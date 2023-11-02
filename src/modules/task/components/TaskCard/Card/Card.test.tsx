@@ -14,14 +14,7 @@ import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 import taskFixtures from '_tests_/fixtures/task'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  render,
-  spinnerTestUtils,
-  cardTestUtils,
-} from '_tests_/utils'
-import { modalTestUtils } from '_tests_/utils/components'
+import { cardTestUtils, fakeWord, getStoreWithAuth, render, spinnerTestUtils } from '_tests_/utils'
 
 import { testUtils as cardTabsTestUtils } from '../../CardTabs/CardTabs.test'
 import {
@@ -430,78 +423,28 @@ describe('Карточка заявки', () => {
         expect(modal).toBeInTheDocument()
       })
 
-      describe('Закрывается', () => {
-        test('При клике на кнопку "Отмена"', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeExecuteTaskItemProps,
-              }}
-            />,
-            {
-              store: getStoreWithAuth({
-                userId: props.task!.assignee!.id,
-              }),
-            },
-          )
+      test('Закрывается при клике на кнопку "Отмена"', async () => {
+        const { user } = render(
+          <TaskCard
+            {...props}
+            task={{
+              ...props.task!,
+              ...activeExecuteTaskItemProps,
+            }}
+          />,
+          {
+            store: getStoreWithAuth({
+              userId: props.task!.assignee!.id,
+            }),
+          },
+        )
 
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
-          const modal = await executeTaskModalTestUtils.findContainer()
-          await executeTaskModalTestUtils.clickCancelButton(user)
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        const modal = await executeTaskModalTestUtils.findContainer()
+        await executeTaskModalTestUtils.clickCancelButton(user)
 
-          expect(modal).not.toBeInTheDocument()
-        })
-
-        test('При клике на кнопку закрытия', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeExecuteTaskItemProps,
-              }}
-            />,
-            {
-              store: getStoreWithAuth({
-                userId: props.task!.assignee!.id,
-              }),
-            },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
-          const modal = await executeTaskModalTestUtils.findContainer()
-          await executeTaskModalTestUtils.clickCloseButton(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
-
-        test('При клике вне модалки', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeExecuteTaskItemProps,
-              }}
-            />,
-            {
-              store: getStoreWithAuth({
-                userId: props.task!.assignee!.id,
-              }),
-            },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
-          const modal = await executeTaskModalTestUtils.findContainer()
-          await modalTestUtils.clickOutsideModal(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
+        expect(modal).not.toBeInTheDocument()
       })
     })
 
@@ -1115,48 +1058,18 @@ describe('Карточка заявки', () => {
         expect(modal).toBeInTheDocument()
       })
 
-      describe('Закрывается', () => {
-        test('При клике на кнопку "Отмена"', async () => {
-          const { user } = render(
-            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
-            { store: getStoreWithAuth() },
-          )
+      test('Закрывается при клике на кнопку "Отмена"', async () => {
+        const { user } = render(
+          <TaskCard{...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
+          { store: getStoreWithAuth() },
+        )
 
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
-          const modal = await requestTaskSuspendModalTestUtils.findContainer()
-          await requestTaskSuspendModalTestUtils.clickCancelButton(user)
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickRequestSuspendItem(user)
+        const modal = await requestTaskSuspendModalTestUtils.findContainer()
+        await requestTaskSuspendModalTestUtils.clickCancelButton(user)
 
-          expect(modal).not.toBeInTheDocument()
-        })
-
-        test('При клике на кнопку закрытия', async () => {
-          const { user } = render(
-            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
-          const modal = await requestTaskSuspendModalTestUtils.findContainer()
-          await requestTaskSuspendModalTestUtils.clickCancelButton(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
-
-        test('При клике вне модалки', async () => {
-          const { user } = render(
-            <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
-          const modal = await requestTaskSuspendModalTestUtils.findContainer()
-          await modalTestUtils.clickOutsideModal(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
+        expect(modal).not.toBeInTheDocument()
       })
 
       describe('При успешном запросе', () => {

@@ -166,6 +166,23 @@ describe('Модалка создания запроса о переводе в 
     expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
   })
 
+  describe('Кнопка закрытия', () => {
+    test('Отображается корректно', () => {
+      render(<RequestTaskSuspendModal {...props} />)
+      const button = testUtils.getCloseButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Обработчик вызывается корректно', async () => {
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+      await testUtils.clickCloseButton(user)
+      expect(props.onCancel).toBeCalledTimes(1)
+    })
+  })
+
   describe('Кнопка отмены', () => {
     test('Отображается корректно', () => {
       render(<RequestTaskSuspendModal {...props} />)

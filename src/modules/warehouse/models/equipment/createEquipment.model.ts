@@ -23,6 +23,7 @@ export type CreateEquipmentMutationArgs = {
   usageCounter?: number
   owner?: IdType
   comment?: string
+  images?: IdType[]
 }
 
 export type CreateEquipmentSuccessResponse = Pick<

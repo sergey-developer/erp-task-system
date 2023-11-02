@@ -35,6 +35,11 @@ const props: Readonly<EquipmentFormModalProps> = {
   onCancel: jest.fn(),
   onSubmit: jest.fn(),
 
+  onUploadImage: jest.fn(),
+
+  onDeleteImage: jest.fn(),
+  deleteImageIsLoading: false,
+
   nomenclatureList: [],
   nomenclatureListIsLoading: false,
   onChangeNomenclature: jest.fn(),
@@ -393,7 +398,6 @@ const expectPurposeLoadingFinished = () =>
 
 // comment field
 const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
-
 const getCommentLabel = () => within(getCommentFormItem()).getByLabelText('Комментарий')
 
 const getCommentField = () =>
@@ -403,6 +407,41 @@ const setComment = async (user: UserEvent, value: string) => {
   const field = getCommentField()
   await user.type(field, value)
   return field
+}
+
+// images
+const getImagesFormItem = () => within(getContainer()).getByTestId('images-form-item')
+const getImagesLabel = () => within(getImagesFormItem()).getByLabelText('Изображения оборудования')
+const getUploadedImage = (filename: string) => within(getImagesFormItem()).getByTitle(filename)
+const queryUploadedImage = (filename: string) => within(getImagesFormItem()).queryByTitle(filename)
+const findImagesError = (error: string) => within(getImagesFormItem()).findByText(error)
+
+const clickDeleteImageButton = async (user: UserEvent) => {
+  const button = buttonTestUtils.getButtonIn(getImagesFormItem(), 'delete')
+  await user.click(button)
+}
+
+const getAddImagesButton = () =>
+  buttonTestUtils.getAllButtonIn(getImagesFormItem(), /Добавить фото/)[1]
+
+const getAddImagesInput = () => {
+  const button = buttonTestUtils.getAllButtonIn(getImagesFormItem(), /Добавить фото/)[0]
+  // eslint-disable-next-line testing-library/no-node-access
+  return button.querySelector('input[type="file"]') as HTMLInputElement
+}
+
+const clickAddImagesButton = async (user: UserEvent) => {
+  const button = getAddImagesButton()
+  await user.click(button)
+}
+
+const setImage = async (
+  user: UserEvent,
+  file: File = new File([], fakeWord(), { type: 'image/png' }),
+) => {
+  const input = getAddImagesInput()
+  await user.upload(input, file)
+  return { input, file }
 }
 
 export const testUtils = {
@@ -418,7 +457,6 @@ export const testUtils = {
   getCancelButton,
   clickCancelButton,
 
-  getCategoryFormItem,
   getCategoryLabel,
   getCategorySelectInput,
   setCategory,
@@ -430,7 +468,6 @@ export const testUtils = {
   expectCategoryLoadingStarted,
   expectCategoryLoadingFinished,
 
-  getNomenclatureFormItem,
   getNomenclatureLabel,
   getNomenclatureSelectInput,
   setNomenclature,
@@ -442,26 +479,22 @@ export const testUtils = {
   expectNomenclatureLoadingStarted,
   expectNomenclatureLoadingFinished,
 
-  getTitleFormItem,
   getTitleLabel,
   getTitleField,
   setTitle,
   findTitleError,
 
-  getCustomerInventoryNumberFormItem,
   queryCustomerInventoryNumberFormItem,
   getCustomerInventoryNumberLabel,
   getCustomerInventoryNumberField,
   setCustomerInventoryNumber,
 
-  getSerialNumberFormItem,
   querySerialNumberFormItem,
   getSerialNumberLabel,
   getSerialNumberField,
   setSerialNumber,
   findSerialNumberError,
 
-  getConditionFormItem,
   getConditionLabel,
   getConditionSelectInput,
   setCondition,
@@ -471,22 +504,18 @@ export const testUtils = {
   openConditionSelect,
   findConditionError,
 
-  getQuantityFormItem,
   queryQuantityFormItem,
   getQuantityLabel,
   getQuantityField,
   setQuantity,
 
-  getMeasurementUnitFormItem,
   queryMeasurementUnitFormItem,
   getMeasurementUnitLabel,
 
-  getPriceFormItem,
   getPriceLabel,
   getPriceField,
   setPrice,
 
-  getCurrencyFormItem,
   getCurrencyLabel,
   getCurrencySelectInput,
   setCurrency,
@@ -496,31 +525,26 @@ export const testUtils = {
   expectCurrencyLoadingStarted,
   expectCurrencyLoadingFinished,
 
-  getIsNewFormItem,
   queryIsNewFormItem,
   getIsNewField,
   clickIsNewField,
   findIsNewError,
 
-  getIsWarrantyFormItem,
   queryIsWarrantyFormItem,
   getIsWarrantyField,
   clickIsWarrantyField,
   findIsWarrantyError,
 
-  getIsRepairedFormItem,
   queryIsRepairedFormItem,
   getIsRepairedField,
   clickIsRepairedField,
   findIsRepairedError,
 
-  getUsageCounterFormItem,
   queryUsageCounterFormItem,
   getUsageCounterLabel,
   getUsageCounterField,
   setUsageCounter,
 
-  getOwnerFormItem,
   queryOwnerFormItem,
   getOwnerLabel,
   getOwnerSelectInput,
@@ -531,7 +555,6 @@ export const testUtils = {
   expectOwnerLoadingStarted,
   expectOwnerLoadingFinished,
 
-  getPurposeFormItem,
   getPurposeLabel,
   getPurposeSelectInput,
   setPurpose,
@@ -543,10 +566,19 @@ export const testUtils = {
   expectPurposeLoadingStarted,
   expectPurposeLoadingFinished,
 
-  getCommentFormItem,
   getCommentLabel,
   getCommentField,
   setComment,
+
+  getImagesLabel,
+  getUploadedImage,
+  queryUploadedImage,
+  findImagesError,
+  getAddImagesButton,
+  getAddImagesInput,
+  clickAddImagesButton,
+  clickDeleteImageButton,
+  setImage,
 }
 
 describe('Модалка оборудования', () => {
@@ -696,7 +728,9 @@ describe('Модалка оборудования', () => {
     test('Отображается если условия соблюдены', () => {
       const nomenclature = warehouseFixtures.nomenclature({ equipmentHasSerialNumber: true })
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />)
+      render(
+        <EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />,
+      )
 
       const label = testUtils.getSerialNumberLabel()
       const field = testUtils.getSerialNumberField()
@@ -710,7 +744,9 @@ describe('Модалка оборудования', () => {
     test('Не отображается если у оборудования нет серийного номера', () => {
       const nomenclature = warehouseFixtures.nomenclature()
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />)
+      render(
+        <EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />,
+      )
 
       const formItem = testUtils.querySerialNumberFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -721,7 +757,9 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(<EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />)
+      render(
+        <EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />,
+      )
 
       const formItem = testUtils.querySerialNumberFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -1147,6 +1185,94 @@ describe('Модалка оборудования', () => {
       const field = await testUtils.setComment(user, value)
 
       expect(field).toHaveDisplayValue(value)
+    })
+  })
+
+  describe('Изображения оборудования', () => {
+    test('Отображается корректно', async () => {
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      render(
+        <EquipmentFormModal {...props} selectedCategory={category} nomenclature={nomenclature} />,
+      )
+
+      const label = testUtils.getImagesLabel()
+      const button = testUtils.getAddImagesButton()
+
+      expect(label).toBeInTheDocument()
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Загрузка работает корректно', async () => {
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      const { user } = render(
+        <EquipmentFormModal {...props} selectedCategory={category} nomenclature={nomenclature} />,
+      )
+
+      const { input, file } = await testUtils.setImage(user)
+      const uploadedImage = testUtils.getUploadedImage(file.name)
+
+      expect(input.files!.item(0)).toBe(file)
+      expect(input.files).toHaveLength(1)
+      expect(uploadedImage).toBeInTheDocument()
+      expect(props.onUploadImage).toBeCalledTimes(1)
+      expect(props.onUploadImage).toBeCalledWith(expect.anything())
+    })
+
+    test('Удаление работает корректно', async () => {
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      const { user } = render(
+        <EquipmentFormModal {...props} selectedCategory={category} nomenclature={nomenclature} />,
+      )
+
+      await testUtils.setImage(user)
+      await testUtils.clickDeleteImageButton(user)
+
+      expect(props.onDeleteImage).toBeCalledTimes(1)
+      expect(props.onDeleteImage).toBeCalledWith(expect.anything())
+    })
+
+    test('Кнопка и зона загрузки не активны во время загрузки', () => {
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      render(
+        <EquipmentFormModal
+          {...props}
+          selectedCategory={category}
+          nomenclature={nomenclature}
+          isLoading
+        />,
+      )
+
+      const button = testUtils.getAddImagesButton()
+      const input = testUtils.getAddImagesInput()
+
+      expect(button).toBeDisabled()
+      expect(input).toBeDisabled()
+    })
+
+    test('Зона загрузки не активна во время удаления изображения', () => {
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      render(
+        <EquipmentFormModal
+          {...props}
+          selectedCategory={category}
+          nomenclature={nomenclature}
+          deleteImageIsLoading
+        />,
+      )
+
+      const input = testUtils.getAddImagesInput()
+      expect(input).toBeDisabled()
     })
   })
 })

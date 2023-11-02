@@ -1,8 +1,11 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Row, Typography } from 'antd'
+import { RcFile } from 'antd/es/upload'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
 import { useMatchUserPermissions } from 'modules/user/hooks'
+import { AttachmentTypeEnum } from 'modules/attachment/constants'
+import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
@@ -28,6 +31,7 @@ import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
+  getErrorDetailStr,
   isBadRequestError,
   isErrorResponse,
   isForbiddenError,
@@ -36,6 +40,7 @@ import {
 import { IdType } from 'shared/types/common'
 import { getYesNoWord, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -72,7 +77,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const debouncedOpenEditEquipmentModal = useDebounceFn(openEditEquipmentModal)
 
-  const debouncedHandleCloseEditEquipmentModal = useDebounceFn(() => {
+  const handleCloseEditEquipmentModal = useDebounceFn(() => {
     closeEditEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
@@ -113,6 +118,9 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] =
     useUpdateEquipmentMutation()
 
+  const [createAttachmentMutation] = useCreateAttachment()
+  const [deleteAttachmentMutation, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
+
   useEffect(() => {
     if (equipment?.category && editEquipmentModalOpened) {
       setSelectedCategory(equipment.category)
@@ -129,10 +137,21 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     useLazyGetCustomerList()
 
   useEffect(() => {
-    if (editEquipmentModalOpened && Boolean(selectedCategory) && !equipmentCategory.isConsumable) {
+    if (
+      editEquipmentModalOpened &&
+      !!selectedCategory &&
+      !equipmentCategory.isConsumable &&
+      !!selectedNomenclatureId
+    ) {
       getCustomerList()
     }
-  }, [editEquipmentModalOpened, equipmentCategory.isConsumable, getCustomerList, selectedCategory])
+  }, [
+    editEquipmentModalOpened,
+    equipmentCategory.isConsumable,
+    getCustomerList,
+    selectedCategory,
+    selectedNomenclatureId,
+  ])
 
   const { currentData: relocationHistory = [], isFetching: relocationHistoryIsFetching } =
     useGetEquipmentRelocationHistory(
@@ -153,11 +172,44 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     setSelectedNomenclatureId(undefined)
   }
 
-  const handleEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async (values, setFields) => {
+  const handleCreateAttachment = useCallback<EquipmentFormModalProps['onUploadImage']>(
+    async ({ file, onSuccess, onError }) => {
       try {
-        await updateEquipmentMutation({ ...values, equipmentId }).unwrap()
-        debouncedHandleCloseEditEquipmentModal()
+        const createdAttachment = await createAttachmentMutation({
+          file: file as RcFile,
+          type: AttachmentTypeEnum.EquipmentImage,
+        }).unwrap()
+
+        onSuccess && onSuccess({ id: createdAttachment.id })
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            onError && onError({ name: '', message: getErrorDetailStr(error) || '' })
+          }
+        }
+      }
+    },
+    [createAttachmentMutation],
+  )
+
+  const handleDeleteAttachment: EquipmentFormModalProps['onDeleteImage'] = useCallback(
+    async (file) => {
+      /* поле response это то что передаётся в колбэк onSuccess при создании */
+      await deleteAttachmentMutation({ attachmentId: file.response.id }).unwrap()
+    },
+    [deleteAttachmentMutation],
+  )
+
+  const handleEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+    async ({ images, ...values }, setFields) => {
+      try {
+        await updateEquipmentMutation({
+          ...values,
+          images: images?.length ? extractIdsFromFilesResponse(images) : undefined,
+          equipmentId,
+        }).unwrap()
+
+        handleCloseEditEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
@@ -174,7 +226,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         }
       }
     },
-    [debouncedHandleCloseEditEquipmentModal, equipmentId, updateEquipmentMutation],
+    [handleCloseEditEquipmentModal, equipmentId, updateEquipmentMutation],
   )
 
   const equipmentFormInitialValues: EquipmentFormModalProps['initialValues'] = equipment
@@ -441,7 +493,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
           fallback={
             <ModalFallback
               open={editEquipmentModalOpened}
-              onCancel={debouncedHandleCloseEditEquipmentModal}
+              onCancel={handleCloseEditEquipmentModal}
             />
           }
         >
@@ -468,8 +520,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             nomenclatureList={nomenclatureList?.results || []}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
-            onCancel={debouncedHandleCloseEditEquipmentModal}
+            onCancel={handleCloseEditEquipmentModal}
             onSubmit={handleEditEquipment}
+            onUploadImage={handleCreateAttachment}
+            onDeleteImage={handleDeleteAttachment}
+            deleteImageIsLoading={deleteAttachmentIsLoading}
           />
         </React.Suspense>
       )}

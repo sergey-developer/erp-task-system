@@ -10,13 +10,13 @@ import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   fakeId,
   fakeIdStr,
-  render,
-  setupApiTests,
-  selectTestUtils,
   fakeWord,
+  getStoreWithAuth,
+  render,
+  selectTestUtils,
   checkboxTestUtils,
   buttonTestUtils
-} from "_tests_/utils";
+} from '_tests_/utils'
 
 import TaskSecondLineModal from './index'
 import { TaskSecondLineModalProps } from './types'
@@ -170,6 +170,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
         'Выберите рабочую группу II линии, в которую хотите направить заявку для дальнейшей работы. Нажмите кнопку «Перевести заявку».',
       ),
     ).toBeInTheDocument()
+
     expect(
       testUtils.getChildByText(
         'Заявка исчезнет из вашей очереди заявок. Просмотр заявки и работа с ней будут недоступны.',

@@ -9,7 +9,7 @@ import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
-import { mapUploadedFiles } from 'shared/utils/file'
+import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 
 import CommentList from './CommentList'
@@ -39,7 +39,9 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
         await createComment({
           taskId,
           comment: values.comment.trim(),
-          attachments: values.attachments ? mapUploadedFiles(values.attachments) : undefined,
+          attachments: values.attachments?.length
+            ? extractOriginFiles(values.attachments)
+            : undefined,
         }).unwrap()
 
         form.resetFields()

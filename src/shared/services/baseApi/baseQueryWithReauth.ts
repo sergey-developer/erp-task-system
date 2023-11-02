@@ -13,7 +13,7 @@ import { HttpMethodEnum } from 'shared/constants/http'
 
 import baseQuery from './baseQuery'
 import { apiPath, currentApiVersion } from './constants'
-import { CustomBaseQueryFn } from './intefraces'
+import { CustomBaseQueryFn } from './types'
 import { isClientRangeError, isErrorResponse, isUnauthorizedError } from './utils'
 
 const mutex = new Mutex()

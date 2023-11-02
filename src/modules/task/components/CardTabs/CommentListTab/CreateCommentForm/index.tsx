@@ -1,12 +1,12 @@
-import { PaperClipOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Upload } from 'antd'
 import stubFalse from 'lodash/stubFalse'
 import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
+import UploadButton from 'components/Buttons/UploadButton'
 import Space from 'components/Space'
 
-import { getFilesFromEvent } from 'shared/utils/form'
+import { filesFormItemProps } from 'shared/constants/form'
 
 import { CreateCommentFormFields, CreateCommentFormProps } from './types'
 
@@ -14,10 +14,7 @@ const { TextArea } = Input
 
 const commentValidationRules: Rule[] = [{ required: true, whitespace: true, max: 10000 }]
 
-const CreateCommentForm: FC<CreateCommentFormProps> = ({
-  onSubmit,
-  isLoading,
-}) => {
+const CreateCommentForm: FC<CreateCommentFormProps> = ({ onSubmit, isLoading }) => {
   const [form] = Form.useForm<CreateCommentFormFields>()
 
   const handleFinish = async (values: CreateCommentFormFields) => {
@@ -25,26 +22,10 @@ const CreateCommentForm: FC<CreateCommentFormProps> = ({
   }
 
   return (
-    <Space
-      data-testid='create-comment-form'
-      direction='vertical'
-      size='middle'
-      $block
-    >
-      <Form<CreateCommentFormFields>
-        form={form}
-        layout='vertical'
-        onFinish={handleFinish}
-      >
-        <Form.Item
-          data-testid='comment-form-item'
-          name='comment'
-          rules={commentValidationRules}
-        >
-          <TextArea
-            placeholder='Дополните информацию о заявке'
-            disabled={isLoading}
-          />
+    <Space data-testid='create-comment-form' direction='vertical' size='middle' $block>
+      <Form<CreateCommentFormFields> form={form} layout='vertical' onFinish={handleFinish}>
+        <Form.Item data-testid='comment-form-item' name='comment' rules={commentValidationRules}>
+          <TextArea placeholder='Дополните информацию о заявке' disabled={isLoading} />
         </Form.Item>
 
         <Row align='middle' justify='space-between'>
@@ -52,17 +33,10 @@ const CreateCommentForm: FC<CreateCommentFormProps> = ({
             <Form.Item
               data-testid='attachments-form-item'
               name='attachments'
-              valuePropName='fileList'
-              getValueFromEvent={getFilesFromEvent}
+              {...filesFormItemProps}
             >
               <Upload beforeUpload={stubFalse} multiple disabled={isLoading}>
-                <Button
-                  type='link'
-                  icon={<PaperClipOutlined />}
-                  disabled={isLoading}
-                >
-                  Добавить вложение
-                </Button>
+                <UploadButton label='Добавить вложение' disabled={isLoading} />
               </Upload>
             </Form.Item>
           </Col>
