@@ -18,11 +18,11 @@ import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import {
-  executeRelocationTaskMessages,
-  returnRelocationTaskToReworkMessages,
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
+  executeRelocationTaskMessages,
   relocationTaskStatusDict,
+  returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
@@ -31,10 +31,10 @@ import {
   useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
 import {
-  useExecuteRelocationTaskMutation,
-  useReturnRelocationTaskToReworkMutation,
   useCancelRelocationTaskMutation,
   useCloseRelocationTaskMutation,
+  useExecuteRelocationTaskMutation,
+  useReturnRelocationTaskToReworkMutation,
 } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
@@ -58,7 +58,7 @@ import {
 } from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-import { mapUploadedFiles } from 'shared/utils/file'
+import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -219,7 +219,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     try {
       await executeRelocationTaskMutation({
         relocationTaskId,
-        documents: mapUploadedFiles(values.documents),
+        documents: extractOriginFiles(values.documents),
       }).unwrap()
 
       toggleOpenExecuteTaskModal()

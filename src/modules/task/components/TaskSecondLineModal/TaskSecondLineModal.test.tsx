@@ -8,14 +8,14 @@ import { validationMessages } from 'shared/constants/validation'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
+  checkboxTestUtils,
   fakeId,
   fakeIdStr,
   fakeWord,
-  getStoreWithAuth,
   render,
   selectTestUtils,
-  checkboxTestUtils,
-  buttonTestUtils
+  setupApiTests,
 } from '_tests_/utils'
 
 import TaskSecondLineModal from './index'

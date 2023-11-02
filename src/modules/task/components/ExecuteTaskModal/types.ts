@@ -1,10 +1,9 @@
 import { FormInstance, ModalProps } from 'antd'
+import { UploadFile } from 'antd/es/upload/interface'
 
 import { TaskModel } from 'modules/task/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
-
-import { UploadFile } from 'shared/types/file'
 
 export type ExecuteTaskModalFormFields = {
   techResolution: string
