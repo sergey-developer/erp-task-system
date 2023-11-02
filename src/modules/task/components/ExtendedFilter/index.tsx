@@ -4,7 +4,6 @@ import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
 import { userListSelectFieldNames } from 'modules/user/constants'
-import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import DatePicker from 'components/DatePicker'
 import DrawerFilter from 'components/Filters/DrawerFilter'
@@ -27,6 +26,8 @@ import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
 const { RangePicker } = DatePicker
 
 const ExtendedFilter: FC<ExtendedFilterProps> = ({
+  open,
+
   formValues,
   initialFormValues,
 
@@ -87,7 +88,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
   return (
     <DrawerFilter
       data-testid='extended-filter'
-      open
+      open={open}
       onClose={onClose}
       onReset={handleResetAll}
       onApply={form.submit}

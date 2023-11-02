@@ -41,8 +41,8 @@ import {
   useGetUserList,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
-  useUserRole
-} from "modules/user/hooks";
+  useUserRole,
+} from 'modules/user/hooks'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
@@ -220,6 +220,7 @@ const TaskListPage: FC = () => {
       {
         customers: selectedCustomers,
         macroregions: selectedMacroregions,
+        assignedToUser: true,
       },
       { skip: !extendedFilterOpened },
     )
@@ -462,6 +463,7 @@ const TaskListPage: FC = () => {
 
       {extendedFilterOpened && (
         <ExtendedFilter
+          open={extendedFilterOpened}
           formValues={extendedFilterFormValues}
           initialFormValues={initialExtendedFilterFormValues}
           customerList={customerList}

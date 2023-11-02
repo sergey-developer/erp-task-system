@@ -6,6 +6,7 @@ import { SupportGroupListModel } from './supportGroupList.model'
 export type GetSupportGroupListQueryArgs = MaybeUndefined<
   Partial<{
     hasTemplate: boolean
+    assignedToUser: boolean
     customers: IdType[]
     macroregions: IdType[]
   }>
