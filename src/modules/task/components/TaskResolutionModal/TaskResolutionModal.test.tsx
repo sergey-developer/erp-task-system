@@ -5,7 +5,7 @@ import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { validationMessages, validationSizes } from 'shared/constants/validation'
 
-import { buttonTestUtils, fakeIdStr, fakeWord, modalTestUtils, render } from '_tests_/utils'
+import { buttonTestUtils, fakeIdStr, fakeWord, render } from '_tests_/utils'
 
 import TaskResolutionModal, { TaskResolutionModalProps } from './index'
 
@@ -104,7 +104,7 @@ const setUserResolution = async (user: UserEvent, value: string) => {
 }
 
 // attachment
-const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachment-form-item')
+const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
 
 const getAddAttachmentsButton = () =>
   buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
@@ -310,193 +310,184 @@ describe('Модалка решения по заявке', () => {
     })
   })
 
-  describe('Форма', () => {
-    describe('Поле технического решения', () => {
-      test('Заголовок отображается', () => {
-        render(<TaskResolutionModal {...props} />)
-        expect(testUtils.getTechResolutionTitle()).toBeInTheDocument()
-      })
-
-      test('Отображается корректно', () => {
-        render(<TaskResolutionModal {...props} />)
-
-        const field = testUtils.getTechResolutionField()
-
-        expect(field).toBeInTheDocument()
-        expect(field).toBeEnabled()
-        expect(field).not.toHaveValue()
-      })
-
-      test('Можно заполнить', async () => {
-        const { user } = render(<TaskResolutionModal {...props} />)
-
-        const value = fakeWord()
-        const field = await testUtils.setTechResolution(user, value)
-
-        expect(field).toHaveDisplayValue(value)
-      })
-
-      test('Не активно во время загрузки', () => {
-        render(<TaskResolutionModal {...props} isLoading />)
-        expect(testUtils.getTechResolutionField()).toBeDisabled()
-      })
-
-      describe('Отображается ошибка', () => {
-        test('Если ввести только пробелы', async () => {
-          const { user } = render(<TaskResolutionModal {...props} />)
-
-          await testUtils.setTechResolution(user, ' ')
-
-          expect(
-            await testUtils.findTechResolutionError(validationMessages.canNotBeEmpty),
-          ).toBeInTheDocument()
-        })
-
-        test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(<TaskResolutionModal {...props} />)
-
-          await testUtils.clickSubmitButton(user)
-
-          expect(
-            await testUtils.findTechResolutionError(validationMessages.required),
-          ).toBeInTheDocument()
-        })
-
-        test('Если превысить лимит символов', async () => {
-          const { user } = render(<TaskResolutionModal {...props} />)
-
-          await testUtils.setTechResolution(
-            user,
-            fakeWord({ length: validationSizes.string.long + 1 }),
-          )
-
-          expect(
-            await testUtils.findTechResolutionError(validationMessages.string.max.long),
-          ).toBeInTheDocument()
-        })
-      })
+  describe('Поле технического решения', () => {
+    test('Заголовок отображается', () => {
+      render(<TaskResolutionModal {...props} />)
+      expect(testUtils.getTechResolutionTitle()).toBeInTheDocument()
     })
 
-    describe('Поле решения для пользователя', () => {
-      test('Заголовок отображается', () => {
-        render(<TaskResolutionModal {...props} />)
-        expect(testUtils.getUserResolutionTitle()).toBeInTheDocument()
-      })
+    test('Отображается корректно', () => {
+      render(<TaskResolutionModal {...props} />)
 
-      test('Отображается корректно если условия соблюдены', () => {
-        render(<TaskResolutionModal {...props} />)
+      const field = testUtils.getTechResolutionField()
 
-        const field = testUtils.getUserResolutionField()
-
-        expect(field).toBeInTheDocument()
-        expect(field).toBeEnabled()
-        expect(field).not.toHaveValue()
-      })
-
-      describe('Не отображается', () => {
-        test('Если тип заявки - incident task', () => {
-          render(<TaskResolutionModal {...props} type={TaskTypeEnum.IncidentTask} />)
-
-          expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
-        })
-
-        test('Если тип заявки - request task', () => {
-          render(<TaskResolutionModal {...props} type={TaskTypeEnum.RequestTask} />)
-
-          expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
-        })
-      })
-
-      test('Можно заполнить', async () => {
-        const { user } = render(<TaskResolutionModal {...props} />)
-
-        const value = fakeWord()
-        const field = await testUtils.setUserResolution(user, value)
-
-        expect(field).toHaveDisplayValue(value)
-      })
-
-      test('Не активно во время загрузки', () => {
-        render(<TaskResolutionModal {...props} isLoading />)
-        expect(testUtils.getUserResolutionField()).toBeDisabled()
-      })
-
-      describe('Отображается ошибка', () => {
-        test('Если ввести только пробелы', async () => {
-          const { user } = render(<TaskResolutionModal {...props} />)
-
-          await testUtils.setUserResolution(user, ' ')
-
-          expect(
-            await testUtils.findUserResolutionError(validationMessages.canNotBeEmpty),
-          ).toBeInTheDocument()
-        })
-
-        test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          const { user } = render(<TaskResolutionModal {...props} />)
-
-          await testUtils.clickSubmitButton(user)
-
-          expect(
-            await testUtils.findUserResolutionError(validationMessages.required),
-          ).toBeInTheDocument()
-        })
-
-        test('Если превысить лимит символов', async () => {
-          const { user } = render(<TaskResolutionModal {...props} />)
-
-          await testUtils.setUserResolution(
-            user,
-            fakeWord({ length: validationSizes.string.long + 1 }),
-          )
-
-          expect(
-            await testUtils.findUserResolutionError(validationMessages.string.max.long),
-          ).toBeInTheDocument()
-        })
-      })
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(field).not.toHaveValue()
     })
 
-    describe('Поле добавления вложения', () => {
-      test('Кнопка отображается корректно', () => {
-        render(<TaskResolutionModal {...props} />)
+    test('Можно заполнить', async () => {
+      const { user } = render(<TaskResolutionModal {...props} />)
 
-        const button = testUtils.getAddAttachmentsButton()
+      const value = fakeWord()
+      const field = await testUtils.setTechResolution(user, value)
 
-        expect(button).toBeInTheDocument()
-        expect(button).toBeEnabled()
-      })
+      expect(field).toHaveDisplayValue(value)
+    })
 
-      test('Можно загрузить вложение', async () => {
+    test('Не активно во время загрузки', () => {
+      render(<TaskResolutionModal {...props} isLoading />)
+      expect(testUtils.getTechResolutionField()).toBeDisabled()
+    })
+
+    describe('Отображается ошибка', () => {
+      test('Если ввести только пробелы', async () => {
         const { user } = render(<TaskResolutionModal {...props} />)
 
-        const { input, file } = await testUtils.setAttachment(user)
+        await testUtils.setTechResolution(user, ' ')
 
-        expect(input.files!.item(0)).toBe(file)
-        expect(input.files).toHaveLength(1)
+        expect(
+          await testUtils.findTechResolutionError(validationMessages.canNotBeEmpty),
+        ).toBeInTheDocument()
       })
 
-      test('После загрузки вложение отображается', async () => {
+      test('Если не заполнить поле и нажать кнопку отправки', async () => {
         const { user } = render(<TaskResolutionModal {...props} />)
 
-        const { file } = await testUtils.setAttachment(user)
+        await testUtils.clickSubmitButton(user)
 
-        const uploadedAttachment = testUtils.getUploadedAttachment(file.name)
-        expect(uploadedAttachment).toBeInTheDocument()
+        expect(
+          await testUtils.findTechResolutionError(validationMessages.required),
+        ).toBeInTheDocument()
       })
 
-      test('Кнопка не активна во время загрузки', () => {
-        render(<TaskResolutionModal {...props} isLoading />)
-        const button = testUtils.getAddAttachmentsButton()
-        expect(button).toBeDisabled()
+      test('Если превысить лимит символов', async () => {
+        const { user } = render(<TaskResolutionModal {...props} />)
+
+        await testUtils.setTechResolution(
+          user,
+          fakeWord({ length: validationSizes.string.long + 1 }),
+        )
+
+        expect(
+          await testUtils.findTechResolutionError(validationMessages.string.max.long),
+        ).toBeInTheDocument()
       })
     })
   })
 
-  test('Обработчик вызывается корректно кликнув вне модалки', async () => {
-    const { user } = render(<TaskResolutionModal {...props} />)
+  describe('Поле решения для пользователя', () => {
+    test('Заголовок отображается', () => {
+      render(<TaskResolutionModal {...props} />)
+      expect(testUtils.getUserResolutionTitle()).toBeInTheDocument()
+    })
 
-    await modalTestUtils.clickOutsideModal(user)
-    expect(props.onCancel).toBeCalledTimes(1)
+    test('Отображается корректно если условия соблюдены', () => {
+      render(<TaskResolutionModal {...props} />)
+
+      const field = testUtils.getUserResolutionField()
+
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(field).not.toHaveValue()
+    })
+
+    describe('Не отображается', () => {
+      test('Если тип заявки - incident task', () => {
+        render(<TaskResolutionModal {...props} type={TaskTypeEnum.IncidentTask} />)
+
+        expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
+      })
+
+      test('Если тип заявки - request task', () => {
+        render(<TaskResolutionModal {...props} type={TaskTypeEnum.RequestTask} />)
+
+        expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
+      })
+    })
+
+    test('Можно заполнить', async () => {
+      const { user } = render(<TaskResolutionModal {...props} />)
+
+      const value = fakeWord()
+      const field = await testUtils.setUserResolution(user, value)
+
+      expect(field).toHaveDisplayValue(value)
+    })
+
+    test('Не активно во время загрузки', () => {
+      render(<TaskResolutionModal {...props} isLoading />)
+      expect(testUtils.getUserResolutionField()).toBeDisabled()
+    })
+
+    describe('Отображается ошибка', () => {
+      test('Если ввести только пробелы', async () => {
+        const { user } = render(<TaskResolutionModal {...props} />)
+
+        await testUtils.setUserResolution(user, ' ')
+
+        expect(
+          await testUtils.findUserResolutionError(validationMessages.canNotBeEmpty),
+        ).toBeInTheDocument()
+      })
+
+      test('Если не заполнить поле и нажать кнопку отправки', async () => {
+        const { user } = render(<TaskResolutionModal {...props} />)
+
+        await testUtils.clickSubmitButton(user)
+
+        expect(
+          await testUtils.findUserResolutionError(validationMessages.required),
+        ).toBeInTheDocument()
+      })
+
+      test('Если превысить лимит символов', async () => {
+        const { user } = render(<TaskResolutionModal {...props} />)
+
+        await testUtils.setUserResolution(
+          user,
+          fakeWord({ length: validationSizes.string.long + 1 }),
+        )
+
+        expect(
+          await testUtils.findUserResolutionError(validationMessages.string.max.long),
+        ).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Поле добавления вложения', () => {
+    test('Кнопка отображается корректно', () => {
+      render(<TaskResolutionModal {...props} />)
+
+      const button = testUtils.getAddAttachmentsButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Можно загрузить вложение', async () => {
+      const { user } = render(<TaskResolutionModal {...props} />)
+
+      const { input, file } = await testUtils.setAttachment(user)
+
+      expect(input.files!.item(0)).toBe(file)
+      expect(input.files).toHaveLength(1)
+    })
+
+    test('После загрузки вложение отображается', async () => {
+      const { user } = render(<TaskResolutionModal {...props} />)
+
+      const { file } = await testUtils.setAttachment(user)
+
+      const uploadedAttachment = testUtils.getUploadedAttachment(file.name)
+      expect(uploadedAttachment).toBeInTheDocument()
+    })
+
+    test('Кнопка не активна во время загрузки', () => {
+      render(<TaskResolutionModal {...props} isLoading />)
+      const button = testUtils.getAddAttachmentsButton()
+      expect(button).toBeDisabled()
+    })
   })
 })

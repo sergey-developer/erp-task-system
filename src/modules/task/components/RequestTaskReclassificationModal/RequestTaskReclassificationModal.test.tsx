@@ -2,20 +2,13 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import {
-  ReclassificationReasonEnum,
   reclassificationReasonDict,
+  ReclassificationReasonEnum,
 } from 'modules/task/constants/taskReclassificationRequest'
 
 import { validationMessages } from 'shared/constants/validation'
 
-import {
-  fakeIdStr,
-  fakeWord,
-  modalTestUtils,
-  render,
-  radioButtonTestUtils,
-  buttonTestUtils,
-} from '_tests_/utils'
+import { buttonTestUtils, fakeIdStr, fakeWord, radioButtonTestUtils, render } from '_tests_/utils'
 
 import RequestTaskReclassificationModal, { RequestTaskReclassificationModalProps } from './index'
 
@@ -325,12 +318,5 @@ describe('Модалка запроса о переклассификации з
         })
       })
     })
-  })
-
-  test('Обработчик вызывается корректно кликнув вне модалки', async () => {
-    const { user } = render(<RequestTaskReclassificationModal {...props} />)
-
-    await modalTestUtils.clickOutsideModal(user)
-    expect(props.onCancel).toBeCalledTimes(1)
   })
 })

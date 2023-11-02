@@ -32,7 +32,7 @@ const setComment = async (user: UserEvent, comment: string) => {
 }
 
 // attachment
-const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachment-form-item')
+const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
 
 const getAddAttachmentsButton = () =>
   buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
@@ -167,21 +167,14 @@ describe('Форма добавления комментария', () => {
       expect(button).toBeEnabled()
     })
 
-    test('Можно загрузить вложение', async () => {
+    test('Загрузка вложения работает корректно', async () => {
       const { user } = render(<CreateCommentForm {...props} />)
 
       const { input, file } = await testUtils.setAttachment(user)
+      const uploadedAttachment = testUtils.getUploadedAttachment(file.name)
 
       expect(input.files!.item(0)).toBe(file)
       expect(input.files).toHaveLength(1)
-    })
-
-    test('После загрузки вложение отображается', async () => {
-      const { user } = render(<CreateCommentForm {...props} />)
-
-      const { file } = await testUtils.setAttachment(user)
-
-      const uploadedAttachment = testUtils.getUploadedAttachment(file.name)
       expect(uploadedAttachment).toBeInTheDocument()
     })
 
@@ -196,10 +189,10 @@ describe('Форма добавления комментария', () => {
     test('Отображается корректно', () => {
       render(<CreateCommentForm {...props} />)
 
-      const submitButton = testUtils.getSubmitButton()
+      const button = testUtils.getSubmitButton()
 
-      expect(submitButton).toBeInTheDocument()
-      expect(submitButton).toBeEnabled()
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
     })
 
     test('Отображает процесс загрузки', async () => {
