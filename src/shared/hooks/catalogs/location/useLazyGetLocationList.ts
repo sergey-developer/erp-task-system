@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
+import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
 import { getLocationListMessagesErrorMsg } from 'shared/constants/catalogs'
 import {
@@ -13,24 +13,16 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/services/baseApi'
-import { useGetLocationListQuery } from 'shared/services/catalogsApi.service'
+import { useLazyGetLocationListQuery } from 'shared/services/catalogsApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetLocationListResult = CustomUseQueryHookResult<
+type UseGetLocationListResult = CustomUseLazyQueryHookResult<
   GetLocationListQueryArgs,
   GetLocationListSuccessResponse
 >
 
-type UseGetLocationListOptions = CustomUseQueryOptions<
-  GetLocationListQueryArgs,
-  GetLocationListSuccessResponse
->
-
-export const useGetLocationList = (
-  args?: GetLocationListQueryArgs,
-  options?: UseGetLocationListOptions,
-): UseGetLocationListResult => {
-  const state = useGetLocationListQuery(args, options)
+export const useLazyGetLocationList = (): UseGetLocationListResult => {
+  const [trigger, state] = useLazyGetLocationListQuery()
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
@@ -42,5 +34,5 @@ export const useGetLocationList = (
     }
   }, [state.error])
 
-  return state
+  return [trigger, state]
 }

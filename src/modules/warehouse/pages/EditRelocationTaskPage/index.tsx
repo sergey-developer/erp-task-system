@@ -46,7 +46,7 @@ import {
 
 import Space from 'components/Space'
 
-import { useGetLocationList } from 'shared/hooks/catalogs/location'
+import { useLazyGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
@@ -62,12 +62,10 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import {
-  conditionsParamByRelocationTaskType,
-  relocateFromLocationTypes,
-  relocateFromWarehouseTypes,
-  relocateToLocationTypes,
-  relocateToWarehouseTypes,
-} from '../CreateRelocationTaskPage/constants'
+  getConditionsByRelocationTaskType,
+  getRelocateFromLocationListParams,
+  getRelocateToLocationListParams,
+} from '../CreateRelocationTaskPage/utils'
 
 const { Text } = Typography
 
@@ -127,25 +125,28 @@ const EditRelocationTaskPage: FC = () => {
     isManager: false,
   })
 
-  const {
-    currentData: relocateFromLocationList = [],
-    isFetching: relocateFromLocationListIsFetching,
-  } = useGetLocationList(
-    {
-      locationTypes: relocateFromLocationTypes[selectedType!],
-      warehouseTypes: relocateFromWarehouseTypes[selectedType!],
-    },
-    { skip: !selectedType },
-  )
+  const [
+    getRelocateFromLocationList,
+    { currentData: relocateFromLocationList = [], isFetching: relocateFromLocationListIsFetching },
+  ] = useLazyGetLocationList()
 
-  const { currentData: relocateToLocationList = [], isFetching: relocateToLocationListIsFetching } =
-    useGetLocationList(
-      {
-        locationTypes: relocateToLocationTypes[selectedType!],
-        warehouseTypes: relocateToWarehouseTypes[selectedType!],
-      },
-      { skip: !selectedType },
-    )
+  const [
+    getRelocateToLocationList,
+    { currentData: relocateToLocationList = [], isFetching: relocateToLocationListIsFetching },
+  ] = useLazyGetLocationList()
+
+  /* сделано через lazy т.к. по каким-то причинам запрос не отправляется снова если один из параметров не изменился */
+  useEffect(() => {
+    if (selectedType) {
+      getRelocateFromLocationList(getRelocateFromLocationListParams(selectedType))
+    }
+  }, [getRelocateFromLocationList, selectedType])
+
+  useEffect(() => {
+    if (selectedType && !typeIsWriteOff) {
+      getRelocateToLocationList(getRelocateToLocationListParams(selectedType))
+    }
+  }, [getRelocateToLocationList, selectedType, typeIsWriteOff])
 
   const { currentData: currencyList = [], isFetching: currencyListIsFetching } =
     useGetCurrencyList()
@@ -158,7 +159,7 @@ const EditRelocationTaskPage: FC = () => {
     useGetEquipmentCatalogList(
       {
         locationId: selectedRelocateFrom?.value,
-        conditions: conditionsParamByRelocationTaskType[selectedType!],
+        conditions: getConditionsByRelocationTaskType(selectedType!),
       },
       { skip: !selectedRelocateFrom?.value || !selectedType },
     )
@@ -461,7 +462,7 @@ const EditRelocationTaskPage: FC = () => {
           price: eqp?.price ?? undefined,
           currency: eqp?.currency?.id || undefined,
           quantity: eqp.quantity,
-          category: eqp.category
+          category: eqp.category,
         })
       })
 
