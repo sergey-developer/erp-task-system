@@ -2,7 +2,7 @@ import { Form, Select } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
-import { statusOptions } from 'modules/warehouse/constants/relocationTask'
+import { relocationTaskStatusOptions } from 'modules/warehouse/constants/relocationTask'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
@@ -56,7 +56,7 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
               data-testid='status-select'
               mode='multiple'
               placeholder='Выберите статус'
-              options={statusOptions}
+              options={relocationTaskStatusOptions}
             />
           </Form.Item>
         </FilterBlock>

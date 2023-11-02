@@ -5,6 +5,10 @@ import moment from 'moment-timezone'
 
 import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
+import {
+  relocationTaskTypeDict,
+  RelocationTaskTypeEnum,
+} from 'modules/warehouse/constants/relocationTask'
 import CreateRelocationTaskPage from 'modules/warehouse/pages/CreateRelocationTaskPage'
 import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskPage/CreateRelocationTaskPage.test'
 
@@ -30,8 +34,14 @@ const props: RelocationTaskFormProps = {
   userList: [],
   userListIsLoading: false,
 
-  locationList: [],
-  locationListIsLoading: false,
+  relocateFromLocationList: [],
+  relocateFromLocationListIsLoading: false,
+
+  relocateToLocationList: [],
+  relocateToLocationListIsLoading: false,
+
+  type: RelocationTaskTypeEnum.Relocation,
+  onChangeType: jest.fn(),
 
   onChangeRelocateTo: jest.fn(),
   onChangeRelocateFrom: jest.fn(),
@@ -41,7 +51,6 @@ const getContainer = () => screen.getByTestId('relocation-task-form')
 
 // deadline at field
 const getDeadlineAtFormItem = () => within(getContainer()).getByTestId('deadline-at-form-item')
-
 const getDeadlineAtTitle = () => within(getDeadlineAtFormItem()).getByTitle('Срок выполнения')
 
 const getDeadlineAtDateFormItem = () =>
@@ -79,11 +88,11 @@ const setDeadlineAtTime = async (user: UserEvent, value: string) => {
 // executor field
 const getExecutorFormItem = () => within(getContainer()).getByTestId('executor-form-item')
 const getExecutorSelectInput = () => selectTestUtils.getSelect(getExecutorFormItem())
+const setExecutor = selectTestUtils.clickSelectOption
+const findExecutorError = (text: string) => within(getExecutorFormItem()).findByText(text)
 
 const openExecutorSelect = (user: UserEvent) =>
   selectTestUtils.openSelect(user, getExecutorFormItem())
-
-const setExecutor = selectTestUtils.clickSelectOption
 
 const getSelectedExecutor = (title: string) =>
   selectTestUtils.getSelectedOptionByTitle(getExecutorFormItem(), title)
@@ -91,16 +100,22 @@ const getSelectedExecutor = (title: string) =>
 const querySelectedExecutor = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getExecutorFormItem(), title)
 
-const findExecutorError = (text: string) => within(getExecutorFormItem()).findByText(text)
+// type field
+const getTypeFormItem = () => within(getContainer()).getByTestId('type-form-item')
+const getTypeSelectInput = () => selectTestUtils.getSelect(getTypeFormItem())
+const openTypeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getTypeFormItem())
+const setType = selectTestUtils.clickSelectOption
+const getSelectedType = () => selectTestUtils.getSelectedOption(getTypeFormItem())
+const findTypeError = async (text: string) => within(getTypeFormItem()).findByText(text)
 
 // relocate from field
 const getRelocateFromFormItem = () => within(getContainer()).getByTestId('relocate-from-form-item')
 const getRelocateFromSelectInput = () => selectTestUtils.getSelect(getRelocateFromFormItem())
+const setRelocateFrom = selectTestUtils.clickSelectOption
+const findRelocateFromError = (text: string) => within(getRelocateFromFormItem()).findByText(text)
 
 const openRelocateFromSelect = (user: UserEvent) =>
   selectTestUtils.openSelect(user, getRelocateFromFormItem())
-
-const setRelocateFrom = selectTestUtils.clickSelectOption
 
 const getSelectedRelocateFrom = (title: string) =>
   selectTestUtils.getSelectedOptionByTitle(getRelocateFromFormItem(), title)
@@ -108,16 +123,14 @@ const getSelectedRelocateFrom = (title: string) =>
 const querySelectedRelocateFrom = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getRelocateFromFormItem(), title)
 
-const findRelocateFromError = (text: string) => within(getRelocateFromFormItem()).findByText(text)
-
 // relocate to field
 const getRelocateToFormItem = () => within(getContainer()).getByTestId('relocate-to-form-item')
 const getRelocateToSelectInput = () => selectTestUtils.getSelect(getRelocateToFormItem())
+const setRelocateTo = selectTestUtils.clickSelectOption
+const findRelocateToError = (text: string) => within(getRelocateToFormItem()).findByText(text)
 
 const openRelocateToSelect = (user: UserEvent) =>
   selectTestUtils.openSelect(user, getRelocateToFormItem())
-
-const setRelocateTo = selectTestUtils.clickSelectOption
 
 const getSelectedRelocateTo = (title: string) =>
   selectTestUtils.getSelectedOptionByTitle(getRelocateToFormItem(), title)
@@ -125,17 +138,13 @@ const getSelectedRelocateTo = (title: string) =>
 const querySelectedRelocateTo = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getRelocateToFormItem(), title)
 
-const findRelocateToError = (text: string) => within(getRelocateToFormItem()).findByText(text)
-
 // comment field
 const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
-
 const getCommentTitle = () => within(getCommentFormItem()).getByTitle('Комментарий')
+const findCommentError = (text: string) => within(getCommentFormItem()).findByText(text)
 
 const getCommentField = () =>
   within(getCommentFormItem()).getByPlaceholderText('Добавьте комментарий')
-
-const findCommentError = (text: string) => within(getCommentFormItem()).findByText(text)
 
 const setComment = async (user: UserEvent, value: string) => {
   const field = getCommentField()
@@ -145,6 +154,12 @@ const setComment = async (user: UserEvent, value: string) => {
 
 export const testUtils = {
   getContainer,
+
+  getTypeSelectInput,
+  openTypeSelect,
+  setType,
+  findTypeError,
+  getSelectedType,
 
   getDeadlineAtTitle,
   getDeadlineAtDateField,
@@ -315,6 +330,44 @@ describe('Форма создания заявки на перемещение �
     })
   })
 
+  describe('Тип', () => {
+    test('Отображается корректно', async () => {
+      const { user } = render(
+        <Form>
+          <RelocationTaskForm {...props} />
+        </Form>,
+      )
+
+      const input = testUtils.getTypeSelectInput()
+      await testUtils.openTypeSelect(user)
+      const selectedType = testUtils.getSelectedType()
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(selectedType).not.toBeInTheDocument()
+      Object.keys(relocationTaskTypeDict).forEach((key) => {
+        const option = selectTestUtils.getSelectOption(
+          relocationTaskTypeDict[key as RelocationTaskTypeEnum],
+        )
+        expect(option).toBeInTheDocument()
+      })
+    })
+
+    test('Можно выбрать значение', async () => {
+      const { user } = render(
+        <Form>
+          <RelocationTaskForm {...props} />
+        </Form>,
+      )
+
+      await testUtils.openTypeSelect(user)
+      await testUtils.setType(user, relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation])
+      const selectedType = testUtils.getSelectedType()
+
+      expect(selectedType).toBeInTheDocument()
+    })
+  })
+
   describe('Объект выбытия', () => {
     test('Отображается корректно', async () => {
       const locationListItem = catalogsFixtures.locationListItem()
@@ -322,7 +375,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} locationList={locationList} />
+          <RelocationTaskForm {...props} relocateFromLocationList={locationList} />
         </Form>,
       )
 
@@ -344,7 +397,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} locationList={[locationListItem]} />
+          <RelocationTaskForm {...props} relocateFromLocationList={[locationListItem]} />
         </Form>,
       )
 
@@ -377,7 +430,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} locationList={locationList} />
+          <RelocationTaskForm {...props} relocateToLocationList={locationList} />
         </Form>,
       )
 
@@ -399,7 +452,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} locationList={[locationListItem]} />
+          <RelocationTaskForm {...props} relocateToLocationList={[locationListItem]} />
         </Form>,
       )
 
