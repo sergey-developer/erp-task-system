@@ -1,9 +1,12 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
+  getEquipmentAttachmentListErrorMsg,
   getEquipmentMessages,
 } from 'modules/warehouse/constants/equipment'
 
@@ -12,8 +15,14 @@ import { NumberOrString } from 'shared/types/utils'
 import { getYesNoWord } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
+import attachmentFixtures from '_tests_/fixtures/attachments'
+import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
+  mockGetEquipmentAttachmentListForbiddenError,
+  mockGetEquipmentAttachmentListNotFoundError,
+  mockGetEquipmentAttachmentListServerError,
+  mockGetEquipmentAttachmentListSuccess,
   mockGetEquipmentForbiddenError,
   mockGetEquipmentNotFoundError,
   mockGetEquipmentServerError,
@@ -38,28 +47,6 @@ const props: Readonly<EquipmentDetailsProps> = {
   equipmentId: fakeInteger(),
 }
 
-export const blockTestIds = [
-  'title',
-  'category',
-  'nomenclature',
-  'customer-inventory-number',
-  'inventory-number',
-  'serial-number',
-  'warehouse',
-  'condition',
-  'created-at',
-  'created-by',
-  'quantity',
-  'price',
-  'is-new',
-  'is-warranty',
-  'is-repaired',
-  'usage-counter',
-  'owner',
-  'purpose',
-  'comment',
-]
-
 const getContainer = () => screen.getByTestId('equipment-details')
 const findContainer = (): Promise<HTMLElement> => screen.findByTestId('equipment-details')
 
@@ -72,9 +59,25 @@ const getInfoInBlock = (block: HTMLElement, value: NumberOrString | RegExp) =>
 const queryInfoInBlock = (block: HTMLElement, value: NumberOrString | RegExp) =>
   within(block).queryByText(value)
 
+// equipment images
+const getEquipmentImageList = () => within(getBlock('images')).getByTestId('equipment-image-list')
+
+const getViewAllImagesButton = () =>
+  buttonTestUtils.getButtonIn(getBlock('images'), /Просмотреть все фото/)
+const clickViewAllImagesButton = async (user: UserEvent) => {
+  const button = getViewAllImagesButton()
+  await user.click(button)
+}
+
+const expectEquipmentImageListLoadingFinished = spinnerTestUtils.expectLoadingFinished(
+  'equipment-image-list-loading',
+)
+
+const expectTotalEquipmentImageListLoadingFinished = () =>
+  buttonTestUtils.expectLoadingFinished(getViewAllImagesButton())
+
 // close button
 const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
-
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
@@ -97,6 +100,12 @@ export const testUtils = {
   getCloseButton,
   clickCloseButton,
 
+  getEquipmentImageList,
+  getViewAllImagesButton,
+  clickViewAllImagesButton,
+  expectEquipmentImageListLoadingFinished,
+  expectTotalEquipmentImageListLoadingFinished,
+
   expectLoadingStarted,
   expectLoadingFinished,
 }
@@ -107,6 +116,8 @@ notificationTestUtils.setupNotifications()
 describe('Информация об оборудовании', () => {
   test('При клике на кнопку закрытия вызывается обработчик', async () => {
     mockGetEquipmentSuccess(props.equipmentId)
+    mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
     const { user } = render(<EquipmentDetails {...props} />)
 
     await testUtils.clickCloseButton(user)
@@ -117,6 +128,7 @@ describe('Информация об оборудовании', () => {
     test('Наименование отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -132,6 +144,7 @@ describe('Информация об оборудовании', () => {
     test('Категория отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -147,6 +160,7 @@ describe('Информация об оборудовании', () => {
     test('Номенклатура отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -163,6 +177,7 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -180,6 +195,7 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -193,6 +209,7 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -210,6 +227,7 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -226,6 +244,7 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -244,6 +263,7 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -257,6 +277,7 @@ describe('Информация об оборудовании', () => {
     test('Склад отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -272,6 +293,7 @@ describe('Информация об оборудовании', () => {
     test('Состояние отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -287,6 +309,7 @@ describe('Информация об оборудовании', () => {
     test('Дата оприходования отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -302,6 +325,7 @@ describe('Информация об оборудовании', () => {
     test('Кем оприходовано отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -317,6 +341,7 @@ describe('Информация об оборудовании', () => {
     test('Количество отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -336,6 +361,7 @@ describe('Информация об оборудовании', () => {
     test('Стоимость отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -356,6 +382,7 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -373,6 +400,7 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -386,6 +414,7 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -403,6 +432,7 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -416,6 +446,7 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -433,6 +464,7 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -446,6 +478,7 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -463,6 +496,7 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -476,6 +510,7 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -493,6 +528,7 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -505,6 +541,7 @@ describe('Информация об оборудовании', () => {
     test('Назначение оборудования отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -520,6 +557,7 @@ describe('Информация об оборудовании', () => {
     test('Комментарий отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -531,12 +569,136 @@ describe('Информация об оборудовании', () => {
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
     })
+
+    describe('Изображения оборудования', () => {
+      test('При успешном запросе отображаются корректно', async () => {
+        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+        const attachmentList = attachmentFixtures.attachmentList()
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
+          body: commonFixtures.paginatedListResponse(attachmentList),
+        })
+
+        render(<EquipmentDetails {...props} />)
+
+        await testUtils.expectLoadingFinished()
+        await testUtils.expectEquipmentImageListLoadingFinished()
+
+        const block = testUtils.getBlock('images')
+        const label = testUtils.getInfoInBlock(block, /Изображения оборудования/)
+        const images = attachmentListTestUtils.getAllIn(testUtils.getEquipmentImageList())
+
+        expect(label).toBeInTheDocument()
+        expect(images).toHaveLength(attachmentList.length)
+      })
+
+      describe('При не успешном запросе', () => {
+        test('Обрабатывается ошибка 403', async () => {
+          mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+          const errorMsg = fakeWord()
+          mockGetEquipmentAttachmentListForbiddenError(props.equipmentId, {
+            body: { detail: errorMsg },
+          })
+
+          render(<EquipmentDetails {...props} />)
+
+          await testUtils.expectLoadingFinished()
+          await testUtils.expectEquipmentImageListLoadingFinished()
+
+          const notification = await notificationTestUtils.findNotification(errorMsg)
+          expect(notification).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка 404', async () => {
+          mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+          const errorMsg = fakeWord()
+          mockGetEquipmentAttachmentListNotFoundError(props.equipmentId, {
+            body: { detail: errorMsg },
+          })
+
+          render(<EquipmentDetails {...props} />)
+
+          await testUtils.expectLoadingFinished()
+          await testUtils.expectEquipmentImageListLoadingFinished()
+
+          const notification = await notificationTestUtils.findNotification(errorMsg)
+          expect(notification).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка 500', async () => {
+          mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+          mockGetEquipmentAttachmentListServerError(props.equipmentId)
+
+          render(<EquipmentDetails {...props} />)
+
+          await testUtils.expectLoadingFinished()
+          await testUtils.expectEquipmentImageListLoadingFinished()
+
+          const notification = await notificationTestUtils.findNotification(
+            getEquipmentAttachmentListErrorMsg,
+          )
+          expect(notification).toBeInTheDocument()
+        })
+      })
+
+      describe('Просмотр всех изображений', () => {
+        test('Кнопка отображается корректно', async () => {
+          mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+          const attachmentListResponse = commonFixtures.paginatedListResponse(
+            attachmentFixtures.attachmentList(),
+          )
+          mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
+            body: attachmentListResponse,
+          })
+
+          render(<EquipmentDetails {...props} />)
+
+          await testUtils.expectLoadingFinished()
+          await testUtils.expectEquipmentImageListLoadingFinished()
+
+          const button = testUtils.getViewAllImagesButton()
+
+          expect(button).toBeInTheDocument()
+          expect(button).toBeEnabled()
+          expect(button).toHaveTextContent(`(${attachmentListResponse.count})`)
+        })
+
+        test('Модалка отображается корректно', async () => {
+          mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+
+          const attachmentListResponse = commonFixtures.paginatedListResponse(
+            attachmentFixtures.attachmentList(),
+          )
+          mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
+            body: attachmentListResponse,
+            once: false,
+          })
+
+          const { user } = render(<EquipmentDetails {...props} />)
+
+          await testUtils.expectLoadingFinished()
+          await testUtils.expectEquipmentImageListLoadingFinished()
+          await testUtils.clickViewAllImagesButton(user)
+
+          const modal = await attachmentListModalTestUtils.findContainer()
+          expect(modal).toBeInTheDocument()
+
+          await testUtils.expectTotalEquipmentImageListLoadingFinished()
+          const images = attachmentListTestUtils.getAllIn(modal)
+          expect(images).toHaveLength(attachmentListResponse.count)
+        })
+      })
+    })
   })
 
   describe('При не успешном запросе', () => {
     test('Обрабатывается ошибка 403', async () => {
       const errorMessage = fakeWord()
       mockGetEquipmentForbiddenError(props.equipmentId, { body: { detail: errorMessage } })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -549,6 +711,7 @@ describe('Информация об оборудовании', () => {
     test('Обрабатывается ошибка 404', async () => {
       const errorMessage = fakeWord()
       mockGetEquipmentNotFoundError(props.equipmentId, { body: { detail: errorMessage } })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -560,6 +723,7 @@ describe('Информация об оборудовании', () => {
 
     test('Обрабатывается ошибка 500', async () => {
       mockGetEquipmentServerError(props.equipmentId)
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 

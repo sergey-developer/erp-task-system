@@ -6,5 +6,7 @@ export * from './useGetEquipmentNomenclatureList'
 
 export * from './useGetEquipmentCatalogList'
 
+export * from './useGetEquipmentAttachmentList'
+
 export * from './useGetEquipmentCategoryList'
 export * from './useCheckEquipmentCategory'

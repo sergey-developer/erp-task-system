@@ -1,12 +1,13 @@
-import { generatePath } from 'react-router-dom'
-
 import { EquipmentApiEnum } from 'modules/warehouse/constants/equipment'
 
 import { IdType } from 'shared/types/common'
-import { appendSlashAtEnd } from 'shared/utils/string'
+import { generateApiPath } from 'shared/utils/api'
 
 export const getEquipmentUrl = (id: IdType): string =>
-  appendSlashAtEnd(generatePath(EquipmentApiEnum.GetEquipment, { id: String(id) }))
+  generateApiPath(EquipmentApiEnum.GetEquipment, { id: String(id) })
+
+export const getEquipmentAttachmentListUrl = (id: IdType): string =>
+  generateApiPath(EquipmentApiEnum.GetEquipmentAttachmentList, { id: String(id) })
 
 export const updateEquipmentUrl = (id: IdType): string =>
-  appendSlashAtEnd(generatePath(EquipmentApiEnum.UpdateEquipment, { id: String(id) }))
+  generateApiPath(EquipmentApiEnum.UpdateEquipment, { id: String(id) })
