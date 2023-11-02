@@ -4,7 +4,6 @@ import React, { FC, useEffect } from 'react'
 
 import { extendedFilterPermissions } from 'modules/task/permissions'
 import { userListSelectFieldNames } from 'modules/user/constants'
-import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import DatePicker from 'components/DatePicker'
 import DrawerFilter from 'components/Filters/DrawerFilter'

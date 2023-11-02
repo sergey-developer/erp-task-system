@@ -41,8 +41,8 @@ import {
   useGetUserList,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
-  useUserRole
-} from "modules/user/hooks";
+  useUserRole,
+} from 'modules/user/hooks'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
@@ -186,7 +186,7 @@ const TaskListPage: FC = () => {
     isError: isGetTaskCountersError,
     isFetching: taskCountersIsFetching,
     refetch: refetchTaskCounters,
-  } = useGetTaskCounters()
+  } = useGetTaskCounters(preloadedExtendedFilters)
 
   /**
    * Намеренно используется LazyQuery чтобы можно было перезапрашивать список по условию.
