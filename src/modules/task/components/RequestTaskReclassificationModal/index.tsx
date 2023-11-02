@@ -1,30 +1,24 @@
-import { Form, FormInstance, Input, ModalProps, Radio, Space, Typography } from 'antd'
+import { Form, Input, Radio, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import {
-  ReclassificationReasonEnum,
   reclassificationReasonDict,
+  ReclassificationReasonEnum,
 } from 'modules/task/constants/taskReclassificationRequest'
-import { TaskModel } from 'modules/task/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { RequestTaskReclassificationFormFields } from './types'
-import { reclassificationReasonRules, commentRules } from './validation'
+import {
+  RequestTaskReclassificationFormFields,
+  RequestTaskReclassificationModalProps,
+} from './types'
+import { commentRules, reclassificationReasonRules } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-export type RequestTaskReclassificationModalProps = Pick<TaskModel, 'recordId'> & {
-  onSubmit: (
-    values: RequestTaskReclassificationFormFields,
-    setFields: FormInstance['setFields'],
-  ) => Promise<void>
-  onCancel: NonNullable<ModalProps['onCancel']>
-  isLoading: boolean
-}
-
 const RequestTaskReclassificationModal: FC<RequestTaskReclassificationModalProps> = ({
+  open,
   recordId,
   isLoading,
   onCancel,
@@ -45,7 +39,7 @@ const RequestTaskReclassificationModal: FC<RequestTaskReclassificationModalProps
   return (
     <BaseModal
       data-testid='request-task-reclassification-modal'
-      open
+      open={open}
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}
