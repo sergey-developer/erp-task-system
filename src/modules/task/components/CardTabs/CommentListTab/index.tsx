@@ -11,7 +11,6 @@ import Space from 'components/Space'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { mapUploadedFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
-import { showErrorNotification } from 'shared/utils/notifications'
 
 import CommentList from './CommentList'
 import CreateCommentForm from './CreateCommentForm'
@@ -30,10 +29,7 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
     taskId,
   })
 
-  const {
-    fn: createComment,
-    state: { isLoading: createCommentIsLoading },
-  } = useCreateTaskComment()
+  const [createComment, { isLoading: createCommentIsLoading }] = useCreateTaskComment()
 
   const [expanded, { toggle: toggleExpanded }] = useBoolean(false)
 
@@ -44,17 +40,13 @@ const CommentListTab: FC<CommentListTabProps> = ({ title, taskId }) => {
           taskId,
           comment: values.comment.trim(),
           attachments: values.attachments ? mapUploadedFiles(values.attachments) : undefined,
-        })
+        }).unwrap()
 
         form.resetFields()
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
             form.setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
           }
         }
       }

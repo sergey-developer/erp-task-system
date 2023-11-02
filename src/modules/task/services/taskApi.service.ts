@@ -4,8 +4,8 @@ import { getPaginatedList } from 'lib/antd/utils'
 
 import {
   TaskApiEnum,
-  TaskApiTriggerEnum,
   TaskApiTagEnum,
+  TaskApiTriggerEnum,
   TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
 import {
@@ -20,7 +20,9 @@ import {
   DeleteTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestSuccessResponse,
   DeleteTaskWorkGroupMutationArgs,
-  DeleteTaskWorkGroupSuccessResponse, GetSubTaskListQueryArgs, GetSubTaskListSuccessResponse,
+  DeleteTaskWorkGroupSuccessResponse,
+  GetSubTaskListQueryArgs,
+  GetSubTaskListSuccessResponse,
   GetTaskCommentListQueryArgs,
   GetTaskCommentListSuccessResponse,
   GetTaskCountersQueryArgs,
@@ -40,14 +42,15 @@ import {
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
   ResolveTaskMutationArgs,
-  ResolveTaskSuccessResponse, SubTaskModel,
+  ResolveTaskSuccessResponse,
+  SubTaskModel,
   TakeTaskMutationArgs,
   TakeTaskSuccessResponse,
   UpdateTaskAssigneeMutationArgs,
   UpdateTaskAssigneeSuccessResponse,
   UpdateTaskWorkGroupMutationArgs,
-  UpdateTaskWorkGroupSuccessResponse
-} from "modules/task/models";
+  UpdateTaskWorkGroupSuccessResponse,
+} from 'modules/task/models'
 import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import {
   createSubTaskUrl,
@@ -55,8 +58,8 @@ import {
   getTaskUrl,
   getTaskWorkPerformedActUrl,
   resolveTaskUrl,
-  takeTaskUrl
-} from "modules/task/utils/task";
+  takeTaskUrl,
+} from 'modules/task/utils/task'
 import { updateTaskAssigneeUrl } from 'modules/task/utils/taskAssignee'
 import { createTaskCommentUrl, getTaskCommentListUrl } from 'modules/task/utils/taskComment'
 import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'modules/task/utils/taskJournal'
@@ -72,6 +75,7 @@ import { deleteTaskWorkGroupUrl, updateTaskWorkGroupUrl } from 'modules/task/uti
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService, ErrorResponse, isNotFoundError } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 
 const taskApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
@@ -100,11 +104,12 @@ const taskApiService = baseApiService.injectEndpoints({
 
     [TaskApiTriggerEnum.GetTaskCounters]: build.query<
       GetTaskCountersSuccessResponse,
-      GetTaskCountersQueryArgs
+      MaybeUndefined<GetTaskCountersQueryArgs>
     >({
-      query: () => ({
+      query: (params) => ({
         url: TaskApiEnum.GetTaskCounters,
         method: HttpMethodEnum.Get,
+        params,
       }),
     }),
 
@@ -190,7 +195,7 @@ const taskApiService = baseApiService.injectEndpoints({
           dispatch(
             baseApiService.util.updateQueryData(
               TaskApiTriggerEnum.GetTaskCommentList as never,
-              taskId as never,
+              { taskId } as never,
               (commentList: GetTaskCommentListSuccessResponse) => {
                 commentList.unshift(newComment)
               },
@@ -336,7 +341,7 @@ const taskApiService = baseApiService.injectEndpoints({
     [TaskApiTriggerEnum.GetSubTaskList]: build.query<
       GetSubTaskListSuccessResponse,
       GetSubTaskListQueryArgs
-      >({
+    >({
       query: (taskId) => ({
         url: getSubTaskListUrl(taskId),
         method: HttpMethodEnum.Get,
@@ -345,7 +350,7 @@ const taskApiService = baseApiService.injectEndpoints({
     [TaskApiTriggerEnum.CreateSubTask]: build.mutation<
       CreateSubTaskSuccessResponse,
       CreateSubTaskMutationArgs
-      >({
+    >({
       query: ({ taskId, ...payload }) => ({
         url: createSubTaskUrl(taskId),
         method: HttpMethodEnum.Post,
