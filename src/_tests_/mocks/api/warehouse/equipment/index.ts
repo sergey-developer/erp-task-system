@@ -6,6 +6,8 @@ export * from './getEquipmentList.mock'
 
 export * from './getEquipmentCategoryList.mock'
 
+export * from './getEquipmentAttachmentList.mock'
+
 export * from './getEquipmentNomenclatureList.mock'
 
 export * from './getEquipmentCatalogList.mock'

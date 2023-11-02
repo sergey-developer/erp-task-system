@@ -12,6 +12,8 @@ export const getEquipmentListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка оборудования',
 }
 
+export const getEquipmentAttachmentListErrorMsg = 'Ошибка получения изображений оборудования'
+
 export const getEquipmentCatalogListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения каталога оборудования',
 }
