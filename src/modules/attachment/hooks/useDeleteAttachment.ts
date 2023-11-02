@@ -28,11 +28,11 @@ export const useDeleteAttachment = (): UseDeleteAttachmentResult => {
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isBadRequestError(state.error)) {
-        showErrorNotification(getErrorDetail(state.error))
-      } else if (isForbiddenError(state.error)) {
-        showErrorNotification(getErrorDetail(state.error))
-      } else if (isNotFoundError(state.error)) {
+      if (
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
+      ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
         showErrorNotification(deleteAttachmentErrorMsg)
