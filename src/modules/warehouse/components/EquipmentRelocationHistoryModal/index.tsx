@@ -15,6 +15,8 @@ const EquipmentRelocationHistoryModal: FC<EquipmentRelocationHistoryModalProps> 
   return (
     <BaseModal
       data-testid='equipment-relocation-history-modal'
+      footer={null}
+      width={1100}
       open={open}
       onCancel={onCancel}
       title='История заявок на перемещение'
