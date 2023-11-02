@@ -6,6 +6,9 @@ export * from './updateEquipment.model'
 export * from './equipmentList.model'
 export * from './getEquipmentList.model'
 
+export * from './equipmentRelocationHistory.model'
+export * from './getEquipmentRelocationHistory.model'
+
 export * from './equipmentCatalogList.model'
 export * from './getEquipmentCatalogList.model'
 
