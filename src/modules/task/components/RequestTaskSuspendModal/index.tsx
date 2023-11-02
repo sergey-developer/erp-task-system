@@ -1,9 +1,7 @@
 import {
   Col,
   Form,
-  FormInstance,
   Input,
-  ModalProps,
   Radio,
   RadioChangeEvent,
   RadioGroupProps,
@@ -16,30 +14,21 @@ import React, { FC, useEffect } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
-import { SuspendReasonEnum, suspendReasonDict } from 'modules/task/constants/taskSuspendRequest'
+import { suspendReasonDict, SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
 
 import DatePicker from 'components/DatePicker'
 import BaseModal from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
-import { reasonsMakeDateTimeFieldDisabled } from './constants'
-import { RequestTaskSuspendFormFields } from './types'
+import { disabledSuspendReasons, reasonsMakeDateTimeFieldDisabled } from './constants'
+import { RequestTaskSuspendFormFields, RequestTaskSuspendModalProps } from './types'
 import { commentRules, endDateRules, endTimeRules, reasonRules } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-export type RequestTaskSuspendModalProps = {
-  recordId: string
-  onSubmit: (
-    values: RequestTaskSuspendFormFields,
-    setFields: FormInstance['setFields'],
-  ) => Promise<void>
-  onCancel: NonNullable<ModalProps['onCancel']>
-  isLoading: boolean
-}
-
 const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
+  open,
   recordId,
   isLoading,
   onCancel,
@@ -47,12 +36,12 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
 }) => {
   const [form] = Form.useForm<RequestTaskSuspendFormFields>()
 
-  const reasonFieldValue = Form.useWatch('reason', form)
+  const reasonFormValue = Form.useWatch('reason', form)
 
   const isReasonMakeDateTimeFieldDisabled =
-    reasonsMakeDateTimeFieldDisabled.includes(reasonFieldValue)
+    reasonsMakeDateTimeFieldDisabled.includes(reasonFormValue)
 
-  const isDateTimeFieldDisabled = !reasonFieldValue || isReasonMakeDateTimeFieldDisabled
+  const isDateTimeFieldDisabled = !reasonFormValue || isReasonMakeDateTimeFieldDisabled
 
   const modalTitle = (
     <Text>
@@ -85,7 +74,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
   return (
     <BaseModal
       data-testid='request-task-suspend-modal'
-      open
+      open={open}
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}
@@ -104,10 +93,14 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           name='reason'
           rules={reasonRules}
         >
-          <Radio.Group disabled={isLoading} onChange={handleChangeReason}>
+          <Radio.Group onChange={handleChangeReason}>
             <Space direction='vertical'>
               {Object.keys(suspendReasonDict).map((key, index) => (
-                <Radio key={index} value={key}>
+                <Radio
+                  key={index}
+                  value={key}
+                  disabled={isLoading || disabledSuspendReasons.includes(key as SuspendReasonEnum)}
+                >
                   {suspendReasonDict[key as SuspendReasonEnum]}
                 </Radio>
               ))}

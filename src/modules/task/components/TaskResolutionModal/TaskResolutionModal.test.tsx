@@ -5,11 +5,13 @@ import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { validationMessages, validationSizes } from 'shared/constants/validation'
 
-import { fakeIdStr, fakeWord, modalTestUtils, render, buttonTestUtils } from '_tests_/utils'
+import { buttonTestUtils, fakeIdStr, fakeWord, modalTestUtils, render } from '_tests_/utils'
 
-import TaskResolutionModal, { TaskResolutionModalProps } from './index'
+import TaskResolutionModal from './index'
+import { TaskResolutionModalProps } from './types'
 
 const props: Readonly<TaskResolutionModalProps> = {
+  open: true,
   type: TaskTypeEnum.Request,
   recordId: fakeIdStr(),
   isLoading: false,
