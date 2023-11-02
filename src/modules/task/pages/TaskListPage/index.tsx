@@ -186,7 +186,7 @@ const TaskListPage: FC = () => {
     isError: isGetTaskCountersError,
     isFetching: taskCountersIsFetching,
     refetch: refetchTaskCounters,
-  } = useGetTaskCounters()
+  } = useGetTaskCounters(preloadedExtendedFilters)
 
   /**
    * Намеренно используется LazyQuery чтобы можно было перезапрашивать список по условию.
