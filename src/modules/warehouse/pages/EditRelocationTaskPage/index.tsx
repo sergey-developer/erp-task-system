@@ -19,11 +19,10 @@ import {
   EquipmentConditionEnum,
 } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
-import { updateRelocationTaskMessages } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
-  useCheckEquipmentCategory,
+  useCreateEquipment,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
   useLazyGetEquipment,
@@ -33,12 +32,12 @@ import {
   useGetRelocationEquipmentBalanceList,
   useGetRelocationEquipmentList,
   useGetRelocationTask,
+  useUpdateRelocationTask,
 } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
-import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
-import { useUpdateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import {
   checkRelocationTaskTypeIsWriteOff,
   getRelocationTaskListPageLink,
@@ -49,21 +48,15 @@ import Space from 'components/Space'
 import { useLazyGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import {
-  isBadRequestError,
-  isErrorResponse,
-  isForbiddenError,
-  isNotFoundError,
-} from 'shared/services/baseApi'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
-import { showErrorNotification } from 'shared/utils/notifications'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 import {
-  getConditionsByRelocationTaskType,
+  getEquipmentCatalogListParams,
   getRelocateFromLocationListParams,
   getRelocateToLocationListParams,
 } from '../CreateRelocationTaskPage/utils'
@@ -88,7 +81,7 @@ const EditRelocationTaskPage: FC = () => {
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
-  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
+  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   const [
     addEquipmentModalOpened,
@@ -160,7 +153,7 @@ const EditRelocationTaskPage: FC = () => {
     useGetEquipmentCatalogList(
       {
         locationId: selectedRelocateFrom?.value,
-        conditions: getConditionsByRelocationTaskType(selectedType!),
+        ...getEquipmentCatalogListParams(selectedType!),
       },
       { skip: !selectedRelocateFrom?.value || !selectedType },
     )
@@ -177,7 +170,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
     useGetNomenclatureList(
-      equipmentCategory.isConsumable
+      categoryIsConsumable
         ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
         : defaultGetNomenclatureListParams,
       { skip: !addEquipmentModalOpened || !selectedCategory },
@@ -194,24 +187,23 @@ const EditRelocationTaskPage: FC = () => {
     if (
       addEquipmentModalOpened &&
       !!selectedCategory &&
-      !equipmentCategory.isConsumable &&
+      !categoryIsConsumable &&
       !!selectedNomenclatureId
     ) {
       getCustomerList()
     }
   }, [
     addEquipmentModalOpened,
-    equipmentCategory.isConsumable,
+    categoryIsConsumable,
     getCustomerList,
     selectedCategory,
     selectedNomenclatureId,
   ])
 
   const [updateRelocationTaskMutation, { isLoading: updateRelocationTaskIsLoading }] =
-    useUpdateRelocationTaskMutation()
+    useUpdateRelocationTask()
 
-  const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] =
-    useCreateEquipmentMutation()
+  const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
 
   const handleUpdateRelocationTask = async (values: RelocationTaskFormFields) => {
     if (!relocationTaskId) return
@@ -236,20 +228,8 @@ const EditRelocationTaskPage: FC = () => {
 
       navigate(getRelocationTaskListPageLink(updatedTask.id))
     } catch (error) {
-      if (isErrorResponse(error)) {
-        if (isBadRequestError(error)) {
-          form.setFields(getFieldsErrors(error.data))
-
-          if (error.data.detail) {
-            showErrorNotification(error.data.detail)
-          }
-        } else if (isForbiddenError(error) && error.data.detail) {
-          showErrorNotification(error.data.detail)
-        } else if (isNotFoundError(error) && error.data.detail) {
-          showErrorNotification(error.data.detail)
-        } else {
-          showErrorNotification(updateRelocationTaskMessages.commonError)
-        }
+      if (isErrorResponse(error) && isBadRequestError(error)) {
+        form.setFields(getFieldsErrors(error.data))
       }
     }
   }
@@ -327,16 +307,8 @@ const EditRelocationTaskPage: FC = () => {
 
         handleCloseAddEquipmentModal()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
-          } else if (isForbiddenError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
