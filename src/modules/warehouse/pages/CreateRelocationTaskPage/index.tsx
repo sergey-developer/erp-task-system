@@ -20,23 +20,19 @@ import {
 } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
-import {
-  createRelocationTaskMessages,
-  RelocationTaskTypeEnum,
-} from 'modules/warehouse/constants/relocationTask'
+import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
-  useCheckEquipmentCategory,
+  useCreateEquipment,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useCreateRelocationTask } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
-import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
-import { useCreateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import {
@@ -50,24 +46,17 @@ import Space from 'components/Space'
 import { useLazyGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import {
-  getErrorDetailStr,
-  isBadRequestError,
-  isErrorResponse,
-  isForbiddenError,
-  isNotFoundError,
-} from 'shared/services/baseApi'
+import { getErrorDetailStr, isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { ArrayFirst } from 'shared/types/utils'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { mergeDateTime } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
-import { showErrorNotification } from 'shared/utils/notifications'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 import {
-  getConditionsByRelocationTaskType,
+  getEquipmentCatalogListParams,
   getRelocateFromLocationListParams,
   getRelocateToLocationListParams,
 } from './utils'
@@ -100,7 +89,7 @@ const CreateRelocationTaskPage: FC = () => {
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
-  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
+  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   const [
     addEquipmentModalOpened,
@@ -172,7 +161,7 @@ const CreateRelocationTaskPage: FC = () => {
     useGetEquipmentCatalogList(
       {
         locationId: selectedRelocateFrom?.value,
-        conditions: getConditionsByRelocationTaskType(selectedType),
+        ...getEquipmentCatalogListParams(selectedType),
       },
       { skip: !selectedRelocateFrom?.value },
     )
@@ -189,7 +178,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
     useGetNomenclatureList(
-      equipmentCategory.isConsumable
+      categoryIsConsumable
         ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
         : defaultGetNomenclatureListParams,
       { skip: !addEquipmentModalOpened || !selectedCategory },
@@ -206,24 +195,23 @@ const CreateRelocationTaskPage: FC = () => {
     if (
       addEquipmentModalOpened &&
       !!selectedCategory &&
-      !equipmentCategory.isConsumable &&
+      !categoryIsConsumable &&
       !!selectedNomenclatureId
     ) {
       getCustomerList()
     }
   }, [
     addEquipmentModalOpened,
-    equipmentCategory.isConsumable,
+    categoryIsConsumable,
     getCustomerList,
     selectedCategory,
     selectedNomenclatureId,
   ])
 
   const [createRelocationTaskMutation, { isLoading: createRelocationTaskIsLoading }] =
-    useCreateRelocationTaskMutation()
+    useCreateRelocationTask()
 
-  const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] =
-    useCreateEquipmentMutation()
+  const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
 
   const handleCreateAttachment = useCallback<EquipmentFormModalProps['onUploadImage']>(
     async ({ file, onSuccess, onError }) => {
@@ -273,20 +261,8 @@ const CreateRelocationTaskPage: FC = () => {
 
       navigate(getRelocationTaskListPageLink(createdTask.id))
     } catch (error) {
-      if (isErrorResponse(error)) {
-        if (isBadRequestError(error)) {
-          form.setFields(getFieldsErrors(error.data))
-
-          if (error.data.detail) {
-            showErrorNotification(error.data.detail)
-          }
-        } else if (isForbiddenError(error) && error.data.detail) {
-          showErrorNotification(error.data.detail)
-        } else if (isNotFoundError(error) && error.data.detail) {
-          showErrorNotification(error.data.detail)
-        } else {
-          showErrorNotification(createRelocationTaskMessages.commonError)
-        }
+      if (isErrorResponse(error) && isBadRequestError(error)) {
+        form.setFields(getFieldsErrors(error.data))
       }
     }
   }
@@ -367,16 +343,8 @@ const CreateRelocationTaskPage: FC = () => {
 
         handleCloseAddEquipmentModal()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
-          } else if (isForbiddenError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },

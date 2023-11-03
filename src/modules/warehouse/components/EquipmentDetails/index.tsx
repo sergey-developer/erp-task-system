@@ -12,17 +12,17 @@ import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/no
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
-  useCheckEquipmentCategory,
   useGetEquipment,
   useGetEquipmentAttachmentList,
   useGetEquipmentCategoryList,
   useGetEquipmentRelocationHistory,
+  useUpdateEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
-import { useUpdateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -32,25 +32,18 @@ import Space from 'components/Space'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import {
-  getErrorDetailStr,
-  isBadRequestError,
-  isErrorResponse,
-  isForbiddenError,
-  isNotFoundError,
-} from 'shared/services/baseApi'
+import { getErrorDetailStr, isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { getYesNoWord, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
-import { showErrorNotification } from 'shared/utils/notifications'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 import { EquipmentFormModalProps } from '../EquipmentFormModal/types'
 import { DrawerExtraStyled } from './style'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
-import { getHiddenFieldsByCategory } from './utils'
+import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
 
 const AttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AttachmentListModal'),
@@ -70,7 +63,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
-  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
+  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   const [relocationHistoryModalOpened, { toggle: toggleOpenRelocationHistoryModal }] =
     useBoolean(false)
@@ -115,7 +108,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
     useGetNomenclatureList(
-      equipmentCategory.isConsumable
+      categoryIsConsumable
         ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
         : defaultGetNomenclatureListParams,
       { skip: !editEquipmentModalOpened || !selectedCategory },
@@ -139,8 +132,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     { skip: !imageListModalOpened || !equipmentAttachmentList?.pagination?.total },
   )
 
-  const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] =
-    useUpdateEquipmentMutation()
+  const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] = useUpdateEquipment()
 
   const [createAttachmentMutation] = useCreateAttachment()
   const [deleteAttachmentMutation, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
@@ -164,14 +156,14 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     if (
       editEquipmentModalOpened &&
       !!selectedCategory &&
-      !equipmentCategory.isConsumable &&
+      !categoryIsConsumable &&
       !!selectedNomenclatureId
     ) {
       getCustomerList()
     }
   }, [
     editEquipmentModalOpened,
-    equipmentCategory.isConsumable,
+    categoryIsConsumable,
     getCustomerList,
     selectedCategory,
     selectedNomenclatureId,
@@ -236,18 +228,8 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         handleCloseEditEquipmentModal()
         refetchEquipmentAttachmentList()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
-          } else if (isNotFoundError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          } else if (isForbiddenError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -258,28 +240,6 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       refetchEquipmentAttachmentList,
     ],
   )
-
-  const equipmentFormInitialValues: EquipmentFormModalProps['initialValues'] = equipment
-    ? {
-        nomenclature: equipment.nomenclature.id,
-        condition: equipment.condition,
-        category: equipment.category.id,
-        purpose: equipment.purpose.id,
-        isNew: equipment.isNew,
-        isWarranty: equipment.isWarranty,
-        isRepaired: equipment.isRepaired,
-        title: nomenclature?.title,
-        warehouse: equipment.warehouse?.id,
-        currency: equipment.currency?.id,
-        customerInventoryNumber: equipment.customerInventoryNumber || undefined,
-        serialNumber: equipment.serialNumber || undefined,
-        quantity: equipment.quantity || undefined,
-        price: equipment.price || undefined,
-        usageCounter: equipment.usageCounter || undefined,
-        owner: equipment.owner?.id,
-        comment: equipment.comment || undefined,
-      }
-    : undefined
 
   const hiddenFields: FieldsMaybeHidden[] = equipment?.category
     ? getHiddenFieldsByCategory(equipment.category)
@@ -561,7 +521,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             title='Редактирование оборудования'
             okText='Сохранить'
             isLoading={updateEquipmentIsLoading}
-            initialValues={equipmentFormInitialValues}
+            initialValues={getEquipmentFormInitialValues(equipment, nomenclature)}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}

@@ -14,10 +14,11 @@ import {
   isNotFoundError,
 } from 'shared/services/baseApi'
 import { useLazyGetLocationListQuery } from 'shared/services/catalogsApi.service'
+import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetLocationListResult = CustomUseLazyQueryHookResult<
-  GetLocationListQueryArgs,
+  MaybeUndefined<GetLocationListQueryArgs>,
   GetLocationListSuccessResponse
 >
 
