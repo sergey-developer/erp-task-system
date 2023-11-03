@@ -60,6 +60,7 @@ import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/che
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
+import { extractPaginationResults } from 'shared/utils/pagination'
 
 import {
   getConditionsByRelocationTaskType,
@@ -575,7 +576,7 @@ const EditRelocationTaskPage: FC = () => {
           workTypeList={workTypeList}
           workTypeListIsFetching={workTypeListIsFetching}
           nomenclature={nomenclature}
-          nomenclatureList={nomenclatureList?.results || []}
+          nomenclatureList={extractPaginationResults(nomenclatureList)}
           nomenclatureListIsLoading={nomenclatureListIsFetching}
           onChangeNomenclature={setSelectedNomenclatureId}
           onCancel={handleCloseAddEquipmentModal}

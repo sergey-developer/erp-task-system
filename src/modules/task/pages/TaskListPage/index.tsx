@@ -55,7 +55,11 @@ import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled } from './styles'
@@ -438,7 +442,7 @@ const TaskListPage: FC = () => {
                 rowClassName={getTableRowClassName}
                 sort={taskListQueryArgs.sort}
                 onRow={handleTableRowClick}
-                dataSource={taskList?.results || []}
+                dataSource={extractPaginationResults(taskList)}
                 loading={taskListIsFetching}
                 onChange={handleChangeTable}
                 pagination={taskList?.pagination || false}
