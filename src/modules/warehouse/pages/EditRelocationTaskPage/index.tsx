@@ -14,7 +14,10 @@ import {
   LocationOption,
   RelocationTaskFormProps,
 } from 'modules/warehouse/components/RelocationTaskForm/types'
-import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
+import {
+  EquipmentCategoryEnum,
+  EquipmentConditionEnum,
+} from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { updateRelocationTaskMessages } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
@@ -36,12 +39,14 @@ import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
 import { useUpdateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
-import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocationTask'
+import {
+  checkRelocationTaskTypeIsWriteOff,
+  getRelocationTaskListPageLink,
+} from 'modules/warehouse/utils/relocationTask'
 
 import Space from 'components/Space'
 
-import { LocationTypeEnum } from 'shared/constants/catalogs'
-import { useGetLocationList } from 'shared/hooks/catalogs/location'
+import { useLazyGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
@@ -51,9 +56,17 @@ import {
   isNotFoundError,
 } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
+import { extractPaginationResults } from 'shared/utils/pagination'
+
+import {
+  getConditionsByRelocationTaskType,
+  getRelocateFromLocationListParams,
+  getRelocateToLocationListParams,
+} from '../CreateRelocationTaskPage/utils'
 
 const { Text } = Typography
 
@@ -94,6 +107,9 @@ const EditRelocationTaskPage: FC = () => {
 
   const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
 
+  const [selectedType, setSelectedType] = useState<RelocationTaskFormFields['type']>()
+  const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(selectedType)
+
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
@@ -110,8 +126,28 @@ const EditRelocationTaskPage: FC = () => {
     isManager: false,
   })
 
-  const { currentData: locationList = [], isFetching: locationListIsFetching } =
-    useGetLocationList()
+  const [
+    getRelocateFromLocationList,
+    { currentData: relocateFromLocationList = [], isFetching: relocateFromLocationListIsFetching },
+  ] = useLazyGetLocationList()
+
+  const [
+    getRelocateToLocationList,
+    { currentData: relocateToLocationList = [], isFetching: relocateToLocationListIsFetching },
+  ] = useLazyGetLocationList()
+
+  /* сделано через lazy т.к. по каким-то причинам запрос не отправляется снова если один из параметров не изменился */
+  useEffect(() => {
+    if (selectedType) {
+      getRelocateFromLocationList(getRelocateFromLocationListParams(selectedType))
+    }
+  }, [getRelocateFromLocationList, selectedType])
+
+  useEffect(() => {
+    if (selectedType && !typeIsWriteOff) {
+      getRelocateToLocationList(getRelocateToLocationListParams(selectedType))
+    }
+  }, [getRelocateToLocationList, selectedType, typeIsWriteOff])
 
   const { currentData: currencyList = [], isFetching: currencyListIsFetching } =
     useGetCurrencyList()
@@ -124,9 +160,9 @@ const EditRelocationTaskPage: FC = () => {
     useGetEquipmentCatalogList(
       {
         locationId: selectedRelocateFrom?.value,
-        locationType: selectedRelocateFrom?.type,
+        conditions: getConditionsByRelocationTaskType(selectedType!),
       },
-      { skip: !selectedRelocateFrom?.value || !selectedRelocateFrom?.type },
+      { skip: !selectedRelocateFrom?.value || !selectedType },
     )
 
   const [getEquipment] = useLazyGetEquipment()
@@ -178,17 +214,12 @@ const EditRelocationTaskPage: FC = () => {
     useCreateEquipmentMutation()
 
   const handleUpdateRelocationTask = async (values: RelocationTaskFormFields) => {
-    const relocateLocations = locationList.filter(
-      (l) => l.id === values.relocateTo || l.id === values.relocateFrom,
-    )
-    const relocateTo = relocateLocations.find((l) => l.id === values.relocateTo)
-    const relocateFrom = relocateLocations.find((l) => l.id === values.relocateFrom)
-
-    if (!relocationTaskId || !relocateTo || !relocateFrom) return
+    if (!relocationTaskId) return
 
     try {
       const updatedTask = await updateRelocationTaskMutation({
         relocationTaskId,
+        type: values.type,
         deadlineAt: mergeDateTime(values.deadlineAtDate, values.deadlineAtTime).toISOString(),
         equipments: values.equipments.map((e) => ({
           id: e.id,
@@ -198,9 +229,7 @@ const EditRelocationTaskPage: FC = () => {
           price: e.price,
         })),
         relocateToId: values.relocateTo,
-        relocateToType: relocateTo.type,
         relocateFromId: values.relocateFrom,
-        relocateFromType: relocateFrom.type,
         executor: values.executor,
         comment: values.comment,
       }).unwrap()
@@ -225,63 +254,46 @@ const EditRelocationTaskPage: FC = () => {
     }
   }
 
+  const handlePickEquipmentFromSelect: FormProps<RelocationTaskFormFields>['onValuesChange'] =
+    async (changedValues, values) => {
+      if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
+        const [index, changes] = Object.entries(changedValues.equipments)[0] as [
+          string,
+          Partial<Omit<RelocationEquipmentRowFields, 'rowId'>>,
+        ]
+
+        if (changes.id && relocationTaskId) {
+          const { data: equipment } = await getEquipment({
+            equipmentId: changes.id,
+            ignoreRelocationTask: relocationTaskId,
+          })
+
+          if (equipment) {
+            const currentEquipment = values.equipments[Number(index)]
+            const isConsumable = equipment.category.code === EquipmentCategoryEnum.Consumable
+
+            form.setFieldValue(['equipments', index], {
+              ...currentEquipment,
+              quantity: isConsumable ? currentEquipment.quantity : 1,
+              serialNumber: equipment.serialNumber,
+              purpose: equipment.purpose.title,
+              condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : equipment.condition,
+              amount: equipment.amount,
+              price: equipment.price,
+              currency: equipment.currency?.id,
+              category: equipment.category,
+            })
+          }
+        }
+      }
+    }
+
   const handleFormChange: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
     changedValues,
     values,
   ) => {
-    if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
-      const [index, changes] = Object.entries(changedValues.equipments)[0] as [
-        string,
-        Partial<Omit<RelocationEquipmentRowFields, 'rowId'>>,
-      ]
-
-      if (changes.id && relocationTaskId) {
-        const { data: equipment } = await getEquipment({
-          equipmentId: changes.id,
-          ignoreRelocationTask: relocationTaskId,
-        })
-
-        if (equipment) {
-          const currentEquipment = values.equipments[Number(index)]
-          const isConsumable = equipment.category.code === EquipmentCategoryEnum.Consumable
-
-          form.setFieldValue(['equipments', index], {
-            ...currentEquipment,
-            quantity: isConsumable ? currentEquipment.quantity : 1,
-            serialNumber: equipment.serialNumber,
-            purpose: equipment.purpose.title,
-            condition: equipment.condition,
-            amount: equipment.amount,
-            price: equipment.price,
-            currency: equipment.currency?.id,
-            category: equipment.category,
-          })
-        }
-      }
-    }
+    await handlePickEquipmentFromSelect(changedValues, values)
   }
-
-  const handleChangeRelocateFrom: RelocationTaskFormProps['onChangeRelocateFrom'] = (
-    value,
-    option,
-  ) => {
-    const equipments = getEquipmentFormValue()
-    const relocateFrom = form.getFieldValue('relocateFrom')
-    const isShowConfirmation = !!equipments.length && !!relocateFrom
-    form.setFieldValue('relocateFrom', value)
-    setSelectedRelocateFrom(option)
-    if (isShowConfirmation) toggleConfirmModal()
-  }
-
-  const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
-    setSelectedCategory(category)
-    setSelectedNomenclatureId(undefined)
-  }
-
-  const getEquipmentFormValue = useCallback<() => RelocationEquipmentRowFields[]>(
-    () => form.getFieldValue('equipments') || [],
-    [form],
-  )
 
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
@@ -294,14 +306,16 @@ const EditRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
-        const newEquipmentIndex = getEquipmentFormValue().length
+        const newEquipmentIndex = (form.getFieldValue('equipments') || []).length
 
         form.setFieldValue(['equipments', newEquipmentIndex], {
           rowId: createdEquipment.id,
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
           purpose: createdEquipment.purpose.title,
-          condition: createdEquipment.condition,
+          condition: typeIsWriteOff
+            ? EquipmentConditionEnum.WrittenOff
+            : createdEquipment.condition,
           amount: createdEquipment.availableQuantity,
           price: createdEquipment.price,
           currency: createdEquipment.currency?.id,
@@ -330,29 +344,110 @@ const EditRelocationTaskPage: FC = () => {
       selectedRelocateTo?.value,
       selectedRelocateFrom?.value,
       createEquipmentMutation,
-      getEquipmentFormValue,
       form,
+      typeIsWriteOff,
       handleCloseAddEquipmentModal,
     ],
   )
 
+  const handleChangeCategory = useCallback<EquipmentFormModalProps['onChangeCategory']>(
+    (category) => {
+      setSelectedCategory(category)
+      setSelectedNomenclatureId(undefined)
+    },
+    [],
+  )
+
+  const handleChangeRelocateFrom = useCallback<RelocationTaskFormProps['onChangeRelocateFrom']>(
+    (value, option) => {
+      const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
+      const relocateFrom = form.getFieldValue('relocateFrom')
+      const isShowConfirmation = !!equipments.length && !!relocateFrom
+      form.setFieldValue('relocateFrom', value)
+      setSelectedRelocateFrom(option)
+      if (isShowConfirmation) toggleConfirmModal()
+    },
+    [form, toggleConfirmModal],
+  )
+
+  const handleChangeType = useCallback<RelocationTaskFormProps['onChangeType']>(
+    (value) => {
+      setSelectedType(value)
+
+      if (checkRelocationTaskTypeIsWriteOff(value)) {
+        const relocateToValue = undefined
+        form.setFieldValue('relocateTo', relocateToValue)
+        setSelectedRelocateTo(relocateToValue)
+
+        const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
+        const newEquipments = equipments.map((eqp) => ({
+          ...eqp,
+          condition: EquipmentConditionEnum.WrittenOff,
+        }))
+        form.setFieldValue('equipments', newEquipments)
+      }
+    },
+    [form],
+  )
+
+  /* Установка значений формы */
   useEffect(() => {
-    if (relocationTask && !relocationTaskIsFetching) {
+    if (relocationTask) {
+      const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
+      setSelectedType(relocationTask.type)
+
       form.setFieldsValue({
+        type: relocationTask.type,
         deadlineAtDate: moment(relocationTask.deadlineAt),
         deadlineAtTime: moment(relocationTask.deadlineAt),
         relocateFrom: relocationTask.relocateFrom?.id,
-        relocateTo: relocationTask.relocateTo?.id,
+        relocateTo: typeIsWriteOff ? undefined : relocationTask.relocateTo?.id,
         executor: relocationTask.executor?.id,
         comment: relocationTask?.comment || undefined,
       })
     }
-  }, [form, relocationTask, relocationTaskIsFetching])
+  }, [form, relocationTask])
 
+  /* Установка значения состояния объекта выбытия */
   useEffect(() => {
-    if (relocationEquipmentList.length && !relocationEquipmentListIsFetching) {
-      const equipments: RelocationTaskFormFields['equipments'] = []
+    if (relocationTask && relocateToLocationList.length) {
+      const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
+
+      if (!typeIsWriteOff) {
+        const relocateToListItem = relocateToLocationList.find(
+          (l) => l.id === relocationTask.relocateTo?.id,
+        )
+
+        if (relocateToListItem) {
+          setSelectedRelocateTo({
+            label: relocateToListItem.title,
+            type: relocateToListItem.type,
+            value: relocateToListItem.id,
+          })
+        }
+      }
+    }
+  }, [relocateToLocationList, relocationTask])
+
+  /* Установка значения состояния объекта прибытия */
+  useEffect(() => {
+    if (relocationTask && relocateFromLocationList.length) {
+      const relocateFromListItem = relocateFromLocationList.find(
+        (l) => l.id === relocationTask.relocateFrom?.id,
+      )
+
+      if (relocateFromListItem) {
+        setSelectedRelocateFrom({ type: relocateFromListItem.type, value: relocateFromListItem.id })
+      }
+    }
+  }, [relocateFromLocationList, relocationTask])
+
+  /* Установка значений перечня оборудования */
+  useEffect(() => {
+    if (relocationTask && relocationEquipmentList.length) {
+      const equipments: RelocationEquipmentRowFields[] = []
       const editableTableRowKeys: Key[] = []
+      const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
 
       relocationEquipmentList.forEach((eqp) => {
         editableTableRowKeys.push(eqp.id)
@@ -363,7 +458,7 @@ const EditRelocationTaskPage: FC = () => {
           id: eqp.id,
           serialNumber: eqp?.serialNumber || undefined,
           purpose: eqp.purpose,
-          condition: eqp.condition,
+          condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : eqp.condition,
           amount: balance?.amount ?? undefined,
           price: eqp?.price ?? undefined,
           currency: eqp?.currency?.id || undefined,
@@ -375,32 +470,12 @@ const EditRelocationTaskPage: FC = () => {
       form.setFieldValue('equipments', equipments)
       setEditableTableRowKeys(editableTableRowKeys)
     }
-  }, [
-    form,
-    relocationEquipmentBalanceList,
-    relocationEquipmentList,
-    relocationEquipmentListIsFetching,
-  ])
-
-  useEffect(() => {
-    if (relocationTask && locationList.length && !locationListIsFetching) {
-      const relocateFromListItem = locationList.find(
-        (l) => l.id === relocationTask.relocateFrom?.id,
-      )
-
-      if (relocateFromListItem) {
-        setSelectedRelocateFrom({
-          type: relocateFromListItem.type,
-          value: relocateFromListItem.id,
-        })
-      }
-    }
-  }, [locationList, locationListIsFetching, relocationTask])
+  }, [form, relocationEquipmentBalanceList, relocationEquipmentList, relocationTask])
 
   const addEquipmentBtnDisabled =
     !selectedRelocateFrom ||
     !selectedRelocateTo ||
-    selectedRelocateTo.type !== LocationTypeEnum.Warehouse
+    !checkLocationTypeIsWarehouse(selectedRelocateTo.type)
 
   return (
     <>
@@ -418,8 +493,12 @@ const EditRelocationTaskPage: FC = () => {
               isLoading={updateRelocationTaskIsLoading || relocationTaskIsFetching}
               userList={userList}
               userListIsLoading={userListIsFetching}
-              locationList={locationList}
-              locationListIsLoading={locationListIsFetching}
+              relocateFromLocationList={relocateFromLocationList}
+              relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
+              relocateToLocationList={relocateToLocationList}
+              relocateToLocationListIsLoading={relocateToLocationListIsFetching}
+              type={selectedType}
+              onChangeType={handleChangeType}
               onChangeRelocateFrom={handleChangeRelocateFrom}
               onChangeRelocateTo={setSelectedRelocateTo}
             />
@@ -497,7 +576,7 @@ const EditRelocationTaskPage: FC = () => {
           workTypeList={workTypeList}
           workTypeListIsFetching={workTypeListIsFetching}
           nomenclature={nomenclature}
-          nomenclatureList={nomenclatureList?.results || []}
+          nomenclatureList={extractPaginationResults(nomenclatureList)}
           nomenclatureListIsLoading={nomenclatureListIsFetching}
           onChangeNomenclature={setSelectedNomenclatureId}
           onCancel={handleCloseAddEquipmentModal}

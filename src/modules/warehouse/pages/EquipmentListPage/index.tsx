@@ -19,7 +19,11 @@ import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 const EquipmentListPage: FC = () => {
   // todo: создать хук который будет возвращать распарсеные значения
@@ -88,7 +92,7 @@ const EquipmentListPage: FC = () => {
   return (
     <div data-testid='equipment-list-page'>
       <EquipmentTable
-        dataSource={equipmentList?.results || []}
+        dataSource={extractPaginationResults(equipmentList)}
         pagination={equipmentList?.pagination || false}
         loading={equipmentListIsFetching}
         sort={getEquipmentListParams.ordering}
