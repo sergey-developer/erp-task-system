@@ -110,8 +110,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     skip: !selectedNomenclatureId || !editEquipmentModalOpened,
   })
 
-  const { currentData: equipmentAttachmentList, isFetching: equipmentAttachmentListIsFetching } =
-    useGetEquipmentAttachmentList({ equipmentId, limit: 4 })
+  const {
+    currentData: equipmentAttachmentList,
+    isFetching: equipmentAttachmentListIsFetching,
+    refetch: refetchEquipmentAttachmentList,
+  } = useGetEquipmentAttachmentList({ equipmentId, limit: 4 })
 
   const {
     currentData: totalEquipmentAttachmentList,
@@ -202,6 +205,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         }).unwrap()
 
         handleCloseEditEquipmentModal()
+        refetchEquipmentAttachmentList()
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
@@ -218,7 +222,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         }
       }
     },
-    [handleCloseEditEquipmentModal, equipmentId, updateEquipmentMutation],
+    [
+      updateEquipmentMutation,
+      equipmentId,
+      handleCloseEditEquipmentModal,
+      refetchEquipmentAttachmentList,
+    ],
   )
 
   const equipmentFormInitialValues: EquipmentFormModalProps['initialValues'] = equipment
