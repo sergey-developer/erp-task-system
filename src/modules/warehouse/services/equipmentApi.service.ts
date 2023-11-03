@@ -42,7 +42,6 @@ const equipmentApiService = baseApiService
       EquipmentApiTagEnum.EquipmentList,
       EquipmentApiTagEnum.Equipment,
       EquipmentApiTagEnum.EquipmentCatalogList,
-      EquipmentApiTagEnum.EquipmentAttachmentList,
     ],
   })
   .injectEndpoints({
@@ -76,8 +75,6 @@ const equipmentApiService = baseApiService
         GetEquipmentAttachmentListTransformedSuccessResponse,
         GetEquipmentAttachmentListQueryArgs
       >({
-        providesTags: (result, error) =>
-          error ? [] : [EquipmentApiTagEnum.EquipmentAttachmentList],
         query: ({ equipmentId, ...params }) => ({
           url: getEquipmentAttachmentListUrl(equipmentId),
           method: HttpMethodEnum.Get,
@@ -128,13 +125,7 @@ const equipmentApiService = baseApiService
       }),
       updateEquipment: build.mutation<UpdateEquipmentSuccessResponse, UpdateEquipmentMutationArgs>({
         invalidatesTags: (result, error) =>
-          error
-            ? []
-            : [
-                EquipmentApiTagEnum.EquipmentList,
-                EquipmentApiTagEnum.Equipment,
-                EquipmentApiTagEnum.EquipmentAttachmentList,
-              ],
+          error ? [] : [EquipmentApiTagEnum.EquipmentList, EquipmentApiTagEnum.Equipment],
         query: ({ equipmentId, ...payload }) => ({
           url: updateEquipmentUrl(equipmentId),
           method: HttpMethodEnum.Put,
