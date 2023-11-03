@@ -368,7 +368,7 @@ const EditRelocationTaskPage: FC = () => {
           price: eqp?.price ?? undefined,
           currency: eqp?.currency?.id || undefined,
           quantity: eqp.quantity,
-          category: eqp.category
+          category: eqp.category,
         })
       })
 

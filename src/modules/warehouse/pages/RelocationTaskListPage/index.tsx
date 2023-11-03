@@ -119,7 +119,10 @@ const RelocationTaskListPage: FC = () => {
 
   const handleApplyFilter = (values: RelocationTaskListFilterFormFields) => {
     setFilterValues(values)
-    setRelocationTaskListParams(relocationTaskListFilterToParams(values))
+    setRelocationTaskListParams({
+      ...relocationTaskListFilterToParams(values),
+      offset: initialRelocationTaskListParams.offset,
+    })
     toggleOpenFilter()
   }
 
