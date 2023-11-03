@@ -55,8 +55,13 @@ export const catalogsApiService = baseApiService.injectEndpoints({
 
 export const {
   useGetTimeZoneListQuery,
+
   useGetSubTaskTemplateListQuery,
+
   useGetUserStatusListQuery,
+
   useGetLocationListQuery,
+  useLazyGetLocationListQuery,
+
   endpoints,
 } = catalogsApiService
