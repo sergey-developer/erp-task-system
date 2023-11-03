@@ -15,5 +15,4 @@ export enum EquipmentApiTagEnum {
   Equipment = 'Equipment',
   EquipmentList = 'EquipmentList',
   EquipmentCatalogList = 'EquipmentCatalogList',
-  EquipmentAttachmentList = 'EquipmentAttachmentList',
 }
