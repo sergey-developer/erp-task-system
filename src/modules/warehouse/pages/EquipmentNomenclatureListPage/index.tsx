@@ -8,7 +8,11 @@ import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipme
 import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
 import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 const initialPaginationParams = getInitialPaginationParams()
 
@@ -60,7 +64,7 @@ const EquipmentNomenclatureListPage: FC = () => {
   return (
     <div data-testid='equipment-nomenclature-list-page'>
       <EquipmentNomenclatureTable
-        dataSource={equipmentNomenclatureList?.results || []}
+        dataSource={extractPaginationResults(equipmentNomenclatureList)}
         pagination={equipmentNomenclatureList?.pagination || false}
         loading={equipmentNomenclatureListIsFetching}
         onChange={handleChangeTable}

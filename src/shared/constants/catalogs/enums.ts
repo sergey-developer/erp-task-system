@@ -6,5 +6,6 @@ export enum UserStatusCodeEnum {
 
 export enum LocationTypeEnum {
   Shop = 'SHOP',
-  Warehouse = 'WAREHOUSE'
+  Warehouse = 'WAREHOUSE',
+  ServiceCenter = 'SERVICE_CENTER',
 }

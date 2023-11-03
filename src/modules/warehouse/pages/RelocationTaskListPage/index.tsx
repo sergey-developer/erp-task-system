@@ -27,7 +27,11 @@ import Space from 'components/Space'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 const initialFilterValues: Pick<RelocationTaskListFilterFormFields, 'status'> = {
   status: [
@@ -141,7 +145,7 @@ const RelocationTaskListPage: FC = () => {
         </Space>
 
         <RelocationTaskTable
-          dataSource={relocationTaskList?.results || []}
+          dataSource={extractPaginationResults(relocationTaskList)}
           pagination={relocationTaskList?.pagination || false}
           loading={relocationTaskListIsFetching}
           sort={relocationTaskListParams.ordering}
