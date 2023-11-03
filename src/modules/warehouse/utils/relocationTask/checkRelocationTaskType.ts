@@ -5,6 +5,9 @@ import { BooleanKey, BooleanMap } from 'shared/types/utils'
 export const checkRelocationTaskTypeIsWriteOff = (type?: RelocationTaskTypeEnum): boolean =>
   type === RelocationTaskTypeEnum.WriteOff
 
+export const checkRelocationTaskTypeIsWarranty = (type?: RelocationTaskTypeEnum): boolean =>
+  type === RelocationTaskTypeEnum.Warranty
+
 type GetRelocationTaskTypeResult = BooleanMap<BooleanKey<keyof typeof RelocationTaskTypeEnum>>
 
 export const checkRelocationTaskType = (
@@ -12,6 +15,6 @@ export const checkRelocationTaskType = (
 ): GetRelocationTaskTypeResult => ({
   isRelocation: type === RelocationTaskTypeEnum.Relocation,
   isRepair: type === RelocationTaskTypeEnum.Repair,
-  isWarranty: type === RelocationTaskTypeEnum.Warranty,
+  isWarranty: checkRelocationTaskTypeIsWarranty(type),
   isWriteOff: checkRelocationTaskTypeIsWriteOff(type),
 })

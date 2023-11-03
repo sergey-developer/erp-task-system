@@ -1,11 +1,11 @@
 import {
-  QueryDefinition,
   MutationDefinition,
+  QueryDefinition,
 } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
 import {
   TypedUseMutationResult,
-  TypedUseQueryStateResult,
   TypedUseQueryHookResult,
+  TypedUseQueryStateResult,
 } from '@reduxjs/toolkit/dist/query/react'
 import {
   LazyQueryTrigger,
@@ -57,8 +57,17 @@ export type CustomMutationTrigger<
   BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
 > = MutationTrigger<CustomMutationDefinition<QueryArg, ResultType, BaseQuery>>
 
-export type CustomUseMutationResult<
+export type CustomUseMutationState<
   QueryArg,
   ResultType,
   BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
 > = TypedUseMutationResult<ResultType, QueryArg, BaseQuery>
+
+export type CustomUseMutationResult<
+  QueryArg,
+  ResultType,
+  BaseQuery extends CustomBaseQueryFn = CustomBaseQueryFn,
+> = [
+  CustomMutationTrigger<QueryArg, ResultType, BaseQuery>,
+  CustomUseMutationState<QueryArg, ResultType, BaseQuery>,
+]
