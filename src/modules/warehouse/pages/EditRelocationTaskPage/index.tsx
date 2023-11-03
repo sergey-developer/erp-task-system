@@ -622,7 +622,7 @@ const EditRelocationTaskPage: FC = () => {
             workTypeList={workTypeList}
             workTypeListIsFetching={workTypeListIsFetching}
             nomenclature={nomenclature}
-            nomenclatureList={nomenclatureList?.results || []}
+            nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseAddEquipmentModal}
