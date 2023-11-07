@@ -16,6 +16,9 @@ export const returnRelocationTaskToReworkUrl = (id: IdType): string =>
     generatePath(RelocationTaskApiEnum.ReturnRelocationTaskToRework, { id: String(id) }),
   )
 
+export const cancelRelocationTaskUrl = (id: IdType): string =>
+  appendSlashAtEnd(generatePath(RelocationTaskApiEnum.CancelRelocationTask, { id: String(id) }))
+
 export const getRelocationTaskWaybillM15Url = (id: IdType): string =>
   appendSlashAtEnd(
     generatePath(RelocationTaskApiEnum.GetRelocationTaskWaybillM15, { id: String(id) }),

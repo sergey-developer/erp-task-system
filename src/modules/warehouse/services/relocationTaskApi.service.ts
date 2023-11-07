@@ -6,6 +6,8 @@ import {
   RelocationTaskApiTriggerEnum,
 } from 'modules/warehouse/constants/relocationTask'
 import {
+  CancelRelocationTaskMutationArgs,
+  CancelRelocationTaskSuccessResponse,
   CloseRelocationTaskMutationArgs,
   CloseRelocationTaskSuccessResponse,
   CreateRelocationTaskMutationArgs,
@@ -25,10 +27,14 @@ import {
   UpdateRelocationTaskMutationArgs,
   UpdateRelocationTaskSuccessResponse,
 } from 'modules/warehouse/models'
-import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehouse/types'
 import {
   closeRelocationTaskUrl,
   getRelocationEquipmentBalanceListUrl,
+  GetRelocationEquipmentListTransformedSuccessResponse,
+  GetRelocationTaskListTransformedSuccessResponse,
+} from 'modules/warehouse/types'
+import {
+  cancelRelocationTaskUrl,
   getRelocationEquipmentListUrl,
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
@@ -123,6 +129,30 @@ const relocationTaskApiService = baseApiService
           }
         },
       }),
+      cancelRelocationTask: build.mutation<
+        CancelRelocationTaskSuccessResponse,
+        CancelRelocationTaskMutationArgs
+        >({
+        query: ({ relocationTaskId }) => ({
+          url: cancelRelocationTaskUrl(relocationTaskId),
+          method: HttpMethodEnum.Post,
+        }),
+        onQueryStarted: async ({ relocationTaskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled
+
+            dispatch(
+              baseApiService.util.updateQueryData(
+                RelocationTaskApiTriggerEnum.GetRelocationTask as never,
+                { relocationTaskId } as never,
+                (task: GetRelocationTaskSuccessResponse) => {
+                  Object.assign(task, { status: data.status })
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
 
       getRelocationTaskList: build.query<
         GetRelocationTaskListTransformedSuccessResponse,
@@ -175,6 +205,7 @@ export const {
   useUpdateRelocationTaskMutation,
   useCloseRelocationTaskMutation,
   useReturnRelocationTaskToReworkMutation,
+  useCancelRelocationTaskMutation,
   useGetRelocationTaskQuery,
 
   useLazyGetRelocationTaskWaybillM15Query,

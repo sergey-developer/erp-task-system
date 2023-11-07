@@ -2,6 +2,7 @@ export * from './getRelocationTask.mock'
 export * from './getRelocationTaskWaybillM15.mock'
 export * from './closeRelocationTask.mock'
 export * from './returnRelocationTaskToRework.mock'
+export * from './cancelRelocationTask.mock'
 
 export * from './getRelocationTaskList.mock'
 
