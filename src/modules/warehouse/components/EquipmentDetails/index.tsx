@@ -1,5 +1,5 @@
 import { useBoolean } from 'ahooks'
-import { Col, Drawer, Row, Typography } from 'antd'
+import { Button, Col, Drawer, Image, Row, Typography } from 'antd'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
@@ -30,7 +30,7 @@ import {
   isNotFoundError,
 } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
-import { getYesNoWord, valueOrHyphen } from 'shared/utils/common'
+import { getYesNoWord, printImage, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -388,6 +388,30 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
                 <Col span={16}>{valueOrHyphen(equipment.comment)}</Col>
               </Row>
+
+              {equipment.qrCode && (
+                <Row data-testid='qr-code' gutter={[8, 8]}>
+                  <Col span={24}>
+                    <Text type='secondary'>QR-код:</Text>
+                  </Col>
+
+                  <Col span={24}>
+                    <Space size='middle' align='start'>
+                      <Image
+                        width={135}
+                        height={155}
+                        src={equipment.qrCode}
+                        preview={false}
+                        alt='QR-code'
+                      />
+
+                      <Button type='link' onClick={() => printImage(equipment.qrCode!)}>
+                        Печать
+                      </Button>
+                    </Space>
+                  </Col>
+                </Row>
+              )}
             </Space>
           )}
         </LoadingArea>
