@@ -5,7 +5,6 @@ import { FC, useEffect, useState } from 'react'
 
 import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskList from 'modules/task/components/TaskList'
-import TaskListLayout from 'modules/task/components/TaskListLayout'
 import TaskListMap from 'modules/task/components/TaskListMap'
 import { getTaskListMapMessages } from 'modules/task/constants/task'
 import { useLazyGetTaskList } from 'modules/task/hooks/task'
@@ -15,6 +14,7 @@ import LoadingArea from 'components/LoadingArea'
 
 import { MaybeNull } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
+import { extractPaginationResults } from 'shared/utils/pagination'
 
 const TaskListMapPage: FC = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<number>>(null)
@@ -47,40 +47,38 @@ const TaskListMapPage: FC = () => {
   const isShowTaskList = !!coords
 
   return (
-    <TaskListLayout>
-      <Row gutter={8} data-testid='task-list-map-page'>
-        {coords && (
-          <Col span={6}>
-            <LoadingArea data-testid='task-list-loading' isLoading={taskListIsFetching}>
-              <TaskList
-                tasks={taskList?.results || []}
-                selectedTaskId={selectedTaskId}
-                onClickTask={setSelectedTaskId}
-              />
-            </LoadingArea>
-          </Col>
-        )}
-
-        <Col
-          span={isShowTaskList && !isShowTaskCard ? 18 : isShowTaskList && isShowTaskCard ? 10 : 24}
-        >
-          <LoadingArea data-testid='task-list-map-loading' isLoading={taskListMapIsFetching}>
-            <TaskListMap tasks={taskListMap} onClickTask={setCoords} />
+    <Row gutter={8} data-testid='task-list-map-page'>
+      {coords && (
+        <Col span={6}>
+          <LoadingArea data-testid='task-list-loading' isLoading={taskListIsFetching}>
+            <TaskList
+              tasks={extractPaginationResults(taskList)}
+              selectedTaskId={selectedTaskId}
+              onClickTask={setSelectedTaskId}
+            />
           </LoadingArea>
         </Col>
+      )}
 
-        {isShowTaskCard && (
-          <Col span={8}>
-            <TaskCard
-              taskId={selectedTaskId}
-              closeTaskCard={() => setSelectedTaskId(null)}
-              additionalInfoExpanded={additionalInfoExpanded}
-              onExpandAdditionalInfo={toggleAdditionalInfoExpanded}
-            />
-          </Col>
-        )}
-      </Row>
-    </TaskListLayout>
+      <Col
+        span={isShowTaskList && !isShowTaskCard ? 18 : isShowTaskList && isShowTaskCard ? 10 : 24}
+      >
+        <LoadingArea data-testid='task-list-map-loading' isLoading={taskListMapIsFetching}>
+          <TaskListMap tasks={taskListMap} onClickTask={setCoords} />
+        </LoadingArea>
+      </Col>
+
+      {isShowTaskCard && (
+        <Col span={8}>
+          <TaskCard
+            taskId={selectedTaskId}
+            closeTaskCard={() => setSelectedTaskId(null)}
+            additionalInfoExpanded={additionalInfoExpanded}
+            onExpandAdditionalInfo={toggleAdditionalInfoExpanded}
+          />
+        </Col>
+      )}
+    </Row>
   )
 }
 

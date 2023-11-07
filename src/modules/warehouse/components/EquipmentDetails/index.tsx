@@ -1,53 +1,64 @@
 import { useBoolean } from 'ahooks'
-import { Col, Drawer, Row, Typography } from 'antd'
+import { Button, Col, Drawer, Row, Typography } from 'antd'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
+import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
-  useCheckEquipmentCategory,
   useGetEquipment,
   useGetEquipmentCategoryList,
+  useGetEquipmentRelocationHistory,
+  useUpdateEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
-import { useUpdateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
+import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import {
-  isBadRequestError,
-  isErrorResponse,
-  isForbiddenError,
-  isNotFoundError,
-} from 'shared/services/baseApi'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { getYesNoWord, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
-import { showErrorNotification } from 'shared/utils/notifications'
+import { extractPaginationResults } from 'shared/utils/pagination'
 
-import EquipmentFormModal from '../EquipmentFormModal'
 import { EquipmentFormModalProps } from '../EquipmentFormModal/types'
 import { DrawerExtraStyled } from './style'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
-import { getHiddenFieldsByCategory } from './utils'
+import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
+
+const EquipmentFormModal = React.lazy(() => import('../EquipmentFormModal'))
+
+const EquipmentRelocationHistoryModal = React.lazy(
+  () => import('../EquipmentRelocationHistoryModal'),
+)
 
 const { Text } = Typography
 
 const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) => {
+  const userPermissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
+
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
-  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
+  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
+
+  const [relocationHistoryModalOpened, { toggle: toggleOpenRelocationHistoryModal }] =
+    useBoolean(false)
+
+  const debouncedToggleOpenRelocationHistoryModal = useDebounceFn(toggleOpenRelocationHistoryModal)
 
   const [
     editEquipmentModalOpened,
@@ -84,7 +95,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
     useGetNomenclatureList(
-      equipmentCategory.isConsumable
+      categoryIsConsumable
         ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
         : defaultGetNomenclatureListParams,
       { skip: !editEquipmentModalOpened || !selectedCategory },
@@ -94,8 +105,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     skip: !selectedNomenclatureId || !editEquipmentModalOpened,
   })
 
-  const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] =
-    useUpdateEquipmentMutation()
+  const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] = useUpdateEquipment()
 
   useEffect(() => {
     if (equipment?.category && editEquipmentModalOpened) {
@@ -113,10 +123,24 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     useLazyGetCustomerList()
 
   useEffect(() => {
-    if (editEquipmentModalOpened && Boolean(selectedCategory) && !equipmentCategory.isConsumable) {
+    if (editEquipmentModalOpened && Boolean(selectedCategory) && !categoryIsConsumable) {
       getCustomerList()
     }
-  }, [editEquipmentModalOpened, equipmentCategory.isConsumable, getCustomerList, selectedCategory])
+  }, [editEquipmentModalOpened, categoryIsConsumable, getCustomerList, selectedCategory])
+
+  const { currentData: relocationHistory = [], isFetching: relocationHistoryIsFetching } =
+    useGetEquipmentRelocationHistory(
+      {
+        equipmentId,
+        statuses: [
+          RelocationTaskStatusEnum.New,
+          RelocationTaskStatusEnum.Completed,
+          RelocationTaskStatusEnum.Returned,
+          RelocationTaskStatusEnum.Closed,
+        ],
+      },
+      { skip: !relocationHistoryModalOpened },
+    )
 
   const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
     setSelectedCategory(category)
@@ -127,47 +151,15 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     async (values, setFields) => {
       try {
         await updateEquipmentMutation({ ...values, equipmentId }).unwrap()
-        closeEditEquipmentModal()
+        debouncedHandleCloseEditEquipmentModal()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
-          } else if (isNotFoundError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          } else if (isForbiddenError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
-    [closeEditEquipmentModal, equipmentId, updateEquipmentMutation],
+    [debouncedHandleCloseEditEquipmentModal, equipmentId, updateEquipmentMutation],
   )
-
-  const equipmentFormInitialValues: EquipmentFormModalProps['initialValues'] = equipment
-    ? {
-        nomenclature: equipment.nomenclature.id,
-        condition: equipment.condition,
-        category: equipment.category.id,
-        purpose: equipment.purpose.id,
-        isNew: equipment.isNew,
-        isWarranty: equipment.isWarranty,
-        isRepaired: equipment.isRepaired,
-        title: nomenclature?.title,
-        warehouse: equipment.warehouse?.id,
-        currency: equipment.currency?.id,
-        customerInventoryNumber: equipment.customerInventoryNumber || undefined,
-        serialNumber: equipment.serialNumber || undefined,
-        quantity: equipment.quantity || undefined,
-        price: equipment.price || undefined,
-        usageCounter: equipment.usageCounter || undefined,
-        owner: equipment.owner?.id,
-        comment: equipment.comment || undefined,
-      }
-    : undefined
 
   const hiddenFields: FieldsMaybeHidden[] = equipment?.category
     ? getHiddenFieldsByCategory(equipment.category)
@@ -176,8 +168,8 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   return (
     <>
       <Drawer
-        data-testid='equipment-details'
         {...props}
+        data-testid='equipment-details'
         title={equipment?.title}
         width={500}
         extra={
@@ -249,6 +241,19 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 </Col>
 
                 <Col span={16}>{valueOrHyphen(equipment.warehouse?.title)}</Col>
+              </Row>
+
+              <Row data-testid='relocation-history'>
+                <Col>
+                  <Button
+                    disabled={
+                      !userPermissions?.equipmentsRead || !userPermissions.relocationTasksRead
+                    }
+                    onClick={debouncedToggleOpenRelocationHistoryModal}
+                  >
+                    История перемещений
+                  </Button>
+                </Col>
               </Row>
 
               <Row data-testid='condition'>
@@ -394,32 +399,59 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       </Drawer>
 
       {editEquipmentModalOpened && (
-        <EquipmentFormModal
-          open={editEquipmentModalOpened}
-          mode='edit'
-          title='Редактирование оборудования'
-          okText='Сохранить'
-          isLoading={updateEquipmentIsLoading}
-          initialValues={equipmentFormInitialValues}
-          categoryList={equipmentCategoryList}
-          categoryListIsLoading={equipmentCategoryListIsFetching}
-          selectedCategory={selectedCategory}
-          onChangeCategory={handleChangeCategory}
-          warehouseList={warehouseList}
-          warehouseListIsLoading={warehouseListIsFetching}
-          currencyList={currencyList}
-          currencyListIsFetching={currencyListIsFetching}
-          ownerList={customerList}
-          ownerListIsFetching={customerListIsFetching}
-          workTypeList={workTypeList}
-          workTypeListIsFetching={workTypeListIsFetching}
-          nomenclature={nomenclature}
-          nomenclatureList={nomenclatureList?.results || []}
-          nomenclatureListIsLoading={nomenclatureListIsFetching}
-          onChangeNomenclature={setSelectedNomenclatureId}
-          onCancel={debouncedHandleCloseEditEquipmentModal}
-          onSubmit={handleEditEquipment}
-        />
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={editEquipmentModalOpened}
+              onCancel={debouncedHandleCloseEditEquipmentModal}
+            />
+          }
+        >
+          <EquipmentFormModal
+            open={editEquipmentModalOpened}
+            mode='edit'
+            title='Редактирование оборудования'
+            okText='Сохранить'
+            isLoading={updateEquipmentIsLoading}
+            initialValues={getEquipmentFormInitialValues(equipment, nomenclature)}
+            categoryList={equipmentCategoryList}
+            categoryListIsLoading={equipmentCategoryListIsFetching}
+            selectedCategory={selectedCategory}
+            onChangeCategory={handleChangeCategory}
+            warehouseList={warehouseList}
+            warehouseListIsLoading={warehouseListIsFetching}
+            currencyList={currencyList}
+            currencyListIsFetching={currencyListIsFetching}
+            ownerList={customerList}
+            ownerListIsFetching={customerListIsFetching}
+            workTypeList={workTypeList}
+            workTypeListIsFetching={workTypeListIsFetching}
+            nomenclature={nomenclature}
+            nomenclatureList={extractPaginationResults(nomenclatureList)}
+            nomenclatureListIsLoading={nomenclatureListIsFetching}
+            onChangeNomenclature={setSelectedNomenclatureId}
+            onCancel={debouncedHandleCloseEditEquipmentModal}
+            onSubmit={handleEditEquipment}
+          />
+        </React.Suspense>
+      )}
+
+      {relocationHistoryModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={relocationHistoryModalOpened}
+              onCancel={debouncedToggleOpenRelocationHistoryModal}
+            />
+          }
+        >
+          <EquipmentRelocationHistoryModal
+            open={relocationHistoryModalOpened}
+            onCancel={debouncedToggleOpenRelocationHistoryModal}
+            dataSource={relocationHistory}
+            loading={relocationHistoryIsFetching}
+          />
+        </React.Suspense>
       )}
     </>
   )

@@ -3,12 +3,12 @@ import isArray from 'lodash/isArray'
 import { FC, useEffect } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
-import { useCheckEquipmentCategory } from 'modules/warehouse/hooks/equipment'
 import {
   EquipmentCategoryListItemModel,
   NomenclatureListItemModel,
   WarehouseListItemModel,
 } from 'modules/warehouse/models'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
 import BaseModal from 'components/Modals/BaseModal'
 
@@ -16,7 +16,7 @@ import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selec
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 
-import { EquipmentFormModalProps, EquipmentFormModalFormFields } from './types'
+import { EquipmentFormModalFormFields, EquipmentFormModalProps } from './types'
 
 const { TextArea } = Input
 
@@ -57,7 +57,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   const hasSelectedNomenclature = Boolean(nomenclature)
 
   const hasSelectedCategory = Boolean(selectedCategory)
-  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
+  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   useEffect(() => {
     if (nomenclature) {
@@ -160,10 +160,10 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               name='title'
               rules={requiredStringRules}
             >
-              <Input placeholder='Введите наименование' disabled={equipmentCategory.isConsumable} />
+              <Input placeholder='Введите наименование' disabled={categoryIsConsumable} />
             </Form.Item>
 
-            {!equipmentCategory.isConsumable && (
+            {!categoryIsConsumable && (
               <Form.Item
                 data-testid='customer-inventory-number-form-item'
                 label='Инвентарный номер заказчика'
@@ -209,7 +209,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               <Select placeholder='Выберите состояние' options={equipmentConditionOptions} />
             </Form.Item>
 
-            {mode === 'create' && equipmentCategory.isConsumable && (
+            {mode === 'create' && categoryIsConsumable && (
               <Form.Item>
                 <Row gutter={8}>
                   <Col span={12}>
@@ -236,7 +236,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                     </Form.Item>
                   </Col>
 
-                  {equipmentCategory.isConsumable && (
+                  {categoryIsConsumable && (
                     <Col span={6}>
                       <Form.Item data-testid='measurement-unit-form-item' label='Ед.измерения'>
                         {nomenclature?.measurementUnit.title}
@@ -268,7 +268,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               </Row>
             </Form.Item>
 
-            {!equipmentCategory.isConsumable && (
+            {!categoryIsConsumable && (
               <Form.Item>
                 <Row>
                   <Col span={8}>
@@ -307,7 +307,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               </Form.Item>
             )}
 
-            {!equipmentCategory.isConsumable && (
+            {!categoryIsConsumable && (
               <Form.Item
                 data-testid='usage-counter-form-item'
                 label='Счетчик пробега текущий'
@@ -317,7 +317,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               </Form.Item>
             )}
 
-            {!equipmentCategory.isConsumable && (
+            {!categoryIsConsumable && (
               <Form.Item data-testid='owner-form-item' label='Владелец оборудования' name='owner'>
                 <Select
                   placeholder='Выберите владельца оборудования'

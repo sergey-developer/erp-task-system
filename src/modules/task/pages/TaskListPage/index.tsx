@@ -18,7 +18,6 @@ import ExtendedFilterList, {
 } from 'modules/task/components/ExtendedFilterList'
 import FastFilterList from 'modules/task/components/FastFilterList'
 import TaskCard from 'modules/task/components/TaskCard/CardContainer'
-import TaskListLayout from 'modules/task/components/TaskListLayout'
 import TaskTable from 'modules/task/components/TaskTable'
 import {
   SortableField,
@@ -56,7 +55,11 @@ import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled } from './styles'
@@ -361,7 +364,7 @@ const TaskListPage: FC = () => {
   }
 
   return (
-    <TaskListLayout>
+    <>
       <Row data-testid='task-list-page' gutter={[0, 40]}>
         <Col span={24}>
           <Row className='task-list-page-header' justify='space-between' align='bottom'>
@@ -439,7 +442,7 @@ const TaskListPage: FC = () => {
                 rowClassName={getTableRowClassName}
                 sort={taskListQueryArgs.sort}
                 onRow={handleTableRowClick}
-                dataSource={taskList?.results || []}
+                dataSource={extractPaginationResults(taskList)}
                 loading={taskListIsFetching}
                 onChange={handleChangeTable}
                 pagination={taskList?.pagination || false}
@@ -482,7 +485,7 @@ const TaskListPage: FC = () => {
           onSubmit={handleExtendedFilterSubmit}
         />
       )}
-    </TaskListLayout>
+    </>
   )
 }
 

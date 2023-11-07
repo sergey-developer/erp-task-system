@@ -1,5 +1,7 @@
 import { RouteEnum } from 'configs/routes'
 
+import { FiscalAccumulatorRouteEnum } from 'modules/fiscalAccumulator/constants'
+
 import { QrcodeIcon, TeamIcon } from 'components/Icons'
 
 import { NavMenuItem } from './types'
@@ -12,9 +14,9 @@ const navMenuEngineerConfig: NavMenuItem[] = [
     text: 'Рабочие группы',
   },
   {
-    key: RouteEnum.FiscalAccumulatorList,
+    key: FiscalAccumulatorRouteEnum.FiscalAccumulator,
     icon: QrcodeIcon,
-    link: RouteEnum.FiscalAccumulatorList,
+    link: FiscalAccumulatorRouteEnum.FiscalAccumulator,
     text: 'Отчёт по ФН',
   },
 ]
