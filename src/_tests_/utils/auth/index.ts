@@ -1,1 +1,2 @@
-export { default as getStoreWithAuth } from './getStoreWithAuth'
+export * from './getAuthState'
+export * from './getStoreWithAuth'

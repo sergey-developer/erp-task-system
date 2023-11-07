@@ -8,6 +8,7 @@ import {
   DropdownProps,
   MenuProps,
   Row,
+  Tooltip,
   Typography,
 } from 'antd'
 import React, { FC } from 'react'
@@ -19,6 +20,7 @@ import { useMatchUserPermissions } from 'modules/user/hooks'
 import {
   closeRelocationTaskMessages,
   relocationTaskStatusDict,
+  returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
@@ -31,6 +33,7 @@ import {
   getEditRelocationTaskPageLink,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
+import { useReturnRelocationTaskToReworkMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 
 import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -38,6 +41,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
+import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
@@ -49,12 +53,18 @@ import {
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { showErrorNotification } from 'shared/utils/notifications'
+import { getFieldsErrors } from 'shared/utils/form'
 
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
+import { ReturnRelocationTaskToReworkModalProps } from '../ReturnRelocationTaskToReworkModal/types'
 import { RelocationTaskDetailsProps } from './types'
 
 const ConfirmExecutionRelocationTaskModal = React.lazy(
   () => import('../ConfirmExecutionRelocationTaskModal'),
+)
+
+const ReturnRelocationTaskToReworkModal = React.lazy(
+  () => import('../ReturnRelocationTaskToReworkModal'),
 )
 
 const { Text } = Typography
@@ -68,6 +78,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     'RELOCATION_TASKS_READ',
     'RELOCATION_TASKS_UPDATE',
   ])
+
+  const [returnToReworkModalOpened, { toggle: toggleOpenReturnToReworkModal }] = useBoolean()
+  const debouncedToggleOpenReturnToReworkModal = useDebounceFn(toggleOpenReturnToReworkModal)
 
   const [confirmExecutionModalOpened, { toggle: toggleOpenConfirmExecutionModal }] = useBoolean()
   const debouncedToggleOpenConfirmExecutionModal = useDebounceFn(toggleOpenConfirmExecutionModal)
@@ -85,6 +98,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const [closeRelocationTaskMutation, { isLoading: closeRelocationTaskIsLoading }] =
     useCloseRelocationTaskMutation()
+
+  const [returnToReworkMutation, { isLoading: returnToReworkIsLoading }] =
+    useReturnRelocationTaskToReworkMutation()
 
   const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
   const executorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.executor?.id)
@@ -125,6 +141,32 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     } catch {}
   }, [relocationTaskId])
 
+  const handleReturnToRework: ReturnRelocationTaskToReworkModalProps['onSubmit'] = async (
+    values,
+    setFields,
+  ) => {
+    try {
+      await returnToReworkMutation({ relocationTaskId, ...values }).unwrap()
+      toggleOpenReturnToReworkModal()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
+
+          if (error.data.detail) {
+            showErrorNotification(error.data.detail)
+          }
+        } else if (isForbiddenError(error) && error.data.detail) {
+          showErrorNotification(error.data.detail)
+        } else if (isNotFoundError(error) && error.data.detail) {
+          showErrorNotification(error.data.detail)
+        } else {
+          showErrorNotification(returnRelocationTaskToReworkMessages.commonError)
+        }
+      }
+    }
+  }
+
   const title: DrawerProps['title'] = relocationTaskIsFetching ? (
     <Space>
       <Text>Заявка на перемещение оборудования</Text>
@@ -159,6 +201,15 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
           relocationTaskStatus.isClosed ||
           relocationTaskStatus.isCompleted,
         onClick: () => navigate(getEditRelocationTaskPageLink(relocationTaskId)),
+      },
+      {
+        key: 4,
+        label: 'Вернуть на доработку',
+        disabled:
+          !userPermissions?.relocationTasksUpdate ||
+          !executorIsCurrentUser ||
+          !relocationTaskStatus.isCompleted,
+        onClick: debouncedToggleOpenReturnToReworkModal,
       },
       {
         key: 6,
@@ -241,6 +292,31 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Col span={16}>{relocationTaskStatusDict[relocationTask.status]}</Col>
                   </Row>
 
+                  {relocationTask.revision && (
+                    <Row data-testid='return-reason'>
+                      <Col span={8}>
+                        <Text type='secondary'>Причина возврата:</Text>
+                      </Col>
+
+                      <Col span={16}>
+                        <Tooltip
+                          title={
+                            <Space direction='vertical'>
+                              {formatDate(relocationTask.revision.createdAt, DATE_FORMAT)}
+
+                              <Space>
+                                {relocationTask.revision.user.fullName}
+                                {relocationTask.revision.user.phone}
+                              </Space>
+                            </Space>
+                          }
+                        >
+                          <Text type='warning'>{relocationTask.revision.text}</Text>
+                        </Tooltip>
+                      </Col>
+                    </Row>
+                  )}
+
                   <Row data-testid='created-by'>
                     <Col span={8}>
                       <Text type='secondary'>Инициатор:</Text>
@@ -312,6 +388,24 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             isLoading={closeRelocationTaskIsLoading}
             onCancel={debouncedToggleOpenConfirmExecutionModal}
             onConfirm={handleCloseTask}
+          />
+        </React.Suspense>
+      )}
+
+      {returnToReworkModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={returnToReworkModalOpened}
+              onCancel={debouncedToggleOpenReturnToReworkModal}
+            />
+          }
+        >
+          <ReturnRelocationTaskToReworkModal
+            open={returnToReworkModalOpened}
+            isLoading={returnToReworkIsLoading}
+            onCancel={debouncedToggleOpenReturnToReworkModal}
+            onSubmit={handleReturnToRework}
           />
         </React.Suspense>
       )}
