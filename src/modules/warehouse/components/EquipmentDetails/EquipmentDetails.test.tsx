@@ -49,6 +49,14 @@ import {
 import EquipmentDetails from './index'
 import { EquipmentDetailsProps } from './types'
 
+jest.mock<typeof import('shared/utils/common/printImage')>(
+  'shared/utils/common/printImage',
+  () => ({
+    __esModule: true,
+    printImage: jest.fn(),
+  }),
+)
+
 const props: Readonly<EquipmentDetailsProps> = {
   open: true,
   onClose: jest.fn(),
@@ -710,6 +718,61 @@ describe('Информация об оборудовании', () => {
           await testUtils.expectTotalEquipmentImageListLoadingFinished()
           const images = attachmentListTestUtils.getAllIn(modal)
           expect(images).toHaveLength(attachmentListResponse.count)
+        })
+      })
+    })
+
+    describe('QR код', () => {
+      test('Отображается корректно', async () => {
+        const equipment = warehouseFixtures.equipment()
+        mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+        render(<EquipmentDetails {...props} />)
+
+        await testUtils.expectLoadingFinished()
+        const block = testUtils.getBlock('qr-code')
+        const label = testUtils.getInfoInBlock(block, /QR-код/)
+        const image = within(block).getByRole('img')
+
+        expect(label).toBeInTheDocument()
+        expect(image).toHaveAttribute('width', '135')
+        expect(image).toHaveAttribute('height', '155')
+        expect(image).toHaveAttribute('src', equipment.qrCode)
+      })
+
+      describe('Кнопка печать', () => {
+        test('Отображается корректно', async () => {
+          const equipment = warehouseFixtures.equipment()
+          mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+          mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+          render(<EquipmentDetails {...props} />)
+
+          await testUtils.expectLoadingFinished()
+          const block = testUtils.getBlock('qr-code')
+          const button = buttonTestUtils.getButtonIn(block, 'Печать')
+
+          expect(button).toBeInTheDocument()
+          expect(button).toBeEnabled()
+        })
+
+        test('При клике обработчик вызывается корректно', async () => {
+          const { printImage } = await import('shared/utils/common/printImage')
+
+          const equipment = warehouseFixtures.equipment()
+          mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+          mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+          const { user } = render(<EquipmentDetails {...props} />)
+
+          await testUtils.expectLoadingFinished()
+          const block = testUtils.getBlock('qr-code')
+          const button = buttonTestUtils.getButtonIn(block, 'Печать')
+          await user.click(button)
+
+          expect(printImage).toBeCalledTimes(1)
+          expect(printImage).toBeCalledWith(equipment.qrCode)
         })
       })
     })
