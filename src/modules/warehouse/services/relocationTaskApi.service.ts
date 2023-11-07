@@ -27,19 +27,16 @@ import {
   UpdateRelocationTaskMutationArgs,
   UpdateRelocationTaskSuccessResponse,
 } from 'modules/warehouse/models'
-import {
-  closeRelocationTaskUrl,
-  getRelocationEquipmentBalanceListUrl,
-  GetRelocationEquipmentListTransformedSuccessResponse,
-  GetRelocationTaskListTransformedSuccessResponse,
-} from 'modules/warehouse/types'
+import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehouse/types'
 import {
   cancelRelocationTaskUrl,
+  closeRelocationTaskUrl,
+  getRelocationEquipmentBalanceListUrl,
   getRelocationEquipmentListUrl,
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
-  updateRelocationTaskUrl,
   returnRelocationTaskToReworkUrl,
+  updateRelocationTaskUrl,
 } from 'modules/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -118,7 +115,7 @@ const relocationTaskApiService = baseApiService
       returnRelocationTaskToRework: build.mutation<
         ReturnRelocationTaskToReworkSuccessResponse,
         ReturnRelocationTaskToReworkMutationArgs
-        >({
+      >({
         invalidatesTags: (result, error) =>
           error ? [] : [RelocationTaskApiTagEnum.RelocationTask],
         query: ({ relocationTaskId, ...payload }) => {
@@ -132,7 +129,7 @@ const relocationTaskApiService = baseApiService
       cancelRelocationTask: build.mutation<
         CancelRelocationTaskSuccessResponse,
         CancelRelocationTaskMutationArgs
-        >({
+      >({
         query: ({ relocationTaskId }) => ({
           url: cancelRelocationTaskUrl(relocationTaskId),
           method: HttpMethodEnum.Post,
