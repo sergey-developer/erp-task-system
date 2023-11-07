@@ -26,6 +26,7 @@ import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeWord,
+  getStoreWithAuth,
   linkTestUtils,
   notificationTestUtils,
   render,
@@ -288,14 +289,11 @@ describe('Страница списка заявок на перемещение
         mockGetRelocationTaskListSuccess()
 
         render(<RelocationTaskListPage />, {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
             },
-          },
+          }),
         })
 
         const link = testUtils.getCreateTaskLink()
@@ -329,14 +327,11 @@ describe('Страница списка заявок на перемещение
           ],
           { initialEntries: [WarehouseRouteEnum.RelocationTaskList], initialIndex: 0 },
           {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
-                },
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
               },
-            },
+            }),
           },
         )
 

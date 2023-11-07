@@ -46,7 +46,6 @@ import {
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
-import getAuthState from '_tests_/utils/auth/getAuthState'
 
 import RelocationTaskDetails from './index'
 import { RelocationTaskDetailsProps } from './types'
@@ -421,14 +420,11 @@ describe('Информация о заявке о перемещении', () =>
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
         {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
             },
-          },
+          }),
         },
       )
 
@@ -466,14 +462,11 @@ describe('Информация о заявке о перемещении', () =>
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
         {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
             },
-          },
+          }),
         },
       )
 
@@ -506,14 +499,11 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
-                },
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
               },
-            },
+            }),
           },
         )
 
@@ -536,14 +526,11 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
-                },
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
               },
-            },
+            }),
           },
         )
 
@@ -562,14 +549,11 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
-                },
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
               },
-            },
+            }),
           },
         )
 
@@ -610,20 +594,19 @@ describe('Информация о заявке о перемещении', () =>
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
         {
-          preloadedState: {
-            auth: getAuthState({
-              user: {
-                userId: relocationTask.createdBy!.id,
-                userRole: UserRoleEnum.FirstLineSupport,
-              },
-            }),
-            api: {
-              // @ts-ignore
+          store: getStoreWithAuth(
+            {
+              userId: relocationTask.createdBy!.id,
+              userRole: UserRoleEnum.FirstLineSupport,
+            },
+            undefined,
+            undefined,
+            {
               queries: {
                 ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
               },
             },
-          },
+          ),
         },
       )
 
@@ -664,14 +647,11 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
-                },
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
               },
-            },
+            }),
           },
         )
 
