@@ -1,3 +1,4 @@
+import { useBoolean } from 'ahooks'
 import {
   Button,
   Col,
@@ -15,13 +16,17 @@ import { useNavigate } from 'react-router-dom'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+import {
+  closeRelocationTaskMessages,
+  relocationTaskStatusDict,
+} from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
   useLazyGetRelocationTaskWaybillM15,
   useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
+import { useCloseRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
   getWaybillM15Filename,
@@ -29,16 +34,28 @@ import {
 
 import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
+import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
 import { RelocationTaskDetailsProps } from './types'
+
+const ConfirmExecutionRelocationTaskModal = React.lazy(
+  () => import('../ConfirmExecutionRelocationTaskModal'),
+)
 
 const { Text } = Typography
 
@@ -52,6 +69,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     'RELOCATION_TASKS_UPDATE',
   ])
 
+  const [confirmExecutionModalOpened, { toggle: toggleOpenConfirmExecutionModal }] = useBoolean()
+  const debouncedToggleOpenConfirmExecutionModal = useDebounceFn(toggleOpenConfirmExecutionModal)
+
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
     useGetRelocationTask({ relocationTaskId })
 
@@ -63,8 +83,33 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
 
+  const [closeRelocationTaskMutation, { isLoading: closeRelocationTaskIsLoading }] =
+    useCloseRelocationTaskMutation()
+
   const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
+  const executorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.executor?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
+
+  const handleCloseTask = async () => {
+    try {
+      await closeRelocationTaskMutation({ relocationTaskId }).unwrap()
+      toggleOpenConfirmExecutionModal()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (error.data.detail) {
+          if (isBadRequestError(error)) {
+            showErrorNotification(error.data.detail)
+          } else if (isForbiddenError(error)) {
+            showErrorNotification(error.data.detail)
+          } else if (isNotFoundError(error)) {
+            showErrorNotification(error.data.detail)
+          } else {
+            showErrorNotification(closeRelocationTaskMessages.commonError)
+          }
+        }
+      }
+    }
+  }
 
   const handleGetWaybillM15 = useDebounceFn(async () => {
     try {
@@ -115,133 +160,162 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
           relocationTaskStatus.isCompleted,
         onClick: () => navigate(getEditRelocationTaskPageLink(relocationTaskId)),
       },
+      {
+        key: 6,
+        label: 'Подтвердить выполнение',
+        disabled:
+          !userPermissions?.relocationTasksUpdate ||
+          !executorIsCurrentUser ||
+          !relocationTaskStatus.isCompleted,
+        onClick: debouncedToggleOpenConfirmExecutionModal,
+      },
     ],
   }
 
   return (
-    <Drawer
-      {...props}
-      data-testid='relocation-task-details'
-      placement='bottom'
-      title={title}
-      extra={
-        <Dropdown menu={menuProps} trigger={dropdownTrigger}>
-          <Button type='text' icon={<MenuIcon />} />
-        </Dropdown>
-      }
-    >
-      <Row gutter={40}>
-        <Col span={8}>
-          <LoadingArea
-            data-testid='relocation-task-details-loading'
-            isLoading={relocationTaskIsFetching}
-            tip='Загрузка заявки на перемещение оборудования...'
-            area='block'
-          >
-            {relocationTask && (
-              <Space $block direction='vertical' size='middle'>
-                <Row data-testid='deadline-at'>
-                  <Col span={8}>
-                    <Text type='secondary'>Срок выполнения:</Text>
-                  </Col>
+    <>
+      <Drawer
+        {...props}
+        data-testid='relocation-task-details'
+        placement='bottom'
+        title={title}
+        extra={
+          <Dropdown menu={menuProps} trigger={dropdownTrigger}>
+            <Button type='text' icon={<MenuIcon />} />
+          </Dropdown>
+        }
+      >
+        <Row gutter={40}>
+          <Col span={8}>
+            <LoadingArea
+              data-testid='relocation-task-details-loading'
+              isLoading={relocationTaskIsFetching}
+              tip='Загрузка заявки на перемещение оборудования...'
+              area='block'
+            >
+              {relocationTask && (
+                <Space $block direction='vertical' size='middle'>
+                  <Row data-testid='deadline-at'>
+                    <Col span={8}>
+                      <Text type='secondary'>Срок выполнения:</Text>
+                    </Col>
 
-                  <Col span={16}>{formatDate(relocationTask.deadlineAt)}</Col>
-                </Row>
+                    <Col span={16}>{formatDate(relocationTask.deadlineAt)}</Col>
+                  </Row>
 
-                <Row data-testid='relocate-from'>
-                  <Col span={8}>
-                    <Text type='secondary'>Объект выбытия:</Text>
-                  </Col>
+                  <Row data-testid='relocate-from'>
+                    <Col span={8}>
+                      <Text type='secondary'>Объект выбытия:</Text>
+                    </Col>
 
-                  <Col span={16}>
-                    <Text>{valueOrHyphen(relocationTask.relocateFrom?.title)}</Text>
-                  </Col>
-                </Row>
+                    <Col span={16}>
+                      <Text>{valueOrHyphen(relocationTask.relocateFrom?.title)}</Text>
+                    </Col>
+                  </Row>
 
-                <Row data-testid='relocate-to'>
-                  <Col span={8}>
-                    <Text type='secondary'>Объект прибытия:</Text>
-                  </Col>
+                  <Row data-testid='relocate-to'>
+                    <Col span={8}>
+                      <Text type='secondary'>Объект прибытия:</Text>
+                    </Col>
 
-                  <Col span={16}>
-                    <Text>{valueOrHyphen(relocationTask.relocateTo?.title)}</Text>
-                  </Col>
-                </Row>
+                    <Col span={16}>
+                      <Text>{valueOrHyphen(relocationTask.relocateTo?.title)}</Text>
+                    </Col>
+                  </Row>
 
-                <Row data-testid='executor'>
-                  <Col span={8}>
-                    <Text type='secondary'>Исполнитель:</Text>
-                  </Col>
+                  <Row data-testid='executor'>
+                    <Col span={8}>
+                      <Text type='secondary'>Исполнитель:</Text>
+                    </Col>
 
-                  <Col span={16}>
-                    <Text>{valueOrHyphen(relocationTask.executor?.fullName)}</Text>
-                  </Col>
-                </Row>
+                    <Col span={16}>
+                      <Text>{valueOrHyphen(relocationTask.executor?.fullName)}</Text>
+                    </Col>
+                  </Row>
 
-                <Row data-testid='status'>
-                  <Col span={8}>
-                    <Text type='secondary'>Статус:</Text>
-                  </Col>
+                  <Row data-testid='status'>
+                    <Col span={8}>
+                      <Text type='secondary'>Статус:</Text>
+                    </Col>
 
-                  <Col span={16}>{relocationTaskStatusDict[relocationTask.status]}</Col>
-                </Row>
+                    <Col span={16}>{relocationTaskStatusDict[relocationTask.status]}</Col>
+                  </Row>
 
-                <Row data-testid='created-by'>
-                  <Col span={8}>
-                    <Text type='secondary'>Инициатор:</Text>
-                  </Col>
+                  <Row data-testid='created-by'>
+                    <Col span={8}>
+                      <Text type='secondary'>Инициатор:</Text>
+                    </Col>
 
-                  <Col span={16}>
-                    <Text>{valueOrHyphen(relocationTask.createdBy?.fullName)}</Text>
-                  </Col>
-                </Row>
+                    <Col span={16}>
+                      <Text>{valueOrHyphen(relocationTask.createdBy?.fullName)}</Text>
+                    </Col>
+                  </Row>
 
-                <Row data-testid='created-at'>
-                  <Col span={8}>
-                    <Text type='secondary'>Создано:</Text>
-                  </Col>
+                  <Row data-testid='created-at'>
+                    <Col span={8}>
+                      <Text type='secondary'>Создано:</Text>
+                    </Col>
 
-                  <Col span={16}>{formatDate(relocationTask.createdAt)}</Col>
-                </Row>
+                    <Col span={16}>{formatDate(relocationTask.createdAt)}</Col>
+                  </Row>
 
-                <Row data-testid='comment'>
-                  <Col span={8}>
-                    <Text type='secondary'>Комментарий:</Text>
-                  </Col>
+                  <Row data-testid='comment'>
+                    <Col span={8}>
+                      <Text type='secondary'>Комментарий:</Text>
+                    </Col>
 
-                  <Col span={16}>
-                    <Text>{valueOrHyphen(relocationTask.comment)}</Text>
-                  </Col>
-                </Row>
+                    <Col span={16}>
+                      <Text>{valueOrHyphen(relocationTask.comment)}</Text>
+                    </Col>
+                  </Row>
 
-                <Row data-testid='documents'>
-                  <Col span={8}>
-                    <Text type='secondary'>Документы:</Text>
-                  </Col>
+                  <Row data-testid='documents'>
+                    <Col span={8}>
+                      <Text type='secondary'>Документы:</Text>
+                    </Col>
 
-                  <Col span={16}>
-                    {!!relocationTask.documents?.length && (
-                      <AttachmentList attachments={relocationTask.documents} />
-                    )}
-                  </Col>
-                </Row>
-              </Space>
-            )}
-          </LoadingArea>
-        </Col>
+                    <Col span={16}>
+                      {!!relocationTask.documents?.length && (
+                        <AttachmentList attachments={relocationTask.documents} />
+                      )}
+                    </Col>
+                  </Row>
+                </Space>
+              )}
+            </LoadingArea>
+          </Col>
 
-        <Col span={16}>
-          <Space direction='vertical'>
-            <Text strong>Перечень оборудования</Text>
+          <Col span={16}>
+            <Space direction='vertical'>
+              <Text strong>Перечень оборудования</Text>
 
-            <RelocationEquipmentTable
-              dataSource={relocationEquipmentList}
-              loading={relocationEquipmentListIsFetching}
+              <RelocationEquipmentTable
+                dataSource={relocationEquipmentList}
+                loading={relocationEquipmentListIsFetching}
+              />
+            </Space>
+          </Col>
+        </Row>
+      </Drawer>
+
+      {confirmExecutionModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={confirmExecutionModalOpened}
+              onCancel={debouncedToggleOpenConfirmExecutionModal}
             />
-          </Space>
-        </Col>
-      </Row>
-    </Drawer>
+          }
+        >
+          <ConfirmExecutionRelocationTaskModal
+            open={confirmExecutionModalOpened}
+            isLoading={closeRelocationTaskIsLoading}
+            onCancel={debouncedToggleOpenConfirmExecutionModal}
+            onConfirm={handleCloseTask}
+          />
+        </React.Suspense>
+      )}
+    </>
   )
 }
 
