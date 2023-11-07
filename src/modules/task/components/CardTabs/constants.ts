@@ -6,6 +6,7 @@ export enum TaskCardTabsEnum {
   Resolution = 'Resolution',
   Description = 'Description',
   Journal = 'Journal',
+  RelocationList = 'RelocationList',
 }
 
 export const taskCardTabNamesDict: Readonly<StringMap<TaskCardTabsEnum>> = {
@@ -14,4 +15,5 @@ export const taskCardTabNamesDict: Readonly<StringMap<TaskCardTabsEnum>> = {
   [TaskCardTabsEnum.Resolution]: 'Решение',
   [TaskCardTabsEnum.Description]: 'Описание',
   [TaskCardTabsEnum.Journal]: 'Журнал',
+  [TaskCardTabsEnum.RelocationList]: 'Перемещения',
 }
