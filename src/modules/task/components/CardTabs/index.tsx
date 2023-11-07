@@ -2,18 +2,20 @@ import { TabsProps } from 'antd'
 import React, { FC } from 'react'
 
 import { TaskModel } from 'modules/task/models'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 
 import Spinner from 'components/Spinner'
 
 import TaskCardWrapper from '../TaskCard/TaskCardWrapper'
 import DescriptionTab from './DescriptionTab'
 import ResolutionTab from './ResolutionTab'
-import { TaskCardTabsEnum, taskCardTabNamesDict } from './constants'
+import { taskCardTabNamesDict, TaskCardTabsEnum } from './constants'
 import { TabsStyled } from './styles'
 
 const JournalTab = React.lazy(() => import('./JournalTab'))
 const CommentListTab = React.lazy(() => import('./CommentListTab'))
 const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
+const RelocationListTab = React.lazy(() => import('./RelocationListTab'))
 
 export type CardTabsProps = {
   task: Pick<
@@ -35,6 +37,8 @@ export type CardTabsProps = {
 }
 
 const CardTabs: FC<CardTabsProps> = ({ task }) => {
+  const userPermissions = useMatchUserPermissions(['RELOCATION_TASKS_READ'])
+
   const tabsItems: TabsProps['items'] = [
     {
       key: TaskCardTabsEnum.Description,
@@ -101,6 +105,21 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
         </TaskCardWrapper>
       ),
     },
+    ...(userPermissions?.relocationTasksRead
+      ? [
+          {
+            key: TaskCardTabsEnum.RelocationList,
+            label: taskCardTabNamesDict[TaskCardTabsEnum.RelocationList],
+            children: (
+              <TaskCardWrapper>
+                <React.Suspense fallback={<Spinner />}>
+                  <RelocationListTab />
+                </React.Suspense>
+              </TaskCardWrapper>
+            ),
+          },
+        ]
+      : []),
   ]
 
   return (
