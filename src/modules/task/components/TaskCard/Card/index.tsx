@@ -10,7 +10,6 @@ import { RequestTaskReclassificationModalProps } from 'modules/task/components/R
 import { RequestTaskSuspendModalProps } from 'modules/task/components/RequestTaskSuspendModal'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
-import { TaskResolutionModalProps } from 'modules/task/components/TaskResolutionModal'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
   taskImpactMap,
@@ -54,6 +53,7 @@ import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import CardTabs from '../../CardTabs'
+import { ExecuteTaskModalProps } from '../../ExecuteTaskModal/types'
 import { RequestTaskSuspendFormFields } from '../../RequestTaskSuspendModal/types'
 import AdditionalInfo from '../AdditionalInfo'
 import CardTitle from '../CardTitle'
@@ -61,7 +61,7 @@ import MainDetails from '../MainDetails'
 import SecondaryDetails from '../SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
-const TaskResolutionModal = React.lazy(() => import('modules/task/components/TaskResolutionModal'))
+const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
 const TaskSuspendRequest = React.lazy(() => import('modules/task/components/TaskSuspendRequest'))
 
 const RequestTaskReclassificationModal = React.lazy(
@@ -241,7 +241,7 @@ const TaskCard: FC<TaskCardProps> = ({
     if (isGetTaskError) closeTaskCard()
   }, [isGetTaskError, closeTaskCard])
 
-  const handleResolutionSubmit = useCallback<TaskResolutionModalProps['onSubmit']>(
+  const handleResolutionSubmit = useCallback<ExecuteTaskModalProps['onSubmit']>(
     async (values, setFields) => {
       if (!task) return
 
@@ -269,7 +269,7 @@ const TaskCard: FC<TaskCardProps> = ({
     [task, closeTaskCard, resolveTask],
   )
 
-  const handleGetAct = useCallback<TaskResolutionModalProps['onGetAct']>(
+  const handleGetAct = useCallback<ExecuteTaskModalProps['onGetAct']>(
     async (values) => {
       if (!task) return
 
@@ -574,7 +574,7 @@ const TaskCard: FC<TaskCardProps> = ({
                     />
                   }
                 >
-                  <TaskResolutionModal
+                  <ExecuteTaskModal
                     type={task.type}
                     recordId={task.recordId}
                     isLoading={isTaskResolving}

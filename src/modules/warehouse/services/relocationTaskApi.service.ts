@@ -6,6 +6,8 @@ import {
   RelocationTaskApiTriggerEnum,
 } from 'modules/warehouse/constants/relocationTask'
 import {
+  ExecuteRelocationTaskMutationArgs,
+  ExecuteRelocationTaskSuccessResponse,
   CancelRelocationTaskMutationArgs,
   CancelRelocationTaskSuccessResponse,
   CloseRelocationTaskMutationArgs,
@@ -29,6 +31,7 @@ import {
 } from 'modules/warehouse/models'
 import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehouse/types'
 import {
+  executeRelocationTaskUrl,
   cancelRelocationTaskUrl,
   closeRelocationTaskUrl,
   getRelocationEquipmentBalanceListUrl,
@@ -150,6 +153,28 @@ const relocationTaskApiService = baseApiService
           } catch {}
         },
       }),
+      executeRelocationTask: build.mutation<
+        ExecuteRelocationTaskSuccessResponse,
+        ExecuteRelocationTaskMutationArgs
+        >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [RelocationTaskApiTagEnum.RelocationTask],
+        query: ({ relocationTaskId, documents }) => {
+          const formData = new FormData()
+
+          if (documents.length) {
+            documents.forEach((doc) => {
+              formData.append('documents', doc)
+            })
+          }
+
+          return {
+            url: executeRelocationTaskUrl(relocationTaskId),
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
 
       getRelocationTaskList: build.query<
         GetRelocationTaskListTransformedSuccessResponse,
@@ -203,6 +228,7 @@ export const {
   useCloseRelocationTaskMutation,
   useReturnRelocationTaskToReworkMutation,
   useCancelRelocationTaskMutation,
+  useExecuteRelocationTaskMutation,
   useGetRelocationTaskQuery,
 
   useLazyGetRelocationTaskWaybillM15Query,
