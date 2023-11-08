@@ -11,19 +11,11 @@ import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Paragraph, Text } = Typography
 
-export type CommentProps = Pick<
-  TaskCommentModel,
-  'createdAt' | 'text' | 'attachments'
-> & {
+export type CommentProps = Pick<TaskCommentModel, 'createdAt' | 'text' | 'attachments'> & {
   author: string
 }
 
-const Comment: FC<CommentProps> = ({
-  text,
-  createdAt,
-  author,
-  attachments,
-}) => {
+const Comment: FC<CommentProps> = ({ text, createdAt, author, attachments }) => {
   return (
     <Space data-testid='task-comment' direction='vertical' $block>
       <SeparatedText>
@@ -33,7 +25,7 @@ const Comment: FC<CommentProps> = ({
 
       <Paragraph>{renderStringWithLineBreak(text)}</Paragraph>
 
-      <AttachmentList attachments={attachments} />
+      <AttachmentList data={attachments} />
     </Space>
   )
 }
