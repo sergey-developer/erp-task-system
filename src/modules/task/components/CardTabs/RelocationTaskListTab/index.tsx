@@ -1,9 +1,11 @@
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import RelocationList from 'modules/task/components/RelocationList'
+import RelocationTaskList from 'modules/task/components/RelocationTaskList'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { useGetRelocationTaskList } from 'modules/warehouse/hooks/relocationTask'
+import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocationTask'
 
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
@@ -14,12 +16,14 @@ import { extractPaginationResults } from 'shared/utils/pagination'
 
 const { Title } = Typography
 
-type RelocationListTabProps = {
+type RelocationTaskListTabProps = {
   taskId: IdType
 }
 
-const RelocationListTab: FC<RelocationListTabProps> = ({ taskId }) => {
-  const { currentData: paginatedRelocationList, isFetching: relocationListIsFetching } =
+const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId }) => {
+  const navigate = useNavigate()
+
+  const { currentData: paginatedRelocationTaskList, isFetching: relocationTaskListIsFetching } =
     useGetRelocationTaskList({
       ordering: '-created_at',
       limit: 999999,
@@ -33,13 +37,15 @@ const RelocationListTab: FC<RelocationListTabProps> = ({ taskId }) => {
       taskId,
     })
 
-  const relocationList = extractPaginationResults(paginatedRelocationList)
+  const relocationTaskList = extractPaginationResults(paginatedRelocationTaskList)
+
+  const handleClickTask = (id: IdType) => navigate(getRelocationTaskListPageLink(id))
 
   return (
     <Space data-testid='relocation-list-tab' size='middle' direction='vertical' $block>
       <Row justify='space-between' align='middle'>
         <Col>
-          <Title level={5}>{getTextWithCounter('Перемещения', relocationList)}</Title>
+          <Title level={5}>{getTextWithCounter('Перемещения', relocationTaskList)}</Title>
         </Col>
 
         <Col>
@@ -47,11 +53,11 @@ const RelocationListTab: FC<RelocationListTabProps> = ({ taskId }) => {
         </Col>
       </Row>
 
-      <LoadingArea isLoading={relocationListIsFetching}>
-        <RelocationList data={relocationList} />
+      <LoadingArea isLoading={relocationTaskListIsFetching}>
+        <RelocationTaskList data={relocationTaskList} onClick={handleClickTask} />
       </LoadingArea>
     </Space>
   )
 }
 
-export default RelocationListTab
+export default RelocationTaskListTab

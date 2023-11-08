@@ -8,6 +8,8 @@ import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLine
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 
+import { EmptyFn } from 'shared/types/utils'
+
 export type SecondaryDetailsProps = Pick<
   TaskModel,
   'id' | 'recordId' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
@@ -15,14 +17,14 @@ export type SecondaryDetailsProps = Pick<
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
     setFields: FormInstance['setFields'],
-    closeTaskFirstLineModal: () => void,
+    closeTaskFirstLineModal: EmptyFn,
   ) => Promise<void>
   transferTaskToFirstLineIsLoading: boolean
 
   transferTaskToSecondLine: (
     values: TaskSecondLineFormFields,
     setFields: FormInstance['setFields'],
-    closeTaskSecondLineModal: () => void,
+    closeTaskSecondLineModal: EmptyFn,
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
 
