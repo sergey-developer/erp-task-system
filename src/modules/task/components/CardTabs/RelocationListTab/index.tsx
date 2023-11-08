@@ -3,47 +3,43 @@ import React, { FC } from 'react'
 
 import RelocationList from 'modules/task/components/RelocationList'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import { useGetRelocationTaskList } from 'modules/warehouse/hooks/relocationTask'
 
+import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
+
+import { IdType } from 'shared/types/common'
+import { getTextWithCounter } from 'shared/utils/common'
+import { extractPaginationResults } from 'shared/utils/pagination'
 
 const { Title } = Typography
 
-type RelocationListTabProps = {}
+type RelocationListTabProps = {
+  taskId: IdType
+}
 
-const RelocationListTab: FC<RelocationListTabProps> = () => {
-  const data = [
-    {
-      deadlineAt: new Date().toISOString(),
-      status: RelocationTaskStatusEnum.New,
-      relocateFrom: {
-        id: 1,
-        title: 'relocateFrom',
-      },
-      relocateTo: {
-        id: 1,
-        title: 'relocateTo',
-      },
-      documents: [
-        {
-          id: 1,
-          size: 42393,
-          url: 'url',
-          name: 'name',
-        },
+const RelocationListTab: FC<RelocationListTabProps> = ({ taskId }) => {
+  const { currentData: paginatedRelocationList, isFetching: relocationListIsFetching } =
+    useGetRelocationTaskList({
+      ordering: '-created_at',
+      limit: 999999,
+      statuses: [
+        RelocationTaskStatusEnum.New,
+        RelocationTaskStatusEnum.Completed,
+        RelocationTaskStatusEnum.Returned,
+        RelocationTaskStatusEnum.Closed,
+        RelocationTaskStatusEnum.Canceled,
       ],
-      createdAt: new Date().toISOString(),
-      executor: {
-        fullName: 'Фулнейм Фулнеймов',
-        phone: '+79804444444',
-      },
-    },
-  ]
+      taskId,
+    })
+
+  const relocationList = extractPaginationResults(paginatedRelocationList)
 
   return (
     <Space data-testid='relocation-list-tab' size='middle' direction='vertical' $block>
       <Row justify='space-between' align='middle'>
         <Col>
-          <Title level={5}>Перемещения</Title>
+          <Title level={5}>{getTextWithCounter('Перемещения', relocationList)}</Title>
         </Col>
 
         <Col>
@@ -51,7 +47,9 @@ const RelocationListTab: FC<RelocationListTabProps> = () => {
         </Col>
       </Row>
 
-      <RelocationList data={data} />
+      <LoadingArea isLoading={relocationListIsFetching}>
+        <RelocationList data={relocationList} />
+      </LoadingArea>
     </Space>
   )
 }
