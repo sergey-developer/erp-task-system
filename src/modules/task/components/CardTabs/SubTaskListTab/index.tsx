@@ -8,8 +8,7 @@ import { ReworkSubTaskModalProps } from 'modules/task/components/ReworkSubTaskMo
 import SubTaskList from 'modules/task/components/SubTaskList'
 import { useCancelSubTask, useGetSubTaskList, useReworkSubTask } from 'modules/task/hooks/subTask'
 import { useTaskExtendedStatus, useTaskStatus, useTaskType } from 'modules/task/hooks/task'
-import { SubTaskModel } from 'modules/task/models'
-import { TaskModel } from 'modules/task/models'
+import { SubTaskModel, TaskModel } from 'modules/task/models'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -17,6 +16,7 @@ import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import { getTextWithCounter } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
 
 const CreateSubTaskModal = React.lazy(() => import('modules/task/components/CreateSubTaskModal'))
@@ -140,9 +140,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
     <Space data-testid='subtask-list-tab' size='middle' direction='vertical' $block>
       <Row justify='space-between' align='middle'>
         <Col>
-          <Title level={5}>
-            {`Задания${!!subTaskList.length ? ` (${subTaskList.length})` : ''}`}
-          </Title>
+          <Title level={5}>{getTextWithCounter('Задания', subTaskList)}</Title>
         </Col>
 
         <Col>
