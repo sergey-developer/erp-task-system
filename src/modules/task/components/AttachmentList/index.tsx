@@ -9,13 +9,13 @@ import { prettyBytes } from 'shared/utils/file'
 const { Link, Text } = Typography
 
 export type AttachmentListProps = {
-  attachments: TaskAttachmentListModel
+  data: TaskAttachmentListModel
 }
 
-const AttachmentList: FC<AttachmentListProps> = ({ attachments }) => {
+const AttachmentList: FC<AttachmentListProps> = ({ data }) => {
   return (
     <Space data-testid='attachment-list' direction='vertical'>
-      {attachments.map((att, index) => (
+      {data.map((att, index) => (
         <Space data-testid={`attachment-${att.name}`} key={index}>
           <Link download href={att.url} target='_blank'>
             <Space>

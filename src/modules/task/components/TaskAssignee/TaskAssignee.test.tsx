@@ -5,14 +5,13 @@ import { userRoleDict } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
 import userFixtures from '_tests_/fixtures/user'
-import { fakePhone, fakeWord, render } from '_tests_/utils'
+import { render } from '_tests_/utils'
 
 import TaskAssignee, { TaskAssigneeProps } from './index'
 
 const props: TaskAssigneeProps = {
-  name: fakeWord(),
-  phone: fakePhone(),
-  assignee: userFixtures.user(),
+  ...userFixtures.user(),
+  hasPopover: false,
 }
 
 const getContainer = () => screen.getByTestId('task-assignee')
@@ -29,20 +28,26 @@ export const testUtils = {
 
 describe('Исполнитель заявки', () => {
   test('Данные исполнителя отображаются при наведении', async () => {
-    const { user } = render(<TaskAssignee {...props} />)
+    const { user } = render(<TaskAssignee {...props} hasPopover />)
 
-    const name = within(getContainer()).getByText(props.name)
+    const name = within(getContainer()).getByText(
+      getFullUserName({
+        firstName: props.firstName,
+        lastName: props.lastName,
+        middleName: props.middleName,
+      }),
+    )
     await user.hover(name)
     const userShortInfo = await userShortInfoTestUtils.findContainer()
 
-    const email = within(userShortInfo).getByText(props.assignee?.email!)
-    const phone = within(userShortInfo).getByText(props.assignee?.phone!)
-    const role = within(userShortInfo).getByText(userRoleDict[props.assignee?.role!])
+    const email = within(userShortInfo).getByText(props.email!)
+    const phone = within(userShortInfo).getByText(props.phone!)
+    const role = within(userShortInfo).getByText(userRoleDict[props.role!])
     const fio = within(userShortInfo).queryByText(
       getFullUserName({
-        firstName: props.assignee?.firstName!,
-        lastName: props.assignee?.lastName!,
-        middleName: props.assignee?.middleName,
+        firstName: props.firstName,
+        lastName: props.lastName,
+        middleName: props.middleName,
       }),
     )
 

@@ -1,14 +1,4 @@
-import {
-  Button,
-  Col,
-  Drawer,
-  DrawerProps,
-  Dropdown,
-  DropdownProps,
-  MenuProps,
-  Row,
-  Typography,
-} from 'antd'
+import { Button, Col, Drawer, Dropdown, DropdownProps, MenuProps, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -39,6 +29,7 @@ import { formatDate } from 'shared/utils/date'
 
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
 import { RelocationTaskDetailsProps } from './types'
+import { getRelocationTaskTitle } from './utils'
 
 const { Text } = Typography
 
@@ -80,17 +71,6 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     } catch {}
   }, [relocationTaskId])
 
-  const title: DrawerProps['title'] = relocationTaskIsFetching ? (
-    <Space>
-      <Text>Заявка на перемещение оборудования</Text>
-      <Spinner centered={false} />
-    </Space>
-  ) : (
-    `Заявка на перемещение оборудования ${valueOrHyphen(
-      relocationTask?.relocateFrom?.title,
-    )} 🠖 ${valueOrHyphen(relocationTask?.relocateTo?.title)}`
-  )
-
   const menuProps: MenuProps = {
     items: [
       {
@@ -123,7 +103,12 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       {...props}
       data-testid='relocation-task-details'
       placement='bottom'
-      title={title}
+      title={
+        <Space>
+          <Text>{getRelocationTaskTitle(relocationTask)}</Text>
+          {relocationTaskIsFetching && <Spinner centered={false} />}
+        </Space>
+      }
       extra={
         <Dropdown menu={menuProps} trigger={dropdownTrigger}>
           <Button type='text' icon={<MenuIcon />} />
@@ -219,11 +204,11 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Text type='secondary'>Документы:</Text>
                   </Col>
 
-                  <Col span={16}>
-                    {!!relocationTask.documents?.length && (
-                      <AttachmentList attachments={relocationTask.documents} />
-                    )}
-                  </Col>
+                  {!!relocationTask.documents?.length && (
+                    <Col span={16}>
+                      <AttachmentList data={relocationTask.documents} />
+                    </Col>
+                  )}
                 </Row>
               </Space>
             )}

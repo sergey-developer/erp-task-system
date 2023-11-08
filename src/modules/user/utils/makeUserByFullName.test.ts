@@ -1,9 +1,9 @@
-import { makeUserNameObject } from './makeUserNameObject'
+import { makeUserByFullName } from './makeUserByFullName'
 
 describe('Корректно возвращает все поля', () => {
   test('Если данные присутствуют', () => {
     const fullName = 'lastName firstName middleName'
-    const result = makeUserNameObject(fullName)
+    const result = makeUserByFullName(fullName)
 
     expect(result.firstName).toBe('firstName')
     expect(result.lastName).toBe('lastName')
@@ -11,7 +11,7 @@ describe('Корректно возвращает все поля', () => {
   })
 
   test('Если данные отсутствуют', () => {
-    const result = makeUserNameObject('')
+    const result = makeUserByFullName('')
 
     expect(result.firstName).toBe('')
     expect(result.lastName).toBe('')
