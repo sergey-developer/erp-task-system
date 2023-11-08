@@ -1,7 +1,7 @@
-import { CreateSubTaskMutationArgs } from 'modules/task/models'
-import { TaskModel } from 'modules/task/models'
+import { CreateSubTaskMutationArgs, TaskModel } from 'modules/task/models'
 
 import { FieldsErrors } from 'shared/services/baseApi'
+import { EmptyFn } from 'shared/types/utils'
 
 type FormFields = Omit<CreateSubTaskMutationArgs, 'taskId'>
 
@@ -11,5 +11,5 @@ export type CreateSubTaskFormErrors = FieldsErrors<FormFields>
 
 export type CreateSubTaskModalProps = {
   task: Pick<TaskModel, 'id' | 'title' | 'description' | 'type' | 'recordId'>
-  onCancel: () => void
+  onCancel: EmptyFn
 }

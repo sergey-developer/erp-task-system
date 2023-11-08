@@ -19,15 +19,17 @@ import { useDeleteTaskWorkGroup, useUpdateTaskWorkGroup } from 'modules/task/hoo
 import { TaskListItemModel } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
 
+import { EmptyFn } from 'shared/types/utils'
+
 import Card from '../Card'
 
 export type TaskCardContainerProps = {
   taskId: TaskListItemModel['id']
 
   additionalInfoExpanded: boolean
-  onExpandAdditionalInfo: () => void
+  onExpandAdditionalInfo: EmptyFn
 
-  closeTaskCard: () => void
+  closeTaskCard: EmptyFn
 }
 
 const TaskCardContainer: FC<TaskCardContainerProps> = ({

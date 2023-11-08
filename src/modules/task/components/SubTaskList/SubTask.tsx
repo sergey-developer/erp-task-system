@@ -17,6 +17,7 @@ import LabeledData from 'components/LabeledData'
 import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 
+import { EmptyFn } from 'shared/types/utils'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Text, Title, Paragraph } = Typography
@@ -25,8 +26,8 @@ export type SubTaskProps = Omit<SubTaskModel, 'id'> & {
   taskStatus: TaskStatusEnum
   taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
-  onClickCancel: () => void
-  onClickRework: () => void
+  onClickCancel: EmptyFn
+  onClickRework: EmptyFn
   taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 

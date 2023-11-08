@@ -16,16 +16,17 @@ import { formatDate } from 'shared/utils/date'
 
 const { Text } = Typography
 
-type RelocationListProps = {
+type RelocationTaskListProps = {
   data: RelocationTaskListItemModel[]
+  onClick: (id: RelocationTaskListItemModel['id']) => void
 }
 
-const RelocationList: FC<RelocationListProps> = ({ data }) => {
+const RelocationTaskList: FC<RelocationTaskListProps> = ({ data, onClick }) => {
   return (
     <Space $block direction='vertical'>
       {data.length ? (
         data.map((item, index, array) => (
-          <Space $block direction='vertical' key={item.id}>
+          <Space $block direction='vertical' key={item.id} onClick={() => onClick(item.id)}>
             <Space $block direction='vertical'>
               <Text type='secondary'>до {formatDate(item.deadlineAt)}</Text>
 
@@ -73,4 +74,4 @@ const RelocationList: FC<RelocationListProps> = ({ data }) => {
   )
 }
 
-export default RelocationList
+export default RelocationTaskList
