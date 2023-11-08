@@ -5,7 +5,7 @@ import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/c
 import { testUtils as relocationTaskListFilterTestUtils } from 'modules/warehouse/components/RelocationTaskListFilter/RelocationTaskListFilter.test'
 import { testUtils as relocationTaskTableTestUtils } from 'modules/warehouse/components/RelocationTaskTable/RelocationTaskTable.test'
 import {
-  getRelocationTaskListMessages,
+  getRelocationTaskListErrorMsg,
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
 } from 'modules/warehouse/constants/relocationTask'
@@ -96,11 +96,12 @@ describe('Страница списка заявок на перемещение
 
       test('Обрабатывается ошибка 500', async () => {
         mockGetRelocationTaskListServerError()
+
         render(<RelocationTaskListPage />)
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(
-          getRelocationTaskListMessages.commonError,
+          getRelocationTaskListErrorMsg,
         )
 
         expect(notification).toBeInTheDocument()

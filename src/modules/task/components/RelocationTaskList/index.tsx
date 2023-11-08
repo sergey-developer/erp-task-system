@@ -23,10 +23,16 @@ type RelocationTaskListProps = {
 
 const RelocationTaskList: FC<RelocationTaskListProps> = ({ data, onClick }) => {
   return (
-    <Space $block direction='vertical'>
+    <Space data-testid='relocation-task-list' $block direction='vertical'>
       {data.length ? (
         data.map((item, index, array) => (
-          <Space $block direction='vertical' key={item.id} onClick={() => onClick(item.id)}>
+          <Space
+            data-testid={`relocation-task-list-item-${item.id}`}
+            $block
+            direction='vertical'
+            key={item.id}
+            onClick={() => onClick(item.id)}
+          >
             <Space $block direction='vertical'>
               <Text type='secondary'>до {formatDate(item.deadlineAt)}</Text>
 
