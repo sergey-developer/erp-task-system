@@ -5,12 +5,12 @@ import React, { FC } from 'react'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import TaskStatus from 'modules/task/components/TaskStatus'
 import { badgeByTaskStatus, iconByTaskStatus } from 'modules/task/components/TaskStatus/constants'
-import { TaskExtendedStatusEnum, TaskStatusEnum, taskStatusDict } from 'modules/task/constants/task'
+import { TaskExtendedStatusEnum, taskStatusDict, TaskStatusEnum } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { SubTaskModel } from 'modules/task/models'
-import { makeUserNameObject } from 'modules/user/utils'
+import { makeUserByFullName } from 'modules/user/utils'
 
 import Expandable from 'components/Expandable'
 import LabeledData from 'components/LabeledData'
@@ -191,9 +191,8 @@ const SubTask: FC<SubTaskProps> = ({
           <Col span={12}>
             <LabeledData label='Исполнитель'>
               <TaskAssignee
-                name={externalAssigneeName}
+                {...makeUserByFullName(externalAssigneeName)}
                 phone={externalAssigneePhone}
-                assignee={makeUserNameObject(externalAssigneeName)}
               />
             </LabeledData>
           </Col>

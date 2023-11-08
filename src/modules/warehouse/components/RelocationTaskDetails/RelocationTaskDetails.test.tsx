@@ -49,6 +49,7 @@ import {
 
 import RelocationTaskDetails from './index'
 import { RelocationTaskDetailsProps } from './types'
+import { getRelocationTaskTitle } from './utils'
 
 const props: RelocationTaskDetailsProps = {
   open: true,
@@ -120,9 +121,8 @@ describe('Информация о заявке о перемещении', () =>
       render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
 
       await testUtils.expectRelocationTaskLoadingFinished()
-
       const title = within(testUtils.getContainer()).getByText(
-        `Заявка на перемещение оборудования ${relocationTask.relocateFrom?.title} 🠖 ${relocationTask.relocateTo?.title}`,
+        getRelocationTaskTitle(relocationTask),
       )
 
       expect(title).toBeInTheDocument()

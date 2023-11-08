@@ -31,7 +31,7 @@ const ResolutionTab: FC<ResolutionTabProps> = ({
       <Space direction='vertical'>
         <Title level={5}>{title}</Title>
 
-        {!!attachments.length && <AttachmentList attachments={attachments} />}
+        {!!attachments.length && <AttachmentList data={attachments} />}
       </Space>
 
       {!!techResolution && (
