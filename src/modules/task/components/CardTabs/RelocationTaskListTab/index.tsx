@@ -3,7 +3,9 @@ import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import RelocationTaskList from 'modules/task/components/RelocationTaskList'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetRelocationTaskList } from 'modules/warehouse/hooks/relocationTask'
 import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocationTask'
 
@@ -16,12 +18,14 @@ import { extractPaginationResults } from 'shared/utils/pagination'
 
 const { Title } = Typography
 
-type RelocationTaskListTabProps = {
+export type RelocationTaskListTabProps = {
   taskId: IdType
 }
 
 const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId }) => {
   const navigate = useNavigate()
+
+  const userPermissions = useMatchUserPermissions(['RELOCATION_TASKS_CREATE'])
 
   const { currentData: paginatedRelocationTaskList, isFetching: relocationTaskListIsFetching } =
     useGetRelocationTaskList({
@@ -40,16 +44,23 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId }) => {
   const relocationTaskList = extractPaginationResults(paginatedRelocationTaskList)
 
   const handleClickTask = (id: IdType) => navigate(getRelocationTaskListPageLink(id))
+  const handleClickCreate = () => navigate(WarehouseRouteEnum.CreateRelocationTask)
 
   return (
-    <Space data-testid='relocation-list-tab' size='middle' direction='vertical' $block>
+    <Space data-testid='relocation-task-list-tab' size='middle' direction='vertical' $block>
       <Row justify='space-between' align='middle'>
         <Col>
           <Title level={5}>{getTextWithCounter('Перемещения', relocationTaskList)}</Title>
         </Col>
 
         <Col>
-          <Button type='link'>Создать новое перемещение</Button>
+          <Button
+            type='link'
+            disabled={!userPermissions?.relocationTasksCreate}
+            onClick={handleClickCreate}
+          >
+            Создать новое перемещение
+          </Button>
         </Col>
       </Row>
 

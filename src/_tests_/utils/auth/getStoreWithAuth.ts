@@ -12,7 +12,7 @@ const getStoreWithAuth = (
   user?: Partial<AuthenticatedUser>,
   accessToken?: string,
   refreshToken?: string,
-  api?: any,
+  api?: Partial<{ queries: Record<string, any> }>,
 ) =>
   setupStore({
     preloadedState: {
@@ -24,7 +24,7 @@ const getStoreWithAuth = (
         accessToken,
         refreshToken,
       }),
-      api,
+      api: api as any,
     },
   })
 
