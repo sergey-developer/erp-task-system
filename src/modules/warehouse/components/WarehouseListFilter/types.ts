@@ -1,3 +1,5 @@
+import { EmptyFn } from 'shared/types/utils'
+
 export type WarehouseListFilterFormFields = Partial<{
   title: string
   address: string
@@ -8,6 +10,6 @@ export type WarehouseListFilterFormFields = Partial<{
 export type WarehouseListFilterProps = {
   visible: boolean
   onApply: (values: WarehouseListFilterFormFields) => void
-  onClose: () => void
+  onClose: EmptyFn
   formValues?: WarehouseListFilterFormFields
 }

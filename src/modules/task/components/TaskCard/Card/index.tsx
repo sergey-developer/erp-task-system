@@ -49,7 +49,7 @@ import Spinner from 'components/Spinner'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
-import { MaybeNull } from 'shared/types/utils'
+import { EmptyFn, MaybeNull } from 'shared/types/utils'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
@@ -125,7 +125,7 @@ export type TaskCardProps = {
   >
 
   taskIsLoading: boolean
-  refetchTask: () => void
+  refetchTask: EmptyFn
   reclassificationRequest: MaybeNull<TaskReclassificationRequestModel>
   reclassificationRequestIsLoading: boolean
   createReclassificationRequest: (
@@ -159,9 +159,9 @@ export type TaskCardProps = {
   deleteWorkGroupIsLoading: boolean
 
   additionalInfoExpanded: boolean
-  onExpandAdditionalInfo: () => void
+  onExpandAdditionalInfo: EmptyFn
 
-  closeTaskCard: () => void
+  closeTaskCard: EmptyFn
 
   isGetTaskError: boolean
 }
@@ -328,7 +328,7 @@ const TaskCard: FC<TaskCardProps> = ({
     async (
       values: TaskSecondLineFormFields,
       setFields: FormInstance['setFields'],
-      closeTaskSecondLineModal: () => void,
+      closeTaskSecondLineModal: EmptyFn,
     ) => {
       if (!task) return
 
@@ -351,7 +351,7 @@ const TaskCard: FC<TaskCardProps> = ({
     async (
       values: TaskFirstLineFormFields,
       setFields: FormInstance['setFields'],
-      closeTaskFirstLineModal: () => void,
+      closeTaskFirstLineModal: EmptyFn,
     ) => {
       if (!task) return
 

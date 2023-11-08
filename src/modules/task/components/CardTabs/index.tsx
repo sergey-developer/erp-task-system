@@ -15,7 +15,7 @@ import { TabsStyled } from './styles'
 const JournalTab = React.lazy(() => import('./JournalTab'))
 const CommentListTab = React.lazy(() => import('./CommentListTab'))
 const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
-const RelocationListTab = React.lazy(() => import('./RelocationListTab'))
+const RelocationTaskListTab = React.lazy(() => import('./RelocationTaskListTab'))
 
 export type CardTabsProps = {
   task: Pick<
@@ -113,7 +113,7 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
             children: (
               <TaskCardWrapper>
                 <React.Suspense fallback={<Spinner />}>
-                  <RelocationListTab taskId={task.id} />
+                  <RelocationTaskListTab taskId={task.id} />
                 </React.Suspense>
               </TaskCardWrapper>
             ),
