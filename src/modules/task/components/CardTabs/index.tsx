@@ -113,7 +113,7 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
             children: (
               <TaskCardWrapper>
                 <React.Suspense fallback={<Spinner />}>
-                  <RelocationListTab />
+                  <RelocationListTab taskId={task.id} />
                 </React.Suspense>
               </TaskCardWrapper>
             ),
