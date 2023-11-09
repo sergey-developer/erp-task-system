@@ -40,6 +40,7 @@ export const task = (
       | 'workGroup'
       | 'assignee'
       | 'suspendRequest'
+      | 'hasRelocationTasks'
     >
   >,
 ): Omit<TaskModel, 'responseTime'> & {
@@ -53,6 +54,7 @@ export const task = (
   workGroup: props?.workGroup || taskFixtures.workGroup(),
   assignee: props?.assignee || taskFixtures.assignee(),
   suspendRequest: props?.suspendRequest || null,
+  hasRelocationTasks: props?.hasRelocationTasks || true,
 
   attachments: [taskFixtures.attachment()],
   resolution: {

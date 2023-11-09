@@ -3,15 +3,14 @@ import { BaseTaskModel, SuspendRequestModel, TaskAttachmentListModel } from 'mod
 import { MaybeNull } from 'shared/types/utils'
 
 export type TaskModel = BaseTaskModel & {
-  attachments: MaybeNull<TaskAttachmentListModel>
   olaEstimatedTime: number
+  resolution: { attachments: TaskAttachmentListModel }
+  hasRelocationTasks: boolean
+  attachments: MaybeNull<TaskAttachmentListModel>
   suspendRequest: MaybeNull<SuspendRequestModel>
   weight: MaybeNull<number>
   company: MaybeNull<string>
   email: MaybeNull<string>
   sapId: MaybeNull<string>
   contactType: MaybeNull<string>
-  resolution: {
-    attachments: TaskAttachmentListModel
-  }
 }
