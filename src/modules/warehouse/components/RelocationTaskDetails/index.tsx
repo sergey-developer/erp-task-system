@@ -14,6 +14,7 @@ import {
 } from 'modules/warehouse/hooks/relocationTask'
 import {
   getEditRelocationTaskPageLink,
+  getRelocationTaskTitle,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
 
@@ -29,7 +30,6 @@ import { formatDate } from 'shared/utils/date'
 
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
 import { RelocationTaskDetailsProps } from './types'
-import { getRelocationTaskTitle } from './utils'
 
 const { Text } = Typography
 
