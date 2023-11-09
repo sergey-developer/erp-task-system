@@ -1,9 +1,10 @@
 import { Button, Col, Drawer, Dropdown, DropdownProps, MenuProps, Row, Typography } from 'antd'
 import React, { FC } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
+import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 import {
@@ -187,6 +188,20 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                   </Col>
 
                   <Col span={16}>{formatDate(relocationTask.createdAt)}</Col>
+                </Row>
+
+                <Row data-testid='task'>
+                  <Col span={8}>
+                    <Text type='secondary'>Заявка ITSM:</Text>
+                  </Col>
+
+                  {relocationTask.task && (
+                    <Col span={16}>
+                      <Link to={getTaskListPageLink(relocationTask.task.id)}>
+                        {relocationTask.task.recordId}
+                      </Link>
+                    </Col>
+                  )}
                 </Row>
 
                 <Row data-testid='comment'>
