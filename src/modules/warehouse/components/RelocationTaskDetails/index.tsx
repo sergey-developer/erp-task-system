@@ -37,6 +37,7 @@ import {
 } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
+  getRelocationTaskTitle,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
 
@@ -65,7 +66,6 @@ import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/t
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
 import { ReturnRelocationTaskToReworkModalProps } from '../ReturnRelocationTaskToReworkModal/types'
 import { RelocationTaskDetailsProps } from './types'
-import { getRelocationTaskTitle } from './utils'
 
 const CancelRelocationTaskModal = React.lazy(() => import('../CancelRelocationTaskModal'))
 

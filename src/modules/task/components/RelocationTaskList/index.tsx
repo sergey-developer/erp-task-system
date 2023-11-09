@@ -4,9 +4,9 @@ import React, { FC } from 'react'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { makeUserByFullName } from 'modules/user/utils'
-import { getRelocationTaskTitle } from 'modules/warehouse/components/RelocationTaskDetails/utils'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 import { RelocationTaskListItemModel } from 'modules/warehouse/models'
+import { getRelocationTaskTitle } from 'modules/warehouse/utils/relocationTask'
 
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
@@ -16,17 +16,23 @@ import { formatDate } from 'shared/utils/date'
 
 const { Text } = Typography
 
-type RelocationTaskListProps = {
+export type RelocationTaskListProps = {
   data: RelocationTaskListItemModel[]
   onClick: (id: RelocationTaskListItemModel['id']) => void
 }
 
 const RelocationTaskList: FC<RelocationTaskListProps> = ({ data, onClick }) => {
   return (
-    <Space $block direction='vertical'>
+    <Space data-testid='relocation-task-list' $block direction='vertical'>
       {data.length ? (
         data.map((item, index, array) => (
-          <Space $block direction='vertical' key={item.id} onClick={() => onClick(item.id)}>
+          <Space
+            data-testid={`relocation-task-list-item-${item.id}`}
+            $block
+            direction='vertical'
+            key={item.id}
+            onClick={() => onClick(item.id)}
+          >
             <Space $block direction='vertical'>
               <Text type='secondary'>до {formatDate(item.deadlineAt)}</Text>
 

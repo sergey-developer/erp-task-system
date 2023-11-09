@@ -64,7 +64,10 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId }) => {
         </Col>
       </Row>
 
-      <LoadingArea isLoading={relocationTaskListIsFetching}>
+      <LoadingArea
+        data-testid='relocation-task-list-loading'
+        isLoading={relocationTaskListIsFetching}
+      >
         <RelocationTaskList data={relocationTaskList} onClick={handleClickTask} />
       </LoadingArea>
     </Space>

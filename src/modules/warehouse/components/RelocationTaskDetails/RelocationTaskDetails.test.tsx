@@ -19,7 +19,10 @@ import {
   RelocationTaskStatusEnum,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
-import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
+import {
+  getRelocationTaskTitle,
+  getWaybillM15Filename,
+} from 'modules/warehouse/utils/relocationTask'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -77,7 +80,6 @@ import {
 
 import RelocationTaskDetails from './index'
 import { RelocationTaskDetailsProps } from './types'
-import { getRelocationTaskTitle } from './utils'
 
 const props: RelocationTaskDetailsProps = {
   open: true,
