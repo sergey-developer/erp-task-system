@@ -4,9 +4,9 @@ import React, { FC } from 'react'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { makeUserByFullName } from 'modules/user/utils'
-import { getRelocationTaskTitle } from 'modules/warehouse/components/RelocationTaskDetails/utils'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 import { RelocationTaskListItemModel } from 'modules/warehouse/models'
+import { getRelocationTaskTitle } from 'modules/warehouse/utils/relocationTask'
 
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
@@ -16,7 +16,7 @@ import { formatDate } from 'shared/utils/date'
 
 const { Text } = Typography
 
-type RelocationTaskListProps = {
+export type RelocationTaskListProps = {
   data: RelocationTaskListItemModel[]
   onClick: (id: RelocationTaskListItemModel['id']) => void
 }

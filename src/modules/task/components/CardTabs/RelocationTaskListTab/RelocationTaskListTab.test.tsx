@@ -57,7 +57,7 @@ export const testUtils = {
 setupApiTests()
 
 describe('Вкладка списка заявок на перемещение', () => {
-  test('Заголовок отображается корректно', async () => {
+  test('Заголовок отображается со счётчиком', async () => {
     const relocationTaskList = warehouseFixtures.relocationTaskList()
     mockGetRelocationTaskListSuccess({
       body: commonFixtures.paginatedListResponse(relocationTaskList),
@@ -72,7 +72,7 @@ describe('Вкладка списка заявок на перемещение',
   })
 
   describe('Кнопка создания', () => {
-    test('Отображается корректно', () => {
+    test('Отображается', () => {
       mockGetRelocationTaskListSuccess()
 
       render(<RelocationTaskListTab {...props} />)
