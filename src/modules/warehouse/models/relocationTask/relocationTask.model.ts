@@ -1,4 +1,4 @@
-import { TaskAttachmentModel } from 'modules/task/models'
+import { TaskAttachmentModel, TaskModel } from 'modules/task/models'
 import { UserModel } from 'modules/user/models'
 import {
   RelocationTaskStatusEnum,
@@ -33,4 +33,5 @@ export type RelocationTaskModel = {
     createdAt: string
     user: Pick<UserModel, 'id' | 'fullName' | 'phone'>
   }>
+  task: MaybeNull<Pick<TaskModel, 'id' | 'recordId'>>
 }

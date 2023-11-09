@@ -31,4 +31,5 @@ export const relocationTask = (
     createdAt: fakeDateString(),
     user: pick(userFixtures.user(), 'id', 'fullName', 'phone'),
   },
+  task: pick(taskFixtures.task(), 'id', 'recordId'),
 })

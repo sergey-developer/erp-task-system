@@ -1,7 +1,12 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { RouteEnum } from 'configs/routes'
+
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
+import TaskListPage from 'modules/task/pages/TaskListPage'
+import { getTaskListPageLink } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
 import { testUtils as executeRelocationTaskModalTestUtils } from 'modules/warehouse/components/ExecuteRelocationTaskModal/ExecuteRelocationTaskModal.test'
 import { testUtils as cancelRelocationTaskModalTestUtils } from 'modules/warehouse/components/CancelRelocationTaskModal/CancelRelocationTaskModal.test'
@@ -19,6 +24,7 @@ import {
   RelocationTaskStatusEnum,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
   getRelocationTaskTitle,
   getWaybillM15Filename,
@@ -64,6 +70,9 @@ import {
   mockReturnRelocationTaskToReworkNotFoundError,
   mockReturnRelocationTaskToReworkServerError,
   mockReturnRelocationTaskToReworkSuccess,
+  mockGetTaskCountersSuccess,
+  mockGetTaskListSuccess,
+  mockGetTaskSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -74,6 +83,7 @@ import {
   menuTestUtils,
   notificationTestUtils,
   render,
+  renderInRoute_latest,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -347,6 +357,58 @@ describe('Информация о заявке о перемещении', () =>
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+    })
+
+    describe('Заявка ITSM', () => {
+      test('Отображается корректно', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+
+        await testUtils.expectRelocationTaskLoadingFinished()
+
+        const label = testUtils.getRelocationTaskInfo('task', /Заявка ITSM/)
+        const link = testUtils.getRelocationTaskInfo('task', relocationTask.task!.recordId)
+
+        expect(label).toBeInTheDocument()
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute('href', getTaskListPageLink(relocationTask.task!.id))
+      })
+
+      test('При клике переходит на страницу реестра заявок и открывает карточку заявки', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+        mockGetTaskSuccess(relocationTask.task!.id)
+        mockGetTaskListSuccess()
+        mockGetTaskCountersSuccess()
+
+        const { user } = renderInRoute_latest(
+          [
+            {
+              path: WarehouseRouteEnum.RelocationTaskList,
+              element: (
+                <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />
+              ),
+            },
+            {
+              path: RouteEnum.TaskList,
+              element: <TaskListPage />,
+            },
+          ],
+          { initialEntries: [WarehouseRouteEnum.RelocationTaskList], initialIndex: 0 },
+        )
+
+        await testUtils.expectRelocationTaskLoadingFinished()
+
+        const link = testUtils.getRelocationTaskInfo('task', relocationTask.task!.recordId)
+        await user.click(link)
+        const card = await taskCardTestUtils.findContainer()
+
+        expect(card).toBeInTheDocument()
+      })
     })
 
     test('Комментарий отображается корректно', async () => {

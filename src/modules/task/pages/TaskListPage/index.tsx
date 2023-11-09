@@ -2,10 +2,12 @@ import { useBoolean, useLocalStorageState, usePrevious, useSetState } from 'ahoo
 import { Button, Col, Input, Row, Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
+import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
 import pick from 'lodash/pick'
 import React, { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import ExtendedFilter from 'modules/task/components/ExtendedFilter'
@@ -49,6 +51,7 @@ import FilterButton from 'components/Buttons/FilterButton'
 import { SyncIcon } from 'components/Icons'
 
 import { UserStatusCodeEnum } from 'shared/constants/catalogs'
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { StorageKeysEnum } from 'shared/constants/storage'
 import { useGetMacroregionList } from 'shared/hooks/macroregion'
@@ -73,6 +76,10 @@ const { Search } = Input
 const initialExtendedFilterFormValues = getInitialExtendedFilterFormValues()
 
 const TaskListPage: FC = () => {
+  // todo: создать хук для useSearchParams который парсит значения в нужный тип
+  const [searchParams, setSearchParams] = useSearchParams()
+  const viewTaskId = Number(searchParams.get('viewTask')) || undefined
+
   const breakpoints = useBreakpoint()
 
   const { role } = useUserRole()
@@ -162,6 +169,13 @@ const TaskListPage: FC = () => {
   )
 
   useOnChangeUserStatus(onUpdateUserStatus)
+
+  useEffect(() => {
+    if (!selectedTaskId && !!viewTaskId) {
+      setSelectedTaskId(viewTaskId)
+      setSearchParams(undefined)
+    }
+  }, [selectedTaskId, setSearchParams, viewTaskId])
 
   useLayoutEffect(() => {
     const taskListLayoutEl: MaybeNull<HTMLElement> = document.querySelector('.task-list-layout')
@@ -293,18 +307,14 @@ const TaskListPage: FC = () => {
     if (!value) handleSearchByTaskId(value)
   }
 
-  const debouncedSetSelectedTaskId = useDebounceFn(setSelectedTaskId)
-
   const handleTableRowClick = useCallback<TaskTableProps['onRow']>(
     (record) => ({
-      onClick: () => debouncedSetSelectedTaskId(record.id),
+      onClick: debounce(() => setSelectedTaskId(record.id), DEFAULT_DEBOUNCE_VALUE),
     }),
-    [debouncedSetSelectedTaskId],
+    [],
   )
 
-  const handleCloseTaskCard = useCallback(() => {
-    setSelectedTaskId(null)
-  }, [setSelectedTaskId])
+  const handleCloseTaskCard = useCallback(() => setSelectedTaskId(null), [])
 
   const handleTableSort = useCallback(
     (sorter: Parameters<TaskTableProps['onChange']>[2]) => {
