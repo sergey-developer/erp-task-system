@@ -357,7 +357,7 @@ const EditRelocationTaskPage: FC = () => {
   )
 
   useEffect(() => {
-    if (relocationTask && !relocationTaskIsFetching) {
+    if (relocationTask) {
       form.setFieldsValue({
         deadlineAtDate: moment(relocationTask.deadlineAt),
         deadlineAtTime: moment(relocationTask.deadlineAt),
@@ -367,7 +367,7 @@ const EditRelocationTaskPage: FC = () => {
         comment: relocationTask?.comment || undefined,
       })
     }
-  }, [form, relocationTask, relocationTaskIsFetching])
+  }, [form, relocationTask])
 
   useEffect(() => {
     if (relocationEquipmentList.length && !relocationEquipmentListIsFetching) {
@@ -403,13 +403,28 @@ const EditRelocationTaskPage: FC = () => {
   ])
 
   useEffect(() => {
-    if (relocationTask && locationList.length && !locationListIsFetching) {
+    if (relocationTask && locationList.length) {
+      const relocateToListItem = locationList.find((l) => l.id === relocationTask.relocateTo?.id)
+
+      if (relocateToListItem) {
+        setSelectedRelocateTo({
+          label: relocateToListItem.title,
+          type: relocateToListItem.type,
+          value: relocateToListItem.id,
+        })
+      }
+    }
+  }, [locationList, relocationTask])
+
+  useEffect(() => {
+    if (relocationTask && locationList.length) {
       const relocateFromListItem = locationList.find(
         (l) => l.id === relocationTask.relocateFrom?.id,
       )
 
       if (relocateFromListItem) {
         setSelectedRelocateFrom({
+          label: relocateFromListItem.title,
           type: relocateFromListItem.type,
           value: relocateFromListItem.id,
         })
