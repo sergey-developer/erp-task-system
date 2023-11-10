@@ -3,7 +3,7 @@ import { FC, useMemo } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
 
-import { modalWidth, cancelBtnText } from './constants'
+import { CANCEL_TEXT, DEFAULT_MODAL_WIDTH } from 'shared/constants/common'
 
 const commonButtonProps: ButtonProps = {
   size: 'large',
@@ -20,9 +20,8 @@ export type BaseModalProps = ModalProps & {
 }
 
 const BaseModal: FC<BaseModalProps> = ({
-  width = modalWidth,
-  cancelText = cancelBtnText,
-  destroyOnClose = true,
+  width = DEFAULT_MODAL_WIDTH,
+  cancelText = CANCEL_TEXT,
   isLoading = false,
   children,
   okButtonProps,
@@ -46,7 +45,6 @@ const BaseModal: FC<BaseModalProps> = ({
     <Modal
       width={width}
       cancelText={cancelText}
-      destroyOnClose={destroyOnClose}
       okButtonProps={mergedOkButtonProps}
       cancelButtonProps={mergedCancelButtonProps}
       {...props}

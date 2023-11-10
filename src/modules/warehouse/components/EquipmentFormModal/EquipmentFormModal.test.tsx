@@ -7,6 +7,7 @@ import {
   EquipmentConditionEnum,
 } from 'modules/warehouse/constants/equipment'
 
+import { CANCEL_TEXT } from 'shared/constants/common'
 import { yesNoOptions } from 'shared/constants/selectField'
 import { validationMessages } from 'shared/constants/validation'
 import { MaybeNull } from 'shared/types/utils'
@@ -87,7 +88,7 @@ const clickEditButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Отменить')
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
@@ -730,7 +731,9 @@ describe('Модалка оборудования', () => {
     test('Отображается если условия соблюдены', () => {
       const nomenclature = warehouseFixtures.nomenclature({ equipmentHasSerialNumber: true })
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />)
+      render(
+        <EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />,
+      )
 
       const label = testUtils.getSerialNumberLabel()
       const field = testUtils.getSerialNumberField()
@@ -744,7 +747,9 @@ describe('Модалка оборудования', () => {
     test('Не отображается если у оборудования нет серийного номера', () => {
       const nomenclature = warehouseFixtures.nomenclature()
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />)
+      render(
+        <EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />,
+      )
 
       const formItem = testUtils.querySerialNumberFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -755,7 +760,9 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(<EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />)
+      render(
+        <EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />,
+      )
 
       const formItem = testUtils.querySerialNumberFormItem()
       expect(formItem).not.toBeInTheDocument()
