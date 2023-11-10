@@ -17,6 +17,7 @@ import { TaskResolutionModalProps } from 'modules/task/components/TaskResolution
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
   getTaskWorkPerformedActMessages,
+  TaskCardTabsEnum,
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
@@ -165,6 +166,8 @@ export type TaskCardProps = {
   additionalInfoExpanded: boolean
   onExpandAdditionalInfo: EmptyFn
 
+  activeTab?: TaskCardTabsEnum
+
   closeTaskCard: EmptyFn
 
   isGetTaskError: boolean
@@ -206,6 +209,8 @@ const TaskCard: FC<TaskCardProps> = ({
   closeTaskCard,
 
   isGetTaskError,
+
+  activeTab,
 }) => {
   const { modal } = App.useApp()
   const taskStatus = useTaskStatus(task?.status)
@@ -589,7 +594,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 taskSuspendRequestStatus={task.suspendRequest?.status}
               />
 
-              <CardTabs task={task} />
+              <CardTabs task={task} activeTab={activeTab} />
 
               {executeTaskModalOpened && (
                 <React.Suspense

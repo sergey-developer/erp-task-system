@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react'
 
+import { TaskCardTabsEnum } from 'modules/task/constants/task'
 import {
   useGetTask,
   useResolveTask,
@@ -30,6 +31,8 @@ export type TaskCardContainerProps = {
   onExpandAdditionalInfo: EmptyFn
 
   closeTaskCard: EmptyFn
+
+  activeTab?: TaskCardTabsEnum
 }
 
 const TaskCardContainer: FC<TaskCardContainerProps> = ({
@@ -37,6 +40,8 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
 
   additionalInfoExpanded,
   onExpandAdditionalInfo,
+
+  activeTab,
 
   closeTaskCard,
 }) => {
@@ -152,6 +157,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
       onExpandAdditionalInfo={onExpandAdditionalInfo}
       closeTaskCard={closeTaskCard}
       isGetTaskError={isGetTaskError}
+      activeTab={activeTab}
     />
   )
 }

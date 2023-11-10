@@ -3,6 +3,8 @@ import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import RelocationTaskList from 'modules/task/components/RelocationTaskList'
+import { TaskCardTabsEnum } from 'modules/task/constants/task'
+import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
@@ -44,7 +46,16 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId }) => {
   const relocationTaskList = extractPaginationResults(paginatedRelocationTaskList)
 
   const handleClickTask = (id: IdType) => navigate(getRelocationTaskListPageLink(id))
-  const handleClickCreate = () => navigate(WarehouseRouteEnum.CreateRelocationTask)
+
+  const handleClickCreate = () =>
+    navigate(WarehouseRouteEnum.CreateRelocationTask, {
+      state: {
+        from: getTaskListPageLink({
+          viewTaskId: taskId,
+          taskCardTab: TaskCardTabsEnum.RelocationTaskList,
+        }),
+      },
+    })
 
   return (
     <Space data-testid='relocation-task-list-tab' size='middle' direction='vertical' $block>

@@ -1,13 +1,18 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { TaskExtendedStatusEnum, TaskStatusEnum, TaskTypeEnum } from 'modules/task/constants/task'
+import {
+  taskCardTabNamesDict,
+  TaskCardTabsEnum,
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+  TaskTypeEnum,
+} from 'modules/task/constants/task'
 
 import taskFixtures from '_tests_/fixtures/task'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { fakeId, fakeIdStr, fakeWord, getStoreWithAuth, render } from '_tests_/utils'
 
-import { taskCardTabNamesDict, TaskCardTabsEnum } from './constants'
 import CardTabs, { CardTabsProps } from './index'
 
 const props: Readonly<CardTabsProps> = {
@@ -100,7 +105,7 @@ describe('Вкладки карточки заявки', () => {
   describe('Вкладка "Перемещения"', () => {
     test('Не отображается если условия не соблюдены', () => {
       render(<CardTabs {...props} />)
-      const tab = testUtils.queryNavItem(TaskCardTabsEnum.RelocationList)
+      const tab = testUtils.queryNavItem(TaskCardTabsEnum.RelocationTaskList)
       expect(tab).not.toBeInTheDocument()
     })
 
@@ -113,7 +118,7 @@ describe('Вкладки карточки заявки', () => {
         }),
       })
 
-      const tab = testUtils.getNavItem(TaskCardTabsEnum.RelocationList)
+      const tab = testUtils.getNavItem(TaskCardTabsEnum.RelocationTaskList)
       expect(tab).toBeInTheDocument()
     })
 
@@ -126,8 +131,8 @@ describe('Вкладки карточки заявки', () => {
         }),
       })
 
-      await testUtils.clickTab(user, TaskCardTabsEnum.RelocationList)
-      const tab = testUtils.getOpenedTab(TaskCardTabsEnum.RelocationList)
+      await testUtils.clickTab(user, TaskCardTabsEnum.RelocationTaskList)
+      const tab = testUtils.getOpenedTab(TaskCardTabsEnum.RelocationTaskList)
 
       expect(tab).toBeInTheDocument()
     })

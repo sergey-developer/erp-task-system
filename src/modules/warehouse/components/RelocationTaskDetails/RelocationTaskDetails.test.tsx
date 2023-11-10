@@ -282,7 +282,10 @@ describe('Информация о заявке о перемещении', () =>
 
         expect(label).toBeInTheDocument()
         expect(link).toBeInTheDocument()
-        expect(link).toHaveAttribute('href', getTaskListPageLink(relocationTask.task!.id))
+        expect(link).toHaveAttribute(
+          'href',
+          getTaskListPageLink({ viewTaskId: relocationTask.task!.id }),
+        )
       })
 
       test('При клике переходит на страницу реестра заявок и открывает карточку заявки', async () => {

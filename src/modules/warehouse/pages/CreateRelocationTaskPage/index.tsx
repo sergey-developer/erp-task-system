@@ -1,7 +1,8 @@
 import { useBoolean, usePrevious } from 'ahooks'
 import { Button, Col, Form, FormProps, Modal, Row, Typography } from 'antd'
+import get from 'lodash/get'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import EquipmentFormModal from 'modules/warehouse/components/EquipmentFormModal'
@@ -65,6 +66,7 @@ const initialValues: Pick<RelocationTaskFormFields, 'equipments' | 'type'> = {
 }
 
 const CreateRelocationTaskPage: FC = () => {
+  const location = useLocation()
   const navigate = useNavigate()
 
   const userPermissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
@@ -220,7 +222,8 @@ const CreateRelocationTaskPage: FC = () => {
         comment: values.comment,
       }).unwrap()
 
-      navigate(getRelocationTaskListPageLink(createdTask.id))
+      const fromPath = get(location, 'state.from', undefined)
+      fromPath ? navigate(fromPath) : navigate(getRelocationTaskListPageLink(createdTask.id))
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))
