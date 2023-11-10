@@ -19,7 +19,6 @@ import ExtendedFilterList, {
   ExtendedFilterListItem,
 } from 'modules/task/components/ExtendedFilterList'
 import FastFilterList from 'modules/task/components/FastFilterList'
-import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskTable from 'modules/task/components/TaskTable'
 import {
   SortableField,
@@ -49,6 +48,7 @@ import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import { SyncIcon } from 'components/Icons'
+import Spinner from 'components/Spinner'
 
 import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
@@ -71,6 +71,8 @@ import {
   getInitialFastFilter,
   mapExtendedFilterFormFieldsToQueries,
 } from './utils'
+
+const TaskCard = React.lazy(() => import('modules/task/components/TaskCard/CardContainer'))
 
 const { Search } = Input
 const initialExtendedFilterFormValues = getInitialExtendedFilterFormValues()
@@ -462,12 +464,14 @@ const TaskListPage: FC = () => {
 
             {!!selectedTaskId && (
               <ColStyled span={breakpoints.xxl ? 9 : 12}>
-                <TaskCard
-                  taskId={selectedTaskId}
-                  additionalInfoExpanded={taskAdditionalInfoExpanded}
-                  onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
-                  closeTaskCard={handleCloseTaskCard}
-                />
+                <React.Suspense fallback={<Spinner />}>
+                  <TaskCard
+                    taskId={selectedTaskId}
+                    additionalInfoExpanded={taskAdditionalInfoExpanded}
+                    onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
+                    closeTaskCard={handleCloseTaskCard}
+                  />
+                </React.Suspense>
               </ColStyled>
             )}
           </RowStyled>

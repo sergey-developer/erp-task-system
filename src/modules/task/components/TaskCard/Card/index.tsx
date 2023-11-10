@@ -64,6 +64,9 @@ import SecondaryDetails from '../SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
+const ConfirmExecuteTaskModal = React.lazy(
+  () => import('modules/task/components/ConfirmExecuteTaskModal'),
+)
 const TaskSuspendRequest = React.lazy(() => import('modules/task/components/TaskSuspendRequest'))
 
 const RequestTaskReclassificationModal = React.lazy(
@@ -121,6 +124,7 @@ export type TaskCardProps = {
       | 'responseTime'
       | 'attachments'
       | 'parentInteractionExternalId'
+      | 'hasRelocationTasks'
     >
   >
 
@@ -219,7 +223,25 @@ const TaskCard: FC<TaskCardProps> = ({
     { setTrue: openExecuteTaskModal, setFalse: closeExecuteTaskModal },
   ] = useBoolean(false)
 
-  const debouncedOpenExecuteTaskModal = useDebounceFn(openExecuteTaskModal)
+  const handleCloseExecuteTaskModal = useDebounceFn(closeExecuteTaskModal)
+
+  const [
+    confirmExecuteTaskModalOpened,
+    { setTrue: openConfirmExecuteTaskModal, setFalse: closeConfirmExecuteTaskModal },
+  ] = useBoolean(false)
+
+  const debouncedCloseConfirmExecuteTaskModal = useDebounceFn(closeConfirmExecuteTaskModal)
+
+  const handleOpenExecuteTaskModal = useDebounceFn(() => {
+    if (task) {
+      task.hasRelocationTasks ? openExecuteTaskModal() : openConfirmExecuteTaskModal()
+    }
+  })
+
+  const handleConfirmExecuteTask = useDebounceFn(() => {
+    closeConfirmExecuteTaskModal()
+    openExecuteTaskModal()
+  })
 
   const [
     taskReclassificationModalOpened,
@@ -227,9 +249,11 @@ const TaskCard: FC<TaskCardProps> = ({
   ] = useBoolean(false)
 
   const handleOpenTaskReclassificationModal = useDebounceFn(() => {
-    task?.parentInteractionExternalId
-      ? openTaskReclassificationModal()
-      : modal.warning({ title: 'Невозможно переклассифицировать заявку без обращения' })
+    if (task) {
+      task.parentInteractionExternalId
+        ? openTaskReclassificationModal()
+        : modal.warning({ title: 'Невозможно переклассифицировать заявку без обращения' })
+    }
   }, [task?.parentInteractionExternalId])
 
   const [
@@ -243,7 +267,7 @@ const TaskCard: FC<TaskCardProps> = ({
     if (isGetTaskError) closeTaskCard()
   }, [isGetTaskError, closeTaskCard])
 
-  const handleResolutionSubmit = useCallback<ExecuteTaskModalProps['onSubmit']>(
+  const handleExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
     async (values, setFields) => {
       if (!task) return
 
@@ -439,7 +463,7 @@ const TaskCard: FC<TaskCardProps> = ({
       suspendRequest={task.suspendRequest}
       onClose={debouncedCloseTaskCard}
       onReloadTask={debouncedRefetchTask}
-      onExecuteTask={debouncedOpenExecuteTaskModal}
+      onExecuteTask={handleOpenExecuteTaskModal}
       onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
       onRequestReclassification={handleOpenTaskReclassificationModal}
     />
@@ -568,7 +592,10 @@ const TaskCard: FC<TaskCardProps> = ({
               {executeTaskModalOpened && (
                 <React.Suspense
                   fallback={
-                    <ModalFallback open={executeTaskModalOpened} onCancel={closeExecuteTaskModal} />
+                    <ModalFallback
+                      open={executeTaskModalOpened}
+                      onCancel={handleCloseExecuteTaskModal}
+                    />
                   }
                 >
                   <ExecuteTaskModal
@@ -576,10 +603,28 @@ const TaskCard: FC<TaskCardProps> = ({
                     type={task.type}
                     recordId={task.recordId}
                     isLoading={isTaskResolving}
-                    onCancel={closeExecuteTaskModal}
-                    onSubmit={handleResolutionSubmit}
+                    onCancel={handleCloseExecuteTaskModal}
+                    onSubmit={handleExecuteTask}
                     onGetAct={handleGetAct}
                     getActIsLoading={taskWorkPerformedActIsLoading}
+                  />
+                </React.Suspense>
+              )}
+
+              {confirmExecuteTaskModalOpened && (
+                <React.Suspense
+                  fallback={
+                    <ModalFallback
+                      open={confirmExecuteTaskModalOpened}
+                      onCancel={debouncedCloseConfirmExecuteTaskModal}
+                    />
+                  }
+                >
+                  <ConfirmExecuteTaskModal
+                    open={confirmExecuteTaskModalOpened}
+                    recordId={task.recordId}
+                    onCancel={debouncedCloseConfirmExecuteTaskModal}
+                    onConfirm={handleConfirmExecuteTask}
                   />
                 </React.Suspense>
               )}
