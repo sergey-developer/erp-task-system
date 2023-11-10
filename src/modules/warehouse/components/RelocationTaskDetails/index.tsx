@@ -197,7 +197,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
                   {relocationTask.task && (
                     <Col span={16}>
-                      <Link to={getTaskListPageLink(relocationTask.task.id)}>
+                      <Link to={getTaskListPageLink({ viewTaskId: relocationTask.task.id })}>
                         {relocationTask.task.recordId}
                       </Link>
                     </Col>
