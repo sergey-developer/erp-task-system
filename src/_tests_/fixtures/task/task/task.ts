@@ -1,3 +1,5 @@
+import isUndefined from 'lodash/isUndefined'
+
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -54,7 +56,7 @@ export const task = (
   workGroup: props?.workGroup || taskFixtures.workGroup(),
   assignee: props?.assignee || taskFixtures.assignee(),
   suspendRequest: props?.suspendRequest || null,
-  hasRelocationTasks: props?.hasRelocationTasks || true,
+  hasRelocationTasks: isUndefined(props?.hasRelocationTasks) ? true : !!props?.hasRelocationTasks,
 
   attachments: [taskFixtures.attachment()],
   resolution: {
