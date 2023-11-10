@@ -446,7 +446,7 @@ const EditRelocationTaskPage: FC = () => {
     }
   }, [form, relocationTask])
 
-  /* Установка значения состояния объекта выбытия */
+  /* Установка значения состояния объекта прибытия */
   useEffect(() => {
     if (relocationTask && relocateToLocationList.length) {
       const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
@@ -467,7 +467,7 @@ const EditRelocationTaskPage: FC = () => {
     }
   }, [relocateToLocationList, relocationTask])
 
-  /* Установка значения состояния объекта прибытия */
+  /* Установка значения состояния объекта выбытия */
   useEffect(() => {
     if (relocationTask && relocateFromLocationList.length) {
       const relocateFromListItem = relocateFromLocationList.find(
@@ -475,7 +475,11 @@ const EditRelocationTaskPage: FC = () => {
       )
 
       if (relocateFromListItem) {
-        setSelectedRelocateFrom({ type: relocateFromListItem.type, value: relocateFromListItem.id })
+        setSelectedRelocateFrom({
+          label: relocateFromListItem.title,
+          type: relocateFromListItem.type,
+          value: relocateFromListItem.id
+        })
       }
     }
   }, [relocateFromLocationList, relocationTask])
