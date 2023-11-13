@@ -57,7 +57,6 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import CardTabs from '../../CardTabs'
 import { ExecuteTaskModalProps } from '../../ExecuteTaskModal/types'
-import { RequestTaskSuspendFormFields } from '../../RequestTaskSuspendModal/types'
 import AdditionalInfo from '../AdditionalInfo'
 import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
