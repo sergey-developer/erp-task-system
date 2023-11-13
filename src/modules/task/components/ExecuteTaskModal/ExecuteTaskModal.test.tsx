@@ -11,6 +11,7 @@ import ExecuteTaskModal from './index'
 import { ExecuteTaskModalProps } from './types'
 
 const props: Readonly<ExecuteTaskModalProps> = {
+  open: true,
   type: TaskTypeEnum.Request,
   recordId: fakeIdStr(),
   isLoading: false,
