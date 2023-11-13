@@ -1,9 +1,9 @@
 import { Layout, Typography } from 'antd'
 import moment from 'moment-timezone'
 import React, { FC, useEffect } from 'react'
-import { Outlet, useMatch } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 
-import { AuthRouteEnum } from 'modules/auth/constants/routes'
+import { useIsLoggedIn } from 'modules/auth/hooks'
 import { useGetUserMe } from 'modules/user/hooks'
 import { useGetUserMeCodeQuery } from 'modules/user/services/userApi.service'
 
@@ -20,6 +20,7 @@ import { ContentStyled, FooterStyled } from './styles'
 const { Text } = Typography
 
 const HomeLayout: FC = () => {
+  const isLoggedIn = useIsLoggedIn()
   const { data: userMe, isFetching: userMeIsFetching } = useGetUserMe()
   useGetTimeZoneList()
   useGetUserStatusList()
@@ -32,8 +33,6 @@ const HomeLayout: FC = () => {
     }
   }, [userMe?.timezone])
 
-  const changePasswordRouteMatched = useMatch(AuthRouteEnum.ChangePassword)
-
   return (
     <Layout>
       <LoadingArea
@@ -44,7 +43,7 @@ const HomeLayout: FC = () => {
       >
         <PrivateHeader />
 
-        <ContentStyled $centered={!!changePasswordRouteMatched}>
+        <ContentStyled>
           <React.Suspense fallback={<Spinner area='parent' size='large' />}>
             <Outlet />
           </React.Suspense>

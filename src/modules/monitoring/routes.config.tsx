@@ -1,9 +1,10 @@
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
-import { MonitoringRouteEnum } from 'modules/monitoring/constants'
+import { CommonRouteEnum } from 'configs/routes'
 
-import AllowedRoute from 'components/AllowedRoute'
+import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
+import { MonitoringRouteEnum } from 'modules/monitoring/constants'
 
 const TaskMonitoringPage = React.lazy(() => import('modules/monitoring/pages/TaskMonitoringPage'))
 
@@ -16,7 +17,13 @@ export const route: Readonly<RouteObject> = {
     },
     {
       path: MonitoringRouteEnum.TaskMonitoring,
-      element: <AllowedRoute component={<TaskMonitoringPage />} allowed={(user) => user.isStaff} />,
+      element: (
+        <ProtectedRoute
+          component={<TaskMonitoringPage />}
+          permitted={(user) => user.isStaff}
+          redirectPath={CommonRouteEnum.Home}
+        />
+      ),
     },
   ],
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, Navigate, RouteObject } from 'react-router-dom'
 
+import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import EquipmentPageLayout from 'modules/warehouse/components/EquipmentPageLayout'
 import ManageWarehousesLayout from 'modules/warehouse/components/ManageWarehousesLayout'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
@@ -137,7 +138,7 @@ export const route: Readonly<RouteObject> = {
             },
             {
               path: WarehouseRouteEnum.CreateRelocationTask,
-              element: <CreateRelocationTaskPage />,
+              element: <ProtectedRoute component={<CreateRelocationTaskPage />} />,
               handle: { crumb: () => 'Создать заявку' },
             },
             {

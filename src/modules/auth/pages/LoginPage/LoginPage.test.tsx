@@ -261,7 +261,7 @@ describe('Страница авторизации', () => {
       expect(authState.user).not.toBeNull()
       expect(authState.accessToken).toBe(authFixtures.loginSuccessResponse.access)
       expect(authState.refreshToken).toBe(authFixtures.loginSuccessResponse.refresh)
-      expect(authState.isAuthenticated).toBe(true)
+      expect(authState.isLoggedIn).toBe(true)
     })
   })
 

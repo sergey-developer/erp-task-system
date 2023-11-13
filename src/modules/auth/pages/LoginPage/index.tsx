@@ -1,6 +1,6 @@
 import { Button, Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { CommonRouteEnum } from 'configs/routes'
 
@@ -28,6 +28,7 @@ const { Text, Title } = Typography
 const LoginPage: FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [form] = Form.useForm<LoginFormFields>()
 
@@ -42,7 +43,8 @@ const LoginPage: FC = () => {
       authLocalStorageService.setRefreshToken(response.refresh)
 
       dispatch(loginAction({ user: parseJwt(response.access), ...response }))
-      navigate(CommonRouteEnum.DesktopTaskList)
+      console.log(location.state.from)
+      navigate(location.state?.from ? location.state.from : CommonRouteEnum.Home)
     } catch (error) {
       if (isErrorResponse(error)) {
         if (isBadRequestError(error)) {

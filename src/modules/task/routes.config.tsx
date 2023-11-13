@@ -3,6 +3,7 @@ import { Navigate, RouteObject } from 'react-router-dom'
 
 import { CommonRouteEnum } from 'configs/routes'
 
+import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import TaskListLayout from 'modules/task/components/TaskListLayout'
 
 const TaskListPage = React.lazy(() => import('modules/task/pages/TaskListPage'))
@@ -18,11 +19,11 @@ export const route: Readonly<RouteObject> = {
     },
     {
       path: CommonRouteEnum.DesktopTaskList,
-      element: <TaskListPage />,
+      element: <ProtectedRoute component={<TaskListPage />} />,
     },
     {
       path: CommonRouteEnum.DesktopTaskListMap,
-      element: <TaskListMapPage />,
+      element: <ProtectedRoute component={<TaskListMapPage />} />,
     },
   ],
 }
