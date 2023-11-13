@@ -11,7 +11,7 @@ const TaskListMapPage = React.lazy(() => import('modules/task/pages/TaskListMapP
 
 export const route: Readonly<RouteObject> = {
   path: CommonRouteEnum.DesktopTasks,
-  element: <TaskListLayout defaultRoute={CommonRouteEnum.DesktopTaskList} />,
+  element: <TaskListLayout />,
   children: [
     {
       index: true,

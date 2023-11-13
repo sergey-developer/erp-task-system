@@ -6,6 +6,8 @@ import { useIsLoggedIn } from 'modules/auth/hooks'
 import { useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
 
+import { CommonLocationState } from 'shared/types/common'
+
 type ProtectedRouteProps = {
   component: ReactElement
   permitted?: (user: UserModel) => boolean
@@ -23,20 +25,23 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
   if (!inRouterContext) throw new Error('ProtectedRoute should be used in Router context')
 
   const location = useLocation()
-  const navigate = <Navigate to={redirectPath} replace state={{ from: location.pathname }} />
+  const navigationState: CommonLocationState = { from: location.pathname }
 
   const isLoggedIn = useIsLoggedIn()
   const { data: user } = useUserMeState()
 
   if (reverseLoggedIn) {
-    if (isLoggedIn) return navigate
-    else return component
+    if (isLoggedIn) {
+      return <Navigate to={location.state?.from || redirectPath} replace state={navigationState} />
+    } else {
+      return component
+    }
   } else {
     if (isLoggedIn) {
       if (!permitted || (user && permitted(user))) return component
-      else return navigate
+      else return <Navigate to={redirectPath} replace state={navigationState} />
     } else {
-      return navigate
+      return <Navigate to={redirectPath} replace state={navigationState} />
     }
   }
 }

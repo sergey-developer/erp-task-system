@@ -52,7 +52,7 @@ describe('TaskListLayout', () => {
       renderInRoute_latest([
         {
           path: CommonRouteEnum.Root,
-          element: <TaskListLayout defaultRoute={CommonRouteEnum.DesktopTaskList} />,
+          element: <TaskListLayout />,
         },
       ])
 
@@ -71,7 +71,7 @@ describe('TaskListLayout', () => {
         [
           {
             path: CommonRouteEnum.DesktopTasks,
-            element: <TaskListLayout defaultRoute={CommonRouteEnum.DesktopTaskListMap} />,
+            element: <TaskListLayout />,
           },
           {
             path: CommonRouteEnum.DesktopTaskList,
@@ -97,7 +97,7 @@ describe('TaskListLayout', () => {
       renderInRoute_latest([
         {
           path: CommonRouteEnum.Root,
-          element: <TaskListLayout defaultRoute={CommonRouteEnum.DesktopTaskList} />,
+          element: <TaskListLayout />,
         },
       ])
 
@@ -116,7 +116,7 @@ describe('TaskListLayout', () => {
         [
           {
             path: CommonRouteEnum.DesktopTasks,
-            element: <TaskListLayout defaultRoute={CommonRouteEnum.DesktopTaskList} />,
+            element: <TaskListLayout />,
           },
           {
             path: CommonRouteEnum.DesktopTaskList,
