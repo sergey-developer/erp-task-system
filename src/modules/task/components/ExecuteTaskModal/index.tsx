@@ -12,7 +12,7 @@ import Space from 'components/Space'
 import { validationSizes } from 'shared/constants/validation'
 import { getFilesFromEvent } from 'shared/utils/form'
 
-import { TaskResolutionFormFields, TaskResolutionModalProps } from './types'
+import { ExecuteTaskModalFormFields, ExecuteTaskModalProps } from './types'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
@@ -35,7 +35,7 @@ const userResolutionValidationRules: Rule[] = [
   },
 ]
 
-const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
+const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
   onGetAct,
   getActIsLoading,
 
@@ -47,7 +47,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   recordId,
   type,
 }) => {
-  const [form] = Form.useForm<TaskResolutionFormFields>()
+  const [form] = Form.useForm<ExecuteTaskModalFormFields>()
   const techResolutionFormValue = Form.useWatch('techResolution', form)
 
   const taskType = useTaskType(type)
@@ -58,7 +58,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
     </Text>
   )
 
-  const handleFinish = async (values: TaskResolutionFormFields) => {
+  const handleFinish = async (values: ExecuteTaskModalFormFields) => {
     await onSubmit(values, form.setFields)
   }
 
@@ -70,7 +70,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
 
   return (
     <BaseModal
-      data-testid='task-resolution-modal'
+      data-testid='execute-task-modal'
       open={open}
       title={modalTitle}
       onCancel={onCancel}
@@ -110,7 +110,7 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
           </Text>
         </Space>
 
-        <Form<TaskResolutionFormFields>
+        <Form<ExecuteTaskModalFormFields>
           form={form}
           layout='vertical'
           onFinish={handleFinish}
@@ -154,4 +154,4 @@ const TaskResolutionModal: FC<TaskResolutionModalProps> = ({
   )
 }
 
-export default TaskResolutionModal
+export default ExecuteTaskModal

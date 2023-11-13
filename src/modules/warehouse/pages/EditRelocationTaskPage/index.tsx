@@ -8,7 +8,10 @@ import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import EquipmentFormModal from 'modules/warehouse/components/EquipmentFormModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
-import { RelocationEquipmentRowFields } from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
+import {
+  RelocationEquipmentEditableTableProps,
+  RelocationEquipmentRowFields,
+} from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
 import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
 import {
   LocationOption,
@@ -51,6 +54,7 @@ import {
   isNotFoundError,
 } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { ArrayFirst } from 'shared/types/utils'
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -72,6 +76,13 @@ const EditRelocationTaskPage: FC = () => {
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
+  const [newEquipmentRow, setNewEquipmentRow] =
+    useState<
+      ArrayFirst<
+        Parameters<NonNullable<RelocationEquipmentEditableTableProps['onClickAddEquipment']>>
+      >
+    >()
+
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
@@ -82,12 +93,21 @@ const EditRelocationTaskPage: FC = () => {
     { setTrue: openAddEquipmentModal, setFalse: closeAddEquipmentModal },
   ] = useBoolean(false)
 
-  const handleOpenAddEquipmentModal = useDebounceFn(openAddEquipmentModal)
+  const handleOpenAddEquipmentModal = useDebounceFn<
+    NonNullable<RelocationEquipmentEditableTableProps['onClickAddEquipment']>
+  >(
+    (row) => {
+      setNewEquipmentRow(row)
+      openAddEquipmentModal()
+    },
+    [openAddEquipmentModal],
+  )
 
   const handleCloseAddEquipmentModal = useDebounceFn(() => {
     closeAddEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
+    setNewEquipmentRow(undefined)
   }, [closeAddEquipmentModal])
 
   const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
@@ -265,7 +285,7 @@ const EditRelocationTaskPage: FC = () => {
     value,
     option,
   ) => {
-    const equipments = getEquipmentFormValue()
+    const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
     const relocateFrom = form.getFieldValue('relocateFrom')
     const isShowConfirmation = !!equipments.length && !!relocateFrom
     form.setFieldValue('relocateFrom', value)
@@ -278,14 +298,9 @@ const EditRelocationTaskPage: FC = () => {
     setSelectedNomenclatureId(undefined)
   }
 
-  const getEquipmentFormValue = useCallback<() => RelocationEquipmentRowFields[]>(
-    () => form.getFieldValue('equipments') || [],
-    [form],
-  )
-
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
-      if (!selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
+      if (!newEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
 
       try {
         const createdEquipment = await createEquipmentMutation({
@@ -294,9 +309,7 @@ const EditRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
-        const newEquipmentIndex = getEquipmentFormValue().length
-
-        form.setFieldValue(['equipments', newEquipmentIndex], {
+        form.setFieldValue(['equipments', newEquipmentRow.rowIndex], {
           rowId: createdEquipment.id,
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
@@ -309,7 +322,14 @@ const EditRelocationTaskPage: FC = () => {
           category: createdEquipment.category,
         })
 
-        setEditableTableRowKeys((prevState) => [...prevState, newEquipmentIndex])
+        setEditableTableRowKeys((prevState) => {
+          const index = prevState.indexOf(newEquipmentRow.rowId)
+          const newArr = [...prevState]
+          if (index !== -1) {
+            newArr[index] = createdEquipment.id
+          }
+          return newArr
+        })
 
         handleCloseAddEquipmentModal()
       } catch (error) {
@@ -327,17 +347,17 @@ const EditRelocationTaskPage: FC = () => {
       }
     },
     [
+      newEquipmentRow,
       selectedRelocateTo?.value,
       selectedRelocateFrom?.value,
       createEquipmentMutation,
-      getEquipmentFormValue,
       form,
       handleCloseAddEquipmentModal,
     ],
   )
 
   useEffect(() => {
-    if (relocationTask && !relocationTaskIsFetching) {
+    if (relocationTask) {
       form.setFieldsValue({
         deadlineAtDate: moment(relocationTask.deadlineAt),
         deadlineAtTime: moment(relocationTask.deadlineAt),
@@ -347,7 +367,7 @@ const EditRelocationTaskPage: FC = () => {
         comment: relocationTask?.comment || undefined,
       })
     }
-  }, [form, relocationTask, relocationTaskIsFetching])
+  }, [form, relocationTask])
 
   useEffect(() => {
     if (relocationEquipmentList.length && !relocationEquipmentListIsFetching) {
@@ -383,13 +403,28 @@ const EditRelocationTaskPage: FC = () => {
   ])
 
   useEffect(() => {
-    if (relocationTask && locationList.length && !locationListIsFetching) {
+    if (relocationTask && locationList.length) {
+      const relocateToListItem = locationList.find((l) => l.id === relocationTask.relocateTo?.id)
+
+      if (relocateToListItem) {
+        setSelectedRelocateTo({
+          label: relocateToListItem.title,
+          type: relocateToListItem.type,
+          value: relocateToListItem.id,
+        })
+      }
+    }
+  }, [locationList, relocationTask])
+
+  useEffect(() => {
+    if (relocationTask && locationList.length) {
       const relocateFromListItem = locationList.find(
         (l) => l.id === relocationTask.relocateFrom?.id,
       )
 
       if (relocateFromListItem) {
         setSelectedRelocateFrom({
+          label: relocateFromListItem.title,
           type: relocateFromListItem.type,
           value: relocateFromListItem.id,
         })

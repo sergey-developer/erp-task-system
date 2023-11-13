@@ -250,11 +250,6 @@ const CreateRelocationTaskPage: FC = () => {
     setSelectedNomenclatureId(undefined)
   }
 
-  const getEquipmentFormValue = useCallback<() => RelocationEquipmentRowFields[]>(
-    () => form.getFieldValue('equipments') || [],
-    [form],
-  )
-
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
       if (!newEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
@@ -317,7 +312,7 @@ const CreateRelocationTaskPage: FC = () => {
     value,
     option,
   ) => {
-    const equipments = getEquipmentFormValue()
+    const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
     const relocateFrom = form.getFieldValue('relocateFrom')
     const isShowConfirmation = !!equipments.length && !!relocateFrom
     form.setFieldValue('relocateFrom', value)

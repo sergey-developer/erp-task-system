@@ -6,7 +6,7 @@ type GetAuthStateConfig = { user: AuthenticatedUser } & Partial<
   Pick<AuthSliceState, 'accessToken' | 'refreshToken' | 'isAuthenticated'>
 >
 
-const getAuthState = ({
+export const getAuthState = ({
   user,
   accessToken = authFixtures.fakeAccessToken,
   refreshToken = authFixtures.fakeRefreshToken,
@@ -16,5 +16,3 @@ const getAuthState = ({
   accessToken,
   refreshToken,
 })
-
-export default getAuthState
