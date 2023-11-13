@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { RouteEnum } from 'configs/routes'
+import { CommonRouteEnum } from 'configs/routes'
 
 import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import { UserPermissions } from 'modules/user/models'
@@ -9,7 +9,7 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CatalogListItem from './CatalogListItem'
 
 export type CatalogItem = {
-  link: RouteEnum | WarehouseRouteEnum
+  link: CommonRouteEnum | WarehouseRouteEnum
   text: string
   permissions?: UserPermissions[]
 }
