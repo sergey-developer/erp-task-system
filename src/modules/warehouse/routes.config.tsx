@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, Navigate, RouteObject } from 'react-router-dom'
 
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
+import { expectedPermissionsAllowed } from 'modules/user/utils'
 import EquipmentPageLayout from 'modules/warehouse/components/EquipmentPageLayout'
 import ManageWarehousesLayout from 'modules/warehouse/components/ManageWarehousesLayout'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
@@ -57,7 +58,7 @@ export const route: Readonly<RouteObject> = {
       children: [
         {
           index: true,
-          element: <WarehouseCatalogListPage />,
+          element: <ProtectedRoute component={<WarehouseCatalogListPage />} />,
         },
         {
           path: WarehouseRouteEnum.WarehouseList,
@@ -67,11 +68,11 @@ export const route: Readonly<RouteObject> = {
           children: [
             {
               index: true,
-              element: <WarehouseListPage />,
+              element: <ProtectedRoute component={<WarehouseListPage />} />,
             },
             {
               path: WarehouseRouteEnum.Warehouse,
-              element: <WarehousePage />,
+              element: <ProtectedRoute component={<WarehousePage />} />,
               handle: {
                 crumb: ({ qs }: BreadCrumbArgs) => qs.get('title'),
               },
@@ -86,7 +87,12 @@ export const route: Readonly<RouteObject> = {
           children: [
             {
               index: true,
-              element: <NomenclatureListPage />,
+              element: (
+                <ProtectedRoute
+                  component={<NomenclatureListPage />}
+                  permitted={(user) => expectedPermissionsAllowed(user, ['NOMENCLATURES_READ'])}
+                />
+              ),
             },
           ],
         },
@@ -100,11 +106,16 @@ export const route: Readonly<RouteObject> = {
       children: [
         {
           index: true,
-          element: <ReserveCatalogListPage />,
+          element: <ProtectedRoute component={<ReserveCatalogListPage />} />,
         },
         {
           path: WarehouseRouteEnum.EquipmentNomenclatureList,
-          element: <EquipmentPageLayout />,
+          element: (
+            <ProtectedRoute
+              component={<EquipmentPageLayout />}
+              permitted={(user) => expectedPermissionsAllowed(user, ['EQUIPMENTS_READ'])}
+            />
+          ),
           handle: {
             crumb: () => (
               <Link to={WarehouseRouteEnum.EquipmentNomenclatureList}>Оборудование</Link>
@@ -134,16 +145,41 @@ export const route: Readonly<RouteObject> = {
           children: [
             {
               index: true,
-              element: <RelocationTaskListPage />,
+              element: (
+                <ProtectedRoute
+                  component={<RelocationTaskListPage />}
+                  permitted={(user) => expectedPermissionsAllowed(user, ['RELOCATION_TASKS_READ'])}
+                />
+              ),
             },
             {
               path: WarehouseRouteEnum.CreateRelocationTask,
-              element: <ProtectedRoute component={<CreateRelocationTaskPage />} />,
+              element: (
+                <ProtectedRoute
+                  component={<CreateRelocationTaskPage />}
+                  permitted={(user) =>
+                    expectedPermissionsAllowed(user, [
+                      'RELOCATION_TASKS_READ',
+                      'RELOCATION_TASKS_CREATE',
+                    ])
+                  }
+                />
+              ),
               handle: { crumb: () => 'Создать заявку' },
             },
             {
               path: WarehouseRouteEnum.EditRelocationTask,
-              element: <EditRelocationTaskPage />,
+              element: (
+                <ProtectedRoute
+                  component={<EditRelocationTaskPage />}
+                  permitted={(user) =>
+                    expectedPermissionsAllowed(user, [
+                      'RELOCATION_TASKS_READ',
+                      'RELOCATION_TASKS_UPDATE',
+                    ])
+                  }
+                />
+              ),
               handle: { crumb: () => 'Редактировать заявку' },
             },
           ],

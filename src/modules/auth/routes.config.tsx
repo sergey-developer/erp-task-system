@@ -1,8 +1,6 @@
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
-import { CommonRouteEnum } from 'configs/routes'
-
 import AuthLayout from 'modules/auth/components/AuthLayout'
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { AuthRouteEnum } from 'modules/auth/constants/routes'
@@ -20,13 +18,7 @@ export const route: Readonly<RouteObject> = {
     },
     {
       path: AuthRouteEnum.Login,
-      element: (
-        <ProtectedRoute
-          component={<LoginPage />}
-          reverseLoggedIn
-          redirectPath={CommonRouteEnum.Home}
-        />
-      ),
+      element: <ProtectedRoute component={<LoginPage />} onlyGuest />,
     },
     {
       path: AuthRouteEnum.ChangePassword,

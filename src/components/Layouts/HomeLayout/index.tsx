@@ -21,11 +21,12 @@ const { Text } = Typography
 
 const HomeLayout: FC = () => {
   const isLoggedIn = useIsLoggedIn()
-  const { data: userMe, isFetching: userMeIsFetching } = useGetUserMe()
-  useGetTimeZoneList()
-  useGetUserStatusList()
-  useGetUserMeCodeQuery()
-  const { data: systemInfo } = useGetSystemInfoQuery()
+
+  const { data: userMe, isFetching: userMeIsFetching } = useGetUserMe({ skip: !isLoggedIn })
+  useGetTimeZoneList({ skip: !isLoggedIn })
+  useGetUserStatusList({ skip: !isLoggedIn })
+  useGetUserMeCodeQuery(undefined, { skip: !isLoggedIn })
+  const { data: systemInfo } = useGetSystemInfoQuery(undefined, { skip: !isLoggedIn })
 
   useEffect(() => {
     if (userMe?.timezone) {

@@ -1,5 +1,7 @@
 import { FC, ReactElement } from 'react'
-import { Navigate, useInRouterContext, useLocation } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
+
+import { CommonRouteEnum } from 'configs/routes'
 
 import { AuthRouteEnum } from 'modules/auth/constants/routes'
 import { useIsLoggedIn } from 'modules/auth/hooks'
@@ -11,37 +13,40 @@ import { CommonLocationState } from 'shared/types/common'
 type ProtectedRouteProps = {
   component: ReactElement
   permitted?: (user: UserModel) => boolean
-  reverseLoggedIn?: boolean
+  onlyGuest?: boolean
   redirectPath?: string
 }
 
 const ProtectedRoute: FC<ProtectedRouteProps> = ({
   component,
   permitted,
-  reverseLoggedIn = false,
-  redirectPath = AuthRouteEnum.Login,
+  onlyGuest = false,
+  redirectPath,
 }) => {
-  const inRouterContext = useInRouterContext()
-  if (!inRouterContext) throw new Error('ProtectedRoute should be used in Router context')
-
   const location = useLocation()
   const navigationState: CommonLocationState = { from: location.pathname }
 
   const isLoggedIn = useIsLoggedIn()
   const { data: user } = useUserMeState()
 
-  if (reverseLoggedIn) {
+  if (onlyGuest) {
     if (isLoggedIn) {
-      return <Navigate to={location.state?.from || redirectPath} replace state={navigationState} />
+      const to = location.state?.from || redirectPath || CommonRouteEnum.Home
+      return <Navigate to={to} replace state={navigationState} />
     } else {
       return component
     }
   } else {
     if (isLoggedIn) {
-      if (!permitted || (user && permitted(user))) return component
-      else return <Navigate to={redirectPath} replace state={navigationState} />
+      if (!permitted || (user && permitted(user))) {
+        return component
+      } else {
+        const to = redirectPath || CommonRouteEnum.Home
+        return <Navigate to={to} replace state={navigationState} />
+      }
     } else {
-      return <Navigate to={redirectPath} replace state={navigationState} />
+      const to = redirectPath || AuthRouteEnum.Login
+      return <Navigate to={to} replace state={navigationState} />
     }
   }
 }

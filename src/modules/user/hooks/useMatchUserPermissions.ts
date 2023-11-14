@@ -1,8 +1,5 @@
 import { UserPermissions } from 'modules/user/models'
-import {
-  MatchedUserPermissions,
-  matchUserPermissions,
-} from 'modules/user/utils'
+import { matchExpectedPermissions, MatchExpectedPermissionsResult } from 'modules/user/utils'
 
 import { MaybeNull } from 'shared/types/utils'
 
@@ -10,7 +7,7 @@ import { useUserMeState } from './useUserMeState'
 
 export const useMatchUserPermissions = (
   expected: UserPermissions[],
-): MaybeNull<MatchedUserPermissions> => {
+): MaybeNull<MatchExpectedPermissionsResult> => {
   const { data: userMe } = useUserMeState()
-  return userMe ? matchUserPermissions(userMe.permissions, expected) : null
+  return userMe ? matchExpectedPermissions(userMe, expected) : null
 }

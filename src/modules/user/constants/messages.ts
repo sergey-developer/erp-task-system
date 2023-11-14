@@ -1,8 +1,6 @@
 import { ApiRequestMessages } from 'shared/types/messages'
 
-export const getUserMeMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Не удалось получить профиль пользователя',
-}
+export const getUserMeErrorMsg = 'Не удалось получить профиль пользователя'
 
 export const getUserListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка пользователей',

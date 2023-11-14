@@ -1,8 +1,6 @@
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
-import { CommonRouteEnum } from 'configs/routes'
-
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { MonitoringRouteEnum } from 'modules/monitoring/constants'
 
@@ -18,11 +16,7 @@ export const route: Readonly<RouteObject> = {
     {
       path: MonitoringRouteEnum.TaskMonitoring,
       element: (
-        <ProtectedRoute
-          component={<TaskMonitoringPage />}
-          permitted={(user) => user.isStaff}
-          redirectPath={CommonRouteEnum.Home}
-        />
+        <ProtectedRoute component={<TaskMonitoringPage />} permitted={(user) => user.isStaff} />
       ),
     },
   ],
