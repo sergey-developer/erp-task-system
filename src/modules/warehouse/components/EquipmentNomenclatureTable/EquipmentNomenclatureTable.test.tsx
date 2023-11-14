@@ -153,10 +153,10 @@ describe('Таблица номенклатуры оборудования', () 
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute(
         'href',
-        getEquipmentListPageLink(
-          equipmentNomenclatureListItem.id,
-          equipmentNomenclatureListItem.title,
-        ),
+        getEquipmentListPageLink({
+          id: equipmentNomenclatureListItem.id,
+          title: equipmentNomenclatureListItem.title,
+        }),
       )
     })
 
