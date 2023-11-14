@@ -1,18 +1,21 @@
+import qs from 'qs'
 import { generatePath } from 'react-router-dom'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { IdType } from 'shared/types/common'
 
-export const getEquipmentListPageLink = (
-  equipmentNomenclatureId: IdType,
-  equipmentNomenclatureTitle?: string,
-): string => {
-  const link = generatePath(WarehouseRouteEnum.EquipmentList, {
-    id: String(equipmentNomenclatureId),
-  })
-
-  return equipmentNomenclatureTitle
-    ? `${link}?equipmentNomenclatureTitle=${equipmentNomenclatureTitle}`
-    : link
+type GetEquipmentListPageLinkParams = {
+  id: IdType
+  title: string
+  viewEquipmentId?: IdType
 }
+
+export const getEquipmentListPageLink = ({
+  id,
+  title,
+  viewEquipmentId,
+}: GetEquipmentListPageLinkParams): string =>
+  `${generatePath(WarehouseRouteEnum.EquipmentList, {
+    id: String(id),
+  })}?${qs.stringify({ equipmentNomenclatureTitle: title, viewEquipmentId })}`
