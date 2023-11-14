@@ -22,6 +22,7 @@ import {
   closeRelocationTaskMessages,
   executeRelocationTaskMessages,
   relocationTaskStatusDict,
+  relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
 import {
@@ -338,6 +339,14 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             >
               {relocationTask && (
                 <Space $block direction='vertical' size='middle'>
+                  <Row data-testid='type'>
+                    <Col span={8}>
+                      <Text type='secondary'>Тип заявки:</Text>
+                    </Col>
+
+                    <Col span={16}>{relocationTaskTypeDict[relocationTask.type]}</Col>
+                  </Row>
+
                   <Row data-testid='deadline-at'>
                     <Col span={8}>
                       <Text type='secondary'>Срок выполнения:</Text>

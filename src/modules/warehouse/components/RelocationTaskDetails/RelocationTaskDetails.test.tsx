@@ -22,6 +22,7 @@ import {
   getRelocationTaskWaybillM15Messages,
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
+  relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
@@ -189,7 +190,7 @@ notificationTestUtils.setupNotifications()
 
 describe('Информация о заявке о перемещении', () => {
   describe('При успешном запросе', () => {
-    test('Заголовок отображается корректно', async () => {
+    test('Заголовок отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -204,7 +205,26 @@ describe('Информация о заявке о перемещении', () =>
       expect(title).toBeInTheDocument()
     })
 
-    test('Срок выполнения отображается корректно', async () => {
+    test('Тип заявки отображается', async () => {
+      const relocationTask = warehouseFixtures.relocationTask()
+      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+
+      await testUtils.expectRelocationTaskLoadingFinished()
+
+      const label = testUtils.getRelocationTaskInfo('type', /Тип заявки/)
+      const value = testUtils.getRelocationTaskInfo(
+        'type',
+        relocationTaskTypeDict[relocationTask.type],
+      )
+
+      expect(label).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
+    test('Срок выполнения отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -223,7 +243,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Объект выбытия отображается корректно', async () => {
+    test('Объект выбытия отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -242,7 +262,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Объект прибытия отображается корректно', async () => {
+    test('Объект прибытия отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -258,7 +278,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Исполнитель отображается корректно', async () => {
+    test('Исполнитель отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -274,7 +294,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Статус отображается корректно', async () => {
+    test('Статус отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -321,7 +341,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(phone).toBeInTheDocument()
     })
 
-    test('Инициатор отображается корректно', async () => {
+    test('Инициатор отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -340,7 +360,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Создано отображается корректно', async () => {
+    test('Создано отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -414,7 +434,7 @@ describe('Информация о заявке о перемещении', () =>
       })
     })
 
-    test('Комментарий отображается корректно', async () => {
+    test('Комментарий отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -430,7 +450,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Документы отображается корректно', async () => {
+    test('Документы отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -494,7 +514,7 @@ describe('Информация о заявке о перемещении', () =>
   })
 
   describe('Перечень оборудования', () => {
-    test('При успешном запросе отображается корректно', async () => {
+    test('При успешном запросе отображается', async () => {
       mockGetRelocationTaskSuccess(props.relocationTaskId)
       const relocationEquipmentList = warehouseFixtures.relocationEquipmentList()
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId, {

@@ -8,6 +8,7 @@ import {
 export type RelocationTaskTableItem = Pick<
   RelocationTaskListItemModel,
   | 'id'
+  | 'type'
   | 'deadlineAt'
   | 'relocateFrom'
   | 'relocateTo'

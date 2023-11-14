@@ -4,6 +4,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import {
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
+  relocationTaskTypeDict,
+  RelocationTaskTypeEnum,
 } from 'modules/warehouse/constants/relocationTask'
 
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
@@ -22,20 +24,14 @@ const props: Readonly<RelocationTaskListFilterProps> = {
 }
 
 const getContainer = () => screen.getByTestId('relocation-task-list-filter')
-
 const queryContainer = () => screen.queryByTestId('relocation-task-list-filter')
-
 const findContainer = (): Promise<HTMLElement> => screen.findByTestId('relocation-task-list-filter')
 
 // status block
 const getStatusBlock = (): HTMLElement => within(getContainer()).getByTestId('status-block')
-
 const getStatusSelect = (): HTMLElement => within(getStatusBlock()).getByTestId('status-select')
-
 const getStatusSelectInput = () => selectTestUtils.getSelect(getStatusSelect())
-
 const openStatusSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getStatusBlock())
-
 const setStatus = selectTestUtils.clickSelectOption
 
 const getSelectedStatus = (title: string) =>
@@ -43,6 +39,19 @@ const getSelectedStatus = (title: string) =>
 
 const querySelectedStatus = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getStatusSelect(), title)
+
+// type block
+const getTypeBlock = (): HTMLElement => within(getContainer()).getByTestId('type-block')
+const getTypeSelect = (): HTMLElement => within(getTypeBlock()).getByTestId('type-select')
+const getTypeSelectInput = () => selectTestUtils.getSelect(getTypeSelect())
+const openTypeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getTypeBlock())
+const setType = selectTestUtils.clickSelectOption
+
+const getSelectedType = (title: string) =>
+  selectTestUtils.getSelectedOptionByTitle(getTypeSelect(), title)
+
+const querySelectedType = (title: string) =>
+  selectTestUtils.querySelectedOptionByTitle(getTypeSelect(), title)
 
 // reset button
 const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сбросить все/)
@@ -86,6 +95,14 @@ export const testUtils = {
   getSelectedStatus,
   querySelectedStatus,
 
+  getTypeBlock,
+  getTypeSelect,
+  getTypeSelectInput,
+  openTypeSelect,
+  setType,
+  getSelectedType,
+  querySelectedType,
+
   getResetAllButton,
   clickResetButtonIn,
   clickResetAllButton,
@@ -99,11 +116,10 @@ export const testUtils = {
 
 describe('Фильтр списка заявок на перемещение оборудования', () => {
   describe('Статус', () => {
-    test('Отображается корректно', async () => {
-      const { user } = render(<RelocationTaskListFilter {...props} />)
+    test('Отображается корректно', () => {
+      render(<RelocationTaskListFilter {...props} />)
 
       const input = testUtils.getStatusSelectInput()
-      await testUtils.openStatusSelect(user)
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -116,41 +132,37 @@ describe('Фильтр списка заявок на перемещение о�
       await testUtils.setStatus(user, relocationTaskStatusDict[RelocationTaskStatusEnum.New])
       await testUtils.setStatus(user, relocationTaskStatusDict[RelocationTaskStatusEnum.Completed])
 
-      const selectedCondition1 = testUtils.getSelectedStatus(
+      const status1 = testUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.New],
       )
-      const selectedCondition2 = testUtils.getSelectedStatus(
+      const status2 = testUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.Completed],
       )
 
-      expect(selectedCondition1).toBeInTheDocument()
-      expect(selectedCondition2).toBeInTheDocument()
+      expect(status1).toBeInTheDocument()
+      expect(status2).toBeInTheDocument()
     })
 
     test('Устанавливается значение по умолчанию', () => {
       render(
         <RelocationTaskListFilter
           {...props}
-          initialValues={{
-            status: [RelocationTaskStatusEnum.New],
-          }}
+          initialValues={{ status: [RelocationTaskStatusEnum.New] }}
         />,
       )
 
-      const selectedCondition = testUtils.getSelectedStatus(
+      const status = testUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.New],
       )
 
-      expect(selectedCondition).toBeInTheDocument()
+      expect(status).toBeInTheDocument()
     })
 
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(
         <RelocationTaskListFilter
           {...props}
-          initialValues={{
-            status: [RelocationTaskStatusEnum.New],
-          }}
+          initialValues={{ status: [RelocationTaskStatusEnum.New] }}
         />,
       )
 
@@ -159,39 +171,121 @@ describe('Фильтр списка заявок на перемещение о�
 
       await testUtils.clickResetButtonIn(user, testUtils.getStatusBlock())
 
-      const selectedCondition1 = testUtils.getSelectedStatus(
+      const status1 = testUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.New],
       )
-      const selectedCondition2 = testUtils.querySelectedStatus(
+      const status2 = testUtils.querySelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.Canceled],
       )
 
-      expect(selectedCondition1).toBeInTheDocument()
-      expect(selectedCondition2).not.toBeInTheDocument()
+      expect(status1).toBeInTheDocument()
+      expect(status2).not.toBeInTheDocument()
     })
 
     test('Переданное значение заменяет значение по умолчанию', () => {
       render(
         <RelocationTaskListFilter
           {...props}
-          initialValues={{
-            status: [RelocationTaskStatusEnum.New],
-          }}
-          values={{
-            status: [RelocationTaskStatusEnum.Completed],
-          }}
+          initialValues={{ status: [RelocationTaskStatusEnum.New] }}
+          values={{ status: [RelocationTaskStatusEnum.Completed] }}
         />,
       )
 
-      const selectedCondition1 = testUtils.getSelectedStatus(
+      const status1 = testUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.Completed],
       )
-      const selectedCondition2 = testUtils.querySelectedStatus(
+      const status2 = testUtils.querySelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.New],
       )
 
-      expect(selectedCondition1).toBeInTheDocument()
-      expect(selectedCondition2).not.toBeInTheDocument()
+      expect(status1).toBeInTheDocument()
+      expect(status2).not.toBeInTheDocument()
+    })
+  })
+
+  describe('Тип заявки', () => {
+    test('Отображается корректно', () => {
+      render(<RelocationTaskListFilter {...props} />)
+
+      const input = testUtils.getTypeSelectInput()
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+    })
+
+    test('Можно выбрать несколько вариантов', async () => {
+      const { user } = render(<RelocationTaskListFilter {...props} />)
+
+      await testUtils.openTypeSelect(user)
+      await testUtils.setType(user, relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation])
+      await testUtils.setType(user, relocationTaskTypeDict[RelocationTaskTypeEnum.Repair])
+
+      const type1 = testUtils.getSelectedType(
+        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+      )
+      const type2 = testUtils.getSelectedType(relocationTaskTypeDict[RelocationTaskTypeEnum.Repair])
+
+      expect(type1).toBeInTheDocument()
+      expect(type2).toBeInTheDocument()
+    })
+
+    test('Устанавливается значение по умолчанию', () => {
+      render(
+        <RelocationTaskListFilter
+          {...props}
+          initialValues={{ type: [RelocationTaskTypeEnum.Relocation] }}
+        />,
+      )
+
+      const type = testUtils.getSelectedType(
+        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+      )
+
+      expect(type).toBeInTheDocument()
+    })
+
+    test('Сбрасывается к значению по умолчанию', async () => {
+      const { user } = render(
+        <RelocationTaskListFilter
+          {...props}
+          initialValues={{ type: [RelocationTaskTypeEnum.Repair] }}
+        />,
+      )
+
+      await testUtils.openTypeSelect(user)
+      await testUtils.setType(user, relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation])
+
+      await testUtils.clickResetButtonIn(user, testUtils.getTypeBlock())
+
+      const type1 = testUtils.querySelectedStatus(
+        relocationTaskTypeDict[RelocationTaskTypeEnum.Repair],
+      )
+      const type2 = testUtils.querySelectedStatus(
+        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+      )
+
+      expect(type1).not.toBeInTheDocument()
+      expect(type2).not.toBeInTheDocument()
+    })
+
+    test('Переданное значение заменяет значение по умолчанию', () => {
+      render(
+        <RelocationTaskListFilter
+          {...props}
+          initialValues={{ type: [RelocationTaskTypeEnum.Repair] }}
+          values={{ type: [RelocationTaskTypeEnum.Relocation] }}
+        />,
+      )
+
+      const type1 = testUtils.getSelectedType(
+        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+      )
+      const type2 = testUtils.querySelectedType(
+        relocationTaskTypeDict[RelocationTaskTypeEnum.Repair],
+      )
+
+      expect(type1).toBeInTheDocument()
+      expect(type2).not.toBeInTheDocument()
     })
   })
 
@@ -231,24 +325,34 @@ describe('Фильтр списка заявок на перемещение о�
           {...props}
           initialValues={{
             status: [RelocationTaskStatusEnum.New],
+            type: [RelocationTaskTypeEnum.Relocation],
           }}
           values={{
             status: [RelocationTaskStatusEnum.Completed],
+            type: [RelocationTaskTypeEnum.Repair],
           }}
         />,
       )
 
       await testUtils.clickResetAllButton(user)
 
-      const selectedStatus1 = testUtils.getSelectedStatus(
+      const status1 = testUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.New],
       )
-      const selectedStatus2 = testUtils.querySelectedStatus(
+      const status2 = testUtils.querySelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.Completed],
       )
+      const type1 = testUtils.getSelectedType(
+        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+      )
+      const type2 = testUtils.querySelectedType(
+        relocationTaskTypeDict[RelocationTaskTypeEnum.Repair],
+      )
 
-      expect(selectedStatus1).toBeInTheDocument()
-      expect(selectedStatus2).not.toBeInTheDocument()
+      expect(status1).toBeInTheDocument()
+      expect(status2).not.toBeInTheDocument()
+      expect(type1).toBeInTheDocument()
+      expect(type2).not.toBeInTheDocument()
     })
   })
 
