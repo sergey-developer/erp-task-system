@@ -1,7 +1,10 @@
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 
-import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import {
+  RelocationTaskStatusEnum,
+  RelocationTaskTypeEnum,
+} from 'modules/warehouse/constants/relocationTask'
 import { RelocationTaskListItemModel } from 'modules/warehouse/models'
 
 import userFixtures from '_tests_/fixtures/user'
@@ -9,6 +12,7 @@ import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
 export const relocationTaskListItem = (): RelocationTaskListItemModel => ({
   id: fakeId(),
+  type: RelocationTaskTypeEnum.Relocation,
   deadlineAt: fakeDateString(),
   status: RelocationTaskStatusEnum.New,
   createdAt: fakeDateString(),

@@ -3,6 +3,7 @@ import { RelocationTaskModel } from './relocationTask.model'
 export type RelocationTaskListItemModel = Pick<
   RelocationTaskModel,
   | 'id'
+  | 'type'
   | 'deadlineAt'
   | 'relocateFrom'
   | 'relocateTo'

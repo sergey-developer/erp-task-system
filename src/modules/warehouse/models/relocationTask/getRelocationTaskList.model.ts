@@ -6,6 +6,7 @@ import { PaginationParams } from 'shared/types/pagination'
 import { ExtendSortKey } from 'shared/types/sort'
 
 export type GetRelocationTaskListSortKey =
+  | 'type'
   | 'deadline_at'
   | 'relocate_from'
   | 'relocate_to'

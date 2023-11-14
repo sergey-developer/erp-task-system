@@ -1,7 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+import {
+  relocationTaskStatusDict,
+  relocationTaskTypeDict,
+} from 'modules/warehouse/constants/relocationTask'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
@@ -129,6 +132,58 @@ describe('Таблица заявок на перемещение оборудо
     render(<RelocationTaskTable {...props} sort='-deadline_at' />)
     const headCell = testUtils.getHeadCell('Срок выполнения')
     expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+  })
+
+  describe('Тип заявки', () => {
+    test('Отображается корректно', () => {
+      render(<RelocationTaskTable {...props} />)
+
+      const headCell = testUtils.getHeadCell('Тип заявки')
+      const title = testUtils.getColTitle('Тип заявки')
+      const value = testUtils.getColValue(
+        relocationTaskListItem.id,
+        relocationTaskTypeDict[relocationTaskListItem.type],
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+      expect(headCell).toHaveClass(columnWithSortingClass)
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+    })
+
+    test('При клике на заголовок обработчик вызывается корректно', async () => {
+      const { user } = render(<RelocationTaskTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Тип заявки')
+
+      expect(props.onChange).toBeCalledTimes(1)
+      expect(props.onChange).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const { user } = render(<RelocationTaskTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Тип заявки')
+      const headCell = testUtils.getHeadCell('Тип заявки')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+      await testUtils.clickColTitle(user, 'Тип заявки')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      await testUtils.clickColTitle(user, 'Тип заявки')
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      props.dataSource.forEach((item) => {
+        const row = testUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
   })
 
   describe('Срок выполнения', () => {
