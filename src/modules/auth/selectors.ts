@@ -1,9 +1,6 @@
 import { RootState } from 'state/store'
 
-export const isAuthenticatedSelector = (
-  state: RootState,
-): RootState['auth']['isAuthenticated'] => state.auth.isAuthenticated
+export const isLoggedInSelector = (state: RootState): RootState['auth']['isLoggedIn'] =>
+  state.auth.isLoggedIn
 
-export const authenticatedUserSelector = (
-  state: RootState,
-): RootState['auth']['user'] => state.auth.user
+export const authUserSelector = (state: RootState): RootState['auth']['user'] => state.auth.user

@@ -1,4 +1,4 @@
-import { RouteEnum } from 'configs/routes'
+import { CommonRouteEnum } from 'configs/routes'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
@@ -8,9 +8,9 @@ import { NavMenuItem } from './types'
 
 const navMenuCommonConfig: NavMenuItem[] = [
   {
-    key: RouteEnum.Tasks,
+    key: CommonRouteEnum.DesktopTasks,
     icon: UnorderedListIcon,
-    link: RouteEnum.TaskList,
+    link: CommonRouteEnum.DesktopTaskList,
     text: 'Рабочий стол',
   },
   {

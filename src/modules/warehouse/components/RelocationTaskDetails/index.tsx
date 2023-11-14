@@ -13,7 +13,7 @@ import {
 import React, { FC } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
@@ -127,8 +127,8 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [closeRelocationTaskMutation, { isLoading: closeRelocationTaskIsLoading }] =
     useCloseRelocationTaskMutation()
 
-  const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
-  const executorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.executor?.id)
+  const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
+  const executorIsCurrentUser = useIdBelongAuthUser(relocationTask?.executor?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const handleCancelTask = async () => {

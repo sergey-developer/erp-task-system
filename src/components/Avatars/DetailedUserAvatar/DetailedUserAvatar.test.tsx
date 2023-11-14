@@ -1,11 +1,13 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { RouteEnum } from 'configs/routes'
+import { CommonRouteEnum } from 'configs/routes'
 
-import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
+import { AuthRouteEnum } from 'modules/auth/constants/routes'
 
-import PrivateApp from 'app/PrivateApp'
+import { testUtils as privateLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
+
+import PrivateApp from 'app/App'
 
 import userFixtures from '_tests_/fixtures/user'
 import {
@@ -64,7 +66,7 @@ describe('Детальный аватар пользователя', () => {
       const changePasswordLink = testUtils.getChangePasswordLink()
 
       expect(changePasswordLink).toBeInTheDocument()
-      expect(changePasswordLink).toHaveAttribute('href', RouteEnum.ChangePassword)
+      expect(changePasswordLink).toHaveAttribute('href', AuthRouteEnum.ChangePassword)
     })
 
     test('При нажатии переходит на страницу смены пароля', async () => {
@@ -74,7 +76,7 @@ describe('Детальный аватар пользователя', () => {
 
       const { user, checkRouteChanged, getCurrentRoute } = renderInRoute(
         <PrivateApp />,
-        RouteEnum.TaskList,
+        CommonRouteEnum.DesktopTaskList,
         { useBrowserRouter: false },
       )
 
@@ -84,7 +86,7 @@ describe('Детальный аватар пользователя', () => {
       await testUtils.clickChangePasswordLink(user)
 
       expect(checkRouteChanged()).toBe(true)
-      expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
+      expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
     })
   })
 })

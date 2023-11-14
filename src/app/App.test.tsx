@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/react'
 
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import {
   updateUserStatusMessages,
   updateUserTimeZoneMessages,
@@ -8,7 +9,7 @@ import {
 } from 'modules/user/constants'
 
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
-import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
+import { testUtils as privateLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
 import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 
@@ -32,8 +33,7 @@ import {
 } from '_tests_/mocks/api'
 import { fakeId, fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
-import PrivateApp from './PrivateApp'
+import PrivateApp from './App'
 
 setupApiTests()
 notificationTestUtils.setupNotifications()

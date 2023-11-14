@@ -1,11 +1,7 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {
-  AuthSliceState,
-  LoginActionPayload,
-  RefreshTokenActionPayload,
-} from './types'
 import { authLocalStorageService } from './services/authLocalStorage.service'
+import { AuthSliceState, LoginActionPayload, RefreshTokenActionPayload } from './types'
 import { parseJwt } from './utils'
 
 export const getInitialState = (): AuthSliceState => {
@@ -16,7 +12,7 @@ export const getInitialState = (): AuthSliceState => {
     user: accessToken ? parseJwt(accessToken) : null,
     accessToken,
     refreshToken,
-    isAuthenticated: !!accessToken && !!refreshToken,
+    isLoggedIn: !!accessToken && !!refreshToken,
   }
 }
 
@@ -28,22 +24,19 @@ const slice = createSlice({
       state.user = payload.user
       state.accessToken = payload.access
       state.refreshToken = payload.refresh
-      state.isAuthenticated = !!payload.access && !!payload.refresh
+      state.isLoggedIn = !!payload.access && !!payload.refresh
     },
-    refreshToken: (
-      state,
-      { payload }: PayloadAction<RefreshTokenActionPayload>,
-    ) => {
+    refreshToken: (state, { payload }: PayloadAction<RefreshTokenActionPayload>) => {
       state.user = payload.user
       state.accessToken = payload.access
       state.refreshToken = payload.refresh
-      state.isAuthenticated = !!payload.access && !!payload.refresh
+      state.isLoggedIn = !!payload.access && !!payload.refresh
     },
     logout: (state) => {
       state.user = null
       state.accessToken = null
       state.refreshToken = null
-      state.isAuthenticated = false
+      state.isLoggedIn = false
     },
   },
 })

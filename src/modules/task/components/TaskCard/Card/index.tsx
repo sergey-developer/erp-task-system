@@ -5,7 +5,7 @@ import React, { FC, useCallback, useEffect } from 'react'
 
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
-import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
@@ -217,7 +217,7 @@ const TaskCard: FC<TaskCardProps> = ({
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
   const userRole = useUserRole()
-  const isAssignedToCurrentUser = useCheckUserAuthenticated(task?.assignee?.id)
+  const isAssignedToCurrentUser = useIdBelongAuthUser(task?.assignee?.id)
 
   const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
