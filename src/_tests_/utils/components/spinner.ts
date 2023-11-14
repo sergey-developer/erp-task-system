@@ -9,7 +9,7 @@ const expectLoadingNotStarted = (testId: string) => () => {
 }
 
 const expectLoadingFinished = (testId: string) => async () => {
-  const spinner = screen.queryByTestId(testId)
+  const spinner = screen.queryAllByTestId(testId)[0]
 
   await waitFor(() => {
     expect(spinner).not.toBeInTheDocument()
