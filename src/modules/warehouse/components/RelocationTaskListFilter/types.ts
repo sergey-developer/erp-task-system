@@ -1,9 +1,13 @@
-import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import {
+  RelocationTaskStatusEnum,
+  RelocationTaskTypeEnum,
+} from 'modules/warehouse/constants/relocationTask'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
 export type RelocationTaskListFilterFormFields = Partial<{
   status: RelocationTaskStatusEnum[]
+  type: RelocationTaskTypeEnum[]
 }>
 
 export type RelocationTaskListFilterProps = Pick<DrawerFilterProps, 'open' | 'onClose'> & {

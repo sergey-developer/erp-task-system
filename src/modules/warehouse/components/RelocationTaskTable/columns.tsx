@@ -1,6 +1,9 @@
 import { ColumnsType } from 'antd/es/table'
 
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+import {
+  relocationTaskStatusDict,
+  relocationTaskTypeDict,
+} from 'modules/warehouse/constants/relocationTask'
 
 import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
@@ -8,6 +11,13 @@ import { formatDate } from 'shared/utils/date'
 import { RelocationTaskTableItem } from './types'
 
 export const columns: ColumnsType<RelocationTaskTableItem> = [
+  {
+    key: 'type',
+    dataIndex: 'type',
+    title: 'Тип заявки',
+    sorter: true,
+    render: (value: RelocationTaskTableItem['type']) => relocationTaskTypeDict[value],
+  },
   {
     key: 'deadlineAt',
     dataIndex: 'deadlineAt',
