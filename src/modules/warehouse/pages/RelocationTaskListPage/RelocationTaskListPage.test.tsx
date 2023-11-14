@@ -8,6 +8,8 @@ import {
   getRelocationTaskListMessages,
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
+  relocationTaskTypeDict,
+  RelocationTaskTypeEnum,
 } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskPage/CreateRelocationTaskPage.test'
@@ -16,20 +18,25 @@ import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/compon
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
+  mockGetCurrencyListSuccess,
+  mockGetLocationListSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskListForbiddenError,
   mockGetRelocationTaskListServerError,
   mockGetRelocationTaskListSuccess,
   mockGetRelocationTaskSuccess,
+  mockGetUserListSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeWord,
+  getStoreWithAuth,
   linkTestUtils,
   notificationTestUtils,
   render,
   renderInRoute_latest,
+  selectTestUtils,
   setupApiTests,
   tableTestUtils,
 } from '_tests_/utils'
@@ -95,6 +102,7 @@ describe('Страница списка заявок на перемещение
 
       test('Обрабатывается ошибка 500', async () => {
         mockGetRelocationTaskListServerError()
+
         render(<RelocationTaskListPage />)
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
@@ -167,6 +175,7 @@ describe('Страница списка заявок на перемещение
     describe('Кнопка фильтров', () => {
       test('Отображается корректно', async () => {
         mockGetRelocationTaskListSuccess()
+
         render(<RelocationTaskListPage />)
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
@@ -179,6 +188,7 @@ describe('Страница списка заявок на перемещение
 
       test('Открывает фильтры', async () => {
         mockGetRelocationTaskListSuccess()
+
         const { user } = render(<RelocationTaskListPage />)
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
@@ -198,20 +208,26 @@ describe('Страница списка заявок на перемещение
       await relocationTaskTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
       await relocationTaskListFilterTestUtils.findContainer()
+
       await relocationTaskListFilterTestUtils.openStatusSelect(user)
-      const selectedStatus1 = relocationTaskListFilterTestUtils.getSelectedStatus(
+      const status1 = relocationTaskListFilterTestUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.New],
       )
-      const selectedStatus2 = relocationTaskListFilterTestUtils.getSelectedStatus(
+      const status2 = relocationTaskListFilterTestUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.Completed],
       )
-      const selectedStatus3 = relocationTaskListFilterTestUtils.getSelectedStatus(
+      const status3 = relocationTaskListFilterTestUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.Returned],
       )
 
-      expect(selectedStatus1).toBeInTheDocument()
-      expect(selectedStatus2).toBeInTheDocument()
-      expect(selectedStatus3).toBeInTheDocument()
+      const type = selectTestUtils.getSelectedOption(
+        relocationTaskListFilterTestUtils.getTypeSelect(),
+      )
+
+      expect(status1).toBeInTheDocument()
+      expect(status2).toBeInTheDocument()
+      expect(status3).toBeInTheDocument()
+      expect(type).not.toBeInTheDocument()
     })
 
     test('После применения список отображается корректно', async () => {
@@ -226,11 +242,20 @@ describe('Страница списка заявок на перемещение
       await relocationTaskTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
       await relocationTaskListFilterTestUtils.findContainer()
+
       await relocationTaskListFilterTestUtils.openStatusSelect(user)
       await relocationTaskListFilterTestUtils.setStatus(
         user,
         relocationTaskStatusDict[RelocationTaskStatusEnum.Canceled],
       )
+
+      await relocationTaskListFilterTestUtils.openTypeSelect(user)
+      await relocationTaskListFilterTestUtils.setType(
+        user,
+        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+        true,
+      )
+
       await relocationTaskListFilterTestUtils.clickApplyButton(user)
 
       await relocationTaskTableTestUtils.expectLoadingStarted()
@@ -288,14 +313,11 @@ describe('Страница списка заявок на перемещение
         mockGetRelocationTaskListSuccess()
 
         render(<RelocationTaskListPage />, {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
             },
-          },
+          }),
         })
 
         const link = testUtils.getCreateTaskLink()
@@ -315,6 +337,9 @@ describe('Страница списка заявок на перемещение
 
       test('При клике переходит на страницу создания заявки', async () => {
         mockGetRelocationTaskListSuccess()
+        mockGetUserListSuccess()
+        mockGetCurrencyListSuccess()
+        mockGetLocationListSuccess({ once: false })
 
         const { user } = renderInRoute_latest(
           [
@@ -329,14 +354,11 @@ describe('Страница списка заявок на перемещение
           ],
           { initialEntries: [WarehouseRouteEnum.RelocationTaskList], initialIndex: 0 },
           {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
-                },
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
               },
-            },
+            }),
           },
         )
 

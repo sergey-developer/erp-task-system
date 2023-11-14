@@ -33,12 +33,13 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
-const initialFilterValues: Pick<RelocationTaskListFilterFormFields, 'status'> = {
+const initialFilterValues: RelocationTaskListFilterFormFields = {
   status: [
     RelocationTaskStatusEnum.New,
     RelocationTaskStatusEnum.Completed,
     RelocationTaskStatusEnum.Returned,
   ],
+  type: undefined,
 }
 
 const initialRelocationTaskListParams: Pick<
