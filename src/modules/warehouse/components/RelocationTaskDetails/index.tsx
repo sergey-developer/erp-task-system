@@ -15,7 +15,10 @@ import { useNavigate } from 'react-router-dom'
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { useMatchUserPermissions } from 'modules/user/hooks'
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+import {
+  relocationTaskStatusDict,
+  relocationTaskTypeDict,
+} from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
@@ -140,6 +143,14 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
           >
             {relocationTask && (
               <Space $block direction='vertical' size='middle'>
+                <Row data-testid='type'>
+                  <Col span={8}>
+                    <Text type='secondary'>Тип заявки:</Text>
+                  </Col>
+
+                  <Col span={16}>{relocationTaskTypeDict[relocationTask.type]}</Col>
+                </Row>
+
                 <Row data-testid='deadline-at'>
                   <Col span={8}>
                     <Text type='secondary'>Срок выполнения:</Text>
