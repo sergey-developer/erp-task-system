@@ -8,12 +8,12 @@ export type MatchExpectedPermissionsResult = Readonly<
   Camelize<Partial<Record<Lowercase<UserPermissions>, boolean>>>
 >
 
-export const matchExpectedPermissions = (
+export const getPermissionsObj = (
   user: UserModel,
-  expectedPermissions: UserModel['permissions'],
+  permissions: UserModel['permissions'],
 ): MatchExpectedPermissionsResult =>
   camelizeKeys(
-    expectedPermissions.reduce<Writeable<MatchExpectedPermissionsResult>>((acc, perm) => {
+    permissions.reduce<Writeable<MatchExpectedPermissionsResult>>((acc, perm) => {
       const key = perm.toLowerCase() as keyof MatchExpectedPermissionsResult
       acc[key] = user.permissions.includes(perm)
       return acc
@@ -23,7 +23,5 @@ export const matchExpectedPermissions = (
 export const checkEveryPermissionAllowed = (permissions: MatchExpectedPermissionsResult): boolean =>
   Object.values(permissions).every(Boolean)
 
-export const expectedPermissionsAllowed = (
-  user: UserModel,
-  expectedPermissions: UserModel['permissions'],
-) => checkEveryPermissionAllowed(matchExpectedPermissions(user, expectedPermissions))
+export const hasPermissions = (user: UserModel, permissions: UserModel['permissions']) =>
+  checkEveryPermissionAllowed(getPermissionsObj(user, permissions))
