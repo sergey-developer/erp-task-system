@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, Navigate, RouteObject } from 'react-router-dom'
 
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
-import { expectedPermissionsAllowed } from 'modules/user/utils'
+import { hasPermissions } from 'modules/user/utils'
 import EquipmentPageLayout from 'modules/warehouse/components/EquipmentPageLayout'
 import ManageWarehousesLayout from 'modules/warehouse/components/ManageWarehousesLayout'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
@@ -90,7 +90,7 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<NomenclatureListPage />}
-                  permitted={(user) => expectedPermissionsAllowed(user, ['NOMENCLATURES_READ'])}
+                  permitted={(user) => hasPermissions(user, ['NOMENCLATURES_READ'])}
                 />
               ),
             },
@@ -113,7 +113,7 @@ export const route: Readonly<RouteObject> = {
           element: (
             <ProtectedRoute
               component={<EquipmentPageLayout />}
-              permitted={(user) => expectedPermissionsAllowed(user, ['EQUIPMENTS_READ'])}
+              permitted={(user) => hasPermissions(user, ['EQUIPMENTS_READ'])}
             />
           ),
           handle: {
@@ -148,7 +148,7 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<RelocationTaskListPage />}
-                  permitted={(user) => expectedPermissionsAllowed(user, ['RELOCATION_TASKS_READ'])}
+                  permitted={(user) => hasPermissions(user, ['RELOCATION_TASKS_READ'])}
                 />
               ),
             },
@@ -158,10 +158,7 @@ export const route: Readonly<RouteObject> = {
                 <ProtectedRoute
                   component={<CreateRelocationTaskPage />}
                   permitted={(user) =>
-                    expectedPermissionsAllowed(user, [
-                      'RELOCATION_TASKS_READ',
-                      'RELOCATION_TASKS_CREATE',
-                    ])
+                    hasPermissions(user, ['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_CREATE'])
                   }
                 />
               ),
@@ -173,10 +170,7 @@ export const route: Readonly<RouteObject> = {
                 <ProtectedRoute
                   component={<EditRelocationTaskPage />}
                   permitted={(user) =>
-                    expectedPermissionsAllowed(user, [
-                      'RELOCATION_TASKS_READ',
-                      'RELOCATION_TASKS_UPDATE',
-                    ])
+                    hasPermissions(user, ['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_UPDATE'])
                   }
                 />
               ),
