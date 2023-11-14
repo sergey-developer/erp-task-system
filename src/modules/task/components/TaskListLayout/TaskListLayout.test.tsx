@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
-import { RouteEnum } from 'configs/routes'
+import { CommonRouteEnum } from 'configs/routes'
 
 import TaskListMapPage from 'modules/task/pages/TaskListMapPage'
 import { testUtils as taskListMapPageTestUtils } from 'modules/task/pages/TaskListMapPage/TaskListMapPage.test'
@@ -51,15 +51,15 @@ describe('TaskListLayout', () => {
     test('Отображается корректно', () => {
       renderInRoute_latest([
         {
-          path: RouteEnum.Root,
-          element: <TaskListLayout defaultRoute={RouteEnum.TaskList} />,
+          path: CommonRouteEnum.Root,
+          element: <TaskListLayout />,
         },
       ])
 
       const button = testUtils.getTaskListButton()
 
       expect(button).toBeInTheDocument()
-      expect(button).toHaveAttribute('value', RouteEnum.TaskList)
+      expect(button).toHaveAttribute('value', CommonRouteEnum.DesktopTaskList)
     })
 
     test('При клике переходит на страницу реестра заявок', async () => {
@@ -70,19 +70,19 @@ describe('TaskListLayout', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.Tasks,
-            element: <TaskListLayout defaultRoute={RouteEnum.TaskListMap} />,
+            path: CommonRouteEnum.DesktopTasks,
+            element: <TaskListLayout />,
           },
           {
-            path: RouteEnum.TaskList,
+            path: CommonRouteEnum.DesktopTaskList,
             element: <TaskListPage />,
           },
           {
-            path: RouteEnum.TaskListMap,
+            path: CommonRouteEnum.DesktopTaskListMap,
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [RouteEnum.Tasks], initialIndex: 0 },
+        { initialEntries: [CommonRouteEnum.DesktopTasks], initialIndex: 0 },
       )
 
       await testUtils.clickTaskListButton(user)
@@ -96,15 +96,15 @@ describe('TaskListLayout', () => {
     test('Отображается корректно', () => {
       renderInRoute_latest([
         {
-          path: RouteEnum.Root,
-          element: <TaskListLayout defaultRoute={RouteEnum.TaskList} />,
+          path: CommonRouteEnum.Root,
+          element: <TaskListLayout />,
         },
       ])
 
       const button = testUtils.getTaskListMapButton()
 
       expect(button).toBeInTheDocument()
-      expect(button).toHaveAttribute('value', RouteEnum.TaskListMap)
+      expect(button).toHaveAttribute('value', CommonRouteEnum.DesktopTaskListMap)
     })
 
     test('При клике переходит на страницу карты с заявками', async () => {
@@ -115,19 +115,19 @@ describe('TaskListLayout', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.Tasks,
-            element: <TaskListLayout defaultRoute={RouteEnum.TaskList} />,
+            path: CommonRouteEnum.DesktopTasks,
+            element: <TaskListLayout />,
           },
           {
-            path: RouteEnum.TaskList,
+            path: CommonRouteEnum.DesktopTaskList,
             element: <TaskListPage />,
           },
           {
-            path: RouteEnum.TaskListMap,
+            path: CommonRouteEnum.DesktopTaskListMap,
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [RouteEnum.Tasks], initialIndex: 0 },
+        { initialEntries: [CommonRouteEnum.DesktopTasks], initialIndex: 0 },
       )
 
       await testUtils.clickTaskListMapButton(user)

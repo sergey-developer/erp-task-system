@@ -6,7 +6,7 @@ import httpClient from 'lib/httpClient'
 import { commonApiMessages } from 'shared/constants/common'
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 
-import { CustomBaseQueryConfig, CustomBaseQueryFn } from './intefraces'
+import { CustomBaseQueryConfig, CustomBaseQueryFn } from './types'
 import { makeRelativeApiUrl } from './utils'
 
 const baseQuery =

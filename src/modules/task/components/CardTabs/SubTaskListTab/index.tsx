@@ -2,14 +2,13 @@ import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useCallback, useState } from 'react'
 
-import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { CancelSubTaskModalProps } from 'modules/task/components/CancelSubTaskModal/types'
 import { ReworkSubTaskModalProps } from 'modules/task/components/ReworkSubTaskModal/types'
 import SubTaskList from 'modules/task/components/SubTaskList'
 import { useCancelSubTask, useGetSubTaskList, useReworkSubTask } from 'modules/task/hooks/subTask'
 import { useTaskExtendedStatus, useTaskStatus, useTaskType } from 'modules/task/hooks/task'
-import { SubTaskModel } from 'modules/task/models'
-import { TaskModel } from 'modules/task/models'
+import { SubTaskModel, TaskModel } from 'modules/task/models'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -71,7 +70,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
   const taskType = useTaskType(task.type)
   const taskStatus = useTaskStatus(task.status)
   const taskExtendedStatus = useTaskExtendedStatus(task.extendedStatus)
-  const currentUserIsTaskAssignee = useCheckUserAuthenticated(task.assignee?.id)
+  const currentUserIsTaskAssignee = useIdBelongAuthUser(task.assignee?.id)
   const taskHasSuspendRequest = !!task.suspendRequest
 
   const handleClickCancel = useCallback(

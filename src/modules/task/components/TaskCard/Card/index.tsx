@@ -5,17 +5,17 @@ import React, { FC, useCallback, useEffect } from 'react'
 
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
-import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal'
 import { RequestTaskSuspendModalProps } from 'modules/task/components/RequestTaskSuspendModal'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
+  getTaskWorkPerformedActMessages,
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
-  getTaskWorkPerformedActMessages,
 } from 'modules/task/constants/task'
 import { useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
@@ -206,7 +206,7 @@ const TaskCard: FC<TaskCardProps> = ({
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
   const userRole = useUserRole()
-  const isAssignedToCurrentUser = useCheckUserAuthenticated(task?.assignee?.id)
+  const isAssignedToCurrentUser = useIdBelongAuthUser(task?.assignee?.id)
 
   const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
