@@ -65,7 +65,7 @@ describe('Страница создания заявки на перемещен
   describe('Форма', () => {
     test('Отображается', () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
@@ -79,7 +79,7 @@ describe('Страница создания заявки на перемещен
   describe('Перечень оборудования', () => {
     test('Отображается', () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
@@ -95,7 +95,7 @@ describe('Страница создания заявки на перемещен
     describe('Кнопка скачивания шаблона', () => {
       test('Отображается если есть права', () => {
         mockGetUserListSuccess()
-        mockGetLocationListSuccess()
+        mockGetLocationListSuccess({ once: false })
         mockGetEquipmentCatalogListSuccess()
         mockGetCurrencyListSuccess()
 
@@ -115,7 +115,7 @@ describe('Страница создания заявки на перемещен
 
       test('Не отображается если нет прав', () => {
         mockGetUserListSuccess()
-        mockGetLocationListSuccess()
+        mockGetLocationListSuccess({ once: false })
         mockGetEquipmentCatalogListSuccess()
         mockGetCurrencyListSuccess()
 
