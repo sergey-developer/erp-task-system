@@ -8,3 +8,4 @@ export * from './closeRelocationTask.mock'
 export * from './getRelocationTaskList.mock'
 
 export * from './getRelocationEquipmentList.mock'
+export * from './getRelocationEquipmentBalanceList.mock'

@@ -88,10 +88,7 @@ const dropdownTrigger: DropdownProps['trigger'] = ['click']
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
   const navigate = useNavigate()
 
-  const userPermissions = useMatchUserPermissions([
-    'RELOCATION_TASKS_READ',
-    'RELOCATION_TASKS_UPDATE',
-  ])
+  const permissions = useMatchUserPermissions(['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_UPDATE'])
 
   const [cancelTaskModalOpened, { toggle: toggleOpenCancelTaskModal }] = useBoolean()
   const debouncedToggleOpenCancelTaskModal = useDebounceFn(toggleOpenCancelTaskModal)
@@ -254,14 +251,14 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             <Text>Сформировать накладную М-15</Text>
           </Space>
         ),
-        disabled: !userPermissions?.relocationTasksRead,
+        disabled: !permissions?.relocationTasksRead,
         onClick: handleGetWaybillM15,
       },
       {
         key: 2,
         label: 'Изменить заявку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -272,7 +269,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 3,
         label: 'Выполнить заявку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -283,7 +280,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 4,
         label: 'Вернуть на доработку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !executorIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenReturnToReworkModal,
@@ -292,7 +289,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 5,
         label: 'Отменить заявку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -303,7 +300,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 6,
         label: 'Подтвердить выполнение',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !executorIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenConfirmExecutionModal,

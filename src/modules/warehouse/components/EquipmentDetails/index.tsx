@@ -58,7 +58,7 @@ const EquipmentRelocationHistoryModal = React.lazy(
 const { Text } = Typography
 
 const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) => {
-  const userPermissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
+  const permissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
@@ -326,9 +326,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
               <Row data-testid='relocation-history'>
                 <Col>
                   <Button
-                    disabled={
-                      !userPermissions?.equipmentsRead || !userPermissions?.relocationTasksRead
-                    }
+                    disabled={!permissions?.equipmentsRead || !permissions.relocationTasksRead}
                     onClick={debouncedToggleOpenRelocationHistoryModal}
                   >
                     История перемещений
