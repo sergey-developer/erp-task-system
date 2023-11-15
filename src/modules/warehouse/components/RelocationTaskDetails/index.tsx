@@ -20,11 +20,9 @@ import { useMatchUserPermissions } from 'modules/user/hooks'
 import {
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
-  relocationTaskStatusDict,
   executeRelocationTaskMessages,
+  relocationTaskStatusDict,
   returnRelocationTaskToReworkMessages,
-} from 'modules/warehouse/constants/relocationTask'
-import {
 } from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
@@ -32,14 +30,16 @@ import {
   useLazyGetRelocationTaskWaybillM15,
   useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
-import { useCloseRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
+import {
+  useCancelRelocationTaskMutation,
+  useCloseRelocationTaskMutation,
+  useExecuteRelocationTaskMutation,
+  useReturnRelocationTaskToReworkMutation,
+} from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
-import { useReturnRelocationTaskToReworkMutation } from 'modules/warehouse/services/relocationTaskApi.service'
-import { useCancelRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
-import { useExecuteRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 
 import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -58,10 +58,9 @@ import {
 } from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-import { showErrorNotification } from 'shared/utils/notifications'
-import { getFieldsErrors } from 'shared/utils/form'
 import { mapUploadedFiles } from 'shared/utils/file'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import { getFieldsErrors } from 'shared/utils/form'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
@@ -87,10 +86,7 @@ const dropdownTrigger: DropdownProps['trigger'] = ['click']
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
   const navigate = useNavigate()
 
-  const userPermissions = useMatchUserPermissions([
-    'RELOCATION_TASKS_READ',
-    'RELOCATION_TASKS_UPDATE',
-  ])
+  const permissions = useMatchUserPermissions(['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_UPDATE'])
 
   const [executeTaskModalOpened, { toggle: toggleOpenExecuteTaskModal }] = useBoolean()
   const debouncedToggleOpenExecuteTaskModal = useDebounceFn(toggleOpenExecuteTaskModal)
@@ -264,14 +260,14 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             <Text>Сформировать накладную М-15</Text>
           </Space>
         ),
-        disabled: !userPermissions?.relocationTasksRead,
+        disabled: !permissions?.relocationTasksRead,
         onClick: handleGetWaybillM15,
       },
       {
         key: 2,
         label: 'Изменить заявку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -282,7 +278,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 3,
         label: 'Выполнить заявку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -293,7 +289,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 4,
         label: 'Вернуть на доработку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !executorIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenReturnToReworkModal,
@@ -302,7 +298,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 5,
         label: 'Отменить заявку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -313,7 +309,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 6,
         label: 'Подтвердить выполнение',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !executorIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenConfirmExecutionModal,

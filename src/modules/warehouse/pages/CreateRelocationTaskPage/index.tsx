@@ -62,7 +62,7 @@ const initialValues: Pick<RelocationTaskFormFields, 'equipments'> = {
 const CreateRelocationTaskPage: FC = () => {
   const navigate = useNavigate()
 
-  const userPermissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
+  const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
@@ -349,8 +349,20 @@ const CreateRelocationTaskPage: FC = () => {
           </Col>
 
           <Col span={24}>
-            <Space direction='vertical'>
-              <Text strong>Перечень оборудования</Text>
+            <Space direction='vertical' size='middle'>
+              <Row justify='space-between' align='middle'>
+                <Col>
+                  <Text strong>Перечень оборудования</Text>
+                </Col>
+
+                {permissions?.equipmentsCreate && (
+                  <Col>
+                    <Space>
+                      <Button>Скачать шаблон</Button>
+                    </Space>
+                  </Col>
+                )}
+              </Row>
 
               <RelocationEquipmentEditableTable
                 editableKeys={editableTableRowKeys}
@@ -360,7 +372,7 @@ const CreateRelocationTaskPage: FC = () => {
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
-                canAddEquipment={userPermissions?.equipmentsCreate}
+                canAddEquipment={permissions?.equipmentsCreate}
                 addEquipmentBtnDisabled={addEquipmentBtnDisabled}
                 onClickAddEquipment={handleOpenAddEquipmentModal}
               />

@@ -1,63 +1,55 @@
-import { useBoolean, usePrevious } from 'ahooks'
-import { Button, Col, Form, FormProps, Modal, Row, Typography } from 'antd'
-import moment from 'moment-timezone'
-import React, { FC, Key, useCallback, useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useBoolean, usePrevious } from "ahooks";
+import { Button, Col, Form, FormProps, Modal, Row, Typography } from "antd";
+import moment from "moment-timezone";
+import React, { FC, Key, useCallback, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
-import EquipmentFormModal from 'modules/warehouse/components/EquipmentFormModal'
-import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
-import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
+import { useGetUserList, useMatchUserPermissions } from "modules/user/hooks";
+import EquipmentFormModal from "modules/warehouse/components/EquipmentFormModal";
+import { EquipmentFormModalProps } from "modules/warehouse/components/EquipmentFormModal/types";
+import RelocationEquipmentEditableTable from "modules/warehouse/components/RelocationEquipmentEditableTable";
 import {
   RelocationEquipmentEditableTableProps,
-  RelocationEquipmentRowFields,
-} from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
-import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
-import {
-  LocationOption,
-  RelocationTaskFormProps,
-} from 'modules/warehouse/components/RelocationTaskForm/types'
-import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
-import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
-import { updateRelocationTaskMessages } from 'modules/warehouse/constants/relocationTask'
-import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
+  RelocationEquipmentRowFields
+} from "modules/warehouse/components/RelocationEquipmentEditableTable/types";
+import RelocationTaskForm from "modules/warehouse/components/RelocationTaskForm";
+import { LocationOption, RelocationTaskFormProps } from "modules/warehouse/components/RelocationTaskForm/types";
+import { EquipmentCategoryEnum } from "modules/warehouse/constants/equipment";
+import { defaultGetNomenclatureListParams } from "modules/warehouse/constants/nomenclature";
+import { updateRelocationTaskMessages } from "modules/warehouse/constants/relocationTask";
+import { WarehouseRouteEnum } from "modules/warehouse/constants/routes";
+import { useLazyGetCustomerList } from "modules/warehouse/hooks/customer";
 import {
   useCheckEquipmentCategory,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
-  useLazyGetEquipment,
-} from 'modules/warehouse/hooks/equipment'
-import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+  useLazyGetEquipment
+} from "modules/warehouse/hooks/equipment";
+import { useGetNomenclature, useGetNomenclatureList } from "modules/warehouse/hooks/nomenclature";
 import {
   useGetRelocationEquipmentBalanceList,
   useGetRelocationEquipmentList,
-  useGetRelocationTask,
-} from 'modules/warehouse/hooks/relocationTask'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
-import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
-import { useCreateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
-import { useUpdateRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
-import { RelocationTaskFormFields } from 'modules/warehouse/types'
-import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocationTask'
+  useGetRelocationTask
+} from "modules/warehouse/hooks/relocationTask";
+import { useGetWorkTypeList } from "modules/warehouse/hooks/workType";
+import { EquipmentCategoryListItemModel } from "modules/warehouse/models";
+import { useCreateEquipmentMutation } from "modules/warehouse/services/equipmentApi.service";
+import { useUpdateRelocationTaskMutation } from "modules/warehouse/services/relocationTaskApi.service";
+import { RelocationTaskFormFields } from "modules/warehouse/types";
+import { getRelocationTaskListPageLink } from "modules/warehouse/utils/relocationTask";
 
-import Space from 'components/Space'
+import Space from "components/Space";
 
-import { LocationTypeEnum } from 'shared/constants/catalogs'
-import { useGetLocationList } from 'shared/hooks/catalogs/location'
-import { useGetCurrencyList } from 'shared/hooks/currency'
-import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import {
-  isBadRequestError,
-  isErrorResponse,
-  isForbiddenError,
-  isNotFoundError,
-} from 'shared/services/baseApi'
-import { IdType } from 'shared/types/common'
-import { ArrayFirst } from 'shared/types/utils'
-import { mergeDateTime } from 'shared/utils/date'
-import { getFieldsErrors } from 'shared/utils/form'
-import { showErrorNotification } from 'shared/utils/notifications'
+import { LocationTypeEnum } from "shared/constants/catalogs";
+import { useGetLocationList } from "shared/hooks/catalogs/location";
+import { useGetCurrencyList } from "shared/hooks/currency";
+import { useDebounceFn } from "shared/hooks/useDebounceFn";
+import { isBadRequestError, isErrorResponse, isForbiddenError, isNotFoundError } from "shared/services/baseApi";
+import { IdType } from "shared/types/common";
+import { ArrayFirst } from "shared/types/utils";
+import { mergeDateTime } from "shared/utils/date";
+import { getFieldsErrors } from "shared/utils/form";
+import { showErrorNotification } from "shared/utils/notifications";
 
 const { Text } = Typography
 
@@ -72,7 +64,7 @@ const EditRelocationTaskPage: FC = () => {
   const params = useParams<'id'>()
   const relocationTaskId = Number(params?.id) || undefined
 
-  const userPermissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
+  const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
@@ -462,7 +454,19 @@ const EditRelocationTaskPage: FC = () => {
 
           <Col span={24}>
             <Space direction='vertical'>
-              <Text strong>Перечень оборудования</Text>
+              <Row justify='space-between' align='middle'>
+                <Col>
+                  <Text strong>Перечень оборудования</Text>
+                </Col>
+
+                {permissions?.equipmentsCreate && (
+                  <Col>
+                    <Space>
+                      <Button>Скачать шаблон</Button>
+                    </Space>
+                  </Col>
+                )}
+              </Row>
 
               <RelocationEquipmentEditableTable
                 editableKeys={editableTableRowKeys}
@@ -473,7 +477,7 @@ const EditRelocationTaskPage: FC = () => {
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
-                canAddEquipment={userPermissions?.equipmentsCreate}
+                canAddEquipment={permissions?.equipmentsCreate}
                 addEquipmentBtnDisabled={addEquipmentBtnDisabled}
                 onClickAddEquipment={handleOpenAddEquipmentModal}
               />
