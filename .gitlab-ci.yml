@@ -26,6 +26,7 @@ Lint:
     - develop
   tags:
     - docker
+    - vk
 
 Tests:
   stage: test
@@ -51,6 +52,7 @@ Tests:
     # - develop
   tags:
     - docker
+    - vk
 
 
 .base_build: &base_build
