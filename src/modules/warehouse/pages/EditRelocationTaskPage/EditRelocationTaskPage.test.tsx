@@ -38,6 +38,17 @@ import EditRelocationTaskPage from './index'
 
 const getContainer = () => screen.getByTestId('edit-relocation-task-page')
 
+// add by excel button
+const getAddByExcelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Добавить из Excel/)
+
+const queryAddByExcelButton = () =>
+  buttonTestUtils.queryButtonIn(getContainer(), /Добавить из Excel/)
+
+const clickAddByExcelButton = async (user: UserEvent) => {
+  const button = getAddByExcelButton()
+  await user.click(button)
+}
+
 // download template button
 const getDownloadTemplateButton = () =>
   buttonTestUtils.getButtonIn(getContainer(), /Скачать шаблон/)
@@ -66,6 +77,10 @@ const clickCancelButton = async (user: UserEvent) => {
 
 export const testUtils = {
   getContainer,
+
+  getAddByExcelButton,
+  queryAddByExcelButton,
+  clickAddByExcelButton,
 
   getDownloadTemplateButton,
   queryDownloadTemplateButton,
@@ -239,6 +254,50 @@ describe('Страница редактирования заявки на пер
         )
 
         expect(notification).toBeInTheDocument()
+      })
+    })
+
+    describe('Кнопка добавления из excel', () => {
+      test('Отображается если есть права', () => {
+        jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
+
+        mockGetUserListSuccess()
+        mockGetLocationListSuccess()
+        mockGetEquipmentCatalogListSuccess()
+        mockGetCurrencyListSuccess()
+        mockGetRelocationTaskSuccess(relocationTaskId)
+        mockGetRelocationEquipmentListSuccess(relocationTaskId)
+        mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
+
+        render(<EditRelocationTaskPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }),
+            },
+          }),
+        })
+
+        const button = testUtils.getAddByExcelButton()
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
+
+      test('Не отображается если нет прав', () => {
+        jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
+
+        mockGetUserListSuccess()
+        mockGetLocationListSuccess()
+        mockGetEquipmentCatalogListSuccess()
+        mockGetCurrencyListSuccess()
+        mockGetRelocationTaskSuccess(relocationTaskId)
+        mockGetRelocationEquipmentListSuccess(relocationTaskId)
+        mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
+
+        render(<EditRelocationTaskPage />)
+
+        const button = testUtils.queryAddByExcelButton()
+        expect(button).not.toBeInTheDocument()
       })
     })
   })

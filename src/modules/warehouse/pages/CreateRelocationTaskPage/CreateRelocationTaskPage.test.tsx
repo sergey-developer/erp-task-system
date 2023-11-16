@@ -32,6 +32,17 @@ import CreateRelocationTaskPage from './index'
 
 const getContainer = () => screen.getByTestId('create-relocation-task-page')
 
+// add by excel button
+const getAddByExcelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Добавить из Excel/)
+
+const queryAddByExcelButton = () =>
+  buttonTestUtils.queryButtonIn(getContainer(), /Добавить из Excel/)
+
+const clickAddByExcelButton = async (user: UserEvent) => {
+  const button = getAddByExcelButton()
+  await user.click(button)
+}
+
 // download template button
 const getDownloadTemplateButton = () =>
   buttonTestUtils.getButtonIn(getContainer(), /Скачать шаблон/)
@@ -60,6 +71,10 @@ const clickCancelButton = async (user: UserEvent) => {
 
 export const testUtils = {
   getContainer,
+
+  getAddByExcelButton,
+  queryAddByExcelButton,
+  clickAddByExcelButton,
 
   getDownloadTemplateButton,
   queryDownloadTemplateButton,
@@ -195,6 +210,40 @@ describe('Страница создания заявки на перемещен
         )
 
         expect(notification).toBeInTheDocument()
+      })
+    })
+
+    describe('Кнопка добавления из excel', () => {
+      test('Отображается если есть права', () => {
+        mockGetUserListSuccess()
+        mockGetLocationListSuccess()
+        mockGetEquipmentCatalogListSuccess()
+        mockGetCurrencyListSuccess()
+
+        render(<CreateRelocationTaskPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }),
+            },
+          }),
+        })
+
+        const button = testUtils.getAddByExcelButton()
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
+
+      test('Не отображается если нет прав', () => {
+        mockGetUserListSuccess()
+        mockGetLocationListSuccess()
+        mockGetEquipmentCatalogListSuccess()
+        mockGetCurrencyListSuccess()
+
+        render(<CreateRelocationTaskPage />)
+
+        const button = testUtils.queryAddByExcelButton()
+        expect(button).not.toBeInTheDocument()
       })
     })
   })
