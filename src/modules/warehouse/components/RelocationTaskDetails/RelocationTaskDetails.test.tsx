@@ -3,18 +3,18 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
 import { UserRoleEnum } from 'modules/user/constants'
-import { testUtils as confirmExecutionRelocationTaskModalTestUtils } from 'modules/warehouse/components/ConfirmExecutionRelocationTaskModal/ConfirmExecutionRelocationTaskModal.test'
 import { testUtils as cancelRelocationTaskModalTestUtils } from 'modules/warehouse/components/CancelRelocationTaskModal/CancelRelocationTaskModal.test'
+import { testUtils as confirmExecutionRelocationTaskModalTestUtils } from 'modules/warehouse/components/ConfirmExecutionRelocationTaskModal/ConfirmExecutionRelocationTaskModal.test'
 import { testUtils as executeRelocationTaskModalTestUtils } from 'modules/warehouse/components/ExecuteRelocationTaskModal/ExecuteRelocationTaskModal.test'
 import { testUtils as relocationEquipmentTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentTable/RelocationEquipmentTable.test'
 import { testUtils as returnRelocationTaskToReworkModalTestUtils } from 'modules/warehouse/components/ReturnRelocationTaskToReworkModal/ReturnRelocationTaskToReworkModal.test'
 import {
-  executeRelocationTaskMessages,
-  closeRelocationTaskMessages,
   cancelRelocationTaskMessages,
+  closeRelocationTaskMessages,
+  executeRelocationTaskMessages,
   getRelocationEquipmentListMessages,
   getRelocationTaskMessages,
-  getRelocationTaskWaybillM15Messages,
+  getRelocationTaskWaybillM15ErrorMsg,
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
   returnRelocationTaskToReworkMessages,
@@ -30,16 +30,16 @@ import { formatDate } from 'shared/utils/date'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
-  mockCloseRelocationTaskBadRequestError,
-  mockCloseRelocationTaskForbiddenError,
-  mockCloseRelocationTaskNotFoundError,
-  mockCloseRelocationTaskServerError,
-  mockCloseRelocationTaskSuccess,
   mockCancelRelocationTaskBadRequestError,
   mockCancelRelocationTaskForbiddenError,
   mockCancelRelocationTaskNotFoundError,
   mockCancelRelocationTaskServerError,
   mockCancelRelocationTaskSuccess,
+  mockCloseRelocationTaskBadRequestError,
+  mockCloseRelocationTaskForbiddenError,
+  mockCloseRelocationTaskNotFoundError,
+  mockCloseRelocationTaskServerError,
+  mockCloseRelocationTaskSuccess,
   mockExecuteRelocationTaskBadRequestError,
   mockExecuteRelocationTaskForbiddenError,
   mockExecuteRelocationTaskNotFoundError,
@@ -562,9 +562,7 @@ describe('Информация о заявке о перемещении', () =>
       await testUtils.openMenu(user)
       await testUtils.clickWaybillM15MenuItem(user)
 
-      await waitFor(() => {
-        expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
-      })
+      await waitFor(() => expect(base64ToArrayBufferSpy).toBeCalledTimes(1))
       expect(base64ToArrayBufferSpy).toBeCalledWith(m15File)
 
       expect(clickDownloadLinkSpy).toBeCalledTimes(1)
@@ -650,7 +648,7 @@ describe('Информация о заявке о перемещении', () =>
         await testUtils.clickWaybillM15MenuItem(user)
 
         const notification = await notificationTestUtils.findNotification(
-          getRelocationTaskWaybillM15Messages.commonError,
+          getRelocationTaskWaybillM15ErrorMsg,
         )
         expect(notification).toBeInTheDocument()
       })

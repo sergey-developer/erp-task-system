@@ -23,3 +23,6 @@ export const getEquipmentCatalogListMessages: ApiRequestMessages<'commonError'> 
 export const getEquipmentMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения оборудования',
 }
+
+export const getEquipmentListTemplateErrorMsg =
+  'Ошибка формирования шаблона для загрузки оборудования из файла'

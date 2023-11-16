@@ -7,5 +7,7 @@ export * from './useGetEquipmentNomenclatureList'
 
 export * from './useGetEquipmentCatalogList'
 
+export * from './useGetEquipmentListTemplateHandler'
+
 export * from './useGetEquipmentCategoryList'
 export * from './useCheckEquipmentCategory'

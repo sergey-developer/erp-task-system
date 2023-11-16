@@ -25,6 +25,7 @@ import {
   useCheckEquipmentCategory,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
+  useGetEquipmentListTemplateHandler,
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
@@ -174,6 +175,9 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] =
     useCreateEquipmentMutation()
+
+  const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
+    useGetEquipmentListTemplateHandler()
 
   const handleCreateRelocationTask = async (values: RelocationTaskFormFields) => {
     try {
@@ -358,7 +362,12 @@ const CreateRelocationTaskPage: FC = () => {
                 {permissions?.equipmentsCreate && (
                   <Col>
                     <Space>
-                      <Button>Скачать шаблон</Button>
+                      <Button
+                        onClick={getEquipmentListTemplate}
+                        loading={getEquipmentListTemplateIsFetching}
+                      >
+                        Скачать шаблон
+                      </Button>
                     </Space>
                   </Col>
                 )}
