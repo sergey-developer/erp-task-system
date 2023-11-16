@@ -12,6 +12,8 @@ import {
   GetEquipmentCategoryListSuccessResponse,
   GetEquipmentListQueryArgs,
   GetEquipmentListSuccessResponse,
+  GetEquipmentListTemplateQueryArgs,
+  GetEquipmentListTemplateSuccessResponse,
   GetEquipmentNomenclatureListQueryArgs,
   GetEquipmentNomenclatureListSuccessResponse,
   GetEquipmentQueryArgs,
@@ -143,6 +145,16 @@ const equipmentApiService = baseApiService
           method: HttpMethodEnum.Get,
         }),
       }),
+
+      getEquipmentListTemplate: build.query<
+        GetEquipmentListTemplateSuccessResponse,
+        GetEquipmentListTemplateQueryArgs
+      >({
+        query: () => ({
+          url: EquipmentApiEnum.GetEquipmentListTemplate,
+          method: HttpMethodEnum.Get,
+        }),
+      }),
     }),
   })
 
@@ -161,4 +173,6 @@ export const {
   useGetEquipmentRelocationHistoryQuery,
 
   useGetEquipmentCategoryListQuery,
+
+  useLazyGetEquipmentListTemplateQuery,
 } = equipmentApiService

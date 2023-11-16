@@ -24,9 +24,7 @@ export const closeRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка закрытия заявки на перемещение',
 }
 
-export const getRelocationTaskWaybillM15Messages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка формирования накладной М-15',
-}
+export const getRelocationTaskWaybillM15ErrorMsg = 'Ошибка формирования накладной М-15'
 
 export const getRelocationEquipmentListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка оборудования по заявке на перемещение',

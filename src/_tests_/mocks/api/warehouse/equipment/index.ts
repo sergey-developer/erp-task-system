@@ -12,3 +12,5 @@ export * from './getEquipmentAttachmentList.mock'
 export * from './getEquipmentNomenclatureList.mock'
 
 export * from './getEquipmentCatalogList.mock'
+
+export * from './getEquipmentListTemplate.mock'

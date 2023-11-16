@@ -6,9 +6,8 @@ export enum EquipmentApiEnum {
   CreateEquipment = '/equipments/',
   GetEquipmentList = '/equipments/',
   GetEquipmentCatalogList = '/equipments/catalog/',
-
   GetEquipmentCategoryList = '/equipments/categories/',
-
+  GetEquipmentListTemplate = '/equipments/template/',
   GetEquipmentNomenclatureList = '/equipments/nomenclatures/reserves/',
 }
 
