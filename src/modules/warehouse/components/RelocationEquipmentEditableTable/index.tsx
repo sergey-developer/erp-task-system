@@ -1,6 +1,7 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Button, Form } from 'antd'
+import { isNil } from 'lodash'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
@@ -50,6 +51,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   canAddEquipment,
   addEquipmentBtnDisabled,
   onClickAddEquipment,
+
+  onClickAddImage,
 }) => {
   const form = Form.useFormInstance()
   const relocateFromFormValue: MaybeUndefined<IdType> = Form.useWatch('relocateFrom', form)
@@ -186,6 +189,24 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
           const isConsumable = category?.code === EquipmentCategoryEnum.Consumable
 
           return { min: 1, max: amount || 1, disabled: (!!category && !isConsumable) || isLoading }
+        }
+      },
+    },
+    {
+      dataIndex: 'attachments',
+      title: 'Изображения',
+      renderFormItem: (schema, config) => {
+        if (!isNil(schema.index) && config.record) {
+          return (
+            <Button
+              disabled={!config.record.id}
+              onClick={() => {
+                onClickAddImage({ rowId: config.record!.rowId!, rowIndex: schema.index! })
+              }}
+            >
+              Добавить
+            </Button>
+          )
         }
       },
     },

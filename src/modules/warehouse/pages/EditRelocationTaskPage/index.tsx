@@ -76,7 +76,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
-  const [newEquipmentRow, setNewEquipmentRow] =
+  const [currentEquipmentRow, setCurrentEquipmentRow] =
     useState<
       ArrayFirst<
         Parameters<NonNullable<RelocationEquipmentEditableTableProps['onClickAddEquipment']>>
@@ -97,7 +97,7 @@ const EditRelocationTaskPage: FC = () => {
     NonNullable<RelocationEquipmentEditableTableProps['onClickAddEquipment']>
   >(
     (row) => {
-      setNewEquipmentRow(row)
+      setCurrentEquipmentRow(row)
       openAddEquipmentModal()
     },
     [openAddEquipmentModal],
@@ -107,7 +107,7 @@ const EditRelocationTaskPage: FC = () => {
     closeAddEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
-    setNewEquipmentRow(undefined)
+    setCurrentEquipmentRow(undefined)
   }, [closeAddEquipmentModal])
 
   const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
@@ -300,7 +300,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
-      if (!newEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
+      if (!currentEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
 
       try {
         const createdEquipment = await createEquipmentMutation({
@@ -309,7 +309,7 @@ const EditRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
-        form.setFieldValue(['equipments', newEquipmentRow.rowIndex], {
+        form.setFieldValue(['equipments', currentEquipmentRow.rowIndex], {
           rowId: createdEquipment.id,
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
@@ -323,7 +323,7 @@ const EditRelocationTaskPage: FC = () => {
         })
 
         setEditableTableRowKeys((prevState) => {
-          const index = prevState.indexOf(newEquipmentRow.rowId)
+          const index = prevState.indexOf(currentEquipmentRow.rowId)
           const newArr = [...prevState]
           if (index !== -1) {
             newArr[index] = createdEquipment.id
@@ -347,7 +347,7 @@ const EditRelocationTaskPage: FC = () => {
       }
     },
     [
-      newEquipmentRow,
+      currentEquipmentRow,
       selectedRelocateTo?.value,
       selectedRelocateFrom?.value,
       createEquipmentMutation,
@@ -473,9 +473,10 @@ const EditRelocationTaskPage: FC = () => {
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
-                canAddEquipment={userPermissions?.equipmentsCreate}
+                canAddEquipment={!!userPermissions?.equipmentsCreate}
                 addEquipmentBtnDisabled={addEquipmentBtnDisabled}
                 onClickAddEquipment={handleOpenAddEquipmentModal}
+                onClickAddImage={() => {}}
               />
             </Space>
           </Col>

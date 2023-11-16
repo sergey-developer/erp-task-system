@@ -17,6 +17,7 @@ export type RelocationTaskFormEquipment = {
   price?: number
   currency?: IdType
   category?: EquipmentModel['category']
+  attachments?: IdType[]
 }
 
 export type RelocationTaskFormFields = {

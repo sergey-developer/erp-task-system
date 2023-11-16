@@ -8,7 +8,7 @@ import EquipmentFormModal from 'modules/warehouse/components/EquipmentFormModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
 import {
-  RelocationEquipmentEditableTableProps,
+  CurrentEquipmentRow,
   RelocationEquipmentRowFields,
 } from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
 import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
@@ -48,7 +48,6 @@ import {
   isNotFoundError,
 } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
-import { ArrayFirst } from 'shared/types/utils'
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -66,12 +65,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
-  const [newEquipmentRow, setNewEquipmentRow] =
-    useState<
-      ArrayFirst<
-        Parameters<NonNullable<RelocationEquipmentEditableTableProps['onClickAddEquipment']>>
-      >
-    >()
+  const [currentEquipmentRow, setCurrentEquipmentRow] = useState<CurrentEquipmentRow>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
@@ -83,11 +77,9 @@ const CreateRelocationTaskPage: FC = () => {
     { setTrue: openAddEquipmentModal, setFalse: closeAddEquipmentModal },
   ] = useBoolean(false)
 
-  const handleOpenAddEquipmentModal = useDebounceFn<
-    NonNullable<RelocationEquipmentEditableTableProps['onClickAddEquipment']>
-  >(
-    (row) => {
-      setNewEquipmentRow(row)
+  const handleOpenAddEquipmentModal = useDebounceFn(
+    (row: CurrentEquipmentRow) => {
+      setCurrentEquipmentRow(row)
       openAddEquipmentModal()
     },
     [openAddEquipmentModal],
@@ -97,8 +89,23 @@ const CreateRelocationTaskPage: FC = () => {
     closeAddEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
-    setNewEquipmentRow(undefined)
+    setCurrentEquipmentRow(undefined)
   }, [closeAddEquipmentModal])
+
+  const [
+    addEquipmentImagesModalOpened,
+    { setTrue: openAddEquipmentImagesModal, setFalse: closeAddEquipmentImagesModal },
+  ] = useBoolean(false)
+
+  const handleOpenAddEquipmentImagesModal = useDebounceFn((row: CurrentEquipmentRow) => {
+    setCurrentEquipmentRow(row)
+    openAddEquipmentImagesModal()
+  })
+
+  const handleCloseAddEquipmentImagesModal = useDebounceFn(() => {
+    closeAddEquipmentImagesModal()
+    setCurrentEquipmentRow(undefined)
+  })
 
   const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
 
@@ -252,7 +259,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
-      if (!newEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
+      if (!currentEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
 
       try {
         const createdEquipment = await createEquipmentMutation({
@@ -261,7 +268,7 @@ const CreateRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
-        form.setFieldValue(['equipments', newEquipmentRow.rowIndex], {
+        form.setFieldValue(['equipments', currentEquipmentRow.rowIndex], {
           rowId: createdEquipment.id,
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
@@ -275,7 +282,7 @@ const CreateRelocationTaskPage: FC = () => {
         })
 
         setEditableTableRowKeys((prevState) => {
-          const index = prevState.indexOf(newEquipmentRow.rowId)
+          const index = prevState.indexOf(currentEquipmentRow.rowId)
           const newArr = [...prevState]
           if (index !== -1) {
             newArr[index] = createdEquipment.id
@@ -299,7 +306,7 @@ const CreateRelocationTaskPage: FC = () => {
       }
     },
     [
-      newEquipmentRow,
+      currentEquipmentRow,
       selectedRelocateTo?.value,
       selectedRelocateFrom?.value,
       createEquipmentMutation,
@@ -360,9 +367,10 @@ const CreateRelocationTaskPage: FC = () => {
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
-                canAddEquipment={userPermissions?.equipmentsCreate}
+                canAddEquipment={!!userPermissions?.equipmentsCreate}
                 addEquipmentBtnDisabled={addEquipmentBtnDisabled}
                 onClickAddEquipment={handleOpenAddEquipmentModal}
+                onClickAddImage={handleOpenAddEquipmentImagesModal}
               />
             </Space>
           </Col>

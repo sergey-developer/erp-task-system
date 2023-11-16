@@ -6,6 +6,11 @@ import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { CurrencyListModel } from 'shared/models/currency'
 import { ArrayFirst } from 'shared/types/utils'
 
+export type CurrentEquipmentRow = {
+  rowIndex: number
+  rowId: number
+}
+
 export type RelocationEquipmentRowFields = Partial<
   ArrayFirst<RelocationTaskFormFields['equipments']>
 >
@@ -23,7 +28,9 @@ export type RelocationEquipmentEditableTableProps = {
   equipmentCatalogList: EquipmentCatalogListModel
   equipmentCatalogListIsLoading: boolean
 
-  canAddEquipment?: boolean
-  addEquipmentBtnDisabled?: boolean
-  onClickAddEquipment?: (row: { rowIndex: number; rowId: number }) => void
+  canAddEquipment: boolean
+  addEquipmentBtnDisabled: boolean
+  onClickAddEquipment: (data: CurrentEquipmentRow) => void
+
+  onClickAddImage: (data: CurrentEquipmentRow) => void
 }
