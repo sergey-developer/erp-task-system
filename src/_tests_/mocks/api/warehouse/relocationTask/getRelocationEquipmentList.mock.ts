@@ -1,4 +1,4 @@
-import { GetRelocationEquipmentListTransformedSuccessResponse } from 'modules/warehouse/types'
+import { GetRelocationEquipmentListSuccessResponse } from 'modules/warehouse/models'
 import { getRelocationEquipmentListUrl } from 'modules/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ const getRelocationEquipmentListMockFn = (id: IdType) =>
 
 export const mockGetRelocationEquipmentListSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentListTransformedSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentListSuccessResponse>>,
 ) => getSuccessMockFn(getRelocationEquipmentListMockFn(id), options)()
 
 export const mockGetRelocationEquipmentListForbiddenError = (

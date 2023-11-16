@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { CustomMutationTrigger, CustomUseMutationResult } from 'lib/rtk-query/types'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { createTaskCommentMessages } from 'modules/task/constants/taskComment'
 import {
@@ -17,10 +17,10 @@ import {
 } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseCreateTaskCommentResult = [
-  CustomMutationTrigger<CreateTaskCommentMutationArgs, CreateTaskCommentSuccessResponse>,
-  CustomUseMutationResult<CreateTaskCommentMutationArgs, CreateTaskCommentSuccessResponse>,
-]
+type UseCreateTaskCommentResult = CustomUseMutationResult<
+  CreateTaskCommentMutationArgs,
+  CreateTaskCommentSuccessResponse
+>
 
 export const useCreateTaskComment = (): UseCreateTaskCommentResult => {
   const [mutation, state] = useCreateTaskCommentMutation()

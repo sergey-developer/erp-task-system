@@ -10,8 +10,10 @@ export type FieldsErrors<T> = {
   [key in keyof T]?: ValidationErrors
 }
 
+export type ErrorDataDetail = string | ValidationErrors
+
 export type ErrorData<T extends object = {}> = FieldsErrors<T> & {
-  detail?: string | ValidationErrors
+  detail?: ErrorDataDetail
 }
 
 export type ErrorResponse<T extends object = {}> = {
@@ -38,9 +40,6 @@ export type CustomBaseQueryConfig = {
   apiVersion: ApiVersionUnion
   prepareHeaders?: (
     headers: AxiosRequestHeaders,
-    api: Pick<
-      BaseQueryApi,
-      'getState' | 'extra' | 'endpoint' | 'type' | 'forced'
-    >,
+    api: Pick<BaseQueryApi, 'getState' | 'extra' | 'endpoint' | 'type' | 'forced'>,
   ) => AxiosRequestHeaders
 }

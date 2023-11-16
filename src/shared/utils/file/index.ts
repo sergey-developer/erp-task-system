@@ -1,2 +1,3 @@
 export * from './prettyBytes'
-export * from './mapUploadedFiles'
+export * from './extractOriginFile'
+export * from './extractFromFileResponse'
