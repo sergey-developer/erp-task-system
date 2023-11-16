@@ -362,6 +362,8 @@ const CreateRelocationTaskPage: FC = () => {
                 {permissions?.equipmentsCreate && (
                   <Col>
                     <Space>
+                      <Button>Добавить из Excel</Button>
+
                       <Button
                         onClick={getEquipmentListTemplate}
                         loading={getEquipmentListTemplateIsFetching}
