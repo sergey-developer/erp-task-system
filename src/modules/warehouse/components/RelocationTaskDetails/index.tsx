@@ -20,11 +20,9 @@ import { useMatchUserPermissions } from 'modules/user/hooks'
 import {
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
-  relocationTaskStatusDict,
   executeRelocationTaskMessages,
+  relocationTaskStatusDict,
   returnRelocationTaskToReworkMessages,
-} from 'modules/warehouse/constants/relocationTask'
-import {
 } from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
@@ -32,14 +30,16 @@ import {
   useLazyGetRelocationTaskWaybillM15,
   useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
-import { useCloseRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
+import {
+  useCancelRelocationTaskMutation,
+  useCloseRelocationTaskMutation,
+  useExecuteRelocationTaskMutation,
+  useReturnRelocationTaskToReworkMutation,
+} from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
-import { useReturnRelocationTaskToReworkMutation } from 'modules/warehouse/services/relocationTaskApi.service'
-import { useCancelRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
-import { useExecuteRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 
 import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -58,10 +58,9 @@ import {
 } from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-import { showErrorNotification } from 'shared/utils/notifications'
+import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
-import { mapUploadedFiles } from 'shared/utils/file'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
@@ -220,7 +219,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     try {
       await executeRelocationTaskMutation({
         relocationTaskId,
-        documents: mapUploadedFiles(values.documents),
+        documents: extractOriginFiles(values.documents),
       }).unwrap()
 
       toggleOpenExecuteTaskModal()

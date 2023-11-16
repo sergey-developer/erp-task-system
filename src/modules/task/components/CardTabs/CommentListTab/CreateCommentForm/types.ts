@@ -1,5 +1,5 @@
 import { FormInstance } from 'antd'
-import { UploadFile } from 'antd/es/upload/interface'
+import { UploadFile } from 'antd/es/upload'
 
 import { FieldsErrors } from 'shared/services/baseApi'
 

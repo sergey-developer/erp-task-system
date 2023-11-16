@@ -1,5 +1,5 @@
 import { FormInstance, UploadProps } from 'antd'
-import { UploadFile } from 'antd/es/upload/interface'
+import { UploadFile } from 'antd/es/upload'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {

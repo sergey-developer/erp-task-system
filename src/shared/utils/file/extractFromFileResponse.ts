@@ -1,4 +1,4 @@
-import { UploadFile } from 'antd/es/upload/interface'
+import { UploadFile } from 'antd/es/upload'
 
 import { IdType } from 'shared/types/common'
 import { isTruthy } from 'shared/utils/common'
