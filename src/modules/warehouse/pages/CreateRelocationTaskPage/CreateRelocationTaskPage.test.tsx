@@ -5,11 +5,10 @@ import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/
 import { testUtils as createRelocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import { getEquipmentListTemplateErrorMsg } from 'modules/warehouse/constants/equipment'
 
+import { CANCEL_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
-
-import { CANCEL_TEXT } from 'shared/constants/common'
 
 import {
   mockGetCurrencyListSuccess,
@@ -141,7 +140,7 @@ describe('Страница создания заявки на перемещен
 
       test('При успешном запросе отрабатывает функционал скачивания', async () => {
         mockGetUserListSuccess()
-        mockGetLocationListSuccess({ body: [] })
+        mockGetLocationListSuccess({ body: [], once: false })
         mockGetEquipmentCatalogListSuccess()
         mockGetCurrencyListSuccess({ body: [] })
 
@@ -177,7 +176,7 @@ describe('Страница создания заявки на перемещен
 
       test('При не успешном запросе отображается сообщение об ошибке', async () => {
         mockGetUserListSuccess()
-        mockGetLocationListSuccess({ body: [] })
+        mockGetLocationListSuccess({ body: [], once: false })
         mockGetEquipmentCatalogListSuccess()
         mockGetCurrencyListSuccess({ body: [] })
         mockGetEquipmentListTemplateServerError()
