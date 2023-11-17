@@ -38,7 +38,7 @@ const props: Readonly<EquipmentFormModalProps> = {
   onUploadImage: jest.fn(),
 
   onDeleteImage: jest.fn(),
-  deleteImageIsLoading: false,
+  imageIsDeleting: false,
 
   nomenclatureList: [],
   nomenclatureListIsLoading: false,
@@ -1301,7 +1301,7 @@ describe('Модалка оборудования', () => {
           {...props}
           selectedCategory={category}
           nomenclature={nomenclature}
-          deleteImageIsLoading
+          imageIsDeleting
         />,
       )
 

@@ -1,7 +1,7 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Button, Form } from 'antd'
-import { isNil } from 'lodash'
+import isUndefined from 'lodash/isUndefined'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
@@ -95,27 +95,26 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         'data-testid': 'equipment-form-item',
       },
       fieldProps: (form, config) => ({
-        dropdownRender:
-          canAddEquipment && onClickAddEquipment
-            ? (menu: ReactNode) => (
-                <Space $block direction='vertical'>
-                  <AddEquipmentButton
-                    type='link'
-                    disabled={addEquipmentBtnDisabled}
-                    onClick={() =>
-                      onClickAddEquipment({
-                        rowIndex: config.rowIndex,
-                        rowId: config.entity.rowId!,
-                      })
-                    }
-                  >
-                    Добавить оборудование
-                  </AddEquipmentButton>
+        dropdownRender: canAddEquipment
+          ? (menu: ReactNode) => (
+              <Space $block direction='vertical'>
+                <AddEquipmentButton
+                  type='link'
+                  disabled={addEquipmentBtnDisabled}
+                  onClick={() =>
+                    onClickAddEquipment({
+                      rowIndex: config.rowIndex,
+                      rowId: config.entity.rowId!,
+                    })
+                  }
+                >
+                  Добавить оборудование
+                </AddEquipmentButton>
 
-                  {menu}
-                </Space>
-              )
-            : undefined,
+                {menu}
+              </Space>
+            )
+          : undefined,
         allowClear: false,
         loading: equipmentCatalogListIsLoading,
         disabled: isLoading || !relocateFromFormValue,
@@ -193,16 +192,16 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       },
     },
     {
-      dataIndex: 'attachments',
+      key: 'attachments',
       title: 'Изображения',
       renderFormItem: (schema, config) => {
-        if (!isNil(schema.index) && config.record) {
+        if (!isUndefined(schema.index) && config.record) {
           return (
             <Button
               disabled={!config.record.id}
-              onClick={() => {
+              onClick={() =>
                 onClickAddImage({ rowId: config.record!.rowId!, rowIndex: schema.index! })
-              }}
+              }
             >
               Добавить
             </Button>

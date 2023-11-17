@@ -217,8 +217,10 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const handleDeleteAttachment: EquipmentFormModalProps['onDeleteImage'] = useCallback(
     async (file) => {
-      /* поле response это то что передаётся в колбэк onSuccess при создании */
-      await deleteAttachmentMutation({ attachmentId: file.response.id }).unwrap()
+      if (file.response?.id) {
+        /* поле response это то что передаётся в колбэк onSuccess при создании */
+        await deleteAttachmentMutation({ attachmentId: file.response.id }).unwrap()
+      }
     },
     [deleteAttachmentMutation],
   )
@@ -581,7 +583,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onSubmit={handleEditEquipment}
             onUploadImage={handleCreateAttachment}
             onDeleteImage={handleDeleteAttachment}
-            deleteImageIsLoading={deleteAttachmentIsLoading}
+            imageIsDeleting={deleteAttachmentIsLoading}
           />
         </React.Suspense>
       )}

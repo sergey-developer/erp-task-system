@@ -1,11 +1,10 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import { Button, Col, Form, FormProps, Modal, Row, Typography } from 'antd'
-import { RcFile } from 'antd/es/upload'
+import { Button, Col, Form, FormProps, Modal, Row, Typography, UploadProps } from 'antd'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
-import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
+import { useCreateAttachmentHandler, useDeleteAttachmentHandler } from 'modules/attachment/hooks'
 import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
@@ -45,7 +44,6 @@ import { useGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
-  getErrorDetailStr,
   isBadRequestError,
   isErrorResponse,
   isForbiddenError,
@@ -56,6 +54,10 @@ import { mergeDateTime } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+const AddAttachmentListModal = React.lazy(
+  () => import('modules/attachment/components/AddAttachmentListModal'),
+)
 
 const EquipmentFormModal = React.lazy(
   () => import('modules/warehouse/components/EquipmentFormModal'),
@@ -124,8 +126,8 @@ const CreateRelocationTaskPage: FC = () => {
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
 
-  const [createAttachmentMutation] = useCreateAttachment()
-  const [deleteAttachmentMutation, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
+  const [createAttachment] = useCreateAttachmentHandler()
+  const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachmentHandler()
 
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
     isManager: false,
@@ -194,44 +196,26 @@ const CreateRelocationTaskPage: FC = () => {
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] =
     useCreateEquipmentMutation()
 
-  const handleCreateAttachment = useCallback<EquipmentFormModalProps['onUploadImage']>(
-    async ({ file, onSuccess, onError }) => {
-      try {
-        const createdAttachment = await createAttachmentMutation({
-          file: file as RcFile,
-          type: AttachmentTypeEnum.EquipmentImage,
-        }).unwrap()
-
-        onSuccess && onSuccess({ id: createdAttachment.id })
-      } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            onError && onError({ name: '', message: getErrorDetailStr(error) || '' })
-          }
-        }
-      }
+  const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
+    async (options) => {
+      await createAttachment({ type: AttachmentTypeEnum.EquipmentImage }, options)
     },
-    [createAttachmentMutation],
-  )
-
-  const handleDeleteAttachment: EquipmentFormModalProps['onDeleteImage'] = useCallback(
-    async (file) => {
-      /* поле response это то что передаётся в колбэк onSuccess при создании */
-      await deleteAttachmentMutation({ attachmentId: file.response.id }).unwrap()
-    },
-    [deleteAttachmentMutation],
+    [createAttachment],
   )
 
   const handleCreateRelocationTask = async (values: RelocationTaskFormFields) => {
     try {
       const createdTask = await createRelocationTaskMutation({
         deadlineAt: mergeDateTime(values.deadlineAtDate, values.deadlineAtTime).toISOString(),
-        equipments: values.equipments.map((e) => ({
-          id: e.id,
-          quantity: e.quantity,
-          condition: e.condition,
-          currency: e.currency,
-          price: e.price,
+        equipments: values.equipments.map((eqp) => ({
+          id: eqp.id,
+          quantity: eqp.quantity,
+          condition: eqp.condition,
+          currency: eqp.currency,
+          price: eqp.price,
+          attachments: eqp.attachments?.length
+            ? extractIdsFromFilesResponse(eqp.attachments)
+            : undefined,
         })),
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
@@ -373,6 +357,11 @@ const CreateRelocationTaskPage: FC = () => {
     !selectedRelocateTo ||
     selectedRelocateTo.type !== LocationTypeEnum.Warehouse
 
+  const equipmentImagesFormPath =
+    addEquipmentImagesModalOpened && currentEquipmentRow
+      ? ['equipments', currentEquipmentRow.rowIndex, 'attachments']
+      : undefined
+
   return (
     <>
       <Form<RelocationTaskFormFields>
@@ -453,7 +442,11 @@ const CreateRelocationTaskPage: FC = () => {
       {addEquipmentModalOpened && (
         <React.Suspense
           fallback={
-            <ModalFallback open={addEquipmentModalOpened} onCancel={handleCloseAddEquipmentModal} />
+            <ModalFallback
+              open
+              onCancel={handleCloseAddEquipmentModal}
+              tip='Загрузка модалки добавления оборудования'
+            />
           }
         >
           <EquipmentFormModal
@@ -478,9 +471,33 @@ const CreateRelocationTaskPage: FC = () => {
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseAddEquipmentModal}
             onSubmit={handleAddEquipment}
-            onUploadImage={handleCreateAttachment}
-            onDeleteImage={handleDeleteAttachment}
-            deleteImageIsLoading={deleteAttachmentIsLoading}
+            onUploadImage={handleCreateEquipmentImage}
+            onDeleteImage={deleteAttachment}
+            imageIsDeleting={deleteAttachmentIsLoading}
+          />
+        </React.Suspense>
+      )}
+
+      {addEquipmentImagesModalOpened && currentEquipmentRow && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={handleCloseAddEquipmentImagesModal}
+              tip='Загрузка модалки добавления изображений оборудования'
+            />
+          }
+        >
+          <AddAttachmentListModal
+            form={form}
+            formItemName={equipmentImagesFormPath}
+            open={addEquipmentImagesModalOpened}
+            title='Добавить изображения оборудования'
+            onCancel={handleCloseAddEquipmentImagesModal}
+            onAdd={handleCreateEquipmentImage}
+            onDelete={deleteAttachment}
+            isDeleting={deleteAttachmentIsLoading}
+            defaultFileList={form.getFieldValue(equipmentImagesFormPath)}
           />
         </React.Suspense>
       )}
