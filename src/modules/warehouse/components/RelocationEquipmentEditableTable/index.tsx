@@ -2,6 +2,7 @@ import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Button, Form } from 'antd'
 import isUndefined from 'lodash/isUndefined'
+import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
@@ -103,8 +104,9 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
                   disabled={addEquipmentBtnDisabled}
                   onClick={() =>
                     onClickAddEquipment({
-                      rowIndex: config.rowIndex,
+                      id: config.entity.id,
                       rowId: config.entity.rowId!,
+                      rowIndex: config.rowIndex,
                     })
                   }
                 >
@@ -200,7 +202,11 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
             <Button
               disabled={!config.record.id}
               onClick={() =>
-                onClickAddImage({ rowId: config.record!.rowId!, rowIndex: schema.index! })
+                onClickAddImage({
+                  id: config.record!.id,
+                  rowId: config.record!.rowId!,
+                  rowIndex: schema.index!,
+                })
               }
             >
               Добавить
@@ -232,9 +238,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       name='equipments'
       columns={columns}
       recordCreatorProps={{
-        record: () => ({
-          rowId: Math.floor(new Date().getTime() * Math.random() * 1000),
-        }),
+        record: () => ({ rowId: random(1, 999999) }),
         disabled: isLoading,
         creatorButtonText: 'Добавить оборудование',
       }}

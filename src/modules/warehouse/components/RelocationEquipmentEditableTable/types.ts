@@ -7,8 +7,9 @@ import { CurrencyListModel } from 'shared/models/currency'
 import { ArrayFirst } from 'shared/types/utils'
 
 export type CurrentEquipmentRow = {
-  rowIndex: number
+  id?: number
   rowId: number
+  rowIndex: number
 }
 
 export type RelocationEquipmentRowFields = Partial<

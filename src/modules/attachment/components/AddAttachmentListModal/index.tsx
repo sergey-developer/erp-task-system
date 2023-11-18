@@ -1,8 +1,9 @@
-import { Form, FormInstance, Modal, ModalProps, Upload, UploadProps } from 'antd'
+import { Form, FormInstance, ModalProps, Upload, UploadProps } from 'antd'
 import { FormItemProps } from 'antd/es/form/FormItem'
 import React, { FC } from 'react'
 
 import UploadButton from 'components/Buttons/UploadButton'
+import BaseModal from 'components/Modals/BaseModal'
 
 import { filesFormItemProps } from 'shared/constants/form'
 import { FileResponse } from 'shared/types/file'
@@ -17,9 +18,12 @@ export type AddAttachmentListModalProps = Required<
     formItemName: FormItemProps['name']
 
     onAdd: NonNullable<UploadProps['customRequest']>
+    isAdding: boolean
 
     onDelete: NonNullable<UploadProps<FileResponse>['onRemove']>
     isDeleting: boolean
+
+    isLoading?: boolean
   }
 
 // todo: добавить индикатор загрузки при удалении
@@ -27,7 +31,10 @@ const AddAttachmentListModal: FC<AddAttachmentListModalProps> = ({
   form,
   formItemName,
 
+  isLoading,
+
   onAdd,
+  isAdding,
 
   onDelete,
   isDeleting,
@@ -36,12 +43,13 @@ const AddAttachmentListModal: FC<AddAttachmentListModalProps> = ({
   ...props
 }) => {
   return (
-    <Modal
+    <BaseModal
       {...props}
       data-testid='add-attachment-list-modal'
       width={450}
       footer={null}
       bodyStyle={bodyStyle}
+      isLoading={isLoading}
     >
       <Form form={form}>
         <Form.Item name={formItemName} {...filesFormItemProps}>
@@ -53,11 +61,11 @@ const AddAttachmentListModal: FC<AddAttachmentListModalProps> = ({
             onRemove={onDelete}
             defaultFileList={defaultFileList}
           >
-            <UploadButton label='Добавить фото' />
+            <UploadButton label='Добавить фото' loading={isAdding} />
           </Upload>
         </Form.Item>
       </Form>
-    </Modal>
+    </BaseModal>
   )
 }
 

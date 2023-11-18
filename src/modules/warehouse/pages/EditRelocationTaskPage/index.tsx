@@ -30,6 +30,7 @@ import {
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetRelocationEquipmentAttachmentList } from 'modules/warehouse/hooks/relocationEquipment'
 import {
   useGetRelocationEquipmentBalanceList,
   useGetRelocationEquipmentList,
@@ -139,8 +140,16 @@ const EditRelocationTaskPage: FC = () => {
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
 
-  const [createAttachment] = useCreateAttachment()
+  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
+
+  const {
+    currentData: relocationEquipmentAttachmentList = [],
+    isFetching: relocationEquipmentAttachmentListIsFetching,
+  } = useGetRelocationEquipmentAttachmentList(
+    { relocationEquipmentId: currentEquipmentRow?.id! },
+    { skip: !currentEquipmentRow?.id || !addRelocationEquipmentImagesModalOpened },
+  )
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
     useGetRelocationTask({ relocationTaskId: relocationTaskId! })
@@ -247,12 +256,15 @@ const EditRelocationTaskPage: FC = () => {
       const updatedTask = await updateRelocationTaskMutation({
         relocationTaskId,
         deadlineAt: mergeDateTime(values.deadlineAtDate, values.deadlineAtTime).toISOString(),
-        equipments: values.equipments.map((e) => ({
-          id: e.id,
-          quantity: e.quantity,
-          condition: e.condition,
-          currency: e.currency,
-          price: e.price,
+        equipments: values.equipments.map((eqp) => ({
+          id: eqp.id,
+          quantity: eqp.quantity,
+          condition: eqp.condition,
+          currency: eqp.currency,
+          price: eqp.price,
+          attachments: eqp.attachments?.length
+            ? extractIdsFromFilesResponse(eqp.attachments)
+            : undefined,
         })),
         relocateToId: values.relocateTo,
         relocateToType: relocateTo.type,
@@ -612,7 +624,9 @@ const EditRelocationTaskPage: FC = () => {
             open={addRelocationEquipmentImagesModalOpened}
             title='Добавить изображения оборудования'
             onCancel={handleCloseAddRelocationEquipmentImagesModal}
+            isLoading={relocationEquipmentAttachmentListIsFetching}
             onAdd={handleCreateRelocationEquipmentImage}
+            isAdding={createAttachmentIsLoading}
             onDelete={deleteAttachment}
             isDeleting={deleteAttachmentIsLoading}
             defaultFileList={form.getFieldValue(equipmentImagesFormPath)}

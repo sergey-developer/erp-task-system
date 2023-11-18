@@ -3,7 +3,7 @@ import { FC, useMemo } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
 
-import { modalWidth, cancelBtnText } from './constants'
+import { cancelBtnText, modalWidth } from './constants'
 
 const commonButtonProps: ButtonProps = {
   size: 'large',
@@ -44,12 +44,12 @@ const BaseModal: FC<BaseModalProps> = ({
 
   return (
     <Modal
+      {...props}
       width={width}
       cancelText={cancelText}
       destroyOnClose={destroyOnClose}
       okButtonProps={mergedOkButtonProps}
       cancelButtonProps={mergedCancelButtonProps}
-      {...props}
     >
       <LoadingArea isLoading={isLoading}>{children}</LoadingArea>
     </Modal>
