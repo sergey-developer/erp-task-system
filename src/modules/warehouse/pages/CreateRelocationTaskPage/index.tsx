@@ -4,7 +4,7 @@ import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
-import { useCreateAttachmentHandler, useDeleteAttachmentHandler } from 'modules/attachment/hooks'
+import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
@@ -104,17 +104,20 @@ const CreateRelocationTaskPage: FC = () => {
   }, [closeAddEquipmentModal])
 
   const [
-    addEquipmentImagesModalOpened,
-    { setTrue: openAddEquipmentImagesModal, setFalse: closeAddEquipmentImagesModal },
+    addRelocationEquipmentImagesModalOpened,
+    {
+      setTrue: openAddRelocationEquipmentImagesModal,
+      setFalse: closeAddRelocationEquipmentImagesModal,
+    },
   ] = useBoolean(false)
 
-  const handleOpenAddEquipmentImagesModal = useDebounceFn((row: CurrentEquipmentRow) => {
+  const handleOpenAddRelocationEquipmentImagesModal = useDebounceFn((row: CurrentEquipmentRow) => {
     setCurrentEquipmentRow(row)
-    openAddEquipmentImagesModal()
+    openAddRelocationEquipmentImagesModal()
   })
 
-  const handleCloseAddEquipmentImagesModal = useDebounceFn(() => {
-    closeAddEquipmentImagesModal()
+  const handleCloseAddRelocationEquipmentImagesModal = useDebounceFn(() => {
+    closeAddRelocationEquipmentImagesModal()
     setCurrentEquipmentRow(undefined)
   })
 
@@ -126,8 +129,8 @@ const CreateRelocationTaskPage: FC = () => {
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
 
-  const [createAttachment] = useCreateAttachmentHandler()
-  const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachmentHandler()
+  const [createAttachment] = useCreateAttachment()
+  const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
     isManager: false,
@@ -202,6 +205,12 @@ const CreateRelocationTaskPage: FC = () => {
     },
     [createAttachment],
   )
+
+  const handleCreateRelocationEquipmentImage: NonNullable<UploadProps['customRequest']> = async (
+    options,
+  ) => {
+    await createAttachment({ type: AttachmentTypeEnum.RelocationEquipmentImage }, options)
+  }
 
   const handleCreateRelocationTask = async (values: RelocationTaskFormFields) => {
     try {
@@ -358,7 +367,7 @@ const CreateRelocationTaskPage: FC = () => {
     selectedRelocateTo.type !== LocationTypeEnum.Warehouse
 
   const equipmentImagesFormPath =
-    addEquipmentImagesModalOpened && currentEquipmentRow
+    addRelocationEquipmentImagesModalOpened && currentEquipmentRow
       ? ['equipments', currentEquipmentRow.rowIndex, 'attachments']
       : undefined
 
@@ -400,7 +409,7 @@ const CreateRelocationTaskPage: FC = () => {
                 canAddEquipment={!!userPermissions?.equipmentsCreate}
                 addEquipmentBtnDisabled={addEquipmentBtnDisabled}
                 onClickAddEquipment={handleOpenAddEquipmentModal}
-                onClickAddImage={handleOpenAddEquipmentImagesModal}
+                onClickAddImage={handleOpenAddRelocationEquipmentImagesModal}
               />
             </Space>
           </Col>
@@ -478,12 +487,12 @@ const CreateRelocationTaskPage: FC = () => {
         </React.Suspense>
       )}
 
-      {addEquipmentImagesModalOpened && currentEquipmentRow && (
+      {addRelocationEquipmentImagesModalOpened && currentEquipmentRow && (
         <React.Suspense
           fallback={
             <ModalFallback
               open
-              onCancel={handleCloseAddEquipmentImagesModal}
+              onCancel={handleCloseAddRelocationEquipmentImagesModal}
               tip='Загрузка модалки добавления изображений оборудования'
             />
           }
@@ -491,10 +500,10 @@ const CreateRelocationTaskPage: FC = () => {
           <AddAttachmentListModal
             form={form}
             formItemName={equipmentImagesFormPath}
-            open={addEquipmentImagesModalOpened}
+            open={addRelocationEquipmentImagesModalOpened}
             title='Добавить изображения оборудования'
-            onCancel={handleCloseAddEquipmentImagesModal}
-            onAdd={handleCreateEquipmentImage}
+            onCancel={handleCloseAddRelocationEquipmentImagesModal}
+            onAdd={handleCreateRelocationEquipmentImage}
             onDelete={deleteAttachment}
             isDeleting={deleteAttachmentIsLoading}
             defaultFileList={form.getFieldValue(equipmentImagesFormPath)}

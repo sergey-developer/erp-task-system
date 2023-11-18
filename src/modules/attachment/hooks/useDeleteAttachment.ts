@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { UploadFile } from 'antd/es/upload'
+import { useCallback, useEffect } from 'react'
 
-import { CustomUseMutationResult } from 'lib/rtk-query/types'
+import { CustomUseMutationState } from 'lib/rtk-query/types'
 
 import { deleteAttachmentErrorMsg } from 'modules/attachment/constants'
 import {
@@ -16,12 +17,13 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/services/baseApi'
+import { FileResponse } from 'shared/types/file'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseDeleteAttachmentResult = CustomUseMutationResult<
-  DeleteAttachmentMutationArgs,
-  DeleteAttachmentSuccessResponse
->
+type UseDeleteAttachmentResult = [
+  (file: UploadFile<FileResponse>) => Promise<void>,
+  CustomUseMutationState<DeleteAttachmentMutationArgs, DeleteAttachmentSuccessResponse>,
+]
 
 export const useDeleteAttachment = (): UseDeleteAttachmentResult => {
   const [mutation, state] = useDeleteAttachmentMutation()
@@ -40,5 +42,14 @@ export const useDeleteAttachment = (): UseDeleteAttachmentResult => {
     }
   }, [state.error])
 
-  return [mutation, state]
+  const handler = useCallback<UseDeleteAttachmentResult[0]>(
+    async (file) => {
+      if (file.response?.id) {
+        await mutation({ attachmentId: file.response.id }).unwrap()
+      }
+    },
+    [mutation],
+  )
+
+  return [handler, state]
 }

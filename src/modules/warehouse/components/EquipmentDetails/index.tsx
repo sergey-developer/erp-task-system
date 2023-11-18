@@ -1,6 +1,5 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Drawer, Row, Typography } from 'antd'
-import { RcFile } from 'antd/es/upload'
+import { Button, Col, Drawer, Row, Typography, UploadProps } from 'antd'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 
 import AttachmentList from 'modules/attachment/components/AttachmentList'
@@ -33,7 +32,6 @@ import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
-  getErrorDetailStr,
   isBadRequestError,
   isErrorResponse,
   isForbiddenError,
@@ -141,8 +139,8 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] =
     useUpdateEquipmentMutation()
 
-  const [createAttachmentMutation] = useCreateAttachment()
-  const [deleteAttachmentMutation, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
+  const [createAttachment] = useCreateAttachment()
+  const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   useEffect(() => {
     if (equipment?.category && editEquipmentModalOpened) {
@@ -195,34 +193,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     setSelectedNomenclatureId(undefined)
   }
 
-  const handleCreateAttachment = useCallback<EquipmentFormModalProps['onUploadImage']>(
-    async ({ file, onSuccess, onError }) => {
-      try {
-        const createdAttachment = await createAttachmentMutation({
-          file: file as RcFile,
-          type: AttachmentTypeEnum.EquipmentImage,
-        }).unwrap()
-
-        onSuccess && onSuccess({ id: createdAttachment.id })
-      } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            onError && onError({ name: '', message: getErrorDetailStr(error) || '' })
-          }
-        }
-      }
+  const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
+    async (options) => {
+      await createAttachment({ type: AttachmentTypeEnum.EquipmentImage }, options)
     },
-    [createAttachmentMutation],
-  )
-
-  const handleDeleteAttachment: EquipmentFormModalProps['onDeleteImage'] = useCallback(
-    async (file) => {
-      if (file.response?.id) {
-        /* поле response это то что передаётся в колбэк onSuccess при создании */
-        await deleteAttachmentMutation({ attachmentId: file.response.id }).unwrap()
-      }
-    },
-    [deleteAttachmentMutation],
+    [createAttachment],
   )
 
   const handleEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
@@ -581,8 +556,8 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseEditEquipmentModal}
             onSubmit={handleEditEquipment}
-            onUploadImage={handleCreateAttachment}
-            onDeleteImage={handleDeleteAttachment}
+            onUploadImage={handleCreateEquipmentImage}
+            onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
           />
         </React.Suspense>
