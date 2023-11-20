@@ -140,7 +140,7 @@ const EditRelocationTaskPage: FC = () => {
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
 
-  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
+  const [createAttachment] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   const {
@@ -626,7 +626,6 @@ const EditRelocationTaskPage: FC = () => {
             onCancel={handleCloseAddRelocationEquipmentImagesModal}
             isLoading={relocationEquipmentAttachmentListIsFetching}
             onAdd={handleCreateRelocationEquipmentImage}
-            isAdding={createAttachmentIsLoading}
             onDelete={deleteAttachment}
             isDeleting={deleteAttachmentIsLoading}
             defaultFileList={form.getFieldValue(equipmentImagesFormPath)}

@@ -18,7 +18,6 @@ export type AddAttachmentListModalProps = Required<
     formItemName: FormItemProps['name']
 
     onAdd: NonNullable<UploadProps['customRequest']>
-    isAdding: boolean
 
     onDelete: NonNullable<UploadProps<FileResponse>['onRemove']>
     isDeleting: boolean
@@ -34,7 +33,6 @@ const AddAttachmentListModal: FC<AddAttachmentListModalProps> = ({
   isLoading,
 
   onAdd,
-  isAdding,
 
   onDelete,
   isDeleting,
@@ -61,7 +59,7 @@ const AddAttachmentListModal: FC<AddAttachmentListModalProps> = ({
             onRemove={onDelete}
             defaultFileList={defaultFileList}
           >
-            <UploadButton label='Добавить фото' loading={isAdding} />
+            <UploadButton label='Добавить фото' />
           </Upload>
         </Form.Item>
       </Form>
