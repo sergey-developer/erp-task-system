@@ -19,7 +19,10 @@ const props: RelocationEquipmentEditableTableProps = {
   equipmentCatalogListIsLoading: false,
 
   canAddEquipment: false,
+  addEquipmentBtnDisabled: false,
   onClickAddEquipment: jest.fn(),
+
+  onClickAddImage: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('relocation-equipment-editable-table-form-item')

@@ -27,7 +27,6 @@ import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 import { formatDate } from 'shared/utils/date'
 
-import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCloseRelocationTaskBadRequestError,
@@ -428,7 +427,7 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId)
       const relocationEquipmentList = warehouseFixtures.relocationEquipmentList()
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId, {
-        body: commonFixtures.paginatedListResponse(relocationEquipmentList),
+        body: relocationEquipmentList,
       })
 
       render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)

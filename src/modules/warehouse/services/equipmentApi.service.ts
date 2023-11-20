@@ -4,6 +4,8 @@ import { EquipmentApiEnum, EquipmentApiTagEnum } from 'modules/warehouse/constan
 import {
   CreateEquipmentMutationArgs,
   CreateEquipmentSuccessResponse,
+  GetEquipmentAttachmentListQueryArgs,
+  GetEquipmentAttachmentListSuccessResponse,
   GetEquipmentCatalogListQueryArgs,
   GetEquipmentCatalogListSuccessResponse,
   GetEquipmentCategoryListQueryArgs,
@@ -20,10 +22,12 @@ import {
   UpdateEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
 import {
+  GetEquipmentAttachmentListTransformedSuccessResponse,
   GetEquipmentListTransformedSuccessResponse,
   GetEquipmentNomenclatureListTransformedSuccessResponse,
 } from 'modules/warehouse/types'
 import {
+  getEquipmentAttachmentListUrl,
   getEquipmentRelocationHistoryUrl,
   getEquipmentUrl,
   updateEquipmentUrl,
@@ -65,6 +69,19 @@ const equipmentApiService = baseApiService
           method: HttpMethodEnum.Get,
           params,
         }),
+      }),
+
+      getEquipmentAttachmentList: build.query<
+        GetEquipmentAttachmentListTransformedSuccessResponse,
+        GetEquipmentAttachmentListQueryArgs
+      >({
+        query: ({ equipmentId, ...params }) => ({
+          url: getEquipmentAttachmentListUrl(equipmentId),
+          method: HttpMethodEnum.Get,
+          params,
+        }),
+        transformResponse: (response: GetEquipmentAttachmentListSuccessResponse, meta, arg) =>
+          getPaginatedList(response, arg),
       }),
 
       getEquipmentList: build.query<
@@ -132,6 +149,8 @@ export const {
   useGetEquipmentNomenclatureListQuery,
 
   useGetEquipmentCatalogListQuery,
+
+  useGetEquipmentAttachmentListQuery,
 
   useGetEquipmentQuery,
   useLazyGetEquipmentQuery,

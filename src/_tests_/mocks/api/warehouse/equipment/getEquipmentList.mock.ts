@@ -1,5 +1,5 @@
 import { EquipmentApiEnum } from 'modules/warehouse/constants/equipment'
-import { GetEquipmentListTransformedSuccessResponse } from 'modules/warehouse/types'
+import { GetEquipmentListSuccessResponse } from 'modules/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'
@@ -16,7 +16,7 @@ const getEquipmentListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, EquipmentApiEnum.GetEquipmentList)
 
 export const mockGetEquipmentListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetEquipmentListTransformedSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetEquipmentListSuccessResponse>>,
 ) => getSuccessMockFn(getEquipmentListMockFn(), options)()
 
 export const mockGetEquipmentListForbiddenError = (

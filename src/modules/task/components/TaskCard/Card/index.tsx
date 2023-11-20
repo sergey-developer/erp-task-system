@@ -51,7 +51,7 @@ import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/serv
 import { MaybeNull } from 'shared/types/utils'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
-import { mapUploadedFiles } from 'shared/utils/file'
+import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -252,7 +252,9 @@ const TaskCard: FC<TaskCardProps> = ({
           taskId: task.id,
           techResolution: values.techResolution.trim(),
           userResolution: values.userResolution?.trim(),
-          attachments: values.attachments ? mapUploadedFiles(values.attachments) : undefined,
+          attachments: values.attachments?.length
+            ? extractOriginFiles(values.attachments)
+            : undefined,
         })
 
         closeTaskCard()
