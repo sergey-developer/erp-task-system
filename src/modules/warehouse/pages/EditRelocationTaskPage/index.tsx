@@ -1,5 +1,7 @@
 import { useBoolean, usePrevious } from 'ahooks'
 import { Button, Col, Form, FormProps, Modal, Row, Typography, UploadProps } from 'antd'
+import { FormItemProps } from 'antd/es/form/FormItem'
+import concat from 'lodash/concat'
 import moment from 'moment-timezone'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -10,8 +12,8 @@ import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
 import {
-  CurrentEquipmentRow,
-  RelocationEquipmentRowFields,
+  ActiveEquipmentRow,
+  RelocationEquipmentRow,
 } from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
 import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
 import {
@@ -62,6 +64,8 @@ import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { relocationEquipmentAttachmentListToFileList } from './utils'
+
 const AddAttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AddAttachmentListModal'),
 )
@@ -87,7 +91,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
-  const [currentEquipmentRow, setCurrentEquipmentRow] = useState<CurrentEquipmentRow>()
+  const [currentEquipmentRow, setCurrentEquipmentRow] = useState<ActiveEquipmentRow>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
@@ -99,13 +103,10 @@ const EditRelocationTaskPage: FC = () => {
     { setTrue: openAddEquipmentModal, setFalse: closeAddEquipmentModal },
   ] = useBoolean(false)
 
-  const handleOpenAddEquipmentModal = useDebounceFn(
-    (row: CurrentEquipmentRow) => {
-      setCurrentEquipmentRow(row)
-      openAddEquipmentModal()
-    },
-    [openAddEquipmentModal],
-  )
+  const handleOpenAddEquipmentModal = useDebounceFn((row: ActiveEquipmentRow) => {
+    setCurrentEquipmentRow(row)
+    openAddEquipmentModal()
+  })
 
   const handleCloseAddEquipmentModal = useDebounceFn(() => {
     closeAddEquipmentModal()
@@ -122,7 +123,7 @@ const EditRelocationTaskPage: FC = () => {
     },
   ] = useBoolean(false)
 
-  const handleOpenAddRelocationEquipmentImagesModal = useDebounceFn((row: CurrentEquipmentRow) => {
+  const handleOpenAddRelocationEquipmentImagesModal = useDebounceFn((row: ActiveEquipmentRow) => {
     setCurrentEquipmentRow(row)
     openAddRelocationEquipmentImagesModal()
   })
@@ -148,7 +149,12 @@ const EditRelocationTaskPage: FC = () => {
     isFetching: relocationEquipmentAttachmentListIsFetching,
   } = useGetRelocationEquipmentAttachmentList(
     { relocationEquipmentId: currentEquipmentRow?.id! },
-    { skip: !currentEquipmentRow?.id || !addRelocationEquipmentImagesModalOpened },
+    {
+      skip:
+        !currentEquipmentRow?.id ||
+        !currentEquipmentRow.inCreatedTask ||
+        !addRelocationEquipmentImagesModalOpened,
+    },
   )
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
@@ -294,14 +300,14 @@ const EditRelocationTaskPage: FC = () => {
     }
   }
 
-  const handleFormChange: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
+  const handleChangeForm: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
     changedValues,
     values,
   ) => {
     if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
       const [index, changes] = Object.entries(changedValues.equipments)[0] as [
         string,
-        Partial<Omit<RelocationEquipmentRowFields, 'rowId'>>,
+        Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
       ]
 
       if (changes.id && relocationTaskId) {
@@ -316,6 +322,7 @@ const EditRelocationTaskPage: FC = () => {
 
           form.setFieldValue(['equipments', index], {
             ...currentEquipment,
+            inCreatedTask: false,
             quantity: isConsumable ? currentEquipment.quantity : 1,
             serialNumber: equipment.serialNumber,
             purpose: equipment.purpose.title,
@@ -334,7 +341,7 @@ const EditRelocationTaskPage: FC = () => {
     value,
     option,
   ) => {
-    const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
+    const equipments: RelocationEquipmentRow[] = form.getFieldValue('equipments') || []
     const relocateFrom = form.getFieldValue('relocateFrom')
     const isShowConfirmation = !!equipments.length && !!relocateFrom
     form.setFieldValue('relocateFrom', value)
@@ -363,6 +370,7 @@ const EditRelocationTaskPage: FC = () => {
         }).unwrap()
 
         form.setFieldValue(['equipments', currentEquipmentRow.rowIndex], {
+          inCreatedTask: false,
           rowId: createdEquipment.id,
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
@@ -424,7 +432,7 @@ const EditRelocationTaskPage: FC = () => {
 
   useEffect(() => {
     if (relocationEquipmentList.length && !relocationEquipmentListIsFetching) {
-      const equipments: RelocationTaskFormFields['equipments'] = []
+      const equipments: RelocationEquipmentRow[] = []
       const editableTableRowKeys: Key[] = []
 
       relocationEquipmentList.forEach((eqp) => {
@@ -432,6 +440,7 @@ const EditRelocationTaskPage: FC = () => {
         const balance = relocationEquipmentBalanceList.find((b) => b.equipmentId === eqp.id)
 
         equipments.push({
+          inCreatedTask: true,
           rowId: eqp.id,
           id: eqp.id,
           serialNumber: eqp?.serialNumber || undefined,
@@ -490,7 +499,7 @@ const EditRelocationTaskPage: FC = () => {
     !selectedRelocateTo ||
     selectedRelocateTo.type !== LocationTypeEnum.Warehouse
 
-  const equipmentImagesFormPath =
+  const equipmentImagesFormPath: FormItemProps['name'] =
     addRelocationEquipmentImagesModalOpened && currentEquipmentRow
       ? ['equipments', currentEquipmentRow.rowIndex, 'attachments']
       : undefined
@@ -502,7 +511,7 @@ const EditRelocationTaskPage: FC = () => {
         form={form}
         layout='vertical'
         onFinish={handleUpdateRelocationTask}
-        onValuesChange={handleFormChange}
+        onValuesChange={handleChangeForm}
         initialValues={initialValues}
       >
         <Row gutter={[40, 40]}>
@@ -628,7 +637,14 @@ const EditRelocationTaskPage: FC = () => {
             onAdd={handleCreateRelocationEquipmentImage}
             onDelete={deleteAttachment}
             isDeleting={deleteAttachmentIsLoading}
-            defaultFileList={form.getFieldValue(equipmentImagesFormPath)}
+            defaultFileList={
+              equipmentImagesFormPath
+                ? concat(
+                    form.getFieldValue(equipmentImagesFormPath) || [],
+                    relocationEquipmentAttachmentListToFileList(relocationEquipmentAttachmentList),
+                  )
+                : undefined
+            }
           />
         </React.Suspense>
       )}
