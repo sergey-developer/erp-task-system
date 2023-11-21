@@ -11,6 +11,7 @@ import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehous
 import RelocationTaskListPage from 'modules/warehouse/pages/RelocationTaskListPage'
 
 import commonFixtures from '_tests_/fixtures/common'
+import taskFixtures from '_tests_/fixtures/task'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
@@ -39,6 +40,7 @@ import RelocationTaskListTab, { RelocationTaskListTabProps } from './index'
 
 const props: RelocationTaskListTabProps = {
   taskId: fakeId(),
+  taskAssignee: taskFixtures.assignee(),
 }
 
 const getContainer = () => screen.getByTestId('relocation-task-list-tab')
@@ -81,11 +83,11 @@ describe('Вкладка списка заявок на перемещение',
       expect(button).toBeInTheDocument()
     })
 
-    test('Активна если есть права', () => {
+    test('Активна если условия соблюдены', () => {
       mockGetRelocationTaskListSuccess()
 
       render(<RelocationTaskListTab {...props} />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
+        store: getStoreWithAuth({ userId: props.taskAssignee!.id }, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
           },
@@ -96,10 +98,25 @@ describe('Вкладка списка заявок на перемещение',
       expect(button).toBeEnabled()
     })
 
-    test('Не активна если нет прав', () => {
+    test('Не активна если условия соблюдены, но нет прав', () => {
       mockGetRelocationTaskListSuccess()
 
-      render(<RelocationTaskListTab {...props} />)
+      render(<RelocationTaskListTab {...props} />, {
+        store: getStoreWithAuth({ userId: props.taskAssignee!.id }),
+      })
+
+      const button = testUtils.getCreateTaskButton()
+      expect(button).toBeDisabled()
+    })
+
+    test('Не активна если условия соблюдены, но исполнитель заявки не авторизованный пользователь', () => {
+      mockGetRelocationTaskListSuccess()
+
+      render(<RelocationTaskListTab {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }) },
+        }),
+      })
 
       const button = testUtils.getCreateTaskButton()
       expect(button).toBeDisabled()
@@ -124,7 +141,7 @@ describe('Вкладка списка заявок на перемещение',
         ],
         { initialEntries: [RouteEnum.TaskList], initialIndex: 0 },
         {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
+          store: getStoreWithAuth({ userId: props.taskAssignee!.id }, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
             },

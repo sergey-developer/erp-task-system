@@ -1,4 +1,5 @@
 import { TabsProps } from 'antd'
+import pick from 'lodash/pick'
 import React, { FC } from 'react'
 
 import { taskCardTabNamesDict, TaskCardTabsEnum } from 'modules/task/constants/task'
@@ -102,7 +103,20 @@ const CardTabs: FC<CardTabsProps> = ({ task, activeTab = TaskCardTabsEnum.Descri
       children: (
         <TaskCardWrapper>
           <React.Suspense fallback={<Spinner />}>
-            <SubTaskListTab task={task} />
+            <SubTaskListTab
+              task={pick(
+                task,
+                'id',
+                'assignee',
+                'status',
+                'extendedStatus',
+                'type',
+                'recordId',
+                'title',
+                'description',
+                'suspendRequest',
+              )}
+            />
           </React.Suspense>
         </TaskCardWrapper>
       ),
@@ -115,7 +129,7 @@ const CardTabs: FC<CardTabsProps> = ({ task, activeTab = TaskCardTabsEnum.Descri
             children: (
               <TaskCardWrapper>
                 <React.Suspense fallback={<Spinner />}>
-                  <RelocationTaskListTab taskId={task.id} />
+                  <RelocationTaskListTab taskId={task.id} taskAssignee={task.assignee} />
                 </React.Suspense>
               </TaskCardWrapper>
             ),

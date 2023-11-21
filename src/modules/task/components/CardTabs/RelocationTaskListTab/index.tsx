@@ -2,8 +2,10 @@ import { Button, Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import RelocationTaskList from 'modules/task/components/RelocationTaskList'
 import { TaskCardTabsEnum } from 'modules/task/constants/task'
+import { TaskModel } from 'modules/task/models'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
@@ -22,12 +24,14 @@ const { Title } = Typography
 
 export type RelocationTaskListTabProps = {
   taskId: IdType
+  taskAssignee: TaskModel['assignee']
 }
 
-const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId }) => {
+const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId, taskAssignee }) => {
   const navigate = useNavigate()
 
-  const userPermissions = useMatchUserPermissions(['RELOCATION_TASKS_CREATE'])
+  const permissions = useMatchUserPermissions(['RELOCATION_TASKS_CREATE'])
+  const assigneeIsCurrentUser = useIdBelongAuthUser(taskAssignee?.id)
 
   const { currentData: paginatedRelocationTaskList, isFetching: relocationTaskListIsFetching } =
     useGetRelocationTaskList({
@@ -67,7 +71,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId }) => {
         <Col>
           <Button
             type='link'
-            disabled={!userPermissions?.relocationTasksCreate}
+            disabled={!permissions?.relocationTasksCreate || !assigneeIsCurrentUser}
             onClick={handleClickCreate}
           >
             Создать новое перемещение

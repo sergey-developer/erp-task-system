@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useCallback, useState } from 'react'
 
-import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { CancelSubTaskModalProps } from 'modules/task/components/CancelSubTaskModal/types'
 import { ReworkSubTaskModalProps } from 'modules/task/components/ReworkSubTaskModal/types'
 import SubTaskList from 'modules/task/components/SubTaskList'
@@ -71,7 +71,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
   const taskType = useTaskType(task.type)
   const taskStatus = useTaskStatus(task.status)
   const taskExtendedStatus = useTaskExtendedStatus(task.extendedStatus)
-  const currentUserIsTaskAssignee = useCheckUserAuthenticated(task.assignee?.id)
+  const currentUserIsTaskAssignee = useIdBelongAuthUser(task.assignee?.id)
   const taskHasSuspendRequest = !!task.suspendRequest
 
   const handleClickCancel = useCallback(

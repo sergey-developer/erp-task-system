@@ -13,18 +13,16 @@ import {
 import React, { FC } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import {
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
-  relocationTaskStatusDict,
   executeRelocationTaskMessages,
+  relocationTaskStatusDict,
   returnRelocationTaskToReworkMessages,
-} from 'modules/warehouse/constants/relocationTask'
-import {
 } from 'modules/warehouse/constants/relocationTask'
 import {
   useGetRelocationEquipmentList,
@@ -32,15 +30,17 @@ import {
   useLazyGetRelocationTaskWaybillM15,
   useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
-import { useCloseRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
+import {
+  useCancelRelocationTaskMutation,
+  useCloseRelocationTaskMutation,
+  useExecuteRelocationTaskMutation,
+  useReturnRelocationTaskToReworkMutation,
+} from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
   getRelocationTaskTitle,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
-import { useReturnRelocationTaskToReworkMutation } from 'modules/warehouse/services/relocationTaskApi.service'
-import { useCancelRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
-import { useExecuteRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 
 import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -59,9 +59,9 @@ import {
 } from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-import { showErrorNotification } from 'shared/utils/notifications'
-import { getFieldsErrors } from 'shared/utils/form'
 import { mapUploadedFiles } from 'shared/utils/file'
+import { getFieldsErrors } from 'shared/utils/form'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
@@ -127,8 +127,8 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [executeRelocationTaskMutation, { isLoading: executeRelocationTaskIsLoading }] =
     useExecuteRelocationTaskMutation()
 
-  const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
-  const executorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.executor?.id)
+  const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
+  const executorIsCurrentUser = useIdBelongAuthUser(relocationTask?.executor?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const handleCloseTask = async () => {

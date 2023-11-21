@@ -2,7 +2,7 @@ import { Button, Col, Row, Typography } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useState } from 'react'
 
-import { useAuthenticatedUser, useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { useAuthUser, useIdBelongAuthUser } from 'modules/auth/hooks'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
@@ -55,21 +55,17 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
-  const authenticatedUser = useAuthenticatedUser()
+  const authenticatedUser = useAuthUser()
 
   const selectedAssigneeIsCurrentAssignee = isEqual(selectedAssignee, currentAssignee)
 
-  const currentAssigneeIsCurrentUser = useCheckUserAuthenticated(currentAssignee)
+  const currentAssigneeIsCurrentUser = useIdBelongAuthUser(currentAssignee)
 
-  const selectedAssigneeIsCurrentUser = useCheckUserAuthenticated(selectedAssignee)
+  const selectedAssigneeIsCurrentUser = useIdBelongAuthUser(selectedAssignee)
 
-  const seniorEngineerFromWorkGroupIsCurrentUser = useCheckUserAuthenticated(
-    workGroup?.seniorEngineer.id,
-  )
+  const seniorEngineerFromWorkGroupIsCurrentUser = useIdBelongAuthUser(workGroup?.seniorEngineer.id)
 
-  const headOfDepartmentFromWorkGroupIsCurrentUser = useCheckUserAuthenticated(
-    workGroup?.groupLead.id,
-  )
+  const headOfDepartmentFromWorkGroupIsCurrentUser = useIdBelongAuthUser(workGroup?.groupLead.id)
 
   const workGroupMembers = workGroup?.members || []
 
