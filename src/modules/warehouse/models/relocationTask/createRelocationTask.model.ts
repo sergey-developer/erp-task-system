@@ -17,6 +17,7 @@ export type CreateRelocationTaskMutationArgs = {
 
     price?: number
     currency?: IdType
+    attachments?: IdType[]
   }[]
 
   relocateToId?: IdType

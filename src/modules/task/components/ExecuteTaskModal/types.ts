@@ -1,5 +1,5 @@
 import { FormInstance, ModalProps } from 'antd'
-import { UploadFile } from 'antd/es/upload/interface'
+import { UploadFile } from 'antd/es/upload'
 
 import { TaskModel } from 'modules/task/models'
 

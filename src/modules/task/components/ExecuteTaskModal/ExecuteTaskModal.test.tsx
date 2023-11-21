@@ -402,7 +402,6 @@ describe('Модалка выполнения заявки', () => {
 
       test('Если тип заявки - request task', () => {
         render(<ExecuteTaskModal {...props} type={TaskTypeEnum.RequestTask} />)
-
         expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
       })
     })

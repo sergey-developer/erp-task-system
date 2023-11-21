@@ -31,7 +31,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   onUploadImage,
 
   onDeleteImage,
-  deleteImageIsLoading,
+  imageIsDeleting,
 
   categoryList,
   categoryListIsLoading,
@@ -374,7 +374,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               <Upload
                 listType='picture'
                 multiple
-                disabled={isLoading || deleteImageIsLoading}
+                disabled={isLoading || imageIsDeleting}
                 customRequest={onUploadImage}
                 onRemove={onDeleteImage}
               >
