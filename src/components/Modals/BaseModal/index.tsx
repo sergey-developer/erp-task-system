@@ -2,6 +2,7 @@ import { ButtonProps, Modal, ModalProps } from 'antd'
 import { FC, useMemo } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
+import { SpinnerProps } from 'components/Spinner'
 
 import { cancelBtnText, modalWidth } from './constants'
 
@@ -17,6 +18,7 @@ const baseOkButtonProps: ButtonProps = {
 export type BaseModalProps = ModalProps & {
   /* Determines whether spinner should be shown on whole modal */
   isLoading?: boolean
+  loadingTip?: SpinnerProps['tip']
 }
 
 const BaseModal: FC<BaseModalProps> = ({
@@ -24,6 +26,7 @@ const BaseModal: FC<BaseModalProps> = ({
   cancelText = cancelBtnText,
   destroyOnClose = true,
   isLoading = false,
+  loadingTip,
   children,
   okButtonProps,
   cancelButtonProps,
@@ -51,7 +54,9 @@ const BaseModal: FC<BaseModalProps> = ({
       okButtonProps={mergedOkButtonProps}
       cancelButtonProps={mergedCancelButtonProps}
     >
-      <LoadingArea isLoading={isLoading}>{children}</LoadingArea>
+      <LoadingArea isLoading={isLoading} tip={loadingTip}>
+        {children}
+      </LoadingArea>
     </Modal>
   )
 }

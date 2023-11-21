@@ -1,20 +1,17 @@
 import { Key } from 'react'
 
 import { EquipmentCatalogListModel } from 'modules/warehouse/models'
-import { RelocationTaskFormFields } from 'modules/warehouse/types'
+import { RelocationTaskFormEquipment } from 'modules/warehouse/types'
 
 import { CurrencyListModel } from 'shared/models/currency'
-import { ArrayFirst } from 'shared/types/utils'
 
-export type CurrentEquipmentRow = {
-  id?: number
-  rowId: number
+export type ActiveEquipmentRow = Pick<RelocationEquipmentRow, 'id' | 'rowId'> & {
   rowIndex: number
 }
 
-export type RelocationEquipmentRowFields = Partial<
-  ArrayFirst<RelocationTaskFormFields['equipments']>
->
+export type RelocationEquipmentRow = Partial<RelocationTaskFormEquipment> & {
+  rowId: number
+}
 
 export type RelocationEquipmentEditableTableProps = {
   editableKeys?: Key[]
@@ -31,7 +28,7 @@ export type RelocationEquipmentEditableTableProps = {
 
   canAddEquipment: boolean
   addEquipmentBtnDisabled: boolean
-  onClickAddEquipment: (data: CurrentEquipmentRow) => void
+  onClickAddEquipment: (activeRow: ActiveEquipmentRow) => void
 
-  onClickAddImage: (data: CurrentEquipmentRow) => void
+  onClickAddImage: (activeRow: ActiveEquipmentRow) => void
 }
