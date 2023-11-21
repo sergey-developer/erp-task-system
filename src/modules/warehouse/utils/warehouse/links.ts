@@ -6,5 +6,5 @@ import { IdType } from 'shared/types/common'
 
 export const getWarehousePageLink = (id: IdType, title?: string): string => {
   const link = generatePath(WarehouseRouteEnum.Warehouse, { id: String(id) })
-  return title ? `${link}?title=${title}` : link
+  return title ? `${link}?warehouseTitle=${title}` : link
 }

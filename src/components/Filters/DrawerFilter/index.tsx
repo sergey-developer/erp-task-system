@@ -2,14 +2,14 @@ import { Button, DrawerProps, Row, Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import React from 'react'
 
-import { FCWithChildren } from 'shared/types/utils'
+import { EmptyFn, FCWithChildren } from 'shared/types/utils'
 
 import { DrawerStyled } from './styles'
 
 export type DrawerFilterProps = Pick<DrawerProps, 'open' | 'title' | 'placement'> & {
-  onApply: () => void
-  onReset: () => void
-  onClose: () => void
+  onApply: EmptyFn
+  onReset: EmptyFn
+  onClose: EmptyFn
 }
 
 const DrawerFilter: FCWithChildren<DrawerFilterProps> = ({

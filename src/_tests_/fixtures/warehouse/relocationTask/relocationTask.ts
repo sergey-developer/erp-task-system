@@ -1,6 +1,9 @@
 import pick from 'lodash/pick'
 
-import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import {
+  RelocationTaskStatusEnum,
+  RelocationTaskTypeEnum,
+} from 'modules/warehouse/constants/relocationTask'
 import { RelocationTaskModel } from 'modules/warehouse/models'
 
 import taskFixtures from '_tests_/fixtures/task'
@@ -13,6 +16,7 @@ export const relocationTask = (
   id: props?.id || fakeId(),
   status: props?.status || RelocationTaskStatusEnum.New,
 
+  type: RelocationTaskTypeEnum.Relocation,
   deadlineAt: fakeDateString(),
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.user(), 'id', 'fullName'),
@@ -27,4 +31,5 @@ export const relocationTask = (
     createdAt: fakeDateString(),
     user: pick(userFixtures.user(), 'id', 'fullName', 'phone'),
   },
+  task: pick(taskFixtures.task(), 'id', 'recordId'),
 })

@@ -2,9 +2,9 @@ import debounce from 'lodash/debounce'
 import { DependencyList, useCallback } from 'react'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
-import { AnyFunction } from 'shared/types/utils'
+import { AnyFn } from 'shared/types/utils'
 
-export const useDebounceFn = <T extends AnyFunction>(
+export const useDebounceFn = <T extends AnyFn>(
   fn: T,
   deps: DependencyList = [],
   delay: number = DEFAULT_DEBOUNCE_VALUE,

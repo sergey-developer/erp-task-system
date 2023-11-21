@@ -10,15 +10,16 @@ import {
 import { useGetEquipmentCatalogListQuery } from 'modules/warehouse/services/equipmentApi.service'
 
 import { isErrorResponse } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetEquipmentCatalogListResult = CustomUseQueryHookResult<
-  GetEquipmentCatalogListQueryArgs,
+  MaybeUndefined<GetEquipmentCatalogListQueryArgs>,
   GetEquipmentCatalogListSuccessResponse
 >
 
 type UseGetEquipmentCatalogListOptions = CustomUseQueryOptions<
-  GetEquipmentCatalogListQueryArgs,
+  MaybeUndefined<GetEquipmentCatalogListQueryArgs>,
   GetEquipmentCatalogListSuccessResponse
 >
 

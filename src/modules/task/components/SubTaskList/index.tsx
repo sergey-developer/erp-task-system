@@ -7,6 +7,7 @@ import { SubTaskModel } from 'modules/task/models'
 
 import Space from 'components/Space'
 
+import { checkLastItem } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import SubTask from './SubTask'
@@ -63,7 +64,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 taskSuspendRequestStatus={taskSuspendRequestStatus}
               />
 
-              {array.length - 1 !== index && <Divider />}
+              {!checkLastItem(index, array) && <Divider />}
             </React.Fragment>
           ))}
         </Space>

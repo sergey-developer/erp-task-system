@@ -6,14 +6,14 @@ import { DefaultTheme } from 'styled-components'
 import { DownIcon, UpIcon } from 'components/Icons'
 import Space, { SpaceProps } from 'components/Space'
 
-import { FCWithChildren } from 'shared/types/utils'
+import { EmptyFn, FCWithChildren } from 'shared/types/utils'
 
 const { Text } = Typography
 
 type ExpandableProps = {
   btnText: string
   expanded: boolean
-  onClick: () => void
+  onClick: EmptyFn
   btnTextType?: BaseType
   btnTextUnderline?: boolean
   showArrow?: boolean

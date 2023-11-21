@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-import { CustomMutationTrigger, CustomUseMutationResult } from 'lib/rtk-query/types'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { createTaskCommentMessages } from 'modules/task/constants/taskComment'
+import { createTaskCommentErrorMsg } from 'modules/task/constants/taskComment'
 import {
   CreateTaskCommentMutationArgs,
   CreateTaskCommentSuccessResponse,
@@ -10,6 +10,7 @@ import {
 import { useCreateTaskCommentMutation } from 'modules/task/services/taskApi.service'
 
 import {
+  getErrorDetail,
   isBadRequestError,
   isErrorResponse,
   isForbiddenError,
@@ -17,24 +18,24 @@ import {
 } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseCreateTaskCommentResult = [
-  CustomMutationTrigger<CreateTaskCommentMutationArgs, CreateTaskCommentSuccessResponse>,
-  CustomUseMutationResult<CreateTaskCommentMutationArgs, CreateTaskCommentSuccessResponse>,
-]
+type UseCreateTaskCommentResult = CustomUseMutationResult<
+  CreateTaskCommentMutationArgs,
+  CreateTaskCommentSuccessResponse
+>
 
 export const useCreateTaskComment = (): UseCreateTaskCommentResult => {
   const [mutation, state] = useCreateTaskCommentMutation()
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isNotFoundError(state.error) && state.error.data.detail) {
-        showErrorNotification(state.error.data.detail)
-      } else if (isBadRequestError(state.error) && state.error.data.detail) {
-        showErrorNotification(state.error.data.detail)
-      } else if (isForbiddenError(state.error) && state.error.data.detail) {
-        showErrorNotification(state.error.data.detail)
+      if (
+        isNotFoundError(state.error) ||
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error)
+      ) {
+        showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createTaskCommentMessages.commonError)
+        showErrorNotification(createTaskCommentErrorMsg)
       }
     }
   }, [state.error])

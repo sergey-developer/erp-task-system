@@ -2,16 +2,14 @@ import React, { FC } from 'react'
 
 import { QuestionCircleIcon } from 'components/Icons'
 
+import { EmptyFn } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
 import TaskRequest, { TaskRequestProps } from '../TaskRequest'
 
-export type TaskReclassificationRequestProps = Pick<
-  TaskRequestProps,
-  'comment' | 'date'
-> & {
+export type TaskReclassificationRequestProps = Pick<TaskRequestProps, 'comment' | 'date'> & {
   user: NonNullable<TaskRequestProps['user']>
-  onCancel: () => void
+  onCancel: EmptyFn
   cancelBtnDisabled: boolean
 }
 

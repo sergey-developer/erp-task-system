@@ -60,7 +60,7 @@ export const route: Readonly<RouteObject> = {
               path: WarehouseRouteEnum.Warehouse,
               element: <WarehousePage />,
               handle: {
-                crumb: ({ qs }: BreadCrumbArgs) => qs.get('title'),
+                crumb: ({ qs }: BreadCrumbArgs) => qs.get('warehouseTitle'),
               },
             },
           ],
@@ -105,7 +105,7 @@ export const route: Readonly<RouteObject> = {
             {
               path: WarehouseRouteEnum.EquipmentList,
               element: <EquipmentListPage />,
-              handle: { crumb: ({ qs }: BreadCrumbArgs) => qs.get('title') },
+              handle: { crumb: ({ qs }: BreadCrumbArgs) => qs.get('equipmentNomenclatureTitle') },
             },
           ],
         },

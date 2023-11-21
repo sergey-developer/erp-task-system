@@ -1,7 +1,6 @@
-import { TaskModel } from 'modules/task/models'
+import { IdType } from 'shared/types/common'
 
 import { SubTaskModel } from './subTask.model'
 
-export type GetSubTaskListQueryArgs = TaskModel['id']
-
+export type GetSubTaskListQueryArgs = IdType
 export type GetSubTaskListSuccessResponse = SubTaskModel[]

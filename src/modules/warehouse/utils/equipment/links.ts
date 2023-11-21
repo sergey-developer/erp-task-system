@@ -4,5 +4,15 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { IdType } from 'shared/types/common'
 
-export const getEquipmentListPageLink = (id: IdType, title: string): string =>
-  `${generatePath(WarehouseRouteEnum.EquipmentList, { id: String(id) })}?title=${title}`
+export const getEquipmentListPageLink = (
+  equipmentNomenclatureId: IdType,
+  equipmentNomenclatureTitle?: string,
+): string => {
+  const link = generatePath(WarehouseRouteEnum.EquipmentList, {
+    id: String(equipmentNomenclatureId),
+  })
+
+  return equipmentNomenclatureTitle
+    ? `${link}?equipmentNomenclatureTitle=${equipmentNomenclatureTitle}`
+    : link
+}

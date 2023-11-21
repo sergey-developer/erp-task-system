@@ -9,7 +9,6 @@ import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
 import { taskAssigneePermissions } from 'modules/task/permissions'
-import { getFullUserName } from 'modules/user/utils'
 
 import Permissions from 'components/Permissions'
 import Space from 'components/Space'
@@ -147,7 +146,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
           canView && !canEdit ? (
             <Space direction='vertical' size='middle' $block>
               {assignee ? (
-                <TaskAssignee name={getFullUserName(assignee)} assignee={assignee} />
+                <TaskAssignee {...assignee} hasPopover />
               ) : (
                 <Text>{NOT_ASSIGNED_TEXT}</Text>
               )}
@@ -163,28 +162,28 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                   placeholder={assignee ? null : NOT_ASSIGNED_TEXT}
                   onSelect={setSelectedAssignee}
                 >
-                  {workGroupMembers.map(({ id, firstName, lastName, middleName }) => {
-                    const currentAssigneeInWorkGroup: boolean = isEqual(id, currentAssignee)
-                    const authenticatedUserInWorkGroup: boolean = isEqual(id, authenticatedUser!.id)
+                  {workGroupMembers.map((member) => {
+                    const currentAssigneeInWorkGroup: boolean = isEqual(member.id, currentAssignee)
+                    const authenticatedUserInWorkGroup: boolean = isEqual(
+                      member.id,
+                      authenticatedUser!.id,
+                    )
                     const disabled = currentAssigneeInWorkGroup || authenticatedUserInWorkGroup
 
                     return (
                       <SelectStyled.Option
-                        data-testid={`select-option-${id}`}
-                        key={id}
-                        value={id}
+                        data-testid={`select-option-${member.id}`}
+                        key={member.id}
+                        value={member.id}
                         disabled={disabled}
                       >
-                        <TaskAssignee
-                          name={getFullUserName({ firstName, lastName, middleName })}
-                          assignee={assignee}
-                        />
+                        <TaskAssignee {...member} />
                       </SelectStyled.Option>
                     )
                   })}
                 </SelectStyled>
               ) : assignee ? (
-                <TaskAssignee name={getFullUserName(assignee)} assignee={assignee} />
+                <TaskAssignee {...assignee} hasPopover />
               ) : (
                 <Text>{NOT_ASSIGNED_TEXT}</Text>
               )}

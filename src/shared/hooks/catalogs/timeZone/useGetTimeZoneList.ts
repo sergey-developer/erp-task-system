@@ -3,7 +3,10 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
 import { getTimeZoneListMessages } from 'shared/constants/catalogs'
-import { GetTimeZoneListQueryArgs, GetTimeZoneListSuccessResponse } from 'shared/models/catalogs/timeZone'
+import {
+  GetTimeZoneListQueryArgs,
+  GetTimeZoneListSuccessResponse,
+} from 'shared/models/catalogs/timeZone'
 import { isErrorResponse } from 'shared/services/baseApi'
 import { useGetTimeZoneListQuery } from 'shared/services/catalogsApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'

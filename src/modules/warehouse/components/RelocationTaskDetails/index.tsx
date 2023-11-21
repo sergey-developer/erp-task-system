@@ -3,7 +3,6 @@ import {
   Button,
   Col,
   Drawer,
-  DrawerProps,
   Dropdown,
   DropdownProps,
   MenuProps,
@@ -12,10 +11,11 @@ import {
   Typography,
 } from 'antd'
 import React, { FC } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
+import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import {
   cancelRelocationTaskMessages,
@@ -35,6 +35,7 @@ import {
 import { useCloseRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
+  getRelocationTaskTitle,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
 import { useReturnRelocationTaskToReworkMutation } from 'modules/warehouse/services/relocationTaskApi.service'
@@ -61,7 +62,6 @@ import { formatDate } from 'shared/utils/date'
 import { showErrorNotification } from 'shared/utils/notifications'
 import { getFieldsErrors } from 'shared/utils/form'
 import { mapUploadedFiles } from 'shared/utils/file'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
 
 import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
@@ -243,17 +243,6 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     }
   }
 
-  const title: DrawerProps['title'] = relocationTaskIsFetching ? (
-    <Space>
-      <Text>Заявка на перемещение оборудования</Text>
-      <Spinner centered={false} />
-    </Space>
-  ) : (
-    `Заявка на перемещение оборудования ${valueOrHyphen(
-      relocationTask?.relocateFrom?.title,
-    )} 🠖 ${valueOrHyphen(relocationTask?.relocateTo?.title)}`
-  )
-
   const menuProps: MenuProps = {
     items: [
       {
@@ -327,7 +316,12 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         {...props}
         data-testid='relocation-task-details'
         placement='bottom'
-        title={title}
+        title={
+          <Space>
+            <Text>{getRelocationTaskTitle(relocationTask)}</Text>
+            {relocationTaskIsFetching && <Spinner centered={false} />}
+          </Space>
+        }
         extra={
           <Dropdown menu={menuProps} trigger={dropdownTrigger}>
             <Button type='text' icon={<MenuIcon />} />
@@ -433,6 +427,20 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Col span={16}>{formatDate(relocationTask.createdAt)}</Col>
                   </Row>
 
+                  <Row data-testid='task'>
+                    <Col span={8}>
+                      <Text type='secondary'>Заявка ITSM:</Text>
+                    </Col>
+
+                    {relocationTask.task && (
+                      <Col span={16}>
+                        <Link to={getTaskListPageLink({ viewTaskId: relocationTask.task.id })}>
+                          {relocationTask.task.recordId}
+                        </Link>
+                      </Col>
+                    )}
+                  </Row>
+
                   <Row data-testid='comment'>
                     <Col span={8}>
                       <Text type='secondary'>Комментарий:</Text>
@@ -448,11 +456,11 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                       <Text type='secondary'>Документы:</Text>
                     </Col>
 
-                    <Col span={16}>
-                      {!!relocationTask.documents?.length && (
-                        <AttachmentList attachments={relocationTask.documents} />
-                      )}
-                    </Col>
+                    {!!relocationTask.documents?.length && (
+                      <Col span={16}>
+                        <AttachmentList data={relocationTask.documents} />
+                      </Col>
+                    )}
                   </Row>
                 </Space>
               )}

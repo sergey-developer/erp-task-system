@@ -3,7 +3,7 @@ import React from 'react'
 
 import Space from 'components/Space'
 
-import { FCWithChildren } from 'shared/types/utils'
+import { EmptyFn, FCWithChildren } from 'shared/types/utils'
 
 import { WrapperStyled } from './styles'
 
@@ -11,7 +11,7 @@ const { Title, Text } = Typography
 
 export type FilterBlockProps = {
   label: string
-  onReset: () => void
+  onReset: EmptyFn
 }
 
 const FilterBlock: FCWithChildren<FilterBlockProps> = ({ children, onReset, label, ...props }) => {

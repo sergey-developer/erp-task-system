@@ -33,12 +33,7 @@ const JournalEntry: FC<JournalEntryProps> = ({
   attachments,
 }) => {
   return (
-    <Space
-      data-testid={`journal-entry-${id}`}
-      direction='vertical'
-      size='middle'
-      $block
-    >
+    <Space data-testid={`journal-entry-${id}`} direction='vertical' size='middle' $block>
       <Space direction='vertical'>
         <Text strong>{createdAt}</Text>
 
@@ -47,10 +42,9 @@ const JournalEntry: FC<JournalEntryProps> = ({
         </Description>
       </Space>
 
-      {/*todo: убрать optional chaining*/}
       {!!attachments?.length && (
         <Space direction='vertical'>
-          <AttachmentList attachments={attachments} />
+          <AttachmentList data={attachments} />
         </Space>
       )}
 

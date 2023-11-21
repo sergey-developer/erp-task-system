@@ -1,4 +1,4 @@
-import { Form, Select, Space, Typography, Input, Checkbox } from 'antd'
+import { Checkbox, Form, Input, Select, Space, Typography } from 'antd'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
@@ -7,6 +7,8 @@ import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
+
+import { filterOptionBy } from 'shared/utils/common'
 
 import { OptionTextStyled, WorkGroupFormItem } from './styles'
 import { TaskSecondLineFormFields, TaskSecondLineModalProps } from './types'
@@ -99,9 +101,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
               loading={workGroupListIsFetching}
               disabled={isLoading}
               showSearch
-              filterOption={(input, option) =>
-                option ? option.title.toLowerCase().includes(input.toLowerCase()) : false
-              }
+              filterOption={filterOptionBy('title')}
             >
               {workGroupList.map(({ id, name, priority }) => (
                 <Select.Option
