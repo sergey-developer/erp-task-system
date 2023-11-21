@@ -70,7 +70,6 @@ import {
   getRelocateFromLocationListParams,
   getRelocateToLocationListParams,
 } from '../CreateRelocationTaskPage/utils'
-
 import { relocationEquipmentAttachmentListToFileList } from './utils'
 
 const AddAttachmentListModal = React.lazy(
@@ -423,7 +422,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const handleChangeRelocateFrom = useCallback<RelocationTaskFormProps['onChangeRelocateFrom']>(
     (value, option) => {
-      const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
+      const equipments: RelocationEquipmentRow[] = form.getFieldValue('equipments') || []
       const relocateFrom = form.getFieldValue('relocateFrom')
       const isShowConfirmation = !!equipments.length && !!relocateFrom
       form.setFieldValue('relocateFrom', value)
@@ -442,7 +441,7 @@ const EditRelocationTaskPage: FC = () => {
         form.setFieldValue('relocateTo', relocateToValue)
         setSelectedRelocateTo(relocateToValue)
 
-        const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
+        const equipments: RelocationEquipmentRow[] = form.getFieldValue('equipments') || []
         const newEquipments = equipments.map((eqp) => ({
           ...eqp,
           condition: EquipmentConditionEnum.WrittenOff,
@@ -503,7 +502,7 @@ const EditRelocationTaskPage: FC = () => {
         setSelectedRelocateFrom({
           label: relocateFromListItem.title,
           type: relocateFromListItem.type,
-          value: relocateFromListItem.id
+          value: relocateFromListItem.id,
         })
       }
     }

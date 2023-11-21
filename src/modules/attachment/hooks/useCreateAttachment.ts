@@ -16,7 +16,7 @@ import {
   isBadRequestError,
   isErrorResponse,
 } from 'shared/services/baseApi'
-import { FileToSend } from 'shared/types/file'
+import { FileToUpload } from 'shared/types/file'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -44,7 +44,7 @@ export const useCreateAttachment = (): UseCreateAttachmentResult => {
   const handler = useCallback<UseCreateAttachmentResult[0]>(
     async (args, { file, onSuccess, onError }) => {
       try {
-        const response = await mutation({ ...args, file: file as FileToSend }).unwrap()
+        const response = await mutation({ ...args, file: file as FileToUpload }).unwrap()
         if (onSuccess) onSuccess({ id: response.id })
         return response
       } catch (error) {

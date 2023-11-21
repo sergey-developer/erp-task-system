@@ -1,10 +1,10 @@
 import { UploadFile } from 'antd/es/upload'
 
-import { FileToSend } from 'shared/types/file'
+import { FileToUpload } from 'shared/types/file'
 import { MaybeUndefined } from 'shared/types/utils'
 import { isTruthy } from 'shared/utils/common'
 
-const extractOriginFile = (file: UploadFile): MaybeUndefined<FileToSend> => file.originFileObj
+const extractOriginFile = (file: UploadFile): MaybeUndefined<FileToUpload> => file.originFileObj
 
-export const extractOriginFiles = (files: UploadFile[]): FileToSend[] =>
+export const extractOriginFiles = (files: UploadFile[]): FileToUpload[] =>
   files.map(extractOriginFile).filter(isTruthy)
