@@ -76,7 +76,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
-  const [currentEquipmentRow, setCurrentEquipmentRow] = useState<ActiveEquipmentRow>()
+  const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
@@ -90,7 +90,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const handleOpenAddEquipmentModal = useDebounceFn(
     (row: ActiveEquipmentRow) => {
-      setCurrentEquipmentRow(row)
+      setActiveEquipmentRow(row)
       openAddEquipmentModal()
     },
     [openAddEquipmentModal],
@@ -100,7 +100,7 @@ const CreateRelocationTaskPage: FC = () => {
     closeAddEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
-    setCurrentEquipmentRow(undefined)
+    setActiveEquipmentRow(undefined)
   }, [closeAddEquipmentModal])
 
   const [
@@ -112,13 +112,13 @@ const CreateRelocationTaskPage: FC = () => {
   ] = useBoolean(false)
 
   const handleOpenAddRelocationEquipmentImagesModal = useDebounceFn((row: ActiveEquipmentRow) => {
-    setCurrentEquipmentRow(row)
+    setActiveEquipmentRow(row)
     openAddRelocationEquipmentImagesModal()
   })
 
   const handleCloseAddRelocationEquipmentImagesModal = useDebounceFn(() => {
     closeAddRelocationEquipmentImagesModal()
-    setCurrentEquipmentRow(undefined)
+    setActiveEquipmentRow(undefined)
   })
 
   const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
@@ -292,7 +292,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
-      if (!currentEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
+      if (!activeEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
 
       try {
         const createdEquipment = await createEquipmentMutation({
@@ -302,7 +302,7 @@ const CreateRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
-        form.setFieldValue(['equipments', currentEquipmentRow.rowIndex], {
+        form.setFieldValue(['equipments', activeEquipmentRow.rowIndex], {
           rowId: createdEquipment.id,
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
@@ -316,7 +316,7 @@ const CreateRelocationTaskPage: FC = () => {
         })
 
         setEditableTableRowKeys((prevState) => {
-          const index = prevState.indexOf(currentEquipmentRow.rowId)
+          const index = prevState.indexOf(activeEquipmentRow.rowId)
           const newArr = [...prevState]
           if (index !== -1) {
             newArr[index] = createdEquipment.id
@@ -340,7 +340,7 @@ const CreateRelocationTaskPage: FC = () => {
       }
     },
     [
-      currentEquipmentRow,
+      activeEquipmentRow,
       selectedRelocateTo?.value,
       selectedRelocateFrom?.value,
       createEquipmentMutation,
@@ -367,8 +367,8 @@ const CreateRelocationTaskPage: FC = () => {
     selectedRelocateTo.type !== LocationTypeEnum.Warehouse
 
   const equipmentImagesFormPath =
-    addRelocationEquipmentImagesModalOpened && currentEquipmentRow
-      ? ['equipments', currentEquipmentRow.rowIndex, 'attachments']
+    addRelocationEquipmentImagesModalOpened && activeEquipmentRow
+      ? ['equipments', activeEquipmentRow.rowIndex, 'attachments']
       : undefined
 
   return (
@@ -487,7 +487,7 @@ const CreateRelocationTaskPage: FC = () => {
         </React.Suspense>
       )}
 
-      {addRelocationEquipmentImagesModalOpened && currentEquipmentRow && (
+      {addRelocationEquipmentImagesModalOpened && activeEquipmentRow && (
         <React.Suspense
           fallback={
             <ModalFallback
