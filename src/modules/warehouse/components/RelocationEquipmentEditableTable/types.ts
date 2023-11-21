@@ -5,13 +5,12 @@ import { RelocationTaskFormEquipment } from 'modules/warehouse/types'
 
 import { CurrencyListModel } from 'shared/models/currency'
 
-export type ActiveEquipmentRow = Pick<RelocationEquipmentRow, 'id' | 'rowId' | 'inCreatedTask'> & {
+export type ActiveEquipmentRow = Pick<RelocationEquipmentRow, 'id' | 'rowId'> & {
   rowIndex: number
 }
 
 export type RelocationEquipmentRow = Partial<RelocationTaskFormEquipment> & {
   rowId: number
-  inCreatedTask: boolean
 }
 
 export type RelocationEquipmentEditableTableProps = {

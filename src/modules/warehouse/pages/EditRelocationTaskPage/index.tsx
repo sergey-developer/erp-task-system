@@ -144,6 +144,19 @@ const EditRelocationTaskPage: FC = () => {
   const [createAttachment] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
+  const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
+    useGetRelocationTask({ relocationTaskId: relocationTaskId! })
+
+  const {
+    currentData: relocationEquipmentList = [],
+    isFetching: relocationEquipmentListIsFetching,
+  } = useGetRelocationEquipmentList({ relocationTaskId: relocationTaskId! })
+
+  const equipmentInCreatedTask =
+    addRelocationEquipmentImagesModalOpened && currentEquipmentRow && relocationEquipmentList.length
+      ? Boolean(relocationEquipmentList.find((eqp) => eqp.id === currentEquipmentRow.id))
+      : false
+
   const {
     currentData: relocationEquipmentAttachmentList = [],
     isFetching: relocationEquipmentAttachmentListIsFetching,
@@ -152,18 +165,10 @@ const EditRelocationTaskPage: FC = () => {
     {
       skip:
         !currentEquipmentRow?.id ||
-        !currentEquipmentRow.inCreatedTask ||
+        !equipmentInCreatedTask ||
         !addRelocationEquipmentImagesModalOpened,
     },
   )
-
-  const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
-    useGetRelocationTask({ relocationTaskId: relocationTaskId! })
-
-  const {
-    currentData: relocationEquipmentList = [],
-    isFetching: relocationEquipmentListIsFetching,
-  } = useGetRelocationEquipmentList({ relocationTaskId: relocationTaskId! })
 
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
     isManager: false,
@@ -322,7 +327,6 @@ const EditRelocationTaskPage: FC = () => {
 
           form.setFieldValue(['equipments', index], {
             ...currentEquipment,
-            inCreatedTask: false,
             quantity: isConsumable ? currentEquipment.quantity : 1,
             serialNumber: equipment.serialNumber,
             purpose: equipment.purpose.title,
@@ -370,7 +374,6 @@ const EditRelocationTaskPage: FC = () => {
         }).unwrap()
 
         form.setFieldValue(['equipments', currentEquipmentRow.rowIndex], {
-          inCreatedTask: false,
           rowId: createdEquipment.id,
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
@@ -440,7 +443,6 @@ const EditRelocationTaskPage: FC = () => {
         const balance = relocationEquipmentBalanceList.find((b) => b.equipmentId === eqp.id)
 
         equipments.push({
-          inCreatedTask: true,
           rowId: eqp.id,
           id: eqp.id,
           serialNumber: eqp?.serialNumber || undefined,

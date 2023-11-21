@@ -106,7 +106,6 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
                     onClickAddEquipment({
                       id: config.entity.id,
                       rowId: config.entity.rowId,
-                      inCreatedTask: config.entity.inCreatedTask,
                       rowIndex: config.rowIndex,
                     })
                   }
@@ -206,7 +205,6 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
                 onClickAddImage({
                   id: config.record!.id,
                   rowId: config.record!.rowId!,
-                  inCreatedTask: config.record!.inCreatedTask,
                   rowIndex: schema.index!,
                 })
               }
@@ -240,7 +238,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       name='equipments'
       columns={columns}
       recordCreatorProps={{
-        record: () => ({ rowId: random(1, 999999), inCreatedTask: false }),
+        record: () => ({ rowId: random(1, 999999) }),
         disabled: isLoading,
         creatorButtonText: 'Добавить оборудование',
       }}
