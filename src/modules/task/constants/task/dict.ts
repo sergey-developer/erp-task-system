@@ -3,7 +3,7 @@ import { BaseTaskModel } from 'modules/task/models'
 
 import { StringMap } from 'shared/types/utils'
 
-import { FastFilterEnum, TaskExtendedStatusEnum, TaskStatusEnum } from './enums'
+import { FastFilterEnum, TaskCardTabsEnum, TaskExtendedStatusEnum, TaskStatusEnum } from './enums'
 
 export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
   [FastFilterEnum.All]: 'Все',
@@ -62,3 +62,12 @@ export const taskPriorityMap: Map<BaseTaskModel['priorityCode'], string> = new M
   [3, '3-средний'],
   [4, '4-низкий'],
 ])
+
+export const taskCardTabNamesDict: Readonly<StringMap<TaskCardTabsEnum>> = {
+  [TaskCardTabsEnum.SubTaskList]: 'Задания',
+  [TaskCardTabsEnum.CommentList]: 'Комментарии',
+  [TaskCardTabsEnum.Resolution]: 'Решение',
+  [TaskCardTabsEnum.Description]: 'Описание',
+  [TaskCardTabsEnum.Journal]: 'Журнал',
+  [TaskCardTabsEnum.RelocationTaskList]: 'Перемещения',
+}

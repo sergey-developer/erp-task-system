@@ -2,6 +2,8 @@ import { Space } from 'antd'
 import { FC, Fragment } from 'react'
 import { useMatches, useSearchParams } from 'react-router-dom'
 
+import { checkLastItem } from 'shared/utils/common'
+
 export type BreadCrumbArgs = {
   qs: ReturnType<typeof useSearchParams>[0]
 }
@@ -25,7 +27,7 @@ const Breadcrumbs: FC = () => {
       {crumbs.map((crumb, index, array) => (
         <Fragment key={index}>
           {crumb}
-          {index === 0 || index !== array.length - 1 ? ' /' : ''}
+          {index === 0 || !checkLastItem(index, array) ? ' /' : ''}
         </Fragment>
       ))}
     </Space>

@@ -27,7 +27,11 @@ import Space from 'components/Space'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 const initialFilterValues: Pick<RelocationTaskListFilterFormFields, 'status'> = {
   status: [
@@ -49,7 +53,7 @@ const initialRelocationTaskListParams: Pick<
 const RelocationTaskListPage: FC = () => {
   // todo: создать хук для useSearchParams который парсит значения в нужный тип
   const [searchParams, setSearchParams] = useSearchParams()
-  const relocationTaskId = Number(searchParams.get('relocationTask'))
+  const relocationTaskId = Number(searchParams.get('viewRelocationTask'))
 
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
@@ -57,11 +61,12 @@ const RelocationTaskListPage: FC = () => {
 
   const [selectedRelocationTaskId, setSelectedRelocationTaskId] = useState<IdType>()
 
-  const [relocationTaskOpened, { toggle: toggleOpenRelocationTask }] = useBoolean(false)
-  const debouncedCloseRelocationTask = useDebounceFn(() => {
-    toggleOpenRelocationTask()
-    setSearchParams(undefined)
-  })
+  const [
+    relocationTaskOpened,
+    { toggle: toggleOpenRelocationTask, setFalse: closeRelocationTask },
+  ] = useBoolean(false)
+
+  const handleCloseRelocationTask = useDebounceFn(closeRelocationTask)
 
   const [relocationTaskListParams, setRelocationTaskListParams] =
     useSetState<GetRelocationTaskListQueryArgs>(initialRelocationTaskListParams)
@@ -74,8 +79,9 @@ const RelocationTaskListPage: FC = () => {
       // todo: вынести в функцию и переиспользовать
       setSelectedRelocationTaskId(relocationTaskId)
       toggleOpenRelocationTask()
+      setSearchParams(undefined)
     }
-  }, [relocationTaskId, relocationTaskOpened, toggleOpenRelocationTask])
+  }, [relocationTaskId, relocationTaskOpened, setSearchParams, toggleOpenRelocationTask])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {
@@ -144,7 +150,7 @@ const RelocationTaskListPage: FC = () => {
         </Space>
 
         <RelocationTaskTable
-          dataSource={relocationTaskList?.results || []}
+          dataSource={extractPaginationResults(relocationTaskList)}
           pagination={relocationTaskList?.pagination || false}
           loading={relocationTaskListIsFetching}
           sort={relocationTaskListParams.ordering}
@@ -156,7 +162,7 @@ const RelocationTaskListPage: FC = () => {
       {relocationTaskOpened && selectedRelocationTaskId && (
         <RelocationTaskDetails
           open={relocationTaskOpened}
-          onClose={debouncedCloseRelocationTask}
+          onClose={handleCloseRelocationTask}
           relocationTaskId={selectedRelocationTaskId}
         />
       )}

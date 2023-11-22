@@ -1,19 +1,22 @@
 import { TabsProps } from 'antd'
+import pick from 'lodash/pick'
 import React, { FC } from 'react'
 
+import { taskCardTabNamesDict, TaskCardTabsEnum } from 'modules/task/constants/task'
 import { TaskModel } from 'modules/task/models'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 
 import Spinner from 'components/Spinner'
 
 import TaskCardWrapper from '../TaskCard/TaskCardWrapper'
 import DescriptionTab from './DescriptionTab'
 import ResolutionTab from './ResolutionTab'
-import { TaskCardTabsEnum, taskCardTabNamesDict } from './constants'
 import { TabsStyled } from './styles'
 
 const JournalTab = React.lazy(() => import('./JournalTab'))
 const CommentListTab = React.lazy(() => import('./CommentListTab'))
 const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
+const RelocationTaskListTab = React.lazy(() => import('./RelocationTaskListTab'))
 
 export type CardTabsProps = {
   task: Pick<
@@ -31,10 +34,18 @@ export type CardTabsProps = {
     | 'suspendRequest'
     | 'resolution'
     | 'attachments'
+    | 'olaNextBreachTime'
+    | 'olaEstimatedTime'
+    | 'olaStatus'
+    | 'shop'
   >
+
+  activeTab?: TaskCardTabsEnum
 }
 
-const CardTabs: FC<CardTabsProps> = ({ task }) => {
+const CardTabs: FC<CardTabsProps> = ({ task, activeTab = TaskCardTabsEnum.Description }) => {
+  const userPermissions = useMatchUserPermissions(['RELOCATION_TASKS_READ'])
+
   const tabsItems: TabsProps['items'] = [
     {
       key: TaskCardTabsEnum.Description,
@@ -96,19 +107,57 @@ const CardTabs: FC<CardTabsProps> = ({ task }) => {
       children: (
         <TaskCardWrapper>
           <React.Suspense fallback={<Spinner />}>
-            <SubTaskListTab task={task} />
+            <SubTaskListTab
+              task={pick(
+                task,
+                'id',
+                'assignee',
+                'status',
+                'extendedStatus',
+                'type',
+                'recordId',
+                'title',
+                'description',
+                'suspendRequest',
+              )}
+            />
           </React.Suspense>
         </TaskCardWrapper>
       ),
     },
+    ...(userPermissions?.relocationTasksRead
+      ? [
+          {
+            key: TaskCardTabsEnum.RelocationTaskList,
+            label: taskCardTabNamesDict[TaskCardTabsEnum.RelocationTaskList],
+            children: (
+              <TaskCardWrapper>
+                <React.Suspense fallback={<Spinner />}>
+                  <RelocationTaskListTab
+                    task={pick(
+                      task,
+                      'id',
+                      'assignee',
+                      'recordId',
+                      'olaNextBreachTime',
+                      'olaEstimatedTime',
+                      'olaStatus',
+                      'shop',
+                    )}
+                  />
+                </React.Suspense>
+              </TaskCardWrapper>
+            ),
+          },
+        ]
+      : []),
   ]
 
   return (
     <TabsStyled
       data-testid='task-card-tabs'
-      defaultActiveKey={TaskCardTabsEnum.Description}
+      defaultActiveKey={activeTab}
       type='card'
-      destroyInactiveTabPane
       items={tabsItems}
     />
   )

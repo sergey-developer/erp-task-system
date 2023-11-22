@@ -5,7 +5,7 @@ import React, { FC, useCallback, useEffect } from 'react'
 
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
-import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
   RequestTaskSuspendFormFields,
@@ -16,6 +16,7 @@ import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineMo
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
   getTaskWorkPerformedActMessages,
+  TaskCardTabsEnum,
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
@@ -48,7 +49,7 @@ import Spinner from 'components/Spinner'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
-import { MaybeNull } from 'shared/types/utils'
+import { EmptyFn, MaybeNull } from 'shared/types/utils'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { mapUploadedFiles } from 'shared/utils/file'
@@ -64,6 +65,9 @@ import SecondaryDetails from '../SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
+const ConfirmExecuteTaskModal = React.lazy(
+  () => import('modules/task/components/ConfirmExecuteTaskModal'),
+)
 const TaskSuspendRequest = React.lazy(() => import('modules/task/components/TaskSuspendRequest'))
 
 const RequestTaskReclassificationModal = React.lazy(
@@ -121,11 +125,13 @@ export type TaskCardProps = {
       | 'responseTime'
       | 'attachments'
       | 'parentInteractionExternalId'
+      | 'hasRelocationTasks'
+      | 'shop'
     >
   >
 
   taskIsLoading: boolean
-  refetchTask: () => void
+  refetchTask: EmptyFn
   reclassificationRequest: MaybeNull<TaskReclassificationRequestModel>
   reclassificationRequestIsLoading: boolean
   createReclassificationRequest: (
@@ -159,9 +165,11 @@ export type TaskCardProps = {
   deleteWorkGroupIsLoading: boolean
 
   additionalInfoExpanded: boolean
-  onExpandAdditionalInfo: () => void
+  onExpandAdditionalInfo: EmptyFn
 
-  closeTaskCard: () => void
+  activeTab?: TaskCardTabsEnum
+
+  closeTaskCard: EmptyFn
 
   isGetTaskError: boolean
 }
@@ -202,24 +210,44 @@ const TaskCard: FC<TaskCardProps> = ({
   closeTaskCard,
 
   isGetTaskError,
+
+  activeTab,
 }) => {
   const { modal } = App.useApp()
   const taskStatus = useTaskStatus(task?.status)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
   const userRole = useUserRole()
-  const isAssignedToCurrentUser = useCheckUserAuthenticated(task?.assignee?.id)
+  const isAssignedToCurrentUser = useIdBelongAuthUser(task?.assignee?.id)
 
   const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
   const debouncedRefetchTask = useDebounceFn(refetchTask)
 
   const [
-    taskResolutionModalOpened,
-    { setTrue: openTaskResolutionModal, setFalse: closeTaskResolutionModal },
+    executeTaskModalOpened,
+    { setTrue: openExecuteTaskModal, setFalse: closeExecuteTaskModal },
   ] = useBoolean(false)
 
-  const debouncedOpenTaskResolutionModal = useDebounceFn(openTaskResolutionModal)
+  const handleCloseExecuteTaskModal = useDebounceFn(closeExecuteTaskModal)
+
+  const [
+    confirmExecuteTaskModalOpened,
+    { setTrue: openConfirmExecuteTaskModal, setFalse: closeConfirmExecuteTaskModal },
+  ] = useBoolean(false)
+
+  const debouncedCloseConfirmExecuteTaskModal = useDebounceFn(closeConfirmExecuteTaskModal)
+
+  const handleOpenExecuteTaskModal = useDebounceFn(() => {
+    if (task) {
+      task.hasRelocationTasks ? openExecuteTaskModal() : openConfirmExecuteTaskModal()
+    }
+  })
+
+  const handleConfirmExecuteTask = useDebounceFn(() => {
+    closeConfirmExecuteTaskModal()
+    openExecuteTaskModal()
+  })
 
   const [
     taskReclassificationModalOpened,
@@ -227,9 +255,11 @@ const TaskCard: FC<TaskCardProps> = ({
   ] = useBoolean(false)
 
   const handleOpenTaskReclassificationModal = useDebounceFn(() => {
-    task?.parentInteractionExternalId
-      ? openTaskReclassificationModal()
-      : modal.warning({ title: 'Невозможно переклассифицировать заявку без обращения' })
+    if (task) {
+      task.parentInteractionExternalId
+        ? openTaskReclassificationModal()
+        : modal.warning({ title: 'Невозможно переклассифицировать заявку без обращения' })
+    }
   }, [task?.parentInteractionExternalId])
 
   const [
@@ -243,7 +273,7 @@ const TaskCard: FC<TaskCardProps> = ({
     if (isGetTaskError) closeTaskCard()
   }, [isGetTaskError, closeTaskCard])
 
-  const handleResolutionSubmit = useCallback<ExecuteTaskModalProps['onSubmit']>(
+  const handleExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
     async (values, setFields) => {
       if (!task) return
 
@@ -328,7 +358,7 @@ const TaskCard: FC<TaskCardProps> = ({
     async (
       values: TaskSecondLineFormFields,
       setFields: FormInstance['setFields'],
-      closeTaskSecondLineModal: () => void,
+      closeTaskSecondLineModal: EmptyFn,
     ) => {
       if (!task) return
 
@@ -351,7 +381,7 @@ const TaskCard: FC<TaskCardProps> = ({
     async (
       values: TaskFirstLineFormFields,
       setFields: FormInstance['setFields'],
-      closeTaskFirstLineModal: () => void,
+      closeTaskFirstLineModal: EmptyFn,
     ) => {
       if (!task) return
 
@@ -441,7 +471,7 @@ const TaskCard: FC<TaskCardProps> = ({
       suspendRequest={task.suspendRequest}
       onClose={debouncedCloseTaskCard}
       onReloadTask={debouncedRefetchTask}
-      onExecuteTask={debouncedOpenTaskResolutionModal}
+      onExecuteTask={handleOpenExecuteTaskModal}
       onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
       onRequestReclassification={handleOpenTaskReclassificationModal}
     />
@@ -565,26 +595,44 @@ const TaskCard: FC<TaskCardProps> = ({
                 taskSuspendRequestStatus={task.suspendRequest?.status}
               />
 
-              <CardTabs task={task} />
+              <CardTabs task={task} activeTab={activeTab} />
 
-              {taskResolutionModalOpened && (
+              {executeTaskModalOpened && (
                 <React.Suspense
                   fallback={
                     <ModalFallback
-                      open={taskResolutionModalOpened}
-                      onCancel={closeTaskResolutionModal}
+                      open={executeTaskModalOpened}
+                      onCancel={handleCloseExecuteTaskModal}
                     />
                   }
                 >
                   <ExecuteTaskModal
-                    open={taskResolutionModalOpened}
+                    open={executeTaskModalOpened}
                     type={task.type}
                     recordId={task.recordId}
                     isLoading={isTaskResolving}
-                    onCancel={closeTaskResolutionModal}
-                    onSubmit={handleResolutionSubmit}
+                    onCancel={handleCloseExecuteTaskModal}
+                    onSubmit={handleExecuteTask}
                     onGetAct={handleGetAct}
                     getActIsLoading={taskWorkPerformedActIsLoading}
+                  />
+                </React.Suspense>
+              )}
+
+              {confirmExecuteTaskModalOpened && (
+                <React.Suspense
+                  fallback={
+                    <ModalFallback
+                      open={confirmExecuteTaskModalOpened}
+                      onCancel={debouncedCloseConfirmExecuteTaskModal}
+                    />
+                  }
+                >
+                  <ConfirmExecuteTaskModal
+                    open={confirmExecuteTaskModalOpened}
+                    recordId={task.recordId}
+                    onCancel={debouncedCloseConfirmExecuteTaskModal}
+                    onConfirm={handleConfirmExecuteTask}
                   />
                 </React.Suspense>
               )}

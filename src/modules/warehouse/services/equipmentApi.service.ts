@@ -31,6 +31,7 @@ import {
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 
 const equipmentApiService = baseApiService
   .enhanceEndpoints({
@@ -57,7 +58,7 @@ const equipmentApiService = baseApiService
 
       getEquipmentCatalogList: build.query<
         GetEquipmentCatalogListSuccessResponse,
-        GetEquipmentCatalogListQueryArgs
+        MaybeUndefined<GetEquipmentCatalogListQueryArgs>
       >({
         providesTags: (result, error) => (error ? [] : [EquipmentApiTagEnum.EquipmentCatalogList]),
         query: (params) => ({

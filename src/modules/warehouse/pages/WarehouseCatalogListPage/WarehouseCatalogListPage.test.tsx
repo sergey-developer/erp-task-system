@@ -10,7 +10,7 @@ import {
   mockGetWarehouseListSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { linkTestUtils, renderInRoute_latest } from '_tests_/utils'
+import { getStoreWithAuth, linkTestUtils, renderInRoute_latest } from '_tests_/utils'
 
 import NomenclatureListPage from '../NomenclatureListPage'
 import { testUtils as nomenclatureListPageTestUtils } from '../NomenclatureListPage/NomenclatureListPage.test'
@@ -106,14 +106,11 @@ describe('Страница списка справочников складов'
         ],
         { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
         {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_READ'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_READ'] }),
             },
-          },
+          }),
         },
       )
 
@@ -155,14 +152,11 @@ describe('Страница списка справочников складов'
         ],
         { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
         {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_READ'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_READ'] }),
             },
-          },
+          }),
         },
       )
 

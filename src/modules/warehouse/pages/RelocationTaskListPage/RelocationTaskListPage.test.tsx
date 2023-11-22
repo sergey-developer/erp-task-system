@@ -5,7 +5,7 @@ import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/c
 import { testUtils as relocationTaskListFilterTestUtils } from 'modules/warehouse/components/RelocationTaskListFilter/RelocationTaskListFilter.test'
 import { testUtils as relocationTaskTableTestUtils } from 'modules/warehouse/components/RelocationTaskTable/RelocationTaskTable.test'
 import {
-  getRelocationTaskListMessages,
+  getRelocationTaskListErrorMsg,
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
 } from 'modules/warehouse/constants/relocationTask'
@@ -26,6 +26,7 @@ import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeWord,
+  getStoreWithAuth,
   linkTestUtils,
   notificationTestUtils,
   render,
@@ -95,11 +96,12 @@ describe('Страница списка заявок на перемещение
 
       test('Обрабатывается ошибка 500', async () => {
         mockGetRelocationTaskListServerError()
+
         render(<RelocationTaskListPage />)
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(
-          getRelocationTaskListMessages.commonError,
+          getRelocationTaskListErrorMsg,
         )
 
         expect(notification).toBeInTheDocument()
@@ -288,14 +290,11 @@ describe('Страница списка заявок на перемещение
         mockGetRelocationTaskListSuccess()
 
         render(<RelocationTaskListPage />, {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
             },
-          },
+          }),
         })
 
         const link = testUtils.getCreateTaskLink()
@@ -329,14 +328,11 @@ describe('Страница списка заявок на перемещение
           ],
           { initialEntries: [WarehouseRouteEnum.RelocationTaskList], initialIndex: 0 },
           {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
-                },
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
               },
-            },
+            }),
           },
         )
 

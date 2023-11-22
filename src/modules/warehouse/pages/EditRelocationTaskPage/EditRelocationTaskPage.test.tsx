@@ -1,8 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as createRelocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
+import { testUtils as createRelocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
+
+import { CANCEL_TEXT } from 'shared/constants/common'
 
 import {
   mockGetCurrencyListSuccess,
@@ -24,7 +26,7 @@ const clickSubmitButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Отменить')
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)

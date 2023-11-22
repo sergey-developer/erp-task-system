@@ -18,7 +18,8 @@ export type StringMap<Key extends string> = Record<Key, string>
 
 export type FCWithChildren<P = unknown> = FC<P & { children: ReactNode }>
 
-export type AnyFunction = (...args: any) => any
+export type AnyFn = (...args: any) => any
+export type EmptyFn = () => void
 
 export type NumberOrString = number | string
 
@@ -29,10 +30,9 @@ export type Writeable<T> = { -readonly [P in keyof T]: T[P] }
 export type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> }
 
 /* Типы взяты из https://www.npmjs.com/package/camelize-ts */
-type CamelCase<S extends string> =
-  S extends `${infer P1}_${infer P2}${infer P3}`
-    ? `${P1}${Uppercase<P2>}${CamelCase<P3>}`
-    : S
+type CamelCase<S extends string> = S extends `${infer P1}_${infer P2}${infer P3}`
+  ? `${P1}${Uppercase<P2>}${CamelCase<P3>}`
+  : S
 
 type CamelizeObject<T, S = false> = {
   [K in keyof T as Uncapitalize<CamelCase<string & K>>]: T[K] extends Date

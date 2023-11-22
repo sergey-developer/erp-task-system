@@ -12,5 +12,6 @@ export enum WarehouseRouteEnum {
 
   RelocationTaskList = '/manage-warehouses/reserves-catalogs/relocation-tasks',
   CreateRelocationTask = '/manage-warehouses/reserves-catalogs/relocation-tasks/create',
+  CreateRelocationTaskSimplified = '/manage-warehouses/reserves-catalogs/relocation-tasks/create/simplified',
   EditRelocationTask = '/manage-warehouses/reserves-catalogs/relocation-tasks/:id/edit',
 }

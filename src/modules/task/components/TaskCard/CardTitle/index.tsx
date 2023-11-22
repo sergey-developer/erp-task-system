@@ -22,6 +22,8 @@ import {
   SyncIcon,
 } from 'components/Icons'
 
+import { EmptyFn } from 'shared/types/utils'
+
 const { Text } = Typography
 
 export type CardTitleProps = Pick<
@@ -31,11 +33,11 @@ export type CardTitleProps = Pick<
   suspendRequest: TaskModel['suspendRequest']
   isAssignedToCurrentUser: boolean
 
-  onReloadTask: () => void
-  onExecuteTask: () => void
-  onRequestSuspend: () => void
-  onRequestReclassification: () => void
-  onClose: () => void
+  onReloadTask: EmptyFn
+  onExecuteTask: EmptyFn
+  onRequestSuspend: EmptyFn
+  onRequestReclassification: EmptyFn
+  onClose: EmptyFn
 }
 
 const CardTitle: FC<CardTitleProps> = ({

@@ -1,10 +1,10 @@
-type MakeUserNameObjectResult = {
+type MakeUserByFullNameResult = {
   firstName: string
   lastName: string
   middleName: string
 }
 
-export const makeUserNameObject = (value: string): MakeUserNameObjectResult => {
+export const makeUserByFullName = (value: string): MakeUserByFullNameResult => {
   const [lastName, firstName, middleName] = value.split(' ')
 
   return {

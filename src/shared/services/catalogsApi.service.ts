@@ -16,6 +16,7 @@ import {
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,
 } from 'shared/models/catalogs/userStatus'
+import { MaybeUndefined } from 'shared/types/utils'
 
 import { baseApiService } from './baseApi'
 
@@ -43,10 +44,14 @@ export const catalogsApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
-    getLocationList: build.query<GetLocationListSuccessResponse, GetLocationListQueryArgs>({
-      query: () => ({
+    getLocationList: build.query<
+      GetLocationListSuccessResponse,
+      MaybeUndefined<GetLocationListQueryArgs>
+    >({
+      query: (params) => ({
         url: CatalogsApiEnum.GetLocationList,
         method: HttpMethodEnum.Get,
+        params,
       }),
     }),
   }),
@@ -54,8 +59,13 @@ export const catalogsApiService = baseApiService.injectEndpoints({
 
 export const {
   useGetTimeZoneListQuery,
+
   useGetSubTaskTemplateListQuery,
+
   useGetUserStatusListQuery,
+
   useGetLocationListQuery,
+  useLazyGetLocationListQuery,
+
   endpoints,
 } = catalogsApiService
