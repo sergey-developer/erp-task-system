@@ -6,11 +6,12 @@ import { testUtils as relocationTaskListTestUtils } from 'modules/task/component
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { getRelocationTaskListErrorMsg } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import CreateRelocationTaskPage from 'modules/warehouse/pages/CreateRelocationTaskPage'
-import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskPage/CreateRelocationTaskPage.test'
+import CreateRelocationTaskSimplifiedPage from 'modules/warehouse/pages/CreateRelocationTaskSimplifiedPage'
+import { testUtils as createRelocationTaskSimplifiedPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskSimplifiedPage/CreateRelocationTaskSimplifiedPage.test'
 import RelocationTaskListPage from 'modules/warehouse/pages/RelocationTaskListPage'
 
 import commonFixtures from '_tests_/fixtures/common'
+import taskFixtures from '_tests_/fixtures/task'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
@@ -25,7 +26,6 @@ import {
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
-  fakeId,
   fakeWord,
   getStoreWithAuth,
   notificationTestUtils,
@@ -38,7 +38,7 @@ import {
 import RelocationTaskListTab, { RelocationTaskListTabProps } from './index'
 
 const props: RelocationTaskListTabProps = {
-  taskId: fakeId(),
+  task: taskFixtures.task(),
 }
 
 const getContainer = () => screen.getByTestId('relocation-task-list-tab')
@@ -81,11 +81,11 @@ describe('Вкладка списка заявок на перемещение',
       expect(button).toBeInTheDocument()
     })
 
-    test('Активна если есть права', () => {
+    test('Активна если условия соблюдены', () => {
       mockGetRelocationTaskListSuccess()
 
       render(<RelocationTaskListTab {...props} />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
+        store: getStoreWithAuth({ userId: props.task.assignee!.id }, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
           },
@@ -96,10 +96,25 @@ describe('Вкладка списка заявок на перемещение',
       expect(button).toBeEnabled()
     })
 
-    test('Не активна если нет прав', () => {
+    test('Не активна если условия соблюдены, но нет прав', () => {
       mockGetRelocationTaskListSuccess()
 
-      render(<RelocationTaskListTab {...props} />)
+      render(<RelocationTaskListTab {...props} />, {
+        store: getStoreWithAuth({ userId: props.task.assignee!.id }),
+      })
+
+      const button = testUtils.getCreateTaskButton()
+      expect(button).toBeDisabled()
+    })
+
+    test('Не активна если условия соблюдены, но исполнитель заявки не авторизованный пользователь', () => {
+      mockGetRelocationTaskListSuccess()
+
+      render(<RelocationTaskListTab {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }) },
+        }),
+      })
 
       const button = testUtils.getCreateTaskButton()
       expect(button).toBeDisabled()
@@ -118,13 +133,13 @@ describe('Вкладка списка заявок на перемещение',
             element: <RelocationTaskListTab {...props} />,
           },
           {
-            path: WarehouseRouteEnum.CreateRelocationTask,
-            element: <CreateRelocationTaskPage />,
+            path: WarehouseRouteEnum.CreateRelocationTaskSimplified,
+            element: <CreateRelocationTaskSimplifiedPage />,
           },
         ],
         { initialEntries: [CommonRouteEnum.DesktopTaskList], initialIndex: 0 },
         {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
+          store: getStoreWithAuth({ userId: props.task.assignee!.id }, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
             },
@@ -135,7 +150,7 @@ describe('Вкладка списка заявок на перемещение',
       const button = testUtils.getCreateTaskButton()
       await user.click(button)
 
-      const page = createRelocationTaskPageTestUtils.getContainer()
+      const page = createRelocationTaskSimplifiedPageTestUtils.getContainer()
       expect(page).toBeInTheDocument()
     })
   })

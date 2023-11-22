@@ -60,6 +60,7 @@ export const task = (
     : props!.suspendRequest,
   hasRelocationTasks: isUndefined(props?.hasRelocationTasks) ? true : !!props?.hasRelocationTasks,
 
+  shop: { id: fakeId(), title: fakeWord() },
   attachments: [taskFixtures.attachment()],
   resolution: {
     attachments: [taskFixtures.attachment()],

@@ -37,7 +37,9 @@ const RelocationTaskListPage = React.lazy(
 const CreateRelocationTaskPage = React.lazy(
   () => import('modules/warehouse/pages/CreateRelocationTaskPage'),
 )
-
+const CreateRelocationTaskSimplifiedPage = React.lazy(
+  () => import('modules/warehouse/pages/CreateRelocationTaskSimplifiedPage'),
+)
 const EditRelocationTaskPage = React.lazy(
   () => import('modules/warehouse/pages/EditRelocationTaskPage'),
 )
@@ -163,6 +165,18 @@ export const route: Readonly<RouteObject> = {
                 />
               ),
               handle: { crumb: () => 'Создать заявку' },
+            },
+            {
+              path: WarehouseRouteEnum.CreateRelocationTaskSimplified,
+              element: (
+                <ProtectedRoute
+                  component={<CreateRelocationTaskSimplifiedPage />}
+                  permitted={(user) =>
+                    hasPermissions(user, ['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_CREATE'])
+                  }
+                />
+              ),
+              handle: { crumb: () => 'Создать перемещение' },
             },
             {
               path: WarehouseRouteEnum.EditRelocationTask,

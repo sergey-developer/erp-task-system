@@ -58,13 +58,9 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   const authUser = useAuthUser()
 
   const selectedAssigneeIsCurrentAssignee = isEqual(selectedAssignee, currentAssignee)
-
   const currentAssigneeIsCurrentUser = useIdBelongAuthUser(currentAssignee)
-
   const selectedAssigneeIsCurrentUser = useIdBelongAuthUser(selectedAssignee)
-
   const seniorEngineerFromWorkGroupIsCurrentUser = useIdBelongAuthUser(workGroup?.seniorEngineer.id)
-
   const headOfDepartmentFromWorkGroupIsCurrentUser = useIdBelongAuthUser(workGroup?.groupLead.id)
 
   const workGroupMembers = workGroup?.members || []

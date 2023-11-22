@@ -1,4 +1,5 @@
 import { TabsProps } from 'antd'
+import pick from 'lodash/pick'
 import React, { FC } from 'react'
 
 import { taskCardTabNamesDict, TaskCardTabsEnum } from 'modules/task/constants/task'
@@ -33,6 +34,10 @@ export type CardTabsProps = {
     | 'suspendRequest'
     | 'resolution'
     | 'attachments'
+    | 'olaNextBreachTime'
+    | 'olaEstimatedTime'
+    | 'olaStatus'
+    | 'shop'
   >
 
   activeTab?: TaskCardTabsEnum
@@ -102,7 +107,20 @@ const CardTabs: FC<CardTabsProps> = ({ task, activeTab = TaskCardTabsEnum.Descri
       children: (
         <TaskCardWrapper>
           <React.Suspense fallback={<Spinner />}>
-            <SubTaskListTab task={task} />
+            <SubTaskListTab
+              task={pick(
+                task,
+                'id',
+                'assignee',
+                'status',
+                'extendedStatus',
+                'type',
+                'recordId',
+                'title',
+                'description',
+                'suspendRequest',
+              )}
+            />
           </React.Suspense>
         </TaskCardWrapper>
       ),
@@ -115,7 +133,18 @@ const CardTabs: FC<CardTabsProps> = ({ task, activeTab = TaskCardTabsEnum.Descri
             children: (
               <TaskCardWrapper>
                 <React.Suspense fallback={<Spinner />}>
-                  <RelocationTaskListTab taskId={task.id} />
+                  <RelocationTaskListTab
+                    task={pick(
+                      task,
+                      'id',
+                      'assignee',
+                      'recordId',
+                      'olaNextBreachTime',
+                      'olaEstimatedTime',
+                      'olaStatus',
+                      'shop',
+                    )}
+                  />
                 </React.Suspense>
               </TaskCardWrapper>
             ),

@@ -126,6 +126,7 @@ export type TaskCardProps = {
       | 'attachments'
       | 'parentInteractionExternalId'
       | 'hasRelocationTasks'
+      | 'shop'
     >
   >
 
