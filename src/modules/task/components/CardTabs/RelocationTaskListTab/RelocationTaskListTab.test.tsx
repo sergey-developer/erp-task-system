@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
-import { RouteEnum } from 'configs/routes'
+import { CommonRouteEnum } from 'configs/routes'
 
 import { testUtils as relocationTaskListTestUtils } from 'modules/task/components/RelocationTaskList/RelocationTaskList.test'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
@@ -129,7 +129,7 @@ describe('Вкладка списка заявок на перемещение',
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.TaskList,
+            path: CommonRouteEnum.DesktopTaskList,
             element: <RelocationTaskListTab {...props} />,
           },
           {
@@ -137,7 +137,7 @@ describe('Вкладка списка заявок на перемещение',
             element: <CreateRelocationTaskSimplifiedPage />,
           },
         ],
-        { initialEntries: [RouteEnum.TaskList], initialIndex: 0 },
+        { initialEntries: [CommonRouteEnum.DesktopTaskList], initialIndex: 0 },
         {
           store: getStoreWithAuth({ userId: props.task.assignee!.id }, undefined, undefined, {
             queries: {
@@ -211,7 +211,7 @@ describe('Вкладка списка заявок на перемещение',
       const { user } = renderInRoute_latest(
         [
           {
-            path: RouteEnum.TaskList,
+            path: CommonRouteEnum.DesktopTaskList,
             element: <RelocationTaskListTab {...props} />,
           },
           {
@@ -219,7 +219,7 @@ describe('Вкладка списка заявок на перемещение',
             element: <RelocationTaskListPage />,
           },
         ],
-        { initialEntries: [RouteEnum.TaskList], initialIndex: 0 },
+        { initialEntries: [CommonRouteEnum.DesktopTaskList], initialIndex: 0 },
       )
 
       await testUtils.expectLoadingFinished()

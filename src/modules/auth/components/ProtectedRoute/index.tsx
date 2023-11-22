@@ -12,7 +12,7 @@ import { CommonLocationState } from 'shared/types/common'
 
 type ProtectedRouteProps = {
   component: ReactElement
-  permitted?: (user: UserModel) => boolean
+  permitted?: (user: UserModel, locationState?: any) => boolean
   onlyGuest?: boolean
   redirectPath?: string
 }
@@ -38,7 +38,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
     }
   } else {
     if (isLoggedIn) {
-      if (!permitted || (user && permitted(user))) {
+      if (!permitted || (user && permitted(user, location.state))) {
         return component
       } else {
         const to = redirectPath || CommonRouteEnum.Home

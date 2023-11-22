@@ -1,6 +1,6 @@
 import qs from 'qs'
 
-import { RouteEnum } from 'configs/routes'
+import { CommonRouteEnum } from 'configs/routes'
 
 import { TaskCardTabsEnum } from 'modules/task/constants/task'
 
@@ -13,5 +13,5 @@ type Params = {
 
 export const getTaskListPageLink = ({ viewTaskId, taskCardTab }: Params): string =>
   viewTaskId || taskCardTab
-    ? `${RouteEnum.TaskList}?${qs.stringify({ viewTask: viewTaskId, taskCardTab })}`
-    : RouteEnum.TaskList
+    ? `${CommonRouteEnum.DesktopTaskList}?${qs.stringify({ viewTask: viewTaskId, taskCardTab })}`
+    : CommonRouteEnum.DesktopTaskList

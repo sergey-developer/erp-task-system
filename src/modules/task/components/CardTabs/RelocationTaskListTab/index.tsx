@@ -57,7 +57,15 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
   const handleClickCreate = () =>
     navigate(WarehouseRouteEnum.CreateRelocationTaskSimplified, {
       state: {
-        task: pick(task, 'recordId', 'olaNextBreachTime', 'olaEstimatedTime', 'olaStatus', 'shop'),
+        task: pick(
+          task,
+          'recordId',
+          'olaNextBreachTime',
+          'olaEstimatedTime',
+          'olaStatus',
+          'shop',
+          'assignee',
+        ),
         from: getTaskListPageLink({
           viewTaskId: task.id,
           taskCardTab: TaskCardTabsEnum.RelocationTaskList,

@@ -1,22 +1,22 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { RouteEnum } from 'configs/routes'
+import { CommonRouteEnum } from 'configs/routes'
 
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
 import TaskListPage from 'modules/task/pages/TaskListPage'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
-import { testUtils as confirmExecutionRelocationTaskModalTestUtils } from 'modules/warehouse/components/ConfirmExecutionRelocationTaskModal/ConfirmExecutionRelocationTaskModal.test'
 import { testUtils as cancelRelocationTaskModalTestUtils } from 'modules/warehouse/components/CancelRelocationTaskModal/CancelRelocationTaskModal.test'
+import { testUtils as confirmExecutionRelocationTaskModalTestUtils } from 'modules/warehouse/components/ConfirmExecutionRelocationTaskModal/ConfirmExecutionRelocationTaskModal.test'
 import { testUtils as executeRelocationTaskModalTestUtils } from 'modules/warehouse/components/ExecuteRelocationTaskModal/ExecuteRelocationTaskModal.test'
 import { testUtils as relocationEquipmentTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentTable/RelocationEquipmentTable.test'
 import { testUtils as returnRelocationTaskToReworkModalTestUtils } from 'modules/warehouse/components/ReturnRelocationTaskToReworkModal/ReturnRelocationTaskToReworkModal.test'
 import {
-  executeRelocationTaskMessages,
-  closeRelocationTaskMessages,
   cancelRelocationTaskMessages,
+  closeRelocationTaskMessages,
+  executeRelocationTaskMessages,
   getRelocationEquipmentListMessages,
   getRelocationTaskMessages,
   getRelocationTaskWaybillM15Messages,
@@ -39,16 +39,16 @@ import { formatDate } from 'shared/utils/date'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
-  mockCloseRelocationTaskBadRequestError,
-  mockCloseRelocationTaskForbiddenError,
-  mockCloseRelocationTaskNotFoundError,
-  mockCloseRelocationTaskServerError,
-  mockCloseRelocationTaskSuccess,
   mockCancelRelocationTaskBadRequestError,
   mockCancelRelocationTaskForbiddenError,
   mockCancelRelocationTaskNotFoundError,
   mockCancelRelocationTaskServerError,
   mockCancelRelocationTaskSuccess,
+  mockCloseRelocationTaskBadRequestError,
+  mockCloseRelocationTaskForbiddenError,
+  mockCloseRelocationTaskNotFoundError,
+  mockCloseRelocationTaskServerError,
+  mockCloseRelocationTaskSuccess,
   mockExecuteRelocationTaskBadRequestError,
   mockExecuteRelocationTaskForbiddenError,
   mockExecuteRelocationTaskNotFoundError,
@@ -66,14 +66,14 @@ import {
   mockGetRelocationTaskWaybillM15NotFoundError,
   mockGetRelocationTaskWaybillM15ServerError,
   mockGetRelocationTaskWaybillM15Success,
+  mockGetTaskCountersSuccess,
+  mockGetTaskListSuccess,
+  mockGetTaskSuccess,
   mockReturnRelocationTaskToReworkBadRequestError,
   mockReturnRelocationTaskToReworkForbiddenError,
   mockReturnRelocationTaskToReworkNotFoundError,
   mockReturnRelocationTaskToReworkServerError,
   mockReturnRelocationTaskToReworkSuccess,
-  mockGetTaskCountersSuccess,
-  mockGetTaskListSuccess,
-  mockGetTaskSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -394,7 +394,7 @@ describe('Информация о заявке о перемещении', () =>
               ),
             },
             {
-              path: RouteEnum.TaskList,
+              path: CommonRouteEnum.DesktopTaskList,
               element: <TaskListPage />,
             },
           ],
