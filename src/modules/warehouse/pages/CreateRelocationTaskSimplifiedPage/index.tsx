@@ -370,7 +370,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   return (
     <>
       <Form<RelocationTaskFormFields>
-        data-testid='create-relocation-task-page'
+        data-testid='create-relocation-task-simplified-page'
         form={form}
         layout='vertical'
         onFinish={handleCreateRelocationTask}

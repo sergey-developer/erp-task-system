@@ -5,13 +5,21 @@ import {
   taskCardTabNamesDict,
   TaskCardTabsEnum,
   TaskExtendedStatusEnum,
+  TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/task'
 
 import taskFixtures from '_tests_/fixtures/task'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { fakeId, fakeIdStr, fakeWord, getStoreWithAuth, render } from '_tests_/utils'
+import {
+  fakeDateString,
+  fakeId,
+  fakeIdStr,
+  fakeWord,
+  getStoreWithAuth,
+  render,
+} from '_tests_/utils'
 
 import CardTabs, { CardTabsProps } from './index'
 
@@ -32,13 +40,15 @@ const props: Readonly<CardTabsProps> = {
     recordId: fakeIdStr(),
     suspendRequest: taskFixtures.suspendRequest(),
     assignee: null,
+    olaNextBreachTime: fakeDateString(),
+    olaEstimatedTime: Date.now(),
+    olaStatus: TaskOlaStatusEnum.NotExpired,
+    shop: taskFixtures.task().shop,
   },
 }
 
 const getContainer = () => screen.getByTestId('task-card-tabs')
-
 const queryContainer = () => screen.queryByTestId('task-card-tabs')
-
 const getTabsNav = () => within(getContainer()).getByRole('tablist')
 
 const getNavItem = (tab: TaskCardTabsEnum) =>

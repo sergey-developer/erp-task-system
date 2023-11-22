@@ -1,5 +1,6 @@
 import { BaseTaskModel, SuspendRequestModel, TaskAttachmentListModel } from 'modules/task/models'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type TaskModel = BaseTaskModel & {
@@ -13,4 +14,8 @@ export type TaskModel = BaseTaskModel & {
   email: MaybeNull<string>
   sapId: MaybeNull<string>
   contactType: MaybeNull<string>
+  shop: MaybeNull<{
+    id: IdType
+    title: string
+  }>
 }

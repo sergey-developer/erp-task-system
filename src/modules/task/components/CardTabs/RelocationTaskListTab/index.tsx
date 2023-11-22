@@ -1,4 +1,5 @@
 import { Button, Col, Row, Typography } from 'antd'
+import pick from 'lodash/pick'
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -23,15 +24,17 @@ import { extractPaginationResults } from 'shared/utils/pagination'
 const { Title } = Typography
 
 export type RelocationTaskListTabProps = {
-  taskId: IdType
-  taskAssignee: TaskModel['assignee']
+  task: Pick<
+    TaskModel,
+    'id' | 'assignee' | 'recordId' | 'olaNextBreachTime' | 'olaEstimatedTime' | 'olaStatus' | 'shop'
+  >
 }
 
-const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId, taskAssignee }) => {
+const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
   const navigate = useNavigate()
 
   const permissions = useMatchUserPermissions(['RELOCATION_TASKS_CREATE'])
-  const assigneeIsCurrentUser = useIdBelongAuthUser(taskAssignee?.id)
+  const assigneeIsCurrentUser = useIdBelongAuthUser(task.assignee?.id)
 
   const { currentData: paginatedRelocationTaskList, isFetching: relocationTaskListIsFetching } =
     useGetRelocationTaskList({
@@ -44,7 +47,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId, taskAss
         RelocationTaskStatusEnum.Closed,
         RelocationTaskStatusEnum.Canceled,
       ],
-      taskId,
+      taskId: task.id,
     })
 
   const relocationTaskList = extractPaginationResults(paginatedRelocationTaskList)
@@ -52,10 +55,11 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ taskId, taskAss
   const handleClickTask = (id: IdType) => navigate(getRelocationTaskListPageLink(id))
 
   const handleClickCreate = () =>
-    navigate(WarehouseRouteEnum.CreateRelocationTask, {
+    navigate(WarehouseRouteEnum.CreateRelocationTaskSimplified, {
       state: {
+        task: pick(task, 'recordId', 'olaNextBreachTime', 'olaEstimatedTime', 'olaStatus', 'shop'),
         from: getTaskListPageLink({
-          viewTaskId: taskId,
+          viewTaskId: task.id,
           taskCardTab: TaskCardTabsEnum.RelocationTaskList,
         }),
       },

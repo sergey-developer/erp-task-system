@@ -6,8 +6,8 @@ import { testUtils as relocationTaskListTestUtils } from 'modules/task/component
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { getRelocationTaskListErrorMsg } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import CreateRelocationTaskPage from 'modules/warehouse/pages/CreateRelocationTaskPage'
-import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskPage/CreateRelocationTaskPage.test'
+import CreateRelocationTaskSimplifiedPage from 'modules/warehouse/pages/CreateRelocationTaskSimplifiedPage'
+import { testUtils as createRelocationTaskSimplifiedPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskSimplifiedPage/CreateRelocationTaskSimplifiedPage.test'
 import RelocationTaskListPage from 'modules/warehouse/pages/RelocationTaskListPage'
 
 import commonFixtures from '_tests_/fixtures/common'
@@ -26,7 +26,6 @@ import {
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
-  fakeId,
   fakeWord,
   getStoreWithAuth,
   notificationTestUtils,
@@ -39,8 +38,7 @@ import {
 import RelocationTaskListTab, { RelocationTaskListTabProps } from './index'
 
 const props: RelocationTaskListTabProps = {
-  taskId: fakeId(),
-  taskAssignee: taskFixtures.assignee(),
+  task: taskFixtures.task(),
 }
 
 const getContainer = () => screen.getByTestId('relocation-task-list-tab')
@@ -87,7 +85,7 @@ describe('Вкладка списка заявок на перемещение',
       mockGetRelocationTaskListSuccess()
 
       render(<RelocationTaskListTab {...props} />, {
-        store: getStoreWithAuth({ userId: props.taskAssignee!.id }, undefined, undefined, {
+        store: getStoreWithAuth({ userId: props.task.assignee!.id }, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
           },
@@ -102,7 +100,7 @@ describe('Вкладка списка заявок на перемещение',
       mockGetRelocationTaskListSuccess()
 
       render(<RelocationTaskListTab {...props} />, {
-        store: getStoreWithAuth({ userId: props.taskAssignee!.id }),
+        store: getStoreWithAuth({ userId: props.task.assignee!.id }),
       })
 
       const button = testUtils.getCreateTaskButton()
@@ -135,13 +133,13 @@ describe('Вкладка списка заявок на перемещение',
             element: <RelocationTaskListTab {...props} />,
           },
           {
-            path: WarehouseRouteEnum.CreateRelocationTask,
-            element: <CreateRelocationTaskPage />,
+            path: WarehouseRouteEnum.CreateRelocationTaskSimplified,
+            element: <CreateRelocationTaskSimplifiedPage />,
           },
         ],
         { initialEntries: [RouteEnum.TaskList], initialIndex: 0 },
         {
-          store: getStoreWithAuth({ userId: props.taskAssignee!.id }, undefined, undefined, {
+          store: getStoreWithAuth({ userId: props.task.assignee!.id }, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
             },
@@ -152,7 +150,7 @@ describe('Вкладка списка заявок на перемещение',
       const button = testUtils.getCreateTaskButton()
       await user.click(button)
 
-      const page = createRelocationTaskPageTestUtils.getContainer()
+      const page = createRelocationTaskSimplifiedPageTestUtils.getContainer()
       expect(page).toBeInTheDocument()
     })
   })
