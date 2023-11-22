@@ -1,3 +1,5 @@
+import get from 'lodash/get'
+import isEqual from 'lodash/isEqual'
 import React from 'react'
 import { Link, Navigate, RouteObject } from 'react-router-dom'
 
@@ -159,9 +161,7 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<CreateRelocationTaskPage />}
-                  permitted={(user) =>
-                    hasPermissions(user, ['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_CREATE'])
-                  }
+                  permitted={(user) => hasPermissions(user, ['RELOCATION_TASKS_CREATE'])}
                 />
               ),
               handle: { crumb: () => 'Создать заявку' },
@@ -171,8 +171,9 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<CreateRelocationTaskSimplifiedPage />}
-                  permitted={(user) =>
-                    hasPermissions(user, ['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_CREATE'])
+                  permitted={(user, locationState) =>
+                    hasPermissions(user, ['RELOCATION_TASKS_CREATE']) &&
+                    isEqual(get(locationState, 'task.assignee.id'), user.id)
                   }
                 />
               ),
@@ -183,9 +184,7 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<EditRelocationTaskPage />}
-                  permitted={(user) =>
-                    hasPermissions(user, ['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_UPDATE'])
-                  }
+                  permitted={(user) => hasPermissions(user, ['RELOCATION_TASKS_UPDATE'])}
                 />
               ),
               handle: { crumb: () => 'Редактировать заявку' },

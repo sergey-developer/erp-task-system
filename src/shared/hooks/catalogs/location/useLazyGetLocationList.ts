@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
-import { getLocationListMessagesErrorMsg } from 'shared/constants/catalogs'
+import { getLocationListErrorMsg } from 'shared/constants/catalogs'
 import {
   GetLocationListQueryArgs,
   GetLocationListSuccessResponse,
@@ -30,7 +30,7 @@ export const useLazyGetLocationList = (): UseGetLocationListResult => {
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getLocationListMessagesErrorMsg)
+        showErrorNotification(getLocationListErrorMsg)
       }
     }
   }, [state.error])

@@ -7,5 +7,4 @@ export const getSubTaskTemplateListMessages: ApiRequestMessages<'commonError'> =
 }
 
 export const getUserStatusListErrorMsg = 'Ошибка получения статусов пользователя'
-
-export const getLocationListMessagesErrorMsg = 'Ошибка получения списка меcтонахождений'
+export const getLocationListErrorMsg = 'Ошибка получения списка меcтонахождений'
