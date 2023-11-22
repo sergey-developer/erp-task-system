@@ -1,12 +1,10 @@
-import { useMemo } from 'react'
+import { authUserSelector } from 'modules/auth/selectors'
+import { AuthenticatedUser } from 'modules/auth/types'
 
 import { useSelector } from 'shared/hooks/useSelector'
 import { MaybeNull } from 'shared/types/utils'
 
-import { authenticatedUserSelector } from '../selectors'
-import { AuthenticatedUser } from '../types'
-
-type UseAuthenticatedUserResult = MaybeNull<{
+type UseAuthUserResult = MaybeNull<{
   id: AuthenticatedUser['userId']
   role: AuthenticatedUser['userRole']
 }>
@@ -15,12 +13,7 @@ type UseAuthenticatedUserResult = MaybeNull<{
  Хук возвращает авторизованного пользователя
  */
 
-export const useAuthUser = (): UseAuthenticatedUserResult => {
-  const authenticatedUser = useSelector(authenticatedUserSelector)
-
-  return useMemo(() => {
-    return authenticatedUser
-      ? { role: authenticatedUser.userRole, id: authenticatedUser.userId }
-      : null
-  }, [authenticatedUser])
+export const useAuthUser = (): UseAuthUserResult => {
+  const authUser = useSelector(authUserSelector)
+  return authUser ? { role: authUser.userRole, id: authUser.userId } : null
 }

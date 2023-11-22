@@ -5,9 +5,9 @@ import React, { FC, useMemo } from 'react'
 import { Link, useMatches } from 'react-router-dom'
 
 import { getNavMenuConfig, mapNavMenuConfig } from 'configs/navMenu/utils'
-import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/components/LogoutButton'
+import { MonitoringRouteEnum } from 'modules/monitoring/constants'
 import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'modules/user/constants'
 import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
@@ -168,7 +168,7 @@ const PrivateHeader: FC = () => {
             <NotificationCounter />
 
             {userMe?.isStaff && (
-              <Link to={RouteEnum.TaskMonitoring}>
+              <Link to={MonitoringRouteEnum.TaskMonitoring}>
                 <MonitoringIcon $color='black' $size='large' $cursor='pointer' />
               </Link>
             )}

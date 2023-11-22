@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getTimeZoneListMessages } from 'shared/constants/catalogs'
+import { getTimeZoneListErrorMsg } from 'shared/constants/catalogs'
 import {
   GetTimeZoneListQueryArgs,
   GetTimeZoneListSuccessResponse,
@@ -16,12 +16,19 @@ type UseGetTimeZoneListResult = CustomUseQueryHookResult<
   GetTimeZoneListSuccessResponse
 >
 
-export const useGetTimeZoneList = (): UseGetTimeZoneListResult => {
-  const state = useGetTimeZoneListQuery()
+type UseGetTimeZoneListOptions = CustomUseQueryOptions<
+  GetTimeZoneListQueryArgs,
+  GetTimeZoneListSuccessResponse
+>
+
+export const useGetTimeZoneList = (
+  options?: UseGetTimeZoneListOptions,
+): UseGetTimeZoneListResult => {
+  const state = useGetTimeZoneListQuery(undefined, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getTimeZoneListMessages.commonError)
+      showErrorNotification(getTimeZoneListErrorMsg)
     }
   }, [state.error])
 

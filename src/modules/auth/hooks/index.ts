@@ -1,5 +1,4 @@
-export * from './useLogin'
 export * from './useLogout'
-export * from './useIsAuthenticated'
 export * from './useAuthUser'
+export * from './useIsLoggedIn'
 export * from './useIdBelongAuthUser'

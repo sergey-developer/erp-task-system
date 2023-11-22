@@ -55,16 +55,12 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
-  const authenticatedUser = useAuthUser()
+  const authUser = useAuthUser()
 
   const selectedAssigneeIsCurrentAssignee = isEqual(selectedAssignee, currentAssignee)
-
   const currentAssigneeIsCurrentUser = useIdBelongAuthUser(currentAssignee)
-
   const selectedAssigneeIsCurrentUser = useIdBelongAuthUser(selectedAssignee)
-
   const seniorEngineerFromWorkGroupIsCurrentUser = useIdBelongAuthUser(workGroup?.seniorEngineer.id)
-
   const headOfDepartmentFromWorkGroupIsCurrentUser = useIdBelongAuthUser(workGroup?.groupLead.id)
 
   const workGroupMembers = workGroup?.members || []
@@ -75,9 +71,9 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
     (seniorEngineerFromWorkGroupIsCurrentUser || headOfDepartmentFromWorkGroupIsCurrentUser)
 
   const handleAssignOnMe = async () => {
-    if (authenticatedUser) {
-      await updateAssignee(authenticatedUser.id)
-      setSelectedAssignee(authenticatedUser.id)
+    if (authUser) {
+      await updateAssignee(authUser.id)
+      setSelectedAssignee(authUser.id)
     }
   }
 
@@ -162,7 +158,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                     const currentAssigneeInWorkGroup: boolean = isEqual(member.id, currentAssignee)
                     const authenticatedUserInWorkGroup: boolean = isEqual(
                       member.id,
-                      authenticatedUser!.id,
+                      authUser!.id,
                     )
                     const disabled = currentAssigneeInWorkGroup || authenticatedUserInWorkGroup
 
