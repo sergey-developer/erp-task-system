@@ -78,6 +78,7 @@ import {
   cardTestUtils,
 } from '_tests_/utils'
 
+import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
 import {
   availableReasons,
   testUtils as taskReclassificationModalTestUtils,
@@ -86,7 +87,6 @@ import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTask
 import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
 import { TaskFirstLineFormErrors } from '../../TaskFirstLineModal/types'
 import { testUtils as taskReclassificationRequestTestUtils } from '../../TaskReclassificationRequest/TaskReclassificationRequest.test'
-import { testUtils as taskResolutionModalTestUtils } from '../../TaskResolutionModal/TaskResolutionModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from '../../TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskSuspendRequestTestUtils } from '../../TaskSuspendRequest/TaskSuspendRequest.test'
 import {
@@ -872,12 +872,12 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
             expect(props.closeTaskCard).toBeCalledTimes(1)
@@ -919,33 +919,31 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           expect(
             await notificationTestUtils.findNotification(badRequestResponse.detail[0]),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findTechResolutionError(
+            await executeTaskModalTestUtils.findTechResolutionError(
               badRequestResponse.techResolution[0],
             ),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findUserResolutionError(
+            await executeTaskModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
             ),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findAttachmentsError(
-              badRequestResponse.attachments[0],
-            ),
+            await executeTaskModalTestUtils.findAttachmentsError(badRequestResponse.attachments[0]),
           ).toBeInTheDocument()
         })
 
@@ -973,12 +971,12 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           const notification = await notificationTestUtils.findNotification(
             resolveTaskMessages.commonError,
@@ -1014,12 +1012,12 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
             expect(props.closeTaskCard).toBeCalledTimes(1)
@@ -1061,33 +1059,31 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           expect(
             await notificationTestUtils.findNotification(badRequestResponse.detail[0]),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findTechResolutionError(
+            await executeTaskModalTestUtils.findTechResolutionError(
               badRequestResponse.techResolution[0],
             ),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findUserResolutionError(
+            await executeTaskModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
             ),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findAttachmentsError(
-              badRequestResponse.attachments[0],
-            ),
+            await executeTaskModalTestUtils.findAttachmentsError(badRequestResponse.attachments[0]),
           ).toBeInTheDocument()
         })
 
@@ -1115,12 +1111,12 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           const notification = await notificationTestUtils.findNotification(
             resolveTaskMessages.commonError,
@@ -1156,12 +1152,12 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
             expect(props.closeTaskCard).toBeCalledTimes(1)
@@ -1203,33 +1199,31 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           expect(
             await notificationTestUtils.findNotification(badRequestResponse.detail[0]),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findTechResolutionError(
+            await executeTaskModalTestUtils.findTechResolutionError(
               badRequestResponse.techResolution[0],
             ),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findUserResolutionError(
+            await executeTaskModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
             ),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findAttachmentsError(
-              badRequestResponse.attachments[0],
-            ),
+            await executeTaskModalTestUtils.findAttachmentsError(badRequestResponse.attachments[0]),
           ).toBeInTheDocument()
         })
 
@@ -1257,12 +1251,12 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           const notification = await notificationTestUtils.findNotification(
             resolveTaskMessages.commonError,
@@ -1298,12 +1292,12 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           await waitFor(() => {
             expect(props.closeTaskCard).toBeCalledTimes(1)
@@ -1345,33 +1339,31 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           expect(
             await notificationTestUtils.findNotification(badRequestResponse.detail[0]),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findTechResolutionError(
+            await executeTaskModalTestUtils.findTechResolutionError(
               badRequestResponse.techResolution[0],
             ),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findUserResolutionError(
+            await executeTaskModalTestUtils.findUserResolutionError(
               badRequestResponse.userResolution[0],
             ),
           ).toBeInTheDocument()
 
           expect(
-            await taskResolutionModalTestUtils.findAttachmentsError(
-              badRequestResponse.attachments[0],
-            ),
+            await executeTaskModalTestUtils.findAttachmentsError(badRequestResponse.attachments[0]),
           ).toBeInTheDocument()
         })
 
@@ -1399,12 +1391,12 @@ describe('Контейнер детальной карточки заявки', 
 
           await cardTitleTestUtils.openMenu(user)
           await cardTitleTestUtils.clickExecuteTaskItem(user)
-          await taskResolutionModalTestUtils.findContainer()
+          await executeTaskModalTestUtils.findContainer()
 
-          await taskResolutionModalTestUtils.setTechResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setUserResolution(user, fakeWord())
-          await taskResolutionModalTestUtils.setAttachment(user)
-          await taskResolutionModalTestUtils.clickSubmitButton(user)
+          await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+          await executeTaskModalTestUtils.setAttachment(user)
+          await executeTaskModalTestUtils.clickSubmitButton(user)
 
           const notification = await notificationTestUtils.findNotification(
             resolveTaskMessages.commonError,

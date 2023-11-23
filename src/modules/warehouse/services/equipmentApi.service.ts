@@ -13,6 +13,8 @@ import {
   GetEquipmentNomenclatureListQueryArgs,
   GetEquipmentNomenclatureListSuccessResponse,
   GetEquipmentQueryArgs,
+  GetEquipmentRelocationHistoryQueryArgs,
+  GetEquipmentRelocationHistorySuccessResponse,
   GetEquipmentSuccessResponse,
   UpdateEquipmentMutationArgs,
   UpdateEquipmentSuccessResponse,
@@ -21,7 +23,11 @@ import {
   GetEquipmentListTransformedSuccessResponse,
   GetEquipmentNomenclatureListTransformedSuccessResponse,
 } from 'modules/warehouse/types'
-import { getEquipmentUrl, updateEquipmentUrl } from 'modules/warehouse/utils/equipment'
+import {
+  getEquipmentRelocationHistoryUrl,
+  getEquipmentUrl,
+  updateEquipmentUrl,
+} from 'modules/warehouse/utils/equipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
@@ -74,6 +80,16 @@ const equipmentApiService = baseApiService
         transformResponse: (response: GetEquipmentListSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
+      getEquipmentRelocationHistory: build.query<
+        GetEquipmentRelocationHistorySuccessResponse,
+        GetEquipmentRelocationHistoryQueryArgs
+      >({
+        query: ({ equipmentId, ...params }) => ({
+          url: getEquipmentRelocationHistoryUrl(equipmentId),
+          method: HttpMethodEnum.Get,
+          params,
+        }),
+      }),
       getEquipment: build.query<GetEquipmentSuccessResponse, GetEquipmentQueryArgs>({
         providesTags: (result, error) => (error ? [] : [EquipmentApiTagEnum.Equipment]),
         query: ({ equipmentId }) => ({
@@ -122,6 +138,7 @@ export const {
   useCreateEquipmentMutation,
   useUpdateEquipmentMutation,
   useGetEquipmentListQuery,
+  useGetEquipmentRelocationHistoryQuery,
 
   useGetEquipmentCategoryListQuery,
 } = equipmentApiService

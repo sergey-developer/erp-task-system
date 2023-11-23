@@ -1,4 +1,5 @@
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import { EquipmentCategoryModel } from 'modules/warehouse/models'
 
 import { CurrencyModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
@@ -10,6 +11,7 @@ export type RelocationEquipmentListItemModel = {
   condition: EquipmentConditionEnum
   purpose: string
   quantity: number
+  category: Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>
 
   price: MaybeNull<number>
   currency: MaybeNull<CurrencyModel>

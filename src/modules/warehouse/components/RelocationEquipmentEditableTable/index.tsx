@@ -185,7 +185,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
 
           const isConsumable = category?.code === EquipmentCategoryEnum.Consumable
 
-          return { min: 1, max: amount, disabled: (!!category && !isConsumable) || isLoading }
+          return { min: 1, max: amount || 1, disabled: (!!category && !isConsumable) || isLoading }
         }
       },
     },

@@ -21,4 +21,10 @@ export const relocationTask = (
   relocateTo: { id: fakeId(), title: fakeWord() },
   comment: fakeWord(),
   documents: [taskFixtures.attachment()],
+  revision: {
+    relocationJournalEntry: fakeId(),
+    text: fakeWord(),
+    createdAt: fakeDateString(),
+    user: pick(userFixtures.user(), 'id', 'fullName', 'phone'),
+  },
 })
