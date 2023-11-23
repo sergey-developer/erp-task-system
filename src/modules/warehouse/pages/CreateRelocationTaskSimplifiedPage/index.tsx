@@ -35,6 +35,7 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 import { idAndFullNameSelectFieldNames } from '../../../../shared/constants/selectField'
+import { useGetWarehouseMy } from '../../hooks/warehouse/useGetWarehouseMy'
 
 const EquipmentFormModal = React.lazy(
   () => import('modules/warehouse/components/EquipmentFormModal'),
@@ -89,6 +90,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     [],
   )
 
+  const { currentData: warehouseMy, isFetching: warehouseMyIsFetching } = useGetWarehouseMy()
+
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
     isManager: false,
   })
@@ -109,10 +112,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const {
     currentData: equipmentCatalogListToWarehouse = [],
     isFetching: equipmentCatalogListToWarehouseIsFetching,
-  } = useGetEquipmentCatalogList(
-    { locationId: get(locationStateTask, 'shop.id') },
-    { skip: !get(locationStateTask, 'shop.id') },
-  )
+  } = useGetEquipmentCatalogList({ locationId: warehouseMy?.id! }, { skip: !warehouseMy?.id })
 
   const [getEquipment] = useLazyGetEquipment()
 

@@ -1,9 +1,3 @@
-import { ApiRequestMessages } from 'shared/types/messages'
-
-export const getWarehouseListMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения списка складов',
-}
-
-export const getWarehouseMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения склада',
-}
+export const getWarehouseListErrorMsg = 'Ошибка получения списка складов'
+export const getWarehouseErrorMsg = 'Ошибка получения склада'
+export const getWarehouseMyErrorMsg = 'Ошибка получения склада инженера'
