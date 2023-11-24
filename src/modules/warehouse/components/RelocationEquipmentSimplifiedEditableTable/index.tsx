@@ -1,5 +1,4 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
-import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Button, Form } from 'antd'
 import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
@@ -22,24 +21,11 @@ import { makeString } from 'shared/utils/string'
 import { CreateEquipmentButton } from '../RelocationEquipmentEditableTable/styles'
 import { RelocationEquipmentRow, RelocationEquipmentSimplifiedEditableTableProps } from './types'
 
-const formItemProps: EditableProTableProps<RelocationEquipmentRow, any>['formItemProps'] = {
-  rules: [
-    {
-      validator: async (_, value) => {
-        if (value.length < 1) {
-          throw new Error('Добавьте оборудование')
-        }
-      },
-    },
-  ],
-  // @ts-ignore
-  'data-testid': 'relocation-equipment-simplified-editable-table-form-item',
-}
-
 const RelocationEquipmentSimplifiedEditableTable: FC<
   RelocationEquipmentSimplifiedEditableTableProps
 > = ({
   name,
+  required,
 
   editableKeys,
   setEditableKeys,
@@ -190,7 +176,11 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
         disabled: isLoading,
         creatorButtonText: 'Добавить оборудование',
       }}
-      formItemProps={formItemProps}
+      formItemProps={{
+        rules: required ? onlyRequiredRules : undefined,
+        // @ts-ignore
+        'data-testid': 'relocation-equipment-simplified-editable-table-form-item',
+      }}
       loading={equipmentListIsLoading}
       editable={{
         type: 'multiple',

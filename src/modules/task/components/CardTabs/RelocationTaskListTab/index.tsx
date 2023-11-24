@@ -59,6 +59,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
       state: {
         task: pick(
           task,
+          'id',
           'recordId',
           'olaNextBreachTime',
           'olaEstimatedTime',

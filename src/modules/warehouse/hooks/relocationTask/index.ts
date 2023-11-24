@@ -1,4 +1,5 @@
 export * from './useCreateRelocationTask'
+export * from './useCreateRelocationTaskITSM'
 export * from './useUpdateRelocationTask'
 export * from './useGetRelocationTask'
 export * from './useLazyGetRelocationTaskWaybillM15'

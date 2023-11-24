@@ -14,6 +14,7 @@ export type RelocationEquipmentRow = Partial<SimplifiedRelocationTaskFormEquipme
 
 export type RelocationEquipmentSimplifiedEditableTableProps = {
   name: NamePath
+  required?: boolean
 
   editableKeys?: Key[]
   setEditableKeys?: (keys: Key[]) => void

@@ -4,10 +4,16 @@ import get from 'lodash/get'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
+import { getCompleteAt } from 'modules/task/components/TaskCard/MainDetails/utils'
+import { TaskModel } from 'modules/task/models'
+import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
-import { ActiveEquipmentRow } from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
 import RelocationEquipmentSimplifiedEditableTable from 'modules/warehouse/components/RelocationEquipmentSimplifiedEditableTable'
+import {
+  ActiveEquipmentRow,
+  RelocationEquipmentRow,
+} from 'modules/warehouse/components/RelocationEquipmentSimplifiedEditableTable/types'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
@@ -17,25 +23,29 @@ import {
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
-import { useCreateRelocationTask } from 'modules/warehouse/hooks/relocationTask'
+import { useCreateRelocationTaskITSM } from 'modules/warehouse/hooks/relocationTask'
+import { useGetWarehouseMy } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { SimplifiedRelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
 import ModalFallback from 'components/Modals/ModalFallback'
+import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
+import Spinner from 'components/Spinner'
 
 import { CANCEL_TEXT, CREATE_TEXT } from 'shared/constants/common'
+import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
+import { onlyRequiredRules } from 'shared/constants/validation'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
+import { valueOrHyphen } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
-
-import { idAndFullNameSelectFieldNames } from '../../../../shared/constants/selectField'
-import { useGetWarehouseMy } from '../../hooks/warehouse/useGetWarehouseMy'
 
 const EquipmentFormModal = React.lazy(
   () => import('modules/warehouse/components/EquipmentFormModal'),
@@ -46,16 +56,24 @@ const { TextArea } = Input
 
 const CreateRelocationTaskSimplifiedPage: FC = () => {
   const location = useLocation()
-  // console.log('location state: ', location.state)
   const fromPath = get(location, 'state.from', '')
-  const locationStateTask = get(location, 'state.task')
+  const task: MaybeUndefined<
+    Pick<
+      TaskModel,
+      'id' | 'shop' | 'recordId' | 'olaStatus' | 'olaNextBreachTime' | 'olaEstimatedTime'
+    >
+  > = get(location, 'state.task')
+  const taskShop = task?.shop
 
   const navigate = useNavigate()
 
   const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
 
   const [form] = Form.useForm<SimplifiedRelocationTaskFormFields>()
-  console.log('form values: ', form.getFieldsValue())
+  const equipmentsToShopFormValue: SimplifiedRelocationTaskFormFields['equipmentsToShop'] =
+    Form.useWatch('equipmentsToShop', form)
+  const equipmentsToWarehouseFormValue: SimplifiedRelocationTaskFormFields['equipmentsToWarehouse'] =
+    Form.useWatch('equipmentsToWarehouse', form)
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
@@ -104,10 +122,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const {
     currentData: equipmentCatalogListFromWarehouse = [],
     isFetching: equipmentCatalogListFromWarehouseIsFetching,
-  } = useGetEquipmentCatalogList(
-    { locationId: get(locationStateTask, 'shop.id') },
-    { skip: !get(locationStateTask, 'shop.id') },
-  )
+  } = useGetEquipmentCatalogList({ locationId: taskShop?.id! }, { skip: !taskShop?.id })
 
   const {
     currentData: equipmentCatalogListToWarehouse = [],
@@ -156,13 +171,32 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     selectedNomenclatureId,
   ])
 
-  const [createRelocationTaskMutation, { isLoading: createRelocationTaskIsLoading }] =
-    useCreateRelocationTask()
+  const [createRelocationTaskITSMMutation, { isLoading: createRelocationTaskITSMIsLoading }] =
+    useCreateRelocationTaskITSM()
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
 
-  const handleCreateRelocationTask = async (values: SimplifiedRelocationTaskFormFields) => {
+  const handleCreateRelocationTaskITSM = async (values: SimplifiedRelocationTaskFormFields) => {
+    if (!task) return
+
     try {
+      await createRelocationTaskITSMMutation({
+        taskId: task.id,
+        controller: values.controller,
+        comment: values.comment?.trim(),
+        equipmentsToShop: values.equipmentsToShop?.map((eqp) => ({
+          id: eqp.id,
+          quantity: eqp.quantity,
+          condition: eqp.condition,
+        })),
+        equipmentsToWarehouse: values.equipmentsToWarehouse?.map((eqp) => ({
+          id: eqp.id,
+          quantity: eqp.quantity,
+          condition: eqp.condition,
+        })),
+      }).unwrap()
+
+      navigate(fromPath)
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))
@@ -170,65 +204,99 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     }
   }
 
-  const pickEquipmentFromWarehouse: FormProps<SimplifiedRelocationTaskFormFields>['onValuesChange'] =
+  const pickEquipmentToWarehouse: FormProps<SimplifiedRelocationTaskFormFields>['onValuesChange'] =
     async (changedValues, values) => {
-      console.log({ changedValues, values })
-      // if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
-      //   const [index, changes] = Object.entries(changedValues.equipments)[0] as [
-      //     string,
-      //     Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
-      //   ]
-      //
-      //   if (changes.id) {
-      //     const { data: equipment } = await getEquipment({ equipmentId: changes.id })
-      //
-      //     if (equipment) {
-      //       const currentEquipment = values.equipments[Number(index)]
-      //       const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
-      //
-      //       form.setFieldValue(['equipments', index], {
-      //         ...currentEquipment,
-      //         serialNumber: equipment.serialNumber,
-      //         purpose: equipment.purpose.title,
-      //         condition: equipment.condition,
-      //         amount: equipment.amount,
-      //         price: equipment.price,
-      //         currency: equipment.currency?.id,
-      //         quantity: isConsumable ? currentEquipment.quantity : 1,
-      //         category: equipment.category,
-      //       })
-      //     }
-      //   }
-      // }
+      if (
+        changedValues.equipmentsToWarehouse &&
+        !Array.isArray(changedValues.equipmentsToWarehouse)
+      ) {
+        const [index, changes] = Object.entries(changedValues.equipmentsToWarehouse)[0] as [
+          string,
+          Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
+        ]
+
+        if (changes.id) {
+          const { data: equipment } = await getEquipment({ equipmentId: changes.id })
+
+          if (equipment) {
+            const currentEquipment = values.equipmentsToWarehouse?.[Number(index)]
+
+            if (currentEquipment) {
+              const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
+
+              form.setFieldValue(['equipmentsToWarehouse', index], {
+                ...currentEquipment,
+                serialNumber: equipment.serialNumber,
+                purpose: equipment.purpose.title,
+                condition: equipment.condition,
+                amount: equipment.amount,
+                quantity: isConsumable ? currentEquipment.quantity : 1,
+                category: equipment.category,
+              })
+            }
+          }
+        }
+      }
+    }
+
+  const pickEquipmentToShop: FormProps<SimplifiedRelocationTaskFormFields>['onValuesChange'] =
+    async (changedValues, values) => {
+      if (changedValues.equipmentsToShop && !Array.isArray(changedValues.equipmentsToShop)) {
+        const [index, changes] = Object.entries(changedValues.equipmentsToShop)[0] as [
+          string,
+          Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
+        ]
+
+        if (changes.id) {
+          const { data: equipment } = await getEquipment({ equipmentId: changes.id })
+
+          if (equipment) {
+            const currentEquipment = values.equipmentsToShop?.[Number(index)]
+
+            if (currentEquipment) {
+              const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
+
+              form.setFieldValue(['equipmentsToShop', index], {
+                ...currentEquipment,
+                serialNumber: equipment.serialNumber,
+                purpose: equipment.purpose.title,
+                condition: equipment.condition,
+                amount: equipment.amount,
+                quantity: isConsumable ? currentEquipment.quantity : 1,
+                category: equipment.category,
+              })
+            }
+          }
+        }
+      }
     }
 
   const handleFormChange: FormProps<SimplifiedRelocationTaskFormFields>['onValuesChange'] = async (
     changedValues,
     values,
   ) => {
-    await pickEquipmentFromWarehouse(changedValues, values)
+    await pickEquipmentToWarehouse(changedValues, values)
+    await pickEquipmentToShop(changedValues, values)
   }
 
   const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
-      if (!activeEquipmentRow) return
+      if (!activeEquipmentRow || !warehouseMy || !taskShop?.id) return
 
       try {
         const createdEquipment = await createEquipmentMutation({
-          location: 1,
-          warehouse: 1,
+          location: taskShop.id,
+          warehouse: warehouseMy.id,
           ...values,
         }).unwrap()
 
-        form.setFieldValue(['equipments', activeEquipmentRow.rowIndex], {
+        form.setFieldValue([activeEquipmentRow.tableName, activeEquipmentRow.rowIndex], {
           rowId: createdEquipment.id,
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
           purpose: createdEquipment.purpose.title,
           condition: createdEquipment.condition,
           amount: createdEquipment.availableQuantity,
-          price: createdEquipment.price,
-          currency: createdEquipment.currency?.id,
           quantity: createdEquipment.quantity,
           category: createdEquipment.category,
         })
@@ -249,7 +317,14 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         }
       }
     },
-    [activeEquipmentRow, createEquipmentMutation, form, handleCloseCreateEquipmentModal],
+    [
+      activeEquipmentRow,
+      createEquipmentMutation,
+      form,
+      handleCloseCreateEquipmentModal,
+      taskShop?.id,
+      warehouseMy,
+    ],
   )
 
   const handleChangeCategory = useCallback<EquipmentFormModalProps['onChangeCategory']>(
@@ -266,14 +341,37 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         data-testid='create-relocation-task-simplified-page'
         form={form}
         layout='vertical'
-        onFinish={handleCreateRelocationTask}
+        onFinish={handleCreateRelocationTaskITSM}
         onValuesChange={handleFormChange}
       >
         <Row gutter={[40, 40]}>
           <Col span={24}>
+            <SeparatedText>
+              <Text strong>
+                Перемещение оборудования для заявки {valueOrHyphen(task?.recordId)}
+              </Text>
+
+              {task?.olaStatus && task?.olaEstimatedTime && task?.olaNextBreachTime ? (
+                <Text type={getOlaStatusTextType(task.olaStatus)}>
+                  {getCompleteAt({
+                    olaStatus: task.olaStatus,
+                    olaEstimatedTime: task.olaEstimatedTime,
+                    olaNextBreachTime: task.olaNextBreachTime,
+                  })}
+                </Text>
+              ) : null}
+            </SeparatedText>
+          </Col>
+
+          <Col span={24}>
             <Row gutter={40}>
               <Col span={8}>
-                <Form.Item data-testid='controller-form-item' label='Контролер' name='controller'>
+                <Form.Item
+                  data-testid='controller-form-item'
+                  rules={equipmentsToShopFormValue?.length ? onlyRequiredRules : undefined}
+                  label='Контролер'
+                  name='controller'
+                >
                   <Select
                     placeholder='Выберите значение'
                     options={userList}
@@ -293,16 +391,24 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
           <Col span={24}>
             <Space direction='vertical'>
-              <Text strong>
-                Перечень оборудования для перемещения со склада "" на объект "
-                {get(locationStateTask, 'shop.title', '')}"
-              </Text>
+              <Space>
+                <Text strong>Перечень оборудования для перемещения со склада</Text>
+
+                {warehouseMyIsFetching ? (
+                  <Spinner centered={false} />
+                ) : (
+                  <Text strong>"{valueOrHyphen(warehouseMy?.title)}"</Text>
+                )}
+
+                <Text strong>на объект "{valueOrHyphen(taskShop?.title)}"</Text>
+              </Space>
 
               <RelocationEquipmentSimplifiedEditableTable
                 name='equipmentsToShop'
+                required={!equipmentsToWarehouseFormValue?.length}
                 editableKeys={fromWarehouseEditableTableRowKeys}
                 setEditableKeys={setFromWarehouseEditableTableRowKeys}
-                isLoading={createRelocationTaskIsLoading}
+                isLoading={createRelocationTaskITSMIsLoading}
                 equipmentCatalogList={equipmentCatalogListFromWarehouse}
                 equipmentCatalogListIsLoading={equipmentCatalogListFromWarehouseIsFetching}
               />
@@ -311,16 +417,25 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
           <Col span={24}>
             <Space direction='vertical'>
-              <Text strong>
-                Перечень оборудования для перемещения с объекта "
-                {get(locationStateTask, 'shop.title', '')}" на склад ""
-              </Text>
+              <Space>
+                <Text strong>
+                  Перечень оборудования для перемещения с объекта "{valueOrHyphen(taskShop?.title)}"
+                  на склад
+                </Text>
+
+                {warehouseMyIsFetching ? (
+                  <Spinner centered={false} />
+                ) : (
+                  <Text strong>"{valueOrHyphen(warehouseMy?.title)}"</Text>
+                )}
+              </Space>
 
               <RelocationEquipmentSimplifiedEditableTable
                 name='equipmentsToWarehouse'
+                required={!equipmentsToShopFormValue?.length}
                 editableKeys={toWarehouseEditableTableRowKeys}
                 setEditableKeys={setToWarehouseEditableTableRowKeys}
-                isLoading={createRelocationTaskIsLoading}
+                isLoading={createRelocationTaskITSMIsLoading}
                 equipmentCatalogList={equipmentCatalogListToWarehouse}
                 equipmentCatalogListIsLoading={equipmentCatalogListToWarehouseIsFetching}
                 canCreateEquipment={permissions?.equipmentsCreate}
