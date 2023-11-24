@@ -2,6 +2,8 @@ import { ApiRequestMessages } from 'shared/types/messages'
 
 export const getRelocationTaskListErrorMsg = 'Ошибка получения списка заявок на перемещение'
 export const createRelocationTaskErrorMsg = 'Ошибка создания заявки на перемещение'
+export const createRelocationTaskITSMErrorMsg =
+  'Ошибка создания заявки на перемещение, связанной с заявкой itsm'
 export const updateRelocationTaskErrorMsg = 'Ошибка обновления заявки на перемещение'
 
 export const getRelocationTaskMessages: ApiRequestMessages<'commonError'> = {

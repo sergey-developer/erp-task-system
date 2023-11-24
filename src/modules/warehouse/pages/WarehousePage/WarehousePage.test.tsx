@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { getWarehouseMessages } from 'modules/warehouse/constants/warehouse'
+import { getWarehouseErrorMsg } from 'modules/warehouse/constants/warehouse'
 import { getWarehousePageLink } from 'modules/warehouse/utils/warehouse'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -11,12 +11,12 @@ import {
   mockGetWarehouseSuccess,
 } from '_tests_/mocks/api'
 import {
-  spinnerTestUtils,
   fakeId,
   fakeWord,
+  notificationTestUtils,
   renderInRoute_latest,
   setupApiTests,
-  notificationTestUtils,
+  spinnerTestUtils,
 } from '_tests_/utils'
 
 import WarehousePage from './index'
@@ -227,9 +227,7 @@ describe('Страница склада', () => {
 
       await testUtils.expectLoadingFinished()
 
-      const notification = await notificationTestUtils.findNotification(
-        getWarehouseMessages.commonError,
-      )
+      const notification = await notificationTestUtils.findNotification(getWarehouseErrorMsg)
       expect(notification).toBeInTheDocument()
     })
   })

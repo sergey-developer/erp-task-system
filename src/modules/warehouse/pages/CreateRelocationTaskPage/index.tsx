@@ -275,7 +275,7 @@ const CreateRelocationTaskPage: FC = () => {
     }
   }
 
-  const handlePickEquipmentFromSelect: FormProps<RelocationTaskFormFields>['onValuesChange'] =
+  const pickEquipment: FormProps<RelocationTaskFormFields>['onValuesChange'] =
     async (changedValues, values) => {
       if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
         const [index, changes] = Object.entries(changedValues.equipments)[0] as [
@@ -283,37 +283,37 @@ const CreateRelocationTaskPage: FC = () => {
           Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
         ]
 
-        if (changes.id) {
-          const { data: equipment } = await getEquipment({ equipmentId: changes.id })
+      if (changes.id) {
+        const { data: equipment } = await getEquipment({ equipmentId: changes.id })
 
-          if (equipment) {
-            const currentEquipment = values.equipments[Number(index)]
-            const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
+        if (equipment) {
+          const currentEquipment = values.equipments[Number(index)]
+          const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
 
-            form.setFieldValue(['equipments', index], {
-              ...currentEquipment,
-              serialNumber: equipment.serialNumber,
-              purpose: equipment.purpose.title,
-              condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : equipment.condition,
-              amount: equipment.amount,
-              price: equipment.price,
-              currency: equipment.currency?.id,
-              quantity: isConsumable ? currentEquipment.quantity : 1,
-              category: equipment.category,
-            })
-          }
+          form.setFieldValue(['equipments', index], {
+            ...currentEquipment,
+            serialNumber: equipment.serialNumber,
+            purpose: equipment.purpose.title,
+            condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : equipment.condition,
+            amount: equipment.amount,
+            price: equipment.price,
+            currency: equipment.currency?.id,
+            quantity: isConsumable ? currentEquipment.quantity : 1,
+            category: equipment.category,
+          })
         }
       }
     }
+  }
 
   const handleChangeForm: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
     changedValues,
     values,
   ) => {
-    await handlePickEquipmentFromSelect(changedValues, values)
+    await pickEquipment(changedValues, values)
   }
 
-  const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+  const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
       if (!activeEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
 
@@ -475,9 +475,9 @@ const CreateRelocationTaskPage: FC = () => {
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
-                canAddEquipment={!!permissions?.equipmentsCreate}
+                canCreateEquipment={!!permissions?.equipmentsCreate}
                 addEquipmentBtnDisabled={addEquipmentBtnDisabled}
-                onClickAddEquipment={handleOpenAddEquipmentModal}
+                onClickCreateEquipment={handleOpenAddEquipmentModal}
                 onClickAddImage={handleOpenAddRelocationEquipmentImagesModal}
               />
             </Space>
@@ -548,7 +548,7 @@ const CreateRelocationTaskPage: FC = () => {
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseAddEquipmentModal}
-            onSubmit={handleAddEquipment}
+            onSubmit={handleCreateEquipment}
             onUploadImage={handleCreateEquipmentImage}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}

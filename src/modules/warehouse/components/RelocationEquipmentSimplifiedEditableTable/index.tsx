@@ -1,19 +1,14 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
-import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Button, Form } from 'antd'
-import isUndefined from 'lodash/isUndefined'
 import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
 import {
   EquipmentCategoryEnum,
-  EquipmentConditionEnum,
   equipmentConditionOptions,
 } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
-import { RelocationTaskFormFields } from 'modules/warehouse/types'
-import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
@@ -23,32 +18,20 @@ import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 import { makeString } from 'shared/utils/string'
 
-import { CreateEquipmentButton } from './styles'
-import { RelocationEquipmentEditableTableProps, RelocationEquipmentRow } from './types'
+import { CreateEquipmentButton } from '../RelocationEquipmentEditableTable/styles'
+import { RelocationEquipmentRow, RelocationEquipmentSimplifiedEditableTableProps } from './types'
 
-const formItemProps: EditableProTableProps<RelocationEquipmentRow, any>['formItemProps'] = {
-  rules: [
-    {
-      validator: async (_, value) => {
-        if (value.length < 1) {
-          throw new Error('Добавьте оборудование')
-        }
-      },
-    },
-  ],
-  // @ts-ignore
-  'data-testid': 'relocation-equipment-editable-table-form-item',
-}
+const RelocationEquipmentSimplifiedEditableTable: FC<
+  RelocationEquipmentSimplifiedEditableTableProps
+> = ({
+  name,
+  required,
 
-const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps> = ({
   editableKeys,
   setEditableKeys,
 
   isLoading,
   equipmentListIsLoading,
-
-  currencyList,
-  currencyListIsLoading,
 
   equipmentCatalogList,
   equipmentCatalogListIsLoading,
@@ -56,20 +39,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   canCreateEquipment,
   addEquipmentBtnDisabled,
   onClickCreateEquipment,
-
-  onClickAddImage,
 }) => {
   const form = Form.useFormInstance()
-
-  const relocateFromFormValue: MaybeUndefined<RelocationTaskFormFields['relocateFrom']> =
-    Form.useWatch('relocateFrom', form)
-
-  const typeFormValue: MaybeUndefined<RelocationTaskFormFields['type']> = Form.useWatch(
-    'type',
-    form,
-  )
-
-  const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(typeFormValue)
 
   const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
     () =>
@@ -80,20 +51,12 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
     [equipmentCatalogList],
   )
 
-  const currencyOptions = useMemo<DefaultOptionType[]>(
-    () => currencyList.map((cur) => ({ label: cur.title, value: cur.id })),
-    [currencyList],
-  )
-
   const handleDeleteRow = useCallback(
     (row: RelocationEquipmentRow) => {
-      const tableDataSource: RelocationEquipmentRow[] = form.getFieldValue('equipments')
-
-      form.setFieldsValue({
-        equipments: tableDataSource.filter((item) => item.rowId !== row?.rowId),
-      })
+      const tableDataSource: RelocationEquipmentRow[] = form.getFieldValue(name)
+      form.setFieldsValue({ [name]: tableDataSource.filter((item) => item.rowId !== row?.rowId) })
     },
-    [form],
+    [form, name],
   )
 
   const columns: ProColumns<RelocationEquipmentRow>[] = [
@@ -103,36 +66,33 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       width: 440,
       title: 'Оборудование',
       valueType: 'select',
-      formItemProps: {
-        rules: onlyRequiredRules,
-        // @ts-ignore
-        'data-testid': 'equipment-form-item',
-      },
+      formItemProps: { rules: onlyRequiredRules },
       fieldProps: (form, config) => ({
-        dropdownRender: canCreateEquipment
-          ? (menu: ReactNode) => (
-              <Space $block direction='vertical'>
-                <CreateEquipmentButton
-                  type='link'
-                  disabled={addEquipmentBtnDisabled}
-                  onClick={() =>
-                    onClickCreateEquipment({
-                      id: config.entity.id,
-                      rowId: config.entity.rowId,
-                      rowIndex: config.rowIndex,
-                    })
-                  }
-                >
-                  Добавить оборудование
-                </CreateEquipmentButton>
+        dropdownRender:
+          canCreateEquipment && onClickCreateEquipment
+            ? (menu: ReactNode) => (
+                <Space $block direction='vertical'>
+                  <CreateEquipmentButton
+                    type='link'
+                    disabled={addEquipmentBtnDisabled}
+                    onClick={() =>
+                      onClickCreateEquipment({
+                        tableName: name,
+                        rowIndex: config.rowIndex,
+                        rowId: config.entity.rowId!,
+                      })
+                    }
+                  >
+                    Добавить оборудование
+                  </CreateEquipmentButton>
 
-                {menu}
-              </Space>
-            )
-          : undefined,
+                  {menu}
+                </Space>
+              )
+            : undefined,
         allowClear: false,
         loading: equipmentCatalogListIsLoading,
-        disabled: isLoading || !relocateFromFormValue,
+        disabled: isLoading,
         options: equipmentCatalogOptions,
         showSearch: true,
         onChange: () => form.resetFields(['quantity']),
@@ -158,7 +118,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       title: 'Состояние',
       valueType: 'select',
       formItemProps: { rules: onlyRequiredRules },
-      fieldProps: { disabled: isLoading || typeIsWriteOff, options: equipmentConditionOptions },
+      fieldProps: { disabled: isLoading, options: equipmentConditionOptions },
     },
     {
       key: 'amount',
@@ -166,24 +126,6 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       title: 'Доступно',
       valueType: 'digit',
       fieldProps: { disabled: true, placeholder: null },
-    },
-    {
-      key: 'price',
-      dataIndex: 'price',
-      title: 'Стоимость',
-      valueType: 'digit',
-      fieldProps: { disabled: isLoading || typeIsWriteOff, min: 0 },
-    },
-    {
-      key: 'currency',
-      dataIndex: 'currency',
-      title: 'Валюта',
-      valueType: 'select',
-      fieldProps: {
-        options: currencyOptions,
-        loading: currencyListIsLoading,
-        disabled: isLoading || typeIsWriteOff,
-      },
     },
     {
       key: 'quantity',
@@ -208,28 +150,6 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       },
     },
     {
-      key: 'attachments',
-      title: 'Изображения',
-      renderFormItem: (schema, config) => {
-        if (config.record && !isUndefined(schema.index)) {
-          return (
-            <Button
-              disabled={!config.record.id}
-              onClick={() =>
-                onClickAddImage({
-                  id: config.record!.id,
-                  rowId: config.record!.rowId!,
-                  rowIndex: schema.index!,
-                })
-              }
-            >
-              Добавить
-            </Button>
-          )
-        }
-      },
-    },
-    {
       title: '',
       valueType: 'option',
       width: 50,
@@ -247,28 +167,27 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
 
   return (
     <EditableProTable<RelocationEquipmentRow>
-      data-testid='relocation-equipment-editable-table'
+      data-testid='relocation-equipment-simplified-editable-table'
       rowKey='rowId'
-      name='equipments'
+      name={name}
       columns={columns}
       recordCreatorProps={{
-        record: () => ({
-          rowId: random(1, 9999999),
-          ...(typeIsWriteOff && { condition: EquipmentConditionEnum.WrittenOff }),
-        }),
+        record: () => ({ rowId: random(1, 9999999) }),
         disabled: isLoading,
         creatorButtonText: 'Добавить оборудование',
       }}
-      formItemProps={formItemProps}
+      formItemProps={{
+        rules: required ? onlyRequiredRules : undefined,
+        // @ts-ignore
+        'data-testid': 'relocation-equipment-simplified-editable-table-form-item',
+      }}
       loading={equipmentListIsLoading}
       editable={{
         type: 'multiple',
         form,
         editableKeys,
         onChange: setEditableKeys,
-        onValuesChange: (record, recordList) => {
-          form.setFieldValue('equipments', recordList)
-        },
+        onValuesChange: (record, recordList) => form.setFieldValue(name, recordList),
         actionRender: (row) => [
           <Button
             key='delete'
@@ -283,4 +202,4 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   )
 }
 
-export default RelocationEquipmentEditableTable
+export default RelocationEquipmentSimplifiedEditableTable

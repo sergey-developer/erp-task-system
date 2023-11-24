@@ -317,7 +317,7 @@ const EditRelocationTaskPage: FC = () => {
     }
   }
 
-  const handlePickEquipmentFromSelect: FormProps<RelocationTaskFormFields>['onValuesChange'] =
+  const pickEquipment: FormProps<RelocationTaskFormFields>['onValuesChange'] =
     async (changedValues, values) => {
       if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
         const [index, changes] = Object.entries(changedValues.equipments)[0] as [
@@ -325,40 +325,40 @@ const EditRelocationTaskPage: FC = () => {
           Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
         ]
 
-        if (changes.id && relocationTaskId) {
-          const { data: equipment } = await getEquipment({
-            equipmentId: changes.id,
-            ignoreRelocationTask: relocationTaskId,
+      if (changes.id && relocationTaskId) {
+        const { data: equipment } = await getEquipment({
+          equipmentId: changes.id,
+          ignoreRelocationTask: relocationTaskId,
+        })
+
+        if (equipment) {
+          const currentEquipment = values.equipments[Number(index)]
+          const isConsumable = equipment.category.code === EquipmentCategoryEnum.Consumable
+
+          form.setFieldValue(['equipments', index], {
+            ...currentEquipment,
+            quantity: isConsumable ? currentEquipment.quantity : 1,
+            serialNumber: equipment.serialNumber,
+            purpose: equipment.purpose.title,
+            condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : equipment.condition,
+            amount: equipment.amount,
+            price: equipment.price,
+            currency: equipment.currency?.id,
+            category: equipment.category,
           })
-
-          if (equipment) {
-            const currentEquipment = values.equipments[Number(index)]
-            const isConsumable = equipment.category.code === EquipmentCategoryEnum.Consumable
-
-            form.setFieldValue(['equipments', index], {
-              ...currentEquipment,
-              quantity: isConsumable ? currentEquipment.quantity : 1,
-              serialNumber: equipment.serialNumber,
-              purpose: equipment.purpose.title,
-              condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : equipment.condition,
-              amount: equipment.amount,
-              price: equipment.price,
-              currency: equipment.currency?.id,
-              category: equipment.category,
-            })
-          }
         }
       }
     }
+  }
 
   const handleChangeForm: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
     changedValues,
     values,
   ) => {
-    await handlePickEquipmentFromSelect(changedValues, values)
+    await pickEquipment(changedValues, values)
   }
 
-  const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+  const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
       if (!activeEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
 
@@ -607,9 +607,9 @@ const EditRelocationTaskPage: FC = () => {
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
-                canAddEquipment={!!permissions?.equipmentsCreate}
+                canCreateEquipment={!!permissions?.equipmentsCreate}
                 addEquipmentBtnDisabled={addEquipmentBtnDisabled}
-                onClickAddEquipment={handleOpenAddEquipmentModal}
+                onClickCreateEquipment={handleOpenAddEquipmentModal}
                 onClickAddImage={handleOpenAddRelocationEquipmentImagesModal}
               />
             </Space>
@@ -676,7 +676,7 @@ const EditRelocationTaskPage: FC = () => {
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseAddEquipmentModal}
-            onSubmit={handleAddEquipment}
+            onSubmit={handleCreateEquipment}
             onUploadImage={handleCreateEquipmentImage}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}

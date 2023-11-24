@@ -12,6 +12,8 @@ import {
   ExecuteRelocationTaskSuccessResponse,
   CloseRelocationTaskMutationArgs,
   CloseRelocationTaskSuccessResponse,
+  CreateRelocationTaskITSMMutationArgs,
+  CreateRelocationTaskITSMSuccessResponse,
   CreateRelocationTaskMutationArgs,
   CreateRelocationTaskSuccessResponse,
   GetRelocationEquipmentBalanceListQueryArgs,
@@ -64,6 +66,16 @@ const relocationTaskApiService = baseApiService
           data: payload,
         }),
       }),
+      createRelocationTaskITSM: build.mutation<
+        CreateRelocationTaskITSMSuccessResponse,
+        CreateRelocationTaskITSMMutationArgs
+      >({
+        query: (payload) => ({
+          url: RelocationTaskApiEnum.CreateRelocationTaskITSM,
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+      }),
       updateRelocationTask: build.mutation<
         UpdateRelocationTaskSuccessResponse,
         UpdateRelocationTaskMutationArgs
@@ -106,7 +118,7 @@ const relocationTaskApiService = baseApiService
       returnRelocationTaskToRework: build.mutation<
         ReturnRelocationTaskToReworkSuccessResponse,
         ReturnRelocationTaskToReworkMutationArgs
-        >({
+      >({
         invalidatesTags: (result, error) =>
           error ? [] : [RelocationTaskApiTagEnum.RelocationTask],
         query: ({ relocationTaskId, ...payload }) => {
@@ -120,7 +132,7 @@ const relocationTaskApiService = baseApiService
       cancelRelocationTask: build.mutation<
         CancelRelocationTaskSuccessResponse,
         CancelRelocationTaskMutationArgs
-        >({
+      >({
         query: ({ relocationTaskId }) => ({
           url: cancelRelocationTaskUrl(relocationTaskId),
           method: HttpMethodEnum.Post,
@@ -222,6 +234,7 @@ const relocationTaskApiService = baseApiService
 
 export const {
   useCreateRelocationTaskMutation,
+  useCreateRelocationTaskITSMMutation,
   useUpdateRelocationTaskMutation,
   useCloseRelocationTaskMutation,
   useGetRelocationTaskQuery,
