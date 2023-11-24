@@ -44,6 +44,7 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { valueOrHyphen } from 'shared/utils/common'
+import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
@@ -280,11 +281,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   }
 
   const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async (values, setFields) => {
+    async ({ images, ...values }, setFields) => {
       if (!activeEquipmentRow || !warehouseMy || !taskShop?.id) return
 
       try {
         const createdEquipment = await createEquipmentMutation({
+          images: images?.length ? extractIdsFromFilesResponse(images) : undefined,
           location: taskShop.id,
           warehouse: warehouseMy.id,
           ...values,
@@ -488,6 +490,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseCreateEquipmentModal}
             onSubmit={handleCreateEquipment}
+            imageIsDeleting={false}
+            onDeleteImage={() => {}}
+            onUploadImage={() => {}}
           />
         </React.Suspense>
       )}
