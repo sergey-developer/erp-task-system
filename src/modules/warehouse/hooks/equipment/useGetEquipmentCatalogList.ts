@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getEquipmentCatalogListMessages } from 'modules/warehouse/constants/equipment'
+import { getEquipmentCatalogListErrorMsg } from 'modules/warehouse/constants/equipment'
 import {
   GetEquipmentCatalogListQueryArgs,
   GetEquipmentCatalogListSuccessResponse,
@@ -31,7 +31,7 @@ export const useGetEquipmentCatalogList = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getEquipmentCatalogListMessages.commonError)
+      showErrorNotification(getEquipmentCatalogListErrorMsg)
     }
   }, [state.error])
 

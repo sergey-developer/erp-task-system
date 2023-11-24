@@ -9,8 +9,8 @@ import EquipmentFormModal from 'modules/warehouse/components/EquipmentFormModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
 import {
-  RelocationEquipmentEditableTableProps,
-  RelocationEquipmentRowFields,
+  ActiveEquipmentRow,
+  RelocationEquipmentRow,
 } from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
 import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
 import {
@@ -46,7 +46,6 @@ import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
-import { ArrayFirst } from 'shared/types/utils'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -73,12 +72,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
-  const [newEquipmentRow, setNewEquipmentRow] =
-    useState<
-      ArrayFirst<
-        Parameters<NonNullable<RelocationEquipmentEditableTableProps['onClickAddEquipment']>>
-      >
-    >()
+  const [newEquipmentRow, setNewEquipmentRow] = useState<ActiveEquipmentRow>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
@@ -90,10 +84,8 @@ const CreateRelocationTaskPage: FC = () => {
     { setTrue: openAddEquipmentModal, setFalse: closeAddEquipmentModal },
   ] = useBoolean(false)
 
-  const handleOpenAddEquipmentModal = useDebounceFn<
-    NonNullable<RelocationEquipmentEditableTableProps['onClickAddEquipment']>
-  >(
-    (row) => {
+  const handleOpenAddEquipmentModal = useDebounceFn(
+    (row: ActiveEquipmentRow) => {
       setNewEquipmentRow(row)
       openAddEquipmentModal()
     },
@@ -231,45 +223,47 @@ const CreateRelocationTaskPage: FC = () => {
     }
   }
 
-  const handlePickEquipmentFromSelect: FormProps<RelocationTaskFormFields>['onValuesChange'] =
-    async (changedValues, values) => {
-      if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
-        const [index, changes] = Object.entries(changedValues.equipments)[0] as [
-          string,
-          Partial<Omit<RelocationEquipmentRowFields, 'rowId'>>,
-        ]
+  const pickEquipment: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
+    changedValues,
+    values,
+  ) => {
+    if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
+      const [index, changes] = Object.entries(changedValues.equipments)[0] as [
+        string,
+        Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
+      ]
 
-        if (changes.id) {
-          const { data: equipment } = await getEquipment({ equipmentId: changes.id })
+      if (changes.id) {
+        const { data: equipment } = await getEquipment({ equipmentId: changes.id })
 
-          if (equipment) {
-            const currentEquipment = values.equipments[Number(index)]
-            const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
+        if (equipment) {
+          const currentEquipment = values.equipments[Number(index)]
+          const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
 
-            form.setFieldValue(['equipments', index], {
-              ...currentEquipment,
-              serialNumber: equipment.serialNumber,
-              purpose: equipment.purpose.title,
-              condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : equipment.condition,
-              amount: equipment.amount,
-              price: equipment.price,
-              currency: equipment.currency?.id,
-              quantity: isConsumable ? currentEquipment.quantity : 1,
-              category: equipment.category,
-            })
-          }
+          form.setFieldValue(['equipments', index], {
+            ...currentEquipment,
+            serialNumber: equipment.serialNumber,
+            purpose: equipment.purpose.title,
+            condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : equipment.condition,
+            amount: equipment.amount,
+            price: equipment.price,
+            currency: equipment.currency?.id,
+            quantity: isConsumable ? currentEquipment.quantity : 1,
+            category: equipment.category,
+          })
         }
       }
     }
+  }
 
   const handleFormChange: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
     changedValues,
     values,
   ) => {
-    await handlePickEquipmentFromSelect(changedValues, values)
+    await pickEquipment(changedValues, values)
   }
 
-  const handleAddEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+  const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
       if (!newEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
 
@@ -332,7 +326,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const handleChangeRelocateFrom = useCallback<RelocationTaskFormProps['onChangeRelocateFrom']>(
     (value, option) => {
-      const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
+      const equipments: RelocationEquipmentRow[] = form.getFieldValue('equipments') || []
       const relocateFrom = form.getFieldValue('relocateFrom')
       const isShowConfirmation = !!equipments.length && !!relocateFrom
       form.setFieldValue('relocateFrom', value)
@@ -351,7 +345,7 @@ const CreateRelocationTaskPage: FC = () => {
         form.setFieldValue('relocateTo', relocateToValue)
         setSelectedRelocateTo(relocateToValue)
 
-        const equipments: RelocationEquipmentRowFields[] = form.getFieldValue('equipments') || []
+        const equipments: RelocationEquipmentRow[] = form.getFieldValue('equipments') || []
         const newEquipments = equipments.map((eqp) => ({
           ...eqp,
           condition: EquipmentConditionEnum.WrittenOff,
@@ -406,9 +400,9 @@ const CreateRelocationTaskPage: FC = () => {
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
-                canAddEquipment={userPermissions?.equipmentsCreate}
+                canCreateEquipment={userPermissions?.equipmentsCreate}
                 addEquipmentBtnDisabled={addEquipmentBtnDisabled}
-                onClickAddEquipment={handleOpenAddEquipmentModal}
+                onClickCreateEquipment={handleOpenAddEquipmentModal}
               />
             </Space>
           </Col>
@@ -469,7 +463,7 @@ const CreateRelocationTaskPage: FC = () => {
           nomenclatureListIsLoading={nomenclatureListIsFetching}
           onChangeNomenclature={setSelectedNomenclatureId}
           onCancel={handleCloseAddEquipmentModal}
-          onSubmit={handleAddEquipment}
+          onSubmit={handleCreateEquipment}
         />
       )}
     </>

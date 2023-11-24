@@ -8,6 +8,8 @@ export * from './getRelocationTaskWaybillM15.model'
 export * from './returnRelocationTaskToRework.model'
 export * from './cancelRelocationTask.model'
 
+export * from './createRelocationTaskITSM.model'
+
 export * from './relocationTaskList.model'
 export * from './getRelocationTaskList.model'
 

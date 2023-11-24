@@ -3,17 +3,16 @@ import { screen } from '@testing-library/react'
 import { buttonTestUtils, render } from '_tests_/utils'
 
 import RelocationEquipmentEditableTable from './index'
-import { RelocationEquipmentEditableTableProps } from './types'
+import { RelocationEquipmentSimplifiedEditableTableProps } from './types'
 
-const props: RelocationEquipmentEditableTableProps = {
+const props: RelocationEquipmentSimplifiedEditableTableProps = {
+  name: '',
+
   editableKeys: undefined,
   setEditableKeys: jest.fn(),
 
   isLoading: false,
   equipmentListIsLoading: false,
-
-  currencyList: [],
-  currencyListIsLoading: false,
 
   equipmentCatalogList: [],
   equipmentCatalogListIsLoading: false,

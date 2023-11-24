@@ -1,26 +1,26 @@
+import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
 
 import { EquipmentCatalogListModel } from 'modules/warehouse/models'
-import { RelocationTaskFormEquipment } from 'modules/warehouse/types'
-
-import { CurrencyListModel } from 'shared/models/currency'
+import { SimplifiedRelocationTaskFormEquipment } from 'modules/warehouse/types/relocationTask/simplifiedRelocationTaskForm'
 
 export type ActiveEquipmentRow = {
+  tableName: RelocationEquipmentSimplifiedEditableTableProps['name']
   rowId: number
   rowIndex: number
 }
 
-export type RelocationEquipmentRow = Partial<RelocationTaskFormEquipment>
+export type RelocationEquipmentRow = Partial<SimplifiedRelocationTaskFormEquipment>
 
-export type RelocationEquipmentEditableTableProps = {
+export type RelocationEquipmentSimplifiedEditableTableProps = {
+  name: NamePath
+  required?: boolean
+
   editableKeys?: Key[]
   setEditableKeys?: (keys: Key[]) => void
 
   isLoading: boolean
   equipmentListIsLoading?: boolean
-
-  currencyList: CurrencyListModel
-  currencyListIsLoading: boolean
 
   equipmentCatalogList: EquipmentCatalogListModel
   equipmentCatalogListIsLoading: boolean
