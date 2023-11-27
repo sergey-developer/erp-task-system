@@ -1,4 +1,4 @@
-import { Col, Form, Input, InputNumber, message, Radio, Row, Select, Upload } from 'antd'
+import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
 import isArray from 'lodash/isArray'
 import React, { FC, useEffect } from 'react'
 
@@ -375,18 +375,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 listType='picture'
                 multiple
                 disabled={isLoading || deleteImageIsLoading}
-                beforeUpload={(file) => {
-                  const allowed =
-                    file.type === 'image/png' ||
-                    file.type === 'image/jpeg' ||
-                    file.type === 'image/bmp'
-
-                  if (!allowed) {
-                    message.error('Доступны только форматы: JPEG, PNG, BMP')
-                  }
-
-                  return allowed || Upload.LIST_IGNORE
-                }}
+                itemRender={(originNode, file) => (!file.error ? originNode : null)}
                 customRequest={onUploadImage}
                 onRemove={onDeleteImage}
               >
