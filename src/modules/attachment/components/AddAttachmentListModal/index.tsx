@@ -58,6 +58,7 @@ const AddAttachmentListModal: FC<AddAttachmentListModalProps> = ({
             customRequest={onAdd}
             onRemove={onDelete}
             defaultFileList={defaultFileList}
+            itemRender={(originNode, file) => (!file.error ? originNode : null)}
           >
             <UploadButton label='Добавить фото' />
           </Upload>
