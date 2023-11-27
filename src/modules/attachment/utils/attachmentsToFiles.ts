@@ -1,12 +1,10 @@
 import { UploadFile } from 'antd/es/upload'
 
-import { RelocationEquipmentAttachmentListModel } from 'modules/warehouse/models/relocationEquipment'
+import { AttachmentListModel } from 'modules/attachment/models'
 
 import { FileResponse } from 'shared/types/file'
 
-export const relocationEquipmentAttachmentListToFileList = (
-  data: RelocationEquipmentAttachmentListModel,
-): UploadFile<FileResponse>[] =>
+export const attachmentsToFiles = (data: AttachmentListModel): UploadFile<FileResponse>[] =>
   data.map((att) => ({
     uid: String(att.id),
     name: att.name,

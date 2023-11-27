@@ -8,6 +8,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
+import { attachmentsToFiles } from 'modules/attachment/utils'
 import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
@@ -63,8 +64,6 @@ import { mergeDateTime } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import { relocationEquipmentAttachmentListToFileList } from './utils'
 
 const AddAttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AddAttachmentListModal'),
@@ -643,7 +642,7 @@ const EditRelocationTaskPage: FC = () => {
               equipmentImagesFormPath
                 ? concat(
                     form.getFieldValue(equipmentImagesFormPath) || [],
-                    relocationEquipmentAttachmentListToFileList(relocationEquipmentAttachmentList),
+                    attachmentsToFiles(relocationEquipmentAttachmentList),
                   )
                 : undefined
             }
