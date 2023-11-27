@@ -28,8 +28,8 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   isLoading,
   initialValues,
 
+  defaultImages,
   onUploadImage,
-
   onDeleteImage,
   imageIsDeleting,
 
@@ -67,10 +67,16 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   useEffect(() => {
-    if (nomenclature) {
+    if (nomenclature?.title) {
       form.setFieldsValue({ title: nomenclature.title })
     }
-  }, [form, nomenclature])
+  }, [form, nomenclature?.title])
+
+  useEffect(() => {
+    if (defaultImages?.length) {
+      form.setFieldsValue({ images: defaultImages })
+    }
+  }, [defaultImages, form])
 
   const handleChangeCategory = (
     value: IdType,
@@ -378,6 +384,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 itemRender={(originNode, file) => (!file.error ? originNode : null)}
                 customRequest={onUploadImage}
                 onRemove={onDeleteImage}
+                defaultFileList={defaultImages}
               >
                 <UploadButton label='Добавить фото' disabled={isLoading} />
               </Upload>
