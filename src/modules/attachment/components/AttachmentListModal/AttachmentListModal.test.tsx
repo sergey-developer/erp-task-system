@@ -1,7 +1,9 @@
 import { screen, within } from '@testing-library/react'
 
+import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
+
 import attachmentFixtures from '_tests_/fixtures/attachments'
-import { fakeWord, render } from '_tests_/utils'
+import { fakeWord, render, spinnerTestUtils } from '_tests_/utils'
 
 import AttachmentListModal, { AttachmentListModalProps } from './index'
 
@@ -18,6 +20,8 @@ const findContainer = () => screen.findByTestId('attachment-list-modal')
 export const testUtils = {
   getContainer,
   findContainer,
+
+  expectLoadingFinished: spinnerTestUtils.expectLoadingFinished('attachment-list-modal-loading'),
 }
 
 describe('Модалка списка вложений', () => {
@@ -26,7 +30,7 @@ describe('Модалка списка вложений', () => {
 
     const container = testUtils.getContainer()
     const title = within(container).getByText(props.title as string)
-    const images = within(container).getAllByRole('img', { name: '' })
+    const images = attachmentListTestUtils.getAllIn(container)
 
     expect(title).toBeInTheDocument()
     expect(images).toHaveLength(props.data.length)
