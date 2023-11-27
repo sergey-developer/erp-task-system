@@ -19,6 +19,7 @@ export type BaseModalProps = ModalProps & {
   /* Determines whether spinner should be shown on whole modal */
   isLoading?: boolean
   loadingTip?: SpinnerProps['tip']
+  'data-testid'?: string
 }
 
 const BaseModal: FC<BaseModalProps> = ({
@@ -30,6 +31,7 @@ const BaseModal: FC<BaseModalProps> = ({
   children,
   okButtonProps,
   cancelButtonProps,
+  'data-testid': testId,
   ...props
 }) => {
   const mergedOkButtonProps = useMemo(
@@ -53,8 +55,9 @@ const BaseModal: FC<BaseModalProps> = ({
       destroyOnClose={destroyOnClose}
       okButtonProps={mergedOkButtonProps}
       cancelButtonProps={mergedCancelButtonProps}
+      data-testid={testId}
     >
-      <LoadingArea isLoading={isLoading} tip={loadingTip}>
+      <LoadingArea data-testid={`${testId}-loading`} isLoading={isLoading} tip={loadingTip}>
         {children}
       </LoadingArea>
     </Modal>
