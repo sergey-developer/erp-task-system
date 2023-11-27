@@ -1,19 +1,23 @@
-import { Modal, ModalProps } from 'antd'
 import { FC } from 'react'
 
 import { AttachmentListModel } from 'modules/attachment/models'
 
+import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
+
 import AttachmentList from '../AttachmentList'
 
-export type AttachmentListModalProps = Required<Pick<ModalProps, 'open' | 'title' | 'onCancel'>> & {
-  data: AttachmentListModel
-}
+export type AttachmentListModalProps = Required<
+  Pick<BaseModalProps, 'open' | 'title' | 'onCancel'>
+> &
+  Pick<BaseModalProps, 'isLoading'> & {
+    data: AttachmentListModel
+  }
 
 const AttachmentListModal: FC<AttachmentListModalProps> = ({ data, ...props }) => {
   return (
-    <Modal {...props} data-testid='attachment-list-modal' width={370} footer={null}>
+    <BaseModal {...props} data-testid='attachment-list-modal' width={370} footer={null}>
       <AttachmentList data={data} />
-    </Modal>
+    </BaseModal>
   )
 }
 

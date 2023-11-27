@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
@@ -25,6 +25,7 @@ import {
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
+import { useGetRelocationEquipmentAttachmentList } from 'modules/warehouse/hooks/relocationEquipment'
 import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
@@ -66,8 +67,13 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
+import { RelocationEquipmentTableItem } from '../RelocationEquipmentTable/types'
 import { ReturnRelocationTaskToReworkModalProps } from '../ReturnRelocationTaskToReworkModal/types'
 import { RelocationTaskDetailsProps } from './types'
+
+const AttachmentListModal = React.lazy(
+  () => import('modules/attachment/components/AttachmentListModal'),
+)
 
 const CancelRelocationTaskModal = React.lazy(() => import('../CancelRelocationTaskModal'))
 
@@ -102,13 +108,36 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [confirmExecutionModalOpened, { toggle: toggleOpenConfirmExecutionModal }] = useBoolean()
   const debouncedToggleOpenConfirmExecutionModal = useDebounceFn(toggleOpenConfirmExecutionModal)
 
+  const [activeEquipment, setActiveEquipment] = useState<RelocationEquipmentTableItem>()
+  const [
+    equipmentImagesModalOpened,
+    { setTrue: openEquipmentImagesModal, setFalse: closeEquipmentImagesModal },
+  ] = useBoolean()
+
+  const handleOpenEquipmentImagesModal = useDebounceFn((event, equipment) => {
+    event.stopPropagation()
+    openEquipmentImagesModal()
+    setActiveEquipment(equipment)
+  })
+
+  const handleCloseEquipmentImagesModal = useDebounceFn(() => {
+    closeEquipmentImagesModal()
+    setActiveEquipment(undefined)
+  })
+
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
     useGetRelocationTask({ relocationTaskId })
 
+  const { currentData: relocationEquipments = [], isFetching: relocationEquipmentsIsFetching } =
+    useGetRelocationEquipmentList({ relocationTaskId })
+
   const {
-    currentData: relocationEquipmentList = [],
-    isFetching: relocationEquipmentListIsFetching,
-  } = useGetRelocationEquipmentList({ relocationTaskId })
+    currentData: relocationEquipmentAttachmentList = [],
+    isFetching: relocationEquipmentAttachmentListIsFetching,
+  } = useGetRelocationEquipmentAttachmentList(
+    { relocationEquipmentId: activeEquipment?.id! },
+    { skip: !equipmentImagesModalOpened || !activeEquipment },
+  )
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
@@ -476,8 +505,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
               <Text strong>Перечень оборудования</Text>
 
               <RelocationEquipmentTable
-                dataSource={relocationEquipmentList}
-                loading={relocationEquipmentListIsFetching}
+                dataSource={relocationEquipments}
+                loading={relocationEquipmentsIsFetching}
+                onClickImages={handleOpenEquipmentImagesModal}
               />
             </Space>
           </Col>
@@ -552,6 +582,26 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             isLoading={closeRelocationTaskIsLoading}
             onCancel={debouncedToggleOpenConfirmExecutionModal}
             onConfirm={handleCloseTask}
+          />
+        </React.Suspense>
+      )}
+
+      {equipmentImagesModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={handleCloseEquipmentImagesModal}
+              tip='Загрузка модалки изображений оборудования'
+            />
+          }
+        >
+          <AttachmentListModal
+            open={equipmentImagesModalOpened}
+            title='Изображения оборудования'
+            data={relocationEquipmentAttachmentList}
+            onCancel={handleCloseEquipmentImagesModal}
+            isLoading={relocationEquipmentAttachmentListIsFetching}
           />
         </React.Suspense>
       )}

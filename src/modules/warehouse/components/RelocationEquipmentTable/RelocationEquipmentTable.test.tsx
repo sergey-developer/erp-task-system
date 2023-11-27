@@ -1,4 +1,5 @@
 import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
@@ -6,7 +7,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { render, tableTestUtils } from '_tests_/utils'
+import { buttonTestUtils, render, tableTestUtils } from '_tests_/utils'
 
 import RelocationEquipmentTable from './index'
 import { RelocationEquipmentTableProps } from './types'
@@ -16,6 +17,7 @@ const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListIte
 const props: Readonly<RelocationEquipmentTableProps> = {
   dataSource: [relocationEquipmentListItem],
   loading: false,
+  onClickImages: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('relocation-equipment-table')
@@ -29,6 +31,13 @@ const getColTitle = (text: string) => within(getContainer()).getByText(text)
 const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> => {
   const row = getRow(id)
   return row ? within(row).getByText(value) : null
+}
+
+// images col
+const getViewImagesButton = (id: IdType) => buttonTestUtils.getButtonIn(getRow(id), 'Посмотреть')
+const clickViewImagesButton = async (user: UserEvent, id: IdType) => {
+  const button = getViewImagesButton(id)
+  await user.click(button)
 }
 
 // loading
@@ -46,6 +55,9 @@ export const testUtils = {
   getHeadCell,
   getColTitle,
   getColValue,
+
+  getViewImagesButton,
+  clickViewImagesButton,
 
   expectLoadingStarted,
   expectLoadingFinished,
@@ -168,6 +180,28 @@ describe('Таблица перечня оборудования заявки н
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+    })
+  })
+
+  describe('Изображения', () => {
+    test('Заголовок и кнопка отображаются', () => {
+      render(<RelocationEquipmentTable {...props} />)
+
+      const title = testUtils.getColTitle('Изображения')
+      const button = testUtils.getViewImagesButton(relocationEquipmentListItem.id)
+
+      expect(title).toBeInTheDocument()
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('При клике на кнопку обработчик вызывается', async () => {
+      const { user } = render(<RelocationEquipmentTable {...props} />)
+
+      await testUtils.clickViewImagesButton(user, relocationEquipmentListItem.id)
+
+      expect(props.onClickImages).toBeCalledTimes(1)
+      expect(props.onClickImages).toBeCalledWith(expect.anything(), relocationEquipmentListItem)
     })
   })
 })
