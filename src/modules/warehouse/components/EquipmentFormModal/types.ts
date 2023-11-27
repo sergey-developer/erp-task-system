@@ -16,6 +16,7 @@ import { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { CurrencyListModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
+import { FileResponse } from 'shared/types/file'
 
 export type EquipmentFormModalFormFields = {
   title: string
@@ -36,7 +37,7 @@ export type EquipmentFormModalFormFields = {
   usageCounter?: number
   owner?: IdType
   comment?: string
-  images?: UploadFile<{ id: IdType }>[]
+  images?: UploadFile<FileResponse>[]
 }
 
 export type EquipmentFormModalProps = Required<
@@ -49,6 +50,7 @@ export type EquipmentFormModalProps = Required<
     setFields: FormInstance['setFields'],
   ) => Promise<void>
 
+  defaultImages?: UploadProps<FileResponse>['defaultFileList']
   onUploadImage: NonNullable<UploadProps['customRequest']>
 
   /* Должно соответствовать параметру onRemove для корректной работы https://ant.design/components/upload#api */

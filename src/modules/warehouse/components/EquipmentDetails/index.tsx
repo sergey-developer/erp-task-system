@@ -1,11 +1,12 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Row, Typography } from 'antd'
 import { RcFile } from 'antd/es/upload'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import AttachmentList from 'modules/attachment/components/AttachmentList'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
+import { attachmentsToFiles } from 'modules/attachment/utils'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -52,7 +53,9 @@ const AttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AttachmentListModal'),
 )
 
-const EquipmentFormModal = React.lazy(() => import('../EquipmentFormModal'))
+const EquipmentFormModal = React.lazy(
+  () => import('modules/warehouse/components/EquipmentFormModal'),
+)
 
 const { Text } = Typography
 
@@ -121,7 +124,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     isFetching: totalEquipmentAttachmentListIsFetching,
   } = useGetEquipmentAttachmentList(
     { equipmentId, limit: equipmentAttachmentList?.pagination?.total! },
-    { skip: !imageListModalOpened || !equipmentAttachmentList?.pagination?.total },
+    {
+      skip:
+        !equipmentAttachmentList?.pagination?.total ||
+        (!imageListModalOpened && !editEquipmentModalOpened),
+    },
   )
 
   const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] =
@@ -255,6 +262,14 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const hiddenFields: FieldsMaybeHidden[] = equipment?.category
     ? getHiddenFieldsByCategory(equipment.category)
     : []
+
+  const defaultEquipmentImages = useMemo(
+    () =>
+      editEquipmentModalOpened && totalEquipmentAttachmentList?.results.length
+        ? attachmentsToFiles(totalEquipmentAttachmentList.results)
+        : undefined,
+    [editEquipmentModalOpened, totalEquipmentAttachmentList?.results],
+  )
 
   return (
     <>
@@ -541,6 +556,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onUploadImage={handleCreateAttachment}
             onDeleteImage={handleDeleteAttachment}
             deleteImageIsLoading={deleteAttachmentIsLoading}
+            defaultImages={defaultEquipmentImages}
           />
         </React.Suspense>
       )}
