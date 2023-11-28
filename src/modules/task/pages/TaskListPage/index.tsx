@@ -447,7 +447,7 @@ const TaskListPage: FC = () => {
                   <Space align='end' size='middle'>
                     <UpdateTasksButton
                       onClick={handleRefetchTaskList}
-                      // disabled={taskListIsFetching}
+                      disabled={taskListIsFetching || taskCountersIsFetching}
                       selectedKeys={tasksUpdateVariants}
                       onSelect={setTasksUpdateVariants}
                       onDeselect={unsetTasksUpdateVariants}
