@@ -5,9 +5,10 @@ import React, { FC, useState } from 'react'
 
 import { TasksUpdateVariantsEnum } from 'shared/constants/tasksUpdateVariants'
 
-export type UpdateTasksButtonProps = Pick<DropdownButtonProps, 'onClick' | 'disabled'> & {
-  onAutoUpdate: () => void
-}
+export type UpdateTasksButtonProps = Required<Pick<DropdownButtonProps, 'onClick'>> &
+  Pick<DropdownButtonProps, 'disabled'> & {
+    onAutoUpdate: () => void
+  }
 
 const UpdateTasksButton: FC<UpdateTasksButtonProps> = ({ onAutoUpdate, ...props }) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])

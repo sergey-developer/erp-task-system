@@ -16,9 +16,9 @@ notificationTestUtils.setupNotifications()
 describe('Страница заявок фискальных накопителей', () => {
   describe('При успешном запросе', () => {
     test('Таблица отображается корректно', async () => {
-      const fakeFiscalAccumulatorList = [fiscalAccumulatorFixtures.fiscalAccumulatorListItem()]
+      const fiscalAccumulators = [fiscalAccumulatorFixtures.fiscalAccumulatorListItem()]
       mockGetFiscalAccumulatorsSuccess({
-        body: fakeFiscalAccumulatorList,
+        body: fiscalAccumulators,
       })
 
       render(<FiscalAccumulatorsPage />)
@@ -26,7 +26,7 @@ describe('Страница заявок фискальных накопител�
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
 
-      fakeFiscalAccumulatorList.forEach((item) => {
+      fiscalAccumulators.forEach((item) => {
         const row = fiscalAccumulatorTaskTableTestUtils.getRow(item.olaNextBreachTime)
         expect(row).toBeInTheDocument()
       })
