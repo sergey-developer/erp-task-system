@@ -122,12 +122,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const {
     currentData: equipmentCatalogListFromWarehouse = [],
     isFetching: equipmentCatalogListFromWarehouseIsFetching,
-  } = useGetEquipmentCatalogList({ locationId: taskShop?.id! }, { skip: !taskShop?.id })
+  } = useGetEquipmentCatalogList({ locationId: warehouseMy?.id! }, { skip: !taskShop?.id })
 
   const {
     currentData: equipmentCatalogListToWarehouse = [],
     isFetching: equipmentCatalogListToWarehouseIsFetching,
-  } = useGetEquipmentCatalogList({ locationId: warehouseMy?.id! }, { skip: !warehouseMy?.id })
+  } = useGetEquipmentCatalogList({ locationId: taskShop?.id! }, { skip: !warehouseMy?.id })
 
   const [getEquipment] = useLazyGetEquipment()
 
