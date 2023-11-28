@@ -1,1 +1,1 @@
-export * from './getFiscalAccumulatorList.mock'
+export * from './getFiscalAccumulators.mock'

@@ -1,35 +1,34 @@
 import { CheckOutlined, DownOutlined } from '@ant-design/icons'
 import { Dropdown } from 'antd'
 import { DropdownButtonProps } from 'antd/es/dropdown'
-import { MenuProps } from 'antd/es/menu'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 
-import { TasksUpdateVariants } from 'shared/constants/updateTasks'
+import { TasksUpdateVariantsEnum } from 'shared/constants/tasksUpdateVariants'
 
-type UpdateTasksButtonProps = Pick<DropdownButtonProps, 'onClick' | 'disabled'> &
-  Required<Pick<MenuProps, 'selectedKeys' | 'onSelect' | 'onDeselect'>>
+export type UpdateTasksButtonProps = Pick<DropdownButtonProps, 'onClick' | 'disabled'> & {
+  onAutoUpdate: () => void
+}
 
-const UpdateTasksButton: FC<UpdateTasksButtonProps> = ({
-  selectedKeys,
-  onSelect,
-  onDeselect,
-  ...props
-}) => {
+const UpdateTasksButton: FC<UpdateTasksButtonProps> = ({ onAutoUpdate, ...props }) => {
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
+
   return (
     <Dropdown.Button
       {...props}
       menu={{
         items: [
           {
-            key: TasksUpdateVariants.AutoUpdate1M,
+            key: TasksUpdateVariantsEnum.AutoUpdate1M,
             label: 'Автообновление',
-            icon: selectedKeys.includes(TasksUpdateVariants.AutoUpdate1M) && <CheckOutlined />,
+            icon: selectedKeys.includes(TasksUpdateVariantsEnum.AutoUpdate1M) && <CheckOutlined />,
+            onClick: onAutoUpdate,
           },
         ],
         selectable: true,
         selectedKeys,
-        onSelect,
-        onDeselect,
+        onSelect: (info) => setSelectedKeys(info.selectedKeys),
+        onDeselect: (info) =>
+          setSelectedKeys((prevState) => prevState.filter((key) => key !== info.key)),
       }}
       icon={<DownOutlined />}
       trigger={['click']}

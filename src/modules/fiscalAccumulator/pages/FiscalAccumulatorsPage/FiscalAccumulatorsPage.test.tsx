@@ -1,14 +1,14 @@
 import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/fiscalAccumulator/components/FiscalAccumulatorTable/FiscalAccumulatorTable.test'
-import { getFiscalAccumulatorListMessages } from 'modules/fiscalAccumulator/constants'
+import { getFiscalAccumulatorsErrorMsg } from 'modules/fiscalAccumulator/constants'
 
+import fiscalAccumulatorFixtures from '_tests_/fixtures/fiscalAccumulator'
 import {
-  mockGetFiscalAccumulatorListServerError,
-  mockGetFiscalAccumulatorListSuccess,
+  mockGetFiscalAccumulatorsServerError,
+  mockGetFiscalAccumulatorsSuccess,
 } from '_tests_/mocks/api'
 import { notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
-import FiscalAccumulatorListPage from './index'
-import fiscalAccumulatorFixtures from "_tests_/fixtures/fiscalAccumulator";
+import FiscalAccumulatorsPage from './index'
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -17,11 +17,11 @@ describe('Страница заявок фискальных накопител�
   describe('При успешном запросе', () => {
     test('Таблица отображается корректно', async () => {
       const fakeFiscalAccumulatorList = [fiscalAccumulatorFixtures.fiscalAccumulatorListItem()]
-      mockGetFiscalAccumulatorListSuccess({
+      mockGetFiscalAccumulatorsSuccess({
         body: fakeFiscalAccumulatorList,
       })
 
-      render(<FiscalAccumulatorListPage />)
+      render(<FiscalAccumulatorsPage />)
 
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
@@ -35,15 +35,15 @@ describe('Страница заявок фискальных накопител�
 
   describe('При не успешном запроса', () => {
     test('Обрабатывается ошибка 500', async () => {
-      mockGetFiscalAccumulatorListServerError()
+      mockGetFiscalAccumulatorsServerError()
 
-      render(<FiscalAccumulatorListPage />)
+      render(<FiscalAccumulatorsPage />)
 
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
 
       const notification = await notificationTestUtils.findNotification(
-        getFiscalAccumulatorListMessages.commonError,
+        getFiscalAccumulatorsErrorMsg,
       )
 
       expect(notification).toBeInTheDocument()

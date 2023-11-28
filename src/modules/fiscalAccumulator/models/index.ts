@@ -1,4 +1,4 @@
 export * from './fiscalAccumulator.model'
 
-export * from './fiscalAccumulatorList.model'
-export * from './getFiscalAccumulatorList.model'
+export * from './fiscalAccumulators.model'
+export * from './getFiscalAccumulators.model'

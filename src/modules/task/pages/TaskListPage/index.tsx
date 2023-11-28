@@ -51,10 +51,12 @@ import UpdateTasksButton from 'components/Buttons/UpdateTasksButton'
 import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { StorageKeysEnum } from 'shared/constants/storage'
-import { TasksUpdateVariants, tasksUpdateVariantsIntervals } from 'shared/constants/updateTasks'
+import {
+  TasksUpdateVariantsEnum,
+  tasksUpdateVariantsIntervals,
+} from 'shared/constants/tasksUpdateVariants'
 import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import { useTasksUpdateVariants } from 'shared/hooks/useTasksUpdateVariants'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
@@ -77,11 +79,7 @@ const TaskListPage: FC = () => {
 
   const colRef = useRef<number>()
 
-  const {
-    variants: tasksUpdateVariants,
-    set: setTasksUpdateVariants,
-    unset: unsetTasksUpdateVariants,
-  } = useTasksUpdateVariants()
+  const [autoUpdateEnabled, { toggle: toggleAutoUpdateEnabled }] = useBoolean(false)
 
   const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<IdType>>(null)
 
@@ -194,8 +192,8 @@ const TaskListPage: FC = () => {
     isFetching: taskCountersIsFetching,
     refetch: refetchTaskCounters,
   } = useGetTaskCounters(preloadedExtendedFilters, {
-    pollingInterval: tasksUpdateVariants.includes(TasksUpdateVariants.AutoUpdate1M)
-      ? tasksUpdateVariantsIntervals[TasksUpdateVariants.AutoUpdate1M]
+    pollingInterval: autoUpdateEnabled
+      ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
   })
 
@@ -204,8 +202,8 @@ const TaskListPage: FC = () => {
     isFetching: taskListIsFetching,
     refetch: refetchTaskList,
   } = useGetTaskList(taskListQueryArgs, {
-    pollingInterval: tasksUpdateVariants.includes(TasksUpdateVariants.AutoUpdate1M)
-      ? tasksUpdateVariantsIntervals[TasksUpdateVariants.AutoUpdate1M]
+    pollingInterval: autoUpdateEnabled
+      ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
   })
 
@@ -423,9 +421,7 @@ const TaskListPage: FC = () => {
                     <UpdateTasksButton
                       onClick={handleRefetchTaskList}
                       disabled={taskListIsFetching || taskCountersIsFetching}
-                      selectedKeys={tasksUpdateVariants}
-                      onSelect={setTasksUpdateVariants}
-                      onDeselect={unsetTasksUpdateVariants}
+                      onAutoUpdate={toggleAutoUpdateEnabled}
                     />
 
                     <Button>+ Создать заявку</Button>
