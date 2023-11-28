@@ -26,7 +26,7 @@ const FiscalAccumulatorsPage: FC = () => {
   })
 
   return (
-    <Row>
+    <Row data-testid='fiscal-accumulators-page'>
       <Col span={24}>
         <Row justify='end'>
           <Col>
