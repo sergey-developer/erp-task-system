@@ -26,8 +26,8 @@ import {
 } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort } from 'modules/task/components/TaskTable/utils'
-import { FastFilterEnum, TaskCardTabsEnum } from 'modules/task/constants/task'
-import { useLazyGetTaskList } from 'modules/task/hooks/task'
+import { FastFilterEnum, TaskCardTabsEnum, FilterTypeEnum } from 'modules/task/constants/task'
+import { useGetTaskList } from 'modules/task/hooks/task'
 import { useGetTaskCounters } from 'modules/task/hooks/taskCounters'
 import {
   ExtendedFilterQueries,
@@ -48,15 +48,17 @@ import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
-import { SyncIcon } from 'components/Icons'
 import Spinner from 'components/Spinner'
+import UpdateTasksButton from 'components/Buttons/UpdateTasksButton'
 
 import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { StorageKeysEnum } from 'shared/constants/storage'
+import { TasksUpdateVariants, tasksUpdateVariantsIntervals } from 'shared/constants/updateTasks'
 import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { useTasksUpdateVariants } from 'shared/hooks/useTasksUpdateVariants'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 import {
@@ -65,7 +67,7 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
-import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
+import { DEFAULT_PAGE_SIZE } from './constants'
 import { ColStyled, RowStyled } from './styles'
 import {
   getInitialExtendedFilterFormValues,
@@ -95,6 +97,11 @@ const TaskListPage: FC = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<IdType>()
 
   const [activeTaskCardTab, setActiveTaskCardTab] = useState<TaskCardTabsEnum>()
+  const {
+    variants: tasksUpdateVariants,
+    set: setTasksUpdateVariants,
+    unset: unsetTasksUpdateVariants,
+  } = useTasksUpdateVariants()
 
   const [taskAdditionalInfoExpanded, { toggle: toggleTaskAdditionalInfoExpanded }] =
     useBoolean(false)
@@ -212,24 +219,21 @@ const TaskListPage: FC = () => {
     isError: isGetTaskCountersError,
     isFetching: taskCountersIsFetching,
     refetch: refetchTaskCounters,
-  } = useGetTaskCounters(preloadedExtendedFilters)
+  } = useGetTaskCounters(preloadedExtendedFilters, {
+    pollingInterval: tasksUpdateVariants.includes(TasksUpdateVariants.AutoUpdate1M)
+      ? tasksUpdateVariantsIntervals[TasksUpdateVariants.AutoUpdate1M]
+      : undefined,
+  })
 
-  /**
-   * Намеренно используется LazyQuery чтобы можно было перезапрашивать список по условию.
-   * Это также можно сделать если передать аргумент `skip` в обычный Query, но тогда
-   * данные будут сбрасываться, это связано с багом https://github.com/reduxjs/redux-toolkit/issues/2871
-   * Как баг починят, будет видно, оставлять как есть или можно использовать обычный Query.
-   */
-  const [getTaskList, { data: taskList, isFetching: taskListIsFetching }] = useLazyGetTaskList()
-
-  useEffect(() => {
-    if (
-      taskListQueryArgs.sort &&
-      !sortableFieldToSortValues.status.includes(taskListQueryArgs.sort)
-    ) {
-      getTaskList(taskListQueryArgs)
-    }
-  }, [getTaskList, taskListQueryArgs])
+  const {
+    currentData: taskList,
+    isFetching: taskListIsFetching,
+    refetch: refetchTaskList,
+  } = useGetTaskList(taskListQueryArgs, {
+    pollingInterval: tasksUpdateVariants.includes(TasksUpdateVariants.AutoUpdate1M)
+      ? tasksUpdateVariantsIntervals[TasksUpdateVariants.AutoUpdate1M]
+      : undefined,
+  })
 
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
     { isManager: true },
@@ -364,10 +368,10 @@ const TaskListPage: FC = () => {
   )
 
   const handleRefetchTaskList = useDebounceFn(() => {
-    getTaskList(taskListQueryArgs)
     handleCloseTaskCard()
+    refetchTaskList()
     refetchTaskCounters()
-  }, [getTaskList, taskListQueryArgs])
+  })
 
   const searchFilterApplied: boolean = isEqual(appliedFilterType, FilterTypeEnum.Search)
 
@@ -441,13 +445,13 @@ const TaskListPage: FC = () => {
 
                 <Col>
                   <Space align='end' size='middle'>
-                    <Button
-                      icon={<SyncIcon />}
+                    <UpdateTasksButton
                       onClick={handleRefetchTaskList}
-                      disabled={taskListIsFetching}
-                    >
-                      Обновить заявки
-                    </Button>
+                      // disabled={taskListIsFetching}
+                      selectedKeys={tasksUpdateVariants}
+                      onSelect={setTasksUpdateVariants}
+                      onDeselect={unsetTasksUpdateVariants}
+                    />
 
                     <Button>+ Создать заявку</Button>
                   </Space>
