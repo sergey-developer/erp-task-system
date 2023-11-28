@@ -16,6 +16,8 @@ import { TaskCountersKeys } from 'modules/task/models'
 import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 
+import { testUtils as updateTasksButtonTestUtils } from 'components/Buttons/UpdateTasksButton/UpdateTasksButton.test'
+
 import commonFixtures from '_tests_/fixtures/common'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
@@ -59,10 +61,9 @@ const clickSearchClearButton = async (user: UserEvent) => {
   return button
 }
 
-const getReloadListButton = () => buttonTestUtils.getButtonIn(getContainer(), /sync/)
-
-const clickReloadListButton = async (user: UserEvent) => {
-  const button = getReloadListButton()
+const getUpdateTasksButton = () => updateTasksButtonTestUtils.getUpdateTasksButton(getContainer())
+const clickUpdateTasksButton = async (user: UserEvent) => {
+  const button = getUpdateTasksButton()
   await user.click(button)
   return button
 }
@@ -94,8 +95,8 @@ export const testUtils = {
   getSearchClearButton,
   clickSearchClearButton,
 
-  getReloadListButton,
-  clickReloadListButton,
+  getUpdateTasksButton,
+  clickUpdateTasksButton,
 
   getCreateTaskButton,
 
@@ -1245,7 +1246,7 @@ describe('Страница реестра заявок', () => {
       render(<TaskListPage />)
 
       await taskTableTestUtils.expectLoadingFinished()
-      const button = testUtils.getReloadListButton()
+      const button = testUtils.getUpdateTasksButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -1260,7 +1261,7 @@ describe('Страница реестра заявок', () => {
       })
 
       await taskTableTestUtils.expectLoadingFinished()
-      await testUtils.clickReloadListButton(user)
+      await testUtils.clickUpdateTasksButton(user)
       await taskTableTestUtils.expectLoadingStarted()
     })
 
@@ -1274,7 +1275,7 @@ describe('Страница реестра заявок', () => {
 
       await taskTableTestUtils.expectLoadingFinished()
       await fastFilterListTestUtils.expectLoadingFinished()
-      await testUtils.clickReloadListButton(user)
+      await testUtils.clickUpdateTasksButton(user)
       await fastFilterListTestUtils.expectLoadingStarted()
     })
 
@@ -1294,7 +1295,7 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.expectLoadingFinished()
       await taskTableTestUtils.clickRow(user, taskListItem.id)
       const taskCard = await taskCardTestUtils.findContainer()
-      await testUtils.clickReloadListButton(user)
+      await testUtils.clickUpdateTasksButton(user)
 
       await waitFor(() => {
         expect(taskCard).not.toBeInTheDocument()
@@ -1307,7 +1308,7 @@ describe('Страница реестра заявок', () => {
 
       render(<TaskListPage />, { store: getStoreWithAuth() })
 
-      const button = testUtils.getReloadListButton()
+      const button = testUtils.getUpdateTasksButton()
       await taskTableTestUtils.expectLoadingStarted()
       expect(button).toBeDisabled()
       await taskTableTestUtils.expectLoadingFinished()
