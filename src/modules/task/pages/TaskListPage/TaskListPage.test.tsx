@@ -17,8 +17,11 @@ import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/
 import { UserRoleEnum } from 'modules/user/constants'
 
 import commonFixtures from '_tests_/fixtures/common'
+import macroregionFixtures from '_tests_/fixtures/macroregion'
+import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import {
   mockGetCustomerListSuccess,
@@ -39,9 +42,6 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import macroregionFixtures from '../../../../_tests_/fixtures/macroregion'
-import supportGroupFixtures from '../../../../_tests_/fixtures/supportGroup'
-import warehouseFixtures from '../../../../_tests_/fixtures/warehouse'
 import { DEFAULT_PAGE_SIZE } from './constants'
 import TaskListPage from './index'
 

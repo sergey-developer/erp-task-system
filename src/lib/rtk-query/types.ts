@@ -1,11 +1,12 @@
+import { SubscriptionOptions } from '@reduxjs/toolkit/dist/query/core/apiState'
 import {
-  QueryDefinition,
   MutationDefinition,
+  QueryDefinition,
 } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
 import {
   TypedUseMutationResult,
-  TypedUseQueryStateResult,
   TypedUseQueryHookResult,
+  TypedUseQueryStateResult,
 } from '@reduxjs/toolkit/dist/query/react'
 import {
   LazyQueryTrigger,
@@ -30,7 +31,8 @@ export type CustomQueryDefinition<
 export type CustomUseQueryOptions<QueryArg, ResultType> = Pick<
   UseQueryStateOptions<CustomQueryDefinition<QueryArg, ResultType>, any>,
   'skip'
->
+> &
+  SubscriptionOptions
 
 export type CustomUseQueryHookResult<
   QueryArg,
