@@ -47,6 +47,8 @@ import { valueOrHyphen } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
+import { extractIdsFromFilesResponse } from '../../../../shared/utils/file'
+
 const EquipmentFormModal = React.lazy(
   () => import('modules/warehouse/components/EquipmentFormModal'),
 )
@@ -280,14 +282,15 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   }
 
   const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async (values, setFields) => {
+    async ({ images, ...values }, setFields) => {
       if (!activeEquipmentRow || !warehouseMy || !taskShop?.id) return
 
       try {
         const createdEquipment = await createEquipmentMutation({
+          ...values,
+          images: images?.length ? extractIdsFromFilesResponse(images) : undefined,
           location: taskShop.id,
           warehouse: warehouseMy.id,
-          ...values,
         }).unwrap()
 
         form.setFieldValue([activeEquipmentRow.tableName, activeEquipmentRow.rowIndex], {
@@ -488,6 +491,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseCreateEquipmentModal}
             onSubmit={handleCreateEquipment}
+            onUploadImage={() => {}}
+            onDeleteImage={() => {}}
+            imageIsDeleting={false}
           />
         </React.Suspense>
       )}

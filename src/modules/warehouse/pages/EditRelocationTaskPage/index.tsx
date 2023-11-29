@@ -349,7 +349,7 @@ const EditRelocationTaskPage: FC = () => {
     }
   }
 
-  const handleFormChange: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
+  const handleChangeForm: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
     changedValues,
     values,
   ) => {
