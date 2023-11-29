@@ -26,7 +26,7 @@ const getDownButton = (container?: HTMLElement) =>
     ? buttonTestUtils.getButtonIn(container, 'down')
     : screen.getByRole('button', { name: 'down' })
 
-const clickDownButton = async (user: UserEvent, container?: HTMLElement) => {
+const openDropdown = async (user: UserEvent, container?: HTMLElement) => {
   const button = getDownButton(container)
   await user.click(button)
 }
@@ -42,7 +42,7 @@ export const testUtils = {
   clickUpdateTasksButton,
 
   getDownButton,
-  clickDownButton,
+  openDropdown,
 
   getAutoUpdateItem,
   clickAutoUpdateItem,
@@ -71,7 +71,7 @@ describe('Кнопка обновления заявок', () => {
     test('Отображается', async () => {
       const { user } = render(<UpdateTasksButton {...props} />)
 
-      await testUtils.clickDownButton(user)
+      await testUtils.openDropdown(user)
       const item = testUtils.getAutoUpdateItem()
 
       expect(item).toBeInTheDocument()
@@ -81,7 +81,7 @@ describe('Кнопка обновления заявок', () => {
     test('При клике вызывается обработчик', async () => {
       const { user } = render(<UpdateTasksButton {...props} />)
 
-      await testUtils.clickDownButton(user)
+      await testUtils.openDropdown(user)
       await testUtils.clickAutoUpdateItem(user)
 
       expect(props.onAutoUpdate).toBeCalledTimes(1)
