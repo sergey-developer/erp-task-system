@@ -95,6 +95,7 @@ const PrivateHeader: FC = () => {
     }
   }
 
+  // fix. use hook useOnChangeUserStatus
   const handleUpdateUserStatus = async (statusId: number) => {
     if (!userMe) return
 

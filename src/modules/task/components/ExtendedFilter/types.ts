@@ -34,7 +34,7 @@ export type ExtendedFilterFormFields = ExtendedFilterSupportGroupFormFields &
     manager: IdType
   }>
 
-export type ExtendedFilterProps = Required<Pick<DrawerFilterProps, 'open'>> & {
+export type ExtendedFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClose'>> & {
   formValues: ExtendedFilterFormFields
   initialFormValues: ExtendedFilterFormFields
 
@@ -55,6 +55,5 @@ export type ExtendedFilterProps = Required<Pick<DrawerFilterProps, 'open'>> & {
   workGroupList: WorkGroupListModel
   workGroupListIsLoading: boolean
 
-  onSubmit: (result: ExtendedFilterFormFields) => void
-  onClose: () => void
+  onSubmit: (values: ExtendedFilterFormFields) => void
 }

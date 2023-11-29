@@ -42,13 +42,13 @@ import {
   UseOnChangeUserStatusFn,
   useUserRole,
 } from 'modules/user/hooks'
+import { checkUserStatusOffline } from 'modules/user/utils'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import UpdateTasksButton from 'components/Buttons/UpdateTasksButton'
 
-import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { StorageKeysEnum } from 'shared/constants/storage'
 import {
@@ -93,7 +93,7 @@ const TaskListPage: FC = () => {
 
   const [preloadedExtendedFilters, setPreloadedExtendedFilters] = useLocalStorageState<
     MaybeUndefined<TaskListPageFiltersStorage>
-  >(StorageKeysEnum.TaskListPageFilters)
+  >(StorageKeysEnum.TasksFilters)
 
   const [selectedCustomers, setSelectedCustomers] = useState<MaybeUndefined<IdType[]>>(
     preloadedExtendedFilters?.customers,
@@ -144,9 +144,9 @@ const TaskListPage: FC = () => {
     [setTaskListQueryArgs],
   )
 
-  const onUpdateUserStatus = useCallback<UseOnChangeUserStatusFn>(
+  const onChangeUserStatus = useCallback<UseOnChangeUserStatusFn>(
     (status) => {
-      if (status.code === UserStatusCodeEnum.Offline) {
+      if (checkUserStatusOffline(status)) {
         setPreloadedExtendedFilters(undefined)
         const initialSupportGroupFilters = pick(
           initialExtendedFilterFormValues,
@@ -163,7 +163,7 @@ const TaskListPage: FC = () => {
     [setExtendedFilterFormValues, setPreloadedExtendedFilters, triggerFilterChange],
   )
 
-  useOnChangeUserStatus(onUpdateUserStatus)
+  useOnChangeUserStatus(onChangeUserStatus)
 
   useLayoutEffect(() => {
     const taskListLayoutEl: MaybeNull<HTMLElement> = document.querySelector('.task-list-layout')
@@ -237,7 +237,7 @@ const TaskListPage: FC = () => {
 
   const debouncedToggleOpenExtendedFilter = useDebounceFn(toggleOpenExtendedFilter)
 
-  const handleExtendedFilterSubmit: ExtendedFilterProps['onSubmit'] = (values) => {
+  const handleApplyFilter: ExtendedFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     setExtendedFilterFormValues(values)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
@@ -479,7 +479,7 @@ const TaskListPage: FC = () => {
           workGroupList={workGroupList}
           workGroupListIsLoading={workGroupListIsFetching}
           onClose={debouncedToggleOpenExtendedFilter}
-          onSubmit={handleExtendedFilterSubmit}
+          onSubmit={handleApplyFilter}
         />
       )}
     </>

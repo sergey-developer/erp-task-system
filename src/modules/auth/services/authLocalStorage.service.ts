@@ -2,27 +2,27 @@ import { StorageKeysEnum } from 'shared/constants/storage'
 import { localStorageService } from 'shared/services/localStorage.service'
 
 const setAccessToken = (token: string) => {
-  return localStorageService.setItem(StorageKeysEnum.accessToken, token)
+  return localStorageService.setItem(StorageKeysEnum.AccessToken, token)
 }
 
 const getAccessToken = () => {
-  return localStorageService.getItem(StorageKeysEnum.accessToken)
+  return localStorageService.getItem(StorageKeysEnum.AccessToken)
 }
 
 const removeAccessToken = () => {
-  return localStorageService.removeItem(StorageKeysEnum.accessToken)
+  return localStorageService.removeItem(StorageKeysEnum.AccessToken)
 }
 
 const setRefreshToken = (token: string) => {
-  return localStorageService.setItem(StorageKeysEnum.refreshToken, token)
+  return localStorageService.setItem(StorageKeysEnum.RefreshToken, token)
 }
 
 const getRefreshToken = () => {
-  return localStorageService.getItem(StorageKeysEnum.refreshToken)
+  return localStorageService.getItem(StorageKeysEnum.RefreshToken)
 }
 
 const removeRefreshToken = () => {
-  return localStorageService.removeItem(StorageKeysEnum.refreshToken)
+  return localStorageService.removeItem(StorageKeysEnum.RefreshToken)
 }
 
 const clearTokens = () => {

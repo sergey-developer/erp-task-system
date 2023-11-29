@@ -1,6 +1,7 @@
+// todo: перенести в auth и task модули
 export enum StorageKeysEnum {
-  accessToken = 'accessToken',
-  refreshToken = 'refreshToken',
+  AccessToken = 'accessToken',
+  RefreshToken = 'refreshToken',
 
-  TaskListPageFilters = 'taskListPage/filters'
+  TasksFilters = 'tasks/filters',
 }

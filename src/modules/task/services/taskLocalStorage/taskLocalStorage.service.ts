@@ -4,18 +4,19 @@ import { StorageKeysEnum } from 'shared/constants/storage'
 import { localStorageService } from 'shared/services/localStorage.service'
 import { MaybeNull } from 'shared/types/utils'
 
+// todo: переименовать в tasks...Storage
 export type TaskListPageFiltersStorage = Pick<
   ExtendedFilterFormFields,
   'customers' | 'macroregions' | 'supportGroups'
 >
 
 const getTaskListPageFilters = (): MaybeNull<TaskListPageFiltersStorage> => {
-  const state = localStorageService.getItem(StorageKeysEnum.TaskListPageFilters)
+  const state = localStorageService.getItem(StorageKeysEnum.TasksFilters)
   return state ? JSON.parse(state) : null
 }
 
 const setTaskListPageFilters = (state: TaskListPageFiltersStorage) =>
-  localStorageService.setItem(StorageKeysEnum.TaskListPageFilters, JSON.stringify(state))
+  localStorageService.setItem(StorageKeysEnum.TasksFilters, JSON.stringify(state))
 
 const deleteTaskListPageFilter = (name: keyof TaskListPageFiltersStorage): boolean => {
   const state = getTaskListPageFilters()
@@ -30,8 +31,7 @@ const deleteTaskListPageFilter = (name: keyof TaskListPageFiltersStorage): boole
   return false
 }
 
-const clearTaskListPageFilters = () =>
-  localStorageService.removeItem(StorageKeysEnum.TaskListPageFilters)
+const clearTaskListPageFilters = () => localStorageService.removeItem(StorageKeysEnum.TasksFilters)
 
 export const taskLocalStorageService = {
   getTaskListPageFilters,

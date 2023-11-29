@@ -1,21 +1,21 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/fiscalAccumulator/components/FiscalAccumulatorTable/FiscalAccumulatorTable.test'
-import { getFiscalAccumulatorsErrorMsg } from 'modules/fiscalAccumulator/constants'
+import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/fiscalAccumulator/components/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
+import { getFiscalAccumulatorTasksErrorMsg } from 'modules/fiscalAccumulator/constants'
 
 import { testUtils as updateTasksButtonTestUtils } from 'components/Buttons/UpdateTasksButton/UpdateTasksButton.test'
 
 import fiscalAccumulatorFixtures from '_tests_/fixtures/fiscalAccumulator'
 import {
-  mockGetFiscalAccumulatorsServerError,
-  mockGetFiscalAccumulatorsSuccess,
+  mockGetFiscalAccumulatorTasksServerError,
+  mockGetFiscalAccumulatorTasksSuccess,
 } from '_tests_/mocks/api'
 import { notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
-import FiscalAccumulatorsPage from './index'
+import FiscalAccumulatorTasksPage from './index'
 
-const getContainer = () => screen.getByTestId('fiscal-accumulators-page')
+const getContainer = () => screen.getByTestId('fiscal-accumulator-tasks-page')
 
 const getUpdateTasksButton = () => updateTasksButtonTestUtils.getUpdateTasksButton(getContainer())
 const clickUpdateTasksButton = async (user: UserEvent) => {
@@ -46,15 +46,15 @@ notificationTestUtils.setupNotifications()
 describe('Страница заявок фискальных накопителей', () => {
   describe('При успешном запросе', () => {
     test('Таблица отображается корректно', async () => {
-      const fiscalAccumulators = [fiscalAccumulatorFixtures.fiscalAccumulatorListItem()]
-      mockGetFiscalAccumulatorsSuccess({ body: fiscalAccumulators })
+      const fiscalAccumulatorTasks = [fiscalAccumulatorFixtures.fiscalAccumulatorTaskListItem()]
+      mockGetFiscalAccumulatorTasksSuccess({ body: fiscalAccumulatorTasks })
 
-      render(<FiscalAccumulatorsPage />)
+      render(<FiscalAccumulatorTasksPage />)
 
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
 
-      fiscalAccumulators.forEach((item) => {
+      fiscalAccumulatorTasks.forEach((item) => {
         const row = fiscalAccumulatorTaskTableTestUtils.getRow(item.olaNextBreachTime)
         expect(row).toBeInTheDocument()
       })
@@ -63,15 +63,15 @@ describe('Страница заявок фискальных накопител�
 
   describe('При не успешном запроса', () => {
     test('Обрабатывается ошибка 500', async () => {
-      mockGetFiscalAccumulatorsServerError()
+      mockGetFiscalAccumulatorTasksServerError()
 
-      render(<FiscalAccumulatorsPage />)
+      render(<FiscalAccumulatorTasksPage />)
 
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
 
       const notification = await notificationTestUtils.findNotification(
-        getFiscalAccumulatorsErrorMsg,
+        getFiscalAccumulatorTasksErrorMsg,
       )
 
       expect(notification).toBeInTheDocument()
@@ -80,9 +80,9 @@ describe('Страница заявок фискальных накопител�
 
   describe('Кнопка обновления заявок', () => {
     test('Отображается', async () => {
-      mockGetFiscalAccumulatorsSuccess()
+      mockGetFiscalAccumulatorTasksSuccess()
 
-      render(<FiscalAccumulatorsPage />)
+      render(<FiscalAccumulatorTasksPage />)
 
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
       const button = testUtils.getUpdateTasksButton()
@@ -92,9 +92,9 @@ describe('Страница заявок фискальных накопител�
     })
 
     test('Перезагружает заявки', async () => {
-      mockGetFiscalAccumulatorsSuccess({ once: false })
+      mockGetFiscalAccumulatorTasksSuccess({ once: false })
 
-      const { user } = render(<FiscalAccumulatorsPage />)
+      const { user } = render(<FiscalAccumulatorTasksPage />)
 
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
       await testUtils.clickUpdateTasksButton(user)
@@ -102,9 +102,9 @@ describe('Страница заявок фискальных накопител�
     })
 
     test('Не активна во время загрузки заявок', async () => {
-      mockGetFiscalAccumulatorsSuccess()
+      mockGetFiscalAccumulatorTasksSuccess()
 
-      render(<FiscalAccumulatorsPage />)
+      render(<FiscalAccumulatorTasksPage />)
 
       const button = testUtils.getUpdateTasksButton()
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
@@ -114,9 +114,9 @@ describe('Страница заявок фискальных накопител�
     })
 
     test('Автообновление работает', async () => {
-      mockGetFiscalAccumulatorsSuccess({ once: false })
+      mockGetFiscalAccumulatorTasksSuccess({ once: false })
 
-      const { user } = render(<FiscalAccumulatorsPage />)
+      const { user } = render(<FiscalAccumulatorTasksPage />)
 
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
       await updateTasksButtonTestUtils.openDropdown(user, getContainer())

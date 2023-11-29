@@ -3,11 +3,11 @@ import { RouteObject } from 'react-router-dom'
 
 import { FiscalAccumulatorRouteEnum } from './constants'
 
-const FiscalAccumulatorsPage = React.lazy(
-  () => import('modules/fiscalAccumulator/pages/FiscalAccumulatorsPage'),
+const FiscalAccumulatorTasksPage = React.lazy(
+  () => import('modules/fiscalAccumulator/pages/FiscalAccumulatorTasksPage'),
 )
 
 export const route: Readonly<RouteObject> = {
   path: FiscalAccumulatorRouteEnum.FiscalAccumulator,
-  element: <FiscalAccumulatorsPage />,
+  element: <FiscalAccumulatorTasksPage />,
 }
