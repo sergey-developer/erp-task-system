@@ -8,19 +8,23 @@ import { FC, ReactNode, useCallback, useMemo } from 'react'
 
 import {
   EquipmentCategoryEnum,
+  EquipmentConditionEnum,
   equipmentConditionOptions,
 } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
+import { RelocationTaskFormFields } from 'modules/warehouse/types'
+import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
 
-import { IdType } from 'shared/types/common'
+import { onlyRequiredRules } from 'shared/constants/validation'
 import { MaybeUndefined } from 'shared/types/utils'
+import { filterOptionBy } from 'shared/utils/common'
 import { makeString } from 'shared/utils/string'
 
-import { AddEquipmentButton } from './styles'
 import { RelocationEquipmentEditableTableProps, RelocationEquipmentRow } from './types'
+import { CreateEquipmentButton } from './styles'
 
 const formItemProps: EditableProTableProps<RelocationEquipmentRow, any>['formItemProps'] = {
   rules: [
@@ -49,14 +53,23 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   equipmentCatalogList,
   equipmentCatalogListIsLoading,
 
-  canAddEquipment,
+  canCreateEquipment,
   addEquipmentBtnDisabled,
-  onClickAddEquipment,
+  onClickCreateEquipment,
 
   onClickAddImage,
 }) => {
   const form = Form.useFormInstance()
-  const relocateFromFormValue: MaybeUndefined<IdType> = Form.useWatch('relocateFrom', form)
+
+  const relocateFromFormValue: MaybeUndefined<RelocationTaskFormFields['relocateFrom']> =
+    Form.useWatch('relocateFrom', form)
+
+  const typeFormValue: MaybeUndefined<RelocationTaskFormFields['type']> = Form.useWatch(
+    'type',
+    form,
+  )
+
+  const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(typeFormValue)
 
   const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
     () =>
@@ -91,19 +104,19 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       title: 'Оборудование',
       valueType: 'select',
       formItemProps: {
-        rules: [{ required: true }],
+        rules: onlyRequiredRules,
         // @ts-ignore
         'data-testid': 'equipment-form-item',
       },
       fieldProps: (form, config) => ({
-        dropdownRender: canAddEquipment
+        dropdownRender: canCreateEquipment
           ? (menu: ReactNode) => (
               <Space $block direction='vertical'>
-                <AddEquipmentButton
+                <CreateEquipmentButton
                   type='link'
                   disabled={addEquipmentBtnDisabled}
                   onClick={() =>
-                    onClickAddEquipment({
+                    onClickCreateEquipment({
                       id: config.entity.id,
                       rowId: config.entity.rowId,
                       rowIndex: config.rowIndex,
@@ -111,7 +124,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
                   }
                 >
                   Добавить оборудование
-                </AddEquipmentButton>
+                </CreateEquipmentButton>
 
                 {menu}
               </Space>
@@ -122,11 +135,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         disabled: isLoading || !relocateFromFormValue,
         options: equipmentCatalogOptions,
         showSearch: true,
-        onChange: () => {
-          form.resetFields(['quantity'])
-        },
-        filterOption: (input: string, option: DefaultOptionType) =>
-          option ? (option.label as string).toLowerCase().includes(input.toLowerCase()) : false,
+        onChange: () => form.resetFields(['quantity']),
+        filterOption: filterOptionBy('label'),
       }),
     },
     {
@@ -147,8 +157,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       width: 190,
       title: 'Состояние',
       valueType: 'select',
-      formItemProps: { rules: [{ required: true }] },
-      fieldProps: { disabled: isLoading, options: equipmentConditionOptions },
+      formItemProps: { rules: onlyRequiredRules },
+      fieldProps: { disabled: isLoading || typeIsWriteOff, options: equipmentConditionOptions },
     },
     {
       key: 'amount',
@@ -162,21 +172,25 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       dataIndex: 'price',
       title: 'Стоимость',
       valueType: 'digit',
-      fieldProps: { disabled: isLoading, min: 0 },
+      fieldProps: { disabled: isLoading || typeIsWriteOff, min: 0 },
     },
     {
       key: 'currency',
       dataIndex: 'currency',
       title: 'Валюта',
       valueType: 'select',
-      fieldProps: { options: currencyOptions, loading: currencyListIsLoading, disabled: isLoading },
+      fieldProps: {
+        options: currencyOptions,
+        loading: currencyListIsLoading,
+        disabled: isLoading || typeIsWriteOff,
+      },
     },
     {
       key: 'quantity',
       dataIndex: 'quantity',
       title: 'Количество',
       valueType: 'digit',
-      formItemProps: { rules: [{ required: true }] },
+      formItemProps: { rules: onlyRequiredRules },
       fieldProps: (form, config) => {
         if (form) {
           const amount: MaybeUndefined<number> = form.getFieldValue(
@@ -238,7 +252,10 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       name='equipments'
       columns={columns}
       recordCreatorProps={{
-        record: () => ({ rowId: random(1, 999999) }),
+        record: () => ({
+          rowId: random(1, 9999999),
+          ...(typeIsWriteOff && { condition: EquipmentConditionEnum.WrittenOff }),
+        }),
         disabled: isLoading,
         creatorButtonText: 'Добавить оборудование',
       }}

@@ -2,6 +2,7 @@ import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocation
 import { RelocationTaskListItemModel } from 'modules/warehouse/models'
 
 import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
+import { IdType } from 'shared/types/common'
 import { PaginationParams } from 'shared/types/pagination'
 import { ExtendSortKey } from 'shared/types/sort'
 
@@ -20,11 +21,13 @@ export type GetRelocationTaskListFilter = Partial<{
   statuses: RelocationTaskStatusEnum[]
 }>
 
-export type GetRelocationTaskListQueryArgs = PaginationParams &
-  GetRelocationTaskListFilter &
-  Partial<{
-    ordering: GetRelocationTaskListSortValue
-  }>
+export type GetRelocationTaskListQueryArgs = GetRelocationTaskListFilter &
+  Partial<
+    PaginationParams & {
+      ordering: GetRelocationTaskListSortValue
+      taskId: IdType
+    }
+  >
 
 export type GetRelocationTaskListSuccessResponse =
   PaginatedListSuccessResponse<RelocationTaskListItemModel>

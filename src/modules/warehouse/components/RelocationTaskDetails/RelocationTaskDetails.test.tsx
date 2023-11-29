@@ -4,6 +4,11 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as taskAttachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { CommonRouteEnum } from 'configs/routes'
+
+import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
+import TaskListPage from 'modules/task/pages/TaskListPage'
+import { getTaskListPageLink } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
 import { testUtils as cancelRelocationTaskModalTestUtils } from 'modules/warehouse/components/CancelRelocationTaskModal/CancelRelocationTaskModal.test'
 import { testUtils as confirmExecutionRelocationTaskModalTestUtils } from 'modules/warehouse/components/ConfirmExecutionRelocationTaskModal/ConfirmExecutionRelocationTaskModal.test'
@@ -22,7 +27,11 @@ import {
   RelocationTaskStatusEnum,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
-import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import {
+  getRelocationTaskTitle,
+  getWaybillM15Filename,
+} from 'modules/warehouse/utils/relocationTask'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -63,6 +72,9 @@ import {
   mockGetRelocationTaskWaybillM15NotFoundError,
   mockGetRelocationTaskWaybillM15ServerError,
   mockGetRelocationTaskWaybillM15Success,
+  mockGetTaskCountersSuccess,
+  mockGetTaskListSuccess,
+  mockGetTaskSuccess,
   mockReturnRelocationTaskToReworkBadRequestError,
   mockReturnRelocationTaskToReworkForbiddenError,
   mockReturnRelocationTaskToReworkNotFoundError,
@@ -78,6 +90,7 @@ import {
   menuTestUtils,
   notificationTestUtils,
   render,
+  renderInRoute_latest,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -187,9 +200,8 @@ describe('Информация о заявке о перемещении', () =>
       render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
 
       await testUtils.expectRelocationTaskLoadingFinished()
-
       const title = within(testUtils.getContainer()).getByText(
-        `Заявка на перемещение оборудования ${relocationTask.relocateFrom?.title} 🠖 ${relocationTask.relocateTo?.title}`,
+        getRelocationTaskTitle(relocationTask),
       )
 
       expect(title).toBeInTheDocument()
@@ -348,6 +360,61 @@ describe('Информация о заявке о перемещении', () =>
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+    })
+
+    describe('Заявка ITSM', () => {
+      test('Отображается корректно', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+
+        await testUtils.expectRelocationTaskLoadingFinished()
+
+        const label = testUtils.getRelocationTaskInfo('task', /Заявка ITSM/)
+        const link = testUtils.getRelocationTaskInfo('task', relocationTask.task!.recordId)
+
+        expect(label).toBeInTheDocument()
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute(
+          'href',
+          getTaskListPageLink({ viewTaskId: relocationTask.task!.id }),
+        )
+      })
+
+      test('При клике переходит на страницу реестра заявок и открывает карточку заявки', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+        mockGetTaskSuccess(relocationTask.task!.id)
+        mockGetTaskListSuccess()
+        mockGetTaskCountersSuccess()
+
+        const { user } = renderInRoute_latest(
+          [
+            {
+              path: WarehouseRouteEnum.RelocationTaskList,
+              element: (
+                <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />
+              ),
+            },
+            {
+              path: CommonRouteEnum.DesktopTaskList,
+              element: <TaskListPage />,
+            },
+          ],
+          { initialEntries: [WarehouseRouteEnum.RelocationTaskList], initialIndex: 0 },
+        )
+
+        await testUtils.expectRelocationTaskLoadingFinished()
+
+        const link = testUtils.getRelocationTaskInfo('task', relocationTask.task!.recordId)
+        await user.click(link)
+        const card = await taskCardTestUtils.findContainer()
+
+        expect(card).toBeInTheDocument()
+      })
     })
 
     test('Комментарий отображается корректно', async () => {
@@ -853,14 +920,11 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
-                },
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
               },
-            },
+            }),
           },
         )
 

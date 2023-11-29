@@ -9,6 +9,7 @@ import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { EmptyFn } from 'shared/types/utils'
 import { valueOrHyphen } from 'shared/utils/common'
 
 import { ContentWrapperStyled } from './styles'
@@ -35,7 +36,7 @@ export type AdditionalInfoProps = Pick<
   priority: string
 
   expanded: boolean
-  onExpand: () => void
+  onExpand: EmptyFn
 
   supportGroup?: string
 }

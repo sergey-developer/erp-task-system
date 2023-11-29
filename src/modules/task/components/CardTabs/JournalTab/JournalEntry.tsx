@@ -44,7 +44,7 @@ const JournalEntry: FC<JournalEntryProps> = ({
 
       {!!attachments.length && (
         <Space direction='vertical'>
-          <AttachmentList attachments={attachments} />
+          <AttachmentList data={attachments} />
         </Space>
       )}
 

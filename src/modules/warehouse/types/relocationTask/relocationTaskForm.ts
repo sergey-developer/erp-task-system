@@ -2,6 +2,7 @@ import { UploadFile } from 'antd/es/upload'
 import { Moment } from 'moment-timezone'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { EquipmentModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
@@ -23,11 +24,12 @@ export type RelocationTaskFormEquipment = {
 }
 
 export type RelocationTaskFormFields = {
+  type: RelocationTaskTypeEnum
   equipments: RelocationTaskFormEquipment[]
   deadlineAtDate: Moment
   deadlineAtTime: Moment
   relocateFrom: IdType
-  relocateTo: IdType
+  relocateTo?: IdType
   executor: IdType
 
   comment?: string

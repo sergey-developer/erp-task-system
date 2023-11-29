@@ -4,7 +4,7 @@ import { FC, useMemo } from 'react'
 import LoadingArea from 'components/LoadingArea'
 import { SpinnerProps } from 'components/Spinner'
 
-import { cancelBtnText, modalWidth } from './constants'
+import { CANCEL_TEXT, DEFAULT_MODAL_WIDTH } from 'shared/constants/common'
 
 const commonButtonProps: ButtonProps = {
   size: 'large',
@@ -23,9 +23,8 @@ export type BaseModalProps = ModalProps & {
 }
 
 const BaseModal: FC<BaseModalProps> = ({
-  width = modalWidth,
-  cancelText = cancelBtnText,
-  destroyOnClose = true,
+  width = DEFAULT_MODAL_WIDTH,
+  cancelText = CANCEL_TEXT,
   isLoading = false,
   loadingTip,
   children,
@@ -52,7 +51,6 @@ const BaseModal: FC<BaseModalProps> = ({
       {...props}
       width={width}
       cancelText={cancelText}
-      destroyOnClose={destroyOnClose}
       okButtonProps={mergedOkButtonProps}
       cancelButtonProps={mergedCancelButtonProps}
       data-testid={testId}

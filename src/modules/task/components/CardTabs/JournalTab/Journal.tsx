@@ -7,10 +7,11 @@ import { getFullUserName } from 'modules/user/utils'
 
 import Space from 'components/Space'
 
+import { checkLastItem } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import JournalEntry from './JournalEntry'
-import { NO_DATA_MSG, journalEntryTypeDict } from './constants'
+import { journalEntryTypeDict, NO_DATA_MSG } from './constants'
 
 const { Text } = Typography
 
@@ -25,25 +26,21 @@ const Journal: FC<JournalProps> = ({ data, isLoading }) => {
       {!isLoading && isEmpty(data) ? (
         <Text>{NO_DATA_MSG}</Text>
       ) : (
-        data.map((item, index, array) => {
-          const isLastItem: boolean = index === array.length - 1
+        data.map((item, index, array) => (
+          <Space key={item.id} direction='vertical' size='large' $block>
+            <JournalEntry
+              id={item.id}
+              createdAt={formatDate(item.createdAt)}
+              type={journalEntryTypeDict[item.type]}
+              author={item.author ? getFullUserName(item.author) : null}
+              description={item.description}
+              sourceSystem={item.sourceSystem}
+              attachments={item.attachments}
+            />
 
-          return (
-            <Space key={item.id} direction='vertical' size='large' $block>
-              <JournalEntry
-                id={item.id}
-                createdAt={formatDate(item.createdAt)}
-                type={journalEntryTypeDict[item.type]}
-                author={item.author ? getFullUserName(item.author) : null}
-                description={item.description}
-                sourceSystem={item.sourceSystem}
-                attachments={item.attachments}
-              />
-
-              {!isLastItem && <Divider />}
-            </Space>
-          )
-        })
+            {!checkLastItem(index, array) && <Divider />}
+          </Space>
+        ))
       )}
     </Space>
   )

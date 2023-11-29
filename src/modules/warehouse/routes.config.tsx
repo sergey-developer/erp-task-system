@@ -1,29 +1,50 @@
+import get from 'lodash/get'
+import isEqual from 'lodash/isEqual'
 import React from 'react'
 import { Link, Navigate, RouteObject } from 'react-router-dom'
 
+import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
+import { hasPermissions } from 'modules/user/utils'
+import EquipmentPageLayout from 'modules/warehouse/components/EquipmentPageLayout'
+import ManageWarehousesLayout from 'modules/warehouse/components/ManageWarehousesLayout'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+
 import { BreadCrumbArgs } from 'components/Breadcrumbs'
 
-import EquipmentPageLayout from './components/EquipmentPageLayout'
-import ManageWarehousesLayout from './components/ManageWarehousesLayout'
-import { WarehouseRouteEnum } from './constants/routes'
-
-const WarehouseCatalogListPage = React.lazy(() => import('./pages/WarehouseCatalogListPage'))
-const WarehouseListPage = React.lazy(() => import('./pages/WarehouseListPage'))
-const WarehousePage = React.lazy(() => import('./pages/WarehousePage'))
-
-const NomenclatureListPage = React.lazy(() => import('./pages/NomenclatureListPage'))
-
-const ReserveCatalogListPage = React.lazy(() => import('./pages/ReserveCatalogListPage'))
-
-const EquipmentNomenclatureListPage = React.lazy(
-  () => import('./pages/EquipmentNomenclatureListPage'),
+const WarehouseCatalogListPage = React.lazy(
+  () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
 )
 
-const EquipmentListPage = React.lazy(() => import('./pages/EquipmentListPage'))
+const WarehouseListPage = React.lazy(() => import('modules/warehouse/pages/WarehouseListPage'))
+const WarehousePage = React.lazy(() => import('modules/warehouse/pages/WarehousePage'))
 
-const RelocationTaskListPage = React.lazy(() => import('./pages/RelocationTaskListPage'))
-const CreateRelocationTaskPage = React.lazy(() => import('./pages/CreateRelocationTaskPage'))
-const EditRelocationTaskPage = React.lazy(() => import('./pages/EditRelocationTaskPage'))
+const NomenclatureListPage = React.lazy(
+  () => import('modules/warehouse/pages/NomenclatureListPage'),
+)
+
+const ReserveCatalogListPage = React.lazy(
+  () => import('modules/warehouse/pages/ReserveCatalogListPage'),
+)
+
+const EquipmentNomenclatureListPage = React.lazy(
+  () => import('modules/warehouse/pages/EquipmentNomenclatureListPage'),
+)
+
+const EquipmentListPage = React.lazy(() => import('modules/warehouse/pages/EquipmentListPage'))
+
+const RelocationTaskListPage = React.lazy(
+  () => import('modules/warehouse/pages/RelocationTaskListPage'),
+)
+
+const CreateRelocationTaskPage = React.lazy(
+  () => import('modules/warehouse/pages/CreateRelocationTaskPage'),
+)
+const CreateRelocationTaskSimplifiedPage = React.lazy(
+  () => import('modules/warehouse/pages/CreateRelocationTaskSimplifiedPage'),
+)
+const EditRelocationTaskPage = React.lazy(
+  () => import('modules/warehouse/pages/EditRelocationTaskPage'),
+)
 
 export const route: Readonly<RouteObject> = {
   path: WarehouseRouteEnum.ManageWarehouses,
@@ -41,7 +62,7 @@ export const route: Readonly<RouteObject> = {
       children: [
         {
           index: true,
-          element: <WarehouseCatalogListPage />,
+          element: <ProtectedRoute component={<WarehouseCatalogListPage />} />,
         },
         {
           path: WarehouseRouteEnum.WarehouseList,
@@ -51,13 +72,13 @@ export const route: Readonly<RouteObject> = {
           children: [
             {
               index: true,
-              element: <WarehouseListPage />,
+              element: <ProtectedRoute component={<WarehouseListPage />} />,
             },
             {
               path: WarehouseRouteEnum.Warehouse,
-              element: <WarehousePage />,
+              element: <ProtectedRoute component={<WarehousePage />} />,
               handle: {
-                crumb: ({ qs }: BreadCrumbArgs) => qs.get('title'),
+                crumb: ({ qs }: BreadCrumbArgs) => qs.get('warehouseTitle'),
               },
             },
           ],
@@ -70,7 +91,12 @@ export const route: Readonly<RouteObject> = {
           children: [
             {
               index: true,
-              element: <NomenclatureListPage />,
+              element: (
+                <ProtectedRoute
+                  component={<NomenclatureListPage />}
+                  permitted={(user) => hasPermissions(user, ['NOMENCLATURES_READ'])}
+                />
+              ),
             },
           ],
         },
@@ -84,11 +110,16 @@ export const route: Readonly<RouteObject> = {
       children: [
         {
           index: true,
-          element: <ReserveCatalogListPage />,
+          element: <ProtectedRoute component={<ReserveCatalogListPage />} />,
         },
         {
           path: WarehouseRouteEnum.EquipmentNomenclatureList,
-          element: <EquipmentPageLayout />,
+          element: (
+            <ProtectedRoute
+              component={<EquipmentPageLayout />}
+              permitted={(user) => hasPermissions(user, ['EQUIPMENTS_READ'])}
+            />
+          ),
           handle: {
             crumb: () => (
               <Link to={WarehouseRouteEnum.EquipmentNomenclatureList}>Оборудование</Link>
@@ -102,7 +133,7 @@ export const route: Readonly<RouteObject> = {
             {
               path: WarehouseRouteEnum.EquipmentList,
               element: <EquipmentListPage />,
-              handle: { crumb: ({ qs }: BreadCrumbArgs) => qs.get('title') },
+              handle: { crumb: ({ qs }: BreadCrumbArgs) => qs.get('equipmentNomenclatureTitle') },
             },
           ],
         },
@@ -118,16 +149,44 @@ export const route: Readonly<RouteObject> = {
           children: [
             {
               index: true,
-              element: <RelocationTaskListPage />,
+              element: (
+                <ProtectedRoute
+                  component={<RelocationTaskListPage />}
+                  permitted={(user) => hasPermissions(user, ['RELOCATION_TASKS_READ'])}
+                />
+              ),
             },
             {
               path: WarehouseRouteEnum.CreateRelocationTask,
-              element: <CreateRelocationTaskPage />,
+              element: (
+                <ProtectedRoute
+                  component={<CreateRelocationTaskPage />}
+                  permitted={(user) => hasPermissions(user, ['RELOCATION_TASKS_CREATE'])}
+                />
+              ),
               handle: { crumb: () => 'Создать заявку' },
             },
             {
+              path: WarehouseRouteEnum.CreateRelocationTaskSimplified,
+              element: (
+                <ProtectedRoute
+                  component={<CreateRelocationTaskSimplifiedPage />}
+                  permitted={(user, locationState) =>
+                    hasPermissions(user, ['RELOCATION_TASKS_CREATE']) &&
+                    isEqual(get(locationState, 'task.assignee.id'), user.id)
+                  }
+                />
+              ),
+              handle: { crumb: () => 'Создать перемещение' },
+            },
+            {
               path: WarehouseRouteEnum.EditRelocationTask,
-              element: <EditRelocationTaskPage />,
+              element: (
+                <ProtectedRoute
+                  component={<EditRelocationTaskPage />}
+                  permitted={(user) => hasPermissions(user, ['RELOCATION_TASKS_UPDATE'])}
+                />
+              ),
               handle: { crumb: () => 'Редактировать заявку' },
             },
           ],

@@ -7,6 +7,7 @@ import {
   EquipmentConditionEnum,
 } from 'modules/warehouse/constants/equipment'
 
+import { CANCEL_TEXT } from 'shared/constants/common'
 import { yesNoOptions } from 'shared/constants/selectField'
 import { validationMessages } from 'shared/constants/validation'
 import { MaybeNull } from 'shared/types/utils'
@@ -92,7 +93,7 @@ const clickEditButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Отменить')
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
 
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()

@@ -5,18 +5,19 @@ import React, { FC } from 'react'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import TaskStatus from 'modules/task/components/TaskStatus'
 import { badgeByTaskStatus, iconByTaskStatus } from 'modules/task/components/TaskStatus/constants'
-import { TaskExtendedStatusEnum, TaskStatusEnum, taskStatusDict } from 'modules/task/constants/task'
+import { TaskExtendedStatusEnum, taskStatusDict, TaskStatusEnum } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { SubTaskModel } from 'modules/task/models'
-import { makeUserNameObject } from 'modules/user/utils'
+import { makeUserByFullName } from 'modules/user/utils'
 
 import Expandable from 'components/Expandable'
 import LabeledData from 'components/LabeledData'
 import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 
+import { EmptyFn } from 'shared/types/utils'
 import { renderStringWithLineBreak } from 'shared/utils/string'
 
 const { Text, Title, Paragraph } = Typography
@@ -25,8 +26,8 @@ export type SubTaskProps = Omit<SubTaskModel, 'id'> & {
   taskStatus: TaskStatusEnum
   taskExtendedStatus: TaskExtendedStatusEnum
   currentUserIsTaskAssignee: boolean
-  onClickCancel: () => void
-  onClickRework: () => void
+  onClickCancel: EmptyFn
+  onClickRework: EmptyFn
   taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 
@@ -191,9 +192,8 @@ const SubTask: FC<SubTaskProps> = ({
           <Col span={12}>
             <LabeledData label='Исполнитель'>
               <TaskAssignee
-                name={externalAssigneeName}
+                {...makeUserByFullName(externalAssigneeName)}
                 phone={externalAssigneePhone}
-                assignee={makeUserNameObject(externalAssigneeName)}
               />
             </LabeledData>
           </Col>

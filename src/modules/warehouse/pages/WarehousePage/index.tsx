@@ -1,17 +1,13 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { useParams } from 'react-router-dom'
-
-import { getWarehouseMessages } from 'modules/warehouse/constants/warehouse'
-import { useGetWarehouseQuery } from 'modules/warehouse/services/warehouseApi.service'
 
 import LabeledData from 'components/LabeledData'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
-import { isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { valueOrHyphen } from 'shared/utils/common'
-import { showErrorNotification } from 'shared/utils/notifications'
 
+import { useGetWarehouse } from '../../hooks/warehouse'
 import { WrapperStyled } from './styles'
 
 const WarehousePage: FC = () => {
@@ -19,21 +15,10 @@ const WarehousePage: FC = () => {
   const params = useParams<'id'>()
   const warehouseId = Number(params?.id) || undefined
 
-  const {
-    currentData: warehouse,
-    isFetching: warehouseIsFetching,
-    error: getWarehouseError,
-  } = useGetWarehouseQuery(warehouseId!, { skip: !warehouseId })
-
-  useEffect(() => {
-    if (isErrorResponse(getWarehouseError)) {
-      if (isNotFoundError(getWarehouseError) && getWarehouseError.data.detail) {
-        showErrorNotification(getWarehouseError.data.detail)
-      } else {
-        showErrorNotification(getWarehouseMessages.commonError)
-      }
-    }
-  }, [getWarehouseError])
+  const { currentData: warehouse, isFetching: warehouseIsFetching } = useGetWarehouse(
+    warehouseId!,
+    { skip: !warehouseId },
+  )
 
   return (
     <WrapperStyled data-testid='warehouse-page'>
