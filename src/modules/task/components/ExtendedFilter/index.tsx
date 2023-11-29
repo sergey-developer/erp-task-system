@@ -21,11 +21,11 @@ import {
   taskOverdueOptions,
 } from './constants'
 import { CheckboxGroupStyled } from './styles'
-import { ExtendedFilterFormFields, ExtendedFilterProps } from './types'
+import { TasksFilterFormFields, TasksFilterProps } from './types'
 
 const { RangePicker } = DatePicker
 
-const ExtendedFilter: FC<ExtendedFilterProps> = ({
+const ExtendedFilter: FC<TasksFilterProps> = ({
   formValues,
   initialFormValues,
 
@@ -50,7 +50,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
 
   ...props
 }) => {
-  const [form] = Form.useForm<ExtendedFilterFormFields>()
+  const [form] = Form.useForm<TasksFilterFormFields>()
 
   useEffect(() => {
     if (!isEqual(initialFormValues, formValues)) {
@@ -58,7 +58,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
     }
   }, [form, formValues, initialFormValues])
 
-  const resetFields = (fields?: Array<keyof ExtendedFilterFormFields>) => () => {
+  const resetFields = (fields?: Array<keyof TasksFilterFormFields>) => () => {
     form.resetFields(fields)
   }
 
@@ -91,7 +91,7 @@ const ExtendedFilter: FC<ExtendedFilterProps> = ({
       onReset={handleResetAll}
       onApply={form.submit}
     >
-      <Form<ExtendedFilterFormFields>
+      <Form<TasksFilterFormFields>
         preserve={false}
         layout='vertical'
         form={form}

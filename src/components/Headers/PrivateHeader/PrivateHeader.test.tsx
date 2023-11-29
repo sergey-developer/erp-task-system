@@ -6,7 +6,7 @@ import { RouteEnum } from 'configs/routes'
 import { testUtils as logoutButtonTestUtils } from 'modules/auth/components/LogoutButton/LogoutButton.test'
 import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/LoginPage.test'
 import { FiscalAccumulatorRouteEnum } from 'modules/fiscalAccumulator/constants'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
@@ -539,11 +539,11 @@ describe('PrivateHeader', () => {
       mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
       mockLogoutSuccess()
 
-      taskLocalStorageService.setTaskListPageFilters({ customers: [1, 2] })
+      taskLocalStorageService.setTasksFilters({ customers: [1, 2] })
 
       const { user } = render(<App />, { useBrowserRouter: false })
 
-      expect(taskLocalStorageService.getTaskListPageFilters()).toBeTruthy()
+      expect(taskLocalStorageService.getTasksFilters()).toBeTruthy()
 
       await loginPageTestUtils.findContainer()
       await loginPageTestUtils.setEmail(user, fakeEmail())
@@ -556,7 +556,7 @@ describe('PrivateHeader', () => {
       const loginPage = await loginPageTestUtils.findContainer()
       expect(loginPage).toBeInTheDocument()
 
-      expect(taskLocalStorageService.getTaskListPageFilters()).toBeNull()
+      expect(taskLocalStorageService.getTasksFilters()).toBeNull()
     })
   })
 })

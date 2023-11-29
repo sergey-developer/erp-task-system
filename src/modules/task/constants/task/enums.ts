@@ -56,3 +56,7 @@ export enum TaskOverdueEnum {
   Overdue = 'True',
   NotOverdue = 'False',
 }
+
+export enum TaskStorageKeysEnum {
+  TasksFilters = 'tasks/filters',
+}

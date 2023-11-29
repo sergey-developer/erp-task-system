@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/react'
 
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import {
   updateUserStatusMessages,
   updateUserTimeZoneMessages,
@@ -32,7 +33,6 @@ import {
 } from '_tests_/mocks/api'
 import { fakeId, fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import PrivateApp from './PrivateApp'
 
 setupApiTests()
@@ -307,18 +307,18 @@ describe('Private app', () => {
 
               const { user } = render(<PrivateApp />, { useBrowserRouter: false })
 
-              taskLocalStorageService.setTaskListPageFilters({ customers: [fakeId()] })
+              taskLocalStorageService.setTasksFilters({ customers: [fakeId()] })
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
 
-              expect(taskLocalStorageService.getTaskListPageFilters()).toBeTruthy()
+              expect(taskLocalStorageService.getTasksFilters()).toBeTruthy()
 
               await privateHeaderTestUtils.openUserStatusSelect(user)
               await privateHeaderTestUtils.setUserStatus(user, userStatus.title, true)
               await privateHeaderTestUtils.expectUserStatusSelectDisabled()
               await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
 
-              expect(taskLocalStorageService.getTaskListPageFilters()).toBeNull()
+              expect(taskLocalStorageService.getTasksFilters()).toBeNull()
             })
           })
 

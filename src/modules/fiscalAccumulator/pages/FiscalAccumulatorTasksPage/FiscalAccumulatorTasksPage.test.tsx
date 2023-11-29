@@ -3,8 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/fiscalAccumulator/components/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
 import { getFiscalAccumulatorTasksErrorMsg } from 'modules/fiscalAccumulator/constants'
-
-import { testUtils as updateTasksButtonTestUtils } from 'components/Buttons/UpdateTasksButton/UpdateTasksButton.test'
+import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 
 import fiscalAccumulatorFixtures from '_tests_/fixtures/fiscalAccumulator'
 import {

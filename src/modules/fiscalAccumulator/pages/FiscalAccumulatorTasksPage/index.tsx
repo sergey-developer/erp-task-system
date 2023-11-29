@@ -11,20 +11,20 @@ import {
 import { useGetFiscalAccumulatorTasks } from 'modules/fiscalAccumulator/hooks'
 import { GetFiscalAccumulatorTasksQueryArgs } from 'modules/fiscalAccumulator/models'
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
-import { TaskListPageFiltersStorage } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import UpdateTasksButton from 'modules/task/components/UpdateTasksButton'
+import {
+  TaskStorageKeysEnum,
+  TasksUpdateVariantsEnum,
+  tasksUpdateVariantsIntervals,
+} from 'modules/task/constants/task'
+import { TasksFiltersStorageData } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { useOnChangeUserStatus, UseOnChangeUserStatusFn } from 'modules/user/hooks'
 import { checkUserStatusOffline } from 'modules/user/utils'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 
 import FilterButton from 'components/Buttons/FilterButton'
-import UpdateTasksButton from 'components/Buttons/UpdateTasksButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
-import { StorageKeysEnum } from 'shared/constants/storage'
-import {
-  TasksUpdateVariantsEnum,
-  tasksUpdateVariantsIntervals,
-} from 'shared/constants/tasksUpdateVariants'
 import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
@@ -47,8 +47,8 @@ const FiscalAccumulatorTasksPage: FC = () => {
   const [autoUpdateEnabled, { toggle: toggleAutoUpdateEnabled }] = useBoolean(false)
 
   const [preloadedFilters, setPreloadedFilters] = useLocalStorageState<
-    MaybeUndefined<TaskListPageFiltersStorage>
-  >(StorageKeysEnum.TasksFilters)
+    MaybeUndefined<TasksFiltersStorageData>
+  >(TaskStorageKeysEnum.TasksFilters)
 
   const [selectedCustomers, setSelectedCustomers] = useState<MaybeUndefined<IdType[]>>(
     preloadedFilters?.customers,

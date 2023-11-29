@@ -10,8 +10,8 @@ import React, { FC, useCallback, useLayoutEffect, useRef, useState } from 'react
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import ExtendedFilter from 'modules/task/components/ExtendedFilter'
 import {
-  ExtendedFilterFormFields,
-  ExtendedFilterProps,
+  TasksFilterFormFields,
+  TasksFilterProps,
 } from 'modules/task/components/ExtendedFilter/types'
 import ExtendedFilterList, {
   ExtendedFilterListItem,
@@ -25,7 +25,14 @@ import {
 } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort } from 'modules/task/components/TaskTable/utils'
-import { FastFilterEnum, FilterTypeEnum } from 'modules/task/constants/task'
+import UpdateTasksButton from 'modules/task/components/UpdateTasksButton'
+import {
+  FastFilterEnum,
+  FilterTypeEnum,
+  TaskStorageKeysEnum,
+  TasksUpdateVariantsEnum,
+  tasksUpdateVariantsIntervals,
+} from 'modules/task/constants/task'
 import { useGetTaskList } from 'modules/task/hooks/task'
 import { useGetTaskCounters } from 'modules/task/hooks/taskCounters'
 import {
@@ -34,8 +41,8 @@ import {
   GetTaskListQueryArgs,
   TaskIdFilterQueries,
 } from 'modules/task/models'
-import { TaskListPageFiltersStorage } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
-import { parseTaskListPageFilters } from 'modules/task/services/taskLocalStorage/utils/taskListPageFilters'
+import { TasksFiltersStorageData } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
+import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils/parseTasksFiltersStorage'
 import {
   useGetUserList,
   useOnChangeUserStatus,
@@ -47,14 +54,8 @@ import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
-import UpdateTasksButton from 'components/Buttons/UpdateTasksButton'
 
 import { SortOrderEnum } from 'shared/constants/sort'
-import { StorageKeysEnum } from 'shared/constants/storage'
-import {
-  TasksUpdateVariantsEnum,
-  tasksUpdateVariantsIntervals,
-} from 'shared/constants/tasksUpdateVariants'
 import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
@@ -92,8 +93,8 @@ const TaskListPage: FC = () => {
   const [extendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
 
   const [preloadedExtendedFilters, setPreloadedExtendedFilters] = useLocalStorageState<
-    MaybeUndefined<TaskListPageFiltersStorage>
-  >(StorageKeysEnum.TasksFilters)
+    MaybeUndefined<TasksFiltersStorageData>
+  >(TaskStorageKeysEnum.TasksFilters)
 
   const [selectedCustomers, setSelectedCustomers] = useState<MaybeUndefined<IdType[]>>(
     preloadedExtendedFilters?.customers,
@@ -103,7 +104,7 @@ const TaskListPage: FC = () => {
   )
 
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
-    useSetState<ExtendedFilterFormFields>({
+    useSetState<TasksFilterFormFields>({
       ...initialExtendedFilterFormValues,
       ...preloadedExtendedFilters,
     })
@@ -237,7 +238,7 @@ const TaskListPage: FC = () => {
 
   const debouncedToggleOpenExtendedFilter = useDebounceFn(toggleOpenExtendedFilter)
 
-  const handleApplyFilter: ExtendedFilterProps['onSubmit'] = (values) => {
+  const handleApplyFilter: TasksFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     setExtendedFilterFormValues(values)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
@@ -354,7 +355,7 @@ const TaskListPage: FC = () => {
     [selectedTaskId],
   )
 
-  const handleCloseFilter = (filter: ExtendedFilterListItem) => {
+  const handleRemoveFilter = (filter: ExtendedFilterListItem) => {
     setPreloadedExtendedFilters((prevState) => ({ ...prevState, [filter.name]: undefined }))
     setExtendedFilterFormValues({ [filter.name]: undefined })
     if (filter.name === 'customers') setSelectedCustomers([])
@@ -374,8 +375,8 @@ const TaskListPage: FC = () => {
                     {preloadedExtendedFilters && (
                       <Col>
                         <ExtendedFilterList
-                          data={parseTaskListPageFilters(preloadedExtendedFilters)}
-                          onClose={handleCloseFilter}
+                          data={parseTasksFiltersStorage(preloadedExtendedFilters)}
+                          onClose={handleRemoveFilter}
                         />
                       </Col>
                     )}

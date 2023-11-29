@@ -1,4 +1,3 @@
-// todo: перенести в модуль tasks
 export enum TasksUpdateVariantsEnum {
   AutoUpdate1M = 'AutoUpdate1M',
 }

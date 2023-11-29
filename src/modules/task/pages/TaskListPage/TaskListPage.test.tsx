@@ -11,12 +11,11 @@ import { testUtils as fastFilterListTestUtils } from 'modules/task/components/Fa
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { paginationConfig } from 'modules/task/components/TaskTable/constants/pagination'
+import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 import { FastFilterEnum, taskExtendedStatusDict } from 'modules/task/constants/task'
 import { TaskCountersKeys } from 'modules/task/models'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
-
-import { testUtils as updateTasksButtonTestUtils } from 'components/Buttons/UpdateTasksButton/UpdateTasksButton.test'
 
 import commonFixtures from '_tests_/fixtures/common'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
@@ -680,7 +679,7 @@ describe('Страница реестра заявок', () => {
           expect(filter).not.toBeInTheDocument()
         })
 
-        const filters = taskLocalStorageService.getTaskListPageFilters()!
+        const filters = taskLocalStorageService.getTasksFilters()!
         expect(filters.customers).toEqual(expect.arrayContaining([1]))
         expect(filters.macroregions).toEqual(expect.arrayContaining([1]))
         expect(filters.supportGroups).toEqual(expect.arrayContaining([1]))

@@ -1,4 +1,4 @@
-import { ExtendedFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
+import { TasksFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
 import { BaseTaskModel } from 'modules/task/models'
 
 import { StringMap } from 'shared/types/utils'
@@ -35,7 +35,7 @@ export const taskExtendedStatusDict: Readonly<Partial<StringMap<TaskExtendedStat
 }
 
 export const extendedFilterDict: Readonly<
-  StringMap<keyof Pick<ExtendedFilterFormFields, 'customers' | 'macroregions' | 'supportGroups'>>
+  StringMap<keyof Pick<TasksFilterFormFields, 'customers' | 'macroregions' | 'supportGroups'>>
 > = {
   customers: 'Клиенты',
   macroregions: 'Макрорегионы',

@@ -1,17 +1,14 @@
-import { Space, Typography, Tag } from 'antd'
+import { Space, Tag, Typography } from 'antd'
 import isArray from 'lodash/isArray'
 import size from 'lodash/size'
 import { FC } from 'react'
 
-import { ExtendedFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
+import { TasksFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
 import { extendedFilterDict } from 'modules/task/constants/task'
 
 const { Text } = Typography
 
-type ExtendedFilters = Pick<
-  ExtendedFilterFormFields,
-  'customers' | 'macroregions' | 'supportGroups'
->
+type ExtendedFilters = Pick<TasksFilterFormFields, 'customers' | 'macroregions' | 'supportGroups'>
 
 export type ExtendedFilterListItem = {
   name: keyof ExtendedFilters

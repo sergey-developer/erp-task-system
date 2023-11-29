@@ -1,10 +1,10 @@
 import get from 'lodash/get'
 
 import { DEFAULT_SEARCH_FIELD } from 'modules/task/components/ExtendedFilter/constants'
-import { ExtendedFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
+import { TasksFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
 import { FastFilterEnum } from 'modules/task/constants/task'
 import { ExtendedFilterQueries } from 'modules/task/models'
-import { TaskListPageFiltersStorage } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import { TasksFiltersStorageData } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getUserRoleMap } from 'modules/user/utils'
 
@@ -16,12 +16,12 @@ import { formatDate } from 'shared/utils/date'
  * Преобразует объект с полями формы расширенной фильтрации в объект с
  * query параметрами расширенной фильтрации
  * @function mapExtendedFilterFormFieldsToQueries
- * @param {ExtendedFilterFormFields} fields - объект со значениями формы расширенной фильтрации
+ * @param {TasksFilterFormFields} fields - объект со значениями формы расширенной фильтрации
  * @returns {ExtendedFilterQueries} объект с query параметрами расширенной фильтрации
  */
 
 export const mapExtendedFilterFormFieldsToQueries = (
-  fields: Partial<ExtendedFilterFormFields>,
+  fields: Partial<TasksFilterFormFields>,
 ): ExtendedFilterQueries => {
   const { completeAt, searchField, searchValue, ...restFields } = fields
 
@@ -46,8 +46,8 @@ export const getInitialFastFilter = (role?: UserRoleEnum): FastFilterEnum => {
 }
 
 export const getInitialExtendedFilterFormValues = (
-  preloadedFilters?: Nullable<TaskListPageFiltersStorage>,
-): Readonly<ExtendedFilterFormFields> => ({
+  preloadedFilters?: Nullable<TasksFiltersStorageData>,
+): Readonly<TasksFilterFormFields> => ({
   completeAt: [],
   searchField: DEFAULT_SEARCH_FIELD,
   searchValue: undefined,
