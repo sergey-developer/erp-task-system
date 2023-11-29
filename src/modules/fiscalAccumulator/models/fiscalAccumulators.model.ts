@@ -16,4 +16,4 @@ export type FiscalAccumulatorListItemModel = Pick<
   | 'faFormat'
 >
 
-export type FiscalAccumulatorListModel = FiscalAccumulatorListItemModel[]
+export type FiscalAccumulatorsModel = FiscalAccumulatorListItemModel[]
