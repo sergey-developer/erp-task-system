@@ -8,14 +8,7 @@ import {
 
 import { validationMessages } from 'shared/constants/validation'
 
-import {
-  buttonTestUtils,
-  fakeIdStr,
-  fakeWord,
-  modalTestUtils,
-  radioButtonTestUtils,
-  render,
-} from '_tests_/utils'
+import { buttonTestUtils, fakeIdStr, fakeWord, radioButtonTestUtils, render } from '_tests_/utils'
 
 import RequestTaskReclassificationModal from './index'
 import { RequestTaskReclassificationModalProps } from './types'
@@ -327,12 +320,5 @@ describe('Модалка запроса о переклассификации з
         })
       })
     })
-  })
-
-  test('Обработчик вызывается корректно кликнув вне модалки', async () => {
-    const { user } = render(<RequestTaskReclassificationModal {...props} />)
-
-    await modalTestUtils.clickOutsideModal(user)
-    expect(props.onCancel).toBeCalledTimes(1)
   })
 })

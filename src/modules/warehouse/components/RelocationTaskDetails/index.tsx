@@ -11,7 +11,7 @@ import {
   Tooltip,
   Typography,
 } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useCheckUserAuthenticated } from 'modules/auth/hooks'
@@ -20,26 +20,27 @@ import { useMatchUserPermissions } from 'modules/user/hooks'
 import {
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
-  relocationTaskStatusDict,
   executeRelocationTaskMessages,
+  relocationTaskStatusDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
-import {
-} from 'modules/warehouse/constants/relocationTask'
+import { useGetRelocationEquipmentAttachmentList } from 'modules/warehouse/hooks/relocationEquipment'
 import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
   useLazyGetRelocationTaskWaybillM15,
   useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
-import { useCloseRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
+import {
+  useCancelRelocationTaskMutation,
+  useCloseRelocationTaskMutation,
+  useExecuteRelocationTaskMutation,
+  useReturnRelocationTaskToReworkMutation,
+} from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
-import { useReturnRelocationTaskToReworkMutation } from 'modules/warehouse/services/relocationTaskApi.service'
-import { useCancelRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
-import { useExecuteRelocationTaskMutation } from 'modules/warehouse/services/relocationTaskApi.service'
 
 import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -58,15 +59,19 @@ import {
 } from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-import { showErrorNotification } from 'shared/utils/notifications'
+import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
-import { mapUploadedFiles } from 'shared/utils/file'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import { showErrorNotification } from 'shared/utils/notifications'
 
 import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
+import { RelocationEquipmentTableItem } from '../RelocationEquipmentTable/types'
 import { ReturnRelocationTaskToReworkModalProps } from '../ReturnRelocationTaskToReworkModal/types'
 import { RelocationTaskDetailsProps } from './types'
+
+const AttachmentListModal = React.lazy(
+  () => import('modules/attachment/components/AttachmentListModal'),
+)
 
 const CancelRelocationTaskModal = React.lazy(() => import('../CancelRelocationTaskModal'))
 
@@ -87,10 +92,7 @@ const dropdownTrigger: DropdownProps['trigger'] = ['click']
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
   const navigate = useNavigate()
 
-  const userPermissions = useMatchUserPermissions([
-    'RELOCATION_TASKS_READ',
-    'RELOCATION_TASKS_UPDATE',
-  ])
+  const permissions = useMatchUserPermissions(['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_UPDATE'])
 
   const [executeTaskModalOpened, { toggle: toggleOpenExecuteTaskModal }] = useBoolean()
   const debouncedToggleOpenExecuteTaskModal = useDebounceFn(toggleOpenExecuteTaskModal)
@@ -104,13 +106,36 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [confirmExecutionModalOpened, { toggle: toggleOpenConfirmExecutionModal }] = useBoolean()
   const debouncedToggleOpenConfirmExecutionModal = useDebounceFn(toggleOpenConfirmExecutionModal)
 
+  const [activeEquipment, setActiveEquipment] = useState<RelocationEquipmentTableItem>()
+  const [
+    equipmentImagesModalOpened,
+    { setTrue: openEquipmentImagesModal, setFalse: closeEquipmentImagesModal },
+  ] = useBoolean()
+
+  const handleOpenEquipmentImagesModal = useDebounceFn((event, equipment) => {
+    event.stopPropagation()
+    openEquipmentImagesModal()
+    setActiveEquipment(equipment)
+  })
+
+  const handleCloseEquipmentImagesModal = useDebounceFn(() => {
+    closeEquipmentImagesModal()
+    setActiveEquipment(undefined)
+  })
+
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
     useGetRelocationTask({ relocationTaskId })
 
+  const { currentData: relocationEquipments = [], isFetching: relocationEquipmentsIsFetching } =
+    useGetRelocationEquipmentList({ relocationTaskId })
+
   const {
-    currentData: relocationEquipmentList = [],
-    isFetching: relocationEquipmentListIsFetching,
-  } = useGetRelocationEquipmentList({ relocationTaskId })
+    currentData: relocationEquipmentAttachmentList = [],
+    isFetching: relocationEquipmentAttachmentListIsFetching,
+  } = useGetRelocationEquipmentAttachmentList(
+    { relocationEquipmentId: activeEquipment?.id! },
+    { skip: !equipmentImagesModalOpened || !activeEquipment },
+  )
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
@@ -220,7 +245,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     try {
       await executeRelocationTaskMutation({
         relocationTaskId,
-        documents: mapUploadedFiles(values.documents),
+        documents: extractOriginFiles(values.documents),
       }).unwrap()
 
       toggleOpenExecuteTaskModal()
@@ -264,14 +289,14 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             <Text>Сформировать накладную М-15</Text>
           </Space>
         ),
-        disabled: !userPermissions?.relocationTasksRead,
+        disabled: !permissions?.relocationTasksRead,
         onClick: handleGetWaybillM15,
       },
       {
         key: 2,
         label: 'Изменить заявку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -282,7 +307,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 3,
         label: 'Выполнить заявку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -293,7 +318,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 4,
         label: 'Вернуть на доработку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !executorIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenReturnToReworkModal,
@@ -302,7 +327,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 5,
         label: 'Отменить заявку',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -313,7 +338,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 6,
         label: 'Подтвердить выполнение',
         disabled:
-          !userPermissions?.relocationTasksUpdate ||
+          !permissions?.relocationTasksUpdate ||
           !executorIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenConfirmExecutionModal,
@@ -448,11 +473,11 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                       <Text type='secondary'>Документы:</Text>
                     </Col>
 
-                    <Col span={16}>
-                      {!!relocationTask.documents?.length && (
+                    {!!relocationTask.documents?.length && (
+                      <Col span={16}>
                         <AttachmentList attachments={relocationTask.documents} />
-                      )}
-                    </Col>
+                      </Col>
+                    )}
                   </Row>
                 </Space>
               )}
@@ -464,8 +489,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
               <Text strong>Перечень оборудования</Text>
 
               <RelocationEquipmentTable
-                dataSource={relocationEquipmentList}
-                loading={relocationEquipmentListIsFetching}
+                dataSource={relocationEquipments}
+                loading={relocationEquipmentsIsFetching}
+                onClickImages={handleOpenEquipmentImagesModal}
               />
             </Space>
           </Col>
@@ -540,6 +566,26 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             isLoading={executeRelocationTaskIsLoading}
             onCancel={debouncedToggleOpenExecuteTaskModal}
             onSubmit={handleExecuteTask}
+          />
+        </React.Suspense>
+      )}
+
+      {equipmentImagesModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={handleCloseEquipmentImagesModal}
+              tip='Загрузка модалки изображений оборудования'
+            />
+          }
+        >
+          <AttachmentListModal
+            open={equipmentImagesModalOpened}
+            title='Изображения оборудования'
+            data={relocationEquipmentAttachmentList}
+            onCancel={handleCloseEquipmentImagesModal}
+            isLoading={relocationEquipmentAttachmentListIsFetching}
           />
         </React.Suspense>
       )}

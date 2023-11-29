@@ -1,6 +1,8 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Button, Form } from 'antd'
+import isUndefined from 'lodash/isUndefined'
+import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
@@ -18,9 +20,9 @@ import { MaybeUndefined } from 'shared/types/utils'
 import { makeString } from 'shared/utils/string'
 
 import { AddEquipmentButton } from './styles'
-import { RelocationEquipmentEditableTableProps, RelocationEquipmentRowFields } from './types'
+import { RelocationEquipmentEditableTableProps, RelocationEquipmentRow } from './types'
 
-const formItemProps: EditableProTableProps<RelocationEquipmentRowFields, any>['formItemProps'] = {
+const formItemProps: EditableProTableProps<RelocationEquipmentRow, any>['formItemProps'] = {
   rules: [
     {
       validator: async (_, value) => {
@@ -50,6 +52,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   canAddEquipment,
   addEquipmentBtnDisabled,
   onClickAddEquipment,
+
+  onClickAddImage,
 }) => {
   const form = Form.useFormInstance()
   const relocateFromFormValue: MaybeUndefined<IdType> = Form.useWatch('relocateFrom', form)
@@ -69,8 +73,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   )
 
   const handleDeleteRow = useCallback(
-    (row: RelocationEquipmentRowFields) => {
-      const tableDataSource: RelocationEquipmentRowFields[] = form.getFieldValue('equipments')
+    (row: RelocationEquipmentRow) => {
+      const tableDataSource: RelocationEquipmentRow[] = form.getFieldValue('equipments')
 
       form.setFieldsValue({
         equipments: tableDataSource.filter((item) => item.rowId !== row?.rowId),
@@ -79,7 +83,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
     [form],
   )
 
-  const columns: ProColumns<RelocationEquipmentRowFields>[] = [
+  const columns: ProColumns<RelocationEquipmentRow>[] = [
     {
       key: 'id',
       dataIndex: 'id',
@@ -92,27 +96,27 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         'data-testid': 'equipment-form-item',
       },
       fieldProps: (form, config) => ({
-        dropdownRender:
-          canAddEquipment && onClickAddEquipment
-            ? (menu: ReactNode) => (
-                <Space $block direction='vertical'>
-                  <AddEquipmentButton
-                    type='link'
-                    disabled={addEquipmentBtnDisabled}
-                    onClick={() =>
-                      onClickAddEquipment({
-                        rowIndex: config.rowIndex,
-                        rowId: config.entity.rowId!,
-                      })
-                    }
-                  >
-                    Добавить оборудование
-                  </AddEquipmentButton>
+        dropdownRender: canAddEquipment
+          ? (menu: ReactNode) => (
+              <Space $block direction='vertical'>
+                <AddEquipmentButton
+                  type='link'
+                  disabled={addEquipmentBtnDisabled}
+                  onClick={() =>
+                    onClickAddEquipment({
+                      id: config.entity.id,
+                      rowId: config.entity.rowId,
+                      rowIndex: config.rowIndex,
+                    })
+                  }
+                >
+                  Добавить оборудование
+                </AddEquipmentButton>
 
-                  {menu}
-                </Space>
-              )
-            : undefined,
+                {menu}
+              </Space>
+            )
+          : undefined,
         allowClear: false,
         loading: equipmentCatalogListIsLoading,
         disabled: isLoading || !relocateFromFormValue,
@@ -190,6 +194,28 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       },
     },
     {
+      key: 'attachments',
+      title: 'Изображения',
+      renderFormItem: (schema, config) => {
+        if (config.record && !isUndefined(schema.index)) {
+          return (
+            <Button
+              disabled={!config.record.id}
+              onClick={() =>
+                onClickAddImage({
+                  id: config.record!.id,
+                  rowId: config.record!.rowId!,
+                  rowIndex: schema.index!,
+                })
+              }
+            >
+              Добавить
+            </Button>
+          )
+        }
+      },
+    },
+    {
       title: '',
       valueType: 'option',
       width: 50,
@@ -206,15 +232,13 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   ]
 
   return (
-    <EditableProTable<RelocationEquipmentRowFields>
+    <EditableProTable<RelocationEquipmentRow>
       data-testid='relocation-equipment-editable-table'
       rowKey='rowId'
       name='equipments'
       columns={columns}
       recordCreatorProps={{
-        record: () => ({
-          rowId: Math.floor(new Date().getTime() * Math.random() * 1000),
-        }),
+        record: () => ({ rowId: random(1, 999999) }),
         disabled: isLoading,
         creatorButtonText: 'Добавить оборудование',
       }}

@@ -2,8 +2,9 @@ import { ButtonProps, Modal, ModalProps } from 'antd'
 import { FC, useMemo } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
+import { SpinnerProps } from 'components/Spinner'
 
-import { modalWidth, cancelBtnText } from './constants'
+import { cancelBtnText, modalWidth } from './constants'
 
 const commonButtonProps: ButtonProps = {
   size: 'large',
@@ -17,6 +18,8 @@ const baseOkButtonProps: ButtonProps = {
 export type BaseModalProps = ModalProps & {
   /* Determines whether spinner should be shown on whole modal */
   isLoading?: boolean
+  loadingTip?: SpinnerProps['tip']
+  'data-testid'?: string
 }
 
 const BaseModal: FC<BaseModalProps> = ({
@@ -24,9 +27,11 @@ const BaseModal: FC<BaseModalProps> = ({
   cancelText = cancelBtnText,
   destroyOnClose = true,
   isLoading = false,
+  loadingTip,
   children,
   okButtonProps,
   cancelButtonProps,
+  'data-testid': testId,
   ...props
 }) => {
   const mergedOkButtonProps = useMemo(
@@ -44,14 +49,17 @@ const BaseModal: FC<BaseModalProps> = ({
 
   return (
     <Modal
+      {...props}
       width={width}
       cancelText={cancelText}
       destroyOnClose={destroyOnClose}
       okButtonProps={mergedOkButtonProps}
       cancelButtonProps={mergedCancelButtonProps}
-      {...props}
+      data-testid={testId}
     >
-      <LoadingArea isLoading={isLoading}>{children}</LoadingArea>
+      <LoadingArea data-testid={`${testId}-loading`} isLoading={isLoading} tip={loadingTip}>
+        {children}
+      </LoadingArea>
     </Modal>
   )
 }

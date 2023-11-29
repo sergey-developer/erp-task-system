@@ -1,16 +1,6 @@
 import { RcFile } from 'antd/es/upload'
-import { UploadFile as BaseUploadFile } from 'antd/es/upload/interface'
 
-export type UploadFile = Pick<
-  BaseUploadFile,
-  | 'uid'
-  | 'type'
-  | 'size'
-  | 'percent'
-  | 'originFileObj'
-  | 'name'
-  | 'lastModified'
-  | 'lastModifiedDate'
->
+import { IdType } from './common'
 
 export type FileToSend = RcFile
+export type FileResponse = Partial<{ id: IdType }>

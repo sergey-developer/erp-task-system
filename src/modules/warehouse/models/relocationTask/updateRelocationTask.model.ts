@@ -19,6 +19,7 @@ export type UpdateRelocationTaskMutationArgs = BaseRelocationTaskRequestArgs & {
 
     price?: number
     currency?: IdType
+    attachments?: IdType[]
   }[]
 
   executor?: IdType
