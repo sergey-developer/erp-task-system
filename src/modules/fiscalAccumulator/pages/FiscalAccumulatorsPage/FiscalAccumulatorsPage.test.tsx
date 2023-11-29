@@ -28,6 +28,18 @@ export const testUtils = {
   clickUpdateTasksButton,
 }
 
+jest.mock('shared/constants/tasksUpdateVariants', () => {
+  const actualModule = jest.requireActual('shared/constants/tasksUpdateVariants')
+
+  return {
+    __esModule: true,
+    ...actualModule,
+    tasksUpdateVariantsIntervals: {
+      [actualModule.TasksUpdateVariantsEnum.AutoUpdate1M]: 500,
+    },
+  }
+})
+
 setupApiTests()
 notificationTestUtils.setupNotifications()
 
@@ -99,6 +111,17 @@ describe('Страница заявок фискальных накопител�
       expect(button).toBeDisabled()
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
       expect(button).toBeEnabled()
+    })
+
+    test('Автообновление работает', async () => {
+      mockGetFiscalAccumulatorsSuccess({ once: false })
+
+      const { user } = render(<FiscalAccumulatorsPage />)
+
+      await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
+      await updateTasksButtonTestUtils.openDropdown(user, getContainer())
+      await updateTasksButtonTestUtils.clickAutoUpdateItem(user)
+      await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
     })
   })
 })

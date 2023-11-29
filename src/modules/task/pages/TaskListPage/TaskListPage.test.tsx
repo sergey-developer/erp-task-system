@@ -50,11 +50,8 @@ import TaskListPage from './index'
 const getContainer = () => screen.getByTestId('task-list-page')
 
 const getSearchInput = () => within(getContainer()).getByPlaceholderText('Искать заявку по номеру')
-
 const getSearchButton = () => buttonTestUtils.getButtonIn(getContainer(), /search/)
-
 const getSearchClearButton = () => buttonTestUtils.getButtonIn(getContainer(), 'close-circle')
-
 const clickSearchClearButton = async (user: UserEvent) => {
   const button = getSearchClearButton()
   await user.click(button)
@@ -65,7 +62,6 @@ const getUpdateTasksButton = () => updateTasksButtonTestUtils.getUpdateTasksButt
 const clickUpdateTasksButton = async (user: UserEvent) => {
   const button = getUpdateTasksButton()
   await user.click(button)
-  return button
 }
 
 const getCreateTaskButton = () => buttonTestUtils.getButtonIn(getContainer(), /создать заявку/i)
@@ -103,6 +99,18 @@ export const testUtils = {
   getExtendedFilterButton,
   clickExtendedFilterButton,
 }
+
+jest.mock('shared/constants/tasksUpdateVariants', () => {
+  const actualModule = jest.requireActual('shared/constants/tasksUpdateVariants')
+
+  return {
+    __esModule: true,
+    ...actualModule,
+    tasksUpdateVariantsIntervals: {
+      [actualModule.TasksUpdateVariantsEnum.AutoUpdate1M]: 500,
+    },
+  }
+})
 
 setupApiTests()
 
@@ -1297,9 +1305,7 @@ describe('Страница реестра заявок', () => {
       const taskCard = await taskCardTestUtils.findContainer()
       await testUtils.clickUpdateTasksButton(user)
 
-      await waitFor(() => {
-        expect(taskCard).not.toBeInTheDocument()
-      })
+      await waitFor(() => expect(taskCard).not.toBeInTheDocument())
     })
 
     test('Не активна во время загрузки заявок', async () => {
@@ -1313,6 +1319,20 @@ describe('Страница реестра заявок', () => {
       expect(button).toBeDisabled()
       await taskTableTestUtils.expectLoadingFinished()
       expect(button).toBeEnabled()
+    })
+
+    test('Автообновление работает', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+      mockGetTaskListSuccess({ once: false })
+
+      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.expectLoadingFinished()
+      await updateTasksButtonTestUtils.openDropdown(user, testUtils.getContainer())
+      await updateTasksButtonTestUtils.clickAutoUpdateItem(user)
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingStarted()
     })
   })
 
