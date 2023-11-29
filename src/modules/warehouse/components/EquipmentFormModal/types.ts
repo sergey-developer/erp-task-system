@@ -50,6 +50,7 @@ export type EquipmentFormModalProps = Required<
     setFields: FormInstance['setFields'],
   ) => Promise<void>
 
+  defaultImages?: UploadProps<FileResponse>['defaultFileList']
   onUploadImage: NonNullable<UploadProps['customRequest']>
 
   onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>

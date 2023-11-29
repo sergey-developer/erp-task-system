@@ -1,11 +1,13 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Row, Typography, UploadProps } from 'antd'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import { RcFile } from 'antd/es/upload'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import AttachmentList from 'modules/attachment/components/AttachmentList'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { useMatchUserPermissions } from 'modules/user/hooks'
+import { attachmentsToFiles } from 'modules/attachment/utils'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
@@ -48,7 +50,9 @@ const AttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AttachmentListModal'),
 )
 
-const EquipmentFormModal = React.lazy(() => import('../EquipmentFormModal'))
+const EquipmentFormModal = React.lazy(
+  () => import('modules/warehouse/components/EquipmentFormModal'),
+)
 
 const EquipmentRelocationHistoryModal = React.lazy(
   () => import('../EquipmentRelocationHistoryModal'),
@@ -57,7 +61,7 @@ const EquipmentRelocationHistoryModal = React.lazy(
 const { Text } = Typography
 
 const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) => {
-  const userPermissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
+  const permissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
@@ -128,7 +132,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     isFetching: totalEquipmentAttachmentListIsFetching,
   } = useGetEquipmentAttachmentList(
     { equipmentId, limit: equipmentAttachmentList?.pagination?.total! },
-    { skip: !imageListModalOpened || !equipmentAttachmentList?.pagination?.total },
+    {
+      skip:
+        !equipmentAttachmentList?.pagination?.total ||
+        (!imageListModalOpened && !editEquipmentModalOpened),
+    },
   )
 
   const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] = useUpdateEquipment()
@@ -223,6 +231,14 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     ? getHiddenFieldsByCategory(equipment.category)
     : []
 
+  const defaultEquipmentImages = useMemo(
+    () =>
+      editEquipmentModalOpened && totalEquipmentAttachmentList?.results.length
+        ? attachmentsToFiles(totalEquipmentAttachmentList.results)
+        : undefined,
+    [editEquipmentModalOpened, totalEquipmentAttachmentList?.results],
+  )
+
   return (
     <>
       <Drawer
@@ -304,9 +320,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
               <Row data-testid='relocation-history'>
                 <Col>
                   <Button
-                    disabled={
-                      !userPermissions?.equipmentsRead || !userPermissions?.relocationTasksRead
-                    }
+                    disabled={!permissions?.equipmentsRead || !permissions?.relocationTasksRead}
                     onClick={debouncedToggleOpenRelocationHistoryModal}
                   >
                     История перемещений
@@ -521,6 +535,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onUploadImage={handleCreateEquipmentImage}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
+            defaultImages={defaultEquipmentImages}
           />
         </React.Suspense>
       )}
