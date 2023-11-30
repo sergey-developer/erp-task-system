@@ -9,7 +9,7 @@ import {
 } from 'modules/user/constants'
 
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
-import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
+import { testUtils as privateLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
 import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 
@@ -33,7 +33,7 @@ import {
 } from '_tests_/mocks/api'
 import { fakeId, fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
-import PrivateApp from './PrivateApp'
+import PrivateApp from './App'
 
 setupApiTests()
 notificationTestUtils.setupNotifications()

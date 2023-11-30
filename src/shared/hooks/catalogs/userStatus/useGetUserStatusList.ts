@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getUserStatusListMessages } from 'shared/constants/catalogs'
+import { getUserStatusListErrorMsg } from 'shared/constants/catalogs'
 import {
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,
@@ -16,12 +16,19 @@ type UseGetUserStatusListResult = CustomUseQueryHookResult<
   GetUserStatusListSuccessResponse
 >
 
-export const useGetUserStatusList = (): UseGetUserStatusListResult => {
-  const state = useGetUserStatusListQuery()
+type UseGetUserStatusListOptions = CustomUseQueryOptions<
+  GetUserStatusListQueryArgs,
+  GetUserStatusListSuccessResponse
+>
+
+export const useGetUserStatusList = (
+  options?: UseGetUserStatusListOptions,
+): UseGetUserStatusListResult => {
+  const state = useGetUserStatusListQuery(undefined, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getUserStatusListMessages.commonError)
+      showErrorNotification(getUserStatusListErrorMsg)
     }
   }, [state.error])
 

@@ -1,3 +1,3 @@
 export enum FiscalAccumulatorRouteEnum {
-  FiscalAccumulator = '/fiscal-accumulator',
+  FiscalAccumulator = '/home/fiscal-accumulator',
 }

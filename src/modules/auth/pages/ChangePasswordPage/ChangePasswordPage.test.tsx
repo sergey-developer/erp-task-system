@@ -1,13 +1,14 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { RouteEnum } from 'configs/routes'
+import { CommonRouteEnum } from 'configs/routes'
 
 import {
   INCORRECT_PASSWORD_ERROR_MSG,
   UPDATE_PASSWORD_SUCCESS_MSG,
   updatePasswordMessages,
 } from 'modules/auth/constants'
+import { AuthRouteEnum } from 'modules/auth/constants/routes'
 
 import { validationMessages } from 'shared/constants/validation'
 
@@ -25,8 +26,8 @@ import {
   notificationTestUtils,
   render,
   renderInRoute,
-  setupApiTests
-} from "_tests_/utils";
+  setupApiTests,
+} from '_tests_/utils'
 
 import ChangePasswordPage from './index'
 
@@ -215,7 +216,7 @@ describe('Страница смены пароля', () => {
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
         <ChangePasswordPage />,
-        RouteEnum.ChangePassword,
+        AuthRouteEnum.ChangePassword,
       )
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
@@ -227,7 +228,7 @@ describe('Страница смены пароля', () => {
 
       expect(notification).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(true)
-      expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
+      expect(getCurrentRoute()).toBe(CommonRouteEnum.DesktopTaskList)
     })
   })
 
@@ -244,7 +245,7 @@ describe('Страница смены пароля', () => {
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
         <ChangePasswordPage />,
-        RouteEnum.ChangePassword,
+        AuthRouteEnum.ChangePassword,
       )
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
@@ -263,7 +264,7 @@ describe('Страница смены пароля', () => {
       expect(commonErrorMessage).toBeInTheDocument()
       expect(passwordErrorMessage).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
-      expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
+      expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
     })
 
     test('Обрабатывается ошибка 404', async () => {
@@ -274,7 +275,7 @@ describe('Страница смены пароля', () => {
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
         <ChangePasswordPage />,
-        RouteEnum.ChangePassword,
+        AuthRouteEnum.ChangePassword,
       )
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
@@ -289,7 +290,7 @@ describe('Страница смены пароля', () => {
       expect(notification).not.toBeInTheDocument()
       expect(errorText).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
-      expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
+      expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
     })
 
     test('Обрабатывается ошибка 401', async () => {
@@ -300,7 +301,7 @@ describe('Страница смены пароля', () => {
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
         <ChangePasswordPage />,
-        RouteEnum.ChangePassword,
+        AuthRouteEnum.ChangePassword,
       )
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
@@ -317,7 +318,7 @@ describe('Страница смены пароля', () => {
       expect(successNotification).not.toBeInTheDocument()
       expect(errorMessage).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
-      expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
+      expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
     })
 
     test('Обрабатывается ошибка 500', async () => {
@@ -325,7 +326,7 @@ describe('Страница смены пароля', () => {
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
         <ChangePasswordPage />,
-        RouteEnum.ChangePassword,
+        AuthRouteEnum.ChangePassword,
       )
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
@@ -342,7 +343,7 @@ describe('Страница смены пароля', () => {
       expect(successNotification).not.toBeInTheDocument()
       expect(errorMessage).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
-      expect(getCurrentRoute()).toBe(RouteEnum.ChangePassword)
+      expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
     })
   })
 })
