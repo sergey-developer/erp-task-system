@@ -11,12 +11,16 @@ import {
 import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilterList/FastFilterList.test'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
+import { paginationConfig } from 'modules/task/components/TaskTable/constants/pagination'
+import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
+import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 import { FastFilterEnum, taskExtendedStatusDict } from 'modules/task/constants/task'
 import { TaskCountersKeys } from 'modules/task/models'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import {
+  taskLocalStorageService,
+  TasksFiltersStorageType,
+} from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
-
-import { testUtils as updateTasksButtonTestUtils } from 'components/Buttons/UpdateTasksButton/UpdateTasksButton.test'
 
 import commonFixtures from '_tests_/fixtures/common'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
@@ -37,6 +41,7 @@ import {
 } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
+  fakeId,
   fakeWord,
   getStoreWithAuth,
   render,
@@ -102,8 +107,8 @@ export const testUtils = {
   clickExtendedFilterButton,
 }
 
-jest.mock('shared/constants/tasksUpdateVariants', () => {
-  const actualModule = jest.requireActual('shared/constants/tasksUpdateVariants')
+jest.mock('modules/task/constants/task/tasksUpdateVariants', () => {
+  const actualModule = jest.requireActual('modules/task/constants/task/tasksUpdateVariants')
 
   return {
     __esModule: true,
@@ -683,7 +688,7 @@ describe('Страница реестра заявок', () => {
           expect(filter).not.toBeInTheDocument()
         })
 
-        const filters = taskLocalStorageService.getTaskListPageFilters()!
+        const filters = taskLocalStorageService.getTasksFilters()!
         expect(filters.customers).toEqual(expect.arrayContaining([customerListItem.id]))
         expect(filters.macroregions).toEqual(expect.arrayContaining([macroregionListItem.id]))
         expect(filters.supportGroups).toEqual(expect.arrayContaining([supportGroupListItem.id]))
@@ -827,6 +832,62 @@ describe('Страница реестра заявок', () => {
 
         expect(selectedOption).not.toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Сохраненные фильтры', () => {
+    test('Не отображаются если их нет', () => {
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
+
+      render(<TaskListPage />)
+
+      const filters = tasksFiltersStorageTestUtils.queryContainer()
+      expect(filters).not.toBeInTheDocument()
+    })
+
+    test('Отображаются если есть', async () => {
+      mockGetTaskListSuccess()
+      mockGetTaskCountersSuccess()
+
+      const savedTasksFilters: TasksFiltersStorageType = {
+        customers: [fakeId()],
+        macroregions: [fakeId()],
+        supportGroups: [fakeId()],
+      }
+      taskLocalStorageService.setTasksFilters(savedTasksFilters)
+
+      render(<TaskListPage />)
+
+      Object.keys(savedTasksFilters).forEach((filterName) => {
+        const customersFilter = tasksFiltersStorageTestUtils.getFilter(
+          filterName as keyof typeof savedTasksFilters,
+        )
+        expect(customersFilter).toBeInTheDocument()
+      })
+    })
+
+    test('После удаления перезапрашиваются заявки и счетчик заявок', async () => {
+      mockGetTaskListSuccess({ once: false })
+      mockGetTaskCountersSuccess({ once: false })
+
+      taskLocalStorageService.setTasksFilters({ customers: [fakeId()] })
+
+      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.expectLoadingFinished()
+
+      const filter = tasksFiltersStorageTestUtils.getFilter('customers')
+      expect(filter).toBeInTheDocument()
+
+      await tasksFiltersStorageTestUtils.removeFilter(user, 'customers')
+      expect(filter).not.toBeInTheDocument()
+
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.expectLoadingFinished()
     })
   })
 

@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react'
 
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import {
   updateUserStatusMessages,
   updateUserTimeZoneMessages,
@@ -33,7 +33,7 @@ import {
 } from '_tests_/mocks/api'
 import { fakeId, fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
-import PrivateApp from './App'
+import App from './App'
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -47,7 +47,7 @@ describe('Private app', () => {
         mockGetTimeZoneListSuccess({ body: [catalogsFixtures.timeZoneListItem()] })
         mockGetUserMeSuccess({ body: userFixtures.user() })
 
-        render(<PrivateApp />, { useBrowserRouter: false })
+        render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingStarted()
@@ -65,7 +65,7 @@ describe('Private app', () => {
 
         mockUpdateUserSuccess(fakeUser.id)
 
-        const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+        const { user } = render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -87,7 +87,7 @@ describe('Private app', () => {
 
         mockUpdateUserSuccess(fakeUser.id)
 
-        const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+        const { user } = render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -110,7 +110,7 @@ describe('Private app', () => {
         const fakeUser = userFixtures.user()
         mockGetUserMeSuccess({ body: fakeUser })
 
-        render(<PrivateApp />, { useBrowserRouter: false })
+        render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -129,7 +129,7 @@ describe('Private app', () => {
         const fakeUser = userFixtures.user()
         mockGetUserMeSuccess({ body: fakeUser })
 
-        const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+        const { user } = render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -157,7 +157,7 @@ describe('Private app', () => {
 
         mockUpdateUserSuccess(fakeUser.id)
 
-        const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+        const { user } = render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -187,7 +187,7 @@ describe('Private app', () => {
 
         mockUpdateUserServerError(fakeUser.id)
 
-        const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+        const { user } = render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -218,7 +218,7 @@ describe('Private app', () => {
             }),
           })
 
-          render(<PrivateApp />, { useBrowserRouter: false })
+          render(<App />, { useBrowserRouter: false })
 
           await privateLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.getUserStatusSelectContainer()
@@ -241,7 +241,7 @@ describe('Private app', () => {
             }),
           })
 
-          render(<PrivateApp />, { useBrowserRouter: false })
+          render(<App />, { useBrowserRouter: false })
 
           await privateLayoutTestUtils.expectLoadingFinished()
           await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -271,7 +271,7 @@ describe('Private app', () => {
 
               mockUpdateUserStatusSuccess(fakeUser.id)
 
-              const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+              const { user } = render(<App />, { useBrowserRouter: false })
 
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -285,7 +285,7 @@ describe('Private app', () => {
               expect(selectedUserStatus).toHaveTextContent(new RegExp(fakeUserStatus1.title))
             })
 
-            test('Если выбран статус OFFLINE, то удаляются фильтры страницы реестра заявок из localStorage', async () => {
+            test('Если выбран статус OFFLINE, то удаляются фильтры заявок из localStorage', async () => {
               mockGetTaskListSuccess()
               mockGetTaskCountersSuccess()
               mockGetUserMeCodeSuccess()
@@ -305,20 +305,20 @@ describe('Private app', () => {
 
               mockUpdateUserStatusSuccess(fakeUser.id)
 
-              const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+              const { user } = render(<App />, { useBrowserRouter: false })
 
-              taskLocalStorageService.setTaskListPageFilters({ customers: [fakeId()] })
+              taskLocalStorageService.setTasksFilters({ customers: [fakeId()] })
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
 
-              expect(taskLocalStorageService.getTaskListPageFilters()).toBeTruthy()
+              expect(taskLocalStorageService.getTasksFilters()).toBeTruthy()
 
               await privateHeaderTestUtils.openUserStatusSelect(user)
               await privateHeaderTestUtils.setUserStatus(user, userStatus.title, true)
               await privateHeaderTestUtils.expectUserStatusSelectDisabled()
               await privateHeaderTestUtils.expectUserStatusSelectNotDisabled()
 
-              expect(taskLocalStorageService.getTaskListPageFilters()).toBeNull()
+              expect(taskLocalStorageService.getTasksFilters()).toBeNull()
             })
           })
 
@@ -345,7 +345,7 @@ describe('Private app', () => {
                 body: { detail: [badRequestErrorMessage] },
               })
 
-              const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+              const { user } = render(<App />, { useBrowserRouter: false })
 
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -386,7 +386,7 @@ describe('Private app', () => {
                 body: { detail: unauthorizedErrorMessage },
               })
 
-              const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+              const { user } = render(<App />, { useBrowserRouter: false })
 
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -427,7 +427,7 @@ describe('Private app', () => {
                 body: { detail: errorMessage },
               })
 
-              const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+              const { user } = render(<App />, { useBrowserRouter: false })
 
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -463,7 +463,7 @@ describe('Private app', () => {
 
               mockUpdateUserStatusServerError(fakeUser.id)
 
-              const { user } = render(<PrivateApp />, { useBrowserRouter: false })
+              const { user } = render(<App />, { useBrowserRouter: false })
 
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -498,7 +498,7 @@ describe('Private app', () => {
             }),
           })
 
-          render(<PrivateApp />, { useBrowserRouter: false })
+          render(<App />, { useBrowserRouter: false })
 
           await privateLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()
@@ -520,7 +520,7 @@ describe('Private app', () => {
             }),
           })
 
-          render(<PrivateApp />, { useBrowserRouter: false })
+          render(<App />, { useBrowserRouter: false })
 
           await privateLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()
@@ -542,7 +542,7 @@ describe('Private app', () => {
             }),
           })
 
-          render(<PrivateApp />, { useBrowserRouter: false })
+          render(<App />, { useBrowserRouter: false })
 
           await privateLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()

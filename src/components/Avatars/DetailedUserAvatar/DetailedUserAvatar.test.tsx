@@ -7,7 +7,7 @@ import { AuthRouteEnum } from 'modules/auth/constants/routes'
 
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
-import PrivateApp from 'app/App'
+import App from 'app/App'
 
 import userFixtures from '_tests_/fixtures/user'
 import {
@@ -75,7 +75,7 @@ describe('Детальный аватар пользователя', () => {
       mockGetUserMeSuccess({ body: userFixtures.user() })
 
       const { user, checkRouteChanged, getCurrentRoute } = renderInRoute(
-        <PrivateApp />,
+        <App />,
         CommonRouteEnum.DesktopTaskList,
         { useBrowserRouter: false },
       )

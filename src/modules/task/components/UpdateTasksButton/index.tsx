@@ -3,7 +3,7 @@ import { Dropdown } from 'antd'
 import { DropdownButtonProps } from 'antd/es/dropdown'
 import React, { FC, useState } from 'react'
 
-import { TasksUpdateVariantsEnum } from 'shared/constants/tasksUpdateVariants'
+import { TasksUpdateVariantsEnum } from 'modules/task/constants/task'
 
 export type UpdateTasksButtonProps = Required<Pick<DropdownButtonProps, 'onClick'>> &
   Pick<DropdownButtonProps, 'disabled'> & {
