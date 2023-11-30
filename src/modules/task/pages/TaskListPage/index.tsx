@@ -58,9 +58,7 @@ import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import Spinner from 'components/Spinner'
-import UpdateTasksButton from 'components/Buttons/UpdateTasksButton'
 
-import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useGetMacroregionList } from 'shared/hooks/macroregion'
