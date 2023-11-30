@@ -5,6 +5,7 @@ import React, { FC, useMemo } from 'react'
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
 import { userListSelectFieldNames } from 'modules/user/constants'
+import { RelocationTaskFormFields } from 'modules/warehouse/types'
 
 import DatePicker from 'components/DatePicker'
 import TimePicker from 'components/TimePicker'
@@ -14,7 +15,7 @@ import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/val
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 
-import { RelocationTaskFormProps, LocationOption } from './types'
+import { LocationOption, RelocationTaskFormProps } from './types'
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 
 const { TextArea } = Input
@@ -31,7 +32,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   onChangeRelocateFrom,
   onChangeRelocateTo,
 }) => {
-  const form = Form.useFormInstance()
+  const form = Form.useFormInstance<RelocationTaskFormFields>()
   const relocateFromFormValue: MaybeUndefined<IdType> = Form.useWatch('relocateFrom', form)
 
   const locationOptions = useMemo(
@@ -91,7 +92,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         >
           <Select<IdType, LocationOption>
             loading={locationListIsLoading}
-            disabled={isLoading}
+            disabled={isLoading || locationListIsLoading}
             options={locationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
@@ -108,7 +109,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         >
           <Select<IdType, LocationOption>
             loading={locationListIsLoading}
-            disabled={isLoading || !relocateFromFormValue}
+            disabled={isLoading || !relocateFromFormValue || locationListIsLoading}
             options={locationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
@@ -128,7 +129,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           <Select
             fieldNames={userListSelectFieldNames}
             loading={userListIsLoading}
-            disabled={isLoading}
+            disabled={isLoading || userListIsLoading}
             options={userList}
             placeholder='Выберите исполнителя'
           />
