@@ -16,13 +16,13 @@ import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 import { MacroregionListModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 
-export type ExtendedFilterSupportGroupFormFields = Partial<{
+export type TasksFilterSupportGroupFormFields = Partial<{
   customers: IdType[]
   macroregions: IdType[]
   supportGroups: IdType[]
 }>
 
-export type ExtendedFilterFormFields = ExtendedFilterSupportGroupFormFields &
+export type TasksFilterFormFields = TasksFilterSupportGroupFormFields &
   Partial<{
     completeAt: Moment[]
     searchField: keyof SearchFields
@@ -34,9 +34,9 @@ export type ExtendedFilterFormFields = ExtendedFilterSupportGroupFormFields &
     manager: IdType
   }>
 
-export type ExtendedFilterProps = Required<Pick<DrawerFilterProps, 'open'>> & {
-  formValues: ExtendedFilterFormFields
-  initialFormValues: ExtendedFilterFormFields
+export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClose'>> & {
+  formValues: TasksFilterFormFields
+  initialFormValues: TasksFilterFormFields
 
   customerList: CustomerListModel
   customerListIsLoading: boolean
@@ -55,6 +55,5 @@ export type ExtendedFilterProps = Required<Pick<DrawerFilterProps, 'open'>> & {
   workGroupList: WorkGroupListModel
   workGroupListIsLoading: boolean
 
-  onSubmit: (result: ExtendedFilterFormFields) => void
-  onClose: () => void
+  onSubmit: (values: TasksFilterFormFields) => void
 }

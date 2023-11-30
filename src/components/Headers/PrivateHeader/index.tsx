@@ -1,22 +1,27 @@
 import { Badge, Col, Layout, Row, Select, Space, Typography } from 'antd'
 import moment from 'moment-timezone'
 import { DefaultOptionType } from 'rc-select/lib/Select'
-import React, { FC, useMemo } from 'react'
+import React, { FC, useCallback, useMemo } from 'react'
 import { Link, useMatches } from 'react-router-dom'
 
 import { getNavMenuConfig, mapNavMenuConfig } from 'configs/navMenu/utils'
-import { RouteEnum } from 'configs/routes'
 
 import LogoutButton from 'modules/auth/components/LogoutButton'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
+import { MonitoringRouteEnum } from 'modules/monitoring/constants'
 import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'modules/user/constants'
-import { useUserMeCodeState, useUserMeState } from 'modules/user/hooks'
+import {
+  useOnChangeUserStatus,
+  UseOnChangeUserStatusFn,
+  useUserMeCodeState,
+  useUserMeState,
+} from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
 import {
   useUpdateUserStatusMutation,
   useUpdateUserTimeZoneMutation,
 } from 'modules/user/services/userApi.service'
-import { getUserRoleMap } from 'modules/user/utils'
+import { checkUserStatusOffline, getUserRoleMap } from 'modules/user/utils'
 
 import DetailedUserAvatar from 'components/Avatars/DetailedUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -25,10 +30,10 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
-import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 import { useTimeZoneListState } from 'shared/hooks/catalogs/timeZone'
 import { useUserStatusListState } from 'shared/hooks/catalogs/userStatus'
 import {
+  getErrorDetail,
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
@@ -100,27 +105,24 @@ const PrivateHeader: FC = () => {
 
     try {
       await updateUserStatusMutation({ userId: userMe.id, status: statusId }).unwrap()
-
-      if (userStatusList.length) {
-        const status = userStatusList.find((status) => status.id === statusId)
-
-        if (status?.code === UserStatusCodeEnum.Offline) {
-          taskLocalStorageService.clearTaskListPageFilters()
-        }
-      }
     } catch (error) {
       if (isErrorResponse(error)) {
-        if (
-          (isNotFoundError(error) || isUnauthorizedError(error) || isBadRequestError(error)) &&
-          error.data.detail
-        ) {
-          showErrorNotification(error.data.detail)
+        if (isNotFoundError(error) || isUnauthorizedError(error) || isBadRequestError(error)) {
+          showErrorNotification(getErrorDetail(error))
         } else {
           showErrorNotification(updateUserStatusMessages.commonError)
         }
       }
     }
   }
+
+  const onChangeUserStatus = useCallback<UseOnChangeUserStatusFn>((status) => {
+    if (checkUserStatusOffline(status)) {
+      taskLocalStorageService.clearTasksFilters()
+    }
+  }, [])
+
+  useOnChangeUserStatus(onChangeUserStatus)
 
   return (
     <Header data-testid='private-header'>
@@ -168,7 +170,7 @@ const PrivateHeader: FC = () => {
             <NotificationCounter />
 
             {userMe?.isStaff && (
-              <Link to={RouteEnum.TaskMonitoring}>
+              <Link to={MonitoringRouteEnum.TaskMonitoring}>
                 <MonitoringIcon $color='black' $size='large' $cursor='pointer' />
               </Link>
             )}

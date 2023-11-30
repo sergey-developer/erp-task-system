@@ -2,9 +2,8 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
-import { RouteEnum } from 'configs/routes'
-
 import { LOGIN_BAD_REQUEST_ERROR_MSG, LOGIN_WRONG_DATA_ERROR_MSG } from 'modules/auth/constants'
+import { AuthRouteEnum } from 'modules/auth/constants/routes'
 import LoginPage from 'modules/auth/pages/LoginPage'
 import { authLocalStorageService } from 'modules/auth/services/authLocalStorage.service'
 
@@ -14,7 +13,6 @@ import { commonApiMessages } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
 import authFixtures from '_tests_/fixtures/auth'
-
 import {
   mockLoginBadRequestError,
   mockLoginServerError,
@@ -202,7 +200,7 @@ describe('Страница авторизации', () => {
   })
 
   test('Пользователь остаётся на странице если не заполнить поля и нажать кнопку отправки', async () => {
-    const { user, checkRouteChanged } = renderInRoute(<LoginPage />, RouteEnum.Login)
+    const { user, checkRouteChanged } = renderInRoute(<LoginPage />, AuthRouteEnum.Login)
 
     await testUtils.clickSubmitButton(user)
 
@@ -215,7 +213,7 @@ describe('Страница авторизации', () => {
     test('Пользователь покидает страницу авторизации', async () => {
       mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
 
-      const { user, checkRouteChanged } = renderInRoute(<LoginPage />, RouteEnum.Login)
+      const { user, checkRouteChanged } = renderInRoute(<LoginPage />, AuthRouteEnum.Login)
 
       await testUtils.setEmail(user, fakeEmail())
       await testUtils.setPassword(user, fakeWord())
@@ -263,7 +261,7 @@ describe('Страница авторизации', () => {
       expect(authState.user).not.toBeNull()
       expect(authState.accessToken).toBe(authFixtures.loginSuccessResponse.access)
       expect(authState.refreshToken).toBe(authFixtures.loginSuccessResponse.refresh)
-      expect(authState.isAuthenticated).toBe(true)
+      expect(authState.isLoggedIn).toBe(true)
     })
   })
 
@@ -271,7 +269,7 @@ describe('Страница авторизации', () => {
     test('Пользователь остаётся на странице авторизации', async () => {
       mockLoginBadRequestError()
 
-      const { user, checkRouteChanged } = renderInRoute(<LoginPage />, RouteEnum.Login)
+      const { user, checkRouteChanged } = renderInRoute(<LoginPage />, AuthRouteEnum.Login)
 
       await testUtils.setEmail(user, fakeEmail())
       await testUtils.setPassword(user, fakeWord())

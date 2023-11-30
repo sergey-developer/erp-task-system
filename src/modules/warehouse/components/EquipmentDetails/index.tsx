@@ -285,7 +285,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 <Col>
                   <Button
                     disabled={
-                      !userPermissions?.equipmentsRead || !userPermissions.relocationTasksRead
+                      !userPermissions?.equipmentsRead || !userPermissions?.relocationTasksRead
                     }
                     onClick={debouncedToggleOpenRelocationHistoryModal}
                   >

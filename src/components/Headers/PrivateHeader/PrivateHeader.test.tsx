@@ -1,20 +1,19 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { RouteEnum } from 'configs/routes'
+import { CommonRouteEnum } from 'configs/routes'
 
 import { testUtils as logoutButtonTestUtils } from 'modules/auth/components/LogoutButton/LogoutButton.test'
 import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/LoginPage.test'
 import { FiscalAccumulatorRouteEnum } from 'modules/fiscalAccumulator/constants'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 
-import { testUtils as privateLayoutTestUtils } from 'components/Layouts/PrivateLayout/PrivateLayout.test'
+import { testUtils as privateLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
 import { MaybeNull } from 'shared/types/utils'
 
 import App from 'app/App'
-import PrivateApp from 'app/PrivateApp'
 
 import authFixtures from '_tests_/fixtures/auth'
 import userFixtures from '_tests_/fixtures/user'
@@ -152,7 +151,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -169,12 +168,12 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
+          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
+          expect(getCurrentRoute()).toBe(CommonRouteEnum.DesktopTaskList)
         })
       })
 
@@ -189,7 +188,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -208,7 +207,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -232,7 +231,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -249,12 +248,12 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
+          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
+          expect(getCurrentRoute()).toBe(CommonRouteEnum.DesktopTaskList)
         })
       })
 
@@ -269,7 +268,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -286,7 +285,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
+          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
@@ -306,7 +305,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -330,7 +329,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -347,12 +346,12 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
+          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
+          expect(getCurrentRoute()).toBe(CommonRouteEnum.DesktopTaskList)
         })
       })
 
@@ -367,7 +366,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -384,7 +383,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
+          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
@@ -404,7 +403,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -428,7 +427,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -445,12 +444,12 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
+          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(RouteEnum.TaskList)
+          expect(getCurrentRoute()).toBe(CommonRouteEnum.DesktopTaskList)
         })
       })
 
@@ -465,7 +464,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -482,7 +481,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          const { user, getCurrentRoute } = renderInRoute(<PrivateApp />, RouteEnum.Root)
+          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root)
 
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
@@ -502,7 +501,7 @@ describe('PrivateHeader', () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
 
-          render(<PrivateApp />)
+          render(<App />)
 
           await privateLayoutTestUtils.expectLoadingFinished()
 
@@ -539,11 +538,11 @@ describe('PrivateHeader', () => {
       mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
       mockLogoutSuccess()
 
-      taskLocalStorageService.setTaskListPageFilters({ customers: [1, 2] })
+      taskLocalStorageService.setTasksFilters({ customers: [1, 2] })
 
       const { user } = render(<App />, { useBrowserRouter: false })
 
-      expect(taskLocalStorageService.getTaskListPageFilters()).toBeTruthy()
+      expect(taskLocalStorageService.getTasksFilters()).toBeTruthy()
 
       await loginPageTestUtils.findContainer()
       await loginPageTestUtils.setEmail(user, fakeEmail())
@@ -556,7 +555,7 @@ describe('PrivateHeader', () => {
       const loginPage = await loginPageTestUtils.findContainer()
       expect(loginPage).toBeInTheDocument()
 
-      expect(taskLocalStorageService.getTaskListPageFilters()).toBeNull()
+      expect(taskLocalStorageService.getTasksFilters()).toBeNull()
     })
   })
 })

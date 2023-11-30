@@ -6,5 +6,5 @@ export type AuthSliceState = {
   user: MaybeNull<AuthenticatedUser>
   accessToken: MaybeNull<string>
   refreshToken: MaybeNull<string>
-  isAuthenticated: boolean
+  isLoggedIn: boolean
 }

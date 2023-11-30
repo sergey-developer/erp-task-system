@@ -381,6 +381,7 @@ export const {
 
   useGetTaskCountersQuery,
 
+  useGetTaskListQuery,
   useLazyGetTaskListQuery,
   useGetTaskListMapQuery,
 
