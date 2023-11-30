@@ -1,10 +1,10 @@
 import { BaseRelocationTaskRequestArgs } from 'modules/warehouse/types'
 
 import { FieldsErrors } from 'shared/services/baseApi'
-import { FileToUpload } from 'shared/types/file'
+import { FileToSend } from 'shared/types/file'
 
 export type ExecuteRelocationTaskMutationArgs = BaseRelocationTaskRequestArgs & {
-  documents: FileToUpload[]
+  documents: FileToSend[]
 }
 
 export type ExecuteRelocationTaskSuccessResponse = void
