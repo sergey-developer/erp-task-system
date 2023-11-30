@@ -1,12 +1,12 @@
 import { BaseTaskRequestArgs } from 'modules/task/types'
 
 import { ErrorResponse } from 'shared/services/baseApi'
-import { FileToUpload } from 'shared/types/file'
+import { FileToSend } from 'shared/types/file'
 
 export type ResolveTaskMutationArgs = BaseTaskRequestArgs & {
   techResolution: string
   userResolution?: string
-  attachments?: FileToUpload[]
+  attachments?: FileToSend[]
 }
 
 export type ResolveTaskSuccessResponse = void

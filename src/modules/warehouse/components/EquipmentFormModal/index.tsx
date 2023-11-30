@@ -174,10 +174,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               name='title'
               rules={requiredStringRules}
             >
-              <Input
-                placeholder='Введите наименование'
-                disabled={categoryIsConsumable || isLoading}
-              />
+              <Input placeholder='Введите наименование' disabled={categoryIsConsumable || isLoading} />
             </Form.Item>
 
             {!categoryIsConsumable && (

@@ -286,10 +286,10 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
       try {
         const createdEquipment = await createEquipmentMutation({
+          ...values,
           images: images?.length ? extractIdsFromFilesResponse(images) : undefined,
           location: taskShop.id,
           warehouse: warehouseMy.id,
-          ...values,
         }).unwrap()
 
         form.setFieldValue([activeEquipmentRow.tableName, activeEquipmentRow.rowIndex], {
@@ -490,9 +490,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseCreateEquipmentModal}
             onSubmit={handleCreateEquipment}
-            imageIsDeleting={false}
-            onDeleteImage={() => {}}
             onUploadImage={() => {}}
+            onDeleteImage={() => {}}
+            imageIsDeleting={false}
           />
         </React.Suspense>
       )}

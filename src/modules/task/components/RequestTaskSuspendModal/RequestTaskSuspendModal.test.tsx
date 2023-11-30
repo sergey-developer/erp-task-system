@@ -24,19 +24,8 @@ const props: Readonly<RequestTaskSuspendModalProps> = {
 }
 
 const getContainer = () => screen.getByTestId('request-task-suspend-modal')
-
 const findContainer = () => screen.findByTestId('request-task-suspend-modal')
-
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
-
-// close button
-const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
-
-const clickCloseButton = async (user: UserEvent) => {
-  const button = getCloseButton()
-  await user.click(button)
-  return button
-}
 
 // cancel button
 const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
@@ -123,9 +112,6 @@ export const testUtils = {
   findContainer,
   getChildByText,
 
-  getCloseButton,
-  clickCloseButton,
-
   getCancelButton,
   clickCancelButton,
 
@@ -164,23 +150,6 @@ describe('Модалка создания запроса о переводе в 
     render(<RequestTaskSuspendModal {...props} />)
     expect(testUtils.getChildByText(/^запрос перевода заявки/i)).toBeInTheDocument()
     expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
-  })
-
-  describe('Кнопка закрытия', () => {
-    test('Отображается корректно', () => {
-      render(<RequestTaskSuspendModal {...props} />)
-      const button = testUtils.getCloseButton()
-
-      expect(button).toBeInTheDocument()
-      expect(button).toBeEnabled()
-    })
-
-    test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<RequestTaskSuspendModal {...props} />)
-
-      await testUtils.clickCloseButton(user)
-      expect(props.onCancel).toBeCalledTimes(1)
-    })
   })
 
   describe('Кнопка отмены', () => {

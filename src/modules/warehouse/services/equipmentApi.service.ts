@@ -29,8 +29,8 @@ import {
   GetEquipmentNomenclatureListTransformedSuccessResponse,
 } from 'modules/warehouse/types'
 import {
-  getEquipmentRelocationHistoryUrl,
   getEquipmentAttachmentListUrl,
+  getEquipmentRelocationHistoryUrl,
   getEquipmentUrl,
   updateEquipmentUrl,
 } from 'modules/warehouse/utils/equipment'
