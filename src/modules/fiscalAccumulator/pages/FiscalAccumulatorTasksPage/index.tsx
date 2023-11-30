@@ -128,7 +128,7 @@ const FiscalAccumulatorTasksPage: FC = () => {
                 {tasksFiltersStorage && (
                   <Col>
                     <TasksFiltersStorage
-                      data={parseTasksFiltersStorage(tasksFiltersStorage)}
+                      filters={parseTasksFiltersStorage(tasksFiltersStorage)}
                       onClose={handleRemoveTasksFilter}
                     />
                   </Col>

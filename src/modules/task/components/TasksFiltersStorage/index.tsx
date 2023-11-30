@@ -14,19 +14,24 @@ export type TasksFilterStorageItem = {
 }
 
 type TasksFiltersStorageProps = {
-  data: TasksFilterStorageItem[]
-  onClose: (item: TasksFilterStorageItem) => void
+  filters: TasksFilterStorageItem[]
+  onClose: (filter: TasksFilterStorageItem) => void
 }
 
-const TasksFiltersStorage: FC<TasksFiltersStorageProps> = ({ data, onClose, ...props }) => {
+const TasksFiltersStorage: FC<TasksFiltersStorageProps> = ({ filters, onClose }) => {
   return (
-    <Space>
-      {data.map((item) => (
-        <Tag {...props} key={item.name} closable onClose={() => onClose(item)}>
+    <Space data-testid='tasks-filters-storage'>
+      {filters.map((filter) => (
+        <Tag
+          data-testid={`tasks-filters-storage-${filter.name}`}
+          key={filter.name}
+          closable
+          onClose={() => onClose(filter)}
+        >
           <Space>
-            <Text>{tasksFiltersDict[item.name]}</Text>
+            <Text>{tasksFiltersDict[filter.name]}</Text>
 
-            {isArray(item.value) && <Text type='secondary'>{size(item.value)}</Text>}
+            {isArray(filter.value) && <Text type='secondary'>{size(filter.value)}</Text>}
           </Space>
         </Tag>
       ))}

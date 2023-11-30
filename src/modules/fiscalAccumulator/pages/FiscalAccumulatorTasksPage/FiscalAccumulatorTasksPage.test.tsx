@@ -3,14 +3,19 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/fiscalAccumulator/components/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
 import { getFiscalAccumulatorTasksErrorMsg } from 'modules/fiscalAccumulator/constants'
+import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
+import {
+  taskLocalStorageService,
+  TasksFiltersStorageType,
+} from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 
 import fiscalAccumulatorFixtures from '_tests_/fixtures/fiscalAccumulator'
 import {
   mockGetFiscalAccumulatorTasksServerError,
   mockGetFiscalAccumulatorTasksSuccess,
 } from '_tests_/mocks/api'
-import { notificationTestUtils, render, setupApiTests } from '_tests_/utils'
+import { fakeId, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
 import FiscalAccumulatorTasksPage from './index'
 
@@ -27,8 +32,8 @@ export const testUtils = {
   clickUpdateTasksButton,
 }
 
-jest.mock('shared/constants/tasksUpdateVariants', () => {
-  const actualModule = jest.requireActual('shared/constants/tasksUpdateVariants')
+jest.mock('modules/task/constants/task/tasksUpdateVariants', () => {
+  const actualModule = jest.requireActual('modules/task/constants/task/tasksUpdateVariants')
 
   return {
     __esModule: true,
@@ -121,6 +126,56 @@ describe('Страница заявок фискальных накопител�
       await updateTasksButtonTestUtils.openDropdown(user, getContainer())
       await updateTasksButtonTestUtils.clickAutoUpdateItem(user)
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
+    })
+  })
+
+  describe('Сохраненные фильтры', () => {
+    test('Не отображаются если их нет', () => {
+      mockGetFiscalAccumulatorTasksSuccess()
+
+      render(<FiscalAccumulatorTasksPage />)
+
+      const filters = tasksFiltersStorageTestUtils.queryContainer()
+      expect(filters).not.toBeInTheDocument()
+    })
+
+    test('Отображаются если есть', async () => {
+      mockGetFiscalAccumulatorTasksSuccess()
+
+      const savedTasksFilters: TasksFiltersStorageType = {
+        customers: [fakeId()],
+        macroregions: [fakeId()],
+        supportGroups: [fakeId()],
+      }
+      taskLocalStorageService.setTasksFilters(savedTasksFilters)
+
+      render(<FiscalAccumulatorTasksPage />)
+
+      Object.keys(savedTasksFilters).forEach((filterName) => {
+        const customersFilter = tasksFiltersStorageTestUtils.getFilter(
+          filterName as keyof typeof savedTasksFilters,
+        )
+        expect(customersFilter).toBeInTheDocument()
+      })
+    })
+
+    test('После удаления перезапрашиваются заявки', async () => {
+      mockGetFiscalAccumulatorTasksSuccess({ once: false })
+
+      taskLocalStorageService.setTasksFilters({ customers: [fakeId()] })
+
+      const { user } = render(<FiscalAccumulatorTasksPage />)
+
+      await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
+
+      const filter = tasksFiltersStorageTestUtils.getFilter('customers')
+      expect(filter).toBeInTheDocument()
+
+      await tasksFiltersStorageTestUtils.removeFilter(user, 'customers')
+      expect(filter).not.toBeInTheDocument()
+
+      await fiscalAccumulatorTaskTableTestUtils.expectLoadingStarted()
+      await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
     })
   })
 })
