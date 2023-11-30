@@ -3,21 +3,21 @@ import { TaskStorageKeysEnum } from 'modules/task/constants/task'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-export type TasksFiltersStorageData = Partial<{
+export type TasksFiltersStorageType = Partial<{
   customers: IdType[]
   macroregions: IdType[]
   supportGroups: IdType[]
 }>
 
-const getTasksFilters = (): MaybeNull<TasksFiltersStorageData> => {
+const getTasksFilters = (): MaybeNull<TasksFiltersStorageType> => {
   const state = localStorage.getItem(TaskStorageKeysEnum.TasksFilters)
   return state ? JSON.parse(state) : null
 }
 
-const setTasksFilters = (state: TasksFiltersStorageData) =>
+const setTasksFilters = (state: TasksFiltersStorageType) =>
   localStorage.setItem(TaskStorageKeysEnum.TasksFilters, JSON.stringify(state))
 
-const deleteTasksFilters = (name: keyof TasksFiltersStorageData): boolean => {
+const deleteTasksFilters = (name: keyof TasksFiltersStorageType): boolean => {
   const state = getTasksFilters()
 
   if (state?.[name]) {

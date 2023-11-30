@@ -4,7 +4,7 @@ import { DEFAULT_SEARCH_FIELD } from 'modules/task/components/ExtendedFilter/con
 import { TasksFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
 import { FastFilterEnum } from 'modules/task/constants/task'
 import { ExtendedFilterQueries } from 'modules/task/models'
-import { TasksFiltersStorageData } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
+import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getUserRoleMap } from 'modules/user/utils'
 
@@ -46,7 +46,7 @@ export const getInitialFastFilter = (role?: UserRoleEnum): FastFilterEnum => {
 }
 
 export const getInitialExtendedFilterFormValues = (
-  preloadedFilters?: Nullable<TasksFiltersStorageData>,
+  tasksFiltersStorage?: Nullable<TasksFiltersStorageType>,
 ): Readonly<TasksFilterFormFields> => ({
   completeAt: [],
   searchField: DEFAULT_SEARCH_FIELD,
@@ -56,7 +56,7 @@ export const getInitialExtendedFilterFormValues = (
   isAssigned: [],
   workGroupId: undefined,
   manager: undefined,
-  customers: get(preloadedFilters, 'customers', []),
-  macroregions: get(preloadedFilters, 'macroregions', []),
-  supportGroups: get(preloadedFilters, 'supportGroups', []),
+  customers: get(tasksFiltersStorage, 'customers', []),
+  macroregions: get(tasksFiltersStorage, 'macroregions', []),
+  supportGroups: get(tasksFiltersStorage, 'supportGroups', []),
 })

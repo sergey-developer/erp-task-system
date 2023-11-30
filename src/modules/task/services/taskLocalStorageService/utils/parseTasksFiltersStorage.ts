@@ -1,18 +1,18 @@
 import isEmpty from 'lodash/isEmpty'
 
-import { TasksFiltersStorageData } from '../taskLocalStorage.service'
+import { TasksFiltersStorageType } from '../taskLocalStorage.service'
 
-type ParsedTasksFiltersStorageData = {
-  name: keyof TasksFiltersStorageData
-  value: NonNullable<TasksFiltersStorageData[keyof TasksFiltersStorageData]>
+type ParsedTasksFilterStorageItem = {
+  name: keyof TasksFiltersStorageType
+  value: NonNullable<TasksFiltersStorageType[keyof TasksFiltersStorageType]>
 }
 
 export const parseTasksFiltersStorage = (
-  filters: TasksFiltersStorageData,
-): ParsedTasksFiltersStorageData[] =>
-  Object.entries(filters).reduce<ParsedTasksFiltersStorageData[]>((acc, [name, value]) => {
+  filters: TasksFiltersStorageType,
+): ParsedTasksFilterStorageItem[] =>
+  Object.entries(filters).reduce<ParsedTasksFilterStorageItem[]>((acc, [name, value]) => {
     if (!isEmpty(value)) {
-      acc.push({ name: name as keyof TasksFiltersStorageData, value })
+      acc.push({ name: name as keyof TasksFiltersStorageType, value })
     }
 
     return acc

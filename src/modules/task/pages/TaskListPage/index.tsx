@@ -13,9 +13,6 @@ import {
   TasksFilterFormFields,
   TasksFilterProps,
 } from 'modules/task/components/ExtendedFilter/types'
-import ExtendedFilterList, {
-  ExtendedFilterListItem,
-} from 'modules/task/components/ExtendedFilterList'
 import FastFilterList from 'modules/task/components/FastFilterList'
 import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskTable from 'modules/task/components/TaskTable'
@@ -25,6 +22,9 @@ import {
 } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort } from 'modules/task/components/TaskTable/utils'
+import TasksFiltersStorage, {
+  TasksFilterStorageItem,
+} from 'modules/task/components/TasksFiltersStorage'
 import UpdateTasksButton from 'modules/task/components/UpdateTasksButton'
 import {
   FastFilterEnum,
@@ -41,7 +41,7 @@ import {
   GetTaskListQueryArgs,
   TaskIdFilterQueries,
 } from 'modules/task/models'
-import { TasksFiltersStorageData } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
+import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils/parseTasksFiltersStorage'
 import {
   useGetUserList,
@@ -92,27 +92,27 @@ const TaskListPage: FC = () => {
 
   const [extendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
 
-  const [preloadedExtendedFilters, setPreloadedExtendedFilters] = useLocalStorageState<
-    MaybeUndefined<TasksFiltersStorageData>
+  const [tasksFiltersStorage, setTasksFiltersStorage] = useLocalStorageState<
+    MaybeUndefined<TasksFiltersStorageType>
   >(TaskStorageKeysEnum.TasksFilters)
 
   const [selectedCustomers, setSelectedCustomers] = useState<MaybeUndefined<IdType[]>>(
-    preloadedExtendedFilters?.customers,
+    tasksFiltersStorage?.customers,
   )
   const [selectedMacroregions, setSelectedMacroregions] = useState<MaybeUndefined<IdType[]>>(
-    preloadedExtendedFilters?.macroregions,
+    tasksFiltersStorage?.macroregions,
   )
 
   const [extendedFilterFormValues, setExtendedFilterFormValues] =
     useSetState<TasksFilterFormFields>({
       ...initialExtendedFilterFormValues,
-      ...preloadedExtendedFilters,
+      ...tasksFiltersStorage,
     })
 
   const [taskListQueryArgs, setTaskListQueryArgs] = useSetState<GetTaskListQueryArgs>(() => ({
     filter: initialFastFilter,
     ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
-    ...preloadedExtendedFilters,
+    ...tasksFiltersStorage,
     sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
   }))
 
@@ -148,7 +148,7 @@ const TaskListPage: FC = () => {
   const onChangeUserStatus = useCallback<UseOnChangeUserStatusFn>(
     (status) => {
       if (checkUserStatusOffline(status)) {
-        setPreloadedExtendedFilters(undefined)
+        setTasksFiltersStorage(undefined)
         const initialSupportGroupFilters = pick(
           initialExtendedFilterFormValues,
           'customers',
@@ -161,7 +161,7 @@ const TaskListPage: FC = () => {
         triggerFilterChange(initialSupportGroupFilters)
       }
     },
-    [setExtendedFilterFormValues, setPreloadedExtendedFilters, triggerFilterChange],
+    [setExtendedFilterFormValues, setTasksFiltersStorage, triggerFilterChange],
   )
 
   useOnChangeUserStatus(onChangeUserStatus)
@@ -192,7 +192,7 @@ const TaskListPage: FC = () => {
     isError: isGetTaskCountersError,
     isFetching: taskCountersIsFetching,
     refetch: refetchTaskCounters,
-  } = useGetTaskCounters(preloadedExtendedFilters, {
+  } = useGetTaskCounters(tasksFiltersStorage, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
@@ -242,7 +242,7 @@ const TaskListPage: FC = () => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     setExtendedFilterFormValues(values)
     triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
-    setPreloadedExtendedFilters(pick(values, 'customers', 'macroregions', 'supportGroups'))
+    setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
     setFastFilter(undefined)
     toggleOpenExtendedFilter()
     handleCloseTaskCard()
@@ -355,8 +355,8 @@ const TaskListPage: FC = () => {
     [selectedTaskId],
   )
 
-  const handleRemoveFilter = (filter: ExtendedFilterListItem) => {
-    setPreloadedExtendedFilters((prevState) => ({ ...prevState, [filter.name]: undefined }))
+  const handleRemoveTasksFilter = (filter: TasksFilterStorageItem) => {
+    setTasksFiltersStorage((prevState) => ({ ...prevState, [filter.name]: undefined }))
     setExtendedFilterFormValues({ [filter.name]: undefined })
     if (filter.name === 'customers') setSelectedCustomers([])
     if (filter.name === 'macroregions') setSelectedMacroregions([])
@@ -372,11 +372,11 @@ const TaskListPage: FC = () => {
               <Row align='middle' gutter={[30, 30]}>
                 <Col span={17}>
                   <Row gutter={[16, 16]}>
-                    {preloadedExtendedFilters && (
+                    {tasksFiltersStorage && (
                       <Col>
-                        <ExtendedFilterList
-                          data={parseTasksFiltersStorage(preloadedExtendedFilters)}
-                          onClose={handleRemoveFilter}
+                        <TasksFiltersStorage
+                          data={parseTasksFiltersStorage(tasksFiltersStorage)}
+                          onClose={handleRemoveTasksFilter}
                         />
                       </Col>
                     )}
