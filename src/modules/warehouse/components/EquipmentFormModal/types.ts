@@ -65,15 +65,17 @@ export type EquipmentFormModalProps = Required<
   warehouseListIsLoading?: boolean
 
   currencyList: CurrencyListModel
-  currencyListIsFetching: boolean
+  currencyListIsLoading: boolean
 
   ownerList: CustomerListModel
-  ownerListIsFetching: boolean
+  ownerListIsLoading: boolean
 
   workTypeList: WorkTypeListModel
-  workTypeListIsFetching: boolean
+  workTypeListIsLoading: boolean
 
   nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>
+  nomenclatureIsLoading: boolean
+
   nomenclatureList: NomenclatureListModel
   nomenclatureListIsLoading: boolean
   onChangeNomenclature: (id: IdType) => void

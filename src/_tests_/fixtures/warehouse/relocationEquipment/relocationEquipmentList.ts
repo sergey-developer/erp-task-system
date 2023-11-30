@@ -10,6 +10,7 @@ import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
 export const relocationEquipmentListItem = (): RelocationEquipmentListItemModel => ({
   id: fakeId(),
+  relocationEquipmentId: fakeId(),
   title: fakeWord(),
   purpose: fakeWord(),
   quantity: fakeInteger(),

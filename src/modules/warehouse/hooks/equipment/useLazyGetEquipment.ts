@@ -6,7 +6,12 @@ import { getEquipmentMessages } from 'modules/warehouse/constants/equipment'
 import { GetEquipmentQueryArgs, GetEquipmentSuccessResponse } from 'modules/warehouse/models'
 import { useLazyGetEquipmentQuery } from 'modules/warehouse/services/equipmentApi.service'
 
-import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetEquipmentResult = CustomUseLazyQueryHookResult<
@@ -19,10 +24,8 @@ export const useLazyGetEquipment = (): UseGetEquipmentResult => {
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isNotFoundError(state.error) && state.error.data.detail) {
-        showErrorNotification(state.error.data.detail)
-      } else if (isForbiddenError(state.error) && state.error.data.detail) {
-        showErrorNotification(state.error.data.detail)
+      if (isNotFoundError(state.error) || isForbiddenError(state.error)) {
+        showErrorNotification(getErrorDetail(state.error))
       } else {
         showErrorNotification(getEquipmentMessages.commonError)
       }

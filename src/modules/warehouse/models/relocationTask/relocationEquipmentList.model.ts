@@ -7,6 +7,7 @@ import { MaybeNull } from 'shared/types/utils'
 
 export type RelocationEquipmentListItemModel = {
   id: IdType
+  relocationEquipmentId: IdType
   title: string
   condition: EquipmentConditionEnum
   purpose: string
