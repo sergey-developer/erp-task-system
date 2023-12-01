@@ -1,22 +1,24 @@
-import { Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd'
+import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
 import isArray from 'lodash/isArray'
-import { FC, useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
-import { useCheckEquipmentCategory } from 'modules/warehouse/hooks/equipment'
 import {
   EquipmentCategoryListItemModel,
   NomenclatureListItemModel,
   WarehouseListItemModel,
 } from 'modules/warehouse/models'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
+import UploadButton from 'components/Buttons/UploadButton'
 import BaseModal from 'components/Modals/BaseModal'
 
+import { filesFormItemProps } from 'shared/constants/form'
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 
-import { EquipmentFormModalProps, EquipmentFormModalFormFields } from './types'
+import { EquipmentFormModalFormFields, EquipmentFormModalProps } from './types'
 
 const { TextArea } = Input
 
@@ -25,6 +27,11 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   isLoading,
   initialValues,
+
+  defaultImages,
+  onUploadImage,
+  onDeleteImage,
+  imageIsDeleting,
 
   categoryList,
   categoryListIsLoading,
@@ -57,13 +64,19 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   const hasSelectedNomenclature = Boolean(nomenclature)
 
   const hasSelectedCategory = Boolean(selectedCategory)
-  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
+  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   useEffect(() => {
-    if (nomenclature) {
+    if (nomenclature?.title) {
       form.setFieldsValue({ title: nomenclature.title })
     }
-  }, [form, nomenclature])
+  }, [form, nomenclature?.title])
+
+  useEffect(() => {
+    if (defaultImages?.length) {
+      form.setFieldsValue({ images: defaultImages })
+    }
+  }, [defaultImages, form])
 
   const handleChangeCategory = (
     value: IdType,
@@ -131,6 +144,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
             fieldNames={idAndTitleSelectFieldNames}
             options={categoryList}
             loading={categoryListIsLoading}
+            disabled={isLoading}
             onChange={handleChangeCategory}
           />
         </Form.Item>
@@ -160,16 +174,16 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               name='title'
               rules={requiredStringRules}
             >
-              <Input placeholder='Введите наименование' disabled={equipmentCategory.isConsumable} />
+              <Input placeholder='Введите наименование' disabled={categoryIsConsumable || isLoading} />
             </Form.Item>
 
-            {!equipmentCategory.isConsumable && (
+            {!categoryIsConsumable && (
               <Form.Item
                 data-testid='customer-inventory-number-form-item'
                 label='Инвентарный номер заказчика'
                 name='customerInventoryNumber'
               >
-                <Input placeholder='Введите инвентарный номер заказчика' />
+                <Input placeholder='Введите инвентарный номер заказчика' disabled={isLoading} />
               </Form.Item>
             )}
 
@@ -180,7 +194,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 name='serialNumber'
                 rules={requiredStringRules}
               >
-                <Input placeholder='Введите серийный номер' />
+                <Input placeholder='Введите серийный номер' disabled={isLoading} />
               </Form.Item>
             )}
 
@@ -196,6 +210,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   fieldNames={idAndTitleSelectFieldNames}
                   options={warehouseList}
                   loading={warehouseListIsLoading}
+                  disabled={isLoading}
                 />
               </Form.Item>
             )}
@@ -206,15 +221,19 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               name='condition'
               rules={onlyRequiredRules}
             >
-              <Select placeholder='Выберите состояние' options={equipmentConditionOptions} />
+              <Select
+                placeholder='Выберите состояние'
+                options={equipmentConditionOptions}
+                disabled={isLoading}
+              />
             </Form.Item>
 
-            {mode === 'create' && equipmentCategory.isConsumable && (
+            {mode === 'create' && categoryIsConsumable && (
               <Form.Item>
                 <Row gutter={8}>
                   <Col span={12}>
                     <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
-                      <InputNumber min={1} placeholder='Введите количество' />
+                      <InputNumber min={1} placeholder='Введите количество' disabled={isLoading} />
                     </Form.Item>
                   </Col>
 
@@ -236,7 +255,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                     </Form.Item>
                   </Col>
 
-                  {equipmentCategory.isConsumable && (
+                  {categoryIsConsumable && (
                     <Col span={6}>
                       <Form.Item data-testid='measurement-unit-form-item' label='Ед.измерения'>
                         {nomenclature?.measurementUnit.title}
@@ -251,7 +270,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               <Row gutter={8}>
                 <Col span={12}>
                   <Form.Item data-testid='price-form-item' label='Стоимость' name='price'>
-                    <InputNumber min={0} placeholder='Введите стоимость' />
+                    <InputNumber min={0} placeholder='Введите стоимость' disabled={isLoading} />
                   </Form.Item>
                 </Col>
 
@@ -262,13 +281,14 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                       fieldNames={idAndTitleSelectFieldNames}
                       options={currencyList}
                       loading={currencyListIsFetching}
+                      disabled={isLoading}
                     />
                   </Form.Item>
                 </Col>
               </Row>
             </Form.Item>
 
-            {!equipmentCategory.isConsumable && (
+            {!categoryIsConsumable && (
               <Form.Item>
                 <Row>
                   <Col span={8}>
@@ -278,7 +298,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                       name='isNew'
                       rules={onlyRequiredRules}
                     >
-                      <Radio.Group options={yesNoOptions} />
+                      <Radio.Group options={yesNoOptions} disabled={isLoading} />
                     </Form.Item>
                   </Col>
 
@@ -289,7 +309,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                       name='isWarranty'
                       rules={onlyRequiredRules}
                     >
-                      <Radio.Group options={yesNoOptions} />
+                      <Radio.Group options={yesNoOptions} disabled={isLoading} />
                     </Form.Item>
                   </Col>
 
@@ -300,30 +320,31 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                       name='isRepaired'
                       rules={onlyRequiredRules}
                     >
-                      <Radio.Group options={yesNoOptions} />
+                      <Radio.Group options={yesNoOptions} disabled={isLoading} />
                     </Form.Item>
                   </Col>
                 </Row>
               </Form.Item>
             )}
 
-            {!equipmentCategory.isConsumable && (
+            {!categoryIsConsumable && (
               <Form.Item
                 data-testid='usage-counter-form-item'
                 label='Счетчик пробега текущий'
                 name='usageCounter'
               >
-                <InputNumber min={0} placeholder='Введите значение' />
+                <InputNumber min={0} placeholder='Введите значение' disabled={isLoading} />
               </Form.Item>
             )}
 
-            {!equipmentCategory.isConsumable && (
+            {!categoryIsConsumable && (
               <Form.Item data-testid='owner-form-item' label='Владелец оборудования' name='owner'>
                 <Select
                   placeholder='Выберите владельца оборудования'
                   fieldNames={idAndTitleSelectFieldNames}
                   options={ownerList}
                   loading={ownerListIsFetching}
+                  disabled={isLoading}
                 />
               </Form.Item>
             )}
@@ -339,11 +360,31 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 fieldNames={idAndTitleSelectFieldNames}
                 options={workTypeList}
                 loading={workTypeListIsFetching}
+                disabled={isLoading}
               />
             </Form.Item>
 
             <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
-              <TextArea placeholder='Добавьте комментарий' />
+              <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
+            </Form.Item>
+
+            <Form.Item
+              data-testid='images-form-item'
+              label='Изображения оборудования'
+              name='images'
+              {...filesFormItemProps}
+            >
+              <Upload
+                listType='picture'
+                multiple
+                disabled={isLoading || imageIsDeleting}
+                itemRender={(originNode, file) => (!file.error ? originNode : null)}
+                customRequest={onUploadImage}
+                onRemove={onDeleteImage}
+                defaultFileList={defaultImages}
+              >
+                <UploadButton label='Добавить фото' disabled={isLoading} />
+              </Upload>
             </Form.Item>
           </>
         )}

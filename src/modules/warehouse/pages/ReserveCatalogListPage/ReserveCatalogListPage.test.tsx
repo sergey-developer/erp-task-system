@@ -6,7 +6,7 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { mockGetEquipmentNomenclatureListSuccess } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { linkTestUtils, renderInRoute_latest } from '_tests_/utils'
+import { getStoreWithAuth, linkTestUtils, renderInRoute_latest } from '_tests_/utils'
 
 import EquipmentNomenclatureListPage from '../EquipmentNomenclatureListPage'
 import { testUtils as equipmentNomenclatureListPageTestUtils } from '../EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
@@ -62,14 +62,11 @@ describe('Страница списка справочников запасов'
         ],
         { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
         {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ'] }),
             },
-          },
+          }),
         },
       )
 
@@ -110,14 +107,11 @@ describe('Страница списка справочников запасов'
         ],
         { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
         {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ'] }),
             },
-          },
+          }),
         },
       )
 
@@ -139,14 +133,11 @@ describe('Страница списка справочников запасов'
         ],
         { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
         {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
             },
-          },
+          }),
         },
       )
 
@@ -187,14 +178,11 @@ describe('Страница списка справочников запасов'
         ],
         { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
         {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
             },
-          },
+          }),
         },
       )
 

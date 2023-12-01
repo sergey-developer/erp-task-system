@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getRelocationTaskListMessages } from 'modules/warehouse/constants/relocationTask'
+import { getRelocationTaskListErrorMsg } from 'modules/warehouse/constants/relocationTask'
 import { GetRelocationTaskListQueryArgs } from 'modules/warehouse/models'
 import { useGetRelocationTaskListQuery } from 'modules/warehouse/services/relocationTaskApi.service'
 import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehouse/types'
 
-import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetRelocationTaskListResult = CustomUseQueryHookResult<
@@ -28,10 +28,10 @@ export const useGetRelocationTaskList = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isForbiddenError(state.error) && state.error.data.detail) {
-        showErrorNotification(state.error.data.detail)
+      if (isForbiddenError(state.error)) {
+        showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getRelocationTaskListMessages.commonError)
+        showErrorNotification(getRelocationTaskListErrorMsg)
       }
     }
   }, [state.error])

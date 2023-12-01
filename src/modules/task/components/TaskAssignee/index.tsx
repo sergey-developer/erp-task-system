@@ -2,46 +2,45 @@ import { Popover, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import UserShortInfo from 'modules/task/components/UserShortInfo'
-import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
-import { getUserAbbr } from 'modules/user/utils'
+import { TaskAssigneeModel } from 'modules/task/models'
+import { getFullUserName, getUserAbbr } from 'modules/user/utils'
 
 import UserAvatar from 'components/Avatars/UserAvatar'
 import Space from 'components/Space'
 
-import { MaybeNull } from 'shared/types/utils'
-
 const { Text } = Typography
 
-export type TaskAssigneeProps = {
-  name: string
-  assignee: MaybeNull<
-    Pick<TaskAssigneeModel, 'firstName' | 'lastName' | 'middleName'> &
-      Partial<Pick<TaskAssigneeModel, 'id' | 'role' | 'phone' | 'email' | 'avatar'>>
-  >
-  phone?: TaskModel['contactPhone']
-}
+export type TaskAssigneeProps = Pick<TaskAssigneeModel, 'firstName' | 'lastName' | 'middleName'> &
+  Partial<Pick<TaskAssigneeModel, 'id' | 'role' | 'phone' | 'email' | 'avatar'>> & {
+    hasPopover?: boolean
+  }
 
-const TaskAssignee: FC<TaskAssigneeProps> = ({ assignee, name, phone }) => {
+const TaskAssignee: FC<TaskAssigneeProps> = ({
+  firstName,
+  lastName,
+  middleName,
+  role,
+  email,
+  phone,
+  avatar,
+
+  hasPopover,
+}) => {
+  const fullName = getFullUserName({ firstName, lastName, middleName })
+
   return (
     <Space data-testid='task-assignee' size='middle' align='start'>
-      {assignee && <UserAvatar src={assignee.avatar} abbr={getUserAbbr(assignee)} />}
+      <UserAvatar src={avatar} abbr={getUserAbbr({ firstName, lastName })} />
 
       <Space direction='vertical'>
-        {assignee ? (
+        {hasPopover ? (
           <Popover
-            content={
-              <UserShortInfo
-                email={assignee.email}
-                phone={assignee.phone}
-                role={assignee.role}
-                skip={['fio']}
-              />
-            }
+            content={<UserShortInfo email={email} phone={phone} role={role} skip={['fio']} />}
           >
-            {name}
+            {fullName}
           </Popover>
         ) : (
-          <Text>{name}</Text>
+          <Text>{fullName}</Text>
         )}
 
         {phone && <Text>{phone}</Text>}

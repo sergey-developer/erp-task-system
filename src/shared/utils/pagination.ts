@@ -26,3 +26,7 @@ export const calculatePaginationParams = ({
 
   return getInitialPaginationParams()
 }
+
+export const extractPaginationResults = <T extends { results: T['results'] }>(
+  value?: T,
+): T['results'] => value?.results || []

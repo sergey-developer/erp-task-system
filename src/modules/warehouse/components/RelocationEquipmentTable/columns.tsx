@@ -1,12 +1,19 @@
+import { Button } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
 import { valueOrHyphen } from 'shared/utils/common'
 
-import { RelocationEquipmentTableItem } from './types'
+import { RelocationEquipmentTableItem, RelocationEquipmentTableProps } from './types'
 
-export const columns: ColumnsType<RelocationEquipmentTableItem> = [
+type GetColumnsArgs = {
+  onClickImages: RelocationEquipmentTableProps['onClickImages']
+}
+
+export const getColumns = ({
+  onClickImages,
+}: GetColumnsArgs): ColumnsType<RelocationEquipmentTableItem> => [
   {
     key: 'title',
     dataIndex: 'title',
@@ -45,5 +52,14 @@ export const columns: ColumnsType<RelocationEquipmentTableItem> = [
     dataIndex: 'currency',
     title: 'Валюта',
     render: (value: RelocationEquipmentTableItem['currency']) => valueOrHyphen(value?.title),
+  },
+  {
+    key: 'images',
+    title: 'Изображения',
+    render: (value, record) => (
+      <Button type='link' onClick={(event) => onClickImages(event, record)}>
+        Посмотреть
+      </Button>
+    ),
   },
 ]

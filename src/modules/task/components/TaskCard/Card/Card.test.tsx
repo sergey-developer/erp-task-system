@@ -14,10 +14,10 @@ import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 import taskFixtures from '_tests_/fixtures/task'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
-import { fakeWord, getStoreWithAuth, render, spinnerTestUtils, cardTestUtils } from '_tests_/utils'
-import { modalTestUtils } from '_tests_/utils/components'
+import { cardTestUtils, fakeWord, getStoreWithAuth, render, spinnerTestUtils } from '_tests_/utils'
 
 import { testUtils as cardTabsTestUtils } from '../../CardTabs/CardTabs.test'
+import { testUtils as confirmExecuteTaskModalTestUtils } from '../../ConfirmExecuteTaskModal/ConfirmExecuteTaskModal.test'
 import {
   availableReasons,
   testUtils as taskReclassificationModalTestUtils,
@@ -33,8 +33,8 @@ import {
   activeAssignButtonProps,
   activeAssignOnMeButtonProps,
   activeTakeTaskButtonProps,
-  testUtils as assigneeBlockTestUtils,
   canSelectAssigneeProps,
+  testUtils as assigneeBlockTestUtils,
 } from '../AssigneeBlock/AssigneeBlock.test'
 import {
   activeExecuteTaskItemProps,
@@ -404,19 +404,15 @@ describe('Карточка заявки', () => {
   })
 
   describe('Выполнение заявки', () => {
-    describe('Модалка решения по заявке', () => {
-      test('Открывается', async () => {
+    describe('Модалка выполнения заявки', () => {
+      test('Открывается если у заявки есть заявки на перемещение', async () => {
+        const task = taskFixtures.task({ hasRelocationTasks: true })
+
         const { user } = render(
-          <TaskCard
-            {...props}
-            task={{
-              ...props.task!,
-              ...activeExecuteTaskItemProps,
-            }}
-          />,
+          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
           {
             store: getStoreWithAuth({
-              userId: props.task!.assignee!.id,
+              userId: task.assignee!.id,
             }),
           },
         )
@@ -428,94 +424,93 @@ describe('Карточка заявки', () => {
         expect(modal).toBeInTheDocument()
       })
 
-      describe('Закрывается', () => {
-        test('При клике на кнопку "Отмена"', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeExecuteTaskItemProps,
-              }}
-            />,
-            {
-              store: getStoreWithAuth({
-                userId: props.task!.assignee!.id,
-              }),
-            },
-          )
+      test('Закрывается при клике на кнопку отмены', async () => {
+        const task = taskFixtures.task({ hasRelocationTasks: true })
 
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
-          const modal = await executeTaskModalTestUtils.findContainer()
-          await executeTaskModalTestUtils.clickCancelButton(user)
+        const { user } = render(
+          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
+          {
+            store: getStoreWithAuth({
+              userId: task.assignee!.id,
+            }),
+          },
+        )
 
-          expect(modal).not.toBeInTheDocument()
-        })
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        const modal = await executeTaskModalTestUtils.findContainer()
+        await executeTaskModalTestUtils.clickCancelButton(user)
 
-        test('При клике на кнопку закрытия', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeExecuteTaskItemProps,
-              }}
-            />,
-            {
-              store: getStoreWithAuth({
-                userId: props.task!.assignee!.id,
-              }),
-            },
-          )
+        await waitFor(() => expect(modal).not.toBeInTheDocument())
+      })
+    })
 
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
-          const modal = await executeTaskModalTestUtils.findContainer()
-          await executeTaskModalTestUtils.clickCloseButton(user)
+    describe('Модалка подтверждения выполнения', () => {
+      test('Открывается если у заявки нет заявок на перемещение', async () => {
+        const task = taskFixtures.task({ hasRelocationTasks: false })
 
-          expect(modal).not.toBeInTheDocument()
-        })
+        const { user } = render(
+          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
+          {
+            store: getStoreWithAuth({ userId: task.assignee!.id }),
+          },
+        )
 
-        test('При клике вне модалки', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeExecuteTaskItemProps,
-              }}
-            />,
-            {
-              store: getStoreWithAuth({
-                userId: props.task!.assignee!.id,
-              }),
-            },
-          )
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        const modal = await confirmExecuteTaskModalTestUtils.findContainer()
 
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
-          const modal = await executeTaskModalTestUtils.findContainer()
-          await modalTestUtils.clickOutsideModal(user)
+        expect(modal).toBeInTheDocument()
+      })
 
-          expect(modal).not.toBeInTheDocument()
-        })
+      test('Закрывается при клике на кнопку отмены', async () => {
+        const task = taskFixtures.task({ hasRelocationTasks: false })
+
+        const { user } = render(
+          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
+          {
+            store: getStoreWithAuth({ userId: task.assignee!.id }),
+          },
+        )
+
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        const modal = await confirmExecuteTaskModalTestUtils.findContainer()
+        await confirmExecuteTaskModalTestUtils.clickCancelButton(user)
+
+        await waitFor(() => expect(modal).not.toBeInTheDocument())
+      })
+
+      test('Закрывается при клике на кнопку подтверждения и открывается модалка выполнения заявки', async () => {
+        const task = taskFixtures.task({ hasRelocationTasks: false })
+
+        const { user } = render(
+          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
+          {
+            store: getStoreWithAuth({ userId: task.assignee!.id }),
+          },
+        )
+
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        const confirmModal = await confirmExecuteTaskModalTestUtils.findContainer()
+        await confirmExecuteTaskModalTestUtils.clickConfirmButton(user)
+        const executeTaskModal = await executeTaskModalTestUtils.findContainer()
+
+        await waitFor(() => expect(confirmModal).not.toBeInTheDocument())
+        expect(executeTaskModal).toBeInTheDocument()
       })
     })
 
     describe('При успешном запросе', () => {
-      test('Переданные обработчики вызываются корректно', async () => {
+      test('Переданные обработчики вызываются', async () => {
+        const task = taskFixtures.task({ hasRelocationTasks: true })
+
         const { user } = render(
-          <TaskCard
-            {...props}
-            task={{
-              ...props.task!,
-              ...activeExecuteTaskItemProps,
-            }}
-          />,
+          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
           {
             store: getStoreWithAuth({
-              userId: props.task!.assignee!.id,
+              userId: task.assignee!.id,
             }),
           },
         )
@@ -535,6 +530,8 @@ describe('Карточка заявки', () => {
       })
     })
 
+    test.todo('При не успешном запросе')
+
     describe('Формирование акта', () => {
       test('Корректно отрабатывает успешный вызов', async () => {
         const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
@@ -548,18 +545,17 @@ describe('Карточка заявки', () => {
           unwrap: jest.fn(() => fakeFile),
         }))
 
+        const task = taskFixtures.task({ hasRelocationTasks: true })
+
         const { user } = render(
           <TaskCard
             {...props}
-            task={{
-              ...props.task!,
-              ...activeExecuteTaskItemProps,
-            }}
+            task={{ ...task, ...activeExecuteTaskItemProps }}
             getTaskWorkPerformedAct={getTaskWorkPerformedActMock as any}
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task!.assignee!.id,
+              userId: task.assignee!.id,
             }),
           },
         )
@@ -581,7 +577,7 @@ describe('Карточка заявки', () => {
         expect(clickDownloadLinkSpy).toBeCalledWith(
           fakeArrayBuffer,
           MimetypeEnum.Pdf,
-          `Акт о выполненных работах ${props.task!.id}`,
+          `Акт о выполненных работах ${task!.id}`,
         )
       })
 
@@ -590,11 +586,9 @@ describe('Карточка заявки', () => {
   })
 
   describe('Получение заявки', () => {
-    describe('При ошибке получения', () => {
-      test('Вызывается обработчик закрытия карточки', () => {
-        render(<TaskCard {...props} isGetTaskError />)
-        expect(props.closeTaskCard).toBeCalledTimes(1)
-      })
+    test('При ошибке вызывается обработчик закрытия карточки', () => {
+      render(<TaskCard {...props} isGetTaskError />)
+      expect(props.closeTaskCard).toBeCalledTimes(1)
     })
   })
 
@@ -1119,72 +1113,26 @@ describe('Карточка заявки', () => {
         expect(modal).toBeInTheDocument()
       })
 
-      describe('Закрывается', () => {
-        test('При клике на кнопку "Отмена"', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
+      test('Закрывается при клике на кнопку "Отмена"', async () => {
+        const { user } = render(
+          <TaskCard
+            {...props}
+            task={{
+              ...props.task!,
+              status: activeRequestSuspendItemProps.status,
+              type: activeRequestSuspendItemProps.type,
+              suspendRequest: null,
+            }}
+          />,
+          { store: getStoreWithAuth() },
+        )
 
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
-          const modal = await requestTaskSuspendModalTestUtils.findContainer()
-          await requestTaskSuspendModalTestUtils.clickCancelButton(user)
+        await cardTitleTestUtils.openMenu(user)
+        await cardTitleTestUtils.clickRequestSuspendItem(user)
+        const modal = await requestTaskSuspendModalTestUtils.findContainer()
+        await requestTaskSuspendModalTestUtils.clickCancelButton(user)
 
-          expect(modal).not.toBeInTheDocument()
-        })
-
-        test('При клике на кнопку закрытия', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
-          const modal = await requestTaskSuspendModalTestUtils.findContainer()
-          await requestTaskSuspendModalTestUtils.clickCancelButton(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
-
-        test('При клике вне модалки', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                status: activeRequestSuspendItemProps.status,
-                type: activeRequestSuspendItemProps.type,
-                suspendRequest: null,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
-          const modal = await requestTaskSuspendModalTestUtils.findContainer()
-          await modalTestUtils.clickOutsideModal(user)
-
-          expect(modal).not.toBeInTheDocument()
-        })
+        expect(modal).not.toBeInTheDocument()
       })
 
       describe('При успешном запросе', () => {

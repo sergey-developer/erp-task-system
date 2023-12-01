@@ -22,6 +22,7 @@ import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { EmptyFn } from 'shared/types/utils'
 
 const TaskFirstLineModal = React.lazy(() => import('modules/task/components/TaskFirstLineModal'))
 
@@ -36,14 +37,14 @@ export type WorkGroupBlockProps = Pick<
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
     setFields: FormInstance['setFields'],
-    closeTaskFirstLineModal: () => void,
+    closeTaskFirstLineModal: EmptyFn,
   ) => Promise<void>
   transferTaskToFirstLineIsLoading: boolean
 
   transferTaskToSecondLine: (
     values: TaskSecondLineFormFields,
     setFields: FormInstance['setFields'],
-    closeTaskSecondLineModal: () => void,
+    closeTaskSecondLineModal: EmptyFn,
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
 

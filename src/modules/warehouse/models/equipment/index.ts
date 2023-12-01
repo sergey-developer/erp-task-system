@@ -12,6 +12,8 @@ export * from './getEquipmentRelocationHistory.model'
 export * from './equipmentCatalogList.model'
 export * from './getEquipmentCatalogList.model'
 
+export * from './getEquipmentAttachmentList.model'
+
 export * from './equipmentNomenclatureList.model'
 export * from './getEquipmentNomenclatureList.model'
 

@@ -16,13 +16,15 @@ export const getEquipmentRelocationHistoryMessages: ApiRequestMessages<'commonEr
   commonError: 'Ошибка получения информации о перемещении оборудования',
 }
 
-export const getEquipmentCatalogListMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения каталога оборудования',
-}
+export const getEquipmentAttachmentListErrorMsg = 'Ошибка получения изображений оборудования'
+export const getEquipmentCatalogListErrorMsg = 'Ошибка получения каталога оборудования'
 
 export const getEquipmentMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения оборудования',
 }
+
+export const createEquipmentErrorMsg = 'Ошибка создания оборудования'
+export const updateEquipmentErrorMsg = 'Ошибка редактирования оборудования'
 
 export const getEquipmentListTemplateErrorMsg =
   'Ошибка формирования шаблона для загрузки оборудования из файла'

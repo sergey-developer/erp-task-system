@@ -1,13 +1,21 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
+import { testUtils as taskAttachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { CommonRouteEnum } from 'configs/routes'
+
+import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
+import TaskListPage from 'modules/task/pages/TaskListPage'
+import { getTaskListPageLink } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
 import { testUtils as cancelRelocationTaskModalTestUtils } from 'modules/warehouse/components/CancelRelocationTaskModal/CancelRelocationTaskModal.test'
 import { testUtils as confirmExecutionRelocationTaskModalTestUtils } from 'modules/warehouse/components/ConfirmExecutionRelocationTaskModal/ConfirmExecutionRelocationTaskModal.test'
 import { testUtils as executeRelocationTaskModalTestUtils } from 'modules/warehouse/components/ExecuteRelocationTaskModal/ExecuteRelocationTaskModal.test'
 import { testUtils as relocationEquipmentTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentTable/RelocationEquipmentTable.test'
 import { testUtils as returnRelocationTaskToReworkModalTestUtils } from 'modules/warehouse/components/ReturnRelocationTaskToReworkModal/ReturnRelocationTaskToReworkModal.test'
+import { getRelocationEquipmentAttachmentListErrorMsg } from 'modules/warehouse/constants/relocationEquipment'
 import {
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
@@ -18,8 +26,13 @@ import {
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
   returnRelocationTaskToReworkMessages,
+  relocationTaskTypeDict,
 } from 'modules/warehouse/constants/relocationTask'
-import { getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import {
+  getRelocationTaskTitle,
+  getWaybillM15Filename,
+} from 'modules/warehouse/utils/relocationTask'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -27,7 +40,6 @@ import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 import { formatDate } from 'shared/utils/date'
 
-import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCancelRelocationTaskBadRequestError,
@@ -45,6 +57,10 @@ import {
   mockExecuteRelocationTaskNotFoundError,
   mockExecuteRelocationTaskServerError,
   mockExecuteRelocationTaskSuccess,
+  mockGetRelocationEquipmentAttachmentsForbiddenError,
+  mockGetRelocationEquipmentAttachmentsNotFoundError,
+  mockGetRelocationEquipmentAttachmentsServerError,
+  mockGetRelocationEquipmentAttachmentsSuccess,
   mockGetRelocationEquipmentListForbiddenError,
   mockGetRelocationEquipmentListNotFoundError,
   mockGetRelocationEquipmentListServerError,
@@ -57,6 +73,9 @@ import {
   mockGetRelocationTaskWaybillM15NotFoundError,
   mockGetRelocationTaskWaybillM15ServerError,
   mockGetRelocationTaskWaybillM15Success,
+  mockGetTaskCountersSuccess,
+  mockGetTaskListSuccess,
+  mockGetTaskSuccess,
   mockReturnRelocationTaskToReworkBadRequestError,
   mockReturnRelocationTaskToReworkForbiddenError,
   mockReturnRelocationTaskToReworkNotFoundError,
@@ -72,6 +91,7 @@ import {
   menuTestUtils,
   notificationTestUtils,
   render,
+  renderInRoute_latest,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -173,7 +193,7 @@ notificationTestUtils.setupNotifications()
 
 describe('Информация о заявке о перемещении', () => {
   describe('При успешном запросе', () => {
-    test('Заголовок отображается корректно', async () => {
+    test('Заголовок отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -181,15 +201,33 @@ describe('Информация о заявке о перемещении', () =>
       render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
 
       await testUtils.expectRelocationTaskLoadingFinished()
-
       const title = within(testUtils.getContainer()).getByText(
-        `Заявка на перемещение оборудования ${relocationTask.relocateFrom?.title} 🠖 ${relocationTask.relocateTo?.title}`,
+        getRelocationTaskTitle(relocationTask),
       )
 
       expect(title).toBeInTheDocument()
     })
 
-    test('Срок выполнения отображается корректно', async () => {
+    test('Тип заявки отображается', async () => {
+      const relocationTask = warehouseFixtures.relocationTask()
+      mockGetRelocationTaskSuccess(props.relocationTaskId!, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId!)
+
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+
+      await testUtils.expectRelocationTaskLoadingFinished()
+
+      const label = testUtils.getRelocationTaskInfo('type', /Тип заявки/)
+      const value = testUtils.getRelocationTaskInfo(
+        'type',
+        relocationTaskTypeDict[relocationTask.type],
+      )
+
+      expect(label).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
+    test('Срок выполнения отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -208,7 +246,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Объект выбытия отображается корректно', async () => {
+    test('Объект выбытия отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -227,7 +265,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Объект прибытия отображается корректно', async () => {
+    test('Объект прибытия отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -243,7 +281,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Исполнитель отображается корректно', async () => {
+    test('Исполнитель отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -259,7 +297,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Статус отображается корректно', async () => {
+    test('Статус отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -325,7 +363,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Создано отображается корректно', async () => {
+    test('Создано отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -344,6 +382,61 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
+    describe('Заявка ITSM', () => {
+      test('Отображается корректно', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+
+        await testUtils.expectRelocationTaskLoadingFinished()
+
+        const label = testUtils.getRelocationTaskInfo('task', /Заявка ITSM/)
+        const link = testUtils.getRelocationTaskInfo('task', relocationTask.task!.recordId)
+
+        expect(label).toBeInTheDocument()
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute(
+          'href',
+          getTaskListPageLink({ viewTaskId: relocationTask.task!.id }),
+        )
+      })
+
+      test('При клике переходит на страницу реестра заявок и открывает карточку заявки', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+        mockGetTaskSuccess(relocationTask.task!.id)
+        mockGetTaskListSuccess()
+        mockGetTaskCountersSuccess()
+
+        const { user } = renderInRoute_latest(
+          [
+            {
+              path: WarehouseRouteEnum.RelocationTaskList,
+              element: (
+                <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />
+              ),
+            },
+            {
+              path: CommonRouteEnum.DesktopTaskList,
+              element: <TaskListPage />,
+            },
+          ],
+          { initialEntries: [WarehouseRouteEnum.RelocationTaskList], initialIndex: 0 },
+        )
+
+        await testUtils.expectRelocationTaskLoadingFinished()
+
+        const link = testUtils.getRelocationTaskInfo('task', relocationTask.task!.recordId)
+        await user.click(link)
+        const card = await taskCardTestUtils.findContainer()
+
+        expect(card).toBeInTheDocument()
+      })
+    })
+
     test('Комментарий отображается корректно', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
@@ -360,7 +453,7 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Документы отображается корректно', async () => {
+    test('Документы отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
@@ -370,7 +463,7 @@ describe('Информация о заявке о перемещении', () =>
       await testUtils.expectRelocationTaskLoadingFinished()
 
       const label = testUtils.getRelocationTaskInfo('documents', /Документы/)
-      const value = attachmentListTestUtils.getContainerIn(testUtils.getContainer())
+      const value = taskAttachmentListTestUtils.getContainerIn(testUtils.getContainer())
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -428,7 +521,7 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId)
       const relocationEquipmentList = warehouseFixtures.relocationEquipmentList()
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId, {
-        body: commonFixtures.paginatedListResponse(relocationEquipmentList),
+        body: relocationEquipmentList,
       })
 
       render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
@@ -484,6 +577,117 @@ describe('Информация о заявке о перемещении', () =>
           getRelocationEquipmentListMessages.commonError,
         )
         expect(notification).toBeInTheDocument()
+      })
+    })
+
+    describe('Изображения оборудования', () => {
+      test('При успешном запросе отображаются', async () => {
+        mockGetRelocationTaskSuccess(props.relocationTaskId)
+        const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListItem()
+        const relocationEquipmentList = [relocationEquipmentListItem]
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId, {
+          body: relocationEquipmentList,
+        })
+        mockGetRelocationEquipmentAttachmentsSuccess(relocationEquipmentListItem.id, {
+          body: warehouseFixtures.relocationEquipmentAttachments(),
+        })
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        )
+
+        await testUtils.expectRelocationEquipmentListLoadingFinished()
+        await relocationEquipmentTableTestUtils.clickViewImagesButton(
+          user,
+          relocationEquipmentListItem.id,
+        )
+        const modal = await attachmentListModalTestUtils.findContainer()
+        await attachmentListModalTestUtils.expectLoadingFinished()
+        const images = attachmentListTestUtils.getAllIn(modal)
+
+        expect(images).toHaveLength(relocationEquipmentList.length)
+      })
+
+      describe('При не успешном запросе', () => {
+        test('Обрабатывает ошибку 403', async () => {
+          mockGetRelocationTaskSuccess(props.relocationTaskId)
+          const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListItem()
+          mockGetRelocationEquipmentListSuccess(props.relocationTaskId, {
+            body: [relocationEquipmentListItem],
+          })
+
+          const errorMsg = fakeWord()
+          mockGetRelocationEquipmentAttachmentsForbiddenError(relocationEquipmentListItem.id, {
+            body: { detail: errorMsg },
+          })
+
+          const { user } = render(
+            <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          )
+
+          await testUtils.expectRelocationEquipmentListLoadingFinished()
+          await relocationEquipmentTableTestUtils.clickViewImagesButton(
+            user,
+            relocationEquipmentListItem.id,
+          )
+          await attachmentListModalTestUtils.findContainer()
+
+          const notification = await notificationTestUtils.findNotification(errorMsg)
+          expect(notification).toBeInTheDocument()
+        })
+
+        test('Обрабатывает ошибку 404', async () => {
+          mockGetRelocationTaskSuccess(props.relocationTaskId)
+          const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListItem()
+          mockGetRelocationEquipmentListSuccess(props.relocationTaskId, {
+            body: [relocationEquipmentListItem],
+          })
+
+          const errorMsg = fakeWord()
+          mockGetRelocationEquipmentAttachmentsNotFoundError(relocationEquipmentListItem.id, {
+            body: { detail: errorMsg },
+          })
+
+          const { user } = render(
+            <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          )
+
+          await testUtils.expectRelocationEquipmentListLoadingFinished()
+          await relocationEquipmentTableTestUtils.clickViewImagesButton(
+            user,
+            relocationEquipmentListItem.id,
+          )
+          await attachmentListModalTestUtils.findContainer()
+
+          const notification = await notificationTestUtils.findNotification(errorMsg)
+          expect(notification).toBeInTheDocument()
+        })
+
+        test('Обрабатывает ошибку 500', async () => {
+          mockGetRelocationTaskSuccess(props.relocationTaskId)
+          const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListItem()
+          mockGetRelocationEquipmentListSuccess(props.relocationTaskId, {
+            body: [relocationEquipmentListItem],
+          })
+
+          mockGetRelocationEquipmentAttachmentsServerError(relocationEquipmentListItem.id)
+
+          const { user } = render(
+            <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          )
+
+          await testUtils.expectRelocationEquipmentListLoadingFinished()
+          await relocationEquipmentTableTestUtils.clickViewImagesButton(
+            user,
+            relocationEquipmentListItem.id,
+          )
+          await attachmentListModalTestUtils.findContainer()
+
+          const notification = await notificationTestUtils.findNotification(
+            getRelocationEquipmentAttachmentListErrorMsg,
+          )
+          expect(notification).toBeInTheDocument()
+        })
       })
     })
   })
@@ -734,14 +938,11 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
-                },
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
               },
-            },
+            }),
           },
         )
 

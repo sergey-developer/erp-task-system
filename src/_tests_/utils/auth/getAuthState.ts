@@ -1,9 +1,9 @@
-import { AuthSliceState, AuthenticatedUser } from 'modules/auth/types'
+import { AuthenticatedUser, AuthSliceState } from 'modules/auth/types'
 
 import authFixtures from '_tests_/fixtures/auth'
 
 type GetAuthStateConfig = { user: AuthenticatedUser } & Partial<
-  Pick<AuthSliceState, 'accessToken' | 'refreshToken' | 'isAuthenticated'>
+  Pick<AuthSliceState, 'accessToken' | 'refreshToken' | 'isLoggedIn'>
 >
 
 export const getAuthState = ({
@@ -12,7 +12,7 @@ export const getAuthState = ({
   refreshToken = authFixtures.fakeRefreshToken,
 }: GetAuthStateConfig): Required<GetAuthStateConfig> => ({
   user,
-  isAuthenticated: !!accessToken && !!refreshToken,
+  isLoggedIn: !!accessToken && !!refreshToken,
   accessToken,
   refreshToken,
 })

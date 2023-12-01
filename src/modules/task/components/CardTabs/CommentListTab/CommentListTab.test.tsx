@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { createTaskCommentMessages } from 'modules/task/constants/taskComment'
+import { createTaskCommentErrorMsg } from 'modules/task/constants/taskComment'
 
 import { commonApiMessages } from 'shared/constants/common'
 
@@ -15,13 +15,13 @@ import {
   mockGetTaskCommentListSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
   fakeId,
   fakeWord,
   getStoreWithAuth,
+  notificationTestUtils,
   render,
   setupApiTests,
-  notificationTestUtils,
-  buttonTestUtils,
 } from '_tests_/utils'
 
 import { testUtils as commentListTestUtils } from './CommentList/CommentList.test'
@@ -310,9 +310,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
-          const error = await notificationTestUtils.findNotification(
-            createTaskCommentMessages.commonError,
-          )
+          const error = await notificationTestUtils.findNotification(createTaskCommentErrorMsg)
           expect(error).toBeInTheDocument()
         })
 
@@ -331,9 +329,7 @@ describe('Вкладка списка комментариев заявки', ()
           await createCommentFormTestUtils.expectLoadingStarted()
           await createCommentFormTestUtils.expectLoadingFinished()
 
-          const error = await notificationTestUtils.findNotification(
-            createTaskCommentMessages.commonError,
-          )
+          const error = await notificationTestUtils.findNotification(createTaskCommentErrorMsg)
           expect(error).toBeInTheDocument()
         })
 

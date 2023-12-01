@@ -3,7 +3,6 @@ import {
   Button,
   Col,
   Drawer,
-  DrawerProps,
   Dropdown,
   DropdownProps,
   MenuProps,
@@ -11,19 +10,22 @@ import {
   Tooltip,
   Typography,
 } from 'antd'
-import React, { FC } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { FC, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { useCheckUserAuthenticated } from 'modules/auth/hooks'
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
+import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import {
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
   executeRelocationTaskMessages,
   relocationTaskStatusDict,
+  relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
+import { useGetRelocationEquipmentAttachmentList } from 'modules/warehouse/hooks/relocationEquipment'
 import {
   useGetRelocationEquipmentList,
   useGetRelocationTask,
@@ -38,6 +40,7 @@ import {
 } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
+  getRelocationTaskTitle,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
 
@@ -58,14 +61,19 @@ import {
 } from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-import { mapUploadedFiles } from 'shared/utils/file'
+import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
+import { RelocationEquipmentTableItem } from '../RelocationEquipmentTable/types'
 import { ReturnRelocationTaskToReworkModalProps } from '../ReturnRelocationTaskToReworkModal/types'
 import { RelocationTaskDetailsProps } from './types'
+
+const AttachmentListModal = React.lazy(
+  () => import('modules/attachment/components/AttachmentListModal'),
+)
 
 const CancelRelocationTaskModal = React.lazy(() => import('../CancelRelocationTaskModal'))
 
@@ -100,13 +108,36 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [confirmExecutionModalOpened, { toggle: toggleOpenConfirmExecutionModal }] = useBoolean()
   const debouncedToggleOpenConfirmExecutionModal = useDebounceFn(toggleOpenConfirmExecutionModal)
 
+  const [activeEquipment, setActiveEquipment] = useState<RelocationEquipmentTableItem>()
+  const [
+    equipmentImagesModalOpened,
+    { setTrue: openEquipmentImagesModal, setFalse: closeEquipmentImagesModal },
+  ] = useBoolean()
+
+  const handleOpenEquipmentImagesModal = useDebounceFn((event, equipment) => {
+    event.stopPropagation()
+    openEquipmentImagesModal()
+    setActiveEquipment(equipment)
+  })
+
+  const handleCloseEquipmentImagesModal = useDebounceFn(() => {
+    closeEquipmentImagesModal()
+    setActiveEquipment(undefined)
+  })
+
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
     useGetRelocationTask({ relocationTaskId })
 
+  const { currentData: relocationEquipments = [], isFetching: relocationEquipmentsIsFetching } =
+    useGetRelocationEquipmentList({ relocationTaskId })
+
   const {
-    currentData: relocationEquipmentList = [],
-    isFetching: relocationEquipmentListIsFetching,
-  } = useGetRelocationEquipmentList({ relocationTaskId })
+    currentData: relocationEquipmentAttachmentList = [],
+    isFetching: relocationEquipmentAttachmentListIsFetching,
+  } = useGetRelocationEquipmentAttachmentList(
+    { relocationEquipmentId: activeEquipment?.id! },
+    { skip: !equipmentImagesModalOpened || !activeEquipment },
+  )
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
@@ -123,8 +154,8 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [executeRelocationTaskMutation, { isLoading: executeRelocationTaskIsLoading }] =
     useExecuteRelocationTaskMutation()
 
-  const creatorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.createdBy?.id)
-  const executorIsCurrentUser = useCheckUserAuthenticated(relocationTask?.executor?.id)
+  const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
+  const executorIsCurrentUser = useIdBelongAuthUser(relocationTask?.executor?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const handleCloseTask = async () => {
@@ -214,7 +245,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     try {
       await executeRelocationTaskMutation({
         relocationTaskId,
-        documents: mapUploadedFiles(values.documents),
+        documents: extractOriginFiles(values.documents),
       }).unwrap()
 
       toggleOpenExecuteTaskModal()
@@ -236,17 +267,6 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       }
     }
   }
-
-  const title: DrawerProps['title'] = relocationTaskIsFetching ? (
-    <Space>
-      <Text>Заявка на перемещение оборудования</Text>
-      <Spinner centered={false} />
-    </Space>
-  ) : (
-    `Заявка на перемещение оборудования ${valueOrHyphen(
-      relocationTask?.relocateFrom?.title,
-    )} 🠖 ${valueOrHyphen(relocationTask?.relocateTo?.title)}`
-  )
 
   const menuProps: MenuProps = {
     items: [
@@ -321,7 +341,12 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         {...props}
         data-testid='relocation-task-details'
         placement='bottom'
-        title={title}
+        title={
+          <Space>
+            <Text>{getRelocationTaskTitle(relocationTask)}</Text>
+            {relocationTaskIsFetching && <Spinner centered={false} />}
+          </Space>
+        }
         extra={
           <Dropdown menu={menuProps} trigger={dropdownTrigger}>
             <Button type='text' icon={<MenuIcon />} />
@@ -338,6 +363,14 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             >
               {relocationTask && (
                 <Space $block direction='vertical' size='middle'>
+                  <Row data-testid='type'>
+                    <Col span={8}>
+                      <Text type='secondary'>Тип заявки:</Text>
+                    </Col>
+
+                    <Col span={16}>{relocationTaskTypeDict[relocationTask.type]}</Col>
+                  </Row>
+
                   <Row data-testid='deadline-at'>
                     <Col span={8}>
                       <Text type='secondary'>Срок выполнения:</Text>
@@ -427,6 +460,20 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Col span={16}>{formatDate(relocationTask.createdAt)}</Col>
                   </Row>
 
+                  <Row data-testid='task'>
+                    <Col span={8}>
+                      <Text type='secondary'>Заявка ITSM:</Text>
+                    </Col>
+
+                    {relocationTask.task && (
+                      <Col span={16}>
+                        <Link to={getTaskListPageLink({ viewTaskId: relocationTask.task.id })}>
+                          {relocationTask.task.recordId}
+                        </Link>
+                      </Col>
+                    )}
+                  </Row>
+
                   <Row data-testid='comment'>
                     <Col span={8}>
                       <Text type='secondary'>Комментарий:</Text>
@@ -442,11 +489,11 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                       <Text type='secondary'>Документы:</Text>
                     </Col>
 
-                    <Col span={16}>
-                      {!!relocationTask.documents?.length && (
-                        <AttachmentList attachments={relocationTask.documents} />
-                      )}
-                    </Col>
+                    {!!relocationTask.documents?.length && (
+                      <Col span={16}>
+                        <AttachmentList data={relocationTask.documents} />
+                      </Col>
+                    )}
                   </Row>
                 </Space>
               )}
@@ -458,8 +505,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
               <Text strong>Перечень оборудования</Text>
 
               <RelocationEquipmentTable
-                dataSource={relocationEquipmentList}
-                loading={relocationEquipmentListIsFetching}
+                dataSource={relocationEquipments}
+                loading={relocationEquipmentsIsFetching}
+                onClickImages={handleOpenEquipmentImagesModal}
               />
             </Space>
           </Col>
@@ -534,6 +582,26 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             isLoading={executeRelocationTaskIsLoading}
             onCancel={debouncedToggleOpenExecuteTaskModal}
             onSubmit={handleExecuteTask}
+          />
+        </React.Suspense>
+      )}
+
+      {equipmentImagesModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={handleCloseEquipmentImagesModal}
+              tip='Загрузка модалки изображений оборудования'
+            />
+          }
+        >
+          <AttachmentListModal
+            open={equipmentImagesModalOpened}
+            title='Изображения оборудования'
+            data={relocationEquipmentAttachmentList}
+            onCancel={handleCloseEquipmentImagesModal}
+            isLoading={relocationEquipmentAttachmentListIsFetching}
           />
         </React.Suspense>
       )}

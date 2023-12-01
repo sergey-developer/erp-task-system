@@ -13,7 +13,7 @@ import { HttpMethodEnum } from 'shared/constants/http'
 
 import baseQuery from './baseQuery'
 import { apiPath, currentApiVersion } from './constants'
-import { CustomBaseQueryFn } from './intefraces'
+import { CustomBaseQueryFn } from './types'
 import { isClientRangeError, isErrorResponse, isUnauthorizedError } from './utils'
 
 const mutex = new Mutex()
@@ -24,11 +24,8 @@ const query = baseQuery({
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken
 
-    if (token) {
-      headers['authorization'] = `Bearer ${token}`
-    } else {
-      delete headers['authorization']
-    }
+    if (token) headers['authorization'] = `Bearer ${token}`
+    else delete headers['authorization']
 
     return headers
   },
@@ -62,7 +59,6 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (args, api, extraOptions) =
           )
 
           if (refreshResult.error) {
-            // noinspection ExceptionCaughtLocallyJS
             throw refreshResult.error
           }
 
@@ -100,7 +96,7 @@ const baseQueryWithReauth: CustomBaseQueryFn = async (args, api, extraOptions) =
        * намеренно, чтобы получить актуальное состояние и при не успешном обновлении токена
        * не отправлялся лишний запрос
        */
-      if ((api.getState() as RootState).auth.isAuthenticated) {
+      if ((api.getState() as RootState).auth.isLoggedIn) {
         response = await query(args, api, extraOptions)
       }
     }

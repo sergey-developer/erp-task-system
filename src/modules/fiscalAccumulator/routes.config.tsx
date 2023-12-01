@@ -1,7 +1,9 @@
 import React from 'react'
 import { RouteObject } from 'react-router-dom'
 
-import { FiscalAccumulatorRouteEnum } from './constants'
+import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
+import { FiscalAccumulatorRouteEnum } from 'modules/fiscalAccumulator/constants'
+import { checkRoleIsFirstLineSupport } from 'modules/user/utils'
 
 const FiscalAccumulatorListPage = React.lazy(
   () => import('modules/fiscalAccumulator/pages/FiscalAccumulatorListPage'),
@@ -9,5 +11,10 @@ const FiscalAccumulatorListPage = React.lazy(
 
 export const route: Readonly<RouteObject> = {
   path: FiscalAccumulatorRouteEnum.FiscalAccumulator,
-  element: <FiscalAccumulatorListPage />,
+  element: (
+    <ProtectedRoute
+      component={<FiscalAccumulatorListPage />}
+      permitted={(user) => !checkRoleIsFirstLineSupport(user.role)}
+    />
+  ),
 }

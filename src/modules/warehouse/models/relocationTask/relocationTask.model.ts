@@ -1,12 +1,16 @@
-import { TaskAttachmentModel } from 'modules/task/models'
+import { TaskAttachmentModel, TaskModel } from 'modules/task/models'
 import { UserModel } from 'modules/user/models'
-import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import {
+  RelocationTaskStatusEnum,
+  RelocationTaskTypeEnum,
+} from 'modules/warehouse/constants/relocationTask'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type RelocationTaskModel = {
   id: IdType
+  type: RelocationTaskTypeEnum
   deadlineAt: string
   status: RelocationTaskStatusEnum
   createdAt: string
@@ -29,4 +33,5 @@ export type RelocationTaskModel = {
     createdAt: string
     user: Pick<UserModel, 'id' | 'fullName' | 'phone'>
   }>
+  task: MaybeNull<Pick<TaskModel, 'id' | 'recordId'>>
 }

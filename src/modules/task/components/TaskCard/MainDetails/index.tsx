@@ -55,16 +55,17 @@ const MainDetails: FC<MainDetailsProps> = ({
 }) => {
   const { isFirstLineSupportRole } = useUserRole()
 
-  const { olaStatusTextType, completeAt } = useMemo(() => {
-    const olaStatusTextType = getOlaStatusTextType(olaStatus)
-    const completeAt = getCompleteAt({
-      olaStatus,
-      olaEstimatedTime,
-      olaNextBreachTime,
-    })
-
-    return { olaStatusTextType, completeAt }
-  }, [olaEstimatedTime, olaStatus, olaNextBreachTime])
+  const { olaStatusTextType, completeAt } = useMemo(
+    () => ({
+      olaStatusTextType: getOlaStatusTextType(olaStatus),
+      completeAt: getCompleteAt({
+        olaStatus,
+        olaEstimatedTime,
+        olaNextBreachTime,
+      }),
+    }),
+    [olaEstimatedTime, olaStatus, olaNextBreachTime],
+  )
 
   const responseTime = useMemo(
     () => parseResponseTime(rawResponseTime, workGroup),

@@ -1,17 +1,12 @@
 import { useMemo } from 'react'
 
-import { useAuthenticatedUser } from 'modules/auth/hooks'
+import { useAuthUser } from 'modules/auth/hooks'
 
-import {
-  PermissionsMap,
-  UserPermissionConfig,
-} from 'shared/types/permissions'
+import { PermissionsMap, UserPermissionConfig } from 'shared/types/permissions'
 import { getPermissionsMap } from 'shared/utils/permissions'
 
-export const useUserPermissions = (
-  config: UserPermissionConfig,
-): PermissionsMap => {
-  const user = useAuthenticatedUser()
+export const useUserPermissions = (config: UserPermissionConfig): PermissionsMap => {
+  const user = useAuthUser()
 
   return useMemo(() => {
     const permissions = user ? config[user.role] : []

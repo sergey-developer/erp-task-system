@@ -59,7 +59,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
     )
 
     if (isReasonMakeDateTimeFieldDisabled) {
-      const endDate = moment().add(5, 'days')
+      const endDate = moment().add(14, 'days')
       const endTime = endDate.clone()
       form.setFieldsValue({ endDate, endTime })
     }

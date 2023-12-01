@@ -7,6 +7,8 @@ import {
   WarehouseListModel,
 } from 'modules/warehouse/models'
 
+import { EmptyFn } from 'shared/types/utils'
+
 export type EquipmentFilterFormFields = Partial<{
   conditions: EquipmentConditionEnum[]
   warehouses: number[]
@@ -36,5 +38,5 @@ export type EquipmentFilterProps = {
   ownerListIsLoading: boolean
 
   onApply: (values: EquipmentFilterFormFields) => void
-  onClose: () => void
+  onClose: EmptyFn
 }

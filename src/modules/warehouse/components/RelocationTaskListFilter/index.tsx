@@ -2,7 +2,10 @@ import { Form, Select } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
-import { statusOptions } from 'modules/warehouse/constants/relocationTask'
+import {
+  relocationTaskStatusOptions,
+  relocationTaskTypeOptions,
+} from 'modules/warehouse/constants/relocationTask'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
@@ -20,10 +23,10 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
   const [form] = Form.useForm<RelocationTaskListFilterFormFields>()
 
   useEffect(() => {
-    if (!isEmpty(values)) {
-      form.setFieldsValue(values!)
-    } else {
+    if (isEmpty(values)) {
       form.setFieldsValue(initialValues)
+    } else {
+      form.setFieldsValue(values!)
     }
   }, [form, values, initialValues])
 
@@ -56,7 +59,18 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
               data-testid='status-select'
               mode='multiple'
               placeholder='Выберите статус'
-              options={statusOptions}
+              options={relocationTaskStatusOptions}
+            />
+          </Form.Item>
+        </FilterBlock>
+
+        <FilterBlock data-testid='type-block' label='Тип заявки' onReset={resetFields(['type'])}>
+          <Form.Item name='type'>
+            <Select
+              data-testid='type-select'
+              mode='multiple'
+              placeholder='Тип заявки'
+              options={relocationTaskTypeOptions}
             />
           </Form.Item>
         </FilterBlock>

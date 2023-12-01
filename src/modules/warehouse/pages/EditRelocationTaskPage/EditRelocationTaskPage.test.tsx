@@ -6,6 +6,7 @@ import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/
 import { testUtils as createRelocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import { getEquipmentListTemplateErrorMsg } from 'modules/warehouse/constants/equipment'
 
+import { CANCEL_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
@@ -67,7 +68,7 @@ const clickSubmitButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Отменить')
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)

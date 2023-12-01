@@ -1,13 +1,12 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/NomenclatureGroupFormModal/NomenclatureGroupFormModal.test'
 import { testUtils as addOrEditNomenclatureModalTestUtils } from 'modules/warehouse/components/NomenclatureFormModal/NomenclatureFormModal.test'
+import { testUtils as addOrEditNomenclatureGroupModalTestUtils } from 'modules/warehouse/components/NomenclatureGroupFormModal/NomenclatureGroupFormModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants/nomenclatureGroup'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
 import {
   mockCreateNomenclatureGroupBadRequestError,
   mockCreateNomenclatureGroupForbiddenError,
@@ -19,11 +18,12 @@ import {
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
-  spinnerTestUtils,
   fakeWord,
+  getStoreWithAuth,
   notificationTestUtils,
   render,
   setupApiTests,
+  spinnerTestUtils,
 } from '_tests_/utils'
 
 import NomenclatureListPage from './index'
@@ -165,16 +165,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureGroupListSuccess({ body: [] })
 
       render(<NomenclatureListPage />, {
-        preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: {
-              ...getUserMeQueryMock({
-                permissions: ['NOMENCLATURE_GROUPS_CREATE'],
-              }),
-            },
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
           },
-        },
+        }),
       })
 
       const button = testUtils.getAddNomenclatureGroupButton()
@@ -198,16 +193,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureGroupListSuccess({ body: [] })
 
       const { user } = render(<NomenclatureListPage />, {
-        preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: {
-              ...getUserMeQueryMock({
-                permissions: ['NOMENCLATURE_GROUPS_CREATE'],
-              }),
-            },
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
           },
-        },
+        }),
       })
 
       await testUtils.clickAddNomenclatureGroupButton(user)
@@ -228,16 +218,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureListSuccess()
 
       const { user } = render(<NomenclatureListPage />, {
-        preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: {
-              ...getUserMeQueryMock({
-                permissions: ['NOMENCLATURE_GROUPS_CREATE'],
-              }),
-            },
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
           },
-        },
+        }),
       })
 
       await testUtils.expectGroupListLoadingFinished()
@@ -269,16 +254,11 @@ describe('Страница списка номенклатур', () => {
         mockGetNomenclatureListSuccess()
 
         const { user } = render(<NomenclatureListPage />, {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({
-                  permissions: ['NOMENCLATURE_GROUPS_CREATE'],
-                }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
             },
-          },
+          }),
         })
 
         await testUtils.clickAddNomenclatureGroupButton(user)
@@ -307,16 +287,11 @@ describe('Страница списка номенклатур', () => {
         mockGetNomenclatureListSuccess()
 
         const { user } = render(<NomenclatureListPage />, {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({
-                  permissions: ['NOMENCLATURE_GROUPS_CREATE'],
-                }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
             },
-          },
+          }),
         })
 
         await testUtils.clickAddNomenclatureGroupButton(user)
@@ -335,16 +310,11 @@ describe('Страница списка номенклатур', () => {
         mockGetNomenclatureListSuccess()
 
         const { user } = render(<NomenclatureListPage />, {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...getUserMeQueryMock({
-                  permissions: ['NOMENCLATURE_GROUPS_CREATE'],
-                }),
-              },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
             },
-          },
+          }),
         })
 
         await testUtils.clickAddNomenclatureGroupButton(user)
@@ -367,16 +337,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureGroupListSuccess({ body: [] })
 
       render(<NomenclatureListPage />, {
-        preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: {
-              ...getUserMeQueryMock({
-                permissions: ['NOMENCLATURES_CREATE'],
-              }),
-            },
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_CREATE'] }),
           },
-        },
+        }),
       })
 
       const button = testUtils.getAddNomenclatureButton()
@@ -400,16 +365,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureGroupListSuccess({ body: [] })
 
       const { user } = render(<NomenclatureListPage />, {
-        preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: {
-              ...getUserMeQueryMock({
-                permissions: ['NOMENCLATURES_CREATE'],
-              }),
-            },
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_CREATE'] }),
           },
-        },
+        }),
       })
 
       await testUtils.clickAddNomenclatureButton(user)

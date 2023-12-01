@@ -1,14 +1,14 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Input, Button, Row, Col, MenuProps } from 'antd'
+import { Button, Col, Input, MenuProps, Row } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
-import { FC, useCallback, useMemo, useState, MouseEvent, useEffect } from 'react'
+import { FC, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
 import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import { useMatchUserPermissions } from 'modules/user/hooks'
-import NomenclatureGroupFormModal from 'modules/warehouse/components/NomenclatureGroupFormModal'
-import { NomenclatureGroupFormModalProps } from 'modules/warehouse/components/NomenclatureGroupFormModal/types'
 import NomenclatureFormModal from 'modules/warehouse/components/NomenclatureFormModal'
 import { NomenclatureFormModalProps } from 'modules/warehouse/components/NomenclatureFormModal/types'
+import NomenclatureGroupFormModal from 'modules/warehouse/components/NomenclatureGroupFormModal'
+import { NomenclatureGroupFormModalProps } from 'modules/warehouse/components/NomenclatureGroupFormModal/types'
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
 import { NomenclatureTableProps } from 'modules/warehouse/components/NomenclatureTable/types'
 import {
@@ -50,7 +50,11 @@ import {
 } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 import { GroupListMenuStyled } from './styles'
 
@@ -187,9 +191,7 @@ const NomenclatureListPage: FC = () => {
     setGetNomenclatureListParams({ group: Number(data.key), offset: 0 })
   }
 
-  const handleCreateNomenclatureGroup = useCallback<
-    NomenclatureGroupFormModalProps['onSubmit']
-  >(
+  const handleCreateNomenclatureGroup = useCallback<NomenclatureGroupFormModalProps['onSubmit']>(
     async (values, setFields) => {
       try {
         await createNomenclatureGroupMutation({
@@ -384,7 +386,7 @@ const NomenclatureListPage: FC = () => {
 
           <Col span={19}>
             <NomenclatureTable
-              dataSource={nomenclatureList?.results || []}
+              dataSource={extractPaginationResults(nomenclatureList)}
               pagination={nomenclatureList?.pagination || false}
               loading={nomenclatureListIsFetching}
               onChange={handleChangeTable}

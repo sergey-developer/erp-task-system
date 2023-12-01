@@ -3,20 +3,11 @@
  * https://testing-library.com/docs/react-testing-library/setup#custom-render
  */
 import { PreloadedState } from '@reduxjs/toolkit'
-import {
-  RenderOptions as BaseRenderOptions,
-  render as baseRender,
-} from '@testing-library/react'
+import { render as baseRender, RenderOptions as BaseRenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import isEqual from 'lodash/isEqual'
 import React, { ReactElement } from 'react'
-import {
-  BrowserRouter,
-  createMemoryRouter,
-  RouterProvider,
-} from 'react-router-dom'
-
-import { RouteEnum } from 'configs/routes'
+import { BrowserRouter, createMemoryRouter, RouterProvider } from 'react-router-dom'
 
 import { AppStore, RootState, setupStore } from 'state/store'
 
@@ -43,11 +34,7 @@ export const render = (
   const Wrapper: FCWithChildren = ({ children }) => {
     return (
       <AppProvider store={store}>
-        {useBrowserRouter ? (
-          <BrowserRouter>{children}</BrowserRouter>
-        ) : (
-          children
-        )}
+        {useBrowserRouter ? <BrowserRouter>{children}</BrowserRouter> : children}
       </AppProvider>
     )
   }
@@ -58,11 +45,7 @@ export const render = (
   }
 }
 
-export const renderInRoute = (
-  component: ReactElement,
-  route: RouteEnum,
-  options?: RenderOptions,
-) => {
+export const renderInRoute = (component: ReactElement, route: string, options?: RenderOptions) => {
   window.history.pushState({}, '', route)
 
   return {

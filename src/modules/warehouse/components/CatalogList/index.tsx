@@ -1,15 +1,14 @@
 import { FC } from 'react'
 
-import { RouteEnum } from 'configs/routes'
-
 import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import { UserPermissions } from 'modules/user/models'
+import { checkEveryPermissionAllowed } from 'modules/user/utils'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import CatalogListItem from './CatalogListItem'
 
 export type CatalogItem = {
-  link: RouteEnum | WarehouseRouteEnum
+  link: WarehouseRouteEnum
   text: string
   permissions?: UserPermissions[]
 }
@@ -25,7 +24,7 @@ const CatalogList: FC<CatalogListProps> = ({ items, ...props }) => {
         !!permissions?.length ? (
           <MatchUserPermissions key={index} expected={permissions}>
             {({ permissions }) =>
-              Object.values(permissions).every(Boolean) ? (
+              checkEveryPermissionAllowed(permissions) ? (
                 <CatalogListItem link={link} text={text} />
               ) : null
             }
