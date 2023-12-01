@@ -12100,6 +12100,13 @@ webpack-merge@^4.2.2:
   dependencies:
     lodash "^4.17.15"
 
+webpack-retry-chunk-load-plugin@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/webpack-retry-chunk-load-plugin/-/webpack-retry-chunk-load-plugin-3.1.1.tgz#44aefc21abd01769ecd07f9a200a58a78caf930c"
+  integrity sha512-BKq/7EcelyWUUI6SeBaUKB1G+fSZP0rlxIwRQ+aO6mK5tffljaHdpJ4I2q54rpaaKjSbwbZRQlaITXe93SL9nA==
+  dependencies:
+    prettier "^2.6.2"
+
 webpack-sources@^1.4.3:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-1.4.3.tgz#eedd8ec0b928fbf1cbfe994e22d2d890f330a933"
