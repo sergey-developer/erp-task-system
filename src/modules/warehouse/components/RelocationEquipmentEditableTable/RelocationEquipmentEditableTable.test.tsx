@@ -10,6 +10,8 @@ const props: RelocationEquipmentEditableTableProps = {
   setEditableKeys: jest.fn(),
 
   isLoading: false,
+
+  equipmentIsLoading: false,
   equipmentListIsLoading: false,
 
   currencyList: [],

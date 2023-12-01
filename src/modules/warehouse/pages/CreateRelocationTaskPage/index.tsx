@@ -181,7 +181,7 @@ const CreateRelocationTaskPage: FC = () => {
       { skip: !selectedRelocateFrom?.value },
     )
 
-  const [getEquipment] = useLazyGetEquipment()
+  const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
     useGetEquipmentCategoryList(undefined, { skip: !addEquipmentModalOpened })
@@ -199,9 +199,12 @@ const CreateRelocationTaskPage: FC = () => {
       { skip: !addEquipmentModalOpened || !selectedCategory },
     )
 
-  const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
-    skip: !selectedNomenclatureId || !addEquipmentModalOpened,
-  })
+  const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
+    selectedNomenclatureId!,
+    {
+      skip: !selectedNomenclatureId || !addEquipmentModalOpened,
+    },
+  )
 
   const [getCustomerList, { data: customerList = [], isFetching: customerListIsFetching }] =
     useLazyGetCustomerList()
@@ -323,8 +326,10 @@ const CreateRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
-        form.setFieldValue(['equipments', activeEquipmentRow.rowIndex], {
-          rowId: createdEquipment.id,
+        const rowPath = ['equipments', activeEquipmentRow.rowIndex]
+
+        form.setFieldValue(rowPath, {
+          ...form.getFieldValue(rowPath),
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
           purpose: createdEquipment.purpose.title,
@@ -336,15 +341,6 @@ const CreateRelocationTaskPage: FC = () => {
           currency: createdEquipment.currency?.id,
           quantity: createdEquipment.quantity,
           category: createdEquipment.category,
-        })
-
-        setEditableTableRowKeys((prevState) => {
-          const index = prevState.indexOf(activeEquipmentRow.rowId)
-          const newArr = [...prevState]
-          if (index !== -1) {
-            newArr[index] = createdEquipment.id
-          }
-          return newArr
         })
 
         handleCloseAddEquipmentModal()
@@ -450,6 +446,7 @@ const CreateRelocationTaskPage: FC = () => {
                 editableKeys={editableTableRowKeys}
                 setEditableKeys={setEditableTableRowKeys}
                 isLoading={createRelocationTaskIsLoading}
+                equipmentIsLoading={equipmentIsFetching}
                 currencyList={currencyList}
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
@@ -517,12 +514,13 @@ const CreateRelocationTaskPage: FC = () => {
             selectedCategory={selectedCategory}
             onChangeCategory={handleChangeCategory}
             currencyList={currencyList}
-            currencyListIsFetching={currencyListIsFetching}
+            currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
-            ownerListIsFetching={customerListIsFetching}
+            ownerListIsLoading={customerListIsFetching}
             workTypeList={workTypeList}
-            workTypeListIsFetching={workTypeListIsFetching}
+            workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
+            nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}

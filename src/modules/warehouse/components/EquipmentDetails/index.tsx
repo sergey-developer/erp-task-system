@@ -117,9 +117,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       { skip: !editEquipmentModalOpened || !selectedCategory },
     )
 
-  const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
-    skip: !selectedNomenclatureId || !editEquipmentModalOpened,
-  })
+  const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
+    selectedNomenclatureId!,
+    {
+      skip: !selectedNomenclatureId || !editEquipmentModalOpened,
+    },
+  )
 
   const {
     currentData: equipmentAttachmentList,
@@ -521,12 +524,13 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             warehouseList={warehouseList}
             warehouseListIsLoading={warehouseListIsFetching}
             currencyList={currencyList}
-            currencyListIsFetching={currencyListIsFetching}
+            currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
-            ownerListIsFetching={customerListIsFetching}
+            ownerListIsLoading={customerListIsFetching}
             workTypeList={workTypeList}
-            workTypeListIsFetching={workTypeListIsFetching}
+            workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
+            nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}

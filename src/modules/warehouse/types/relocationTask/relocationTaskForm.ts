@@ -8,9 +8,10 @@ import { EquipmentModel } from 'modules/warehouse/models'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 
-export type RelocationTaskFormEquipment = {
+export type RelocationTaskEquipment = {
   rowId: number
   id: IdType
+  relocationEquipmentId: IdType
   quantity: number
   condition: EquipmentConditionEnum
 
@@ -25,7 +26,7 @@ export type RelocationTaskFormEquipment = {
 
 export type RelocationTaskFormFields = {
   type: RelocationTaskTypeEnum
-  equipments: RelocationTaskFormEquipment[]
+  equipments: RelocationTaskEquipment[]
   deadlineAtDate: Moment
   deadlineAtTime: Moment
   relocateFrom: IdType

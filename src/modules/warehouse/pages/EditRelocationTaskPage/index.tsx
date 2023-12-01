@@ -160,20 +160,24 @@ const EditRelocationTaskPage: FC = () => {
     isFetching: relocationEquipmentListIsFetching,
   } = useGetRelocationEquipmentList({ relocationTaskId: relocationTaskId! })
 
-  const activeEquipmentInCreatedTask =
+  const activeEquipmentIsRelocationEquipment =
     addRelocationEquipmentImagesModalOpened && activeEquipmentRow && relocationEquipmentList.length
-      ? Boolean(relocationEquipmentList.find((eqp) => eqp.id === activeEquipmentRow.id))
+      ? Boolean(
+          relocationEquipmentList.find(
+            (eqp) => eqp.relocationEquipmentId === activeEquipmentRow.relocationEquipmentId,
+          ),
+        )
       : false
 
   const {
     currentData: relocationEquipmentAttachmentList = [],
     isFetching: relocationEquipmentAttachmentListIsFetching,
   } = useGetRelocationEquipmentAttachmentList(
-    { relocationEquipmentId: activeEquipmentRow?.id! },
+    { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
     {
       skip:
-        !activeEquipmentRow?.id ||
-        !activeEquipmentInCreatedTask ||
+        !activeEquipmentRow?.relocationEquipmentId ||
+        !activeEquipmentIsRelocationEquipment ||
         !addRelocationEquipmentImagesModalOpened,
     },
   )
@@ -221,7 +225,7 @@ const EditRelocationTaskPage: FC = () => {
       { skip: !selectedRelocateFrom?.value || !selectedType },
     )
 
-  const [getEquipment] = useLazyGetEquipment()
+  const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
     useGetEquipmentCategoryList(undefined, { skip: !addEquipmentModalOpened })
@@ -239,9 +243,12 @@ const EditRelocationTaskPage: FC = () => {
       { skip: !addEquipmentModalOpened || !selectedCategory },
     )
 
-  const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
-    skip: !selectedNomenclatureId || !addEquipmentModalOpened,
-  })
+  const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
+    selectedNomenclatureId!,
+    {
+      skip: !selectedNomenclatureId || !addEquipmentModalOpened,
+    },
+  )
 
   const [getCustomerList, { data: customerList = [], isFetching: customerListIsFetching }] =
     useLazyGetCustomerList()
@@ -368,8 +375,10 @@ const EditRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
-        form.setFieldValue(['equipments', activeEquipmentRow.rowIndex], {
-          rowId: createdEquipment.id,
+        const rowPath = ['equipments', activeEquipmentRow.rowIndex]
+
+        form.setFieldValue(rowPath, {
+          ...form.getFieldValue(rowPath),
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
           purpose: createdEquipment.purpose.title,
@@ -381,15 +390,6 @@ const EditRelocationTaskPage: FC = () => {
           currency: createdEquipment.currency?.id,
           quantity: createdEquipment.quantity,
           category: createdEquipment.category,
-        })
-
-        setEditableTableRowKeys((prevState) => {
-          const index = prevState.indexOf(activeEquipmentRow.rowId)
-          const newArr = [...prevState]
-          if (index !== -1) {
-            newArr[index] = createdEquipment.id
-          }
-          return newArr
         })
 
         handleCloseAddEquipmentModal()
@@ -520,6 +520,7 @@ const EditRelocationTaskPage: FC = () => {
         equipments.push({
           rowId: eqp.id,
           id: eqp.id,
+          relocationEquipmentId: eqp.relocationEquipmentId,
           serialNumber: eqp?.serialNumber || undefined,
           purpose: eqp.purpose,
           condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : eqp.condition,
@@ -581,6 +582,7 @@ const EditRelocationTaskPage: FC = () => {
                 editableKeys={editableTableRowKeys}
                 setEditableKeys={setEditableTableRowKeys}
                 isLoading={updateRelocationTaskIsLoading}
+                equipmentIsLoading={equipmentIsFetching}
                 equipmentListIsLoading={relocationEquipmentListIsFetching}
                 currencyList={currencyList}
                 currencyListIsLoading={currencyListIsFetching}
@@ -645,12 +647,13 @@ const EditRelocationTaskPage: FC = () => {
             selectedCategory={selectedCategory}
             onChangeCategory={handleChangeCategory}
             currencyList={currencyList}
-            currencyListIsFetching={currencyListIsFetching}
+            currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
-            ownerListIsFetching={customerListIsFetching}
+            ownerListIsLoading={customerListIsFetching}
             workTypeList={workTypeList}
-            workTypeListIsFetching={workTypeListIsFetching}
+            workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
+            nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
