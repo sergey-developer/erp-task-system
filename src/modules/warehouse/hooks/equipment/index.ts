@@ -9,8 +9,8 @@ export * from './useGetEquipmentNomenclatureList'
 
 export * from './useGetEquipmentCatalogList'
 
-export * from './useGetEquipmentAttachmentList'
-
 export * from './useGetEquipmentListTemplateHandler'
+
+export * from './useGetEquipmentAttachmentList'
 
 export * from './useGetEquipmentCategoryList'

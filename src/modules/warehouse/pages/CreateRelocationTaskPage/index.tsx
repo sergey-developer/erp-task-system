@@ -61,6 +61,10 @@ import {
   getRelocateToLocationListParams,
 } from './utils'
 
+const CreateEquipmentsByFileTemplateModal = React.lazy(
+  () => import('modules/warehouse/components/CreateEquipmentsByFileTemplateModal'),
+)
+
 const AddAttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AddAttachmentListModal'),
 )
@@ -90,6 +94,15 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
+
+  const [
+    createEquipmentsByFileTemplateModalOpened,
+    { toggle: toggleOpenCreateEquipmentsByFileTemplateModal },
+  ] = useBoolean(false)
+
+  const debouncedToggleOpenCreateEquipmentsByFileTemplateModal = useDebounceFn(
+    toggleOpenCreateEquipmentsByFileTemplateModal,
+  )
 
   const [
     addEquipmentModalOpened,
@@ -450,7 +463,9 @@ const CreateRelocationTaskPage: FC = () => {
                 {permissions?.equipmentsCreate && (
                   <Col>
                     <Space>
-                      <Button>Добавить из Excel</Button>
+                      <Button onClick={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}>
+                        Добавить из Excel
+                      </Button>
 
                       <Button
                         onClick={getEquipmentListTemplate}
@@ -576,6 +591,15 @@ const CreateRelocationTaskPage: FC = () => {
             defaultFileList={form.getFieldValue(equipmentImagesFormPath)}
           />
         </React.Suspense>
+      )}
+
+      {createEquipmentsByFileTemplateModalOpened && (
+        <CreateEquipmentsByFileTemplateModal
+          open={createEquipmentsByFileTemplateModalOpened}
+          onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
+          onOk={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
+          dataSource={[]}
+        />
       )}
     </>
   )
