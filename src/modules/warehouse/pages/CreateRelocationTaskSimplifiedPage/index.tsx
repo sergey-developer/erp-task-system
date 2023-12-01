@@ -149,9 +149,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       { skip: !createEquipmentModalOpened || !selectedCategory },
     )
 
-  const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
-    skip: !selectedNomenclatureId || !createEquipmentModalOpened,
-  })
+  const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
+    selectedNomenclatureId!,
+    {
+      skip: !selectedNomenclatureId || !createEquipmentModalOpened,
+    },
+  )
 
   const [getCustomerList, { data: customerList = [], isFetching: customerListIsFetching }] =
     useLazyGetCustomerList()
@@ -480,12 +483,13 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             selectedCategory={selectedCategory}
             onChangeCategory={handleChangeCategory}
             currencyList={currencyList}
-            currencyListIsFetching={currencyListIsFetching}
+            currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
-            ownerListIsFetching={customerListIsFetching}
+            ownerListIsLoading={customerListIsFetching}
             workTypeList={workTypeList}
-            workTypeListIsFetching={workTypeListIsFetching}
+            workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
+            nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
