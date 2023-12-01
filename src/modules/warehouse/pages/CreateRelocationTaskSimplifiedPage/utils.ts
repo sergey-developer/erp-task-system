@@ -29,7 +29,7 @@ const getRelocateFromLocationTypes = (
   switch (type) {
     case RelocationTaskTypeEnum.Relocation:
     case RelocationTaskTypeEnum.WriteOff:
-      return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop, LocationTypeEnum.ServiceCenter]
+      return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
     case RelocationTaskTypeEnum.Repair:
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
     case RelocationTaskTypeEnum.Warranty:
@@ -59,7 +59,7 @@ const getRelocateToLocationTypes = (
     case RelocationTaskTypeEnum.Repair:
       return [LocationTypeEnum.Warehouse]
     case RelocationTaskTypeEnum.Warranty:
-      return [LocationTypeEnum.ServiceCenter]
+      return undefined
     case RelocationTaskTypeEnum.WriteOff:
       return undefined
   }
