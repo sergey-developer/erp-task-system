@@ -23,8 +23,8 @@ import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 import { makeString } from 'shared/utils/string'
 
-import { RelocationEquipmentEditableTableProps, RelocationEquipmentRow } from './types'
 import { CreateEquipmentButton } from './styles'
+import { RelocationEquipmentEditableTableProps, RelocationEquipmentRow } from './types'
 
 const formItemProps: EditableProTableProps<RelocationEquipmentRow, any>['formItemProps'] = {
   rules: [
@@ -117,12 +117,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
                 <CreateEquipmentButton
                   type='link'
                   disabled={addEquipmentBtnDisabled}
-                  onClick={() =>
-                    onClickCreateEquipment({
-                      relocationEquipmentId: config.entity.relocationEquipmentId,
-                      rowIndex: config.rowIndex,
-                    })
-                  }
+                  onClick={() => onClickCreateEquipment({ rowIndex: config.rowIndex })}
                 >
                   Добавить оборудование
                 </CreateEquipmentButton>
@@ -159,7 +154,10 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       title: 'Состояние',
       valueType: 'select',
       formItemProps: { rules: onlyRequiredRules },
-      fieldProps: { disabled: isLoading || typeIsWriteOff || equipmentIsLoading, options: equipmentConditionOptions },
+      fieldProps: {
+        disabled: isLoading || typeIsWriteOff || equipmentIsLoading,
+        options: equipmentConditionOptions,
+      },
     },
     {
       key: 'amount',
