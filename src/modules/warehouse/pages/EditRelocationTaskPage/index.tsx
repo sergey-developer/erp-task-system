@@ -1,7 +1,8 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import { Button, Col, Form, FormProps, Modal, Row, Typography, UploadProps } from 'antd'
+import { Button, Col, Form, FormProps, Modal, Row, Typography, Upload, UploadProps } from 'antd'
 import { FormItemProps } from 'antd/es/form/FormItem'
 import concat from 'lodash/concat'
+import stubFalse from 'lodash/stubFalse'
 import moment from 'moment-timezone'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -30,9 +31,10 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
+  useCreateEquipmentsByFileTemplate,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
-  useGetEquipmentListTemplateHandler,
+  useGetEquipmentListTemplate,
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
@@ -60,6 +62,7 @@ import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { FileToSend } from 'shared/types/file'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { mergeDateTime } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
@@ -71,6 +74,10 @@ import {
   getRelocateFromLocationListParams,
   getRelocateToLocationListParams,
 } from '../CreateRelocationTaskPage/utils'
+
+const CreateEquipmentsByFileTemplateModal = React.lazy(
+  () => import('modules/warehouse/components/CreateEquipmentsByFileTemplateModal'),
+)
 
 const AddAttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AddAttachmentListModal'),
@@ -103,6 +110,15 @@ const EditRelocationTaskPage: FC = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
+
+  const [
+    createEquipmentsByFileTemplateModalOpened,
+    { toggle: toggleOpenCreateEquipmentsByFileTemplateModal },
+  ] = useBoolean(false)
+
+  const debouncedToggleOpenCreateEquipmentsByFileTemplateModal = useDebounceFn(
+    toggleOpenCreateEquipmentsByFileTemplateModal,
+  )
 
   const [
     createEquipmentModalOpened,
@@ -276,6 +292,11 @@ const EditRelocationTaskPage: FC = () => {
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
 
+  const [
+    createEquipmentsByFileTemplateMutation,
+    { isLoading: createEquipmentsByFileTemplateIsLoading, data: createdEquipmentsByFileTemplate },
+  ] = useCreateEquipmentsByFileTemplate()
+
   const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
       await createAttachment({ type: AttachmentTypeEnum.EquipmentImage }, options)
@@ -290,7 +311,7 @@ const EditRelocationTaskPage: FC = () => {
   }
 
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
-    useGetEquipmentListTemplateHandler()
+    useGetEquipmentListTemplate()
 
   const handleUpdateRelocationTask = async (values: RelocationTaskFormFields) => {
     if (!relocationTaskId) return
@@ -358,11 +379,8 @@ const EditRelocationTaskPage: FC = () => {
     }
   }
 
-  const handleChangeForm: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
-    changedValues,
-    values,
-  ) => {
-    await pickEquipment(changedValues, values)
+  const createEquipmentsByFileTemplate: NonNullable<UploadProps['onChange']> = async ({ file }) => {
+    await createEquipmentsByFileTemplateMutation({ file: file as FileToSend })
   }
 
   const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
@@ -539,7 +557,7 @@ const EditRelocationTaskPage: FC = () => {
     }
   }, [form, relocationEquipmentBalanceList, relocationEquipmentList, relocationTask])
 
-  const addEquipmentBtnDisabled =
+  const createEquipmentDisabled =
     !selectedRelocateFrom ||
     !selectedRelocateTo ||
     !checkLocationTypeIsWarehouse(selectedRelocateTo.type)
@@ -556,7 +574,7 @@ const EditRelocationTaskPage: FC = () => {
         form={form}
         layout='vertical'
         onFinish={handleUpdateRelocationTask}
-        onValuesChange={handleChangeForm}
+        onValuesChange={pickEquipment}
         initialValues={initialValues}
       >
         <Row gutter={[40, 40]}>
@@ -586,7 +604,19 @@ const EditRelocationTaskPage: FC = () => {
                 {permissions?.equipmentsCreate && (
                   <Col>
                     <Space>
-                      <Button>Добавить из Excel</Button>
+                      <Upload
+                        showUploadList={false}
+                        beforeUpload={stubFalse}
+                        fileList={[]}
+                        onChange={createEquipmentsByFileTemplate}
+                      >
+                        <Button
+                          disabled={createEquipmentDisabled}
+                          loading={createEquipmentsByFileTemplateIsLoading}
+                        >
+                          Добавить из Excel
+                        </Button>
+                      </Upload>
 
                       <Button
                         onClick={getEquipmentListTemplate}
@@ -610,7 +640,7 @@ const EditRelocationTaskPage: FC = () => {
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
                 canCreateEquipment={!!permissions?.equipmentsCreate}
-                addEquipmentBtnDisabled={addEquipmentBtnDisabled}
+                addEquipmentBtnDisabled={createEquipmentDisabled}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
                 onClickAddImage={handleOpenAddRelocationEquipmentImagesModal}
               />
@@ -718,6 +748,21 @@ const EditRelocationTaskPage: FC = () => {
                   )
                 : undefined
             }
+          />
+        </React.Suspense>
+      )}
+
+      {createEquipmentsByFileTemplateModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback open onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal} />
+          }
+        >
+          <CreateEquipmentsByFileTemplateModal
+            open={createEquipmentsByFileTemplateModalOpened}
+            onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
+            onOk={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
+            dataSource={[]}
           />
         </React.Suspense>
       )}

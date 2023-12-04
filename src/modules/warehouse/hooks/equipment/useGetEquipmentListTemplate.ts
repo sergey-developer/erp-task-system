@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { CustomUseQueryStateResult } from 'lib/rtk-query/types'
 
@@ -14,7 +14,7 @@ import { isErrorResponse } from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetEquipmentListTemplateHandlerResult = [
+type UseGetEquipmentListTemplateResult = [
   () => Promise<void>,
   CustomUseQueryStateResult<
     GetEquipmentListTemplateQueryArgs,
@@ -22,7 +22,7 @@ type UseGetEquipmentListTemplateHandlerResult = [
   >,
 ]
 
-export const useGetEquipmentListTemplateHandler = (): UseGetEquipmentListTemplateHandlerResult => {
+export const useGetEquipmentListTemplate = (): UseGetEquipmentListTemplateResult => {
   const [trigger, state] = useLazyGetEquipmentListTemplateQuery()
 
   useEffect(() => {
@@ -31,13 +31,13 @@ export const useGetEquipmentListTemplateHandler = (): UseGetEquipmentListTemplat
     }
   }, [state.error])
 
-  const handler = async () => {
+  const handler = useCallback(async () => {
     const { data } = await trigger()
 
     if (data) {
       clickDownloadLink(base64ToArrayBuffer(data), MimetypeEnum.Xls, 'Шаблон загрузки оборудования')
     }
-  }
+  }, [trigger])
 
   return [handler, state]
 }

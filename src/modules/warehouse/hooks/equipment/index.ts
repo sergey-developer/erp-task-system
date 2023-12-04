@@ -1,4 +1,5 @@
 export * from './useCreateEquipment'
+export * from './useCreateEquipmentsByFileTemplate'
 export * from './useUpdateEquipment'
 export * from './useGetEquipment'
 export * from './useLazyGetEquipment'
@@ -9,7 +10,7 @@ export * from './useGetEquipmentNomenclatureList'
 
 export * from './useGetEquipmentCatalogList'
 
-export * from './useGetEquipmentListTemplateHandler'
+export * from './useGetEquipmentListTemplate'
 
 export * from './useGetEquipmentAttachmentList'
 

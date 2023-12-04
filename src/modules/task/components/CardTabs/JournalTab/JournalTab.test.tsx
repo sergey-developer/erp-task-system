@@ -13,14 +13,14 @@ import {
   mockGetJournalSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
   fakeId,
   fakeWord,
   getStoreWithAuth,
-  spinnerTestUtils,
+  notificationTestUtils,
   render,
   setupApiTests,
-  notificationTestUtils,
-  buttonTestUtils,
+  spinnerTestUtils,
 } from '_tests_/utils'
 
 import { testUtils as journalEntryTestUtils } from '../JournalTab/JournalEntry.test'
@@ -299,7 +299,6 @@ describe('Вкладка журнала задачи', () => {
           await testUtils.expectJournalLoadingFinished()
 
           expect(screen.queryByTestId('journal-btn-download')).not.toBeInTheDocument()
-
           expect(screen.queryByTestId('journal-icon-download')).not.toBeInTheDocument()
         })
       })
