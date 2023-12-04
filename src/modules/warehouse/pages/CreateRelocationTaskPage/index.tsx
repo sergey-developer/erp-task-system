@@ -105,24 +105,21 @@ const CreateRelocationTaskPage: FC = () => {
   )
 
   const [
-    addEquipmentModalOpened,
-    { setTrue: openAddEquipmentModal, setFalse: closeAddEquipmentModal },
+    createEquipmentModalOpened,
+    { setTrue: openCreateEquipmentModal, setFalse: closeCreateEquipmentModal },
   ] = useBoolean(false)
 
-  const handleOpenAddEquipmentModal = useDebounceFn(
-    (row: ActiveEquipmentRow) => {
-      setActiveEquipmentRow(row)
-      openAddEquipmentModal()
-    },
-    [openAddEquipmentModal],
-  )
+  const handleOpenCreateEquipmentModal = useDebounceFn((row: ActiveEquipmentRow) => {
+    setActiveEquipmentRow(row)
+    openCreateEquipmentModal()
+  })
 
-  const handleCloseAddEquipmentModal = useDebounceFn(() => {
-    closeAddEquipmentModal()
+  const handleCloseCreateEquipmentModal = useDebounceFn(() => {
+    closeCreateEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
     setActiveEquipmentRow(undefined)
-  }, [closeAddEquipmentModal])
+  })
 
   const [
     addRelocationEquipmentImagesModalOpened,
@@ -195,14 +192,14 @@ const CreateRelocationTaskPage: FC = () => {
       { skip: !selectedRelocateFrom?.value },
     )
 
-  const [getEquipment] = useLazyGetEquipment()
+  const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
-    useGetEquipmentCategoryList(undefined, { skip: !addEquipmentModalOpened })
+    useGetEquipmentCategoryList(undefined, { skip: !createEquipmentModalOpened })
 
   const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypeList(
     undefined,
-    { skip: !addEquipmentModalOpened || !selectedCategory || !selectedNomenclatureId },
+    { skip: !createEquipmentModalOpened || !selectedCategory || !selectedNomenclatureId },
   )
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
@@ -210,19 +207,22 @@ const CreateRelocationTaskPage: FC = () => {
       categoryIsConsumable
         ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
         : defaultGetNomenclatureListParams,
-      { skip: !addEquipmentModalOpened || !selectedCategory },
+      { skip: !createEquipmentModalOpened || !selectedCategory },
     )
 
-  const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
-    skip: !selectedNomenclatureId || !addEquipmentModalOpened,
-  })
+  const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
+    selectedNomenclatureId!,
+    {
+      skip: !selectedNomenclatureId || !createEquipmentModalOpened,
+    },
+  )
 
   const [getCustomerList, { data: customerList = [], isFetching: customerListIsFetching }] =
     useLazyGetCustomerList()
 
   useEffect(() => {
     if (
-      addEquipmentModalOpened &&
+      createEquipmentModalOpened &&
       !!selectedCategory &&
       !categoryIsConsumable &&
       !!selectedNomenclatureId
@@ -230,7 +230,7 @@ const CreateRelocationTaskPage: FC = () => {
       getCustomerList()
     }
   }, [
-    addEquipmentModalOpened,
+    createEquipmentModalOpened,
     categoryIsConsumable,
     getCustomerList,
     selectedCategory,
@@ -295,7 +295,7 @@ const CreateRelocationTaskPage: FC = () => {
     if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
       const [index, changes] = Object.entries(changedValues.equipments)[0] as [
         string,
-        Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
+        Partial<RelocationEquipmentRow>,
       ]
 
       if (changes.id) {
@@ -340,8 +340,10 @@ const CreateRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
-        form.setFieldValue(['equipments', activeEquipmentRow.rowIndex], {
-          rowId: createdEquipment.id,
+        const rowPath = ['equipments', activeEquipmentRow.rowIndex]
+
+        form.setFieldValue(rowPath, {
+          ...form.getFieldValue(rowPath),
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
           purpose: createdEquipment.purpose.title,
@@ -355,16 +357,7 @@ const CreateRelocationTaskPage: FC = () => {
           category: createdEquipment.category,
         })
 
-        setEditableTableRowKeys((prevState) => {
-          const index = prevState.indexOf(activeEquipmentRow.rowId)
-          const newArr = [...prevState]
-          if (index !== -1) {
-            newArr[index] = createdEquipment.id
-          }
-          return newArr
-        })
-
-        handleCloseAddEquipmentModal()
+        handleCloseCreateEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
           setFields(getFieldsErrors(error.data))
@@ -378,7 +371,7 @@ const CreateRelocationTaskPage: FC = () => {
       createEquipmentMutation,
       form,
       typeIsWriteOff,
-      handleCloseAddEquipmentModal,
+      handleCloseCreateEquipmentModal,
     ],
   )
 
@@ -488,13 +481,14 @@ const CreateRelocationTaskPage: FC = () => {
                 editableKeys={editableTableRowKeys}
                 setEditableKeys={setEditableTableRowKeys}
                 isLoading={createRelocationTaskIsLoading}
+                equipmentIsLoading={equipmentIsFetching}
                 currencyList={currencyList}
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
                 canCreateEquipment={!!permissions?.equipmentsCreate}
                 addEquipmentBtnDisabled={addEquipmentBtnDisabled}
-                onClickCreateEquipment={handleOpenAddEquipmentModal}
+                onClickCreateEquipment={handleOpenCreateEquipmentModal}
                 onClickAddImage={handleOpenAddRelocationEquipmentImagesModal}
               />
             </Space>
@@ -534,18 +528,18 @@ const CreateRelocationTaskPage: FC = () => {
         <Text>Вы действительно хотите сменить объект выбытия?</Text>
       </Modal>
 
-      {addEquipmentModalOpened && (
+      {createEquipmentModalOpened && (
         <React.Suspense
           fallback={
             <ModalFallback
               open
-              onCancel={handleCloseAddEquipmentModal}
+              onCancel={handleCloseCreateEquipmentModal}
               tip='Загрузка модалки добавления оборудования'
             />
           }
         >
           <EquipmentFormModal
-            open={addEquipmentModalOpened}
+            open={createEquipmentModalOpened}
             mode='create'
             title='Добавление оборудования'
             okText='Добавить'
@@ -555,16 +549,17 @@ const CreateRelocationTaskPage: FC = () => {
             selectedCategory={selectedCategory}
             onChangeCategory={handleChangeCategory}
             currencyList={currencyList}
-            currencyListIsFetching={currencyListIsFetching}
+            currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
-            ownerListIsFetching={customerListIsFetching}
+            ownerListIsLoading={customerListIsFetching}
             workTypeList={workTypeList}
-            workTypeListIsFetching={workTypeListIsFetching}
+            workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
+            nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
-            onCancel={handleCloseAddEquipmentModal}
+            onCancel={handleCloseCreateEquipmentModal}
             onSubmit={handleCreateEquipment}
             onUploadImage={handleCreateEquipmentImage}
             onDeleteImage={deleteAttachment}
