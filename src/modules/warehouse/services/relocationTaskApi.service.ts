@@ -1,5 +1,6 @@
 import { getPaginatedList } from 'lib/antd/utils'
 
+import { RelocationEquipmentApiTagEnum } from 'modules/warehouse/constants/relocationEquipment'
 import {
   RelocationTaskApiEnum,
   RelocationTaskApiTagEnum,
@@ -86,6 +87,7 @@ const relocationTaskApiService = baseApiService
             : [
                 RelocationTaskApiTagEnum.RelocationEquipmentList,
                 RelocationTaskApiTagEnum.RelocationTask,
+                RelocationEquipmentApiTagEnum.RelocationEquipmentAttachmentList,
               ],
         query: ({ relocationTaskId, ...payload }) => ({
           url: updateRelocationTaskUrl(relocationTaskId),
