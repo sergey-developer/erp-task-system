@@ -4,6 +4,7 @@ export enum EquipmentApiEnum {
   GetEquipmentAttachmentList = '/equipments/:id/attachments/',
   GetEquipmentRelocationHistory = '/equipments/:id/relocations/',
   CreateEquipment = '/equipments/',
+  CreateEquipmentsByFileTemplate = '/equipments/template/',
   GetEquipmentList = '/equipments/',
   GetEquipmentCatalogList = '/equipments/catalog/',
   GetEquipmentCategoryList = '/equipments/categories/',

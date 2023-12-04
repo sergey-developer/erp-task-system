@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import * as reactRouterDom from 'react-router-dom'
 
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
-import { testUtils as createRelocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
+import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import { getEquipmentListTemplateErrorMsg } from 'modules/warehouse/constants/equipment'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
@@ -117,7 +117,7 @@ describe('Страница редактирования заявки на пер
 
       render(<EditRelocationTaskPage />)
 
-      const form = createRelocationTaskFormTestUtils.getContainer()
+      const form = relocationTaskFormTestUtils.getContainer()
       expect(form).toBeInTheDocument()
     })
   })
@@ -256,7 +256,7 @@ describe('Страница редактирования заявки на пер
       })
     })
 
-    describe('Кнопка добавления из excel', () => {
+    describe('Кнопка добавления из Excel', () => {
       test('Отображается если есть права', () => {
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 

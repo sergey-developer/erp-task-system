@@ -1,6 +1,7 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import { Button, Col, Form, FormProps, Modal, Row, Typography, UploadProps } from 'antd'
+import { Button, Col, Form, FormProps, Modal, Row, Typography, Upload, UploadProps } from 'antd'
 import get from 'lodash/get'
+import stubFalse from 'lodash/stubFalse'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
@@ -25,9 +26,10 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
+  useCreateEquipmentsByFileTemplate,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
-  useGetEquipmentListTemplateHandler,
+  useGetEquipmentListTemplate,
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
@@ -49,6 +51,7 @@ import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { FileToSend } from 'shared/types/file'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { mergeDateTime } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
@@ -168,7 +171,7 @@ const CreateRelocationTaskPage: FC = () => {
     getRelocateToLocationList,
     { currentData: relocateToLocationList = [], isFetching: relocateToLocationListIsFetching },
   ] = useLazyGetLocationList()
-
+  console.log({ relocateFromLocationList, relocateToLocationList })
   /* сделано через lazy т.к. по каким-то причинам запрос не отправляется снова если один из параметров не изменился */
   useEffect(() => {
     getRelocateFromLocationList(getRelocateFromLocationListParams(selectedType))
@@ -242,6 +245,11 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
 
+  const [
+    createEquipmentsByFileTemplateMutation,
+    { isLoading: createEquipmentsByFileTemplateIsLoading, data: createdEquipmentsByFileTemplate },
+  ] = useCreateEquipmentsByFileTemplate()
+
   const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
       await createAttachment({ type: AttachmentTypeEnum.EquipmentImage }, options)
@@ -256,7 +264,7 @@ const CreateRelocationTaskPage: FC = () => {
   }
 
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
-    useGetEquipmentListTemplateHandler()
+    useGetEquipmentListTemplate()
 
   const handleCreateRelocationTask = async (values: RelocationTaskFormFields) => {
     try {
@@ -321,11 +329,8 @@ const CreateRelocationTaskPage: FC = () => {
     }
   }
 
-  const handleChangeForm: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
-    changedValues,
-    values,
-  ) => {
-    await pickEquipment(changedValues, values)
+  const createEquipmentsByFileTemplate: NonNullable<UploadProps['onChange']> = async ({ file }) => {
+    await createEquipmentsByFileTemplateMutation({ file: file as FileToSend })
   }
 
   const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
@@ -415,7 +420,7 @@ const CreateRelocationTaskPage: FC = () => {
     [form],
   )
 
-  const addEquipmentBtnDisabled =
+  const createEquipmentDisabled =
     !selectedRelocateFrom ||
     !selectedRelocateTo ||
     !checkLocationTypeIsWarehouse(selectedRelocateTo.type)
@@ -432,7 +437,7 @@ const CreateRelocationTaskPage: FC = () => {
         form={form}
         layout='vertical'
         onFinish={handleCreateRelocationTask}
-        onValuesChange={handleChangeForm}
+        onValuesChange={pickEquipment}
         initialValues={initialValues}
       >
         <Row gutter={[40, 40]}>
@@ -462,9 +467,19 @@ const CreateRelocationTaskPage: FC = () => {
                 {permissions?.equipmentsCreate && (
                   <Col>
                     <Space>
-                      <Button onClick={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}>
-                        Добавить из Excel
-                      </Button>
+                      <Upload
+                        showUploadList={false}
+                        beforeUpload={stubFalse}
+                        fileList={[]}
+                        onChange={createEquipmentsByFileTemplate}
+                      >
+                        <Button
+                          disabled={createEquipmentDisabled}
+                          loading={createEquipmentsByFileTemplateIsLoading}
+                        >
+                          Добавить из Excel
+                        </Button>
+                      </Upload>
 
                       <Button
                         onClick={getEquipmentListTemplate}
@@ -487,7 +502,7 @@ const CreateRelocationTaskPage: FC = () => {
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
                 canCreateEquipment={!!permissions?.equipmentsCreate}
-                addEquipmentBtnDisabled={addEquipmentBtnDisabled}
+                addEquipmentBtnDisabled={createEquipmentDisabled}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
                 onClickAddImage={handleOpenAddRelocationEquipmentImagesModal}
               />
@@ -593,12 +608,18 @@ const CreateRelocationTaskPage: FC = () => {
       )}
 
       {createEquipmentsByFileTemplateModalOpened && (
-        <CreateEquipmentsByFileTemplateModal
-          open={createEquipmentsByFileTemplateModalOpened}
-          onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
-          onOk={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
-          dataSource={[]}
-        />
+        <React.Suspense
+          fallback={
+            <ModalFallback open onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal} />
+          }
+        >
+          <CreateEquipmentsByFileTemplateModal
+            open={createEquipmentsByFileTemplateModalOpened}
+            onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
+            onOk={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
+            dataSource={[]}
+          />
+        </React.Suspense>
       )}
     </>
   )
