@@ -254,11 +254,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 <Form.Item>
                   <Row gutter={8}>
                     <Col span={12}>
-                      <Form.Item
-                        data-testid='quantity-form-item'
-                        label='Количество'
-                        name='quantity'
-                      >
+                      <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
                         <InputNumber disabled />
                       </Form.Item>
                     </Col>

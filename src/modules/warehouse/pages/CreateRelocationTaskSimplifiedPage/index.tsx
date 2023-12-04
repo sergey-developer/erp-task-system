@@ -88,20 +88,17 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     { setTrue: openCreateEquipmentModal, setFalse: closeCreateEquipmentModal },
   ] = useBoolean(false)
 
-  const handleOpenCreateEquipmentModal = useDebounceFn(
-    (row: ActiveEquipmentRow) => {
-      setActiveEquipmentRow(row)
-      openCreateEquipmentModal()
-    },
-    [openCreateEquipmentModal],
-  )
+  const handleOpenCreateEquipmentModal = useDebounceFn((row: ActiveEquipmentRow) => {
+    setActiveEquipmentRow(row)
+    openCreateEquipmentModal()
+  })
 
   const handleCloseCreateEquipmentModal = useDebounceFn(() => {
     closeCreateEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
     setActiveEquipmentRow(undefined)
-  }, [closeCreateEquipmentModal])
+  })
 
   const [toWarehouseEditableTableRowKeys, setToWarehouseEditableTableRowKeys] = useState<Key[]>([])
 
@@ -130,7 +127,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     isFetching: equipmentCatalogListToWarehouseIsFetching,
   } = useGetEquipmentCatalogList({ locationId: taskShop?.id! }, { skip: !warehouseMy?.id })
 
-  const [getEquipment] = useLazyGetEquipment()
+  const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
     useGetEquipmentCategoryList(undefined, { skip: !createEquipmentModalOpened })
@@ -175,16 +172,15 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     selectedNomenclatureId,
   ])
 
-  const [createRelocationTaskITSMMutation, { isLoading: createRelocationTaskITSMIsLoading }] =
-    useCreateRelocationTaskITSM()
+  const [createTaskMutation, { isLoading: createTaskIsLoading }] = useCreateRelocationTaskITSM()
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
 
-  const handleCreateRelocationTaskITSM = async (values: SimplifiedRelocationTaskFormFields) => {
+  const handleCreateTask = async (values: SimplifiedRelocationTaskFormFields) => {
     if (!task) return
 
     try {
-      await createRelocationTaskITSMMutation({
+      await createTaskMutation({
         taskId: task.id,
         controller: values.controller,
         comment: values.comment?.trim(),
@@ -216,7 +212,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       ) {
         const [index, changes] = Object.entries(changedValues.equipmentsToWarehouse)[0] as [
           string,
-          Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
+          Partial<RelocationEquipmentRow>,
         ]
 
         if (changes.id) {
@@ -248,7 +244,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       if (changedValues.equipmentsToShop && !Array.isArray(changedValues.equipmentsToShop)) {
         const [index, changes] = Object.entries(changedValues.equipmentsToShop)[0] as [
           string,
-          Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
+          Partial<RelocationEquipmentRow>,
         ]
 
         if (changes.id) {
@@ -295,8 +291,10 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           warehouse: warehouseMy.id,
         }).unwrap()
 
-        form.setFieldValue([activeEquipmentRow.tableName, activeEquipmentRow.rowIndex], {
-          rowId: createdEquipment.id,
+        const rowPath = [activeEquipmentRow.tableName, activeEquipmentRow.rowIndex]
+
+        form.setFieldValue(rowPath, {
+          ...form.getFieldValue(rowPath),
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
           purpose: createdEquipment.purpose.title,
@@ -304,15 +302,6 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           amount: createdEquipment.availableQuantity,
           quantity: createdEquipment.quantity,
           category: createdEquipment.category,
-        })
-
-        setToWarehouseEditableTableRowKeys((prevState) => {
-          const index = prevState.indexOf(activeEquipmentRow.rowId)
-          const newArr = [...prevState]
-          if (index !== -1) {
-            newArr[index] = createdEquipment.id
-          }
-          return newArr
         })
 
         handleCloseCreateEquipmentModal()
@@ -346,7 +335,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         data-testid='create-relocation-task-simplified-page'
         form={form}
         layout='vertical'
-        onFinish={handleCreateRelocationTaskITSM}
+        onFinish={handleCreateTask}
         onValuesChange={handleFormChange}
       >
         <Row gutter={[40, 40]}>
@@ -381,6 +370,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                     placeholder='Выберите значение'
                     options={userList}
                     loading={userListIsFetching}
+                    disabled={userListIsFetching || createTaskIsLoading}
                     fieldNames={idAndFullNameSelectFieldNames}
                   />
                 </Form.Item>
@@ -388,7 +378,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
               <Col span={8}>
                 <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
-                  <TextArea placeholder='Добавьте комментарий' />
+                  <TextArea placeholder='Добавьте комментарий' disabled={createTaskIsLoading} />
                 </Form.Item>
               </Col>
             </Row>
@@ -413,7 +403,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 required={!equipmentsToWarehouseFormValue?.length}
                 editableKeys={fromWarehouseEditableTableRowKeys}
                 setEditableKeys={setFromWarehouseEditableTableRowKeys}
-                isLoading={createRelocationTaskITSMIsLoading}
+                isLoading={createTaskIsLoading}
+                equipmentIsLoading={equipmentIsFetching}
                 equipmentCatalogList={equipmentCatalogListFromWarehouse}
                 equipmentCatalogListIsLoading={equipmentCatalogListFromWarehouseIsFetching}
               />
@@ -440,10 +431,11 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 required={!equipmentsToShopFormValue?.length}
                 editableKeys={toWarehouseEditableTableRowKeys}
                 setEditableKeys={setToWarehouseEditableTableRowKeys}
-                isLoading={createRelocationTaskITSMIsLoading}
+                isLoading={createTaskIsLoading}
+                equipmentIsLoading={equipmentIsFetching}
                 equipmentCatalogList={equipmentCatalogListToWarehouse}
                 equipmentCatalogListIsLoading={equipmentCatalogListToWarehouseIsFetching}
-                canCreateEquipment={permissions?.equipmentsCreate}
+                canCreateEquipment={!!permissions?.equipmentsCreate}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
               />
             </Space>
@@ -458,7 +450,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
               </Col>
 
               <Col>
-                <Button type='primary' htmlType='submit'>
+                <Button type='primary' htmlType='submit' loading={createTaskIsLoading}>
                   {CREATE_TEXT}
                 </Button>
               </Col>

@@ -117,12 +117,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
                 <CreateEquipmentButton
                   type='link'
                   disabled={addEquipmentBtnDisabled}
-                  onClick={() =>
-                    onClickCreateEquipment({
-                      relocationEquipmentId: config.entity.relocationEquipmentId,
-                      rowIndex: config.rowIndex,
-                    })
-                  }
+                  onClick={() => onClickCreateEquipment({ rowIndex: config.rowIndex })}
                 >
                   Добавить оборудование
                 </CreateEquipmentButton>
