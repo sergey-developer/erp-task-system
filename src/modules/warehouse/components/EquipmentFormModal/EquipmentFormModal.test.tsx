@@ -41,6 +41,8 @@ const props: Readonly<EquipmentFormModalProps> = {
   onDeleteImage: jest.fn(),
   imageIsDeleting: false,
 
+  nomenclatureIsLoading: false,
+
   nomenclatureList: [],
   nomenclatureListIsLoading: false,
   onChangeNomenclature: jest.fn(),
@@ -50,13 +52,13 @@ const props: Readonly<EquipmentFormModalProps> = {
   onChangeCategory: jest.fn(),
 
   currencyList: [],
-  currencyListIsFetching: false,
+  currencyListIsLoading: false,
 
   ownerList: [],
-  ownerListIsFetching: false,
+  ownerListIsLoading: false,
 
   workTypeList: [],
-  workTypeListIsFetching: false,
+  workTypeListIsLoading: false,
 
   warehouseList: [],
   warehouseListIsLoading: false,

@@ -3,6 +3,8 @@ import { getPaginatedList } from 'lib/antd/utils'
 import { EquipmentApiEnum, EquipmentApiTagEnum } from 'modules/warehouse/constants/equipment'
 import {
   CreateEquipmentMutationArgs,
+  CreateEquipmentsByFileTemplateMutationArgs,
+  CreateEquipmentsByFileTemplateSuccessResponse,
   CreateEquipmentSuccessResponse,
   GetEquipmentAttachmentListQueryArgs,
   GetEquipmentAttachmentListSuccessResponse,
@@ -126,6 +128,21 @@ const equipmentApiService = baseApiService
           data: payload,
         }),
       }),
+      createEquipmentsByFileTemplate: build.mutation<
+        CreateEquipmentsByFileTemplateSuccessResponse,
+        CreateEquipmentsByFileTemplateMutationArgs
+      >({
+        query: (payload) => {
+          const formData = new FormData()
+          formData.append('file', payload.file)
+
+          return {
+            url: EquipmentApiEnum.CreateEquipmentsByFileTemplate,
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
       updateEquipment: build.mutation<UpdateEquipmentSuccessResponse, UpdateEquipmentMutationArgs>({
         invalidatesTags: (result, error) =>
           error ? [] : [EquipmentApiTagEnum.EquipmentList, EquipmentApiTagEnum.Equipment],
@@ -168,6 +185,7 @@ export const {
   useGetEquipmentQuery,
   useLazyGetEquipmentQuery,
   useCreateEquipmentMutation,
+  useCreateEquipmentsByFileTemplateMutation,
   useUpdateEquipmentMutation,
   useGetEquipmentListQuery,
   useGetEquipmentRelocationHistoryQuery,

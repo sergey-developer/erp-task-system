@@ -1,16 +1,16 @@
 import { Key } from 'react'
 
 import { EquipmentCatalogListModel } from 'modules/warehouse/models'
-import { RelocationTaskFormEquipment } from 'modules/warehouse/types'
+import { RelocationTaskEquipment } from 'modules/warehouse/types'
 
 import { CurrencyListModel } from 'shared/models/currency'
 
-export type ActiveEquipmentRow = Pick<RelocationEquipmentRow, 'id' | 'rowId'> & {
-  rowIndex: number
+export type RelocationEquipmentRow = Partial<RelocationTaskEquipment> & {
+  rowId: number
 }
 
-export type RelocationEquipmentRow = Partial<RelocationTaskFormEquipment> & {
-  rowId: number
+export type ActiveEquipmentRow = Pick<RelocationEquipmentRow, 'relocationEquipmentId'> & {
+  rowIndex: number
 }
 
 export type RelocationEquipmentEditableTableProps = {
@@ -18,6 +18,8 @@ export type RelocationEquipmentEditableTableProps = {
   setEditableKeys?: (keys: Key[]) => void
 
   isLoading: boolean
+
+  equipmentIsLoading: boolean
   equipmentListIsLoading?: boolean
 
   currencyList: CurrencyListModel

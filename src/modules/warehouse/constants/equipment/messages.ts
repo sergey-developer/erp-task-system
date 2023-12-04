@@ -24,6 +24,7 @@ export const getEquipmentMessages: ApiRequestMessages<'commonError'> = {
 }
 
 export const createEquipmentErrorMsg = 'Ошибка создания оборудования'
+export const createEquipmentsByFileTemplateErrorMsg = 'Ошибка загрузки оборудования из файла'
 export const updateEquipmentErrorMsg = 'Ошибка редактирования оборудования'
 
 export const getEquipmentListTemplateErrorMsg =

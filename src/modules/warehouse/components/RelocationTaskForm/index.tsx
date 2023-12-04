@@ -38,7 +38,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   onChangeRelocateFrom,
   onChangeRelocateTo,
 }) => {
-  const form = Form.useFormInstance()
+  const form = Form.useFormInstance<RelocationTaskFormFields>()
 
   const relocateFromFormValue: MaybeUndefined<RelocationTaskFormFields['relocateFrom']> =
     Form.useWatch('relocateFrom', form)
@@ -81,7 +81,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         >
           <Select<IdType, LocationOption>
             loading={relocateFromLocationListIsLoading}
-            disabled={isLoading}
+            disabled={isLoading || relocateFromLocationListIsLoading}
             options={relocateFromLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
@@ -98,7 +98,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         >
           <Select<IdType, LocationOption>
             loading={relocateToLocationListIsLoading}
-            disabled={isLoading || !relocateFromFormValue || typeIsWriteOff}
+            disabled={isLoading || !relocateFromFormValue || typeIsWriteOff || relocateToLocationListIsLoading}
             options={relocateToLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
@@ -143,7 +143,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           <Select
             fieldNames={userListSelectFieldNames}
             loading={userListIsLoading}
-            disabled={isLoading}
+            disabled={isLoading || userListIsLoading}
             options={userList}
             placeholder='Выберите исполнителя'
           />

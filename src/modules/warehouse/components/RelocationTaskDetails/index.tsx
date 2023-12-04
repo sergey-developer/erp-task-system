@@ -67,7 +67,10 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from '../RelocationEquipmentTable'
-import { RelocationEquipmentTableItem } from '../RelocationEquipmentTable/types'
+import {
+  RelocationEquipmentTableItem,
+  RelocationEquipmentTableProps,
+} from '../RelocationEquipmentTable/types'
 import { ReturnRelocationTaskToReworkModalProps } from '../ReturnRelocationTaskToReworkModal/types'
 import { RelocationTaskDetailsProps } from './types'
 
@@ -108,21 +111,22 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [confirmExecutionModalOpened, { toggle: toggleOpenConfirmExecutionModal }] = useBoolean()
   const debouncedToggleOpenConfirmExecutionModal = useDebounceFn(toggleOpenConfirmExecutionModal)
 
-  const [activeEquipment, setActiveEquipment] = useState<RelocationEquipmentTableItem>()
+  const [activeEquipmentRow, setActiveEquipmentRow] = useState<RelocationEquipmentTableItem>()
   const [
     equipmentImagesModalOpened,
     { setTrue: openEquipmentImagesModal, setFalse: closeEquipmentImagesModal },
   ] = useBoolean()
 
-  const handleOpenEquipmentImagesModal = useDebounceFn((event, equipment) => {
-    event.stopPropagation()
-    openEquipmentImagesModal()
-    setActiveEquipment(equipment)
-  })
+  const handleOpenEquipmentImagesModal: RelocationEquipmentTableProps['onClickImages'] =
+    useDebounceFn((event, equipment) => {
+      event.stopPropagation()
+      openEquipmentImagesModal()
+      setActiveEquipmentRow(equipment)
+    })
 
   const handleCloseEquipmentImagesModal = useDebounceFn(() => {
     closeEquipmentImagesModal()
-    setActiveEquipment(undefined)
+    setActiveEquipmentRow(undefined)
   })
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
@@ -135,8 +139,8 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     currentData: relocationEquipmentAttachmentList = [],
     isFetching: relocationEquipmentAttachmentListIsFetching,
   } = useGetRelocationEquipmentAttachmentList(
-    { relocationEquipmentId: activeEquipment?.id! },
-    { skip: !equipmentImagesModalOpened || !activeEquipment },
+    { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
+    { skip: !equipmentImagesModalOpened || !activeEquipmentRow },
   )
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =

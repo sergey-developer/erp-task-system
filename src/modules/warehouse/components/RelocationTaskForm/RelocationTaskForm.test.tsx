@@ -123,6 +123,9 @@ const getSelectedRelocateFrom = (title: string) =>
 const querySelectedRelocateFrom = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getRelocateFromFormItem(), title)
 
+const expectRelocateFromLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getRelocateFromFormItem())
+
 // relocate to field
 const getRelocateToFormItem = () => within(getContainer()).getByTestId('relocate-to-form-item')
 const getRelocateToSelectInput = () => selectTestUtils.getSelect(getRelocateToFormItem())
@@ -137,6 +140,9 @@ const getSelectedRelocateTo = (title: string) =>
 
 const querySelectedRelocateTo = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getRelocateToFormItem(), title)
+
+const expectRelocateToLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getRelocateToFormItem())
 
 // comment field
 const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
@@ -175,6 +181,7 @@ export const testUtils = {
   getSelectedRelocateFrom,
   querySelectedRelocateFrom,
   findRelocateFromError,
+  expectRelocateFromLoadingFinished,
 
   getRelocateToSelectInput,
   openRelocateToSelect,
@@ -182,6 +189,7 @@ export const testUtils = {
   getSelectedRelocateTo,
   querySelectedRelocateTo,
   findRelocateToError,
+  expectRelocateToLoadingFinished,
 
   getExecutorSelectInput,
   openExecutorSelect,

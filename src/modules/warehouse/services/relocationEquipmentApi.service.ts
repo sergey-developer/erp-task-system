@@ -1,3 +1,4 @@
+import { RelocationEquipmentApiTagEnum } from 'modules/warehouse/constants/relocationEquipment'
 import {
   GetRelocationEquipmentAttachmentListQueryArgs,
   GetRelocationEquipmentAttachmentListSuccessResponse,
@@ -13,6 +14,8 @@ const relocationEquipmentApiService = baseApiService.injectEndpoints({
       GetRelocationEquipmentAttachmentListSuccessResponse,
       GetRelocationEquipmentAttachmentListQueryArgs
     >({
+      providesTags: (result, error) =>
+        error ? [] : [RelocationEquipmentApiTagEnum.RelocationEquipmentAttachmentList],
       query: ({ relocationEquipmentId }) => ({
         url: getRelocationEquipmentAttachmentListUrl(relocationEquipmentId),
         method: HttpMethodEnum.Get,

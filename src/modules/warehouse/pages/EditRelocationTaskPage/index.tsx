@@ -1,7 +1,8 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import { Button, Col, Form, FormProps, Modal, Row, Typography, UploadProps } from 'antd'
+import { Button, Col, Form, FormProps, Modal, Row, Typography, Upload, UploadProps } from 'antd'
 import { FormItemProps } from 'antd/es/form/FormItem'
 import concat from 'lodash/concat'
+import stubFalse from 'lodash/stubFalse'
 import moment from 'moment-timezone'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -30,9 +31,10 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
+  useCreateEquipmentsByFileTemplate,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
-  useGetEquipmentListTemplateHandler,
+  useGetEquipmentListTemplate,
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
@@ -60,6 +62,7 @@ import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { FileToSend } from 'shared/types/file'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { mergeDateTime } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
@@ -71,6 +74,10 @@ import {
   getRelocateFromLocationListParams,
   getRelocateToLocationListParams,
 } from '../CreateRelocationTaskPage/utils'
+
+const CreateEquipmentsByFileTemplateModal = React.lazy(
+  () => import('modules/warehouse/components/CreateEquipmentsByFileTemplateModal'),
+)
 
 const AddAttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AddAttachmentListModal'),
@@ -105,21 +112,30 @@ const EditRelocationTaskPage: FC = () => {
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   const [
-    addEquipmentModalOpened,
-    { setTrue: openAddEquipmentModal, setFalse: closeAddEquipmentModal },
+    createEquipmentsByFileTemplateModalOpened,
+    { toggle: toggleOpenCreateEquipmentsByFileTemplateModal },
   ] = useBoolean(false)
 
-  const handleOpenAddEquipmentModal = useDebounceFn((row: ActiveEquipmentRow) => {
+  const debouncedToggleOpenCreateEquipmentsByFileTemplateModal = useDebounceFn(
+    toggleOpenCreateEquipmentsByFileTemplateModal,
+  )
+
+  const [
+    createEquipmentModalOpened,
+    { setTrue: openCreateEquipmentModal, setFalse: closeCreateEquipmentModal },
+  ] = useBoolean(false)
+
+  const handleOpenCreateEquipmentModal = useDebounceFn((row: ActiveEquipmentRow) => {
     setActiveEquipmentRow(row)
-    openAddEquipmentModal()
+    openCreateEquipmentModal()
   })
 
-  const handleCloseAddEquipmentModal = useDebounceFn(() => {
-    closeAddEquipmentModal()
+  const handleCloseCreateEquipmentModal = useDebounceFn(() => {
+    closeCreateEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
     setActiveEquipmentRow(undefined)
-  }, [closeAddEquipmentModal])
+  })
 
   const [
     addRelocationEquipmentImagesModalOpened,
@@ -161,20 +177,24 @@ const EditRelocationTaskPage: FC = () => {
     isFetching: relocationEquipmentListIsFetching,
   } = useGetRelocationEquipmentList({ relocationTaskId: relocationTaskId! })
 
-  const activeEquipmentInCreatedTask =
+  const activeEquipmentIsRelocationEquipment =
     addRelocationEquipmentImagesModalOpened && activeEquipmentRow && relocationEquipmentList.length
-      ? Boolean(relocationEquipmentList.find((eqp) => eqp.id === activeEquipmentRow.id))
+      ? Boolean(
+          relocationEquipmentList.find(
+            (eqp) => eqp.relocationEquipmentId === activeEquipmentRow.relocationEquipmentId,
+          ),
+        )
       : false
 
   const {
     currentData: relocationEquipmentAttachmentList = [],
     isFetching: relocationEquipmentAttachmentListIsFetching,
   } = useGetRelocationEquipmentAttachmentList(
-    { relocationEquipmentId: activeEquipmentRow?.id! },
+    { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
     {
       skip:
-        !activeEquipmentRow?.id ||
-        !activeEquipmentInCreatedTask ||
+        !activeEquipmentRow?.relocationEquipmentId ||
+        !activeEquipmentIsRelocationEquipment ||
         !addRelocationEquipmentImagesModalOpened,
     },
   )
@@ -222,14 +242,14 @@ const EditRelocationTaskPage: FC = () => {
       { skip: !selectedRelocateFrom?.value || !selectedType },
     )
 
-  const [getEquipment] = useLazyGetEquipment()
+  const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
-    useGetEquipmentCategoryList(undefined, { skip: !addEquipmentModalOpened })
+    useGetEquipmentCategoryList(undefined, { skip: !createEquipmentModalOpened })
 
   const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypeList(
     undefined,
-    { skip: !addEquipmentModalOpened || !selectedCategory || !selectedNomenclatureId },
+    { skip: !createEquipmentModalOpened || !selectedCategory || !selectedNomenclatureId },
   )
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
@@ -237,19 +257,22 @@ const EditRelocationTaskPage: FC = () => {
       categoryIsConsumable
         ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
         : defaultGetNomenclatureListParams,
-      { skip: !addEquipmentModalOpened || !selectedCategory },
+      { skip: !createEquipmentModalOpened || !selectedCategory },
     )
 
-  const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
-    skip: !selectedNomenclatureId || !addEquipmentModalOpened,
-  })
+  const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
+    selectedNomenclatureId!,
+    {
+      skip: !selectedNomenclatureId || !createEquipmentModalOpened,
+    },
+  )
 
   const [getCustomerList, { data: customerList = [], isFetching: customerListIsFetching }] =
     useLazyGetCustomerList()
 
   useEffect(() => {
     if (
-      addEquipmentModalOpened &&
+      createEquipmentModalOpened &&
       !!selectedCategory &&
       !categoryIsConsumable &&
       !!selectedNomenclatureId
@@ -257,7 +280,7 @@ const EditRelocationTaskPage: FC = () => {
       getCustomerList()
     }
   }, [
-    addEquipmentModalOpened,
+    createEquipmentModalOpened,
     categoryIsConsumable,
     getCustomerList,
     selectedCategory,
@@ -268,6 +291,11 @@ const EditRelocationTaskPage: FC = () => {
     useUpdateRelocationTask()
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
+
+  const [
+    createEquipmentsByFileTemplateMutation,
+    { isLoading: createEquipmentsByFileTemplateIsLoading, data: createdEquipmentsByFileTemplate },
+  ] = useCreateEquipmentsByFileTemplate()
 
   const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
@@ -283,7 +311,7 @@ const EditRelocationTaskPage: FC = () => {
   }
 
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
-    useGetEquipmentListTemplateHandler()
+    useGetEquipmentListTemplate()
 
   const handleUpdateRelocationTask = async (values: RelocationTaskFormFields) => {
     if (!relocationTaskId) return
@@ -324,7 +352,7 @@ const EditRelocationTaskPage: FC = () => {
     if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
       const [index, changes] = Object.entries(changedValues.equipments)[0] as [
         string,
-        Partial<Omit<RelocationEquipmentRow, 'rowId'>>,
+        Partial<RelocationEquipmentRow>,
       ]
 
       if (changes.id && relocationTaskId) {
@@ -353,11 +381,8 @@ const EditRelocationTaskPage: FC = () => {
     }
   }
 
-  const handleChangeForm: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
-    changedValues,
-    values,
-  ) => {
-    await pickEquipment(changedValues, values)
+  const createEquipmentsByFileTemplate: NonNullable<UploadProps['onChange']> = async ({ file }) => {
+    await createEquipmentsByFileTemplateMutation({ file: file as FileToSend })
   }
 
   const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
@@ -372,8 +397,10 @@ const EditRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
-        form.setFieldValue(['equipments', activeEquipmentRow.rowIndex], {
-          rowId: createdEquipment.id,
+        const rowPath = ['equipments', activeEquipmentRow.rowIndex]
+
+        form.setFieldValue(rowPath, {
+          ...form.getFieldValue(rowPath),
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber,
           purpose: createdEquipment.purpose.title,
@@ -387,16 +414,7 @@ const EditRelocationTaskPage: FC = () => {
           category: createdEquipment.category,
         })
 
-        setEditableTableRowKeys((prevState) => {
-          const index = prevState.indexOf(activeEquipmentRow.rowId)
-          const newArr = [...prevState]
-          if (index !== -1) {
-            newArr[index] = createdEquipment.id
-          }
-          return newArr
-        })
-
-        handleCloseAddEquipmentModal()
+        handleCloseCreateEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
           setFields(getFieldsErrors(error.data))
@@ -410,7 +428,7 @@ const EditRelocationTaskPage: FC = () => {
       createEquipmentMutation,
       form,
       typeIsWriteOff,
-      handleCloseAddEquipmentModal,
+      handleCloseCreateEquipmentModal,
     ],
   )
 
@@ -524,6 +542,7 @@ const EditRelocationTaskPage: FC = () => {
         equipments.push({
           rowId: eqp.id,
           id: eqp.id,
+          relocationEquipmentId: eqp.relocationEquipmentId,
           serialNumber: eqp?.serialNumber || undefined,
           purpose: eqp.purpose,
           condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : eqp.condition,
@@ -540,7 +559,7 @@ const EditRelocationTaskPage: FC = () => {
     }
   }, [form, relocationEquipmentBalanceList, relocationEquipmentList, relocationTask])
 
-  const addEquipmentBtnDisabled =
+  const createEquipmentDisabled =
     !selectedRelocateFrom ||
     !selectedRelocateTo ||
     !checkLocationTypeIsWarehouse(selectedRelocateTo.type)
@@ -557,7 +576,7 @@ const EditRelocationTaskPage: FC = () => {
         form={form}
         layout='vertical'
         onFinish={handleUpdateRelocationTask}
-        onValuesChange={handleChangeForm}
+        onValuesChange={pickEquipment}
         initialValues={initialValues}
       >
         <Row gutter={[40, 40]}>
@@ -587,7 +606,19 @@ const EditRelocationTaskPage: FC = () => {
                 {permissions?.equipmentsCreate && (
                   <Col>
                     <Space>
-                      <Button>Добавить из Excel</Button>
+                      <Upload
+                        showUploadList={false}
+                        beforeUpload={stubFalse}
+                        fileList={[]}
+                        onChange={createEquipmentsByFileTemplate}
+                      >
+                        <Button
+                          disabled={createEquipmentDisabled}
+                          loading={createEquipmentsByFileTemplateIsLoading}
+                        >
+                          Добавить из Excel
+                        </Button>
+                      </Upload>
 
                       <Button
                         onClick={getEquipmentListTemplate}
@@ -604,14 +635,15 @@ const EditRelocationTaskPage: FC = () => {
                 editableKeys={editableTableRowKeys}
                 setEditableKeys={setEditableTableRowKeys}
                 isLoading={updateRelocationTaskIsLoading}
+                equipmentIsLoading={equipmentIsFetching}
                 equipmentListIsLoading={relocationEquipmentListIsFetching}
                 currencyList={currencyList}
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
                 canCreateEquipment={!!permissions?.equipmentsCreate}
-                addEquipmentBtnDisabled={addEquipmentBtnDisabled}
-                onClickCreateEquipment={handleOpenAddEquipmentModal}
+                addEquipmentBtnDisabled={createEquipmentDisabled}
+                onClickCreateEquipment={handleOpenCreateEquipmentModal}
                 onClickAddImage={handleOpenAddRelocationEquipmentImagesModal}
               />
             </Space>
@@ -651,14 +683,17 @@ const EditRelocationTaskPage: FC = () => {
         <Text>Вы действительно хотите сменить объект выбытия?</Text>
       </Modal>
 
-      {addEquipmentModalOpened && (
+      {createEquipmentModalOpened && (
         <React.Suspense
           fallback={
-            <ModalFallback open={addEquipmentModalOpened} onCancel={handleCloseAddEquipmentModal} />
+            <ModalFallback
+              open={createEquipmentModalOpened}
+              onCancel={handleCloseCreateEquipmentModal}
+            />
           }
         >
           <EquipmentFormModal
-            open={addEquipmentModalOpened}
+            open={createEquipmentModalOpened}
             mode='create'
             title='Добавление оборудования'
             okText='Добавить'
@@ -668,16 +703,17 @@ const EditRelocationTaskPage: FC = () => {
             selectedCategory={selectedCategory}
             onChangeCategory={handleChangeCategory}
             currencyList={currencyList}
-            currencyListIsFetching={currencyListIsFetching}
+            currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
-            ownerListIsFetching={customerListIsFetching}
+            ownerListIsLoading={customerListIsFetching}
             workTypeList={workTypeList}
-            workTypeListIsFetching={workTypeListIsFetching}
+            workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
+            nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
-            onCancel={handleCloseAddEquipmentModal}
+            onCancel={handleCloseCreateEquipmentModal}
             onSubmit={handleCreateEquipment}
             onUploadImage={handleCreateEquipmentImage}
             onDeleteImage={deleteAttachment}
@@ -714,6 +750,21 @@ const EditRelocationTaskPage: FC = () => {
                   )
                 : undefined
             }
+          />
+        </React.Suspense>
+      )}
+
+      {createEquipmentsByFileTemplateModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback open onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal} />
+          }
+        >
+          <CreateEquipmentsByFileTemplateModal
+            open={createEquipmentsByFileTemplateModalOpened}
+            onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
+            onOk={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
+            dataSource={[]}
           />
         </React.Suspense>
       )}

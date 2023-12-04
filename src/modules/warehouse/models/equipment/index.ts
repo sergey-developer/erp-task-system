@@ -3,6 +3,9 @@ export * from './getEquipment.model'
 export * from './createEquipment.model'
 export * from './updateEquipment.model'
 
+export * from './equipmentsByFileTemplate.model'
+export * from './createEquipmentsByFileTemplate.model'
+
 export * from './equipmentList.model'
 export * from './getEquipmentList.model'
 
