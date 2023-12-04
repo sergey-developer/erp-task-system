@@ -7,11 +7,12 @@ import { RelocationEquipmentSimplifiedEditableTableProps } from './types'
 
 const props: RelocationEquipmentSimplifiedEditableTableProps = {
   name: '',
+  isLoading: false,
 
   editableKeys: undefined,
   setEditableKeys: jest.fn(),
 
-  isLoading: false,
+  equipmentIsLoading: false,
   equipmentListIsLoading: false,
 
   equipmentCatalogList: [],
