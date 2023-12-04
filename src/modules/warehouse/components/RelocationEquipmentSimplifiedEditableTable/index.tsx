@@ -26,18 +26,18 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
 > = ({
   name,
   required,
+  isLoading,
 
   editableKeys,
   setEditableKeys,
 
-  isLoading,
+  equipmentIsLoading,
   equipmentListIsLoading,
 
   equipmentCatalogList,
   equipmentCatalogListIsLoading,
 
   canCreateEquipment,
-  addEquipmentBtnDisabled,
   onClickCreateEquipment,
 }) => {
   const form = Form.useFormInstance()
@@ -74,13 +74,8 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
                 <Space $block direction='vertical'>
                   <CreateEquipmentButton
                     type='link'
-                    disabled={addEquipmentBtnDisabled}
                     onClick={() =>
-                      onClickCreateEquipment({
-                        tableName: name,
-                        rowIndex: config.rowIndex,
-                        rowId: config.entity.rowId!,
-                      })
+                      onClickCreateEquipment({ tableName: name, rowIndex: config.rowIndex })
                     }
                   >
                     Добавить оборудование
@@ -92,7 +87,7 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
             : undefined,
         allowClear: false,
         loading: equipmentCatalogListIsLoading,
-        disabled: isLoading,
+        disabled: isLoading || equipmentCatalogListIsLoading,
         options: equipmentCatalogOptions,
         showSearch: true,
         onChange: () => form.resetFields(['quantity']),
@@ -118,7 +113,7 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
       title: 'Состояние',
       valueType: 'select',
       formItemProps: { rules: onlyRequiredRules },
-      fieldProps: { disabled: isLoading, options: equipmentConditionOptions },
+      fieldProps: { disabled: isLoading || equipmentIsLoading, options: equipmentConditionOptions },
     },
     {
       key: 'amount',
@@ -145,7 +140,11 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
 
           const isConsumable = category?.code === EquipmentCategoryEnum.Consumable
 
-          return { min: 1, max: amount || 1, disabled: (!!category && !isConsumable) || isLoading }
+          return {
+            min: 1,
+            max: amount || 1,
+            disabled: (!!category && !isConsumable) || isLoading || equipmentIsLoading,
+          }
         }
       },
     },
@@ -173,7 +172,7 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
       columns={columns}
       recordCreatorProps={{
         record: () => ({ rowId: random(1, 9999999) }),
-        disabled: isLoading,
+        disabled: isLoading || equipmentListIsLoading,
         creatorButtonText: 'Добавить оборудование',
       }}
       formItemProps={{

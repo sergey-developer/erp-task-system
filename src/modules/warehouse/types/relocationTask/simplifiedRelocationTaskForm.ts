@@ -3,9 +3,10 @@ import { EquipmentModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 
-export type SimplifiedRelocationTaskFormEquipment = {
+export type SimplifiedRelocationTaskEquipment = {
   rowId: number
   id: IdType
+  relocationEquipmentId: IdType
   quantity: number
   condition: EquipmentConditionEnum
 
@@ -19,6 +20,6 @@ export type SimplifiedRelocationTaskFormFields = {
   controller?: IdType
   comment?: string
 
-  equipmentsToShop?: SimplifiedRelocationTaskFormEquipment[]
-  equipmentsToWarehouse?: SimplifiedRelocationTaskFormEquipment[]
+  equipmentsToShop?: SimplifiedRelocationTaskEquipment[]
+  equipmentsToWarehouse?: SimplifiedRelocationTaskEquipment[]
 }
