@@ -171,7 +171,7 @@ const CreateRelocationTaskPage: FC = () => {
     getRelocateToLocationList,
     { currentData: relocateToLocationList = [], isFetching: relocateToLocationListIsFetching },
   ] = useLazyGetLocationList()
-  console.log({ relocateFromLocationList, relocateToLocationList })
+
   /* сделано через lazy т.к. по каким-то причинам запрос не отправляется снова если один из параметров не изменился */
   useEffect(() => {
     getRelocateFromLocationList(getRelocateFromLocationListParams(selectedType))
@@ -330,7 +330,10 @@ const CreateRelocationTaskPage: FC = () => {
   }
 
   const createEquipmentsByFileTemplate: NonNullable<UploadProps['onChange']> = async ({ file }) => {
-    await createEquipmentsByFileTemplateMutation({ file: file as FileToSend })
+    try {
+      await createEquipmentsByFileTemplateMutation({ file: file as FileToSend }).unwrap()
+      toggleOpenCreateEquipmentsByFileTemplateModal()
+    } catch {}
   }
 
   const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
@@ -607,7 +610,7 @@ const CreateRelocationTaskPage: FC = () => {
         </React.Suspense>
       )}
 
-      {createEquipmentsByFileTemplateModalOpened && (
+      {createEquipmentsByFileTemplateModalOpened && createdEquipmentsByFileTemplate && (
         <React.Suspense
           fallback={
             <ModalFallback open onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal} />
@@ -617,7 +620,7 @@ const CreateRelocationTaskPage: FC = () => {
             open={createEquipmentsByFileTemplateModalOpened}
             onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
             onOk={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
-            dataSource={[]}
+            data={createdEquipmentsByFileTemplate}
           />
         </React.Suspense>
       )}

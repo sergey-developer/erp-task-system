@@ -1,19 +1,21 @@
 import React, { FC } from 'react'
 
+import { EquipmentsByFileTemplateModel } from 'modules/warehouse/models'
+
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { ADD_TEXT } from 'shared/constants/common'
 
 import EquipmentsByFileTemplateTable from '../EquipmentsByFileTemplateTable'
-import { EquipmentsByFileTemplateTableProps } from '../EquipmentsByFileTemplateTable/types'
 
 export type CreateEquipmentsByFileTemplateModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel' | 'onOk'>
-> &
-  Pick<EquipmentsByFileTemplateTableProps, 'dataSource'>
+> & {
+  data: EquipmentsByFileTemplateModel
+}
 
 const CreateEquipmentsByFileTemplateModal: FC<CreateEquipmentsByFileTemplateModalProps> = ({
-  dataSource,
+  data,
   ...props
 }) => {
   return (
@@ -24,7 +26,7 @@ const CreateEquipmentsByFileTemplateModal: FC<CreateEquipmentsByFileTemplateModa
       width='100%'
       title='Оборудование из Excel'
     >
-      <EquipmentsByFileTemplateTable dataSource={dataSource} />
+      <EquipmentsByFileTemplateTable dataSource={data} />
     </BaseModal>
   )
 }
