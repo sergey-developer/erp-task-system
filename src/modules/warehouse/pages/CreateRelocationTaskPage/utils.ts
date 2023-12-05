@@ -2,7 +2,6 @@ import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 import { GetEquipmentCatalogListQueryArgs } from 'modules/warehouse/models'
-import { checkRelocationTaskTypeIsWarranty } from 'modules/warehouse/utils/relocationTask'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { GetLocationListQueryArgs } from 'shared/models/catalogs/location'
@@ -11,7 +10,6 @@ import { MaybeUndefined } from 'shared/types/utils'
 const getConditionsByType = (type: RelocationTaskTypeEnum): EquipmentConditionEnum[] => {
   switch (type) {
     case RelocationTaskTypeEnum.Relocation:
-    case RelocationTaskTypeEnum.Warranty:
     case RelocationTaskTypeEnum.Repair:
       return [
         EquipmentConditionEnum.Working,
@@ -32,8 +30,6 @@ const getRelocateFromLocationTypes = (
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
     case RelocationTaskTypeEnum.Repair:
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
-    case RelocationTaskTypeEnum.Warranty:
-      return [LocationTypeEnum.Warehouse]
   }
 }
 
@@ -45,7 +41,6 @@ const getRelocateFromWarehouseTypes = (
       return [WarehouseTypeEnum.Main, WarehouseTypeEnum.Msi]
     case RelocationTaskTypeEnum.Relocation:
     case RelocationTaskTypeEnum.WriteOff:
-    case RelocationTaskTypeEnum.Warranty:
       return undefined
   }
 }
@@ -58,8 +53,6 @@ const getRelocateToLocationTypes = (
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
     case RelocationTaskTypeEnum.Repair:
       return [LocationTypeEnum.Warehouse]
-    case RelocationTaskTypeEnum.Warranty:
-      return undefined
     case RelocationTaskTypeEnum.WriteOff:
       return undefined
   }
@@ -74,7 +67,6 @@ const getRelocateToWarehouseTypes = (
     case RelocationTaskTypeEnum.Repair:
       return [WarehouseTypeEnum.Repair]
     case RelocationTaskTypeEnum.WriteOff:
-    case RelocationTaskTypeEnum.Warranty:
       return undefined
   }
 }
@@ -83,7 +75,6 @@ export const getEquipmentCatalogListParams = (
   type: RelocationTaskTypeEnum,
 ): Pick<GetEquipmentCatalogListQueryArgs, 'conditions' | 'isWarranty'> => ({
   conditions: getConditionsByType(type),
-  isWarranty: checkRelocationTaskTypeIsWarranty(type) ? true : undefined,
 })
 
 export const getRelocateFromLocationListParams = (
