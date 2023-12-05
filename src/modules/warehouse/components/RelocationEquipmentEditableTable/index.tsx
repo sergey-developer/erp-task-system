@@ -232,18 +232,20 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       },
     },
     {
-      title: '',
-      valueType: 'option',
+      key: 'delete',
       width: 50,
-      render: (_, row) => [
-        <Button
-          key='delete'
-          type='text'
-          icon={<MinusCircleIcon />}
-          onClick={() => handleDeleteRow(row)}
-          disabled={isLoading}
-        />,
-      ],
+      renderFormItem: (schema, config) => {
+        return (
+          config.record && (
+            <Button
+              type='text'
+              icon={<MinusCircleIcon />}
+              onClick={() => handleDeleteRow(config.record!)}
+              disabled={isLoading}
+            />
+          )
+        )
+      },
     },
   ]
 
@@ -268,18 +270,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         form,
         editableKeys,
         onChange: setEditableKeys,
-        onValuesChange: (record, recordList) => {
-          form.setFieldValue('equipments', recordList)
-        },
-        actionRender: (row) => [
-          <Button
-            key='delete'
-            type='text'
-            icon={<MinusCircleIcon />}
-            onClick={() => handleDeleteRow(row)}
-            disabled={isLoading}
-          />,
-        ],
+        onValuesChange: (record, recordList) => form.setFieldValue('equipments', recordList),
       }}
     />
   )

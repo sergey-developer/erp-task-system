@@ -31,7 +31,7 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
-  useCreateEquipmentsByFileTemplate,
+  useCreateEquipmentsByFile,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
   useGetEquipmentListTemplate,
@@ -75,8 +75,8 @@ import {
   getRelocateToLocationListParams,
 } from '../CreateRelocationTaskPage/utils'
 
-const CreateEquipmentsByFileTemplateModal = React.lazy(
-  () => import('modules/warehouse/components/CreateEquipmentsByFileTemplateModal'),
+const CreateEquipmentsByFileModal = React.lazy(
+  () => import('modules/warehouse/components/CreateEquipmentsByFileModal'),
 )
 
 const AddAttachmentListModal = React.lazy(
@@ -111,13 +111,11 @@ const EditRelocationTaskPage: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
-  const [
-    createEquipmentsByFileTemplateModalOpened,
-    { toggle: toggleOpenCreateEquipmentsByFileTemplateModal },
-  ] = useBoolean(false)
+  const [createEquipmentsByFileModalOpened, { toggle: toggleOpenCreateEquipmentsByFileModal }] =
+    useBoolean(false)
 
-  const debouncedToggleOpenCreateEquipmentsByFileTemplateModal = useDebounceFn(
-    toggleOpenCreateEquipmentsByFileTemplateModal,
+  const debouncedToggleOpenCreateEquipmentsByFileModal = useDebounceFn(
+    toggleOpenCreateEquipmentsByFileModal,
   )
 
   const [
@@ -293,9 +291,9 @@ const EditRelocationTaskPage: FC = () => {
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
 
   const [
-    createEquipmentsByFileTemplateMutation,
-    { isLoading: createEquipmentsByFileTemplateIsLoading, data: createdEquipmentsByFileTemplate },
-  ] = useCreateEquipmentsByFileTemplate()
+    createEquipmentsByFileMutation,
+    { isLoading: createEquipmentsByFileIsLoading, data: equipmentsByFile },
+  ] = useCreateEquipmentsByFile()
 
   const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
@@ -313,7 +311,7 @@ const EditRelocationTaskPage: FC = () => {
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
     useGetEquipmentListTemplate()
 
-  const handleUpdateRelocationTask = async (values: RelocationTaskFormFields) => {
+  const updateRelocationTask = async (values: RelocationTaskFormFields) => {
     if (!relocationTaskId) return
 
     try {
@@ -381,14 +379,14 @@ const EditRelocationTaskPage: FC = () => {
     }
   }
 
-  const createEquipmentsByFileTemplate: NonNullable<UploadProps['onChange']> = async ({ file }) => {
+  const createEquipmentsByFile: NonNullable<UploadProps['onChange']> = async ({ file }) => {
     try {
-      await createEquipmentsByFileTemplateMutation({ file: file as FileToSend }).unwrap()
-      toggleOpenCreateEquipmentsByFileTemplateModal()
+      await createEquipmentsByFileMutation({ file: file as FileToSend }).unwrap()
+      toggleOpenCreateEquipmentsByFileModal()
     } catch {}
   }
 
-  const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+  const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
       if (!activeEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
 
@@ -578,7 +576,7 @@ const EditRelocationTaskPage: FC = () => {
         data-testid='edit-relocation-task-page'
         form={form}
         layout='vertical'
-        onFinish={handleUpdateRelocationTask}
+        onFinish={updateRelocationTask}
         onValuesChange={pickEquipment}
         initialValues={initialValues}
       >
@@ -613,11 +611,11 @@ const EditRelocationTaskPage: FC = () => {
                         showUploadList={false}
                         beforeUpload={stubFalse}
                         fileList={[]}
-                        onChange={createEquipmentsByFileTemplate}
+                        onChange={createEquipmentsByFile}
                       >
                         <Button
                           disabled={createEquipmentDisabled}
-                          loading={createEquipmentsByFileTemplateIsLoading}
+                          loading={createEquipmentsByFileIsLoading}
                         >
                           Добавить из Excel
                         </Button>
@@ -717,7 +715,7 @@ const EditRelocationTaskPage: FC = () => {
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseCreateEquipmentModal}
-            onSubmit={handleCreateEquipment}
+            onSubmit={createEquipment}
             onUploadImage={handleCreateEquipmentImage}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
@@ -757,17 +755,18 @@ const EditRelocationTaskPage: FC = () => {
         </React.Suspense>
       )}
 
-      {createEquipmentsByFileTemplateModalOpened && createdEquipmentsByFileTemplate && (
+      {createEquipmentsByFileModalOpened && equipmentsByFile && (
         <React.Suspense
           fallback={
-            <ModalFallback open onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal} />
+            <ModalFallback open onCancel={debouncedToggleOpenCreateEquipmentsByFileModal} />
           }
         >
-          <CreateEquipmentsByFileTemplateModal
-            open={createEquipmentsByFileTemplateModalOpened}
-            onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
-            onOk={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
-            data={createdEquipmentsByFileTemplate}
+          <CreateEquipmentsByFileModal
+            open={createEquipmentsByFileModalOpened}
+            onCancel={debouncedToggleOpenCreateEquipmentsByFileModal}
+            onCreate={async () => {}}
+            isCreating={false}
+            data={equipmentsByFile}
           />
         </React.Suspense>
       )}

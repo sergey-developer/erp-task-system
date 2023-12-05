@@ -11,7 +11,6 @@ import { FileResponse } from 'shared/types/file'
 export type RelocationTaskEquipment = {
   rowId: number
   id: IdType
-  relocationEquipmentId: IdType
   quantity: number
   condition: EquipmentConditionEnum
 
@@ -20,6 +19,7 @@ export type RelocationTaskEquipment = {
   amount?: number
   price?: number
   currency?: IdType
+  relocationEquipmentId?: IdType
   category?: EquipmentModel['category']
   attachments?: UploadFile<FileResponse>[]
 }

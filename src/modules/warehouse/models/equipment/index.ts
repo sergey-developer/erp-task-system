@@ -1,10 +1,11 @@
 export * from './equipment.model'
 export * from './getEquipment.model'
 export * from './createEquipment.model'
+export * from './createEquipments.model'
 export * from './updateEquipment.model'
 
-export * from './equipmentsByFileTemplate.model'
-export * from './createEquipmentsByFileTemplate.model'
+export * from './equipmentsByFile.model'
+export * from './createEquipmentsByFile.model'
 
 export * from './equipmentList.model'
 export * from './getEquipmentList.model'

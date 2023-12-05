@@ -1,10 +1,14 @@
+import random from 'lodash/random'
+
 import { getPaginatedList } from 'lib/antd/utils'
 
 import { EquipmentApiEnum, EquipmentApiTagEnum } from 'modules/warehouse/constants/equipment'
 import {
   CreateEquipmentMutationArgs,
-  CreateEquipmentsByFileTemplateMutationArgs,
-  CreateEquipmentsByFileTemplateSuccessResponse,
+  CreateEquipmentsByFileMutationArgs,
+  CreateEquipmentsByFileSuccessResponse,
+  CreateEquipmentsMutationArgs,
+  CreateEquipmentsSuccessResponse,
   CreateEquipmentSuccessResponse,
   GetEquipmentAttachmentListQueryArgs,
   GetEquipmentAttachmentListSuccessResponse,
@@ -26,6 +30,7 @@ import {
   UpdateEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
 import {
+  CreateEquipmentsByFileTransformedSuccessResponse,
   GetEquipmentAttachmentListTransformedSuccessResponse,
   GetEquipmentListTransformedSuccessResponse,
   GetEquipmentNomenclatureListTransformedSuccessResponse,
@@ -128,20 +133,34 @@ const equipmentApiService = baseApiService
           data: payload,
         }),
       }),
-      createEquipmentsByFileTemplate: build.mutation<
-        CreateEquipmentsByFileTemplateSuccessResponse,
-        CreateEquipmentsByFileTemplateMutationArgs
+      createEquipments: build.mutation<
+        CreateEquipmentsSuccessResponse,
+        CreateEquipmentsMutationArgs
+      >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [EquipmentApiTagEnum.EquipmentCatalogList],
+        query: (payload) => ({
+          url: EquipmentApiEnum.CreateEquipments,
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+      }),
+      createEquipmentsByFile: build.mutation<
+        CreateEquipmentsByFileTransformedSuccessResponse,
+        CreateEquipmentsByFileMutationArgs
       >({
         query: (payload) => {
           const formData = new FormData()
           formData.append('file', payload.file)
 
           return {
-            url: EquipmentApiEnum.CreateEquipmentsByFileTemplate,
+            url: EquipmentApiEnum.CreateEquipmentsByFile,
             method: HttpMethodEnum.Post,
             data: formData,
           }
         },
+        transformResponse: (response: CreateEquipmentsByFileSuccessResponse) =>
+          response.map((eqp) => ({ ...eqp, rowId: random(1, 9999999) })),
       }),
       updateEquipment: build.mutation<UpdateEquipmentSuccessResponse, UpdateEquipmentMutationArgs>({
         invalidatesTags: (result, error) =>
@@ -185,7 +204,8 @@ export const {
   useGetEquipmentQuery,
   useLazyGetEquipmentQuery,
   useCreateEquipmentMutation,
-  useCreateEquipmentsByFileTemplateMutation,
+  useCreateEquipmentsMutation,
+  useCreateEquipmentsByFileMutation,
   useUpdateEquipmentMutation,
   useGetEquipmentListQuery,
   useGetEquipmentRelocationHistoryQuery,

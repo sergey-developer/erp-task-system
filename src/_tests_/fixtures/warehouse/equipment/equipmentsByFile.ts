@@ -1,12 +1,14 @@
 import times from 'lodash/times'
 
-import { EquipmentByFileTemplateTableRow } from 'modules/warehouse/components/EquipmentsByFileTemplateTable/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import { EquipmentsByFileModel } from 'modules/warehouse/models'
+import { EquipmentByFile } from 'modules/warehouse/types'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
-export const equipmentByFileTemplate = (): EquipmentByFileTemplateTableRow => ({
-  id: fakeId(),
+export const equipmentByFile = (): EquipmentByFile => ({
+  rowId: fakeId(),
+  title: fakeWord(),
   inventoryNumber: fakeWord(),
   serialNumber: fakeWord(),
   quantity: fakeInteger(),
@@ -24,5 +26,5 @@ export const equipmentByFileTemplate = (): EquipmentByFileTemplateTableRow => ({
   purpose: { id: fakeId(), title: fakeWord() },
 })
 
-export const equipmentsByFileTemplate = (length: number = 1): EquipmentByFileTemplateTableRow[] =>
-  times(length, () => equipmentByFileTemplate())
+export const equipmentsByFile = (length: number = 1): EquipmentsByFileModel =>
+  times(length, () => equipmentByFile())

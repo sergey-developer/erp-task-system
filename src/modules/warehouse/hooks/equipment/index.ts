@@ -1,5 +1,6 @@
 export * from './useCreateEquipment'
-export * from './useCreateEquipmentsByFileTemplate'
+export * from './useCreateEquipments'
+export * from './useCreateEquipmentsByFile'
 export * from './useUpdateEquipment'
 export * from './useGetEquipment'
 export * from './useLazyGetEquipment'

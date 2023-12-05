@@ -7,11 +7,10 @@ import {
 } from 'modules/warehouse/models'
 
 import { CurrencyModel } from 'shared/models/currency'
-import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-export type EquipmentByFileTemplateModel = {
-  id: IdType
+export type EquipmentByFileModel = {
+  title: MaybeNull<string>
   inventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>
   comment: MaybeNull<string>
@@ -33,4 +32,4 @@ export type EquipmentByFileTemplateModel = {
   >
 }
 
-export type EquipmentsByFileTemplateModel = EquipmentByFileTemplateModel[]
+export type EquipmentsByFileModel = EquipmentByFileModel[]
