@@ -9,6 +9,5 @@ export enum RelocationTaskStatusEnum {
 export enum RelocationTaskTypeEnum {
   Relocation = 'RELOCATION',
   Repair = 'REPAIR',
-  Warranty = 'WARRANTY',
   WriteOff = 'WRITE_OFF',
 }
