@@ -13,7 +13,7 @@ import CreateEquipmentsByFileTemplateModal, {
 
 const props: CreateEquipmentsByFileTemplateModalProps = {
   open: true,
-  dataSource: [],
+  data: [],
   onOk: jest.fn(),
   onCancel: jest.fn(),
 }

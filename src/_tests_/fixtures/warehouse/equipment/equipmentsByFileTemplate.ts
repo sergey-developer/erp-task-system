@@ -5,7 +5,7 @@ import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
-export const equipmentByTemplate = (): EquipmentByFileTemplateTableRow => ({
+export const equipmentByFileTemplate = (): EquipmentByFileTemplateTableRow => ({
   id: fakeId(),
   inventoryNumber: fakeWord(),
   serialNumber: fakeWord(),
@@ -24,5 +24,5 @@ export const equipmentByTemplate = (): EquipmentByFileTemplateTableRow => ({
   purpose: { id: fakeId(), title: fakeWord() },
 })
 
-export const equipmentsByTemplate = (length: number = 1): EquipmentByFileTemplateTableRow[] =>
-  times(length, () => equipmentByTemplate())
+export const equipmentsByFileTemplate = (length: number = 1): EquipmentByFileTemplateTableRow[] =>
+  times(length, () => equipmentByFileTemplate())

@@ -382,7 +382,10 @@ const EditRelocationTaskPage: FC = () => {
   }
 
   const createEquipmentsByFileTemplate: NonNullable<UploadProps['onChange']> = async ({ file }) => {
-    await createEquipmentsByFileTemplateMutation({ file: file as FileToSend })
+    try {
+      await createEquipmentsByFileTemplateMutation({ file: file as FileToSend }).unwrap()
+      toggleOpenCreateEquipmentsByFileTemplateModal()
+    } catch {}
   }
 
   const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
@@ -754,7 +757,7 @@ const EditRelocationTaskPage: FC = () => {
         </React.Suspense>
       )}
 
-      {createEquipmentsByFileTemplateModalOpened && (
+      {createEquipmentsByFileTemplateModalOpened && createdEquipmentsByFileTemplate && (
         <React.Suspense
           fallback={
             <ModalFallback open onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal} />
@@ -764,7 +767,7 @@ const EditRelocationTaskPage: FC = () => {
             open={createEquipmentsByFileTemplateModalOpened}
             onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
             onOk={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
-            dataSource={[]}
+            data={createdEquipmentsByFileTemplate}
           />
         </React.Suspense>
       )}

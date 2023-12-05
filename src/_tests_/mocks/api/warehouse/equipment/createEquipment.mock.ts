@@ -11,6 +11,7 @@ import {
   getBadRequestErrorMockFn,
   getForbiddenErrorMockFn,
   getRequestMockFn,
+  getServerErrorMockFn,
   getSuccessMockFn,
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
@@ -31,3 +32,6 @@ export const mockCreateEquipmentBadRequestError = <
 export const mockCreateEquipmentForbiddenError = (
   options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getForbiddenErrorMockFn(createEquipmentMockFn(), options)()
+
+export const mockCreateEquipmentServerError = (options?: Partial<ResponseResolverOptions>) =>
+  getServerErrorMockFn(createEquipmentMockFn(), options)()
