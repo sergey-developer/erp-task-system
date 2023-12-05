@@ -1,4 +1,5 @@
 export * from './apiRequest'
 export * from './equipmentFilter'
 export * from './equipmentList'
+export * from './equipmentAttachmentList'
 export * from './equipmentNomenclatureList'

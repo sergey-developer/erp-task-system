@@ -2,10 +2,12 @@ import { useBoolean, useLocalStorageState, usePrevious, useSetState } from 'ahoo
 import { Button, Col, Input, Row, Space } from 'antd'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { SearchProps } from 'antd/es/input'
+import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
 import pick from 'lodash/pick'
 import React, { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import ExtendedFilter from 'modules/task/components/ExtendedFilter'
@@ -17,7 +19,6 @@ import ExtendedFilterList, {
   ExtendedFilterListItem,
 } from 'modules/task/components/ExtendedFilterList'
 import FastFilterList from 'modules/task/components/FastFilterList'
-import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskTable from 'modules/task/components/TaskTable'
 import {
   SortableField,
@@ -25,7 +26,7 @@ import {
 } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort } from 'modules/task/components/TaskTable/utils'
-import { FastFilterEnum } from 'modules/task/constants/task'
+import { FastFilterEnum, TaskCardTabsEnum } from 'modules/task/constants/task'
 import { useLazyGetTaskList } from 'modules/task/hooks/task'
 import { useGetTaskCounters } from 'modules/task/hooks/taskCounters'
 import {
@@ -36,6 +37,7 @@ import {
 } from 'modules/task/models'
 import { TaskListPageFiltersStorage } from 'modules/task/services/taskLocalStorage/taskLocalStorage.service'
 import { parseTaskListPageFilters } from 'modules/task/services/taskLocalStorage/utils/taskListPageFilters'
+import { validateTaskCardTab } from 'modules/task/utils/task'
 import {
   useGetUserList,
   useOnChangeUserStatus,
@@ -47,15 +49,21 @@ import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import { SyncIcon } from 'components/Icons'
+import Spinner from 'components/Spinner'
 
 import { UserStatusCodeEnum } from 'shared/constants/catalogs'
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { StorageKeysEnum } from 'shared/constants/storage'
 import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
-import { calculatePaginationParams, getInitialPaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 import { DEFAULT_PAGE_SIZE, FilterTypeEnum } from './constants'
 import { ColStyled, RowStyled } from './styles'
@@ -65,17 +73,28 @@ import {
   mapExtendedFilterFormFieldsToQueries,
 } from './utils'
 
+const TaskCard = React.lazy(() => import('modules/task/components/TaskCard/CardContainer'))
+
 const { Search } = Input
 const initialExtendedFilterFormValues = getInitialExtendedFilterFormValues()
 
 const TaskListPage: FC = () => {
+  // todo: создать хук для useSearchParams который парсит значения в нужный тип
+  const [searchParams, setSearchParams] = useSearchParams()
+  const viewTaskId = Number(searchParams.get('viewTask')) || undefined
+  const taskCardTab = validateTaskCardTab(searchParams.get('taskCardTab') || '')
+    ? (searchParams.get('taskCardTab') as TaskCardTabsEnum)
+    : undefined
+
   const breakpoints = useBreakpoint()
 
   const { role } = useUserRole()
 
   const colRef = useRef<number>()
 
-  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<IdType>>(null)
+  const [selectedTaskId, setSelectedTaskId] = useState<IdType>()
+
+  const [activeTaskCardTab, setActiveTaskCardTab] = useState<TaskCardTabsEnum>()
 
   const [taskAdditionalInfoExpanded, { toggle: toggleTaskAdditionalInfoExpanded }] =
     useBoolean(false)
@@ -158,6 +177,14 @@ const TaskListPage: FC = () => {
   )
 
   useOnChangeUserStatus(onUpdateUserStatus)
+
+  useEffect(() => {
+    if (!selectedTaskId && !!viewTaskId) {
+      setSelectedTaskId(viewTaskId)
+      setActiveTaskCardTab(taskCardTab)
+      setSearchParams(undefined)
+    }
+  }, [selectedTaskId, setSearchParams, taskCardTab, viewTaskId])
 
   useLayoutEffect(() => {
     const taskListLayoutEl: MaybeNull<HTMLElement> = document.querySelector('.task-list-layout')
@@ -289,18 +316,17 @@ const TaskListPage: FC = () => {
     if (!value) handleSearchByTaskId(value)
   }
 
-  const debouncedSetSelectedTaskId = useDebounceFn(setSelectedTaskId)
-
   const handleTableRowClick = useCallback<TaskTableProps['onRow']>(
     (record) => ({
-      onClick: () => debouncedSetSelectedTaskId(record.id),
+      onClick: debounce(() => setSelectedTaskId(record.id), DEFAULT_DEBOUNCE_VALUE),
     }),
-    [debouncedSetSelectedTaskId],
+    [],
   )
 
   const handleCloseTaskCard = useCallback(() => {
-    setSelectedTaskId(null)
-  }, [setSelectedTaskId])
+    setSelectedTaskId(undefined)
+    setActiveTaskCardTab(undefined)
+  }, [])
 
   const handleTableSort = useCallback(
     (sorter: Parameters<TaskTableProps['onChange']>[2]) => {
@@ -438,7 +464,7 @@ const TaskListPage: FC = () => {
                 rowClassName={getTableRowClassName}
                 sort={taskListQueryArgs.sort}
                 onRow={handleTableRowClick}
-                dataSource={taskList?.results || []}
+                dataSource={extractPaginationResults(taskList)}
                 loading={taskListIsFetching}
                 onChange={handleChangeTable}
                 pagination={taskList?.pagination || false}
@@ -448,12 +474,15 @@ const TaskListPage: FC = () => {
 
             {!!selectedTaskId && (
               <ColStyled span={breakpoints.xxl ? 9 : 12}>
-                <TaskCard
-                  taskId={selectedTaskId}
-                  additionalInfoExpanded={taskAdditionalInfoExpanded}
-                  onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
-                  closeTaskCard={handleCloseTaskCard}
-                />
+                <React.Suspense fallback={<Spinner />}>
+                  <TaskCard
+                    taskId={selectedTaskId}
+                    activeTab={activeTaskCardTab}
+                    additionalInfoExpanded={taskAdditionalInfoExpanded}
+                    onExpandAdditionalInfo={toggleTaskAdditionalInfoExpanded}
+                    closeTaskCard={handleCloseTaskCard}
+                  />
+                </React.Suspense>
               </ColStyled>
             )}
           </RowStyled>

@@ -9,13 +9,11 @@ export const getPaginatedList = <T>(
   response: PaginatedListSuccessResponse<T>,
   params?: Partial<PaginationParams>,
 ): AntdPaginatedList<T> => ({
-  pagination:
-    isNumber(params?.offset) && params?.limit
-      ? {
-          current: params.offset / params.limit + 1,
-          pageSize: params.limit,
-          total: response.count,
-        }
-      : undefined,
+  pagination: {
+    ...(isNumber(params?.offset) && params?.limit
+      ? { current: params.offset / params.limit + 1, pageSize: params.limit }
+      : {}),
+    total: response.count,
+  },
   results: response.results,
 })

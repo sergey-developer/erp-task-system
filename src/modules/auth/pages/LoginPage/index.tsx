@@ -2,14 +2,17 @@ import { Button, Form, Input, Typography } from 'antd'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
-import { RouteEnum } from 'configs/routes'
-
-import { useLogin } from 'modules/auth/hooks'
+import { login as loginAction } from 'modules/auth/auth.slice'
+import { AuthRouteEnum } from 'modules/auth/constants/routes'
+import { useLoginMutation } from 'modules/auth/services/authApi.service'
+import { authLocalStorageService } from 'modules/auth/services/authLocalStorage.service'
+import { parseJwt } from 'modules/auth/utils'
 
 import { BaseCard } from 'components/Card/BaseCard'
 import Space from 'components/Space'
 
 import { APP_NAME } from 'shared/constants/common'
+import { useDispatch } from 'shared/hooks/useDispatch'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 
@@ -21,18 +24,21 @@ import { emailRules, passwordRules } from './validation'
 const { Text, Title } = Typography
 
 const LoginPage: FC = () => {
+  const dispatch = useDispatch()
+
   const [form] = Form.useForm<LoginFormFields>()
 
-  const {
-    fn: login,
-    state: { isLoading, error: loginErrorResponse },
-  } = useLogin()
-
+  const [loginMutation, { isLoading, error: loginErrorResponse }] = useLoginMutation()
   const loginError = getLoginError(loginErrorResponse)
 
-  const handleSubmit = async (values: LoginFormFields) => {
+  const login = async (values: LoginFormFields) => {
     try {
-      await login(values)
+      const response = await loginMutation(values).unwrap()
+
+      authLocalStorageService.setAccessToken(response.access)
+      authLocalStorageService.setRefreshToken(response.refresh)
+
+      dispatch(loginAction({ user: parseJwt(response.access), ...response }))
     } catch (error) {
       if (isErrorResponse(error)) {
         if (isBadRequestError(error)) {
@@ -54,7 +60,7 @@ const LoginPage: FC = () => {
         <Space direction='vertical'>
           {loginError && <Text type='danger'>{loginError}</Text>}
 
-          <Form<LoginFormFields> form={form} onFinish={handleSubmit} layout='vertical'>
+          <Form<LoginFormFields> form={form} onFinish={login} layout='vertical'>
             <Form.Item data-testid='field-email' label='E-mail' name='email' rules={emailRules}>
               <Input
                 data-testid='input-email'
@@ -88,7 +94,7 @@ const LoginPage: FC = () => {
                 Войти
               </Button>
 
-              <Link data-testid='btn-forgotPassword' to={RouteEnum.ForgotPassword}>
+              <Link data-testid='btn-forgotPassword' to={AuthRouteEnum.ForgotPassword}>
                 <Button type='link' block>
                   Забыли пароль?
                 </Button>

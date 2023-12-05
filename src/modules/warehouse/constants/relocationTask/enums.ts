@@ -5,3 +5,9 @@ export enum RelocationTaskStatusEnum {
   Closed = 'CLOSED',
   Canceled = 'CANCELED',
 }
+
+export enum RelocationTaskTypeEnum {
+  Relocation = 'RELOCATION',
+  Repair = 'REPAIR',
+  WriteOff = 'WRITE_OFF',
+}

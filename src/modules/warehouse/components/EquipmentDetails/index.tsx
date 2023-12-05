@@ -1,23 +1,29 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Drawer, Row, Typography } from 'antd'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import { Button, Col, Drawer, Row, Typography, UploadProps } from 'antd'
+import { RcFile } from 'antd/es/upload'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
+import AttachmentList from 'modules/attachment/components/AttachmentList'
+import { AttachmentTypeEnum } from 'modules/attachment/constants'
+import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { useMatchUserPermissions } from 'modules/user/hooks'
+import { attachmentsToFiles } from 'modules/attachment/utils'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
-  useCheckEquipmentCategory,
   useGetEquipment,
+  useGetEquipmentAttachmentList,
   useGetEquipmentCategoryList,
   useGetEquipmentRelocationHistory,
+  useUpdateEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
-import { useUpdateEquipmentMutation } from 'modules/warehouse/services/equipmentApi.service'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -27,24 +33,26 @@ import Space from 'components/Space'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import {
-  isBadRequestError,
-  isErrorResponse,
-  isForbiddenError,
-  isNotFoundError,
-} from 'shared/services/baseApi'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { getYesNoWord, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
-import { showErrorNotification } from 'shared/utils/notifications'
+import { extractPaginationResults } from 'shared/utils/pagination'
 
 import { EquipmentFormModalProps } from '../EquipmentFormModal/types'
 import { DrawerExtraStyled } from './style'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
-import { getHiddenFieldsByCategory } from './utils'
+import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
 
-const EquipmentFormModal = React.lazy(() => import('../EquipmentFormModal'))
+const AttachmentListModal = React.lazy(
+  () => import('modules/attachment/components/AttachmentListModal'),
+)
+
+const EquipmentFormModal = React.lazy(
+  () => import('modules/warehouse/components/EquipmentFormModal'),
+)
 
 const EquipmentRelocationHistoryModal = React.lazy(
   () => import('../EquipmentRelocationHistoryModal'),
@@ -53,12 +61,12 @@ const EquipmentRelocationHistoryModal = React.lazy(
 const { Text } = Typography
 
 const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) => {
-  const userPermissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
+  const permissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
-  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
+  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   const [relocationHistoryModalOpened, { toggle: toggleOpenRelocationHistoryModal }] =
     useBoolean(false)
@@ -72,11 +80,14 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const debouncedOpenEditEquipmentModal = useDebounceFn(openEditEquipmentModal)
 
-  const debouncedHandleCloseEditEquipmentModal = useDebounceFn(() => {
+  const handleCloseEditEquipmentModal = useDebounceFn(() => {
     closeEditEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedCategory(undefined)
   }, [closeEditEquipmentModal])
+
+  const [imageListModalOpened, { toggle: toggleOpenImageListModal }] = useBoolean(false)
+  const debouncedToggleOpenImageListModal = useDebounceFn(toggleOpenImageListModal)
 
   const { currentData: equipment, isFetching: equipmentIsFetching } = useGetEquipment({
     equipmentId,
@@ -100,18 +111,41 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
     useGetNomenclatureList(
-      equipmentCategory.isConsumable
+      categoryIsConsumable
         ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
         : defaultGetNomenclatureListParams,
       { skip: !editEquipmentModalOpened || !selectedCategory },
     )
 
-  const { currentData: nomenclature } = useGetNomenclature(selectedNomenclatureId!, {
-    skip: !selectedNomenclatureId || !editEquipmentModalOpened,
-  })
+  const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
+    selectedNomenclatureId!,
+    {
+      skip: !selectedNomenclatureId || !editEquipmentModalOpened,
+    },
+  )
 
-  const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] =
-    useUpdateEquipmentMutation()
+  const {
+    currentData: equipmentAttachmentList,
+    isFetching: equipmentAttachmentListIsFetching,
+    refetch: refetchEquipmentAttachmentList,
+  } = useGetEquipmentAttachmentList({ equipmentId, limit: 4 })
+
+  const {
+    currentData: totalEquipmentAttachmentList,
+    isFetching: totalEquipmentAttachmentListIsFetching,
+  } = useGetEquipmentAttachmentList(
+    { equipmentId, limit: equipmentAttachmentList?.pagination?.total! },
+    {
+      skip:
+        !equipmentAttachmentList?.pagination?.total ||
+        (!imageListModalOpened && !editEquipmentModalOpened),
+    },
+  )
+
+  const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] = useUpdateEquipment()
+
+  const [createAttachment] = useCreateAttachment()
+  const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   useEffect(() => {
     if (equipment?.category && editEquipmentModalOpened) {
@@ -129,10 +163,21 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     useLazyGetCustomerList()
 
   useEffect(() => {
-    if (editEquipmentModalOpened && Boolean(selectedCategory) && !equipmentCategory.isConsumable) {
+    if (
+      editEquipmentModalOpened &&
+      !!selectedCategory &&
+      !categoryIsConsumable &&
+      !!selectedNomenclatureId
+    ) {
       getCustomerList()
     }
-  }, [editEquipmentModalOpened, equipmentCategory.isConsumable, getCustomerList, selectedCategory])
+  }, [
+    editEquipmentModalOpened,
+    categoryIsConsumable,
+    getCustomerList,
+    selectedCategory,
+    selectedNomenclatureId,
+  ])
 
   const { currentData: relocationHistory = [], isFetching: relocationHistoryIsFetching } =
     useGetEquipmentRelocationHistory(
@@ -153,55 +198,49 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     setSelectedNomenclatureId(undefined)
   }
 
-  const handleEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async (values, setFields) => {
-      try {
-        await updateEquipmentMutation({ ...values, equipmentId }).unwrap()
-        debouncedHandleCloseEditEquipmentModal()
-      } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
+  const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
+    async (options) => {
+      await createAttachment({ type: AttachmentTypeEnum.EquipmentImage }, options)
+    },
+    [createAttachment],
+  )
 
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
-          } else if (isNotFoundError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          } else if (isForbiddenError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          }
+  const handleEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+    async ({ images, ...values }, setFields) => {
+      try {
+        await updateEquipmentMutation({
+          ...values,
+          images: images?.length ? extractIdsFromFilesResponse(images) : undefined,
+          equipmentId,
+        }).unwrap()
+
+        handleCloseEditEquipmentModal()
+        refetchEquipmentAttachmentList()
+      } catch (error) {
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
-    [debouncedHandleCloseEditEquipmentModal, equipmentId, updateEquipmentMutation],
+    [
+      updateEquipmentMutation,
+      equipmentId,
+      handleCloseEditEquipmentModal,
+      refetchEquipmentAttachmentList,
+    ],
   )
-
-  const equipmentFormInitialValues: EquipmentFormModalProps['initialValues'] = equipment
-    ? {
-        nomenclature: equipment.nomenclature.id,
-        condition: equipment.condition,
-        category: equipment.category.id,
-        purpose: equipment.purpose.id,
-        isNew: equipment.isNew,
-        isWarranty: equipment.isWarranty,
-        isRepaired: equipment.isRepaired,
-        title: nomenclature?.title,
-        warehouse: equipment.warehouse?.id,
-        currency: equipment.currency?.id,
-        customerInventoryNumber: equipment.customerInventoryNumber || undefined,
-        serialNumber: equipment.serialNumber || undefined,
-        quantity: equipment.quantity || undefined,
-        price: equipment.price || undefined,
-        usageCounter: equipment.usageCounter || undefined,
-        owner: equipment.owner?.id,
-        comment: equipment.comment || undefined,
-      }
-    : undefined
 
   const hiddenFields: FieldsMaybeHidden[] = equipment?.category
     ? getHiddenFieldsByCategory(equipment.category)
     : []
+
+  const defaultEquipmentImages = useMemo(
+    () =>
+      editEquipmentModalOpened && totalEquipmentAttachmentList?.results.length
+        ? attachmentsToFiles(totalEquipmentAttachmentList.results)
+        : undefined,
+    [editEquipmentModalOpened, totalEquipmentAttachmentList?.results],
+  )
 
   return (
     <>
@@ -284,9 +323,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
               <Row data-testid='relocation-history'>
                 <Col>
                   <Button
-                    disabled={
-                      !userPermissions?.equipmentsRead || !userPermissions.relocationTasksRead
-                    }
+                    disabled={!permissions?.equipmentsRead || !permissions?.relocationTasksRead}
                     onClick={debouncedToggleOpenRelocationHistoryModal}
                   >
                     История перемещений
@@ -431,6 +468,34 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
                 <Col span={16}>{valueOrHyphen(equipment.comment)}</Col>
               </Row>
+
+              <Row data-testid='images' gutter={[8, 8]}>
+                <Col span={24}>
+                  <Text type='secondary'>Изображения оборудования:</Text>
+                </Col>
+
+                <Col span={24}>
+                  <LoadingArea
+                    data-testid='equipment-image-list-loading'
+                    isLoading={equipmentAttachmentListIsFetching}
+                    tip='Загрузка изображений...'
+                  >
+                    <Space $block direction='vertical'>
+                      <AttachmentList
+                        data-testid='equipment-image-list'
+                        data={equipmentAttachmentList?.results || []}
+                      />
+
+                      <Button
+                        onClick={debouncedToggleOpenImageListModal}
+                        loading={totalEquipmentAttachmentListIsFetching}
+                      >
+                        Просмотреть все фото ({equipmentAttachmentList?.pagination?.total})
+                      </Button>
+                    </Space>
+                  </LoadingArea>
+                </Col>
+              </Row>
             </Space>
           )}
         </LoadingArea>
@@ -441,7 +506,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
           fallback={
             <ModalFallback
               open={editEquipmentModalOpened}
-              onCancel={debouncedHandleCloseEditEquipmentModal}
+              onCancel={handleCloseEditEquipmentModal}
             />
           }
         >
@@ -451,7 +516,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             title='Редактирование оборудования'
             okText='Сохранить'
             isLoading={updateEquipmentIsLoading}
-            initialValues={equipmentFormInitialValues}
+            initialValues={getEquipmentFormInitialValues(equipment, nomenclature)}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}
@@ -459,17 +524,22 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             warehouseList={warehouseList}
             warehouseListIsLoading={warehouseListIsFetching}
             currencyList={currencyList}
-            currencyListIsFetching={currencyListIsFetching}
+            currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
-            ownerListIsFetching={customerListIsFetching}
+            ownerListIsLoading={customerListIsFetching}
             workTypeList={workTypeList}
-            workTypeListIsFetching={workTypeListIsFetching}
+            workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
-            nomenclatureList={nomenclatureList?.results || []}
+            nomenclatureIsLoading={nomenclatureIsFetching}
+            nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
-            onCancel={debouncedHandleCloseEditEquipmentModal}
+            onCancel={handleCloseEditEquipmentModal}
             onSubmit={handleEditEquipment}
+            onUploadImage={handleCreateEquipmentImage}
+            onDeleteImage={deleteAttachment}
+            imageIsDeleting={deleteAttachmentIsLoading}
+            defaultImages={defaultEquipmentImages}
           />
         </React.Suspense>
       )}
@@ -488,6 +558,24 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onCancel={debouncedToggleOpenRelocationHistoryModal}
             dataSource={relocationHistory}
             loading={relocationHistoryIsFetching}
+          />
+        </React.Suspense>
+      )}
+
+      {imageListModalOpened && !totalEquipmentAttachmentListIsFetching && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={imageListModalOpened}
+              onCancel={debouncedToggleOpenImageListModal}
+            />
+          }
+        >
+          <AttachmentListModal
+            open={imageListModalOpened}
+            title='Изображения оборудования'
+            data={totalEquipmentAttachmentList?.results || []}
+            onCancel={debouncedToggleOpenImageListModal}
           />
         </React.Suspense>
       )}

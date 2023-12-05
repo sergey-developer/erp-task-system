@@ -1,6 +1,6 @@
-import path from 'path'
-
 import { when } from '@craco/craco'
+import path from 'path'
+import { RetryChunkLoadPlugin } from 'webpack-retry-chunk-load-plugin'
 
 /**
   Нужно для парсинга `*.env` файлов и записи их в `process.env`
@@ -18,6 +18,9 @@ module.exports = {
     },
   })),
   webpack: {
+    plugins: {
+      add: [new RetryChunkLoadPlugin({ maxRetries: 3 })],
+    },
     alias: {
       assets: resolvePath('src/assets'),
       lib: resolvePath('src/lib'),

@@ -8,7 +8,7 @@ import { render } from '_tests_/utils'
 import AttachmentList, { AttachmentListProps } from './index'
 
 const props: Readonly<AttachmentListProps> = {
-  attachments: [taskFixtures.attachment()],
+  data: [taskFixtures.attachment()],
 }
 
 const getContainer = () => screen.getByTestId('attachment-list')
@@ -43,9 +43,9 @@ describe('Список вложений', () => {
   test('Отображаются корректно если присутствуют', () => {
     render(<AttachmentList {...props} />)
 
-    const fakeAttachment = props.attachments[0]
+    const fakeAttachment = props.data[0]
 
-    const allAttachmentLinks = props.attachments.map((att) => testUtils.getAttachmentLink(att.name))
+    const allAttachmentLinks = props.data.map((att) => testUtils.getAttachmentLink(att.name))
     const attachmentLink = allAttachmentLinks[0]
 
     const attachmentSize = testUtils.getChildByText(new RegExp(prettyBytes(fakeAttachment.size)))
@@ -56,13 +56,11 @@ describe('Список вложений', () => {
     expect(attachmentLink).toBeInTheDocument()
     expect(attachmentLink).toHaveAttribute('download')
     expect(attachmentLink).toHaveAttribute('href', fakeAttachment.url)
-    expect(allAttachmentLinks).toHaveLength(props.attachments.length)
+    expect(allAttachmentLinks).toHaveLength(props.data.length)
   })
 
   test('Текст "Не передано в Х5" отображается если у вложения нет externalId', () => {
-    render(
-      <AttachmentList {...props} attachments={[taskFixtures.attachment({ externalId: '' })]} />,
-    )
+    render(<AttachmentList {...props} data={[taskFixtures.attachment({ externalId: '' })]} />)
 
     const externalIdText = testUtils.getChildByText('Не передано в Х5')
     expect(externalIdText).toBeInTheDocument()

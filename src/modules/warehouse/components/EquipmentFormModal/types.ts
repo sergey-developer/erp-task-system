@@ -1,4 +1,5 @@
-import { FormInstance } from 'antd'
+import { FormInstance, UploadProps } from 'antd'
+import { UploadFile } from 'antd/es/upload'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
@@ -15,6 +16,7 @@ import { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { CurrencyListModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
+import { FileResponse } from 'shared/types/file'
 
 export type EquipmentFormModalFormFields = {
   title: string
@@ -35,6 +37,7 @@ export type EquipmentFormModalFormFields = {
   usageCounter?: number
   owner?: IdType
   comment?: string
+  images?: UploadFile<FileResponse>[]
 }
 
 export type EquipmentFormModalProps = Required<
@@ -47,6 +50,12 @@ export type EquipmentFormModalProps = Required<
     setFields: FormInstance['setFields'],
   ) => Promise<void>
 
+  defaultImages?: UploadProps<FileResponse>['defaultFileList']
+  onUploadImage: NonNullable<UploadProps['customRequest']>
+
+  onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
+  imageIsDeleting: boolean
+
   categoryList: EquipmentCategoryListModel
   categoryListIsLoading: boolean
   selectedCategory?: EquipmentCategoryListItemModel
@@ -56,15 +65,17 @@ export type EquipmentFormModalProps = Required<
   warehouseListIsLoading?: boolean
 
   currencyList: CurrencyListModel
-  currencyListIsFetching: boolean
+  currencyListIsLoading: boolean
 
   ownerList: CustomerListModel
-  ownerListIsFetching: boolean
+  ownerListIsLoading: boolean
 
   workTypeList: WorkTypeListModel
-  workTypeListIsFetching: boolean
+  workTypeListIsLoading: boolean
 
   nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>
+  nomenclatureIsLoading: boolean
+
   nomenclatureList: NomenclatureListModel
   nomenclatureListIsLoading: boolean
   onChangeNomenclature: (id: IdType) => void

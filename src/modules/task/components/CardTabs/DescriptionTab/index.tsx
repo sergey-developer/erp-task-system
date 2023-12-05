@@ -31,7 +31,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
 
       {description && <Paragraph>{renderStringWithLineBreak(description)}</Paragraph>}
 
-      {!!attachments?.length && <AttachmentList attachments={attachments} />}
+      {!!attachments?.length && <AttachmentList data={attachments} />}
     </Space>
   )
 }

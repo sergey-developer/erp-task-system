@@ -14,6 +14,7 @@ import LoadingArea from 'components/LoadingArea'
 
 import { MaybeNull } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
+import { extractPaginationResults } from 'shared/utils/pagination'
 
 const TaskListMapPage: FC = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<number>>(null)
@@ -51,7 +52,7 @@ const TaskListMapPage: FC = () => {
         <Col span={6}>
           <LoadingArea data-testid='task-list-loading' isLoading={taskListIsFetching}>
             <TaskList
-              tasks={taskList?.results || []}
+              tasks={extractPaginationResults(taskList)}
               selectedTaskId={selectedTaskId}
               onClickTask={setSelectedTaskId}
             />

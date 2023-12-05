@@ -15,8 +15,8 @@ type LabeledDataProps = Pick<SpaceProps, 'size' | 'direction' | 'align'> & {
 const LabeledData: FCWithChildren<LabeledDataProps> = ({
   children,
   label,
-  direction,
-  block,
+  direction = 'vertical',
+  block = true,
   ...props
 }) => {
   return (
@@ -26,11 +26,6 @@ const LabeledData: FCWithChildren<LabeledDataProps> = ({
       {children}
     </Space>
   )
-}
-
-LabeledData.defaultProps = {
-  direction: 'vertical',
-  block: true,
 }
 
 export default LabeledData

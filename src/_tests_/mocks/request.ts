@@ -3,6 +3,7 @@ import { rest } from 'msw'
 
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
 import { makeAbsoluteApiUrl } from 'shared/services/baseApi'
+import { EmptyFn } from 'shared/types/utils'
 
 import {
   getResponseResolver,
@@ -11,7 +12,7 @@ import {
 } from '_tests_/mocks/response'
 import { server } from '_tests_/mocks/server'
 
-export type AddMockFn = () => void
+export type AddMockFn = EmptyFn
 
 export type PartialAppliedRequestMockFn = (resolver: ResponseResolver) => AddMockFn
 

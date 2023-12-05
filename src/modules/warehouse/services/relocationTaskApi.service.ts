@@ -1,19 +1,22 @@
 import { getPaginatedList } from 'lib/antd/utils'
 
+import { RelocationEquipmentApiTagEnum } from 'modules/warehouse/constants/relocationEquipment'
 import {
   RelocationTaskApiEnum,
   RelocationTaskApiTagEnum,
   RelocationTaskApiTriggerEnum,
 } from 'modules/warehouse/constants/relocationTask'
 import {
-  ExecuteRelocationTaskMutationArgs,
-  ExecuteRelocationTaskSuccessResponse,
   CancelRelocationTaskMutationArgs,
   CancelRelocationTaskSuccessResponse,
   CloseRelocationTaskMutationArgs,
   CloseRelocationTaskSuccessResponse,
+  CreateRelocationTaskITSMMutationArgs,
+  CreateRelocationTaskITSMSuccessResponse,
   CreateRelocationTaskMutationArgs,
   CreateRelocationTaskSuccessResponse,
+  ExecuteRelocationTaskMutationArgs,
+  ExecuteRelocationTaskSuccessResponse,
   GetRelocationEquipmentBalanceListQueryArgs,
   GetRelocationEquipmentBalanceListSuccessResponse,
   GetRelocationEquipmentListQueryArgs,
@@ -31,9 +34,9 @@ import {
 } from 'modules/warehouse/models'
 import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehouse/types'
 import {
-  executeRelocationTaskUrl,
   cancelRelocationTaskUrl,
   closeRelocationTaskUrl,
+  executeRelocationTaskUrl,
   getRelocationEquipmentBalanceListUrl,
   getRelocationEquipmentListUrl,
   getRelocationTaskUrl,
@@ -64,6 +67,16 @@ const relocationTaskApiService = baseApiService
           data: payload,
         }),
       }),
+      createRelocationTaskITSM: build.mutation<
+        CreateRelocationTaskITSMSuccessResponse,
+        CreateRelocationTaskITSMMutationArgs
+      >({
+        query: (payload) => ({
+          url: RelocationTaskApiEnum.CreateRelocationTaskITSM,
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+      }),
       updateRelocationTask: build.mutation<
         UpdateRelocationTaskSuccessResponse,
         UpdateRelocationTaskMutationArgs
@@ -74,6 +87,7 @@ const relocationTaskApiService = baseApiService
             : [
                 RelocationTaskApiTagEnum.RelocationEquipmentList,
                 RelocationTaskApiTagEnum.RelocationTask,
+                RelocationEquipmentApiTagEnum.RelocationEquipmentAttachmentList,
               ],
         query: ({ relocationTaskId, ...payload }) => ({
           url: updateRelocationTaskUrl(relocationTaskId),
@@ -156,7 +170,7 @@ const relocationTaskApiService = baseApiService
       executeRelocationTask: build.mutation<
         ExecuteRelocationTaskSuccessResponse,
         ExecuteRelocationTaskMutationArgs
-        >({
+      >({
         invalidatesTags: (result, error) =>
           error ? [] : [RelocationTaskApiTagEnum.RelocationTask],
         query: ({ relocationTaskId, documents }) => {
@@ -224,6 +238,7 @@ const relocationTaskApiService = baseApiService
 
 export const {
   useCreateRelocationTaskMutation,
+  useCreateRelocationTaskITSMMutation,
   useUpdateRelocationTaskMutation,
   useCloseRelocationTaskMutation,
   useReturnRelocationTaskToReworkMutation,

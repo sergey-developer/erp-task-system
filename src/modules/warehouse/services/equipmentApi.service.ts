@@ -4,6 +4,8 @@ import { EquipmentApiEnum, EquipmentApiTagEnum } from 'modules/warehouse/constan
 import {
   CreateEquipmentMutationArgs,
   CreateEquipmentSuccessResponse,
+  GetEquipmentAttachmentListQueryArgs,
+  GetEquipmentAttachmentListSuccessResponse,
   GetEquipmentCatalogListQueryArgs,
   GetEquipmentCatalogListSuccessResponse,
   GetEquipmentCategoryListQueryArgs,
@@ -20,10 +22,12 @@ import {
   UpdateEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
 import {
+  GetEquipmentAttachmentListTransformedSuccessResponse,
   GetEquipmentListTransformedSuccessResponse,
   GetEquipmentNomenclatureListTransformedSuccessResponse,
 } from 'modules/warehouse/types'
 import {
+  getEquipmentAttachmentListUrl,
   getEquipmentRelocationHistoryUrl,
   getEquipmentUrl,
   updateEquipmentUrl,
@@ -31,6 +35,7 @@ import {
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 
 const equipmentApiService = baseApiService
   .enhanceEndpoints({
@@ -57,7 +62,7 @@ const equipmentApiService = baseApiService
 
       getEquipmentCatalogList: build.query<
         GetEquipmentCatalogListSuccessResponse,
-        GetEquipmentCatalogListQueryArgs
+        MaybeUndefined<GetEquipmentCatalogListQueryArgs>
       >({
         providesTags: (result, error) => (error ? [] : [EquipmentApiTagEnum.EquipmentCatalogList]),
         query: (params) => ({
@@ -65,6 +70,19 @@ const equipmentApiService = baseApiService
           method: HttpMethodEnum.Get,
           params,
         }),
+      }),
+
+      getEquipmentAttachmentList: build.query<
+        GetEquipmentAttachmentListTransformedSuccessResponse,
+        GetEquipmentAttachmentListQueryArgs
+      >({
+        query: ({ equipmentId, ...params }) => ({
+          url: getEquipmentAttachmentListUrl(equipmentId),
+          method: HttpMethodEnum.Get,
+          params,
+        }),
+        transformResponse: (response: GetEquipmentAttachmentListSuccessResponse, meta, arg) =>
+          getPaginatedList(response, arg),
       }),
 
       getEquipmentList: build.query<
@@ -132,6 +150,8 @@ export const {
   useGetEquipmentNomenclatureListQuery,
 
   useGetEquipmentCatalogListQuery,
+
+  useGetEquipmentAttachmentListQuery,
 
   useGetEquipmentQuery,
   useLazyGetEquipmentQuery,

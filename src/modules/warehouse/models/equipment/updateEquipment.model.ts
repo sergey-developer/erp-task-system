@@ -22,6 +22,7 @@ export type UpdateEquipmentMutationArgs = BaseEquipmentRequestArgs & {
   usageCounter?: number
   owner?: IdType
   comment?: string
+  images?: IdType[]
 }
 
 export type UpdateEquipmentSuccessResponse = EquipmentListItemModel

@@ -1,22 +1,25 @@
-import { Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd'
+import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
 import isArray from 'lodash/isArray'
-import { FC, useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
-import { useCheckEquipmentCategory } from 'modules/warehouse/hooks/equipment'
 import {
   EquipmentCategoryListItemModel,
   NomenclatureListItemModel,
   WarehouseListItemModel,
 } from 'modules/warehouse/models'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
+import UploadButton from 'components/Buttons/UploadButton'
+import LoadingArea from 'components/LoadingArea'
 import BaseModal from 'components/Modals/BaseModal'
 
+import { filesFormItemProps } from 'shared/constants/form'
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 
-import { EquipmentFormModalProps, EquipmentFormModalFormFields } from './types'
+import { EquipmentFormModalFormFields, EquipmentFormModalProps } from './types'
 
 const { TextArea } = Input
 
@@ -25,6 +28,11 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   isLoading,
   initialValues,
+
+  defaultImages,
+  onUploadImage,
+  onDeleteImage,
+  imageIsDeleting,
 
   categoryList,
   categoryListIsLoading,
@@ -35,15 +43,17 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   warehouseListIsLoading,
 
   currencyList,
-  currencyListIsFetching,
+  currencyListIsLoading,
 
   ownerList,
-  ownerListIsFetching,
+  ownerListIsLoading,
 
   workTypeList,
-  workTypeListIsFetching,
+  workTypeListIsLoading,
 
   nomenclature,
+  nomenclatureIsLoading,
+
   nomenclatureList,
   nomenclatureListIsLoading,
   onChangeNomenclature,
@@ -57,13 +67,19 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   const hasSelectedNomenclature = Boolean(nomenclature)
 
   const hasSelectedCategory = Boolean(selectedCategory)
-  const equipmentCategory = useCheckEquipmentCategory(selectedCategory?.code)
+  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   useEffect(() => {
-    if (nomenclature) {
+    if (nomenclature?.title) {
       form.setFieldsValue({ title: nomenclature.title })
     }
-  }, [form, nomenclature])
+  }, [form, nomenclature?.title])
+
+  useEffect(() => {
+    if (defaultImages?.length) {
+      form.setFieldsValue({ images: defaultImages })
+    }
+  }, [defaultImages, form])
 
   const handleChangeCategory = (
     value: IdType,
@@ -131,6 +147,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
             fieldNames={idAndTitleSelectFieldNames}
             options={categoryList}
             loading={categoryListIsLoading}
+            disabled={isLoading || categoryListIsLoading}
             onChange={handleChangeCategory}
           />
         </Form.Item>
@@ -147,206 +164,235 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
             fieldNames={idAndTitleSelectFieldNames}
             options={nomenclatureList}
             loading={nomenclatureListIsLoading}
-            disabled={isLoading}
+            disabled={isLoading || nomenclatureListIsLoading}
             onChange={onChangeNomenclature}
           />
         </Form.Item>
 
-        {hasSelectedCategory && hasSelectedNomenclature && (
-          <>
-            <Form.Item
-              data-testid='title-form-item'
-              label='Наименование'
-              name='title'
-              rules={requiredStringRules}
-            >
-              <Input placeholder='Введите наименование' disabled={equipmentCategory.isConsumable} />
-            </Form.Item>
-
-            {!equipmentCategory.isConsumable && (
+        <LoadingArea isLoading={nomenclatureIsLoading} tip='Загрузка номенклатуры...'>
+          {hasSelectedCategory && hasSelectedNomenclature && (
+            <>
               <Form.Item
-                data-testid='customer-inventory-number-form-item'
-                label='Инвентарный номер заказчика'
-                name='customerInventoryNumber'
-              >
-                <Input placeholder='Введите инвентарный номер заказчика' />
-              </Form.Item>
-            )}
-
-            {nomenclature?.equipmentHasSerialNumber && (
-              <Form.Item
-                data-testid='serial-number-form-item'
-                label='Серийный номер'
-                name='serialNumber'
+                data-testid='title-form-item'
+                label='Наименование'
+                name='title'
                 rules={requiredStringRules}
               >
-                <Input placeholder='Введите серийный номер' />
+                <Input placeholder='Введите наименование' disabled={categoryIsConsumable || isLoading} />
               </Form.Item>
-            )}
 
-            {mode === 'edit' && (
+              {!categoryIsConsumable && (
+                <Form.Item
+                  data-testid='customer-inventory-number-form-item'
+                  label='Инвентарный номер заказчика'
+                  name='customerInventoryNumber'
+                >
+                  <Input placeholder='Введите инвентарный номер заказчика' disabled={isLoading} />
+                </Form.Item>
+              )}
+
+              {nomenclature?.equipmentHasSerialNumber && (
+                <Form.Item
+                  data-testid='serial-number-form-item'
+                  label='Серийный номер'
+                  name='serialNumber'
+                  rules={requiredStringRules}
+                >
+                  <Input placeholder='Введите серийный номер' disabled={isLoading} />
+                </Form.Item>
+              )}
+
+              {mode === 'edit' && (
+                <Form.Item
+                  data-testid='warehouse-form-item'
+                  label='Склад'
+                  name='warehouse'
+                  rules={onlyRequiredRules}
+                >
+                  <Select<IdType, WarehouseListItemModel>
+                    placeholder='Выберите склад'
+                    fieldNames={idAndTitleSelectFieldNames}
+                    options={warehouseList}
+                    loading={warehouseListIsLoading}
+                    disabled={isLoading || warehouseListIsLoading}
+                  />
+                </Form.Item>
+              )}
+
               <Form.Item
-                data-testid='warehouse-form-item'
-                label='Склад'
-                name='warehouse'
+                data-testid='condition-form-item'
+                label='Состояние'
+                name='condition'
                 rules={onlyRequiredRules}
               >
-                <Select<IdType, WarehouseListItemModel>
-                  placeholder='Выберите склад'
-                  fieldNames={idAndTitleSelectFieldNames}
-                  options={warehouseList}
-                  loading={warehouseListIsLoading}
+                <Select
+                  placeholder='Выберите состояние'
+                  options={equipmentConditionOptions}
+                  disabled={isLoading}
                 />
               </Form.Item>
-            )}
 
-            <Form.Item
-              data-testid='condition-form-item'
-              label='Состояние'
-              name='condition'
-              rules={onlyRequiredRules}
-            >
-              <Select placeholder='Выберите состояние' options={equipmentConditionOptions} />
-            </Form.Item>
+              {mode === 'create' && categoryIsConsumable && (
+                <Form.Item>
+                  <Row gutter={8}>
+                    <Col span={12}>
+                      <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
+                        <InputNumber min={1} placeholder='Введите количество' disabled={isLoading} />
+                      </Form.Item>
+                    </Col>
 
-            {mode === 'create' && equipmentCategory.isConsumable && (
-              <Form.Item>
-                <Row gutter={8}>
-                  <Col span={12}>
-                    <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
-                      <InputNumber min={1} placeholder='Введите количество' />
-                    </Form.Item>
-                  </Col>
-
-                  <Col span={6}>
-                    <Form.Item data-testid='measurement-unit-form-item' label='Ед.измерения'>
-                      {nomenclature?.measurementUnit.title}
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form.Item>
-            )}
-
-            {mode === 'edit' && (
-              <Form.Item>
-                <Row gutter={8}>
-                  <Col span={12}>
-                    <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
-                      <InputNumber disabled />
-                    </Form.Item>
-                  </Col>
-
-                  {equipmentCategory.isConsumable && (
                     <Col span={6}>
                       <Form.Item data-testid='measurement-unit-form-item' label='Ед.измерения'>
                         {nomenclature?.measurementUnit.title}
                       </Form.Item>
                     </Col>
-                  )}
-                </Row>
-              </Form.Item>
-            )}
+                  </Row>
+                </Form.Item>
+              )}
 
-            <Form.Item>
-              <Row gutter={8}>
-                <Col span={12}>
-                  <Form.Item data-testid='price-form-item' label='Стоимость' name='price'>
-                    <InputNumber min={0} placeholder='Введите стоимость' />
-                  </Form.Item>
-                </Col>
+              {mode === 'edit' && (
+                <Form.Item>
+                  <Row gutter={8}>
+                    <Col span={12}>
+                      <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
+                        <InputNumber disabled />
+                      </Form.Item>
+                    </Col>
 
-                <Col span={6}>
-                  <Form.Item data-testid='currency-form-item' label='Валюта' name='currency'>
-                    <Select
-                      placeholder='Выберите валюту'
-                      fieldNames={idAndTitleSelectFieldNames}
-                      options={currencyList}
-                      loading={currencyListIsFetching}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form.Item>
+                    {categoryIsConsumable && (
+                      <Col span={6}>
+                        <Form.Item data-testid='measurement-unit-form-item' label='Ед.измерения'>
+                          {nomenclature?.measurementUnit.title}
+                        </Form.Item>
+                      </Col>
+                    )}
+                  </Row>
+                </Form.Item>
+              )}
 
-            {!equipmentCategory.isConsumable && (
               <Form.Item>
-                <Row>
-                  <Col span={8}>
-                    <Form.Item
-                      data-testid='is-new-form-item'
-                      label='Новое'
-                      name='isNew'
-                      rules={onlyRequiredRules}
-                    >
-                      <Radio.Group options={yesNoOptions} />
+                <Row gutter={8}>
+                  <Col span={12}>
+                    <Form.Item data-testid='price-form-item' label='Стоимость' name='price'>
+                      <InputNumber min={0} placeholder='Введите стоимость' disabled={isLoading} />
                     </Form.Item>
                   </Col>
 
-                  <Col span={8}>
-                    <Form.Item
-                      data-testid='is-warranty-form-item'
-                      label='На гарантии'
-                      name='isWarranty'
-                      rules={onlyRequiredRules}
-                    >
-                      <Radio.Group options={yesNoOptions} />
-                    </Form.Item>
-                  </Col>
-
-                  <Col span={8}>
-                    <Form.Item
-                      data-testid='is-repaired-form-item'
-                      label='Отремонтированное'
-                      name='isRepaired'
-                      rules={onlyRequiredRules}
-                    >
-                      <Radio.Group options={yesNoOptions} />
+                  <Col span={6}>
+                    <Form.Item data-testid='currency-form-item' label='Валюта' name='currency'>
+                      <Select
+                        placeholder='Выберите валюту'
+                        fieldNames={idAndTitleSelectFieldNames}
+                        options={currencyList}
+                        loading={currencyListIsLoading}
+                        disabled={isLoading || currencyListIsLoading}
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
               </Form.Item>
-            )}
 
-            {!equipmentCategory.isConsumable && (
+              {!categoryIsConsumable && (
+                <Form.Item>
+                  <Row>
+                    <Col span={8}>
+                      <Form.Item
+                        data-testid='is-new-form-item'
+                        label='Новое'
+                        name='isNew'
+                        rules={onlyRequiredRules}
+                      >
+                        <Radio.Group options={yesNoOptions} disabled={isLoading} />
+                      </Form.Item>
+                    </Col>
+
+                    <Col span={8}>
+                      <Form.Item
+                        data-testid='is-warranty-form-item'
+                        label='На гарантии'
+                        name='isWarranty'
+                        rules={onlyRequiredRules}
+                      >
+                        <Radio.Group options={yesNoOptions} disabled={isLoading} />
+                      </Form.Item>
+                    </Col>
+
+                    <Col span={8}>
+                      <Form.Item
+                        data-testid='is-repaired-form-item'
+                        label='Отремонтированное'
+                        name='isRepaired'
+                        rules={onlyRequiredRules}
+                      >
+                        <Radio.Group options={yesNoOptions} disabled={isLoading} />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form.Item>
+              )}
+
+              {!categoryIsConsumable && (
+                <Form.Item
+                  data-testid='usage-counter-form-item'
+                  label='Счетчик пробега текущий'
+                  name='usageCounter'
+                >
+                  <InputNumber min={0} placeholder='Введите значение' disabled={isLoading} />
+                </Form.Item>
+              )}
+
+              {!categoryIsConsumable && (
+                <Form.Item data-testid='owner-form-item' label='Владелец оборудования' name='owner'>
+                  <Select
+                    placeholder='Выберите владельца оборудования'
+                    fieldNames={idAndTitleSelectFieldNames}
+                    options={ownerList}
+                    loading={ownerListIsLoading}
+                    disabled={isLoading || ownerListIsLoading}
+                  />
+                </Form.Item>
+              )}
+
               <Form.Item
-                data-testid='usage-counter-form-item'
-                label='Счетчик пробега текущий'
-                name='usageCounter'
+                data-testid='purpose-form-item'
+                label='Назначение оборудования'
+                name='purpose'
+                rules={onlyRequiredRules}
               >
-                <InputNumber min={0} placeholder='Введите значение' />
-              </Form.Item>
-            )}
-
-            {!equipmentCategory.isConsumable && (
-              <Form.Item data-testid='owner-form-item' label='Владелец оборудования' name='owner'>
                 <Select
-                  placeholder='Выберите владельца оборудования'
+                  placeholder='Выберите назначение оборудования'
                   fieldNames={idAndTitleSelectFieldNames}
-                  options={ownerList}
-                  loading={ownerListIsFetching}
+                  options={workTypeList}
+                  loading={workTypeListIsLoading}
+                  disabled={isLoading || workTypeListIsLoading}
                 />
               </Form.Item>
-            )}
 
-            <Form.Item
-              data-testid='purpose-form-item'
-              label='Назначение оборудования'
-              name='purpose'
-              rules={onlyRequiredRules}
-            >
-              <Select
-                placeholder='Выберите назначение оборудования'
-                fieldNames={idAndTitleSelectFieldNames}
-                options={workTypeList}
-                loading={workTypeListIsFetching}
-              />
-            </Form.Item>
+              <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
+                <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
+              </Form.Item>
 
-            <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
-              <TextArea placeholder='Добавьте комментарий' />
-            </Form.Item>
-          </>
-        )}
+              <Form.Item
+                data-testid='images-form-item'
+                label='Изображения оборудования'
+                name='images'
+                {...filesFormItemProps}
+              >
+                <Upload
+                  listType='picture'
+                  multiple
+                  disabled={isLoading || imageIsDeleting}
+                  itemRender={(originNode, file) => (!file.error ? originNode : null)}
+                  customRequest={onUploadImage}
+                  onRemove={onDeleteImage}
+                  defaultFileList={defaultImages}
+                >
+                  <UploadButton label='Добавить фото' disabled={isLoading} />
+                </Upload>
+              </Form.Item>
+            </>
+          )}
+        </LoadingArea>
       </Form>
     </BaseModal>
   )

@@ -1,16 +1,10 @@
 import { ApiRequestMessages } from 'shared/types/messages'
 
-export const getRelocationTaskListMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения списка заявок на перемещение',
-}
-
-export const createRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка создания заявки на перемещение',
-}
-
-export const updateRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка обновления заявки на перемещение',
-}
+export const getRelocationTaskListErrorMsg = 'Ошибка получения списка заявок на перемещение'
+export const createRelocationTaskErrorMsg = 'Ошибка создания заявки на перемещение'
+export const createRelocationTaskITSMErrorMsg =
+  'Ошибка создания заявки на перемещение, связанной с заявкой itsm'
+export const updateRelocationTaskErrorMsg = 'Ошибка обновления заявки на перемещение'
 
 export const getRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения заявки на перемещение',
