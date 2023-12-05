@@ -121,132 +121,162 @@ describe('Страница создания заявки на перемещен
       expect(title).toBeInTheDocument()
       expect(table).toBeInTheDocument()
     })
+  })
 
-    describe('Кнопка скачивания шаблона', () => {
-      test('Отображается если есть права', () => {
-        mockGetUserListSuccess()
-        mockGetLocationListSuccess({ once: false })
-        mockGetEquipmentCatalogListSuccess()
-        mockGetCurrencyListSuccess()
+  describe('Кнопка скачивания шаблона', () => {
+    test('Отображается если есть права', () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess({ once: false })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess()
 
-        render(<CreateRelocationTaskPage />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }),
-            },
-          }),
-        })
-
-        const button = testUtils.getDownloadTemplateButton()
-
-        expect(button).toBeInTheDocument()
-        expect(button).toBeEnabled()
+      render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }),
+          },
+        }),
       })
 
-      test('Не отображается если нет прав', () => {
-        mockGetUserListSuccess()
-        mockGetLocationListSuccess({ once: false })
-        mockGetEquipmentCatalogListSuccess()
-        mockGetCurrencyListSuccess()
+      const button = testUtils.getDownloadTemplateButton()
 
-        render(<CreateRelocationTaskPage />)
-
-        const button = testUtils.queryDownloadTemplateButton()
-        expect(button).not.toBeInTheDocument()
-      })
-
-      test('При успешном запросе отрабатывает функционал скачивания', async () => {
-        mockGetUserListSuccess()
-        mockGetLocationListSuccess({ body: [], once: false })
-        mockGetEquipmentCatalogListSuccess()
-        mockGetCurrencyListSuccess({ body: [] })
-
-        const file = fakeWord()
-        mockGetEquipmentListTemplateSuccess({ body: file })
-
-        const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
-
-        const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
-        const arrayBuffer = new Uint8Array()
-        base64ToArrayBufferSpy.mockReturnValueOnce(arrayBuffer)
-
-        const { user } = render(<CreateRelocationTaskPage />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }),
-            },
-          }),
-        })
-
-        await testUtils.clickDownloadTemplateButton(user)
-
-        await waitFor(() => expect(base64ToArrayBufferSpy).toBeCalledTimes(1))
-        expect(base64ToArrayBufferSpy).toBeCalledWith(file)
-
-        expect(clickDownloadLinkSpy).toBeCalledTimes(1)
-        expect(clickDownloadLinkSpy).toBeCalledWith(
-          arrayBuffer,
-          MimetypeEnum.Xls,
-          'Шаблон загрузки оборудования',
-        )
-      })
-
-      test('При не успешном запросе отображается сообщение об ошибке', async () => {
-        mockGetUserListSuccess()
-        mockGetLocationListSuccess({ body: [], once: false })
-        mockGetEquipmentCatalogListSuccess()
-        mockGetCurrencyListSuccess({ body: [] })
-        mockGetEquipmentListTemplateServerError()
-
-        const { user } = render(<CreateRelocationTaskPage />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }),
-            },
-          }),
-        })
-
-        await testUtils.clickDownloadTemplateButton(user)
-        const notification = await notificationTestUtils.findNotification(
-          getEquipmentListTemplateErrorMsg,
-        )
-
-        expect(notification).toBeInTheDocument()
-      })
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
     })
 
-    describe('Кнопка добавления из Excel', () => {
-      test('Отображается если есть права', () => {
-        mockGetUserListSuccess()
-        mockGetLocationListSuccess()
-        mockGetEquipmentCatalogListSuccess()
-        mockGetCurrencyListSuccess()
+    test('Не отображается если нет прав', () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess({ once: false })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess()
 
-        render(<CreateRelocationTaskPage />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }),
-            },
-          }),
-        })
+      render(<CreateRelocationTaskPage />)
 
-        const button = testUtils.getAddByExcelButton()
-        expect(button).toBeInTheDocument()
+      const button = testUtils.queryDownloadTemplateButton()
+      expect(button).not.toBeInTheDocument()
+    })
+
+    test('При успешном запросе отрабатывает функционал скачивания', async () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess({ body: [] })
+
+      const file = fakeWord()
+      mockGetEquipmentListTemplateSuccess({ body: file })
+
+      const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
+
+      const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
+      const arrayBuffer = new Uint8Array()
+      base64ToArrayBufferSpy.mockReturnValueOnce(arrayBuffer)
+
+      const { user } = render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }),
+          },
+        }),
       })
 
-      test('Не отображается если нет прав', () => {
-        mockGetUserListSuccess()
-        mockGetLocationListSuccess()
-        mockGetEquipmentCatalogListSuccess()
-        mockGetCurrencyListSuccess()
+      await testUtils.clickDownloadTemplateButton(user)
 
-        render(<CreateRelocationTaskPage />)
+      await waitFor(() => expect(base64ToArrayBufferSpy).toBeCalledTimes(1))
+      expect(base64ToArrayBufferSpy).toBeCalledWith(file)
 
-        const button = testUtils.queryAddByExcelButton()
-        expect(button).not.toBeInTheDocument()
+      expect(clickDownloadLinkSpy).toBeCalledTimes(1)
+      expect(clickDownloadLinkSpy).toBeCalledWith(
+        arrayBuffer,
+        MimetypeEnum.Xls,
+        'Шаблон загрузки оборудования',
+      )
+    })
+
+    test('При не успешном запросе отображается сообщение об ошибке', async () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentListTemplateServerError()
+
+      const { user } = render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }),
+          },
+        }),
       })
 
-      test.skip('Активна если условия соблюдены', async () => {
+      await testUtils.clickDownloadTemplateButton(user)
+      const notification = await notificationTestUtils.findNotification(
+        getEquipmentListTemplateErrorMsg,
+      )
+
+      expect(notification).toBeInTheDocument()
+    })
+  })
+
+  describe('Кнопка добавления из Excel', () => {
+    test('Отображается если есть права', () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess()
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess()
+
+      render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }),
+          },
+        }),
+      })
+
+      const button = testUtils.getAddByExcelButton()
+      expect(button).toBeInTheDocument()
+    })
+
+    test('Не отображается если нет прав', () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess()
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess()
+
+      render(<CreateRelocationTaskPage />)
+
+      const button = testUtils.queryAddByExcelButton()
+      expect(button).not.toBeInTheDocument()
+    })
+
+    test.skip('Активна если условия соблюдены', async () => {
+      mockGetUserListSuccess()
+
+      const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
+      const locationFrom = catalogsFixtures.locationListItem()
+      mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+
+      mockGetEquipmentCatalogListSuccess({ body: [] })
+      mockGetCurrencyListSuccess({ body: [] })
+
+      const { user } = render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+        }),
+      })
+
+      await relocationTaskFormTestUtils.expectRelocateFromLoadingFinished()
+      await relocationTaskFormTestUtils.openRelocateFromSelect(user)
+      await relocationTaskFormTestUtils.setRelocateFrom(user, locationFrom.title)
+
+      await relocationTaskFormTestUtils.expectRelocateToLoadingFinished()
+      await relocationTaskFormTestUtils.openRelocateToSelect(user)
+      await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
+
+      const button = testUtils.getAddByExcelButton()
+      await waitFor(() => expect(button).toBeEnabled())
+    })
+
+    describe('Не активна если условия соблюдены', () => {
+      test.skip('Но не выбран объект выбытия', async () => {
         mockGetUserListSuccess()
 
         const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
@@ -274,91 +304,68 @@ describe('Страница создания заявки на перемещен
         await waitFor(() => expect(button).toBeEnabled())
       })
 
-      describe('Не активна если условия соблюдены', () => {
-        test.skip('Но не выбран объект выбытия', async () => {
-          mockGetUserListSuccess()
+      test.skip('Но не выбран объект прибытия', async () => {
+        mockGetUserListSuccess()
 
-          const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-          const locationFrom = catalogsFixtures.locationListItem()
-          mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+        const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
+        const locationFrom = catalogsFixtures.locationListItem()
+        mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
 
-          mockGetEquipmentCatalogListSuccess()
-          mockGetCurrencyListSuccess({ body: [] })
+        mockGetEquipmentCatalogListSuccess()
+        mockGetCurrencyListSuccess({ body: [] })
 
-          const { user } = render(<CreateRelocationTaskPage />, {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
-            }),
-          })
-
-          await relocationTaskFormTestUtils.expectRelocateToLoadingFinished()
-          await relocationTaskFormTestUtils.openRelocateToSelect(user)
-          await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
-
-          await relocationTaskFormTestUtils.expectRelocateFromLoadingFinished()
-          await relocationTaskFormTestUtils.openRelocateFromSelect(user)
-          await relocationTaskFormTestUtils.setRelocateFrom(user, locationFrom.title)
-
-          const button = testUtils.getAddByExcelButton()
-          await waitFor(() => expect(button).toBeEnabled())
+        const { user } = render(<CreateRelocationTaskPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          }),
         })
 
-        test.skip('Но не выбран объект прибытия', async () => {
-          mockGetUserListSuccess()
+        await relocationTaskFormTestUtils.expectRelocateToLoadingFinished()
+        await relocationTaskFormTestUtils.openRelocateToSelect(user)
+        await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
 
-          const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-          const locationFrom = catalogsFixtures.locationListItem()
-          mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+        await relocationTaskFormTestUtils.expectRelocateFromLoadingFinished()
+        await relocationTaskFormTestUtils.openRelocateFromSelect(user)
+        await relocationTaskFormTestUtils.setRelocateFrom(user, locationFrom.title)
 
-          mockGetEquipmentCatalogListSuccess()
-          mockGetCurrencyListSuccess({ body: [] })
-
-          const { user } = render(<CreateRelocationTaskPage />, {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
-            }),
-          })
-
-          await relocationTaskFormTestUtils.expectRelocateToLoadingFinished()
-          await relocationTaskFormTestUtils.openRelocateToSelect(user)
-          await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
-
-          await relocationTaskFormTestUtils.expectRelocateFromLoadingFinished()
-          await relocationTaskFormTestUtils.openRelocateFromSelect(user)
-          await relocationTaskFormTestUtils.setRelocateFrom(user, locationFrom.title)
-
-          const button = testUtils.getAddByExcelButton()
-          await waitFor(() => expect(button).toBeEnabled())
-        })
-
-        test.skip('Но объект прибытия не склад', async () => {
-          mockGetUserListSuccess()
-
-          const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-          const locationFrom = catalogsFixtures.locationListItem()
-          mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
-
-          mockGetEquipmentCatalogListSuccess()
-          mockGetCurrencyListSuccess({ body: [] })
-
-          const { user } = render(<CreateRelocationTaskPage />, {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
-            }),
-          })
-
-          await relocationTaskFormTestUtils.expectRelocateToLoadingFinished()
-          await relocationTaskFormTestUtils.openRelocateToSelect(user)
-          await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
-
-          await relocationTaskFormTestUtils.expectRelocateFromLoadingFinished()
-          await relocationTaskFormTestUtils.openRelocateFromSelect(user)
-          await relocationTaskFormTestUtils.setRelocateFrom(user, locationFrom.title)
-
-          const button = testUtils.getAddByExcelButton()
-          await waitFor(() => expect(button).toBeEnabled())
-        })
+        const button = testUtils.getAddByExcelButton()
+        await waitFor(() => expect(button).toBeEnabled())
       })
+
+      test.skip('Но объект прибытия не склад', async () => {
+        mockGetUserListSuccess()
+
+        const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
+        const locationFrom = catalogsFixtures.locationListItem()
+        mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+
+        mockGetEquipmentCatalogListSuccess()
+        mockGetCurrencyListSuccess({ body: [] })
+
+        const { user } = render(<CreateRelocationTaskPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          }),
+        })
+
+        await relocationTaskFormTestUtils.expectRelocateToLoadingFinished()
+        await relocationTaskFormTestUtils.openRelocateToSelect(user)
+        await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
+
+        await relocationTaskFormTestUtils.expectRelocateFromLoadingFinished()
+        await relocationTaskFormTestUtils.openRelocateFromSelect(user)
+        await relocationTaskFormTestUtils.setRelocateFrom(user, locationFrom.title)
+
+        const button = testUtils.getAddByExcelButton()
+        await waitFor(() => expect(button).toBeEnabled())
+      })
+    })
+
+    test.todo('При успешном запросе открывается модалка')
+
+    describe('При не успешном запросе', () => {
+      test.todo('Обрабатывается ошибка 400')
+      test.todo('Обрабатывается ошибка 500')
     })
   })
 })

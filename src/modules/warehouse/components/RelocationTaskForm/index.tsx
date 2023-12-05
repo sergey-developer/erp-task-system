@@ -80,6 +80,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           rules={onlyRequiredRules}
         >
           <Select<IdType, LocationOption>
+            dropdownRender={(menu) => <div data-testid='relocate-from-select-dropdown'>{menu}</div>}
             loading={relocateFromLocationListIsLoading}
             disabled={isLoading || relocateFromLocationListIsLoading}
             options={relocateFromLocationOptions}
@@ -97,8 +98,14 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           rules={onlyRequiredRules}
         >
           <Select<IdType, LocationOption>
+            dropdownRender={(menu) => <div data-testid='relocate-to-select-dropdown'>{menu}</div>}
             loading={relocateToLocationListIsLoading}
-            disabled={isLoading || !relocateFromFormValue || typeIsWriteOff || relocateToLocationListIsLoading}
+            disabled={
+              isLoading ||
+              !relocateFromFormValue ||
+              typeIsWriteOff ||
+              relocateToLocationListIsLoading
+            }
             options={relocateToLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {

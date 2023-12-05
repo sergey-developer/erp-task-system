@@ -14,6 +14,7 @@ const EquipmentsByFileTemplateTable: FC<EquipmentsByFileTemplateTableProps> = (p
       rowKey='id'
       columns={columns}
       scroll={scrollConfig}
+      pagination={false}
     />
   )
 }
