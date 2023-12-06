@@ -14,13 +14,6 @@ const EquipmentsByFileTable: FC<EquipmentsByFileTableProps> = (props) => {
       rowKey='rowId'
       columns={columns}
       scroll={scrollConfig}
-      components={{
-        body: {
-          row: (props: any) => {
-            return <tr {...props} />
-          },
-        },
-      }}
       pagination={false}
     />
   )

@@ -35,20 +35,29 @@ const getSelectedOptionText = (option: HTMLElement, text: string) => within(opti
 
 const getAllSelectOption = () => screen.getAllByRole('option')
 
-const getSelectOption = (name: string) => screen.getByRole('option', { name })
+const getSelectOption = (name: string, container?: HTMLElement) =>
+  container ? within(container).getByRole('option', { name }) : screen.getByRole('option', { name })
 
 const getSelectOptionById = (id: NumberOrString | RegExp) =>
   screen.getByTestId(`select-option-${id}`)
 
 const querySelectOption = (name: string) => screen.queryByRole('option', { name })
 
-const clickSelectOption = async (user: UserEvent, name: string, isGetByRole?: boolean) => {
+const clickSelectOption = async (
+  user: UserEvent,
+  name: string,
+  isGetByRole?: boolean,
+  dropdownId?: string,
+) => {
   let option
+  let dropdown
+
+  if (dropdownId) dropdown = screen.getByTestId(dropdownId)
 
   if (isGetByRole) {
-    option = getSelectOption(name)
+    option = getSelectOption(name, dropdown)
   } else {
-    option = await screen.findByText(name)
+    option = dropdown ? await within(dropdown).findByText(name) : await screen.findByText(name)
   }
 
   await user.click(option)

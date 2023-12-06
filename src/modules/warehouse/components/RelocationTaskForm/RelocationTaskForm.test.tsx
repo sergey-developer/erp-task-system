@@ -111,8 +111,10 @@ const findTypeError = async (text: string) => within(getTypeFormItem()).findByTe
 // relocate from field
 const getRelocateFromFormItem = () => within(getContainer()).getByTestId('relocate-from-form-item')
 const getRelocateFromSelectInput = () => selectTestUtils.getSelect(getRelocateFromFormItem())
-const setRelocateFrom = selectTestUtils.clickSelectOption
 const findRelocateFromError = (text: string) => within(getRelocateFromFormItem()).findByText(text)
+
+const setRelocateFrom = (user: UserEvent, name: string) =>
+  selectTestUtils.clickSelectOption(user, name, undefined, 'relocate-from-select-dropdown')
 
 const openRelocateFromSelect = (user: UserEvent) =>
   selectTestUtils.openSelect(user, getRelocateFromFormItem())
@@ -123,14 +125,19 @@ const getSelectedRelocateFrom = (title: string) =>
 const querySelectedRelocateFrom = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getRelocateFromFormItem(), title)
 
+const expectRelocateFromLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getRelocateFromFormItem())
+
 const expectRelocateFromLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getRelocateFromFormItem())
 
 // relocate to field
 const getRelocateToFormItem = () => within(getContainer()).getByTestId('relocate-to-form-item')
 const getRelocateToSelectInput = () => selectTestUtils.getSelect(getRelocateToFormItem())
-const setRelocateTo = selectTestUtils.clickSelectOption
 const findRelocateToError = (text: string) => within(getRelocateToFormItem()).findByText(text)
+
+const setRelocateTo = (user: UserEvent, name: string) =>
+  selectTestUtils.clickSelectOption(user, name, undefined, 'relocate-to-select-dropdown')
 
 const openRelocateToSelect = (user: UserEvent) =>
   selectTestUtils.openSelect(user, getRelocateToFormItem())
@@ -181,6 +188,7 @@ export const testUtils = {
   getSelectedRelocateFrom,
   querySelectedRelocateFrom,
   findRelocateFromError,
+  expectRelocateFromLoadingStarted,
   expectRelocateFromLoadingFinished,
 
   getRelocateToSelectInput,
