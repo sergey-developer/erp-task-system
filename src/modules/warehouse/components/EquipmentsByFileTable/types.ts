@@ -1,11 +1,12 @@
 import { TableProps } from 'antd'
 
-import { EquipmentByFile } from 'modules/warehouse/types'
+import { CreateEquipmentsBadRequestErrorResponse } from 'modules/warehouse/models'
+import { ImportedEquipmentByFile } from 'modules/warehouse/types'
 
 export type EquipmentByFileTableRow = Pick<
-  EquipmentByFile,
+  ImportedEquipmentByFile,
   | 'rowId'
-  | 'inventoryNumber'
+  | 'customerInventoryNumber'
   | 'serialNumber'
   | 'comment'
   | 'condition'
@@ -24,4 +25,6 @@ export type EquipmentByFileTableRow = Pick<
 
 export type EquipmentsByFileTableProps = Required<
   Pick<TableProps<EquipmentByFileTableRow>, 'dataSource'>
->
+> & {
+  errors?: CreateEquipmentsBadRequestErrorResponse
+}

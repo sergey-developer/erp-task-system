@@ -7,6 +7,7 @@ import {
 } from 'modules/warehouse/models'
 
 import { CurrencyListItemModel } from 'shared/models/currency'
+import { FieldsErrors } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -35,16 +36,15 @@ export type CreatedEquipmentListItemModel = {
 
 export type CreatedEquipmentsModel = CreatedEquipmentListItemModel[]
 
-export type CreateEquipmentsMutationArgs = {
+export type CreateEquipmentModel = {
   location: IdType
-
+  warehouse?: IdType
   title?: string
   nomenclature?: IdType
-  warehouse?: IdType
   condition?: EquipmentConditionEnum
   category?: IdType
   purpose?: IdType
-  inventoryNumber?: string
+  customerInventoryNumber?: string
   serialNumber?: string
   quantity?: number
   price?: number
@@ -56,6 +56,17 @@ export type CreateEquipmentsMutationArgs = {
   owner?: IdType
   comment?: string
   images?: { id: IdType }[]
-}[]
+}
+
+export type CreateEquipmentsMutationArgs = CreateEquipmentModel[]
 
 export type CreateEquipmentsSuccessResponse = CreatedEquipmentsModel
+
+export type CreateEquipmentsBadRequestErrorResponse = Partial<
+  FieldsErrors<
+    Pick<
+      CreateEquipmentModel,
+      'title' | 'nomenclature' | 'purpose' | 'condition' | 'customerInventoryNumber'
+    >
+  >
+>[]

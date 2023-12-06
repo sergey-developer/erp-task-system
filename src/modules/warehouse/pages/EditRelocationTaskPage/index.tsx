@@ -31,10 +31,10 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
-  useCreateEquipmentsByFile,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
   useGetEquipmentListTemplate,
+  useImportEquipmentsByFile,
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
@@ -291,9 +291,9 @@ const EditRelocationTaskPage: FC = () => {
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
 
   const [
-    createEquipmentsByFileMutation,
-    { isLoading: createEquipmentsByFileIsLoading, data: equipmentsByFile },
-  ] = useCreateEquipmentsByFile()
+    importEquipmentsByFileMutation,
+    { isLoading: importEquipmentsByFileIsLoading, data: importedEquipmentsByFile },
+  ] = useImportEquipmentsByFile()
 
   const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
@@ -379,9 +379,9 @@ const EditRelocationTaskPage: FC = () => {
     }
   }
 
-  const createEquipmentsByFile: NonNullable<UploadProps['onChange']> = async ({ file }) => {
+  const importEquipmentsByFile: NonNullable<UploadProps['onChange']> = async ({ file }) => {
     try {
-      await createEquipmentsByFileMutation({ file: file as FileToSend }).unwrap()
+      await importEquipmentsByFileMutation({ file: file as FileToSend }).unwrap()
       toggleOpenCreateEquipmentsByFileModal()
     } catch {}
   }
@@ -611,11 +611,11 @@ const EditRelocationTaskPage: FC = () => {
                         showUploadList={false}
                         beforeUpload={stubFalse}
                         fileList={[]}
-                        onChange={createEquipmentsByFile}
+                        onChange={importEquipmentsByFile}
                       >
                         <Button
                           disabled={createEquipmentDisabled}
-                          loading={createEquipmentsByFileIsLoading}
+                          loading={importEquipmentsByFileIsLoading}
                         >
                           Добавить из Excel
                         </Button>
@@ -755,7 +755,7 @@ const EditRelocationTaskPage: FC = () => {
         </React.Suspense>
       )}
 
-      {createEquipmentsByFileModalOpened && equipmentsByFile && (
+      {createEquipmentsByFileModalOpened && importedEquipmentsByFile && (
         <React.Suspense
           fallback={
             <ModalFallback open onCancel={debouncedToggleOpenCreateEquipmentsByFileModal} />
@@ -766,7 +766,7 @@ const EditRelocationTaskPage: FC = () => {
             onCancel={debouncedToggleOpenCreateEquipmentsByFileModal}
             onCreate={async () => {}}
             isCreating={false}
-            data={equipmentsByFile}
+            data={importedEquipmentsByFile}
           />
         </React.Suspense>
       )}

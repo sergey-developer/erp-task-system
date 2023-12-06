@@ -5,8 +5,8 @@ import { testUtils as createEquipmentsByFileModalTestUtils } from 'modules/wareh
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
 import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import {
-  createEquipmentsByFileErrorMsg,
   getEquipmentListTemplateErrorMsg,
+  importEquipmentsByFileErrorMsg,
 } from 'modules/warehouse/constants/equipment'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
@@ -18,15 +18,15 @@ import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
-  mockCreateEquipmentsByFileBadRequestError,
-  mockCreateEquipmentsByFileServerError,
-  mockCreateEquipmentsByFileSuccess,
   mockGetCurrencyListSuccess,
   mockGetEquipmentCatalogListSuccess,
   mockGetEquipmentListTemplateServerError,
   mockGetEquipmentListTemplateSuccess,
   mockGetLocationListSuccess,
   mockGetUserListSuccess,
+  mockImportEquipmentsByFileBadRequestError,
+  mockImportEquipmentsByFileServerError,
+  mockImportEquipmentsByFileSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -372,7 +372,7 @@ describe('Страница создания заявки на перемещен
 
       mockGetEquipmentCatalogListSuccess({ body: [] })
       mockGetCurrencyListSuccess({ body: [] })
-      mockCreateEquipmentsByFileSuccess({ body: [warehouseFixtures.equipmentByFile()] })
+      mockImportEquipmentsByFileSuccess({ body: [warehouseFixtures.importedEquipmentByFile()] })
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -407,7 +407,7 @@ describe('Страница создания заявки на перемещен
         mockGetCurrencyListSuccess({ body: [] })
 
         const errorMsg = fakeWord()
-        mockCreateEquipmentsByFileBadRequestError({ body: { detail: errorMsg } })
+        mockImportEquipmentsByFileBadRequestError({ body: { detail: errorMsg } })
 
         const { user } = render(<CreateRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -439,7 +439,7 @@ describe('Страница создания заявки на перемещен
 
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
-        mockCreateEquipmentsByFileServerError()
+        mockImportEquipmentsByFileServerError()
 
         const { user } = render(<CreateRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -459,7 +459,7 @@ describe('Страница создания заявки на перемещен
         await testUtils.expectAddByExcelLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(
-          createEquipmentsByFileErrorMsg,
+          importEquipmentsByFileErrorMsg,
         )
         expect(notification).toBeInTheDocument()
       })

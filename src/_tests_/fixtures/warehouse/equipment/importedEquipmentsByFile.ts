@@ -1,15 +1,14 @@
 import times from 'lodash/times'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { EquipmentsByFileModel } from 'modules/warehouse/models'
-import { EquipmentByFile } from 'modules/warehouse/types'
+import { ImportedEquipmentByFile, ImportedEquipmentsByFile } from 'modules/warehouse/types'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
-export const equipmentByFile = (): EquipmentByFile => ({
+export const importedEquipmentByFile = (): ImportedEquipmentByFile => ({
   rowId: fakeId(),
   title: fakeWord(),
-  inventoryNumber: fakeWord(),
+  customerInventoryNumber: fakeWord(),
   serialNumber: fakeWord(),
   quantity: fakeInteger(),
   comment: fakeWord(),
@@ -26,5 +25,5 @@ export const equipmentByFile = (): EquipmentByFile => ({
   purpose: { id: fakeId(), title: fakeWord() },
 })
 
-export const equipmentsByFile = (length: number = 1): EquipmentsByFileModel =>
-  times(length, () => equipmentByFile())
+export const importedEquipmentsByFile = (length: number = 1): ImportedEquipmentsByFile =>
+  times(length, () => importedEquipmentByFile())

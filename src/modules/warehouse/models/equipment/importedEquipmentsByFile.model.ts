@@ -9,9 +9,9 @@ import {
 import { CurrencyModel } from 'shared/models/currency'
 import { MaybeNull } from 'shared/types/utils'
 
-export type EquipmentByFileModel = {
+export type ImportedEquipmentByFileModel = {
   title: MaybeNull<string>
-  inventoryNumber: MaybeNull<string>
+  customerInventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>
   comment: MaybeNull<string>
   condition: MaybeNull<EquipmentConditionEnum>
@@ -32,4 +32,4 @@ export type EquipmentByFileModel = {
   >
 }
 
-export type EquipmentsByFileModel = EquipmentByFileModel[]
+export type ImportedEquipmentsByFileModel = ImportedEquipmentByFileModel[]

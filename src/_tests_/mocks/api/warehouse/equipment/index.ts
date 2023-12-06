@@ -1,6 +1,6 @@
 export * from './getEquipment.mock'
 export * from './createEquipment.mock'
-export * from './createEquipmentsByFile.mock'
+export * from './importEquipmentsByFile.mock'
 export * from './updateEquipment.mock'
 export * from './getEquipmentRelocationHistory.mock'
 

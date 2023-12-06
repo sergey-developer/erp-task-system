@@ -4,8 +4,8 @@ export * from './createEquipment.model'
 export * from './createEquipments.model'
 export * from './updateEquipment.model'
 
-export * from './equipmentsByFile.model'
-export * from './createEquipmentsByFile.model'
+export * from './importedEquipmentsByFile.model'
+export * from './importEquipmentsByFile.model'
 
 export * from './equipmentList.model'
 export * from './getEquipmentList.model'

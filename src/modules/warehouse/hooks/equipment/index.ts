@@ -1,6 +1,6 @@
 export * from './useCreateEquipment'
 export * from './useCreateEquipments'
-export * from './useCreateEquipmentsByFile'
+export * from './useImportEquipmentsByFile'
 export * from './useUpdateEquipment'
 export * from './useGetEquipment'
 export * from './useLazyGetEquipment'

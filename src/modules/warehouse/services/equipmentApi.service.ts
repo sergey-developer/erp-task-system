@@ -5,8 +5,6 @@ import { getPaginatedList } from 'lib/antd/utils'
 import { EquipmentApiEnum, EquipmentApiTagEnum } from 'modules/warehouse/constants/equipment'
 import {
   CreateEquipmentMutationArgs,
-  CreateEquipmentsByFileMutationArgs,
-  CreateEquipmentsByFileSuccessResponse,
   CreateEquipmentsMutationArgs,
   CreateEquipmentsSuccessResponse,
   CreateEquipmentSuccessResponse,
@@ -26,14 +24,16 @@ import {
   GetEquipmentRelocationHistoryQueryArgs,
   GetEquipmentRelocationHistorySuccessResponse,
   GetEquipmentSuccessResponse,
+  ImportEquipmentsByFileMutationArgs,
+  ImportEquipmentsByFileSuccessResponse,
   UpdateEquipmentMutationArgs,
   UpdateEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
 import {
-  CreateEquipmentsByFileTransformedSuccessResponse,
   GetEquipmentAttachmentListTransformedSuccessResponse,
   GetEquipmentListTransformedSuccessResponse,
   GetEquipmentNomenclatureListTransformedSuccessResponse,
+  ImportEquipmentsByFileTransformedSuccessResponse,
 } from 'modules/warehouse/types'
 import {
   getEquipmentAttachmentListUrl,
@@ -145,21 +145,21 @@ const equipmentApiService = baseApiService
           data: payload,
         }),
       }),
-      createEquipmentsByFile: build.mutation<
-        CreateEquipmentsByFileTransformedSuccessResponse,
-        CreateEquipmentsByFileMutationArgs
+      importEquipmentsByFile: build.mutation<
+        ImportEquipmentsByFileTransformedSuccessResponse,
+        ImportEquipmentsByFileMutationArgs
       >({
         query: (payload) => {
           const formData = new FormData()
           formData.append('file', payload.file)
 
           return {
-            url: EquipmentApiEnum.CreateEquipmentsByFile,
+            url: EquipmentApiEnum.ImportEquipmentsByFile,
             method: HttpMethodEnum.Post,
             data: formData,
           }
         },
-        transformResponse: (response: CreateEquipmentsByFileSuccessResponse) =>
+        transformResponse: (response: ImportEquipmentsByFileSuccessResponse) =>
           response.map((eqp) => ({ ...eqp, rowId: random(1, 9999999) })),
       }),
       updateEquipment: build.mutation<UpdateEquipmentSuccessResponse, UpdateEquipmentMutationArgs>({
@@ -205,7 +205,7 @@ export const {
   useLazyGetEquipmentQuery,
   useCreateEquipmentMutation,
   useCreateEquipmentsMutation,
-  useCreateEquipmentsByFileMutation,
+  useImportEquipmentsByFileMutation,
   useUpdateEquipmentMutation,
   useGetEquipmentListQuery,
   useGetEquipmentRelocationHistoryQuery,

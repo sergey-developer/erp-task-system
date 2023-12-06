@@ -5,8 +5,8 @@ import { RequestTaskSuspendFormErrors } from './types'
 export const getFormErrorsFromBadRequestError = (
   errors: CreateTaskSuspendRequestBadRequestErrorResponse,
 ): RequestTaskSuspendFormErrors => ({
-  comment: errors.data.comment,
-  reason: errors.data.suspendReason,
-  endDate: errors.data.suspendEndAt,
-  endTime: errors.data.suspendEndAt,
+  comment: errors.comment,
+  reason: errors.suspendReason,
+  endDate: errors.suspendEndAt,
+  endTime: errors.suspendEndAt,
 })
