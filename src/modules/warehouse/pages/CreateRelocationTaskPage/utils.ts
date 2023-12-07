@@ -28,8 +28,9 @@ const getRelocateFromLocationTypes = (
 ): MaybeUndefined<LocationTypeEnum[]> => {
   switch (type) {
     case RelocationTaskTypeEnum.Relocation:
-    case RelocationTaskTypeEnum.WriteOff:
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
+    case RelocationTaskTypeEnum.WriteOff:
+      return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop, LocationTypeEnum.ServiceCenter]
     case RelocationTaskTypeEnum.Repair:
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
     case RelocationTaskTypeEnum.Warranty:
@@ -43,8 +44,9 @@ const getRelocateFromWarehouseTypes = (
   switch (type) {
     case RelocationTaskTypeEnum.Repair:
       return [WarehouseTypeEnum.Main, WarehouseTypeEnum.Msi]
-    case RelocationTaskTypeEnum.Relocation:
     case RelocationTaskTypeEnum.WriteOff:
+      return [WarehouseTypeEnum.Main, WarehouseTypeEnum.Msi, WarehouseTypeEnum.Repair]
+    case RelocationTaskTypeEnum.Relocation:
     case RelocationTaskTypeEnum.Warranty:
       return undefined
   }
@@ -59,7 +61,6 @@ const getRelocateToLocationTypes = (
     case RelocationTaskTypeEnum.Repair:
       return [LocationTypeEnum.Warehouse]
     case RelocationTaskTypeEnum.Warranty:
-      return undefined
     case RelocationTaskTypeEnum.WriteOff:
       return undefined
   }
