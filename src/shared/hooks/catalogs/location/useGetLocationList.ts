@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getLocationListMessages } from 'shared/constants/catalogs'
+import { getLocationListErrorMsg } from 'shared/constants/catalogs'
 import {
   GetLocationListQueryArgs,
   GetLocationListSuccessResponse,
@@ -35,7 +35,7 @@ export const useGetLocationList = (
       } else if (isForbiddenError(state.error) && state.error.data.detail) {
         showErrorNotification(state.error.data.detail)
       } else {
-        showErrorNotification(getLocationListMessages.commonError)
+        showErrorNotification(getLocationListErrorMsg)
       }
     }
   }, [state.error])
