@@ -14,6 +14,7 @@ import TimePicker from 'components/TimePicker'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
+import { filterOptionBy } from 'shared/utils/common'
 
 import { LocationOption, RelocationTaskFormProps } from './types'
 import { makeLocationOptions } from './utils'
@@ -88,6 +89,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
             onChange={(value, option) => {
               if (!Array.isArray(option)) onChangeRelocateFrom(value, option)
             }}
+            showSearch
+            filterOption={filterOptionBy('label')}
           />
         </Form.Item>
 
@@ -106,6 +109,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
             onChange={(value, option) => {
               if (!Array.isArray(option)) onChangeRelocateTo(option)
             }}
+            showSearch
+            filterOption={filterOptionBy('label')}
           />
         </Form.Item>
       </Col>
@@ -148,6 +153,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
             disabled={isLoading || userListIsLoading}
             options={userList}
             placeholder='Выберите исполнителя'
+            showSearch
+            filterOption={filterOptionBy('fullName')}
           />
         </Form.Item>
 
