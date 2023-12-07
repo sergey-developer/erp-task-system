@@ -9,15 +9,16 @@ import {
 } from 'shared/models/catalogs/location'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { useGetLocationListQuery } from 'shared/services/catalogsApi.service'
+import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetLocationListResult = CustomUseQueryHookResult<
-  GetLocationListQueryArgs,
+  MaybeUndefined<GetLocationListQueryArgs>,
   GetLocationListSuccessResponse
 >
 
 type UseGetLocationListOptions = CustomUseQueryOptions<
-  GetLocationListQueryArgs,
+  MaybeUndefined<GetLocationListQueryArgs>,
   GetLocationListSuccessResponse
 >
 
