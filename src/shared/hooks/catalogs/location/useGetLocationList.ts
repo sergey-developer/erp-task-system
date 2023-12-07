@@ -2,22 +2,23 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getLocationListMessages } from 'shared/constants/catalogs'
+import { getLocationListErrorMsg } from 'shared/constants/catalogs'
 import {
   GetLocationListQueryArgs,
   GetLocationListSuccessResponse,
 } from 'shared/models/catalogs/location'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { useGetLocationListQuery } from 'shared/services/catalogsApi.service'
+import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetLocationListResult = CustomUseQueryHookResult<
-  GetLocationListQueryArgs,
+  MaybeUndefined<GetLocationListQueryArgs>,
   GetLocationListSuccessResponse
 >
 
 type UseGetLocationListOptions = CustomUseQueryOptions<
-  GetLocationListQueryArgs,
+  MaybeUndefined<GetLocationListQueryArgs>,
   GetLocationListSuccessResponse
 >
 
@@ -34,7 +35,7 @@ export const useGetLocationList = (
       } else if (isForbiddenError(state.error) && state.error.data.detail) {
         showErrorNotification(state.error.data.detail)
       } else {
-        showErrorNotification(getLocationListMessages.commonError)
+        showErrorNotification(getLocationListErrorMsg)
       }
     }
   }, [state.error])

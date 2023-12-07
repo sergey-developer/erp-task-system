@@ -12,8 +12,4 @@ export const getUserStatusListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения статусов пользователя',
 }
 
-export const getLocationListMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения списка меcтонахождений',
-}
-
-
+export const getLocationListErrorMsg = 'Ошибка получения списка меcтонахождений'
