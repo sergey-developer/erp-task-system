@@ -8,16 +8,16 @@ import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 import { ADD_TEXT } from 'shared/constants/common'
 
 import EquipmentsByFileTable from '../EquipmentsByFileTable'
+import { EquipmentsByFileTableProps } from '../EquipmentsByFileTable/types'
 
-export type CreateEquipmentsByFileModalProps = Required<
-  Pick<BaseModalProps, 'open' | 'onCancel'>
-> & {
-  data: ImportedEquipmentsByFile
-  errors?: CreateEquipmentsBadRequestErrorResponse
+export type CreateEquipmentsByFileModalProps = Required<Pick<BaseModalProps, 'open' | 'onCancel'>> &
+  Pick<EquipmentsByFileTableProps, 'onEdit'> & {
+    data: ImportedEquipmentsByFile
+    errors?: CreateEquipmentsBadRequestErrorResponse
 
-  onCreate: () => Promise<void>
-  isCreating: boolean
-}
+    onCreate: () => Promise<void>
+    isCreating: boolean
+  }
 
 const CreateEquipmentsByFileModal: FC<CreateEquipmentsByFileModalProps> = ({
   data,
@@ -25,6 +25,8 @@ const CreateEquipmentsByFileModal: FC<CreateEquipmentsByFileModalProps> = ({
 
   onCreate,
   isCreating,
+
+  onEdit,
 
   ...props
 }) => {
@@ -38,7 +40,7 @@ const CreateEquipmentsByFileModal: FC<CreateEquipmentsByFileModalProps> = ({
       width='100%'
       title='Оборудование из Excel'
     >
-      <EquipmentsByFileTable dataSource={data} errors={errors} />
+      <EquipmentsByFileTable dataSource={data} errors={errors} onEdit={onEdit} />
     </BaseModal>
   )
 }

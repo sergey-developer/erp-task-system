@@ -41,44 +41,45 @@ export type EquipmentFormModalFormFields = {
 }
 
 export type EquipmentFormModalProps = Required<
-  Pick<BaseModalProps, 'open' | 'onCancel' | 'okText' | 'title' | 'isLoading'>
-> & {
-  mode: 'create' | 'edit'
+  Pick<BaseModalProps, 'open' | 'onCancel' | 'okText' | 'title'>
+> &
+  Pick<BaseModalProps, 'isLoading'> & {
+    mode: 'create' | 'edit'
 
-  onSubmit: (
-    values: EquipmentFormModalFormFields,
-    setFields: FormInstance['setFields'],
-  ) => Promise<void>
+    onSubmit: (
+      values: EquipmentFormModalFormFields,
+      setFields: FormInstance['setFields'],
+    ) => Promise<void>
 
-  defaultImages?: UploadProps<FileResponse>['defaultFileList']
-  onUploadImage: NonNullable<UploadProps['customRequest']>
+    defaultImages?: UploadProps<FileResponse>['defaultFileList']
+    onUploadImage: NonNullable<UploadProps['customRequest']>
 
-  onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
-  imageIsDeleting: boolean
+    onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
+    imageIsDeleting: boolean
 
-  categoryList: EquipmentCategoryListModel
-  categoryListIsLoading: boolean
-  selectedCategory?: EquipmentCategoryListItemModel
-  onChangeCategory: (category: EquipmentCategoryListItemModel) => void
+    categoryList: EquipmentCategoryListModel
+    categoryListIsLoading: boolean
+    selectedCategory?: EquipmentCategoryListItemModel
+    onChangeCategory: (category: EquipmentCategoryListItemModel) => void
 
-  warehouseList?: WarehouseListModel
-  warehouseListIsLoading?: boolean
+    warehouseList?: WarehouseListModel
+    warehouseListIsLoading?: boolean
 
-  currencyList: CurrencyListModel
-  currencyListIsLoading: boolean
+    currencyList: CurrencyListModel
+    currencyListIsLoading: boolean
 
-  ownerList: CustomerListModel
-  ownerListIsLoading: boolean
+    ownerList: CustomerListModel
+    ownerListIsLoading: boolean
 
-  workTypeList: WorkTypeListModel
-  workTypeListIsLoading: boolean
+    workTypeList: WorkTypeListModel
+    workTypeListIsLoading: boolean
 
-  nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>
-  nomenclatureIsLoading: boolean
+    nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>
+    nomenclatureIsLoading: boolean
 
-  nomenclatureList: NomenclatureListModel
-  nomenclatureListIsLoading: boolean
-  onChangeNomenclature: (id: IdType) => void
+    nomenclatureList: NomenclatureListModel
+    nomenclatureListIsLoading: boolean
+    onChangeNomenclature: (id: IdType) => void
 
-  initialValues?: Partial<EquipmentFormModalFormFields>
-}
+    initialValues?: Partial<Omit<EquipmentFormModalFormFields, 'images'>>
+  }

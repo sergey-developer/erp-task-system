@@ -767,6 +767,7 @@ const EditRelocationTaskPage: FC = () => {
             onCreate={async () => {}}
             isCreating={false}
             data={importedEquipmentsByFile}
+            onEdit={() => {}}
           />
         </React.Suspense>
       )}
