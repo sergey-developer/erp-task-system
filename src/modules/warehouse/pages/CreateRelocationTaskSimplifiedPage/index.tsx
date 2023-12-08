@@ -488,6 +488,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             onCancel={handleCloseCreateEquipmentModal}
             onSubmit={createEquipment}
             onUploadImage={() => {}}
+            imageIsUploading={false}
             onDeleteImage={() => {}}
             imageIsDeleting={false}
           />

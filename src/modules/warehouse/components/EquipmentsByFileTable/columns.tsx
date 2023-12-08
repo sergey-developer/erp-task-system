@@ -3,11 +3,15 @@ import isBoolean from 'lodash/isBoolean'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
+import { EditIcon } from 'components/Icons'
+
 import { getYesNoWord } from 'shared/utils/common'
 
-import { EquipmentByFileTableRow } from './types'
+import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from './types'
 
-export const columns: ColumnsType<EquipmentByFileTableRow> = [
+type GetColumnsArgs = Pick<EquipmentsByFileTableProps, 'onEdit'>
+
+export const getColumns = ({ onEdit }: GetColumnsArgs): ColumnsType<EquipmentByFileTableRow> => [
   {
     key: 'category',
     dataIndex: 'category',
@@ -21,8 +25,8 @@ export const columns: ColumnsType<EquipmentByFileTableRow> = [
     render: (value: EquipmentByFileTableRow['nomenclature']) => value?.title,
   },
   {
-    key: 'inventoryNumber',
-    dataIndex: 'inventoryNumber',
+    key: 'customerInventoryNumber',
+    dataIndex: 'customerInventoryNumber',
     title: 'Инв. №',
   },
   {
@@ -99,5 +103,17 @@ export const columns: ColumnsType<EquipmentByFileTableRow> = [
     key: 'comment',
     dataIndex: 'comment',
     title: 'Комментарий',
+  },
+  {
+    key: 'edit',
+    width: 50,
+    render: (value, record, index) => (
+      <EditIcon
+        $size='large'
+        $cursor='pointer'
+        $color='bleuDeFrance'
+        onClick={() => onEdit(record, index)}
+      />
+    ),
   },
 ]

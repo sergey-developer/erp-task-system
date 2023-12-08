@@ -1,6 +1,9 @@
 import times from 'lodash/times'
 
-import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import {
+  EquipmentCategoryEnum,
+  EquipmentConditionEnum,
+} from 'modules/warehouse/constants/equipment'
 import { ImportedEquipmentByFile, ImportedEquipmentsByFile } from 'modules/warehouse/types'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
@@ -21,7 +24,7 @@ export const importedEquipmentByFile = (): ImportedEquipmentByFile => ({
   nomenclature: { id: fakeId(), title: fakeWord(), measurementUnit: fakeWord() },
   owner: { id: fakeId(), title: fakeWord() },
   currency: { id: fakeId(), title: fakeWord() },
-  category: { id: fakeId(), title: fakeWord() },
+  category: { id: fakeId(), title: fakeWord(), code: EquipmentCategoryEnum.Equipment },
   purpose: { id: fakeId(), title: fakeWord() },
 })
 

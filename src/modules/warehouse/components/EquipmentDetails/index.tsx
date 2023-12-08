@@ -5,8 +5,8 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import AttachmentList from 'modules/attachment/components/AttachmentList'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
-import { useMatchUserPermissions } from 'modules/user/hooks'
 import { attachmentsToFiles } from 'modules/attachment/utils'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
@@ -143,7 +143,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] = useUpdateEquipment()
 
-  const [createAttachment] = useCreateAttachment()
+  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   useEffect(() => {
@@ -501,21 +501,14 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       </Drawer>
 
       {editEquipmentModalOpened && (
-        <React.Suspense
-          fallback={
-            <ModalFallback
-              open={editEquipmentModalOpened}
-              onCancel={handleCloseEditEquipmentModal}
-            />
-          }
-        >
+        <React.Suspense fallback={<ModalFallback open onCancel={handleCloseEditEquipmentModal} />}>
           <EquipmentFormModal
             open={editEquipmentModalOpened}
             mode='edit'
             title='Редактирование оборудования'
             okText='Сохранить'
             isLoading={updateEquipmentIsLoading}
-            initialValues={getEquipmentFormInitialValues(equipment, nomenclature)}
+            initialValues={getEquipmentFormInitialValues(equipment)}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}
@@ -536,6 +529,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onCancel={handleCloseEditEquipmentModal}
             onSubmit={handleEditEquipment}
             onUploadImage={handleCreateEquipmentImage}
+            imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
             defaultImages={defaultEquipmentImages}
@@ -545,12 +539,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
       {relocationHistoryModalOpened && (
         <React.Suspense
-          fallback={
-            <ModalFallback
-              open={relocationHistoryModalOpened}
-              onCancel={debouncedToggleOpenRelocationHistoryModal}
-            />
-          }
+          fallback={<ModalFallback open onCancel={debouncedToggleOpenRelocationHistoryModal} />}
         >
           <EquipmentRelocationHistoryModal
             open={relocationHistoryModalOpened}
@@ -563,12 +552,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
       {imageListModalOpened && !totalEquipmentAttachmentListIsFetching && (
         <React.Suspense
-          fallback={
-            <ModalFallback
-              open={imageListModalOpened}
-              onCancel={debouncedToggleOpenImageListModal}
-            />
-          }
+          fallback={<ModalFallback open onCancel={debouncedToggleOpenImageListModal} />}
         >
           <AttachmentListModal
             open={imageListModalOpened}
