@@ -1,6 +1,16 @@
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
-import { EquipmentCategoryModel, EquipmentModel, NomenclatureModel } from 'modules/warehouse/models'
+import {
+  CustomerModel,
+  EquipmentCategoryModel,
+  EquipmentModel,
+  NomenclatureModel,
+  WarehouseModel,
+  WorkTypeModel,
+} from 'modules/warehouse/models'
+
+import { CurrencyModel } from 'shared/models/currency'
+import { MaybeNull } from 'shared/types/utils'
 
 import { FieldsMaybeHidden } from './types'
 
@@ -28,12 +38,12 @@ export const getHiddenFieldsByCategory = (
 
 export const getEquipmentFormInitialValues = (
   equipment?: Partial<{
-    nomenclature: Pick<EquipmentModel['nomenclature'], 'id'>
-    category: Pick<EquipmentModel['category'], 'id'>
-    purpose: Pick<EquipmentModel['purpose'], 'id'>
-    warehouse: Pick<NonNullable<EquipmentModel['warehouse']>, 'id'>
-    currency: Pick<NonNullable<EquipmentModel['currency']>, 'id'>
-    owner: Pick<NonNullable<EquipmentModel['owner']>, 'id'>
+    nomenclature: Pick<NomenclatureModel, 'id' | 'title'>
+    category: Pick<EquipmentCategoryModel, 'id'>
+    purpose: Pick<WorkTypeModel, 'id'>
+    warehouse: MaybeNull<Pick<WarehouseModel, 'id'>>
+    currency: MaybeNull<Pick<CurrencyModel, 'id'>>
+    owner: MaybeNull<Pick<CustomerModel, 'id'>>
     condition: EquipmentModel['condition']
     isNew: EquipmentModel['isNew']
     isWarranty: EquipmentModel['isWarranty']
@@ -45,7 +55,6 @@ export const getEquipmentFormInitialValues = (
     usageCounter: EquipmentModel['usageCounter']
     comment: EquipmentModel['comment']
   }>,
-  nomenclature?: Partial<Pick<NomenclatureModel, 'title'>>,
 ): EquipmentFormModalProps['initialValues'] =>
   equipment
     ? {
@@ -53,10 +62,10 @@ export const getEquipmentFormInitialValues = (
         condition: equipment.condition || undefined,
         category: equipment.category?.id,
         purpose: equipment.purpose?.id,
-        isNew: equipment.isNew || undefined,
-        isWarranty: equipment.isWarranty || undefined,
-        isRepaired: equipment.isRepaired || undefined,
-        title: nomenclature?.title,
+        isNew: equipment.isNew || false,
+        isWarranty: equipment.isWarranty || false,
+        isRepaired: equipment.isRepaired || false,
+        title: equipment.nomenclature?.title,
         warehouse: equipment.warehouse?.id,
         currency: equipment.currency?.id,
         customerInventoryNumber: equipment.customerInventoryNumber || undefined,

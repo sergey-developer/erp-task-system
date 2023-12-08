@@ -143,7 +143,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] = useUpdateEquipment()
 
-  const [createAttachment] = useCreateAttachment()
+  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   useEffect(() => {
@@ -508,7 +508,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             title='Редактирование оборудования'
             okText='Сохранить'
             isLoading={updateEquipmentIsLoading}
-            initialValues={getEquipmentFormInitialValues(equipment, nomenclature)}
+            initialValues={getEquipmentFormInitialValues(equipment)}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}
@@ -529,6 +529,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onCancel={handleCloseEditEquipmentModal}
             onSubmit={handleEditEquipment}
             onUploadImage={handleCreateEquipmentImage}
+            imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
             defaultImages={defaultEquipmentImages}

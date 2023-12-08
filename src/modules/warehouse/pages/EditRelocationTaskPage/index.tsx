@@ -164,7 +164,7 @@ const EditRelocationTaskPage: FC = () => {
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
 
-  const [createAttachment] = useCreateAttachment()
+  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
@@ -717,6 +717,7 @@ const EditRelocationTaskPage: FC = () => {
             onCancel={handleCloseCreateEquipmentModal}
             onSubmit={createEquipment}
             onUploadImage={handleCreateEquipmentImage}
+            imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
           />
@@ -766,7 +767,7 @@ const EditRelocationTaskPage: FC = () => {
             onCancel={debouncedToggleOpenCreateEquipmentsByFileModal}
             onCreate={async () => {}}
             isCreating={false}
-            data={importedEquipmentsByFile}
+            data={[]}
             onEdit={() => {}}
           />
         </React.Suspense>

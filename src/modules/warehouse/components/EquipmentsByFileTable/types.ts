@@ -1,9 +1,10 @@
 import { TableProps } from 'antd'
+import { UploadFile } from 'antd/es/upload'
 
 import { CreateEquipmentsBadRequestErrorResponse } from 'modules/warehouse/models'
 import { ImportedEquipmentByFile } from 'modules/warehouse/types'
 
-import { IdType } from 'shared/types/common'
+import { FileResponse } from 'shared/types/file'
 
 export type EquipmentByFileTableRow = Pick<ImportedEquipmentByFile, 'rowId'> & {
   title?: NonNullable<ImportedEquipmentByFile['title']>
@@ -22,7 +23,7 @@ export type EquipmentByFileTableRow = Pick<ImportedEquipmentByFile, 'rowId'> & {
   owner?: NonNullable<ImportedEquipmentByFile['owner']>
   purpose?: NonNullable<ImportedEquipmentByFile['purpose']>
   nomenclature?: NonNullable<ImportedEquipmentByFile['nomenclature']>
-  images?: IdType[]
+  images?: UploadFile<FileResponse>[]
 }
 
 export type EquipmentsByFileTableProps = Required<

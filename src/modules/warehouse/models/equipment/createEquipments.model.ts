@@ -55,7 +55,7 @@ export type CreateEquipmentModel = {
   usageCounter?: number
   owner?: IdType
   comment?: string
-  images?: { id: IdType }[]
+  images?: IdType[]
 }
 
 export type CreateEquipmentsMutationArgs = CreateEquipmentModel[]

@@ -1,9 +1,10 @@
 import { UploadFile } from 'antd/es/upload'
 import { Moment } from 'moment-timezone'
 
+import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
-import { CreateEquipmentModel, EquipmentModel } from 'modules/warehouse/models'
+import { EquipmentModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
@@ -27,7 +28,7 @@ export type RelocationTaskEquipment = {
 export type RelocationTaskFormFields = {
   type: RelocationTaskTypeEnum
   equipments: RelocationTaskEquipment[]
-  equipmentsByFile?: CreateEquipmentModel[]
+  equipmentsByFile?: EquipmentByFileTableRow[]
   deadlineAtDate: Moment
   deadlineAtTime: Moment
   relocateFrom: IdType

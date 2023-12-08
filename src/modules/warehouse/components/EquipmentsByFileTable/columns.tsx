@@ -25,8 +25,8 @@ export const getColumns = ({ onEdit }: GetColumnsArgs): ColumnsType<EquipmentByF
     render: (value: EquipmentByFileTableRow['nomenclature']) => value?.title,
   },
   {
-    key: 'inventoryNumber',
-    dataIndex: 'inventoryNumber',
+    key: 'customerInventoryNumber',
+    dataIndex: 'customerInventoryNumber',
     title: 'Инв. №',
   },
   {

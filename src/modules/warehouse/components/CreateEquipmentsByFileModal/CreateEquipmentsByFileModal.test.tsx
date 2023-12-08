@@ -12,9 +12,12 @@ import CreateEquipmentsByFileModal, { CreateEquipmentsByFileModalProps } from '.
 const props: CreateEquipmentsByFileModalProps = {
   open: true,
   data: [],
+  errors: undefined,
 
   onCreate: jest.fn(),
   isCreating: false,
+
+  onEdit: jest.fn(),
 
   onCancel: jest.fn(),
 }

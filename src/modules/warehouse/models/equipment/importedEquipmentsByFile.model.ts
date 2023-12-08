@@ -21,7 +21,7 @@ export type ImportedEquipmentByFileModel = {
   isNew: MaybeNull<boolean>
   isWarranty: MaybeNull<boolean>
   isRepaired: MaybeNull<boolean>
-  category: MaybeNull<Pick<EquipmentCategoryModel, 'id' | 'title'>>
+  category: MaybeNull<Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>>
   currency: MaybeNull<Pick<CurrencyModel, 'id' | 'title'>>
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
   purpose: MaybeNull<Pick<WorkTypeModel, 'id' | 'title'>>

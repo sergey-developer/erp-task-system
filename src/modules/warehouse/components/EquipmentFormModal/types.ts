@@ -53,7 +53,7 @@ export type EquipmentFormModalProps = Required<
 
     defaultImages?: UploadProps<FileResponse>['defaultFileList']
     onUploadImage: NonNullable<UploadProps['customRequest']>
-
+    imageIsUploading: boolean
     onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
     imageIsDeleting: boolean
 

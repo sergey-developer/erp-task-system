@@ -1,18 +1,17 @@
 import React, { FC } from 'react'
 
 import { CreateEquipmentsBadRequestErrorResponse } from 'modules/warehouse/models'
-import { ImportedEquipmentsByFile } from 'modules/warehouse/types'
 
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { ADD_TEXT } from 'shared/constants/common'
 
 import EquipmentsByFileTable from '../EquipmentsByFileTable'
-import { EquipmentsByFileTableProps } from '../EquipmentsByFileTable/types'
+import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from '../EquipmentsByFileTable/types'
 
 export type CreateEquipmentsByFileModalProps = Required<Pick<BaseModalProps, 'open' | 'onCancel'>> &
   Pick<EquipmentsByFileTableProps, 'onEdit'> & {
-    data: ImportedEquipmentsByFile
+    data: EquipmentByFileTableRow[]
     errors?: CreateEquipmentsBadRequestErrorResponse
 
     onCreate: () => Promise<void>

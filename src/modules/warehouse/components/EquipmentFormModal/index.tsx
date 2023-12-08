@@ -31,6 +31,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   defaultImages,
   onUploadImage,
+  imageIsUploading,
   onDeleteImage,
   imageIsDeleting,
 
@@ -125,7 +126,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   return (
     <BaseModal
       data-testid='equipment-form-modal'
-      confirmLoading={isLoading}
+      confirmLoading={isLoading || imageIsUploading || imageIsDeleting}
       onOk={form.submit}
       {...props}
     >
@@ -178,7 +179,10 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 name='title'
                 rules={requiredStringRules}
               >
-                <Input placeholder='Введите наименование' disabled={categoryIsConsumable || isLoading} />
+                <Input
+                  placeholder='Введите наименование'
+                  disabled={categoryIsConsumable || isLoading}
+                />
               </Form.Item>
 
               {!categoryIsConsumable && (
@@ -236,8 +240,16 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 <Form.Item>
                   <Row gutter={8}>
                     <Col span={12}>
-                      <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
-                        <InputNumber min={1} placeholder='Введите количество' disabled={isLoading} />
+                      <Form.Item
+                        data-testid='quantity-form-item'
+                        label='Количество'
+                        name='quantity'
+                      >
+                        <InputNumber
+                          min={1}
+                          placeholder='Введите количество'
+                          disabled={isLoading}
+                        />
                       </Form.Item>
                     </Col>
 
@@ -254,7 +266,11 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 <Form.Item>
                   <Row gutter={8}>
                     <Col span={12}>
-                      <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
+                      <Form.Item
+                        data-testid='quantity-form-item'
+                        label='Количество'
+                        name='quantity'
+                      >
                         <InputNumber disabled />
                       </Form.Item>
                     </Col>

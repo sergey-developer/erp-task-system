@@ -1,6 +1,7 @@
 import { screen, within } from '@testing-library/react'
 
 import {
+  EquipmentCategoryEnum,
   equipmentConditionDict,
   EquipmentConditionEnum,
 } from 'modules/warehouse/constants/equipment'
@@ -29,7 +30,7 @@ const tableRow: EquipmentByFileTableRow = {
   nomenclature: { id: fakeId(), title: fakeWord(), measurementUnit: fakeWord() },
   owner: { id: fakeId(), title: fakeWord() },
   currency: { id: fakeId(), title: fakeWord() },
-  category: { id: fakeId(), title: fakeWord() },
+  category: { id: fakeId(), title: fakeWord(), code: EquipmentCategoryEnum.Equipment },
   purpose: { id: fakeId(), title: fakeWord() },
 }
 
