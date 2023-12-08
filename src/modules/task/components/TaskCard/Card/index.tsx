@@ -6,6 +6,7 @@ import React, { FC, useCallback, useEffect } from 'react'
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
+import CardTabs from 'modules/task/components/CardTabs'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
@@ -13,6 +14,10 @@ import {
   RequestTaskSuspendModalProps,
 } from 'modules/task/components/RequestTaskSuspendModal/types'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
+import AdditionalInfo from 'modules/task/components/TaskCard/AdditionalInfo'
+import CardTitle from 'modules/task/components/TaskCard/CardTitle'
+import MainDetails from 'modules/task/components/TaskCard/MainDetails'
+import SecondaryDetails from 'modules/task/components/TaskCard/SecondaryDetails'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
@@ -57,11 +62,6 @@ import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import CardTabs from '../../CardTabs'
-import AdditionalInfo from '../AdditionalInfo'
-import CardTitle from '../CardTitle'
-import MainDetails from '../MainDetails'
-import SecondaryDetails from '../SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))

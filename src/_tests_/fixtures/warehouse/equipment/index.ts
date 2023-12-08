@@ -1,7 +1,7 @@
 export * from './equipment'
 export * from './equipmentList'
 
-export * from './equipmentsByFileTemplate'
+export * from './importedEquipmentsByFile'
 
 export * from './equipmentRelocationHistory'
 

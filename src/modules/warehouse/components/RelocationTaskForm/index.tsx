@@ -16,7 +16,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 
-import { LocationOption, RelocationTaskFormProps } from './types'
+import { LocationOption, LocationOptionGroup, RelocationTaskFormProps } from './types'
 import { makeLocationOptions } from './utils'
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 
@@ -80,14 +80,15 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           name='relocateFrom'
           rules={onlyRequiredRules}
         >
-          <Select<IdType, LocationOption>
+          <Select<IdType, LocationOptionGroup>
             dropdownRender={(menu) => <div data-testid='relocate-from-select-dropdown'>{menu}</div>}
             loading={relocateFromLocationListIsLoading}
             disabled={isLoading || relocateFromLocationListIsLoading}
             options={relocateFromLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
-              if (!Array.isArray(option)) onChangeRelocateFrom(value, option)
+              if (!Array.isArray(option))
+                onChangeRelocateFrom(value, option as unknown as LocationOption)
             }}
             showSearch
             filterOption={filterOptionBy('label')}
@@ -95,7 +96,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         </Form.Item>
 
         <Form.Item data-testid='relocate-to-form-item' label='Объект прибытия' name='relocateTo'>
-          <Select<IdType, LocationOption>
+          <Select<IdType, LocationOptionGroup>
             dropdownRender={(menu) => <div data-testid='relocate-to-select-dropdown'>{menu}</div>}
             loading={relocateToLocationListIsLoading}
             disabled={
@@ -107,7 +108,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
             options={relocateToLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
-              if (!Array.isArray(option)) onChangeRelocateTo(option)
+              if (!Array.isArray(option)) onChangeRelocateTo(option as unknown as LocationOption)
             }}
             showSearch
             filterOption={filterOptionBy('label')}

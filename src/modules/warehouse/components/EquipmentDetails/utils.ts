@@ -1,8 +1,16 @@
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
-import { EquipmentCategoryModel, EquipmentModel, NomenclatureModel } from 'modules/warehouse/models'
+import {
+  CustomerModel,
+  EquipmentCategoryModel,
+  EquipmentModel,
+  NomenclatureModel,
+  WarehouseModel,
+  WorkTypeModel,
+} from 'modules/warehouse/models'
 
-import { MaybeUndefined } from 'shared/types/utils'
+import { CurrencyModel } from 'shared/models/currency'
+import { MaybeNull } from 'shared/types/utils'
 
 import { FieldsMaybeHidden } from './types'
 
@@ -29,19 +37,35 @@ export const getHiddenFieldsByCategory = (
 }
 
 export const getEquipmentFormInitialValues = (
-  equipment?: EquipmentModel,
-  nomenclature?: NomenclatureModel,
-): MaybeUndefined<EquipmentFormModalProps['initialValues']> =>
+  equipment?: Partial<{
+    nomenclature: Pick<NomenclatureModel, 'id' | 'title'>
+    category: Pick<EquipmentCategoryModel, 'id'>
+    purpose: Pick<WorkTypeModel, 'id'>
+    warehouse: MaybeNull<Pick<WarehouseModel, 'id'>>
+    currency: MaybeNull<Pick<CurrencyModel, 'id'>>
+    owner: MaybeNull<Pick<CustomerModel, 'id'>>
+    condition: EquipmentModel['condition']
+    isNew: EquipmentModel['isNew']
+    isWarranty: EquipmentModel['isWarranty']
+    isRepaired: EquipmentModel['isRepaired']
+    customerInventoryNumber: EquipmentModel['customerInventoryNumber']
+    serialNumber: EquipmentModel['serialNumber']
+    quantity: EquipmentModel['quantity']
+    price: EquipmentModel['price']
+    usageCounter: EquipmentModel['usageCounter']
+    comment: EquipmentModel['comment']
+  }>,
+): EquipmentFormModalProps['initialValues'] =>
   equipment
     ? {
-        nomenclature: equipment.nomenclature.id,
-        condition: equipment.condition,
-        category: equipment.category.id,
-        purpose: equipment.purpose.id,
-        isNew: equipment.isNew,
-        isWarranty: equipment.isWarranty,
-        isRepaired: equipment.isRepaired,
-        title: nomenclature?.title,
+        nomenclature: equipment.nomenclature?.id,
+        condition: equipment.condition || undefined,
+        category: equipment.category?.id,
+        purpose: equipment.purpose?.id,
+        isNew: equipment.isNew || false,
+        isWarranty: equipment.isWarranty || false,
+        isRepaired: equipment.isRepaired || false,
+        title: equipment.nomenclature?.title,
         warehouse: equipment.warehouse?.id,
         currency: equipment.currency?.id,
         customerInventoryNumber: equipment.customerInventoryNumber || undefined,
@@ -52,4 +76,4 @@ export const getEquipmentFormInitialValues = (
         owner: equipment.owner?.id,
         comment: equipment.comment || undefined,
       }
-    : undefined
+    : {}

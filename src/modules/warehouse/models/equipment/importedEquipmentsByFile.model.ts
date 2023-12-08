@@ -7,12 +7,11 @@ import {
 } from 'modules/warehouse/models'
 
 import { CurrencyModel } from 'shared/models/currency'
-import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-export type EquipmentByFileTemplateModel = {
-  id: IdType
-  inventoryNumber: MaybeNull<string>
+export type ImportedEquipmentByFileModel = {
+  title: MaybeNull<string>
+  customerInventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>
   comment: MaybeNull<string>
   condition: MaybeNull<EquipmentConditionEnum>
@@ -22,7 +21,7 @@ export type EquipmentByFileTemplateModel = {
   isNew: MaybeNull<boolean>
   isWarranty: MaybeNull<boolean>
   isRepaired: MaybeNull<boolean>
-  category: MaybeNull<Pick<EquipmentCategoryModel, 'id' | 'title'>>
+  category: MaybeNull<Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>>
   currency: MaybeNull<Pick<CurrencyModel, 'id' | 'title'>>
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
   purpose: MaybeNull<Pick<WorkTypeModel, 'id' | 'title'>>
@@ -33,4 +32,4 @@ export type EquipmentByFileTemplateModel = {
   >
 }
 
-export type EquipmentsByFileTemplateModel = EquipmentByFileTemplateModel[]
+export type ImportedEquipmentsByFileModel = ImportedEquipmentByFileModel[]

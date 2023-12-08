@@ -3,26 +3,30 @@ import isBoolean from 'lodash/isBoolean'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
+import { EditIcon } from 'components/Icons'
+
 import { getYesNoWord } from 'shared/utils/common'
 
-import { EquipmentByFileTemplateTableRow } from './types'
+import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from './types'
 
-export const columns: ColumnsType<EquipmentByFileTemplateTableRow> = [
+type GetColumnsArgs = Pick<EquipmentsByFileTableProps, 'onEdit'>
+
+export const getColumns = ({ onEdit }: GetColumnsArgs): ColumnsType<EquipmentByFileTableRow> => [
   {
     key: 'category',
     dataIndex: 'category',
     title: 'Категория',
-    render: (value: EquipmentByFileTemplateTableRow['category']) => value?.title,
+    render: (value: EquipmentByFileTableRow['category']) => value?.title,
   },
   {
     key: 'nomenclature',
     dataIndex: 'nomenclature',
     title: 'Номенклатура',
-    render: (value: EquipmentByFileTemplateTableRow['nomenclature']) => value?.title,
+    render: (value: EquipmentByFileTableRow['nomenclature']) => value?.title,
   },
   {
-    key: 'inventoryNumber',
-    dataIndex: 'inventoryNumber',
+    key: 'customerInventoryNumber',
+    dataIndex: 'customerInventoryNumber',
     title: 'Инв. №',
   },
   {
@@ -34,8 +38,7 @@ export const columns: ColumnsType<EquipmentByFileTemplateTableRow> = [
     key: 'condition',
     dataIndex: 'condition',
     title: 'Состояние',
-    render: (value: EquipmentByFileTemplateTableRow['condition']) =>
-      value && equipmentConditionDict[value],
+    render: (value: EquipmentByFileTableRow['condition']) => value && equipmentConditionDict[value],
   },
   {
     key: 'price',
@@ -46,7 +49,7 @@ export const columns: ColumnsType<EquipmentByFileTemplateTableRow> = [
     key: 'currency',
     dataIndex: 'currency',
     title: 'Валюта',
-    render: (value: EquipmentByFileTemplateTableRow['currency']) => value?.title,
+    render: (value: EquipmentByFileTableRow['currency']) => value?.title,
   },
   {
     key: 'quantity',
@@ -57,27 +60,26 @@ export const columns: ColumnsType<EquipmentByFileTemplateTableRow> = [
     key: 'nomenclature',
     dataIndex: 'nomenclature',
     title: 'Ед. изм.',
-    render: (value: EquipmentByFileTemplateTableRow['nomenclature']) => value?.measurementUnit,
+    render: (value: EquipmentByFileTableRow['nomenclature']) => value?.measurementUnit,
   },
   {
     key: 'isNew',
     dataIndex: 'isNew',
     title: 'Новое',
-    render: (value: EquipmentByFileTemplateTableRow['isNew']) =>
-      isBoolean(value) && getYesNoWord(value),
+    render: (value: EquipmentByFileTableRow['isNew']) => isBoolean(value) && getYesNoWord(value),
   },
   {
     key: 'isWarranty',
     dataIndex: 'isWarranty',
     title: 'На гарантии',
-    render: (value: EquipmentByFileTemplateTableRow['isWarranty']) =>
+    render: (value: EquipmentByFileTableRow['isWarranty']) =>
       isBoolean(value) && getYesNoWord(value),
   },
   {
     key: 'isRepaired',
     dataIndex: 'isRepaired',
     title: 'Отремонтиров.',
-    render: (value: EquipmentByFileTemplateTableRow['isRepaired']) =>
+    render: (value: EquipmentByFileTableRow['isRepaired']) =>
       isBoolean(value) && getYesNoWord(value),
   },
   {
@@ -89,17 +91,29 @@ export const columns: ColumnsType<EquipmentByFileTemplateTableRow> = [
     key: 'owner',
     dataIndex: 'owner',
     title: 'Владелец',
-    render: (value: EquipmentByFileTemplateTableRow['owner']) => value?.title,
+    render: (value: EquipmentByFileTableRow['owner']) => value?.title,
   },
   {
     key: 'purpose',
     dataIndex: 'purpose',
     title: 'Назначение',
-    render: (value: EquipmentByFileTemplateTableRow['purpose']) => value?.title,
+    render: (value: EquipmentByFileTableRow['purpose']) => value?.title,
   },
   {
     key: 'comment',
     dataIndex: 'comment',
     title: 'Комментарий',
+  },
+  {
+    key: 'edit',
+    width: 50,
+    render: (value, record, index) => (
+      <EditIcon
+        $size='large'
+        $cursor='pointer'
+        $color='bleuDeFrance'
+        onClick={() => onEdit(record, index)}
+      />
+    ),
   },
 ]

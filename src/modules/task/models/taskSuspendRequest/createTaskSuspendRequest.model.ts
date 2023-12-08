@@ -2,7 +2,7 @@ import { SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
 import { SuspendRequestModel } from 'modules/task/models'
 import { BaseTaskRequestArgs } from 'modules/task/types'
 
-import { ErrorResponse } from 'shared/services/baseApi'
+import { FieldsErrors } from 'shared/services/baseApi'
 
 export type CreateTaskSuspendRequestMutationArgs = BaseTaskRequestArgs & {
   comment: string
@@ -12,6 +12,6 @@ export type CreateTaskSuspendRequestMutationArgs = BaseTaskRequestArgs & {
 
 export type CreateTaskSuspendRequestSuccessResponse = SuspendRequestModel
 
-export type CreateTaskSuspendRequestBadRequestErrorResponse = ErrorResponse<
+export type CreateTaskSuspendRequestBadRequestErrorResponse = FieldsErrors<
   Pick<CreateTaskSuspendRequestMutationArgs, 'comment' | 'suspendEndAt' | 'suspendReason'>
 >

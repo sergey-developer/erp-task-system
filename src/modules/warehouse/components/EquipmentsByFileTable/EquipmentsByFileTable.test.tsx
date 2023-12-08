@@ -1,27 +1,49 @@
 import { screen, within } from '@testing-library/react'
 
-import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
+import {
+  EquipmentCategoryEnum,
+  equipmentConditionDict,
+  EquipmentConditionEnum,
+} from 'modules/warehouse/constants/equipment'
 
-import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { getYesNoWord } from 'shared/utils/common'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { render, tableTestUtils } from '_tests_/utils'
+import { fakeId, fakeInteger, fakeWord, render, tableTestUtils } from '_tests_/utils'
 
-import EquipmentsByFileTemplateTable from './index'
-import { EquipmentsByFileTemplateTableProps } from './types'
+import EquipmentsByFileTable from './index'
+import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from './types'
 
-const equipmentByFileTemplate = warehouseFixtures.equipmentByFileTemplate()
-
-const props: Readonly<EquipmentsByFileTemplateTableProps> = {
-  dataSource: [equipmentByFileTemplate],
+const tableRow: EquipmentByFileTableRow = {
+  rowId: fakeId(),
+  title: fakeWord(),
+  customerInventoryNumber: fakeWord(),
+  serialNumber: fakeWord(),
+  quantity: fakeInteger(),
+  comment: fakeWord(),
+  price: fakeInteger(),
+  usageCounter: fakeInteger(),
+  isNew: false,
+  isRepaired: false,
+  isWarranty: false,
+  condition: EquipmentConditionEnum.Working,
+  nomenclature: { id: fakeId(), title: fakeWord(), measurementUnit: fakeWord() },
+  owner: { id: fakeId(), title: fakeWord() },
+  currency: { id: fakeId(), title: fakeWord() },
+  category: { id: fakeId(), title: fakeWord(), code: EquipmentCategoryEnum.Equipment },
+  purpose: { id: fakeId(), title: fakeWord() },
 }
 
-const getContainer = () => screen.getByTestId('equipments-by-file-template-table')
-const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const props: Readonly<EquipmentsByFileTableProps> = {
+  dataSource: [tableRow],
+  onEdit: jest.fn(),
+  errors: undefined,
+}
+
+const getContainer = () => screen.getByTestId('equipments-by-file-table')
+const getRow = (id: number) => tableTestUtils.getRowIn(getContainer(), id)
 const getColTitle = (text: string) => within(getContainer()).getByText(text)
-const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> => {
+const getColValue = (id: number, value: NumberOrString): MaybeNull<HTMLElement> => {
   const row = getRow(id)
   return row ? within(row).getByText(value) : null
 }
@@ -42,137 +64,113 @@ export const testUtils = {
 
 describe('Таблица оборудования по шаблону файла', () => {
   test('Отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const table = testUtils.getContainer()
     expect(table).toBeInTheDocument()
 
     props.dataSource.forEach((item) => {
-      const row = testUtils.getRow(item.id)
+      const row = testUtils.getRow(item.rowId)
       expect(row).toBeInTheDocument()
     })
   })
 
   test('Колонка категория отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Категория')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.category!.title,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.category!.title)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка номенклатура отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Номенклатура')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.nomenclature!.title,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.nomenclature!.title)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка инв. № отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Инв. №')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.inventoryNumber!,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.customerInventoryNumber!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка серийный № отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Серийный №')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.serialNumber!,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.serialNumber!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка состояние отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Состояние')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentConditionDict[equipmentByFileTemplate.condition!],
-    )
+    const value = testUtils.getColValue(tableRow.rowId, equipmentConditionDict[tableRow.condition!])
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка стоимость отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Стоимость')
-    const value = testUtils.getColValue(equipmentByFileTemplate.id, equipmentByFileTemplate.price!)
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.price!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка валюта отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Валюта')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.currency!.title,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.currency!.title)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка количество отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Количество')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.quantity!,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.quantity!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка ед. изм. отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Ед. изм.')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.nomenclature!.measurementUnit,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.nomenclature!.measurementUnit)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка новое отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Новое')
-    const value = within(testUtils.getRow(equipmentByFileTemplate.id)).getAllByText(
-      getYesNoWord(equipmentByFileTemplate.isNew!),
+    const value = within(testUtils.getRow(tableRow.rowId)).getAllByText(
+      getYesNoWord(tableRow.isNew!),
     )[0]
 
     expect(title).toBeInTheDocument()
@@ -180,11 +178,11 @@ describe('Таблица оборудования по шаблону файла
   })
 
   test('Колонка на гарантии отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('На гарантии')
-    const value = within(testUtils.getRow(equipmentByFileTemplate.id)).getAllByText(
-      getYesNoWord(equipmentByFileTemplate.isWarranty!),
+    const value = within(testUtils.getRow(tableRow.rowId)).getAllByText(
+      getYesNoWord(tableRow.isWarranty!),
     )[1]
 
     expect(title).toBeInTheDocument()
@@ -192,11 +190,11 @@ describe('Таблица оборудования по шаблону файла
   })
 
   test('Колонка отремонтиров. отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Отремонтиров.')
-    const value = within(testUtils.getRow(equipmentByFileTemplate.id)).getAllByText(
-      getYesNoWord(equipmentByFileTemplate.isRepaired!),
+    const value = within(testUtils.getRow(tableRow.rowId)).getAllByText(
+      getYesNoWord(tableRow.isRepaired!),
     )[2]
 
     expect(title).toBeInTheDocument()
@@ -204,52 +202,40 @@ describe('Таблица оборудования по шаблону файла
   })
 
   test('Колонка пробег отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Пробег')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.usageCounter!,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.usageCounter!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка владелец отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Владелец')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.owner!.title,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.owner!.title)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка назначение отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Назначение')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.purpose!.title,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.purpose!.title)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
   })
 
   test('Колонка комментарий отображается', () => {
-    render(<EquipmentsByFileTemplateTable {...props} />)
+    render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Комментарий')
-    const value = testUtils.getColValue(
-      equipmentByFileTemplate.id,
-      equipmentByFileTemplate.comment!,
-    )
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.comment!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()

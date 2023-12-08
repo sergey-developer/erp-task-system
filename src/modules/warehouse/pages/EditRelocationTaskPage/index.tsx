@@ -31,10 +31,10 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
-  useCreateEquipmentsByFileTemplate,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
   useGetEquipmentListTemplate,
+  useImportEquipmentsByFile,
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
@@ -75,8 +75,8 @@ import {
   getRelocateToLocationListParams,
 } from '../CreateRelocationTaskPage/utils'
 
-const CreateEquipmentsByFileTemplateModal = React.lazy(
-  () => import('modules/warehouse/components/CreateEquipmentsByFileTemplateModal'),
+const CreateEquipmentsByFileModal = React.lazy(
+  () => import('modules/warehouse/components/CreateEquipmentsByFileModal'),
 )
 
 const AddAttachmentListModal = React.lazy(
@@ -111,13 +111,11 @@ const EditRelocationTaskPage: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
-  const [
-    createEquipmentsByFileTemplateModalOpened,
-    { toggle: toggleOpenCreateEquipmentsByFileTemplateModal },
-  ] = useBoolean(false)
+  const [createEquipmentsByFileModalOpened, { toggle: toggleOpenCreateEquipmentsByFileModal }] =
+    useBoolean(false)
 
-  const debouncedToggleOpenCreateEquipmentsByFileTemplateModal = useDebounceFn(
-    toggleOpenCreateEquipmentsByFileTemplateModal,
+  const debouncedToggleOpenCreateEquipmentsByFileModal = useDebounceFn(
+    toggleOpenCreateEquipmentsByFileModal,
   )
 
   const [
@@ -166,7 +164,7 @@ const EditRelocationTaskPage: FC = () => {
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
 
-  const [createAttachment] = useCreateAttachment()
+  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
@@ -293,9 +291,9 @@ const EditRelocationTaskPage: FC = () => {
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
 
   const [
-    createEquipmentsByFileTemplateMutation,
-    { isLoading: createEquipmentsByFileTemplateIsLoading, data: createdEquipmentsByFileTemplate },
-  ] = useCreateEquipmentsByFileTemplate()
+    importEquipmentsByFileMutation,
+    { isLoading: importEquipmentsByFileIsLoading, data: importedEquipmentsByFile },
+  ] = useImportEquipmentsByFile()
 
   const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
@@ -313,7 +311,7 @@ const EditRelocationTaskPage: FC = () => {
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
     useGetEquipmentListTemplate()
 
-  const handleUpdateRelocationTask = async (values: RelocationTaskFormFields) => {
+  const updateRelocationTask = async (values: RelocationTaskFormFields) => {
     if (!relocationTaskId) return
 
     try {
@@ -379,14 +377,14 @@ const EditRelocationTaskPage: FC = () => {
     }
   }
 
-  const createEquipmentsByFileTemplate: NonNullable<UploadProps['onChange']> = async ({ file }) => {
+  const importEquipmentsByFile: NonNullable<UploadProps['onChange']> = async ({ file }) => {
     try {
-      await createEquipmentsByFileTemplateMutation({ file: file as FileToSend }).unwrap()
-      toggleOpenCreateEquipmentsByFileTemplateModal()
+      await importEquipmentsByFileMutation({ file: file as FileToSend }).unwrap()
+      toggleOpenCreateEquipmentsByFileModal()
     } catch {}
   }
 
-  const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+  const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
       if (!activeEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
 
@@ -576,7 +574,7 @@ const EditRelocationTaskPage: FC = () => {
         data-testid='edit-relocation-task-page'
         form={form}
         layout='vertical'
-        onFinish={handleUpdateRelocationTask}
+        onFinish={updateRelocationTask}
         onValuesChange={pickEquipment}
         initialValues={initialValues}
       >
@@ -611,11 +609,11 @@ const EditRelocationTaskPage: FC = () => {
                         showUploadList={false}
                         beforeUpload={stubFalse}
                         fileList={[]}
-                        onChange={createEquipmentsByFileTemplate}
+                        onChange={importEquipmentsByFile}
                       >
                         <Button
                           disabled={createEquipmentDisabled}
-                          loading={createEquipmentsByFileTemplateIsLoading}
+                          loading={importEquipmentsByFileIsLoading}
                         >
                           Добавить из Excel
                         </Button>
@@ -715,8 +713,9 @@ const EditRelocationTaskPage: FC = () => {
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseCreateEquipmentModal}
-            onSubmit={handleCreateEquipment}
+            onSubmit={createEquipment}
             onUploadImage={handleCreateEquipmentImage}
+            imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
           />
@@ -755,17 +754,19 @@ const EditRelocationTaskPage: FC = () => {
         </React.Suspense>
       )}
 
-      {createEquipmentsByFileTemplateModalOpened && createdEquipmentsByFileTemplate && (
+      {createEquipmentsByFileModalOpened && importedEquipmentsByFile && (
         <React.Suspense
           fallback={
-            <ModalFallback open onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal} />
+            <ModalFallback open onCancel={debouncedToggleOpenCreateEquipmentsByFileModal} />
           }
         >
-          <CreateEquipmentsByFileTemplateModal
-            open={createEquipmentsByFileTemplateModalOpened}
-            onCancel={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
-            onOk={debouncedToggleOpenCreateEquipmentsByFileTemplateModal}
-            data={createdEquipmentsByFileTemplate}
+          <CreateEquipmentsByFileModal
+            open={createEquipmentsByFileModalOpened}
+            onCancel={debouncedToggleOpenCreateEquipmentsByFileModal}
+            onCreate={async () => {}}
+            isCreating={false}
+            data={[]}
+            onEdit={() => {}}
           />
         </React.Suspense>
       )}

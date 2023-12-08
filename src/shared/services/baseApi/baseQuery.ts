@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios'
+import isArray from 'lodash/isArray'
 import isPlainObject from 'lodash/isPlainObject'
 
 import httpClient from 'lib/httpClient'
@@ -41,7 +42,11 @@ const baseQuery =
       return {
         error: {
           status,
-          data: isPlainObject(errorData) ? errorData : { detail: [commonApiMessages.unknownError] },
+          data: isPlainObject(errorData)
+            ? errorData
+            : isArray(errorData)
+            ? { errorList: errorData }
+            : { detail: [commonApiMessages.unknownError] },
         },
       }
     }
