@@ -609,7 +609,6 @@ const CreateRelocationTaskPage: FC = () => {
       ? ['equipments', activeEquipmentRow.rowIndex, 'attachments']
       : undefined
 
-  console.log({ editableEquipmentByFile, eqpsByFile: form.getFieldValue('equipmentsByFile') })
   return (
     <>
       <Form<RelocationTaskFormFields>
