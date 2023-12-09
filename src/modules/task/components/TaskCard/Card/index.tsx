@@ -54,17 +54,12 @@ import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import {
-  ErrorResponse,
-  isBadRequestError,
-  isErrorResponse,
-  isNotFoundError,
-} from 'shared/services/baseApi'
+import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { EmptyFn, MaybeNull } from 'shared/types/utils'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { extractOriginFiles } from 'shared/utils/file'
-import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
+import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
@@ -442,15 +437,12 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            const badRequestError =
-              error as ErrorResponse<CreateTaskSuspendRequestBadRequestErrorResponse>
-
-            handleSetFieldsErrors(
-              {
-                ...badRequestError,
-                data: getFormErrorsFromBadRequestError(badRequestError.data),
-              },
-              setFields,
+            setFields(
+              getFieldsErrors(
+                getFormErrorsFromBadRequestError(
+                  error.data as CreateTaskSuspendRequestBadRequestErrorResponse,
+                ),
+              ),
             )
           }
         }
