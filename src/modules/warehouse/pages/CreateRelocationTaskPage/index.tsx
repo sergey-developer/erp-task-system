@@ -9,6 +9,7 @@ import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
+import { getEquipmentFormInitialValues } from 'modules/warehouse/components/EquipmentDetails/utils'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
@@ -64,7 +65,6 @@ import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
-import { getEquipmentFormInitialValues } from '../../components/EquipmentDetails/utils'
 import {
   getEquipmentCatalogListParams,
   getRelocateFromLocationListParams,
@@ -444,6 +444,7 @@ const CreateRelocationTaskPage: FC = () => {
           purpose: eqp.purpose.title,
           currency: eqp.currency?.id,
           category: eqp.category,
+          attachments: [],
         })
 
         newEditableTableRowKeys.push(eqp.id)
@@ -521,13 +522,13 @@ const CreateRelocationTaskPage: FC = () => {
   )
 
   const editEquipmentByFile: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async (values) => {
+    (values) => {
       if (!editableEquipmentByFile || !isNumber(editableEquipmentByFileIndex)) return
 
       const equipmentPath = ['equipmentsByFile', editableEquipmentByFileIndex]
       const updatableEquipmentByFile: EquipmentByFileTableRow = {
-        rowId: editableEquipmentByFile.rowId,
         ...values,
+        rowId: editableEquipmentByFile.rowId,
         category: equipmentCategoryList.find((c) => c.id === values.category),
         currency: values.currency ? currencyList.find((c) => c.id === values.currency) : undefined,
         owner: values.owner ? customerList.find((c) => c.id === values.owner) : undefined,
@@ -616,6 +617,7 @@ const CreateRelocationTaskPage: FC = () => {
         onFinish={createRelocationTask}
         onValuesChange={pickEquipment}
         initialValues={initialValues}
+        preserve={false}
       >
         <Row gutter={[40, 40]}>
           <Col span={24}>

@@ -125,10 +125,10 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   return (
     <BaseModal
-      data-testid='equipment-form-modal'
-      confirmLoading={isLoading || imageIsUploading || imageIsDeleting}
-      onOk={form.submit}
       {...props}
+      data-testid='equipment-form-modal'
+      okButtonProps={{ loading: isLoading, disabled: imageIsUploading || imageIsDeleting }}
+      onOk={form.submit}
     >
       <Form<EquipmentFormModalFormFields>
         form={form}
