@@ -2,6 +2,7 @@ import { useBoolean, usePrevious } from 'ahooks'
 import { Button, Col, Form, FormProps, Modal, Row, Typography, Upload, UploadProps } from 'antd'
 import { FormItemProps } from 'antd/es/form/FormItem'
 import concat from 'lodash/concat'
+import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 import stubFalse from 'lodash/stubFalse'
 import moment from 'moment-timezone'
@@ -446,9 +447,9 @@ const EditRelocationTaskPage: FC = () => {
         owner: eqp.owner || undefined,
         title: eqp.title || undefined,
         condition: eqp.condition || undefined,
-        isNew: eqp.isNew || false,
-        isWarranty: eqp.isWarranty || false,
-        isRepaired: eqp.isRepaired || false,
+        isNew: isBoolean(eqp.isNew) ? eqp.isNew : undefined,
+        isWarranty: isBoolean(eqp.isWarranty) ? eqp.isWarranty : undefined,
+        isRepaired: isBoolean(eqp.isRepaired) ? eqp.isRepaired : undefined,
         customerInventoryNumber: eqp.customerInventoryNumber || undefined,
         serialNumber: eqp.serialNumber || undefined,
         quantity: isNumber(eqp.quantity) ? eqp.quantity : undefined,
@@ -984,7 +985,7 @@ const EditRelocationTaskPage: FC = () => {
             onCreate={createEquipments}
             isCreating={createEquipmentsIsLoading}
             data={(form.getFieldValue('equipmentsByFile') || []) as EquipmentByFileTableRow[]}
-            errors={createEquipmentsErrors}
+            // errors={createEquipmentsErrors}
             onEdit={handleOpenEditEquipmentByFileModal}
           />
         </React.Suspense>

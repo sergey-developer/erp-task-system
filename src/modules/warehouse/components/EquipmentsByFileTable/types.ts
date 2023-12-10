@@ -26,9 +26,8 @@ export type EquipmentByFileTableRow = Pick<ImportedEquipmentByFile, 'rowId'> & {
   images?: UploadFile<FileResponse>[]
 }
 
-export type EquipmentsByFileTableProps = Required<
-  Pick<TableProps<EquipmentByFileTableRow>, 'dataSource'>
-> & {
+export type EquipmentsByFileTableProps = {
+  dataSource: NonNullable<TableProps<EquipmentByFileTableRow>['dataSource']>
   onEdit: (row: EquipmentByFileTableRow, index: number) => void
   errors?: CreateEquipmentsBadRequestErrorResponse
 }
