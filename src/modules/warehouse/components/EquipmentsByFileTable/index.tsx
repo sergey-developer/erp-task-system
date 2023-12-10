@@ -1,7 +1,7 @@
 import { Table, TableProps, Tooltip, Typography } from 'antd'
 import isNumber from 'lodash/isNumber'
 import { GetComponentProps } from 'rc-table/lib/interface'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 
 import { getColumns } from './columns'
 import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from './types'
@@ -13,14 +13,12 @@ const scrollConfig: TableProps<EquipmentByFileTableRow>['scroll'] = { y: 280 }
 const customComponents: TableProps<EquipmentByFileTableRow>['components'] = {
   body: {
     row: ({
-      missRequiredFields,
+      hasErrors,
       ...props
-    }: ReturnType<GetComponentProps<EquipmentByFileTableRow>> & {
-      missRequiredFields: boolean
-    }) => {
+    }: ReturnType<GetComponentProps<EquipmentByFileTableRow>> & { hasErrors: boolean }) => {
       const row = <tr {...props} />
 
-      return missRequiredFields ? (
+      return hasErrors ? (
         <Tooltip
           title={<Text type='danger'>Не заполнены обязательные поля или данные не корректны</Text>}
           placement='topRight'
@@ -34,20 +32,22 @@ const customComponents: TableProps<EquipmentByFileTableRow>['components'] = {
   },
 }
 
-const EquipmentsByFileTable: FC<EquipmentsByFileTableProps> = ({ errors, onEdit, ...props }) => {
+const EquipmentsByFileTable: FC<EquipmentsByFileTableProps> = ({ errors, onEdit, dataSource }) => {
+  const columns = useMemo(() => getColumns({ onEdit, dataSource }), [dataSource, onEdit])
+
   return (
     <Table<EquipmentByFileTableRow>
-      {...props}
       data-testid='equipments-by-file-table'
       rowKey='rowId'
-      columns={getColumns({ onEdit })}
+      dataSource={dataSource}
+      columns={columns}
       scroll={scrollConfig}
       pagination={false}
       components={customComponents}
       /* https://github.com/ant-design/ant-design/issues/28817 */
       onRow={(data, index) =>
         errors && isNumber(index)
-          ? ({ missRequiredFields: !!errors[index] } as ReturnType<
+          ? ({ hasErrors: !!errors[index] } as ReturnType<
               GetComponentProps<EquipmentByFileTableRow>
             >)
           : {}

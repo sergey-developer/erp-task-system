@@ -1,28 +1,42 @@
 import { ColumnsType } from 'antd/es/table'
 import isBoolean from 'lodash/isBoolean'
+import isNumber from 'lodash/isNumber'
+import { CSSProperties } from 'react'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
 import { EditIcon } from 'components/Icons'
 
 import { getYesNoWord } from 'shared/utils/common'
 
+import theme from 'styles/theme'
+
 import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from './types'
 
-type GetColumnsArgs = Pick<EquipmentsByFileTableProps, 'onEdit'>
+type GetColumnsArgs = Pick<EquipmentsByFileTableProps, 'onEdit' | 'dataSource'>
 
-export const getColumns = ({ onEdit }: GetColumnsArgs): ColumnsType<EquipmentByFileTableRow> => [
+const errorCellStyles: Record<'style', CSSProperties> = {
+  style: { backgroundColor: theme.colors.fireOpal, opacity: 0.85 },
+}
+
+export const getColumns = ({
+  onEdit,
+  dataSource,
+}: GetColumnsArgs): ColumnsType<EquipmentByFileTableRow> => [
   {
     key: 'category',
     dataIndex: 'category',
     title: 'Категория',
     render: (value: EquipmentByFileTableRow['category']) => value?.title,
+    onCell: ({ category }) => (category ? {} : errorCellStyles),
   },
   {
     key: 'nomenclature',
     dataIndex: 'nomenclature',
     title: 'Номенклатура',
     render: (value: EquipmentByFileTableRow['nomenclature']) => value?.title,
+    onCell: ({ nomenclature }) => (nomenclature ? {} : errorCellStyles),
   },
   {
     key: 'customerInventoryNumber',
@@ -33,12 +47,23 @@ export const getColumns = ({ onEdit }: GetColumnsArgs): ColumnsType<EquipmentByF
     key: 'serialNumber',
     dataIndex: 'serialNumber',
     title: 'Серийный №',
+    onCell: ({ serialNumber, category }) => {
+      if (serialNumber) {
+        const duplicates = dataSource.filter((item) => item.serialNumber === serialNumber)
+        return duplicates.length > 1 ? errorCellStyles : {}
+      } else if (category && !checkEquipmentCategoryIsConsumable(category.code)) {
+        return errorCellStyles
+      } else {
+        return {}
+      }
+    },
   },
   {
     key: 'condition',
     dataIndex: 'condition',
     title: 'Состояние',
     render: (value: EquipmentByFileTableRow['condition']) => value && equipmentConditionDict[value],
+    onCell: ({ condition }) => (condition ? {} : errorCellStyles),
   },
   {
     key: 'price',
@@ -55,6 +80,10 @@ export const getColumns = ({ onEdit }: GetColumnsArgs): ColumnsType<EquipmentByF
     key: 'quantity',
     dataIndex: 'quantity',
     title: 'Количество',
+    onCell: ({ quantity, category }) =>
+      !isNumber(quantity) && category && checkEquipmentCategoryIsConsumable(category.code)
+        ? errorCellStyles
+        : {},
   },
   {
     key: 'nomenclature',
@@ -67,6 +96,10 @@ export const getColumns = ({ onEdit }: GetColumnsArgs): ColumnsType<EquipmentByF
     dataIndex: 'isNew',
     title: 'Новое',
     render: (value: EquipmentByFileTableRow['isNew']) => isBoolean(value) && getYesNoWord(value),
+    onCell: ({ isNew, category }) =>
+      !isBoolean(isNew) && category && !checkEquipmentCategoryIsConsumable(category.code)
+        ? errorCellStyles
+        : {},
   },
   {
     key: 'isWarranty',
@@ -74,6 +107,10 @@ export const getColumns = ({ onEdit }: GetColumnsArgs): ColumnsType<EquipmentByF
     title: 'На гарантии',
     render: (value: EquipmentByFileTableRow['isWarranty']) =>
       isBoolean(value) && getYesNoWord(value),
+    onCell: ({ isWarranty, category }) =>
+      !isBoolean(isWarranty) && category && !checkEquipmentCategoryIsConsumable(category.code)
+        ? errorCellStyles
+        : {},
   },
   {
     key: 'isRepaired',
@@ -81,6 +118,10 @@ export const getColumns = ({ onEdit }: GetColumnsArgs): ColumnsType<EquipmentByF
     title: 'Отремонтиров.',
     render: (value: EquipmentByFileTableRow['isRepaired']) =>
       isBoolean(value) && getYesNoWord(value),
+    onCell: ({ isRepaired, category }) =>
+      !isBoolean(isRepaired) && category && !checkEquipmentCategoryIsConsumable(category.code)
+        ? errorCellStyles
+        : {},
   },
   {
     key: 'usageCounter',
@@ -98,6 +139,7 @@ export const getColumns = ({ onEdit }: GetColumnsArgs): ColumnsType<EquipmentByF
     dataIndex: 'purpose',
     title: 'Назначение',
     render: (value: EquipmentByFileTableRow['purpose']) => value?.title,
+    onCell: ({ purpose }) => (purpose ? {} : errorCellStyles),
   },
   {
     key: 'comment',
