@@ -4,8 +4,8 @@ import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
 import { getFiscalAccumulatorListMessages } from 'modules/fiscalAccumulator/constants'
 import {
-  GetFiscalAccumulatorListQueryArgs,
-  GetFiscalAccumulatorListSuccessResponse,
+  GetFiscalAccumulatorTasksQueryArgs,
+  GetFiscalAccumulatorTasksSuccessResponse,
 } from 'modules/fiscalAccumulator/models'
 import { useGetFiscalAccumulatorQuery } from 'modules/fiscalAccumulator/services/fiscalAccumulatorApi.service'
 
@@ -13,12 +13,12 @@ import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetFiscalAccumulatorListResult = CustomUseQueryHookResult<
-  GetFiscalAccumulatorListQueryArgs,
-  GetFiscalAccumulatorListSuccessResponse
+  GetFiscalAccumulatorTasksQueryArgs,
+  GetFiscalAccumulatorTasksSuccessResponse
 >
 
 export const useGetFiscalAccumulatorList = (): UseGetFiscalAccumulatorListResult => {
-  const state = useGetFiscalAccumulatorQuery()
+  const state = useGetFiscalAccumulatorQuery({})
 
   useEffect(() => {
     if (!state.error) return

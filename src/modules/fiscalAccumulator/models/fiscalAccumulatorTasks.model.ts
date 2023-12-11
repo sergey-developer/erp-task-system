@@ -1,9 +1,12 @@
-import { FiscalAccumulatorFormatEnum } from 'modules/fiscalAccumulator/constants'
+import { TaskCommentModel } from 'modules/task/models'
+import { UserModel } from 'modules/user/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-export type FiscalAccumulatorModel = {
+import { FiscalAccumulatorFormatEnum } from '../constants'
+
+export type FiscalAccumulatorTaskListItemModel = {
   blockingIn: MaybeNull<number>
   olaNextBreachTime: string
   recordId: string
@@ -26,4 +29,8 @@ export type FiscalAccumulatorModel = {
   title: string
   createdAt: string
   faFormat: MaybeNull<FiscalAccumulatorFormatEnum>
+  assignee: MaybeNull<Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>>
+  comment: MaybeNull<Pick<TaskCommentModel, 'id' | 'text'>>
 }
+
+export type FiscalAccumulatorTasksModel = FiscalAccumulatorTaskListItemModel[]
