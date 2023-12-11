@@ -19,6 +19,7 @@ export const fiscalAccumulatorTaskListItem = (
 ): FiscalAccumulatorTaskListItemModel => ({
   faFormat: props?.faFormat || null,
 
+  id: fakeId(),
   address: fakeAddress(),
   name: fakeWord(),
   title: fakeWord(),

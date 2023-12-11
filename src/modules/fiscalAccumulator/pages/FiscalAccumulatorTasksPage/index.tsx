@@ -1,9 +1,14 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Col, Row } from 'antd'
+import debounce from 'lodash/debounce'
 import pick from 'lodash/pick'
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 
 import FiscalAccumulatorTaskTable from 'modules/fiscalAccumulator/components/FiscalAccumulatorTaskTable'
+import {
+  FiscalAccumulatorTaskTableItem,
+  FiscalAccumulatorTaskTableProps,
+} from 'modules/fiscalAccumulator/components/FiscalAccumulatorTaskTable/types'
 import {
   FiscalAccumulatorTasksFilterFormFields,
   FiscalAccumulatorTasksFilterProps,
@@ -27,6 +32,7 @@ import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
@@ -35,6 +41,8 @@ import { MaybeUndefined } from 'shared/types/utils'
 const FiscalAccumulatorTasksFilter = React.lazy(
   () => import('modules/fiscalAccumulator/components/FiscalAccumulatorTasksFilter'),
 )
+
+const TaskDetails = React.lazy(() => import('modules/task/components/TaskDetails'))
 
 const initialFilterValues: Readonly<FiscalAccumulatorTasksFilterFormFields> = {
   customers: [],
@@ -45,6 +53,12 @@ const initialFilterValues: Readonly<FiscalAccumulatorTasksFilterFormFields> = {
 const FiscalAccumulatorTasksPage: FC = () => {
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
+
+  const [selectedTask, setSelectedTask] = useState<FiscalAccumulatorTaskTableItem>()
+  const [taskOpened, { setTrue: openTask, setFalse: originCloseTask }] = useBoolean(false)
+  const closeTask = useDebounceFn(originCloseTask)
+
+  const [additionalInfoExpanded, { toggle: toggleAdditionalInfoExpanded }] = useBoolean(false)
 
   const [autoUpdateEnabled, { toggle: toggleAutoUpdateEnabled }] = useBoolean(false)
 
@@ -111,6 +125,16 @@ const FiscalAccumulatorTasksPage: FC = () => {
     setTasksFiltersStorage((prevState) => ({ ...prevState, [filter.name]: undefined }))
   }
 
+  const onClickRow = useCallback<FiscalAccumulatorTaskTableProps['onRow']>(
+    (record) => ({
+      onClick: debounce(() => {
+        setSelectedTask(record)
+        openTask()
+      }, DEFAULT_DEBOUNCE_VALUE),
+    }),
+    [openTask],
+  )
+
   return (
     <>
       <Row data-testid='fiscal-accumulator-tasks-page' gutter={[24, 24]}>
@@ -150,6 +174,7 @@ const FiscalAccumulatorTasksPage: FC = () => {
           <FiscalAccumulatorTaskTable
             loading={fiscalAccumulatorTasksIsFetching}
             dataSource={fiscalAccumulatorTasks}
+            onRow={onClickRow}
           />
         </Col>
       </Row>
@@ -170,6 +195,17 @@ const FiscalAccumulatorTasksPage: FC = () => {
             supportGroupsIsLoading={supportGroupsIsFetching}
             onClose={debouncedToggleOpenFilter}
             onSubmit={handleApplyFilter}
+          />
+        </React.Suspense>
+      )}
+
+      {taskOpened && selectedTask && (
+        <React.Suspense fallback={<ModalFallback open onCancel={closeTask} />}>
+          <TaskDetails
+            taskId={selectedTask.id}
+            onClose={closeTask}
+            additionalInfoExpanded={additionalInfoExpanded}
+            onExpandAdditionalInfo={toggleAdditionalInfoExpanded}
           />
         </React.Suspense>
       )}

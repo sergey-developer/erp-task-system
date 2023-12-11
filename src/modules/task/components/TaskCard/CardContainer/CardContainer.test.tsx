@@ -68,14 +68,14 @@ import {
   mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
+  cardTestUtils,
   fakeId,
   fakeWord,
   getStoreWithAuth,
+  notificationTestUtils,
   render,
   setupApiTests,
-  notificationTestUtils,
-  buttonTestUtils,
-  cardTestUtils,
 } from '_tests_/utils'
 
 import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
@@ -102,7 +102,7 @@ import {
   activeRequestReclassificationItemProps,
   activeRequestSuspendItemProps,
   testUtils as cardTitleTestUtils,
-} from '../CardTitle/CardTitle.test'
+} from '../TaskDetailsTitle/TaskDetailsTitle.test'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
 
 const props: Readonly<TaskCardContainerProps> = {

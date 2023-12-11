@@ -16,6 +16,7 @@ const getRowKey = (
 const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
   dataSource = [],
   loading,
+  onRow,
 }) => {
   return (
     <TableWrapperStyled data-testid='fiscal-accumulator-task-table'>
@@ -25,6 +26,7 @@ const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
         components={components}
         columns={columns}
         loading={loading}
+        onRow={onRow}
       />
     </TableWrapperStyled>
   )

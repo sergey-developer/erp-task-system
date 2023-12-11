@@ -3,7 +3,6 @@ import { App, Drawer, FormInstance } from 'antd'
 import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
-import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import CardTabs from 'modules/task/components/CardTabs'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
@@ -14,9 +13,9 @@ import {
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
 import AdditionalInfo from 'modules/task/components/TaskCard/AdditionalInfo'
 import { DividerStyled } from 'modules/task/components/TaskCard/Card/styles'
-import CardTitle from 'modules/task/components/TaskCard/CardTitle'
 import MainDetails from 'modules/task/components/TaskCard/MainDetails'
 import SecondaryDetails from 'modules/task/components/TaskCard/SecondaryDetails'
+import TaskDetailsTitle from 'modules/task/components/TaskCard/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
@@ -109,6 +108,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   onClose: originOnClose,
 }) => {
   const { modal } = App.useApp()
+
   const userRole = useUserRole()
   const closeTaskCard = useDebounceFn(originOnClose)
 
@@ -125,8 +125,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const taskStatus = useTaskStatus(task?.status)
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
-
-  const isAssignedToCurrentUser = useIdBelongAuthUser(task?.assignee?.id)
 
   const {
     fn: deleteSuspendRequest,
@@ -157,6 +155,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       skip: !taskExtendedStatus.isInReclassification || !!createReclassificationRequestResult,
     },
   )
+
+  const reclassificationRequest =
+    createReclassificationRequestResult || getReclassificationRequestResult
 
   const getTaskCalledAfterSuccessfullyRequestCreation =
     getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
@@ -436,17 +437,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     } catch {}
   }, [deleteSuspendRequest, task])
 
-  const cardTitle = !taskIsFetching && task && (
-    <CardTitle
+  const cardTitle = task && (
+    <TaskDetailsTitle
       id={task.id}
       type={task.type}
-      status={task.status}
+      assignee={task.assignee}
       workGroup={task.workGroup}
+      status={task.status}
       extendedStatus={task.extendedStatus}
       olaStatus={task.olaStatus}
-      isAssignedToCurrentUser={isAssignedToCurrentUser}
       suspendRequest={task.suspendRequest}
-      onClose={closeTaskCard}
       onReloadTask={refetchTask}
       onExecuteTask={handleOpenExecuteTaskModal}
       onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
@@ -454,15 +454,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     />
   )
 
-  const reclassificationRequest =
-    createReclassificationRequestResult || getReclassificationRequestResult
-
   return (
-    <Drawer open={!!taskId} onClose={closeTaskCard}>
-      <Space direction='vertical' $block size='middle'>
-        {
+    <>
+      <Drawer open={!!taskId} onClose={closeTaskCard} width={600} title={cardTitle} mask={false}>
+        <Space direction='vertical' $block size='middle'>
           <LoadingArea
-            data-testid='task-card-reclassification-request-loading'
+            data-testid='task-details-reclassification-request-loading'
             isLoading={reclassificationRequestIsFetching || createReclassificationRequestIsLoading}
             tip='Загрузка запроса на переклассификацию...'
             area='block'
@@ -479,184 +476,185 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               </React.Suspense>
             )}
           </LoadingArea>
-        }
 
-        {task?.suspendRequest && (
-          <React.Suspense fallback={<Spinner area='block' />}>
-            <TaskSuspendRequest
-              title={
-                taskSuspendRequestStatus.isNew || taskSuspendRequestStatus.isInProgress
-                  ? 'Запрошено ожидание'
-                  : taskSuspendRequestStatus.isApproved
-                  ? 'Заявка в ожидании'
-                  : ''
-              }
-              date={task.suspendRequest.suspendEndAt}
-              user={task.suspendRequest.author}
-              comment={task.suspendRequest.comment}
-              action={
-                taskSuspendRequestStatus.isNew || taskSuspendRequestStatus.isInProgress
-                  ? {
-                      text: 'Отменить запрос',
-                      onClick: handleDeleteTaskSuspendRequest,
-                      loading: deleteSuspendRequestIsLoading,
-                      disabled: userRole.isEngineerRole,
+          <LoadingArea isLoading={taskIsFetching}>
+            <Space direction='vertical' $block size='middle'>
+              {task?.suspendRequest && (
+                <React.Suspense fallback={<Spinner area='block' />}>
+                  <TaskSuspendRequest
+                    title={
+                      taskSuspendRequestStatus.isNew || taskSuspendRequestStatus.isInProgress
+                        ? 'Запрошено ожидание'
+                        : taskSuspendRequestStatus.isApproved
+                        ? 'Заявка в ожидании'
+                        : ''
                     }
-                  : taskSuspendRequestStatus.isApproved
-                  ? {
-                      text: 'Вернуть в работу',
-                      onClick: handleTakeTask,
-                      loading: takeTaskIsLoading,
+                    date={task.suspendRequest.suspendEndAt}
+                    user={task.suspendRequest.author}
+                    comment={task.suspendRequest.comment}
+                    action={
+                      taskSuspendRequestStatus.isNew || taskSuspendRequestStatus.isInProgress
+                        ? {
+                            text: 'Отменить запрос',
+                            onClick: handleDeleteTaskSuspendRequest,
+                            loading: deleteSuspendRequestIsLoading,
+                            disabled: userRole.isEngineerRole,
+                          }
+                        : taskSuspendRequestStatus.isApproved
+                        ? {
+                            text: 'Вернуть в работу',
+                            onClick: handleTakeTask,
+                            loading: takeTaskIsLoading,
+                          }
+                        : undefined
                     }
-                  : undefined
-              }
-            />
-          </React.Suspense>
-        )}
-
-        {task && (
-          <Space data-testid='task-card-details' direction='vertical' $block size='middle'>
-            <MainDetails
-              recordId={task.recordId}
-              status={task.status}
-              title={task.title}
-              createdAt={formatDate(task.createdAt)}
-              name={task.name}
-              address={task.address}
-              contactService={task.contactService}
-              contactPhone={task.contactPhone}
-              portablePhone={task.portablePhone}
-              olaStatus={task.olaStatus}
-              olaEstimatedTime={task.olaEstimatedTime}
-              olaNextBreachTime={task.olaNextBreachTime}
-              responseTime={task.responseTime}
-              workGroup={task.workGroup}
-              assignee={task.assignee}
-            />
-
-            <AdditionalInfo
-              email={task.email}
-              sapId={task.sapId}
-              weight={task.weight}
-              address={task.address}
-              company={task.company}
-              contactType={task.contactType}
-              severity={taskSeverityMap.get(task.severity)!}
-              priority={taskPriorityMap.get(task.priorityCode)!}
-              impact={taskImpactMap.get(task.initialImpact)!}
-              supportGroup={task.supportGroup?.name}
-              productClassifier1={task.productClassifier1}
-              productClassifier2={task.productClassifier2}
-              productClassifier3={task.productClassifier3}
-              latitude={task.latitude}
-              longitude={task.longitude}
-              expanded={additionalInfoExpanded}
-              onExpand={onExpandAdditionalInfo}
-            />
-
-            {!additionalInfoExpanded && <DividerStyled />}
-
-            <SecondaryDetails
-              id={task.id}
-              recordId={task.recordId}
-              status={task.status}
-              extendedStatus={task.extendedStatus}
-              assignee={task.assignee}
-              workGroup={task.workGroup}
-              transferTaskToFirstLine={handleTransferTaskToFirstLine}
-              transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
-              transferTaskToSecondLine={handleTransferTaskToSecondLine}
-              transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
-              updateAssignee={handleUpdateAssignee}
-              updateAssigneeIsLoading={updateAssigneeIsLoading}
-              takeTask={handleTakeTask}
-              takeTaskIsLoading={takeTaskIsLoading}
-              taskSuspendRequestStatus={task.suspendRequest?.status}
-            />
-
-            <CardTabs task={task} activeTab={activeTab} />
-
-            {executeTaskModalOpened && (
-              <React.Suspense
-                fallback={
-                  <ModalFallback
-                    open={executeTaskModalOpened}
-                    onCancel={handleCloseExecuteTaskModal}
                   />
-                }
-              >
-                <ExecuteTaskModal
-                  open={executeTaskModalOpened}
-                  type={task.type}
-                  recordId={task.recordId}
-                  isLoading={isTaskResolving}
-                  onCancel={handleCloseExecuteTaskModal}
-                  onSubmit={handleExecuteTask}
-                  onGetAct={handleGetAct}
-                  getActIsLoading={taskWorkPerformedActIsLoading}
-                />
-              </React.Suspense>
-            )}
+                </React.Suspense>
+              )}
 
-            {confirmExecuteTaskModalOpened && (
-              <React.Suspense
-                fallback={
-                  <ModalFallback
-                    open={confirmExecuteTaskModalOpened}
-                    onCancel={debouncedCloseConfirmExecuteTaskModal}
+              {task && (
+                <Space data-testid='task-card-details' direction='vertical' $block size='middle'>
+                  <MainDetails
+                    recordId={task.recordId}
+                    status={task.status}
+                    title={task.title}
+                    createdAt={formatDate(task.createdAt)}
+                    name={task.name}
+                    address={task.address}
+                    contactService={task.contactService}
+                    contactPhone={task.contactPhone}
+                    portablePhone={task.portablePhone}
+                    olaStatus={task.olaStatus}
+                    olaEstimatedTime={task.olaEstimatedTime}
+                    olaNextBreachTime={task.olaNextBreachTime}
+                    responseTime={task.responseTime}
+                    workGroup={task.workGroup}
+                    assignee={task.assignee}
                   />
-                }
-              >
-                <ConfirmExecuteTaskModal
-                  open={confirmExecuteTaskModalOpened}
-                  recordId={task.recordId}
-                  onCancel={debouncedCloseConfirmExecuteTaskModal}
-                  onConfirm={handleConfirmExecuteTask}
-                />
-              </React.Suspense>
-            )}
 
-            {taskReclassificationModalOpened && (
-              <React.Suspense
-                fallback={
-                  <ModalFallback
-                    open={taskReclassificationModalOpened}
-                    onCancel={closeTaskReclassificationModal}
+                  <AdditionalInfo
+                    email={task.email}
+                    sapId={task.sapId}
+                    weight={task.weight}
+                    address={task.address}
+                    company={task.company}
+                    contactType={task.contactType}
+                    severity={taskSeverityMap.get(task.severity)!}
+                    priority={taskPriorityMap.get(task.priorityCode)!}
+                    impact={taskImpactMap.get(task.initialImpact)!}
+                    supportGroup={task.supportGroup?.name}
+                    productClassifier1={task.productClassifier1}
+                    productClassifier2={task.productClassifier2}
+                    productClassifier3={task.productClassifier3}
+                    latitude={task.latitude}
+                    longitude={task.longitude}
+                    expanded={additionalInfoExpanded}
+                    onExpand={onExpandAdditionalInfo}
                   />
-                }
-              >
-                <RequestTaskReclassificationModal
-                  open={taskReclassificationModalOpened}
-                  recordId={task.recordId}
-                  isLoading={createReclassificationRequestIsLoading}
-                  onSubmit={handleReclassificationRequestSubmit}
-                  onCancel={closeTaskReclassificationModal}
-                />
-              </React.Suspense>
-            )}
 
-            {requestTaskSuspendModalOpened && (
-              <React.Suspense
-                fallback={
-                  <ModalFallback
-                    open={requestTaskSuspendModalOpened}
-                    onCancel={closeRequestTaskSuspendModal}
+                  {!additionalInfoExpanded && <DividerStyled />}
+
+                  <SecondaryDetails
+                    id={task.id}
+                    recordId={task.recordId}
+                    status={task.status}
+                    extendedStatus={task.extendedStatus}
+                    assignee={task.assignee}
+                    workGroup={task.workGroup}
+                    transferTaskToFirstLine={handleTransferTaskToFirstLine}
+                    transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
+                    transferTaskToSecondLine={handleTransferTaskToSecondLine}
+                    transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
+                    updateAssignee={handleUpdateAssignee}
+                    updateAssigneeIsLoading={updateAssigneeIsLoading}
+                    takeTask={handleTakeTask}
+                    takeTaskIsLoading={takeTaskIsLoading}
+                    taskSuspendRequestStatus={task.suspendRequest?.status}
                   />
-                }
-              >
-                <RequestTaskSuspendModal
-                  open={requestTaskSuspendModalOpened}
-                  recordId={task.recordId}
-                  isLoading={createSuspendRequestIsLoading}
-                  onSubmit={handleCreateTaskSuspendRequest}
-                  onCancel={closeRequestTaskSuspendModal}
-                />
-              </React.Suspense>
-            )}
-          </Space>
-        )}
-      </Space>
-    </Drawer>
+
+                  <CardTabs task={task} activeTab={activeTab} />
+                </Space>
+              )}
+            </Space>
+          </LoadingArea>
+        </Space>
+      </Drawer>
+
+      {executeTaskModalOpened && task && (
+        <React.Suspense
+          fallback={
+            <ModalFallback open={executeTaskModalOpened} onCancel={handleCloseExecuteTaskModal} />
+          }
+        >
+          <ExecuteTaskModal
+            open={executeTaskModalOpened}
+            type={task.type}
+            recordId={task.recordId}
+            isLoading={isTaskResolving}
+            onCancel={handleCloseExecuteTaskModal}
+            onSubmit={handleExecuteTask}
+            onGetAct={handleGetAct}
+            getActIsLoading={taskWorkPerformedActIsLoading}
+          />
+        </React.Suspense>
+      )}
+
+      {confirmExecuteTaskModalOpened && task && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={confirmExecuteTaskModalOpened}
+              onCancel={debouncedCloseConfirmExecuteTaskModal}
+            />
+          }
+        >
+          <ConfirmExecuteTaskModal
+            open={confirmExecuteTaskModalOpened}
+            recordId={task.recordId}
+            onCancel={debouncedCloseConfirmExecuteTaskModal}
+            onConfirm={handleConfirmExecuteTask}
+          />
+        </React.Suspense>
+      )}
+
+      {taskReclassificationModalOpened && task && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={taskReclassificationModalOpened}
+              onCancel={closeTaskReclassificationModal}
+            />
+          }
+        >
+          <RequestTaskReclassificationModal
+            open={taskReclassificationModalOpened}
+            recordId={task.recordId}
+            isLoading={createReclassificationRequestIsLoading}
+            onSubmit={handleReclassificationRequestSubmit}
+            onCancel={closeTaskReclassificationModal}
+          />
+        </React.Suspense>
+      )}
+
+      {requestTaskSuspendModalOpened && task && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={requestTaskSuspendModalOpened}
+              onCancel={closeRequestTaskSuspendModal}
+            />
+          }
+        >
+          <RequestTaskSuspendModal
+            open={requestTaskSuspendModalOpened}
+            recordId={task.recordId}
+            isLoading={createSuspendRequestIsLoading}
+            onSubmit={handleCreateTaskSuspendRequest}
+            onCancel={closeRequestTaskSuspendModal}
+          />
+        </React.Suspense>
+      )}
+    </>
   )
 }
 

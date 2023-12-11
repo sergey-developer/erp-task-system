@@ -5,7 +5,6 @@ import React, { FC, useCallback, useEffect } from 'react'
 
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
-import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
   RequestTaskSuspendFormFields,
@@ -59,9 +58,9 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import CardTabs from '../../CardTabs'
 import { ExecuteTaskModalProps } from '../../ExecuteTaskModal/types'
 import AdditionalInfo from '../AdditionalInfo'
-import CardTitle from '../CardTitle'
 import MainDetails from '../MainDetails'
 import SecondaryDetails from '../SecondaryDetails'
+import TaskDetailsTitle from '../TaskDetailsTitle'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
@@ -218,9 +217,6 @@ const TaskCard: FC<TaskCardProps> = ({
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
   const userRole = useUserRole()
-  const isAssignedToCurrentUser = useIdBelongAuthUser(task?.assignee?.id)
-
-  const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
   const debouncedRefetchTask = useDebounceFn(refetchTask)
 
@@ -462,16 +458,15 @@ const TaskCard: FC<TaskCardProps> = ({
   }, [cancelSuspendRequest, task])
 
   const cardTitle = !taskIsLoading && task && (
-    <CardTitle
+    <TaskDetailsTitle
       id={task.id}
       type={task.type}
       status={task.status}
       workGroup={task.workGroup}
       extendedStatus={task.extendedStatus}
       olaStatus={task.olaStatus}
-      isAssignedToCurrentUser={isAssignedToCurrentUser}
+      assignee={task.assignee}
       suspendRequest={task.suspendRequest}
-      onClose={debouncedCloseTaskCard}
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={handleOpenExecuteTaskModal}
       onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
@@ -485,7 +480,7 @@ const TaskCard: FC<TaskCardProps> = ({
         <Space direction='vertical' $block size='middle'>
           {
             <LoadingArea
-              data-testid='task-card-reclassification-request-loading'
+              data-testid='task-details-reclassification-request-loading'
               isLoading={reclassificationRequestIsLoading || createReclassificationRequestIsLoading}
               tip='Загрузка запроса на переклассификацию...'
               area='block'

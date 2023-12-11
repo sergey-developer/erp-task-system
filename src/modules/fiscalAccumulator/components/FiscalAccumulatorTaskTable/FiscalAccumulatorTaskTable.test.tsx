@@ -17,6 +17,7 @@ const fiscalAccumulatorTaskListItem = fiscalAccumulatorFixtures.fiscalAccumulato
 const props: Readonly<FiscalAccumulatorTaskTableProps> = {
   dataSource: [fiscalAccumulatorTaskListItem],
   loading: false,
+  onRow: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('fiscal-accumulator-task-table')

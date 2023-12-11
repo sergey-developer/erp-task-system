@@ -3,6 +3,7 @@ import { MenuProps } from 'antd/es/menu'
 import noop from 'lodash/noop'
 import React, { FC } from 'react'
 
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import {
   useTaskExtendedStatus,
   useTaskOlaStatus,
@@ -10,59 +11,45 @@ import {
   useTaskType,
 } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
-import { TaskModel } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
 
 import {
   CheckCircleIcon,
-  CloseIcon,
   MenuIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
   SyncIcon,
 } from 'components/Icons'
 
-import { EmptyFn } from 'shared/types/utils'
+import { TaskDetailsTitleProps } from './types'
 
 const { Text } = Typography
 
-export type CardTitleProps = Pick<
-  TaskModel,
-  'id' | 'status' | 'extendedStatus' | 'olaStatus' | 'type' | 'workGroup'
-> & {
-  suspendRequest: TaskModel['suspendRequest']
-  isAssignedToCurrentUser: boolean
-
-  onReloadTask: EmptyFn
-  onExecuteTask: EmptyFn
-  onRequestSuspend: EmptyFn
-  onRequestReclassification: EmptyFn
-  onClose: EmptyFn
-}
-
-const CardTitle: FC<CardTitleProps> = ({
+const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   id,
   type,
   status,
   workGroup,
   extendedStatus,
   olaStatus,
-  isAssignedToCurrentUser,
   suspendRequest,
-  onClose,
+  assignee,
   onReloadTask,
   onExecuteTask,
   onRequestSuspend,
   onRequestReclassification,
 }) => {
   const taskType = useTaskType(type)
+
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskOlaStatus = useTaskOlaStatus(olaStatus)
-  const { isEngineerRole, isFirstLineSupportRole } = useUserRole()
-  const suspendRequestStatus = useTaskSuspendRequestStatus(suspendRequest?.status)
 
   const suspendRequestExist = !!suspendRequest
+  const suspendRequestStatus = useTaskSuspendRequestStatus(suspendRequest?.status)
+
+  const isAssignedToCurrentUser = useIdBelongAuthUser(assignee?.id)
+  const { isEngineerRole, isFirstLineSupportRole } = useUserRole()
 
   const menuProps: MenuProps = {
     items: [
@@ -129,7 +116,7 @@ const CardTitle: FC<CardTitleProps> = ({
   }
 
   return (
-    <Row data-testid='task-card-title' justify='space-between' align='middle'>
+    <Row data-testid='task-details-title' justify='space-between' align='middle'>
       <Text>{id}</Text>
 
       <Space size='middle'>
@@ -138,11 +125,9 @@ const CardTitle: FC<CardTitleProps> = ({
         <Dropdown menu={menuProps}>
           <Button type='text' icon={<MenuIcon />} />
         </Dropdown>
-
-        <Button type='text' icon={<CloseIcon />} onClick={onClose} />
       </Space>
     </Row>
   )
 }
 
-export default CardTitle
+export default TaskDetailsTitle

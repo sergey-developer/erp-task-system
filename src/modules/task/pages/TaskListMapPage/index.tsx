@@ -11,7 +11,6 @@ import { useGetTaskList, useGetTaskListMap } from 'modules/task/hooks/task'
 import LoadingArea from 'components/LoadingArea'
 
 import { MaybeNull } from 'shared/types/utils'
-import { showErrorNotification } from 'shared/utils/notifications'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 const TaskListMapPage: FC = () => {
