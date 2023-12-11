@@ -1,6 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { getFullUserName } from 'modules/user/utils'
+
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
@@ -18,7 +20,6 @@ const props: Readonly<FiscalAccumulatorTaskTableProps> = {
 }
 
 const getContainer = () => screen.getByTestId('fiscal-accumulator-task-table')
-
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
@@ -230,6 +231,19 @@ describe('Таблица заявок фискальных накопителе�
       })
     })
 
+    test('Исполнитель отображается', () => {
+      render(<FiscalAccumulatorTaskTable {...props} />)
+
+      const title = testUtils.getColTitle('Исполнитель')
+      const value = testUtils.getColValue(
+        fakeFiscalAccumulatorListItem.olaNextBreachTime,
+        getFullUserName(fakeFiscalAccumulatorListItem.assignee!),
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
     describe('Категория', () => {
       test('Отображается корректно', () => {
         render(<FiscalAccumulatorTaskTable {...props} />)
@@ -258,6 +272,19 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
       })
+    })
+
+    test('Комментарий отображается', () => {
+      render(<FiscalAccumulatorTaskTable {...props} />)
+
+      const title = testUtils.getColTitle('Комментарий')
+      const value = testUtils.getColValue(
+        fakeFiscalAccumulatorListItem.olaNextBreachTime,
+        fakeFiscalAccumulatorListItem.comment!.text,
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
     })
   })
 })

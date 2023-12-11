@@ -1,3 +1,5 @@
+import pick from 'lodash/pick'
+
 import { FiscalAccumulatorTaskListItemModel } from 'modules/fiscalAccumulator/models'
 
 import {
@@ -9,9 +11,14 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
+import taskFixtures from '../task'
+import userFixtures from '../user'
+
 export const fiscalAccumulatorTaskListItem = (
   props?: Partial<Pick<FiscalAccumulatorTaskListItemModel, 'faFormat'>>,
 ): FiscalAccumulatorTaskListItemModel => ({
+  faFormat: props?.faFormat || null,
+
   address: fakeAddress(),
   name: fakeWord(),
   title: fakeWord(),
@@ -27,5 +34,6 @@ export const fiscalAccumulatorTaskListItem = (
     name: fakeWord(),
     macroregion: { id: fakeId(), title: fakeWord() },
   },
-  faFormat: props?.faFormat || null,
+  assignee: pick(userFixtures.user(), 'id', 'firstName', 'lastName', 'middleName'),
+  comment: pick(taskFixtures.comment(), 'id', 'text'),
 })
