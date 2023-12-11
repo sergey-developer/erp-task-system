@@ -2,7 +2,7 @@ import { TableProps } from 'antd'
 
 import { FiscalAccumulatorTaskListItemModel } from 'modules/fiscalAccumulator/models'
 
-export type FiscalAccumulatorTableItem = Pick<
+export type FiscalAccumulatorTaskTableItem = Pick<
   FiscalAccumulatorTaskListItemModel,
   | 'blockingIn'
   | 'olaNextBreachTime'
@@ -16,10 +16,8 @@ export type FiscalAccumulatorTableItem = Pick<
   | 'title'
   | 'createdAt'
   | 'faFormat'
-  | 'assignee'
-  | 'comment'
 >
 
-export type FiscalAccumulatorTableProps = Required<
-  Pick<TableProps<FiscalAccumulatorTableItem>, 'dataSource' | 'loading'>
+export type FiscalAccumulatorTaskTableProps = Required<
+  Pick<TableProps<FiscalAccumulatorTaskTableItem>, 'dataSource' | 'loading'>
 >

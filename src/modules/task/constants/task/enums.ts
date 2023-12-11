@@ -9,6 +9,12 @@ export enum FastFilterEnum {
   LessThreeHours = 'LESS_3_HOURS',
 }
 
+export enum FilterTypeEnum {
+  Fast = 'Fast',
+  Extended = 'Extended',
+  Search = 'Search',
+}
+
 export enum TaskStatusEnum {
   New = 'NEW',
   InProgress = 'IN_PROGRESS',
@@ -58,4 +64,8 @@ export enum TaskCardTabsEnum {
   Description = 'Description',
   Journal = 'Journal',
   RelocationTaskList = 'RelocationTaskList',
+}
+
+export enum TaskStorageKeysEnum {
+  TasksFilters = 'tasks/filters',
 }

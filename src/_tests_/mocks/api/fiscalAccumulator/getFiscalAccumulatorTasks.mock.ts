@@ -6,13 +6,13 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const getFiscalAccumulatorListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, FiscalAccumulatorApiEnum.GetFiscalAccumulator)
+const getFiscalAccumulatorTasksMockFn = () =>
+  getRequestMockFn(HttpMethodEnum.Get, FiscalAccumulatorApiEnum.GetFiscalAccumulatorTasks)
 
-export const mockGetFiscalAccumulatorListSuccess = (
+export const mockGetFiscalAccumulatorTasksSuccess = (
   options?: Partial<ResponseResolverOptions<GetFiscalAccumulatorTasksSuccessResponse>>,
-) => getSuccessMockFn(getFiscalAccumulatorListMockFn(), options)()
+) => getSuccessMockFn(getFiscalAccumulatorTasksMockFn(), options)()
 
-export const mockGetFiscalAccumulatorListServerError = (
+export const mockGetFiscalAccumulatorTasksServerError = (
   options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(getFiscalAccumulatorListMockFn(), options)()
+) => getServerErrorMockFn(getFiscalAccumulatorTasksMockFn(), options)()

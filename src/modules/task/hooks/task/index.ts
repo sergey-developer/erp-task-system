@@ -7,4 +7,5 @@ export * from './useGetTask'
 export * from './useResolveTask'
 export * from './useTakeTask'
 
-export * from './useLazyGetTaskList'
+export * from './useGetTaskList'
+export * from './useGetTaskListMap'

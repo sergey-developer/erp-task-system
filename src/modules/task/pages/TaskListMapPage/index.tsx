@@ -1,14 +1,12 @@
 import { useBoolean } from 'ahooks'
 import { Col, Row } from 'antd'
 import { Coordinate } from 'ol/coordinate'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 
 import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskList from 'modules/task/components/TaskList'
 import TaskListMap from 'modules/task/components/TaskListMap'
-import { getTaskListMapMessages } from 'modules/task/constants/task'
-import { useLazyGetTaskList } from 'modules/task/hooks/task'
-import { useGetTaskListMapQuery } from 'modules/task/services/taskApi.service'
+import { useGetTaskList, useGetTaskListMap } from 'modules/task/hooks/task'
 
 import LoadingArea from 'components/LoadingArea'
 
@@ -21,34 +19,21 @@ const TaskListMapPage: FC = () => {
 
   const [coords, setCoords] = useState<MaybeNull<Coordinate>>(null)
 
-  const [additionalInfoExpanded, { toggle: toggleAdditionalInfoExpanded }] = useBoolean(false)
-
-  const {
-    currentData: taskListMap = [],
-    isFetching: taskListMapIsFetching,
-    isError: isGetTaskListMapError,
-  } = useGetTaskListMapQuery()
-
-  useEffect(() => {
-    if (isGetTaskListMapError) {
-      showErrorNotification(getTaskListMapMessages.commonError)
-    }
-  }, [isGetTaskListMapError])
-
-  const [getTaskList, { data: taskList, isFetching: taskListIsFetching }] = useLazyGetTaskList()
-
-  useEffect(() => {
-    if (coords) {
-      getTaskList({ long: coords[0], lat: coords[1], limit: 1000 })
-    }
-  }, [coords, getTaskList])
-
   const isShowTaskCard = !!selectedTaskId
   const isShowTaskList = !!coords
 
+  const [additionalInfoExpanded, { toggle: toggleAdditionalInfoExpanded }] = useBoolean(false)
+
+  const { currentData: taskListMap = [], isFetching: taskListMapIsFetching } = useGetTaskListMap()
+
+  const { currentData: taskList, isFetching: taskListIsFetching } = useGetTaskList(
+    { long: coords?.[0], lat: coords?.[1], limit: 1000 },
+    { skip: !isShowTaskList },
+  )
+
   return (
     <Row gutter={8} data-testid='task-list-map-page'>
-      {coords && (
+      {isShowTaskList && (
         <Col span={6}>
           <LoadingArea data-testid='task-list-loading' isLoading={taskListIsFetching}>
             <TaskList

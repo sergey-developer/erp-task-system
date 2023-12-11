@@ -14,7 +14,7 @@ import {
 import taskFixtures from '../task'
 import userFixtures from '../user'
 
-export const fiscalAccumulatorListItem = (
+export const fiscalAccumulatorTaskListItem = (
   props?: Partial<Pick<FiscalAccumulatorTaskListItemModel, 'faFormat'>>,
 ): FiscalAccumulatorTaskListItemModel => ({
   faFormat: props?.faFormat || null,

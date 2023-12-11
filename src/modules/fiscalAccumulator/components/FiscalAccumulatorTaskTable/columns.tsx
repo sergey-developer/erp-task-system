@@ -9,11 +9,11 @@ import { formatDate } from 'shared/utils/date'
 
 import { BodyCellProps } from './components'
 import { OlaNextBreachTimeStyled } from './styles'
-import { FiscalAccumulatorTableItem } from './types'
+import { FiscalAccumulatorTaskTableItem } from './types'
 
 const { Paragraph } = Typography
 
-export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
+export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
   {
     key: 'blockingIn',
     dataIndex: 'blockingIn',
@@ -21,13 +21,13 @@ export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
     onCell: (data): BodyCellProps => ({
       bgColor: data.faFormat ? fiscalAccumulatorFormatColorDict[data.faFormat] : undefined,
     }),
-    render: (value: FiscalAccumulatorTableItem['blockingIn']) => valueOrHyphen(value),
+    render: (value: FiscalAccumulatorTaskTableItem['blockingIn']) => valueOrHyphen(value),
   },
   {
     key: 'olaNextBreachTime',
     dataIndex: 'olaNextBreachTime',
     title: 'Крайний срок',
-    render: (value: FiscalAccumulatorTableItem['olaNextBreachTime'], record) => (
+    render: (value: FiscalAccumulatorTaskTableItem['olaNextBreachTime'], record) => (
       <OlaNextBreachTimeStyled $faFormat={record.faFormat}>
         {formatDate(value)}
       </OlaNextBreachTimeStyled>
@@ -57,34 +57,34 @@ export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
     key: 'fiscalAccumulator',
     dataIndex: 'fiscalAccumulator',
     title: 'ФН',
-    render: (value: FiscalAccumulatorTableItem['fiscalAccumulator']) =>
+    render: (value: FiscalAccumulatorTaskTableItem['fiscalAccumulator']) =>
       valueOrHyphen(value?.faNumber),
   },
   {
     key: 'deadlineOrTotalFiscalDocs',
     dataIndex: 'deadlineOrTotalFiscalDocs',
     title: 'Срок / Всего ФД',
-    render: (value: FiscalAccumulatorTableItem['deadlineOrTotalFiscalDocs']) =>
+    render: (value: FiscalAccumulatorTaskTableItem['deadlineOrTotalFiscalDocs']) =>
       valueOrHyphen(value),
   },
   {
     key: 'mr',
     dataIndex: 'supportGroup',
     title: 'МР',
-    render: (value: FiscalAccumulatorTableItem['supportGroup']) =>
+    render: (value: FiscalAccumulatorTaskTableItem['supportGroup']) =>
       valueOrHyphen(value.macroregion?.title),
   },
   {
     key: 'supportGroup',
     dataIndex: 'supportGroup',
     title: 'Группа поддержки',
-    render: (value: FiscalAccumulatorTableItem['supportGroup']) => value.name,
+    render: (value: FiscalAccumulatorTaskTableItem['supportGroup']) => value.name,
   },
   {
     key: 'assignee',
     dataIndex: 'assignee',
     title: 'Исполнитель',
-    render: (value: FiscalAccumulatorTableItem['assignee']) => value && getFullUserName(value),
+    render: (value: FiscalAccumulatorTaskTableItem['assignee']) => value && getFullUserName(value),
   },
   {
     key: 'title',
@@ -95,13 +95,13 @@ export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
     key: 'createdAt',
     dataIndex: 'createdAt',
     title: 'Дата создания заявки',
-    render: (value: FiscalAccumulatorTableItem['createdAt']) => formatDate(value),
+    render: (value: FiscalAccumulatorTaskTableItem['createdAt']) => formatDate(value),
   },
   {
     key: 'comment',
     dataIndex: 'comment',
     title: 'Комментарий',
-    render: (value: FiscalAccumulatorTableItem['comment']) =>
+    render: (value: FiscalAccumulatorTaskTableItem['comment']) =>
       value && (
         <Paragraph ellipsis={{ rows: 2 }} title={value.text}>
           {value.text}
