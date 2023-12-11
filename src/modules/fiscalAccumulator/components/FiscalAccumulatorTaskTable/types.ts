@@ -16,6 +16,8 @@ export type FiscalAccumulatorTaskTableItem = Pick<
   | 'title'
   | 'createdAt'
   | 'faFormat'
+  | 'assignee'
+  | 'comment'
 >
 
 export type FiscalAccumulatorTaskTableProps = Required<

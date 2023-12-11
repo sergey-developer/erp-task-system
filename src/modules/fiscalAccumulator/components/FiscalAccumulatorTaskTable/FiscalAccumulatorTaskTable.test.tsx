@@ -236,8 +236,8 @@ describe('Таблица заявок фискальных накопителе�
 
       const title = testUtils.getColTitle('Исполнитель')
       const value = testUtils.getColValue(
-        fakeFiscalAccumulatorListItem.olaNextBreachTime,
-        getFullUserName(fakeFiscalAccumulatorListItem.assignee!),
+        fiscalAccumulatorTaskListItem.olaNextBreachTime,
+        getFullUserName(fiscalAccumulatorTaskListItem.assignee!),
       )
 
       expect(title).toBeInTheDocument()
@@ -279,8 +279,8 @@ describe('Таблица заявок фискальных накопителе�
 
       const title = testUtils.getColTitle('Комментарий')
       const value = testUtils.getColValue(
-        fakeFiscalAccumulatorListItem.olaNextBreachTime,
-        fakeFiscalAccumulatorListItem.comment!.text,
+        fiscalAccumulatorTaskListItem.olaNextBreachTime,
+        fiscalAccumulatorTaskListItem.comment!.text,
       )
 
       expect(title).toBeInTheDocument()
