@@ -1,7 +1,7 @@
 import { FiscalAccumulatorApiEnum } from 'modules/fiscalAccumulator/constants'
 import {
-  GetFiscalAccumulatorListQueryArgs,
-  GetFiscalAccumulatorListSuccessResponse,
+  GetFiscalAccumulatorTasksQueryArgs,
+  GetFiscalAccumulatorTasksSuccessResponse,
 } from 'modules/fiscalAccumulator/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -10,8 +10,8 @@ import { baseApiService } from 'shared/services/baseApi'
 const fiscalAccumulatorApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
     getFiscalAccumulator: build.query<
-      GetFiscalAccumulatorListSuccessResponse,
-      GetFiscalAccumulatorListQueryArgs
+      GetFiscalAccumulatorTasksSuccessResponse,
+      GetFiscalAccumulatorTasksQueryArgs
     >({
       query: (params) => ({
         url: FiscalAccumulatorApiEnum.GetFiscalAccumulator,

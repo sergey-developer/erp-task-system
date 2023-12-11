@@ -1,5 +1,5 @@
 import { FiscalAccumulatorApiEnum } from 'modules/fiscalAccumulator/constants'
-import { GetFiscalAccumulatorListSuccessResponse } from 'modules/fiscalAccumulator/models'
+import { GetFiscalAccumulatorTasksSuccessResponse } from 'modules/fiscalAccumulator/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -10,7 +10,7 @@ const getFiscalAccumulatorListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, FiscalAccumulatorApiEnum.GetFiscalAccumulator)
 
 export const mockGetFiscalAccumulatorListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetFiscalAccumulatorListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetFiscalAccumulatorTasksSuccessResponse>>,
 ) => getSuccessMockFn(getFiscalAccumulatorListMockFn(), options)()
 
 export const mockGetFiscalAccumulatorListServerError = (

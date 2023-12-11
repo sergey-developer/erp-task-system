@@ -1,6 +1,8 @@
+import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
 import { fiscalAccumulatorFormatColorDict } from 'modules/fiscalAccumulator/constants'
+import { getFullUserName } from 'modules/user/utils'
 
 import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
@@ -8,6 +10,8 @@ import { formatDate } from 'shared/utils/date'
 import { BodyCellProps } from './components'
 import { OlaNextBreachTimeStyled } from './styles'
 import { FiscalAccumulatorTableItem } from './types'
+
+const { Paragraph } = Typography
 
 export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
   {
@@ -77,6 +81,12 @@ export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
     render: (value: FiscalAccumulatorTableItem['supportGroup']) => value.name,
   },
   {
+    key: 'assignee',
+    dataIndex: 'assignee',
+    title: 'Исполнитель',
+    render: (value: FiscalAccumulatorTableItem['assignee']) => value && getFullUserName(value),
+  },
+  {
     key: 'title',
     dataIndex: 'title',
     title: 'Категория',
@@ -86,5 +96,16 @@ export const columns: ColumnsType<FiscalAccumulatorTableItem> = [
     dataIndex: 'createdAt',
     title: 'Дата создания заявки',
     render: (value: FiscalAccumulatorTableItem['createdAt']) => formatDate(value),
+  },
+  {
+    key: 'comment',
+    dataIndex: 'comment',
+    title: 'Комментарий',
+    render: (value: FiscalAccumulatorTableItem['comment']) =>
+      value && (
+        <Paragraph ellipsis={{ rows: 2 }} title={value.text}>
+          {value.text}
+        </Paragraph>
+      ),
   },
 ]
