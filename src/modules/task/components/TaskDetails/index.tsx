@@ -3,7 +3,6 @@ import { App, Drawer, FormInstance } from 'antd'
 import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
-import CardTabs from 'modules/task/components/CardTabs'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
@@ -11,16 +10,16 @@ import {
   RequestTaskSuspendModalProps,
 } from 'modules/task/components/RequestTaskSuspendModal/types'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
-import AdditionalInfo from 'modules/task/components/TaskCard/AdditionalInfo'
-import { DividerStyled } from 'modules/task/components/TaskCard/Card/styles'
-import MainDetails from 'modules/task/components/TaskCard/MainDetails'
-import SecondaryDetails from 'modules/task/components/TaskCard/SecondaryDetails'
-import TaskDetailsTitle from 'modules/task/components/TaskCard/TaskDetailsTitle'
+import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
+import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
+import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
+import TaskDetailsTabs from 'modules/task/components/TaskDetails/TaskDetailsTabs'
+import TaskDetailsTitle from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
   getTaskWorkPerformedActMessages,
-  TaskCardTabsEnum,
+  TaskDetailsTabsEnum,
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
@@ -94,7 +93,7 @@ export type TaskDetailsProps = {
 
   onClose: EmptyFn
 
-  activeTab?: TaskCardTabsEnum
+  activeTab?: TaskDetailsTabsEnum
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
@@ -110,7 +109,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const { modal } = App.useApp()
 
   const userRole = useUserRole()
-  const closeTaskCard = useDebounceFn(originOnClose)
+  const closeTask = useDebounceFn(originOnClose)
 
   const {
     refetch: originRefetchTask,
@@ -456,7 +455,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <>
-      <Drawer open={!!taskId} onClose={closeTaskCard} width={600} title={cardTitle} mask={false}>
+      <Drawer open={!!taskId} onClose={closeTask} width={600} title={cardTitle} mask={false}>
         <Space direction='vertical' $block size='middle'>
           <LoadingArea
             data-testid='task-details-reclassification-request-loading'
@@ -477,7 +476,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             )}
           </LoadingArea>
 
-          <LoadingArea isLoading={taskIsFetching}>
+          <LoadingArea isLoading={taskIsFetching} tip='Загрузка заявки...'>
             <Space direction='vertical' $block size='middle'>
               {task?.suspendRequest && (
                 <React.Suspense fallback={<Spinner area='block' />}>
@@ -552,8 +551,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     onExpand={onExpandAdditionalInfo}
                   />
 
-                  {!additionalInfoExpanded && <DividerStyled />}
-
                   <SecondaryDetails
                     id={task.id}
                     recordId={task.recordId}
@@ -572,7 +569,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     taskSuspendRequestStatus={task.suspendRequest?.status}
                   />
 
-                  <CardTabs task={task} activeTab={activeTab} />
+                  <TaskDetailsTabs task={task} activeTab={activeTab} />
                 </Space>
               )}
             </Space>
@@ -581,11 +578,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       </Drawer>
 
       {executeTaskModalOpened && task && (
-        <React.Suspense
-          fallback={
-            <ModalFallback open={executeTaskModalOpened} onCancel={handleCloseExecuteTaskModal} />
-          }
-        >
+        <React.Suspense fallback={<ModalFallback open onCancel={handleCloseExecuteTaskModal} />}>
           <ExecuteTaskModal
             open={executeTaskModalOpened}
             type={task.type}
@@ -601,12 +594,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
       {confirmExecuteTaskModalOpened && task && (
         <React.Suspense
-          fallback={
-            <ModalFallback
-              open={confirmExecuteTaskModalOpened}
-              onCancel={debouncedCloseConfirmExecuteTaskModal}
-            />
-          }
+          fallback={<ModalFallback open onCancel={debouncedCloseConfirmExecuteTaskModal} />}
         >
           <ConfirmExecuteTaskModal
             open={confirmExecuteTaskModalOpened}
@@ -618,14 +606,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       )}
 
       {taskReclassificationModalOpened && task && (
-        <React.Suspense
-          fallback={
-            <ModalFallback
-              open={taskReclassificationModalOpened}
-              onCancel={closeTaskReclassificationModal}
-            />
-          }
-        >
+        <React.Suspense fallback={<ModalFallback open onCancel={closeTaskReclassificationModal} />}>
           <RequestTaskReclassificationModal
             open={taskReclassificationModalOpened}
             recordId={task.recordId}
@@ -637,14 +618,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       )}
 
       {requestTaskSuspendModalOpened && task && (
-        <React.Suspense
-          fallback={
-            <ModalFallback
-              open={requestTaskSuspendModalOpened}
-              onCancel={closeRequestTaskSuspendModal}
-            />
-          }
-        >
+        <React.Suspense fallback={<ModalFallback open onCancel={closeRequestTaskSuspendModal} />}>
           <RequestTaskSuspendModal
             open={requestTaskSuspendModalOpened}
             recordId={task.recordId}

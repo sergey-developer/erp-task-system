@@ -15,7 +15,7 @@ import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineMo
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
   getTaskWorkPerformedActMessages,
-  TaskCardTabsEnum,
+  TaskDetailsTabsEnum,
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
@@ -55,11 +55,11 @@ import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import CardTabs from '../../CardTabs'
 import { ExecuteTaskModalProps } from '../../ExecuteTaskModal/types'
 import AdditionalInfo from '../AdditionalInfo'
 import MainDetails from '../MainDetails'
 import SecondaryDetails from '../SecondaryDetails'
+import TaskDetailsTabs from '../TaskDetailsTabs'
 import TaskDetailsTitle from '../TaskDetailsTitle'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
@@ -166,7 +166,7 @@ export type TaskCardProps = {
   additionalInfoExpanded: boolean
   onExpandAdditionalInfo: EmptyFn
 
-  activeTab?: TaskCardTabsEnum
+  activeTab?: TaskDetailsTabsEnum
 
   closeTaskCard: EmptyFn
 
@@ -592,7 +592,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 taskSuspendRequestStatus={task.suspendRequest?.status}
               />
 
-              <CardTabs task={task} activeTab={activeTab} />
+              <TaskDetailsTabs task={task} activeTab={activeTab} />
 
               {executeTaskModalOpened && (
                 <React.Suspense

@@ -13,17 +13,17 @@ import {
   mockGetJournalSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
   fakeId,
   fakeWord,
   getStoreWithAuth,
-  spinnerTestUtils,
+  notificationTestUtils,
   render,
   setupApiTests,
-  notificationTestUtils,
-  buttonTestUtils,
+  spinnerTestUtils,
 } from '_tests_/utils'
 
-import { testUtils as journalEntryTestUtils } from '../JournalTab/JournalEntry.test'
+import { testUtils as journalEntryTestUtils } from './JournalEntry.test'
 import { NO_DATA_MSG } from './constants'
 import JournalTab, { JournalTabProps } from './index'
 import { getJournalCsvFilename } from './utils'

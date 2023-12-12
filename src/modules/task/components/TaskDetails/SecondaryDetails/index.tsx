@@ -1,8 +1,8 @@
 import { Col, FormInstance, Row } from 'antd'
 import React, { FC } from 'react'
 
-import AssigneeBlock from 'modules/task/components/TaskCard/AssigneeBlock'
-import WorkGroupBlock from 'modules/task/components/TaskCard/WorkGroupBlock'
+import AssigneeBlock from 'modules/task/components/TaskDetails/AssigneeBlock'
+import WorkGroupBlock from 'modules/task/components/TaskDetails/WorkGroupBlock'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'

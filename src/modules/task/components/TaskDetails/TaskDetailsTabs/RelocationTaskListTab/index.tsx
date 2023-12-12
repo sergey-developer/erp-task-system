@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import RelocationTaskList from 'modules/task/components/RelocationTaskList'
-import { TaskCardTabsEnum } from 'modules/task/constants/task'
+import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { TaskModel } from 'modules/task/models'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
@@ -69,7 +69,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
         ),
         from: getTaskListPageLink({
           viewTaskId: task.id,
-          taskCardTab: TaskCardTabsEnum.RelocationTaskList,
+          taskDetailsTab: TaskDetailsTabsEnum.RelocationTaskList,
         }),
       },
     })

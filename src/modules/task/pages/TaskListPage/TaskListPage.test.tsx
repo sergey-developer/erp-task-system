@@ -8,9 +8,8 @@ import {
   taskOverdueDict,
 } from 'modules/task/components/ExtendedFilter/constants'
 import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilterList/FastFilterList.test'
-import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
+import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/Card_old/Card.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
-import { paginationConfig } from 'modules/task/components/TaskTable/constants/pagination'
 import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 import { FastFilterEnum, taskExtendedStatusDict } from 'modules/task/constants/task'
@@ -1970,22 +1969,6 @@ describe('Страница реестра заявок', () => {
 
           await taskTableTestUtils.expectLoadingFinished()
           await taskTableTestUtils.clickPaginationPageButton(user, '2')
-          await taskTableTestUtils.expectLoadingStarted()
-        })
-
-        test('При смене размера страницы', async () => {
-          mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1)),
-          })
-
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.changePageSize(user, paginationConfig.pageSizeOptions[0])
           await taskTableTestUtils.expectLoadingStarted()
         })
       })

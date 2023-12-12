@@ -23,7 +23,6 @@ import {
   spinnerTestUtils,
 } from '_tests_/utils'
 
-import { testUtils as cardTabsTestUtils } from '../../CardTabs/CardTabs.test'
 import { testUtils as confirmExecuteTaskModalTestUtils } from '../../ConfirmExecuteTaskModal/ConfirmExecuteTaskModal.test'
 import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
 import {
@@ -45,6 +44,7 @@ import {
 } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.test'
 import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
+import { testUtils as cardTabsTestUtils } from '../TaskDetailsTabs/TaskDetailsTabs.test'
 import {
   activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,

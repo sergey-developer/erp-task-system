@@ -4,7 +4,7 @@ import {
   activeSecondLineButtonProps,
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
-} from 'modules/task/components/TaskCard/WorkGroupBlock/WorkGroupBlock.test'
+} from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
 import { resolveTaskMessages, TaskExtendedStatusEnum } from 'modules/task/constants/task'
 import { updateTaskAssigneeMessages } from 'modules/task/constants/taskAssignee'
 import { createReclassificationRequestMessages } from 'modules/task/constants/taskReclassificationRequest'
@@ -96,7 +96,7 @@ import {
   canSelectAssigneeProps,
   testUtils as assigneeBlockTestUtils,
 } from '../AssigneeBlock/AssigneeBlock.test'
-import { testUtils as taskCardTestUtils } from '../Card/Card.test'
+import { testUtils as taskCardTestUtils } from '../Card_old/Card.test'
 import {
   activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,

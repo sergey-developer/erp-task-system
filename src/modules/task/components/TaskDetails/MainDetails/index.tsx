@@ -49,7 +49,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   olaStatus,
   olaNextBreachTime,
   olaEstimatedTime,
-  responseTime: rawResponseTime,
+  responseTime: originResponseTime,
   workGroup,
   assignee,
 }) => {
@@ -68,8 +68,8 @@ const MainDetails: FC<MainDetailsProps> = ({
   )
 
   const responseTime = useMemo(
-    () => parseResponseTime(rawResponseTime, workGroup),
-    [rawResponseTime, workGroup],
+    () => parseResponseTime(originResponseTime, workGroup),
+    [originResponseTime, workGroup],
   )
 
   return (
