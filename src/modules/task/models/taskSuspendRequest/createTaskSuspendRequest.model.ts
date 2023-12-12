@@ -18,6 +18,12 @@ export type CreateTaskSuspendRequestMutationArgs = BaseTaskRequestArgs & {
 export type CreateTaskSuspendRequestSuccessResponse = SuspendRequestModel
 
 export type CreateTaskSuspendRequestBadRequestErrorResponse = FieldsErrors<
-  Pick<CreateTaskSuspendRequestMutationArgs, 'comment' | 'suspendEndAt' | 'suspendReason' | 'externalRevisionLink'
-    | 'externalResponsibleCompany'>
+  Pick<
+    CreateTaskSuspendRequestMutationArgs,
+    | 'comment'
+    | 'suspendEndAt'
+    | 'suspendReason'
+    | 'externalRevisionLink'
+    | 'externalResponsibleCompany'
+  >
 >

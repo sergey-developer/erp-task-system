@@ -393,15 +393,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   }, [takeTask, task])
 
   const handleCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
-    async ({ endDate, endTime, reason, ...values }: RequestTaskSuspendFormFields, setFields) => {
+    async (values: RequestTaskSuspendFormFields, setFields) => {
       if (!task) return
 
       try {
         await createSuspendRequest({
-          ...values,
           taskId: task.id,
-          suspendReason: reason,
-          suspendEndAt: mergeDateTime(endDate, endTime).toISOString(),
+          suspendReason: values.reason,
+          suspendEndAt: mergeDateTime(values.endDate, values.endTime).toISOString(),
+          externalRevisionLink: values.taskLink,
+          externalResponsibleCompany: values.organization,
+          comment: values.comment,
         }).unwrap()
 
         closeRequestTaskSuspendModal()
