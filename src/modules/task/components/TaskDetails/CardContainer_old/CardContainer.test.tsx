@@ -845,7 +845,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -883,7 +882,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -944,7 +942,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -985,7 +982,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -1023,7 +1019,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -1084,7 +1079,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -1125,7 +1119,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -1163,7 +1156,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -1224,7 +1216,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -1265,7 +1256,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -1303,7 +1293,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
@@ -1364,7 +1353,6 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            assignee: taskFixtures.assignee(),
             ...activeExecuteTaskItemProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })

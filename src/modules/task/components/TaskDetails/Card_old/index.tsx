@@ -13,10 +13,10 @@ import {
 } from 'modules/task/components/RequestTaskSuspendModal/types'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
 import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
-import Title from 'modules/task/components/TaskDetails/Title'
+import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
+import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
 import Tabs from 'modules/task/components/TaskDetails/Tabs'
-import MainDetails from 'modules/task/components/TaskCard/MainDetails'
-import SecondaryDetails from 'modules/task/components/TaskCard/SecondaryDetails'
+import Title from 'modules/task/components/TaskDetails/Title'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
@@ -64,9 +64,11 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
+
 const ConfirmExecuteTaskModal = React.lazy(
   () => import('modules/task/components/ConfirmExecuteTaskModal'),
 )
+
 const TaskSuspendRequest = React.lazy(() => import('modules/task/components/TaskSuspendRequest'))
 
 const RequestTaskReclassificationModal = React.lazy(
