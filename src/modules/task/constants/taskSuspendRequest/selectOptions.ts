@@ -2,7 +2,7 @@ import { CheckboxOptionType } from 'antd'
 
 import { externalResponsibleCompanyDict } from './dict'
 
-export const externalResponsibleCompanyOptions: CheckboxOptionType[] = Object.keys(
+export const organizationOptions: CheckboxOptionType[] = Object.keys(
   externalResponsibleCompanyDict,
 ).map((key) => ({
   label: externalResponsibleCompanyDict[key as keyof typeof externalResponsibleCompanyDict],

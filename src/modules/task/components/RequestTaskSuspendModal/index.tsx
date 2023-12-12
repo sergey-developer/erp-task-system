@@ -1,11 +1,13 @@
 import {
   Col,
   Form,
+  FormProps,
   Input,
   Radio,
   RadioChangeEvent,
   RadioGroupProps,
   Row,
+  Select,
   Space,
   Typography,
 } from 'antd'
@@ -15,11 +17,18 @@ import React, { FC, useEffect } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
-import { suspendReasonDict, SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
+import {
+  ExternalResponsibleCompanyEnum,
+  organizationOptions,
+  suspendReasonDict,
+  SuspendReasonEnum,
+} from 'modules/task/constants/taskSuspendRequest'
 
 import DatePicker from 'components/DatePicker'
 import BaseModal from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
+
+import { onlyRequiredRules } from 'shared/constants/validation'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import { RequestTaskSuspendFormFields, RequestTaskSuspendModalProps } from './types'
@@ -27,6 +36,10 @@ import { commentRules, endDateRules, endTimeRules, reasonRules, taskLinkRules } 
 
 const { Text, Link } = Typography
 const { TextArea } = Input
+
+const initialValues: FormProps<RequestTaskSuspendFormFields>['initialValues'] = {
+  organization: ExternalResponsibleCompanyEnum.BusinessDepartmentX5,
+}
 
 const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
   open,
@@ -86,6 +99,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
     >
       <Form<RequestTaskSuspendFormFields>
         form={form}
+        initialValues={initialValues}
         layout='vertical'
         onFinish={handleFinish}
         preserve={false}
@@ -111,10 +125,21 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           <Form.Item
             data-testid='task-link-form-item'
             label='Ссылка на задачу'
-            name='task-link'
+            name='taskLink'
             rules={taskLinkRules}
           >
             <Input placeholder='Ссылка на задачу во внешней системе' disabled={isLoading} />
+          </Form.Item>
+        )}
+
+        {isAwaitingNonItWorkReason && (
+          <Form.Item
+            data-testid='organization-form-item'
+            label='Организация (ответственная за работу вне зоны ответственности ИТ)'
+            name='organization'
+            rules={onlyRequiredRules}
+          >
+            <Select aria-label='Организация' options={organizationOptions} disabled={isLoading} />
           </Form.Item>
         )}
 

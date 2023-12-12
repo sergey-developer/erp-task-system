@@ -4,7 +4,12 @@ import moment from 'moment-timezone'
 
 import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
-import { suspendReasonDict, SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
+import {
+  externalResponsibleCompanyDict,
+  ExternalResponsibleCompanyEnum,
+  suspendReasonDict,
+  SuspendReasonEnum,
+} from 'modules/task/constants/taskSuspendRequest'
 
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
@@ -16,6 +21,7 @@ import {
   fakeWord,
   radioButtonTestUtils,
   render,
+  selectTestUtils,
 } from '_tests_/utils'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
@@ -72,6 +78,26 @@ const setTaskLink = async (user: UserEvent, value: string) => {
   await user.type(field, value)
   return field
 }
+
+// organization field
+const getOrganizationFormItem = () => within(getContainer()).getByTestId('organization-form-item')
+const queryOrganizationFormItem = () =>
+  within(getContainer()).queryByTestId('organization-form-item')
+
+const getOrganizationSelectInput = () =>
+  selectTestUtils.getSelect(getOrganizationFormItem(), { name: 'Организация' })
+
+const setOrganization = selectTestUtils.clickSelectOption
+
+const getSelectedOrganization = (value: string): HTMLElement =>
+  within(getOrganizationFormItem()).getByTitle(value)
+
+const openOrganizationSelect = async (user: UserEvent) => {
+  await selectTestUtils.openSelect(user, getOrganizationFormItem())
+}
+
+const findOrganizationError = (error: string): Promise<HTMLElement> =>
+  within(getOrganizationFormItem()).findByText(error)
 
 // return time field
 const getReturnTimeFormItem = () => within(getContainer()).getByTestId('return-time-form-item')
@@ -138,6 +164,14 @@ export const testUtils = {
   getTaskLinkField,
   findTaskLinkError,
   setTaskLink,
+
+  getOrganizationFormItem,
+  queryOrganizationFormItem,
+  getOrganizationSelectInput,
+  setOrganization,
+  getSelectedOrganization,
+  openOrganizationSelect,
+  findOrganizationError,
 
   getReturnTimeFormItem,
   getReturnTimeTitle,
@@ -346,6 +380,60 @@ describe('Модалка создания запроса о переводе в 
         const error = await testUtils.findTaskLinkError(validationMessages.required)
         expect(error).toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Поле организации', () => {
+    test(`Отображается корректно если выбрана причина ${SuspendReasonEnum.AwaitingNonItWork}`, async () => {
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+      await testUtils.setReason(user, SuspendReasonEnum.AwaitingNonItWork)
+      const label = within(testUtils.getOrganizationFormItem()).getByLabelText(
+        'Организация (ответственная за работу вне зоны ответственности ИТ)',
+      )
+      const input = testUtils.getOrganizationSelectInput()
+
+      await testUtils.openOrganizationSelect(user)
+      const value =
+        externalResponsibleCompanyDict[ExternalResponsibleCompanyEnum.BusinessDepartmentX5]
+      const selectedOrganization = testUtils.getSelectedOrganization(value)
+
+      expect(selectedOrganization).toBeInTheDocument()
+      expect(label).toBeInTheDocument()
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+    })
+
+    test('Не отображается если выбрана другая причина', async () => {
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+      await testUtils.setReason(user, SuspendReasonEnum.AwaitingInitiator)
+
+      const field = testUtils.queryOrganizationFormItem()
+      expect(field).not.toBeInTheDocument()
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+      await testUtils.setReason(user, SuspendReasonEnum.AwaitingNonItWork)
+      await testUtils.openOrganizationSelect(user)
+      const value =
+        externalResponsibleCompanyDict[ExternalResponsibleCompanyEnum.OutsideOrganization]
+      await testUtils.setOrganization(user, value)
+      const selectedOrganization = testUtils.getSelectedOrganization(value)
+
+      expect(selectedOrganization).toBeInTheDocument()
+    })
+
+    test('Показывается ошибка если поле не заполнено', async () => {
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+      await testUtils.setReason(user, SuspendReasonEnum.AwaitingNonItWork)
+      await testUtils.clickSubmitButton(user)
+      const error = await testUtils.findOrganizationError(validationMessages.required)
+
+      expect(error).toBeInTheDocument()
     })
   })
 
