@@ -26,6 +26,8 @@ import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendReque
 import {
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskSuspendRequestBadRequestErrorResponse,
+  CreateTaskSuspendRequestMutationArgs,
+  DeleteTaskSuspendRequestMutationArgs,
   DeleteTaskWorkGroupMutationArgs,
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
@@ -137,9 +139,9 @@ export type TaskCardProps = {
   ) => Promise<void>
   createReclassificationRequestIsLoading: boolean
 
-  createSuspendRequest: CustomMutationTrigger<any, any>
+  createSuspendRequest: CustomMutationTrigger<CreateTaskSuspendRequestMutationArgs, any>
   createSuspendRequestIsLoading: boolean
-  cancelSuspendRequest: CustomMutationTrigger<any, any>
+  cancelSuspendRequest: CustomMutationTrigger<DeleteTaskSuspendRequestMutationArgs, any>
   cancelSuspendRequestIsLoading: boolean
 
   takeTask: (data: TakeTaskMutationArgs) => Promise<void>
@@ -420,15 +422,17 @@ const TaskCard: FC<TaskCardProps> = ({
   }, [takeTask, task])
 
   const handleCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
-    async ({ endDate, endTime, reason, ...values }: RequestTaskSuspendFormFields, setFields) => {
+    async (values: RequestTaskSuspendFormFields, setFields) => {
       if (!task) return
 
       try {
         await createSuspendRequest({
-          ...values,
           taskId: task.id,
-          suspendReason: reason,
-          suspendEndAt: mergeDateTime(endDate, endTime).toISOString(),
+          suspendReason: values.reason,
+          suspendEndAt: mergeDateTime(values.endDate, values.endTime).toISOString(),
+          externalRevisionLink: values.taskLink,
+          externalResponsibleCompany: values.organization,
+          comment: values.comment,
         }).unwrap()
 
         closeRequestTaskSuspendModal()
