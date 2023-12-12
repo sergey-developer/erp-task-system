@@ -9,7 +9,14 @@ import { suspendReasonDict, SuspendReasonEnum } from 'modules/task/constants/tas
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
-import { buttonTestUtils, fakeIdStr, fakeWord, radioButtonTestUtils, render } from '_tests_/utils'
+import {
+  buttonTestUtils,
+  fakeIdStr,
+  fakeUrl,
+  fakeWord,
+  radioButtonTestUtils,
+  render,
+} from '_tests_/utils'
 
 import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import RequestTaskSuspendModal from './index'
@@ -24,41 +31,24 @@ const props: Readonly<RequestTaskSuspendModalProps> = {
 }
 
 const getContainer = () => screen.getByTestId('request-task-suspend-modal')
-
 const findContainer = () => screen.findByTestId('request-task-suspend-modal')
-
-const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
-
-// close button
-const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
-
-const clickCloseButton = async (user: UserEvent) => {
-  const button = getCloseButton()
-  await user.click(button)
-  return button
-}
 
 // cancel button
 const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
-
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
-  return button
 }
 
 // submit button
 const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /перевести в ожидание/i)
-
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
-  return button
 }
 
 // reason field
 const getReasonFormItem = () => within(getContainer()).getByTestId('reason-form-item')
-const getReasonTitle = () => within(getReasonFormItem()).getByTitle('Причина ожидания')
 const getReasonField = (reason: SuspendReasonEnum): HTMLInputElement =>
   radioButtonTestUtils.getRadioButtonIn(getReasonFormItem(), suspendReasonDict[reason])
 
@@ -67,6 +57,19 @@ const findReasonError = (text: string) => within(getReasonFormItem()).findByText
 const setReason = async (user: UserEvent, reason: SuspendReasonEnum) => {
   const field = getReasonField(reason)
   await user.click(field)
+  return field
+}
+
+// task link field
+const getTaskLinkFormItem = () => within(getContainer()).getByTestId('task-link-form-item')
+const queryTaskLinkFormItem = () => within(getContainer()).queryByTestId('task-link-form-item')
+const getTaskLinkField = () =>
+  within(getTaskLinkFormItem()).getByPlaceholderText('Ссылка на задачу во внешней системе')
+const findTaskLinkError = (text: string) => within(getTaskLinkFormItem()).findByText(text)
+
+const setTaskLink = async (user: UserEvent, value: string) => {
+  const field = getTaskLinkField()
+  await user.type(field, value)
   return field
 }
 
@@ -103,7 +106,6 @@ const setEndTime = async (user: UserEvent, value: string) => {
 
 // comment field
 const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
-const getCommentTitle = () => within(getCommentFormItem()).getByTitle('Комментарий')
 const getCommentField = () => within(getCommentFormItem()).getByPlaceholderText('Опишите ситуацию')
 const findCommentError = (text: string) => within(getCommentFormItem()).findByText(text)
 
@@ -115,16 +117,11 @@ const setComment = async (user: UserEvent, value: string) => {
 
 // loading
 const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
-
 const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {
   getContainer,
   findContainer,
-  getChildByText,
-
-  getCloseButton,
-  clickCloseButton,
 
   getCancelButton,
   clickCancelButton,
@@ -132,11 +129,15 @@ export const testUtils = {
   getSubmitButton,
   clickSubmitButton,
 
-  getReasonFormItem,
-  getReasonTitle,
   getReasonField,
   findReasonError,
   setReason,
+
+  getTaskLinkFormItem,
+  queryTaskLinkFormItem,
+  getTaskLinkField,
+  findTaskLinkError,
+  setTaskLink,
 
   getReturnTimeFormItem,
   getReturnTimeTitle,
@@ -150,7 +151,6 @@ export const testUtils = {
   setEndTime,
 
   getCommentFormItem,
-  getCommentTitle,
   getCommentField,
   findCommentError,
   setComment,
@@ -162,8 +162,8 @@ export const testUtils = {
 describe('Модалка создания запроса о переводе в ожидание', () => {
   test('Заголовок отображается', () => {
     render(<RequestTaskSuspendModal {...props} />)
-    expect(testUtils.getChildByText(/^запрос перевода заявки/i)).toBeInTheDocument()
-    expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
+    expect(within(getContainer()).getByText(/^запрос перевода заявки/i)).toBeInTheDocument()
+    expect(within(getContainer()).getByText(props.recordId)).toBeInTheDocument()
   })
 
   describe('Кнопка отмены', () => {
@@ -219,52 +219,16 @@ describe('Модалка создания запроса о переводе в 
     test('Отображается корректно', () => {
       render(<RequestTaskSuspendModal {...props} />)
 
-      const awaitingReleaseField = testUtils.getReasonField(SuspendReasonEnum.AwaitingRelease)
-      const awaitingNonItWorkField = testUtils.getReasonField(SuspendReasonEnum.AwaitingNonItWork)
-      const awaitingInformationField = testUtils.getReasonField(
-        SuspendReasonEnum.AwaitingInformation,
-      )
-      const awaitingInformationFromFirstLineField = testUtils.getReasonField(
-        SuspendReasonEnum.AwaitingInformationFromFirstLine,
-      )
-      const awaitingInitiatorField = testUtils.getReasonField(SuspendReasonEnum.AwaitingInitiator)
-      const awaitingPurchaseField = testUtils.getReasonField(SuspendReasonEnum.AwaitingPurchase)
-
-      const title = testUtils.getReasonTitle()
-
+      const title = within(getReasonFormItem()).getByTitle('Причина ожидания')
       expect(title).toBeInTheDocument()
 
-      expect(awaitingReleaseField).toBeInTheDocument()
-      expect(awaitingReleaseField).not.toBeEnabled()
-      expect(awaitingReleaseField.value).toBe(SuspendReasonEnum.AwaitingRelease)
-      expect(awaitingReleaseField).not.toBeChecked()
-
-      expect(awaitingNonItWorkField).toBeInTheDocument()
-      expect(awaitingNonItWorkField).not.toBeEnabled()
-      expect(awaitingNonItWorkField.value).toBe(SuspendReasonEnum.AwaitingNonItWork)
-      expect(awaitingNonItWorkField).not.toBeChecked()
-
-      expect(awaitingInformationField).toBeInTheDocument()
-      expect(awaitingInformationField).toBeEnabled()
-      expect(awaitingInformationField.value).toBe(SuspendReasonEnum.AwaitingInformation)
-      expect(awaitingInformationField).not.toBeChecked()
-
-      expect(awaitingInformationFromFirstLineField).toBeInTheDocument()
-      expect(awaitingInformationFromFirstLineField).toBeEnabled()
-      expect(awaitingInformationFromFirstLineField.value).toBe(
-        SuspendReasonEnum.AwaitingInformationFromFirstLine,
-      )
-      expect(awaitingInformationFromFirstLineField).not.toBeChecked()
-
-      expect(awaitingInitiatorField).toBeInTheDocument()
-      expect(awaitingInitiatorField).toBeEnabled()
-      expect(awaitingInitiatorField.value).toBe(SuspendReasonEnum.AwaitingInitiator)
-      expect(awaitingInitiatorField).not.toBeChecked()
-
-      expect(awaitingPurchaseField).toBeInTheDocument()
-      expect(awaitingPurchaseField).toBeEnabled()
-      expect(awaitingPurchaseField.value).toBe(SuspendReasonEnum.AwaitingPurchase)
-      expect(awaitingPurchaseField).not.toBeChecked()
+      Object.values(SuspendReasonEnum).forEach((reason) => {
+        const field = testUtils.getReasonField(reason)
+        expect(field).toBeInTheDocument()
+        expect(field).toBeEnabled()
+        expect(field.value).toBe(reason)
+        expect(field).not.toBeChecked()
+      })
     })
 
     test('Можно выбрать причину', async () => {
@@ -274,13 +238,13 @@ describe('Модалка создания запроса о переводе в 
         user,
         SuspendReasonEnum.AwaitingRelease,
       )
-      expect(awaitingReleaseField).not.toBeChecked()
+      expect(awaitingReleaseField).toBeChecked()
 
       const awaitingNonItWorkField = await testUtils.setReason(
         user,
         SuspendReasonEnum.AwaitingNonItWork,
       )
-      expect(awaitingNonItWorkField).not.toBeChecked()
+      expect(awaitingNonItWorkField).toBeChecked()
 
       const awaitingInitiatorField = await testUtils.setReason(
         user,
@@ -322,7 +286,65 @@ describe('Модалка создания запроса о переводе в 
 
         await testUtils.clickSubmitButton(user)
 
-        expect(await testUtils.findReasonError(validationMessages.required)).toBeInTheDocument()
+        const error = await testUtils.findReasonError(validationMessages.required)
+        expect(error).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Поле ссылки на задачу', () => {
+    test(`Отображается если выбрана причина ${SuspendReasonEnum.AwaitingRelease}`, async () => {
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+      await testUtils.setReason(user, SuspendReasonEnum.AwaitingRelease)
+
+      const title = within(testUtils.getTaskLinkFormItem()).getByTitle('Ссылка на задачу')
+      const field = testUtils.getTaskLinkField()
+
+      expect(title).toBeInTheDocument()
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(field).not.toHaveValue()
+    })
+
+    test('Не отображается если выбрана другая причина', async () => {
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+      await testUtils.setReason(user, SuspendReasonEnum.AwaitingInitiator)
+
+      const field = testUtils.queryTaskLinkFormItem()
+      expect(field).not.toBeInTheDocument()
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+      await testUtils.setReason(user, SuspendReasonEnum.AwaitingRelease)
+      const value = fakeUrl()
+      const field = await testUtils.setTaskLink(user, value)
+
+      expect(field).toHaveDisplayValue(value)
+    })
+
+    describe('Отображается ошибка', () => {
+      test('Если ввести не корректный url', async () => {
+        const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+        await testUtils.setReason(user, SuspendReasonEnum.AwaitingRelease)
+        await testUtils.setTaskLink(user, fakeWord())
+
+        const error = await testUtils.findTaskLinkError(validationMessages.url.incorrect)
+        expect(error).toBeInTheDocument()
+      })
+
+      test('Если не заполнить поле и нажать кнопку отправки', async () => {
+        const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+        await testUtils.setReason(user, SuspendReasonEnum.AwaitingRelease)
+        await testUtils.clickSubmitButton(user)
+
+        const error = await testUtils.findTaskLinkError(validationMessages.required)
+        expect(error).toBeInTheDocument()
       })
     })
   })
@@ -402,7 +424,8 @@ describe('Модалка создания запроса о переводе в 
 
           await testUtils.clickSubmitButton(user)
 
-          expect(await testUtils.findEndDateError(validationMessages.required)).toBeInTheDocument()
+          const error = await testUtils.findEndDateError(validationMessages.required)
+          expect(error).toBeInTheDocument()
         })
 
         test('Если дата в прошлом времени', async () => {
@@ -413,9 +436,8 @@ describe('Модалка создания запроса о переводе в 
           const value = formatDate(moment().subtract(1, 'day'), DATE_PICKER_FORMAT)
           await testUtils.setEndDate(user, value)
 
-          expect(
-            await testUtils.findEndDateError(validationMessages.date.canNotBeInPast),
-          ).toBeInTheDocument()
+          const error = await testUtils.findEndDateError(validationMessages.date.canNotBeInPast)
+          expect(error).toBeInTheDocument()
         })
       })
 
@@ -496,7 +518,8 @@ describe('Модалка создания запроса о переводе в 
 
           await testUtils.clickSubmitButton(user)
 
-          expect(await testUtils.findEndTimeError(validationMessages.required)).toBeInTheDocument()
+          const error = await testUtils.findEndTimeError(validationMessages.required)
+          expect(error).toBeInTheDocument()
         })
 
         // todo: выяснить почему тест падает но функционал работает
@@ -511,9 +534,8 @@ describe('Модалка создания запроса о переводе в 
           const timeValue = formatDate(moment().subtract(1, 'hour'), TIME_PICKER_FORMAT)
           await testUtils.setEndTime(user, timeValue)
 
-          expect(
-            await testUtils.findEndTimeError(validationMessages.time.canNotBeInPast),
-          ).toBeInTheDocument()
+          const error = await testUtils.findEndTimeError(validationMessages.time.canNotBeInPast)
+          expect(error).toBeInTheDocument()
         })
       })
 
@@ -524,9 +546,7 @@ describe('Модалка создания запроса о переводе в 
 
         const field = testUtils.getEndTimeField()
         expect(field).toHaveDisplayValue(field.value)
-
         await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
-
         expect(testUtils.getEndTimeField()).not.toHaveDisplayValue(field.value)
       })
     })
@@ -536,7 +556,7 @@ describe('Модалка создания запроса о переводе в 
     test('Отображается корректно', () => {
       render(<RequestTaskSuspendModal {...props} />)
 
-      const title = testUtils.getCommentTitle()
+      const title = within(getCommentFormItem()).getByTitle('Комментарий')
       const field = testUtils.getCommentField()
 
       expect(title).toBeInTheDocument()
@@ -560,9 +580,8 @@ describe('Модалка создания запроса о переводе в 
 
         await testUtils.setComment(user, ' ')
 
-        expect(
-          await testUtils.findCommentError(validationMessages.canNotBeEmpty),
-        ).toBeInTheDocument()
+        const error = await testUtils.findCommentError(validationMessages.canNotBeEmpty)
+        expect(error).toBeInTheDocument()
       })
 
       test('Если не заполнить поле и нажать кнопку отправки', async () => {
@@ -570,7 +589,8 @@ describe('Модалка создания запроса о переводе в 
 
         await testUtils.clickSubmitButton(user)
 
-        expect(await testUtils.findCommentError(validationMessages.required)).toBeInTheDocument()
+        const error = await testUtils.findCommentError(validationMessages.required)
+        expect(error).toBeInTheDocument()
       })
     })
   })

@@ -12,15 +12,10 @@ export const validationTemplateMessages = {
 export const validationMessages = {
   required: 'Обязательное поле',
   canNotBeEmpty: 'Поле не может быть пустым',
-  email: {
-    incorrect: 'Введён не корректный email',
-  },
-  date: {
-    canNotBeInPast: 'Дата не может быть в прошлом времени',
-  },
-  time: {
-    canNotBeInPast: 'Время не может быть в прошлом времени',
-  },
+  url: { incorrect: 'Не корректная ссылка' },
+  email: { incorrect: 'Не корректный email' },
+  date: { canNotBeInPast: 'Дата не может быть в прошлом времени' },
+  time: { canNotBeInPast: 'Время не может быть в прошлом времени' },
   string: {
     max: {
       short: makeMaxLengthMessage(
