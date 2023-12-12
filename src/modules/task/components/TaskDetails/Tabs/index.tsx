@@ -1,4 +1,4 @@
-import { TabsProps } from 'antd'
+import { TabsProps as AntdTabsProps } from 'antd'
 import pick from 'lodash/pick'
 import React, { FC } from 'react'
 
@@ -17,7 +17,7 @@ const CommentListTab = React.lazy(() => import('./CommentListTab'))
 const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
 const RelocationTaskListTab = React.lazy(() => import('./RelocationTaskListTab'))
 
-export type TaskDetailsTabsProps = {
+export type TabsProps = {
   task: Pick<
     TaskModel,
     | 'id'
@@ -42,13 +42,10 @@ export type TaskDetailsTabsProps = {
   activeTab?: TaskDetailsTabsEnum
 }
 
-const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({
-  task,
-  activeTab = TaskDetailsTabsEnum.Description,
-}) => {
+const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description }) => {
   const permissions = useMatchUserPermissions(['RELOCATION_TASKS_READ'])
 
-  const tabsItems: TabsProps['items'] = [
+  const tabsItems: AntdTabsProps['items'] = [
     {
       key: TaskDetailsTabsEnum.Description,
       label: taskDetailsTabNameDict[TaskDetailsTabsEnum.Description],
@@ -153,4 +150,4 @@ const TaskDetailsTabs: FC<TaskDetailsTabsProps> = ({
   )
 }
 
-export default TaskDetailsTabs
+export default Tabs

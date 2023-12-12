@@ -2,7 +2,7 @@ import { TaskModel } from 'modules/task/models'
 
 import { EmptyFn } from 'shared/types/utils'
 
-export type TaskDetailsTitleProps = Pick<
+export type TitleProps = Pick<
   TaskModel,
   | 'id'
   | 'status'

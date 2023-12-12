@@ -21,9 +21,9 @@ import {
   render,
 } from '_tests_/utils'
 
-import TaskDetailsTabs, { TaskDetailsTabsProps } from './index'
+import Tabs, { TabsProps } from './index'
 
-const props: Readonly<TaskDetailsTabsProps> = {
+const props: Readonly<TabsProps> = {
   task: {
     id: fakeId(),
     type: TaskTypeEnum.Request,
@@ -78,7 +78,7 @@ export const testUtils = {
 
 describe('Вкладки карточки заявки', () => {
   test('Доступные вкладки отображаются', () => {
-    render(<TaskDetailsTabs {...props} />)
+    render(<Tabs {...props} />)
 
     expect(testUtils.getNavItem(TaskDetailsTabsEnum.Description)).toBeInTheDocument()
     expect(testUtils.getNavItem(TaskDetailsTabsEnum.CommentList)).toBeInTheDocument()
@@ -88,13 +88,13 @@ describe('Вкладки карточки заявки', () => {
   })
 
   test('Установлена корректная вкладка по умолчанию', () => {
-    render(<TaskDetailsTabs {...props} />)
+    render(<Tabs {...props} />)
     const defaultTab = testUtils.getOpenedTab(TaskDetailsTabsEnum.Description)
     expect(defaultTab).toBeInTheDocument()
   })
 
   test('Можно открыть любую доступную вкладку', async () => {
-    const { user } = render(<TaskDetailsTabs {...props} />)
+    const { user } = render(<Tabs {...props} />)
 
     await testUtils.clickTab(user, TaskDetailsTabsEnum.Description)
     expect(testUtils.getOpenedTab(TaskDetailsTabsEnum.Description)).toBeInTheDocument()
@@ -114,13 +114,13 @@ describe('Вкладки карточки заявки', () => {
 
   describe('Вкладка "Перемещения"', () => {
     test('Не отображается если условия не соблюдены', () => {
-      render(<TaskDetailsTabs {...props} />)
+      render(<Tabs {...props} />)
       const tab = testUtils.queryNavItem(TaskDetailsTabsEnum.RelocationTaskList)
       expect(tab).not.toBeInTheDocument()
     })
 
     test('Отображается если условия соблюдены', () => {
-      render(<TaskDetailsTabs {...props} />, {
+      render(<Tabs {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
@@ -133,7 +133,7 @@ describe('Вкладки карточки заявки', () => {
     })
 
     test('Открывается по клику', async () => {
-      const { user } = render(<TaskDetailsTabs {...props} />, {
+      const { user } = render(<Tabs {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),

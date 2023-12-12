@@ -59,8 +59,8 @@ import { ExecuteTaskModalProps } from '../../ExecuteTaskModal/types'
 import AdditionalInfo from '../AdditionalInfo'
 import MainDetails from '../MainDetails'
 import SecondaryDetails from '../SecondaryDetails'
-import TaskDetailsTabs from '../TaskDetailsTabs'
-import TaskDetailsTitle from '../TaskDetailsTitle'
+import Tabs from '../Tabs'
+import Title from '../Title'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
@@ -458,7 +458,7 @@ const TaskCard: FC<TaskCardProps> = ({
   }, [cancelSuspendRequest, task])
 
   const cardTitle = !taskIsLoading && task && (
-    <TaskDetailsTitle
+    <Title
       id={task.id}
       type={task.type}
       status={task.status}
@@ -480,7 +480,7 @@ const TaskCard: FC<TaskCardProps> = ({
         <Space direction='vertical' $block size='middle'>
           {
             <LoadingArea
-              data-testid='task-details-reclassification-request-loading'
+              data-testid='task-reclassification-request-loading'
               isLoading={reclassificationRequestIsLoading || createReclassificationRequestIsLoading}
               tip='Загрузка запроса на переклассификацию...'
               area='block'
@@ -533,7 +533,7 @@ const TaskCard: FC<TaskCardProps> = ({
           )}
 
           {task && (
-            <Space data-testid='task-card-details' direction='vertical' $block size='middle'>
+            <Space data-testid='task' direction='vertical' $block size='middle'>
               <MainDetails
                 recordId={task.recordId}
                 status={task.status}
@@ -592,7 +592,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 taskSuspendRequestStatus={task.suspendRequest?.status}
               />
 
-              <TaskDetailsTabs task={task} activeTab={activeTab} />
+              <Tabs task={task} activeTab={activeTab} />
 
               {executeTaskModalOpened && (
                 <React.Suspense

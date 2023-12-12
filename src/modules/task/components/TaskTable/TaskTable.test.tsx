@@ -20,7 +20,7 @@ import {
   columnWithSortingClass,
 } from '_tests_/constants/components'
 import taskFixtures from '_tests_/fixtures/task'
-import { iconTestUtils, render } from '_tests_/utils'
+import { iconTestUtils, render, tableTestUtils } from '_tests_/utils'
 
 import TaskTable from './index'
 import { TaskTableProps } from './types'
@@ -54,20 +54,11 @@ export const testConstants = {
 }
 
 const getContainer = () => screen.getByTestId('task-table')
-
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
-
-const getRow = (id: IdType) =>
-  // eslint-disable-next-line testing-library/no-node-access
-  getContainer().querySelector(`[data-row-key='${id}']`)
-
-const clickRow = async (user: UserEvent, id: IdType) => {
-  const row = getRow(id)
-  await user.click(row!)
-  return row
-}
+const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const clickRow = async (user: UserEvent, id: IdType) =>
+  tableTestUtils.clickRowIn(getContainer(), user, id)
 
 const getHeadCol = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access

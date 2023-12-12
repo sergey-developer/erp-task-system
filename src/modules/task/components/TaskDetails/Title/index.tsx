@@ -21,11 +21,11 @@ import {
   SyncIcon,
 } from 'components/Icons'
 
-import { TaskDetailsTitleProps } from './types'
+import { TitleProps } from './types'
 
 const { Text } = Typography
 
-const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
+const Title: FC<TitleProps> = ({
   id,
   type,
   status,
@@ -130,4 +130,4 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   )
 }
 
-export default TaskDetailsTitle
+export default Title

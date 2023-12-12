@@ -13,8 +13,8 @@ import { getFormErrorsFromBadRequestError } from 'modules/task/components/Reques
 import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
 import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
-import TaskDetailsTabs from 'modules/task/components/TaskDetails/TaskDetailsTabs'
-import TaskDetailsTitle from 'modules/task/components/TaskDetails/TaskDetailsTitle'
+import Tabs from 'modules/task/components/TaskDetails/Tabs'
+import Title from 'modules/task/components/TaskDetails/Title'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
@@ -436,8 +436,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     } catch {}
   }, [deleteSuspendRequest, task])
 
-  const cardTitle = task && (
-    <TaskDetailsTitle
+  const title = task && (
+    <Title
       id={task.id}
       type={task.type}
       assignee={task.assignee}
@@ -455,10 +455,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <>
-      <Drawer open={!!taskId} onClose={closeTask} width={600} title={cardTitle} mask={false}>
+      <Drawer open={!!taskId} onClose={closeTask} width={600} title={title} mask={false}>
         <Space direction='vertical' $block size='middle'>
           <LoadingArea
-            data-testid='task-details-reclassification-request-loading'
+            data-testid='task-reclassification-request-loading'
             isLoading={reclassificationRequestIsFetching || createReclassificationRequestIsLoading}
             tip='Загрузка запроса на переклассификацию...'
             area='block'
@@ -476,7 +476,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             )}
           </LoadingArea>
 
-          <LoadingArea isLoading={taskIsFetching} tip='Загрузка заявки...'>
+          <LoadingArea
+            data-testid='task-loading'
+            isLoading={taskIsFetching}
+            tip='Загрузка заявки...'
+          >
             <Space direction='vertical' $block size='middle'>
               {task?.suspendRequest && (
                 <React.Suspense fallback={<Spinner area='block' />}>
@@ -512,7 +516,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
               )}
 
               {task && (
-                <Space data-testid='task-card-details' direction='vertical' $block size='middle'>
+                <Space data-testid='task' direction='vertical' $block size='middle'>
                   <MainDetails
                     recordId={task.recordId}
                     status={task.status}
@@ -569,7 +573,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     taskSuspendRequestStatus={task.suspendRequest?.status}
                   />
 
-                  <TaskDetailsTabs task={task} activeTab={activeTab} />
+                  <Tabs task={task} activeTab={activeTab} />
                 </Space>
               )}
             </Space>

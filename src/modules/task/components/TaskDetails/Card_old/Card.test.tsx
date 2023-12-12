@@ -44,13 +44,13 @@ import {
 } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.test'
 import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
-import { testUtils as cardTabsTestUtils } from '../TaskDetailsTabs/TaskDetailsTabs.test'
+import { testUtils as cardTabsTestUtils } from '../Tabs/Tabs.test'
 import {
   activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,
   activeRequestSuspendItemProps,
   testUtils as cardTitleTestUtils,
-} from '../TaskDetailsTitle/TaskDetailsTitle.test'
+} from '../Title/Title.test'
 import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,
@@ -107,10 +107,10 @@ const expectLoadingStarted = () => cardTestUtils.expectLoadingStarted(getContain
 const expectLoadingNotStarted = () => cardTestUtils.expectLoadingNotStarted(getContainer())
 const expectLoadingFinished = () => cardTestUtils.expectLoadingFinished(getContainer())
 
-const getCardDetails = () => within(getContainer()).getByTestId('task-card-details')
-const queryCardDetails = () => within(getContainer()).queryByTestId('task-card-details')
+const getCardDetails = () => within(getContainer()).getByTestId('task')
+const queryCardDetails = () => within(getContainer()).queryByTestId('task')
 
-const taskCardReclassificationRequestSpinnerTestId = 'task-details-reclassification-request-loading'
+const taskCardReclassificationRequestSpinnerTestId = 'task-reclassification-request-loading'
 
 const expectReclassificationRequestLoadingStarted = spinnerTestUtils.expectLoadingStarted(
   taskCardReclassificationRequestSpinnerTestId,
