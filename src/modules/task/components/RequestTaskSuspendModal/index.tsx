@@ -125,7 +125,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           <Form.Item
             data-testid='task-link-form-item'
             label='Ссылка на задачу'
-            name='taskLink'
+            name='externalRevisionLink'
             rules={taskLinkRules}
           >
             <Input placeholder='Ссылка на задачу во внешней системе' disabled={isLoading} />
@@ -136,7 +136,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           <Form.Item
             data-testid='organization-form-item'
             label='Организация (ответственная за работу вне зоны ответственности ИТ)'
-            name='organization'
+            name='externalResponsibleCompany'
             rules={onlyRequiredRules}
           >
             <Select aria-label='Организация' options={organizationOptions} disabled={isLoading} />

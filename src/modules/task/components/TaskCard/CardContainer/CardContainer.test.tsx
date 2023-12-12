@@ -3323,6 +3323,8 @@ describe('Контейнер детальной карточки заявки', 
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
+              externalRevisionLink: [fakeWord()],
+              externalResponsibleCompany: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
@@ -3373,6 +3375,18 @@ describe('Контейнер детальной карточки заявки', 
             expect(
               await requestTaskSuspendModalTestUtils.findEndTimeError(
                 badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalRevisionLink[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalResponsibleCompany[0],
               ),
             ).toBeInTheDocument()
           })
@@ -3515,6 +3529,8 @@ describe('Контейнер детальной карточки заявки', 
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
+              externalRevisionLink: [fakeWord()],
+              externalResponsibleCompany: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
@@ -3565,6 +3581,18 @@ describe('Контейнер детальной карточки заявки', 
             expect(
               await requestTaskSuspendModalTestUtils.findEndTimeError(
                 badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalRevisionLink[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalResponsibleCompany[0],
               ),
             ).toBeInTheDocument()
           })
@@ -3707,6 +3735,8 @@ describe('Контейнер детальной карточки заявки', 
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
+              externalRevisionLink: [fakeWord()],
+              externalResponsibleCompany: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
@@ -3757,6 +3787,18 @@ describe('Контейнер детальной карточки заявки', 
             expect(
               await requestTaskSuspendModalTestUtils.findEndTimeError(
                 badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalRevisionLink[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalResponsibleCompany[0],
               ),
             ).toBeInTheDocument()
           })
@@ -3899,6 +3941,8 @@ describe('Контейнер детальной карточки заявки', 
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
+              externalRevisionLink: [fakeWord()],
+              externalResponsibleCompany: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
@@ -3949,6 +3993,18 @@ describe('Контейнер детальной карточки заявки', 
             expect(
               await requestTaskSuspendModalTestUtils.findEndTimeError(
                 badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalRevisionLink[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalResponsibleCompany[0],
               ),
             ).toBeInTheDocument()
           })
