@@ -125,15 +125,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
-  const {
-    fn: deleteSuspendRequest,
-    state: { isLoading: deleteSuspendRequestIsLoading },
-  } = useDeleteTaskSuspendRequest()
+  const [deleteSuspendRequest, { isLoading: deleteSuspendRequestIsLoading }] =
+    useDeleteTaskSuspendRequest()
 
-  const {
-    fn: createSuspendRequest,
-    state: { isLoading: createSuspendRequestIsLoading },
-  } = useCreateTaskSuspendRequest()
+  const [createSuspendRequest, { isLoading: createSuspendRequestIsLoading }] =
+    useCreateTaskSuspendRequest()
 
   const {
     fn: createReclassificationRequest,
@@ -397,16 +393,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   }, [takeTask, task])
 
   const handleCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
-    async (values: RequestTaskSuspendFormFields, setFields) => {
+    async ({ endDate, endTime, reason, ...values }: RequestTaskSuspendFormFields, setFields) => {
       if (!task) return
 
       try {
         await createSuspendRequest({
+          ...values,
           taskId: task.id,
-          comment: values.comment,
-          suspendReason: values.reason,
-          suspendEndAt: mergeDateTime(values.endDate, values.endTime).toISOString(),
-        })
+          suspendReason: reason,
+          suspendEndAt: mergeDateTime(endDate, endTime).toISOString(),
+        }).unwrap()
 
         closeRequestTaskSuspendModal()
       } catch (error) {
@@ -428,10 +424,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const handleDeleteTaskSuspendRequest = useDebounceFn(async () => {
     if (!task) return
-
-    try {
-      await deleteSuspendRequest({ taskId: task.id })
-    } catch {}
+    await deleteSuspendRequest({ taskId: task.id })
   }, [deleteSuspendRequest, task])
 
   const title = task && (
