@@ -15,3 +15,7 @@ export enum SuspendRequestStatusEnum {
   Canceled = 'CANCELED',
 }
 
+export enum ExternalResponsibleCompanyEnum {
+  BusinessDepartmentX5 = 'BUSINESS_DEPARTMENT_X5',
+  OutsideOrganization = 'OUTSIDE_ORGANIZATION',
+}

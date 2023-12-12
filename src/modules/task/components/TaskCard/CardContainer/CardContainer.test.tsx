@@ -9,8 +9,8 @@ import { resolveTaskMessages, TaskExtendedStatusEnum } from 'modules/task/consta
 import { updateTaskAssigneeMessages } from 'modules/task/constants/taskAssignee'
 import { createReclassificationRequestMessages } from 'modules/task/constants/taskReclassificationRequest'
 import {
-  createSuspendRequestMessages,
-  deleteSuspendRequestMessages,
+  createSuspendRequestErrorMsg,
+  deleteSuspendRequestErrorMsg,
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/taskSuspendRequest'
@@ -68,14 +68,14 @@ import {
   mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
+  cardTestUtils,
   fakeId,
   fakeWord,
   getStoreWithAuth,
+  notificationTestUtils,
   render,
   setupApiTests,
-  notificationTestUtils,
-  buttonTestUtils,
-  cardTestUtils,
 } from '_tests_/utils'
 
 import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
@@ -3301,9 +3301,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(
-                createSuspendRequestMessages.notFoundError,
-              ),
+              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
             ).toBeInTheDocument()
           })
 
@@ -3325,6 +3323,8 @@ describe('Контейнер детальной карточки заявки', 
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
+              externalRevisionLink: [fakeWord()],
+              externalResponsibleCompany: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
@@ -3351,9 +3351,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(
-                createSuspendRequestMessages.badRequestError,
-              ),
+              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
             ).toBeInTheDocument()
 
             expect(
@@ -3377,6 +3375,18 @@ describe('Контейнер детальной карточки заявки', 
             expect(
               await requestTaskSuspendModalTestUtils.findEndTimeError(
                 badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalRevisionLink[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalResponsibleCompany[0],
               ),
             ).toBeInTheDocument()
           })
@@ -3497,9 +3507,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(
-                createSuspendRequestMessages.notFoundError,
-              ),
+              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
             ).toBeInTheDocument()
           })
 
@@ -3521,6 +3529,8 @@ describe('Контейнер детальной карточки заявки', 
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
+              externalRevisionLink: [fakeWord()],
+              externalResponsibleCompany: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
@@ -3547,9 +3557,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(
-                createSuspendRequestMessages.badRequestError,
-              ),
+              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
             ).toBeInTheDocument()
 
             expect(
@@ -3573,6 +3581,18 @@ describe('Контейнер детальной карточки заявки', 
             expect(
               await requestTaskSuspendModalTestUtils.findEndTimeError(
                 badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalRevisionLink[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalResponsibleCompany[0],
               ),
             ).toBeInTheDocument()
           })
@@ -3693,9 +3713,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(
-                createSuspendRequestMessages.notFoundError,
-              ),
+              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
             ).toBeInTheDocument()
           })
 
@@ -3717,6 +3735,8 @@ describe('Контейнер детальной карточки заявки', 
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
+              externalRevisionLink: [fakeWord()],
+              externalResponsibleCompany: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
@@ -3743,9 +3763,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(
-                createSuspendRequestMessages.badRequestError,
-              ),
+              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
             ).toBeInTheDocument()
 
             expect(
@@ -3769,6 +3787,18 @@ describe('Контейнер детальной карточки заявки', 
             expect(
               await requestTaskSuspendModalTestUtils.findEndTimeError(
                 badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalRevisionLink[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalResponsibleCompany[0],
               ),
             ).toBeInTheDocument()
           })
@@ -3889,9 +3919,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(
-                createSuspendRequestMessages.notFoundError,
-              ),
+              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
             ).toBeInTheDocument()
           })
 
@@ -3913,6 +3941,8 @@ describe('Контейнер детальной карточки заявки', 
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
+              externalRevisionLink: [fakeWord()],
+              externalResponsibleCompany: [fakeWord()],
             }
 
             mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
@@ -3939,9 +3969,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(
-                createSuspendRequestMessages.badRequestError,
-              ),
+              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
             ).toBeInTheDocument()
 
             expect(
@@ -3965,6 +3993,18 @@ describe('Контейнер детальной карточки заявки', 
             expect(
               await requestTaskSuspendModalTestUtils.findEndTimeError(
                 badRequestResponse.suspendEndAt[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalRevisionLink[0],
+              ),
+            ).toBeInTheDocument()
+
+            expect(
+              await requestTaskSuspendModalTestUtils.findEndTimeError(
+                badRequestResponse.externalResponsibleCompany[0],
               ),
             ).toBeInTheDocument()
           })
@@ -4067,9 +4107,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             expect(
-              await notificationTestUtils.findNotification(
-                deleteSuspendRequestMessages.notFoundError,
-              ),
+              await notificationTestUtils.findNotification(deleteSuspendRequestErrorMsg),
             ).toBeInTheDocument()
           })
 
@@ -4189,9 +4227,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             expect(
-              await notificationTestUtils.findNotification(
-                deleteSuspendRequestMessages.notFoundError,
-              ),
+              await notificationTestUtils.findNotification(deleteSuspendRequestErrorMsg),
             ).toBeInTheDocument()
           })
 
@@ -4311,9 +4347,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             expect(
-              await notificationTestUtils.findNotification(
-                deleteSuspendRequestMessages.notFoundError,
-              ),
+              await notificationTestUtils.findNotification(deleteSuspendRequestErrorMsg),
             ).toBeInTheDocument()
           })
 

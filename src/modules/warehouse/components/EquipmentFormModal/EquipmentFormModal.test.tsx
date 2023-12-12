@@ -105,13 +105,10 @@ const clickCancelButton = async (user: UserEvent) => {
 // category field
 const getCategoryFormItem = () => within(getContainer()).getByTestId('category-form-item')
 
-const getCategoryLabel = () => within(getCategoryFormItem()).getByLabelText('Категория')
-
 const getCategorySelectInput = (opened?: boolean) =>
   selectTestUtils.getSelect(getCategoryFormItem(), { name: 'Категория', expanded: opened })
 
 const setCategory = selectTestUtils.clickSelectOption
-
 const getCategoryOption = selectTestUtils.getSelectOption
 
 const getSelectedCategory = (value: string): HTMLElement =>
@@ -494,7 +491,7 @@ export const testUtils = {
   getCancelButton,
   clickCancelButton,
 
-  getCategoryLabel,
+  getCategoryFormItem,
   getCategorySelectInput,
   setCategory,
   getCategoryOption,
@@ -623,7 +620,7 @@ describe('Модалка оборудования', () => {
     test('Отображается корректно', () => {
       render(<EquipmentFormModal {...props} />)
 
-      const label = testUtils.getCategoryLabel()
+      const label = within(testUtils.getCategoryFormItem()).getByLabelText('Категория')
       const input = testUtils.getCategorySelectInput()
 
       expect(label).toBeInTheDocument()

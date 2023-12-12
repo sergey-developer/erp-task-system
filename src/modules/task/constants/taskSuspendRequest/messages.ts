@@ -1,11 +1,2 @@
-import { ApiRequestMessages } from 'shared/types/messages'
-
-export const createSuspendRequestMessages: ApiRequestMessages<'notFoundError' | 'badRequestError'> =
-  {
-    notFoundError: 'Невозможно перевести заявку в ожидание - заявка не найдена',
-    badRequestError: 'Невозможно перевести заявку в ожидание. Пожалуйста, попробуйте позже',
-  }
-
-export const deleteSuspendRequestMessages: ApiRequestMessages<'notFoundError'> = {
-  notFoundError: 'Заявка не найдена или не находится в ожидании',
-}
+export const createSuspendRequestErrorMsg = 'Ошибка перевода заявку в ожидание'
+export const deleteSuspendRequestErrorMsg = 'Ошибка удаления заявки в ожидании'
