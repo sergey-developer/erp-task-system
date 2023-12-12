@@ -9,4 +9,6 @@ export const getFormErrorsFromBadRequestError = (
   reason: errors.data.suspendReason,
   endDate: errors.data.suspendEndAt,
   endTime: errors.data.suspendEndAt,
+  taskLink: errors.data.externalRevisionLink,
+  organization: errors.data.externalResponsibleCompany,
 })

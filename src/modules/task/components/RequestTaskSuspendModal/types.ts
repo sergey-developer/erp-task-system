@@ -22,8 +22,8 @@ export type RequestTaskSuspendModalProps = Required<Pick<BaseModalProps, 'open'>
 
 export type RequestTaskSuspendFormFields = {
   reason: SuspendReasonEnum
-  externalRevisionLink?: string
-  externalResponsibleCompany?: ExternalResponsibleCompanyEnum
+  taskLink?: string
+  organization?: ExternalResponsibleCompanyEnum
   endDate: Moment
   endTime: Moment
   comment: string
