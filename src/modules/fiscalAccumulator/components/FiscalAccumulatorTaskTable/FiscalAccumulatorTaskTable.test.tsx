@@ -17,6 +17,7 @@ const fiscalAccumulatorTaskListItem = fiscalAccumulatorFixtures.fiscalAccumulato
 const props: Readonly<FiscalAccumulatorTaskTableProps> = {
   dataSource: [fiscalAccumulatorTaskListItem],
   loading: false,
+  onRow: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('fiscal-accumulator-task-table')
@@ -25,6 +26,9 @@ const queryChildByText = (text: string) => within(getContainer()).queryByText(te
 
 const getRow = (id: FiscalAccumulatorTaskTableItem['olaNextBreachTime']) =>
   tableTestUtils.getRowIn(getContainer(), id)
+
+const clickRow = async (user: UserEvent, id: FiscalAccumulatorTaskTableItem['olaNextBreachTime']) =>
+  tableTestUtils.clickRowIn(getContainer(), user, id)
 
 const getHeadCell = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access
@@ -48,14 +52,14 @@ const getColValue = (
 }
 
 const expectLoadingStarted = () => iconTestUtils.expectLoadingStartedIn(getContainer())
-
 const expectLoadingFinished = () => iconTestUtils.expectLoadingFinishedIn(getContainer())
 
 export const testUtils = {
   getContainer,
-  getRow,
   getChildByText,
   queryChildByText,
+  getRow,
+  clickRow,
   getHeadCell,
   getColTitle,
   getColValue,

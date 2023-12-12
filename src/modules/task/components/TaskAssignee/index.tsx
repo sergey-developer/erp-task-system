@@ -29,7 +29,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   const fullName = getFullUserName({ firstName, lastName, middleName })
 
   return (
-    <Space data-testid='task-assignee' size='middle' align='start'>
+    <Space data-testid='task-assignee' align='center'>
       <UserAvatar src={avatar} abbr={getUserAbbr({ firstName, lastName })} />
 
       <Space direction='vertical'>

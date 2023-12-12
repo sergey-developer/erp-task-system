@@ -2,8 +2,8 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import {
-  taskCardTabNamesDict,
-  TaskCardTabsEnum,
+  taskDetailsTabNameDict,
+  TaskDetailsTabsEnum,
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
@@ -21,9 +21,9 @@ import {
   render,
 } from '_tests_/utils'
 
-import CardTabs, { CardTabsProps } from './index'
+import Tabs, { TabsProps } from './index'
 
-const props: Readonly<CardTabsProps> = {
+const props: Readonly<TabsProps> = {
   task: {
     id: fakeId(),
     type: TaskTypeEnum.Request,
@@ -47,20 +47,20 @@ const props: Readonly<CardTabsProps> = {
   },
 }
 
-const getContainer = () => screen.getByTestId('task-card-tabs')
-const queryContainer = () => screen.queryByTestId('task-card-tabs')
+const getContainer = () => screen.getByTestId('task-details-tabs')
+const queryContainer = () => screen.queryByTestId('task-details-tabs')
 const getTabsNav = () => within(getContainer()).getByRole('tablist')
 
-const getNavItem = (tab: TaskCardTabsEnum) =>
-  within(getTabsNav()).getByRole('tab', { name: taskCardTabNamesDict[tab] })
+const getNavItem = (tab: TaskDetailsTabsEnum) =>
+  within(getTabsNav()).getByRole('tab', { name: taskDetailsTabNameDict[tab] })
 
-const queryNavItem = (tab: TaskCardTabsEnum) =>
-  within(getTabsNav()).queryByRole('tab', { name: taskCardTabNamesDict[tab] })
+const queryNavItem = (tab: TaskDetailsTabsEnum) =>
+  within(getTabsNav()).queryByRole('tab', { name: taskDetailsTabNameDict[tab] })
 
-const getOpenedTab = (tab: TaskCardTabsEnum) =>
-  within(getContainer()).getByRole('tabpanel', { name: taskCardTabNamesDict[tab] })
+const getOpenedTab = (tab: TaskDetailsTabsEnum) =>
+  within(getContainer()).getByRole('tabpanel', { name: taskDetailsTabNameDict[tab] })
 
-const clickTab = async (user: UserEvent, tab: TaskCardTabsEnum) => {
+const clickTab = async (user: UserEvent, tab: TaskDetailsTabsEnum) => {
   await user.click(getNavItem(tab))
 }
 
@@ -78,49 +78,49 @@ export const testUtils = {
 
 describe('Вкладки карточки заявки', () => {
   test('Доступные вкладки отображаются', () => {
-    render(<CardTabs {...props} />)
+    render(<Tabs {...props} />)
 
-    expect(testUtils.getNavItem(TaskCardTabsEnum.Description)).toBeInTheDocument()
-    expect(testUtils.getNavItem(TaskCardTabsEnum.CommentList)).toBeInTheDocument()
-    expect(testUtils.getNavItem(TaskCardTabsEnum.Resolution)).toBeInTheDocument()
-    expect(testUtils.getNavItem(TaskCardTabsEnum.Journal)).toBeInTheDocument()
-    expect(testUtils.getNavItem(TaskCardTabsEnum.SubTaskList)).toBeInTheDocument()
+    expect(testUtils.getNavItem(TaskDetailsTabsEnum.Description)).toBeInTheDocument()
+    expect(testUtils.getNavItem(TaskDetailsTabsEnum.CommentList)).toBeInTheDocument()
+    expect(testUtils.getNavItem(TaskDetailsTabsEnum.Resolution)).toBeInTheDocument()
+    expect(testUtils.getNavItem(TaskDetailsTabsEnum.Journal)).toBeInTheDocument()
+    expect(testUtils.getNavItem(TaskDetailsTabsEnum.SubTaskList)).toBeInTheDocument()
   })
 
   test('Установлена корректная вкладка по умолчанию', () => {
-    render(<CardTabs {...props} />)
-    const defaultTab = testUtils.getOpenedTab(TaskCardTabsEnum.Description)
+    render(<Tabs {...props} />)
+    const defaultTab = testUtils.getOpenedTab(TaskDetailsTabsEnum.Description)
     expect(defaultTab).toBeInTheDocument()
   })
 
   test('Можно открыть любую доступную вкладку', async () => {
-    const { user } = render(<CardTabs {...props} />)
+    const { user } = render(<Tabs {...props} />)
 
-    await testUtils.clickTab(user, TaskCardTabsEnum.Description)
-    expect(testUtils.getOpenedTab(TaskCardTabsEnum.Description)).toBeInTheDocument()
+    await testUtils.clickTab(user, TaskDetailsTabsEnum.Description)
+    expect(testUtils.getOpenedTab(TaskDetailsTabsEnum.Description)).toBeInTheDocument()
 
-    await testUtils.clickTab(user, TaskCardTabsEnum.CommentList)
-    expect(testUtils.getOpenedTab(TaskCardTabsEnum.CommentList)).toBeInTheDocument()
+    await testUtils.clickTab(user, TaskDetailsTabsEnum.CommentList)
+    expect(testUtils.getOpenedTab(TaskDetailsTabsEnum.CommentList)).toBeInTheDocument()
 
-    await testUtils.clickTab(user, TaskCardTabsEnum.Resolution)
-    expect(testUtils.getOpenedTab(TaskCardTabsEnum.Resolution)).toBeInTheDocument()
+    await testUtils.clickTab(user, TaskDetailsTabsEnum.Resolution)
+    expect(testUtils.getOpenedTab(TaskDetailsTabsEnum.Resolution)).toBeInTheDocument()
 
-    await testUtils.clickTab(user, TaskCardTabsEnum.Journal)
-    expect(testUtils.getOpenedTab(TaskCardTabsEnum.Journal)).toBeInTheDocument()
+    await testUtils.clickTab(user, TaskDetailsTabsEnum.Journal)
+    expect(testUtils.getOpenedTab(TaskDetailsTabsEnum.Journal)).toBeInTheDocument()
 
-    await testUtils.clickTab(user, TaskCardTabsEnum.SubTaskList)
-    expect(testUtils.getOpenedTab(TaskCardTabsEnum.SubTaskList)).toBeInTheDocument()
+    await testUtils.clickTab(user, TaskDetailsTabsEnum.SubTaskList)
+    expect(testUtils.getOpenedTab(TaskDetailsTabsEnum.SubTaskList)).toBeInTheDocument()
   })
 
   describe('Вкладка "Перемещения"', () => {
     test('Не отображается если условия не соблюдены', () => {
-      render(<CardTabs {...props} />)
-      const tab = testUtils.queryNavItem(TaskCardTabsEnum.RelocationTaskList)
+      render(<Tabs {...props} />)
+      const tab = testUtils.queryNavItem(TaskDetailsTabsEnum.RelocationTaskList)
       expect(tab).not.toBeInTheDocument()
     })
 
     test('Отображается если условия соблюдены', () => {
-      render(<CardTabs {...props} />, {
+      render(<Tabs {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
@@ -128,12 +128,12 @@ describe('Вкладки карточки заявки', () => {
         }),
       })
 
-      const tab = testUtils.getNavItem(TaskCardTabsEnum.RelocationTaskList)
+      const tab = testUtils.getNavItem(TaskDetailsTabsEnum.RelocationTaskList)
       expect(tab).toBeInTheDocument()
     })
 
     test('Открывается по клику', async () => {
-      const { user } = render(<CardTabs {...props} />, {
+      const { user } = render(<Tabs {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
@@ -141,8 +141,8 @@ describe('Вкладки карточки заявки', () => {
         }),
       })
 
-      await testUtils.clickTab(user, TaskCardTabsEnum.RelocationTaskList)
-      const tab = testUtils.getOpenedTab(TaskCardTabsEnum.RelocationTaskList)
+      await testUtils.clickTab(user, TaskDetailsTabsEnum.RelocationTaskList)
+      const tab = testUtils.getOpenedTab(TaskDetailsTabsEnum.RelocationTaskList)
 
       expect(tab).toBeInTheDocument()
     })

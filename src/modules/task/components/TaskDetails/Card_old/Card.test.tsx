@@ -14,10 +14,17 @@ import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 import taskFixtures from '_tests_/fixtures/task'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
-import { cardTestUtils, fakeWord, getStoreWithAuth, render, spinnerTestUtils } from '_tests_/utils'
+import {
+  buttonTestUtils,
+  cardTestUtils,
+  fakeWord,
+  getStoreWithAuth,
+  render,
+  spinnerTestUtils,
+} from '_tests_/utils'
 
-import { testUtils as cardTabsTestUtils } from '../../CardTabs/CardTabs.test'
 import { testUtils as confirmExecuteTaskModalTestUtils } from '../../ConfirmExecuteTaskModal/ConfirmExecuteTaskModal.test'
+import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
 import {
   availableReasons,
   testUtils as taskReclassificationModalTestUtils,
@@ -25,7 +32,6 @@ import {
 import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskReclassificationRequestTestUtils } from '../../TaskReclassificationRequest/TaskReclassificationRequest.test'
-import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from '../../TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskSuspendRequestTestUtils } from '../../TaskSuspendRequest/TaskSuspendRequest.test'
 import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
@@ -36,14 +42,15 @@ import {
   canSelectAssigneeProps,
   testUtils as assigneeBlockTestUtils,
 } from '../AssigneeBlock/AssigneeBlock.test'
+import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.test'
+import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
+import { testUtils as cardTabsTestUtils } from '../Tabs/Tabs.test'
 import {
   activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,
   activeRequestSuspendItemProps,
   testUtils as cardTitleTestUtils,
-} from '../CardTitle/CardTitle.test'
-import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.test'
-import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
+} from '../Title/Title.test'
 import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,
@@ -94,16 +101,16 @@ const props: Readonly<TaskCardProps> = {
 }
 
 const getContainer = () => screen.getByTestId('task-card')
-const findContainer = () => screen.findByTestId('task-card', undefined)
+const findContainer = () => screen.findByTestId('task-card')
 
 const expectLoadingStarted = () => cardTestUtils.expectLoadingStarted(getContainer())
 const expectLoadingNotStarted = () => cardTestUtils.expectLoadingNotStarted(getContainer())
 const expectLoadingFinished = () => cardTestUtils.expectLoadingFinished(getContainer())
 
-const getCardDetails = () => within(getContainer()).getByTestId('task-card-details')
-const queryCardDetails = () => within(getContainer()).queryByTestId('task-card-details')
+const getCardDetails = () => within(getContainer()).getByTestId('task')
+const queryCardDetails = () => within(getContainer()).queryByTestId('task')
 
-const taskCardReclassificationRequestSpinnerTestId = 'task-card-reclassification-request-loading'
+const taskCardReclassificationRequestSpinnerTestId = 'task-reclassification-request-loading'
 
 const expectReclassificationRequestLoadingStarted = spinnerTestUtils.expectLoadingStarted(
   taskCardReclassificationRequestSpinnerTestId,
@@ -160,10 +167,10 @@ describe('Карточка заявки', () => {
       })
     })
 
-    test('При клике на кнопку закрытия обработчик вызывается корректно', async () => {
+    test('При клике на кнопку закрытия вызывается обработчик', async () => {
       const { user } = render(<TaskCard {...props} />)
 
-      await cardTitleTestUtils.clickCloseButton(user)
+      await buttonTestUtils.clickCloseButtonIn(cardTitleTestUtils.getContainer(), user)
 
       await waitFor(() => {
         expect(props.closeTaskCard).toBeCalledTimes(1)

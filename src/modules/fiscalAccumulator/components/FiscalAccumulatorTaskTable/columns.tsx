@@ -26,6 +26,7 @@ export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
   {
     key: 'olaNextBreachTime',
     dataIndex: 'olaNextBreachTime',
+    width: 110,
     title: 'Крайний срок',
     render: (value: FiscalAccumulatorTaskTableItem['olaNextBreachTime'], record) => (
       <OlaNextBreachTimeStyled $faFormat={record.faFormat}>
@@ -63,6 +64,7 @@ export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
   {
     key: 'deadlineOrTotalFiscalDocs',
     dataIndex: 'deadlineOrTotalFiscalDocs',
+    width: 100,
     title: 'Срок / Всего ФД',
     render: (value: FiscalAccumulatorTaskTableItem['deadlineOrTotalFiscalDocs']) =>
       valueOrHyphen(value),

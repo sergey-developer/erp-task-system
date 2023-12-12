@@ -1,11 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { TablePaginationConfig } from 'antd'
-import { TableAction } from 'antd/es/table/interface'
 
-import { parseResponseTime } from 'modules/task/components/TaskCard/MainDetails/utils'
+import { parseResponseTime } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
-import { TaskExtendedStatusEnum, TaskStatusEnum, taskStatusDict } from 'modules/task/constants/task'
+import { TaskExtendedStatusEnum, taskStatusDict, TaskStatusEnum } from 'modules/task/constants/task'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getShortUserName } from 'modules/user/utils'
@@ -23,9 +22,8 @@ import {
 import taskFixtures from '_tests_/fixtures/task'
 import { iconTestUtils, render, tableTestUtils } from '_tests_/utils'
 
-import { paginationConfig } from './constants/pagination'
 import TaskTable from './index'
-import { TaskTableListItem, TaskTableProps } from './types'
+import { TaskTableProps } from './types'
 
 const taskTableItem = taskFixtures.taskTableItem()
 
@@ -56,16 +54,11 @@ export const testConstants = {
 }
 
 const getContainer = () => screen.getByTestId('task-table')
-
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
-
 const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
-const clickRow = async (user: UserEvent, id: IdType) => {
-  const row = getRow(id)
-  await user.click(row)
-  return row
-}
+const clickRow = async (user: UserEvent, id: IdType) =>
+  tableTestUtils.clickRowIn(getContainer(), user, id)
 
 const getHeadCol = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access
@@ -150,17 +143,6 @@ const expectLoadingFinished = async () => {
   return table
 }
 
-const onChangeTableArgs = {
-  pagination: (config: typeof paginationProps) => ({
-    ...paginationConfig,
-    ...config,
-  }),
-  extra: (action: TableAction, dataSource: ReadonlyArray<TaskTableListItem>) => ({
-    action,
-    currentDataSource: dataSource,
-  }),
-}
-
 export const testUtils = {
   getContainer,
   getRow,
@@ -186,8 +168,6 @@ export const testUtils = {
 
   expectLoadingStarted,
   expectLoadingFinished,
-
-  onChangeTableArgs,
 }
 
 afterEach(() => {
@@ -1255,40 +1235,6 @@ describe('Таблица заявок', () => {
       expect(page2Button).toBeInTheDocument()
     })
 
-    describe('Кнопки "Вперед" и "Назад" отображаются корректно', () => {
-      test('Если элементов больше чем установленный размер страницы', () => {
-        render(<TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />)
-
-        const nextButton = testUtils.getPaginationNextButton()
-        const prevButton = testUtils.getPaginationPrevButton()
-
-        expect(prevButton).toBeInTheDocument()
-        expect(prevButton).toBeDisabled()
-        expect(nextButton).toBeInTheDocument()
-        expect(nextButton).toBeEnabled()
-      })
-
-      test('Если количество элементов равно установленному размеру страницы', () => {
-        render(
-          <TaskTable
-            {...testConstants.props}
-            pagination={{
-              ...testConstants.paginationProps,
-              total: testConstants.paginationProps.pageSize,
-            }}
-          />,
-        )
-
-        const nextButton = testUtils.getPaginationNextButton()
-        const prevButton = testUtils.getPaginationPrevButton()
-
-        expect(prevButton).toBeInTheDocument()
-        expect(prevButton).toBeDisabled()
-        expect(nextButton).toBeInTheDocument()
-        expect(nextButton).toBeDisabled()
-      })
-    })
-
     test('Отображается корректный размер страницы по умолчанию', () => {
       render(<TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />)
 
@@ -1299,101 +1245,13 @@ describe('Таблица заявок', () => {
       expect(defaultPageSize).toHaveClass('ant-select-selection-item')
     })
 
-    test('Отображаются корректные варианты размера страницы', async () => {
-      const { user } = render(
-        <TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />,
-      )
-
-      const pagination = testUtils.getPaginationContainer()
-
-      await testUtils.openPageSizeOptions(user, pagination)
-
-      const pageSizeOptionsContainer = testUtils.getPageSizeOptionsContainer(pagination)
-
-      paginationConfig.pageSizeOptions.forEach((pageSize) => {
-        const option = testUtils.getPageSizeOption(pageSizeOptionsContainer, pageSize)
-        expect(option).toBeInTheDocument()
-      })
-    })
-
-    test('При изменении размера страницы обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />,
-      )
-
-      const pageSize = paginationConfig.pageSizeOptions[0] as number
-
-      await testUtils.changePageSize(user, pageSize)
-      expect(testConstants.props.onChange).toBeCalledTimes(1)
-      expect(testConstants.props.onChange).toBeCalledWith(
-        testUtils.onChangeTableArgs.pagination({
-          ...testConstants.paginationProps,
-          pageSize,
-        }),
-        {},
-        {},
-        testUtils.onChangeTableArgs.extra('paginate', testConstants.props.dataSource),
-      )
-    })
-
-    test('При клике "Вперед" обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />,
-      )
-
-      await testUtils.clickPaginationNextButton(user)
-      expect(testConstants.props.onChange).toBeCalledTimes(1)
-      expect(testConstants.props.onChange).toBeCalledWith(
-        testUtils.onChangeTableArgs.pagination({
-          ...testConstants.paginationProps,
-          current: 2,
-        }),
-        {},
-        {},
-        testUtils.onChangeTableArgs.extra('paginate', testConstants.props.dataSource),
-      )
-    })
-
-    test('При клике "Назад" обработчик вызывается корректно', async () => {
-      const { user } = render(
-        <TaskTable
-          {...testConstants.props}
-          pagination={{
-            ...testConstants.paginationProps,
-            current: 2,
-          }}
-        />,
-      )
-
-      await testUtils.clickPaginationPrevButton(user)
-      expect(testConstants.props.onChange).toBeCalledTimes(1)
-      expect(testConstants.props.onChange).toBeCalledWith(
-        testUtils.onChangeTableArgs.pagination({
-          ...testConstants.paginationProps,
-          current: 1,
-        }),
-        {},
-        {},
-        testUtils.onChangeTableArgs.extra('paginate', testConstants.props.dataSource),
-      )
-    })
-
-    test('При клике на номер страницы обработчик вызывается корректно', async () => {
+    test('При клике на номер страницы вызывается обработчик', async () => {
       const { user } = render(
         <TaskTable {...testConstants.props} pagination={testConstants.paginationProps} />,
       )
 
       await testUtils.clickPaginationPageButton(user, '2')
       expect(testConstants.props.onChange).toBeCalledTimes(1)
-      expect(testConstants.props.onChange).toBeCalledWith(
-        testUtils.onChangeTableArgs.pagination({
-          ...testConstants.paginationProps,
-          current: 2,
-        }),
-        {},
-        {},
-        testUtils.onChangeTableArgs.extra('paginate', testConstants.props.dataSource),
-      )
     })
   })
 

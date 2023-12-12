@@ -5,8 +5,6 @@ import React, { FC, useCallback, useEffect } from 'react'
 
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
-import { useIdBelongAuthUser } from 'modules/auth/hooks'
-import CardTabs from 'modules/task/components/CardTabs'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
@@ -14,15 +12,16 @@ import {
   RequestTaskSuspendModalProps,
 } from 'modules/task/components/RequestTaskSuspendModal/types'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
-import AdditionalInfo from 'modules/task/components/TaskCard/AdditionalInfo'
-import CardTitle from 'modules/task/components/TaskCard/CardTitle'
+import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
+import Title from 'modules/task/components/TaskDetails/Title'
+import Tabs from 'modules/task/components/TaskDetails/Tabs'
 import MainDetails from 'modules/task/components/TaskCard/MainDetails'
 import SecondaryDetails from 'modules/task/components/TaskCard/SecondaryDetails'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
   getTaskWorkPerformedActMessages,
-  TaskCardTabsEnum,
+  TaskDetailsTabsEnum,
   taskImpactMap,
   taskPriorityMap,
   taskSeverityMap,
@@ -167,7 +166,7 @@ export type TaskCardProps = {
   additionalInfoExpanded: boolean
   onExpandAdditionalInfo: EmptyFn
 
-  activeTab?: TaskCardTabsEnum
+  activeTab?: TaskDetailsTabsEnum
 
   closeTaskCard: EmptyFn
 
@@ -218,9 +217,6 @@ const TaskCard: FC<TaskCardProps> = ({
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
   const userRole = useUserRole()
-  const isAssignedToCurrentUser = useIdBelongAuthUser(task?.assignee?.id)
-
-  const debouncedCloseTaskCard = useDebounceFn(closeTaskCard)
 
   const debouncedRefetchTask = useDebounceFn(refetchTask)
 
@@ -456,16 +452,15 @@ const TaskCard: FC<TaskCardProps> = ({
   }, [cancelSuspendRequest, task])
 
   const cardTitle = !taskIsLoading && task && (
-    <CardTitle
+    <Title
       id={task.id}
       type={task.type}
       status={task.status}
       workGroup={task.workGroup}
       extendedStatus={task.extendedStatus}
       olaStatus={task.olaStatus}
-      isAssignedToCurrentUser={isAssignedToCurrentUser}
+      assignee={task.assignee}
       suspendRequest={task.suspendRequest}
-      onClose={debouncedCloseTaskCard}
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={handleOpenExecuteTaskModal}
       onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
@@ -479,7 +474,7 @@ const TaskCard: FC<TaskCardProps> = ({
         <Space direction='vertical' $block size='middle'>
           {
             <LoadingArea
-              data-testid='task-card-reclassification-request-loading'
+              data-testid='task-reclassification-request-loading'
               isLoading={reclassificationRequestIsLoading || createReclassificationRequestIsLoading}
               tip='Загрузка запроса на переклассификацию...'
               area='block'
@@ -532,7 +527,7 @@ const TaskCard: FC<TaskCardProps> = ({
           )}
 
           {task && (
-            <Space data-testid='task-card-details' direction='vertical' $block size='middle'>
+            <Space data-testid='task' direction='vertical' $block size='middle'>
               <MainDetails
                 recordId={task.recordId}
                 status={task.status}
@@ -591,7 +586,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 taskSuspendRequestStatus={task.suspendRequest?.status}
               />
 
-              <CardTabs task={task} activeTab={activeTab} />
+              <Tabs task={task} activeTab={activeTab} />
 
               {executeTaskModalOpened && (
                 <React.Suspense

@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react'
 
-import { TaskCardTabsEnum } from 'modules/task/constants/task'
+import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import {
   useGetTask,
   useResolveTask,
@@ -19,10 +19,10 @@ import {
 import { useDeleteTaskWorkGroup, useUpdateTaskWorkGroup } from 'modules/task/hooks/taskWorkGroup'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
 
-import { EmptyFn } from 'shared/types/utils'
 import { IdType } from 'shared/types/common'
+import { EmptyFn } from 'shared/types/utils'
 
-import Card from '../Card'
+import Card from '../Card_old'
 
 export type TaskCardContainerProps = {
   taskId: IdType
@@ -32,7 +32,7 @@ export type TaskCardContainerProps = {
 
   closeTaskCard: EmptyFn
 
-  activeTab?: TaskCardTabsEnum
+  activeTab?: TaskDetailsTabsEnum
 }
 
 const TaskCardContainer: FC<TaskCardContainerProps> = ({

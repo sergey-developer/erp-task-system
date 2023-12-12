@@ -4,7 +4,7 @@ import {
   activeSecondLineButtonProps,
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
-} from 'modules/task/components/TaskCard/WorkGroupBlock/WorkGroupBlock.test'
+} from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
 import {
   getTaskMessages,
   resolveTaskMessages,
@@ -100,13 +100,13 @@ import {
   canSelectAssigneeProps,
   testUtils as assigneeBlockTestUtils,
 } from '../AssigneeBlock/AssigneeBlock.test'
-import { testUtils as taskCardTestUtils } from '../Card/Card.test'
+import { testUtils as taskCardTestUtils } from '../Card_old/Card.test'
 import {
   activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,
   activeRequestSuspendItemProps,
   testUtils as cardTitleTestUtils,
-} from '../CardTitle/CardTitle.test'
+} from '../Title/Title.test'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
 
 const props: Readonly<TaskCardContainerProps> = {
