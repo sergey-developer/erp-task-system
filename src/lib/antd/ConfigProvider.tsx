@@ -21,6 +21,7 @@ const globalFormConfig: BaseConfigProviderProps['form'] = {
       max: validationTemplateMessages.string.max,
     },
     types: {
+      url: validationMessages.url.incorrect,
       email: validationMessages.email.incorrect,
     },
   },

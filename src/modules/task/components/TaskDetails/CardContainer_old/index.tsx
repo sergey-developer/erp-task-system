@@ -55,15 +55,11 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
 
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
 
-  const {
-    fn: deleteSuspendRequest,
-    state: { isLoading: deleteSuspendRequestIsLoading },
-  } = useDeleteTaskSuspendRequest()
+  const [deleteSuspendRequest, { isLoading: deleteSuspendRequestIsLoading }] =
+    useDeleteTaskSuspendRequest()
 
-  const {
-    fn: createSuspendRequest,
-    state: { isLoading: createSuspendRequestIsLoading },
-  } = useCreateTaskSuspendRequest()
+  const [createSuspendRequest, { isLoading: createSuspendRequestIsLoading }] =
+    useCreateTaskSuspendRequest()
 
   const {
     fn: createReclassificationRequest,

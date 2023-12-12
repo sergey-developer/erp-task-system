@@ -31,8 +31,6 @@ import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendReque
 import {
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskSuspendRequestBadRequestErrorResponse,
-  CreateTaskSuspendRequestMutationArgs,
-  DeleteTaskSuspendRequestMutationArgs,
   DeleteTaskWorkGroupMutationArgs,
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
@@ -140,9 +138,9 @@ export type TaskCardProps = {
   ) => Promise<void>
   createReclassificationRequestIsLoading: boolean
 
-  createSuspendRequest: (data: CreateTaskSuspendRequestMutationArgs) => Promise<void>
+  createSuspendRequest: CustomMutationTrigger<any, any>
   createSuspendRequestIsLoading: boolean
-  cancelSuspendRequest: (data: DeleteTaskSuspendRequestMutationArgs) => Promise<void>
+  cancelSuspendRequest: CustomMutationTrigger<any, any>
   cancelSuspendRequestIsLoading: boolean
 
   takeTask: (data: TakeTaskMutationArgs) => Promise<void>
@@ -416,16 +414,16 @@ const TaskCard: FC<TaskCardProps> = ({
   }, [takeTask, task])
 
   const handleCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
-    async (values: RequestTaskSuspendFormFields, setFields) => {
+    async ({ endDate, endTime, reason, ...values }: RequestTaskSuspendFormFields, setFields) => {
       if (!task) return
 
       try {
         await createSuspendRequest({
+          ...values,
           taskId: task.id,
-          comment: values.comment,
-          suspendReason: values.reason,
-          suspendEndAt: mergeDateTime(values.endDate, values.endTime).toISOString(),
-        })
+          suspendReason: reason,
+          suspendEndAt: mergeDateTime(endDate, endTime).toISOString(),
+        }).unwrap()
 
         closeRequestTaskSuspendModal()
       } catch (error) {
@@ -447,10 +445,7 @@ const TaskCard: FC<TaskCardProps> = ({
 
   const handleCancelTaskSuspendRequest = useDebounceFn(async () => {
     if (!task) return
-
-    try {
-      await cancelSuspendRequest({ taskId: task.id })
-    } catch {}
+    await cancelSuspendRequest({ taskId: task.id })
   }, [cancelSuspendRequest, task])
 
   const cardTitle = !taskIsLoading && task && (
