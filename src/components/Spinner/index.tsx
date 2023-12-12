@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 import { SpinnerStyled } from './styles'
 
 export type SpinnerProps = SpinProps & {
-  area?: 'block' | 'parent'
+  area?: 'block' | 'parent' | 'global'
   centered?: boolean
 }
 

@@ -7,6 +7,7 @@ import { MaybeNull } from 'shared/types/utils'
 import { FiscalAccumulatorFormatEnum } from '../constants'
 
 export type FiscalAccumulatorTaskListItemModel = {
+  id: IdType
   blockingIn: MaybeNull<number>
   olaNextBreachTime: string
   recordId: string

@@ -4,10 +4,11 @@ import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect, useMemo, useState } from 'react'
 import { ResizableProps } from 'react-resizable'
 
-import { localeConfig } from './constants/common'
-import tableComponents from './constants/components'
-import { paginationConfig } from './constants/pagination'
-import { TableStyled, TableWrapperStyled } from './styles'
+import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
+
+import { localeConfig, scrollConfig } from './constants/common'
+import components from './constants/components'
+import { TableStyled } from './styles'
 import { TaskTableListItem, TaskTableProps } from './types'
 import { applySortToColumn, applyWidthToColumn, getTableColumns } from './utils'
 
@@ -43,7 +44,6 @@ const TaskTable: FC<TaskTableProps> = ({ sort, pagination, userRole, ...props })
 
   useEffect(() => {
     if (isEmpty(breakpoints)) return
-
     setColumns((prevColumns) => prevColumns.map((col) => applyWidthToColumn(col, breakpoints)))
   }, [breakpoints])
 
@@ -53,22 +53,20 @@ const TaskTable: FC<TaskTableProps> = ({ sort, pagination, userRole, ...props })
   )
 
   return (
-    <TableWrapperStyled data-testid='task-table'>
-      <TableStyled<TaskTableListItem>
-        components={tableComponents}
-        columns={sortedColumns}
-        pagination={
-          pagination && {
-            ...paginationConfig,
-            ...pagination,
-          }
-        }
-        rowKey='id'
-        showSorterTooltip={false}
-        locale={localeConfig}
-        {...props}
-      />
-    </TableWrapperStyled>
+    <TableStyled<TaskTableListItem>
+      {...props}
+      data-testid='task-table'
+      components={components}
+      columns={sortedColumns}
+      rowKey='id'
+      showSorterTooltip={false}
+      locale={localeConfig}
+      scroll={scrollConfig}
+      pagination={{
+        ...pagination,
+        defaultPageSize: DEFAULT_PAGE_SIZE,
+      }}
+    />
   )
 }
 

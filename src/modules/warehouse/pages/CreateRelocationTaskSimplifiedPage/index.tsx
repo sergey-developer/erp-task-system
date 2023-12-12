@@ -4,7 +4,7 @@ import get from 'lodash/get'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
-import { getCompleteAt } from 'modules/task/components/TaskCard/MainDetails/utils'
+import { getCompleteAt } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
