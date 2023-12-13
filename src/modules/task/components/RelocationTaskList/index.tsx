@@ -1,27 +1,26 @@
-import { Col, Divider, Row, Typography } from 'antd'
+import { Col, Divider, Row, Typography, Upload, UploadProps } from 'antd'
 import React, { FC } from 'react'
 
 import AttachmentList from 'modules/task/components/AttachmentList'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { makeUserByFullName } from 'modules/user/utils'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
-import { RelocationTaskListItemModel } from 'modules/warehouse/models'
 import { getRelocationTaskTitle } from 'modules/warehouse/utils/relocationTask'
 
+import UploadButton from 'components/Buttons/UploadButton'
 import LabeledData from 'components/LabeledData'
 import Space from 'components/Space'
 
 import { checkLastItem } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
+import { RelocationTaskListProps } from './types'
+
 const { Text } = Typography
 
-export type RelocationTaskListProps = {
-  data: RelocationTaskListItemModel[]
-  onClick: (id: RelocationTaskListItemModel['id']) => void
-}
+const showUploadListConfig: UploadProps['showUploadList'] = { showRemoveIcon: false }
 
-const RelocationTaskList: FC<RelocationTaskListProps> = ({ data, onClick }) => {
+const RelocationTaskList: FC<RelocationTaskListProps> = ({ data, onClick, onCreateAttachment }) => {
   return (
     <Space data-testid='relocation-task-list' $block direction='vertical'>
       {data.length ? (
@@ -38,21 +37,30 @@ const RelocationTaskList: FC<RelocationTaskListProps> = ({ data, onClick }) => {
 
               <Text strong>{getRelocationTaskTitle(item)}</Text>
 
-              <Row>
+              <Row justify='space-between'>
                 <Col span={12}>
                   <Space $block direction='vertical'>
                     <LabeledData label='Статус:' direction='horizontal'>
                       <Text>{relocationTaskStatusDict[item.status]}</Text>
                     </LabeledData>
 
-                    <LabeledData label='Документы:'>
+                    <LabeledData label='Документы:' onClick={(event) => event.stopPropagation()}>
+                      <Upload
+                        multiple
+                        customRequest={onCreateAttachment(item.id)}
+                        showUploadList={showUploadListConfig}
+                        itemRender={(originNode, file) => (!file.error ? originNode : null)}
+                      >
+                        <UploadButton label='Добавить вложение' />
+                      </Upload>
+
                       {!!item.documents?.length && <AttachmentList data={item.documents} />}
                     </LabeledData>
                   </Space>
                 </Col>
 
                 <Col span={12}>
-                  <Space $block direction='vertical'>
+                  <Space $block direction='vertical' align='center'>
                     <LabeledData label='Дата создания:' direction='horizontal'>
                       {formatDate(item.createdAt)}
                     </LabeledData>

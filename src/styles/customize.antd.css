@@ -1,5 +1,5 @@
 .ant-layout {
-  height: 100vh !important;
+  min-height: 100vh;
 }
 
 .ant-btn-default {
@@ -21,11 +21,6 @@
 
 .ant-form-vertical .ant-form-item:last-child {
   margin-bottom: 0;
-}
-
-.ant-typography {
-  white-space: normal;
-  overflow-wrap: anywhere !important;
 }
 
 .ant-typography,

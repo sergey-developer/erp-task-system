@@ -3,6 +3,7 @@ export * from './useCreateRelocationTaskITSM'
 export * from './useUpdateRelocationTask'
 export * from './useGetRelocationTask'
 export * from './useLazyGetRelocationTaskWaybillM15'
+export * from './useCreateRelocationTaskAttachment'
 export * from './useRelocationTaskStatus'
 
 export * from './useGetRelocationTaskList'
