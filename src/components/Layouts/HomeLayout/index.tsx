@@ -39,7 +39,7 @@ const HomeLayout: FC = () => {
       <LoadingArea
         data-testid='home-layout-loading'
         isLoading={userMeIsFetching}
-        area='parent'
+        area='global'
         size='large'
       >
         <PrivateHeader />

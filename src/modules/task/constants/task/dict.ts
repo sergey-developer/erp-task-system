@@ -1,9 +1,14 @@
-import { ExtendedFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
 import { BaseTaskModel } from 'modules/task/models'
+import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 
 import { StringMap } from 'shared/types/utils'
 
-import { FastFilterEnum, TaskCardTabsEnum, TaskExtendedStatusEnum, TaskStatusEnum } from './enums'
+import {
+  FastFilterEnum,
+  TaskDetailsTabsEnum,
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from './enums'
 
 export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
   [FastFilterEnum.All]: 'Все',
@@ -34,9 +39,7 @@ export const taskExtendedStatusDict: Readonly<Partial<StringMap<TaskExtendedStat
   [TaskExtendedStatusEnum.Closed]: 'Закрытые',
 }
 
-export const extendedFilterDict: Readonly<
-  StringMap<keyof Pick<ExtendedFilterFormFields, 'customers' | 'macroregions' | 'supportGroups'>>
-> = {
+export const tasksFiltersDict: Readonly<StringMap<keyof TasksFiltersStorageType>> = {
   customers: 'Клиенты',
   macroregions: 'Макрорегионы',
   supportGroups: 'Группы поддержки',
@@ -63,11 +66,11 @@ export const taskPriorityMap: Map<BaseTaskModel['priorityCode'], string> = new M
   [4, '4-низкий'],
 ])
 
-export const taskCardTabNamesDict: Readonly<StringMap<TaskCardTabsEnum>> = {
-  [TaskCardTabsEnum.SubTaskList]: 'Задания',
-  [TaskCardTabsEnum.CommentList]: 'Комментарии',
-  [TaskCardTabsEnum.Resolution]: 'Решение',
-  [TaskCardTabsEnum.Description]: 'Описание',
-  [TaskCardTabsEnum.Journal]: 'Журнал',
-  [TaskCardTabsEnum.RelocationTaskList]: 'Перемещения',
+export const taskDetailsTabNameDict: Readonly<StringMap<TaskDetailsTabsEnum>> = {
+  [TaskDetailsTabsEnum.SubTaskList]: 'Задания',
+  [TaskDetailsTabsEnum.CommentList]: 'Комментарии',
+  [TaskDetailsTabsEnum.Resolution]: 'Решение',
+  [TaskDetailsTabsEnum.Description]: 'Описание',
+  [TaskDetailsTabsEnum.Journal]: 'Журнал',
+  [TaskDetailsTabsEnum.RelocationTaskList]: 'Перемещения',
 }

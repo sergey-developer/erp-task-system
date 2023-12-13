@@ -3,15 +3,18 @@ import styled, { css } from 'styled-components'
 
 import { SpinnerProps } from './index'
 
-const areaStyles: Record<
-  NonNullable<SpinnerProps['area']>,
-  ReturnType<typeof css>
-> = {
-  block: css<SpinnerStyledProps>`
+// todo: fix styles
+const areaStyles: Record<NonNullable<SpinnerProps['area']>, ReturnType<typeof css>> = {
+  block: css`
     width: 100%;
   `,
-  parent: css<SpinnerStyledProps>`
+  parent: css`
     height: 100%;
+  `,
+  global: css`
+    position: absolute;
+    height: 100%;
+    width: 100%;
   `,
 }
 
@@ -30,6 +33,5 @@ export const SpinnerStyled = styled(Spin)<SpinnerStyledProps>`
         ${areaStyles[$area]}`
       : ''}
 
-  ${({ $centered }) =>
-    $centered ? 'justify-content: center; align-items: center;' : ''}
+  ${({ $centered }) => ($centered ? 'justify-content: center; align-items: center;' : '')}
 `

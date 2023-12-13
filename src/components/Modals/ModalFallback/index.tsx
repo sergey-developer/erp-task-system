@@ -7,7 +7,7 @@ type ModalFallbackProps = Pick<ModalProps, 'open' | 'onCancel'> & Pick<SpinnerPr
 
 const ModalFallback: FC<ModalFallbackProps> = (props) => {
   return (
-    <Modal destroyOnClose {...props} footer={null} maskClosable={false}>
+    <Modal {...props} destroyOnClose footer={null} maskClosable={false}>
       <Spinner area='block' />
     </Modal>
   )

@@ -4,13 +4,8 @@ export const getTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения заявки',
 }
 
-export const getTaskListMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения списка заявок',
-}
-
-export const getTaskListMapMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения списка заявок для карты',
-}
+export const getTaskListErrorMsg = 'Ошибка получения списка заявок'
+export const getTaskListMapErrorMsg = 'Ошибка получения списка заявок для карты'
 
 export const getTaskWorkPerformedActMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка формирования акта выполненных работ',

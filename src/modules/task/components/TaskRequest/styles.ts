@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 
-import { TaskCardContainerStyled } from '../TaskCard/Card/styles'
-
-export const WrapperStyled = styled(TaskCardContainerStyled)`
-  margin-top: -20px;
+export const WrapperStyled = styled.div`
+  margin-top: -25px;
+  margin-left: -25px;
+  margin-right: -25px;
+  padding: 20px;
   background-color: ${({ theme }) => theme.colors.cosmicLatte};
   border-bottom: 1px solid ${({ theme }) => theme.colors.chineseWhite};
 `
