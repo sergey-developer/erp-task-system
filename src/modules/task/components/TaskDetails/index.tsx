@@ -62,7 +62,7 @@ import { EmptyFn } from 'shared/types/utils'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { extractOriginFiles } from 'shared/utils/file'
-import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
+import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
@@ -412,14 +412,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            const badRequestError = error as CreateTaskSuspendRequestBadRequestErrorResponse
-
-            handleSetFieldsErrors(
-              {
-                ...badRequestError,
-                data: getFormErrorsFromBadRequestError(badRequestError),
-              },
-              setFields,
+            setFields(
+              getFieldsErrors(
+                getFormErrorsFromBadRequestError(
+                  error.data as CreateTaskSuspendRequestBadRequestErrorResponse,
+                ),
+              ),
             )
           }
         }
