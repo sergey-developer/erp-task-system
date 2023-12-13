@@ -114,11 +114,6 @@ const getAddAttachmentsButton = () =>
 const getAddAttachmentsZoneButton = () =>
   buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[0]
 
-const clickAddAttachmentsButton = async (user: UserEvent) => {
-  const button = getAddAttachmentsButton()
-  await user.click(button)
-}
-
 const setAttachment = async (
   user: UserEvent,
   file: File = new File([], '', { type: 'image/png' }),
@@ -173,7 +168,6 @@ export const testUtils = {
   setUserResolution,
 
   getAddAttachmentsButton,
-  clickAddAttachmentsButton,
   setAttachment,
   getUploadedAttachment,
   findAttachmentsError,
@@ -468,21 +462,14 @@ describe('Модалка выполнения заявки', () => {
       expect(button).toBeEnabled()
     })
 
-    test('Можно загрузить вложение', async () => {
+    test('Загруженное вложение отображается', async () => {
       const { user } = render(<ExecuteTaskModal {...props} />)
 
       const { input, file } = await testUtils.setAttachment(user)
+      const uploadedAttachment = testUtils.getUploadedAttachment(file.name)
 
       expect(input.files!.item(0)).toBe(file)
       expect(input.files).toHaveLength(1)
-    })
-
-    test('После загрузки вложение отображается', async () => {
-      const { user } = render(<ExecuteTaskModal {...props} />)
-
-      const { file } = await testUtils.setAttachment(user)
-
-      const uploadedAttachment = testUtils.getUploadedAttachment(file.name)
       expect(uploadedAttachment).toBeInTheDocument()
     })
 
