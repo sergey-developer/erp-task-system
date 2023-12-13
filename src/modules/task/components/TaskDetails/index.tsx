@@ -448,7 +448,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <>
-      <Drawer open={!!taskId} onClose={closeTask} width={600} title={title} mask={false}>
+      <Drawer open={!!taskId} onClose={closeTask} width={650} title={title} mask={false}>
         <Space direction='vertical' $block size='middle'>
           <LoadingArea
             data-testid='task-reclassification-request-loading'

@@ -10,15 +10,17 @@ import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { render } from '_tests_/utils'
+import { buttonTestUtils, render } from '_tests_/utils'
 
-import RelocationTaskList, { RelocationTaskListProps } from './index'
+import RelocationTaskList from './index'
+import { RelocationTaskListProps } from './types'
 
 const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
 
 const props: RelocationTaskListProps = {
   data: [relocationTaskListItem],
   onClick: jest.fn(),
+  onCreateAttachment: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('relocation-task-list')
@@ -35,12 +37,38 @@ const clickListItem = async (user: UserEvent, id: IdType) => {
   await user.click(item)
 }
 
+// documents
+const getCreateDocumentsButton = (id: IdType) =>
+  buttonTestUtils.getAllButtonIn(getListItem(id), /Добавить вложение/)[1]
+
+const getCreateDocumentsZoneButton = (id: IdType) =>
+  buttonTestUtils.getAllButtonIn(getListItem(id), /Добавить вложение/)[0]
+
+const setDocument = async (
+  id: IdType,
+  user: UserEvent,
+  file: File = new File([], '', { type: 'image/png' }),
+) => {
+  const button = getCreateDocumentsZoneButton(id)
+  // eslint-disable-next-line testing-library/no-node-access
+  const input = button.querySelector('input[type="file"]') as HTMLInputElement
+  await user.upload(input, file)
+  return { input, file }
+}
+
+const getUploadedDocument = (filename: string, id: IdType) =>
+  within(getListItem(id)).getByTitle(filename)
+
 export const testUtils = {
   getContainer,
 
   getListItem,
   getChildInListItem,
   clickListItem,
+
+  getCreateDocumentsButton,
+  setDocument,
+  getUploadedDocument,
 }
 
 describe('RelocationTaskList', () => {
@@ -77,16 +105,44 @@ describe('RelocationTaskList', () => {
     expect(value).toBeInTheDocument()
   })
 
-  test('Документы отображается', () => {
-    render(<RelocationTaskList {...props} />)
+  describe('Документы', () => {
+    test('Отображаются', () => {
+      render(<RelocationTaskList {...props} />)
 
-    const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Документы/)
-    const value = attachmentListTestUtils.getContainerIn(
-      testUtils.getListItem(relocationTaskListItem.id),
-    )
+      const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Документы/)
+      const value = attachmentListTestUtils.getContainerIn(
+        testUtils.getListItem(relocationTaskListItem.id),
+      )
 
-    expect(label).toBeInTheDocument()
-    expect(value).toBeInTheDocument()
+      expect(label).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
+    describe('Кнопка добавления', () => {
+      test('Отображается', () => {
+        render(<RelocationTaskList {...props} />)
+
+        const button = testUtils.getCreateDocumentsButton(relocationTaskListItem.id)
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
+
+      test('Вызывается обработчик и загруженный документ отображается', async () => {
+        const { user } = render(<RelocationTaskList {...props} />)
+
+        const { input, file } = await testUtils.setDocument(relocationTaskListItem.id, user)
+        const uploadedAttachment = testUtils.getUploadedDocument(
+          file.name,
+          relocationTaskListItem.id,
+        )
+
+        expect(props.onCreateAttachment).toBeCalledTimes(1)
+        expect(input.files!.item(0)).toBe(file)
+        expect(input.files).toHaveLength(1)
+        expect(uploadedAttachment).toBeInTheDocument()
+      })
+    })
   })
 
   test('Дата создания отображается', () => {

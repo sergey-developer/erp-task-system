@@ -5,7 +5,7 @@ import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
 import pick from 'lodash/pick'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
@@ -85,7 +85,7 @@ const initialExtendedFilterFormValues = getInitialExtendedFilterFormValues()
 
 const TaskListPage: FC = () => {
   // todo: создать хук для useSearchParams который парсит значения в нужный тип
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const viewTaskId = Number(searchParams.get('viewTask')) || undefined
   const taskDetailsTab = taskDetailsTabExist(searchParams.get('taskDetailsTab') || '')
     ? (searchParams.get('taskDetailsTab') as TaskDetailsTabsEnum)
@@ -94,9 +94,11 @@ const TaskListPage: FC = () => {
   const { role } = useUserRole()
   const [autoUpdateEnabled, { toggle: toggleAutoUpdateEnabled }] = useBoolean(false)
 
-  const [selectedTaskId, setSelectedTaskId] = useState<IdType>()
-  const [activeTaskDetailsTab, setActiveTaskDetailsTab] = useState<TaskDetailsTabsEnum>()
+  const [selectedTaskId, setSelectedTaskId] = useState<MaybeUndefined<IdType>>(viewTaskId)
   const [additionalInfoExpanded, { toggle: toggleAdditionalInfoExpanded }] = useBoolean(false)
+
+  const [activeTaskDetailsTab, setActiveTaskDetailsTab] =
+    useState<MaybeUndefined<TaskDetailsTabsEnum>>(taskDetailsTab)
 
   const initialFastFilter = getInitialFastFilter(role)
   const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
@@ -176,14 +178,6 @@ const TaskListPage: FC = () => {
   )
 
   useOnChangeUserStatus(onChangeUserStatus)
-
-  useEffect(() => {
-    if (!selectedTaskId && !!viewTaskId) {
-      setSelectedTaskId(viewTaskId)
-      setActiveTaskDetailsTab(taskDetailsTab)
-      setSearchParams(undefined)
-    }
-  }, [selectedTaskId, setSearchParams, taskDetailsTab, viewTaskId])
 
   const {
     data: taskCounters,

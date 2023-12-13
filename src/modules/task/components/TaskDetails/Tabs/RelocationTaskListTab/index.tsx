@@ -1,17 +1,20 @@
 import { Button, Col, Row, Typography } from 'antd'
 import pick from 'lodash/pick'
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import RelocationTaskList from 'modules/task/components/RelocationTaskList'
+import { RelocationTaskListProps } from 'modules/task/components/RelocationTaskList/types'
 import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
-import { TaskModel } from 'modules/task/models'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { useGetRelocationTaskList } from 'modules/warehouse/hooks/relocationTask'
+import {
+  useCreateRelocationTaskAttachment,
+  useGetRelocationTaskList,
+} from 'modules/warehouse/hooks/relocationTask'
 import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocationTask'
 
 import LoadingArea from 'components/LoadingArea'
@@ -21,20 +24,17 @@ import { IdType } from 'shared/types/common'
 import { getTextWithCounter } from 'shared/utils/common'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
-const { Title } = Typography
+import { RelocationTaskListTabProps } from './types'
 
-export type RelocationTaskListTabProps = {
-  task: Pick<
-    TaskModel,
-    'id' | 'assignee' | 'recordId' | 'olaNextBreachTime' | 'olaEstimatedTime' | 'olaStatus' | 'shop'
-  >
-}
+const { Title } = Typography
 
 const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
   const navigate = useNavigate()
 
   const permissions = useMatchUserPermissions(['RELOCATION_TASKS_CREATE'])
   const assigneeIsCurrentUser = useIdBelongAuthUser(task.assignee?.id)
+
+  const [createRelocationTaskAttachment] = useCreateRelocationTaskAttachment()
 
   const { currentData: paginatedRelocationTaskList, isFetching: relocationTaskListIsFetching } =
     useGetRelocationTaskList({
@@ -52,7 +52,10 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
 
   const relocationTaskList = extractPaginationResults(paginatedRelocationTaskList)
 
-  const handleClickTask = (id: IdType) => navigate(getRelocationTaskListPageLink(id))
+  const handleClickTask = useCallback(
+    (id: IdType) => navigate(getRelocationTaskListPageLink(id)),
+    [navigate],
+  )
 
   const handleClickCreate = () =>
     navigate(WarehouseRouteEnum.CreateRelocationTaskSimplified, {
@@ -73,6 +76,13 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
         }),
       },
     })
+
+  const handleCreateAttachment = useCallback<RelocationTaskListProps['onCreateAttachment']>(
+    (id) => async (options) => {
+      await createRelocationTaskAttachment({ relocationTaskId: id }, options)
+    },
+    [createRelocationTaskAttachment],
+  )
 
   return (
     <Space data-testid='relocation-task-list-tab' size='middle' direction='vertical' $block>
@@ -96,7 +106,11 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
         data-testid='relocation-task-list-loading'
         isLoading={relocationTaskListIsFetching}
       >
-        <RelocationTaskList data={relocationTaskList} onClick={handleClickTask} />
+        <RelocationTaskList
+          data={relocationTaskList}
+          onClick={handleClickTask}
+          onCreateAttachment={handleCreateAttachment}
+        />
       </LoadingArea>
     </Space>
   )

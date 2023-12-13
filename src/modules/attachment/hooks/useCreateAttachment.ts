@@ -45,7 +45,7 @@ export const useCreateAttachment = (): UseCreateAttachmentResult => {
     async (args, { file, onSuccess, onError }) => {
       try {
         const response = await mutation({ ...args, file: file as FileToSend }).unwrap()
-        if (onSuccess) onSuccess({ id: response.id })
+        if (onSuccess) onSuccess(response)
         return response
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
