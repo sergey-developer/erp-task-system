@@ -20,6 +20,7 @@ import {
   useCreateEquipment,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
+  useGetEquipmentListTemplate,
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
@@ -175,6 +176,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const [createTaskMutation, { isLoading: createTaskIsLoading }] = useCreateRelocationTaskITSM()
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
+
+  const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
+    useGetEquipmentListTemplate()
 
   const handleCreateTask = async (values: SimplifiedRelocationTaskFormFields) => {
     if (!task) return
@@ -415,18 +419,33 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
           <Col span={24}>
             <Space direction='vertical'>
-              <Space>
-                <Text strong>
-                  Перечень оборудования для перемещения с объекта "{valueOrHyphen(taskShop?.title)}"
-                  на склад
-                </Text>
+              <Row justify='space-between' align='middle'>
+                <Col>
+                  <Space>
+                    <Text strong>
+                      Перечень оборудования для перемещения с объекта "
+                      {valueOrHyphen(taskShop?.title)}" на склад
+                    </Text>
 
-                {warehouseMyIsFetching ? (
-                  <Spinner centered={false} />
-                ) : (
-                  <Text strong>"{valueOrHyphen(warehouseMy?.title)}"</Text>
+                    {warehouseMyIsFetching ? (
+                      <Spinner centered={false} />
+                    ) : (
+                      <Text strong>"{valueOrHyphen(warehouseMy?.title)}"</Text>
+                    )}
+                  </Space>
+                </Col>
+
+                {permissions?.equipmentsCreate && (
+                  <Col>
+                    <Button
+                      onClick={getEquipmentListTemplate}
+                      loading={getEquipmentListTemplateIsFetching}
+                    >
+                      Скачать шаблон
+                    </Button>
+                  </Col>
                 )}
-              </Space>
+              </Row>
 
               <RelocationEquipmentSimplifiedEditableTable
                 name='equipmentsToWarehouse'

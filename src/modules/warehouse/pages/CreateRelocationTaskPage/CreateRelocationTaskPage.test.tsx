@@ -112,6 +112,7 @@ export const testUtils = {
 }
 
 setupApiTests()
+notificationTestUtils.setupNotifications()
 
 describe('Страница создания заявки на перемещение', () => {
   describe('Форма', () => {
