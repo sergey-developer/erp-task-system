@@ -1,3 +1,4 @@
+import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
 
@@ -22,4 +23,5 @@ export type SimplifiedRelocationTaskFormFields = {
 
   equipmentsToShop?: SimplifiedRelocationTaskEquipment[]
   equipmentsToWarehouse?: SimplifiedRelocationTaskEquipment[]
+  equipmentsToWarehouseByFile?: EquipmentByFileTableRow[]
 }

@@ -52,10 +52,7 @@ import {
   useUpdateRelocationTask,
 } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
-import {
-  CreateEquipmentsBadRequestErrorResponse,
-  EquipmentCategoryListItemModel,
-} from 'modules/warehouse/models'
+import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import {
@@ -127,7 +124,6 @@ const EditRelocationTaskPage: FC = () => {
   ] = useBoolean(false)
 
   const handleCloseCreateEquipmentsByFileModal = useDebounceFn(() => {
-    setCreateEquipmentsErrors(undefined)
     closeCreateEquipmentsByFileModal()
     form.setFieldValue('equipmentsByFile', [])
   })
@@ -191,9 +187,6 @@ const EditRelocationTaskPage: FC = () => {
   })
 
   const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
-
-  const [createEquipmentsErrors, setCreateEquipmentsErrors] =
-    useState<CreateEquipmentsBadRequestErrorResponse>()
 
   const [editableEquipmentByFile, setEditableEquipmentByFile] = useState<EquipmentByFileTableRow>()
   const [editableEquipmentByFileIndex, setEditableEquipmentByFileIndex] = useState<number>()
@@ -507,27 +500,18 @@ const EditRelocationTaskPage: FC = () => {
 
       form.setFieldValue(equipmentsPath, [...currentEquipments, ...newEquipments])
       setEditableTableRowKeys((prevState) => prevState.concat(newEditableTableRowKeys))
-
-      if (isNumber(editableEquipmentByFileIndex)) {
-        setCreateEquipmentsErrors((prevState) => {
-          if (prevState) {
-            const newState = [...prevState]
-            newState.splice(editableEquipmentByFileIndex, 1)
-            return newState
-          }
-
-          return prevState
-        })
-      }
-
       handleCloseCreateEquipmentsByFileModal()
     } catch (error) {
-      if (isErrorResponse(error) && isBadRequestError(error) && error.data.errorList) {
-        const errors = error.data.errorList as CreateEquipmentsBadRequestErrorResponse
-        setCreateEquipmentsErrors(errors)
-      }
+      console.error(error)
     }
-  }, [createEquipmentsMutation, selectedRelocateFrom, selectedRelocateTo])
+  }, [
+    createEquipmentsMutation,
+    editableEquipmentByFileIndex,
+    form,
+    handleCloseCreateEquipmentsByFileModal,
+    selectedRelocateFrom,
+    selectedRelocateTo,
+  ])
 
   const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
@@ -987,7 +971,6 @@ const EditRelocationTaskPage: FC = () => {
             onCreate={createEquipments}
             isCreating={createEquipmentsIsLoading}
             data={(form.getFieldValue('equipmentsByFile') || []) as EquipmentByFileTableRow[]}
-            // errors={createEquipmentsErrors}
             onEdit={handleOpenEditEquipmentByFileModal}
           />
         </React.Suspense>
