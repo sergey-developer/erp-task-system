@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
-import { testUtils as createRelocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
+import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
 
@@ -54,7 +54,7 @@ describe('Страница создания заявки на перемещен
 
       render(<CreateRelocationTaskPage />)
 
-      const form = createRelocationTaskFormTestUtils.getContainer()
+      const form = relocationTaskFormTestUtils.getContainer()
       expect(form).toBeInTheDocument()
     })
   })

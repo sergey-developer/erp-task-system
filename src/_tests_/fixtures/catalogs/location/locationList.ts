@@ -5,10 +5,13 @@ import { LocationListItemModel, LocationListModel } from 'shared/models/catalogs
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
-export const locationListItem = (): LocationListItemModel => ({
+export const locationListItem = (
+  props?: Partial<LocationListItemModel>,
+): LocationListItemModel => ({
+  type: props?.type || LocationTypeEnum.Shop,
+
   id: fakeId(),
   title: fakeWord(),
-  type: LocationTypeEnum.Shop,
 })
 
 export const locationList = (length: number = 1): LocationListModel =>
