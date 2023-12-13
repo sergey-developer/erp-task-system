@@ -12,13 +12,15 @@ import { formatDate } from 'shared/utils/date'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render } from '_tests_/utils'
 
-import RelocationTaskList, { RelocationTaskListProps } from './index'
+import RelocationTaskList from './index'
+import { RelocationTaskListProps } from './types'
 
 const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
 
 const props: RelocationTaskListProps = {
   data: [relocationTaskListItem],
   onClick: jest.fn(),
+  onCreateAttachment: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('relocation-task-list')

@@ -26,6 +26,9 @@ export const executeRelocationTaskMessages: ApiRequestMessages<'commonError'> = 
   commonError: 'Ошибка выполнения заявки на перемещение',
 }
 
+export const createRelocationTaskAttachmentErrorMsg =
+  'Ошибка создания вложения к заявке на перемещение'
+
 export const getRelocationTaskWaybillM15ErrorMsg = 'Ошибка формирования накладной М-15'
 
 export const getRelocationEquipmentListMessages: ApiRequestMessages<'commonError'> = {

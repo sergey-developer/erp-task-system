@@ -35,7 +35,8 @@ import {
   spinnerTestUtils,
 } from '_tests_/utils'
 
-import RelocationTaskListTab, { RelocationTaskListTabProps } from './index'
+import RelocationTaskListTab from './index'
+import { RelocationTaskListTabProps } from './types'
 
 const props: RelocationTaskListTabProps = {
   task: taskFixtures.task(),

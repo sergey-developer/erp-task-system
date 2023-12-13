@@ -7,7 +7,7 @@ import { FCWithChildren } from 'shared/types/utils'
 
 const { Text } = Typography
 
-type LabeledDataProps = Pick<SpaceProps, 'size' | 'direction' | 'align'> & {
+type LabeledDataProps = Pick<SpaceProps, 'size' | 'direction' | 'align' | 'onClick'> & {
   label: string
   block?: boolean
 }

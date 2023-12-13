@@ -11,6 +11,8 @@ import {
   CancelRelocationTaskSuccessResponse,
   CloseRelocationTaskMutationArgs,
   CloseRelocationTaskSuccessResponse,
+  CreateRelocationTaskAttachmentMutationArgs,
+  CreateRelocationTaskAttachmentSuccessResponse,
   CreateRelocationTaskITSMMutationArgs,
   CreateRelocationTaskITSMSuccessResponse,
   CreateRelocationTaskMutationArgs,
@@ -36,6 +38,7 @@ import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehou
 import {
   cancelRelocationTaskUrl,
   closeRelocationTaskUrl,
+  createRelocationTaskAttachmentUrl,
   executeRelocationTaskUrl,
   getRelocationEquipmentBalanceListUrl,
   getRelocationEquipmentListUrl,
@@ -190,6 +193,22 @@ const relocationTaskApiService = baseApiService
         },
       }),
 
+      createRelocationTaskAttachment: build.mutation<
+        CreateRelocationTaskAttachmentSuccessResponse,
+        CreateRelocationTaskAttachmentMutationArgs
+      >({
+        query: ({ relocationTaskId, file }) => {
+          const formData = new FormData()
+          formData.append('file', file)
+
+          return {
+            url: createRelocationTaskAttachmentUrl(relocationTaskId),
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
+
       getRelocationTaskList: build.query<
         GetRelocationTaskListTransformedSuccessResponse,
         GetRelocationTaskListQueryArgs
@@ -244,6 +263,7 @@ export const {
   useReturnRelocationTaskToReworkMutation,
   useCancelRelocationTaskMutation,
   useExecuteRelocationTaskMutation,
+  useCreateRelocationTaskAttachmentMutation,
   useGetRelocationTaskQuery,
 
   useLazyGetRelocationTaskWaybillM15Query,
