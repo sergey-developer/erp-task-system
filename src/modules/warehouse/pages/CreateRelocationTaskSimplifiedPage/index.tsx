@@ -117,7 +117,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     Form.useWatch('equipmentsToShop', form)
   const equipmentsToWarehouseFormValue: SimplifiedRelocationTaskFormFields['equipmentsToWarehouse'] =
     Form.useWatch('equipmentsToWarehouse', form)
-  console.log({ equipmentsToShopFormValue, equipmentsToWarehouseFormValue })
+
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
