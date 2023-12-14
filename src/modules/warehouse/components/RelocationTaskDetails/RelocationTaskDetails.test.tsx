@@ -2388,7 +2388,7 @@ describe('Информация о заявке о перемещении', () =>
 
         await waitFor(() => expect(modal).not.toBeInTheDocument())
 
-        const status = testUtils.getRelocationTaskInfo(
+        const status = testUtils.getBlockInfo(
           'status',
           relocationTaskStatusDict[closeRelocationTaskResponse.status],
         )
