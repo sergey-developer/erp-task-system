@@ -29,4 +29,6 @@ export type RelocationEquipmentSimplifiedEditableTableProps = {
 
   canCreateEquipment?: boolean
   onClickCreateEquipment?: (row: ActiveEquipmentRow) => void
+
+  onClickCreateImage: (activeRow: ActiveEquipmentRow) => void
 }

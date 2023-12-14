@@ -7,12 +7,12 @@ import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
 import {
-  EquipmentCategoryEnum,
   EquipmentConditionEnum,
   equipmentConditionOptions,
 } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
 import { MinusCircleIcon } from 'components/Icons'
@@ -59,7 +59,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   addEquipmentBtnDisabled,
   onClickCreateEquipment,
 
-  onClickAddImage,
+  onClickCreateImage,
 }) => {
   const form = Form.useFormInstance<RelocationTaskFormFields>()
 
@@ -200,7 +200,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
             (config.rowKey as unknown as string[]).concat('category'),
           )
 
-          const isConsumable = category?.code === EquipmentCategoryEnum.Consumable
+          const isConsumable = checkEquipmentCategoryIsConsumable(category?.code)
 
           return {
             min: 1,
@@ -212,6 +212,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
     },
     {
       key: 'attachments',
+      width: 110,
       title: 'Изображения',
       renderFormItem: (schema, config) => {
         if (config.record && !isUndefined(schema.index)) {
@@ -219,7 +220,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
             <Button
               disabled={!config.record.id || isLoading}
               onClick={() =>
-                onClickAddImage({
+                onClickCreateImage({
                   relocationEquipmentId: config.record!.relocationEquipmentId,
                   rowIndex: schema.index!,
                 })
