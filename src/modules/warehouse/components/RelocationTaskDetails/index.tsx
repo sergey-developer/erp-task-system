@@ -9,14 +9,23 @@ import {
   Row,
   Tooltip,
   Typography,
+  Upload,
+  UploadProps,
 } from 'antd'
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
+import { ExecuteRelocationTaskModalProps } from 'modules/warehouse/components/ExecuteRelocationTaskModal/types'
+import RelocationEquipmentTable from 'modules/warehouse/components/RelocationEquipmentTable'
+import {
+  RelocationEquipmentTableItem,
+  RelocationEquipmentTableProps,
+} from 'modules/warehouse/components/RelocationEquipmentTable/types'
+import { ReturnRelocationTaskToReworkModalProps } from 'modules/warehouse/components/ReturnRelocationTaskToReworkModal/types'
 import {
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
@@ -27,6 +36,7 @@ import {
 } from 'modules/warehouse/constants/relocationTask'
 import { useGetRelocationEquipmentAttachmentList } from 'modules/warehouse/hooks/relocationEquipment'
 import {
+  useCreateRelocationTaskAttachment,
   useGetRelocationEquipmentList,
   useGetRelocationTask,
   useLazyGetRelocationTaskWaybillM15,
@@ -44,6 +54,7 @@ import {
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
 
+import UploadButton from 'components/Buttons/UploadButton'
 import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -65,34 +76,32 @@ import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { ExecuteRelocationTaskModalProps } from '../ExecuteRelocationTaskModal/types'
-import RelocationEquipmentTable from '../RelocationEquipmentTable'
-import {
-  RelocationEquipmentTableItem,
-  RelocationEquipmentTableProps,
-} from '../RelocationEquipmentTable/types'
-import { ReturnRelocationTaskToReworkModalProps } from '../ReturnRelocationTaskToReworkModal/types'
 import { RelocationTaskDetailsProps } from './types'
 
 const AttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AttachmentListModal'),
 )
 
-const CancelRelocationTaskModal = React.lazy(() => import('../CancelRelocationTaskModal'))
+const CancelRelocationTaskModal = React.lazy(
+  () => import('modules/warehouse/components/CancelRelocationTaskModal'),
+)
 
 const ConfirmExecutionRelocationTaskModal = React.lazy(
-  () => import('../ConfirmExecutionRelocationTaskModal'),
+  () => import('modules/warehouse/components/ConfirmExecutionRelocationTaskModal'),
 )
 
 const ReturnRelocationTaskToReworkModal = React.lazy(
-  () => import('../ReturnRelocationTaskToReworkModal'),
+  () => import('modules/warehouse/components/ReturnRelocationTaskToReworkModal'),
 )
 
-const ExecuteRelocationTaskModal = React.lazy(() => import('../ExecuteRelocationTaskModal'))
+const ExecuteRelocationTaskModal = React.lazy(
+  () => import('modules/warehouse/components/ExecuteRelocationTaskModal'),
+)
 
 const { Text } = Typography
 
 const dropdownTrigger: DropdownProps['trigger'] = ['click']
+const showUploadListConfig: UploadProps['showUploadList'] = { showRemoveIcon: false }
 
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
   const navigate = useNavigate()
@@ -146,17 +155,17 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
 
-  const [closeRelocationTaskMutation, { isLoading: closeRelocationTaskIsLoading }] =
-    useCloseRelocationTaskMutation()
+  const [closeTaskMutation, { isLoading: closeTaskIsLoading }] = useCloseRelocationTaskMutation()
 
   const [returnToReworkMutation, { isLoading: returnToReworkIsLoading }] =
     useReturnRelocationTaskToReworkMutation()
 
-  const [cancelRelocationTaskMutation, { isLoading: cancelRelocationTaskIsLoading }] =
-    useCancelRelocationTaskMutation()
+  const [cancelTaskMutation, { isLoading: cancelTaskIsLoading }] = useCancelRelocationTaskMutation()
 
-  const [executeRelocationTaskMutation, { isLoading: executeRelocationTaskIsLoading }] =
+  const [executeTaskMutation, { isLoading: executeTaskIsLoading }] =
     useExecuteRelocationTaskMutation()
+
+  const [createAttachment] = useCreateRelocationTaskAttachment()
 
   const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
   const executorIsCurrentUser = useIdBelongAuthUser(relocationTask?.executor?.id)
@@ -164,7 +173,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const handleCloseTask = async () => {
     try {
-      await closeRelocationTaskMutation({ relocationTaskId }).unwrap()
+      await closeTaskMutation({ relocationTaskId }).unwrap()
       toggleOpenConfirmExecutionModal()
     } catch (error) {
       if (isErrorResponse(error)) {
@@ -185,7 +194,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const handleCancelTask = async () => {
     try {
-      await cancelRelocationTaskMutation({ relocationTaskId }).unwrap()
+      await cancelTaskMutation({ relocationTaskId }).unwrap()
       toggleOpenCancelTaskModal()
     } catch (error) {
       if (isErrorResponse(error)) {
@@ -247,7 +256,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     setFields,
   ) => {
     try {
-      await executeRelocationTaskMutation({
+      await executeTaskMutation({
         relocationTaskId,
         documents: extractOriginFiles(values.documents),
       }).unwrap()
@@ -271,6 +280,13 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       }
     }
   }
+
+  const handleCreateAttachment = useCallback<NonNullable<UploadProps['customRequest']>>(
+    async (options) => {
+      await createAttachment({ relocationTaskId }, options)
+    },
+    [createAttachment, relocationTaskId],
+  )
 
   const menuProps: MenuProps = {
     items: [
@@ -367,7 +383,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             >
               {relocationTask && (
                 <Space $block direction='vertical' size='middle'>
-                  <Row data-testid='type'>
+                  <Row data-testid='type' align='middle'>
                     <Col span={8}>
                       <Text type='secondary'>Тип заявки:</Text>
                     </Col>
@@ -375,7 +391,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Col span={16}>{relocationTaskTypeDict[relocationTask.type]}</Col>
                   </Row>
 
-                  <Row data-testid='deadline-at'>
+                  <Row data-testid='deadline-at' align='middle'>
                     <Col span={8}>
                       <Text type='secondary'>Срок выполнения:</Text>
                     </Col>
@@ -383,7 +399,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Col span={16}>{formatDate(relocationTask.deadlineAt)}</Col>
                   </Row>
 
-                  <Row data-testid='relocate-from'>
+                  <Row data-testid='relocate-from' align='middle'>
                     <Col span={8}>
                       <Text type='secondary'>Объект выбытия:</Text>
                     </Col>
@@ -393,7 +409,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     </Col>
                   </Row>
 
-                  <Row data-testid='relocate-to'>
+                  <Row data-testid='relocate-to' align='middle'>
                     <Col span={8}>
                       <Text type='secondary'>Объект прибытия:</Text>
                     </Col>
@@ -403,7 +419,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     </Col>
                   </Row>
 
-                  <Row data-testid='executor'>
+                  <Row data-testid='executor' align='middle'>
                     <Col span={8}>
                       <Text type='secondary'>Исполнитель:</Text>
                     </Col>
@@ -413,7 +429,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     </Col>
                   </Row>
 
-                  <Row data-testid='status'>
+                  <Row data-testid='status' align='middle'>
                     <Col span={8}>
                       <Text type='secondary'>Статус:</Text>
                     </Col>
@@ -446,7 +462,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     </Row>
                   )}
 
-                  <Row data-testid='created-by'>
+                  <Row data-testid='created-by' align='middle'>
                     <Col span={8}>
                       <Text type='secondary'>Инициатор:</Text>
                     </Col>
@@ -456,7 +472,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     </Col>
                   </Row>
 
-                  <Row data-testid='created-at'>
+                  <Row data-testid='created-at' align='middle'>
                     <Col span={8}>
                       <Text type='secondary'>Создано:</Text>
                     </Col>
@@ -464,17 +480,19 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     <Col span={16}>{formatDate(relocationTask.createdAt)}</Col>
                   </Row>
 
-                  <Row data-testid='task'>
+                  <Row data-testid='task' align='middle'>
                     <Col span={8}>
                       <Text type='secondary'>Заявка ITSM:</Text>
                     </Col>
 
-                    {relocationTask.task && (
+                    {relocationTask.task ? (
                       <Col span={16}>
                         <Link to={getTaskListPageLink({ viewTaskId: relocationTask.task.id })}>
                           {relocationTask.task.recordId}
                         </Link>
                       </Col>
+                    ) : (
+                      valueOrHyphen(relocationTask.task)
                     )}
                   </Row>
 
@@ -493,11 +511,22 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                       <Text type='secondary'>Документы:</Text>
                     </Col>
 
-                    {!!relocationTask.documents?.length && (
-                      <Col span={16}>
-                        <AttachmentList data={relocationTask.documents} />
-                      </Col>
-                    )}
+                    <Col span={16}>
+                      <Space direction='vertical'>
+                        <Upload
+                          multiple
+                          customRequest={handleCreateAttachment}
+                          showUploadList={showUploadListConfig}
+                          itemRender={(originNode, file) => (!file.error ? originNode : null)}
+                        >
+                          <UploadButton label='Добавить вложение' />
+                        </Upload>
+
+                        {!!relocationTask.documents?.length && (
+                          <AttachmentList data={relocationTask.documents} />
+                        )}
+                      </Space>
+                    </Col>
                   </Row>
                 </Space>
               )}
@@ -529,7 +558,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         >
           <ConfirmExecutionRelocationTaskModal
             open={confirmExecutionModalOpened}
-            isLoading={closeRelocationTaskIsLoading}
+            isLoading={closeTaskIsLoading}
             onCancel={debouncedToggleOpenConfirmExecutionModal}
             onConfirm={handleCloseTask}
           />
@@ -565,7 +594,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         >
           <CancelRelocationTaskModal
             open={cancelTaskModalOpened}
-            isLoading={cancelRelocationTaskIsLoading}
+            isLoading={cancelTaskIsLoading}
             onCancel={debouncedToggleOpenCancelTaskModal}
             onConfirm={handleCancelTask}
           />
@@ -583,7 +612,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         >
           <ExecuteRelocationTaskModal
             open={executeTaskModalOpened}
-            isLoading={executeRelocationTaskIsLoading}
+            isLoading={executeTaskIsLoading}
             onCancel={debouncedToggleOpenExecuteTaskModal}
             onSubmit={handleExecuteTask}
           />
