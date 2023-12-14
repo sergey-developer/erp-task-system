@@ -1,14 +1,13 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { Button, Form } from 'antd'
+import isUndefined from 'lodash/isUndefined'
 import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
-import {
-  EquipmentCategoryEnum,
-  equipmentConditionOptions,
-} from 'modules/warehouse/constants/equipment'
+import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
+import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
@@ -39,6 +38,8 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
 
   canCreateEquipment,
   onClickCreateEquipment,
+
+  onClickCreateImage,
 }) => {
   const form = Form.useFormInstance()
 
@@ -138,13 +139,36 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
             (config.rowKey as unknown as string[]).concat('category'),
           )
 
-          const isConsumable = category?.code === EquipmentCategoryEnum.Consumable
+          const isConsumable = checkEquipmentCategoryIsConsumable(category?.code)
 
           return {
             min: 1,
             max: amount || 1,
             disabled: (!!category && !isConsumable) || isLoading || equipmentIsLoading,
           }
+        }
+      },
+    },
+    {
+      key: 'attachments',
+      width: 110,
+      title: 'Изображения',
+      renderFormItem: (schema, config) => {
+        if (config.record && !isUndefined(schema.index)) {
+          return (
+            <Button
+              disabled={!config.record.id || isLoading}
+              onClick={() =>
+                onClickCreateImage({
+                  tableName: name,
+                  rowIndex: schema.index!,
+                  relocationEquipmentId: config.record!.relocationEquipmentId,
+                })
+              }
+            >
+              Добавить
+            </Button>
+          )
         }
       },
     },
