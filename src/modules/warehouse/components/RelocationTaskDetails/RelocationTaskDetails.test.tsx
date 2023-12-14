@@ -52,6 +52,7 @@ import {
   mockCloseRelocationTaskNotFoundError,
   mockCloseRelocationTaskServerError,
   mockCloseRelocationTaskSuccess,
+  mockCreateRelocationTaskAttachmentSuccess,
   mockExecuteRelocationTaskBadRequestError,
   mockExecuteRelocationTaskForbiddenError,
   mockExecuteRelocationTaskNotFoundError,
@@ -108,8 +109,9 @@ const props: RelocationTaskDetailsProps = {
 const getContainer = () => screen.getByTestId('relocation-task-details')
 const findContainer = () => screen.findByTestId('relocation-task-details')
 
-const getRelocationTaskInfo = (testId: string, text: string | RegExp) =>
-  within(within(getContainer()).getByTestId(testId)).getByText(text)
+const getBlock = (testId: string) => within(getContainer()).getByTestId(testId)
+const getBlockInfo = (testId: string, text: string | RegExp) =>
+  within(getBlock(testId)).getByText(text)
 
 const openMenu = (user: UserEvent) =>
   buttonTestUtils.clickMenuButtonIn(testUtils.getContainer(), user)
@@ -145,6 +147,26 @@ const getConfirmExecutionMenuItem = () => menuTestUtils.getMenuItem('Подтв�
 const clickConfirmExecutionMenuItem = (user: UserEvent) =>
   menuTestUtils.clickMenuItem('Подтвердить выполнение', user)
 
+// documents
+const getCreateDocumentsButton = () =>
+  buttonTestUtils.getAllButtonIn(getBlock('documents'), /Добавить вложение/)[1]
+
+const getCreateDocumentsZoneButton = () =>
+  buttonTestUtils.getAllButtonIn(getBlock('documents'), /Добавить вложение/)[0]
+
+const setDocument = async (
+  user: UserEvent,
+  file: File = new File([], '', { type: 'image/png' }),
+) => {
+  const button = getCreateDocumentsZoneButton()
+  // eslint-disable-next-line testing-library/no-node-access
+  const input = button.querySelector('input[type="file"]') as HTMLInputElement
+  await user.upload(input, file)
+  return { input, file }
+}
+
+const getUploadedDocument = (filename: string) => within(getBlock('documents')).getByTitle(filename)
+
 // loading
 const expectRelocationTaskLoadingStarted = spinnerTestUtils.expectLoadingStarted(
   'relocation-task-details-loading',
@@ -161,7 +183,7 @@ export const testUtils = {
   getContainer,
   findContainer,
 
-  getRelocationTaskInfo,
+  getBlockInfo,
 
   openMenu,
 
@@ -182,6 +204,10 @@ export const testUtils = {
 
   getConfirmExecutionMenuItem,
   clickConfirmExecutionMenuItem,
+
+  getCreateDocumentsButton,
+  setDocument,
+  getUploadedDocument,
 
   clickCloseButton: (user: UserEvent) => buttonTestUtils.clickCloseButtonIn(getContainer(), user),
 
@@ -220,11 +246,8 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('type', /Тип заявки/)
-      const value = testUtils.getRelocationTaskInfo(
-        'type',
-        relocationTaskTypeDict[relocationTask.type],
-      )
+      const label = testUtils.getBlockInfo('type', /Тип заявки/)
+      const value = testUtils.getBlockInfo('type', relocationTaskTypeDict[relocationTask.type])
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -239,11 +262,8 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('deadline-at', /Срок выполнения/)
-      const value = testUtils.getRelocationTaskInfo(
-        'deadline-at',
-        formatDate(relocationTask.deadlineAt),
-      )
+      const label = testUtils.getBlockInfo('deadline-at', /Срок выполнения/)
+      const value = testUtils.getBlockInfo('deadline-at', formatDate(relocationTask.deadlineAt))
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -258,11 +278,8 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('relocate-from', /Объект выбытия/)
-      const value = testUtils.getRelocationTaskInfo(
-        'relocate-from',
-        relocationTask.relocateFrom!.title,
-      )
+      const label = testUtils.getBlockInfo('relocate-from', /Объект выбытия/)
+      const value = testUtils.getBlockInfo('relocate-from', relocationTask.relocateFrom!.title)
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -277,8 +294,8 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('relocate-to', /Объект прибытия/)
-      const value = testUtils.getRelocationTaskInfo('relocate-to', relocationTask.relocateTo!.title)
+      const label = testUtils.getBlockInfo('relocate-to', /Объект прибытия/)
+      const value = testUtils.getBlockInfo('relocate-to', relocationTask.relocateTo!.title)
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -293,8 +310,8 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('executor', /Исполнитель/)
-      const value = testUtils.getRelocationTaskInfo('executor', relocationTask.executor!.fullName)
+      const label = testUtils.getBlockInfo('executor', /Исполнитель/)
+      const value = testUtils.getBlockInfo('executor', relocationTask.executor!.fullName)
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -309,8 +326,8 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('status', /Статус/)
-      const value = testUtils.getRelocationTaskInfo(
+      const label = testUtils.getBlockInfo('status', /Статус/)
+      const value = testUtils.getBlockInfo(
         'status',
         relocationTaskStatusDict[relocationTask.status],
       )
@@ -330,8 +347,8 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('return-reason', /Причина возврата/)
-      const value = testUtils.getRelocationTaskInfo('return-reason', relocationTask.revision!.text)
+      const label = testUtils.getBlockInfo('return-reason', /Причина возврата/)
+      const value = testUtils.getBlockInfo('return-reason', relocationTask.revision!.text)
 
       await user.hover(value)
       const date = await screen.findByText(
@@ -356,11 +373,8 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('created-by', /Инициатор/)
-      const value = testUtils.getRelocationTaskInfo(
-        'created-by',
-        relocationTask.createdBy!.fullName,
-      )
+      const label = testUtils.getBlockInfo('created-by', /Инициатор/)
+      const value = testUtils.getBlockInfo('created-by', relocationTask.createdBy!.fullName)
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -375,11 +389,8 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('created-at', /Создано/)
-      const value = testUtils.getRelocationTaskInfo(
-        'created-at',
-        formatDate(relocationTask.createdAt),
-      )
+      const label = testUtils.getBlockInfo('created-at', /Создано/)
+      const value = testUtils.getBlockInfo('created-at', formatDate(relocationTask.createdAt))
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -395,8 +406,8 @@ describe('Информация о заявке о перемещении', () =>
 
         await testUtils.expectRelocationTaskLoadingFinished()
 
-        const label = testUtils.getRelocationTaskInfo('task', /Заявка ITSM/)
-        const link = testUtils.getRelocationTaskInfo('task', relocationTask.task!.recordId)
+        const label = testUtils.getBlockInfo('task', /Заявка ITSM/)
+        const link = testUtils.getBlockInfo('task', relocationTask.task!.recordId)
 
         expect(label).toBeInTheDocument()
         expect(link).toBeInTheDocument()
@@ -432,7 +443,7 @@ describe('Информация о заявке о перемещении', () =>
 
         await testUtils.expectRelocationTaskLoadingFinished()
 
-        const link = testUtils.getRelocationTaskInfo('task', relocationTask.task!.recordId)
+        const link = testUtils.getBlockInfo('task', relocationTask.task!.recordId)
         await user.click(link)
         const card = await taskCardTestUtils.findContainer()
 
@@ -449,27 +460,65 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('comment', /Комментарий/)
-      const value = testUtils.getRelocationTaskInfo('comment', relocationTask.comment!)
+      const label = testUtils.getBlockInfo('comment', /Комментарий/)
+      const value = testUtils.getBlockInfo('comment', relocationTask.comment!)
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
     })
 
-    test('Документы отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
-      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+    describe('Документы', () => {
+      test('Отображаются', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+        await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getRelocationTaskInfo('documents', /Документы/)
-      const value = taskAttachmentListTestUtils.getContainerIn(testUtils.getContainer())
+        const label = testUtils.getBlockInfo('documents', /Документы/)
+        const value = taskAttachmentListTestUtils.getContainerIn(testUtils.getContainer())
 
-      expect(label).toBeInTheDocument()
-      expect(value).toBeInTheDocument()
+        expect(label).toBeInTheDocument()
+        expect(value).toBeInTheDocument()
+      })
+    })
+
+    describe('Кнопка добавления', () => {
+      test('Отображается', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+
+        await testUtils.expectRelocationTaskLoadingFinished()
+        const button = testUtils.getCreateDocumentsButton()
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
+      })
+
+      test('Загруженный документ отображается', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+        mockCreateRelocationTaskAttachmentSuccess(props.relocationTaskId)
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        )
+
+        await testUtils.expectRelocationTaskLoadingFinished()
+
+        const { input, file } = await testUtils.setDocument(user)
+        const uploadedAttachment = testUtils.getUploadedDocument(file.name)
+
+        expect(input.files!.item(0)).toBe(file)
+        expect(input.files).toHaveLength(1)
+        expect(uploadedAttachment).toBeInTheDocument()
+      })
     })
   })
 
@@ -2001,7 +2050,7 @@ describe('Информация о заявке о перемещении', () =>
 
         await waitFor(() => expect(modal).not.toBeInTheDocument())
 
-        const status = testUtils.getRelocationTaskInfo(
+        const status = testUtils.getBlockInfo(
           'status',
           relocationTaskStatusDict[cancelRelocationTaskResponse.status],
         )
