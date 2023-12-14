@@ -24,7 +24,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
   redirectPath,
 }) => {
   const location = useLocation()
-  const navigationState: CommonLocationState = { from: location.pathname }
+  const navigationState: CommonLocationState = { from: `${location.pathname}${location.search}` }
 
   const isLoggedIn = useIsLoggedIn()
   const { data: user } = useUserMeState()
