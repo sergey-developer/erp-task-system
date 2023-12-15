@@ -26,8 +26,9 @@ const getRelocateFromLocationTypes = (
 ): MaybeUndefined<LocationTypeEnum[]> => {
   switch (type) {
     case RelocationTaskTypeEnum.Relocation:
-    case RelocationTaskTypeEnum.WriteOff:
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
+    case RelocationTaskTypeEnum.WriteOff:
+      return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop, LocationTypeEnum.ServiceCenter]
     case RelocationTaskTypeEnum.Repair:
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
   }
@@ -39,8 +40,9 @@ const getRelocateFromWarehouseTypes = (
   switch (type) {
     case RelocationTaskTypeEnum.Repair:
       return [WarehouseTypeEnum.Main, WarehouseTypeEnum.Msi]
-    case RelocationTaskTypeEnum.Relocation:
     case RelocationTaskTypeEnum.WriteOff:
+      return [WarehouseTypeEnum.Main, WarehouseTypeEnum.Msi, WarehouseTypeEnum.Repair]
+    case RelocationTaskTypeEnum.Relocation:
       return undefined
   }
 }
@@ -73,7 +75,7 @@ const getRelocateToWarehouseTypes = (
 
 export const getEquipmentCatalogListParams = (
   type: RelocationTaskTypeEnum,
-): Pick<GetEquipmentCatalogListQueryArgs, 'conditions' | 'isWarranty'> => ({
+): Pick<GetEquipmentCatalogListQueryArgs, 'conditions'> => ({
   conditions: getConditionsByType(type),
 })
 

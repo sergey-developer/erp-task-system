@@ -93,12 +93,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           />
         </Form.Item>
 
-        <Form.Item
-          data-testid='relocate-to-form-item'
-          label='Объект прибытия'
-          name='relocateTo'
-          rules={onlyRequiredRules}
-        >
+        <Form.Item data-testid='relocate-to-form-item' label='Объект прибытия' name='relocateTo'>
           <Select<IdType, LocationOption>
             loading={relocateToLocationListIsLoading}
             disabled={
