@@ -20,6 +20,7 @@ import {
   buttonTestUtils,
   fakeWord,
   getStoreWithAuth,
+  menuTestUtils,
   notificationTestUtils,
   render,
   setupApiTests,
@@ -402,13 +403,16 @@ describe('Страница списка номенклатур', () => {
 
     test('При клике перезапрашивается номенклатура', async () => {
       mockGetNomenclatureListSuccess({ once: false })
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      const nomenclatureGroupListItem = warehouseFixtures.nomenclatureGroupListItem()
+      mockGetNomenclatureGroupListSuccess({ body: [nomenclatureGroupListItem] })
 
       const { user } = render(<NomenclatureListPage />)
 
       await testUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
-      // await testUtils
+      await menuTestUtils.clickMenuItem(nomenclatureGroupListItem.title, user)
+      await nomenclatureTableTestUtils.expectLoadingStarted()
+      await nomenclatureTableTestUtils.expectLoadingFinished()
       await testUtils.clickAllNomenclatureButton(user)
       await nomenclatureTableTestUtils.expectLoadingStarted()
       await nomenclatureTableTestUtils.expectLoadingFinished()
