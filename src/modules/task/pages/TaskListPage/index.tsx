@@ -416,7 +416,7 @@ const TaskListPage: FC = () => {
                       onAutoUpdate={toggleAutoUpdateEnabled}
                     />
 
-                    <Button>+ Создать заявку</Button>
+                    <Button>Создать заявку</Button>
                   </Space>
                 </Col>
               </Row>
