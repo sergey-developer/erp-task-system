@@ -17,15 +17,15 @@ import {
   useDeleteTaskSuspendRequest,
 } from 'modules/task/hooks/taskSuspendRequest'
 import { useDeleteTaskWorkGroup, useUpdateTaskWorkGroup } from 'modules/task/hooks/taskWorkGroup'
-import { TaskListItemModel } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
 
+import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 
 import Card from '../Card'
 
 export type TaskCardContainerProps = {
-  taskId: TaskListItemModel['id']
+  taskId: IdType
 
   additionalInfoExpanded: boolean
   onExpandAdditionalInfo: EmptyFn

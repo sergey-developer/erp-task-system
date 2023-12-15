@@ -65,3 +65,7 @@ export enum TaskCardTabsEnum {
   Journal = 'Journal',
   RelocationTaskList = 'RelocationTaskList',
 }
+
+export enum TaskStorageKeysEnum {
+  TasksFilters = 'tasks/filters',
+}

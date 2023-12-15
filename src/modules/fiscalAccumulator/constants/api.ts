@@ -1,3 +1,3 @@
 export enum FiscalAccumulatorApiEnum {
-  GetFiscalAccumulators = '/fiscal-accumulator/',
+  GetFiscalAccumulatorTasks = '/fiscal-accumulator/',
 }
