@@ -7,11 +7,11 @@ import { MaybeNull } from 'shared/types/utils'
 import countryFixtures from '_tests_/fixtures/country'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
-  selectTestUtils,
-  fakeWord,
-  render,
   buttonTestUtils,
   checkboxTestUtils,
+  fakeWord,
+  render,
+  selectTestUtils,
 } from '_tests_/utils'
 
 import NomenclatureFormModal from './index'
@@ -20,7 +20,7 @@ import { NomenclatureFormModalProps } from './types'
 const props: Readonly<NomenclatureFormModalProps> = {
   open: true,
   isLoading: false,
-  permissions: undefined,
+  submitBtnDisabled: false,
 
   nomenclature: undefined,
   nomenclatureIsLoading: false,
@@ -329,7 +329,7 @@ describe('Модалка создания и редактирования ном
   })
 
   describe('Кнопка отправки', () => {
-    test('Отображается корректно если права не переданы', () => {
+    test('Отображается', () => {
       render(<NomenclatureFormModal {...props} />)
 
       const button = testUtils.getSubmitButton(new RegExp(props.okText))
@@ -338,21 +338,9 @@ describe('Модалка создания и редактирования ном
       expect(button).toBeEnabled()
     })
 
-    test('Отображается корректно если есть права на редактирование', () => {
-      render(<NomenclatureFormModal {...props} permissions={{ nomenclaturesUpdate: true }} />)
-
+    test('Можно сделать не активной', () => {
+      render(<NomenclatureFormModal {...props} submitBtnDisabled />)
       const button = testUtils.getSubmitButton(new RegExp(props.okText))
-
-      expect(button).toBeInTheDocument()
-      expect(button).toBeEnabled()
-    })
-
-    test('Отображается корректно если нет прав на редактирование', () => {
-      render(<NomenclatureFormModal {...props} permissions={{ nomenclaturesUpdate: false }} />)
-
-      const button = testUtils.getSubmitButton(new RegExp(props.okText))
-
-      expect(button).toBeInTheDocument()
       expect(button).toBeDisabled()
     })
 
