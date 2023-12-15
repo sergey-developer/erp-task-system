@@ -1,1 +1,1 @@
-export * from './useGetFiscalAccumulatorList'
+export * from './useGetFiscalAccumulators'

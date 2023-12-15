@@ -5,15 +5,15 @@ import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { FiscalAccumulatorRouteEnum } from 'modules/fiscalAccumulator/constants'
 import { checkRoleIsFirstLineSupport } from 'modules/user/utils'
 
-const FiscalAccumulatorListPage = React.lazy(
-  () => import('modules/fiscalAccumulator/pages/FiscalAccumulatorListPage'),
+const FiscalAccumulatorsPage = React.lazy(
+  () => import('modules/fiscalAccumulator/pages/FiscalAccumulatorsPage'),
 )
 
 export const route: Readonly<RouteObject> = {
   path: FiscalAccumulatorRouteEnum.FiscalAccumulator,
   element: (
     <ProtectedRoute
-      component={<FiscalAccumulatorListPage />}
+      component={<FiscalAccumulatorsPage />}
       permitted={(user) => !checkRoleIsFirstLineSupport(user.role)}
     />
   ),

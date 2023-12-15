@@ -1,3 +1,4 @@
+import { SubscriptionOptions } from '@reduxjs/toolkit/dist/query/core/apiState'
 import {
   MutationDefinition,
   QueryDefinition,
@@ -30,7 +31,8 @@ export type CustomQueryDefinition<
 export type CustomUseQueryOptions<QueryArg, ResultType> = Pick<
   UseQueryStateOptions<CustomQueryDefinition<QueryArg, ResultType>, any>,
   'skip'
->
+> &
+  SubscriptionOptions
 
 export type CustomUseQueryHookResult<
   QueryArg,
