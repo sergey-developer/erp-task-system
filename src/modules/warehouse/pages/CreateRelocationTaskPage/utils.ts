@@ -61,6 +61,7 @@ const getRelocateToLocationTypes = (
     case RelocationTaskTypeEnum.Repair:
       return [LocationTypeEnum.Warehouse]
     case RelocationTaskTypeEnum.Warranty:
+      return [LocationTypeEnum.ServiceCenter]
     case RelocationTaskTypeEnum.WriteOff:
       return undefined
   }
