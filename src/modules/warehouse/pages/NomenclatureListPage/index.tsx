@@ -1,13 +1,11 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Input, MenuProps, Row } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
-import { FC, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import sortBy from 'lodash/sortBy'
+import React, { FC, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
-import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import { useMatchUserPermissions } from 'modules/user/hooks'
-import NomenclatureFormModal from 'modules/warehouse/components/NomenclatureFormModal'
 import { NomenclatureFormModalProps } from 'modules/warehouse/components/NomenclatureFormModal/types'
-import NomenclatureGroupFormModal from 'modules/warehouse/components/NomenclatureGroupFormModal'
 import { NomenclatureGroupFormModalProps } from 'modules/warehouse/components/NomenclatureGroupFormModal/types'
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
 import { NomenclatureTableProps } from 'modules/warehouse/components/NomenclatureTable/types'
@@ -38,6 +36,7 @@ import {
 
 import { EditIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
+import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { useGetCountryList } from 'shared/hooks/country'
@@ -58,17 +57,29 @@ import {
 
 import { GroupListMenuStyled } from './styles'
 
+const NomenclatureGroupFormModal = React.lazy(
+  () => import('modules/warehouse/components/NomenclatureGroupFormModal'),
+)
+
+const NomenclatureFormModal = React.lazy(
+  () => import('modules/warehouse/components/NomenclatureFormModal'),
+)
+
 const { Search } = Input
 
 const NomenclatureListPage: FC = () => {
-  const updateNomenclaturePerms = useMatchUserPermissions(['NOMENCLATURES_UPDATE'])
-  const updateNomenclatureGroupPerms = useMatchUserPermissions(['NOMENCLATURE_GROUPS_UPDATE'])
+  const permissions = useMatchUserPermissions([
+    'NOMENCLATURES_CREATE',
+    'NOMENCLATURES_UPDATE',
+    'NOMENCLATURE_GROUPS_CREATE',
+    'NOMENCLATURE_GROUPS_UPDATE',
+  ])
 
   const [getNomenclatureGroupListParams, setGetNomenclatureGroupListParams] = useSetState<
     NonNullable<GetNomenclatureGroupListQueryArgs>
   >({})
 
-  const [getNomenclatureListParams, setGetNomenclatureListParams] = useSetState<
+  const [nomenclatureListParams, setNomenclatureListParams] = useSetState<
     NonNullable<GetNomenclatureListQueryArgs>
   >(getInitialPaginationParams())
 
@@ -77,19 +88,22 @@ const NomenclatureListPage: FC = () => {
 
   const [editableNomenclatureId, setEditableNomenclatureId] = useState<number>()
 
-  const [addNomenclatureGroupModalOpened, { toggle: toggleAddNomenclatureGroupModal }] =
+  const [createNomenclatureGroupModalOpened, { toggle: toggleCreateNomenclatureGroupModal }] =
     useBoolean(false)
 
-  const debouncedToggleAddNomenclatureGroupModal = useDebounceFn(toggleAddNomenclatureGroupModal)
+  const debouncedToggleCreateNomenclatureGroupModal = useDebounceFn(
+    toggleCreateNomenclatureGroupModal,
+  )
 
   const [editNomenclatureGroupModalOpened, { toggle: toggleEditNomenclatureGroupModal }] =
     useBoolean(false)
 
   const debouncedToggleEditNomenclatureGroupModal = useDebounceFn(toggleEditNomenclatureGroupModal)
 
-  const [addNomenclatureModalOpened, { toggle: toggleAddNomenclatureModal }] = useBoolean(false)
+  const [createNomenclatureModalOpened, { toggle: toggleCreateNomenclatureModal }] =
+    useBoolean(false)
 
-  const debouncedToggleAddNomenclatureModal = useDebounceFn(toggleAddNomenclatureModal)
+  const debouncedToggleCreateNomenclatureModal = useDebounceFn(toggleCreateNomenclatureModal)
 
   const [editNomenclatureModalOpened, { toggle: toggleEditNomenclatureModal }] = useBoolean(false)
 
@@ -120,7 +134,7 @@ const NomenclatureListPage: FC = () => {
     currentData: allNomenclatureGroupList = [],
     isFetching: allNomenclatureGroupListIsFetching,
   } = useGetNomenclatureGroupList(undefined, {
-    skip: !addNomenclatureModalOpened && !editNomenclatureModalOpened,
+    skip: !createNomenclatureModalOpened && !editNomenclatureModalOpened,
   })
 
   const [createNomenclatureMutation, { isLoading: createNomenclatureIsLoading }] =
@@ -144,18 +158,16 @@ const NomenclatureListPage: FC = () => {
   }, [handleCloseEditNomenclatureModal, isGetNomenclatureError])
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
-    useGetNomenclatureList(getNomenclatureListParams)
+    useGetNomenclatureList(nomenclatureListParams)
 
   const { currentData: measurementUnitList = [], isFetching: measurementUnitListIsFetching } =
     useGetMeasurementUnitList(undefined, {
-      skip: !addNomenclatureModalOpened && !editNomenclatureModalOpened,
+      skip: !createNomenclatureModalOpened && !editNomenclatureModalOpened,
     })
 
   const { currentData: countryList = [], isFetching: countryListIsFetching } = useGetCountryList(
     undefined,
-    {
-      skip: !addNomenclatureModalOpened && !editNomenclatureModalOpened,
-    },
+    { skip: !createNomenclatureModalOpened && !editNomenclatureModalOpened },
   )
 
   const groupListMenuItems: MenuProps['items'] = useMemo(() => {
@@ -165,30 +177,32 @@ const NomenclatureListPage: FC = () => {
       debouncedToggleEditNomenclatureGroupModal()
     }
 
-    return nomenclatureGroupList.map((group) => {
-      const { id, title } = group
+    return sortBy(
+      nomenclatureGroupList.map((group) => {
+        const { id, title } = group
 
-      return {
-        key: id,
-        label: title,
-        title,
-        itemIcon: id === hoveredGroupId &&
-          updateNomenclatureGroupPerms?.nomenclatureGroupsUpdate && (
+        return {
+          key: id,
+          label: title,
+          title,
+          itemIcon: id === hoveredGroupId && permissions?.nomenclatureGroupsUpdate && (
             <EditIcon title='Редактировать группу' onClick={handleClickEdit(group)} />
           ),
-        onMouseEnter: () => setHoveredGroupId(id),
-        onMouseLeave: () => setHoveredGroupId(undefined),
-      }
-    })
+          onMouseEnter: () => setHoveredGroupId(id),
+          onMouseLeave: () => setHoveredGroupId(undefined),
+        }
+      }),
+      'label',
+    )
   }, [
     debouncedToggleEditNomenclatureGroupModal,
     hoveredGroupId,
     nomenclatureGroupList,
-    updateNomenclatureGroupPerms?.nomenclatureGroupsUpdate,
+    permissions?.nomenclatureGroupsUpdate,
   ])
 
   const handleClickGroup: MenuProps['onClick'] = (data) => {
-    setGetNomenclatureListParams({ group: Number(data.key), offset: 0 })
+    setNomenclatureListParams({ group: Number(data.key), offset: 0 })
   }
 
   const handleCreateNomenclatureGroup = useCallback<NomenclatureGroupFormModalProps['onSubmit']>(
@@ -199,7 +213,7 @@ const NomenclatureListPage: FC = () => {
           getListParams: getNomenclatureGroupListParams,
         }).unwrap()
 
-        toggleAddNomenclatureGroupModal()
+        toggleCreateNomenclatureGroupModal()
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
@@ -219,7 +233,7 @@ const NomenclatureListPage: FC = () => {
     [
       createNomenclatureGroupMutation,
       getNomenclatureGroupListParams,
-      toggleAddNomenclatureGroupModal,
+      toggleCreateNomenclatureGroupModal,
     ],
   )
 
@@ -260,7 +274,7 @@ const NomenclatureListPage: FC = () => {
     async (values, setFields) => {
       try {
         await createNomenclatureMutation(values).unwrap()
-        toggleAddNomenclatureModal()
+        toggleCreateNomenclatureModal()
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
@@ -277,7 +291,7 @@ const NomenclatureListPage: FC = () => {
         }
       }
     },
-    [createNomenclatureMutation, toggleAddNomenclatureModal],
+    [createNomenclatureMutation, toggleCreateNomenclatureModal],
   )
 
   const handleUpdateNomenclature: NomenclatureFormModalProps['onSubmit'] = async (
@@ -290,7 +304,7 @@ const NomenclatureListPage: FC = () => {
       await updateNomenclatureMutation({
         ...values,
         id: editableNomenclatureId,
-        getListParams: getNomenclatureListParams,
+        getListParams: nomenclatureListParams,
       }).unwrap()
 
       handleCloseEditNomenclatureModal()
@@ -315,21 +329,15 @@ const NomenclatureListPage: FC = () => {
 
   const handleChangeSearch: SearchProps['onSearch'] = (value) => {
     const searchValue = value || undefined
-
     setGetNomenclatureGroupListParams({ search: searchValue })
-
-    setGetNomenclatureListParams({
-      search: searchValue,
-      group: undefined,
-      offset: 0,
-    })
+    setNomenclatureListParams({ search: searchValue, group: undefined, offset: 0 })
   }
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<NomenclatureTableProps['onChange']>[0]) => {
-      setGetNomenclatureListParams(calculatePaginationParams(pagination))
+      setNomenclatureListParams(calculatePaginationParams(pagination))
     },
-    [setGetNomenclatureListParams],
+    [setNomenclatureListParams],
   )
 
   const handleChangeTable = useCallback<NomenclatureTableProps['onChange']>(
@@ -338,6 +346,8 @@ const NomenclatureListPage: FC = () => {
     },
     [handleTablePagination],
   )
+
+  const onClickAllNomenclature = () => setNomenclatureListParams({ group: undefined, offset: 0 })
 
   return (
     <>
@@ -350,21 +360,13 @@ const NomenclatureListPage: FC = () => {
             onSearch={handleChangeSearch}
           />
 
-          <MatchUserPermissions expected={['NOMENCLATURE_GROUPS_CREATE']}>
-            {({ permissions }) =>
-              permissions.nomenclatureGroupsCreate ? (
-                <Button onClick={debouncedToggleAddNomenclatureGroupModal}>Добавить группу</Button>
-              ) : null
-            }
-          </MatchUserPermissions>
+          {permissions?.nomenclatureGroupsCreate && (
+            <Button onClick={debouncedToggleCreateNomenclatureGroupModal}>Добавить группу</Button>
+          )}
 
-          <MatchUserPermissions expected={['NOMENCLATURES_CREATE']}>
-            {({ permissions }) =>
-              permissions.nomenclaturesCreate ? (
-                <Button onClick={debouncedToggleAddNomenclatureModal}>Добавить номенклатуру</Button>
-              ) : null
-            }
-          </MatchUserPermissions>
+          {permissions?.nomenclaturesCreate && (
+            <Button onClick={debouncedToggleCreateNomenclatureModal}>Добавить номенклатуру</Button>
+          )}
         </Space>
 
         <Row gutter={16}>
@@ -375,12 +377,27 @@ const NomenclatureListPage: FC = () => {
               area='parent'
               tip='Загрузка групп...'
             >
-              <GroupListMenuStyled
-                data-testid='group-list'
-                mode='inline'
-                items={groupListMenuItems}
-                onClick={handleClickGroup}
-              />
+              <Space $block direction='vertical'>
+                <Button
+                  block
+                  onClick={onClickAllNomenclature}
+                  disabled={nomenclatureListIsFetching}
+                >
+                  Вся номенклатура
+                </Button>
+
+                <GroupListMenuStyled
+                  data-testid='group-list'
+                  mode='inline'
+                  items={groupListMenuItems}
+                  selectedKeys={
+                    nomenclatureListParams.group
+                      ? [String(nomenclatureListParams.group)]
+                      : undefined
+                  }
+                  onClick={handleClickGroup}
+                />
+              </Space>
             </LoadingArea>
           </Col>
 
@@ -396,64 +413,104 @@ const NomenclatureListPage: FC = () => {
         </Row>
       </Space>
 
-      {addNomenclatureGroupModalOpened && (
-        <NomenclatureGroupFormModal
-          open={addNomenclatureGroupModalOpened}
-          title='Добавление номенклатурной группы'
-          okText='Добавить'
-          isLoading={createNomenclatureGroupIsLoading}
-          onCancel={debouncedToggleAddNomenclatureGroupModal}
-          onSubmit={handleCreateNomenclatureGroup}
-        />
+      {createNomenclatureGroupModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={debouncedToggleCreateNomenclatureGroupModal}
+              tip='Загрузка модалки добавления номенклатурной группы...'
+            />
+          }
+        >
+          <NomenclatureGroupFormModal
+            open={createNomenclatureGroupModalOpened}
+            title='Добавление номенклатурной группы'
+            okText='Добавить'
+            isLoading={createNomenclatureGroupIsLoading}
+            onCancel={debouncedToggleCreateNomenclatureGroupModal}
+            onSubmit={handleCreateNomenclatureGroup}
+          />
+        </React.Suspense>
       )}
 
       {editNomenclatureGroupModalOpened && !!editableGroup && (
-        <NomenclatureGroupFormModal
-          open={editNomenclatureGroupModalOpened}
-          title='Редактирование номенклатурной группы'
-          okText='Сохранить'
-          initialValues={{ title: editableGroup.title }}
-          isLoading={updateNomenclatureGroupIsLoading}
-          onCancel={debouncedToggleEditNomenclatureGroupModal}
-          onSubmit={handleUpdateNomenclatureGroup}
-        />
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={debouncedToggleEditNomenclatureGroupModal}
+              tip='Загрузка модалки редактирования номенклатурной группы...'
+            />
+          }
+        >
+          <NomenclatureGroupFormModal
+            open={editNomenclatureGroupModalOpened}
+            title='Редактирование номенклатурной группы'
+            okText='Сохранить'
+            initialValues={{ title: editableGroup.title }}
+            isLoading={updateNomenclatureGroupIsLoading}
+            onCancel={debouncedToggleEditNomenclatureGroupModal}
+            onSubmit={handleUpdateNomenclatureGroup}
+          />
+        </React.Suspense>
       )}
 
-      {addNomenclatureModalOpened && (
-        <NomenclatureFormModal
-          open={addNomenclatureModalOpened}
-          title='Добавление номенклатурной позиции'
-          okText='Добавить'
-          isLoading={createNomenclatureIsLoading}
-          groups={allNomenclatureGroupList}
-          groupsIsLoading={allNomenclatureGroupListIsFetching}
-          countries={countryList}
-          countriesIsLoading={countryListIsFetching}
-          measurementUnits={measurementUnitList}
-          measurementUnitsIsLoading={measurementUnitListIsFetching}
-          onCancel={debouncedToggleAddNomenclatureModal}
-          onSubmit={handleCreateNomenclature}
-        />
+      {createNomenclatureModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={debouncedToggleCreateNomenclatureModal}
+              tip='Загрузка модалки добавления номенклатурной позиции...'
+            />
+          }
+        >
+          <NomenclatureFormModal
+            open={createNomenclatureModalOpened}
+            title='Добавление номенклатурной позиции'
+            okText='Добавить'
+            isLoading={createNomenclatureIsLoading}
+            groups={allNomenclatureGroupList}
+            groupsIsLoading={allNomenclatureGroupListIsFetching}
+            countries={countryList}
+            countriesIsLoading={countryListIsFetching}
+            measurementUnits={measurementUnitList}
+            measurementUnitsIsLoading={measurementUnitListIsFetching}
+            onCancel={debouncedToggleCreateNomenclatureModal}
+            onSubmit={handleCreateNomenclature}
+          />
+        </React.Suspense>
       )}
 
       {editNomenclatureModalOpened && !!editableNomenclatureId && (
-        <NomenclatureFormModal
-          open={editNomenclatureModalOpened}
-          title='Редактирование номенклатурной позиции'
-          okText='Сохранить'
-          isLoading={updateNomenclatureIsLoading}
-          permissions={updateNomenclaturePerms}
-          nomenclature={nomenclature}
-          nomenclatureIsLoading={nomenclatureIsFetching}
-          groups={allNomenclatureGroupList}
-          groupsIsLoading={allNomenclatureGroupListIsFetching}
-          countries={countryList}
-          countriesIsLoading={countryListIsFetching}
-          measurementUnits={measurementUnitList}
-          measurementUnitsIsLoading={measurementUnitListIsFetching}
-          onCancel={debouncedHandleCloseEditNomenclatureModal}
-          onSubmit={handleUpdateNomenclature}
-        />
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={debouncedHandleCloseEditNomenclatureModal}
+              tip='Загрузка модалки редактирования номенклатурной позиции...'
+            />
+          }
+        >
+          <NomenclatureFormModal
+            open={editNomenclatureModalOpened}
+            title='Редактирование номенклатурной позиции'
+            okText='Сохранить'
+            isLoading={updateNomenclatureIsLoading}
+            submitBtnDisabled={!permissions?.nomenclaturesUpdate}
+            nomenclature={nomenclature}
+            nomenclatureIsLoading={nomenclatureIsFetching}
+            groups={allNomenclatureGroupList}
+            groupsIsLoading={allNomenclatureGroupListIsFetching}
+            countries={countryList}
+            countriesIsLoading={countryListIsFetching}
+            measurementUnits={measurementUnitList}
+            measurementUnitsIsLoading={measurementUnitListIsFetching}
+            onCancel={debouncedHandleCloseEditNomenclatureModal}
+            onSubmit={handleUpdateNomenclature}
+          />
+        </React.Suspense>
       )}
     </>
   )
