@@ -1,7 +1,7 @@
-import * as fiscalAccumulatorList from './fiscalAccumulatorList'
+import * as fiscalAccumulatorTasks from './fiscalAccumulatorTasks'
 
 const fiscalAccumulatorFixtures = {
-  ...fiscalAccumulatorList,
+  ...fiscalAccumulatorTasks,
 } as const
 
 export default fiscalAccumulatorFixtures

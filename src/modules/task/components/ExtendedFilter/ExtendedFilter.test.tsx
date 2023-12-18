@@ -29,14 +29,14 @@ import {
 
 import { searchFieldDict, taskAssignedDict, taskOverdueDict } from './constants'
 import ExtendedFilter from './index'
-import { ExtendedFilterProps } from './types'
+import { TasksFilterProps } from './types'
 
 const taskExtendedStatusDictValues = Object.values(taskExtendedStatusDict)
 const taskOverdueDictValues = Object.values(taskOverdueDict)
 const taskAssignedDictValues = Object.values(taskAssignedDict)
 const searchFieldDictValues = Object.values(searchFieldDict)
 
-const props: Readonly<ExtendedFilterProps> = {
+const props: Readonly<TasksFilterProps> = {
   open: true,
 
   formValues: getInitialExtendedFilterFormValues(),

@@ -2,3 +2,6 @@ import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTa
 
 export const checkRelocationTaskTypeIsWriteOff = (type?: RelocationTaskTypeEnum): boolean =>
   type === RelocationTaskTypeEnum.WriteOff
+
+export const checkRelocationTaskTypeIsWarranty = (type?: RelocationTaskTypeEnum): boolean =>
+  type === RelocationTaskTypeEnum.Warranty

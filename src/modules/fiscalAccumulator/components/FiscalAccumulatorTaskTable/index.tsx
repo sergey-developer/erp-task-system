@@ -7,16 +7,19 @@ import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
 import { columns } from './columns'
 import { components } from './components'
-import { FiscalAccumulatorTableItem, FiscalAccumulatorTableProps } from './types'
+import { FiscalAccumulatorTaskTableItem, FiscalAccumulatorTaskTableProps } from './types'
 
 const getRowKey = (
-  record: FiscalAccumulatorTableItem,
-): FiscalAccumulatorTableItem['olaNextBreachTime'] => record.olaNextBreachTime
+  record: FiscalAccumulatorTaskTableItem,
+): FiscalAccumulatorTaskTableItem['olaNextBreachTime'] => record.olaNextBreachTime
 
-const FiscalAccumulatorTable: FC<FiscalAccumulatorTableProps> = ({ dataSource = [], loading }) => {
+const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
+  dataSource = [],
+  loading,
+}) => {
   return (
-    <TableWrapperStyled data-testid='fiscal-accumulator-table'>
-      <ParentSizedTable<FiscalAccumulatorTableItem>
+    <TableWrapperStyled data-testid='fiscal-accumulator-task-table'>
+      <ParentSizedTable<FiscalAccumulatorTaskTableItem>
         rowKey={getRowKey}
         dataSource={dataSource}
         components={components}
@@ -27,4 +30,4 @@ const FiscalAccumulatorTable: FC<FiscalAccumulatorTableProps> = ({ dataSource = 
   )
 }
 
-export default FiscalAccumulatorTable
+export default FiscalAccumulatorTaskTable
