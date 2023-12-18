@@ -13,13 +13,12 @@ const getConditionsByType = (type: RelocationTaskTypeEnum): EquipmentConditionEn
     case RelocationTaskTypeEnum.Relocation:
     case RelocationTaskTypeEnum.Warranty:
     case RelocationTaskTypeEnum.Repair:
+    case RelocationTaskTypeEnum.WriteOff:
       return [
         EquipmentConditionEnum.Working,
         EquipmentConditionEnum.Broken,
         EquipmentConditionEnum.NonRepairable,
       ]
-    case RelocationTaskTypeEnum.WriteOff:
-      return [EquipmentConditionEnum.WrittenOff]
   }
 }
 
@@ -28,7 +27,6 @@ const getRelocateFromLocationTypes = (
 ): MaybeUndefined<LocationTypeEnum[]> => {
   switch (type) {
     case RelocationTaskTypeEnum.Relocation:
-      return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
     case RelocationTaskTypeEnum.WriteOff:
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop, LocationTypeEnum.ServiceCenter]
     case RelocationTaskTypeEnum.Repair:
