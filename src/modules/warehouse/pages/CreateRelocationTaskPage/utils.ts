@@ -28,7 +28,6 @@ const getRelocateFromLocationTypes = (
 ): MaybeUndefined<LocationTypeEnum[]> => {
   switch (type) {
     case RelocationTaskTypeEnum.Relocation:
-      return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
     case RelocationTaskTypeEnum.WriteOff:
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop, LocationTypeEnum.ServiceCenter]
     case RelocationTaskTypeEnum.Repair:
