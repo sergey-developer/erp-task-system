@@ -13,13 +13,12 @@ const getConditionsByType = (type: RelocationTaskTypeEnum): EquipmentConditionEn
     case RelocationTaskTypeEnum.Relocation:
     case RelocationTaskTypeEnum.Warranty:
     case RelocationTaskTypeEnum.Repair:
+    case RelocationTaskTypeEnum.WriteOff:
       return [
         EquipmentConditionEnum.Working,
         EquipmentConditionEnum.Broken,
         EquipmentConditionEnum.NonRepairable,
       ]
-    case RelocationTaskTypeEnum.WriteOff:
-      return [EquipmentConditionEnum.WrittenOff]
   }
 }
 
