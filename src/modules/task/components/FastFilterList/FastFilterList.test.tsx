@@ -29,10 +29,6 @@ const props: Readonly<FastFilterListProps> = {
 
 const getContainer = () => screen.getByTestId('fast-filter-list')
 
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
-const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
-
 const getFilterTag = () => screen.getByTestId('fast-filter-list-item')
 const getAllFilterTag = () => screen.getAllByTestId('fast-filter-list-item')
 
@@ -104,8 +100,6 @@ const expectAllFiltersNotDisabled = () => {
 
 export const testUtils = {
   getContainer,
-  getChildByText,
-  queryChildByText,
 
   getFilterTag,
   getAllFilterTag,
@@ -140,6 +134,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.LessOneHour,
       FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
+      FastFilterEnum.Returned,
     ]
 
     test('Отображается корректно', () => {
@@ -166,6 +161,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.LessOneHour,
       FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
+      FastFilterEnum.Returned,
     ]
 
     const notAvailableFilters = [FastFilterEnum.FirstLine, FastFilterEnum.SecondLine]
@@ -199,6 +195,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.LessOneHour,
       FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
+      FastFilterEnum.Returned,
     ]
 
     const notAvailableFilters = [FastFilterEnum.FirstLine, FastFilterEnum.SecondLine]
@@ -232,6 +229,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.LessOneHour,
       FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
+      FastFilterEnum.Returned,
     ]
 
     const notAvailableFilters = [FastFilterEnum.FirstLine, FastFilterEnum.SecondLine]
@@ -274,7 +272,6 @@ describe('Быстрый фильтр', () => {
 
   test('Отображает состояние загрузки', async () => {
     render(<FastFilterList {...props} isLoading userRole={UserRoleEnum.FirstLineSupport} />)
-
     await testUtils.expectLoadingStarted()
   })
 
@@ -303,7 +300,6 @@ describe('Быстрый фильтр', () => {
 
   test('Можно сделать все фильтры не активными', () => {
     render(<FastFilterList {...props} disabled userRole={UserRoleEnum.FirstLineSupport} />)
-
     testUtils.expectAllFiltersDisabled()
   })
 })

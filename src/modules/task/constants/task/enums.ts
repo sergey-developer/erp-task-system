@@ -7,6 +7,7 @@ export enum FastFilterEnum {
   SecondLine = 'SECOND_LINE',
   LessOneHour = 'LESS_1_HOUR',
   LessThreeHours = 'LESS_3_HOURS',
+  Returned = 'RETURNED',
 }
 
 export enum FilterTypeEnum {

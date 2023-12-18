@@ -7,7 +7,7 @@ import { TaskCountersKeys } from 'modules/task/models'
 
 import FilterTag from './FastFilterListItem'
 import { fastFilters } from './constants'
-import { FastFilterListProps, FastFilterItem } from './types'
+import { FastFilterItem, FastFilterListProps } from './types'
 
 const FastFilterList: FC<FastFilterListProps> = ({
   data,
@@ -21,28 +21,20 @@ const FastFilterList: FC<FastFilterListProps> = ({
   const filters: FastFilterItem[] = useMemo(() => {
     const counters = (data || {}) as NonNullable<typeof data>
 
-    return fastFilters.reduce<FastFilterItem[]>(
-      (acc, { filter, roles, text }) => {
-        const taskCounterKey = camelize(
-          filter.toLowerCase(),
-        ) as TaskCountersKeys
+    return fastFilters.reduce<FastFilterItem[]>((acc, { filter, roles, text }) => {
+      const taskCounterKey = camelize(filter.toLowerCase()) as TaskCountersKeys
+      const taskCounterValue = isShowCounters ? counters[taskCounterKey] : null
 
-        const taskCounterValue = isShowCounters
-          ? counters[taskCounterKey]
-          : null
+      if (userRole && roles.includes(userRole)) {
+        acc.push({
+          text,
+          value: filter,
+          amount: taskCounterValue,
+        })
+      }
 
-        if (userRole && roles.includes(userRole)) {
-          acc.push({
-            text,
-            value: filter,
-            amount: taskCounterValue,
-          })
-        }
-
-        return acc
-      },
-      [],
-    )
+      return acc
+    }, [])
   }, [data, isShowCounters, userRole])
 
   return (
