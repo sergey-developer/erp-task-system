@@ -23,7 +23,7 @@ import { TaskTableListItem } from '../types'
 
 const { Text } = Typography
 
-export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListItem> => {
+export const getColumns = (role: UserRoleEnum): ColumnsType<TaskTableListItem> => {
   const roleMap = getUserRoleMap(role)
 
   return [

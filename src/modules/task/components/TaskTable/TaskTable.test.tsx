@@ -5,7 +5,7 @@ import { TableAction } from 'antd/es/table/interface'
 
 import { parseResponseTime } from 'modules/task/components/TaskCard/MainDetails/utils'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
-import { TaskExtendedStatusEnum, TaskStatusEnum, taskStatusDict } from 'modules/task/constants/task'
+import { TaskExtendedStatusEnum, taskStatusDict, TaskStatusEnum } from 'modules/task/constants/task'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getShortUserName } from 'modules/user/utils'
@@ -427,8 +427,7 @@ describe('Таблица заявок', () => {
 
       test('Отображает значение', () => {
         render(<TaskTable {...props} />)
-
-        expect(testUtils.getChildByText(firstTaskTableItem.recordId)).toBeInTheDocument()
+        expect(testUtils.getChildByText(firstTaskTableItem.recordId!)).toBeInTheDocument()
       })
 
       test('Сортировка включена', () => {
@@ -479,13 +478,11 @@ describe('Таблица заявок', () => {
 
       test('Отображает значение', () => {
         render(<TaskTable {...props} />)
-
-        expect(testUtils.getChildByText(firstTaskTableItem.name)).toBeInTheDocument()
+        expect(testUtils.getChildByText(firstTaskTableItem.name!)).toBeInTheDocument()
       })
 
       test('Сортировка включена', () => {
         render(<TaskTable {...props} />)
-
         const headCol = testUtils.getHeadCol('Объект')
         expect(headCol).toHaveClass(columnWithSortingClass)
       })
@@ -530,8 +527,7 @@ describe('Таблица заявок', () => {
 
       test('Отображает значение', () => {
         render(<TaskTable {...props} />)
-
-        expect(testUtils.getChildByText(firstTaskTableItem.title)).toBeInTheDocument()
+        expect(testUtils.getChildByText(firstTaskTableItem.title!)).toBeInTheDocument()
       })
 
       test('Сортировка включена', () => {
@@ -986,7 +982,7 @@ describe('Таблица заявок', () => {
 
           const responseTime = parseResponseTime(
             taskTableItem.responseTime!,
-            taskTableItem.workGroup,
+            taskTableItem.workGroup!,
           )
 
           expect(testUtils.queryChildByText(responseTime!.value)).not.toBeInTheDocument()
@@ -1065,7 +1061,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.props} />)
 
         expect(
-          testUtils.getChildByText(taskStatusDict[testConstants.firstTaskTableItem.status]),
+          testUtils.getChildByText(taskStatusDict[testConstants.firstTaskTableItem.status!]),
         ).toBeInTheDocument()
       })
 
@@ -1119,7 +1115,9 @@ describe('Таблица заявок', () => {
 
         expect(
           testUtils.getChildByText(
-            `${testConstants.firstTaskTableItem.subtasksCounter.completed}/${testConstants.firstTaskTableItem.subtasksCounter.all}`,
+            `${testConstants.firstTaskTableItem.subtasksCounter!.completed}/${
+              testConstants.firstTaskTableItem.subtasksCounter!.all
+            }`,
           ),
         ).toBeInTheDocument()
       })
@@ -1143,7 +1141,7 @@ describe('Таблица заявок', () => {
         render(<TaskTable {...testConstants.props} />)
 
         expect(
-          testUtils.getChildByText(testConstants.firstTaskTableItem.lastComment),
+          testUtils.getChildByText(testConstants.firstTaskTableItem.lastComment!),
         ).toBeInTheDocument()
       })
 
