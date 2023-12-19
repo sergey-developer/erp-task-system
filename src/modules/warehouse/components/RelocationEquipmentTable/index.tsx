@@ -1,6 +1,5 @@
+import { Table } from 'antd'
 import { FC } from 'react'
-
-import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
 import { getColumns } from './columns'
 import { RelocationEquipmentTableItem, RelocationEquipmentTableProps } from './types'
@@ -11,7 +10,7 @@ const RelocationEquipmentTable: FC<RelocationEquipmentTableProps> = ({
 }) => {
   return (
     <div data-testid='relocation-equipment-table'>
-      <ParentSizedTable<RelocationEquipmentTableItem>
+      <Table<RelocationEquipmentTableItem>
         {...props}
         rowKey='id'
         columns={getColumns({ onClickImages })}

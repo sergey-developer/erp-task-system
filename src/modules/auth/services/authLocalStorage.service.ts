@@ -1,29 +1,22 @@
-import { StorageKeysEnum } from 'shared/constants/storage'
-import { localStorageService } from 'shared/services/localStorage.service'
+import { MaybeNull } from 'shared/types/utils'
 
-const setAccessToken = (token: string) => {
-  return localStorageService.setItem(StorageKeysEnum.accessToken, token)
-}
+import { AuthStorageKeysEnum } from '../constants'
 
-const getAccessToken = () => {
-  return localStorageService.getItem(StorageKeysEnum.accessToken)
-}
+const setAccessToken = (token: string) =>
+  localStorage.setItem(AuthStorageKeysEnum.AccessToken, token)
 
-const removeAccessToken = () => {
-  return localStorageService.removeItem(StorageKeysEnum.accessToken)
-}
+const getAccessToken = (): MaybeNull<string> =>
+  localStorage.getItem(AuthStorageKeysEnum.AccessToken)
 
-const setRefreshToken = (token: string) => {
-  return localStorageService.setItem(StorageKeysEnum.refreshToken, token)
-}
+const removeAccessToken = () => localStorage.removeItem(AuthStorageKeysEnum.AccessToken)
 
-const getRefreshToken = () => {
-  return localStorageService.getItem(StorageKeysEnum.refreshToken)
-}
+const setRefreshToken = (token: string) =>
+  localStorage.setItem(AuthStorageKeysEnum.RefreshToken, token)
 
-const removeRefreshToken = () => {
-  return localStorageService.removeItem(StorageKeysEnum.refreshToken)
-}
+const getRefreshToken = (): MaybeNull<string> =>
+  localStorage.getItem(AuthStorageKeysEnum.RefreshToken)
+
+const removeRefreshToken = () => localStorage.removeItem(AuthStorageKeysEnum.RefreshToken)
 
 const clearTokens = () => {
   removeAccessToken()
