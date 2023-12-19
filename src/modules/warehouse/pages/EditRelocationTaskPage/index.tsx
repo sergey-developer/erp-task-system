@@ -436,10 +436,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const importEquipmentsByFile: NonNullable<UploadProps['onChange']> = async ({ file }) => {
     try {
-      const equipments = await importEquipmentsByFileMutation({
-        file: file as FileToSend,
-      }).unwrap()
-
+      const equipments = await importEquipmentsByFileMutation({ file: file as FileToSend }).unwrap()
       const equipmentsByFile: Omit<EquipmentByFileTableRow, 'images'>[] = equipments.map((eqp) => ({
         rowId: eqp.rowId,
         nomenclature: eqp.nomenclature || undefined,
