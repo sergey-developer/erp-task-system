@@ -30,7 +30,7 @@ import {
   sortableFieldToSortValues,
 } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
-import { getSort } from 'modules/task/components/TaskTable/utils'
+import { getSort, parseSort } from 'modules/task/components/TaskTable/utils'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
 } from 'modules/task/components/TasksFiltersStorage'
@@ -79,7 +79,7 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
-import { DEFAULT_PAGE_SIZE } from './constants'
+import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
 import { ColStyled, RowStyled } from './styles'
 import {
   getInitialExtendedFilterFormValues,
@@ -330,14 +330,13 @@ const TaskListPage: FC = () => {
     if (!value) handleSearchByTaskId(value)
   }
 
-  const handleTableRowClick = useCallback<TaskTableProps['onRow']>((record) => {
-    return {
+  const handleTableRowClick = useCallback<TaskTableProps['onRow']>(
+    (record) => ({
       onClick: debounce(() => setSelectedTaskId(record.id), DEFAULT_DEBOUNCE_VALUE),
-      ...(record.isBoundary && {
-        style: { borderBottom: '5px solid black' },
-      }),
-    }
-  }, [])
+      ...(record.isBoundary && { style: tableItemBoundaryStyles }),
+    }),
+    [],
+  )
 
   const handleCloseTaskCard = useCallback(() => {
     setSelectedTaskId(undefined)
@@ -401,10 +400,16 @@ const TaskListPage: FC = () => {
     triggerFilterChange({ [filter.name]: undefined })
   }
 
-  const tasks = useMemo(
-    () => getTasksByOlaNextBreachTime(extractPaginationResults(originalTasks)),
-    [originalTasks],
-  )
+  const tasks = useMemo(() => {
+    const extractedTasks = extractPaginationResults(originalTasks)
+    const columnKey = taskListQueryArgs.sort
+      ? parseSort(taskListQueryArgs.sort).columnKey
+      : undefined
+
+    return columnKey === 'olaNextBreachTime'
+      ? getTasksByOlaNextBreachTime(extractedTasks)
+      : extractedTasks
+  }, [originalTasks, taskListQueryArgs.sort])
 
   return (
     <>
