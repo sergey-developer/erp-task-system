@@ -1,14 +1,13 @@
-import {
-  GetWarehouseListSortKey,
-  GetWarehouseListSortValue,
-} from 'modules/warehouse/models'
+import { ColumnsType } from 'antd/es/table'
+import { SortOrder } from 'antd/es/table/interface'
+import isEqual from 'lodash/isEqual'
+
+import { GetWarehouseListSortKey, GetWarehouseListSortValue } from 'modules/warehouse/models'
+
+import { SortOrderEnum } from 'shared/constants/sort'
+import { ArrayFirst } from 'shared/types/utils'
 
 import { WarehouseTableItem } from './types'
-import { ArrayFirst } from "shared/types/utils";
-import { ColumnsType } from "antd/es/table";
-import isEqual from "lodash/isEqual";
-import { SortOrder } from "antd/es/table/interface";
-import { SortOrderEnum } from "shared/constants/sort";
 
 export type SortableField = keyof Pick<
   WarehouseTableItem,
@@ -17,10 +16,7 @@ export type SortableField = keyof Pick<
 
 export const sortableFieldToSortValues: Record<
   SortableField,
-  [
-    GetWarehouseListSortKey,
-    Exclude<GetWarehouseListSortValue, GetWarehouseListSortKey>,
-  ]
+  [GetWarehouseListSortKey, Exclude<GetWarehouseListSortValue, GetWarehouseListSortKey>]
 > = {
   title: ['title', '-title'],
   address: ['address', '-address'],
@@ -29,17 +25,18 @@ export const sortableFieldToSortValues: Record<
 }
 
 // todo: создать функцию для переиспользования
-export const sortValueToSortableField = Object.keys(
-  sortableFieldToSortValues,
-).reduce((acc, field) => {
-  const sortableField = field as SortableField
-  const [ascendValue, descendValue] = sortableFieldToSortValues[sortableField]
+export const sortValueToSortableField = Object.keys(sortableFieldToSortValues).reduce(
+  (acc, field) => {
+    const sortableField = field as SortableField
+    const [ascendValue, descendValue] = sortableFieldToSortValues[sortableField]
 
-  acc[ascendValue] = sortableField
-  acc[descendValue] = sortableField
+    acc[ascendValue] = sortableField
+    acc[descendValue] = sortableField
 
-  return acc
-}, {} as Record<GetWarehouseListSortValue, SortableField>)
+    return acc
+  },
+  {} as Record<GetWarehouseListSortValue, SortableField>,
+)
 
 export const applySort = (
   column: ArrayFirst<ColumnsType<WarehouseTableItem>>,
@@ -56,10 +53,7 @@ export const applySort = (
 }
 
 // todo: создать функцию для переиспользования
-export const getSort = (
-  field: SortableField,
-  order: SortOrder,
-): GetWarehouseListSortValue => {
+export const getSort = (field: SortableField, order: SortOrder): GetWarehouseListSortValue => {
   const [ascendValue, descendValue] = sortableFieldToSortValues[field]
   return order === SortOrderEnum.Descend ? descendValue : ascendValue
 }
@@ -67,13 +61,12 @@ export const getSort = (
 // todo: создать фунцию для переиспользования
 export const parseSort = (
   value: GetWarehouseListSortValue,
-): { order: SortOrder; columnKey: string } => {
+): { order: SortOrder; columnKey: SortableField } => {
   const isDescend = value.startsWith('-')
   const parsedValue = isDescend ? value.slice(1) : value
 
   return {
     order: isDescend ? SortOrderEnum.Descend : SortOrderEnum.Ascend,
-    columnKey:
-      sortValueToSortableField[parsedValue as GetWarehouseListSortValue],
+    columnKey: sortValueToSortableField[parsedValue as GetWarehouseListSortValue],
   }
 }

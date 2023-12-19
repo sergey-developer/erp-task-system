@@ -12,11 +12,14 @@ import taskFixtures from '_tests_/fixtures/task'
 import { fakeDateString, fakeId, fakeIdStr, fakeInteger, fakeName, fakeWord } from '_tests_/utils'
 
 export const taskTableItem = (
-  props?: Partial<Pick<TaskTableListItem, 'status' | 'extendedStatus' | 'olaStatus'>>,
+  props?: Partial<
+    Pick<TaskTableListItem, 'status' | 'extendedStatus' | 'olaStatus' | 'olaNextBreachTime'>
+  >,
 ): TaskTableListItem => ({
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
+  olaNextBreachTime: props?.olaNextBreachTime || fakeDateString(),
 
   id: fakeId(),
   name: fakeName(),
@@ -27,7 +30,6 @@ export const taskTableItem = (
   recordId: fakeIdStr(),
   lastComment: fakeWord(),
   assignee: taskFixtures.assignee(),
-  olaNextBreachTime: fakeDateString(),
   subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },
   responseTime: taskFixtures.taskResponseTime(),
 })
