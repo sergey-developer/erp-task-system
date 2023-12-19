@@ -43,11 +43,10 @@ import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
-import { valueOrHyphen } from 'shared/utils/common'
+import { filterOptionBy, valueOrHyphen } from 'shared/utils/common'
+import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
-
-import { extractIdsFromFilesResponse } from '../../../../shared/utils/file'
 
 const EquipmentFormModal = React.lazy(
   () => import('modules/warehouse/components/EquipmentFormModal'),
@@ -373,6 +372,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                     loading={userListIsFetching}
                     disabled={userListIsFetching || createTaskIsLoading}
                     fieldNames={idAndFullNameSelectFieldNames}
+                    showSearch
+                    filterOption={filterOptionBy('fullName')}
                   />
                 </Form.Item>
               </Col>

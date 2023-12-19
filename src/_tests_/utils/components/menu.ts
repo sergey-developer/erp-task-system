@@ -2,9 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 const getMenu = () => screen.getByRole('menu')
-
 const getMenuItem = (name: string | RegExp) => within(getMenu()).getByRole('menuitem', { name })
-
 const queryMenuItem = (name: string | RegExp) => within(getMenu()).queryByRole('menuitem', { name })
 
 const clickMenuItem = async (name: string | RegExp, user: UserEvent) => {

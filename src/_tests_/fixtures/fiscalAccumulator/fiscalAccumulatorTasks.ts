@@ -1,4 +1,4 @@
-import { FiscalAccumulatorListItemModel } from 'modules/fiscalAccumulator/models'
+import { FiscalAccumulatorTaskListItemModel } from 'modules/fiscalAccumulator/models'
 
 import {
   fakeAddress,
@@ -9,9 +9,9 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const fiscalAccumulatorListItem = (
-  props?: Partial<Pick<FiscalAccumulatorListItemModel, 'faFormat'>>,
-): FiscalAccumulatorListItemModel => ({
+export const fiscalAccumulatorTaskListItem = (
+  props?: Partial<Pick<FiscalAccumulatorTaskListItemModel, 'faFormat'>>,
+): FiscalAccumulatorTaskListItemModel => ({
   address: fakeAddress(),
   name: fakeWord(),
   title: fakeWord(),

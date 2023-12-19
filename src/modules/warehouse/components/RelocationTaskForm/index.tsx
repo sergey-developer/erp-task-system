@@ -14,6 +14,7 @@ import TimePicker from 'components/TimePicker'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
+import { filterOptionBy } from 'shared/utils/common'
 
 import { LocationOption, LocationOptionGroup, RelocationTaskFormProps } from './types'
 import { makeLocationOptions } from './utils'
@@ -89,15 +90,12 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
               if (!Array.isArray(option))
                 onChangeRelocateFrom(value, option as unknown as LocationOption)
             }}
+            showSearch
+            filterOption={filterOptionBy('label')}
           />
         </Form.Item>
 
-        <Form.Item
-          data-testid='relocate-to-form-item'
-          label='Объект прибытия'
-          name='relocateTo'
-          rules={onlyRequiredRules}
-        >
+        <Form.Item data-testid='relocate-to-form-item' label='Объект прибытия' name='relocateTo'>
           <Select<IdType, LocationOptionGroup>
             dropdownRender={(menu) => <div data-testid='relocate-to-select-dropdown'>{menu}</div>}
             loading={relocateToLocationListIsLoading}
@@ -112,6 +110,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
             onChange={(value, option) => {
               if (!Array.isArray(option)) onChangeRelocateTo(option as unknown as LocationOption)
             }}
+            showSearch
+            filterOption={filterOptionBy('label')}
           />
         </Form.Item>
       </Col>
@@ -154,6 +154,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
             disabled={isLoading || userListIsLoading}
             options={userList}
             placeholder='Выберите исполнителя'
+            showSearch
+            filterOption={filterOptionBy('fullName')}
           />
         </Form.Item>
 

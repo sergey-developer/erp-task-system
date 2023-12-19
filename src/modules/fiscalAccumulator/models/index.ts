@@ -1,4 +1,2 @@
-export * from './fiscalAccumulator.model'
-
-export * from './fiscalAccumulatorList.model'
-export * from './getFiscalAccumulatorList.model'
+export * from './fiscalAccumulatorTasks.model'
+export * from './getFiscalAccumulatorTasks.model'
