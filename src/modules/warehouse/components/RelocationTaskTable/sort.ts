@@ -75,7 +75,7 @@ export const getSort = (field: SortableField, order: SortOrder): GetRelocationTa
 
 export const parseSort = (
   value: GetRelocationTaskListSortValue,
-): { order: SortOrder; columnKey: string } => {
+): { order: SortOrder; columnKey: SortableField } => {
   const isDescend = value.startsWith('-')
   const parsedValue = isDescend ? value.slice(1) : value
 

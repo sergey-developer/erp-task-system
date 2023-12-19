@@ -1,7 +1,7 @@
 import {
   FastFilterEnum,
-  TaskExtendedStatusEnum,
   TaskAssignedEnum,
+  TaskExtendedStatusEnum,
   TaskOverdueEnum,
 } from 'modules/task/constants/task'
 import { TaskListItemModel } from 'modules/task/models'
@@ -48,9 +48,9 @@ export type ExtendedFilterQueries = Partial<{
   isAssigned: TaskAssignedEnum[]
   workGroupId: IdType
   manager: IdType
-  customers: IdType[],
-  macroregions: IdType[],
-  supportGroups: IdType[],
+  customers: IdType[]
+  macroregions: IdType[]
+  supportGroups: IdType[]
 }> &
   SearchFields
 

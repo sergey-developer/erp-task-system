@@ -6,6 +6,10 @@ import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 const { Text } = Typography
 
 export const TableStyled: typeof ParentSizedTable = styled(ParentSizedTable)`
+  table {
+    border-collapse: collapse;
+  }
+
   .ant-table-cell {
     padding: 3px;
   }

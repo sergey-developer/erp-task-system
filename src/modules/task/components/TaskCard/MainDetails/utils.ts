@@ -1,10 +1,10 @@
 import { BlockProps } from 'antd/es/typography/Base'
 import { DurationFormatSettings } from 'moment-timezone'
 
-import { BaseTaskModel, TaskModel, TaskResponseTimeModel } from 'modules/task/models'
+import { TaskModel, TaskResponseTimeModel } from 'modules/task/models'
 import { getOlaStatusMap } from 'modules/task/utils/task'
 
-import { MaybeNull } from 'shared/types/utils'
+import { MaybeNull, Nullable } from 'shared/types/utils'
 import { formatDate, humanizeDuration } from 'shared/utils/date'
 import { makeString } from 'shared/utils/string'
 
@@ -43,8 +43,8 @@ export const humanizeResponseTime = (responseTime: TaskResponseTimeModel): strin
   humanizeDuration(responseTime.timedelta, 'milliseconds', responseTimeDurationSettings)
 
 export const parseResponseTime = (
-  responseTime: BaseTaskModel['responseTime'],
-  workGroup: BaseTaskModel['workGroup'],
+  responseTime: Nullable<TaskModel['responseTime']>,
+  workGroup: Nullable<TaskModel['workGroup']>,
 ): MaybeNull<{ type: BlockProps['type']; value: string }> => {
   if (!responseTime || !!workGroup) return null
 

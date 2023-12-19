@@ -1,5 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import moment from 'moment-timezone'
 
 import { testUtils as extendedFilterTestUtils } from 'modules/task/components/ExtendedFilter/ExtendedFilter.test'
 import {
@@ -48,7 +49,7 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import { DEFAULT_PAGE_SIZE } from './constants'
+import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
 import TaskListPage from './index'
 
 const getContainer = () => screen.getByTestId('task-list-page')
@@ -1839,30 +1840,60 @@ describe('Страница реестра заявок', () => {
             expect(row).toBeInTheDocument()
           })
         })
-      })
 
-      describe('Статус', () => {
-        test.skip('После сортировки список отображается корректно', async () => {
+        test('Разделение списка отображается при сортировке по полю', async () => {
           mockGetTaskCountersSuccess()
-
-          const taskList = taskFixtures.taskList()
+          const item1 = taskFixtures.taskListItem({
+            olaNextBreachTime: moment().subtract(1, 'day').toISOString(),
+          })
+          const item2 = taskFixtures.taskListItem({ olaNextBreachTime: moment().toISOString() })
+          const item3 = taskFixtures.taskListItem({
+            olaNextBreachTime: moment().add(1, 'day').toISOString(),
+          })
           mockGetTaskListSuccess({
             once: false,
-            body: taskFixtures.taskListResponse(taskList),
+            body: taskFixtures.taskListResponse([item1, item2, item3]),
           })
 
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
+          render(<TaskListPage />)
+
+          await taskTableTestUtils.expectLoadingFinished()
+          const row1 = taskTableTestUtils.getRow(item1.id)
+          const row2 = taskTableTestUtils.getRow(item2.id)
+          const row3 = taskTableTestUtils.getRow(item3.id)
+
+          expect(row1).toHaveStyle(tableItemBoundaryStyles)
+          expect(row2).toHaveStyle(tableItemBoundaryStyles)
+          expect(row3).not.toHaveStyle(tableItemBoundaryStyles)
+        })
+
+        test('Разделение списка не отображается без сортировки по полю', async () => {
+          mockGetTaskCountersSuccess()
+          const item1 = taskFixtures.taskListItem({
+            olaNextBreachTime: moment().subtract(1, 'day').toISOString(),
+          })
+          const item2 = taskFixtures.taskListItem({ olaNextBreachTime: moment().toISOString() })
+          const item3 = taskFixtures.taskListItem({
+            olaNextBreachTime: moment().add(1, 'day').toISOString(),
+          })
+          mockGetTaskListSuccess({
+            once: false,
+            body: taskFixtures.taskListResponse([item1, item2, item3]),
           })
 
+          const { user } = render(<TaskListPage />)
+
+          await taskTableTestUtils.expectLoadingFinished()
+          await taskTableTestUtils.clickColTitle(user, 'Комментарий')
           await taskTableTestUtils.expectLoadingStarted()
           await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickColTitle(user, 'Статус')
+          const row1 = taskTableTestUtils.getRow(item1.id)
+          const row2 = taskTableTestUtils.getRow(item2.id)
+          const row3 = taskTableTestUtils.getRow(item3.id)
 
-          taskList.forEach((item) => {
-            const row = taskTableTestUtils.getRow(item.id)
-            expect(row).toBeInTheDocument()
-          })
+          expect(row1).not.toHaveStyle(tableItemBoundaryStyles)
+          expect(row2).not.toHaveStyle(tableItemBoundaryStyles)
+          expect(row3).not.toHaveStyle(tableItemBoundaryStyles)
         })
       })
 

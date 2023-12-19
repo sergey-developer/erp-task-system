@@ -9,11 +9,11 @@ import tableComponents from './constants/components'
 import { paginationConfig } from './constants/pagination'
 import { TableStyled, TableWrapperStyled } from './styles'
 import { TaskTableListItem, TaskTableProps } from './types'
-import { applySortToColumn, applyWidthToColumn, getTableColumns } from './utils'
+import { applySortToColumn, applyWidthToColumn, getColumns } from './utils'
 
 const TaskTable: FC<TaskTableProps> = ({ sort, pagination, userRole, ...props }) => {
   const breakpoints = useBreakpoint()
-  const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>(getTableColumns(userRole))
+  const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>(getColumns(userRole))
 
   const handleResize =
     (index: number): ResizableProps['onResize'] =>
@@ -43,7 +43,6 @@ const TaskTable: FC<TaskTableProps> = ({ sort, pagination, userRole, ...props })
 
   useEffect(() => {
     if (isEmpty(breakpoints)) return
-
     setColumns((prevColumns) => prevColumns.map((col) => applyWidthToColumn(col, breakpoints)))
   }, [breakpoints])
 
