@@ -134,7 +134,7 @@ describe('Страница списка оборудования', () => {
   })
 
   describe('Карточка просмотра оборудования', () => {
-    test('Можно открыть', async () => {
+    test('Открывается по клику на строку таблицы', async () => {
       const equipmentListItem = warehouseFixtures.equipmentListItem()
       mockGetEquipmentListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
@@ -153,7 +153,20 @@ describe('Страница списка оборудования', () => {
       expect(equipment).toBeInTheDocument()
     })
 
-    test('Можно закрыть', async () => {
+    test('Открывается по данным из search params', async () => {
+      const fakeEquipmentId = 1
+      jest.spyOn(URLSearchParams.prototype, 'get').mockImplementation(() => String(fakeEquipmentId))
+
+      mockGetEquipmentListSuccess()
+      mockGetEquipmentSuccess(fakeEquipmentId)
+
+      render(<EquipmentListPage />)
+
+      const equipment = await equipmentDetailsTestUtils.findContainer()
+      expect(equipment).toBeInTheDocument()
+    })
+
+    test('Закрывается', async () => {
       const equipmentListItem = warehouseFixtures.equipmentListItem()
       mockGetEquipmentListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),

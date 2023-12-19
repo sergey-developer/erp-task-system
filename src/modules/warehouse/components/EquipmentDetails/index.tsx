@@ -530,6 +530,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             <ModalFallback
               open={editEquipmentModalOpened}
               onCancel={handleCloseEditEquipmentModal}
+              tip='Загрузка данных для формы оборудования'
             />
           }
         >
@@ -573,6 +574,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             <ModalFallback
               open={relocationHistoryModalOpened}
               onCancel={debouncedToggleOpenRelocationHistoryModal}
+              tip='Загрузка данных для истории перемещений'
             />
           }
         >
