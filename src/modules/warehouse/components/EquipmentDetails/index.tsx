@@ -1,5 +1,5 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Drawer, Row, Typography, UploadProps } from 'antd'
+import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import AttachmentList from 'modules/attachment/components/AttachmentList'
@@ -34,7 +34,7 @@ import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
-import { getYesNoWord, valueOrHyphen } from 'shared/utils/common'
+import { getYesNoWord, printImage, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -495,13 +495,45 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                   </LoadingArea>
                 </Col>
               </Row>
+
+              {equipment.qrCode && (
+                <Row data-testid='qr-code' gutter={[8, 8]}>
+                  <Col span={24}>
+                    <Text type='secondary'>QR-код:</Text>
+                  </Col>
+
+                  <Col span={24}>
+                    <Space size='middle' align='start'>
+                      <Image
+                        width={135}
+                        height={155}
+                        src={equipment.qrCode}
+                        preview={false}
+                        alt='QR-code'
+                      />
+
+                      <Button type='link' onClick={() => printImage(equipment.qrCode!)}>
+                        Печать
+                      </Button>
+                    </Space>
+                  </Col>
+                </Row>
+              )}
             </Space>
           )}
         </LoadingArea>
       </Drawer>
 
       {editEquipmentModalOpened && (
-        <React.Suspense fallback={<ModalFallback open onCancel={handleCloseEditEquipmentModal} />}>
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={handleCloseEditEquipmentModal}
+              tip='Загрузка данных для формы оборудования'
+            />
+          }
+        >
           <EquipmentFormModal
             open={editEquipmentModalOpened}
             mode='edit'
@@ -539,7 +571,13 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
       {relocationHistoryModalOpened && (
         <React.Suspense
-          fallback={<ModalFallback open onCancel={debouncedToggleOpenRelocationHistoryModal} />}
+          fallback={
+            <ModalFallback
+              open
+              onCancel={debouncedToggleOpenRelocationHistoryModal}
+              tip='Загрузка данных для истории перемещений'
+            />
+          }
         >
           <EquipmentRelocationHistoryModal
             open={relocationHistoryModalOpened}
