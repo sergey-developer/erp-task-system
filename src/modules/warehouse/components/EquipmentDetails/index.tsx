@@ -41,7 +41,6 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 import { EquipmentFormModalProps } from '../EquipmentFormModal/types'
-import { DrawerExtraStyled } from './style'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
 
@@ -63,6 +62,10 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const permissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
+  const [
+    userChangedNomenclature,
+    { setTrue: setUserChangedNomenclature, setFalse: resetUserChangedNomenclature },
+  ] = useBoolean(false)
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
@@ -82,6 +85,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const handleCloseEditEquipmentModal = useDebounceFn(() => {
     closeEditEquipmentModal()
     setSelectedNomenclatureId(undefined)
+    resetUserChangedNomenclature()
     setSelectedCategory(undefined)
   }, [closeEditEquipmentModal])
 
@@ -192,10 +196,22 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       { skip: !relocationHistoryModalOpened },
     )
 
-  const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
-    setSelectedCategory(category)
-    setSelectedNomenclatureId(undefined)
-  }
+  const handleChangeCategory = useCallback<EquipmentFormModalProps['onChangeCategory']>(
+    (category) => {
+      setSelectedCategory(category)
+      setSelectedNomenclatureId(undefined)
+      resetUserChangedNomenclature()
+    },
+    [resetUserChangedNomenclature],
+  )
+
+  const onChangeNomenclature = useCallback<EquipmentFormModalProps['onChangeNomenclature']>(
+    (id) => {
+      setSelectedNomenclatureId(id)
+      setUserChangedNomenclature()
+    },
+    [setUserChangedNomenclature],
+  )
 
   const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
@@ -233,12 +249,21 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     ? getHiddenFieldsByCategory(equipment.category)
     : []
 
-  const defaultEquipmentImages = useMemo(
-    () =>
-      editEquipmentModalOpened && totalEquipmentAttachmentList?.results.length
-        ? attachmentsToFiles(totalEquipmentAttachmentList.results)
-        : undefined,
-    [editEquipmentModalOpened, totalEquipmentAttachmentList?.results],
+  const equipmentFormValues = useMemo(
+    () => ({
+      title: userChangedNomenclature ? nomenclature?.title : equipment?.title,
+      images:
+        editEquipmentModalOpened && totalEquipmentAttachmentList?.results.length
+          ? attachmentsToFiles(totalEquipmentAttachmentList.results)
+          : undefined,
+    }),
+    [
+      editEquipmentModalOpened,
+      equipment?.title,
+      nomenclature?.title,
+      totalEquipmentAttachmentList?.results,
+      userChangedNomenclature,
+    ],
   )
 
   return (
@@ -246,12 +271,17 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       <Drawer
         {...props}
         data-testid='equipment-details'
-        title={equipment?.title}
         width={500}
-        extra={
-          <DrawerExtraStyled>
-            <EditIcon $size='large' onClick={debouncedOpenEditEquipmentModal} />
-          </DrawerExtraStyled>
+        title={
+          equipment && (
+            <Row justify='space-between'>
+              <Col>{equipment.title}</Col>
+
+              <Col>
+                <EditIcon $size='large' onClick={debouncedOpenEditEquipmentModal} />
+              </Col>
+            </Row>
+          )
         }
       >
         <LoadingArea data-testid='equipment-details-loading' isLoading={equipmentIsFetching}>
@@ -541,6 +571,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             okText='Сохранить'
             isLoading={updateEquipmentIsLoading}
             initialValues={getEquipmentFormInitialValues(equipment)}
+            values={equipmentFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}
@@ -557,14 +588,13 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
-            onChangeNomenclature={setSelectedNomenclatureId}
+            onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseEditEquipmentModal}
             onSubmit={handleEditEquipment}
             onUploadImage={handleCreateEquipmentImage}
             imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
-            defaultImages={defaultEquipmentImages}
           />
         </React.Suspense>
       )}

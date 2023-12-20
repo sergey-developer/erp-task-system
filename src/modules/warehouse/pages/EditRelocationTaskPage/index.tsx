@@ -6,7 +6,7 @@ import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 import stubFalse from 'lodash/stubFalse'
 import moment from 'moment-timezone'
-import React, { FC, Key, useCallback, useEffect, useState } from 'react'
+import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
@@ -14,7 +14,6 @@ import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hoo
 import { attachmentsToFiles } from 'modules/attachment/utils'
 import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
-import { getEquipmentFormInitialValues } from 'modules/warehouse/components/EquipmentDetails/utils'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
 import RelocationEquipmentEditableTable from 'modules/warehouse/components/RelocationEquipmentEditableTable'
@@ -80,6 +79,7 @@ import { extractPaginationResults } from 'shared/utils/pagination'
 
 import {
   getEquipmentCatalogListParams,
+  getEquipmentFormInitialValues,
   getRelocateFromLocationListParams,
   getRelocateToLocationListParams,
 } from '../CreateRelocationTaskPage/utils'
@@ -117,6 +117,10 @@ const EditRelocationTaskPage: FC = () => {
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
+  const [
+    userChangedNomenclature,
+    { setTrue: setUserChangedNomenclature, setFalse: resetUserChangedNomenclature },
+  ] = useBoolean(false)
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
@@ -145,6 +149,7 @@ const EditRelocationTaskPage: FC = () => {
   const handleCloseCreateEquipmentModal = useDebounceFn(() => {
     closeCreateEquipmentModal()
     setSelectedNomenclatureId(undefined)
+    resetUserChangedNomenclature()
     setSelectedCategory(undefined)
     setActiveEquipmentRow(undefined)
   })
@@ -169,6 +174,7 @@ const EditRelocationTaskPage: FC = () => {
     setEditableEquipmentByFileIndex(undefined)
     setSelectedCategory(undefined)
     setSelectedNomenclatureId(undefined)
+    resetUserChangedNomenclature()
     closeEditEquipmentByFileModal()
   })
 
@@ -614,8 +620,17 @@ const EditRelocationTaskPage: FC = () => {
     (category) => {
       setSelectedCategory(category)
       setSelectedNomenclatureId(undefined)
+      resetUserChangedNomenclature()
     },
-    [],
+    [resetUserChangedNomenclature],
+  )
+
+  const onChangeNomenclature = useCallback<EquipmentFormModalProps['onChangeNomenclature']>(
+    (id) => {
+      setSelectedNomenclatureId(id)
+      setUserChangedNomenclature()
+    },
+    [setUserChangedNomenclature],
   )
 
   const handleChangeRelocateFrom = useCallback<RelocationTaskFormProps['onChangeRelocateFrom']>(
@@ -746,6 +761,22 @@ const EditRelocationTaskPage: FC = () => {
     addRelocationEquipmentImagesModalOpened && activeEquipmentRow
       ? ['equipments', activeEquipmentRow.rowIndex, 'attachments']
       : undefined
+
+  const equipmentByFileFormValues = useMemo(
+    () => ({
+      title: userChangedNomenclature ? nomenclature?.title : editableEquipmentByFile?.title,
+      images: isNumber(editableEquipmentByFileIndex)
+        ? form.getFieldValue(['equipmentsByFile', editableEquipmentByFileIndex, 'images'])
+        : undefined,
+    }),
+    [
+      editableEquipmentByFile?.title,
+      editableEquipmentByFileIndex,
+      form,
+      nomenclature?.title,
+      userChangedNomenclature,
+    ],
+  )
 
   return (
     <>
@@ -891,7 +922,7 @@ const EditRelocationTaskPage: FC = () => {
             nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
-            onChangeNomenclature={setSelectedNomenclatureId}
+            onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseCreateEquipmentModal}
             onSubmit={createEquipment}
             onUploadImage={handleCreateEquipmentImage}
@@ -912,6 +943,7 @@ const EditRelocationTaskPage: FC = () => {
             title='Изменить добавляемое оборудование'
             okText='Сохранить'
             initialValues={getEquipmentFormInitialValues(editableEquipmentByFile)}
+            values={equipmentByFileFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}
@@ -926,18 +958,13 @@ const EditRelocationTaskPage: FC = () => {
             nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
-            onChangeNomenclature={setSelectedNomenclatureId}
+            onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseEditEquipmentByFileModal}
             onSubmit={editEquipmentByFile}
             onUploadImage={handleCreateEquipmentImage}
             imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
-            defaultImages={
-              isNumber(editableEquipmentByFileIndex)
-                ? form.getFieldValue(['equipmentsByFile', editableEquipmentByFileIndex, 'images'])
-                : undefined
-            }
           />
         </React.Suspense>
       )}
