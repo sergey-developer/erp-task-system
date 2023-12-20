@@ -1,12 +1,10 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button } from 'antd'
 import debounce from 'lodash/debounce'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
 import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
-import RelocationTaskDetails from 'modules/warehouse/components/RelocationTaskDetails'
-import RelocationTaskListFilter from 'modules/warehouse/components/RelocationTaskListFilter'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
 import {
@@ -22,6 +20,7 @@ import { GetRelocationTaskListQueryArgs } from 'modules/warehouse/models'
 import { relocationTaskListFilterToParams } from 'modules/warehouse/utils/relocationTask'
 
 import FilterButton from 'components/Buttons/FilterButton'
+import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
@@ -32,14 +31,22 @@ import {
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
+import { MaybeUndefined } from 'shared/types/utils'
 
-const initialFilterValues: RelocationTaskListFilterFormFields = {
+const RelocationTaskListFilter = React.lazy(
+  () => import('modules/warehouse/components/RelocationTaskListFilter'),
+)
+
+const RelocationTaskDetails = React.lazy(
+  () => import('modules/warehouse/components/RelocationTaskDetails'),
+)
+
+const initialFilterValues: Pick<RelocationTaskListFilterFormFields, 'status'> = {
   status: [
     RelocationTaskStatusEnum.New,
     RelocationTaskStatusEnum.Completed,
     RelocationTaskStatusEnum.Returned,
   ],
-  type: undefined,
 }
 
 const initialRelocationTaskListParams: Pick<
@@ -53,19 +60,20 @@ const initialRelocationTaskListParams: Pick<
 
 const RelocationTaskListPage: FC = () => {
   // todo: создать хук для useSearchParams который парсит значения в нужный тип
-  const [searchParams, setSearchParams] = useSearchParams()
-  const relocationTaskId = Number(searchParams.get('viewRelocationTask'))
+  const [searchParams] = useSearchParams()
+  const relocationTaskId = Number(searchParams.get('viewRelocationTask')) || undefined
 
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
   const [filterValues, setFilterValues] = useState<RelocationTaskListFilterFormFields>()
 
-  const [selectedRelocationTaskId, setSelectedRelocationTaskId] = useState<IdType>()
+  const [selectedRelocationTaskId, setSelectedRelocationTaskId] =
+    useState<MaybeUndefined<IdType>>(relocationTaskId)
 
   const [
     relocationTaskOpened,
     { toggle: toggleOpenRelocationTask, setFalse: closeRelocationTask },
-  ] = useBoolean(false)
+  ] = useBoolean(!!selectedRelocationTaskId)
 
   const handleCloseRelocationTask = useDebounceFn(closeRelocationTask)
 
@@ -74,15 +82,6 @@ const RelocationTaskListPage: FC = () => {
 
   const { currentData: relocationTaskList, isFetching: relocationTaskListIsFetching } =
     useGetRelocationTaskList(relocationTaskListParams)
-
-  useEffect(() => {
-    if (!relocationTaskOpened && !!relocationTaskId) {
-      // todo: вынести в функцию и переиспользовать
-      setSelectedRelocationTaskId(relocationTaskId)
-      toggleOpenRelocationTask()
-      setSearchParams(undefined)
-    }
-  }, [relocationTaskId, relocationTaskOpened, setSearchParams, toggleOpenRelocationTask])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {
@@ -161,21 +160,27 @@ const RelocationTaskListPage: FC = () => {
       </Space>
 
       {relocationTaskOpened && selectedRelocationTaskId && (
-        <RelocationTaskDetails
-          open={relocationTaskOpened}
-          onClose={handleCloseRelocationTask}
-          relocationTaskId={selectedRelocationTaskId}
-        />
+        <React.Suspense
+          fallback={<ModalFallback open tip='Загрузка данных для заявки на перемещение' />}
+        >
+          <RelocationTaskDetails
+            open={relocationTaskOpened}
+            onClose={handleCloseRelocationTask}
+            relocationTaskId={selectedRelocationTaskId}
+          />
+        </React.Suspense>
       )}
 
       {filterOpened && (
-        <RelocationTaskListFilter
-          open={filterOpened}
-          values={filterValues}
-          initialValues={initialFilterValues}
-          onClose={debouncedToggleOpenFilter}
-          onApply={handleApplyFilter}
-        />
+        <React.Suspense fallback={<ModalFallback open tip='Загрузка данных для фильтров' />}>
+          <RelocationTaskListFilter
+            open={filterOpened}
+            values={filterValues}
+            initialValues={initialFilterValues}
+            onClose={debouncedToggleOpenFilter}
+            onApply={handleApplyFilter}
+          />
+        </React.Suspense>
       )}
     </>
   )

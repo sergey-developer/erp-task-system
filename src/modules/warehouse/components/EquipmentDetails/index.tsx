@@ -1,5 +1,5 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Drawer, Row, Typography, UploadProps } from 'antd'
+import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import AttachmentList from 'modules/attachment/components/AttachmentList'
@@ -34,14 +34,13 @@ import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
-import { getYesNoWord, valueOrHyphen } from 'shared/utils/common'
+import { getYesNoWord, printImage, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 import { EquipmentFormModalProps } from '../EquipmentFormModal/types'
-import { DrawerExtraStyled } from './style'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
 
@@ -63,6 +62,10 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const permissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
+  const [
+    userChangedNomenclature,
+    { setTrue: setUserChangedNomenclature, setFalse: resetUserChangedNomenclature },
+  ] = useBoolean(false)
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
@@ -82,6 +85,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const handleCloseEditEquipmentModal = useDebounceFn(() => {
     closeEditEquipmentModal()
     setSelectedNomenclatureId(undefined)
+    resetUserChangedNomenclature()
     setSelectedCategory(undefined)
   }, [closeEditEquipmentModal])
 
@@ -192,10 +196,22 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       { skip: !relocationHistoryModalOpened },
     )
 
-  const handleChangeCategory: EquipmentFormModalProps['onChangeCategory'] = (category) => {
-    setSelectedCategory(category)
-    setSelectedNomenclatureId(undefined)
-  }
+  const handleChangeCategory = useCallback<EquipmentFormModalProps['onChangeCategory']>(
+    (category) => {
+      setSelectedCategory(category)
+      setSelectedNomenclatureId(undefined)
+      resetUserChangedNomenclature()
+    },
+    [resetUserChangedNomenclature],
+  )
+
+  const onChangeNomenclature = useCallback<EquipmentFormModalProps['onChangeNomenclature']>(
+    (id) => {
+      setSelectedNomenclatureId(id)
+      setUserChangedNomenclature()
+    },
+    [setUserChangedNomenclature],
+  )
 
   const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
@@ -233,12 +249,21 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     ? getHiddenFieldsByCategory(equipment.category)
     : []
 
-  const defaultEquipmentImages = useMemo(
-    () =>
-      editEquipmentModalOpened && totalEquipmentAttachmentList?.results.length
-        ? attachmentsToFiles(totalEquipmentAttachmentList.results)
-        : undefined,
-    [editEquipmentModalOpened, totalEquipmentAttachmentList?.results],
+  const equipmentFormValues = useMemo(
+    () => ({
+      title: userChangedNomenclature ? nomenclature?.title : equipment?.title,
+      images:
+        editEquipmentModalOpened && totalEquipmentAttachmentList?.results.length
+          ? attachmentsToFiles(totalEquipmentAttachmentList.results)
+          : undefined,
+    }),
+    [
+      editEquipmentModalOpened,
+      equipment?.title,
+      nomenclature?.title,
+      totalEquipmentAttachmentList?.results,
+      userChangedNomenclature,
+    ],
   )
 
   return (
@@ -246,12 +271,17 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       <Drawer
         {...props}
         data-testid='equipment-details'
-        title={equipment?.title}
         width={500}
-        extra={
-          <DrawerExtraStyled>
-            <EditIcon $size='large' onClick={debouncedOpenEditEquipmentModal} />
-          </DrawerExtraStyled>
+        title={
+          equipment && (
+            <Row justify='space-between'>
+              <Col>{equipment.title}</Col>
+
+              <Col>
+                <EditIcon $size='large' onClick={debouncedOpenEditEquipmentModal} />
+              </Col>
+            </Row>
+          )
         }
       >
         <LoadingArea data-testid='equipment-details-loading' isLoading={equipmentIsFetching}>
@@ -495,13 +525,45 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                   </LoadingArea>
                 </Col>
               </Row>
+
+              {equipment.qrCode && (
+                <Row data-testid='qr-code' gutter={[8, 8]}>
+                  <Col span={24}>
+                    <Text type='secondary'>QR-код:</Text>
+                  </Col>
+
+                  <Col span={24}>
+                    <Space size='middle' align='start'>
+                      <Image
+                        width={135}
+                        height={155}
+                        src={equipment.qrCode}
+                        preview={false}
+                        alt='QR-code'
+                      />
+
+                      <Button type='link' onClick={() => printImage(equipment.qrCode!)}>
+                        Печать
+                      </Button>
+                    </Space>
+                  </Col>
+                </Row>
+              )}
             </Space>
           )}
         </LoadingArea>
       </Drawer>
 
       {editEquipmentModalOpened && (
-        <React.Suspense fallback={<ModalFallback open onCancel={handleCloseEditEquipmentModal} />}>
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={handleCloseEditEquipmentModal}
+              tip='Загрузка данных для формы оборудования'
+            />
+          }
+        >
           <EquipmentFormModal
             open={editEquipmentModalOpened}
             mode='edit'
@@ -509,6 +571,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             okText='Сохранить'
             isLoading={updateEquipmentIsLoading}
             initialValues={getEquipmentFormInitialValues(equipment)}
+            values={equipmentFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}
@@ -525,21 +588,26 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
-            onChangeNomenclature={setSelectedNomenclatureId}
+            onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseEditEquipmentModal}
             onSubmit={handleEditEquipment}
             onUploadImage={handleCreateEquipmentImage}
             imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
-            defaultImages={defaultEquipmentImages}
           />
         </React.Suspense>
       )}
 
       {relocationHistoryModalOpened && (
         <React.Suspense
-          fallback={<ModalFallback open onCancel={debouncedToggleOpenRelocationHistoryModal} />}
+          fallback={
+            <ModalFallback
+              open
+              onCancel={debouncedToggleOpenRelocationHistoryModal}
+              tip='Загрузка данных для истории перемещений'
+            />
+          }
         >
           <EquipmentRelocationHistoryModal
             open={relocationHistoryModalOpened}

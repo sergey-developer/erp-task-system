@@ -27,9 +27,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   mode,
 
   isLoading,
+  values,
   initialValues,
 
-  defaultImages,
   onUploadImage,
   imageIsUploading,
   onDeleteImage,
@@ -65,22 +65,18 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 }) => {
   const [form] = Form.useForm<EquipmentFormModalFormFields>()
 
-  const hasSelectedNomenclature = Boolean(nomenclature)
+  const nomenclatureSelected = Boolean(nomenclature)
 
-  const hasSelectedCategory = Boolean(selectedCategory)
+  const categorySelected = Boolean(selectedCategory)
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   useEffect(() => {
-    if (nomenclature?.title) {
-      form.setFieldsValue({ title: nomenclature.title })
-    }
-  }, [form, nomenclature?.title])
+    if (values?.title) form.setFieldsValue({ title: values.title })
+  }, [form, values?.title])
 
   useEffect(() => {
-    if (defaultImages?.length) {
-      form.setFieldsValue({ images: defaultImages })
-    }
-  }, [defaultImages, form])
+    if (values?.images?.length) form.setFieldsValue({ images: values.images })
+  }, [form, values?.images])
 
   const handleChangeCategory = (
     value: IdType,
@@ -171,7 +167,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         </Form.Item>
 
         <LoadingArea isLoading={nomenclatureIsLoading} tip='Загрузка номенклатуры...'>
-          {hasSelectedCategory && hasSelectedNomenclature && (
+          {categorySelected && nomenclatureSelected && (
             <>
               <Form.Item
                 data-testid='title-form-item'
@@ -401,7 +397,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   itemRender={(originNode, file) => (!file.error ? originNode : null)}
                   customRequest={onUploadImage}
                   onRemove={onDeleteImage}
-                  defaultFileList={defaultImages}
+                  defaultFileList={values?.images}
                 >
                   <UploadButton label='Добавить фото' disabled={isLoading} />
                 </Upload>

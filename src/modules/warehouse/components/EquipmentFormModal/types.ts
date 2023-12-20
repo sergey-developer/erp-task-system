@@ -51,7 +51,6 @@ export type EquipmentFormModalProps = Required<
       setFields: FormInstance['setFields'],
     ) => Promise<void> | void
 
-    defaultImages?: UploadProps<FileResponse>['defaultFileList']
     onUploadImage: NonNullable<UploadProps['customRequest']>
     imageIsUploading: boolean
     onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
@@ -81,5 +80,6 @@ export type EquipmentFormModalProps = Required<
     nomenclatureListIsLoading: boolean
     onChangeNomenclature: (id: IdType) => void
 
-    initialValues?: Partial<Omit<EquipmentFormModalFormFields, 'images'>>
+    values?: Partial<Pick<EquipmentFormModalFormFields, 'title' | 'images'>>
+    initialValues?: Partial<EquipmentFormModalFormFields>
   }
