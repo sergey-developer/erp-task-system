@@ -41,13 +41,12 @@ const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
 )
 
-const initialFilterValues: RelocationTaskListFilterFormFields = {
+const initialFilterValues: Pick<RelocationTaskListFilterFormFields, 'status'> = {
   status: [
     RelocationTaskStatusEnum.New,
     RelocationTaskStatusEnum.Completed,
     RelocationTaskStatusEnum.Returned,
   ],
-  type: undefined,
 }
 
 const initialRelocationTaskListParams: Pick<
