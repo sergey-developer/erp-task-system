@@ -279,7 +279,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     await pickEquipmentToShop(changedValues, values)
   }
 
-  const handleCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+  const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
       if (!activeEquipmentRow || !warehouseMy || !taskShop?.id) return
 
@@ -487,8 +487,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={setSelectedNomenclatureId}
             onCancel={handleCloseCreateEquipmentModal}
-            onSubmit={handleCreateEquipment}
+            onSubmit={createEquipment}
             onUploadImage={() => {}}
+            imageIsUploading={false}
             onDeleteImage={() => {}}
             imageIsDeleting={false}
           />

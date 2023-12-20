@@ -1,5 +1,7 @@
 import { FiscalAccumulatorFormatEnum } from 'modules/fiscalAccumulator/constants'
 
+import theme from 'styles/theme'
+
 import { fiscalAccumulatorFormatColorDict } from './dict'
 
 test('fiscal accumulator format color', () => {
@@ -10,7 +12,7 @@ test('fiscal accumulator format color', () => {
   )
 
   expect(fiscalAccumulatorFormatColorDict[FiscalAccumulatorFormatEnum.OutOfMemoryLess15]).toBe(
-    '#EB5757',
+    theme.colors.fireOpal,
   )
 
   expect(fiscalAccumulatorFormatColorDict[FiscalAccumulatorFormatEnum.OutOfMemoryLess21]).toBe(
