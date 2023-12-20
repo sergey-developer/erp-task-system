@@ -23,7 +23,7 @@ export type EmptyFn = () => void
 
 export type NumberOrString = number | string
 
-export type ArrayFirst<T extends any[]> = T['length'] extends 0 ? never : T[0]
+export type ArrayFirst<T extends any[] | readonly any[]> = T['length'] extends 0 ? never : T[0]
 
 export type Writeable<T> = { -readonly [P in keyof T]: T[P] }
 

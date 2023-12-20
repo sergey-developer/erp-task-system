@@ -205,17 +205,15 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   }
 
   const handleGetWaybillM15 = useDebounceFn(async () => {
-    try {
-      const waybillM15 = await getWaybillM15({ relocationTaskId }).unwrap()
+    const { data } = await getWaybillM15({ relocationTaskId })
 
-      if (waybillM15) {
-        clickDownloadLink(
-          base64ToArrayBuffer(waybillM15),
-          MimetypeEnum.Pdf,
-          getWaybillM15Filename(relocationTaskId),
-        )
-      }
-    } catch {}
+    if (data) {
+      clickDownloadLink(
+        base64ToArrayBuffer(data),
+        MimetypeEnum.Pdf,
+        getWaybillM15Filename(relocationTaskId),
+      )
+    }
   }, [relocationTaskId])
 
   const handleReturnToRework: ReturnRelocationTaskToReworkModalProps['onSubmit'] = async (

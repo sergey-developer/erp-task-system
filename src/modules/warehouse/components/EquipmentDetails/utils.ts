@@ -1,8 +1,9 @@
+import isBoolean from 'lodash/isBoolean'
+import isNumber from 'lodash/isNumber'
+
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
-import { EquipmentCategoryModel, EquipmentModel, NomenclatureModel } from 'modules/warehouse/models'
-
-import { MaybeUndefined } from 'shared/types/utils'
+import { EquipmentCategoryModel, EquipmentModel } from 'modules/warehouse/models'
 
 import { FieldsMaybeHidden } from './types'
 
@@ -30,26 +31,25 @@ export const getHiddenFieldsByCategory = (
 
 export const getEquipmentFormInitialValues = (
   equipment?: EquipmentModel,
-  nomenclature?: NomenclatureModel,
-): MaybeUndefined<EquipmentFormModalProps['initialValues']> =>
+): EquipmentFormModalProps['initialValues'] =>
   equipment
     ? {
-        nomenclature: equipment.nomenclature.id,
-        condition: equipment.condition,
-        category: equipment.category.id,
-        purpose: equipment.purpose.id,
-        isNew: equipment.isNew,
-        isWarranty: equipment.isWarranty,
-        isRepaired: equipment.isRepaired,
-        title: nomenclature?.title,
+        nomenclature: equipment.nomenclature?.id,
+        condition: equipment.condition || undefined,
+        category: equipment.category?.id,
+        purpose: equipment.purpose?.id,
+        isNew: isBoolean(equipment.isNew) ? equipment.isNew : undefined,
+        isWarranty: isBoolean(equipment.isWarranty) ? equipment.isWarranty : undefined,
+        isRepaired: isBoolean(equipment.isRepaired) ? equipment.isRepaired : undefined,
+        title: equipment.nomenclature?.title,
         warehouse: equipment.warehouse?.id,
         currency: equipment.currency?.id,
         customerInventoryNumber: equipment.customerInventoryNumber || undefined,
         serialNumber: equipment.serialNumber || undefined,
-        quantity: equipment.quantity || undefined,
-        price: equipment.price || undefined,
-        usageCounter: equipment.usageCounter || undefined,
+        quantity: isNumber(equipment.quantity) ? equipment.quantity : undefined,
+        price: isNumber(equipment.price) ? equipment.price : undefined,
+        usageCounter: isNumber(equipment.usageCounter) ? equipment.usageCounter : undefined,
         owner: equipment.owner?.id,
         comment: equipment.comment || undefined,
       }
-    : undefined
+    : {}

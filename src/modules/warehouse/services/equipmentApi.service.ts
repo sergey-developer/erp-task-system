@@ -1,8 +1,12 @@
+import random from 'lodash/random'
+
 import { getPaginatedList } from 'lib/antd/utils'
 
 import { EquipmentApiEnum, EquipmentApiTagEnum } from 'modules/warehouse/constants/equipment'
 import {
   CreateEquipmentMutationArgs,
+  CreateEquipmentsMutationArgs,
+  CreateEquipmentsSuccessResponse,
   CreateEquipmentSuccessResponse,
   GetEquipmentAttachmentListQueryArgs,
   GetEquipmentAttachmentListSuccessResponse,
@@ -12,12 +16,16 @@ import {
   GetEquipmentCategoryListSuccessResponse,
   GetEquipmentListQueryArgs,
   GetEquipmentListSuccessResponse,
+  GetEquipmentListTemplateQueryArgs,
+  GetEquipmentListTemplateSuccessResponse,
   GetEquipmentNomenclatureListQueryArgs,
   GetEquipmentNomenclatureListSuccessResponse,
   GetEquipmentQueryArgs,
   GetEquipmentRelocationHistoryQueryArgs,
   GetEquipmentRelocationHistorySuccessResponse,
   GetEquipmentSuccessResponse,
+  ImportEquipmentsByFileMutationArgs,
+  ImportEquipmentsByFileSuccessResponse,
   UpdateEquipmentMutationArgs,
   UpdateEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
@@ -25,6 +33,7 @@ import {
   GetEquipmentAttachmentListTransformedSuccessResponse,
   GetEquipmentListTransformedSuccessResponse,
   GetEquipmentNomenclatureListTransformedSuccessResponse,
+  ImportEquipmentsByFileTransformedSuccessResponse,
 } from 'modules/warehouse/types'
 import {
   getEquipmentAttachmentListUrl,
@@ -124,6 +133,35 @@ const equipmentApiService = baseApiService
           data: payload,
         }),
       }),
+      createEquipments: build.mutation<
+        CreateEquipmentsSuccessResponse,
+        CreateEquipmentsMutationArgs
+      >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [EquipmentApiTagEnum.EquipmentCatalogList],
+        query: (payload) => ({
+          url: EquipmentApiEnum.CreateEquipments,
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+      }),
+      importEquipmentsByFile: build.mutation<
+        ImportEquipmentsByFileTransformedSuccessResponse,
+        ImportEquipmentsByFileMutationArgs
+      >({
+        query: (payload) => {
+          const formData = new FormData()
+          formData.append('file', payload.file)
+
+          return {
+            url: EquipmentApiEnum.ImportEquipmentsByFile,
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+        transformResponse: (response: ImportEquipmentsByFileSuccessResponse) =>
+          response.map((eqp) => ({ ...eqp, rowId: random(1, 9999999) })),
+      }),
       updateEquipment: build.mutation<UpdateEquipmentSuccessResponse, UpdateEquipmentMutationArgs>({
         invalidatesTags: (result, error) =>
           error ? [] : [EquipmentApiTagEnum.EquipmentList, EquipmentApiTagEnum.Equipment],
@@ -143,6 +181,16 @@ const equipmentApiService = baseApiService
           method: HttpMethodEnum.Get,
         }),
       }),
+
+      getEquipmentListTemplate: build.query<
+        GetEquipmentListTemplateSuccessResponse,
+        GetEquipmentListTemplateQueryArgs
+      >({
+        query: () => ({
+          url: EquipmentApiEnum.GetEquipmentListTemplate,
+          method: HttpMethodEnum.Get,
+        }),
+      }),
     }),
   })
 
@@ -156,9 +204,13 @@ export const {
   useGetEquipmentQuery,
   useLazyGetEquipmentQuery,
   useCreateEquipmentMutation,
+  useCreateEquipmentsMutation,
+  useImportEquipmentsByFileMutation,
   useUpdateEquipmentMutation,
   useGetEquipmentListQuery,
   useGetEquipmentRelocationHistoryQuery,
 
   useGetEquipmentCategoryListQuery,
+
+  useLazyGetEquipmentListTemplateQuery,
 } = equipmentApiService

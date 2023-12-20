@@ -6,12 +6,18 @@ import React, { FC, useCallback, useEffect } from 'react'
 import { CustomMutationTrigger } from 'lib/rtk-query/types'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
+import CardTabs from 'modules/task/components/CardTabs'
+import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
   RequestTaskSuspendFormFields,
   RequestTaskSuspendModalProps,
 } from 'modules/task/components/RequestTaskSuspendModal/types'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
+import AdditionalInfo from 'modules/task/components/TaskCard/AdditionalInfo'
+import CardTitle from 'modules/task/components/TaskCard/CardTitle'
+import MainDetails from 'modules/task/components/TaskCard/MainDetails'
+import SecondaryDetails from 'modules/task/components/TaskCard/SecondaryDetails'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
@@ -53,15 +59,9 @@ import { EmptyFn, MaybeNull } from 'shared/types/utils'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { extractOriginFiles } from 'shared/utils/file'
-import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
+import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import CardTabs from '../../CardTabs'
-import { ExecuteTaskModalProps } from '../../ExecuteTaskModal/types'
-import AdditionalInfo from '../AdditionalInfo'
-import CardTitle from '../CardTitle'
-import MainDetails from '../MainDetails'
-import SecondaryDetails from '../SecondaryDetails'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
@@ -437,14 +437,12 @@ const TaskCard: FC<TaskCardProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            const badRequestError = error as CreateTaskSuspendRequestBadRequestErrorResponse
-
-            handleSetFieldsErrors(
-              {
-                ...badRequestError,
-                data: getFormErrorsFromBadRequestError(badRequestError),
-              },
-              setFields,
+            setFields(
+              getFieldsErrors(
+                getFormErrorsFromBadRequestError(
+                  error.data as CreateTaskSuspendRequestBadRequestErrorResponse,
+                ),
+              ),
             )
           }
         }

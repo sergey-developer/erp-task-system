@@ -22,7 +22,7 @@ export const mockResolveTaskSuccess = (
 
 export const mockResolveTaskBadRequestError = (
   taskId: IdType,
-  options?: Partial<ResponseResolverOptions<ResolveTaskBadRequestErrorResponse['data']>>,
+  options?: Partial<ResponseResolverOptions<ResolveTaskBadRequestErrorResponse>>,
 ) => getBadRequestErrorMockFn(resolveTaskMockFn(taskId), options)()
 
 export const mockResolveTaskServerError = (
