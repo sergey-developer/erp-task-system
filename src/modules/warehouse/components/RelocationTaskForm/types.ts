@@ -6,11 +6,14 @@ import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTa
 import { LocationListItemModel, LocationListModel } from 'shared/models/catalogs/location'
 import { IdType } from 'shared/types/common'
 
+export type LocationOptionGroup = Pick<LocationOption, 'type' | 'label'> & {
+  options: LocationOption[]
+}
+
 export type LocationOption = {
   type: LocationListItemModel['type']
-  label?: ReactNode
-  value?: IdType
-  options?: LocationOption[]
+  label: ReactNode
+  value: IdType
 }
 
 export type RelocationTaskFormProps = {

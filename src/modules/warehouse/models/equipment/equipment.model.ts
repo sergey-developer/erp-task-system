@@ -38,4 +38,5 @@ export type EquipmentModel = {
   usageCounter: MaybeNull<number>
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
   comment: MaybeNull<string>
+  qrCode: MaybeNull<string>
 }

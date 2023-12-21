@@ -68,14 +68,14 @@ import {
   mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
 import {
+  buttonTestUtils,
+  cardTestUtils,
   fakeId,
   fakeWord,
   getStoreWithAuth,
+  notificationTestUtils,
   render,
   setupApiTests,
-  notificationTestUtils,
-  buttonTestUtils,
-  cardTestUtils,
 } from '_tests_/utils'
 
 import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
@@ -896,7 +896,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse['data']> = {
+          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
@@ -1036,7 +1036,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse['data']> = {
+          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
@@ -1176,7 +1176,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse['data']> = {
+          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
@@ -1316,7 +1316,7 @@ describe('Контейнер детальной карточки заявки', 
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
-          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse['data']> = {
+          const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
@@ -3319,9 +3319,7 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            const badRequestResponse: Required<
-              Omit<CreateTaskSuspendRequestBadRequestErrorResponse['data'], 'detail'>
-            > = {
+            const badRequestResponse: Required<CreateTaskSuspendRequestBadRequestErrorResponse> = {
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
@@ -3515,9 +3513,7 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            const badRequestResponse: Required<
-              Omit<CreateTaskSuspendRequestBadRequestErrorResponse['data'], 'detail'>
-            > = {
+            const badRequestResponse: Required<CreateTaskSuspendRequestBadRequestErrorResponse> = {
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
@@ -3711,9 +3707,7 @@ describe('Контейнер детальной карточки заявки', 
               }),
             })
 
-            const badRequestResponse: Required<
-              Omit<CreateTaskSuspendRequestBadRequestErrorResponse['data'], 'detail'>
-            > = {
+            const badRequestResponse: Required<CreateTaskSuspendRequestBadRequestErrorResponse> = {
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],
               suspendReason: [fakeWord()],
@@ -3908,7 +3902,7 @@ describe('Контейнер детальной карточки заявки', 
             })
 
             const badRequestResponse: Required<
-              Omit<CreateTaskSuspendRequestBadRequestErrorResponse['data'], 'detail'>
+              Omit<CreateTaskSuspendRequestBadRequestErrorResponse, 'detail'>
             > = {
               comment: [fakeWord()],
               suspendEndAt: [fakeWord()],

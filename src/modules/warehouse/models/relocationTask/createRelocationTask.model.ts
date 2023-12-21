@@ -25,6 +25,3 @@ export type CreateRelocationTaskMutationArgs = {
 }
 
 export type CreateRelocationTaskSuccessResponse = RelocationTaskModel
-
-// todo: fix
-export type CreateRelocationBadRequestErrorResponse = Partial<CreateRelocationTaskMutationArgs>

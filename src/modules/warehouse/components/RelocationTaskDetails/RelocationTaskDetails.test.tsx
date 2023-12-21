@@ -22,7 +22,7 @@ import {
   executeRelocationTaskMessages,
   getRelocationEquipmentListMessages,
   getRelocationTaskMessages,
-  getRelocationTaskWaybillM15Messages,
+  getRelocationTaskWaybillM15ErrorMsg,
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
   returnRelocationTaskToReworkMessages,
@@ -766,9 +766,7 @@ describe('Информация о заявке о перемещении', () =>
       await testUtils.openMenu(user)
       await testUtils.clickWaybillM15MenuItem(user)
 
-      await waitFor(() => {
-        expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
-      })
+      await waitFor(() => expect(base64ToArrayBufferSpy).toBeCalledTimes(1))
       expect(base64ToArrayBufferSpy).toBeCalledWith(m15File)
 
       expect(clickDownloadLinkSpy).toBeCalledTimes(1)
@@ -854,7 +852,7 @@ describe('Информация о заявке о перемещении', () =>
         await testUtils.clickWaybillM15MenuItem(user)
 
         const notification = await notificationTestUtils.findNotification(
-          getRelocationTaskWaybillM15Messages.commonError,
+          getRelocationTaskWaybillM15ErrorMsg,
         )
         expect(notification).toBeInTheDocument()
       })

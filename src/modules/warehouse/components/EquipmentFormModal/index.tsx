@@ -27,10 +27,11 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   mode,
 
   isLoading,
+  values,
   initialValues,
 
-  defaultImages,
   onUploadImage,
+  imageIsUploading,
   onDeleteImage,
   imageIsDeleting,
 
@@ -64,22 +65,18 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 }) => {
   const [form] = Form.useForm<EquipmentFormModalFormFields>()
 
-  const hasSelectedNomenclature = Boolean(nomenclature)
+  const nomenclatureSelected = Boolean(nomenclature)
 
-  const hasSelectedCategory = Boolean(selectedCategory)
+  const categorySelected = Boolean(selectedCategory)
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   useEffect(() => {
-    if (nomenclature?.title) {
-      form.setFieldsValue({ title: nomenclature.title })
-    }
-  }, [form, nomenclature?.title])
+    if (values?.title) form.setFieldsValue({ title: values.title })
+  }, [form, values?.title])
 
   useEffect(() => {
-    if (defaultImages?.length) {
-      form.setFieldsValue({ images: defaultImages })
-    }
-  }, [defaultImages, form])
+    if (values?.images?.length) form.setFieldsValue({ images: values.images })
+  }, [form, values?.images])
 
   const handleChangeCategory = (
     value: IdType,
@@ -124,10 +121,10 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   return (
     <BaseModal
-      data-testid='equipment-form-modal'
-      confirmLoading={isLoading}
-      onOk={form.submit}
       {...props}
+      data-testid='equipment-form-modal'
+      okButtonProps={{ loading: isLoading, disabled: imageIsUploading || imageIsDeleting }}
+      onOk={form.submit}
     >
       <Form<EquipmentFormModalFormFields>
         form={form}
@@ -170,7 +167,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         </Form.Item>
 
         <LoadingArea isLoading={nomenclatureIsLoading} tip='Загрузка номенклатуры...'>
-          {hasSelectedCategory && hasSelectedNomenclature && (
+          {categorySelected && nomenclatureSelected && (
             <>
               <Form.Item
                 data-testid='title-form-item'
@@ -178,7 +175,10 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 name='title'
                 rules={requiredStringRules}
               >
-                <Input placeholder='Введите наименование' disabled={categoryIsConsumable || isLoading} />
+                <Input
+                  placeholder='Введите наименование'
+                  disabled={categoryIsConsumable || isLoading}
+                />
               </Form.Item>
 
               {!categoryIsConsumable && (
@@ -236,8 +236,16 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 <Form.Item>
                   <Row gutter={8}>
                     <Col span={12}>
-                      <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
-                        <InputNumber min={1} placeholder='Введите количество' disabled={isLoading} />
+                      <Form.Item
+                        data-testid='quantity-form-item'
+                        label='Количество'
+                        name='quantity'
+                      >
+                        <InputNumber
+                          min={1}
+                          placeholder='Введите количество'
+                          disabled={isLoading}
+                        />
                       </Form.Item>
                     </Col>
 
@@ -254,7 +262,11 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 <Form.Item>
                   <Row gutter={8}>
                     <Col span={12}>
-                      <Form.Item data-testid='quantity-form-item' label='Количество' name='quantity'>
+                      <Form.Item
+                        data-testid='quantity-form-item'
+                        label='Количество'
+                        name='quantity'
+                      >
                         <InputNumber disabled />
                       </Form.Item>
                     </Col>
@@ -385,7 +397,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   itemRender={(originNode, file) => (!file.error ? originNode : null)}
                   customRequest={onUploadImage}
                   onRemove={onDeleteImage}
-                  defaultFileList={defaultImages}
+                  defaultFileList={values?.images}
                 >
                   <UploadButton label='Добавить фото' disabled={isLoading} />
                 </Upload>

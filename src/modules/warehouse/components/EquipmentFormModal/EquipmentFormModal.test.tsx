@@ -37,7 +37,7 @@ const props: Readonly<EquipmentFormModalProps> = {
   onSubmit: jest.fn(),
 
   onUploadImage: jest.fn(),
-
+  imageIsUploading: false,
   onDeleteImage: jest.fn(),
   imageIsDeleting: false,
 
