@@ -49,7 +49,10 @@ import {
   useUpdateRelocationTask,
 } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
-import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
+import {
+  CreateEquipmentsBadRequestErrorResponse,
+  EquipmentCategoryListItemModel,
+} from 'modules/warehouse/models'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import {
@@ -120,12 +123,19 @@ const EditRelocationTaskPage: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
+  const [createEquipmentsErrors, setCreateEquipmentsErrors] =
+    useState<CreateEquipmentsBadRequestErrorResponse>()
+
+  const [editableEquipmentByFile, setEditableEquipmentByFile] = useState<EquipmentByFileTableRow>()
+  const [editableEquipmentByFileIndex, setEditableEquipmentByFileIndex] = useState<number>()
+
   const [
     createEquipmentsByFileModalOpened,
     { setTrue: openCreateEquipmentsByFileModal, setFalse: closeCreateEquipmentsByFileModal },
   ] = useBoolean(false)
 
   const handleCloseCreateEquipmentsByFileModal = useDebounceFn(() => {
+    setCreateEquipmentsErrors(undefined)
     closeCreateEquipmentsByFileModal()
     form.setFieldValue('equipmentsByFile', [])
   })
@@ -193,9 +203,6 @@ const EditRelocationTaskPage: FC = () => {
   })
 
   const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
-
-  const [editableEquipmentByFile, setEditableEquipmentByFile] = useState<EquipmentByFileTableRow>()
-  const [editableEquipmentByFileIndex, setEditableEquipmentByFileIndex] = useState<number>()
 
   const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
 
@@ -394,8 +401,6 @@ const EditRelocationTaskPage: FC = () => {
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))
-      } else {
-        console.error(error)
       }
     }
   }
@@ -434,8 +439,6 @@ const EditRelocationTaskPage: FC = () => {
         } catch (error) {
           if (isErrorResponse(error) && isForbiddenError(error)) {
             form.setFieldValue(equipmentPath, { rowId: currentEquipment.rowId })
-          } else {
-            console.error(error)
           }
         }
       }
@@ -514,11 +517,13 @@ const EditRelocationTaskPage: FC = () => {
       setEditableTableRowKeys((prevState) => prevState.concat(newEditableTableRowKeys))
       handleCloseCreateEquipmentsByFileModal()
     } catch (error) {
-      console.error(error)
+      if (isErrorResponse(error) && isBadRequestError(error) && error.data.errorList) {
+        const errors = error.data.errorList as CreateEquipmentsBadRequestErrorResponse
+        setCreateEquipmentsErrors(errors)
+      }
     }
   }, [
     createEquipmentsMutation,
-    editableEquipmentByFileIndex,
     form,
     handleCloseCreateEquipmentsByFileModal,
     selectedRelocateFrom,
@@ -560,8 +565,6 @@ const EditRelocationTaskPage: FC = () => {
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
           setFields(getFieldsErrors(error.data))
-        } else {
-          console.error(error)
         }
       }
     },
@@ -597,6 +600,17 @@ const EditRelocationTaskPage: FC = () => {
           : undefined,
       }
 
+      if (isNumber(editableEquipmentByFileIndex)) {
+        setCreateEquipmentsErrors((prevState) => {
+          if (prevState) {
+            const newState = [...prevState]
+            newState[editableEquipmentByFileIndex] = {}
+            return newState
+          }
+
+          return prevState
+        })
+      }
       form.setFieldValue(equipmentPath, updatableEquipmentByFile)
       handleCloseEditEquipmentByFileModal()
     },
@@ -961,6 +975,11 @@ const EditRelocationTaskPage: FC = () => {
             imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
+            errors={
+              createEquipmentsErrors && isNumber(editableEquipmentByFileIndex)
+                ? createEquipmentsErrors[editableEquipmentByFileIndex]
+                : undefined
+            }
           />
         </React.Suspense>
       )}
@@ -1007,6 +1026,7 @@ const EditRelocationTaskPage: FC = () => {
             onCreate={createEquipments}
             isCreating={createEquipmentsIsLoading}
             data={(form.getFieldValue('equipmentsByFile') || []) as EquipmentByFileTableRow[]}
+            errors={createEquipmentsErrors}
             onEdit={handleOpenEditEquipmentByFileModal}
           />
         </React.Suspense>
