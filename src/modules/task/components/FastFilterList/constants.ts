@@ -1,14 +1,14 @@
 import { FastFilterEnum, fastFilterNamesDict } from 'modules/task/constants/task'
 import { UserRoleEnum } from 'modules/user/constants'
 
-export type FastFilterType = {
+export type FastFilterConfig = {
   filter: FastFilterEnum
   text: string
   roles: UserRoleEnum[]
 }
 
 /* Последовательность имеет значение */
-export const fastFilters: FastFilterType[] = [
+export const fastFiltersConfig: FastFilterConfig[] = [
   {
     filter: FastFilterEnum.FirstLine,
     roles: [UserRoleEnum.FirstLineSupport],
