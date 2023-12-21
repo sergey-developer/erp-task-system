@@ -6,7 +6,7 @@ import React, { FC, useMemo } from 'react'
 import { TaskCountersKeys } from 'modules/task/models'
 
 import FilterTag from './FastFilterListItem'
-import { fastFilters } from './constants'
+import { fastFiltersConfig } from './constants'
 import { FastFilterItem, FastFilterListProps } from './types'
 
 const FastFilterList: FC<FastFilterListProps> = ({
@@ -21,7 +21,7 @@ const FastFilterList: FC<FastFilterListProps> = ({
   const filters: FastFilterItem[] = useMemo(() => {
     const counters = (data || {}) as NonNullable<typeof data>
 
-    return fastFilters.reduce<FastFilterItem[]>((acc, { filter, roles, text }) => {
+    return fastFiltersConfig.reduce<FastFilterItem[]>((acc, { filter, roles, text }) => {
       const taskCounterKey = camelize(filter.toLowerCase()) as TaskCountersKeys
       const taskCounterValue = isShowCounters ? counters[taskCounterKey] : null
 
