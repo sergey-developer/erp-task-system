@@ -14,6 +14,7 @@ export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
   [FastFilterEnum.SecondLine]: 'Вторая линия',
   [FastFilterEnum.LessOneHour]: 'Менее 1 часа',
   [FastFilterEnum.LessThreeHours]: 'Менее 3-х часов',
+  [FastFilterEnum.ReclassificationDenied]: 'Отказ в переклассификации',
 }
 
 export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
