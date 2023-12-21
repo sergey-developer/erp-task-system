@@ -1,8 +1,6 @@
 import { AxiosError } from 'axios'
 import isArray from 'lodash/isArray'
-import isEmpty from 'lodash/isEmpty'
 import isPlainObject from 'lodash/isPlainObject'
-import negate from 'lodash/negate'
 
 import httpClient from 'lib/httpClient'
 
@@ -47,7 +45,7 @@ const baseQuery =
           data: isPlainObject(errorData)
             ? errorData
             : isArray(errorData)
-            ? { errorList: errorData.filter(negate(isEmpty)) }
+            ? { errorList: errorData }
             : { detail: [commonApiMessages.unknownError] },
         },
       }

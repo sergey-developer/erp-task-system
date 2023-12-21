@@ -1,4 +1,5 @@
 import { Table, TableProps, Tooltip, Typography } from 'antd'
+import isEmpty from 'lodash/isEmpty'
 import isNumber from 'lodash/isNumber'
 import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useMemo } from 'react'
@@ -10,7 +11,7 @@ const { Text } = Typography
 
 const scrollConfig: TableProps<EquipmentByFileTableRow>['scroll'] = { y: 280 }
 
-const customComponents: TableProps<EquipmentByFileTableRow>['components'] = {
+const components: TableProps<EquipmentByFileTableRow>['components'] = {
   body: {
     row: ({
       hasErrors,
@@ -19,10 +20,7 @@ const customComponents: TableProps<EquipmentByFileTableRow>['components'] = {
       const row = <tr {...props} />
 
       return hasErrors ? (
-        <Tooltip
-          title={<Text type='danger'>Не заполнены обязательные поля или данные не корректны</Text>}
-          placement='topRight'
-        >
+        <Tooltip title={<Text type='danger'>Данные не корректны</Text>} placement='topRight'>
           {row}
         </Tooltip>
       ) : (
@@ -43,11 +41,11 @@ const EquipmentsByFileTable: FC<EquipmentsByFileTableProps> = ({ errors, onEdit,
       columns={columns}
       scroll={scrollConfig}
       pagination={false}
-      components={customComponents}
+      components={components}
       /* https://github.com/ant-design/ant-design/issues/28817 */
       onRow={(data, index) =>
         errors && isNumber(index)
-          ? ({ hasErrors: !!errors[index] } as ReturnType<
+          ? ({ hasErrors: !isEmpty(errors[index]) } as ReturnType<
               GetComponentProps<EquipmentByFileTableRow>
             >)
           : {}
