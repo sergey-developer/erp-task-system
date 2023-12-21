@@ -79,4 +79,14 @@ export const fastFilters: FastFilterType[] = [
     ],
     text: fastFilterNamesDict[FastFilterEnum.Overdue],
   },
+  {
+    filter: FastFilterEnum.ReclassificationDenied,
+    roles: [
+      UserRoleEnum.FirstLineSupport,
+      UserRoleEnum.Engineer,
+      UserRoleEnum.SeniorEngineer,
+      UserRoleEnum.HeadOfDepartment,
+    ],
+    text: fastFilterNamesDict[FastFilterEnum.ReclassificationDenied],
+  },
 ]

@@ -140,6 +140,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.LessOneHour,
       FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
+      FastFilterEnum.ReclassificationDenied,
     ]
 
     test('Отображается корректно', () => {
@@ -166,6 +167,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.LessOneHour,
       FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
+      FastFilterEnum.ReclassificationDenied,
     ]
 
     const notAvailableFilters = [FastFilterEnum.FirstLine, FastFilterEnum.SecondLine]
@@ -199,6 +201,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.LessOneHour,
       FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
+      FastFilterEnum.ReclassificationDenied,
     ]
 
     const notAvailableFilters = [FastFilterEnum.FirstLine, FastFilterEnum.SecondLine]
@@ -232,6 +235,7 @@ describe('Быстрый фильтр', () => {
       FastFilterEnum.LessOneHour,
       FastFilterEnum.LessThreeHours,
       FastFilterEnum.Overdue,
+      FastFilterEnum.ReclassificationDenied,
     ]
 
     const notAvailableFilters = [FastFilterEnum.FirstLine, FastFilterEnum.SecondLine]

@@ -11,4 +11,5 @@ export const taskCounters = (): TaskCountersModel => ({
   secondLine: fakeInteger({ min: 1, max: 10 }),
   less1Hour: fakeInteger({ min: 1, max: 10 }),
   less3Hours: fakeInteger({ min: 1, max: 10 }),
+  reclassificationDenied: fakeInteger({ min: 1, max: 100 }),
 })
