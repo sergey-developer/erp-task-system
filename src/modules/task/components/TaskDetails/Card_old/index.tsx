@@ -12,9 +12,9 @@ import {
   RequestTaskSuspendModalProps,
 } from 'modules/task/components/RequestTaskSuspendModal/types'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
-import AdditionalInfo from 'modules/task/components/TaskCard/AdditionalInfo'
-import MainDetails from 'modules/task/components/TaskCard/MainDetails'
-import SecondaryDetails from 'modules/task/components/TaskCard/SecondaryDetails'
+import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
+import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
+import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {

@@ -53,20 +53,21 @@ const TaskTable: FC<TaskTableProps> = ({ sort, pagination, userRole, ...props })
   )
 
   return (
-    <TableStyled<TaskTableListItem>
-      {...props}
-      data-testid='task-table'
-      components={components}
-      columns={sortedColumns}
-      rowKey='id'
-      showSorterTooltip={false}
-      locale={localeConfig}
-      scroll={scrollConfig}
-      pagination={{
-        ...pagination,
-        defaultPageSize: DEFAULT_PAGE_SIZE,
-      }}
-    />
+    <div data-testid='task-table'>
+      <TableStyled<TaskTableListItem>
+        {...props}
+        components={components}
+        columns={sortedColumns}
+        rowKey='id'
+        showSorterTooltip={false}
+        locale={localeConfig}
+        scroll={scrollConfig}
+        pagination={{
+          ...pagination,
+          defaultPageSize: DEFAULT_PAGE_SIZE,
+        }}
+      />
+    </div>
   )
 }
 

@@ -1,5 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { App, Drawer, FormInstance } from 'antd'
+import debounce from 'lodash/debounce'
 import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
@@ -62,7 +63,7 @@ import { EmptyFn } from 'shared/types/utils'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { extractOriginFiles } from 'shared/utils/file'
-import { getFieldsErrors, handleSetFieldsErrors } from 'shared/utils/form'
+import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
@@ -213,11 +214,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const debouncedCloseConfirmExecuteTaskModal = useDebounceFn(closeConfirmExecuteTaskModal)
 
-  const handleOpenExecuteTaskModal = useDebounceFn(() => {
-    if (task) {
-      task.hasRelocationTasks ? openExecuteTaskModal() : openConfirmExecuteTaskModal()
-    }
-  })
+  const handleOpenExecuteTaskModal = useCallback(
+    () =>
+      debounce(() => {
+        if (task) {
+          task.hasRelocationTasks ? openExecuteTaskModal() : openConfirmExecuteTaskModal()
+        }
+      })(),
+    [openConfirmExecuteTaskModal, openExecuteTaskModal, task],
+  )
 
   const handleConfirmExecuteTask = useDebounceFn(() => {
     closeConfirmExecuteTaskModal()
@@ -412,14 +417,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       } catch (error) {
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
-            const badRequestError = error as CreateTaskSuspendRequestBadRequestErrorResponse
-
-            handleSetFieldsErrors(
-              {
-                ...badRequestError,
-                data: getFormErrorsFromBadRequestError(badRequestError),
-              },
-              setFields,
+            setFields(
+              getFieldsErrors(
+                getFormErrorsFromBadRequestError(
+                  error.data as CreateTaskSuspendRequestBadRequestErrorResponse,
+                ),
+              ),
             )
           }
         }
@@ -455,7 +458,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <>
-      <Drawer open={!!taskId} onClose={closeTask} width={600} title={title} mask={false}>
+      <Drawer
+        data-testid='task-details'
+        open={!!taskId}
+        onClose={closeTask}
+        width={600}
+        title={title}
+        mask={false}
+      >
         <Space direction='vertical' $block size='middle'>
           <LoadingArea
             data-testid='task-reclassification-request-loading'
