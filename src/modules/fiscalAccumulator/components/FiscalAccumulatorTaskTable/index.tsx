@@ -1,9 +1,5 @@
+import { Table } from 'antd'
 import React, { FC } from 'react'
-
-// todo: придумать как избавиться от этого компонента
-import { TableWrapperStyled } from 'modules/task/components/TaskTable/styles'
-
-import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
 import { columns } from './columns'
 import { components } from './components'
@@ -16,17 +12,18 @@ const getRowKey = (
 const FiscalAccumulatorTaskTable: FC<FiscalAccumulatorTaskTableProps> = ({
   dataSource = [],
   loading,
+  onRow,
 }) => {
   return (
-    <TableWrapperStyled data-testid='fiscal-accumulator-task-table'>
-      <ParentSizedTable<FiscalAccumulatorTaskTableItem>
-        rowKey={getRowKey}
-        dataSource={dataSource}
-        components={components}
-        columns={columns}
-        loading={loading}
-      />
-    </TableWrapperStyled>
+    <Table<FiscalAccumulatorTaskTableItem>
+      data-testid='fiscal-accumulator-task-table'
+      rowKey={getRowKey}
+      dataSource={dataSource}
+      components={components}
+      columns={columns}
+      loading={loading}
+      onRow={onRow}
+    />
   )
 }
 

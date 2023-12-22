@@ -1,24 +1,27 @@
 import { useBoolean } from 'ahooks'
 import { Col, Row } from 'antd'
 import { Coordinate } from 'ol/coordinate'
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 
-import TaskCard from 'modules/task/components/TaskCard/CardContainer'
 import TaskList from 'modules/task/components/TaskList'
 import TaskListMap from 'modules/task/components/TaskListMap'
 import { useGetTaskList, useGetTaskListMap } from 'modules/task/hooks/task'
 
 import LoadingArea from 'components/LoadingArea'
+import ModalFallback from 'components/Modals/ModalFallback'
 
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { MaybeNull } from 'shared/types/utils'
 import { extractPaginationResults } from 'shared/utils/pagination'
+
+const TaskDetails = React.lazy(() => import('modules/task/components/TaskDetails'))
 
 const TaskListMapPage: FC = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<number>>(null)
 
   const [coords, setCoords] = useState<MaybeNull<Coordinate>>(null)
 
-  const isShowTaskCard = !!selectedTaskId
+  const isShowTask = !!selectedTaskId
   const isShowTaskList = !!coords
 
   const [additionalInfoExpanded, { toggle: toggleAdditionalInfoExpanded }] = useBoolean(false)
@@ -29,6 +32,8 @@ const TaskListMapPage: FC = () => {
     { long: coords?.[0], lat: coords?.[1], limit: 1000 },
     { skip: !isShowTaskList },
   )
+
+  const closeTask = useDebounceFn(() => setSelectedTaskId(null))
 
   return (
     <Row gutter={8} data-testid='task-list-map-page'>
@@ -44,23 +49,21 @@ const TaskListMapPage: FC = () => {
         </Col>
       )}
 
-      <Col
-        span={isShowTaskList && !isShowTaskCard ? 18 : isShowTaskList && isShowTaskCard ? 10 : 24}
-      >
+      <Col span={isShowTaskList ? 18 : 24}>
         <LoadingArea data-testid='task-list-map-loading' isLoading={taskListMapIsFetching}>
           <TaskListMap tasks={taskListMap} onClickTask={setCoords} />
         </LoadingArea>
       </Col>
 
-      {isShowTaskCard && (
-        <Col span={8}>
-          <TaskCard
+      {isShowTask && (
+        <React.Suspense fallback={<ModalFallback open onCancel={closeTask} />}>
+          <TaskDetails
             taskId={selectedTaskId}
-            closeTaskCard={() => setSelectedTaskId(null)}
+            onClose={closeTask}
             additionalInfoExpanded={additionalInfoExpanded}
             onExpandAdditionalInfo={toggleAdditionalInfoExpanded}
           />
-        </Col>
+        </React.Suspense>
       )}
     </Row>
   )

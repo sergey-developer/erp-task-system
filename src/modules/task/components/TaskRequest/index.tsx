@@ -34,7 +34,7 @@ const TaskRequest: FC<TaskRequestProps> = ({
   ...props
 }) => {
   return (
-    <WrapperStyled $stretch {...props}>
+    <WrapperStyled {...props}>
       <Space size='middle' align='baseline' $block>
         {icon}
 

@@ -1,6 +1,8 @@
+import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
 import { fiscalAccumulatorFormatColorDict } from 'modules/fiscalAccumulator/constants'
+import { getFullUserName } from 'modules/user/utils'
 
 import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
@@ -8,6 +10,8 @@ import { formatDate } from 'shared/utils/date'
 import { BodyCellProps } from './components'
 import { OlaNextBreachTimeStyled } from './styles'
 import { FiscalAccumulatorTaskTableItem } from './types'
+
+const { Paragraph } = Typography
 
 export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
   {
@@ -22,6 +26,7 @@ export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
   {
     key: 'olaNextBreachTime',
     dataIndex: 'olaNextBreachTime',
+    width: 110,
     title: 'Крайний срок',
     render: (value: FiscalAccumulatorTaskTableItem['olaNextBreachTime'], record) => (
       <OlaNextBreachTimeStyled $faFormat={record.faFormat}>
@@ -59,6 +64,7 @@ export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
   {
     key: 'deadlineOrTotalFiscalDocs',
     dataIndex: 'deadlineOrTotalFiscalDocs',
+    width: 100,
     title: 'Срок / Всего ФД',
     render: (value: FiscalAccumulatorTaskTableItem['deadlineOrTotalFiscalDocs']) =>
       valueOrHyphen(value),
@@ -77,6 +83,12 @@ export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
     render: (value: FiscalAccumulatorTaskTableItem['supportGroup']) => value.name,
   },
   {
+    key: 'assignee',
+    dataIndex: 'assignee',
+    title: 'Исполнитель',
+    render: (value: FiscalAccumulatorTaskTableItem['assignee']) => value && getFullUserName(value),
+  },
+  {
     key: 'title',
     dataIndex: 'title',
     title: 'Категория',
@@ -86,5 +98,16 @@ export const columns: ColumnsType<FiscalAccumulatorTaskTableItem> = [
     dataIndex: 'createdAt',
     title: 'Дата создания заявки',
     render: (value: FiscalAccumulatorTaskTableItem['createdAt']) => formatDate(value),
+  },
+  {
+    key: 'comment',
+    dataIndex: 'comment',
+    title: 'Комментарий',
+    render: (value: FiscalAccumulatorTaskTableItem['comment']) =>
+      value && (
+        <Paragraph ellipsis={{ rows: 2 }} title={value.text}>
+          {value.text}
+        </Paragraph>
+      ),
   },
 ]
