@@ -1,11 +1,13 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { getFullUserName } from 'modules/user/utils'
+
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
 import fiscalAccumulatorFixtures from '_tests_/fixtures/fiscalAccumulator'
-import { iconTestUtils, render } from '_tests_/utils'
+import { iconTestUtils, render, tableTestUtils } from '_tests_/utils'
 
 import FiscalAccumulatorTaskTable from './index'
 import { FiscalAccumulatorTaskTableItem, FiscalAccumulatorTaskTableProps } from './types'
@@ -15,17 +17,18 @@ const fiscalAccumulatorTaskListItem = fiscalAccumulatorFixtures.fiscalAccumulato
 const props: Readonly<FiscalAccumulatorTaskTableProps> = {
   dataSource: [fiscalAccumulatorTaskListItem],
   loading: false,
+  onRow: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('fiscal-accumulator-task-table')
-
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
-const getRow = (id: FiscalAccumulatorTaskTableItem['olaNextBreachTime']): MaybeNull<HTMLElement> =>
-  // eslint-disable-next-line testing-library/no-node-access
-  getContainer().querySelector(`[data-row-key='${id}']`)
+const getRow = (id: FiscalAccumulatorTaskTableItem['olaNextBreachTime']) =>
+  tableTestUtils.getRowIn(getContainer(), id)
+
+const clickRow = async (user: UserEvent, id: FiscalAccumulatorTaskTableItem['olaNextBreachTime']) =>
+  tableTestUtils.clickRowIn(getContainer(), user, id)
 
 const getHeadCell = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access
@@ -49,14 +52,14 @@ const getColValue = (
 }
 
 const expectLoadingStarted = () => iconTestUtils.expectLoadingStartedIn(getContainer())
-
 const expectLoadingFinished = () => iconTestUtils.expectLoadingFinishedIn(getContainer())
 
 export const testUtils = {
   getContainer,
-  getRow,
   getChildByText,
   queryChildByText,
+  getRow,
+  clickRow,
   getHeadCell,
   getColTitle,
   getColValue,
@@ -232,6 +235,19 @@ describe('Таблица заявок фискальных накопителе�
       })
     })
 
+    test('Исполнитель отображается', () => {
+      render(<FiscalAccumulatorTaskTable {...props} />)
+
+      const title = testUtils.getColTitle('Исполнитель')
+      const value = testUtils.getColValue(
+        fiscalAccumulatorTaskListItem.olaNextBreachTime,
+        getFullUserName(fiscalAccumulatorTaskListItem.assignee!),
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
     describe('Категория', () => {
       test('Отображается корректно', () => {
         render(<FiscalAccumulatorTaskTable {...props} />)
@@ -260,6 +276,19 @@ describe('Таблица заявок фискальных накопителе�
         expect(title).toBeInTheDocument()
         expect(value).toBeInTheDocument()
       })
+    })
+
+    test('Комментарий отображается', () => {
+      render(<FiscalAccumulatorTaskTable {...props} />)
+
+      const title = testUtils.getColTitle('Комментарий')
+      const value = testUtils.getColValue(
+        fiscalAccumulatorTaskListItem.olaNextBreachTime,
+        fiscalAccumulatorTaskListItem.comment!.text,
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
     })
   })
 })

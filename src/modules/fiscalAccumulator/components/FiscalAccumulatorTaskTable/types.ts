@@ -4,6 +4,7 @@ import { FiscalAccumulatorTaskListItemModel } from 'modules/fiscalAccumulator/mo
 
 export type FiscalAccumulatorTaskTableItem = Pick<
   FiscalAccumulatorTaskListItemModel,
+  | 'id'
   | 'blockingIn'
   | 'olaNextBreachTime'
   | 'recordId'
@@ -16,8 +17,12 @@ export type FiscalAccumulatorTaskTableItem = Pick<
   | 'title'
   | 'createdAt'
   | 'faFormat'
+  | 'assignee'
+  | 'comment'
 >
 
 export type FiscalAccumulatorTaskTableProps = Required<
-  Pick<TableProps<FiscalAccumulatorTaskTableItem>, 'dataSource' | 'loading'>
->
+  Pick<TableProps<FiscalAccumulatorTaskTableItem>, 'loading' | 'onRow'>
+> & {
+  dataSource: NonNullable<TableProps<FiscalAccumulatorTaskTableItem>['dataSource']>
+}
