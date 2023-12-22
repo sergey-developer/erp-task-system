@@ -3,6 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { camelize } from 'humps'
 import moment from 'moment-timezone'
 
+import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
 import { testUtils as extendedFilterTestUtils } from 'modules/task/components/ExtendedFilter/ExtendedFilter.test'
 import {
   searchFieldDict,
@@ -11,6 +12,11 @@ import {
 } from 'modules/task/components/ExtendedFilter/constants'
 import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilterList/FastFilterList.test'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/Card_old/Card.test'
+import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
+import {
+  activeExecuteTaskItemProps,
+  testUtils as cardTitleTestUtils,
+} from 'modules/task/components/TaskDetails/Title/Title.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
@@ -38,6 +44,7 @@ import {
   mockGetTaskSuccess,
   mockGetUserListSuccess,
   mockGetWorkGroupListSuccess,
+  mockResolveTaskSuccess,
 } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
@@ -391,6 +398,43 @@ describe('Страница реестра заявок', () => {
 
       expect(searchInput).not.toHaveValue()
       expect(searchInput).not.toHaveDisplayValue(searchValue)
+    })
+
+    test('Перезапрашивается при выполнении заявки', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = taskFixtures.taskListItem()
+      mockGetTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([taskListItem]),
+        once: false,
+      })
+
+      const task = taskFixtures.task({
+        id: taskListItem.id,
+        hasRelocationTasks: true,
+        ...activeExecuteTaskItemProps,
+      })
+      mockGetTaskSuccess(task.id, { body: task })
+      mockResolveTaskSuccess(task.id)
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth({ userId: activeExecuteTaskItemProps.assignee!.id }),
+      })
+
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickRow(user, task.id)
+      await taskDetailsTestUtils.findContainer()
+      await taskDetailsTestUtils.expectTaskLoadingFinished()
+      await cardTitleTestUtils.openMenu(user)
+      await cardTitleTestUtils.clickExecuteTaskItem(user)
+      await executeTaskModalTestUtils.findContainer()
+      await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+      await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+      await executeTaskModalTestUtils.clickSubmitButton(user)
+      await executeTaskModalTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
     })
   })
 

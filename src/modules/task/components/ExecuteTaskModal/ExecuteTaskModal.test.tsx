@@ -132,7 +132,6 @@ const findAttachmentsError = (error: string) => within(getAttachmentsFormItem())
 
 // loading
 const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
-
 const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {

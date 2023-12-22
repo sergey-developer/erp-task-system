@@ -290,7 +290,7 @@ const TaskListPage: FC = () => {
     if (!value) handleSearchByTaskId(value)
   }
 
-  const handleTableRowClick = useCallback<TaskTableProps['onRow']>(
+  const onTableRow = useCallback<TaskTableProps['onRow']>(
     (record) => ({
       onClick: debounce(() => setSelectedTaskId(record.id), DEFAULT_DEBOUNCE_VALUE),
       ...(record.isBoundary && { style: tableItemBoundaryStyles }),
@@ -445,7 +445,7 @@ const TaskListPage: FC = () => {
           <TaskTable
             rowClassName={getTableRowClassName}
             sort={taskListQueryArgs.sort}
-            onRow={handleTableRowClick}
+            onRow={onTableRow}
             dataSource={tasks}
             loading={tasksIsFetching}
             onChange={handleChangeTable}

@@ -1,5 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { App, Drawer, FormInstance } from 'antd'
+import debounce from 'lodash/debounce'
 import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
@@ -209,11 +210,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const debouncedCloseConfirmExecuteTaskModal = useDebounceFn(closeConfirmExecuteTaskModal)
 
-  const handleOpenExecuteTaskModal = useDebounceFn(() => {
-    if (task) {
-      task.hasRelocationTasks ? openExecuteTaskModal() : openConfirmExecuteTaskModal()
-    }
-  })
+  const handleOpenExecuteTaskModal = useCallback(
+    () =>
+      debounce(() => {
+        if (task) {
+          task.hasRelocationTasks ? openExecuteTaskModal() : openConfirmExecuteTaskModal()
+        }
+      })(),
+    [openConfirmExecuteTaskModal, openExecuteTaskModal, task],
+  )
 
   const handleConfirmExecuteTask = useDebounceFn(() => {
     closeConfirmExecuteTaskModal()
@@ -448,7 +453,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <>
-      <Drawer open={!!taskId} onClose={closeTask} width={650} title={title} mask={false}>
+      <Drawer
+        data-testid='task-details'
+        open={!!taskId}
+        onClose={closeTask}
+        width={650}
+        title={title}
+        mask={false}
+      >
         <Space direction='vertical' $block size='middle'>
           <LoadingArea
             data-testid='task-reclassification-request-loading'

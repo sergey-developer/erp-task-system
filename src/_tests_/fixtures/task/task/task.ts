@@ -58,7 +58,7 @@ export const task = (
   suspendRequest: isUndefined(props?.suspendRequest)
     ? taskFixtures.suspendRequest()
     : props!.suspendRequest,
-  hasRelocationTasks: isUndefined(props?.hasRelocationTasks) ? true : !!props?.hasRelocationTasks,
+  hasRelocationTasks: isUndefined(props?.hasRelocationTasks) ? true : props!.hasRelocationTasks,
 
   shop: { id: fakeId(), title: fakeWord() },
   attachments: [taskFixtures.attachment()],

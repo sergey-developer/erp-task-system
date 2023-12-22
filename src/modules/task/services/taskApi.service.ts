@@ -75,302 +75,310 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService, ErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
-const taskApiService = baseApiService.injectEndpoints({
-  endpoints: (build) => ({
-    [TaskApiTriggerEnum.GetTaskList]: build.query<
-      GetTaskListTransformedSuccessResponse,
-      GetTaskListQueryArgs
-    >({
-      providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
-      query: (params) => ({
-        url: TaskApiEnum.GetTaskList,
-        method: HttpMethodEnum.Get,
-        params,
+const taskApiService = baseApiService
+  .enhanceEndpoints({ addTagTypes: [TaskApiTagEnum.TaskCounters] })
+  .injectEndpoints({
+    endpoints: (build) => ({
+      [TaskApiTriggerEnum.GetTaskList]: build.query<
+        GetTaskListTransformedSuccessResponse,
+        GetTaskListQueryArgs
+      >({
+        providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
+        query: (params) => ({
+          url: TaskApiEnum.GetTaskList,
+          method: HttpMethodEnum.Get,
+          params,
+        }),
+        transformResponse: (response: GetTaskListSuccessResponse, meta, arg) =>
+          getPaginatedList(response, arg),
       }),
-      transformResponse: (response: GetTaskListSuccessResponse, meta, arg) =>
-        getPaginatedList(response, arg),
-    }),
-    [TaskApiTriggerEnum.GetTaskListMap]: build.query<
-      GetTaskListMapSuccessResponse,
-      GetTaskListMapQueryArgs
-    >({
-      query: () => ({
-        url: TaskApiEnum.GetTaskListMap,
-        method: HttpMethodEnum.Get,
+      [TaskApiTriggerEnum.GetTaskListMap]: build.query<
+        GetTaskListMapSuccessResponse,
+        GetTaskListMapQueryArgs
+      >({
+        query: () => ({
+          url: TaskApiEnum.GetTaskListMap,
+          method: HttpMethodEnum.Get,
+        }),
       }),
-    }),
 
-    [TaskApiTriggerEnum.GetTaskCounters]: build.query<
-      GetTaskCountersSuccessResponse,
-      MaybeUndefined<GetTaskCountersQueryArgs>
-    >({
-      query: (params) => ({
-        url: TaskApiEnum.GetTaskCounters,
-        method: HttpMethodEnum.Get,
-        params,
+      [TaskApiTriggerEnum.GetTaskCounters]: build.query<
+        GetTaskCountersSuccessResponse,
+        MaybeUndefined<GetTaskCountersQueryArgs>
+      >({
+        providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskCounters]),
+        query: (params) => ({
+          url: TaskApiEnum.GetTaskCounters,
+          method: HttpMethodEnum.Get,
+          params,
+        }),
       }),
-    }),
 
-    [TaskApiTriggerEnum.GetTask]: build.query<GetTaskSuccessResponse, GetTaskQueryArgs>({
-      query: (taskId) => ({
-        url: getTaskUrl(taskId),
-        method: HttpMethodEnum.Get,
+      [TaskApiTriggerEnum.GetTask]: build.query<GetTaskSuccessResponse, GetTaskQueryArgs>({
+        providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
+        query: (taskId) => ({
+          url: getTaskUrl(taskId),
+          method: HttpMethodEnum.Get,
+        }),
       }),
-      providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
-    }),
 
-    [TaskApiTriggerEnum.GetWorkPerformedAct]: build.mutation<
-      GetTaskWorkPerformedActSuccessResponse,
-      GetTaskWorkPerformedActMutationArgs
-    >({
-      query: ({ taskId, ...payload }) => ({
-        url: getTaskWorkPerformedActUrl(taskId),
-        method: HttpMethodEnum.Post,
-        data: payload,
-      }),
-    }),
-
-    [TaskApiTriggerEnum.ResolveTask]: build.mutation<
-      ResolveTaskSuccessResponse,
-      ResolveTaskMutationArgs
-    >({
-      query: ({ taskId, techResolution, userResolution, attachments }) => {
-        const formData = new FormData()
-
-        formData.append('tech_resolution', techResolution)
-
-        if (userResolution) {
-          formData.append('user_resolution', userResolution)
-        }
-
-        if (attachments?.length) {
-          attachments.forEach((att) => formData.append('attachments', att))
-        }
-
-        return {
-          url: resolveTaskUrl(taskId),
+      [TaskApiTriggerEnum.GetWorkPerformedAct]: build.mutation<
+        GetTaskWorkPerformedActSuccessResponse,
+        GetTaskWorkPerformedActMutationArgs
+      >({
+        query: ({ taskId, ...payload }) => ({
+          url: getTaskWorkPerformedActUrl(taskId),
           method: HttpMethodEnum.Post,
-          data: formData,
-        }
-      },
-      invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
-    }),
-
-    [TaskApiTriggerEnum.TakeTask]: build.mutation<TakeTaskSuccessResponse, TakeTaskMutationArgs>({
-      query: ({ taskId }) => ({
-        url: takeTaskUrl(taskId),
-        method: HttpMethodEnum.Post,
+          data: payload,
+        }),
       }),
-      invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
-    }),
 
-    [TaskApiTriggerEnum.CreateTaskComment]: build.mutation<
-      CreateTaskCommentSuccessResponse,
-      CreateTaskCommentMutationArgs
-    >({
-      query: ({ taskId, comment, attachments }) => {
-        const formData = new FormData()
-        formData.append('comment', comment)
+      [TaskApiTriggerEnum.ResolveTask]: build.mutation<
+        ResolveTaskSuccessResponse,
+        ResolveTaskMutationArgs
+      >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.TaskCounters],
+        query: ({ taskId, techResolution, userResolution, attachments }) => {
+          const formData = new FormData()
 
-        if (attachments?.length) {
-          attachments.forEach((att) => {
-            formData.append('attachments', att)
-          })
-        }
+          formData.append('tech_resolution', techResolution)
 
-        return {
-          url: createTaskCommentUrl(taskId),
+          if (userResolution) {
+            formData.append('user_resolution', userResolution)
+          }
+
+          if (attachments?.length) {
+            attachments.forEach((att) => formData.append('attachments', att))
+          }
+
+          return {
+            url: resolveTaskUrl(taskId),
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
+
+      [TaskApiTriggerEnum.TakeTask]: build.mutation<TakeTaskSuccessResponse, TakeTaskMutationArgs>({
+        invalidatesTags: (result, error) =>
+          error ? [] : [TaskApiTagEnum.Task, TaskApiTagEnum.TaskCounters],
+        query: ({ taskId }) => ({
+          url: takeTaskUrl(taskId),
           method: HttpMethodEnum.Post,
-          data: formData,
-        }
-      },
-      onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
-        try {
-          const { data: newComment } = await queryFulfilled
+        }),
+      }),
 
-          dispatch(
-            baseApiService.util.updateQueryData(
-              TaskApiTriggerEnum.GetTaskCommentList as never,
-              { taskId } as never,
-              (commentList: GetTaskCommentListSuccessResponse) => {
-                commentList.unshift(newComment)
-              },
-            ),
-          )
-        } catch {}
-      },
-    }),
-    [TaskApiTriggerEnum.GetTaskCommentList]: build.query<
-      GetTaskCommentListSuccessResponse,
-      GetTaskCommentListQueryArgs
-    >({
-      query: ({ taskId }) => ({
-        url: getTaskCommentListUrl(taskId),
-        method: HttpMethodEnum.Get,
-      }),
-    }),
+      [TaskApiTriggerEnum.CreateTaskComment]: build.mutation<
+        CreateTaskCommentSuccessResponse,
+        CreateTaskCommentMutationArgs
+      >({
+        query: ({ taskId, comment, attachments }) => {
+          const formData = new FormData()
+          formData.append('comment', comment)
 
-    updateTaskAssignee: build.mutation<
-      UpdateTaskAssigneeSuccessResponse,
-      UpdateTaskAssigneeMutationArgs
-    >({
-      query: ({ taskId, ...payload }) => ({
-        url: updateTaskAssigneeUrl(taskId),
-        method: HttpMethodEnum.Post,
-        data: payload,
-      }),
-      invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
-    }),
+          if (attachments?.length) {
+            attachments.forEach((att) => {
+              formData.append('attachments', att)
+            })
+          }
 
-    getTaskJournal: build.query<GetTaskJournalSuccessResponse, GetTaskJournalQueryArgs>({
-      query: ({ taskId }) => ({
-        url: getTaskJournalUrl(taskId),
-        method: HttpMethodEnum.Get,
-      }),
-    }),
-    getTaskJournalCsv: build.query<GetTaskJournalCsvSuccessResponse, GetTaskJournalCsvQueryArgs>({
-      query: ({ taskId }) => ({
-        url: getTaskJournalCsvUrl(taskId),
-        method: HttpMethodEnum.Get,
-      }),
-    }),
+          return {
+            url: createTaskCommentUrl(taskId),
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+        onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data: newComment } = await queryFulfilled
 
-    createReclassificationRequest: build.mutation<
-      CreateTaskReclassificationRequestSuccessResponse,
-      CreateTaskReclassificationRequestMutationArgs
-    >({
-      query: ({ taskId, ...payload }) => ({
-        url: createTaskReclassificationRequestUrl(taskId),
-        method: HttpMethodEnum.Post,
-        data: payload,
+            dispatch(
+              baseApiService.util.updateQueryData(
+                TaskApiTriggerEnum.GetTaskCommentList as never,
+                { taskId } as never,
+                (commentList: GetTaskCommentListSuccessResponse) => {
+                  commentList.unshift(newComment)
+                },
+              ),
+            )
+          } catch {}
+        },
       }),
-      onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
-        try {
-          await queryFulfilled
+      [TaskApiTriggerEnum.GetTaskCommentList]: build.query<
+        GetTaskCommentListSuccessResponse,
+        GetTaskCommentListQueryArgs
+      >({
+        query: ({ taskId }) => ({
+          url: getTaskCommentListUrl(taskId),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
 
-          dispatch(
-            taskApiService.util.updateQueryData(
-              TaskApiTriggerEnum.GetTask as never,
-              taskId as never,
-              (task: GetTaskSuccessResponse) => {
-                task.extendedStatus = TaskExtendedStatusEnum.InReclassification
-              },
-            ),
-          )
-        } catch {}
-      },
-    }),
-    getReclassificationRequest: build.query<
-      GetTaskReclassificationRequestSuccessResponse,
-      GetTaskReclassificationRequestQueryArgs
-    >({
-      query: ({ taskId }) => ({
-        url: getTaskReclassificationRequestUrl(taskId),
-        method: HttpMethodEnum.Get,
+      updateTaskAssignee: build.mutation<
+        UpdateTaskAssigneeSuccessResponse,
+        UpdateTaskAssigneeMutationArgs
+      >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [TaskApiTagEnum.Task, TaskApiTagEnum.TaskCounters],
+        query: ({ taskId, ...payload }) => ({
+          url: updateTaskAssigneeUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
       }),
-    }),
 
-    createSuspendRequest: build.mutation<
-      CreateTaskSuspendRequestSuccessResponse,
-      CreateTaskSuspendRequestMutationArgs
-    >({
-      query: ({ taskId, ...payload }) => ({
-        url: createTaskSuspendRequestUrl(taskId),
-        method: HttpMethodEnum.Post,
-        data: payload,
+      getTaskJournal: build.query<GetTaskJournalSuccessResponse, GetTaskJournalQueryArgs>({
+        query: ({ taskId }) => ({
+          url: getTaskJournalUrl(taskId),
+          method: HttpMethodEnum.Get,
+        }),
       }),
-      onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
-        try {
-          const { data: suspendRequest } = await queryFulfilled
+      getTaskJournalCsv: build.query<GetTaskJournalCsvSuccessResponse, GetTaskJournalCsvQueryArgs>({
+        query: ({ taskId }) => ({
+          url: getTaskJournalCsvUrl(taskId),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
 
-          dispatch(
-            taskApiService.util.updateQueryData(
-              TaskApiTriggerEnum.GetTask as never,
-              taskId as never,
-              (task: GetTaskSuccessResponse) => {
-                task.suspendRequest = suspendRequest
-              },
-            ),
-          )
-        } catch {}
-      },
-    }),
-    deleteSuspendRequest: build.mutation<
-      DeleteTaskSuspendRequestSuccessResponse,
-      DeleteTaskSuspendRequestMutationArgs
-    >({
-      query: ({ taskId }) => ({
-        url: deleteTaskSuspendRequestUrl(taskId),
-        method: HttpMethodEnum.Delete,
-      }),
-      invalidatesTags: (result, error) =>
-        error
-          ? isNotFoundError(error as ErrorResponse)
-            ? [TaskApiTagEnum.Task]
-            : []
-          : [TaskApiTagEnum.Task],
-    }),
+      createReclassificationRequest: build.mutation<
+        CreateTaskReclassificationRequestSuccessResponse,
+        CreateTaskReclassificationRequestMutationArgs
+      >({
+        query: ({ taskId, ...payload }) => ({
+          url: createTaskReclassificationRequestUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+        onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled
 
-    updateTaskWorkGroup: build.mutation<
-      UpdateTaskWorkGroupSuccessResponse,
-      UpdateTaskWorkGroupMutationArgs
-    >({
-      query: ({ taskId, ...payload }) => ({
-        url: updateTaskWorkGroupUrl(taskId),
-        method: HttpMethodEnum.Post,
-        data: payload,
+            dispatch(
+              taskApiService.util.updateQueryData(
+                TaskApiTriggerEnum.GetTask as never,
+                taskId as never,
+                (task: GetTaskSuccessResponse) => {
+                  task.extendedStatus = TaskExtendedStatusEnum.InReclassification
+                },
+              ),
+            )
+          } catch {}
+        },
       }),
-      invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
-    }),
-    deleteTaskWorkGroup: build.mutation<
-      DeleteTaskWorkGroupSuccessResponse,
-      DeleteTaskWorkGroupMutationArgs
-    >({
-      query: ({ taskId, ...payload }) => ({
-        url: deleteTaskWorkGroupUrl(taskId),
-        method: HttpMethodEnum.Delete,
-        data: payload,
+      getReclassificationRequest: build.query<
+        GetTaskReclassificationRequestSuccessResponse,
+        GetTaskReclassificationRequestQueryArgs
+      >({
+        query: ({ taskId }) => ({
+          url: getTaskReclassificationRequestUrl(taskId),
+          method: HttpMethodEnum.Get,
+        }),
       }),
-      invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
-    }),
 
-    [TaskApiTriggerEnum.GetSubTaskList]: build.query<
-      GetSubTaskListSuccessResponse,
-      GetSubTaskListQueryArgs
-    >({
-      query: (taskId) => ({
-        url: getSubTaskListUrl(taskId),
-        method: HttpMethodEnum.Get,
-      }),
-    }),
-    [TaskApiTriggerEnum.CreateSubTask]: build.mutation<
-      CreateSubTaskSuccessResponse,
-      CreateSubTaskMutationArgs
-    >({
-      query: ({ taskId, ...payload }) => ({
-        url: createSubTaskUrl(taskId),
-        method: HttpMethodEnum.Post,
-        data: payload,
-      }),
-      onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
-        try {
-          const { data: newSubTask } = await queryFulfilled
+      createSuspendRequest: build.mutation<
+        CreateTaskSuspendRequestSuccessResponse,
+        CreateTaskSuspendRequestMutationArgs
+      >({
+        query: ({ taskId, ...payload }) => ({
+          url: createTaskSuspendRequestUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+        onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data: suspendRequest } = await queryFulfilled
 
-          dispatch(
-            baseApiService.util.updateQueryData(
-              TaskApiTriggerEnum.GetSubTaskList as never,
-              taskId as never,
-              (subTaskList: SubTaskModel[]) => {
-                subTaskList.unshift(newSubTask)
-              },
-            ),
-          )
-        } catch {}
-      },
+            dispatch(
+              taskApiService.util.updateQueryData(
+                TaskApiTriggerEnum.GetTask as never,
+                taskId as never,
+                (task: GetTaskSuccessResponse) => {
+                  task.suspendRequest = suspendRequest
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
+      deleteSuspendRequest: build.mutation<
+        DeleteTaskSuspendRequestSuccessResponse,
+        DeleteTaskSuspendRequestMutationArgs
+      >({
+        invalidatesTags: (result, error) =>
+          error
+            ? isNotFoundError(error as ErrorResponse)
+              ? [TaskApiTagEnum.Task]
+              : []
+            : [TaskApiTagEnum.Task],
+        query: ({ taskId }) => ({
+          url: deleteTaskSuspendRequestUrl(taskId),
+          method: HttpMethodEnum.Delete,
+        }),
+      }),
+
+      updateTaskWorkGroup: build.mutation<
+        UpdateTaskWorkGroupSuccessResponse,
+        UpdateTaskWorkGroupMutationArgs
+      >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.TaskCounters],
+        query: ({ taskId, ...payload }) => ({
+          url: updateTaskWorkGroupUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+      }),
+      deleteTaskWorkGroup: build.mutation<
+        DeleteTaskWorkGroupSuccessResponse,
+        DeleteTaskWorkGroupMutationArgs
+      >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.TaskCounters],
+        query: ({ taskId, ...payload }) => ({
+          url: deleteTaskWorkGroupUrl(taskId),
+          method: HttpMethodEnum.Delete,
+          data: payload,
+        }),
+      }),
+
+      [TaskApiTriggerEnum.GetSubTaskList]: build.query<
+        GetSubTaskListSuccessResponse,
+        GetSubTaskListQueryArgs
+      >({
+        query: (taskId) => ({
+          url: getSubTaskListUrl(taskId),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
+      [TaskApiTriggerEnum.CreateSubTask]: build.mutation<
+        CreateSubTaskSuccessResponse,
+        CreateSubTaskMutationArgs
+      >({
+        query: ({ taskId, ...payload }) => ({
+          url: createSubTaskUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+        onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data: newSubTask } = await queryFulfilled
+
+            dispatch(
+              baseApiService.util.updateQueryData(
+                TaskApiTriggerEnum.GetSubTaskList as never,
+                taskId as never,
+                (subTaskList: SubTaskModel[]) => {
+                  subTaskList.unshift(newSubTask)
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
     }),
-  }),
-  overrideExisting: false,
-})
+    overrideExisting: false,
+  })
 
 export const {
   useGetTaskQuery,
@@ -378,7 +386,6 @@ export const {
   useGetTaskCountersQuery,
 
   useGetTaskListQuery,
-  useLazyGetTaskListQuery,
   useGetTaskListMapQuery,
 
   useGetTaskWorkPerformedActMutation,
