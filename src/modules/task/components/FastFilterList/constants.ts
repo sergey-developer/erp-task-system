@@ -91,12 +91,7 @@ export const fastFiltersConfig: FastFilterConfig[] = [
   },
   {
     filter: FastFilterEnum.ReclassificationDenied,
-    roles: [
-      UserRoleEnum.FirstLineSupport,
-      UserRoleEnum.Engineer,
-      UserRoleEnum.SeniorEngineer,
-      UserRoleEnum.HeadOfDepartment,
-    ],
+    roles: [UserRoleEnum.FirstLineSupport],
     text: fastFilterNamesDict[FastFilterEnum.ReclassificationDenied],
   },
 ]
