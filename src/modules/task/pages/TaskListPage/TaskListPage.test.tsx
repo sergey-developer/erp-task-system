@@ -16,10 +16,13 @@ import {
   testUtils as cardTitleTestUtils,
 } from 'modules/task/components/TaskDetails/Title/Title.test'
 import {
+  activeFirstLineButtonProps,
   activeSecondLineButtonProps,
+  showFirstLineButtonProps,
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
 } from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
+import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/components/TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
@@ -40,6 +43,7 @@ import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import {
+  mockDeleteTaskWorkGroupSuccess,
   mockGetCustomerListSuccess,
   mockGetMacroregionListSuccess,
   mockGetSupportGroupListSuccess,
@@ -439,6 +443,40 @@ describe('Страница реестра заявок', () => {
       await fastFilterListTestUtils.expectLoadingFinished()
     })
 
+    test('Перезапрашивается при переводе на 1-ю линию', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = taskFixtures.taskListItem()
+      mockGetTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([taskListItem]),
+        once: false,
+      })
+
+      const task = taskFixtures.task({
+        id: taskListItem.id,
+        ...showFirstLineButtonProps,
+        ...activeFirstLineButtonProps,
+      })
+      mockGetTaskSuccess(task.id, { body: task })
+      mockDeleteTaskWorkGroupSuccess(task.id)
+
+      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickRow(user, task.id)
+      await taskDetailsTestUtils.findContainer()
+      await taskDetailsTestUtils.expectTaskLoadingFinished()
+
+      await workGroupBlockTestUtils.clickFirstLineButton(user)
+      await taskFirstLineModalTestUtils.findContainer()
+      await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
+      await taskFirstLineModalTestUtils.clickSubmitButton(user)
+
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
+    })
+
     test('Перезапрашивается при переводе на 2-ю линию', async () => {
       mockGetTaskCountersSuccess({ once: false })
 
@@ -450,9 +488,8 @@ describe('Страница реестра заявок', () => {
 
       const task = taskFixtures.task({
         id: taskListItem.id,
-        workGroup: showSecondLineButtonProps.workGroup,
-        status: activeSecondLineButtonProps.status,
-        extendedStatus: activeSecondLineButtonProps.extendedStatus,
+        ...showSecondLineButtonProps,
+        ...activeSecondLineButtonProps,
       })
       mockGetTaskSuccess(task.id, { body: task })
 
