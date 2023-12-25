@@ -15,6 +15,7 @@ import {
 import React, { FC, useCallback, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
+import { renderUploadedFile } from 'modules/attachment/utils'
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { getTaskListPageLink } from 'modules/task/utils/task'
@@ -163,8 +164,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const [cancelTaskMutation, { isLoading: cancelTaskIsLoading }] = useCancelRelocationTaskMutation()
 
-  const [closeTaskMutation, { isLoading: closeTaskIsLoading }] =
-    useCloseRelocationTaskMutation()
+  const [closeTaskMutation, { isLoading: closeTaskIsLoading }] = useCloseRelocationTaskMutation()
 
   const [createAttachment] = useCreateRelocationTaskAttachment()
 
@@ -518,7 +518,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                           multiple
                           customRequest={handleCreateAttachment}
                           showUploadList={showUploadListConfig}
-                          itemRender={(originNode, file) => (!file.error ? originNode : null)}
+                          itemRender={renderUploadedFile}
                         >
                           <UploadButton label='Добавить вложение' />
                         </Upload>
