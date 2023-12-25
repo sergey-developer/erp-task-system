@@ -65,7 +65,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
 
   const workGroupMembers = workGroup?.members || []
 
-  const canSelectAssignee: boolean =
+  const canSelectAssignee =
     !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
     (seniorEngineerFromWorkGroupIsCurrentUser || headOfDepartmentFromWorkGroupIsCurrentUser)
@@ -155,9 +155,9 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                   onSelect={setSelectedAssignee}
                 >
                   {workGroupMembers.map((member) => {
-                    const currentAssigneeInWorkGroup: boolean = isEqual(member.id, currentAssignee)
-                    const authenticatedUserInWorkGroup: boolean = isEqual(member.id, authUser!.id)
-                    const disabled = currentAssigneeInWorkGroup || authenticatedUserInWorkGroup
+                    const currentAssigneeInWorkGroup = isEqual(member.id, currentAssignee)
+                    const authUserInWorkGroup = isEqual(member.id, authUser!.id)
+                    const disabled = currentAssigneeInWorkGroup || authUserInWorkGroup
 
                     return (
                       <SelectStyled.Option

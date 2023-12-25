@@ -3,6 +3,7 @@ import { UploadFile } from 'antd/es/upload'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
+  CreateEquipmentsBadRequestErrorResponse,
   CustomerListModel,
   EquipmentCategoryListItemModel,
   EquipmentCategoryListModel,
@@ -17,6 +18,7 @@ import { BaseModalProps } from 'components/Modals/BaseModal'
 import { CurrencyListModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
+import { ArrayFirst } from 'shared/types/utils'
 
 export type EquipmentFormModalFormFields = {
   title: string
@@ -51,7 +53,6 @@ export type EquipmentFormModalProps = Required<
       setFields: FormInstance['setFields'],
     ) => Promise<void> | void
 
-    defaultImages?: UploadProps<FileResponse>['defaultFileList']
     onUploadImage: NonNullable<UploadProps['customRequest']>
     imageIsUploading: boolean
     onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
@@ -81,5 +82,7 @@ export type EquipmentFormModalProps = Required<
     nomenclatureListIsLoading: boolean
     onChangeNomenclature: (id: IdType) => void
 
-    initialValues?: Partial<Omit<EquipmentFormModalFormFields, 'images'>>
+    values?: Partial<Pick<EquipmentFormModalFormFields, 'title' | 'images'>>
+    initialValues?: Partial<EquipmentFormModalFormFields>
+    errors?: ArrayFirst<CreateEquipmentsBadRequestErrorResponse>
   }

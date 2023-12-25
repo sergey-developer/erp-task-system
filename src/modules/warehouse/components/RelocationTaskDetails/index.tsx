@@ -15,6 +15,7 @@ import {
 import React, { FC, useCallback, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
+import { renderUploadedFile } from 'modules/attachment/utils'
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { getTaskListPageLink } from 'modules/task/utils/task'
@@ -86,16 +87,16 @@ const CancelRelocationTaskModal = React.lazy(
   () => import('modules/warehouse/components/CancelRelocationTaskModal'),
 )
 
-const ConfirmExecutionRelocationTaskModal = React.lazy(
-  () => import('modules/warehouse/components/ConfirmExecutionRelocationTaskModal'),
+const ExecuteRelocationTaskModal = React.lazy(
+  () => import('modules/warehouse/components/ExecuteRelocationTaskModal'),
 )
 
 const ReturnRelocationTaskToReworkModal = React.lazy(
   () => import('modules/warehouse/components/ReturnRelocationTaskToReworkModal'),
 )
 
-const ExecuteRelocationTaskModal = React.lazy(
-  () => import('modules/warehouse/components/ExecuteRelocationTaskModal'),
+const ConfirmExecutionRelocationTaskModal = React.lazy(
+  () => import('modules/warehouse/components/ConfirmExecutionRelocationTaskModal'),
 )
 
 const { Text } = Typography
@@ -108,14 +109,14 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const permissions = useMatchUserPermissions(['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_UPDATE'])
 
-  const [executeTaskModalOpened, { toggle: toggleOpenExecuteTaskModal }] = useBoolean()
-  const debouncedToggleOpenExecuteTaskModal = useDebounceFn(toggleOpenExecuteTaskModal)
-
   const [cancelTaskModalOpened, { toggle: toggleOpenCancelTaskModal }] = useBoolean()
   const debouncedToggleOpenCancelTaskModal = useDebounceFn(toggleOpenCancelTaskModal)
 
   const [returnToReworkModalOpened, { toggle: toggleOpenReturnToReworkModal }] = useBoolean()
   const debouncedToggleOpenReturnToReworkModal = useDebounceFn(toggleOpenReturnToReworkModal)
+
+  const [executeTaskModalOpened, { toggle: toggleOpenExecuteTaskModal }] = useBoolean()
+  const debouncedToggleOpenExecuteTaskModal = useDebounceFn(toggleOpenExecuteTaskModal)
 
   const [confirmExecutionModalOpened, { toggle: toggleOpenConfirmExecutionModal }] = useBoolean()
   const debouncedToggleOpenConfirmExecutionModal = useDebounceFn(toggleOpenConfirmExecutionModal)
@@ -155,42 +156,21 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
     useLazyGetRelocationTaskWaybillM15()
 
-  const [closeTaskMutation, { isLoading: closeTaskIsLoading }] = useCloseRelocationTaskMutation()
+  const [executeTaskMutation, { isLoading: executeTaskIsLoading }] =
+    useExecuteRelocationTaskMutation()
 
   const [returnToReworkMutation, { isLoading: returnToReworkIsLoading }] =
     useReturnRelocationTaskToReworkMutation()
 
   const [cancelTaskMutation, { isLoading: cancelTaskIsLoading }] = useCancelRelocationTaskMutation()
 
-  const [executeTaskMutation, { isLoading: executeTaskIsLoading }] =
-    useExecuteRelocationTaskMutation()
+  const [closeTaskMutation, { isLoading: closeTaskIsLoading }] = useCloseRelocationTaskMutation()
 
   const [createAttachment] = useCreateRelocationTaskAttachment()
 
   const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
   const executorIsCurrentUser = useIdBelongAuthUser(relocationTask?.executor?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
-
-  const handleCloseTask = async () => {
-    try {
-      await closeTaskMutation({ relocationTaskId }).unwrap()
-      toggleOpenConfirmExecutionModal()
-    } catch (error) {
-      if (isErrorResponse(error)) {
-        if (error.data.detail) {
-          if (isBadRequestError(error)) {
-            showErrorNotification(error.data.detail)
-          } else if (isForbiddenError(error)) {
-            showErrorNotification(error.data.detail)
-          } else if (isNotFoundError(error)) {
-            showErrorNotification(error.data.detail)
-          } else {
-            showErrorNotification(closeRelocationTaskMessages.commonError)
-          }
-        }
-      }
-    }
-  }
 
   const handleCancelTask = async () => {
     try {
@@ -207,6 +187,27 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             showErrorNotification(error.data.detail)
           } else {
             showErrorNotification(cancelRelocationTaskMessages.commonError)
+          }
+        }
+      }
+    }
+  }
+
+  const handleCloseTask = async () => {
+    try {
+      await closeTaskMutation({ relocationTaskId }).unwrap()
+      toggleOpenConfirmExecutionModal()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (error.data.detail) {
+          if (isBadRequestError(error)) {
+            showErrorNotification(error.data.detail)
+          } else if (isForbiddenError(error)) {
+            showErrorNotification(error.data.detail)
+          } else if (isNotFoundError(error)) {
+            showErrorNotification(error.data.detail)
+          } else {
+            showErrorNotification(closeRelocationTaskMessages.commonError)
           }
         }
       }
@@ -517,7 +518,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                           multiple
                           customRequest={handleCreateAttachment}
                           showUploadList={showUploadListConfig}
-                          itemRender={(originNode, file) => (!file.error ? originNode : null)}
+                          itemRender={renderUploadedFile}
                         >
                           <UploadButton label='Добавить вложение' />
                         </Upload>
@@ -547,20 +548,20 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         </Row>
       </Drawer>
 
-      {confirmExecutionModalOpened && (
+      {executeTaskModalOpened && (
         <React.Suspense
           fallback={
             <ModalFallback
-              open={confirmExecutionModalOpened}
-              onCancel={debouncedToggleOpenConfirmExecutionModal}
+              open={executeTaskModalOpened}
+              onCancel={debouncedToggleOpenExecuteTaskModal}
             />
           }
         >
-          <ConfirmExecutionRelocationTaskModal
-            open={confirmExecutionModalOpened}
-            isLoading={closeTaskIsLoading}
-            onCancel={debouncedToggleOpenConfirmExecutionModal}
-            onConfirm={handleCloseTask}
+          <ExecuteRelocationTaskModal
+            open={executeTaskModalOpened}
+            isLoading={executeTaskIsLoading}
+            onCancel={debouncedToggleOpenExecuteTaskModal}
+            onSubmit={handleExecuteTask}
           />
         </React.Suspense>
       )}
@@ -601,20 +602,20 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         </React.Suspense>
       )}
 
-      {executeTaskModalOpened && (
+      {confirmExecutionModalOpened && (
         <React.Suspense
           fallback={
             <ModalFallback
-              open={executeTaskModalOpened}
-              onCancel={debouncedToggleOpenExecuteTaskModal}
+              open={confirmExecutionModalOpened}
+              onCancel={debouncedToggleOpenConfirmExecutionModal}
             />
           }
         >
-          <ExecuteRelocationTaskModal
-            open={executeTaskModalOpened}
-            isLoading={executeTaskIsLoading}
-            onCancel={debouncedToggleOpenExecuteTaskModal}
-            onSubmit={handleExecuteTask}
+          <ConfirmExecutionRelocationTaskModal
+            open={confirmExecutionModalOpened}
+            isLoading={closeTaskIsLoading}
+            onCancel={debouncedToggleOpenConfirmExecutionModal}
+            onConfirm={handleCloseTask}
           />
         </React.Suspense>
       )}

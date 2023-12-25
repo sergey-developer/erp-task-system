@@ -49,6 +49,14 @@ import {
 import EquipmentDetails from './index'
 import { EquipmentDetailsProps } from './types'
 
+jest.mock<typeof import('shared/utils/common/printImage')>(
+  'shared/utils/common/printImage',
+  () => ({
+    __esModule: true,
+    printImage: jest.fn(),
+  }),
+)
+
 const props: Readonly<EquipmentDetailsProps> = {
   open: true,
   onClose: jest.fn(),
@@ -86,6 +94,7 @@ const expectTotalEquipmentImageListLoadingFinished = () =>
 
 // close button
 const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
+
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
@@ -712,6 +721,61 @@ describe('Информация об оборудовании', () => {
         })
       })
     })
+
+    describe('QR код', () => {
+      test('Отображается корректно', async () => {
+        const equipment = warehouseFixtures.equipment()
+        mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+        render(<EquipmentDetails {...props} />)
+
+        await testUtils.expectLoadingFinished()
+        const block = testUtils.getBlock('qr-code')
+        const label = testUtils.getInfoInBlock(block, /QR-код/)
+        const image = within(block).getByRole('img')
+
+        expect(label).toBeInTheDocument()
+        expect(image).toHaveAttribute('width', '135')
+        expect(image).toHaveAttribute('height', '155')
+        expect(image).toHaveAttribute('src', equipment.qrCode)
+      })
+
+      describe('Кнопка печать', () => {
+        test('Отображается корректно', async () => {
+          const equipment = warehouseFixtures.equipment()
+          mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+          mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+          render(<EquipmentDetails {...props} />)
+
+          await testUtils.expectLoadingFinished()
+          const block = testUtils.getBlock('qr-code')
+          const button = buttonTestUtils.getButtonIn(block, 'Печать')
+
+          expect(button).toBeInTheDocument()
+          expect(button).toBeEnabled()
+        })
+
+        test('При клике обработчик вызывается корректно', async () => {
+          const { printImage } = await import('shared/utils/common/printImage')
+
+          const equipment = warehouseFixtures.equipment()
+          mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+          mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+          const { user } = render(<EquipmentDetails {...props} />)
+
+          await testUtils.expectLoadingFinished()
+          const block = testUtils.getBlock('qr-code')
+          const button = buttonTestUtils.getButtonIn(block, 'Печать')
+          await user.click(button)
+
+          expect(printImage).toBeCalledTimes(1)
+          expect(printImage).toBeCalledWith(equipment.qrCode)
+        })
+      })
+    })
   })
 
   describe('При не успешном запросе', () => {
@@ -759,6 +823,7 @@ describe('Информация об оборудовании', () => {
   describe('История перемещений', () => {
     test('Кнопка отображается', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -770,6 +835,7 @@ describe('Информация об оборудовании', () => {
 
     test('Кнопка активна если условия соблюдены', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -787,6 +853,7 @@ describe('Информация об оборудовании', () => {
 
     test('Кнопка не активна если условия соблюдены, но нет прав на чтение оборудования', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -804,6 +871,7 @@ describe('Информация об оборудовании', () => {
 
     test('Кнопка не активна если условия соблюдены, но нет прав на чтение заявок на перемещение', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -822,6 +890,7 @@ describe('Информация об оборудовании', () => {
     test('При клике открывается модалка', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId)
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -840,6 +909,7 @@ describe('Информация об оборудовании', () => {
 
     test('При успешном запрос данные отображаются', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       const equipmentRelocationHistory = warehouseFixtures.equipmentRelocationHistory()
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId, {
@@ -868,6 +938,7 @@ describe('Информация об оборудовании', () => {
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 403', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         const errorMsg = fakeWord()
         mockGetEquipmentRelocationHistoryForbiddenError(props.equipmentId, {
@@ -892,6 +963,7 @@ describe('Информация об оборудовании', () => {
 
       test('Обрабатывается ошибка 404', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         const errorMsg = fakeWord()
         mockGetEquipmentRelocationHistoryNotFoundError(props.equipmentId, {
@@ -917,6 +989,7 @@ describe('Информация об оборудовании', () => {
       test('Обрабатывается ошибка 500', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
         mockGetEquipmentRelocationHistoryServerError(props.equipmentId)
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         const { user } = render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {

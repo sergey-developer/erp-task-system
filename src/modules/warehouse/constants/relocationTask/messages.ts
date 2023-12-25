@@ -10,20 +10,20 @@ export const getRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения заявки на перемещение',
 }
 
-export const cancelRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка отмены заявки на перемещение',
-}
-
 export const returnRelocationTaskToReworkMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка возврата заявки на перемещение на доработку',
 }
 
-export const closeRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка закрытия заявки на перемещение',
-}
-
 export const executeRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка выполнения заявки на перемещение',
+}
+
+export const cancelRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка отмены заявки на перемещение',
+}
+
+export const closeRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка закрытия заявки на перемещение',
 }
 
 export const createRelocationTaskAttachmentErrorMsg =

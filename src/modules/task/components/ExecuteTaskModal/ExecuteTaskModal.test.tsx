@@ -132,7 +132,6 @@ const findAttachmentsError = (error: string) => within(getAttachmentsFormItem())
 
 // loading
 const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
-
 const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {
@@ -391,13 +390,11 @@ describe('Модалка выполнения заявки', () => {
     describe('Не отображается', () => {
       test('Если тип заявки - incident task', () => {
         render(<ExecuteTaskModal {...props} type={TaskTypeEnum.IncidentTask} />)
-
         expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
       })
 
       test('Если тип заявки - request task', () => {
         render(<ExecuteTaskModal {...props} type={TaskTypeEnum.RequestTask} />)
-
         expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
       })
     })

@@ -20,7 +20,9 @@ export type TaskTableListItem = Pick<
   | 'extendedStatus'
   | 'subtasksCounter'
   | 'responseTime'
->
+> & {
+  isBoundary?: boolean
+}
 
 export type TaskTableColumnKey =
   | 'noop'

@@ -9,15 +9,15 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { filterOptionBy } from 'shared/utils/common'
+import { onlyRequiredRules } from 'shared/constants/validation'
 
-import { OptionTextStyled, WorkGroupFormItem } from './styles'
+import { WorkGroupFormItem } from './styles'
 import { TaskSecondLineFormFields, TaskSecondLineModalProps } from './types'
-import { workGroupValidationRules } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-const okBtnText: string = 'Перевести заявку'
+const okBtnText = 'Перевести заявку'
 
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
@@ -26,12 +26,12 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   onSubmit,
   onCancel,
 }) => {
+  const [form] = Form.useForm<TaskSecondLineFormFields>()
+  const markDefaultGroupValue = Form.useWatch('markAsDefault', form)
+
   const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroupList({
     taskId: id,
   })
-
-  const [form] = Form.useForm<TaskSecondLineFormFields>()
-  const markDefaultGroupValue = Form.useWatch('markAsDefault', form)
 
   useEffect(() => {
     if (!workGroupList.length) return
@@ -94,7 +94,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
             data-testid='work-group-form-item'
             name='workGroup'
             label='Рабочая группа'
-            rules={workGroupValidationRules}
+            rules={onlyRequiredRules}
           >
             <Select
               placeholder='Выберите рабочую группу'
@@ -110,9 +110,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
                   value={id}
                   title={priority?.description}
                 >
-                  <OptionTextStyled $isBold={priority ? priority.value < 4 : false}>
-                    {name}
-                  </OptionTextStyled>
+                  <Text strong={!!priority && priority.value < 4}>{name}</Text>
                 </Select.Option>
               ))}
             </Select>

@@ -5,6 +5,7 @@ import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
+import { hexToRGB } from 'shared/utils/hexToRGB'
 
 import theme from 'styles/theme'
 
@@ -91,8 +92,7 @@ describe('Список заявок', () => {
 
       // eslint-disable-next-line testing-library/no-node-access
       const wrapper = type.parentNode!
-
-      expect(wrapper).toHaveStyle({ backgroundColor: theme.colors.fireOpal })
+      expect(wrapper).toHaveStyle({ backgroundColor: hexToRGB(theme.colors.fireOpal) })
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.IncidentTask} отображается корректно`, () => {
@@ -109,10 +109,7 @@ describe('Список заявок', () => {
 
       // eslint-disable-next-line testing-library/no-node-access
       const wrapper = type.parentNode!
-
-      expect(wrapper).toHaveStyle({
-        backgroundColor: theme.colors.darkTangerine,
-      })
+      expect(wrapper).toHaveStyle({ backgroundColor: hexToRGB(theme.colors.darkTangerine) })
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.Request} отображается корректно`, () => {
@@ -129,10 +126,7 @@ describe('Список заявок', () => {
 
       // eslint-disable-next-line testing-library/no-node-access
       const wrapper = type.parentNode!
-
-      expect(wrapper).toHaveStyle({
-        backgroundColor: theme.colors.unitedNationsBlue,
-      })
+      expect(wrapper).toHaveStyle({ backgroundColor: hexToRGB(theme.colors.unitedNationsBlue) })
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.RequestTask} отображается корректно`, () => {
@@ -149,10 +143,7 @@ describe('Список заявок', () => {
 
       // eslint-disable-next-line testing-library/no-node-access
       const wrapper = type.parentNode!
-
-      expect(wrapper).toHaveStyle({
-        backgroundColor: theme.colors.darkTangerine,
-      })
+      expect(wrapper).toHaveStyle({ backgroundColor: hexToRGB(theme.colors.darkTangerine) })
     })
   })
 
@@ -200,7 +191,7 @@ describe('Список заявок', () => {
     const listItem = testUtils.getListItem(taskListItem.id)
 
     expect(listItem).toHaveClass('list-item-selected')
-    expect(listItem).toHaveStyle({ backgroundColor: theme.colors.chineseWhite })
+    expect(listItem).toHaveStyle({ backgroundColor: hexToRGB(theme.colors.chineseWhite) })
   })
 
   test('По клику на элемент вызывается обработчик', async () => {

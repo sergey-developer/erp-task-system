@@ -1,41 +1,39 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { createSuspendRequestMessages } from 'modules/task/constants/taskSuspendRequest'
-import { CreateTaskSuspendRequestMutationArgs } from 'modules/task/models'
-import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
+
+import { createSuspendRequestErrorMsg } from 'modules/task/constants/taskSuspendRequest'
+import {
+  CreateTaskSuspendRequestMutationArgs,
+  CreateTaskSuspendRequestSuccessResponse,
+} from 'modules/task/models'
 import { useCreateSuspendRequestMutation } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/common'
-import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isBadRequestError,
+  isErrorResponse,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useCreateTaskSuspendRequest = () => {
-  const permissions = useUserPermissions(taskSuspendRequestApiPermissions)
+type UseCreateTaskSuspendRequestResult = CustomUseMutationResult<
+  CreateTaskSuspendRequestMutationArgs,
+  CreateTaskSuspendRequestSuccessResponse
+>
+
+export const useCreateTaskSuspendRequest = (): UseCreateTaskSuspendRequestResult => {
   const [mutation, state] = useCreateSuspendRequestMutation()
 
-  const fn = useCallback(
-    async (data: CreateTaskSuspendRequestMutationArgs) => {
-      if (!permissions.canCreate) return
-
-      await mutation(data).unwrap()
-    },
-    [mutation, permissions.canCreate],
-  )
-
   useEffect(() => {
-    if (!state.error) return
-
     if (isErrorResponse(state.error)) {
-      if (isNotFoundError(state.error)) {
-        showErrorNotification(createSuspendRequestMessages.notFoundError)
-      } else if (isBadRequestError(state.error)) {
-        showErrorNotification(createSuspendRequestMessages.badRequestError)
+      if (isNotFoundError(state.error) || isBadRequestError(state.error)) {
+        showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(commonApiMessages.unknownError)
+        showErrorNotification(createSuspendRequestErrorMsg)
       }
     }
   }, [state.error])
 
-  return { fn, state }
+  return [mutation, state]
 }

@@ -1,6 +1,7 @@
 import { Col, Divider, Row, Typography, Upload, UploadProps } from 'antd'
 import React, { FC } from 'react'
 
+import { renderUploadedFile } from 'modules/attachment/utils'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { makeUserByFullName } from 'modules/user/utils'
@@ -49,7 +50,7 @@ const RelocationTaskList: FC<RelocationTaskListProps> = ({ data, onClick, onCrea
                         multiple
                         customRequest={onCreateAttachment(item.id)}
                         showUploadList={showUploadListConfig}
-                        itemRender={(originNode, file) => (!file.error ? originNode : null)}
+                        itemRender={renderUploadedFile}
                       >
                         <UploadButton label='Добавить вложение' />
                       </Upload>

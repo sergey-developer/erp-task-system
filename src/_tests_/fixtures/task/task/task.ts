@@ -53,10 +53,12 @@ export const task = (
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
-  workGroup: props?.workGroup || taskFixtures.workGroup(),
-  assignee: props?.assignee || taskFixtures.assignee(),
-  suspendRequest: props?.suspendRequest || null,
-  hasRelocationTasks: isUndefined(props?.hasRelocationTasks) ? true : !!props?.hasRelocationTasks,
+  workGroup: isUndefined(props?.workGroup) ? taskFixtures.workGroup() : props!.workGroup,
+  assignee: isUndefined(props?.assignee) ? taskFixtures.assignee() : props!.assignee,
+  suspendRequest: isUndefined(props?.suspendRequest)
+    ? taskFixtures.suspendRequest()
+    : props!.suspendRequest,
+  hasRelocationTasks: isUndefined(props?.hasRelocationTasks) ? true : props!.hasRelocationTasks,
 
   shop: { id: fakeId(), title: fakeWord() },
   attachments: [taskFixtures.attachment()],

@@ -1,4 +1,4 @@
-import { App, ConfigProvider as BaseConfigProvider, ThemeConfig } from 'antd'
+import { ConfigProvider as BaseConfigProvider, ThemeConfig, App } from 'antd'
 import { ConfigProviderProps as BaseConfigProviderProps } from 'antd/lib/config-provider'
 import ruRU from 'antd/lib/locale/ru_RU'
 import { FC } from 'react'
@@ -21,6 +21,7 @@ const globalFormConfig: BaseConfigProviderProps['form'] = {
       max: validationTemplateMessages.string.max,
     },
     types: {
+      url: validationMessages.url.incorrect,
       email: validationMessages.email.incorrect,
     },
   },

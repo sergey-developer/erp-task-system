@@ -1,14 +1,14 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-
-import { iconTestUtils, render } from '_tests_/utils'
+import { iconTestUtils, render, tableTestUtils } from '_tests_/utils'
 
 import NomenclatureTable from './index'
-import { NomenclatureTableItem, NomenclatureTableProps } from './types'
+import { NomenclatureTableProps } from './types'
 
 const nomenclatureListItem = warehouseFixtures.nomenclatureListItem()
 
@@ -21,15 +21,10 @@ const props: Readonly<NomenclatureTableProps> = {
 }
 
 const getContainer = () => screen.getByTestId('nomenclature-table')
-
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
-const getRow = (id: NomenclatureTableItem['id']): MaybeNull<HTMLElement> =>
-  // eslint-disable-next-line testing-library/no-node-access
-  getContainer().querySelector(`[data-row-key='${id}']`)
-
+const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
 const getHeadCell = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access
   return getChildByText(text).parentElement?.parentElement!
@@ -43,17 +38,13 @@ const clickColTitle = async (user: UserEvent, title: string) => {
   await user.click(col)
 }
 
-const getColValue = (
-  id: NomenclatureTableItem['id'],
-  value: NumberOrString,
-): MaybeNull<HTMLElement> => {
+const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> => {
   const row = getRow(id)
   return row ? within(row).getByText(value) : null
 }
 
 // loading
 const expectLoadingStarted = () => iconTestUtils.expectLoadingStartedIn(getContainer())
-
 const expectLoadingFinished = () => iconTestUtils.expectLoadingFinishedIn(getContainer())
 
 export const testUtils = {

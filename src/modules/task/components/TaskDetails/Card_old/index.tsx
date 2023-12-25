@@ -64,9 +64,11 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
+
 const ConfirmExecuteTaskModal = React.lazy(
   () => import('modules/task/components/ConfirmExecuteTaskModal'),
 )
+
 const TaskSuspendRequest = React.lazy(() => import('modules/task/components/TaskSuspendRequest'))
 
 const RequestTaskReclassificationModal = React.lazy(
@@ -138,9 +140,9 @@ export type TaskCardProps = {
   ) => Promise<void>
   createReclassificationRequestIsLoading: boolean
 
-  createSuspendRequest: (data: CreateTaskSuspendRequestMutationArgs) => Promise<void>
+  createSuspendRequest: CustomMutationTrigger<CreateTaskSuspendRequestMutationArgs, any>
   createSuspendRequestIsLoading: boolean
-  cancelSuspendRequest: (data: DeleteTaskSuspendRequestMutationArgs) => Promise<void>
+  cancelSuspendRequest: CustomMutationTrigger<DeleteTaskSuspendRequestMutationArgs, any>
   cancelSuspendRequestIsLoading: boolean
 
   takeTask: (data: TakeTaskMutationArgs) => Promise<void>
@@ -288,10 +290,6 @@ const TaskCard: FC<TaskCardProps> = ({
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
             setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
           }
         }
       }
@@ -424,10 +422,12 @@ const TaskCard: FC<TaskCardProps> = ({
       try {
         await createSuspendRequest({
           taskId: task.id,
-          comment: values.comment,
           suspendReason: values.reason,
           suspendEndAt: mergeDateTime(values.endDate, values.endTime).toISOString(),
-        })
+          externalRevisionLink: values.taskLink,
+          externalResponsibleCompany: values.organization,
+          comment: values.comment,
+        }).unwrap()
 
         closeRequestTaskSuspendModal()
       } catch (error) {
@@ -449,10 +449,7 @@ const TaskCard: FC<TaskCardProps> = ({
 
   const handleCancelTaskSuspendRequest = useDebounceFn(async () => {
     if (!task) return
-
-    try {
-      await cancelSuspendRequest({ taskId: task.id })
-    } catch {}
+    await cancelSuspendRequest({ taskId: task.id })
   }, [cancelSuspendRequest, task])
 
   const cardTitle = !taskIsLoading && task && (

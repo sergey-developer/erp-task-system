@@ -1,7 +1,9 @@
 import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
 import isArray from 'lodash/isArray'
+import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
+import { renderUploadedFile } from 'modules/attachment/utils'
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 import {
   EquipmentCategoryListItemModel,
@@ -18,6 +20,7 @@ import { filesFormItemProps } from 'shared/constants/form'
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
+import { getFieldsErrors } from 'shared/utils/form'
 
 import { EquipmentFormModalFormFields, EquipmentFormModalProps } from './types'
 
@@ -27,9 +30,10 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   mode,
 
   isLoading,
+  values,
   initialValues,
+  errors,
 
-  defaultImages,
   onUploadImage,
   imageIsUploading,
   onDeleteImage,
@@ -65,22 +69,24 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 }) => {
   const [form] = Form.useForm<EquipmentFormModalFormFields>()
 
-  const hasSelectedNomenclature = Boolean(nomenclature)
+  const nomenclatureSelected = Boolean(nomenclature)
 
-  const hasSelectedCategory = Boolean(selectedCategory)
+  const categorySelected = Boolean(selectedCategory)
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   useEffect(() => {
-    if (nomenclature?.title) {
-      form.setFieldsValue({ title: nomenclature.title })
-    }
-  }, [form, nomenclature?.title])
+    if (values?.title) form.setFieldsValue({ title: values.title })
+  }, [form, values?.title])
 
   useEffect(() => {
-    if (defaultImages?.length) {
-      form.setFieldsValue({ images: defaultImages })
+    if (values?.images?.length) form.setFieldsValue({ images: values.images })
+  }, [form, values?.images])
+
+  useEffect(() => {
+    if (!isEmpty(errors) && nomenclatureSelected && categorySelected) {
+      form.setFields(getFieldsErrors(errors!))
     }
-  }, [defaultImages, form])
+  }, [categorySelected, errors, form, nomenclatureSelected])
 
   const handleChangeCategory = (
     value: IdType,
@@ -135,7 +141,6 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         initialValues={initialValues}
         layout='vertical'
         onFinish={handleFinish}
-        preserve={false}
       >
         <Form.Item
           data-testid='category-form-item'
@@ -171,7 +176,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         </Form.Item>
 
         <LoadingArea isLoading={nomenclatureIsLoading} tip='Загрузка номенклатуры...'>
-          {hasSelectedCategory && hasSelectedNomenclature && (
+          {categorySelected && nomenclatureSelected && (
             <>
               <Form.Item
                 data-testid='title-form-item'
@@ -398,10 +403,10 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   listType='picture'
                   multiple
                   disabled={isLoading || imageIsDeleting}
-                  itemRender={(originNode, file) => (!file.error ? originNode : null)}
+                  itemRender={renderUploadedFile}
                   customRequest={onUploadImage}
                   onRemove={onDeleteImage}
-                  defaultFileList={defaultImages}
+                  defaultFileList={values?.images}
                 >
                   <UploadButton label='Добавить фото' disabled={isLoading} />
                 </Upload>

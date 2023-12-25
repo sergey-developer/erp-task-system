@@ -1,5 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { App, Drawer, FormInstance } from 'antd'
+import debounce from 'lodash/debounce'
 import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
@@ -125,15 +126,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
-  const {
-    fn: deleteSuspendRequest,
-    state: { isLoading: deleteSuspendRequestIsLoading },
-  } = useDeleteTaskSuspendRequest()
+  const [deleteSuspendRequest, { isLoading: deleteSuspendRequestIsLoading }] =
+    useDeleteTaskSuspendRequest()
 
-  const {
-    fn: createSuspendRequest,
-    state: { isLoading: createSuspendRequestIsLoading },
-  } = useCreateTaskSuspendRequest()
+  const [createSuspendRequest, { isLoading: createSuspendRequestIsLoading }] =
+    useCreateTaskSuspendRequest()
 
   const {
     fn: createReclassificationRequest,
@@ -213,11 +210,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const debouncedCloseConfirmExecuteTaskModal = useDebounceFn(closeConfirmExecuteTaskModal)
 
-  const handleOpenExecuteTaskModal = useDebounceFn(() => {
-    if (task) {
-      task.hasRelocationTasks ? openExecuteTaskModal() : openConfirmExecuteTaskModal()
-    }
-  })
+  const handleOpenExecuteTaskModal = useCallback(
+    () =>
+      debounce(() => {
+        if (task) {
+          task.hasRelocationTasks ? openExecuteTaskModal() : openConfirmExecuteTaskModal()
+        }
+      })(),
+    [openConfirmExecuteTaskModal, openExecuteTaskModal, task],
+  )
 
   const handleConfirmExecuteTask = useDebounceFn(() => {
     closeConfirmExecuteTaskModal()
@@ -403,10 +404,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       try {
         await createSuspendRequest({
           taskId: task.id,
-          comment: values.comment,
           suspendReason: values.reason,
           suspendEndAt: mergeDateTime(values.endDate, values.endTime).toISOString(),
-        })
+          externalRevisionLink: values.taskLink,
+          externalResponsibleCompany: values.organization,
+          comment: values.comment,
+        }).unwrap()
 
         closeRequestTaskSuspendModal()
       } catch (error) {
@@ -428,10 +431,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const handleDeleteTaskSuspendRequest = useDebounceFn(async () => {
     if (!task) return
-
-    try {
-      await deleteSuspendRequest({ taskId: task.id })
-    } catch {}
+    await deleteSuspendRequest({ taskId: task.id })
   }, [deleteSuspendRequest, task])
 
   const title = task && (
@@ -453,7 +453,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   return (
     <>
-      <Drawer open={!!taskId} onClose={closeTask} width={650} title={title} mask={false}>
+      <Drawer
+        data-testid='task-details'
+        open={!!taskId}
+        onClose={closeTask}
+        width={650}
+        title={title}
+        mask={false}
+      >
         <Space direction='vertical' $block size='middle'>
           <LoadingArea
             data-testid='task-reclassification-request-loading'

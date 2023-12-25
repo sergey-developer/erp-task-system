@@ -25,6 +25,7 @@ Lint:
     - develop
   tags:
     - docker
+    - vk
 
 Tests:
   stage: test
@@ -46,10 +47,11 @@ Tests:
       policy: pull
   only:
     # - rc
-    # - master
-    - develop
+    - master
+    # - develop
   tags:
     - docker
+    - vk
 
 
 .base_build: &base_build

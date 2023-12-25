@@ -66,7 +66,21 @@ export type CreateEquipmentsBadRequestErrorResponse = Partial<
   FieldsErrors<
     Pick<
       CreateEquipmentModel,
-      'title' | 'nomenclature' | 'purpose' | 'condition' | 'customerInventoryNumber'
+      | 'category'
+      | 'nomenclature'
+      | 'customerInventoryNumber'
+      | 'serialNumber'
+      | 'condition'
+      | 'price'
+      | 'currency'
+      | 'quantity'
+      | 'isNew'
+      | 'isWarranty'
+      | 'isRepaired'
+      | 'usageCounter'
+      | 'owner'
+      | 'purpose'
+      | 'comment'
     >
   >
 >[]

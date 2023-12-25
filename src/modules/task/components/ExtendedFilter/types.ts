@@ -15,7 +15,6 @@ import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
 import { MacroregionListModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
-import { EmptyFn } from 'shared/types/utils'
 
 export type TasksFilterSupportGroupFormFields = Partial<{
   customers: IdType[]

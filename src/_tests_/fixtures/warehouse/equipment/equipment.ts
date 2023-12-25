@@ -6,7 +6,7 @@ import { EquipmentModel } from 'modules/warehouse/models'
 import currencyFixtures from '_tests_/fixtures/currency'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeDateString, fakeId, fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/utils'
 
 export const equipment = (
   props?: Partial<
@@ -51,4 +51,5 @@ export const equipment = (
   currency: pick(currencyFixtures.currency(), 'id', 'title'),
   comment: fakeWord(),
   amount: fakeInteger(),
+  qrCode: fakeUrl(),
 })

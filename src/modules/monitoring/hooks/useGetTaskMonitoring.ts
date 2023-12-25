@@ -8,7 +8,7 @@ import {
 } from 'modules/monitoring/models'
 import { useGetTaskMonitoringQuery } from 'modules/monitoring/services/monitoringApi.service'
 
-import { getErrorDetail, isErrorResponse } from 'shared/services/baseApi'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskMonitoringResult = CustomUseQueryHookResult<
@@ -28,10 +28,8 @@ export const useGetTaskMonitoring = (
   const state = useGetTaskMonitoringQuery(args, options)
 
   useEffect(() => {
-    if (!state.error) return
-
-    if (isErrorResponse(state.error)) {
-      showErrorNotification(getErrorDetail(state.error))
+    if (isErrorResponse(state.error) && state.error.data.detail) {
+      showErrorNotification(state.error.data.detail)
     }
   }, [state.error])
 

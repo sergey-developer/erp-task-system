@@ -1,9 +1,8 @@
 import { useBoolean, useSetState } from 'ahooks'
 import debounce from 'lodash/debounce'
-import { FC, useCallback, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { FC, useCallback, useState } from 'react'
+import { useParams, useSearchParams } from 'react-router-dom'
 
-import EquipmentDetails from 'modules/warehouse/components/EquipmentDetails'
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'modules/warehouse/components/EquipmentTable'
 import {
@@ -16,25 +15,35 @@ import { useGetEquipmentList } from 'modules/warehouse/hooks/equipment'
 import { GetEquipmentListQueryArgs } from 'modules/warehouse/models'
 import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
+import ModalFallback from 'components/Modals/ModalFallback'
+
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
 import {
   calculatePaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
+const EquipmentDetails = React.lazy(() => import('modules/warehouse/components/EquipmentDetails'))
+
 const EquipmentListPage: FC = () => {
+  const [searchParams] = useSearchParams()
   // todo: создать хук который будет возвращать распарсеные значения
   const params = useParams<'id'>()
   const nomenclatureId = Number(params?.id) || undefined
+  const viewEquipmentId = Number(searchParams.get('viewEquipmentId')) || undefined
 
   const context = useEquipmentPageContext()
 
-  const [selectedEquipmentId, setSelectedEquipmentId] = useState<IdType>()
+  const [selectedEquipmentId, setSelectedEquipmentId] =
+    useState<MaybeUndefined<IdType>>(viewEquipmentId)
 
-  const [equipmentDetailsOpened, { toggle: toggleOpenEquipmentDetails }] = useBoolean(false)
+  const [equipmentDetailsOpened, { toggle: toggleOpenEquipmentDetails }] = useBoolean(
+    !!selectedEquipmentId,
+  )
   const debouncedToggleOpenEquipmentDetails = useDebounceFn(toggleOpenEquipmentDetails)
 
   const [getEquipmentListParams, setGetEquipmentListParams] =
@@ -101,11 +110,13 @@ const EquipmentListPage: FC = () => {
       />
 
       {equipmentDetailsOpened && selectedEquipmentId && (
-        <EquipmentDetails
-          open={equipmentDetailsOpened}
-          onClose={debouncedToggleOpenEquipmentDetails}
-          equipmentId={selectedEquipmentId}
-        />
+        <React.Suspense fallback={<ModalFallback open tip='Загрузка данных для оборудования' />}>
+          <EquipmentDetails
+            open={equipmentDetailsOpened}
+            onClose={debouncedToggleOpenEquipmentDetails}
+            equipmentId={selectedEquipmentId}
+          />
+        </React.Suspense>
       )}
     </div>
   )

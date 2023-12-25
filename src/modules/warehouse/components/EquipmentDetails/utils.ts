@@ -1,16 +1,9 @@
+import isBoolean from 'lodash/isBoolean'
+import isNumber from 'lodash/isNumber'
+
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
-import {
-  CustomerModel,
-  EquipmentCategoryModel,
-  EquipmentModel,
-  NomenclatureModel,
-  WarehouseModel,
-  WorkTypeModel,
-} from 'modules/warehouse/models'
-
-import { CurrencyModel } from 'shared/models/currency'
-import { MaybeNull } from 'shared/types/utils'
+import { EquipmentCategoryModel, EquipmentModel } from 'modules/warehouse/models'
 
 import { FieldsMaybeHidden } from './types'
 
@@ -37,24 +30,7 @@ export const getHiddenFieldsByCategory = (
 }
 
 export const getEquipmentFormInitialValues = (
-  equipment?: Partial<{
-    nomenclature: Pick<NomenclatureModel, 'id' | 'title'>
-    category: Pick<EquipmentCategoryModel, 'id'>
-    purpose: Pick<WorkTypeModel, 'id'>
-    warehouse: MaybeNull<Pick<WarehouseModel, 'id'>>
-    currency: MaybeNull<Pick<CurrencyModel, 'id'>>
-    owner: MaybeNull<Pick<CustomerModel, 'id'>>
-    condition: EquipmentModel['condition']
-    isNew: EquipmentModel['isNew']
-    isWarranty: EquipmentModel['isWarranty']
-    isRepaired: EquipmentModel['isRepaired']
-    customerInventoryNumber: EquipmentModel['customerInventoryNumber']
-    serialNumber: EquipmentModel['serialNumber']
-    quantity: EquipmentModel['quantity']
-    price: EquipmentModel['price']
-    usageCounter: EquipmentModel['usageCounter']
-    comment: EquipmentModel['comment']
-  }>,
+  equipment?: EquipmentModel,
 ): EquipmentFormModalProps['initialValues'] =>
   equipment
     ? {
@@ -62,17 +38,17 @@ export const getEquipmentFormInitialValues = (
         condition: equipment.condition || undefined,
         category: equipment.category?.id,
         purpose: equipment.purpose?.id,
-        isNew: equipment.isNew || false,
-        isWarranty: equipment.isWarranty || false,
-        isRepaired: equipment.isRepaired || false,
+        isNew: isBoolean(equipment.isNew) ? equipment.isNew : undefined,
+        isWarranty: isBoolean(equipment.isWarranty) ? equipment.isWarranty : undefined,
+        isRepaired: isBoolean(equipment.isRepaired) ? equipment.isRepaired : undefined,
         title: equipment.nomenclature?.title,
         warehouse: equipment.warehouse?.id,
         currency: equipment.currency?.id,
         customerInventoryNumber: equipment.customerInventoryNumber || undefined,
         serialNumber: equipment.serialNumber || undefined,
-        quantity: equipment.quantity || undefined,
-        price: equipment.price || undefined,
-        usageCounter: equipment.usageCounter || undefined,
+        quantity: isNumber(equipment.quantity) ? equipment.quantity : undefined,
+        price: isNumber(equipment.price) ? equipment.price : undefined,
+        usageCounter: isNumber(equipment.usageCounter) ? equipment.usageCounter : undefined,
         owner: equipment.owner?.id,
         comment: equipment.comment || undefined,
       }

@@ -1,5 +1,5 @@
 import { FormInstance, ModalProps } from 'antd'
-import { UploadFile } from 'antd/lib/upload'
+import { UploadFile } from 'antd/es/upload'
 
 export type ExecuteRelocationTaskModalFormFields = {
   documents: UploadFile[]

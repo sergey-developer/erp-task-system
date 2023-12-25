@@ -8,6 +8,8 @@ export type TaskCountersModel = {
   secondLine: number
   less1Hour: number
   less3Hours: number
+  returned: number
+  reclassificationDenied: number
 }
 
 export type TaskCountersKeys = keyof TaskCountersModel
