@@ -9,6 +9,12 @@ import {
   taskOverdueDict,
 } from 'modules/task/components/ExtendedFilter/constants'
 import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilterList/FastFilterList.test'
+import {
+  activeAssignButtonProps,
+  activeTakeTaskButtonProps,
+  canSelectAssigneeProps,
+  testUtils as assigneeBlockTestUtils,
+} from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/Card_old/Card.test'
 import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import {
@@ -34,6 +40,7 @@ import {
   TasksFiltersStorageType,
 } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
+import { getFullUserName } from 'modules/user/utils'
 
 import commonFixtures from '_tests_/fixtures/common'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
@@ -54,6 +61,7 @@ import {
   mockGetWorkGroupListSuccess,
   mockResolveTaskSuccess,
   mockTakeTaskSuccess,
+  mockUpdateTaskAssigneeSuccess,
   mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
 import {
@@ -66,10 +74,6 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import {
-  activeTakeTaskButtonProps,
-  testUtils as assigneeBlockTestUtils,
-} from '../../components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { DEFAULT_PAGE_SIZE } from './constants'
 import TaskListPage from './index'
 
@@ -550,6 +554,90 @@ describe('Страница реестра заявок', () => {
       await taskDetailsTestUtils.expectTaskLoadingFinished()
 
       await assigneeBlockTestUtils.clickTakeTaskButton(user)
+
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
+    })
+
+    test('Перезапрашивается при назначении заявки на себя', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = taskFixtures.taskListItem()
+      mockGetTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([taskListItem]),
+        once: false,
+      })
+
+      const task = taskFixtures.task({
+        id: taskListItem.id,
+        status: canSelectAssigneeProps.status,
+        extendedStatus: activeAssignButtonProps.extendedStatus,
+        assignee: activeAssignButtonProps.assignee,
+        workGroup: taskFixtures.workGroup({
+          id: canSelectAssigneeProps.workGroup.id,
+        }),
+      })
+      mockGetTaskSuccess(task.id, { body: task, once: false })
+      mockUpdateTaskAssigneeSuccess(task.id)
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth({
+          userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+          userRole: UserRoleEnum.SeniorEngineer,
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickRow(user, task.id)
+      await taskDetailsTestUtils.findContainer()
+      await taskDetailsTestUtils.expectTaskLoadingFinished()
+
+      await assigneeBlockTestUtils.clickAssignOnMeButton(user)
+
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
+    })
+
+    test('Перезапрашивается при назначении исполнителя', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = taskFixtures.taskListItem()
+      mockGetTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([taskListItem]),
+        once: false,
+      })
+
+      const task = taskFixtures.task({
+        id: taskListItem.id,
+        status: canSelectAssigneeProps.status,
+        extendedStatus: activeAssignButtonProps.extendedStatus,
+        assignee: activeAssignButtonProps.assignee,
+        workGroup: canSelectAssigneeProps.workGroup,
+      })
+      mockGetTaskSuccess(task.id, { body: task, once: false })
+      mockUpdateTaskAssigneeSuccess(task.id)
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth({
+          userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+          userRole: UserRoleEnum.SeniorEngineer,
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickRow(user, task.id)
+      await taskDetailsTestUtils.findContainer()
+      await taskDetailsTestUtils.expectTaskLoadingFinished()
+
+      await assigneeBlockTestUtils.findAssigneeSelect()
+      await assigneeBlockTestUtils.openAssigneeSelect(user)
+      await assigneeBlockTestUtils.selectAssignee(
+        user,
+        getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
+      )
+      await assigneeBlockTestUtils.clickAssignButton(user)
 
       await fastFilterListTestUtils.expectLoadingStarted()
       await fastFilterListTestUtils.expectLoadingFinished()
