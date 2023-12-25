@@ -14,10 +14,10 @@ import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
   fakeId,
+  fakeIdStr,
   fakeWord,
   getStoreWithAuth,
   render,
-  fakeIdStr,
 } from '_tests_/utils'
 
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
@@ -51,7 +51,7 @@ export const activeFirstLineButtonProps: Pick<WorkGroupBlockProps, 'status' | 'e
 
 // second line button
 export const showSecondLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup'> = {
-  workGroup: undefined,
+  workGroup: null,
 }
 
 export const activeSecondLineButtonProps: Pick<WorkGroupBlockProps, 'status' | 'extendedStatus'> = {

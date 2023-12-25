@@ -9,12 +9,27 @@ import {
   taskOverdueDict,
 } from 'modules/task/components/ExtendedFilter/constants'
 import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilterList/FastFilterList.test'
+import {
+  activeAssignButtonProps,
+  activeTakeTaskButtonProps,
+  canSelectAssigneeProps,
+  testUtils as assigneeBlockTestUtils,
+} from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/Card_old/Card.test'
 import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import {
   activeExecuteTaskItemProps,
   testUtils as cardTitleTestUtils,
 } from 'modules/task/components/TaskDetails/Title/Title.test'
+import {
+  activeFirstLineButtonProps,
+  activeSecondLineButtonProps,
+  showFirstLineButtonProps,
+  showSecondLineButtonProps,
+  testUtils as workGroupBlockTestUtils,
+} from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
+import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/components/TaskFirstLineModal/TaskFirstLineModal.test'
+import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
@@ -25,6 +40,7 @@ import {
   TasksFiltersStorageType,
 } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
+import { getFullUserName } from 'modules/user/utils'
 
 import commonFixtures from '_tests_/fixtures/common'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
@@ -34,6 +50,7 @@ import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import {
+  mockDeleteTaskWorkGroupSuccess,
   mockGetCustomerListSuccess,
   mockGetMacroregionListSuccess,
   mockGetSupportGroupListSuccess,
@@ -43,6 +60,9 @@ import {
   mockGetUserListSuccess,
   mockGetWorkGroupListSuccess,
   mockResolveTaskSuccess,
+  mockTakeTaskSuccess,
+  mockUpdateTaskAssigneeSuccess,
+  mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
@@ -428,6 +448,197 @@ describe('Страница реестра заявок', () => {
       await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
       await executeTaskModalTestUtils.clickSubmitButton(user)
       await executeTaskModalTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
+    })
+
+    test('Перезапрашивается при переводе на 1-ю линию', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = taskFixtures.taskListItem()
+      mockGetTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([taskListItem]),
+        once: false,
+      })
+
+      const task = taskFixtures.task({
+        id: taskListItem.id,
+        ...showFirstLineButtonProps,
+        ...activeFirstLineButtonProps,
+      })
+      mockGetTaskSuccess(task.id, { body: task })
+      mockDeleteTaskWorkGroupSuccess(task.id)
+
+      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickRow(user, task.id)
+      await taskDetailsTestUtils.findContainer()
+      await taskDetailsTestUtils.expectTaskLoadingFinished()
+
+      await workGroupBlockTestUtils.clickFirstLineButton(user)
+      await taskFirstLineModalTestUtils.findContainer()
+      await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
+      await taskFirstLineModalTestUtils.clickSubmitButton(user)
+
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
+    })
+
+    test('Перезапрашивается при переводе на 2-ю линию', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = taskFixtures.taskListItem()
+      mockGetTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([taskListItem]),
+        once: false,
+      })
+
+      const task = taskFixtures.task({
+        id: taskListItem.id,
+        ...showSecondLineButtonProps,
+        ...activeSecondLineButtonProps,
+      })
+      mockGetTaskSuccess(task.id, { body: task })
+
+      const workGroup = workGroupFixtures.workGroupListItem()
+      mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
+
+      mockUpdateTaskWorkGroupSuccess(task.id)
+
+      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickRow(user, task.id)
+      await taskDetailsTestUtils.findContainer()
+      await taskDetailsTestUtils.expectTaskLoadingFinished()
+
+      await workGroupBlockTestUtils.clickSecondLineButton(user)
+      await taskSecondLineModalTestUtils.findContainer()
+      await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
+      await taskSecondLineModalTestUtils.openWorkGroupField(user)
+      await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroup.name)
+      await taskSecondLineModalTestUtils.setComment(user, fakeWord())
+      await taskSecondLineModalTestUtils.clickSubmitButton(user)
+
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
+    })
+
+    test('Перезапрашивается при взятии в работу', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = taskFixtures.taskListItem()
+      mockGetTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([taskListItem]),
+        once: false,
+      })
+
+      const task = taskFixtures.task({ id: taskListItem.id, ...activeTakeTaskButtonProps })
+      mockGetTaskSuccess(task.id, { body: task, once: false })
+      mockTakeTaskSuccess(task.id)
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth({
+          userId: task.assignee!.id,
+          userRole: UserRoleEnum.FirstLineSupport,
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickRow(user, task.id)
+      await taskDetailsTestUtils.findContainer()
+      await taskDetailsTestUtils.expectTaskLoadingFinished()
+
+      await assigneeBlockTestUtils.clickTakeTaskButton(user)
+
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
+    })
+
+    test('Перезапрашивается при назначении заявки на себя', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = taskFixtures.taskListItem()
+      mockGetTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([taskListItem]),
+        once: false,
+      })
+
+      const task = taskFixtures.task({
+        id: taskListItem.id,
+        status: canSelectAssigneeProps.status,
+        extendedStatus: activeAssignButtonProps.extendedStatus,
+        assignee: activeAssignButtonProps.assignee,
+        workGroup: taskFixtures.workGroup({
+          id: canSelectAssigneeProps.workGroup.id,
+        }),
+      })
+      mockGetTaskSuccess(task.id, { body: task, once: false })
+      mockUpdateTaskAssigneeSuccess(task.id)
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth({
+          userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+          userRole: UserRoleEnum.SeniorEngineer,
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickRow(user, task.id)
+      await taskDetailsTestUtils.findContainer()
+      await taskDetailsTestUtils.expectTaskLoadingFinished()
+
+      await assigneeBlockTestUtils.clickAssignOnMeButton(user)
+
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
+    })
+
+    test('Перезапрашивается при назначении исполнителя', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = taskFixtures.taskListItem()
+      mockGetTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([taskListItem]),
+        once: false,
+      })
+
+      const task = taskFixtures.task({
+        id: taskListItem.id,
+        status: canSelectAssigneeProps.status,
+        extendedStatus: activeAssignButtonProps.extendedStatus,
+        assignee: activeAssignButtonProps.assignee,
+        workGroup: canSelectAssigneeProps.workGroup,
+      })
+      mockGetTaskSuccess(task.id, { body: task, once: false })
+      mockUpdateTaskAssigneeSuccess(task.id)
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth({
+          userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+          userRole: UserRoleEnum.SeniorEngineer,
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickRow(user, task.id)
+      await taskDetailsTestUtils.findContainer()
+      await taskDetailsTestUtils.expectTaskLoadingFinished()
+
+      await assigneeBlockTestUtils.findAssigneeSelect()
+      await assigneeBlockTestUtils.openAssigneeSelect(user)
+      await assigneeBlockTestUtils.selectAssignee(
+        user,
+        getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
+      )
+      await assigneeBlockTestUtils.clickAssignButton(user)
+
       await fastFilterListTestUtils.expectLoadingStarted()
       await fastFilterListTestUtils.expectLoadingFinished()
     })
