@@ -2,6 +2,8 @@ import { Form, FormInstance, ModalProps, Upload, UploadProps } from 'antd'
 import { FormItemProps } from 'antd/es/form/FormItem'
 import React, { FC } from 'react'
 
+import { renderUploadedFile } from 'modules/attachment/utils'
+
 import UploadButton from 'components/Buttons/UploadButton'
 import BaseModal from 'components/Modals/BaseModal'
 
@@ -58,7 +60,7 @@ const CreateAttachmentListModal: FC<CreateAttachmentListModalProps> = ({
             customRequest={onCreate}
             onRemove={onDelete}
             defaultFileList={defaultFileList}
-            itemRender={(originNode, file) => (!file.error ? originNode : null)}
+            itemRender={renderUploadedFile}
           >
             <UploadButton label='Добавить фото' />
           </Upload>
