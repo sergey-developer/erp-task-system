@@ -17,7 +17,7 @@ import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from './types'
 const tableRow: EquipmentByFileTableRow = {
   rowId: fakeId(),
   title: fakeWord(),
-  customerInventoryNumber: fakeWord(),
+  inventoryNumber: fakeWord(),
   serialNumber: fakeWord(),
   quantity: fakeInteger(),
   comment: fakeWord(),
@@ -99,7 +99,7 @@ describe('Таблица оборудования по шаблону файла
     render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Инв. №')
-    const value = testUtils.getColValue(tableRow.rowId, tableRow.customerInventoryNumber!)
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.inventoryNumber!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()

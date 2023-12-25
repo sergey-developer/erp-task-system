@@ -39,8 +39,8 @@ export const getColumns = ({
     onCell: ({ nomenclature }) => (nomenclature ? {} : errorCellStyles),
   },
   {
-    key: 'customerInventoryNumber',
-    dataIndex: 'customerInventoryNumber',
+    key: 'inventoryNumber',
+    dataIndex: 'inventoryNumber',
     title: 'Инв. №',
   },
   {

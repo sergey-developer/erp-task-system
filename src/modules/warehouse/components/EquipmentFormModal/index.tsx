@@ -18,6 +18,7 @@ import { filesFormItemProps } from 'shared/constants/form'
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
+import { filterOptionBy } from 'shared/utils/common'
 
 import { EquipmentFormModalFormFields, EquipmentFormModalProps } from './types'
 
@@ -88,7 +89,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
       form.setFieldsValue({
         nomenclature: undefined,
         title: undefined,
-        customerInventoryNumber: undefined,
+        inventoryNumber: undefined,
         serialNumber: undefined,
         warehouse: undefined,
         condition: undefined,
@@ -113,7 +114,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         title: values.title.trim(),
         comment: values.comment?.trim(),
         serialNumber: values.serialNumber?.trim(),
-        customerInventoryNumber: values.customerInventoryNumber?.trim(),
+        inventoryNumber: values.inventoryNumber?.trim(),
       },
       form.setFields,
     )
@@ -163,6 +164,8 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
             loading={nomenclatureListIsLoading}
             disabled={isLoading || nomenclatureListIsLoading}
             onChange={onChangeNomenclature}
+            showSearch
+            filterOption={filterOptionBy('title')}
           />
         </Form.Item>
 
@@ -183,11 +186,11 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
               {!categoryIsConsumable && (
                 <Form.Item
-                  data-testid='customer-inventory-number-form-item'
-                  label='Инвентарный номер заказчика'
-                  name='customerInventoryNumber'
+                  data-testid='inventory-number-form-item'
+                  label='Инвентарный номер'
+                  name='inventoryNumber'
                 >
-                  <Input placeholder='Введите инвентарный номер заказчика' disabled={isLoading} />
+                  <Input placeholder='Введите инвентарный номер' disabled={isLoading} />
                 </Form.Item>
               )}
 
@@ -361,6 +364,8 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                     options={ownerList}
                     loading={ownerListIsLoading}
                     disabled={isLoading || ownerListIsLoading}
+                    showSearch
+                    filterOption={filterOptionBy('title')}
                   />
                 </Form.Item>
               )}

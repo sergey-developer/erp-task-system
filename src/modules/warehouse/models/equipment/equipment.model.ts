@@ -29,7 +29,6 @@ export type EquipmentModel = {
   amount: number
 
   warehouse: MaybeNull<Pick<WarehouseModel, 'id' | 'title'>>
-  customerInventoryNumber: MaybeNull<string>
   inventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>
   quantity: MaybeNull<number>

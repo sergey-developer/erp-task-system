@@ -30,7 +30,6 @@ export type CreatedEquipmentListItemModel = {
   currency: MaybeNull<Pick<CurrencyListItemModel, 'id' | 'title'>>
   price: MaybeNull<number>
   serialNumber: MaybeNull<string>
-  customerInventoryNumber: MaybeNull<string>
   inventoryNumber: MaybeNull<string>
 }
 
@@ -44,7 +43,7 @@ export type CreateEquipmentModel = {
   condition?: EquipmentConditionEnum
   category?: IdType
   purpose?: IdType
-  customerInventoryNumber?: string
+  inventoryNumber?: string
   serialNumber?: string
   quantity?: number
   price?: number
@@ -66,7 +65,7 @@ export type CreateEquipmentsBadRequestErrorResponse = Partial<
   FieldsErrors<
     Pick<
       CreateEquipmentModel,
-      'title' | 'nomenclature' | 'purpose' | 'condition' | 'customerInventoryNumber'
+      'title' | 'nomenclature' | 'purpose' | 'condition' | 'inventoryNumber'
     >
   >
 >[]

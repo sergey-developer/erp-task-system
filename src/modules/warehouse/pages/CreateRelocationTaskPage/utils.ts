@@ -119,7 +119,7 @@ export const getEquipmentFormInitialValues = (
         isRepaired: isBoolean(equipment.isRepaired) ? equipment.isRepaired : undefined,
         title: equipment.nomenclature?.title,
         currency: equipment.currency?.id,
-        customerInventoryNumber: equipment.customerInventoryNumber || undefined,
+        inventoryNumber: equipment.inventoryNumber || undefined,
         serialNumber: equipment.serialNumber || undefined,
         quantity: isNumber(equipment.quantity) ? equipment.quantity : undefined,
         price: isNumber(equipment.price) ? equipment.price : undefined,
