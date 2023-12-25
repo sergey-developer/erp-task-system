@@ -53,6 +53,7 @@ import {
   mockGetUserListSuccess,
   mockGetWorkGroupListSuccess,
   mockResolveTaskSuccess,
+  mockTakeTaskSuccess,
   mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
 import {
@@ -65,6 +66,10 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
+import {
+  activeTakeTaskButtonProps,
+  testUtils as assigneeBlockTestUtils,
+} from '../../components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { DEFAULT_PAGE_SIZE } from './constants'
 import TaskListPage from './index'
 
@@ -513,6 +518,38 @@ describe('Страница реестра заявок', () => {
       await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroup.name)
       await taskSecondLineModalTestUtils.setComment(user, fakeWord())
       await taskSecondLineModalTestUtils.clickSubmitButton(user)
+
+      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingFinished()
+    })
+
+    test('Перезапрашивается при взятии в работу', async () => {
+      mockGetTaskCountersSuccess({ once: false })
+
+      const taskListItem = taskFixtures.taskListItem()
+      mockGetTaskListSuccess({
+        body: commonFixtures.paginatedListResponse([taskListItem]),
+        once: false,
+      })
+
+      const task = taskFixtures.task({ id: taskListItem.id, ...activeTakeTaskButtonProps })
+      mockGetTaskSuccess(task.id, { body: task, once: false })
+      mockTakeTaskSuccess(task.id)
+
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth({
+          userId: task.assignee!.id,
+          userRole: UserRoleEnum.FirstLineSupport,
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickRow(user, task.id)
+      await taskDetailsTestUtils.findContainer()
+      await taskDetailsTestUtils.expectTaskLoadingFinished()
+
+      await assigneeBlockTestUtils.clickTakeTaskButton(user)
 
       await fastFilterListTestUtils.expectLoadingStarted()
       await fastFilterListTestUtils.expectLoadingFinished()
