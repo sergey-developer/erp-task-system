@@ -65,7 +65,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
 
   const workGroupMembers = workGroup?.members || []
 
-  const canSelectAssignee: boolean =
+  const canSelectAssignee =
     !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
     (seniorEngineerFromWorkGroupIsCurrentUser || headOfDepartmentFromWorkGroupIsCurrentUser)
