@@ -1,11 +1,11 @@
-import { Moment } from 'moment-timezone'
+import moment, { Moment } from 'moment-timezone'
 import { FormInstance, NamePath, ValidatorRule } from 'rc-field-form/es/interface'
 
 import { validationMessages } from 'shared/constants/validation'
 
 export const dateValidator: ValidatorRule['validator'] = (rule, value: Moment) =>
   value
-    ? value.isBefore(new Date(), 'day')
+    ? value.isBefore(moment(), 'day')
       ? Promise.reject(new Error(validationMessages.date.canNotBeInPast))
       : Promise.resolve()
     : Promise.reject(validationMessages.required)
@@ -16,7 +16,7 @@ export const timeValidator =
     if (!value) return Promise.reject(validationMessages.required)
 
     const date: Moment = valueGetter(fieldName)
-    const currentDate = new Date()
+    const currentDate = moment()
 
     if (!date || date.isAfter(currentDate, 'day')) {
       return Promise.resolve()
