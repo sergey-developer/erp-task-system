@@ -63,7 +63,7 @@ export const getColumns = ({
     dataIndex: 'inventoryNumber',
     title: 'Инв. №',
     onCell: (record, index) => {
-      const colErrors = extractColumnError('customerInventoryNumber', errors, index)
+      const colErrors = extractColumnError('inventoryNumber', errors, index)
       return colErrors ? { errors: colErrors, ...errorCellStyles } : {}
     },
   },
