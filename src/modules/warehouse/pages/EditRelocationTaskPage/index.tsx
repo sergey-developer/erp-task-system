@@ -503,6 +503,7 @@ const EditRelocationTaskPage: FC = () => {
           purpose: eqp.purpose.title,
           currency: eqp.currency?.id,
           category: eqp.category,
+          amount: eqp.availableQuantity,
         })
 
         newEditableTableRowKeys.push(eqp.id)
