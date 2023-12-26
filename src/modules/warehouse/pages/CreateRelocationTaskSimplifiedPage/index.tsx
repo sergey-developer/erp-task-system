@@ -1,7 +1,7 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Form, FormProps, Input, Row, Select, Typography } from 'antd'
 import get from 'lodash/get'
-import React, { FC, Key, useCallback, useEffect, useState } from 'react'
+import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { getCompleteAt } from 'modules/task/components/TaskCard/MainDetails/utils'
@@ -329,6 +329,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     [],
   )
 
+  const createEquipmentFormValues = useMemo(
+    () =>
+      createEquipmentModalOpened ? { title: nomenclature ? nomenclature.title : '' } : undefined,
+    [createEquipmentModalOpened, nomenclature],
+  )
+
   return (
     <>
       <Form<SimplifiedRelocationTaskFormFields>
@@ -471,6 +477,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             title='Добавление оборудования'
             okText='Добавить'
             isLoading={createEquipmentIsLoading}
+            values={createEquipmentFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}
