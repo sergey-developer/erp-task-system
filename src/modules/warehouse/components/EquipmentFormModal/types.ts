@@ -29,7 +29,7 @@ export type EquipmentFormModalFormFields = {
   isNew?: boolean
   isWarranty?: boolean
   isRepaired?: boolean
-  customerInventoryNumber?: string
+  inventoryNumber?: string
   serialNumber?: string
   quantity?: number
   price?: number

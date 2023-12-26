@@ -180,23 +180,21 @@ const setTitle = async (user: UserEvent, value: string) => {
 const findTitleError = (error: string): Promise<HTMLElement> =>
   within(getTitleFormItem()).findByText(error)
 
-// customer inventory number field
-const getCustomerInventoryNumberFormItem = () =>
-  within(getContainer()).getByTestId('customer-inventory-number-form-item')
+// inventory number field
+const getInventoryNumberFormItem = () =>
+  within(getContainer()).getByTestId('inventory-number-form-item')
 
-const queryCustomerInventoryNumberFormItem = () =>
-  within(getContainer()).queryByTestId('customer-inventory-number-form-item')
+const queryInventoryNumberFormItem = () =>
+  within(getContainer()).queryByTestId('inventory-number-form-item')
 
-const getCustomerInventoryNumberLabel = () =>
-  within(getCustomerInventoryNumberFormItem()).getByLabelText('Инвентарный номер заказчика')
+const getInventoryNumberLabel = () =>
+  within(getInventoryNumberFormItem()).getByLabelText('Инвентарный номер')
 
-const getCustomerInventoryNumberField = () =>
-  within(getCustomerInventoryNumberFormItem()).getByPlaceholderText(
-    'Введите инвентарный номер заказчика',
-  )
+const getInventoryNumberField = () =>
+  within(getInventoryNumberFormItem()).getByPlaceholderText('Введите инвентарный номер')
 
-const setCustomerInventoryNumber = async (user: UserEvent, value: string) => {
-  const field = getCustomerInventoryNumberField()
+const setInventoryNumber = async (user: UserEvent, value: string) => {
+  const field = getInventoryNumberField()
   await user.type(field, value)
   return field
 }
@@ -521,10 +519,10 @@ export const testUtils = {
   setTitle,
   findTitleError,
 
-  queryCustomerInventoryNumberFormItem,
-  getCustomerInventoryNumberLabel,
-  getCustomerInventoryNumberField,
-  setCustomerInventoryNumber,
+  queryInventoryNumberFormItem,
+  getInventoryNumberLabel,
+  getInventoryNumberField,
+  setInventoryNumber,
 
   querySerialNumberFormItem,
   getSerialNumberLabel,
@@ -727,13 +725,13 @@ describe('Модалка оборудования', () => {
     })
   })
 
-  describe('Инвентарный номер заказчика', () => {
+  describe('Инвентарный номер', () => {
     test('Отображается если категория не расходный материал', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
       render(<EquipmentFormModal {...props} selectedCategory={category} />)
 
-      const label = testUtils.getCustomerInventoryNumberLabel()
-      const field = testUtils.getCustomerInventoryNumberField()
+      const label = testUtils.getInventoryNumberLabel()
+      const field = testUtils.getInventoryNumberField()
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
@@ -747,7 +745,7 @@ describe('Модалка оборудования', () => {
       })
       render(<EquipmentFormModal {...props} selectedCategory={category} />)
 
-      const formItem = testUtils.queryCustomerInventoryNumberFormItem()
+      const formItem = testUtils.queryInventoryNumberFormItem()
       expect(formItem).not.toBeInTheDocument()
     })
 
@@ -755,7 +753,7 @@ describe('Модалка оборудования', () => {
       const { user } = render(<EquipmentFormModal {...props} />)
 
       const value = fakeWord()
-      const field = await testUtils.setCustomerInventoryNumber(user, value)
+      const field = await testUtils.setInventoryNumber(user, value)
 
       expect(field).toHaveDisplayValue(value)
     })

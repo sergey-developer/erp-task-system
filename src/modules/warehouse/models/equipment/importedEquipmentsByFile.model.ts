@@ -11,7 +11,7 @@ import { MaybeNull } from 'shared/types/utils'
 
 export type ImportedEquipmentByFileModel = {
   title: MaybeNull<string>
-  customerInventoryNumber: MaybeNull<string>
+  inventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>
   comment: MaybeNull<string>
   condition: MaybeNull<EquipmentConditionEnum>

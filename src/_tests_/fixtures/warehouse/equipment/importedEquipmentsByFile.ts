@@ -11,7 +11,7 @@ import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 export const importedEquipmentByFile = (): ImportedEquipmentByFile => ({
   rowId: fakeId(),
   title: fakeWord(),
-  customerInventoryNumber: fakeWord(),
+  inventoryNumber: fakeWord(),
   serialNumber: fakeWord(),
   quantity: fakeInteger(),
   comment: fakeWord(),

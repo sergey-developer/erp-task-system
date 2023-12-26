@@ -14,15 +14,7 @@ export const getHiddenFieldsByCategory = (
 
   switch (category.code) {
     case EquipmentCategoryEnum.Consumable:
-      return [
-        'customerInventoryNumber',
-        'inventoryNumber',
-        'isNew',
-        'isWarranty',
-        'isRepaired',
-        'usageCounter',
-        'owner',
-      ]
+      return ['inventoryNumber', 'isNew', 'isWarranty', 'isRepaired', 'usageCounter', 'owner']
     case EquipmentCategoryEnum.Equipment:
     case EquipmentCategoryEnum.CoreResources:
       return []
@@ -44,7 +36,7 @@ export const getEquipmentFormInitialValues = (
         title: equipment.nomenclature?.title,
         warehouse: equipment.warehouse?.id,
         currency: equipment.currency?.id,
-        customerInventoryNumber: equipment.customerInventoryNumber || undefined,
+        inventoryNumber: equipment.inventoryNumber || undefined,
         serialNumber: equipment.serialNumber || undefined,
         quantity: isNumber(equipment.quantity) ? equipment.quantity : undefined,
         price: isNumber(equipment.price) ? equipment.price : undefined,
