@@ -460,7 +460,7 @@ const EditRelocationTaskPage: FC = () => {
         isNew: isBoolean(eqp.isNew) ? eqp.isNew : undefined,
         isWarranty: isBoolean(eqp.isWarranty) ? eqp.isWarranty : undefined,
         isRepaired: isBoolean(eqp.isRepaired) ? eqp.isRepaired : undefined,
-        customerInventoryNumber: eqp.customerInventoryNumber || undefined,
+        inventoryNumber: eqp.inventoryNumber || undefined,
         serialNumber: eqp.serialNumber || undefined,
         quantity: isNumber(eqp.quantity) ? eqp.quantity : undefined,
         price: isNumber(eqp.price) ? eqp.price : undefined,
