@@ -637,14 +637,24 @@ const CreateRelocationTaskPage: FC = () => {
       ? ['equipments', activeEquipmentRow.rowIndex, 'attachments']
       : undefined
 
+  const createEquipmentFormValues = useMemo(
+    () =>
+      createEquipmentModalOpened ? { title: nomenclature ? nomenclature.title : '' } : undefined,
+    [createEquipmentModalOpened, nomenclature],
+  )
+
   const equipmentByFileFormValues = useMemo(
-    () => ({
-      title: userChangedNomenclature ? nomenclature?.title : editableEquipmentByFile?.title,
-      images: isNumber(editableEquipmentByFileIndex)
-        ? form.getFieldValue(['equipmentsByFile', editableEquipmentByFileIndex, 'images'])
+    () =>
+      editEquipmentByFileModalOpened
+        ? {
+            title: userChangedNomenclature ? nomenclature?.title : editableEquipmentByFile?.title,
+            images: isNumber(editableEquipmentByFileIndex)
+              ? form.getFieldValue(['equipmentsByFile', editableEquipmentByFileIndex, 'images'])
+              : undefined,
+          }
         : undefined,
-    }),
     [
+      editEquipmentByFileModalOpened,
       editableEquipmentByFile?.title,
       editableEquipmentByFileIndex,
       form,
@@ -784,6 +794,7 @@ const CreateRelocationTaskPage: FC = () => {
             title='Добавление оборудования'
             okText='Добавить'
             isLoading={createEquipmentIsLoading}
+            values={createEquipmentFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}

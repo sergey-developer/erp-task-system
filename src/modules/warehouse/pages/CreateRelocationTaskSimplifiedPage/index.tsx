@@ -347,8 +347,6 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))
-      } else {
-        console.error(error)
       }
     }
   }
@@ -550,8 +548,6 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
           setFields(getFieldsErrors(error.data))
-        } else {
-          console.error(error)
         }
       }
     },
@@ -642,6 +638,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       nomenclature?.title,
       userChangedNomenclature,
     ],
+  )
+
+  const createEquipmentFormValues = useMemo(
+    () =>
+      createEquipmentModalOpened ? { title: nomenclature ? nomenclature.title : '' } : undefined,
+    [createEquipmentModalOpened, nomenclature],
   )
 
   return (
@@ -815,6 +817,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             title='Добавление оборудования'
             okText='Добавить'
             isLoading={createEquipmentIsLoading}
+            values={createEquipmentFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}
