@@ -26,7 +26,7 @@ export type ImportedEquipmentByFileModel = {
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
   purpose: MaybeNull<Pick<WorkTypeModel, 'id' | 'title'>>
   nomenclature: MaybeNull<
-    Pick<NomenclatureModel, 'id' | 'title'> & {
+    Pick<NomenclatureModel, 'id' | 'title' | 'equipmentHasSerialNumber'> & {
       measurementUnit: NomenclatureModel['measurementUnit']['title']
     }
   >
