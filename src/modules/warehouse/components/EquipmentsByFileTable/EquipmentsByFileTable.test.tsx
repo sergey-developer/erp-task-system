@@ -27,7 +27,12 @@ const tableRow: EquipmentByFileTableRow = {
   isRepaired: false,
   isWarranty: false,
   condition: EquipmentConditionEnum.Working,
-  nomenclature: { id: fakeId(), title: fakeWord(), measurementUnit: fakeWord() },
+  nomenclature: {
+    id: fakeId(),
+    title: fakeWord(),
+    measurementUnit: fakeWord(),
+    equipmentHasSerialNumber: false,
+  },
   owner: { id: fakeId(), title: fakeWord() },
   currency: { id: fakeId(), title: fakeWord() },
   category: { id: fakeId(), title: fakeWord(), code: EquipmentCategoryEnum.Equipment },
