@@ -17,6 +17,7 @@ export type CreatedEquipmentListItemModel = {
   title: string
   condition: EquipmentConditionEnum
   quantity: number
+  availableQuantity: number
   category: Pick<EquipmentCategoryListItemModel, 'id' | 'title' | 'code'>
   purpose: Pick<WorkTypeListItemModel, 'id' | 'title'>
   isNew: boolean

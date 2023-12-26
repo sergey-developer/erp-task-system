@@ -71,14 +71,14 @@ export const getColumns = ({
     key: 'serialNumber',
     dataIndex: 'serialNumber',
     title: 'Серийный №',
-    onCell: ({ serialNumber, category }, index) => {
+    onCell: ({ serialNumber, category, nomenclature }, index) => {
       const colErrors = extractColumnError('serialNumber', errors, index)
       if (colErrors) {
         return { errors: colErrors, ...errorCellStyles }
       } else if (serialNumber) {
         const duplicates = dataSource.filter((item) => item.serialNumber === serialNumber)
         return duplicates.length > 1 ? errorCellStyles : {}
-      } else if (category && !checkEquipmentCategoryIsConsumable(category.code)) {
+      } else if (nomenclature?.equipmentHasSerialNumber) {
         return errorCellStyles
       } else {
         return {}

@@ -508,6 +508,7 @@ const EditRelocationTaskPage: FC = () => {
           purpose: eqp.purpose.title,
           currency: eqp.currency?.id,
           category: eqp.category,
+          amount: eqp.availableQuantity,
         })
 
         newEditableTableRowKeys.push(eqp.id)
@@ -596,21 +597,20 @@ const EditRelocationTaskPage: FC = () => {
               id: nomenclature.id,
               title: nomenclature.title,
               measurementUnit: nomenclature.measurementUnit.title,
+              equipmentHasSerialNumber: nomenclature.equipmentHasSerialNumber,
             }
           : undefined,
       }
 
-      if (isNumber(editableEquipmentByFileIndex)) {
-        setCreateEquipmentsErrors((prevState) => {
-          if (prevState) {
-            const newState = [...prevState]
-            newState[editableEquipmentByFileIndex] = {}
-            return newState
-          }
+      setCreateEquipmentsErrors((prevState) => {
+        if (prevState) {
+          const newState = [...prevState]
+          newState[editableEquipmentByFileIndex] = {}
+          return newState
+        }
 
-          return prevState
-        })
-      }
+        return prevState
+      })
       form.setFieldValue(equipmentPath, updatableEquipmentByFile)
       handleCloseEditEquipmentByFileModal()
     },
