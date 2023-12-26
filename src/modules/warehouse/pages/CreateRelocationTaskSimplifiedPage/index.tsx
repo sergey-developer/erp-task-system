@@ -578,6 +578,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
               id: nomenclature.id,
               title: nomenclature.title,
               measurementUnit: nomenclature.measurementUnit.title,
+              equipmentHasSerialNumber: nomenclature.equipmentHasSerialNumber,
             }
           : undefined,
       }
