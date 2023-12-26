@@ -6,7 +6,7 @@ import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
-import { NomenclatureFormModalProps, NomenclatureFormModalFormFields } from './types'
+import { NomenclatureFormModalFormFields, NomenclatureFormModalProps } from './types'
 import {
   groupValidationRules,
   measurementUnitValidationRules,
@@ -65,8 +65,8 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
         title: title.trim(),
         shortTitle: shortTitle.trim(),
         vendorCode: vendorCode.trim(),
-        country: country || null,
         equipmentHasSerialNumber: equipmentHasSerialNumber || false,
+        country: country || null,
       },
       form.setFields,
     )
