@@ -15,7 +15,6 @@ export const equipment = (
       | 'id'
       | 'nomenclature'
       | 'category'
-      | 'customerInventoryNumber'
       | 'inventoryNumber'
       | 'isNew'
       | 'isWarranty'
@@ -33,7 +32,6 @@ export const equipment = (
   isNew: props?.isNew || false,
   isWarranty: props?.isWarranty || false,
   isRepaired: props?.isRepaired || false,
-  customerInventoryNumber: props?.customerInventoryNumber || fakeWord(),
   inventoryNumber: props?.inventoryNumber || fakeWord(),
   usageCounter: props?.usageCounter || fakeInteger(),
   owner: props?.owner || pick(warehouseFixtures.customer(), 'id', 'title'),
