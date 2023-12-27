@@ -3,7 +3,6 @@ import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
-import { renderUploadedFile } from 'modules/attachment/utils'
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 import {
   EquipmentCategoryListItemModel,
@@ -408,7 +407,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   listType='picture'
                   multiple
                   disabled={isLoading || imageIsDeleting}
-                  itemRender={renderUploadedFile}
+                  itemRender={(originNode, file) => (file.error ? null : originNode)}
                   customRequest={onUploadImage}
                   onRemove={onDeleteImage}
                   defaultFileList={values?.images}
