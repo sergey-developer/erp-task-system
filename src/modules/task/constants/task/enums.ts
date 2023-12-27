@@ -58,7 +58,7 @@ export enum TaskOverdueEnum {
   NotOverdue = 'False',
 }
 
-export enum TaskCardTabsEnum {
+export enum TaskDetailsTabsEnum {
   SubTaskList = 'SubTaskList',
   CommentList = 'CommentList',
   Resolution = 'Resolution',

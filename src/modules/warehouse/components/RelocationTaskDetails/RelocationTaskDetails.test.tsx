@@ -1,12 +1,12 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { CommonRouteEnum } from 'configs/routes'
+
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as taskAttachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
-import { CommonRouteEnum } from 'configs/routes'
-
-import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskCard/Card/Card.test'
+import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/Card_old/Card.test'
 import TaskListPage from 'modules/task/pages/TaskListPage'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
@@ -25,8 +25,8 @@ import {
   getRelocationTaskWaybillM15ErrorMsg,
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
-  returnRelocationTaskToReworkMessages,
   relocationTaskTypeDict,
+  returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {

@@ -33,6 +33,7 @@ export enum TaskApiEnum {
 export enum TaskApiTagEnum {
   Task = 'Task',
   TaskList = 'TaskList',
+  TaskCounters = 'TaskCounters',
 }
 
 export enum TaskApiTriggerEnum {

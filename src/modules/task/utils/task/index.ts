@@ -1,6 +1,6 @@
 export * from './links'
 export * from './apiUrls'
 export * from './messages'
-export * from './taskCardTab'
+export * from './taskDetailsTab'
 export * from './getOlaStatusMap'
 export * from './getOlaStatusTextType'
