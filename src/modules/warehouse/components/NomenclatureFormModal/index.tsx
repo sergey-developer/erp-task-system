@@ -1,12 +1,13 @@
 import { Checkbox, Form, Input, Select } from 'antd'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
+import isBoolean from 'lodash/isBoolean'
 import React, { FC, useEffect } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
-import { NomenclatureFormModalProps, NomenclatureFormModalFormFields } from './types'
+import { NomenclatureFormModalFormFields, NomenclatureFormModalProps } from './types'
 import {
   groupValidationRules,
   measurementUnitValidationRules,
@@ -18,7 +19,7 @@ import {
 const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
   onSubmit,
   isLoading,
-  permissions,
+  submitBtnDisabled,
 
   nomenclature,
   nomenclatureIsLoading,
@@ -66,7 +67,9 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
         shortTitle: shortTitle.trim(),
         vendorCode: vendorCode.trim(),
         country: country || null,
-        equipmentHasSerialNumber: equipmentHasSerialNumber || false,
+        equipmentHasSerialNumber: isBoolean(equipmentHasSerialNumber)
+          ? equipmentHasSerialNumber
+          : undefined,
       },
       form.setFields,
     )
@@ -81,9 +84,7 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
       {...props}
       data-testid='nomenclature-form-modal'
       onOk={form.submit}
-      okButtonProps={{
-        disabled: !!permissions && !permissions.nomenclaturesUpdate,
-      }}
+      okButtonProps={{ disabled: submitBtnDisabled }}
       confirmLoading={isLoading}
       isLoading={nomenclatureIsLoading}
       footer={nomenclatureIsLoading ? null : undefined}

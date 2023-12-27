@@ -1,6 +1,5 @@
 import { FormInstance } from 'antd'
 
-import { MatchExpectedPermissionsResult } from 'modules/user/utils'
 import {
   MeasurementUnitListModel,
   NomenclatureGroupListModel,
@@ -18,7 +17,7 @@ export type NomenclatureFormModalFormFields = {
   group: number
   vendorCode: string
   measurementUnit: number
-  equipmentHasSerialNumber: boolean
+  equipmentHasSerialNumber?: boolean
   country?: MaybeNull<number>
 }
 
@@ -26,7 +25,7 @@ export type NomenclatureFormModalProps = Required<Pick<BaseModalProps, 'open' | 
   title: string
   okText: string
   isLoading: boolean
-  permissions?: MaybeNull<MatchExpectedPermissionsResult>
+  submitBtnDisabled?: boolean
 
   nomenclature?: NomenclatureModel
   nomenclatureIsLoading?: boolean
