@@ -1,7 +1,10 @@
 import { FormInstance, ModalProps } from 'antd'
 import { Moment } from 'moment-timezone'
 
-import { SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
+import {
+  ExternalResponsibleCompanyEnum,
+  SuspendReasonEnum,
+} from 'modules/task/constants/taskSuspendRequest'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -19,6 +22,8 @@ export type RequestTaskSuspendModalProps = Required<Pick<BaseModalProps, 'open'>
 
 export type RequestTaskSuspendFormFields = {
   reason: SuspendReasonEnum
+  taskLink?: string
+  organization?: ExternalResponsibleCompanyEnum
   endDate: Moment
   endTime: Moment
   comment: string

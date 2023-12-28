@@ -5,8 +5,3 @@ export const reasonsMakeDateTimeFieldDisabled: ReadonlyArray<SuspendReasonEnum> 
   SuspendReasonEnum.AwaitingInitiator,
   SuspendReasonEnum.AwaitingInformationFromFirstLine,
 ]
-
-export const disabledSuspendReasons: ReadonlyArray<SuspendReasonEnum> = [
-  SuspendReasonEnum.AwaitingRelease,
-  SuspendReasonEnum.AwaitingNonItWork,
-]

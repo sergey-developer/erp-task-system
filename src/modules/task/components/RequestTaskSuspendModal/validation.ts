@@ -7,20 +7,12 @@ import { dateValidator, timeValidator } from 'shared/utils/validation'
 export const commentRules: Rule[] = [{ required: true, whitespace: true, max: 10000 }]
 
 export const reasonRules: Rule[] = [
-  {
-    required: true,
-    type: 'enum',
-    enum: Object.values(SuspendReasonEnum),
-  },
+  { required: true, type: 'enum', enum: Object.values(SuspendReasonEnum) },
 ]
 
-export const endDateRules: Rule[] = [
-  {
-    type: 'date',
-    required: true,
-    validator: dateValidator,
-  },
-]
+export const taskLinkRules: Rule[] = [{ required: true, type: 'url' }]
+
+export const endDateRules: Rule[] = [{ type: 'date', required: true, validator: dateValidator }]
 
 export const endTimeRules: Rule[] = [
   ({ getFieldValue }) => ({
