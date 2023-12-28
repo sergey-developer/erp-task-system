@@ -23,11 +23,19 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const taskListItem = (props?: Partial<TaskListItemModel>): TaskListItemModel => ({
+export const taskListItem = (
+  props?: Partial<
+    Pick<
+      TaskListItemModel,
+      'status' | 'extendedStatus' | 'olaStatus' | 'type' | 'olaNextBreachTime'
+    >
+  >,
+): TaskListItemModel => ({
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   type: props?.type || TaskTypeEnum.Request,
+  olaNextBreachTime: props?.olaNextBreachTime || fakeDateString(),
 
   responseTime: null,
   id: fakeId(),
@@ -61,7 +69,6 @@ export const taskListItem = (props?: Partial<TaskListItemModel>): TaskListItemMo
   userResolution: fakeWord(),
   techResolution: fakeWord(),
   portablePhone: fakePhone(),
-  olaNextBreachTime: fakeDateString(),
   description: fakeWord(),
   address: fakeAddress(),
   contactPhone: fakePhone(),

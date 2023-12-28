@@ -10,11 +10,11 @@ import { localeConfig, scrollConfig } from './constants/common'
 import components from './constants/components'
 import { TableStyled } from './styles'
 import { TaskTableListItem, TaskTableProps } from './types'
-import { applySortToColumn, applyWidthToColumn, getTableColumns } from './utils'
+import { applySortToColumn, applyWidthToColumn, getColumns } from './utils'
 
 const TaskTable: FC<TaskTableProps> = ({ sort, pagination, userRole, ...props }) => {
   const breakpoints = useBreakpoint()
-  const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>(getTableColumns(userRole))
+  const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>(getColumns(userRole))
 
   const handleResize =
     (index: number): ResizableProps['onResize'] =>

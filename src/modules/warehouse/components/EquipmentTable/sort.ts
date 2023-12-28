@@ -2,10 +2,7 @@ import { ColumnsType } from 'antd/es/table'
 import { SortOrder } from 'antd/es/table/interface'
 import isEqual from 'lodash/isEqual'
 
-import {
-  GetEquipmentListSortKey,
-  GetEquipmentListSortValue,
-} from 'modules/warehouse/models'
+import { GetEquipmentListSortKey, GetEquipmentListSortValue } from 'modules/warehouse/models'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 import { ArrayFirst } from 'shared/types/utils'
@@ -26,10 +23,7 @@ export type SortableField = keyof Pick<
 
 export const sortableFieldToSortValues: Record<
   SortableField,
-  [
-    GetEquipmentListSortKey,
-    Exclude<GetEquipmentListSortValue, GetEquipmentListSortKey>,
-  ]
+  [GetEquipmentListSortKey, Exclude<GetEquipmentListSortValue, GetEquipmentListSortKey>]
 > = {
   title: ['title', '-title'],
   serialNumber: ['serial_number', '-serial_number'],
@@ -41,17 +35,18 @@ export const sortableFieldToSortValues: Record<
   purpose: ['purpose', '-purpose'],
 }
 
-export const sortValueToSortableField = Object.keys(
-  sortableFieldToSortValues,
-).reduce((acc, field) => {
-  const sortableField = field as SortableField
-  const [ascendValue, descendValue] = sortableFieldToSortValues[sortableField]
+export const sortValueToSortableField = Object.keys(sortableFieldToSortValues).reduce(
+  (acc, field) => {
+    const sortableField = field as SortableField
+    const [ascendValue, descendValue] = sortableFieldToSortValues[sortableField]
 
-  acc[ascendValue] = sortableField
-  acc[descendValue] = sortableField
+    acc[ascendValue] = sortableField
+    acc[descendValue] = sortableField
 
-  return acc
-}, {} as Record<GetEquipmentListSortValue, SortableField>)
+    return acc
+  },
+  {} as Record<GetEquipmentListSortValue, SortableField>,
+)
 
 export const applySort = (
   column: ArrayFirst<ColumnsType<EquipmentTableItem>>,
@@ -67,23 +62,19 @@ export const applySort = (
   }
 }
 
-export const getSort = (
-  field: SortableField,
-  order: SortOrder,
-): GetEquipmentListSortValue => {
+export const getSort = (field: SortableField, order: SortOrder): GetEquipmentListSortValue => {
   const [ascendValue, descendValue] = sortableFieldToSortValues[field]
   return order === SortOrderEnum.Descend ? descendValue : ascendValue
 }
 
 export const parseSort = (
   value: GetEquipmentListSortValue,
-): { order: SortOrder; columnKey: string } => {
+): { order: SortOrder; columnKey: SortableField } => {
   const isDescend = value.startsWith('-')
   const parsedValue = isDescend ? value.slice(1) : value
 
   return {
     order: isDescend ? SortOrderEnum.Descend : SortOrderEnum.Ascend,
-    columnKey:
-      sortValueToSortableField[parsedValue as GetEquipmentListSortValue],
+    columnKey: sortValueToSortableField[parsedValue as GetEquipmentListSortValue],
   }
 }

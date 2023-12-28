@@ -2,6 +2,10 @@ import { Table } from 'antd'
 import styled from 'styled-components'
 
 export const TableStyled: typeof Table = styled(Table)`
+  table {
+    border-collapse: collapse;
+  }
+  
   .ant-table-cell-row-hover {
     background: unset !important;
   }

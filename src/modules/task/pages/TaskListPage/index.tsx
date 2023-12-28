@@ -20,7 +20,7 @@ import {
   sortableFieldToSortValues,
 } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
-import { getSort } from 'modules/task/components/TaskTable/utils'
+import { getSort, parseSort } from 'modules/task/components/TaskTable/utils'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
 } from 'modules/task/components/TasksFiltersStorage'
@@ -69,11 +69,12 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
-import { DEFAULT_PAGE_SIZE } from './constants'
+import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
 import {
   getInitialExtendedFilterFormValues,
   getInitialFastFilter,
-  mapExtendedFilterFormFieldsToQueries,
+  getTasksByOlaNextBreachTime,
+  mapFilterToQueryArgs,
 } from './utils'
 
 const TaskDetails = React.lazy(() => import('modules/task/components/TaskDetails'))
@@ -196,8 +197,8 @@ const TaskListPage: FC = () => {
   })
 
   const {
-    currentData: taskList,
-    isFetching: taskListIsFetching,
+    currentData: originalTasks,
+    isFetching: tasksIsFetching,
     refetch: refetchTaskList,
   } = useGetTaskList(taskListQueryArgs, {
     pollingInterval: autoUpdateEnabled
@@ -238,7 +239,7 @@ const TaskListPage: FC = () => {
   const handleApplyFilter: TasksFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     setExtendedFilterFormValues(values)
-    triggerFilterChange(mapExtendedFilterFormFieldsToQueries(values))
+    triggerFilterChange(mapFilterToQueryArgs(values))
     setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
     setFastFilter(undefined)
     toggleOpenExtendedFilter()
@@ -271,7 +272,7 @@ const TaskListPage: FC = () => {
         setAppliedFilterType(prevAppliedFilterType!)
 
         const prevFilter = isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)
-          ? mapExtendedFilterFormFieldsToQueries(extendedFilterFormValues)
+          ? mapFilterToQueryArgs(extendedFilterFormValues)
           : isEqual(prevAppliedFilterType, FilterTypeEnum.Fast)
           ? { filter: fastFilter }
           : {}
@@ -293,6 +294,7 @@ const TaskListPage: FC = () => {
   const onTableRow = useCallback<TaskTableProps['onRow']>(
     (record) => ({
       onClick: debounce(() => setSelectedTaskId(record.id), DEFAULT_DEBOUNCE_VALUE),
+      ...(record.isBoundary && { style: tableItemBoundaryStyles }),
     }),
     [],
   )
@@ -359,6 +361,17 @@ const TaskListPage: FC = () => {
     triggerFilterChange({ [filter.name]: undefined })
   }
 
+  const tasks = useMemo(() => {
+    const extractedTasks = extractPaginationResults(originalTasks)
+    const columnKey = taskListQueryArgs.sort
+      ? parseSort(taskListQueryArgs.sort).columnKey
+      : undefined
+
+    return columnKey === 'olaNextBreachTime'
+      ? getTasksByOlaNextBreachTime(extractedTasks)
+      : extractedTasks
+  }, [originalTasks, taskListQueryArgs.sort])
+
   return (
     <>
       <Row data-testid='task-list-page' gutter={[0, 40]}>
@@ -383,7 +396,7 @@ const TaskListPage: FC = () => {
                         selectedFilter={taskListQueryArgs.filter}
                         onChange={handleFastFilterChange}
                         isShowCounters={!isGetTaskCountersError}
-                        disabled={taskListIsFetching}
+                        disabled={tasksIsFetching}
                         isLoading={taskCountersIsFetching}
                         userRole={role}
                       />
@@ -394,7 +407,7 @@ const TaskListPage: FC = () => {
                 <Col xl={5} xxl={3}>
                   <FilterButton
                     onClick={debouncedToggleOpenExtendedFilter}
-                    disabled={taskListIsFetching || searchFilterApplied}
+                    disabled={tasksIsFetching || searchFilterApplied}
                   />
                 </Col>
               </Row>
@@ -409,7 +422,7 @@ const TaskListPage: FC = () => {
                     onChange={onChangeSearch}
                     value={searchValue}
                     placeholder='Искать заявку по номеру'
-                    disabled={taskListIsFetching}
+                    disabled={tasksIsFetching}
                   />
                 </Col>
 
@@ -417,7 +430,7 @@ const TaskListPage: FC = () => {
                   <Space align='end' size='middle'>
                     <UpdateTasksButton
                       onClick={handleRefetchTaskList}
-                      disabled={taskListIsFetching || taskCountersIsFetching}
+                      disabled={tasksIsFetching || taskCountersIsFetching}
                       onAutoUpdate={toggleAutoUpdateEnabled}
                     />
 
@@ -435,9 +448,9 @@ const TaskListPage: FC = () => {
             sort={taskListQueryArgs.sort}
             onRow={onTableRow}
             dataSource={extractPaginationResults(taskList)}
-            loading={taskListIsFetching}
+            loading={tasksIsFetching}
             onChange={handleChangeTable}
-            pagination={taskList?.pagination || false}
+            pagination={originalTasks?.pagination || false}
             userRole={role!}
           />
         </Col>
