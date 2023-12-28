@@ -293,4 +293,83 @@ describe('Layout номенклатуры оборудования', () => {
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
     })
   })
+
+  // todo: добавить тесты
+  describe('Карточка просмотра оборудования', () => {
+    // describe('При не успешном запросе', () => {
+    //   test('Обрабатывается ошибка 403', async () => {
+    //     const equipmentListItem = warehouseFixtures.equipmentListItem()
+    //     mockGetEquipmentListSuccess({
+    //       body: commonFixtures.paginatedListResponse([equipmentListItem]),
+    //     })
+    //
+    //     const errorMessage = fakeWord()
+    //     mockGetEquipmentForbiddenError(equipmentListItem.id, {
+    //       body: { detail: errorMessage },
+    //     })
+    //
+    //     const { user } = render(<EquipmentListPage />)
+    //
+    //     await equipmentTableTestUtils.expectLoadingFinished()
+    //     await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
+    //     const equipment = await equipmentTestUtils.findContainer()
+    //     await equipmentTestUtils.expectLoadingFinished()
+    //     const notification = await notificationTestUtils.findNotification(errorMessage)
+    //
+    //     expect(notification).toBeInTheDocument()
+    //     await waitFor(() => {
+    //       expect(equipment).not.toBeInTheDocument()
+    //     })
+    //   })
+    //
+    //   test('Обрабатывается ошибка 404', async () => {
+    //     const equipmentListItem = warehouseFixtures.equipmentListItem()
+    //     mockGetEquipmentListSuccess({
+    //       body: commonFixtures.paginatedListResponse([equipmentListItem]),
+    //     })
+    //
+    //     const errorMessage = fakeWord()
+    //     mockGetEquipmentNotFoundError(equipmentListItem.id, {
+    //       body: { detail: errorMessage },
+    //     })
+    //
+    //     const { user } = render(<EquipmentListPage />)
+    //
+    //     await equipmentTableTestUtils.expectLoadingFinished()
+    //     await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
+    //     const equipment = await equipmentTestUtils.findContainer()
+    //     await equipmentTestUtils.expectLoadingFinished()
+    //     const notification = await notificationTestUtils.findNotification(errorMessage)
+    //
+    //     expect(notification).toBeInTheDocument()
+    //     await waitFor(() => {
+    //       expect(equipment).not.toBeInTheDocument()
+    //     })
+    //   })
+    //
+    //   test('Обрабатывается ошибка 500', async () => {
+    //     const equipmentListItem = warehouseFixtures.equipmentListItem()
+    //     mockGetEquipmentListSuccess({
+    //       body: commonFixtures.paginatedListResponse([equipmentListItem]),
+    //     })
+    //
+    //     mockGetEquipmentServerError(equipmentListItem.id)
+    //
+    //     const { user } = render(<EquipmentListPage />)
+    //
+    //     await equipmentTableTestUtils.expectLoadingFinished()
+    //     await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
+    //     const equipment = await equipmentTestUtils.findContainer()
+    //     await equipmentTestUtils.expectLoadingFinished()
+    //     const notification = await notificationTestUtils.findNotification(
+    //       getEquipmentMessages.commonError,
+    //     )
+    //
+    //     expect(notification).toBeInTheDocument()
+    //     await waitFor(() => {
+    //       expect(equipment).not.toBeInTheDocument()
+    //     })
+    //   })
+    // })
+  })
 })

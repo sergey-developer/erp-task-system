@@ -15,6 +15,8 @@ import { getFormErrorsFromBadRequestError } from 'modules/task/components/Reques
 import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
 import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
+import Tabs from 'modules/task/components/TaskDetails/Tabs'
+import Title from 'modules/task/components/TaskDetails/Title'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
@@ -59,14 +61,14 @@ import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import Tabs from '../Tabs'
-import Title from '../Title'
 import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
+
 const ConfirmExecuteTaskModal = React.lazy(
   () => import('modules/task/components/ConfirmExecuteTaskModal'),
 )
+
 const TaskSuspendRequest = React.lazy(() => import('modules/task/components/TaskSuspendRequest'))
 
 const RequestTaskReclassificationModal = React.lazy(
@@ -288,10 +290,6 @@ const TaskCard: FC<TaskCardProps> = ({
         if (isErrorResponse(error)) {
           if (isBadRequestError(error)) {
             setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
           }
         }
       }

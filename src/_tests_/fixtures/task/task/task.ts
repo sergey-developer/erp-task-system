@@ -55,7 +55,9 @@ export const task = (
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
   workGroup: isUndefined(props?.workGroup) ? taskFixtures.workGroup() : props!.workGroup,
   assignee: isUndefined(props?.assignee) ? taskFixtures.assignee() : props!.assignee,
-  suspendRequest: props?.suspendRequest || null,
+  suspendRequest: isUndefined(props?.suspendRequest)
+    ? taskFixtures.suspendRequest()
+    : props!.suspendRequest,
   hasRelocationTasks: isUndefined(props?.hasRelocationTasks) ? true : props!.hasRelocationTasks,
 
   shop: { id: fakeId(), title: fakeWord() },

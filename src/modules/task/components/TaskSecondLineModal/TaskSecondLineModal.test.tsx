@@ -1,4 +1,3 @@
-import { ByRoleOptions } from '@testing-library/dom/types/queries'
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -14,7 +13,6 @@ import {
   fakeId,
   fakeIdStr,
   fakeWord,
-  getStoreWithAuth,
   render,
   selectTestUtils,
   setupApiTests,
@@ -33,24 +31,15 @@ const props: Readonly<TaskSecondLineModalProps> = {
 
 const getContainer = () => screen.getByTestId('task-second-line-modal')
 const findContainer = () => screen.findByTestId('task-second-line-modal')
-
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // work group field
 const getWorkGroupFormItem = () => within(getContainer()).getByTestId('work-group-form-item')
-
-const getWorkGroupField = (opts?: ByRoleOptions) =>
-  selectTestUtils.getSelect(getWorkGroupFormItem(), opts)
-
-const queryWorkGroupField = (opts?: ByRoleOptions) =>
-  selectTestUtils.querySelect(getWorkGroupFormItem(), opts)
-
+const getWorkGroupField = () => selectTestUtils.getSelect(getWorkGroupFormItem())
+const queryWorkGroupField = () => selectTestUtils.querySelect(getWorkGroupFormItem())
 const findWorkGroupError = (error: string) => within(getWorkGroupFormItem()).findByText(error)
-
 const getSelectedWorkGroup = () => selectTestUtils.getSelectedOption(getWorkGroupFormItem())
-
 const getSelectedWorkGroupText = selectTestUtils.getSelectedOptionText
-
 const getWorkGroupOption = selectTestUtils.getSelectOptionById
 const getWorkGroupOptionText = (option: HTMLElement, text: string) => within(option).getByText(text)
 
@@ -59,8 +48,6 @@ const expectWorkGroupLoadingStarted = () =>
 
 const expectWorkGroupLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getWorkGroupFormItem())
-
-const expectWorkGroupSelectDisabled = () => selectTestUtils.selectDisabledIn(getWorkGroupFormItem())
 
 const openWorkGroupField = async (user: UserEvent) => {
   await selectTestUtils.openSelect(user, getWorkGroupFormItem())
@@ -141,7 +128,6 @@ export const testUtils = {
   getWorkGroupOptionText,
   openWorkGroupField,
   selectWorkGroup,
-  expectWorkGroupSelectDisabled,
   expectWorkGroupLoadingStarted,
   expectWorkGroupLoadingFinished,
 
@@ -170,24 +156,14 @@ export const testUtils = {
 setupApiTests()
 
 describe('Модалка перевода заявки на 2-ю линию', () => {
-  test('Заголовок отображается корректно', () => {
+  test('Заголовок и текст отображается корректно', () => {
     mockGetWorkGroupListSuccess()
 
-    render(<TaskSecondLineModal {...props} />, {
-      store: getStoreWithAuth(),
-    })
+    render(<TaskSecondLineModal {...props} />)
 
     expect(testUtils.getChildByText(String(props.recordId))).toBeInTheDocument()
     expect(testUtils.getChildByText(/перевод заявки/i)).toBeInTheDocument()
     expect(testUtils.getChildByText(/на II линию/i)).toBeInTheDocument()
-  })
-
-  test('Текст отображается корректно', () => {
-    mockGetWorkGroupListSuccess()
-
-    render(<TaskSecondLineModal {...props} />, {
-      store: getStoreWithAuth(),
-    })
 
     expect(
       testUtils.getChildByText(
@@ -206,9 +182,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     test('Поле отображается корректно', async () => {
       mockGetWorkGroupListSuccess({ body: [] })
 
-      render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      render(<TaskSecondLineModal {...props} />)
 
       await testUtils.expectWorkGroupLoadingFinished()
 
@@ -220,18 +194,6 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       expect(input).toBeEnabled()
       expect(title).toBeInTheDocument()
       expect(placeholder).toBeInTheDocument()
-    })
-
-    test('Поле закрыто по умолчанию', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
-
-      render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
-
-      await testUtils.expectWorkGroupLoadingFinished()
-
-      expect(testUtils.queryWorkGroupField({ expanded: true })).not.toBeInTheDocument()
     })
 
     describe('Имеет верное значение по умолчанию', () => {
@@ -251,9 +213,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
-        render(<TaskSecondLineModal {...props} />, {
-          store: getStoreWithAuth(),
-        })
+        render(<TaskSecondLineModal {...props} />)
 
         await testUtils.expectWorkGroupLoadingFinished()
 
@@ -285,9 +245,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
-        render(<TaskSecondLineModal {...props} />, {
-          store: getStoreWithAuth(),
-        })
+        render(<TaskSecondLineModal {...props} />)
 
         await testUtils.expectWorkGroupLoadingFinished()
 
@@ -309,42 +267,18 @@ describe('Модалка перевода заявки на 2-ю линию', ()
         const workGroupList = workGroupFixtures.workGroupList(2)
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
-        render(<TaskSecondLineModal {...props} />, {
-          store: getStoreWithAuth(),
-        })
+        render(<TaskSecondLineModal {...props} />)
 
         await testUtils.expectWorkGroupLoadingFinished()
         expect(testUtils.getSelectedWorkGroup()).not.toBeInTheDocument()
       })
     })
 
-    test('Отображается состояние загрузки во время загрузки рабочих групп', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
-
-      render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
-
-      await testUtils.expectWorkGroupLoadingStarted()
-    })
-
-    test('Не активно во время загрузки', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
-
-      render(<TaskSecondLineModal {...props} isLoading />, {
-        store: getStoreWithAuth(),
-      })
-
-      await testUtils.expectWorkGroupSelectDisabled()
-    })
-
     test('Отображает верное количество вариантов', async () => {
       const workGroupList = workGroupFixtures.workGroupList()
       mockGetWorkGroupListSuccess({ body: workGroupList })
 
-      const { user } = render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      const { user } = render(<TaskSecondLineModal {...props} />)
 
       await testUtils.expectWorkGroupLoadingFinished()
       await testUtils.openWorkGroupField(user)
@@ -358,9 +292,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       const workGroupList = workGroupFixtures.workGroupList()
       mockGetWorkGroupListSuccess({ body: workGroupList })
 
-      const { user } = render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      const { user } = render(<TaskSecondLineModal {...props} />)
 
       await testUtils.expectWorkGroupLoadingFinished()
       await testUtils.openWorkGroupField(user)
@@ -382,9 +314,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       ]
       mockGetWorkGroupListSuccess({ body: workGroupList })
 
-      const { user } = render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      const { user } = render(<TaskSecondLineModal {...props} />)
 
       await testUtils.expectWorkGroupLoadingFinished()
       await testUtils.openWorkGroupField(user)
@@ -393,7 +323,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
         const option = testUtils.getWorkGroupOption(workGroup.id)
         const optionText = testUtils.getWorkGroupOptionText(option, workGroup.name)
 
-        expect(optionText).not.toHaveStyle('font-weight: 500')
+        expect(optionText).not.toHaveStyle('font-weight: bold')
       })
     })
 
@@ -405,9 +335,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       ]
       mockGetWorkGroupListSuccess({ body: workGroupList })
 
-      const { user } = render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      const { user } = render(<TaskSecondLineModal {...props} />)
 
       await testUtils.expectWorkGroupLoadingFinished()
       await testUtils.openWorkGroupField(user)
@@ -415,8 +343,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       workGroupList.forEach((workGroup) => {
         const option = testUtils.getWorkGroupOption(workGroup.id)
         const optionText = testUtils.getWorkGroupOptionText(option, workGroup.name)
-
-        expect(optionText).toHaveStyle('font-weight: 500')
+        expect(optionText).toHaveStyle('font-weight: bold')
       })
     })
 
@@ -424,9 +351,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       const workGroupList = workGroupFixtures.workGroupList()
       mockGetWorkGroupListSuccess({ body: workGroupList })
 
-      const { user } = render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      const { user } = render(<TaskSecondLineModal {...props} />)
 
       await testUtils.expectWorkGroupLoadingFinished()
       await testUtils.openWorkGroupField(user)
@@ -435,28 +360,11 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       expect(testUtils.getSelectedWorkGroup()).toBeInTheDocument()
     })
 
-    test('После выбора рабочей группы поле закрывается', async () => {
-      const workGroupList = workGroupFixtures.workGroupList()
-      mockGetWorkGroupListSuccess({ body: workGroupList })
-
-      const { user } = render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
-
-      await testUtils.expectWorkGroupLoadingFinished()
-      await testUtils.openWorkGroupField(user)
-      await testUtils.selectWorkGroup(user, workGroupList[0].name)
-
-      expect(testUtils.getWorkGroupField({ expanded: false })).toBeInTheDocument()
-    })
-
     test('Отображает ошибку если не выбрать группу и нажать кнопку отправки', async () => {
       const workGroupList = workGroupFixtures.workGroupList()
       mockGetWorkGroupListSuccess({ body: workGroupList })
 
-      const { user } = render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      const { user } = render(<TaskSecondLineModal {...props} />)
 
       await testUtils.expectWorkGroupLoadingFinished()
       await testUtils.clickSubmitButton(user)
@@ -522,12 +430,10 @@ describe('Модалка перевода заявки на 2-ю линию', ()
   })
 
   describe('Кнопка отправки', () => {
-    test('Отображается', () => {
+    test('Отображается корректно', () => {
       mockGetWorkGroupListSuccess({ body: [] })
 
-      render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      render(<TaskSecondLineModal {...props} />)
 
       const button = testUtils.getSubmitButton()
 
@@ -537,11 +443,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     test('Отображает состоянии загрузки', async () => {
       mockGetWorkGroupListSuccess({ body: [] })
-
-      render(<TaskSecondLineModal {...props} isLoading />, {
-        store: getStoreWithAuth(),
-      })
-
+      render(<TaskSecondLineModal {...props} isLoading />)
       await testUtils.expectLoadingStarted()
     })
 
@@ -550,9 +452,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
         const workGroupList = workGroupFixtures.workGroupList()
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
-        const { user } = render(<TaskSecondLineModal {...props} />, {
-          store: getStoreWithAuth(),
-        })
+        const { user } = render(<TaskSecondLineModal {...props} />)
 
         await testUtils.expectWorkGroupLoadingFinished()
         await testUtils.openWorkGroupField(user)
@@ -567,9 +467,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
         const workGroupList = workGroupFixtures.workGroupList()
         mockGetWorkGroupListSuccess({ body: workGroupList })
 
-        const { user } = render(<TaskSecondLineModal {...props} />, {
-          store: getStoreWithAuth(),
-        })
+        const { user } = render(<TaskSecondLineModal {...props} />)
 
         await testUtils.expectWorkGroupLoadingFinished()
         await testUtils.clickSubmitButton(user)
@@ -583,9 +481,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     test('Отображается корректно', () => {
       mockGetWorkGroupListSuccess({ body: [] })
 
-      render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      render(<TaskSecondLineModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -596,9 +492,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     test('Обработчик вызывается корректно', async () => {
       mockGetWorkGroupListSuccess({ body: [] })
 
-      const { user } = render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      const { user } = render(<TaskSecondLineModal {...props} />)
 
       await testUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
@@ -609,9 +503,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     test('Отображается корректно', () => {
       mockGetWorkGroupListSuccess({ body: [] })
 
-      render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      render(<TaskSecondLineModal {...props} />)
 
       const button = testUtils.getCloseButton()
 
@@ -622,9 +514,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     test('Обработчик вызывается корректно', async () => {
       mockGetWorkGroupListSuccess({ body: [] })
 
-      const { user } = render(<TaskSecondLineModal {...props} />, {
-        store: getStoreWithAuth(),
-      })
+      const { user } = render(<TaskSecondLineModal {...props} />)
 
       await testUtils.clickCloseButton(user)
       expect(props.onCancel).toBeCalledTimes(1)

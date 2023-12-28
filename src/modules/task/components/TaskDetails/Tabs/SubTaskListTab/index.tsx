@@ -157,7 +157,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task }) => {
               taskExtendedStatus.isInReclassification
             }
           >
-            + Создать новое задание
+            Создать новое задание
           </Button>
         </Col>
       </Row>

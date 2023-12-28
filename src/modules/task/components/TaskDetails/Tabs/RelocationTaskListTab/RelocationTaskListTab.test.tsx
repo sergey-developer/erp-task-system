@@ -15,6 +15,7 @@ import taskFixtures from '_tests_/fixtures/task'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
+  mockGetEquipmentCatalogListSuccess,
   mockGetLocationListSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskListForbiddenError,
@@ -22,6 +23,7 @@ import {
   mockGetRelocationTaskListSuccess,
   mockGetRelocationTaskSuccess,
   mockGetUserListSuccess,
+  mockGetWarehouseMySuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -35,7 +37,8 @@ import {
   spinnerTestUtils,
 } from '_tests_/utils'
 
-import RelocationTaskListTab, { RelocationTaskListTabProps } from './index'
+import RelocationTaskListTab from './index'
+import { RelocationTaskListTabProps } from './types'
 
 const props: RelocationTaskListTabProps = {
   task: taskFixtures.task(),
@@ -55,6 +58,7 @@ export const testUtils = {
 }
 
 setupApiTests()
+notificationTestUtils.setupNotifications()
 
 describe('Вкладка списка заявок на перемещение', () => {
   test('Заголовок отображается со счётчиком', async () => {
@@ -125,6 +129,8 @@ describe('Вкладка списка заявок на перемещение',
       mockGetUserListSuccess()
       mockGetCurrencyListSuccess()
       mockGetLocationListSuccess({ once: false })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetWarehouseMySuccess()
 
       const { user } = renderInRoute_latest(
         [

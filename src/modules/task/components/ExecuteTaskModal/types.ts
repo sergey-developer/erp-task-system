@@ -1,7 +1,9 @@
 import { FormInstance, ModalProps } from 'antd'
-import { UploadFile } from 'antd/lib/upload'
+import { UploadFile } from 'antd/es/upload'
 
 import { TaskModel } from 'modules/task/models'
+
+import { BaseModalProps } from 'components/Modals/BaseModal'
 
 export type ExecuteTaskModalFormFields = {
   techResolution: string
@@ -9,8 +11,8 @@ export type ExecuteTaskModalFormFields = {
   attachments?: UploadFile[]
 }
 
-export type ExecuteTaskModalProps = Pick<TaskModel, 'type' | 'recordId'> &
-  Required<Pick<ModalProps, 'open'>> & {
+export type ExecuteTaskModalProps = Required<Pick<BaseModalProps, 'open'>> &
+  Pick<TaskModel, 'type' | 'recordId'> & {
     isLoading: boolean
     onSubmit: (
       values: ExecuteTaskModalFormFields,

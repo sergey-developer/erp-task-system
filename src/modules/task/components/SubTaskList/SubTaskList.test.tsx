@@ -16,7 +16,7 @@ import {
 import SubTaskList, { SubTaskListProps } from './index'
 
 const props: Readonly<SubTaskListProps> = {
-  list: taskFixtures.getSubTaskList(),
+  list: taskFixtures.subTaskList(),
   isError: false,
   taskStatus: TaskStatusEnum.New,
   taskExtendedStatus: TaskExtendedStatusEnum.New,

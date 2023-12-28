@@ -156,8 +156,8 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                 >
                   {workGroupMembers.map((member) => {
                     const currentAssigneeInWorkGroup = isEqual(member.id, currentAssignee)
-                    const authenticatedUserInWorkGroup = isEqual(member.id, authUser!.id)
-                    const disabled = currentAssigneeInWorkGroup || authenticatedUserInWorkGroup
+                    const authUserInWorkGroup = isEqual(member.id, authUser!.id)
+                    const disabled = currentAssigneeInWorkGroup || authUserInWorkGroup
 
                     return (
                       <SelectStyled.Option

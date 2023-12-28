@@ -1,14 +1,33 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Form, FormProps, Input, Row, Select, Typography } from 'antd'
+import {
+  Button,
+  Col,
+  Form,
+  FormProps,
+  Input,
+  Row,
+  Select,
+  Typography,
+  Upload,
+  UploadProps,
+} from 'antd'
 import get from 'lodash/get'
 import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
+import isBoolean from 'lodash/isBoolean'
+import isNumber from 'lodash/isNumber'
+import stubFalse from 'lodash/stubFalse'
+import { NamePath } from 'rc-field-form/es/interface'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
+import { AttachmentTypeEnum } from 'modules/attachment/constants'
+import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { getCompleteAt } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
+import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
+import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
 import RelocationEquipmentSimplifiedEditableTable from 'modules/warehouse/components/RelocationEquipmentSimplifiedEditableTable'
 import {
   ActiveEquipmentRow,
@@ -18,8 +37,11 @@ import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/no
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
+  useCreateEquipments,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
+  useGetEquipmentListTemplate,
+  useImportEquipmentsByFile,
   useLazyGetEquipment,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
@@ -40,13 +62,24 @@ import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { FileToSend } from 'shared/types/file'
 import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy, valueOrHyphen } from 'shared/utils/common'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
+
+import { getEquipmentFormInitialValues } from '../CreateRelocationTaskPage/utils'
+
+const CreateEquipmentsByFileModal = React.lazy(
+  () => import('modules/warehouse/components/CreateEquipmentsByFileModal'),
+)
+
+const CreateAttachmentListModal = React.lazy(
+  () => import('modules/attachment/components/CreateAttachmentListModal'),
+)
 
 const EquipmentFormModal = React.lazy(
   () => import('modules/warehouse/components/EquipmentFormModal'),
@@ -55,9 +88,19 @@ const EquipmentFormModal = React.lazy(
 const { Text } = Typography
 const { TextArea } = Input
 
+const initialValues: Pick<
+  SimplifiedRelocationTaskFormFields,
+  'equipmentsToShop' | 'equipmentsToWarehouse' | 'equipmentsToWarehouseByFile'
+> = {
+  equipmentsToShop: [],
+  equipmentsToWarehouse: [],
+  equipmentsToWarehouseByFile: [],
+}
+
 const CreateRelocationTaskSimplifiedPage: FC = () => {
   const location = useLocation()
   const fromPath = get(location, 'state.from', '')
+
   const task: MaybeUndefined<
     Pick<
       TaskModel,
@@ -79,9 +122,26 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
+  const [
+    userChangedNomenclature,
+    { setTrue: setUserChangedNomenclature, setFalse: resetUserChangedNomenclature },
+  ] = useBoolean(false)
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
+
+  const [editableEquipmentByFile, setEditableEquipmentByFile] = useState<EquipmentByFileTableRow>()
+  const [editableEquipmentByFileIndex, setEditableEquipmentByFileIndex] = useState<number>()
+
+  const [
+    createEquipmentsByFileModalOpened,
+    { setTrue: openCreateEquipmentsByFileModal, setFalse: closeCreateEquipmentsByFileModal },
+  ] = useBoolean(false)
+
+  const handleCloseCreateEquipmentsByFileModal = useDebounceFn(() => {
+    closeCreateEquipmentsByFileModal()
+    form.setFieldValue('equipmentsToWarehouseByFile', [])
+  })
 
   const [
     createEquipmentModalOpened,
@@ -96,7 +156,52 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const handleCloseCreateEquipmentModal = useDebounceFn(() => {
     closeCreateEquipmentModal()
     setSelectedNomenclatureId(undefined)
+    resetUserChangedNomenclature()
     setSelectedCategory(undefined)
+    setActiveEquipmentRow(undefined)
+  })
+
+  const [
+    editEquipmentByFileModalOpened,
+    { setTrue: openEditEquipmentByFileModal, setFalse: closeEditEquipmentByFileModal },
+  ] = useBoolean(false)
+
+  const handleOpenEditEquipmentByFileModal = useDebounceFn<
+    CreateEquipmentsByFileModalProps['onEdit']
+  >((row: EquipmentByFileTableRow, index) => {
+    setEditableEquipmentByFile(row)
+    setEditableEquipmentByFileIndex(index)
+    row.category && setSelectedCategory(row.category)
+    row.nomenclature && setSelectedNomenclatureId(row.nomenclature.id)
+    openEditEquipmentByFileModal()
+  })
+
+  const handleCloseEditEquipmentByFileModal = useDebounceFn(() => {
+    setEditableEquipmentByFile(undefined)
+    setEditableEquipmentByFileIndex(undefined)
+    setSelectedCategory(undefined)
+    setSelectedNomenclatureId(undefined)
+    resetUserChangedNomenclature()
+    closeEditEquipmentByFileModal()
+  })
+
+  const [
+    createRelocationEquipmentImagesModalOpened,
+    {
+      setTrue: openCreateRelocationEquipmentImagesModal,
+      setFalse: closeCreateRelocationEquipmentImagesModal,
+    },
+  ] = useBoolean(false)
+
+  const handleOpenCreateRelocationEquipmentImagesModal = useDebounceFn(
+    (row: ActiveEquipmentRow) => {
+      setActiveEquipmentRow(row)
+      openCreateRelocationEquipmentImagesModal()
+    },
+  )
+
+  const handleCloseCreateRelocationEquipmentImagesModal = useDebounceFn(() => {
+    closeCreateRelocationEquipmentImagesModal()
     setActiveEquipmentRow(undefined)
   })
 
@@ -114,7 +219,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
   const { currentData: currencyList = [], isFetching: currencyListIsFetching } = useGetCurrencyList(
     undefined,
-    { skip: !createEquipmentModalOpened },
+    { skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened },
   )
 
   const {
@@ -130,11 +235,18 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
-    useGetEquipmentCategoryList(undefined, { skip: !createEquipmentModalOpened })
+    useGetEquipmentCategoryList(undefined, {
+      skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened,
+    })
 
   const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypeList(
     undefined,
-    { skip: !createEquipmentModalOpened || !selectedCategory || !selectedNomenclatureId },
+    {
+      skip:
+        (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) ||
+        !selectedCategory ||
+        !selectedNomenclatureId,
+    },
   )
 
   const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
@@ -142,13 +254,16 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       categoryIsConsumable
         ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
         : defaultGetNomenclatureListParams,
-      { skip: !createEquipmentModalOpened || !selectedCategory },
+      {
+        skip: (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) || !selectedCategory,
+      },
     )
 
   const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
     selectedNomenclatureId!,
     {
-      skip: !selectedNomenclatureId || !createEquipmentModalOpened,
+      skip:
+        !selectedNomenclatureId || (!createEquipmentModalOpened && !editEquipmentByFileModalOpened),
     },
   )
 
@@ -157,7 +272,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
   useEffect(() => {
     if (
-      createEquipmentModalOpened &&
+      (createEquipmentModalOpened || editEquipmentByFileModalOpened) &&
       !!selectedCategory &&
       !categoryIsConsumable &&
       !!selectedNomenclatureId
@@ -170,11 +285,37 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     getCustomerList,
     selectedCategory,
     selectedNomenclatureId,
+    editEquipmentByFileModalOpened,
   ])
+
+  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
+  const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   const [createTaskMutation, { isLoading: createTaskIsLoading }] = useCreateRelocationTaskITSM()
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
+  const [createEquipmentsMutation, { isLoading: createEquipmentsIsLoading }] = useCreateEquipments()
+
+  const [
+    importEquipmentsByFileMutation,
+    { isLoading: importEquipmentsByFileIsLoading, data: importedEquipmentsByFile },
+  ] = useImportEquipmentsByFile()
+
+  const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
+    useGetEquipmentListTemplate()
+
+  const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
+    async (options) => {
+      await createAttachment({ type: AttachmentTypeEnum.EquipmentImage }, options)
+    },
+    [createAttachment],
+  )
+
+  const handleCreateRelocationEquipmentImage: NonNullable<UploadProps['customRequest']> = async (
+    options,
+  ) => {
+    await createAttachment({ type: AttachmentTypeEnum.RelocationEquipmentImage }, options)
+  }
 
   const handleCreateTask = async (values: SimplifiedRelocationTaskFormFields) => {
     if (!task) return
@@ -188,11 +329,17 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           id: eqp.id,
           quantity: eqp.quantity,
           condition: eqp.condition,
+          attachments: eqp.attachments?.length
+            ? extractIdsFromFilesResponse(eqp.attachments)
+            : undefined,
         })),
         equipmentsToWarehouse: values.equipmentsToWarehouse?.map((eqp) => ({
           id: eqp.id,
           quantity: eqp.quantity,
           condition: eqp.condition,
+          attachments: eqp.attachments?.length
+            ? extractIdsFromFilesResponse(eqp.attachments)
+            : undefined,
         })),
       }).unwrap()
 
@@ -216,15 +363,13 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         ]
 
         if (changes.id) {
-          const { data: equipment } = await getEquipment({ equipmentId: changes.id })
-
-          if (equipment) {
-            const currentEquipment = values.equipmentsToWarehouse?.[Number(index)]
-
-            if (currentEquipment) {
+          const equipmentPath: NamePath = ['equipmentsToWarehouse', index]
+          const currentEquipment = values.equipmentsToWarehouse?.[Number(index)]
+          if (currentEquipment) {
+            try {
+              const equipment = await getEquipment({ equipmentId: changes.id }).unwrap()
               const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
-
-              form.setFieldValue(['equipmentsToWarehouse', index], {
+              form.setFieldValue(equipmentPath, {
                 ...currentEquipment,
                 serialNumber: equipment.serialNumber,
                 purpose: equipment.purpose.title,
@@ -233,6 +378,10 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 quantity: isConsumable ? currentEquipment.quantity : 1,
                 category: equipment.category,
               })
+            } catch (error) {
+              if (isErrorResponse(error) && isForbiddenError(error)) {
+                form.setFieldValue(equipmentPath, { rowId: currentEquipment.rowId })
+              }
             }
           }
         }
@@ -248,15 +397,13 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         ]
 
         if (changes.id) {
-          const { data: equipment } = await getEquipment({ equipmentId: changes.id })
-
-          if (equipment) {
-            const currentEquipment = values.equipmentsToShop?.[Number(index)]
-
-            if (currentEquipment) {
+          const equipmentPath: NamePath = ['equipmentsToShop', index]
+          const currentEquipment = values.equipmentsToShop?.[Number(index)]
+          if (currentEquipment) {
+            try {
+              const equipment = await getEquipment({ equipmentId: changes.id }).unwrap()
               const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
-
-              form.setFieldValue(['equipmentsToShop', index], {
+              form.setFieldValue(equipmentPath, {
                 ...currentEquipment,
                 serialNumber: equipment.serialNumber,
                 purpose: equipment.purpose.title,
@@ -265,6 +412,10 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 quantity: isConsumable ? currentEquipment.quantity : 1,
                 category: equipment.category,
               })
+            } catch (error) {
+              if (isErrorResponse(error) && isForbiddenError(error)) {
+                form.setFieldValue(equipmentPath, { rowId: currentEquipment.rowId })
+              }
             }
           }
         }
@@ -279,6 +430,93 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     await pickEquipmentToShop(changedValues, values)
   }
 
+  const importEquipmentsByFile: NonNullable<UploadProps['onChange']> = async ({ file }) => {
+    try {
+      const equipments = await importEquipmentsByFileMutation({
+        file: file as FileToSend,
+      }).unwrap()
+
+      const equipmentsByFile: Omit<EquipmentByFileTableRow, 'images'>[] = equipments.map((eqp) => ({
+        rowId: eqp.rowId,
+        nomenclature: eqp.nomenclature || undefined,
+        category: eqp.category || undefined,
+        purpose: eqp.purpose || undefined,
+        currency: eqp.currency || undefined,
+        owner: eqp.owner || undefined,
+        title: eqp.title || undefined,
+        condition: eqp.condition || undefined,
+        isNew: isBoolean(eqp.isNew) ? eqp.isNew : undefined,
+        isWarranty: isBoolean(eqp.isWarranty) ? eqp.isWarranty : undefined,
+        isRepaired: isBoolean(eqp.isRepaired) ? eqp.isRepaired : undefined,
+        customerInventoryNumber: eqp.customerInventoryNumber || undefined,
+        serialNumber: eqp.serialNumber || undefined,
+        quantity: isNumber(eqp.quantity) ? eqp.quantity : undefined,
+        price: isNumber(eqp.price) ? eqp.price : undefined,
+        usageCounter: eqp.usageCounter || undefined,
+        comment: eqp.comment || undefined,
+      }))
+
+      form.setFieldValue('equipmentsToWarehouseByFile', equipmentsByFile)
+      openCreateEquipmentsByFileModal()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const createEquipments = useDebounceFn<CreateEquipmentsByFileModalProps['onCreate']>(async () => {
+    const equipmentsByFile: EquipmentByFileTableRow[] = form.getFieldValue(
+      'equipmentsToWarehouseByFile',
+    )
+    if (!equipmentsByFile || !warehouseMy || !taskShop?.id) return
+
+    try {
+      const createdEquipments = await createEquipmentsMutation(
+        equipmentsByFile.map(({ rowId, ...eqp }) => ({
+          ...eqp,
+          location: taskShop.id,
+          warehouse: warehouseMy.id,
+          nomenclature: eqp.nomenclature?.id,
+          category: eqp.category?.id,
+          currency: eqp.currency?.id,
+          owner: eqp.owner?.id,
+          purpose: eqp.purpose?.id,
+          images: eqp.images?.length ? extractIdsFromFilesResponse(eqp.images) : undefined,
+        })),
+      ).unwrap()
+
+      const equipmentsPath = 'equipmentsToWarehouse'
+      const currentEquipments: RelocationEquipmentRow[] = form.getFieldValue(equipmentsPath)
+      const newEquipments: RelocationEquipmentRow[] = []
+      const newEditableTableRowKeys: Key[] = []
+
+      createdEquipments.forEach((eqp) => {
+        newEquipments.push({
+          rowId: eqp.id,
+          id: eqp.id,
+          serialNumber: eqp.serialNumber || undefined,
+          quantity: eqp.quantity,
+          condition: eqp.condition,
+          purpose: eqp.purpose.title,
+          category: eqp.category,
+        })
+
+        newEditableTableRowKeys.push(eqp.id)
+      })
+
+      form.setFieldValue(equipmentsPath, [...currentEquipments, ...newEquipments])
+      setToWarehouseEditableTableRowKeys((prevState) => prevState.concat(newEditableTableRowKeys))
+      handleCloseCreateEquipmentsByFileModal()
+    } catch (error) {
+      console.error(error)
+    }
+  }, [
+    createEquipmentsMutation,
+    form,
+    handleCloseCreateEquipmentsByFileModal,
+    taskShop?.id,
+    warehouseMy,
+  ])
+
   const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
       if (!activeEquipmentRow || !warehouseMy || !taskShop?.id) return
@@ -292,18 +530,20 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         }).unwrap()
 
         const rowPath = [activeEquipmentRow.tableName, activeEquipmentRow.rowIndex]
-
-        form.setFieldValue(rowPath, {
-          ...form.getFieldValue(rowPath),
+        const currentRow: RelocationEquipmentRow = form.getFieldValue(rowPath)
+        const equipmentRow: RelocationEquipmentRow = {
+          rowId: currentRow.rowId,
+          attachments: images,
           id: createdEquipment.id,
-          serialNumber: createdEquipment.serialNumber,
+          serialNumber: createdEquipment.serialNumber || undefined,
           purpose: createdEquipment.purpose.title,
           condition: createdEquipment.condition,
           amount: createdEquipment.availableQuantity,
-          quantity: createdEquipment.quantity,
+          quantity: isNumber(createdEquipment.quantity) ? createdEquipment.quantity : undefined,
           category: createdEquipment.category,
-        })
+        }
 
+        form.setFieldValue(rowPath, equipmentRow)
         handleCloseCreateEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
@@ -321,12 +561,83 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     ],
   )
 
+  const editEquipmentByFile: EquipmentFormModalProps['onSubmit'] = useCallback(
+    (values) => {
+      if (!editableEquipmentByFile || !isNumber(editableEquipmentByFileIndex)) return
+
+      const equipmentPath = ['equipmentsToWarehouseByFile', editableEquipmentByFileIndex]
+      const updatableEquipmentByFile: EquipmentByFileTableRow = {
+        ...values,
+        rowId: editableEquipmentByFile.rowId,
+        category: equipmentCategoryList.find((c) => c.id === values.category),
+        currency: values.currency ? currencyList.find((c) => c.id === values.currency) : undefined,
+        owner: values.owner ? customerList.find((c) => c.id === values.owner) : undefined,
+        purpose: workTypeList.find((w) => w.id === values.purpose),
+        nomenclature: nomenclature
+          ? {
+              id: nomenclature.id,
+              title: nomenclature.title,
+              measurementUnit: nomenclature.measurementUnit.title,
+            }
+          : undefined,
+      }
+
+      form.setFieldValue(equipmentPath, updatableEquipmentByFile)
+      handleCloseEditEquipmentByFileModal()
+    },
+    [
+      currencyList,
+      customerList,
+      editableEquipmentByFile,
+      editableEquipmentByFileIndex,
+      equipmentCategoryList,
+      form,
+      handleCloseEditEquipmentByFileModal,
+      nomenclature,
+      workTypeList,
+    ],
+  )
+
   const handleChangeCategory = useCallback<EquipmentFormModalProps['onChangeCategory']>(
     (category) => {
       setSelectedCategory(category)
       setSelectedNomenclatureId(undefined)
+      resetUserChangedNomenclature()
     },
-    [],
+    [resetUserChangedNomenclature],
+  )
+
+  const onChangeNomenclature = useCallback<EquipmentFormModalProps['onChangeNomenclature']>(
+    (id) => {
+      setSelectedNomenclatureId(id)
+      setUserChangedNomenclature()
+    },
+    [setUserChangedNomenclature],
+  )
+
+  const equipmentImagesFormPath =
+    createRelocationEquipmentImagesModalOpened && activeEquipmentRow
+      ? [activeEquipmentRow.tableName, activeEquipmentRow.rowIndex, 'attachments']
+      : undefined
+
+  const equipmentByFileFormValues = useMemo(
+    () => ({
+      title: userChangedNomenclature ? nomenclature?.title : editableEquipmentByFile?.title,
+      images: isNumber(editableEquipmentByFileIndex)
+        ? form.getFieldValue([
+            'equipmentsToWarehouseByFile',
+            editableEquipmentByFileIndex,
+            'images',
+          ])
+        : undefined,
+    }),
+    [
+      editableEquipmentByFile?.title,
+      editableEquipmentByFileIndex,
+      form,
+      nomenclature?.title,
+      userChangedNomenclature,
+    ],
   )
 
   const createEquipmentFormValues = useMemo(
@@ -343,6 +654,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         layout='vertical'
         onFinish={handleCreateTask}
         onValuesChange={handleFormChange}
+        initialValues={initialValues}
       >
         <Row gutter={[40, 40]}>
           <Col span={24}>
@@ -351,7 +663,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 Перемещение оборудования для заявки {valueOrHyphen(task?.recordId)}
               </Text>
 
-              {task?.olaStatus && task?.olaEstimatedTime && task?.olaNextBreachTime ? (
+              {task?.olaStatus && isNumber(task?.olaEstimatedTime) && task?.olaNextBreachTime ? (
                 <Text type={getOlaStatusTextType(task.olaStatus)}>
                   {getCompleteAt({
                     olaStatus: task.olaStatus,
@@ -415,24 +727,51 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 equipmentIsLoading={equipmentIsFetching}
                 equipmentCatalogList={equipmentCatalogListFromWarehouse}
                 equipmentCatalogListIsLoading={equipmentCatalogListFromWarehouseIsFetching}
+                onClickCreateImage={handleOpenCreateRelocationEquipmentImagesModal}
               />
             </Space>
           </Col>
 
           <Col span={24}>
             <Space direction='vertical'>
-              <Space>
-                <Text strong>
-                  Перечень оборудования для перемещения с объекта "{valueOrHyphen(taskShop?.title)}"
-                  на склад
-                </Text>
+              <Row justify='space-between' align='middle'>
+                <Col>
+                  <Space>
+                    <Text strong>
+                      Перечень оборудования для перемещения с объекта "
+                      {valueOrHyphen(taskShop?.title)}" на склад
+                    </Text>
 
-                {warehouseMyIsFetching ? (
-                  <Spinner centered={false} />
-                ) : (
-                  <Text strong>"{valueOrHyphen(warehouseMy?.title)}"</Text>
+                    {warehouseMyIsFetching ? (
+                      <Spinner centered={false} />
+                    ) : (
+                      <Text strong>"{valueOrHyphen(warehouseMy?.title)}"</Text>
+                    )}
+                  </Space>
+                </Col>
+
+                {permissions?.equipmentsCreate && (
+                  <Col>
+                    <Space>
+                      <Upload
+                        showUploadList={false}
+                        beforeUpload={stubFalse}
+                        fileList={[]}
+                        onChange={importEquipmentsByFile}
+                      >
+                        <Button loading={importEquipmentsByFileIsLoading}>Добавить из Excel</Button>
+                      </Upload>
+
+                      <Button
+                        onClick={getEquipmentListTemplate}
+                        loading={getEquipmentListTemplateIsFetching}
+                      >
+                        Скачать шаблон
+                      </Button>
+                    </Space>
+                  </Col>
                 )}
-              </Space>
+              </Row>
 
               <RelocationEquipmentSimplifiedEditableTable
                 name='equipmentsToWarehouse'
@@ -445,6 +784,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 equipmentCatalogListIsLoading={equipmentCatalogListToWarehouseIsFetching}
                 canCreateEquipment={!!permissions?.equipmentsCreate}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
+                onClickCreateImage={handleOpenCreateRelocationEquipmentImagesModal}
               />
             </Space>
           </Col>
@@ -492,13 +832,90 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             nomenclatureIsLoading={nomenclatureIsFetching}
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
-            onChangeNomenclature={setSelectedNomenclatureId}
+            onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseCreateEquipmentModal}
             onSubmit={createEquipment}
-            onUploadImage={() => {}}
-            imageIsUploading={false}
-            onDeleteImage={() => {}}
-            imageIsDeleting={false}
+            onUploadImage={handleCreateEquipmentImage}
+            imageIsUploading={createAttachmentIsLoading}
+            onDeleteImage={deleteAttachment}
+            imageIsDeleting={deleteAttachmentIsLoading}
+          />
+        </React.Suspense>
+      )}
+
+      {editEquipmentByFileModalOpened && (
+        <React.Suspense
+          fallback={<ModalFallback open onCancel={handleCloseEditEquipmentByFileModal} />}
+        >
+          <EquipmentFormModal
+            open={editEquipmentByFileModalOpened}
+            mode='create'
+            title='Изменить добавляемое оборудование'
+            okText='Сохранить'
+            initialValues={getEquipmentFormInitialValues(editableEquipmentByFile)}
+            values={equipmentByFileFormValues}
+            categoryList={equipmentCategoryList}
+            categoryListIsLoading={equipmentCategoryListIsFetching}
+            selectedCategory={selectedCategory}
+            onChangeCategory={handleChangeCategory}
+            currencyList={currencyList}
+            currencyListIsLoading={currencyListIsFetching}
+            ownerList={customerList}
+            ownerListIsLoading={customerListIsFetching}
+            workTypeList={workTypeList}
+            workTypeListIsLoading={workTypeListIsFetching}
+            nomenclature={nomenclature}
+            nomenclatureIsLoading={nomenclatureIsFetching}
+            nomenclatureList={extractPaginationResults(nomenclatureList)}
+            nomenclatureListIsLoading={nomenclatureListIsFetching}
+            onChangeNomenclature={onChangeNomenclature}
+            onCancel={handleCloseEditEquipmentByFileModal}
+            onSubmit={editEquipmentByFile}
+            onUploadImage={handleCreateEquipmentImage}
+            imageIsUploading={createAttachmentIsLoading}
+            onDeleteImage={deleteAttachment}
+            imageIsDeleting={deleteAttachmentIsLoading}
+          />
+        </React.Suspense>
+      )}
+
+      {createRelocationEquipmentImagesModalOpened && activeEquipmentRow && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={handleCloseCreateRelocationEquipmentImagesModal}
+              tip='Загрузка модалки добавления изображений оборудования'
+            />
+          }
+        >
+          <CreateAttachmentListModal
+            form={form}
+            formItemName={equipmentImagesFormPath}
+            open={createRelocationEquipmentImagesModalOpened}
+            title='Добавить изображения оборудования'
+            onCancel={handleCloseCreateRelocationEquipmentImagesModal}
+            onCreate={handleCreateRelocationEquipmentImage}
+            onDelete={deleteAttachment}
+            isDeleting={deleteAttachmentIsLoading}
+            defaultFileList={form.getFieldValue(equipmentImagesFormPath)}
+          />
+        </React.Suspense>
+      )}
+
+      {createEquipmentsByFileModalOpened && importedEquipmentsByFile && (
+        <React.Suspense
+          fallback={<ModalFallback open onCancel={handleCloseCreateEquipmentsByFileModal} />}
+        >
+          <CreateEquipmentsByFileModal
+            open={createEquipmentsByFileModalOpened}
+            onCancel={handleCloseCreateEquipmentsByFileModal}
+            onCreate={createEquipments}
+            isCreating={createEquipmentsIsLoading}
+            data={
+              (form.getFieldValue('equipmentsToWarehouseByFile') || []) as EquipmentByFileTableRow[]
+            }
+            onEdit={handleOpenEditEquipmentByFileModal}
           />
         </React.Suspense>
       )}

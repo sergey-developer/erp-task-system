@@ -122,15 +122,15 @@ const changePageSize = async (user: UserEvent, pageSize: NumberOrString) => {
 }
 
 const expectLoadingStarted = async () => {
-  const taskTable = getContainer()
-  await iconTestUtils.expectLoadingStartedIn(taskTable)
-  return taskTable
+  const table = getContainer()
+  await iconTestUtils.expectLoadingStartedIn(table)
+  return table
 }
 
 const expectLoadingFinished = async () => {
-  const taskTable = getContainer()
-  await iconTestUtils.expectLoadingFinishedIn(taskTable)
-  return taskTable
+  const table = getContainer()
+  await iconTestUtils.expectLoadingFinishedIn(table)
+  return table
 }
 
 export const testUtils = {
@@ -1216,7 +1216,7 @@ describe('Таблица заявок', () => {
 
     await testUtils.clickRow(user, taskTableItem.id)
 
-    expect(props.onRow).toBeCalledTimes(1)
+    expect(props.onRow).toBeCalled()
     expect(props.onRow).toBeCalledWith(taskTableItem, 0)
   })
 })

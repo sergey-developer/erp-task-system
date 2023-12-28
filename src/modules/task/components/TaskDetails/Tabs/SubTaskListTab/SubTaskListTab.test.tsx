@@ -85,6 +85,7 @@ notificationTestUtils.setupNotifications()
 describe('Вкладка списка заданий', () => {
   describe('Кнопка создания задания', () => {
     test('Отображается', () => {
+      mockGetSubTaskListSuccess(props.task.id)
       render(<SubTaskListTab {...props} />)
       expect(testUtils.getCreateSubTaskButton()).toBeInTheDocument()
     })
@@ -221,6 +222,7 @@ describe('Вкладка списка заданий', () => {
 
     test('При нажатии открывает модалку создания задания', async () => {
       mockGetSubTaskListSuccess(props.task.id)
+      mockGetSupportGroupListSuccess()
       mockGetSubTaskTemplateListSuccess()
 
       const { user } = render(
@@ -288,7 +290,7 @@ describe('Вкладка списка заданий', () => {
       })
 
       test('В список добавляется новое задание', async () => {
-        const subTaskList = taskFixtures.getSubTaskList()
+        const subTaskList = taskFixtures.subTaskList()
         mockGetSubTaskListSuccess(props.task.id, { body: subTaskList })
 
         const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
@@ -339,7 +341,7 @@ describe('Вкладка списка заданий', () => {
   describe('Список заданий', () => {
     test('Отображается', async () => {
       mockGetSubTaskListSuccess(props.task.id, {
-        body: taskFixtures.getSubTaskList(),
+        body: taskFixtures.subTaskList(),
       })
 
       render(<SubTaskListTab {...props} />, {
@@ -352,7 +354,7 @@ describe('Вкладка списка заданий', () => {
 
     describe('При успешном получении', () => {
       test('Отображает верное количество заданий', async () => {
-        const subTaskList = taskFixtures.getSubTaskList()
+        const subTaskList = taskFixtures.subTaskList()
         mockGetSubTaskListSuccess(props.task.id, { body: subTaskList })
 
         render(

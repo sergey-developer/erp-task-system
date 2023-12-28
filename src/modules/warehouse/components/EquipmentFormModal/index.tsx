@@ -407,7 +407,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   listType='picture'
                   multiple
                   disabled={isLoading || imageIsDeleting}
-                  itemRender={(originNode, file) => (!file.error ? originNode : null)}
+                  itemRender={(originNode, file) => (file.error ? null : originNode)}
                   customRequest={onUploadImage}
                   onRemove={onDeleteImage}
                   defaultFileList={values?.images}

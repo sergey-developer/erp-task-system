@@ -94,6 +94,7 @@ const expectTotalEquipmentImageListLoadingFinished = () =>
 
 // close button
 const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
+
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
@@ -693,6 +694,7 @@ describe('Информация об оборудовании', () => {
       test('Отображается корректно', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />)
 
@@ -711,6 +713,7 @@ describe('Информация об оборудовании', () => {
         test('Отображается корректно', async () => {
           const equipment = warehouseFixtures.equipment()
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+          mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
           render(<EquipmentDetails {...props} />)
 
@@ -727,6 +730,7 @@ describe('Информация об оборудовании', () => {
 
           const equipment = warehouseFixtures.equipment()
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+          mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
           const { user } = render(<EquipmentDetails {...props} />)
 
@@ -787,6 +791,7 @@ describe('Информация об оборудовании', () => {
   describe('История перемещений', () => {
     test('Кнопка отображается', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />)
 
@@ -798,6 +803,7 @@ describe('Информация об оборудовании', () => {
 
     test('Кнопка активна если условия соблюдены', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -815,6 +821,7 @@ describe('Информация об оборудовании', () => {
 
     test('Кнопка не активна если условия соблюдены, но нет прав на чтение оборудования', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -832,6 +839,7 @@ describe('Информация об оборудовании', () => {
 
     test('Кнопка не активна если условия соблюдены, но нет прав на чтение заявок на перемещение', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -850,6 +858,7 @@ describe('Информация об оборудовании', () => {
     test('При клике открывается модалка', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId)
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -868,6 +877,7 @@ describe('Информация об оборудовании', () => {
 
     test('При успешном запрос данные отображаются', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
       const equipmentRelocationHistory = warehouseFixtures.equipmentRelocationHistory()
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId, {
@@ -896,6 +906,7 @@ describe('Информация об оборудовании', () => {
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 403', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         const errorMsg = fakeWord()
         mockGetEquipmentRelocationHistoryForbiddenError(props.equipmentId, {
@@ -920,6 +931,7 @@ describe('Информация об оборудовании', () => {
 
       test('Обрабатывается ошибка 404', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         const errorMsg = fakeWord()
         mockGetEquipmentRelocationHistoryNotFoundError(props.equipmentId, {
@@ -945,6 +957,7 @@ describe('Информация об оборудовании', () => {
       test('Обрабатывается ошибка 500', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
         mockGetEquipmentRelocationHistoryServerError(props.equipmentId)
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
         const { user } = render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {

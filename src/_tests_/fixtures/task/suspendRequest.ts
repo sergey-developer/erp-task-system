@@ -7,7 +7,7 @@ import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 export const suspendRequest = (
   props?: Pick<SuspendRequestModel, 'status'>,
 ): SuspendRequestModel => ({
-  status: props?.status || SuspendRequestStatusEnum.New,
+  status: props?.status || SuspendRequestStatusEnum.Denied,
 
   id: fakeId(),
   comment: fakeWord(),

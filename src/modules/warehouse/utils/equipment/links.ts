@@ -13,8 +13,9 @@ type GetEquipmentListPageLinkParams = {
 
 export const getEquipmentListPageLink = ({
   id,
-  ...params
+  title,
+  viewEquipmentId,
 }: GetEquipmentListPageLinkParams): string =>
   `${generatePath(WarehouseRouteEnum.EquipmentList, {
     id: String(id),
-  })}?${qs.stringify(params)}`
+  })}?${qs.stringify({ equipmentNomenclatureTitle: title, viewEquipmentId })}`

@@ -404,10 +404,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       try {
         await createSuspendRequest({
           taskId: task.id,
-          comment: values.comment,
           suspendReason: values.reason,
           suspendEndAt: mergeDateTime(values.endDate, values.endTime).toISOString(),
-        })
+          externalRevisionLink: values.taskLink,
+          externalResponsibleCompany: values.organization,
+          comment: values.comment,
+        }).unwrap()
 
         closeRequestTaskSuspendModal()
       } catch (error) {
@@ -429,10 +431,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const handleDeleteTaskSuspendRequest = useDebounceFn(async () => {
     if (!task) return
-
-    try {
-      await deleteSuspendRequest({ taskId: task.id })
-    } catch {}
+    await deleteSuspendRequest({ taskId: task.id })
   }, [deleteSuspendRequest, task])
 
   const title = task && (
@@ -458,7 +457,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         data-testid='task-details'
         open={!!taskId}
         onClose={closeTask}
-        width={600}
+        width={650}
         title={title}
         mask={false}
       >

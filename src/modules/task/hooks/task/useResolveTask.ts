@@ -6,7 +6,12 @@ import { taskResolutionApiPermissions } from 'modules/task/permissions'
 import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
 import { useUserPermissions } from 'modules/user/hooks'
 
-import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import {
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useResolveTask = () => {
@@ -23,11 +28,14 @@ export const useResolveTask = () => {
   )
 
   useEffect(() => {
-    if (!state.error) return
-
     if (isErrorResponse(state.error)) {
-      if (isBadRequestError(state.error)) {
-        showErrorNotification(getErrorDetail(state.error))
+      if (
+        (isBadRequestError(state.error) ||
+          isForbiddenError(state.error) ||
+          isNotFoundError(state.error)) &&
+        state.error.data.detail
+      ) {
+        showErrorNotification(state.error.data.detail)
       } else {
         showErrorNotification(resolveTaskMessages.commonError)
       }

@@ -10,14 +10,14 @@ import { FileResponse } from 'shared/types/file'
 
 const bodyStyle: ModalProps['bodyStyle'] = { paddingTop: 20 }
 
-export type AddAttachmentListModalProps = Required<
+export type CreateAttachmentListModalProps = Required<
   Pick<ModalProps, 'open' | 'title' | 'onCancel'>
 > &
   Pick<UploadProps, 'defaultFileList'> & {
     form: FormInstance
     formItemName: FormItemProps['name']
 
-    onAdd: NonNullable<UploadProps['customRequest']>
+    onCreate: NonNullable<UploadProps['customRequest']>
 
     onDelete: NonNullable<UploadProps<FileResponse>['onRemove']>
     isDeleting: boolean
@@ -26,13 +26,13 @@ export type AddAttachmentListModalProps = Required<
   }
 
 // todo: добавить индикатор загрузки при удалении
-const AddAttachmentListModal: FC<AddAttachmentListModalProps> = ({
+const CreateAttachmentListModal: FC<CreateAttachmentListModalProps> = ({
   form,
   formItemName,
 
   isLoading,
 
-  onAdd,
+  onCreate,
 
   onDelete,
   isDeleting,
@@ -43,7 +43,7 @@ const AddAttachmentListModal: FC<AddAttachmentListModalProps> = ({
   return (
     <BaseModal
       {...props}
-      data-testid='add-attachment-list-modal'
+      data-testid='create-attachment-list-modal'
       width={450}
       footer={null}
       bodyStyle={bodyStyle}
@@ -55,10 +55,10 @@ const AddAttachmentListModal: FC<AddAttachmentListModalProps> = ({
             listType='picture'
             multiple
             disabled={isDeleting}
-            customRequest={onAdd}
+            customRequest={onCreate}
             onRemove={onDelete}
             defaultFileList={defaultFileList}
-            itemRender={(originNode, file) => (!file.error ? originNode : null)}
+            itemRender={(originNode, file) => (file.error ? null : originNode)}
           >
             <UploadButton label='Добавить фото' />
           </Upload>
@@ -68,4 +68,4 @@ const AddAttachmentListModal: FC<AddAttachmentListModalProps> = ({
   )
 }
 
-export default AddAttachmentListModal
+export default CreateAttachmentListModal

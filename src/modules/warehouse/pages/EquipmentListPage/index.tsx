@@ -20,12 +20,12 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
 import {
   calculatePaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
-import { MaybeUndefined } from 'shared/types/utils'
 
 const EquipmentDetails = React.lazy(() => import('modules/warehouse/components/EquipmentDetails'))
 
