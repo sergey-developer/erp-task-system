@@ -5,7 +5,7 @@ import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
 import pick from 'lodash/pick'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
@@ -447,7 +447,7 @@ const TaskListPage: FC = () => {
             rowClassName={getTableRowClassName}
             sort={taskListQueryArgs.sort}
             onRow={onTableRow}
-            dataSource={extractPaginationResults(taskList)}
+            dataSource={tasks}
             loading={tasksIsFetching}
             onChange={handleChangeTable}
             pagination={originalTasks?.pagination || false}
