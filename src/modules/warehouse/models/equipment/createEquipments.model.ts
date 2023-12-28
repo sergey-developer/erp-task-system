@@ -17,6 +17,7 @@ export type CreatedEquipmentListItemModel = {
   title: string
   condition: EquipmentConditionEnum
   quantity: number
+  availableQuantity: number
   category: Pick<EquipmentCategoryListItemModel, 'id' | 'title' | 'code'>
   purpose: Pick<WorkTypeListItemModel, 'id' | 'title'>
   isNew: boolean
@@ -65,7 +66,21 @@ export type CreateEquipmentsBadRequestErrorResponse = Partial<
   FieldsErrors<
     Pick<
       CreateEquipmentModel,
-      'title' | 'nomenclature' | 'purpose' | 'condition' | 'inventoryNumber'
+      | 'category'
+      | 'nomenclature'
+      | 'inventoryNumber'
+      | 'serialNumber'
+      | 'condition'
+      | 'price'
+      | 'currency'
+      | 'quantity'
+      | 'isNew'
+      | 'isWarranty'
+      | 'isRepaired'
+      | 'usageCounter'
+      | 'owner'
+      | 'purpose'
+      | 'comment'
     >
   >
 >[]

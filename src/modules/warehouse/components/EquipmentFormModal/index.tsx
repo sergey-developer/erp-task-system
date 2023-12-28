@@ -1,5 +1,6 @@
 import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
 import isArray from 'lodash/isArray'
+import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
@@ -18,6 +19,7 @@ import { filesFormItemProps } from 'shared/constants/form'
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
+import { getFieldsErrors } from 'shared/utils/form'
 import { filterOptionBy } from 'shared/utils/common'
 
 import { EquipmentFormModalFormFields, EquipmentFormModalProps } from './types'
@@ -30,6 +32,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   isLoading,
   values,
   initialValues,
+  errors,
 
   onUploadImage,
   imageIsUploading,
@@ -78,6 +81,12 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   useEffect(() => {
     if (values?.images?.length) form.setFieldsValue({ images: values.images })
   }, [form, values?.images])
+
+  useEffect(() => {
+    if (!isEmpty(errors) && nomenclatureSelected && categorySelected) {
+      form.setFields(getFieldsErrors(errors!))
+    }
+  }, [categorySelected, errors, form, nomenclatureSelected])
 
   const handleChangeCategory = (
     value: IdType,
@@ -132,7 +141,6 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         initialValues={initialValues}
         layout='vertical'
         onFinish={handleFinish}
-        preserve={false}
       >
         <Form.Item
           data-testid='category-form-item'
