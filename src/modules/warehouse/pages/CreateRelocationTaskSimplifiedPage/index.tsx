@@ -12,11 +12,11 @@ import {
   UploadProps,
 } from 'antd'
 import get from 'lodash/get'
-import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 import stubFalse from 'lodash/stubFalse'
 import { NamePath } from 'rc-field-form/es/interface'
+import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
@@ -448,7 +448,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         isNew: isBoolean(eqp.isNew) ? eqp.isNew : undefined,
         isWarranty: isBoolean(eqp.isWarranty) ? eqp.isWarranty : undefined,
         isRepaired: isBoolean(eqp.isRepaired) ? eqp.isRepaired : undefined,
-        customerInventoryNumber: eqp.customerInventoryNumber || undefined,
+        inventoryNumber: eqp.inventoryNumber || undefined,
         serialNumber: eqp.serialNumber || undefined,
         quantity: isNumber(eqp.quantity) ? eqp.quantity : undefined,
         price: isNumber(eqp.price) ? eqp.price : undefined,
@@ -578,6 +578,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
               id: nomenclature.id,
               title: nomenclature.title,
               measurementUnit: nomenclature.measurementUnit.title,
+              equipmentHasSerialNumber: nomenclature.equipmentHasSerialNumber,
             }
           : undefined,
       }
