@@ -498,6 +498,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           condition: eqp.condition,
           purpose: eqp.purpose.title,
           category: eqp.category,
+          amount: eqp.availableQuantity,
         })
 
         newEditableTableRowKeys.push(eqp.id)
