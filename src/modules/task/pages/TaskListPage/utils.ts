@@ -64,7 +64,7 @@ export const getInitialExtendedFilterFormValues = (
 })
 
 export const getTasksByOlaNextBreachTime = (tasks: TaskListModel): TaskTableListItem[] => {
-  const currentDate = new Date()
+  const currentDate = moment()
   const granularity = 'day'
   const lessThanCurrentDate: TaskTableListItem[] = []
   const equalCurrentDate: TaskTableListItem[] = []

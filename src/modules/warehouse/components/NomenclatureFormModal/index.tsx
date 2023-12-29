@@ -1,6 +1,5 @@
 import { Checkbox, Form, Input, Select } from 'antd'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
-import isBoolean from 'lodash/isBoolean'
 import React, { FC, useEffect } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
@@ -66,10 +65,8 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
         title: title.trim(),
         shortTitle: shortTitle.trim(),
         vendorCode: vendorCode.trim(),
+        equipmentHasSerialNumber: equipmentHasSerialNumber || false,
         country: country || null,
-        equipmentHasSerialNumber: isBoolean(equipmentHasSerialNumber)
-          ? equipmentHasSerialNumber
-          : undefined,
       },
       form.setFields,
     )

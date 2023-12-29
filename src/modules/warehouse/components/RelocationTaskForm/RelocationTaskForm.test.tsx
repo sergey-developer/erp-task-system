@@ -240,7 +240,7 @@ describe('Форма создания заявки на перемещение �
           </Form>,
         )
 
-        const value = formatDate(new Date(), DATE_PICKER_FORMAT)
+        const value = formatDate(moment(), DATE_PICKER_FORMAT)
         const field = await testUtils.setDeadlineAtDate(user, value)
 
         expect(field).toHaveDisplayValue(value)
@@ -301,7 +301,7 @@ describe('Форма создания заявки на перемещение �
           </Form>,
         )
 
-        const value = formatDate(new Date(), TIME_PICKER_FORMAT)
+        const value = formatDate(moment(), TIME_PICKER_FORMAT)
         const field = await testUtils.setDeadlineAtTime(user, value)
 
         expect(field).toHaveDisplayValue(value)
@@ -330,7 +330,7 @@ describe('Форма создания заявки на перемещение �
             </Form>,
           )
 
-          const dateValue = formatDate(new Date(), DATE_PICKER_FORMAT)
+          const dateValue = formatDate(moment(), DATE_PICKER_FORMAT)
           await testUtils.setDeadlineAtDate(user, dateValue)
 
           const timeValue = formatDate(moment().subtract(1, 'hour'), TIME_PICKER_FORMAT)

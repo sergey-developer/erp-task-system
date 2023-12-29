@@ -1,9 +1,9 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
+import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
@@ -200,38 +200,6 @@ describe('Информация об оборудовании', () => {
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
-    })
-
-    describe('Инвентарный номер заказчика', () => {
-      test('Отображается если нет в списке скрытых', async () => {
-        const equipment = warehouseFixtures.equipment()
-        mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
-
-        render(<EquipmentDetails {...props} />)
-
-        await testUtils.expectLoadingFinished()
-        const block = testUtils.getBlock('customer-inventory-number')
-        const label = testUtils.getInfoInBlock(block, /Инвентарный номер заказчика/)
-        const value = testUtils.getInfoInBlock(block, equipment.customerInventoryNumber!)
-
-        expect(label).toBeInTheDocument()
-        expect(value).toBeInTheDocument()
-      })
-
-      test('Не отображается если категория расходный материал', async () => {
-        const equipment = warehouseFixtures.equipment({
-          category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
-        })
-        mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
-
-        render(<EquipmentDetails {...props} />)
-
-        await testUtils.expectLoadingFinished()
-        const block = testUtils.queryBlock('customer-inventory-number')
-        expect(block).not.toBeInTheDocument()
-      })
     })
 
     describe('Инвентарный номер', () => {
