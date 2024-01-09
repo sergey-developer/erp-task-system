@@ -1,1 +1,1 @@
-export const getTaskCountersErrorMsg = 'Возникла ошибка при добавлении комментария'
+export const getTaskCountersErrorMsg = 'Ошибка получения количества заявок для быстрых фильтров'

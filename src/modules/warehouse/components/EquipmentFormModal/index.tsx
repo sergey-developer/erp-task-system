@@ -1,5 +1,6 @@
 import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
 import isArray from 'lodash/isArray'
+import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
@@ -18,6 +19,8 @@ import { filesFormItemProps } from 'shared/constants/form'
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
+import { getFieldsErrors } from 'shared/utils/form'
+import { filterOptionBy } from 'shared/utils/common'
 
 import { EquipmentFormModalFormFields, EquipmentFormModalProps } from './types'
 
@@ -29,6 +32,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   isLoading,
   values,
   initialValues,
+  errors,
 
   onUploadImage,
   imageIsUploading,
@@ -78,6 +82,12 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
     if (values?.images?.length) form.setFieldsValue({ images: values.images })
   }, [form, values?.images])
 
+  useEffect(() => {
+    if (!isEmpty(errors) && nomenclatureSelected && categorySelected) {
+      form.setFields(getFieldsErrors(errors!))
+    }
+  }, [categorySelected, errors, form, nomenclatureSelected])
+
   const handleChangeCategory = (
     value: IdType,
     option: EquipmentCategoryListItemModel | EquipmentCategoryListItemModel[],
@@ -88,7 +98,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
       form.setFieldsValue({
         nomenclature: undefined,
         title: undefined,
-        customerInventoryNumber: undefined,
+        inventoryNumber: undefined,
         serialNumber: undefined,
         warehouse: undefined,
         condition: undefined,
@@ -113,7 +123,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         title: values.title.trim(),
         comment: values.comment?.trim(),
         serialNumber: values.serialNumber?.trim(),
-        customerInventoryNumber: values.customerInventoryNumber?.trim(),
+        inventoryNumber: values.inventoryNumber?.trim(),
       },
       form.setFields,
     )
@@ -131,7 +141,6 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         initialValues={initialValues}
         layout='vertical'
         onFinish={handleFinish}
-        preserve={false}
       >
         <Form.Item
           data-testid='category-form-item'
@@ -163,6 +172,8 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
             loading={nomenclatureListIsLoading}
             disabled={isLoading || nomenclatureListIsLoading}
             onChange={onChangeNomenclature}
+            showSearch
+            filterOption={filterOptionBy('title')}
           />
         </Form.Item>
 
@@ -183,11 +194,11 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
               {!categoryIsConsumable && (
                 <Form.Item
-                  data-testid='customer-inventory-number-form-item'
-                  label='Инвентарный номер заказчика'
-                  name='customerInventoryNumber'
+                  data-testid='inventory-number-form-item'
+                  label='Инвентарный номер'
+                  name='inventoryNumber'
                 >
-                  <Input placeholder='Введите инвентарный номер заказчика' disabled={isLoading} />
+                  <Input placeholder='Введите инвентарный номер' disabled={isLoading} />
                 </Form.Item>
               )}
 
@@ -361,6 +372,8 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                     options={ownerList}
                     loading={ownerListIsLoading}
                     disabled={isLoading || ownerListIsLoading}
+                    showSearch
+                    filterOption={filterOptionBy('title')}
                   />
                 </Form.Item>
               )}
@@ -394,7 +407,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   listType='picture'
                   multiple
                   disabled={isLoading || imageIsDeleting}
-                  itemRender={(originNode, file) => (!file.error ? originNode : null)}
+                  itemRender={(originNode, file) => (file.error ? null : originNode)}
                   customRequest={onUploadImage}
                   onRemove={onDeleteImage}
                   defaultFileList={values?.images}

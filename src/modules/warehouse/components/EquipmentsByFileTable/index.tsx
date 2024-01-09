@@ -1,7 +1,8 @@
-import { Table, TableProps, Tooltip, Typography } from 'antd'
-import isNumber from 'lodash/isNumber'
+import { Space, Table, TableProps, Tooltip, Typography } from 'antd'
 import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useMemo } from 'react'
+
+import { ValidationErrors } from 'shared/services/baseApi'
 
 import { getColumns } from './columns'
 import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from './types'
@@ -10,30 +11,38 @@ const { Text } = Typography
 
 const scrollConfig: TableProps<EquipmentByFileTableRow>['scroll'] = { y: 280 }
 
-const customComponents: TableProps<EquipmentByFileTableRow>['components'] = {
+const components: TableProps<EquipmentByFileTableRow>['components'] = {
   body: {
-    row: ({
-      hasErrors,
+    cell: ({
+      errors,
       ...props
-    }: ReturnType<GetComponentProps<EquipmentByFileTableRow>> & { hasErrors: boolean }) => {
-      const row = <tr {...props} />
+    }: ReturnType<GetComponentProps<EquipmentByFileTableRow>> & { errors?: ValidationErrors }) => {
+      const cell = <th {...props} />
 
-      return hasErrors ? (
+      return errors ? (
         <Tooltip
-          title={<Text type='danger'>Не заполнены обязательные поля или данные не корректны</Text>}
-          placement='topRight'
+          title={
+            <Space direction='vertical'>
+              {errors.map((error) => (
+                <Text type='danger'>{error}</Text>
+              ))}
+            </Space>
+          }
         >
-          {row}
+          {cell}
         </Tooltip>
       ) : (
-        row
+        cell
       )
     },
   },
 }
 
 const EquipmentsByFileTable: FC<EquipmentsByFileTableProps> = ({ errors, onEdit, dataSource }) => {
-  const columns = useMemo(() => getColumns({ onEdit, dataSource }), [dataSource, onEdit])
+  const columns = useMemo(
+    () => getColumns({ onEdit, dataSource, errors }),
+    [dataSource, errors, onEdit],
+  )
 
   return (
     <Table<EquipmentByFileTableRow>
@@ -43,15 +52,7 @@ const EquipmentsByFileTable: FC<EquipmentsByFileTableProps> = ({ errors, onEdit,
       columns={columns}
       scroll={scrollConfig}
       pagination={false}
-      components={customComponents}
-      /* https://github.com/ant-design/ant-design/issues/28817 */
-      onRow={(data, index) =>
-        errors && isNumber(index)
-          ? ({ hasErrors: !!errors[index] } as ReturnType<
-              GetComponentProps<EquipmentByFileTableRow>
-            >)
-          : {}
-      }
+      components={components}
     />
   )
 }

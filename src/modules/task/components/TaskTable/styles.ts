@@ -1,15 +1,11 @@
-import { Typography } from 'antd'
+import { Table } from 'antd'
 import styled from 'styled-components'
 
-import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
-
-const { Text } = Typography
-
-export const TableStyled: typeof ParentSizedTable = styled(ParentSizedTable)`
-  .ant-table-cell {
-    padding: 3px;
+export const TableStyled: typeof Table = styled(Table)`
+  table {
+    border-collapse: collapse;
   }
-
+  
   .ant-table-cell-row-hover {
     background: unset !important;
   }
@@ -28,16 +24,4 @@ export const TableStyled: typeof ParentSizedTable = styled(ParentSizedTable)`
     cursor: col-resize;
     z-index: 1;
   }
-`
-
-export const TableWrapperStyled = styled.div`
-  height: 100%;
-`
-
-export const EmptyContentStyled = styled.div`
-  padding: 20px 0;
-`
-
-export const OlaNextBreachTimeStyled = styled(Text)`
-  white-space: nowrap;
 `

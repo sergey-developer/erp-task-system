@@ -6,13 +6,7 @@ import { IdType } from 'shared/types/common'
 
 export type FieldsMaybeHidden = keyof Pick<
   EquipmentModel,
-  | 'customerInventoryNumber'
-  | 'inventoryNumber'
-  | 'isNew'
-  | 'isWarranty'
-  | 'isRepaired'
-  | 'usageCounter'
-  | 'owner'
+  'inventoryNumber' | 'isNew' | 'isWarranty' | 'isRepaired' | 'usageCounter' | 'owner'
 >
 
 export type EquipmentDetailsProps = Required<Pick<DrawerProps, 'onClose' | 'open'>> & {

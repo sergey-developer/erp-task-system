@@ -27,5 +27,5 @@ export const subTask = (
   cancelReason: fakeWord(),
 })
 
-export const getSubTaskList = (length: number = 1): NonNullableObject<SubTaskModel>[] =>
+export const subTaskList = (length: number = 1): NonNullableObject<SubTaskModel>[] =>
   times(length, () => subTask())

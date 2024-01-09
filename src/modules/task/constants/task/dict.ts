@@ -3,7 +3,12 @@ import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageS
 
 import { StringMap } from 'shared/types/utils'
 
-import { FastFilterEnum, TaskCardTabsEnum, TaskExtendedStatusEnum, TaskStatusEnum } from './enums'
+import {
+  FastFilterEnum,
+  TaskDetailsTabsEnum,
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from './enums'
 
 export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
   [FastFilterEnum.All]: 'Все',
@@ -14,6 +19,8 @@ export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
   [FastFilterEnum.SecondLine]: 'Вторая линия',
   [FastFilterEnum.LessOneHour]: 'Менее 1 часа',
   [FastFilterEnum.LessThreeHours]: 'Менее 3-х часов',
+  [FastFilterEnum.Returned]: 'На доработку',
+  [FastFilterEnum.ReclassificationDenied]: 'Отказ в переклассификации',
 }
 
 export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
@@ -61,11 +68,11 @@ export const taskPriorityMap: Map<BaseTaskModel['priorityCode'], string> = new M
   [4, '4-низкий'],
 ])
 
-export const taskCardTabNamesDict: Readonly<StringMap<TaskCardTabsEnum>> = {
-  [TaskCardTabsEnum.SubTaskList]: 'Задания',
-  [TaskCardTabsEnum.CommentList]: 'Комментарии',
-  [TaskCardTabsEnum.Resolution]: 'Решение',
-  [TaskCardTabsEnum.Description]: 'Описание',
-  [TaskCardTabsEnum.Journal]: 'Журнал',
-  [TaskCardTabsEnum.RelocationTaskList]: 'Перемещения',
+export const taskDetailsTabNameDict: Readonly<StringMap<TaskDetailsTabsEnum>> = {
+  [TaskDetailsTabsEnum.SubTaskList]: 'Задания',
+  [TaskDetailsTabsEnum.CommentList]: 'Комментарии',
+  [TaskDetailsTabsEnum.Resolution]: 'Решение',
+  [TaskDetailsTabsEnum.Description]: 'Описание',
+  [TaskDetailsTabsEnum.Journal]: 'Журнал',
+  [TaskDetailsTabsEnum.RelocationTaskList]: 'Перемещения',
 }

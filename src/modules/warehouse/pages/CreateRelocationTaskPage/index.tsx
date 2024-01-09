@@ -3,6 +3,7 @@ import { Button, Col, Form, FormProps, Modal, Row, Typography, Upload, UploadPro
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 import stubFalse from 'lodash/stubFalse'
+import { NamePath } from 'rc-field-form/es/interface'
 import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
@@ -56,7 +57,7 @@ import Space from 'components/Space'
 import { useLazyGetLocationList } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
@@ -76,8 +77,8 @@ const CreateEquipmentsByFileModal = React.lazy(
   () => import('modules/warehouse/components/CreateEquipmentsByFileModal'),
 )
 
-const AddAttachmentListModal = React.lazy(
-  () => import('modules/attachment/components/AddAttachmentListModal'),
+const CreateAttachmentListModal = React.lazy(
+  () => import('modules/attachment/components/CreateAttachmentListModal'),
 )
 
 const EquipmentFormModal = React.lazy(
@@ -110,6 +111,12 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
+
+  const [createEquipmentsErrors, setCreateEquipmentsErrors] =
+    useState<CreateEquipmentsBadRequestErrorResponse>()
+
+  const [editableEquipmentByFile, setEditableEquipmentByFile] = useState<EquipmentByFileTableRow>()
+  const [editableEquipmentByFileIndex, setEditableEquipmentByFileIndex] = useState<number>()
 
   const [
     createEquipmentsByFileModalOpened,
@@ -165,30 +172,26 @@ const CreateRelocationTaskPage: FC = () => {
   })
 
   const [
-    addRelocationEquipmentImagesModalOpened,
+    createRelocationEquipmentImagesModalOpened,
     {
-      setTrue: openAddRelocationEquipmentImagesModal,
-      setFalse: closeAddRelocationEquipmentImagesModal,
+      setTrue: openCreateRelocationEquipmentImagesModal,
+      setFalse: closeCreateRelocationEquipmentImagesModal,
     },
   ] = useBoolean(false)
 
-  const handleOpenAddRelocationEquipmentImagesModal = useDebounceFn((row: ActiveEquipmentRow) => {
-    setActiveEquipmentRow(row)
-    openAddRelocationEquipmentImagesModal()
-  })
+  const handleOpenCreateRelocationEquipmentImagesModal = useDebounceFn(
+    (row: ActiveEquipmentRow) => {
+      setActiveEquipmentRow(row)
+      openCreateRelocationEquipmentImagesModal()
+    },
+  )
 
-  const handleCloseAddRelocationEquipmentImagesModal = useDebounceFn(() => {
-    closeAddRelocationEquipmentImagesModal()
+  const handleCloseCreateRelocationEquipmentImagesModal = useDebounceFn(() => {
+    closeCreateRelocationEquipmentImagesModal()
     setActiveEquipmentRow(undefined)
   })
 
   const [confirmModalOpened, { toggle: toggleConfirmModal }] = useBoolean(false)
-
-  const [createEquipmentsErrors, setCreateEquipmentsErrors] =
-    useState<CreateEquipmentsBadRequestErrorResponse>()
-
-  const [editableEquipmentByFile, setEditableEquipmentByFile] = useState<EquipmentByFileTableRow>()
-  const [editableEquipmentByFileIndex, setEditableEquipmentByFileIndex] = useState<number>()
 
   const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
 
@@ -200,9 +203,6 @@ const CreateRelocationTaskPage: FC = () => {
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
-
-  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
-  const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
     isManager: false,
@@ -297,8 +297,10 @@ const CreateRelocationTaskPage: FC = () => {
     selectedNomenclatureId,
   ])
 
-  const [createRelocationTaskMutation, { isLoading: createRelocationTaskIsLoading }] =
-    useCreateRelocationTask()
+  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
+  const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
+
+  const [createTaskMutation, { isLoading: createTaskIsLoading }] = useCreateRelocationTask()
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
   const [createEquipmentsMutation, { isLoading: createEquipmentsIsLoading }] = useCreateEquipments()
@@ -307,6 +309,9 @@ const CreateRelocationTaskPage: FC = () => {
     importEquipmentsByFileMutation,
     { isLoading: importEquipmentsByFileIsLoading, data: importedEquipmentsByFile },
   ] = useImportEquipmentsByFile()
+
+  const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
+    useGetEquipmentListTemplate()
 
   const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
@@ -321,12 +326,9 @@ const CreateRelocationTaskPage: FC = () => {
     await createAttachment({ type: AttachmentTypeEnum.RelocationEquipmentImage }, options)
   }
 
-  const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
-    useGetEquipmentListTemplate()
-
-  const createRelocationTask = async (values: RelocationTaskFormFields) => {
+  const createTask = async (values: RelocationTaskFormFields) => {
     try {
-      const createdTask = await createRelocationTaskMutation({
+      const createdTask = await createTaskMutation({
         type: values.type,
         deadlineAt: mergeDateTime(values.deadlineAtDate, values.deadlineAtTime).toISOString(),
         equipments: values.equipments.map((eqp) => ({
@@ -350,6 +352,8 @@ const CreateRelocationTaskPage: FC = () => {
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))
+      } else {
+        console.error(error)
       }
     }
   }
@@ -365,13 +369,13 @@ const CreateRelocationTaskPage: FC = () => {
       ]
 
       if (changes.id) {
-        const { data: equipment } = await getEquipment({ equipmentId: changes.id })
+        const equipmentPath: NamePath = ['equipments', index]
+        const currentEquipment = values.equipments[Number(index)]
 
-        if (equipment) {
-          const currentEquipment = values.equipments[Number(index)]
+        try {
+          const equipment = await getEquipment({ equipmentId: changes.id }).unwrap()
           const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
-
-          form.setFieldValue(['equipments', index], {
+          form.setFieldValue(equipmentPath, {
             ...currentEquipment,
             serialNumber: equipment.serialNumber,
             purpose: equipment.purpose.title,
@@ -382,6 +386,10 @@ const CreateRelocationTaskPage: FC = () => {
             quantity: isConsumable ? currentEquipment.quantity : 1,
             category: equipment.category,
           })
+        } catch (error) {
+          if (isErrorResponse(error) && isForbiddenError(error)) {
+            form.setFieldValue(equipmentPath, { rowId: currentEquipment.rowId })
+          }
         }
       }
     }
@@ -402,7 +410,7 @@ const CreateRelocationTaskPage: FC = () => {
         isNew: isBoolean(eqp.isNew) ? eqp.isNew : undefined,
         isWarranty: isBoolean(eqp.isWarranty) ? eqp.isWarranty : undefined,
         isRepaired: isBoolean(eqp.isRepaired) ? eqp.isRepaired : undefined,
-        customerInventoryNumber: eqp.customerInventoryNumber || undefined,
+        inventoryNumber: eqp.inventoryNumber || undefined,
         serialNumber: eqp.serialNumber || undefined,
         quantity: isNumber(eqp.quantity) ? eqp.quantity : undefined,
         price: isNumber(eqp.price) ? eqp.price : undefined,
@@ -450,6 +458,7 @@ const CreateRelocationTaskPage: FC = () => {
           purpose: eqp.purpose.title,
           currency: eqp.currency?.id,
           category: eqp.category,
+          amount: eqp.availableQuantity,
           attachments: [],
         })
 
@@ -458,19 +467,6 @@ const CreateRelocationTaskPage: FC = () => {
 
       form.setFieldValue(equipmentsPath, [...currentEquipments, ...newEquipments])
       setEditableTableRowKeys((prevState) => prevState.concat(newEditableTableRowKeys))
-
-      if (isNumber(editableEquipmentByFileIndex)) {
-        setCreateEquipmentsErrors((prevState) => {
-          if (prevState) {
-            const newState = [...prevState]
-            newState.splice(editableEquipmentByFileIndex, 1)
-            return newState
-          }
-
-          return prevState
-        })
-      }
-
       handleCloseCreateEquipmentsByFileModal()
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error) && error.data.errorList) {
@@ -478,7 +474,13 @@ const CreateRelocationTaskPage: FC = () => {
         setCreateEquipmentsErrors(errors)
       }
     }
-  }, [createEquipmentsMutation, selectedRelocateFrom, selectedRelocateTo])
+  }, [
+    createEquipmentsMutation,
+    form,
+    handleCloseCreateEquipmentsByFileModal,
+    selectedRelocateFrom,
+    selectedRelocateTo,
+  ])
 
   const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
@@ -493,22 +495,24 @@ const CreateRelocationTaskPage: FC = () => {
         }).unwrap()
 
         const rowPath = ['equipments', activeEquipmentRow.rowIndex]
-
-        form.setFieldValue(rowPath, {
-          ...form.getFieldValue(rowPath),
+        const currentRow: RelocationEquipmentRow = form.getFieldValue(rowPath)
+        const equipmentRow: RelocationEquipmentRow = {
+          rowId: currentRow.rowId,
+          attachments: images,
           id: createdEquipment.id,
-          serialNumber: createdEquipment.serialNumber,
+          serialNumber: createdEquipment.serialNumber || undefined,
           purpose: createdEquipment.purpose.title,
           condition: typeIsWriteOff
             ? EquipmentConditionEnum.WrittenOff
             : createdEquipment.condition,
           amount: createdEquipment.availableQuantity,
-          price: createdEquipment.price,
+          price: isNumber(createdEquipment.price) ? createdEquipment.price : undefined,
           currency: createdEquipment.currency?.id,
-          quantity: createdEquipment.quantity,
+          quantity: isNumber(createdEquipment.quantity) ? createdEquipment.quantity : undefined,
           category: createdEquipment.category,
-        })
+        }
 
+        form.setFieldValue(rowPath, equipmentRow)
         handleCloseCreateEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
@@ -544,10 +548,20 @@ const CreateRelocationTaskPage: FC = () => {
               id: nomenclature.id,
               title: nomenclature.title,
               measurementUnit: nomenclature.measurementUnit.title,
+              equipmentHasSerialNumber: nomenclature.equipmentHasSerialNumber,
             }
           : undefined,
       }
 
+      setCreateEquipmentsErrors((prevState) => {
+        if (prevState) {
+          const newState = [...prevState]
+          newState[editableEquipmentByFileIndex] = {}
+          return newState
+        }
+
+        return prevState
+      })
       form.setFieldValue(equipmentPath, updatableEquipmentByFile)
       handleCloseEditEquipmentByFileModal()
     },
@@ -619,18 +633,28 @@ const CreateRelocationTaskPage: FC = () => {
     !checkLocationTypeIsWarehouse(selectedRelocateTo.type)
 
   const equipmentImagesFormPath =
-    addRelocationEquipmentImagesModalOpened && activeEquipmentRow
+    createRelocationEquipmentImagesModalOpened && activeEquipmentRow
       ? ['equipments', activeEquipmentRow.rowIndex, 'attachments']
       : undefined
 
+  const createEquipmentFormValues = useMemo(
+    () =>
+      createEquipmentModalOpened ? { title: nomenclature ? nomenclature.title : '' } : undefined,
+    [createEquipmentModalOpened, nomenclature],
+  )
+
   const equipmentByFileFormValues = useMemo(
-    () => ({
-      title: userChangedNomenclature ? nomenclature?.title : editableEquipmentByFile?.title,
-      images: isNumber(editableEquipmentByFileIndex)
-        ? form.getFieldValue(['equipmentsByFile', editableEquipmentByFileIndex, 'images'])
+    () =>
+      editEquipmentByFileModalOpened
+        ? {
+            title: userChangedNomenclature ? nomenclature?.title : editableEquipmentByFile?.title,
+            images: isNumber(editableEquipmentByFileIndex)
+              ? form.getFieldValue(['equipmentsByFile', editableEquipmentByFileIndex, 'images'])
+              : undefined,
+          }
         : undefined,
-    }),
     [
+      editEquipmentByFileModalOpened,
       editableEquipmentByFile?.title,
       editableEquipmentByFileIndex,
       form,
@@ -645,15 +669,14 @@ const CreateRelocationTaskPage: FC = () => {
         data-testid='create-relocation-task-page'
         form={form}
         layout='vertical'
-        onFinish={createRelocationTask}
+        onFinish={createTask}
         onValuesChange={pickEquipment}
         initialValues={initialValues}
-        preserve={false}
       >
         <Row gutter={[40, 40]}>
           <Col span={24}>
             <RelocationTaskForm
-              isLoading={createRelocationTaskIsLoading}
+              isLoading={createTaskIsLoading}
               userList={userList}
               userListIsLoading={userListIsFetching}
               relocateFromLocationList={relocateFromLocationList}
@@ -705,7 +728,7 @@ const CreateRelocationTaskPage: FC = () => {
               <RelocationEquipmentEditableTable
                 editableKeys={editableTableRowKeys}
                 setEditableKeys={setEditableTableRowKeys}
-                isLoading={createRelocationTaskIsLoading}
+                isLoading={createTaskIsLoading}
                 equipmentIsLoading={equipmentIsFetching}
                 currencyList={currencyList}
                 currencyListIsLoading={currencyListIsFetching}
@@ -714,7 +737,7 @@ const CreateRelocationTaskPage: FC = () => {
                 canCreateEquipment={!!permissions?.equipmentsCreate}
                 addEquipmentBtnDisabled={createEquipmentDisabled}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
-                onClickAddImage={handleOpenAddRelocationEquipmentImagesModal}
+                onClickCreateImage={handleOpenCreateRelocationEquipmentImagesModal}
               />
             </Space>
           </Col>
@@ -728,7 +751,7 @@ const CreateRelocationTaskPage: FC = () => {
               </Col>
 
               <Col>
-                <Button type='primary' htmlType='submit' loading={createRelocationTaskIsLoading}>
+                <Button type='primary' htmlType='submit' loading={createTaskIsLoading}>
                   Создать заявку
                 </Button>
               </Col>
@@ -771,6 +794,7 @@ const CreateRelocationTaskPage: FC = () => {
             title='Добавление оборудования'
             okText='Добавить'
             isLoading={createEquipmentIsLoading}
+            values={createEquipmentFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}
@@ -828,27 +852,32 @@ const CreateRelocationTaskPage: FC = () => {
             imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
+            errors={
+              createEquipmentsErrors && isNumber(editableEquipmentByFileIndex)
+                ? createEquipmentsErrors[editableEquipmentByFileIndex]
+                : undefined
+            }
           />
         </React.Suspense>
       )}
 
-      {addRelocationEquipmentImagesModalOpened && activeEquipmentRow && (
+      {createRelocationEquipmentImagesModalOpened && activeEquipmentRow && (
         <React.Suspense
           fallback={
             <ModalFallback
               open
-              onCancel={handleCloseAddRelocationEquipmentImagesModal}
+              onCancel={handleCloseCreateRelocationEquipmentImagesModal}
               tip='Загрузка модалки добавления изображений оборудования'
             />
           }
         >
-          <AddAttachmentListModal
+          <CreateAttachmentListModal
             form={form}
             formItemName={equipmentImagesFormPath}
-            open={addRelocationEquipmentImagesModalOpened}
+            open={createRelocationEquipmentImagesModalOpened}
             title='Добавить изображения оборудования'
-            onCancel={handleCloseAddRelocationEquipmentImagesModal}
-            onAdd={handleCreateRelocationEquipmentImage}
+            onCancel={handleCloseCreateRelocationEquipmentImagesModal}
+            onCreate={handleCreateRelocationEquipmentImage}
             onDelete={deleteAttachment}
             isDeleting={deleteAttachmentIsLoading}
             defaultFileList={form.getFieldValue(equipmentImagesFormPath)}
@@ -866,7 +895,7 @@ const CreateRelocationTaskPage: FC = () => {
             onCreate={createEquipments}
             isCreating={createEquipmentsIsLoading}
             data={(form.getFieldValue('equipmentsByFile') || []) as EquipmentByFileTableRow[]}
-            // errors={createEquipmentsErrors}
+            errors={createEquipmentsErrors}
             onEdit={handleOpenEditEquipmentByFileModal}
           />
         </React.Suspense>

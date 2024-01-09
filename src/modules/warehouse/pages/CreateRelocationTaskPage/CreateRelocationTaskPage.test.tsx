@@ -112,12 +112,13 @@ export const testUtils = {
 }
 
 setupApiTests()
+notificationTestUtils.setupNotifications()
 
 describe('Страница создания заявки на перемещение', () => {
   describe('Форма', () => {
     test('Отображается', () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
@@ -131,7 +132,7 @@ describe('Страница создания заявки на перемещен
   describe('Перечень оборудования', () => {
     test('Отображается', () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
@@ -148,7 +149,7 @@ describe('Страница создания заявки на перемещен
   describe('Кнопка скачивания шаблона', () => {
     test('Отображается если есть права', () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
@@ -166,7 +167,7 @@ describe('Страница создания заявки на перемещен
 
     test('Не отображается если нет прав', () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
@@ -178,7 +179,7 @@ describe('Страница создания заявки на перемещен
 
     test('При успешном запросе отрабатывает функционал скачивания', async () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
@@ -212,7 +213,7 @@ describe('Страница создания заявки на перемещен
 
     test('При не успешном запросе отображается сообщение об ошибке', async () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentListTemplateServerError()

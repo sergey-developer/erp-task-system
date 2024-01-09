@@ -32,5 +32,5 @@ export type RelocationEquipmentEditableTableProps = {
   addEquipmentBtnDisabled: boolean
   onClickCreateEquipment: (activeRow: ActiveEquipmentRow) => void
 
-  onClickAddImage: (activeRow: ActiveEquipmentRow) => void
+  onClickCreateImage: (activeRow: ActiveEquipmentRow) => void
 }

@@ -22,25 +22,25 @@ const EquipmentNomenclatureListPage: FC = () => {
   const [getEquipmentNomenclatureListParams, setGetEquipmentNomenclatureListParams] =
     useSetState<GetEquipmentNomenclatureListQueryArgs>({
       ...initialPaginationParams,
-      ...(context.filter && equipmentFilterToParams(context.filter)),
-      search: context.search,
+      ...(context?.filter && equipmentFilterToParams(context.filter)),
+      search: context?.search,
     })
 
   useEffect(() => {
     setGetEquipmentNomenclatureListParams({
-      search: context.search || undefined,
+      search: context?.search || undefined,
       offset: initialPaginationParams.offset,
     })
-  }, [context.search, setGetEquipmentNomenclatureListParams])
+  }, [context?.search, setGetEquipmentNomenclatureListParams])
 
   useEffect(() => {
-    if (context.filter) {
+    if (context?.filter) {
       setGetEquipmentNomenclatureListParams({
         ...equipmentFilterToParams(context.filter),
         offset: initialPaginationParams.offset,
       })
     }
-  }, [context.filter, setGetEquipmentNomenclatureListParams])
+  }, [context?.filter, setGetEquipmentNomenclatureListParams])
 
   const {
     currentData: equipmentNomenclatureList,

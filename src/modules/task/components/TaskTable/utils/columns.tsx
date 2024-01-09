@@ -3,7 +3,7 @@ import { ColumnsType } from 'antd/es/table'
 import get from 'lodash/get'
 import React from 'react'
 
-import { parseResponseTime } from 'modules/task/components/TaskCard/MainDetails/utils'
+import { parseResponseTime } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import {
   badgeByTaskStatus,
   iconByTaskExtendedStatus,
@@ -13,18 +13,17 @@ import TaskStatus from 'modules/task/components/TaskStatus/index'
 import { taskStatusDict } from 'modules/task/constants/task'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
-import { getShortUserName, getUserRoleMap } from 'modules/user/utils'
+import { checkRoleIsFirstLineSupport, getShortUserName } from 'modules/user/utils'
 
 import { MaybeNull } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
-import { OlaNextBreachTimeStyled } from '../styles'
 import { TaskTableListItem } from '../types'
 
 const { Text } = Typography
 
-export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListItem> => {
-  const roleMap = getUserRoleMap(role)
+export const getColumns = (role: UserRoleEnum): ColumnsType<TaskTableListItem> => {
+  const isFirstLineSupportRole = checkRoleIsFirstLineSupport(role)
 
   return [
     {
@@ -79,7 +78,7 @@ export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListIt
       ellipsis: true,
       sorter: true,
     },
-    ...(roleMap.isFirstLineSupportRole
+    ...(isFirstLineSupportRole
       ? [
           {
             key: 'supportGroup',
@@ -101,7 +100,7 @@ export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListIt
             ellipsis: true,
           },
         ]),
-    ...(roleMap.isFirstLineSupportRole
+    ...(isFirstLineSupportRole
       ? [
           {
             key: 'responseTime',
@@ -128,9 +127,7 @@ export const getTableColumns = (role: UserRoleEnum): ColumnsType<TaskTableListIt
       dataIndex: 'olaNextBreachTime',
       title: 'Выполнить до',
       render: (value: TaskTableListItem['olaNextBreachTime'], { olaStatus }) => (
-        <OlaNextBreachTimeStyled type={getOlaStatusTextType(olaStatus)}>
-          {formatDate(value)}
-        </OlaNextBreachTimeStyled>
+        <Text type={getOlaStatusTextType(olaStatus)}>{formatDate(value)}</Text>
       ),
       sorter: true,
       ellipsis: true,

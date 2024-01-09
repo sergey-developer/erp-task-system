@@ -11,7 +11,7 @@ import { MaybeNull } from 'shared/types/utils'
 
 export type ImportedEquipmentByFileModel = {
   title: MaybeNull<string>
-  customerInventoryNumber: MaybeNull<string>
+  inventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>
   comment: MaybeNull<string>
   condition: MaybeNull<EquipmentConditionEnum>
@@ -26,7 +26,7 @@ export type ImportedEquipmentByFileModel = {
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
   purpose: MaybeNull<Pick<WorkTypeModel, 'id' | 'title'>>
   nomenclature: MaybeNull<
-    Pick<NomenclatureModel, 'id' | 'title'> & {
+    Pick<NomenclatureModel, 'id' | 'title' | 'equipmentHasSerialNumber'> & {
       measurementUnit: NomenclatureModel['measurementUnit']['title']
     }
   >

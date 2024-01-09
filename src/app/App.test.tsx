@@ -47,7 +47,7 @@ describe('Private app', () => {
         mockGetTimeZoneListSuccess({ body: [catalogsFixtures.timeZoneListItem()] })
         mockGetUserMeSuccess({ body: userFixtures.user() })
 
-        render(<App />)
+        render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingStarted()
@@ -65,7 +65,7 @@ describe('Private app', () => {
 
         mockUpdateUserSuccess(fakeUser.id)
 
-        const { user } = render(<App />)
+        const { user } = render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -87,7 +87,7 @@ describe('Private app', () => {
 
         mockUpdateUserSuccess(fakeUser.id)
 
-        const { user } = render(<App />)
+        const { user } = render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -110,7 +110,7 @@ describe('Private app', () => {
         const fakeUser = userFixtures.user()
         mockGetUserMeSuccess({ body: fakeUser })
 
-        render(<App />)
+        render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -123,20 +123,20 @@ describe('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneList = catalogsFixtures.timeZoneList()
-        mockGetTimeZoneListSuccess({ body: fakeTimeZoneList })
+        const timeZoneList = catalogsFixtures.timeZoneList()
+        mockGetTimeZoneListSuccess({ body: timeZoneList })
 
         const fakeUser = userFixtures.user()
         mockGetUserMeSuccess({ body: fakeUser })
 
-        const { user } = render(<App />)
+        const { user } = render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         await privateHeaderTestUtils.openTimeZoneSelect(user)
         const options = privateHeaderTestUtils.getAllTimeZoneOption()
 
-        expect(options).toHaveLength(fakeTimeZoneList.length)
+        expect(options).toHaveLength(timeZoneList.length)
       })
 
       // todo: Выяснить почему не проходит. Всё работает верно, но в тестах новое значение не приходит почему-то
@@ -157,7 +157,7 @@ describe('Private app', () => {
 
         mockUpdateUserSuccess(fakeUser.id)
 
-        const { user } = render(<App />)
+        const { user } = render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -187,7 +187,7 @@ describe('Private app', () => {
 
         mockUpdateUserServerError(fakeUser.id)
 
-        const { user } = render(<App />)
+        const { user } = render(<App />, { useBrowserRouter: false })
 
         await privateLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
@@ -218,7 +218,7 @@ describe('Private app', () => {
             }),
           })
 
-          render(<App />)
+          render(<App />, { useBrowserRouter: false })
 
           await privateLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.getUserStatusSelectContainer()
@@ -241,7 +241,7 @@ describe('Private app', () => {
             }),
           })
 
-          render(<App />)
+          render(<App />, { useBrowserRouter: false })
 
           await privateLayoutTestUtils.expectLoadingFinished()
           await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -271,7 +271,7 @@ describe('Private app', () => {
 
               mockUpdateUserStatusSuccess(fakeUser.id)
 
-              const { user } = render(<App />)
+              const { user } = render(<App />, { useBrowserRouter: false })
 
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -345,7 +345,7 @@ describe('Private app', () => {
                 body: { detail: [badRequestErrorMessage] },
               })
 
-              const { user } = render(<App />)
+              const { user } = render(<App />, { useBrowserRouter: false })
 
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -386,7 +386,7 @@ describe('Private app', () => {
                 body: { detail: unauthorizedErrorMessage },
               })
 
-              const { user } = render(<App />)
+              const { user } = render(<App />, { useBrowserRouter: false })
 
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -427,7 +427,7 @@ describe('Private app', () => {
                 body: { detail: errorMessage },
               })
 
-              const { user } = render(<App />)
+              const { user } = render(<App />, { useBrowserRouter: false })
 
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -463,7 +463,7 @@ describe('Private app', () => {
 
               mockUpdateUserStatusServerError(fakeUser.id)
 
-              const { user } = render(<App />)
+              const { user } = render(<App />, { useBrowserRouter: false })
 
               await privateLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
@@ -498,7 +498,7 @@ describe('Private app', () => {
             }),
           })
 
-          render(<App />)
+          render(<App />, { useBrowserRouter: false })
 
           await privateLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()
@@ -520,7 +520,7 @@ describe('Private app', () => {
             }),
           })
 
-          render(<App />)
+          render(<App />, { useBrowserRouter: false })
 
           await privateLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()
@@ -542,7 +542,7 @@ describe('Private app', () => {
             }),
           })
 
-          render(<App />)
+          render(<App />, { useBrowserRouter: false })
 
           await privateLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()

@@ -8,7 +8,7 @@ export type CreateNomenclatureMutationArgs = {
   group: number
   vendorCode: string
   measurementUnit: number
-  equipmentHasSerialNumber: boolean
+  equipmentHasSerialNumber?: boolean
   country?: MaybeNull<number>
 }
 
@@ -17,5 +17,4 @@ export type CreateNomenclatureSuccessResponse = Pick<
   'id' | 'title' | 'vendorCode'
 >
 
-export type CreateNomenclatureBadRequestErrorResponse =
-  Partial<CreateNomenclatureMutationArgs>
+export type CreateNomenclatureBadRequestErrorResponse = Partial<CreateNomenclatureMutationArgs>

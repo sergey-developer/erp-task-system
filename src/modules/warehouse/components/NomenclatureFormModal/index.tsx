@@ -6,7 +6,7 @@ import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
-import { NomenclatureFormModalProps, NomenclatureFormModalFormFields } from './types'
+import { NomenclatureFormModalFormFields, NomenclatureFormModalProps } from './types'
 import {
   groupValidationRules,
   measurementUnitValidationRules,
@@ -18,7 +18,7 @@ import {
 const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
   onSubmit,
   isLoading,
-  permissions,
+  submitBtnDisabled,
 
   nomenclature,
   nomenclatureIsLoading,
@@ -65,8 +65,8 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
         title: title.trim(),
         shortTitle: shortTitle.trim(),
         vendorCode: vendorCode.trim(),
-        country: country || null,
         equipmentHasSerialNumber: equipmentHasSerialNumber || false,
+        country: country || null,
       },
       form.setFields,
     )
@@ -81,9 +81,7 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
       {...props}
       data-testid='nomenclature-form-modal'
       onOk={form.submit}
-      okButtonProps={{
-        disabled: !!permissions && !permissions.nomenclaturesUpdate,
-      }}
+      okButtonProps={{ disabled: submitBtnDisabled }}
       confirmLoading={isLoading}
       isLoading={nomenclatureIsLoading}
       footer={nomenclatureIsLoading ? null : undefined}

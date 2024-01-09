@@ -1,12 +1,14 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { deleteSuspendRequestMessages } from 'modules/task/constants/taskSuspendRequest'
-import { DeleteTaskSuspendRequestMutationArgs } from 'modules/task/models'
-import { taskSuspendRequestApiPermissions } from 'modules/task/permissions'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
+
+import { deleteSuspendRequestErrorMsg } from 'modules/task/constants/taskSuspendRequest'
+import {
+  DeleteTaskSuspendRequestMutationArgs,
+  DeleteTaskSuspendRequestSuccessResponse,
+} from 'modules/task/models'
 import { useDeleteSuspendRequestMutation } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/common'
 import {
   getErrorDetail,
   isBadRequestError,
@@ -15,32 +17,23 @@ import {
 } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useDeleteTaskSuspendRequest = () => {
-  const permissions = useUserPermissions(taskSuspendRequestApiPermissions)
+type UseDeleteTaskSuspendRequest = CustomUseMutationResult<
+  DeleteTaskSuspendRequestMutationArgs,
+  DeleteTaskSuspendRequestSuccessResponse
+>
+
+export const useDeleteTaskSuspendRequest = (): UseDeleteTaskSuspendRequest => {
   const [mutation, state] = useDeleteSuspendRequestMutation()
 
-  const fn = useCallback(
-    async (data: DeleteTaskSuspendRequestMutationArgs) => {
-      if (!permissions.canDelete) return
-
-      await mutation(data).unwrap()
-    },
-    [mutation, permissions.canDelete],
-  )
-
   useEffect(() => {
-    if (!state.error) return
-
     if (isErrorResponse(state.error)) {
-      if (isNotFoundError(state.error)) {
-        showErrorNotification(deleteSuspendRequestMessages.notFoundError)
-      } else if (isBadRequestError(state.error)) {
+      if (isNotFoundError(state.error) || isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(commonApiMessages.unknownError)
+        showErrorNotification(deleteSuspendRequestErrorMsg)
       }
     }
   }, [state.error])
 
-  return { fn, state }
+  return [mutation, state]
 }

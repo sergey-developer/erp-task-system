@@ -7,11 +7,11 @@ import { MaybeNull } from 'shared/types/utils'
 import countryFixtures from '_tests_/fixtures/country'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
-  selectTestUtils,
-  fakeWord,
-  render,
   buttonTestUtils,
   checkboxTestUtils,
+  fakeWord,
+  render,
+  selectTestUtils,
 } from '_tests_/utils'
 
 import NomenclatureFormModal from './index'
@@ -20,7 +20,7 @@ import { NomenclatureFormModalProps } from './types'
 const props: Readonly<NomenclatureFormModalProps> = {
   open: true,
   isLoading: false,
-  permissions: undefined,
+  submitBtnDisabled: false,
 
   nomenclature: undefined,
   nomenclatureIsLoading: false,
@@ -86,14 +86,9 @@ const findShortNameError = (error: string): Promise<HTMLElement> =>
 
 // group field
 const getGroupFormItem = () => within(getContainer()).getByTestId('group-form-item')
-
 const getGroupLabel = () => within(getGroupFormItem()).getByLabelText('Группа')
-
-const getGroupField = (opened?: boolean) =>
-  selectTestUtils.getSelect(getGroupFormItem(), { name: 'Группа', expanded: opened })
-
+const getGroupField = () => selectTestUtils.getSelect(getGroupFormItem())
 const setGroup = selectTestUtils.clickSelectOption
-
 const getGroupOption = selectTestUtils.getSelectOption
 
 const getSelectedGroup = (value: string): HTMLElement =>
@@ -137,14 +132,8 @@ const getMeasurementUnitFormItem = () =>
 const getMeasurementUnitLabel = () =>
   within(getMeasurementUnitFormItem()).getByLabelText('Единица измерения')
 
-const getMeasurementUnitField = (opened?: boolean) =>
-  selectTestUtils.getSelect(getMeasurementUnitFormItem(), {
-    name: 'Единица измерения',
-    expanded: opened,
-  })
-
+const getMeasurementUnitField = () => selectTestUtils.getSelect(getMeasurementUnitFormItem())
 const setMeasurementUnit = selectTestUtils.clickSelectOption
-
 const getMeasurementUnitOption = selectTestUtils.getSelectOption
 
 const getSelectedMeasurementUnit = (value: string): HTMLElement =>
@@ -168,17 +157,9 @@ const expectMeasurementUnitLoadingFinished = () =>
 
 // country field
 const getCountryFormItem = () => within(getContainer()).getByTestId('country-form-item')
-
 const getCountryLabel = () => within(getCountryFormItem()).getByLabelText('Страна производитель')
-
-const getCountryField = (opened?: boolean) =>
-  selectTestUtils.getSelect(getCountryFormItem(), {
-    name: 'Страна производитель',
-    expanded: opened,
-  })
-
+const getCountryField = () => selectTestUtils.getSelect(getCountryFormItem())
 const setCountry = selectTestUtils.clickSelectOption
-
 const getCountryOption = selectTestUtils.getSelectOption
 
 const getSelectedCountry = (value: string): HTMLElement =>
@@ -329,7 +310,7 @@ describe('Модалка создания и редактирования ном
   })
 
   describe('Кнопка отправки', () => {
-    test('Отображается корректно если права не переданы', () => {
+    test('Отображается', () => {
       render(<NomenclatureFormModal {...props} />)
 
       const button = testUtils.getSubmitButton(new RegExp(props.okText))
@@ -338,21 +319,9 @@ describe('Модалка создания и редактирования ном
       expect(button).toBeEnabled()
     })
 
-    test('Отображается корректно если есть права на редактирование', () => {
-      render(<NomenclatureFormModal {...props} permissions={{ nomenclaturesUpdate: true }} />)
-
+    test('Можно сделать не активной', () => {
+      render(<NomenclatureFormModal {...props} submitBtnDisabled />)
       const button = testUtils.getSubmitButton(new RegExp(props.okText))
-
-      expect(button).toBeInTheDocument()
-      expect(button).toBeEnabled()
-    })
-
-    test('Отображается корректно если нет прав на редактирование', () => {
-      render(<NomenclatureFormModal {...props} permissions={{ nomenclaturesUpdate: false }} />)
-
-      const button = testUtils.getSubmitButton(new RegExp(props.okText))
-
-      expect(button).toBeInTheDocument()
       expect(button).toBeDisabled()
     })
 
@@ -369,6 +338,8 @@ describe('Модалка создания и редактирования ном
 
       await testUtils.openMeasurementUnitSelect(user)
       await testUtils.setMeasurementUnit(user, props.measurementUnits[0].title)
+
+      await testUtils.setEquipmentHasSerialNumber(user)
 
       await testUtils.clickSubmitButton(user, new RegExp(props.okText))
 

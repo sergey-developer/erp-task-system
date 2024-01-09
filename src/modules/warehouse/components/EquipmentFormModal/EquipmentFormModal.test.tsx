@@ -104,14 +104,8 @@ const clickCancelButton = async (user: UserEvent) => {
 
 // category field
 const getCategoryFormItem = () => within(getContainer()).getByTestId('category-form-item')
-
-const getCategoryLabel = () => within(getCategoryFormItem()).getByLabelText('Категория')
-
-const getCategorySelectInput = (opened?: boolean) =>
-  selectTestUtils.getSelect(getCategoryFormItem(), { name: 'Категория', expanded: opened })
-
+const getCategorySelectInput = () => selectTestUtils.getSelect(getCategoryFormItem())
 const setCategory = selectTestUtils.clickSelectOption
-
 const getCategoryOption = selectTestUtils.getSelectOption
 
 const getSelectedCategory = (value: string): HTMLElement =>
@@ -135,14 +129,9 @@ const expectCategoryLoadingFinished = () =>
 
 // nomenclature field
 const getNomenclatureFormItem = () => within(getContainer()).getByTestId('nomenclature-form-item')
-
 const getNomenclatureLabel = () => within(getNomenclatureFormItem()).getByLabelText('Номенклатура')
-
-const getNomenclatureSelectInput = (opened?: boolean) =>
-  selectTestUtils.getSelect(getNomenclatureFormItem(), { name: 'Номенклатура', expanded: opened })
-
+const getNomenclatureSelectInput = () => selectTestUtils.getSelect(getNomenclatureFormItem())
 const setNomenclature = selectTestUtils.clickSelectOption
-
 const getNomenclatureOption = selectTestUtils.getSelectOption
 
 const getSelectedNomenclature = (value: string): HTMLElement =>
@@ -180,23 +169,21 @@ const setTitle = async (user: UserEvent, value: string) => {
 const findTitleError = (error: string): Promise<HTMLElement> =>
   within(getTitleFormItem()).findByText(error)
 
-// customer inventory number field
-const getCustomerInventoryNumberFormItem = () =>
-  within(getContainer()).getByTestId('customer-inventory-number-form-item')
+// inventory number field
+const getInventoryNumberFormItem = () =>
+  within(getContainer()).getByTestId('inventory-number-form-item')
 
-const queryCustomerInventoryNumberFormItem = () =>
-  within(getContainer()).queryByTestId('customer-inventory-number-form-item')
+const queryInventoryNumberFormItem = () =>
+  within(getContainer()).queryByTestId('inventory-number-form-item')
 
-const getCustomerInventoryNumberLabel = () =>
-  within(getCustomerInventoryNumberFormItem()).getByLabelText('Инвентарный номер заказчика')
+const getInventoryNumberLabel = () =>
+  within(getInventoryNumberFormItem()).getByLabelText('Инвентарный номер')
 
-const getCustomerInventoryNumberField = () =>
-  within(getCustomerInventoryNumberFormItem()).getByPlaceholderText(
-    'Введите инвентарный номер заказчика',
-  )
+const getInventoryNumberField = () =>
+  within(getInventoryNumberFormItem()).getByPlaceholderText('Введите инвентарный номер')
 
-const setCustomerInventoryNumber = async (user: UserEvent, value: string) => {
-  const field = getCustomerInventoryNumberField()
+const setInventoryNumber = async (user: UserEvent, value: string) => {
+  const field = getInventoryNumberField()
   await user.type(field, value)
   return field
 }
@@ -224,14 +211,9 @@ const findSerialNumberError = (error: string): Promise<HTMLElement> =>
 
 // condition field
 const getConditionFormItem = () => within(getContainer()).getByTestId('condition-form-item')
-
 const getConditionLabel = () => within(getConditionFormItem()).getByLabelText('Состояние')
-
-const getConditionSelectInput = (opened?: boolean) =>
-  selectTestUtils.getSelect(getConditionFormItem(), { name: 'Состояние', expanded: opened })
-
+const getConditionSelectInput = () => selectTestUtils.getSelect(getConditionFormItem())
 const setCondition = selectTestUtils.clickSelectOption
-
 const getConditionOption = selectTestUtils.getSelectOption
 
 const getSelectedCondition = (value: string): HTMLElement =>
@@ -283,14 +265,9 @@ const setPrice = async (user: UserEvent, value: number) => {
 
 // currency field
 const getCurrencyFormItem = () => within(getContainer()).getByTestId('currency-form-item')
-
 const getCurrencyLabel = () => within(getCurrencyFormItem()).getByLabelText('Валюта')
-
-const getCurrencySelectInput = (opened?: boolean) =>
-  selectTestUtils.getSelect(getCurrencyFormItem(), { name: 'Валюта', expanded: opened })
-
+const getCurrencySelectInput = () => selectTestUtils.getSelect(getCurrencyFormItem())
 const setCurrency = selectTestUtils.clickSelectOption
-
 const getCurrencyOption = selectTestUtils.getSelectOption
 
 const getSelectedCurrency = (value: string): HTMLElement =>
@@ -377,16 +354,10 @@ const setUsageCounter = async (user: UserEvent, value: number) => {
 
 // owner field
 const getOwnerFormItem = () => within(getContainer()).getByTestId('owner-form-item')
-
 const queryOwnerFormItem = () => within(getContainer()).queryByTestId('owner-form-item')
-
 const getOwnerLabel = () => within(getOwnerFormItem()).getByLabelText('Владелец оборудования')
-
-const getOwnerSelectInput = (opened?: boolean) =>
-  selectTestUtils.getSelect(getOwnerFormItem(), { name: 'Владелец оборудования', expanded: opened })
-
+const getOwnerSelectInput = () => selectTestUtils.getSelect(getOwnerFormItem())
 const setOwner = selectTestUtils.clickSelectOption
-
 const getOwnerOption = selectTestUtils.getSelectOption
 
 const getSelectedOwner = (value: string): HTMLElement =>
@@ -402,17 +373,9 @@ const expectOwnerLoadingFinished = () => selectTestUtils.expectLoadingFinished(g
 
 // purpose field
 const getPurposeFormItem = () => within(getContainer()).getByTestId('purpose-form-item')
-
 const getPurposeLabel = () => within(getPurposeFormItem()).getByLabelText('Назначение оборудования')
-
-const getPurposeSelectInput = (opened?: boolean) =>
-  selectTestUtils.getSelect(getPurposeFormItem(), {
-    name: 'Назначение оборудования',
-    expanded: opened,
-  })
-
+const getPurposeSelectInput = () => selectTestUtils.getSelect(getPurposeFormItem())
 const setPurpose = selectTestUtils.clickSelectOption
-
 const getPurposeOption = selectTestUtils.getSelectOption
 
 const getSelectedPurpose = (value: string): HTMLElement =>
@@ -494,7 +457,7 @@ export const testUtils = {
   getCancelButton,
   clickCancelButton,
 
-  getCategoryLabel,
+  getCategoryFormItem,
   getCategorySelectInput,
   setCategory,
   getCategoryOption,
@@ -521,10 +484,10 @@ export const testUtils = {
   setTitle,
   findTitleError,
 
-  queryCustomerInventoryNumberFormItem,
-  getCustomerInventoryNumberLabel,
-  getCustomerInventoryNumberField,
-  setCustomerInventoryNumber,
+  queryInventoryNumberFormItem,
+  getInventoryNumberLabel,
+  getInventoryNumberField,
+  setInventoryNumber,
 
   querySerialNumberFormItem,
   getSerialNumberLabel,
@@ -623,7 +586,7 @@ describe('Модалка оборудования', () => {
     test('Отображается корректно', () => {
       render(<EquipmentFormModal {...props} />)
 
-      const label = testUtils.getCategoryLabel()
+      const label = within(testUtils.getCategoryFormItem()).getByLabelText('Категория')
       const input = testUtils.getCategorySelectInput()
 
       expect(label).toBeInTheDocument()
@@ -727,13 +690,13 @@ describe('Модалка оборудования', () => {
     })
   })
 
-  describe('Инвентарный номер заказчика', () => {
+  describe('Инвентарный номер', () => {
     test('Отображается если категория не расходный материал', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
       render(<EquipmentFormModal {...props} selectedCategory={category} />)
 
-      const label = testUtils.getCustomerInventoryNumberLabel()
-      const field = testUtils.getCustomerInventoryNumberField()
+      const label = testUtils.getInventoryNumberLabel()
+      const field = testUtils.getInventoryNumberField()
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
@@ -747,7 +710,7 @@ describe('Модалка оборудования', () => {
       })
       render(<EquipmentFormModal {...props} selectedCategory={category} />)
 
-      const formItem = testUtils.queryCustomerInventoryNumberFormItem()
+      const formItem = testUtils.queryInventoryNumberFormItem()
       expect(formItem).not.toBeInTheDocument()
     })
 
@@ -755,7 +718,7 @@ describe('Модалка оборудования', () => {
       const { user } = render(<EquipmentFormModal {...props} />)
 
       const value = fakeWord()
-      const field = await testUtils.setCustomerInventoryNumber(user, value)
+      const field = await testUtils.setInventoryNumber(user, value)
 
       expect(field).toHaveDisplayValue(value)
     })

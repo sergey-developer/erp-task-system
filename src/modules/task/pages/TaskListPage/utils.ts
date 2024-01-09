@@ -1,9 +1,11 @@
 import get from 'lodash/get'
+import moment from 'moment-timezone'
 
 import { DEFAULT_SEARCH_FIELD } from 'modules/task/components/ExtendedFilter/constants'
 import { TasksFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
+import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
 import { FastFilterEnum } from 'modules/task/constants/task'
-import { ExtendedFilterQueries } from 'modules/task/models'
+import { ExtendedFilterQueries, TaskListModel } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getUserRoleMap } from 'modules/user/utils'
@@ -15,12 +17,12 @@ import { formatDate } from 'shared/utils/date'
 /**
  * Преобразует объект с полями формы расширенной фильтрации в объект с
  * query параметрами расширенной фильтрации
- * @function mapExtendedFilterFormFieldsToQueries
+ * @function mapFilterToQueryArgs
  * @param {TasksFilterFormFields} fields - объект со значениями формы расширенной фильтрации
  * @returns {ExtendedFilterQueries} объект с query параметрами расширенной фильтрации
  */
 
-export const mapExtendedFilterFormFieldsToQueries = (
+export const mapFilterToQueryArgs = (
   fields: Partial<TasksFilterFormFields>,
 ): ExtendedFilterQueries => {
   const { completeAt, searchField, searchValue, ...restFields } = fields
@@ -60,3 +62,42 @@ export const getInitialExtendedFilterFormValues = (
   macroregions: get(tasksFiltersStorage, 'macroregions', []),
   supportGroups: get(tasksFiltersStorage, 'supportGroups', []),
 })
+
+export const getTasksByOlaNextBreachTime = (tasks: TaskListModel): TaskTableListItem[] => {
+  const currentDate = moment()
+  const granularity = 'day'
+  const lessThanCurrentDate: TaskTableListItem[] = []
+  const equalCurrentDate: TaskTableListItem[] = []
+  const moreThanCurrentDate: TaskTableListItem[] = []
+
+  tasks.forEach((task) => {
+    const olaNextBreachTimeMoment = moment(task.olaNextBreachTime)
+
+    if (olaNextBreachTimeMoment.isBefore(currentDate, granularity)) {
+      lessThanCurrentDate.push(task)
+    } else if (olaNextBreachTimeMoment.isSame(currentDate, granularity)) {
+      equalCurrentDate.push(task)
+    } else if (olaNextBreachTimeMoment.isAfter(currentDate, granularity)) {
+      moreThanCurrentDate.push(task)
+    }
+  })
+
+  const lessThanCurrentDateTaskBoundary = lessThanCurrentDate.pop()
+  const equalCurrentDateTaskBoundary = equalCurrentDate.pop()
+
+  return [
+    ...lessThanCurrentDate,
+
+    ...(lessThanCurrentDateTaskBoundary
+      ? [{ ...lessThanCurrentDateTaskBoundary, isBoundary: true }]
+      : []),
+
+    ...equalCurrentDate,
+
+    ...(equalCurrentDateTaskBoundary
+      ? [{ ...equalCurrentDateTaskBoundary, isBoundary: true }]
+      : []),
+
+    ...moreThanCurrentDate,
+  ]
+}

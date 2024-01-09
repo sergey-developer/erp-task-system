@@ -2,11 +2,11 @@ import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import AttachmentList from 'modules/attachment/components/AttachmentList'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { attachmentsToFiles } from 'modules/attachment/utils'
-import { useMatchUserPermissions } from 'modules/user/hooks'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
@@ -311,16 +311,6 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 <Col span={16}>{equipment.nomenclature.title}</Col>
               </Row>
 
-              {!hiddenFields.includes('customerInventoryNumber') && (
-                <Row data-testid='customer-inventory-number'>
-                  <Col span={8}>
-                    <Text type='secondary'>Инвентарный номер заказчика:</Text>
-                  </Col>
-
-                  <Col span={16}>{valueOrHyphen(equipment.customerInventoryNumber)}</Col>
-                </Row>
-              )}
-
               {!hiddenFields.includes('inventoryNumber') && (
                 <Row data-testid='inventory-number'>
                   <Col span={8}>
@@ -620,7 +610,13 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
       {imageListModalOpened && !totalEquipmentAttachmentListIsFetching && (
         <React.Suspense
-          fallback={<ModalFallback open onCancel={debouncedToggleOpenImageListModal} />}
+          fallback={
+            <ModalFallback
+              open
+              onCancel={debouncedToggleOpenImageListModal}
+              tip='Загрузка данных для изображений оборудования'
+            />
+          }
         >
           <AttachmentListModal
             open={imageListModalOpened}

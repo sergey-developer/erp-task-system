@@ -17,6 +17,7 @@ export type CreatedEquipmentListItemModel = {
   title: string
   condition: EquipmentConditionEnum
   quantity: number
+  availableQuantity: number
   category: Pick<EquipmentCategoryListItemModel, 'id' | 'title' | 'code'>
   purpose: Pick<WorkTypeListItemModel, 'id' | 'title'>
   isNew: boolean
@@ -30,7 +31,6 @@ export type CreatedEquipmentListItemModel = {
   currency: MaybeNull<Pick<CurrencyListItemModel, 'id' | 'title'>>
   price: MaybeNull<number>
   serialNumber: MaybeNull<string>
-  customerInventoryNumber: MaybeNull<string>
   inventoryNumber: MaybeNull<string>
 }
 
@@ -44,7 +44,7 @@ export type CreateEquipmentModel = {
   condition?: EquipmentConditionEnum
   category?: IdType
   purpose?: IdType
-  customerInventoryNumber?: string
+  inventoryNumber?: string
   serialNumber?: string
   quantity?: number
   price?: number
@@ -66,7 +66,21 @@ export type CreateEquipmentsBadRequestErrorResponse = Partial<
   FieldsErrors<
     Pick<
       CreateEquipmentModel,
-      'title' | 'nomenclature' | 'purpose' | 'condition' | 'customerInventoryNumber'
+      | 'category'
+      | 'nomenclature'
+      | 'inventoryNumber'
+      | 'serialNumber'
+      | 'condition'
+      | 'price'
+      | 'currency'
+      | 'quantity'
+      | 'isNew'
+      | 'isWarranty'
+      | 'isRepaired'
+      | 'usageCounter'
+      | 'owner'
+      | 'purpose'
+      | 'comment'
     >
   >
 >[]

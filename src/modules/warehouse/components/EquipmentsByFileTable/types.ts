@@ -8,7 +8,7 @@ import { FileResponse } from 'shared/types/file'
 
 export type EquipmentByFileTableRow = Pick<ImportedEquipmentByFile, 'rowId'> & {
   title?: NonNullable<ImportedEquipmentByFile['title']>
-  customerInventoryNumber?: NonNullable<ImportedEquipmentByFile['customerInventoryNumber']>
+  inventoryNumber?: NonNullable<ImportedEquipmentByFile['inventoryNumber']>
   serialNumber?: NonNullable<ImportedEquipmentByFile['serialNumber']>
   comment?: NonNullable<ImportedEquipmentByFile['comment']>
   condition?: NonNullable<ImportedEquipmentByFile['condition']>
