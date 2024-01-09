@@ -47,7 +47,7 @@ Tests:
       policy: pull
   only:
     # - rc
-    - master
+  #  - master
     # - develop
   tags:
     - docker
