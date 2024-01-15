@@ -48,9 +48,8 @@ const paginationProps: Readonly<
 const getContainer = () => screen.getByTestId('task-table')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
-
 const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
-const clickRow = (user: UserEvent, id: IdType) =>
+const clickRow = async (user: UserEvent, id: IdType) =>
   tableTestUtils.clickRowIn(getContainer(), user, id)
 
 const getHeadCol = (text: string) => {

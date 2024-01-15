@@ -17,7 +17,7 @@ import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from './types'
 const tableRow: EquipmentByFileTableRow = {
   rowId: fakeId(),
   title: fakeWord(),
-  customerInventoryNumber: fakeWord(),
+  inventoryNumber: fakeWord(),
   serialNumber: fakeWord(),
   quantity: fakeInteger(),
   comment: fakeWord(),
@@ -27,7 +27,12 @@ const tableRow: EquipmentByFileTableRow = {
   isRepaired: false,
   isWarranty: false,
   condition: EquipmentConditionEnum.Working,
-  nomenclature: { id: fakeId(), title: fakeWord(), measurementUnit: fakeWord() },
+  nomenclature: {
+    id: fakeId(),
+    title: fakeWord(),
+    measurementUnit: fakeWord(),
+    equipmentHasSerialNumber: false,
+  },
   owner: { id: fakeId(), title: fakeWord() },
   currency: { id: fakeId(), title: fakeWord() },
   category: { id: fakeId(), title: fakeWord(), code: EquipmentCategoryEnum.Equipment },
@@ -99,7 +104,7 @@ describe('Таблица оборудования по шаблону файла
     render(<EquipmentsByFileTable {...props} />)
 
     const title = testUtils.getColTitle('Инв. №')
-    const value = testUtils.getColValue(tableRow.rowId, tableRow.customerInventoryNumber!)
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.inventoryNumber!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()

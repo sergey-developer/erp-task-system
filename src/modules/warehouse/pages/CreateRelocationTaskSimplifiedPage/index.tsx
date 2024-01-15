@@ -347,8 +347,6 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))
-      } else {
-        console.error(error)
       }
     }
   }
@@ -450,7 +448,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         isNew: isBoolean(eqp.isNew) ? eqp.isNew : undefined,
         isWarranty: isBoolean(eqp.isWarranty) ? eqp.isWarranty : undefined,
         isRepaired: isBoolean(eqp.isRepaired) ? eqp.isRepaired : undefined,
-        customerInventoryNumber: eqp.customerInventoryNumber || undefined,
+        inventoryNumber: eqp.inventoryNumber || undefined,
         serialNumber: eqp.serialNumber || undefined,
         quantity: isNumber(eqp.quantity) ? eqp.quantity : undefined,
         price: isNumber(eqp.price) ? eqp.price : undefined,
@@ -500,6 +498,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           condition: eqp.condition,
           purpose: eqp.purpose.title,
           category: eqp.category,
+          amount: eqp.availableQuantity,
         })
 
         newEditableTableRowKeys.push(eqp.id)
@@ -550,8 +549,6 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
           setFields(getFieldsErrors(error.data))
-        } else {
-          console.error(error)
         }
       }
     },
@@ -582,6 +579,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
               id: nomenclature.id,
               title: nomenclature.title,
               measurementUnit: nomenclature.measurementUnit.title,
+              equipmentHasSerialNumber: nomenclature.equipmentHasSerialNumber,
             }
           : undefined,
       }
@@ -642,6 +640,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       nomenclature?.title,
       userChangedNomenclature,
     ],
+  )
+
+  const createEquipmentFormValues = useMemo(
+    () =>
+      createEquipmentModalOpened ? { title: nomenclature ? nomenclature.title : '' } : undefined,
+    [createEquipmentModalOpened, nomenclature],
   )
 
   return (
@@ -815,6 +819,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             title='Добавление оборудования'
             okText='Добавить'
             isLoading={createEquipmentIsLoading}
+            values={createEquipmentFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}

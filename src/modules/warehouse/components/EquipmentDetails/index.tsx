@@ -311,16 +311,6 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 <Col span={16}>{equipment.nomenclature.title}</Col>
               </Row>
 
-              {!hiddenFields.includes('customerInventoryNumber') && (
-                <Row data-testid='customer-inventory-number'>
-                  <Col span={8}>
-                    <Text type='secondary'>Инвентарный номер заказчика:</Text>
-                  </Col>
-
-                  <Col span={16}>{valueOrHyphen(equipment.customerInventoryNumber)}</Col>
-                </Row>
-              )}
-
               {!hiddenFields.includes('inventoryNumber') && (
                 <Row data-testid='inventory-number'>
                   <Col span={8}>
