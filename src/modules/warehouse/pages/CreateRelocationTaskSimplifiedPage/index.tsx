@@ -534,7 +534,6 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         const currentRow: RelocationEquipmentRow = form.getFieldValue(rowPath)
         const equipmentRow: RelocationEquipmentRow = {
           rowId: currentRow.rowId,
-          attachments: images,
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber || undefined,
           purpose: createdEquipment.purpose.title,
