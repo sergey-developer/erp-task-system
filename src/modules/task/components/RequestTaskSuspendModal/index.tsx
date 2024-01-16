@@ -44,12 +44,13 @@ const initialValues: FormProps<RequestTaskSuspendFormFields>['initialValues'] = 
 const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
   open,
   recordId,
+  systemSettings,
   isLoading,
   onCancel,
   onSubmit,
 }) => {
   const [form] = Form.useForm<RequestTaskSuspendFormFields>()
-
+  console.log(systemSettings)
   const reasonFormValue = Form.useWatch('reason', form)
   const isAwaitingReleaseReason = isEqual(reasonFormValue, SuspendReasonEnum.AwaitingRelease)
   const isAwaitingNonItWorkReason = isEqual(reasonFormValue, SuspendReasonEnum.AwaitingNonItWork)

@@ -8,6 +8,7 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { SystemSettingsModel } from 'shared/models/system'
 import { FieldsErrors } from 'shared/services/baseApi'
 
 export type RequestTaskSuspendModalProps = Required<Pick<BaseModalProps, 'open'>> & {
@@ -18,6 +19,7 @@ export type RequestTaskSuspendModalProps = Required<Pick<BaseModalProps, 'open'>
   ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
   isLoading: boolean
+  systemSettings?: SystemSettingsModel
 }
 
 export type RequestTaskSuspendFormFields = {
