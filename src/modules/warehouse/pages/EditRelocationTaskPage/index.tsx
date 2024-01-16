@@ -405,13 +405,15 @@ const EditRelocationTaskPage: FC = () => {
     }
   }
 
-  const pickEquipment: FormProps<RelocationTaskFormFields>['onValuesChange'] =
-    async (changedValues, values) => {
-      if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
-        const [index, changes] = Object.entries(changedValues.equipments)[0] as [
-          string,
-          Partial<RelocationEquipmentRow>,
-        ]
+  const pickEquipment: FormProps<RelocationTaskFormFields>['onValuesChange'] = async (
+    changedValues,
+    values,
+  ) => {
+    if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
+      const [index, changes] = Object.entries(changedValues.equipments)[0] as [
+        string,
+        Partial<RelocationEquipmentRow>,
+      ]
 
       if (changes.id && relocationTaskId) {
         const equipmentPath: NamePath = ['equipments', index]
@@ -547,7 +549,6 @@ const EditRelocationTaskPage: FC = () => {
         const currentRow: RelocationEquipmentRow = form.getFieldValue(rowPath)
         const equipmentRow: RelocationEquipmentRow = {
           rowId: currentRow.rowId,
-          attachments: images,
           id: createdEquipment.id,
           serialNumber: createdEquipment.serialNumber || undefined,
           purpose: createdEquipment.purpose.title,
