@@ -19,7 +19,9 @@ export type RequestTaskSuspendModalProps = Required<Pick<BaseModalProps, 'open'>
   ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
   isLoading: boolean
+
   systemSettings?: SystemSettingsModel
+  systemSettingsIsLoading?: boolean
 }
 
 export type RequestTaskSuspendFormFields = {
