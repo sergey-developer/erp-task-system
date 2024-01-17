@@ -52,9 +52,8 @@ const clickDownloadButton = async (user: UserEvent): Promise<HTMLElement> => {
   return button
 }
 
-const expectJournalLoadingStarted = spinnerTestUtils.expectLoadingStarted('journal-loading')
-
-const expectJournalLoadingFinished = spinnerTestUtils.expectLoadingFinished('journal-loading')
+const expectJournalLoadingStarted = spinnerTestUtils.expectLoadingStarted('task-journal-loading')
+const expectJournalLoadingFinished = spinnerTestUtils.expectLoadingFinished('task-journal-loading')
 
 const expectJournalCsvLoadingStarted = buttonTestUtils.expectLoadingStarted
 const expectJournalCsvLoadingFinished = buttonTestUtils.expectLoadingFinished

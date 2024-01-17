@@ -1,5 +1,5 @@
 import { useSetState } from 'ahooks'
-import { Button, Col, Radio, RadioGroupProps, Row } from 'antd'
+import { Button, Col, Radio, RadioGroupProps, Row, Select, SelectProps } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
@@ -12,10 +12,13 @@ import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { useSelectAll } from 'shared/hooks/useSelectAll'
 import { IdType } from 'shared/types/common'
+import { filterOptionBy } from 'shared/utils/common'
 import { clickDownloadLink } from 'shared/utils/common/downloadLink'
 
 import Journal from './Journal'
+import { journalTypeOptions } from './constants'
 import { getJournalCsvFilename } from './utils'
 
 export type JournalTabProps = {
@@ -35,6 +38,17 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
 
   const [getJournalCsv, { isFetching: journalCsvIsFetching }] = useLazyGetTaskJournalCsv()
 
+  const onChangeType: SelectProps['onChange'] = (value: GetTaskJournalQueryArgs['types']) => {
+    setTaskJournalQueryArgs({ types: value })
+  }
+
+  const selectProps = useSelectAll({
+    showSelectAll: true,
+    value: taskJournalQueryArgs.types,
+    onChange: onChangeType,
+    options: journalTypeOptions,
+  })
+
   const handleGetJournalCsv = async () => {
     try {
       const journalCsv = await getJournalCsv({ taskId }).unwrap()
@@ -50,21 +64,39 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
   }
 
   return (
-    <LoadingArea data-testid='journal-loading' isLoading={false}>
+    <LoadingArea data-testid='task-journal-loading' isLoading={journalIsFetching}>
       <Space data-testid='task-journal' direction='vertical' size='middle' $block>
-        <Row justify='space-between' align='middle'>
+        <Row justify='space-between' align='middle' gutter={[16, 8]}>
           <Col>
-            <Radio.Group onChange={onChangeSourceSystem}>
-              <Radio.Button>Все</Radio.Button>
+            <Row gutter={[16, 8]}>
+              <Col>
+                <Radio.Group
+                  onChange={onChangeSourceSystem}
+                  value={taskJournalQueryArgs.sourceSystems}
+                >
+                  <Radio.Button>Все</Radio.Button>
 
-              <Radio.Button value={TaskJournalSourceEnum.X5}>
-                {TaskJournalSourceEnum.X5}
-              </Radio.Button>
+                  <Radio.Button value={TaskJournalSourceEnum.X5}>
+                    {TaskJournalSourceEnum.X5}
+                  </Radio.Button>
 
-              <Radio.Button value={TaskJournalSourceEnum.ITSM}>
-                {TaskJournalSourceEnum.ITSM}
-              </Radio.Button>
-            </Radio.Group>
+                  <Radio.Button value={TaskJournalSourceEnum.ITSM}>
+                    {TaskJournalSourceEnum.ITSM}
+                  </Radio.Button>
+                </Radio.Group>
+              </Col>
+
+              <Col>
+                <Select
+                  {...selectProps}
+                  style={{ width: taskJournalQueryArgs.types?.length ? '100%' : 150 }}
+                  placeholder='Выберите тип'
+                  mode='multiple'
+                  filterOption={filterOptionBy('label')}
+                  popupMatchSelectWidth={300}
+                />
+              </Col>
+            </Row>
           </Col>
 
           <Col>
@@ -84,7 +116,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
           </Col>
         </Row>
 
-        <Journal data={journal} isLoading={journalIsFetching} />
+        <Journal data={journal} />
       </Space>
     </LoadingArea>
   )
