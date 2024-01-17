@@ -1,8 +1,11 @@
-import { Button, Row } from 'antd'
+import { useSetState } from 'ahooks'
+import { Button, Col, Radio, RadioGroupProps, Row } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
+import { TaskJournalSourceEnum } from 'modules/task/constants/taskJournal'
 import { useGetTaskJournal, useLazyGetTaskJournalCsv } from 'modules/task/hooks/taskJournal'
+import { GetTaskJournalQueryArgs } from 'modules/task/models'
 
 import { DownloadIcon, SyncIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
@@ -20,11 +23,15 @@ export type JournalTabProps = {
 }
 
 const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
+  const [taskJournalQueryArgs, setTaskJournalQueryArgs] = useSetState<GetTaskJournalQueryArgs>({
+    taskId,
+  })
+
   const {
     data: journal = [],
     isFetching: journalIsFetching,
     refetch: refetchJournal,
-  } = useGetTaskJournal({ taskId })
+  } = useGetTaskJournal(taskJournalQueryArgs)
 
   const [getJournalCsv, { isFetching: journalCsvIsFetching }] = useLazyGetTaskJournalCsv()
 
@@ -38,23 +45,43 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
     } catch {}
   }
 
-  return (
-    <LoadingArea data-testid='journal-loading' isLoading={journalIsFetching}>
-      <Space data-testid='task-journal' direction='vertical' $block>
-        <Row justify='end'>
-          <Space>
-            {!isEmpty(journal) && (
-              <Button
-                data-testid='journal-btn-download'
-                type='link'
-                onClick={handleGetJournalCsv}
-                loading={journalCsvIsFetching}
-                icon={<DownloadIcon data-testid='journal-icon-download' $color='black' />}
-              />
-            )}
+  const onChangeSourceSystem: RadioGroupProps['onChange'] = (event) => {
+    setTaskJournalQueryArgs({ sourceSystems: event.target.value })
+  }
 
-            <Button type='link' icon={<SyncIcon $color='black' />} onClick={refetchJournal} />
-          </Space>
+  return (
+    <LoadingArea data-testid='journal-loading' isLoading={false}>
+      <Space data-testid='task-journal' direction='vertical' size='middle' $block>
+        <Row justify='space-between' align='middle'>
+          <Col>
+            <Radio.Group onChange={onChangeSourceSystem}>
+              <Radio.Button>Все</Radio.Button>
+
+              <Radio.Button value={TaskJournalSourceEnum.X5}>
+                {TaskJournalSourceEnum.X5}
+              </Radio.Button>
+
+              <Radio.Button value={TaskJournalSourceEnum.ITSM}>
+                {TaskJournalSourceEnum.ITSM}
+              </Radio.Button>
+            </Radio.Group>
+          </Col>
+
+          <Col>
+            <Space>
+              {!isEmpty(journal) && (
+                <Button
+                  data-testid='journal-btn-download'
+                  type='link'
+                  onClick={handleGetJournalCsv}
+                  loading={journalCsvIsFetching}
+                  icon={<DownloadIcon data-testid='journal-icon-download' $color='black' />}
+                />
+              )}
+
+              <Button type='link' icon={<SyncIcon $color='black' />} onClick={refetchJournal} />
+            </Space>
+          </Col>
         </Row>
 
         <Journal data={journal} isLoading={journalIsFetching} />
