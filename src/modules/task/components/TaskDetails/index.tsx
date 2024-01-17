@@ -66,6 +66,8 @@ import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { useSystemSettingsState } from '../../../../shared/hooks/system'
+
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
 
 const ConfirmExecuteTaskModal = React.lazy(
@@ -244,6 +246,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   ] = useBoolean(false)
 
   const debouncedOpenRequestTaskSuspendModal = useDebounceFn(openRequestTaskSuspendModal)
+
+  const { data: systemSettings, isFetching: systemSettingsIsFetching } = useSystemSettingsState()
 
   useEffect(() => {
     if (isGetTaskError) originOnClose()
@@ -631,6 +635,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           <RequestTaskSuspendModal
             open={requestTaskSuspendModalOpened}
             recordId={task.recordId}
+            systemSettings={systemSettings}
             isLoading={createSuspendRequestIsLoading}
             onSubmit={handleCreateTaskSuspendRequest}
             onCancel={closeRequestTaskSuspendModal}
