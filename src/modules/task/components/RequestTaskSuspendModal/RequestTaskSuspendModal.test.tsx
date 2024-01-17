@@ -14,9 +14,11 @@ import {
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
+import systemFixtures from '_tests_/fixtures/system'
 import {
   buttonTestUtils,
   fakeIdStr,
+  fakeInteger,
   fakeUrl,
   fakeWord,
   radioButtonTestUtils,
@@ -24,13 +26,15 @@ import {
   selectTestUtils,
 } from '_tests_/utils'
 
-import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import RequestTaskSuspendModal from './index'
 import { RequestTaskSuspendModalProps } from './types'
+import { getDateLimitExceedError } from './utils'
 
 const props: Readonly<RequestTaskSuspendModalProps> = {
   open: true,
   recordId: fakeIdStr(),
+  systemSettings: systemFixtures.settings(),
+  systemSettingsIsLoading: false,
   isLoading: false,
   onCancel: jest.fn(),
   onSubmit: jest.fn(),
@@ -116,6 +120,12 @@ const setEndDate = async (user: UserEvent, value: string) => {
   return field
 }
 
+const resetEndDate = async (user: UserEvent) => {
+  const formItem = getEndDateFormItem()
+  const clearButton = buttonTestUtils.getButtonIn(formItem, 'close-circle')
+  await user.click(clearButton)
+}
+
 const getEndTimeFormItem = () => within(getReturnTimeFormItem()).getByTestId('end-time-form-item')
 
 const getEndTimeField = (): HTMLInputElement =>
@@ -179,6 +189,7 @@ export const testUtils = {
   getEndDateField,
   findEndDateError,
   setEndDate,
+  resetEndDate,
   getEndTimeFormItem,
   getEndTimeField,
   findEndTimeError,
@@ -265,53 +276,54 @@ describe('Модалка создания запроса о переводе в 
       })
     })
 
-    test('Можно выбрать причину', async () => {
-      const { user } = render(<RequestTaskSuspendModal {...props} />)
-
-      const awaitingReleaseField = await testUtils.setReason(
-        user,
-        SuspendReasonEnum.AwaitingRelease,
+    test('Поле не активно если так указано в системных настройках', () => {
+      render(
+        <RequestTaskSuspendModal
+          {...props}
+          systemSettings={{
+            suspendReasons: {
+              [SuspendReasonEnum.AwaitingInformation]: {
+                editable: false,
+                limit: fakeInteger({ min: 1, max: 20 }),
+              },
+              [SuspendReasonEnum.AwaitingInitiator]: {
+                editable: false,
+                limit: fakeInteger({ min: 1, max: 20 }),
+              },
+              [SuspendReasonEnum.AwaitingNonItWork]: {
+                editable: false,
+                limit: fakeInteger({ min: 1, max: 20 }),
+              },
+              [SuspendReasonEnum.AwaitingRelease]: {
+                editable: false,
+                limit: fakeInteger({ min: 1, max: 20 }),
+              },
+              [SuspendReasonEnum.AwaitingPurchase]: {
+                editable: false,
+                limit: fakeInteger({ min: 1, max: 20 }),
+              },
+              [SuspendReasonEnum.AwaitingInformationFromFirstLine]: {
+                editable: false,
+                limit: fakeInteger({ min: 1, max: 20 }),
+              },
+            },
+          }}
+        />,
       )
-      expect(awaitingReleaseField).toBeChecked()
-
-      const awaitingNonItWorkField = await testUtils.setReason(
-        user,
-        SuspendReasonEnum.AwaitingNonItWork,
-      )
-      expect(awaitingNonItWorkField).toBeChecked()
-
-      const awaitingInitiatorField = await testUtils.setReason(
-        user,
-        SuspendReasonEnum.AwaitingInitiator,
-      )
-      expect(awaitingInitiatorField).toBeChecked()
-
-      const awaitingInformationField = await testUtils.setReason(
-        user,
-        SuspendReasonEnum.AwaitingInformation,
-      )
-      expect(awaitingInformationField).toBeChecked()
-
-      const awaitingInformationFromFirstLineField = await testUtils.setReason(
-        user,
-        SuspendReasonEnum.AwaitingInformationFromFirstLine,
-      )
-      expect(awaitingInformationFromFirstLineField).toBeChecked()
-
-      const awaitingPurchaseField = await testUtils.setReason(
-        user,
-        SuspendReasonEnum.AwaitingPurchase,
-      )
-      expect(awaitingPurchaseField).toBeChecked()
-    })
-
-    test('Не активно во время загрузки', () => {
-      render(<RequestTaskSuspendModal {...props} isLoading />)
 
       Object.values(SuspendReasonEnum).forEach((reason) => {
         const field = testUtils.getReasonField(reason)
         expect(field).toBeDisabled()
       })
+    })
+
+    test('Можно выбрать причину', async () => {
+      const { user } = render(<RequestTaskSuspendModal {...props} />)
+
+      for await (const reason of Object.values(SuspendReasonEnum)) {
+        const field = await testUtils.setReason(user, reason)
+        expect(field).toBeChecked()
+      }
     })
 
     describe('Отображается ошибка', () => {
@@ -425,16 +437,6 @@ describe('Модалка создания запроса о переводе в 
 
       expect(selectedOrganization).toBeInTheDocument()
     })
-
-    test('Показывается ошибка если поле не заполнено', async () => {
-      const { user } = render(<RequestTaskSuspendModal {...props} />)
-
-      await testUtils.setReason(user, SuspendReasonEnum.AwaitingNonItWork)
-      await testUtils.clickSubmitButton(user)
-      const error = await testUtils.findOrganizationError(validationMessages.required)
-
-      expect(error).toBeInTheDocument()
-    })
   })
 
   describe('Поля времени возврата', () => {
@@ -447,23 +449,16 @@ describe('Модалка создания запроса о переводе в 
 
       expect(title).toBeInTheDocument()
       expect(endDateField).toBeInTheDocument()
-      expect(endDateField).toBeDisabled()
       expect(endDateField).not.toHaveValue()
       expect(endTimeField).toBeInTheDocument()
-      expect(endTimeField).toBeDisabled()
       expect(endTimeField).not.toHaveValue()
     })
 
     describe('Поле даты', () => {
-      test('Активно если выбрать определённую причину', async () => {
+      test('Активно если выбрать причину', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
-
-        for await (const reason of Object.values(SuspendReasonEnum)) {
-          if (reasonsMakeDateTimeFieldDisabled.includes(reason)) return
-
-          await testUtils.setReason(user, reason)
-          expect(testUtils.getEndDateField()).toBeEnabled()
-        }
+        await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
+        expect(testUtils.getEndDateField()).toBeEnabled()
       })
 
       describe('Не активно', () => {
@@ -472,38 +467,40 @@ describe('Модалка создания запроса о переводе в 
           expect(testUtils.getEndDateField()).toBeDisabled()
         })
 
-        test('Если выбрать определённую причину', async () => {
-          const { user } = render(<RequestTaskSuspendModal {...props} />)
+        test('При загрузке', () => {
+          render(<RequestTaskSuspendModal {...props} isLoading />)
+          expect(testUtils.getEndDateField()).toBeDisabled()
+        })
 
-          for await (const reason of Object.values(SuspendReasonEnum)) {
-            if (!reasonsMakeDateTimeFieldDisabled.includes(reason)) return
-
-            await testUtils.setReason(user, reason)
-            expect(testUtils.getEndDateField()).toBeDisabled()
-          }
+        test('При загрузке системных настроек', () => {
+          render(<RequestTaskSuspendModal {...props} systemSettingsIsLoading />)
+          expect(testUtils.getEndDateField()).toBeDisabled()
         })
       })
 
-      test('Можно установить значение если выбрать определённую причину', async () => {
+      test('Можно установить значение', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
 
-        await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
-
+        await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
+        await testUtils.resetEndDate(user)
         const value = formatDate(moment(), DATE_PICKER_FORMAT)
         const field = await testUtils.setEndDate(user, value)
 
         expect(field).toHaveDisplayValue(value)
       })
 
-      test('При выборе определённой причины, автоматически устанавливается текущая дата на пять дней больше', async () => {
+      test('При выборе причины значение устанавливается в соответствии с системными настройками', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
 
-        await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
+        const reason = SuspendReasonEnum.AwaitingInformation
+        await testUtils.setReason(user, reason)
 
         const field = testUtils.getEndDateField()
-        const plusFiveDaysDate = moment().add('5', 'days').format(DATE_PICKER_FORMAT)
+        const value = moment()
+          .add(props.systemSettings!.suspendReasons[reason].limit, 'days')
+          .format(DATE_PICKER_FORMAT)
 
-        expect(field.value).toBe(plusFiveDaysDate)
+        expect(field.value).toBe(value)
       })
 
       describe('Отображается ошибка', () => {
@@ -520,39 +517,39 @@ describe('Модалка создания запроса о переводе в 
           const { user } = render(<RequestTaskSuspendModal {...props} />)
 
           await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
-
+          await testUtils.resetEndDate(user)
           const value = formatDate(moment().subtract(1, 'day'), DATE_PICKER_FORMAT)
           await testUtils.setEndDate(user, value)
 
           const error = await testUtils.findEndDateError(validationMessages.date.canNotBeInPast)
           expect(error).toBeInTheDocument()
         })
-      })
 
-      test('Значение сбрасывается при выборе определённой причины', async () => {
-        const { user } = render(<RequestTaskSuspendModal {...props} />)
+        test('Если превышен лимит из системных настроек', async () => {
+          const { user } = render(<RequestTaskSuspendModal {...props} />)
 
-        await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
+          const reason = SuspendReasonEnum.AwaitingInformation
+          await testUtils.setReason(user, reason)
+          await testUtils.resetEndDate(user)
 
-        const field = testUtils.getEndDateField()
-        expect(field).toHaveDisplayValue(field.value)
+          const limit = props.systemSettings!.suspendReasons[reason].limit
+          const value = moment()
+            .add(limit + 1, 'days')
+            .format(DATE_PICKER_FORMAT)
+          await testUtils.setEndDate(user, value)
 
-        await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
-
-        expect(testUtils.getEndDateField()).not.toHaveDisplayValue(field.value)
+          const limitDate = moment().add(limit, 'days')
+          const error = await testUtils.findEndDateError(getDateLimitExceedError(limitDate))
+          expect(error).toBeInTheDocument()
+        })
       })
     })
 
     describe('Поле времени', () => {
-      test('Активно если выбрать определённую причину', async () => {
+      test('Активно если выбрать причину', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
-
-        for await (const reason of Object.values(SuspendReasonEnum)) {
-          if (reasonsMakeDateTimeFieldDisabled.includes(reason)) return
-
-          await testUtils.setReason(user, reason)
-          expect(testUtils.getEndTimeField()).toBeEnabled()
-        }
+        await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
+        expect(testUtils.getEndTimeField()).toBeEnabled()
       })
 
       describe('Не активно', () => {
@@ -561,43 +558,35 @@ describe('Модалка создания запроса о переводе в 
           expect(testUtils.getEndTimeField()).toBeDisabled()
         })
 
-        test('Если выбрать определённую причину', async () => {
-          const { user } = render(<RequestTaskSuspendModal {...props} />)
-
-          for await (const reason of Object.values(SuspendReasonEnum)) {
-            if (!reasonsMakeDateTimeFieldDisabled.includes(reason)) return
-
-            await testUtils.setReason(user, reason)
-            expect(testUtils.getEndTimeField()).toBeDisabled()
-          }
+        test('При загрузке', () => {
+          render(<RequestTaskSuspendModal {...props} isLoading />)
+          expect(testUtils.getEndTimeField()).toBeDisabled()
         })
 
-        test('Во время загрузки', () => {
-          render(<RequestTaskSuspendModal {...props} isLoading />)
+        test('При загрузке системных настроек', () => {
+          render(<RequestTaskSuspendModal {...props} systemSettingsIsLoading />)
           expect(testUtils.getEndTimeField()).toBeDisabled()
         })
       })
 
-      test('Можно установить значение если выбрать определённую причину', async () => {
+      test('Можно установить значение', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
 
         await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
-
         const value = formatDate(moment(), TIME_PICKER_FORMAT)
         const field = await testUtils.setEndTime(user, value)
 
         expect(field).toHaveDisplayValue(value)
       })
 
-      test('При выборе определённой причины, автоматически устанавливается текущее время', async () => {
+      test('При выборе причины устанавливается текущее время', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
 
         await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
-
         const field = testUtils.getEndTimeField()
-        const plusFiveDaysTime = moment().add('5', 'days').format(TIME_PICKER_FORMAT)
+        const value = moment().format(TIME_PICKER_FORMAT)
 
-        expect(field.value).toBe(plusFiveDaysTime)
+        expect(field.value).toBe(value)
       })
 
       describe('Отображается ошибка', () => {
@@ -625,17 +614,6 @@ describe('Модалка создания запроса о переводе в 
           const error = await testUtils.findEndTimeError(validationMessages.time.canNotBeInPast)
           expect(error).toBeInTheDocument()
         })
-      })
-
-      test('Значение сбрасывается при выборе определённой причины', async () => {
-        const { user } = render(<RequestTaskSuspendModal {...props} />)
-
-        await testUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
-
-        const field = testUtils.getEndTimeField()
-        expect(field).toHaveDisplayValue(field.value)
-        await testUtils.setReason(user, SuspendReasonEnum.AwaitingPurchase)
-        expect(testUtils.getEndTimeField()).not.toHaveDisplayValue(field.value)
       })
     })
   })
