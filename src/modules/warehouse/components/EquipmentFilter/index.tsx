@@ -1,6 +1,6 @@
-import { Form, Radio, Select, InputNumber, Row, Col } from 'antd'
+import { Col, Form, InputNumber, Radio, Row, Select, SelectProps } from 'antd'
 import isEmpty from 'lodash/isEmpty'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 
@@ -9,6 +9,7 @@ import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
+import { useSelectAll } from 'shared/hooks/useSelectAll'
 
 import { EquipmentFilterFormFields, EquipmentFilterProps } from './types'
 
@@ -33,6 +34,26 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
   onApply,
 }) => {
   const [form] = Form.useForm<EquipmentFilterFormFields>()
+  const warehousesFormValue: EquipmentFilterFormFields['warehouses'] = Form.useWatch(
+    'warehouses',
+    form,
+  )
+
+  const onChangeWarehouses: SelectProps['onChange'] = (
+    value: EquipmentFilterFormFields['warehouses'],
+  ) => form.setFieldValue('warehouses', value)
+
+  const warehouseOptions = useMemo(
+    () => warehouseList.map((w) => ({ label: w.title, value: w.id })),
+    [warehouseList],
+  )
+
+  const warehouseSelectProps = useSelectAll({
+    showSelectAll: true,
+    value: warehousesFormValue,
+    onChange: onChangeWarehouses,
+    options: warehouseOptions,
+  })
 
   useEffect(() => {
     if (!isEmpty(values)) {
@@ -84,11 +105,10 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
         <FilterBlock data-testid='warehouses' label='Склад' onReset={resetFields(['warehouses'])}>
           <Form.Item name='warehouses'>
             <Select
+              {...warehouseSelectProps}
               data-testid='warehouses-select'
               mode='multiple'
-              fieldNames={idAndTitleSelectFieldNames}
               placeholder='Выберите склад'
-              options={warehouseList}
               loading={warehouseListIsLoading}
             />
           </Form.Item>
