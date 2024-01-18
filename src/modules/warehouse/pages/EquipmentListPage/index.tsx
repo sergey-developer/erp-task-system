@@ -1,6 +1,7 @@
 import { useBoolean, useSetState } from 'ahooks'
 import debounce from 'lodash/debounce'
-import React, { FC, useCallback, useState } from 'react'
+import isNumber from 'lodash/isNumber'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
@@ -29,6 +30,8 @@ import {
 
 const EquipmentDetails = React.lazy(() => import('modules/warehouse/components/EquipmentDetails'))
 
+const initialPaginationParams = getInitialPaginationParams()
+
 const EquipmentListPage: FC = () => {
   const [searchParams] = useSearchParams()
   // todo: создать хук который будет возвращать распарсеные значения
@@ -48,7 +51,7 @@ const EquipmentListPage: FC = () => {
 
   const [getEquipmentListParams, setGetEquipmentListParams] =
     useSetState<GetEquipmentListQueryArgs>({
-      ...getInitialPaginationParams(),
+      ...initialPaginationParams,
       ...(context?.filter && equipmentFilterToParams(context.filter)),
       search: context?.search,
       nomenclature: nomenclatureId,
@@ -57,6 +60,26 @@ const EquipmentListPage: FC = () => {
 
   const { currentData: equipmentList, isFetching: equipmentListIsFetching } =
     useGetEquipmentList(getEquipmentListParams)
+
+  useEffect(() => {
+    if (isNumber(getEquipmentListParams.nomenclature)) {
+      context?.setGetEquipmentsXlsxParams({ nomenclature: getEquipmentListParams.nomenclature })
+    }
+
+    return () => {
+      context?.setGetEquipmentsXlsxParams({ nomenclature: undefined })
+    }
+  }, [context?.setGetEquipmentsXlsxParams, getEquipmentListParams.nomenclature])
+
+  useEffect(() => {
+    if (getEquipmentListParams.ordering) {
+      context?.setGetEquipmentsXlsxParams({ ordering: getEquipmentListParams.ordering })
+    }
+
+    return () => {
+      context?.setGetEquipmentsXlsxParams({ ordering: undefined })
+    }
+  }, [context?.setGetEquipmentsXlsxParams, getEquipmentListParams.ordering])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<EquipmentTableProps['onChange']>[0]) => {
@@ -71,9 +94,8 @@ const EquipmentListPage: FC = () => {
         const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
         if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
-          setGetEquipmentListParams({
-            ordering: order ? getSort(columnKey as SortableField, order) : undefined,
-          })
+          const ordering = order ? getSort(columnKey as SortableField, order) : undefined
+          setGetEquipmentListParams({ ordering })
         }
       }
     },
