@@ -89,6 +89,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
               <Col>
                 <Select
                   {...selectProps}
+                  data-testid='type-filter-select'
                   style={{ width: taskJournalQueryArgs.types?.length ? '100%' : 150 }}
                   placeholder='Выберите тип'
                   mode='multiple'

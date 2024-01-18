@@ -4,6 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import {
   getTaskJournalCsvErrorMsg,
   getTaskJournalErrorMsg,
+  TaskJournalSourceEnum,
 } from 'modules/task/constants/taskJournal'
 
 import { commonApiMessages } from 'shared/constants/common'
@@ -25,6 +26,7 @@ import {
   notificationTestUtils,
   radioButtonTestUtils,
   render,
+  selectTestUtils,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -41,11 +43,20 @@ const props: Readonly<JournalTabProps> = {
 const getContainer = () => screen.getByTestId('task-journal')
 
 // filters
-const getSourceTypeFilter = () => radioButtonTestUtils.getRadioButtonIn(getContainer(), 'X5')
+const getSourceFilter = (type: TaskJournalSourceEnum) =>
+  radioButtonTestUtils.getRadioButtonIn(getContainer(), type)
+const clickSourceFilter = async (user: UserEvent, type: TaskJournalSourceEnum) => {
+  const filter = getSourceFilter(type)
+  await user.click(filter)
+}
+
+const getTypeFilterSelect = () => within(getContainer()).getByTestId('type-filter-select')
+const getTypeFilterSelectInput = () => selectTestUtils.getSelect(getTypeFilterSelect())
+const openTypeFilter = (user: UserEvent) => selectTestUtils.openSelect(user, getTypeFilterSelect())
+const setTypeFilter = selectTestUtils.clickSelectOption
 
 // reload button
 const getReloadButton = () => buttonTestUtils.getButtonIn(getContainer(), 'sync')
-
 const clickReloadButton = async (user: UserEvent) => {
   const button = getReloadButton()
   await user.click(button)
@@ -54,7 +65,6 @@ const clickReloadButton = async (user: UserEvent) => {
 
 // download button
 const getDownloadButton = () => screen.getByTestId('journal-btn-download')
-
 const clickDownloadButton = async (user: UserEvent): Promise<HTMLElement> => {
   const button = getDownloadButton()
   await user.click(button)
@@ -70,7 +80,13 @@ const expectJournalCsvLoadingFinished = buttonTestUtils.expectLoadingFinished
 export const testUtils = {
   getContainer,
 
-  getSourceTypeFilter,
+  getSourceFilter,
+  clickSourceFilter,
+
+  getTypeFilterSelect,
+  getTypeFilterSelectInput,
+  openTypeFilter,
+  setTypeFilter,
 
   getDownloadButton,
   clickDownloadButton,
@@ -89,6 +105,53 @@ setupApiTests()
 notificationTestUtils.setupNotifications()
 
 describe('Вкладка журнала задачи', () => {
+  describe('Фильтр по источнику', () => {
+    test('Отображается', async () => {
+      mockGetJournalSuccess(props.taskId)
+      render(<JournalTab {...props} />)
+
+      await testUtils.expectJournalLoadingFinished()
+
+      Object.values(TaskJournalSourceEnum).forEach((value) => {
+        const filter = getSourceFilter(value)
+        expect(filter).toBeInTheDocument()
+      })
+    })
+
+    test('При клике отправляется запрос', async () => {
+      mockGetJournalSuccess(props.taskId, { once: false })
+      const { user } = render(<JournalTab {...props} />)
+
+      await testUtils.expectJournalLoadingFinished()
+      await testUtils.clickSourceFilter(user, TaskJournalSourceEnum.X5)
+      await testUtils.expectJournalLoadingStarted()
+      await testUtils.expectJournalLoadingFinished()
+    })
+  })
+
+  describe('Фильтр по типу', () => {
+    test('Отображается', async () => {
+      mockGetJournalSuccess(props.taskId)
+      render(<JournalTab {...props} />)
+
+      await testUtils.expectJournalLoadingFinished()
+      const select = testUtils.getTypeFilterSelect()
+
+      expect(select).toBeInTheDocument()
+    })
+
+    test('При выборе всех типов отправляется запрос', async () => {
+      mockGetJournalSuccess(props.taskId, { once: false })
+      const { user } = render(<JournalTab {...props} />)
+
+      await testUtils.expectJournalLoadingFinished()
+      await testUtils.openTypeFilter(user)
+      await testUtils.setTypeFilter(user, 'Выбрать все')
+      await testUtils.expectJournalLoadingStarted()
+      await testUtils.expectJournalLoadingFinished()
+    })
+  })
+
   describe('Кнопка обновления журнала', () => {
     test('Отображается корректно', async () => {
       mockGetJournalSuccess(props.taskId)
