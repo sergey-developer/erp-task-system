@@ -1,3 +1,6 @@
+import sortBy from 'lodash/sortBy'
+import { DefaultOptionType } from 'rc-select/lib/Select'
+
 import { TaskJournalTypeEnum } from 'modules/task/constants/taskJournal'
 
 import { StringMap } from 'shared/types/utils'
@@ -23,5 +26,14 @@ export const journalEntryTypeDict: Readonly<StringMap<TaskJournalTypeEnum>> = {
   [TaskJournalTypeEnum.FirstLineReturned]: 'Возврат на первую линию',
   [TaskJournalTypeEnum.AwaitingCanceled]: 'Перевод в ожидание отменен',
   [TaskJournalTypeEnum.AutoEscalation]: 'Автоэскалация',
+  [TaskJournalTypeEnum.ReassignmentSupportGroup]: 'Переназначение на другую ГП',
   [TaskJournalTypeEnum.Other]: 'Другое',
 }
+
+export const journalTypeOptions: DefaultOptionType[] = sortBy(
+  Object.keys(journalEntryTypeDict).map((key) => ({
+    label: journalEntryTypeDict[key as TaskJournalTypeEnum],
+    value: key,
+  })),
+  'label',
+)

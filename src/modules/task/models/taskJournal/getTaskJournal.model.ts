@@ -1,6 +1,11 @@
+import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constants/taskJournal'
 import { TaskJournalModel } from 'modules/task/models'
 import { BaseTaskRequestArgs } from 'modules/task/types'
 
-export type GetTaskJournalQueryArgs = BaseTaskRequestArgs
+export type GetTaskJournalQueryArgs = BaseTaskRequestArgs &
+  Partial<{
+    types: TaskJournalTypeEnum[]
+    sourceSystems: TaskJournalSourceEnum[]
+  }>
 
 export type GetTaskJournalSuccessResponse = TaskJournalModel

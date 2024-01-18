@@ -229,9 +229,10 @@ const taskApiService = baseApiService
       }),
 
       getTaskJournal: build.query<GetTaskJournalSuccessResponse, GetTaskJournalQueryArgs>({
-        query: ({ taskId }) => ({
+        query: ({ taskId, ...params }) => ({
           url: getTaskJournalUrl(taskId),
           method: HttpMethodEnum.Get,
+          params,
         }),
       }),
       getTaskJournalCsv: build.query<GetTaskJournalCsvSuccessResponse, GetTaskJournalCsvQueryArgs>({

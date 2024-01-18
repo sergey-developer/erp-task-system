@@ -17,6 +17,7 @@ export enum TaskJournalTypeEnum {
   FirstLineReturned = 'FIRST_LINE_RETURNED',
   AwaitingCanceled = 'AWAITING_CANCELED',
   AutoEscalation = 'AUTO_ESCALATION',
+  ReassignmentSupportGroup = 'REASSIGNMENT_SUPPORT_GROUP',
   Other = 'OTHER',
 }
 
@@ -24,4 +25,3 @@ export enum TaskJournalSourceEnum {
   X5 = 'X5',
   ITSM = 'ITSM',
 }
-
