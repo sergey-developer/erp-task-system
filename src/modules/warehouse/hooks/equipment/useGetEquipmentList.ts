@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
-import { getEquipmentListMessages } from 'modules/warehouse/constants/equipment'
+import { getEquipmentsErrorMsg } from 'modules/warehouse/constants/equipment'
 import { GetEquipmentListQueryArgs } from 'modules/warehouse/models'
 import { useGetEquipmentListQuery } from 'modules/warehouse/services/equipmentApi.service'
 import { GetEquipmentListTransformedSuccessResponse } from 'modules/warehouse/types'
 
-import { isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetEquipmentListResult = CustomUseQueryHookResult<
@@ -20,10 +20,10 @@ export const useGetEquipmentList = (args: GetEquipmentListQueryArgs): UseGetEqui
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isForbiddenError(state.error) && state.error.data.detail) {
-        showErrorNotification(state.error.data.detail)
+      if (isForbiddenError(state.error)) {
+        showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentListMessages.commonError)
+        showErrorNotification(getEquipmentsErrorMsg)
       }
     }
   }, [state.error])

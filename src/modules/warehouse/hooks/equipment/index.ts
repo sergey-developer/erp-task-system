@@ -5,6 +5,7 @@ export * from './useUpdateEquipment'
 export * from './useGetEquipment'
 export * from './useLazyGetEquipment'
 export * from './useGetEquipmentList'
+export * from './useLazyGetEquipmentsXlsx'
 export * from './useGetEquipmentRelocationHistory'
 
 export * from './useGetEquipmentNomenclatureList'
