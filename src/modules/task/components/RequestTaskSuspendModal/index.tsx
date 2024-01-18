@@ -106,11 +106,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           >
             <Space direction='vertical'>
               {Object.values(SuspendReasonEnum).map((reason) => (
-                <Radio
-                  key={reason}
-                  value={reason}
-                  disabled={!systemSettings?.suspendReasons[reason].editable}
-                >
+                <Radio key={reason} value={reason}>
                   {suspendReasonDict[reason]}
                 </Radio>
               ))}
@@ -148,7 +144,14 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
                 name='endDate'
                 rules={endDateRules(systemSettings?.suspendReasons[reasonFormValue]?.limit)}
               >
-                <DatePicker disabled={!reasonFormValue || isLoading || systemSettingsIsLoading} />
+                <DatePicker
+                  disabled={
+                    !reasonFormValue ||
+                    isLoading ||
+                    systemSettingsIsLoading ||
+                    !systemSettings?.suspendReasons[reasonFormValue].editable
+                  }
+                />
               </Form.Item>
             </Col>
 
@@ -160,7 +163,12 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
                 rules={endTimeRules}
               >
                 <TimePicker
-                  disabled={!reasonFormValue || isLoading || systemSettingsIsLoading}
+                  disabled={
+                    !reasonFormValue ||
+                    isLoading ||
+                    systemSettingsIsLoading ||
+                    !systemSettings?.suspendReasons[reasonFormValue].editable
+                  }
                   format={TIME_PICKER_FORMAT}
                 />
               </Form.Item>

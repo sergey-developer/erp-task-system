@@ -276,47 +276,6 @@ describe('Модалка создания запроса о переводе в 
       })
     })
 
-    test('Поле не активно если так указано в системных настройках', () => {
-      render(
-        <RequestTaskSuspendModal
-          {...props}
-          systemSettings={{
-            suspendReasons: {
-              [SuspendReasonEnum.AwaitingInformation]: {
-                editable: false,
-                limit: fakeInteger({ min: 1, max: 20 }),
-              },
-              [SuspendReasonEnum.AwaitingInitiator]: {
-                editable: false,
-                limit: fakeInteger({ min: 1, max: 20 }),
-              },
-              [SuspendReasonEnum.AwaitingNonItWork]: {
-                editable: false,
-                limit: fakeInteger({ min: 1, max: 20 }),
-              },
-              [SuspendReasonEnum.AwaitingRelease]: {
-                editable: false,
-                limit: fakeInteger({ min: 1, max: 20 }),
-              },
-              [SuspendReasonEnum.AwaitingPurchase]: {
-                editable: false,
-                limit: fakeInteger({ min: 1, max: 20 }),
-              },
-              [SuspendReasonEnum.AwaitingInformationFromFirstLine]: {
-                editable: false,
-                limit: fakeInteger({ min: 1, max: 20 }),
-              },
-            },
-          }}
-        />,
-      )
-
-      Object.values(SuspendReasonEnum).forEach((reason) => {
-        const field = testUtils.getReasonField(reason)
-        expect(field).toBeDisabled()
-      })
-    })
-
     test('Можно выбрать причину', async () => {
       const { user } = render(<RequestTaskSuspendModal {...props} />)
 
@@ -476,6 +435,47 @@ describe('Модалка создания запроса о переводе в 
           render(<RequestTaskSuspendModal {...props} systemSettingsIsLoading />)
           expect(testUtils.getEndDateField()).toBeDisabled()
         })
+
+        test('Если так указано в системных настройках', async () => {
+          const { user } = render(
+            <RequestTaskSuspendModal
+              {...props}
+              systemSettings={{
+                suspendReasons: {
+                  [SuspendReasonEnum.AwaitingInformation]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                  [SuspendReasonEnum.AwaitingInitiator]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                  [SuspendReasonEnum.AwaitingNonItWork]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                  [SuspendReasonEnum.AwaitingRelease]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                  [SuspendReasonEnum.AwaitingPurchase]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                  [SuspendReasonEnum.AwaitingInformationFromFirstLine]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                },
+              }}
+            />,
+          )
+
+          for await (const reason of Object.values(SuspendReasonEnum)) {
+            await testUtils.setReason(user, reason)
+            expect(testUtils.getEndDateField()).toBeDisabled()
+          }
+        })
       })
 
       test('Можно установить значение', async () => {
@@ -566,6 +566,47 @@ describe('Модалка создания запроса о переводе в 
         test('При загрузке системных настроек', () => {
           render(<RequestTaskSuspendModal {...props} systemSettingsIsLoading />)
           expect(testUtils.getEndTimeField()).toBeDisabled()
+        })
+
+        test('Если так указано в системных настройках', async () => {
+          const { user } = render(
+            <RequestTaskSuspendModal
+              {...props}
+              systemSettings={{
+                suspendReasons: {
+                  [SuspendReasonEnum.AwaitingInformation]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                  [SuspendReasonEnum.AwaitingInitiator]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                  [SuspendReasonEnum.AwaitingNonItWork]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                  [SuspendReasonEnum.AwaitingRelease]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                  [SuspendReasonEnum.AwaitingPurchase]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                  [SuspendReasonEnum.AwaitingInformationFromFirstLine]: {
+                    editable: false,
+                    limit: fakeInteger({ min: 1, max: 20 }),
+                  },
+                },
+              }}
+            />,
+          )
+
+          for await (const reason of Object.values(SuspendReasonEnum)) {
+            await testUtils.setReason(user, reason)
+            expect(testUtils.getEndTimeField()).toBeDisabled()
+          }
         })
       })
 
