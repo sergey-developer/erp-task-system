@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios'
-import { merge } from 'lodash'
 import isArray from 'lodash/isArray'
 import isPlainObject from 'lodash/isPlainObject'
+import merge from 'lodash/merge'
 
 import httpClient from 'lib/httpClient'
 
