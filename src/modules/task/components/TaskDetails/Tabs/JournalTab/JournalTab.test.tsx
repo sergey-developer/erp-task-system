@@ -1,6 +1,12 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import {
+  getTaskJournalCsvErrorMsg,
+  getTaskJournalErrorMsg,
+  TaskJournalSourceEnum,
+} from 'modules/task/constants/taskJournal'
+
 import { commonApiMessages } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as downloadLink from 'shared/utils/common/downloadLink'
@@ -18,7 +24,9 @@ import {
   fakeWord,
   getStoreWithAuth,
   notificationTestUtils,
+  radioButtonTestUtils,
   render,
+  selectTestUtils,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -34,9 +42,21 @@ const props: Readonly<JournalTabProps> = {
 
 const getContainer = () => screen.getByTestId('task-journal')
 
+// filters
+const getSourceFilter = (type: TaskJournalSourceEnum) =>
+  radioButtonTestUtils.getRadioButtonIn(getContainer(), type)
+const clickSourceFilter = async (user: UserEvent, type: TaskJournalSourceEnum) => {
+  const filter = getSourceFilter(type)
+  await user.click(filter)
+}
+
+const getTypeFilterSelect = () => within(getContainer()).getByTestId('type-filter-select')
+const getTypeFilterSelectInput = () => selectTestUtils.getSelect(getTypeFilterSelect())
+const openTypeFilter = (user: UserEvent) => selectTestUtils.openSelect(user, getTypeFilterSelect())
+const setTypeFilter = selectTestUtils.clickSelectOption
+
 // reload button
 const getReloadButton = () => buttonTestUtils.getButtonIn(getContainer(), 'sync')
-
 const clickReloadButton = async (user: UserEvent) => {
   const button = getReloadButton()
   await user.click(button)
@@ -45,22 +65,28 @@ const clickReloadButton = async (user: UserEvent) => {
 
 // download button
 const getDownloadButton = () => screen.getByTestId('journal-btn-download')
-
 const clickDownloadButton = async (user: UserEvent): Promise<HTMLElement> => {
   const button = getDownloadButton()
   await user.click(button)
   return button
 }
 
-const expectJournalLoadingStarted = spinnerTestUtils.expectLoadingStarted('journal-loading')
-
-const expectJournalLoadingFinished = spinnerTestUtils.expectLoadingFinished('journal-loading')
+const expectJournalLoadingStarted = spinnerTestUtils.expectLoadingStarted('task-journal-loading')
+const expectJournalLoadingFinished = spinnerTestUtils.expectLoadingFinished('task-journal-loading')
 
 const expectJournalCsvLoadingStarted = buttonTestUtils.expectLoadingStarted
 const expectJournalCsvLoadingFinished = buttonTestUtils.expectLoadingFinished
 
 export const testUtils = {
   getContainer,
+
+  getSourceFilter,
+  clickSourceFilter,
+
+  getTypeFilterSelect,
+  getTypeFilterSelectInput,
+  openTypeFilter,
+  setTypeFilter,
 
   getDownloadButton,
   clickDownloadButton,
@@ -79,10 +105,59 @@ setupApiTests()
 notificationTestUtils.setupNotifications()
 
 describe('Вкладка журнала задачи', () => {
-  describe('Кнопка обновления журнала', () => {
-    test('Отображается корректно', () => {
+  describe('Фильтр по источнику', () => {
+    test('Отображается', async () => {
+      mockGetJournalSuccess(props.taskId)
       render(<JournalTab {...props} />)
 
+      await testUtils.expectJournalLoadingFinished()
+
+      Object.values(TaskJournalSourceEnum).forEach((value) => {
+        const filter = getSourceFilter(value)
+        expect(filter).toBeInTheDocument()
+      })
+    })
+
+    test('При клике отправляется запрос', async () => {
+      mockGetJournalSuccess(props.taskId, { once: false })
+      const { user } = render(<JournalTab {...props} />)
+
+      await testUtils.expectJournalLoadingFinished()
+      await testUtils.clickSourceFilter(user, TaskJournalSourceEnum.X5)
+      await testUtils.expectJournalLoadingStarted()
+      await testUtils.expectJournalLoadingFinished()
+    })
+  })
+
+  describe('Фильтр по типу', () => {
+    test('Отображается', async () => {
+      mockGetJournalSuccess(props.taskId)
+      render(<JournalTab {...props} />)
+
+      await testUtils.expectJournalLoadingFinished()
+      const select = testUtils.getTypeFilterSelect()
+
+      expect(select).toBeInTheDocument()
+    })
+
+    test('При выборе всех типов отправляется запрос', async () => {
+      mockGetJournalSuccess(props.taskId, { once: false })
+      const { user } = render(<JournalTab {...props} />)
+
+      await testUtils.expectJournalLoadingFinished()
+      await testUtils.openTypeFilter(user)
+      await testUtils.setTypeFilter(user, 'Выбрать все')
+      await testUtils.expectJournalLoadingStarted()
+      await testUtils.expectJournalLoadingFinished()
+    })
+  })
+
+  describe('Кнопка обновления журнала', () => {
+    test('Отображается корректно', async () => {
+      mockGetJournalSuccess(props.taskId)
+      render(<JournalTab {...props} />)
+
+      await testUtils.expectJournalLoadingFinished()
       const button = testUtils.getReloadButton()
 
       expect(button).toBeInTheDocument()
@@ -105,69 +180,143 @@ describe('Вкладка журнала задачи', () => {
     })
   })
 
-  describe('При успешном запросе журнала', () => {
-    describe('Если есть записи', () => {
-      describe('Отображает', () => {
-        test('Записи', async () => {
-          const taskJournal = taskFixtures.journal()
-          mockGetJournalSuccess(props.taskId, {
-            body: taskJournal,
-          })
-
-          render(<JournalTab {...props} />, {
-            store: getStoreWithAuth(),
-          })
-
-          await testUtils.expectJournalLoadingStarted()
-          await testUtils.expectJournalLoadingFinished()
-
-          const journalEntries = taskJournal.map((entry) =>
-            journalEntryTestUtils.getContainer(entry.id),
-          )
-
-          expect(journalEntries).toHaveLength(taskJournal.length)
-        })
-
-        test('Кнопку экспорта в csv', async () => {
-          mockGetJournalSuccess(props.taskId, {
-            body: taskFixtures.journal(),
-          })
-
-          render(<JournalTab {...props} />, {
-            store: getStoreWithAuth(),
-          })
-
-          await testUtils.expectJournalLoadingStarted()
-          await testUtils.expectJournalLoadingFinished()
-
-          const downloadButton = testUtils.getDownloadButton()
-
-          expect(downloadButton).toBeInTheDocument()
-
-          expect(within(downloadButton).getByTestId('journal-icon-download')).toBeInTheDocument()
-        })
+  describe('Экспорт в csv', () => {
+    test('Кнопка отображается при успешном запросе журнала', async () => {
+      mockGetJournalSuccess(props.taskId, {
+        body: taskFixtures.journal(),
       })
 
-      describe('Не отображает', () => {
-        test(`Текст "${NO_DATA_MSG}"`, async () => {
-          mockGetJournalSuccess(props.taskId, {
-            body: taskFixtures.journal(),
-          })
-
-          render(<JournalTab {...props} />, {
-            store: getStoreWithAuth(),
-          })
-
-          await testUtils.expectJournalLoadingStarted()
-          await testUtils.expectJournalLoadingFinished()
-
-          expect(screen.queryByText(NO_DATA_MSG)).not.toBeInTheDocument()
-        })
+      render(<JournalTab {...props} />, {
+        store: getStoreWithAuth(),
       })
 
-      test('Кнопка экспорта в csv активна', async () => {
+      await testUtils.expectJournalLoadingStarted()
+      await testUtils.expectJournalLoadingFinished()
+      const downloadButton = testUtils.getDownloadButton()
+
+      expect(downloadButton).toBeInTheDocument()
+      expect(downloadButton).toBeEnabled()
+      expect(within(downloadButton).getByTestId('journal-icon-download')).toBeInTheDocument()
+    })
+
+    test('Кнопка не отображается если нет записей', async () => {
+      mockGetJournalSuccess(props.taskId, {
+        body: taskFixtures.journal(0),
+      })
+
+      render(<JournalTab {...props} />, {
+        store: getStoreWithAuth(),
+      })
+
+      await testUtils.expectJournalLoadingStarted()
+      await testUtils.expectJournalLoadingFinished()
+
+      expect(screen.queryByTestId('journal-btn-download')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('journal-icon-download')).not.toBeInTheDocument()
+    })
+
+    describe('При успешной загрузке csv', () => {
+      const clickDownloadLinkSpy = jest.spyOn(downloadLink, 'clickDownloadLink')
+
+      test('Не показывает сообщение об ошибке', async () => {
         mockGetJournalSuccess(props.taskId, {
           body: taskFixtures.journal(),
+        })
+
+        const fakeCsv = fakeWord()
+        mockGetJournalCsvSuccess(props.taskId, { body: fakeCsv })
+
+        const { user } = render(<JournalTab {...props} />, {
+          store: getStoreWithAuth(),
+        })
+
+        await testUtils.expectJournalLoadingStarted()
+        await testUtils.expectJournalLoadingFinished()
+
+        const downloadButton = await testUtils.clickDownloadButton(user)
+
+        await testUtils.expectJournalCsvLoadingStarted(downloadButton)
+        await testUtils.expectJournalCsvLoadingFinished(downloadButton)
+
+        expect(clickDownloadLinkSpy).toBeCalledTimes(1)
+        expect(clickDownloadLinkSpy).toBeCalledWith(
+          fakeCsv,
+          MimetypeEnum.Csv,
+          getJournalCsvFilename(props.taskId),
+        )
+
+        const notification = screen.queryByText(commonApiMessages.unknownError)
+        expect(notification).not.toBeInTheDocument()
+      })
+    })
+
+    describe('При не успешной загрузке csv', () => {
+      const clickDownloadLinkSpy = jest.spyOn(downloadLink, 'clickDownloadLink')
+
+      test('Показывает сообщение об ошибке', async () => {
+        mockGetJournalSuccess(props.taskId, {
+          body: taskFixtures.journal(),
+        })
+        mockGetJournalCsvServerError(props.taskId)
+
+        const { user } = render(<JournalTab {...props} />, {
+          store: getStoreWithAuth(),
+        })
+
+        await testUtils.expectJournalLoadingStarted()
+        await testUtils.expectJournalLoadingFinished()
+
+        const downloadButton = await testUtils.clickDownloadButton(user)
+
+        await testUtils.expectJournalCsvLoadingStarted(downloadButton)
+        await testUtils.expectJournalCsvLoadingFinished(downloadButton)
+
+        expect(clickDownloadLinkSpy).not.toBeCalled()
+
+        const notification = await notificationTestUtils.findNotification(getTaskJournalCsvErrorMsg)
+        expect(notification).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('При успешном запросе журнала', () => {
+    test('Отображает записи', async () => {
+      const taskJournal = taskFixtures.journal()
+      mockGetJournalSuccess(props.taskId, { body: taskJournal })
+
+      render(<JournalTab {...props} />, {
+        store: getStoreWithAuth(),
+      })
+
+      await testUtils.expectJournalLoadingStarted()
+      await testUtils.expectJournalLoadingFinished()
+
+      const journalEntries = taskJournal.map((entry) =>
+        journalEntryTestUtils.getContainer(entry.id),
+      )
+
+      expect(journalEntries).toHaveLength(taskJournal.length)
+    })
+
+    test(`Если есть записи, не отображает текст "${NO_DATA_MSG}"`, async () => {
+      mockGetJournalSuccess(props.taskId, {
+        body: taskFixtures.journal(),
+      })
+
+      render(<JournalTab {...props} />, {
+        store: getStoreWithAuth(),
+      })
+
+      await testUtils.expectJournalLoadingStarted()
+      await testUtils.expectJournalLoadingFinished()
+
+      expect(screen.queryByText(NO_DATA_MSG)).not.toBeInTheDocument()
+    })
+
+    describe('Если нет записей', () => {
+      test(`Отображает текст "${NO_DATA_MSG}"`, async () => {
+        mockGetJournalSuccess(props.taskId, {
+          body: taskFixtures.journal(0),
         })
 
         render(<JournalTab {...props} />, {
@@ -177,130 +326,27 @@ describe('Вкладка журнала задачи', () => {
         await testUtils.expectJournalLoadingStarted()
         await testUtils.expectJournalLoadingFinished()
 
-        const downloadButton = testUtils.getDownloadButton()
-        expect(downloadButton).toBeEnabled()
+        expect(screen.getByText(NO_DATA_MSG)).toBeInTheDocument()
       })
 
-      describe('При успешной загрузке csv', () => {
-        const clickDownloadLinkSpy = jest.spyOn(downloadLink, 'clickDownloadLink')
-
-        test('Не показывает сообщение об ошибке', async () => {
-          mockGetJournalSuccess(props.taskId, {
-            body: taskFixtures.journal(),
-          })
-
-          const fakeCsv = fakeWord()
-          mockGetJournalCsvSuccess(props.taskId, { body: fakeCsv })
-
-          const { user } = render(<JournalTab {...props} />, {
-            store: getStoreWithAuth(),
-          })
-
-          await testUtils.expectJournalLoadingStarted()
-          await testUtils.expectJournalLoadingFinished()
-
-          const downloadButton = await testUtils.clickDownloadButton(user)
-
-          await testUtils.expectJournalCsvLoadingStarted(downloadButton)
-          await testUtils.expectJournalCsvLoadingFinished(downloadButton)
-
-          expect(clickDownloadLinkSpy).toBeCalledTimes(1)
-          expect(clickDownloadLinkSpy).toBeCalledWith(
-            fakeCsv,
-            MimetypeEnum.Csv,
-            getJournalCsvFilename(props.taskId),
-          )
-
-          const notification = screen.queryByText(commonApiMessages.unknownError)
-          expect(notification).not.toBeInTheDocument()
-        })
-      })
-
-      describe('При не успешной загрузке csv', () => {
-        const clickDownloadLinkSpy = jest.spyOn(downloadLink, 'clickDownloadLink')
-
-        test('Показывает сообщение об ошибке', async () => {
-          mockGetJournalSuccess(props.taskId, {
-            body: taskFixtures.journal(),
-          })
-          mockGetJournalCsvServerError(props.taskId)
-
-          const { user } = render(<JournalTab {...props} />, {
-            store: getStoreWithAuth(),
-          })
-
-          await testUtils.expectJournalLoadingStarted()
-          await testUtils.expectJournalLoadingFinished()
-
-          const downloadButton = await testUtils.clickDownloadButton(user)
-
-          await testUtils.expectJournalCsvLoadingStarted(downloadButton)
-          await testUtils.expectJournalCsvLoadingFinished(downloadButton)
-
-          expect(clickDownloadLinkSpy).not.toBeCalled()
-
-          const notification = await notificationTestUtils.findNotification(
-            commonApiMessages.unknownError,
-          )
-          expect(notification).toBeInTheDocument()
-        })
-      })
-    })
-
-    describe('Если нет записей', () => {
-      describe('Отображает', () => {
-        test(`Текст "${NO_DATA_MSG}"`, async () => {
-          mockGetJournalSuccess(props.taskId, {
-            body: taskFixtures.journal(0),
-          })
-
-          render(<JournalTab {...props} />, {
-            store: getStoreWithAuth(),
-          })
-
-          await testUtils.expectJournalLoadingStarted()
-          await testUtils.expectJournalLoadingFinished()
-
-          expect(screen.getByText(NO_DATA_MSG)).toBeInTheDocument()
-        })
-      })
-
-      describe('Не отображает', () => {
-        test('Записи', async () => {
-          const taskJournal = taskFixtures.journal(0)
-          mockGetJournalSuccess(props.taskId, {
-            body: taskJournal,
-          })
-
-          render(<JournalTab {...props} />, {
-            store: getStoreWithAuth(),
-          })
-
-          await testUtils.expectJournalLoadingStarted()
-          await testUtils.expectJournalLoadingFinished()
-
-          const journalEntries = taskJournal
-            .map((entry) => journalEntryTestUtils.queryContainer(entry.id))
-            .filter(Boolean)
-
-          expect(journalEntries).toHaveLength(taskJournal.length)
+      test('Не отображает записи', async () => {
+        const taskJournal = taskFixtures.journal(0)
+        mockGetJournalSuccess(props.taskId, {
+          body: taskJournal,
         })
 
-        test('Кнопку экспорта в csv', async () => {
-          mockGetJournalSuccess(props.taskId, {
-            body: taskFixtures.journal(0),
-          })
-
-          render(<JournalTab {...props} />, {
-            store: getStoreWithAuth(),
-          })
-
-          await testUtils.expectJournalLoadingStarted()
-          await testUtils.expectJournalLoadingFinished()
-
-          expect(screen.queryByTestId('journal-btn-download')).not.toBeInTheDocument()
-          expect(screen.queryByTestId('journal-icon-download')).not.toBeInTheDocument()
+        render(<JournalTab {...props} />, {
+          store: getStoreWithAuth(),
         })
+
+        await testUtils.expectJournalLoadingStarted()
+        await testUtils.expectJournalLoadingFinished()
+
+        const journalEntries = taskJournal
+          .map((entry) => journalEntryTestUtils.queryContainer(entry.id))
+          .filter(Boolean)
+
+        expect(journalEntries).toHaveLength(taskJournal.length)
       })
     })
   })
@@ -317,9 +363,7 @@ describe('Вкладка журнала задачи', () => {
         await testUtils.expectJournalLoadingStarted()
         await testUtils.expectJournalLoadingFinished()
 
-        const notification = await notificationTestUtils.findNotification(
-          commonApiMessages.unknownError,
-        )
+        const notification = await notificationTestUtils.findNotification(getTaskJournalErrorMsg)
         expect(notification).toBeInTheDocument()
       })
 
