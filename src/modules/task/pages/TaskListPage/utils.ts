@@ -7,6 +7,7 @@ import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
 import { FastFilterEnum } from 'modules/task/constants/task'
 import { ExtendedFilterQueries, TaskListModel } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
+import { checkOlaStatusExpired } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getUserRoleMap } from 'modules/user/utils'
 
@@ -66,38 +67,38 @@ export const getInitialExtendedFilterFormValues = (
 export const getTasksByOlaNextBreachTime = (tasks: TaskListModel): TaskTableListItem[] => {
   const currentDate = moment()
   const granularity = 'day'
-  const lessThanCurrentDate: TaskTableListItem[] = []
-  const equalCurrentDate: TaskTableListItem[] = []
-  const moreThanCurrentDate: TaskTableListItem[] = []
+  const olaStatusExpiredTasks: TaskTableListItem[] = []
+  const equalCurrentDateTasks: TaskTableListItem[] = []
+  const moreThanCurrentDateTasks: TaskTableListItem[] = []
 
   tasks.forEach((task) => {
     const olaNextBreachTimeMoment = moment(task.olaNextBreachTime)
 
-    if (olaNextBreachTimeMoment.isBefore(currentDate, granularity)) {
-      lessThanCurrentDate.push(task)
+    if (checkOlaStatusExpired(task.olaStatus)) {
+      olaStatusExpiredTasks.push(task)
     } else if (olaNextBreachTimeMoment.isSame(currentDate, granularity)) {
-      equalCurrentDate.push(task)
+      equalCurrentDateTasks.push(task)
     } else if (olaNextBreachTimeMoment.isAfter(currentDate, granularity)) {
-      moreThanCurrentDate.push(task)
+      moreThanCurrentDateTasks.push(task)
     }
   })
 
-  const lessThanCurrentDateTaskBoundary = lessThanCurrentDate.pop()
-  const equalCurrentDateTaskBoundary = equalCurrentDate.pop()
+  const olaStatusExpiredTaskBoundary = olaStatusExpiredTasks.pop()
+  const equalCurrentDateTaskBoundary = equalCurrentDateTasks.pop()
 
   return [
-    ...lessThanCurrentDate,
+    ...olaStatusExpiredTasks,
 
-    ...(lessThanCurrentDateTaskBoundary
-      ? [{ ...lessThanCurrentDateTaskBoundary, isBoundary: true }]
+    ...(olaStatusExpiredTaskBoundary
+      ? [{ ...olaStatusExpiredTaskBoundary, isBoundary: true }]
       : []),
 
-    ...equalCurrentDate,
+    ...equalCurrentDateTasks,
 
     ...(equalCurrentDateTaskBoundary
       ? [{ ...equalCurrentDateTaskBoundary, isBoundary: true }]
       : []),
 
-    ...moreThanCurrentDate,
+    ...moreThanCurrentDateTasks,
   ]
 }

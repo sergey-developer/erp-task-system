@@ -1,6 +1,6 @@
 import { TaskOlaStatusEnum } from 'modules/task/constants/task'
 
-import { getOlaStatusMap } from './getOlaStatusMap'
+import { getOlaStatusMap } from './checkOlaStatus'
 
 describe('Корректно работает если "olaStatus" имеет значение', () => {
   test(`${TaskOlaStatusEnum.Expired}`, () => {
