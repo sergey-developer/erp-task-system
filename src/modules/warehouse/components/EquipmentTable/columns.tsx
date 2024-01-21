@@ -2,7 +2,7 @@ import { ColumnsType } from 'antd/es/table'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { getYesNoWord, valueOrHyphen } from 'shared/utils/common'
 
 import { EquipmentTableItem } from './types'
 
@@ -25,24 +25,27 @@ export const columns: ColumnsType<EquipmentTableItem> = [
     dataIndex: 'inventoryNumber',
     title: 'Инвентарный номер',
     sorter: true,
-    render: (value: EquipmentTableItem['inventoryNumber']) =>
-      valueOrHyphen(value),
+    render: (value: EquipmentTableItem['inventoryNumber']) => valueOrHyphen(value),
   },
   {
-    key: 'warehouse',
-    dataIndex: 'warehouse',
-    title: 'Склад',
+    key: 'location',
+    dataIndex: 'location',
+    title: 'Местонахождение',
     sorter: true,
-    render: (value: EquipmentTableItem['warehouse']) =>
-      valueOrHyphen(value?.title),
+    render: (value: EquipmentTableItem['location']) => valueOrHyphen(value?.title),
+  },
+  {
+    key: 'isCredited',
+    dataIndex: 'isCredited',
+    title: 'Оприходовано',
+    render: (value: EquipmentTableItem['isCredited']) => getYesNoWord(value),
   },
   {
     key: 'condition',
     dataIndex: 'condition',
     title: 'Состояние',
     sorter: true,
-    render: (value: EquipmentTableItem['condition']) =>
-      equipmentConditionDict[value],
+    render: (value: EquipmentTableItem['condition']) => equipmentConditionDict[value],
   },
   {
     key: 'quantity',

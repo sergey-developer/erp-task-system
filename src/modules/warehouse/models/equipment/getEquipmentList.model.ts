@@ -9,7 +9,7 @@ export type GetEquipmentListSortKey =
   | 'title'
   | 'serial_number'
   | 'inventory_number'
-  | 'warehouse'
+  | 'location'
   | 'condition'
   | 'quantity'
   | 'category'
