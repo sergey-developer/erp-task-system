@@ -5,8 +5,7 @@ import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
-
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { getYesNoWord } from 'shared/utils/common'
 
 import {
   ariaSortAttrAscValue,
@@ -14,6 +13,7 @@ import {
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render, tableTestUtils } from '_tests_/utils'
 
 import EquipmentTable from './index'
@@ -275,12 +275,12 @@ describe('Таблица оборудования', () => {
     })
   })
 
-  describe('Склад', () => {
+  describe('Местонахождение', () => {
     test('Отображается', () => {
       render(<EquipmentTable {...props} />)
 
-      const title = testUtils.getColTitle('Склад')
-      const value = testUtils.getColValue(equipmentListItem.id, equipmentListItem.warehouse!.title)
+      const title = testUtils.getColTitle('Местонахождение')
+      const value = testUtils.getColValue(equipmentListItem.id, equipmentListItem.location!.title)
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -289,7 +289,7 @@ describe('Таблица оборудования', () => {
     test('При клике на заголовок обработчик вызывается корректно', async () => {
       const { user } = render(<EquipmentTable {...props} />)
 
-      await testUtils.clickColTitle(user, 'Склад')
+      await testUtils.clickColTitle(user, 'Местонахождение')
 
       expect(props.onChange).toBeCalledTimes(1)
       expect(props.onChange).toBeCalledWith(
@@ -303,14 +303,14 @@ describe('Таблица оборудования', () => {
     test('Сортировка работает корректно', async () => {
       const { user } = render(<EquipmentTable {...props} />)
 
-      await testUtils.clickColTitle(user, 'Склад')
-      const headCell = testUtils.getHeadCell('Склад')
+      await testUtils.clickColTitle(user, 'Местонахождение')
+      const headCell = testUtils.getHeadCell('Местонахождение')
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
-      await testUtils.clickColTitle(user, 'Склад')
+      await testUtils.clickColTitle(user, 'Местонахождение')
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
-      await testUtils.clickColTitle(user, 'Склад')
+      await testUtils.clickColTitle(user, 'Местонахождение')
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
@@ -318,6 +318,21 @@ describe('Таблица оборудования', () => {
         const row = testUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Оприходовано', () => {
+    test('Отображается', () => {
+      render(<EquipmentTable {...props} />)
+
+      const title = testUtils.getColTitle('Оприходовано')
+      const value = testUtils.getColValue(
+        equipmentListItem.id,
+        getYesNoWord(equipmentListItem.isCredited),
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
     })
   })
 

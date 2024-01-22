@@ -287,6 +287,38 @@ describe('Информация об оборудовании', () => {
       expect(value).toBeInTheDocument()
     })
 
+    test('Местоположение отображается', async () => {
+      const equipment = warehouseFixtures.equipment()
+      mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+      render(<EquipmentDetails {...props} />)
+
+      await testUtils.expectLoadingFinished()
+      const block = testUtils.getBlock('location')
+      const label = testUtils.getInfoInBlock(block, /Местоположение/)
+      const value = testUtils.getInfoInBlock(block, equipment.location!.title)
+
+      expect(label).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
+    test('Оприходовано отображается', async () => {
+      const equipment = warehouseFixtures.equipment()
+      mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+      render(<EquipmentDetails {...props} />)
+
+      await testUtils.expectLoadingFinished()
+      const block = testUtils.getBlock('is-credited')
+      const label = testUtils.getInfoInBlock(block, /Оприходовано/)
+      const value = testUtils.getInfoInBlock(block, getYesNoWord(equipment.isCredited))
+
+      expect(label).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
     test('Состояние отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })

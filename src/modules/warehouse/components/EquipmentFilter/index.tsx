@@ -10,10 +10,12 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 import { useSelectAll } from 'shared/hooks/useSelectAll'
+import { getBooleanOptions } from 'shared/utils/selectField'
 
 import { EquipmentFilterFormFields, EquipmentFilterProps } from './types'
 
 const { RangePicker } = DatePicker
+const zeroQuantityOptions = getBooleanOptions('Отображать', 'Не отображать')
 
 const EquipmentFilter: FC<EquipmentFilterProps> = ({
   visible,
@@ -201,6 +203,16 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
         >
           <Form.Item name='createdAt'>
             <RangePicker allowClear={false} />
+          </Form.Item>
+        </FilterBlock>
+
+        <FilterBlock
+          data-testid='zero-quantity'
+          label='Оборудование с остатком 0'
+          onReset={resetFields(['zeroQuantity'])}
+        >
+          <Form.Item name='zeroQuantity'>
+            <Radio.Group options={zeroQuantityOptions} />
           </Form.Item>
         </FilterBlock>
       </Form>

@@ -53,6 +53,7 @@ const initialFilterValues: EquipmentFilterFormFields = {
   isNew: undefined,
   isRepaired: undefined,
   isWarranty: undefined,
+  zeroQuantity: true,
 }
 
 const EquipmentPageLayout: FC = () => {
