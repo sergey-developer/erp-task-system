@@ -1,4 +1,4 @@
-import { Form, Radio, Select, InputNumber, Row, Col } from 'antd'
+import { Col, Form, InputNumber, Radio, Row, Select } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
@@ -9,10 +9,12 @@ import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
+import { getBooleanOptions } from 'shared/utils/selectField'
 
 import { EquipmentFilterFormFields, EquipmentFilterProps } from './types'
 
 const { RangePicker } = DatePicker
+const zeroQuantityOptions = getBooleanOptions('Отображать', 'Не отображать')
 
 const EquipmentFilter: FC<EquipmentFilterProps> = ({
   visible,
@@ -181,6 +183,16 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
         >
           <Form.Item name='createdAt'>
             <RangePicker allowClear={false} />
+          </Form.Item>
+        </FilterBlock>
+
+        <FilterBlock
+          data-testid='zero-quantity'
+          label='Оборудование с остатком 0'
+          onReset={resetFields(['zeroQuantity'])}
+        >
+          <Form.Item name='zeroQuantity'>
+            <Radio.Group options={zeroQuantityOptions} />
           </Form.Item>
         </FilterBlock>
       </Form>

@@ -1,19 +1,17 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { equipmentConditionDict, EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import {
+  equipmentConditionDict,
+  EquipmentConditionEnum,
+} from 'modules/warehouse/constants/equipment'
 
 import { yesNoOptions } from 'shared/constants/selectField'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { buttonTestUtils, radioButtonTestUtils, render, selectTestUtils } from '_tests_/utils'
 
-import {
-  selectTestUtils,
-  radioButtonTestUtils,
-  render,
-  buttonTestUtils,
-} from '_tests_/utils'
-
+import { getBooleanOptions } from '../../../../shared/utils/selectField'
 import EquipmentFilter from './index'
 import { EquipmentFilterProps } from './types'
 
@@ -83,7 +81,8 @@ const getSelectedWarehouse = (title: string) =>
 const querySelectedWarehouse = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getWarehousesSelect(), title)
 
-const expectWarehousesLoadingFinished = () => selectTestUtils.expectLoadingFinished(getWarehousesSelect())
+const expectWarehousesLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getWarehousesSelect())
 
 // owners
 const getOwnersBlock = () => within(getContainer()).getByTestId('owners')
@@ -128,13 +127,12 @@ const getSelectedCategory = (title: string) =>
 const querySelectedCategory = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getCategoriesSelect(), title)
 
-const expectCategoryLoadingFinished = () => selectTestUtils.expectLoadingFinished(getCategoriesSelect())
+const expectCategoryLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getCategoriesSelect())
 
 // is new
 const getIsNewBlock = () => within(getContainer()).getByTestId('is-new')
-
 const getIsNewField = (text: string) => radioButtonTestUtils.getRadioButtonIn(getIsNewBlock(), text)
-
 const clickIsNewField = async (user: UserEvent, text: string) => {
   const field = getIsNewField(text)
   await user.click(field)
@@ -143,7 +141,6 @@ const clickIsNewField = async (user: UserEvent, text: string) => {
 
 // is warranty
 const getIsWarrantyBlock = () => within(getContainer()).getByTestId('is-warranty')
-
 const getIsWarrantyField = (text: string) =>
   radioButtonTestUtils.getRadioButtonIn(getIsWarrantyBlock(), text)
 
@@ -155,12 +152,22 @@ const clickIsWarrantyField = async (user: UserEvent, text: string) => {
 
 // is repaired
 const getIsRepairedBlock = () => within(getContainer()).getByTestId('is-repaired')
-
 const getIsRepairedField = (text: string) =>
   radioButtonTestUtils.getRadioButtonIn(getIsRepairedBlock(), text)
 
 const clickIsRepairedField = async (user: UserEvent, text: string) => {
   const field = getIsRepairedField(text)
+  await user.click(field)
+  return field
+}
+
+// zero quantity
+const getZeroQuantityBlock = () => within(getContainer()).getByTestId('zero-quantity')
+const getZeroQuantityField = (text: string) =>
+  radioButtonTestUtils.getRadioButtonIn(getZeroQuantityBlock(), text)
+
+const clickZeroQuantityField = async (user: UserEvent, text: string) => {
+  const field = getZeroQuantityField(text)
   await user.click(field)
   return field
 }
@@ -180,7 +187,6 @@ const clickResetAllButton = async (user: UserEvent) => {
 
 // close button
 const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
-
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
@@ -188,7 +194,6 @@ const clickCloseButton = async (user: UserEvent) => {
 
 // apply button
 const getApplyButton = () => buttonTestUtils.getButtonIn(getContainer(), /Применить/)
-
 const clickApplyButton = async (user: UserEvent) => {
   const button = getApplyButton()
   await user.click(button)
@@ -238,6 +243,10 @@ export const testUtils = {
   getIsRepairedBlock,
   getIsRepairedField,
   clickIsRepairedField,
+
+  getZeroQuantityBlock,
+  getZeroQuantityField,
+  clickZeroQuantityField,
 
   getCategoriesBlock,
   getCategoriesSelect,
@@ -580,6 +589,66 @@ describe('Фильтр списка номенклатуры оборудова�
 
   test.todo('Стоимость')
   test.todo('Период оприходования')
+
+  describe('Оборудование с остатком 0', () => {
+    const options = getBooleanOptions('Отображать', 'Не отображать')
+
+    test('Отображается', () => {
+      render(<EquipmentFilter {...props} />)
+
+      options.forEach((opt) => {
+        const field = testUtils.getZeroQuantityField(opt.label as string)
+        expect(field).toBeInTheDocument()
+        expect(field).toBeEnabled()
+        expect(field).not.toBeChecked()
+      })
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<EquipmentFilter {...props} />)
+      const field = await testUtils.clickZeroQuantityField(user, options[0].label as string)
+      expect(field).toBeChecked()
+    })
+
+    test('Устанавливается значение по умолчанию', () => {
+      render(<EquipmentFilter {...props} initialValues={{ zeroQuantity: true }} />)
+
+      const truthyField = testUtils.getZeroQuantityField(options[0].label as string)
+      const falsyField = testUtils.getZeroQuantityField(options[1].label as string)
+
+      expect(truthyField).toBeChecked()
+      expect(falsyField).not.toBeChecked()
+    })
+
+    test('Сбрасывается к значению по умолчанию', async () => {
+      const { user } = render(<EquipmentFilter {...props} initialValues={{ zeroQuantity: true }} />)
+
+      const field = await testUtils.clickZeroQuantityField(user, options[1].label as string)
+      expect(field).toBeChecked()
+
+      await testUtils.clickResetButtonIn(user, testUtils.getZeroQuantityBlock())
+      expect(field).not.toBeChecked()
+
+      const truthyField = testUtils.getZeroQuantityField(options[0].label as string)
+      expect(truthyField).toBeChecked()
+    })
+
+    test('Переданное значение заменяет значение по умолчанию', () => {
+      render(
+        <EquipmentFilter
+          {...props}
+          initialValues={{ zeroQuantity: true }}
+          values={{ zeroQuantity: false }}
+        />,
+      )
+
+      const truthyField = testUtils.getZeroQuantityField(options[0].label as string)
+      const falsyField = testUtils.getZeroQuantityField(options[1].label as string)
+
+      expect(truthyField).not.toBeChecked()
+      expect(falsyField).toBeChecked()
+    })
+  })
 
   test.todo('Кнопка применить')
   test.todo('Кнопка сбросить всё')

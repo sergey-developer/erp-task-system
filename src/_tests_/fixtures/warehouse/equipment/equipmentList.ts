@@ -1,11 +1,11 @@
+import pick from 'lodash/pick'
 import times from 'lodash/times'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import {
-  EquipmentListItemModel,
-  EquipmentListModel,
-} from 'modules/warehouse/models'
+import { EquipmentListItemModel, EquipmentListModel } from 'modules/warehouse/models'
 
+import catalogsFixtures from '_tests_/fixtures/catalogs'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
 export const equipmentListItem = (): EquipmentListItemModel => ({
@@ -15,18 +15,10 @@ export const equipmentListItem = (): EquipmentListItemModel => ({
   inventoryNumber: fakeWord(),
   condition: EquipmentConditionEnum.Working,
   quantity: fakeInteger(),
-  warehouse: {
-    id: fakeId(),
-    title: fakeWord(),
-  },
-  category: {
-    id: fakeId(),
-    title: fakeWord(),
-  },
-  purpose: {
-    id: fakeId(),
-    title: fakeWord(),
-  },
+  location: catalogsFixtures.location(),
+  isCredited: false,
+  category: pick(warehouseFixtures.equipmentCategory(), 'id', 'title'),
+  purpose: pick(warehouseFixtures.workType(), 'id', 'title'),
 })
 
 export const equipmentList = (length: number = 1): EquipmentListModel =>

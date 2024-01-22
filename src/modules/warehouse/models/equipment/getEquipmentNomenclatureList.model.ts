@@ -6,9 +6,7 @@ import { PaginationParams } from 'shared/types/pagination'
 
 export type GetEquipmentNomenclatureListQueryArgs = PaginationParams &
   EquipmentFilterParams &
-  Partial<{
-    search: string
-  }>
+  Partial<{ search: string }>
 
 export type GetEquipmentNomenclatureListSuccessResponse =
   PaginatedListSuccessResponse<EquipmentNomenclatureListItemModel>
