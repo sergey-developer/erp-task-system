@@ -582,9 +582,43 @@ describe('Фильтр списка номенклатуры оборудова�
       expect(selectedCategory2).toBeInTheDocument()
     })
 
-    test.todo('Устанавливается значение по умолчанию')
-    test.todo('Сбрасывается к значению по умолчанию')
-    test.todo('Переданное значение заменяет значение по умолчанию')
+    test('Устанавливается значение по умолчанию', async () => {
+      const initialCategory = props.categoryList[1]
+      const { user } = render(
+        <EquipmentFilter {...props} initialValues={{ categories: [initialCategory.id] }} />,
+      )
+
+      await testUtils.openCategoriesSelect(user)
+      const selectedCategory = testUtils.getSelectedCategory(initialCategory.title)
+      expect(selectedCategory).toBeInTheDocument()
+    })
+
+    test('Сбрасывается к значению по умолчанию', async () => {
+      const initialCategory = props.categoryList[1]
+      const { user } = render(
+        <EquipmentFilter {...props} initialValues={{ categories: [initialCategory.id] }} />,
+      )
+
+      await testUtils.openCategoriesSelect(user)
+      await testUtils.setCategory(user, props.categoryList[0].title)
+      await testUtils.clickResetButtonIn(user, testUtils.getCategoriesBlock())
+      const selectedCategory = testUtils.getSelectedCategory(initialCategory.title)
+      expect(selectedCategory).toBeInTheDocument()
+    })
+
+    test('Переданное значение заменяет значение по умолчанию', async () => {
+      const { user } = render(
+        <EquipmentFilter
+          {...props}
+          initialValues={{ categories: [props.categoryList[1].id] }}
+          values={{ categories: [props.categoryList[0].id] }}
+        />,
+      )
+
+      await testUtils.openCategoriesSelect(user)
+      const selectedCategory = testUtils.getSelectedCategory(props.categoryList[0].title)
+      expect(selectedCategory).toBeInTheDocument()
+    })
   })
 
   test.todo('Стоимость')
