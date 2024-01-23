@@ -66,6 +66,7 @@ import {
   mockGetRelocationEquipmentListNotFoundError,
   mockGetRelocationEquipmentListServerError,
   mockGetRelocationEquipmentListSuccess,
+  mockGetRelocationTaskAttachmentsSuccess,
   mockGetRelocationTaskForbiddenError,
   mockGetRelocationTaskNotFoundError,
   mockGetRelocationTaskServerError,
@@ -167,6 +168,19 @@ const setDocument = async (
 
 const getUploadedDocument = (filename: string) => within(getBlock('documents')).getByTitle(filename)
 
+// common photos button
+const getCommonPhotosButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), /Посмотреть общие фото/)
+const clickCommonPhotosButton = async (user: UserEvent) => {
+  const button = getCommonPhotosButton()
+  await user.click(button)
+}
+
+const expectCommonPhotosLoadingStarted = () =>
+  buttonTestUtils.expectLoadingStarted(getCommonPhotosButton())
+const expectCommonPhotosLoadingFinished = () =>
+  buttonTestUtils.expectLoadingFinished(getCommonPhotosButton())
+
 // loading
 const expectRelocationTaskLoadingStarted = spinnerTestUtils.expectLoadingStarted(
   'relocation-task-details-loading',
@@ -208,6 +222,11 @@ export const testUtils = {
   getCreateDocumentsButton,
   setDocument,
   getUploadedDocument,
+
+  getCommonPhotosButton,
+  clickCommonPhotosButton,
+  expectCommonPhotosLoadingStarted,
+  expectCommonPhotosLoadingFinished,
 
   clickCloseButton: (user: UserEvent) => buttonTestUtils.clickCloseButtonIn(getContainer(), user),
 
@@ -2562,6 +2581,38 @@ describe('Информация о заявке о перемещении', () =>
         )
         expect(notification).toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Посмотреть общие фото', () => {
+    test('Кнопка отображается', async () => {
+      const relocationTask = warehouseFixtures.relocationTask()
+      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+
+      await testUtils.expectRelocationTaskLoadingFinished()
+      const button = testUtils.getCommonPhotosButton()
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('При нажатии открывается модалка просмотра изображений', async () => {
+      const relocationTask = warehouseFixtures.relocationTask()
+      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+      mockGetRelocationTaskAttachmentsSuccess(props.relocationTaskId)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+      )
+
+      await testUtils.expectRelocationTaskLoadingFinished()
+      await testUtils.clickCommonPhotosButton(user)
+      const modal = await attachmentListModalTestUtils.findContainer()
+
+      expect(modal).toBeInTheDocument()
     })
   })
 })
