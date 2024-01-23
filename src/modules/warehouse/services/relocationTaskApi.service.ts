@@ -25,6 +25,8 @@ import {
   GetRelocationEquipmentBalanceListSuccessResponse,
   GetRelocationEquipmentListQueryArgs,
   GetRelocationEquipmentListSuccessResponse,
+  GetRelocationTaskAttachmentsQueryArgs,
+  GetRelocationTaskAttachmentsSuccessResponse,
   GetRelocationTaskListQueryArgs,
   GetRelocationTaskListSuccessResponse,
   GetRelocationTaskQueryArgs,
@@ -44,6 +46,7 @@ import {
   executeRelocationTaskUrl,
   getRelocationEquipmentBalanceListUrl,
   getRelocationEquipmentListUrl,
+  getRelocationTaskAttachmentsUrl,
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
   returnRelocationTaskToReworkUrl,
@@ -78,34 +81,6 @@ const getFormData = (model: any, form: FormData = new FormData(), namespace = ''
   }
   return formData
 }
-
-// const getFormData = (
-//   data: any,
-//   formData: FormData = new FormData(),
-//   previousKey?: string,
-// ): FormData => {
-//   if (data instanceof Object) {
-//     Object.keys(data).forEach((k) => {
-//       let key = k
-//       const value = data[key]
-//       if (value instanceof Object && !Array.isArray(value)) {
-//         return getFormData(formData, value, key)
-//       }
-//       if (previousKey) {
-//         key = `${previousKey}[${key}]`
-//       }
-//       if (Array.isArray(value)) {
-//         value.forEach((val) => {
-//           formData.append(`${key}[]`, val)
-//         })
-//       } else {
-//         formData.append(key, value)
-//       }
-//     })
-//   }
-//
-//   return formData
-// }
 
 const relocationTaskApiService = baseApiService
   .enhanceEndpoints({
@@ -252,6 +227,15 @@ const relocationTaskApiService = baseApiService
         },
       }),
 
+      getRelocationTaskAttachments: build.query<
+        GetRelocationTaskAttachmentsSuccessResponse,
+        GetRelocationTaskAttachmentsQueryArgs
+      >({
+        query: ({ relocationTaskId }) => ({
+          url: getRelocationTaskAttachmentsUrl(relocationTaskId),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
       createRelocationTaskAttachment: build.mutation<
         CreateRelocationTaskAttachmentSuccessResponse,
         CreateRelocationTaskAttachmentMutationArgs
@@ -325,6 +309,7 @@ export const {
   useReturnRelocationTaskToReworkMutation,
   useCancelRelocationTaskMutation,
   useCreateRelocationTaskAttachmentMutation,
+  useGetRelocationTaskAttachmentsQuery,
   useLazyGetRelocationTaskWaybillM15Query,
 
   useGetRelocationTaskListQuery,
