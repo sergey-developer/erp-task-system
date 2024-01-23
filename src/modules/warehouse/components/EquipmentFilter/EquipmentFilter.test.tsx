@@ -7,11 +7,11 @@ import {
 } from 'modules/warehouse/constants/equipment'
 
 import { yesNoOptions } from 'shared/constants/selectField'
+import { getBooleanOptions } from 'shared/utils/selectField'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { buttonTestUtils, radioButtonTestUtils, render, selectTestUtils } from '_tests_/utils'
 
-import { getBooleanOptions } from '../../../../shared/utils/selectField'
 import EquipmentFilter from './index'
 import { EquipmentFilterProps } from './types'
 
@@ -35,7 +35,6 @@ const props: Readonly<EquipmentFilterProps> = {
 }
 
 const getContainer = () => screen.getByTestId('equipment-filter')
-
 const queryContainer = () => screen.queryByTestId('equipment-filter')
 
 // conditions
@@ -62,7 +61,6 @@ const querySelectedCondition = (title: string) =>
 
 // warehouses
 const getWarehousesBlock = () => within(getContainer()).getByTestId('warehouses')
-
 const getWarehousesSelect = () => within(getWarehousesBlock()).getByTestId('warehouses-select')
 
 const getWarehousesPlaceholder = (): HTMLElement =>
@@ -86,16 +84,13 @@ const expectWarehousesLoadingFinished = () =>
 
 // owners
 const getOwnersBlock = () => within(getContainer()).getByTestId('owners')
-
 const getOwnersSelect = () => within(getOwnersBlock()).getByTestId('owners-select')
 
 const getOwnersPlaceholder = (): HTMLElement =>
   within(getOwnersSelect()).getByText('Выберите владельца оборудования')
 
 const getOwnersSelectInput = () => selectTestUtils.getSelect(getOwnersSelect())
-
 const openOwnersSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getOwnersBlock())
-
 const setOwner = selectTestUtils.clickSelectOption
 
 const getSelectedOwner = (title: string) =>
@@ -108,7 +103,6 @@ const expectOwnersLoadingFinished = () => selectTestUtils.expectLoadingFinished(
 
 // categories
 const getCategoriesBlock = () => within(getContainer()).getByTestId('categories')
-
 const getCategoriesSelect = () => within(getCategoriesBlock()).getByTestId('categories-select')
 
 const getCategoriesPlaceholder = (): HTMLElement =>
@@ -129,6 +123,9 @@ const querySelectedCategory = (title: string) =>
 
 const expectCategoryLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getCategoriesSelect())
+
+// price
+const getPriceBlock = () => within(getContainer()).getByTestId('price')
 
 // is new
 const getIsNewBlock = () => within(getContainer()).getByTestId('is-new')
@@ -257,6 +254,8 @@ export const testUtils = {
   getSelectedCategory,
   querySelectedCategory,
   expectCategoryLoadingFinished,
+
+  getPriceBlock,
 
   getResetAllButton,
   clickResetButtonIn,
@@ -754,7 +753,6 @@ describe('Фильтр списка номенклатуры оборудова�
   })
 
   test.todo('Стоимость')
-
   test.todo('Период оприходования')
 
   describe('Оборудование с остатком 0', () => {
