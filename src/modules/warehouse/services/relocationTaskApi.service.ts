@@ -1,3 +1,5 @@
+import { decamelizeKeys } from 'humps'
+
 import { getPaginatedList } from 'lib/antd/utils'
 
 import { RelocationEquipmentApiTagEnum } from 'modules/warehouse/constants/relocationEquipment'
@@ -9,8 +11,6 @@ import {
 import {
   CancelRelocationTaskMutationArgs,
   CancelRelocationTaskSuccessResponse,
-  ExecuteRelocationTaskMutationArgs,
-  ExecuteRelocationTaskSuccessResponse,
   CloseRelocationTaskMutationArgs,
   CloseRelocationTaskSuccessResponse,
   CreateRelocationTaskAttachmentMutationArgs,
@@ -19,6 +19,8 @@ import {
   CreateRelocationTaskITSMSuccessResponse,
   CreateRelocationTaskMutationArgs,
   CreateRelocationTaskSuccessResponse,
+  ExecuteRelocationTaskMutationArgs,
+  ExecuteRelocationTaskSuccessResponse,
   GetRelocationEquipmentBalanceListQueryArgs,
   GetRelocationEquipmentBalanceListSuccessResponse,
   GetRelocationEquipmentListQueryArgs,
@@ -36,20 +38,74 @@ import {
 } from 'modules/warehouse/models'
 import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehouse/types'
 import {
+  cancelRelocationTaskUrl,
   closeRelocationTaskUrl,
-  getRelocationEquipmentBalanceListUrl,
   createRelocationTaskAttachmentUrl,
   executeRelocationTaskUrl,
-  cancelRelocationTaskUrl,
+  getRelocationEquipmentBalanceListUrl,
   getRelocationEquipmentListUrl,
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
-  updateRelocationTaskUrl,
   returnRelocationTaskToReworkUrl,
+  updateRelocationTaskUrl,
 } from 'modules/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
+
+const getFormData = (model: any, form: FormData = new FormData(), namespace = ''): FormData => {
+  let formData = form || new FormData()
+
+  for (let propertyName in model) {
+    if (!model.hasOwnProperty(propertyName) || !model[propertyName]) continue
+    let formKey = namespace ? `${namespace}[${propertyName}]` : propertyName
+    if (model[propertyName] instanceof Date)
+      formData.append(formKey, model[propertyName].toISOString())
+    else if (model[propertyName] instanceof Array) {
+      model[propertyName].forEach((element: any, index: number) => {
+        if (typeof element.name == 'string') {
+          formData.append(formKey, element)
+        } else {
+          const tempFormKey = `${formKey}[${index}]`
+          getFormData(element, formData, tempFormKey)
+        }
+      })
+    } else if (typeof model[propertyName] === 'object' && !(model[propertyName] instanceof File)) {
+      getFormData(model[propertyName], formData, formKey)
+    } else {
+      formData.append(formKey, model[propertyName].toString())
+    }
+  }
+  return formData
+}
+
+// const getFormData = (
+//   data: any,
+//   formData: FormData = new FormData(),
+//   previousKey?: string,
+// ): FormData => {
+//   if (data instanceof Object) {
+//     Object.keys(data).forEach((k) => {
+//       let key = k
+//       const value = data[key]
+//       if (value instanceof Object && !Array.isArray(value)) {
+//         return getFormData(formData, value, key)
+//       }
+//       if (previousKey) {
+//         key = `${previousKey}[${key}]`
+//       }
+//       if (Array.isArray(value)) {
+//         value.forEach((val) => {
+//           formData.append(`${key}[]`, val)
+//         })
+//       } else {
+//         formData.append(key, value)
+//       }
+//     })
+//   }
+//
+//   return formData
+// }
 
 const relocationTaskApiService = baseApiService
   .enhanceEndpoints({
@@ -74,11 +130,14 @@ const relocationTaskApiService = baseApiService
         CreateRelocationTaskITSMSuccessResponse,
         CreateRelocationTaskITSMMutationArgs
       >({
-        query: (payload) => ({
-          url: RelocationTaskApiEnum.CreateRelocationTaskITSM,
-          method: HttpMethodEnum.Post,
-          data: payload,
-        }),
+        query: (payload) => {
+          const data = getFormData(decamelizeKeys(payload))
+          return {
+            url: RelocationTaskApiEnum.CreateRelocationTaskITSM,
+            method: HttpMethodEnum.Post,
+            data,
+          }
+        },
       }),
       updateRelocationTask: build.mutation<
         UpdateRelocationTaskSuccessResponse,
@@ -101,7 +160,7 @@ const relocationTaskApiService = baseApiService
       executeRelocationTask: build.mutation<
         ExecuteRelocationTaskSuccessResponse,
         ExecuteRelocationTaskMutationArgs
-        >({
+      >({
         invalidatesTags: (result, error) =>
           error ? [] : [RelocationTaskApiTagEnum.RelocationTask],
         query: ({ relocationTaskId, documents }) => {
@@ -158,7 +217,10 @@ const relocationTaskApiService = baseApiService
           } catch {}
         },
       }),
-      [RelocationTaskApiTriggerEnum.GetRelocationTask]: build.query<GetRelocationTaskSuccessResponse, GetRelocationTaskQueryArgs>({
+      [RelocationTaskApiTriggerEnum.GetRelocationTask]: build.query<
+        GetRelocationTaskSuccessResponse,
+        GetRelocationTaskQueryArgs
+      >({
         providesTags: (result, error) => (error ? [] : [RelocationTaskApiTagEnum.RelocationTask]),
         query: ({ relocationTaskId }) => ({
           url: getRelocationTaskUrl(relocationTaskId),
