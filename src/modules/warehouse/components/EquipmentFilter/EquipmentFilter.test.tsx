@@ -7,11 +7,11 @@ import {
 } from 'modules/warehouse/constants/equipment'
 
 import { yesNoOptions } from 'shared/constants/selectField'
+import { getBooleanOptions } from 'shared/utils/selectField'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { buttonTestUtils, radioButtonTestUtils, render, selectTestUtils } from '_tests_/utils'
 
-import { getBooleanOptions } from '../../../../shared/utils/selectField'
 import EquipmentFilter from './index'
 import { EquipmentFilterProps } from './types'
 
@@ -35,7 +35,6 @@ const props: Readonly<EquipmentFilterProps> = {
 }
 
 const getContainer = () => screen.getByTestId('equipment-filter')
-
 const queryContainer = () => screen.queryByTestId('equipment-filter')
 
 // conditions
@@ -62,7 +61,6 @@ const querySelectedCondition = (title: string) =>
 
 // warehouses
 const getWarehousesBlock = () => within(getContainer()).getByTestId('warehouses')
-
 const getWarehousesSelect = () => within(getWarehousesBlock()).getByTestId('warehouses-select')
 
 const getWarehousesPlaceholder = (): HTMLElement =>
@@ -86,16 +84,13 @@ const expectWarehousesLoadingFinished = () =>
 
 // owners
 const getOwnersBlock = () => within(getContainer()).getByTestId('owners')
-
 const getOwnersSelect = () => within(getOwnersBlock()).getByTestId('owners-select')
 
 const getOwnersPlaceholder = (): HTMLElement =>
   within(getOwnersSelect()).getByText('Выберите владельца оборудования')
 
 const getOwnersSelectInput = () => selectTestUtils.getSelect(getOwnersSelect())
-
 const openOwnersSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getOwnersBlock())
-
 const setOwner = selectTestUtils.clickSelectOption
 
 const getSelectedOwner = (title: string) =>
@@ -108,7 +103,6 @@ const expectOwnersLoadingFinished = () => selectTestUtils.expectLoadingFinished(
 
 // categories
 const getCategoriesBlock = () => within(getContainer()).getByTestId('categories')
-
 const getCategoriesSelect = () => within(getCategoriesBlock()).getByTestId('categories-select')
 
 const getCategoriesPlaceholder = (): HTMLElement =>
@@ -129,6 +123,9 @@ const querySelectedCategory = (title: string) =>
 
 const expectCategoryLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getCategoriesSelect())
+
+// price
+const getPriceBlock = () => within(getContainer()).getByTestId('price')
 
 // is new
 const getIsNewBlock = () => within(getContainer()).getByTestId('is-new')
@@ -257,6 +254,8 @@ export const testUtils = {
   getSelectedCategory,
   querySelectedCategory,
   expectCategoryLoadingFinished,
+
+  getPriceBlock,
 
   getResetAllButton,
   clickResetButtonIn,
@@ -479,9 +478,43 @@ describe('Фильтр списка номенклатуры оборудова�
       expect(selectedOwner2).toBeInTheDocument()
     })
 
-    test.todo('Устанавливается значение по умолчанию')
-    test.todo('Сбрасывается к значению по умолчанию')
-    test.todo('Переданное значение заменяет значение по умолчанию')
+    test('Устанавливается значение по умолчанию', async () => {
+      const initialOwner = props.ownerList[1]
+      const { user } = render(
+        <EquipmentFilter {...props} initialValues={{ owners: [initialOwner.id] }} />,
+      )
+
+      await testUtils.openOwnersSelect(user)
+      const selectedOption = testUtils.getSelectedOwner(initialOwner.title)
+      expect(selectedOption).toBeInTheDocument()
+    })
+
+    test('Сбрасывается к значению по умолчанию', async () => {
+      const initialOwner = props.ownerList[1]
+      const { user } = render(
+        <EquipmentFilter {...props} initialValues={{ owners: [initialOwner.id] }} />,
+      )
+
+      await testUtils.openOwnersSelect(user)
+      await testUtils.setOwner(user, props.ownerList[0].title)
+      await testUtils.clickResetButtonIn(user, testUtils.getOwnersBlock())
+      const selectedOption = testUtils.getSelectedOwner(initialOwner.title)
+      expect(selectedOption).toBeInTheDocument()
+    })
+
+    test('Переданное значение заменяет значение по умолчанию', async () => {
+      const { user } = render(
+        <EquipmentFilter
+          {...props}
+          initialValues={{ owners: [props.ownerList[1].id] }}
+          values={{ owners: [props.ownerList[0].id] }}
+        />,
+      )
+
+      await testUtils.openOwnersSelect(user)
+      const selectedOption = testUtils.getSelectedOwner(props.ownerList[0].title)
+      expect(selectedOption).toBeInTheDocument()
+    })
   })
 
   describe('Новое', () => {
@@ -498,14 +531,44 @@ describe('Фильтр списка номенклатуры оборудова�
 
     test('Можно установить значение', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
-
       const field = await testUtils.clickIsNewField(user, yesNoOptions[0].label as string)
       expect(field).toBeChecked()
     })
 
-    test.todo('Устанавливается значение по умолчанию')
-    test.todo('Сбрасывается к значению по умолчанию')
-    test.todo('Переданное значение заменяет значение по умолчанию')
+    test('Устанавливается значение по умолчанию', () => {
+      render(<EquipmentFilter {...props} initialValues={{ isNew: true }} />)
+
+      const truthyField = testUtils.getIsNewField(yesNoOptions[0].label as string)
+      const falsyField = testUtils.getIsNewField(yesNoOptions[1].label as string)
+
+      expect(truthyField).toBeChecked()
+      expect(falsyField).not.toBeChecked()
+    })
+
+    test('Сбрасывается к значению по умолчанию', async () => {
+      const { user } = render(<EquipmentFilter {...props} initialValues={{ isNew: true }} />)
+
+      const falsyField = await testUtils.clickIsNewField(user, yesNoOptions[1].label as string)
+      expect(falsyField).toBeChecked()
+
+      await testUtils.clickResetButtonIn(user, testUtils.getIsNewBlock())
+      expect(falsyField).not.toBeChecked()
+
+      const truthyField = testUtils.getIsNewField(yesNoOptions[0].label as string)
+      expect(truthyField).toBeChecked()
+    })
+
+    test('Переданное значение заменяет значение по умолчанию', () => {
+      render(
+        <EquipmentFilter {...props} initialValues={{ isNew: true }} values={{ isNew: false }} />,
+      )
+
+      const truthyField = testUtils.getIsNewField(yesNoOptions[0].label as string)
+      const falsyField = testUtils.getIsNewField(yesNoOptions[1].label as string)
+
+      expect(truthyField).not.toBeChecked()
+      expect(falsyField).toBeChecked()
+    })
   })
 
   describe('На гарантии', () => {
@@ -522,14 +585,48 @@ describe('Фильтр списка номенклатуры оборудова�
 
     test('Можно установить значение', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
-
       const field = await testUtils.clickIsWarrantyField(user, yesNoOptions[0].label as string)
       expect(field).toBeChecked()
     })
 
-    test.todo('Устанавливается значение по умолчанию')
-    test.todo('Сбрасывается к значению по умолчанию')
-    test.todo('Переданное значение заменяет значение по умолчанию')
+    test('Устанавливается значение по умолчанию', () => {
+      render(<EquipmentFilter {...props} initialValues={{ isWarranty: true }} />)
+
+      const truthyField = testUtils.getIsWarrantyField(yesNoOptions[0].label as string)
+      const falsyField = testUtils.getIsWarrantyField(yesNoOptions[1].label as string)
+
+      expect(truthyField).toBeChecked()
+      expect(falsyField).not.toBeChecked()
+    })
+
+    test('Сбрасывается к значению по умолчанию', async () => {
+      const { user } = render(<EquipmentFilter {...props} initialValues={{ isWarranty: true }} />)
+
+      const falsyField = await testUtils.clickIsWarrantyField(user, yesNoOptions[1].label as string)
+      expect(falsyField).toBeChecked()
+
+      await testUtils.clickResetButtonIn(user, testUtils.getIsWarrantyBlock())
+      expect(falsyField).not.toBeChecked()
+
+      const truthyField = testUtils.getIsWarrantyField(yesNoOptions[0].label as string)
+      expect(truthyField).toBeChecked()
+    })
+
+    test('Переданное значение заменяет значение по умолчанию', async () => {
+      render(
+        <EquipmentFilter
+          {...props}
+          initialValues={{ isWarranty: true }}
+          values={{ isWarranty: false }}
+        />,
+      )
+
+      const truthyField = testUtils.getIsWarrantyField(yesNoOptions[0].label as string)
+      const falsyField = testUtils.getIsWarrantyField(yesNoOptions[1].label as string)
+
+      expect(truthyField).not.toBeChecked()
+      expect(falsyField).toBeChecked()
+    })
   })
 
   describe('Отремонтированное', () => {
@@ -546,14 +643,48 @@ describe('Фильтр списка номенклатуры оборудова�
 
     test('Можно установить значение', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
-
       const field = await testUtils.clickIsRepairedField(user, yesNoOptions[0].label as string)
       expect(field).toBeChecked()
     })
 
-    test.todo('Устанавливается значение по умолчанию')
-    test.todo('Сбрасывается к значению по умолчанию')
-    test.todo('Переданное значение заменяет значение по умолчанию')
+    test('Устанавливается значение по умолчанию', () => {
+      render(<EquipmentFilter {...props} initialValues={{ isRepaired: true }} />)
+
+      const truthyField = testUtils.getIsRepairedField(yesNoOptions[0].label as string)
+      const falsyField = testUtils.getIsRepairedField(yesNoOptions[1].label as string)
+
+      expect(truthyField).toBeChecked()
+      expect(falsyField).not.toBeChecked()
+    })
+
+    test('Сбрасывается к значению по умолчанию', async () => {
+      const { user } = render(<EquipmentFilter {...props} initialValues={{ isRepaired: true }} />)
+
+      const falsyField = await testUtils.clickIsRepairedField(user, yesNoOptions[1].label as string)
+      expect(falsyField).toBeChecked()
+
+      await testUtils.clickResetButtonIn(user, testUtils.getIsRepairedBlock())
+      expect(falsyField).not.toBeChecked()
+
+      const truthyField = testUtils.getIsRepairedField(yesNoOptions[0].label as string)
+      expect(truthyField).toBeChecked()
+    })
+
+    test('Переданное значение заменяет значение по умолчанию', () => {
+      render(
+        <EquipmentFilter
+          {...props}
+          initialValues={{ isRepaired: true }}
+          values={{ isRepaired: false }}
+        />,
+      )
+
+      const truthyField = testUtils.getIsRepairedField(yesNoOptions[0].label as string)
+      const falsyField = testUtils.getIsRepairedField(yesNoOptions[1].label as string)
+
+      expect(truthyField).not.toBeChecked()
+      expect(falsyField).toBeChecked()
+    })
   })
 
   describe('Категория', () => {
@@ -582,9 +713,43 @@ describe('Фильтр списка номенклатуры оборудова�
       expect(selectedCategory2).toBeInTheDocument()
     })
 
-    test.todo('Устанавливается значение по умолчанию')
-    test.todo('Сбрасывается к значению по умолчанию')
-    test.todo('Переданное значение заменяет значение по умолчанию')
+    test('Устанавливается значение по умолчанию', async () => {
+      const initialCategory = props.categoryList[1]
+      const { user } = render(
+        <EquipmentFilter {...props} initialValues={{ categories: [initialCategory.id] }} />,
+      )
+
+      await testUtils.openCategoriesSelect(user)
+      const selectedOption = testUtils.getSelectedCategory(initialCategory.title)
+      expect(selectedOption).toBeInTheDocument()
+    })
+
+    test('Сбрасывается к значению по умолчанию', async () => {
+      const initialCategory = props.categoryList[1]
+      const { user } = render(
+        <EquipmentFilter {...props} initialValues={{ categories: [initialCategory.id] }} />,
+      )
+
+      await testUtils.openCategoriesSelect(user)
+      await testUtils.setCategory(user, props.categoryList[0].title)
+      await testUtils.clickResetButtonIn(user, testUtils.getCategoriesBlock())
+      const selectedOption = testUtils.getSelectedCategory(initialCategory.title)
+      expect(selectedOption).toBeInTheDocument()
+    })
+
+    test('Переданное значение заменяет значение по умолчанию', async () => {
+      const { user } = render(
+        <EquipmentFilter
+          {...props}
+          initialValues={{ categories: [props.categoryList[1].id] }}
+          values={{ categories: [props.categoryList[0].id] }}
+        />,
+      )
+
+      await testUtils.openCategoriesSelect(user)
+      const selectedOption = testUtils.getSelectedCategory(props.categoryList[0].title)
+      expect(selectedOption).toBeInTheDocument()
+    })
   })
 
   test.todo('Стоимость')
@@ -623,11 +788,11 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(<EquipmentFilter {...props} initialValues={{ zeroQuantity: true }} />)
 
-      const field = await testUtils.clickZeroQuantityField(user, options[1].label as string)
-      expect(field).toBeChecked()
+      const falsyField = await testUtils.clickZeroQuantityField(user, options[1].label as string)
+      expect(falsyField).toBeChecked()
 
       await testUtils.clickResetButtonIn(user, testUtils.getZeroQuantityBlock())
-      expect(field).not.toBeChecked()
+      expect(falsyField).not.toBeChecked()
 
       const truthyField = testUtils.getZeroQuantityField(options[0].label as string)
       expect(truthyField).toBeChecked()
