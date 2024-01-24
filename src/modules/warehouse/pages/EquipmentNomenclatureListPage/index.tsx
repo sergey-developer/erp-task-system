@@ -8,6 +8,7 @@ import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipme
 import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
 import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
+import { LocationTypeEnum } from 'shared/constants/catalogs'
 import {
   calculatePaginationParams,
   extractPaginationResults,
@@ -19,39 +20,40 @@ const initialPaginationParams = getInitialPaginationParams()
 const EquipmentNomenclatureListPage: FC = () => {
   const context = useEquipmentPageContext()
 
-  const [getEquipmentNomenclatureListParams, setGetEquipmentNomenclatureListParams] =
+  const [equipmentNomenclatureListParams, setEquipmentNomenclatureListParams] =
     useSetState<GetEquipmentNomenclatureListQueryArgs>({
       ...initialPaginationParams,
       ...(context?.filter && equipmentFilterToParams(context.filter)),
       search: context?.search,
+      locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter],
     })
 
   useEffect(() => {
-    setGetEquipmentNomenclatureListParams({
+    setEquipmentNomenclatureListParams({
       search: context?.search || undefined,
       offset: initialPaginationParams.offset,
     })
-  }, [context?.search, setGetEquipmentNomenclatureListParams])
+  }, [context?.search, setEquipmentNomenclatureListParams])
 
   useEffect(() => {
     if (context?.filter) {
-      setGetEquipmentNomenclatureListParams({
+      setEquipmentNomenclatureListParams({
         ...equipmentFilterToParams(context.filter),
         offset: initialPaginationParams.offset,
       })
     }
-  }, [context?.filter, setGetEquipmentNomenclatureListParams])
+  }, [context?.filter, setEquipmentNomenclatureListParams])
 
   const {
     currentData: equipmentNomenclatureList,
     isFetching: equipmentNomenclatureListIsFetching,
-  } = useGetEquipmentNomenclatureList(getEquipmentNomenclatureListParams)
+  } = useGetEquipmentNomenclatureList(equipmentNomenclatureListParams)
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<EquipmentNomenclatureTableProps['onChange']>[0]) => {
-      setGetEquipmentNomenclatureListParams(calculatePaginationParams(pagination))
+      setEquipmentNomenclatureListParams(calculatePaginationParams(pagination))
     },
-    [setGetEquipmentNomenclatureListParams],
+    [setEquipmentNomenclatureListParams],
   )
 
   const handleChangeTable = useCallback<EquipmentNomenclatureTableProps['onChange']>(
