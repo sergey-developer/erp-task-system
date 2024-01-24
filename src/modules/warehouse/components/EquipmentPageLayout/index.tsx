@@ -64,7 +64,7 @@ const EquipmentPageLayout: FC = () => {
       isNew: undefined,
       isRepaired: undefined,
       isWarranty: undefined,
-      zeroQuantity: true,
+      zeroQuantity: undefined,
     }),
     [equipmentCategoryList, warehouseList],
   )
