@@ -63,23 +63,23 @@ const EquipmentListPage: FC = () => {
 
   useEffect(() => {
     if (isNumber(getEquipmentListParams.nomenclature)) {
-      context?.setGetEquipmentsXlsxParams({ nomenclature: getEquipmentListParams.nomenclature })
+      context?.setEquipmentsXlsxParams({ nomenclature: getEquipmentListParams.nomenclature })
     }
 
     return () => {
-      context?.setGetEquipmentsXlsxParams({ nomenclature: undefined })
+      context?.setEquipmentsXlsxParams({ nomenclature: undefined })
     }
-  }, [context?.setGetEquipmentsXlsxParams, getEquipmentListParams.nomenclature])
+  }, [context?.setEquipmentsXlsxParams, getEquipmentListParams.nomenclature])
 
   useEffect(() => {
     if (getEquipmentListParams.ordering) {
-      context?.setGetEquipmentsXlsxParams({ ordering: getEquipmentListParams.ordering })
+      context?.setEquipmentsXlsxParams({ ordering: getEquipmentListParams.ordering })
     }
 
     return () => {
-      context?.setGetEquipmentsXlsxParams({ ordering: undefined })
+      context?.setEquipmentsXlsxParams({ ordering: undefined })
     }
-  }, [context?.setGetEquipmentsXlsxParams, getEquipmentListParams.ordering])
+  }, [context?.setEquipmentsXlsxParams, getEquipmentListParams.ordering])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<EquipmentTableProps['onChange']>[0]) => {
