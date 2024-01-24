@@ -33,6 +33,6 @@ export const equipmentFilterToParams = (
     priceTo,
     createdAtFrom: createdAt?.[0] ? formatDate(createdAt[0], DATE_FILTER_FORMAT) : undefined,
     createdAtTo: createdAt?.[1] ? formatDate(createdAt[1], DATE_FILTER_FORMAT) : undefined,
-    quantityGt: zeroQuantity ? 0 : undefined,
+    quantityGt: zeroQuantity ? undefined : 0,
   }
 }

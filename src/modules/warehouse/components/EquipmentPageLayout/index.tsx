@@ -14,6 +14,7 @@ import {
 } from 'modules/warehouse/hooks/equipment'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { GetEquipmentsXlsxQueryArgs } from 'modules/warehouse/models'
+import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -28,7 +29,7 @@ const EquipmentFilter = React.lazy(() => import('modules/warehouse/components/Eq
 
 const { Search } = Input
 
-const pickEquipmentsXlsxParams = (
+const getEquipmentsXlsxParamsByLocation = (
   location: ReturnType<typeof useLocation>,
   params: GetEquipmentsXlsxQueryArgs,
 ): GetEquipmentsXlsxQueryArgs => {
@@ -53,7 +54,7 @@ const initialFilterValues: EquipmentFilterFormFields = {
   isNew: undefined,
   isRepaired: undefined,
   isWarranty: undefined,
-  zeroQuantity: true,
+  zeroQuantity: undefined,
 }
 
 const EquipmentPageLayout: FC = () => {
@@ -76,10 +77,9 @@ const EquipmentPageLayout: FC = () => {
     { skip: !filterOpened },
   )
 
-  const [getEquipmentsXlsxParams, setGetEquipmentsXlsxParams] =
-    useSetState<GetEquipmentsXlsxQueryArgs>({
-      locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter],
-    })
+  const [equipmentsXlsxParams, setEquipmentsXlsxParams] = useSetState<GetEquipmentsXlsxQueryArgs>({
+    locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter],
+  })
 
   const [getEquipmentsXlsx, { isFetching: getEquipmentsXlsxIsFetching }] =
     useLazyGetEquipmentsXlsx()
@@ -87,20 +87,20 @@ const EquipmentPageLayout: FC = () => {
   const onApplyFilter = (values: EquipmentFilterFormFields) => {
     setFilterValues(values)
     toggleFilterOpened()
-    setGetEquipmentsXlsxParams(values)
+    setEquipmentsXlsxParams(equipmentFilterToParams(values))
     navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
   }
 
   const onSearch: SearchProps['onSearch'] = (value) => {
     setSearchValue(value)
-    setGetEquipmentsXlsxParams({ search: value })
+    setEquipmentsXlsxParams({ search: value })
     navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
   }
 
   const onExportToXlsx = async () => {
     try {
       const equipments = await getEquipmentsXlsx(
-        pickEquipmentsXlsxParams(location, getEquipmentsXlsxParams),
+        getEquipmentsXlsxParamsByLocation(location, equipmentsXlsxParams),
       ).unwrap()
 
       clickDownloadLink(equipments, MimetypeEnum.Xlsx, 'Оборудование')
@@ -108,8 +108,8 @@ const EquipmentPageLayout: FC = () => {
   }
 
   const routeContext = useMemo<EquipmentPageContextType>(
-    () => ({ filter: filterValues, search: searchValue, setGetEquipmentsXlsxParams }),
-    [filterValues, searchValue, setGetEquipmentsXlsxParams],
+    () => ({ filter: filterValues, search: searchValue, setEquipmentsXlsxParams }),
+    [filterValues, searchValue, setEquipmentsXlsxParams],
   )
 
   return (

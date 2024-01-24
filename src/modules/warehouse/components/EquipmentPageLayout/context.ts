@@ -9,7 +9,7 @@ export type EquipmentPageContextType = Partial<{
   filter: EquipmentFilterFormFields
   search: string
 }> & {
-  setGetEquipmentsXlsxParams: (
+  setEquipmentsXlsxParams: (
     params: Pick<GetEquipmentsXlsxQueryArgs, 'nomenclature' | 'ordering'>,
   ) => void
 }

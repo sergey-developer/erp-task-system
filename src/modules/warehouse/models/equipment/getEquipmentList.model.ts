@@ -1,5 +1,6 @@
 import { EquipmentFilterParams } from 'modules/warehouse/types'
 
+import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
 import { IdType } from 'shared/types/common'
 import { PaginationParams } from 'shared/types/pagination'
@@ -25,6 +26,8 @@ export type GetEquipmentListQueryArgs = PaginationParams &
     search: string
     nomenclature: IdType
     ordering: GetEquipmentListSortValue
-  }>
+  }> & {
+    locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter]
+  }
 
 export type GetEquipmentListSuccessResponse = PaginatedListSuccessResponse<EquipmentListItemModel>
