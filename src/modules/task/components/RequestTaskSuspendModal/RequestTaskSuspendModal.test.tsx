@@ -405,8 +405,12 @@ describe('Модалка создания запроса о переводе в 
       const endDateField = testUtils.getEndDateField()
       const endTimeField = testUtils.getEndTimeField()
       const title = testUtils.getReturnTimeTitle()
+      const info = within(testUtils.getReturnTimeFormItem()).getByText(
+        `Убедитесь, что на компьютере установлено точное время. Время ожидания может быть автоматически уменьшено до установленного администратором системы`,
+      )
 
       expect(title).toBeInTheDocument()
+      expect(info).toBeInTheDocument()
       expect(endDateField).toBeInTheDocument()
       expect(endDateField).not.toHaveValue()
       expect(endTimeField).toBeInTheDocument()
