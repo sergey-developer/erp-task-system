@@ -62,7 +62,7 @@ import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { mergeDateTime } from 'shared/utils/date'
-import { extractIdsFromFilesResponse } from 'shared/utils/file'
+import { extractIdsFromFilesResponse, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
@@ -345,6 +345,7 @@ const CreateRelocationTaskPage: FC = () => {
         relocateFromId: values.relocateFrom,
         executor: values.executor,
         comment: values.comment,
+        images: values.images?.length ? extractOriginFiles(values.images) : undefined,
       }).unwrap()
 
       const fromPath = location.state?.from

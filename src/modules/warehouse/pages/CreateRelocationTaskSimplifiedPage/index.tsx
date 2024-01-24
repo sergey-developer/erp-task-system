@@ -11,7 +11,6 @@ import {
   Upload,
   UploadProps,
 } from 'antd'
-import { omit } from 'lodash'
 import get from 'lodash/get'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
@@ -71,7 +70,7 @@ import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy, valueOrHyphen } from 'shared/utils/common'
-import { extractIdsFromFilesResponse } from 'shared/utils/file'
+import { extractIdsFromFilesResponse, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
@@ -339,7 +338,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             ? extractIdsFromFilesResponse(eqp.attachments)
             : undefined,
           images: values.equipmentsToShopImages?.length
-            ? values.equipmentsToShopImages.map((f) => omit(f.originFileObj, 'uid'))
+            ? extractOriginFiles(values.equipmentsToShopImages)
             : undefined,
         })),
         equipmentsToWarehouse: values.equipmentsToWarehouse?.map((eqp) => ({
@@ -350,7 +349,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             ? extractIdsFromFilesResponse(eqp.attachments)
             : undefined,
           images: values.equipmentsToWarehouseImages?.length
-            ? values.equipmentsToWarehouseImages.map((f) => omit(f.originFileObj, 'uid'))
+            ? extractOriginFiles(values.equipmentsToWarehouseImages)
             : undefined,
         })),
       }).unwrap()
