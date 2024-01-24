@@ -1,3 +1,4 @@
+import { InfoCircleTwoTone } from '@ant-design/icons'
 import {
   Col,
   Form,
@@ -36,6 +37,16 @@ import { commentRules, endDateRules, endTimeRules, reasonRules, taskLinkRules } 
 
 const { Text, Link } = Typography
 const { TextArea } = Input
+const returnTimeInfo = (
+  <Space align='start' style={{ marginTop: '5px' }}>
+    <InfoCircleTwoTone />
+
+    <Text>
+      Убедитесь, что на компьютере установлено точное время. Время ожидания может быть автоматически
+      уменьшено до установленного администратором системы
+    </Text>
+  </Space>
+)
 
 const initialValues: FormProps<RequestTaskSuspendFormFields>['initialValues'] = {
   organization: ExternalResponsibleCompanyEnum.BusinessDepartmentX5,
@@ -136,7 +147,11 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           </Form.Item>
         )}
 
-        <Form.Item data-testid='return-time-form-item' label='Время возврата'>
+        <Form.Item
+          data-testid='return-time-form-item'
+          label='Время возврата'
+          extra={returnTimeInfo}
+        >
           <Row justify='space-between'>
             <Col span={11}>
               <Form.Item
