@@ -1,25 +1,50 @@
-import { useBoolean } from 'ahooks'
-import { Col, Input, Row, Space } from 'antd'
+import { useBoolean, useSetState } from 'ahooks'
+import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
+import omit from 'lodash/omit'
 import { FC, useMemo, useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import EquipmentFilter from 'modules/warehouse/components/EquipmentFilter'
 import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
-import { useGetEquipmentCategoryList } from 'modules/warehouse/hooks/equipment'
+import {
+  useGetEquipmentCategoryList,
+  useLazyGetEquipmentsXlsx,
+} from 'modules/warehouse/hooks/equipment'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
+import { GetEquipmentsXlsxQueryArgs } from 'modules/warehouse/models'
+import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import FilterButton from 'components/Buttons/FilterButton'
+
+import { LocationTypeEnum } from 'shared/constants/catalogs'
+import { MimetypeEnum } from 'shared/constants/mimetype'
+import { clickDownloadLink } from 'shared/utils/common'
 
 import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
 
+const getEquipmentsXlsxParamsByLocation = (
+  location: ReturnType<typeof useLocation>,
+  params: GetEquipmentsXlsxQueryArgs,
+): GetEquipmentsXlsxQueryArgs => {
+  switch (location.pathname) {
+    case WarehouseRouteEnum.EquipmentList:
+      return params
+    case WarehouseRouteEnum.EquipmentNomenclatureList:
+      return omit(params, 'nomenclature', 'ordering')
+    default:
+      return params
+  }
+}
+
 const EquipmentPageLayout: FC = () => {
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [searchValue, setSearchValue] = useState<string>()
 
@@ -37,15 +62,34 @@ const EquipmentPageLayout: FC = () => {
     { skip: !filterOpened },
   )
 
-  const handleApplyFilter = (values: EquipmentFilterFormFields) => {
+  const [equipmentsXlsxParams, setEquipmentsXlsxParams] = useSetState<GetEquipmentsXlsxQueryArgs>({
+    locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter],
+  })
+
+  const [getEquipmentsXlsx, { isFetching: getEquipmentsXlsxIsFetching }] =
+    useLazyGetEquipmentsXlsx()
+
+  const onApplyFilter = (values: EquipmentFilterFormFields) => {
     setFilterValues(values)
     toggleFilterOpened()
+    setEquipmentsXlsxParams(equipmentFilterToParams(values))
     navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
   }
 
-  const handleSearch: SearchProps['onSearch'] = (value) => {
+  const onSearch: SearchProps['onSearch'] = (value) => {
     setSearchValue(value)
+    setEquipmentsXlsxParams({ search: value })
     navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
+  }
+
+  const onExportToXlsx = async () => {
+    try {
+      const equipments = await getEquipmentsXlsx(
+        getEquipmentsXlsxParamsByLocation(location, equipmentsXlsxParams),
+      ).unwrap()
+
+      clickDownloadLink(equipments, MimetypeEnum.Xlsx, 'Оборудование')
+    } catch {}
   }
 
   const initialFilterValues: EquipmentFilterFormFields = useMemo(
@@ -70,8 +114,8 @@ const EquipmentPageLayout: FC = () => {
   )
 
   const routeContext = useMemo<EquipmentPageContextType>(
-    () => ({ filter: filterValues, search: searchValue }),
-    [filterValues, searchValue],
+    () => ({ filter: filterValues, search: searchValue, setEquipmentsXlsxParams }),
+    [filterValues, searchValue, setEquipmentsXlsxParams],
   )
 
   return (
@@ -82,11 +126,15 @@ const EquipmentPageLayout: FC = () => {
             <Col>
               <Space size='middle'>
                 <FilterButton onClick={toggleFilterOpened} />
+
+                <Button onClick={onExportToXlsx} loading={getEquipmentsXlsxIsFetching}>
+                  Экспорт в Excel
+                </Button>
               </Space>
             </Col>
 
             <Col>
-              <Search allowClear placeholder='Поиск оборудования' onSearch={handleSearch} />
+              <Search allowClear placeholder='Поиск оборудования' onSearch={onSearch} />
             </Col>
           </Row>
         </Col>
@@ -108,7 +156,7 @@ const EquipmentPageLayout: FC = () => {
           ownerList={customerList}
           ownerListIsLoading={customerListIsFetching}
           onClose={toggleFilterOpened}
-          onApply={handleApplyFilter}
+          onApply={onApplyFilter}
         />
       )}
     </>
