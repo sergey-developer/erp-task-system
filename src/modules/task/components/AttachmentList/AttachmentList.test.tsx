@@ -5,7 +5,8 @@ import { prettyBytes } from 'shared/utils/file'
 import taskFixtures from '_tests_/fixtures/task'
 import { render } from '_tests_/utils'
 
-import AttachmentList, { AttachmentListProps } from './index'
+import AttachmentList from './index'
+import { AttachmentListProps } from './types'
 
 const props: Readonly<AttachmentListProps> = {
   data: [taskFixtures.attachment()],
