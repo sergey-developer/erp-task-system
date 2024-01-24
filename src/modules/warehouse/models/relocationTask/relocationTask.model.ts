@@ -1,4 +1,4 @@
-import { TaskAttachmentModel, TaskModel } from 'modules/task/models'
+import { TaskModel } from 'modules/task/models'
 import { UserModel } from 'modules/user/models'
 import {
   RelocationTaskStatusEnum,
@@ -7,6 +7,8 @@ import {
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
+
+import { RelocationTaskAttachmentModel } from './relocationTaskAttachment.model'
 
 export type RelocationTaskModel = {
   id: IdType
@@ -26,7 +28,7 @@ export type RelocationTaskModel = {
   executor: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   createdBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   comment: MaybeNull<string>
-  documents: MaybeNull<Pick<TaskAttachmentModel, 'id' | 'name' | 'url' | 'size'>[]>
+  documents: MaybeNull<RelocationTaskAttachmentModel[]>
   revision: MaybeNull<{
     relocationJournalEntry: IdType
     text: string
