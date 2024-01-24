@@ -3,23 +3,38 @@ import { screen, within } from '@testing-library/react'
 import { prettyBytes } from 'shared/utils/file'
 
 import taskFixtures from '_tests_/fixtures/task'
-import { render } from '_tests_/utils'
+import {
+  fakeDateString,
+  fakeId,
+  fakeInteger,
+  fakeName,
+  fakeUrl,
+  fakeWord,
+  render,
+} from '_tests_/utils'
 
 import AttachmentList from './index'
 import { AttachmentListProps } from './types'
 
+const attachmentListItem: AttachmentListProps['data'][number] = {
+  id: fakeId(),
+  url: fakeUrl(),
+  name: fakeWord(),
+  size: fakeInteger(),
+  createdAt: fakeDateString(),
+  firstName: fakeName(),
+  lastName: fakeName(),
+  middleName: fakeName(),
+}
+
 const props: Readonly<AttachmentListProps> = {
-  data: [taskFixtures.attachment()],
+  data: [attachmentListItem],
 }
 
 const getContainer = () => screen.getByTestId('attachment-list')
-
 const getContainerIn = (container: HTMLElement) => within(container).getByTestId('attachment-list')
-
 const queryContainer = () => screen.queryByTestId('attachment-list')
-
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
-
 const queryChildByText = (text: string | RegExp) => within(getContainer()).queryByText(text)
 
 const getAttachmentContainer = (name: string) =>

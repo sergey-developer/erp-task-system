@@ -8,8 +8,8 @@ import { AttachmentListProps } from './types'
 const AttachmentList: FC<AttachmentListProps> = ({ data }) => {
   return (
     <Space data-testid='attachment-list' direction='vertical'>
-      {data.map((att) => (
-        <UploadedAttachment {...att} />
+      {data.map((att, index) => (
+        <UploadedAttachment key={att.id || index} {...att} />
       ))}
     </Space>
   )
