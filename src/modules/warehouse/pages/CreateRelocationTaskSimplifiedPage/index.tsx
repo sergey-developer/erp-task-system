@@ -70,7 +70,7 @@ import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy, valueOrHyphen } from 'shared/utils/common'
-import { extractIdsFromFilesResponse, extractOriginFiles } from 'shared/utils/file'
+import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
@@ -322,6 +322,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     await createAttachment({ type: AttachmentTypeEnum.RelocationEquipmentImage }, options)
   }
 
+  const handleCreateCommonRelocationEquipmentImage: NonNullable<
+    UploadProps['customRequest']
+  > = async (options) => {
+    await createAttachment({ type: AttachmentTypeEnum.RelocationTaskImage }, options)
+  }
+
   const handleCreateTask = async (values: SimplifiedRelocationTaskFormFields) => {
     if (!task) return
 
@@ -338,7 +344,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             ? extractIdsFromFilesResponse(eqp.attachments)
             : undefined,
           images: values.equipmentsToShopImages?.length
-            ? extractOriginFiles(values.equipmentsToShopImages)
+            ? extractIdsFromFilesResponse(values.equipmentsToShopImages)
             : undefined,
         })),
         equipmentsToWarehouse: values.equipmentsToWarehouse?.map((eqp) => ({
@@ -349,7 +355,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             ? extractIdsFromFilesResponse(eqp.attachments)
             : undefined,
           images: values.equipmentsToWarehouseImages?.length
-            ? extractOriginFiles(values.equipmentsToWarehouseImages)
+            ? extractIdsFromFilesResponse(values.equipmentsToWarehouseImages)
             : undefined,
         })),
       }).unwrap()
@@ -747,12 +753,16 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                   <Upload
                     multiple
                     listType='picture'
-                    beforeUpload={stubFalse}
+                    customRequest={handleCreateCommonRelocationEquipmentImage}
+                    onRemove={deleteAttachment}
                     itemRender={renderUploadedFile}
-                    disabled={createTaskIsLoading}
+                    disabled={createTaskIsLoading || deleteAttachmentIsLoading}
                     maxCount={10}
                   >
-                    <UploadButton label='Добавить фото' disabled={createTaskIsLoading} />
+                    <UploadButton
+                      label='Добавить фото'
+                      disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                    />
                   </Upload>
                 </Form.Item>
               </Space>
@@ -818,12 +828,16 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 <Upload
                   multiple
                   listType='picture'
-                  beforeUpload={stubFalse}
+                  customRequest={handleCreateCommonRelocationEquipmentImage}
+                  onRemove={deleteAttachment}
                   itemRender={renderUploadedFile}
-                  disabled={createTaskIsLoading}
+                  disabled={createTaskIsLoading || deleteAttachmentIsLoading}
                   maxCount={10}
                 >
-                  <UploadButton label='Добавить фото' disabled={createTaskIsLoading} />
+                  <UploadButton
+                    label='Добавить фото'
+                    disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                  />
                 </Upload>
               </Form.Item>
             </Space>
