@@ -19,6 +19,12 @@ const props: Readonly<RelocationTaskListFilterProps> = {
   values: {},
   initialValues: {},
 
+  users: [],
+  usersIsLoading: false,
+
+  locations: [],
+  locationsIsLoading: false,
+
   onClose: jest.fn(),
   onApply: jest.fn(),
 }
