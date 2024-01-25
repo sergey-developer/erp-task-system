@@ -1,9 +1,6 @@
 import { TableProps } from 'antd'
 
-import {
-  EquipmentListItemModel,
-  GetEquipmentListSortValue,
-} from 'modules/warehouse/models'
+import { EquipmentListItemModel, GetEquipmentListSortValue } from 'modules/warehouse/models'
 
 export type EquipmentTableItem = Pick<
   EquipmentListItemModel,
@@ -11,11 +8,12 @@ export type EquipmentTableItem = Pick<
   | 'title'
   | 'serialNumber'
   | 'inventoryNumber'
-  | 'warehouse'
+  | 'location'
   | 'condition'
   | 'quantity'
   | 'category'
   | 'purpose'
+  | 'isCredited'
 >
 
 export type EquipmentTableProps = Required<

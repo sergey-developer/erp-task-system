@@ -14,7 +14,7 @@ export type SortableField = keyof Pick<
   | 'title'
   | 'serialNumber'
   | 'inventoryNumber'
-  | 'warehouse'
+  | 'location'
   | 'condition'
   | 'quantity'
   | 'category'
@@ -28,7 +28,7 @@ export const sortableFieldToSortValues: Record<
   title: ['title', '-title'],
   serialNumber: ['serial_number', '-serial_number'],
   inventoryNumber: ['inventory_number', '-inventory_number'],
-  warehouse: ['warehouse', '-warehouse'],
+  location: ['location', '-location'],
   condition: ['condition', '-condition'],
   quantity: ['quantity', '-quantity'],
   category: ['category', '-category'],

@@ -1,7 +1,7 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { FC, useMemo, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
@@ -16,18 +16,19 @@ import {
 } from 'modules/warehouse/hooks/equipment'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { GetEquipmentsXlsxQueryArgs } from 'modules/warehouse/models'
+import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import FilterButton from 'components/Buttons/FilterButton'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { clickDownloadLink } from 'shared/utils/common'
 
-import { MimetypeEnum } from '../../../../shared/constants/mimetype'
 import { EquipmentPageContextType } from './context'
 
 const { Search } = Input
 
-const pickEquipmentsXlsxParams = (
+const getEquipmentsXlsxParamsByLocation = (
   location: ReturnType<typeof useLocation>,
   params: GetEquipmentsXlsxQueryArgs,
 ): GetEquipmentsXlsxQueryArgs => {
@@ -61,10 +62,9 @@ const EquipmentPageLayout: FC = () => {
     { skip: !filterOpened },
   )
 
-  const [getEquipmentsXlsxParams, setGetEquipmentsXlsxParams] =
-    useSetState<GetEquipmentsXlsxQueryArgs>({
-      locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter],
-    })
+  const [equipmentsXlsxParams, setEquipmentsXlsxParams] = useSetState<GetEquipmentsXlsxQueryArgs>({
+    locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter],
+  })
 
   const [getEquipmentsXlsx, { isFetching: getEquipmentsXlsxIsFetching }] =
     useLazyGetEquipmentsXlsx()
@@ -72,20 +72,20 @@ const EquipmentPageLayout: FC = () => {
   const onApplyFilter = (values: EquipmentFilterFormFields) => {
     setFilterValues(values)
     toggleFilterOpened()
-    setGetEquipmentsXlsxParams(values)
+    setEquipmentsXlsxParams(equipmentFilterToParams(values))
     navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
   }
 
   const onSearch: SearchProps['onSearch'] = (value) => {
     setSearchValue(value)
-    setGetEquipmentsXlsxParams({ search: value })
+    setEquipmentsXlsxParams({ search: value })
     navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
   }
 
   const onExportToXlsx = async () => {
     try {
       const equipments = await getEquipmentsXlsx(
-        pickEquipmentsXlsxParams(location, getEquipmentsXlsxParams),
+        getEquipmentsXlsxParamsByLocation(location, equipmentsXlsxParams),
       ).unwrap()
 
       clickDownloadLink(equipments, MimetypeEnum.Xlsx, 'Оборудование')
@@ -108,13 +108,14 @@ const EquipmentPageLayout: FC = () => {
       isNew: undefined,
       isRepaired: undefined,
       isWarranty: undefined,
+      zeroQuantity: undefined,
     }),
     [equipmentCategoryList, warehouseList],
   )
 
   const routeContext = useMemo<EquipmentPageContextType>(
-    () => ({ filter: filterValues, search: searchValue, setGetEquipmentsXlsxParams }),
-    [filterValues, searchValue, setGetEquipmentsXlsxParams],
+    () => ({ filter: filterValues, search: searchValue, setEquipmentsXlsxParams }),
+    [filterValues, searchValue, setEquipmentsXlsxParams],
   )
 
   return (
