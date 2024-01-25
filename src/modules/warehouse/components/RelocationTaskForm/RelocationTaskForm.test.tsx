@@ -35,6 +35,7 @@ const props: RelocationTaskFormProps = {
   imageIsUploading: false,
   onDeleteImage: jest.fn(),
   imageIsDeleting: false,
+  imagesIsLoading: false,
 
   userList: [],
   userListIsLoading: false,
