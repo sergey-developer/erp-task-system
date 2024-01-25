@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios'
+import { merge } from 'lodash'
 import isArray from 'lodash/isArray'
 import isPlainObject from 'lodash/isPlainObject'
 
@@ -6,22 +7,26 @@ import httpClient from 'lib/httpClient'
 
 import { commonApiMessages } from 'shared/constants/common'
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 
 import { CustomBaseQueryConfig, CustomBaseQueryFn } from './types'
 import { makeRelativeApiUrl } from './utils'
 
 const baseQuery =
   ({ basePath, apiVersion, prepareHeaders }: CustomBaseQueryConfig): CustomBaseQueryFn =>
-  async ({ url, method = HttpMethodEnum.Get, data, params }, api) => {
-    const headers = prepareHeaders
-      ? prepareHeaders(
-          data instanceof FormData
-            ? {
-                ...httpClient.defaults.headers.common,
-                'Content-Type': 'multipart/form-data',
-              }
-            : httpClient.defaults.headers.common,
-          api,
+  async ({ url, method = HttpMethodEnum.Get, data, params, headers }, api) => {
+    const finalHeaders = prepareHeaders
+      ? merge(
+          prepareHeaders(
+            data instanceof FormData
+              ? {
+                  ...httpClient.defaults.headers.common,
+                  'Content-Type': 'multipart/form-data',
+                }
+              : httpClient.defaults.headers.common,
+            api,
+          ),
+          headers,
         )
       : undefined
 
@@ -31,7 +36,10 @@ const baseQuery =
         method,
         data,
         params,
-        headers,
+        headers: finalHeaders,
+        responseType: (finalHeaders!['Accept'] as string).includes(MimetypeEnum.Xlsx)
+          ? 'blob'
+          : undefined,
       })
       return { data: response.data }
     } catch (exception) {
