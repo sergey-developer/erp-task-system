@@ -1,14 +1,15 @@
 import { UploadFile } from 'antd/es/upload'
 
-import { AttachmentListModel } from 'modules/attachment/models'
-
 import { FileResponse } from 'shared/types/file'
 
-export const attachmentsToFiles = (data: AttachmentListModel): UploadFile<FileResponse>[] =>
+import { AttachmentListItem } from '../components/AttachmentList/types'
+
+export const attachmentsToFiles = (data: AttachmentListItem[]): UploadFile<FileResponse>[] =>
   data.map((att) => ({
     uid: String(att.id),
     name: att.name,
     url: att.url,
-    thumbUrl: att.thumbnails.smallThumbnail,
+    size: att.size,
+    thumbUrl: att.thumbnails?.smallThumbnail || att.thumbnails?.mediumThumbnail,
     response: { id: att.id },
   }))

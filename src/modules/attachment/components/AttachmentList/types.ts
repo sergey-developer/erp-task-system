@@ -5,7 +5,9 @@ export type AttachmentListItem = {
   id: IdType
   name: string
   url: string
+  size?: number
   thumbnails: MaybeNull<{
+    smallThumbnail?: string
     mediumThumbnail: string
   }>
 }

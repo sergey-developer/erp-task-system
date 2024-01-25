@@ -14,7 +14,7 @@ import { isErrorResponse } from 'shared/services/baseApi'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetEquipmentListTemplateResult = [
+type UseLazyGetEquipmentListTemplateResult = [
   () => Promise<void>,
   CustomUseQueryStateResult<
     GetEquipmentListTemplateQueryArgs,
@@ -22,7 +22,7 @@ type UseGetEquipmentListTemplateResult = [
   >,
 ]
 
-export const useGetEquipmentListTemplate = (): UseGetEquipmentListTemplateResult => {
+export const useLazyGetEquipmentListTemplate = (): UseLazyGetEquipmentListTemplateResult => {
   const [trigger, state] = useLazyGetEquipmentListTemplateQuery()
 
   useEffect(() => {

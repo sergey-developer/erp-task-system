@@ -35,9 +35,9 @@ import {
   useCreateEquipments,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
-  useGetEquipmentListTemplate,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
+  useLazyGetEquipmentListTemplate,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useCreateRelocationTask } from 'modules/warehouse/hooks/relocationTask'
@@ -321,7 +321,7 @@ const CreateRelocationTaskPage: FC = () => {
   ] = useImportEquipmentsByFile()
 
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
-    useGetEquipmentListTemplate()
+    useLazyGetEquipmentListTemplate()
 
   const createEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {

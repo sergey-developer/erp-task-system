@@ -34,6 +34,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   imageIsUploading,
   onDeleteImage,
   imageIsDeleting,
+  imagesIsLoading,
 
   userList,
   userListIsLoading,
@@ -190,11 +191,12 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
               customRequest={onUploadImage}
               onRemove={onDeleteImage}
               itemRender={renderUploadedFile}
-              disabled={isLoading || imageIsUploading || imageIsDeleting}
+              disabled={isLoading || imageIsUploading || imageIsDeleting || imagesIsLoading}
               maxCount={10}
             >
               <UploadButton
                 label='Добавить фото'
+                loading={imagesIsLoading}
                 disabled={isLoading || imageIsUploading || imageIsDeleting}
               />
             </Upload>

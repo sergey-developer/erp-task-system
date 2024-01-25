@@ -12,7 +12,7 @@ export * from './useGetEquipmentNomenclatureList'
 
 export * from './useGetEquipmentCatalogList'
 
-export * from './useGetEquipmentListTemplate'
+export * from './useLazyGetEquipmentListTemplate'
 
 export * from './useGetEquipmentAttachmentList'
 
