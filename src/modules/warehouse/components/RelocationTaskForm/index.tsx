@@ -1,5 +1,4 @@
 import { Col, Form, Input, Row, Select, Typography, Upload } from 'antd'
-import stubFalse from 'lodash/stubFalse'
 import React, { FC, useMemo } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
@@ -30,6 +29,11 @@ const { Text } = Typography
 
 const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   isLoading,
+
+  onUploadImage,
+  imageIsUploading,
+  onDeleteImage,
+  imageIsDeleting,
 
   userList,
   userListIsLoading,
@@ -183,12 +187,16 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
             <Upload
               multiple
               listType='picture'
-              beforeUpload={stubFalse}
+              customRequest={onUploadImage}
+              onRemove={onDeleteImage}
               itemRender={renderUploadedFile}
-              disabled={isLoading}
+              disabled={isLoading || imageIsUploading || imageIsDeleting}
               maxCount={10}
             >
-              <UploadButton label='Добавить фото' disabled={isLoading} />
+              <UploadButton
+                label='Добавить фото'
+                disabled={isLoading || imageIsUploading || imageIsDeleting}
+              />
             </Upload>
           </Form.Item>
         </Space>

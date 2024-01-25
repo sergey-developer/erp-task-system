@@ -27,7 +27,7 @@ export const renderUploadedFile: UploadProps['itemRender'] = (
   return file.error ? null : file.status === 'uploading' ? (
     originNode
   ) : attrs.url && attrs.name ? (
-    <UploadedAttachment id={file.uid} {...attrs} {...actions} />
+    <UploadedAttachment key={file.uid} id={file.uid} {...attrs} {...actions} />
   ) : (
     originNode
   )
@@ -39,7 +39,7 @@ export const renderUploadedReadonlyFile: UploadProps['itemRender'] = (originNode
   return file.error ? null : file.status === 'uploading' ? (
     originNode
   ) : attrs.url && attrs.name ? (
-    <UploadedAttachment id={file.uid} {...attrs} />
+    <UploadedAttachment key={file.uid} id={file.uid} {...attrs} />
   ) : (
     originNode
   )

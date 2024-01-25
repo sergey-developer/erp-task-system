@@ -2,7 +2,6 @@ import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 
 import { IdType } from 'shared/types/common'
-import { FileToSend } from 'shared/types/file'
 
 import { RelocationTaskModel } from './relocationTask.model'
 
@@ -23,7 +22,7 @@ export type CreateRelocationTaskMutationArgs = {
 
   relocateToId?: IdType
   comment?: string
-  images?: FileToSend[]
+  images?: IdType[]
 }
 
 export type CreateRelocationTaskSuccessResponse = RelocationTaskModel

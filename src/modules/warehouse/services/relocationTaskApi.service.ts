@@ -67,29 +67,11 @@ const relocationTaskApiService = baseApiService
         CreateRelocationTaskSuccessResponse,
         CreateRelocationTaskMutationArgs
       >({
-        query: (payload) => {
-          const formData = new FormData()
-          // payload.relocateFromId
-          // payload.type
-          // payload.deadlineAt
-          // payload.executor
-          // payload.equipments
-
-          if (payload.relocateToId) formData.append('relocateToId', String(payload.relocateToId))
-          if (payload.comment) formData.append('comment', payload.comment)
-
-          if (payload.images?.length) {
-            payload.images.forEach((img) => {
-              formData.append('images', img)
-            })
-          }
-
-          return {
-            url: RelocationTaskApiEnum.CreateRelocationTask,
-            method: HttpMethodEnum.Post,
-            data: formData,
-          }
-        },
+        query: (payload) => ({
+          url: RelocationTaskApiEnum.CreateRelocationTask,
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
       }),
       createRelocationTaskITSM: build.mutation<
         CreateRelocationTaskITSMSuccessResponse,
