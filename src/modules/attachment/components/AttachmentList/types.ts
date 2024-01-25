@@ -1,14 +1,17 @@
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-export type RelocationTaskAttachmentListItemModel = {
+export type AttachmentListItem = {
   id: IdType
   name: string
-  size: number
   url: string
   thumbnails: MaybeNull<{
     mediumThumbnail: string
   }>
 }
 
-export type RelocationTaskAttachmentsModel = RelocationTaskAttachmentListItemModel[]
+export type AttachmentListProps = {
+  data: AttachmentListItem[]
+  imgWidth?: number
+  imgHeight?: number
+}
