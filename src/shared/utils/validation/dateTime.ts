@@ -6,16 +6,16 @@ import { validationMessages } from 'shared/constants/validation'
 export const dateValidator: ValidatorRule['validator'] = (rule, value: Moment) =>
   value
     ? value.isBefore(moment(), 'day')
-      ? Promise.reject(new Error(validationMessages.date.canNotBeInPast))
+      ? Promise.reject(validationMessages.date.canNotBeInPast)
       : Promise.resolve()
     : Promise.reject(validationMessages.required)
 
 export const timeValidator =
-  (valueGetter: FormInstance['getFieldValue'], fieldName: NamePath): ValidatorRule['validator'] =>
+  (dateGetter: FormInstance['getFieldValue'], fieldName: NamePath): ValidatorRule['validator'] =>
   (rule, value: Moment) => {
     if (!value) return Promise.reject(validationMessages.required)
 
-    const date: Moment = valueGetter(fieldName)
+    const date: Moment = dateGetter(fieldName)
     const currentDate = moment()
 
     if (!date || date.isAfter(currentDate, 'day')) {
@@ -24,7 +24,7 @@ export const timeValidator =
 
     if (date.isSame(currentDate, 'day')) {
       return value.isBefore(currentDate, 'minute')
-        ? Promise.reject(new Error(validationMessages.time.canNotBeInPast))
+        ? Promise.reject(validationMessages.time.canNotBeInPast)
         : Promise.resolve()
     } else {
       return Promise.resolve()

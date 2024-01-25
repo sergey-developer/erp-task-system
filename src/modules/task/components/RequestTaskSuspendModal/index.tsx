@@ -1,3 +1,4 @@
+import { InfoCircleTwoTone } from '@ant-design/icons'
 import {
   Col,
   Form,
@@ -13,7 +14,7 @@ import {
 } from 'antd'
 import isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
@@ -29,13 +30,23 @@ import BaseModal from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
 import { onlyRequiredRules } from 'shared/constants/validation'
+import { MaybeUndefined } from 'shared/types/utils'
 
-import { reasonsMakeDateTimeFieldDisabled } from './constants'
 import { RequestTaskSuspendFormFields, RequestTaskSuspendModalProps } from './types'
 import { commentRules, endDateRules, endTimeRules, reasonRules, taskLinkRules } from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
+const returnTimeInfo = (
+  <Space align='start' style={{ marginTop: '5px' }}>
+    <InfoCircleTwoTone />
+
+    <Text>
+      Убедитесь, что на компьютере установлено точное время. Время ожидания может быть автоматически
+      уменьшено до установленного администратором системы
+    </Text>
+  </Space>
+)
 
 const initialValues: FormProps<RequestTaskSuspendFormFields>['initialValues'] = {
   organization: ExternalResponsibleCompanyEnum.BusinessDepartmentX5,
@@ -44,20 +55,17 @@ const initialValues: FormProps<RequestTaskSuspendFormFields>['initialValues'] = 
 const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
   open,
   recordId,
+  systemSettings,
+  systemSettingsIsLoading,
   isLoading,
   onCancel,
   onSubmit,
 }) => {
   const [form] = Form.useForm<RequestTaskSuspendFormFields>()
 
-  const reasonFormValue = Form.useWatch('reason', form)
+  const reasonFormValue: MaybeUndefined<SuspendReasonEnum> = Form.useWatch('reason', form)
   const isAwaitingReleaseReason = isEqual(reasonFormValue, SuspendReasonEnum.AwaitingRelease)
   const isAwaitingNonItWorkReason = isEqual(reasonFormValue, SuspendReasonEnum.AwaitingNonItWork)
-
-  const isReasonMakeDateTimeFieldDisabled =
-    reasonsMakeDateTimeFieldDisabled.includes(reasonFormValue)
-
-  const isDateTimeFieldDisabled = !reasonFormValue || isReasonMakeDateTimeFieldDisabled
 
   const modalTitle = (
     <Text>
@@ -70,22 +78,15 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
   }
 
   const handleChangeReason: RadioGroupProps['onChange'] = (event: RadioChangeEvent) => {
-    const isReasonMakeDateTimeFieldDisabled = reasonsMakeDateTimeFieldDisabled.includes(
-      event.target.value,
-    )
-
-    if (isReasonMakeDateTimeFieldDisabled) {
-      const endDate = moment().add(14, 'days')
+    if (systemSettings) {
+      const reason = event.target.value as SuspendReasonEnum
+      const endDate = moment().add(systemSettings.suspendReasons[reason].limit, 'days')
       const endTime = endDate.clone()
       form.setFieldsValue({ endDate, endTime })
+    } else {
+      console.error('For changing reason the systemSettings was not provided')
     }
   }
-
-  useEffect(() => {
-    if (!isReasonMakeDateTimeFieldDisabled) {
-      form.resetFields(['endDate', 'endTime'])
-    }
-  }, [isReasonMakeDateTimeFieldDisabled, form])
 
   return (
     <BaseModal
@@ -110,11 +111,14 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           name='reason'
           rules={reasonRules}
         >
-          <Radio.Group onChange={handleChangeReason} disabled={isLoading}>
+          <Radio.Group
+            onChange={handleChangeReason}
+            disabled={isLoading || systemSettingsIsLoading}
+          >
             <Space direction='vertical'>
-              {Object.keys(suspendReasonDict).map((key) => (
-                <Radio key={key} value={key}>
-                  {suspendReasonDict[key as keyof typeof suspendReasonDict]}
+              {Object.values(SuspendReasonEnum).map((reason) => (
+                <Radio key={reason} value={reason}>
+                  {suspendReasonDict[reason]}
                 </Radio>
               ))}
             </Space>
@@ -143,11 +147,26 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
           </Form.Item>
         )}
 
-        <Form.Item data-testid='return-time-form-item' label='Время возврата'>
+        <Form.Item
+          data-testid='return-time-form-item'
+          label='Время возврата'
+          extra={returnTimeInfo}
+        >
           <Row justify='space-between'>
             <Col span={11}>
-              <Form.Item data-testid='end-date-form-item' name='endDate' rules={endDateRules}>
-                <DatePicker disabled={isDateTimeFieldDisabled || isLoading} />
+              <Form.Item
+                data-testid='end-date-form-item'
+                name='endDate'
+                rules={endDateRules(systemSettings?.suspendReasons[reasonFormValue]?.limit)}
+              >
+                <DatePicker
+                  disabled={
+                    !reasonFormValue ||
+                    isLoading ||
+                    systemSettingsIsLoading ||
+                    !systemSettings?.suspendReasons[reasonFormValue].editable
+                  }
+                />
               </Form.Item>
             </Col>
 
@@ -159,7 +178,12 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
                 rules={endTimeRules}
               >
                 <TimePicker
-                  disabled={isDateTimeFieldDisabled || isLoading}
+                  disabled={
+                    !reasonFormValue ||
+                    isLoading ||
+                    systemSettingsIsLoading ||
+                    !systemSettings?.suspendReasons[reasonFormValue].editable
+                  }
                   format={TIME_PICKER_FORMAT}
                 />
               </Form.Item>

@@ -13,7 +13,7 @@ import Spinner from 'components/Spinner'
 
 import { useGetTimeZoneList } from 'shared/hooks/catalogs/timeZone'
 import { useGetUserStatusList } from 'shared/hooks/catalogs/userStatus'
-import { useGetSystemInfoQuery } from 'shared/services/systemApi.service'
+import { useGetSystemInfo, useGetSystemSettings } from 'shared/hooks/system'
 
 import { ContentStyled, FooterStyled } from './styles'
 
@@ -26,7 +26,8 @@ const HomeLayout: FC = () => {
   useGetTimeZoneList({ skip: !isLoggedIn })
   useGetUserStatusList({ skip: !isLoggedIn })
   useGetUserMeCodeQuery(undefined, { skip: !isLoggedIn })
-  const { data: systemInfo } = useGetSystemInfoQuery(undefined, { skip: !isLoggedIn })
+  useGetSystemSettings(undefined, { skip: !isLoggedIn })
+  const { data: systemInfo } = useGetSystemInfo(undefined, { skip: !isLoggedIn })
 
   useEffect(() => {
     if (userMe?.timezone) {
