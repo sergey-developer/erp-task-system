@@ -1,14 +1,12 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
+import { getTaskJournalErrorMsg } from 'modules/task/constants/taskJournal'
 import { GetTaskJournalQueryArgs, GetTaskJournalSuccessResponse } from 'modules/task/models'
-import { taskJournalApiPermissions } from 'modules/task/permissions'
 import { useGetTaskJournalQuery } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/common'
-import { isErrorResponse } from 'shared/services/baseApi'
+import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskJournalResult = CustomUseQueryHookResult<
@@ -16,13 +14,24 @@ type UseGetTaskJournalResult = CustomUseQueryHookResult<
   GetTaskJournalSuccessResponse
 >
 
-export const useGetTaskJournal = (args: GetTaskJournalQueryArgs): UseGetTaskJournalResult => {
-  const permissions = useUserPermissions(taskJournalApiPermissions.list)
-  const state = useGetTaskJournalQuery(args, { skip: !permissions.canGetList })
+type UseGetTaskJournalOptions = CustomUseQueryOptions<
+  GetTaskJournalQueryArgs,
+  GetTaskJournalSuccessResponse
+>
+
+export const useGetTaskJournal = (
+  args: GetTaskJournalQueryArgs,
+  options?: UseGetTaskJournalOptions,
+): UseGetTaskJournalResult => {
+  const state = useGetTaskJournalQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(commonApiMessages.unknownError)
+      if (isNotFoundError(state.error)) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(getTaskJournalErrorMsg)
+      }
     }
   }, [state.error])
 

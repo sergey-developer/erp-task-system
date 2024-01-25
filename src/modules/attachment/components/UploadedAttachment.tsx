@@ -17,7 +17,7 @@ type UploadedAttachmentProps = {
 
 const UploadedAttachment: FC<UploadedAttachmentProps> = ({ id, url, size, name, externalId }) => {
   return (
-    <Space data-testid={`attachment-${name}`} key={id} size={4} wrap>
+    <Space data-testid={`attachment-${name}`} size={4} wrap>
       <Link download href={url} target='_blank'>
         <Space>
           <PaperClipOutlined />
