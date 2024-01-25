@@ -14,6 +14,7 @@ import { RelocationTaskTableItem } from './types'
 
 export type SortableField = keyof Pick<
   RelocationTaskTableItem,
+  | 'id'
   | 'type'
   | 'deadlineAt'
   | 'relocateFrom'
@@ -31,6 +32,7 @@ export const sortableFieldToSortValues: Record<
     Exclude<GetRelocationTaskListSortValue, GetRelocationTaskListSortKey>,
   ]
 > = {
+  id: ['id', '-id'],
   type: ['type', '-type'],
   deadlineAt: ['deadline_at', '-deadline_at'],
   relocateFrom: ['relocate_from', '-relocate_from'],

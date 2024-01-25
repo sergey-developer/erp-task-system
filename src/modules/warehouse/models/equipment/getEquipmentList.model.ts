@@ -3,6 +3,7 @@ import { EquipmentFilterParams } from 'modules/warehouse/types'
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
 import { IdType } from 'shared/types/common'
+import { FilterParams } from 'shared/types/filter'
 import { PaginationParams } from 'shared/types/pagination'
 import { ExtendSortKey } from 'shared/types/sort'
 
@@ -22,8 +23,7 @@ export type GetEquipmentListSortValue = ExtendSortKey<GetEquipmentListSortKey>
 
 export type GetEquipmentListQueryArgs = PaginationParams &
   EquipmentFilterParams &
-  Partial<{
-    search: string
+  Partial<FilterParams & {
     nomenclature: IdType
     ordering: GetEquipmentListSortValue
   }> & {

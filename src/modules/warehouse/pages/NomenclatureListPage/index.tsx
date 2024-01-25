@@ -66,7 +66,7 @@ const NomenclatureFormModal = React.lazy(
 )
 
 const { Search } = Input
-const initialPaginationParams = getInitialPaginationParams()
+const nomenclaturesInitialPaginationParams = getInitialPaginationParams()
 
 const NomenclatureListPage: FC = () => {
   const permissions = useMatchUserPermissions([
@@ -81,7 +81,7 @@ const NomenclatureListPage: FC = () => {
   >({})
 
   const [nomenclatureListParams, setNomenclatureListParams] =
-    useSetState<NonNullable<GetNomenclatureListQueryArgs>>(initialPaginationParams)
+    useSetState<NonNullable<GetNomenclatureListQueryArgs>>(nomenclaturesInitialPaginationParams)
 
   const [hoveredGroupId, setHoveredGroupId] = useState<number>()
   const [editableGroup, setEditableGroup] = useState<NomenclatureGroupListItemModel>()
@@ -202,7 +202,10 @@ const NomenclatureListPage: FC = () => {
   ])
 
   const handleClickGroup: MenuProps['onClick'] = (data) => {
-    setNomenclatureListParams({ group: Number(data.key), offset: 0 })
+    setNomenclatureListParams({
+      group: Number(data.key),
+      offset: nomenclaturesInitialPaginationParams.offset,
+    })
   }
 
   const handleCreateNomenclatureGroup = useCallback<NomenclatureGroupFormModalProps['onSubmit']>(
@@ -330,7 +333,11 @@ const NomenclatureListPage: FC = () => {
   const handleChangeSearch: SearchProps['onSearch'] = (value) => {
     const searchValue = value || undefined
     setGetNomenclatureGroupListParams({ search: searchValue })
-    setNomenclatureListParams({ search: searchValue, group: undefined, offset: 0 })
+    setNomenclatureListParams({
+      search: searchValue,
+      group: undefined,
+      offset: nomenclaturesInitialPaginationParams.offset,
+    })
   }
 
   const handleTablePagination = useCallback(
@@ -347,7 +354,11 @@ const NomenclatureListPage: FC = () => {
     [handleTablePagination],
   )
 
-  const onClickAllNomenclature = () => setNomenclatureListParams({ group: undefined, offset: 0 })
+  const onClickAllNomenclature = () =>
+    setNomenclatureListParams({
+      group: undefined,
+      offset: nomenclaturesInitialPaginationParams.offset,
+    })
 
   return (
     <>
