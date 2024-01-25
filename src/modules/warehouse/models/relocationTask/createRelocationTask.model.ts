@@ -22,6 +22,7 @@ export type CreateRelocationTaskMutationArgs = {
 
   relocateToId?: IdType
   comment?: string
+  images?: IdType[]
 }
 
 export type CreateRelocationTaskSuccessResponse = RelocationTaskModel

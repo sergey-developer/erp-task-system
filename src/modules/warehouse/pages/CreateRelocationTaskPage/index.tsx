@@ -313,17 +313,23 @@ const CreateRelocationTaskPage: FC = () => {
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
     useGetEquipmentListTemplate()
 
-  const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
+  const createEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
       await createAttachment({ type: AttachmentTypeEnum.EquipmentImage }, options)
     },
     [createAttachment],
   )
 
-  const handleCreateRelocationEquipmentImage: NonNullable<UploadProps['customRequest']> = async (
+  const createRelocationEquipmentImage: NonNullable<UploadProps['customRequest']> = async (
     options,
   ) => {
     await createAttachment({ type: AttachmentTypeEnum.RelocationEquipmentImage }, options)
+  }
+
+  const createCommonRelocationEquipmentImage: NonNullable<UploadProps['customRequest']> = async (
+    options,
+  ) => {
+    await createAttachment({ type: AttachmentTypeEnum.RelocationTaskImage }, options)
   }
 
   const createTask = async (values: RelocationTaskFormFields) => {
@@ -345,6 +351,7 @@ const CreateRelocationTaskPage: FC = () => {
         relocateFromId: values.relocateFrom,
         executor: values.executor,
         comment: values.comment,
+        images: values.images?.length ? extractIdsFromFilesResponse(values.images) : undefined,
       }).unwrap()
 
       const fromPath = location.state?.from
@@ -352,8 +359,6 @@ const CreateRelocationTaskPage: FC = () => {
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))
-      } else {
-        console.error(error)
       }
     }
   }
@@ -686,6 +691,10 @@ const CreateRelocationTaskPage: FC = () => {
               onChangeType={handleChangeType}
               onChangeRelocateFrom={handleChangeRelocateFrom}
               onChangeRelocateTo={setSelectedRelocateTo}
+              onUploadImage={createCommonRelocationEquipmentImage}
+              imageIsUploading={createAttachmentIsLoading}
+              onDeleteImage={deleteAttachment}
+              imageIsDeleting={deleteAttachmentIsLoading}
             />
           </Col>
 
@@ -811,7 +820,7 @@ const CreateRelocationTaskPage: FC = () => {
             onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseCreateEquipmentModal}
             onSubmit={createEquipment}
-            onUploadImage={handleCreateEquipmentImage}
+            onUploadImage={createEquipmentImage}
             imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
@@ -847,7 +856,7 @@ const CreateRelocationTaskPage: FC = () => {
             onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseEditEquipmentByFileModal}
             onSubmit={editEquipmentByFile}
-            onUploadImage={handleCreateEquipmentImage}
+            onUploadImage={createEquipmentImage}
             imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
@@ -876,7 +885,7 @@ const CreateRelocationTaskPage: FC = () => {
             open={createRelocationEquipmentImagesModalOpened}
             title='Добавить изображения оборудования'
             onCancel={handleCloseCreateRelocationEquipmentImagesModal}
-            onCreate={handleCreateRelocationEquipmentImage}
+            onCreate={createRelocationEquipmentImage}
             onDelete={deleteAttachment}
             isDeleting={deleteAttachmentIsLoading}
             defaultFileList={form.getFieldValue(equipmentImagesFormPath)}

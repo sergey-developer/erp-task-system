@@ -756,12 +756,18 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                     customRequest={handleCreateCommonRelocationEquipmentImage}
                     onRemove={deleteAttachment}
                     itemRender={renderUploadedFile}
-                    disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                    disabled={
+                      createTaskIsLoading || createAttachmentIsLoading || deleteAttachmentIsLoading
+                    }
                     maxCount={10}
                   >
                     <UploadButton
                       label='Добавить фото'
-                      disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                      disabled={
+                        createTaskIsLoading ||
+                        createAttachmentIsLoading ||
+                        deleteAttachmentIsLoading
+                      }
                     />
                   </Upload>
                 </Form.Item>
@@ -831,12 +837,16 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                   customRequest={handleCreateCommonRelocationEquipmentImage}
                   onRemove={deleteAttachment}
                   itemRender={renderUploadedFile}
-                  disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                  disabled={
+                    createTaskIsLoading || createAttachmentIsLoading || deleteAttachmentIsLoading
+                  }
                   maxCount={10}
                 >
                   <UploadButton
                     label='Добавить фото'
-                    disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                    disabled={
+                      createTaskIsLoading || createAttachmentIsLoading || deleteAttachmentIsLoading
+                    }
                   />
                 </Upload>
               </Form.Item>
