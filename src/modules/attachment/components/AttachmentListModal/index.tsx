@@ -1,6 +1,7 @@
 import { FC } from 'react'
 
 import { AttachmentListModel } from 'modules/attachment/models'
+import { RelocationTaskAttachmentsModel } from 'modules/warehouse/models'
 
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -10,7 +11,7 @@ export type AttachmentListModalProps = Required<
   Pick<BaseModalProps, 'open' | 'title' | 'onCancel'>
 > &
   Pick<BaseModalProps, 'isLoading'> & {
-    data: AttachmentListModel
+    data: AttachmentListModel | RelocationTaskAttachmentsModel
   }
 
 const AttachmentListModal: FC<AttachmentListModalProps> = ({ data, ...props }) => {

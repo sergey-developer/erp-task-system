@@ -21,6 +21,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
+import { renderUploadedFile } from 'modules/attachment/utils'
 import { getCompleteAt } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
@@ -52,12 +53,14 @@ import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { SimplifiedRelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
+import UploadButton from 'components/Buttons/UploadButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
 import { CANCEL_TEXT, CREATE_TEXT } from 'shared/constants/common'
+import { filesFormItemProps } from 'shared/constants/form'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { useGetCurrencyList } from 'shared/hooks/currency'
@@ -114,8 +117,10 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
 
   const [form] = Form.useForm<SimplifiedRelocationTaskFormFields>()
+
   const equipmentsToShopFormValue: SimplifiedRelocationTaskFormFields['equipmentsToShop'] =
     Form.useWatch('equipmentsToShop', form)
+
   const equipmentsToWarehouseFormValue: SimplifiedRelocationTaskFormFields['equipmentsToWarehouse'] =
     Form.useWatch('equipmentsToWarehouse', form)
 
@@ -317,6 +322,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     await createAttachment({ type: AttachmentTypeEnum.RelocationEquipmentImage }, options)
   }
 
+  const handleCreateCommonRelocationEquipmentImage: NonNullable<
+    UploadProps['customRequest']
+  > = async (options) => {
+    await createAttachment({ type: AttachmentTypeEnum.RelocationTaskImage }, options)
+  }
+
   const handleCreateTask = async (values: SimplifiedRelocationTaskFormFields) => {
     if (!task) return
 
@@ -332,6 +343,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           attachments: eqp.attachments?.length
             ? extractIdsFromFilesResponse(eqp.attachments)
             : undefined,
+          images: values.equipmentsToShopImages?.length
+            ? extractIdsFromFilesResponse(values.equipmentsToShopImages)
+            : undefined,
         })),
         equipmentsToWarehouse: values.equipmentsToWarehouse?.map((eqp) => ({
           id: eqp.id,
@@ -339,6 +353,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           condition: eqp.condition,
           attachments: eqp.attachments?.length
             ? extractIdsFromFilesResponse(eqp.attachments)
+            : undefined,
+          images: values.equipmentsToWarehouseImages?.length
+            ? extractIdsFromFilesResponse(values.equipmentsToWarehouseImages)
             : undefined,
         })),
       }).unwrap()
@@ -458,9 +475,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
       form.setFieldValue('equipmentsToWarehouseByFile', equipmentsByFile)
       openCreateEquipmentsByFileModal()
-    } catch (error) {
-      console.error(error)
-    }
+    } catch {}
   }
 
   const createEquipments = useDebounceFn<CreateEquipmentsByFileModalProps['onCreate']>(async () => {
@@ -730,6 +745,27 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 equipmentCatalogListIsLoading={equipmentCatalogListFromWarehouseIsFetching}
                 onClickCreateImage={handleOpenCreateRelocationEquipmentImagesModal}
               />
+
+              <Space direction='vertical'>
+                <Text type='secondary'>Общие фотографии к перемещению (до 10 штук)</Text>
+
+                <Form.Item name='equipmentsToShopImages' {...filesFormItemProps}>
+                  <Upload
+                    multiple
+                    listType='picture'
+                    customRequest={handleCreateCommonRelocationEquipmentImage}
+                    onRemove={deleteAttachment}
+                    itemRender={renderUploadedFile}
+                    disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                    maxCount={10}
+                  >
+                    <UploadButton
+                      label='Добавить фото'
+                      disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                    />
+                  </Upload>
+                </Form.Item>
+              </Space>
             </Space>
           </Col>
 
@@ -787,6 +823,23 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
                 onClickCreateImage={handleOpenCreateRelocationEquipmentImagesModal}
               />
+
+              <Form.Item name='equipmentsToWarehouseImages' {...filesFormItemProps}>
+                <Upload
+                  multiple
+                  listType='picture'
+                  customRequest={handleCreateCommonRelocationEquipmentImage}
+                  onRemove={deleteAttachment}
+                  itemRender={renderUploadedFile}
+                  disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                  maxCount={10}
+                >
+                  <UploadButton
+                    label='Добавить фото'
+                    disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                  />
+                </Upload>
+              </Form.Item>
             </Space>
           </Col>
 

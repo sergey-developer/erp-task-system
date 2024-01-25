@@ -26,6 +26,9 @@ export type SimplifiedRelocationTaskFormFields = {
   comment?: string
 
   equipmentsToShop?: SimplifiedRelocationTaskEquipment[]
+  equipmentsToShopImages?: UploadFile<FileResponse>[]
+
   equipmentsToWarehouse?: SimplifiedRelocationTaskEquipment[]
   equipmentsToWarehouseByFile?: EquipmentByFileTableRow[]
+  equipmentsToWarehouseImages?: UploadFile<FileResponse>[]
 }

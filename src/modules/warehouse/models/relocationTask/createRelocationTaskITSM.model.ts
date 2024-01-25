@@ -12,12 +12,14 @@ export type CreateRelocationTaskITSMMutationArgs = {
     quantity: number
     condition: EquipmentConditionEnum
     attachments?: IdType[]
+    images?: IdType[]
   }[]
   equipmentsToWarehouse?: {
     id: IdType
     quantity: number
     condition: EquipmentConditionEnum
     attachments?: IdType[]
+    images?: IdType[]
   }[]
 }
 
