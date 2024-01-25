@@ -11,7 +11,6 @@ import {
   Upload,
   UploadProps,
 } from 'antd'
-import { omit } from 'lodash'
 import get from 'lodash/get'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
@@ -323,6 +322,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     await createAttachment({ type: AttachmentTypeEnum.RelocationEquipmentImage }, options)
   }
 
+  const handleCreateCommonRelocationEquipmentImage: NonNullable<
+    UploadProps['customRequest']
+  > = async (options) => {
+    await createAttachment({ type: AttachmentTypeEnum.RelocationTaskImage }, options)
+  }
+
   const handleCreateTask = async (values: SimplifiedRelocationTaskFormFields) => {
     if (!task) return
 
@@ -339,7 +344,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             ? extractIdsFromFilesResponse(eqp.attachments)
             : undefined,
           images: values.equipmentsToShopImages?.length
-            ? values.equipmentsToShopImages.map((f) => omit(f.originFileObj, 'uid'))
+            ? extractIdsFromFilesResponse(values.equipmentsToShopImages)
             : undefined,
         })),
         equipmentsToWarehouse: values.equipmentsToWarehouse?.map((eqp) => ({
@@ -350,7 +355,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             ? extractIdsFromFilesResponse(eqp.attachments)
             : undefined,
           images: values.equipmentsToWarehouseImages?.length
-            ? values.equipmentsToWarehouseImages.map((f) => omit(f.originFileObj, 'uid'))
+            ? extractIdsFromFilesResponse(values.equipmentsToWarehouseImages)
             : undefined,
         })),
       }).unwrap()
@@ -748,12 +753,16 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                   <Upload
                     multiple
                     listType='picture'
-                    beforeUpload={stubFalse}
+                    customRequest={handleCreateCommonRelocationEquipmentImage}
+                    onRemove={deleteAttachment}
                     itemRender={renderUploadedFile}
-                    disabled={createTaskIsLoading}
+                    disabled={createTaskIsLoading || deleteAttachmentIsLoading}
                     maxCount={10}
                   >
-                    <UploadButton label='Добавить фото' disabled={createTaskIsLoading} />
+                    <UploadButton
+                      label='Добавить фото'
+                      disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                    />
                   </Upload>
                 </Form.Item>
               </Space>
@@ -819,12 +828,16 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 <Upload
                   multiple
                   listType='picture'
-                  beforeUpload={stubFalse}
+                  customRequest={handleCreateCommonRelocationEquipmentImage}
+                  onRemove={deleteAttachment}
                   itemRender={renderUploadedFile}
-                  disabled={createTaskIsLoading}
+                  disabled={createTaskIsLoading || deleteAttachmentIsLoading}
                   maxCount={10}
                 >
-                  <UploadButton label='Добавить фото' disabled={createTaskIsLoading} />
+                  <UploadButton
+                    label='Добавить фото'
+                    disabled={createTaskIsLoading || deleteAttachmentIsLoading}
+                  />
                 </Upload>
               </Form.Item>
             </Space>

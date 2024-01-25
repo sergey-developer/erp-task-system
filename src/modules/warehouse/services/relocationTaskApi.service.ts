@@ -1,5 +1,3 @@
-import { decamelizeKeys } from 'humps'
-
 import { getPaginatedList } from 'lib/antd/utils'
 
 import { RelocationEquipmentApiTagEnum } from 'modules/warehouse/constants/relocationEquipment'
@@ -56,32 +54,6 @@ import {
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
 
-const getFormData = (model: any, form: FormData = new FormData(), namespace = ''): FormData => {
-  let formData = form || new FormData()
-
-  for (let propertyName in model) {
-    if (!model.hasOwnProperty(propertyName) || !model[propertyName]) continue
-    let formKey = namespace ? `${namespace}[${propertyName}]` : propertyName
-    if (model[propertyName] instanceof Date)
-      formData.append(formKey, model[propertyName].toISOString())
-    else if (model[propertyName] instanceof Array) {
-      model[propertyName].forEach((element: any, index: number) => {
-        if (typeof element.name == 'string') {
-          formData.append(formKey, element)
-        } else {
-          const tempFormKey = `${formKey}[${index}]`
-          getFormData(element, formData, tempFormKey)
-        }
-      })
-    } else if (typeof model[propertyName] === 'object' && !(model[propertyName] instanceof File)) {
-      getFormData(model[propertyName], formData, formKey)
-    } else {
-      formData.append(formKey, model[propertyName].toString())
-    }
-  }
-  return formData
-}
-
 const relocationTaskApiService = baseApiService
   .enhanceEndpoints({
     addTagTypes: [
@@ -105,14 +77,11 @@ const relocationTaskApiService = baseApiService
         CreateRelocationTaskITSMSuccessResponse,
         CreateRelocationTaskITSMMutationArgs
       >({
-        query: (payload) => {
-          const data = getFormData(decamelizeKeys(payload))
-          return {
-            url: RelocationTaskApiEnum.CreateRelocationTaskITSM,
-            method: HttpMethodEnum.Post,
-            data,
-          }
-        },
+        query: (payload) => ({
+          url: RelocationTaskApiEnum.CreateRelocationTaskITSM,
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
       }),
       updateRelocationTask: build.mutation<
         UpdateRelocationTaskSuccessResponse,
