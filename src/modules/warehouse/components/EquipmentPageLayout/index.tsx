@@ -2,12 +2,10 @@ import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import omit from 'lodash/omit'
-import { FC, useMemo, useState } from 'react'
+import React, { FC, useMemo, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import EquipmentFilter from 'modules/warehouse/components/EquipmentFilter'
 import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
-import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
@@ -19,12 +17,15 @@ import { GetEquipmentsXlsxQueryArgs } from 'modules/warehouse/models'
 import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import FilterButton from 'components/Buttons/FilterButton'
+import ModalFallback from 'components/Modals/ModalFallback'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { clickDownloadLink } from 'shared/utils/common'
 
 import { EquipmentPageContextType } from './context'
+
+const EquipmentFilter = React.lazy(() => import('modules/warehouse/components/EquipmentFilter'))
 
 const { Search } = Input
 
@@ -40,6 +41,20 @@ const getEquipmentsXlsxParamsByLocation = (
     default:
       return params
   }
+}
+
+const initialFilterValues: EquipmentFilterFormFields = {
+  conditions: undefined,
+  categories: undefined,
+  warehouses: undefined,
+  owners: undefined,
+  priceTo: undefined,
+  priceFrom: undefined,
+  createdAt: undefined,
+  isNew: undefined,
+  isRepaired: undefined,
+  isWarranty: undefined,
+  zeroQuantity: undefined,
 }
 
 const EquipmentPageLayout: FC = () => {
@@ -92,27 +107,6 @@ const EquipmentPageLayout: FC = () => {
     } catch {}
   }
 
-  const initialFilterValues: EquipmentFilterFormFields = useMemo(
-    () => ({
-      conditions: [
-        EquipmentConditionEnum.Working,
-        EquipmentConditionEnum.Broken,
-        EquipmentConditionEnum.NonRepairable,
-      ],
-      categories: equipmentCategoryList.map((c) => c.id),
-      warehouses: warehouseList.map((w) => w.id),
-      owners: undefined,
-      priceTo: undefined,
-      priceFrom: undefined,
-      createdAt: undefined,
-      isNew: undefined,
-      isRepaired: undefined,
-      isWarranty: undefined,
-      zeroQuantity: undefined,
-    }),
-    [equipmentCategoryList, warehouseList],
-  )
-
   const routeContext = useMemo<EquipmentPageContextType>(
     () => ({ filter: filterValues, search: searchValue, setEquipmentsXlsxParams }),
     [filterValues, searchValue, setEquipmentsXlsxParams],
@@ -145,19 +139,21 @@ const EquipmentPageLayout: FC = () => {
       </Row>
 
       {filterOpened && (
-        <EquipmentFilter
-          visible={filterOpened}
-          values={filterValues}
-          initialValues={initialFilterValues}
-          warehouseList={warehouseList}
-          warehouseListIsLoading={warehouseListIsFetching}
-          categoryList={equipmentCategoryList}
-          categoryListIsLoading={equipmentCategoryListIsFetching}
-          ownerList={customerList}
-          ownerListIsLoading={customerListIsFetching}
-          onClose={toggleFilterOpened}
-          onApply={onApplyFilter}
-        />
+        <React.Suspense fallback={<ModalFallback open onCancel={toggleFilterOpened} />}>
+          <EquipmentFilter
+            visible={filterOpened}
+            values={filterValues}
+            initialValues={initialFilterValues}
+            warehouseList={warehouseList}
+            warehouseListIsLoading={warehouseListIsFetching}
+            categoryList={equipmentCategoryList}
+            categoryListIsLoading={equipmentCategoryListIsFetching}
+            ownerList={customerList}
+            ownerListIsLoading={customerListIsFetching}
+            onClose={toggleFilterOpened}
+            onApply={onApplyFilter}
+          />
+        </React.Suspense>
       )}
     </>
   )
