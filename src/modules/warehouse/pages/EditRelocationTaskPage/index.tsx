@@ -824,6 +824,10 @@ const EditRelocationTaskPage: FC = () => {
               onChangeType={handleChangeType}
               onChangeRelocateFrom={handleChangeRelocateFrom}
               onChangeRelocateTo={setSelectedRelocateTo}
+              onUploadImage={() => {}}
+              imageIsUploading={false}
+              onDeleteImage={() => {}}
+              imageIsDeleting={false}
             />
           </Col>
 
