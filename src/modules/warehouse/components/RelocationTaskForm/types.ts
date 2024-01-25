@@ -25,6 +25,7 @@ export type RelocationTaskFormProps = {
   imageIsUploading: boolean
   onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
   imageIsDeleting: boolean
+  imagesIsLoading?: boolean
 
   userList: UserListModel
   userListIsLoading: boolean

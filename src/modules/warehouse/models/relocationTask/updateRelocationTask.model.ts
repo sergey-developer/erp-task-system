@@ -23,8 +23,7 @@ export type UpdateRelocationTaskMutationArgs = BaseRelocationTaskRequestArgs & {
   relocateToId?: IdType
   executor?: IdType
   comment?: string
+  images?: IdType[]
 }
 
 export type UpdateRelocationTaskSuccessResponse = RelocationTaskModel
-
-export type UpdateRelocationBadRequestErrorResponse = Partial<UpdateRelocationTaskMutationArgs>
