@@ -2,7 +2,6 @@ import { StringMap } from 'shared/types/utils'
 
 import { ExternalResponsibleCompanyEnum, SuspendReasonEnum } from './enums'
 
-/** Порядок значений имеет значение */
 export const suspendReasonDict: Readonly<StringMap<SuspendReasonEnum>> = {
   [SuspendReasonEnum.AwaitingInformation]: 'Ожидание информации от пользователя',
   [SuspendReasonEnum.AwaitingInformationFromFirstLine]:

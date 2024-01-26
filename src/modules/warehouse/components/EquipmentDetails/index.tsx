@@ -2,11 +2,11 @@ import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useMatchUserPermissions } from 'modules/user/hooks'
 import AttachmentList from 'modules/attachment/components/AttachmentList'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { attachmentsToFiles } from 'modules/attachment/utils'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
@@ -339,6 +339,14 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 <Col span={16}>{valueOrHyphen(equipment.warehouse?.title)}</Col>
               </Row>
 
+              <Row data-testid='location'>
+                <Col span={8}>
+                  <Text type='secondary'>Местоположение:</Text>
+                </Col>
+
+                <Col span={16}>{valueOrHyphen(equipment.location?.title)}</Col>
+              </Row>
+
               <Row data-testid='relocation-history'>
                 <Col>
                   <Button
@@ -348,6 +356,14 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                     История перемещений
                   </Button>
                 </Col>
+              </Row>
+
+              <Row data-testid='is-credited'>
+                <Col span={8}>
+                  <Text type='secondary'>Оприходовано:</Text>
+                </Col>
+
+                <Col span={16}>{getYesNoWord(equipment.isCredited)}</Col>
               </Row>
 
               <Row data-testid='condition'>

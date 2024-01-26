@@ -17,13 +17,12 @@ const { Text } = Typography
 
 type JournalProps = {
   data: TaskJournalModel
-  isLoading: boolean
 }
 
-const Journal: FC<JournalProps> = ({ data, isLoading }) => {
+const Journal: FC<JournalProps> = ({ data }) => {
   return (
     <Space direction='vertical' size='large' $block>
-      {!isLoading && isEmpty(data) ? (
+      {isEmpty(data) ? (
         <Text>{NO_DATA_MSG}</Text>
       ) : (
         data.map((item, index, array) => (

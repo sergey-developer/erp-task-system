@@ -20,6 +20,7 @@ export type EquipmentFilterFormFields = Partial<{
   priceFrom: number
   priceTo: number
   createdAt: [Moment, Moment]
+  zeroQuantity: boolean
 }>
 
 export type EquipmentFilterProps = {

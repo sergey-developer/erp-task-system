@@ -4,7 +4,7 @@ import { TaskOlaStatusEnum } from 'modules/task/constants/task'
 
 import { MaybeUndefined } from 'shared/types/utils'
 
-import { getOlaStatusMap } from './getOlaStatusMap'
+import { getOlaStatusMap } from './checkOlaStatus'
 
 export const getOlaStatusTextType = (
   olaStatus: TaskOlaStatusEnum,
