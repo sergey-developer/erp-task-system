@@ -10,3 +10,6 @@ export const updateUserUrl = (userId: IdType): string =>
 
 export const updateUserStatusUrl = (userId: IdType): string =>
   appendSlashAtEnd(generatePath(UserApiEnum.UpdateUserStatus, { id: String(userId) }))
+
+export const getWarehouseMSIUrl = (userId: IdType): string =>
+  appendSlashAtEnd(generatePath(UserApiEnum.GetWarehouseMSI, { id: String(userId) }))

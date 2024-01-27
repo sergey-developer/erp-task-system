@@ -33,7 +33,7 @@ import {
   TasksUpdateVariantsEnum,
   tasksUpdateVariantsIntervals,
 } from 'modules/task/constants/task'
-import { useGetTaskList } from 'modules/task/hooks/task'
+import { useGetTasks } from 'modules/task/hooks/task'
 import { useGetTaskCounters } from 'modules/task/hooks/taskCounters'
 import { ExtendedFilterQueries, FastFilterQueries, GetTaskListQueryArgs } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
@@ -190,7 +190,7 @@ const TaskListPage: FC = () => {
     currentData: originalTasks,
     isFetching: tasksIsFetching,
     refetch: refetchTaskList,
-  } = useGetTaskList(taskListQueryArgs, {
+  } = useGetTasks(taskListQueryArgs, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,

@@ -4,7 +4,9 @@ import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
-import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
+import { useGetTask, useGetTasks } from 'modules/task/hooks/task'
+import { GetTaskListQueryArgs } from 'modules/task/models'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
 import {
@@ -26,12 +28,16 @@ import Space from 'components/Space'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
 import {
   calculatePaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
-import { MaybeUndefined } from 'shared/types/utils'
+
+const CreateRelocationTaskByIncidentModal = React.lazy(
+  () => import('modules/warehouse/components/CreateRelocationTaskByIncidentModal'),
+)
 
 const RelocationTaskListFilter = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskListFilter'),
@@ -63,6 +69,8 @@ const RelocationTaskListPage: FC = () => {
   const [searchParams] = useSearchParams()
   const relocationTaskId = Number(searchParams.get('viewRelocationTask')) || undefined
 
+  const permissions = useMatchUserPermissions(['RELOCATION_TASKS_CREATE'])
+
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
   const [filterValues, setFilterValues] = useState<RelocationTaskListFilterFormFields>()
@@ -70,15 +78,57 @@ const RelocationTaskListPage: FC = () => {
   const [selectedRelocationTaskId, setSelectedRelocationTaskId] =
     useState<MaybeUndefined<IdType>>(relocationTaskId)
 
+  const [incidentSearchValue, setIncidentSearchValue] = useState('')
+  const [selectedIncidentId, setSelectedIncidentId] = useState<IdType>()
+
+  const [tasksParams, setTasksParams] = useSetState<
+    Pick<GetTaskListQueryArgs, 'limit' | 'search' | 'sort'>
+  >({ limit: 10, sort: 'created_at' })
+
+  const debouncedSetTasksParams = useDebounceFn(setTasksParams, [], 500)
+
+  const onChangeIncidentSearchValue = (value: string) => {
+    setIncidentSearchValue(value)
+    if (value.length >= 5) {
+      debouncedSetTasksParams({ search: value })
+    }
+  }
+
+  const [
+    createRelocationTaskByIncidentModalOpened,
+    {
+      setTrue: openCreateRelocationTaskByIncidentModal,
+      setFalse: closeCreateRelocationTaskByIncidentModal,
+    },
+  ] = useBoolean(false)
+
+  const onOpenCreateRelocationTaskByIncidentModal = useDebounceFn(
+    openCreateRelocationTaskByIncidentModal,
+  )
+
+  const onCloseCreateRelocationTaskByIncidentModal = useDebounceFn(() => {
+    closeCreateRelocationTaskByIncidentModal()
+    setSelectedIncidentId(undefined)
+    setTasksParams({ search: undefined })
+  })
+
   const [
     relocationTaskOpened,
     { toggle: toggleOpenRelocationTask, setFalse: closeRelocationTask },
   ] = useBoolean(!!selectedRelocationTaskId)
 
-  const handleCloseRelocationTask = useDebounceFn(closeRelocationTask)
+  const onCloseRelocationTask = useDebounceFn(closeRelocationTask)
 
   const [relocationTaskListParams, setRelocationTaskListParams] =
     useSetState<GetRelocationTaskListQueryArgs>(initialRelocationTaskListParams)
+
+  const { currentData: tasks, isFetching: tasksIsFetching } = useGetTasks(tasksParams, {
+    skip: !tasksParams.search,
+  })
+
+  const { currentData: task, isFetching: taskIsFetching } = useGetTask(selectedIncidentId!, {
+    skip: !selectedIncidentId,
+  })
 
   const { currentData: relocationTaskList, isFetching: relocationTaskListIsFetching } =
     useGetRelocationTaskList(relocationTaskListParams)
@@ -138,15 +188,18 @@ const RelocationTaskListPage: FC = () => {
         <Space size='middle'>
           <FilterButton onClick={debouncedToggleOpenFilter} />
 
-          <MatchUserPermissions expected={['RELOCATION_TASKS_CREATE']}>
-            {({ permissions }) =>
-              permissions.relocationTasksCreate ? (
-                <Link to={WarehouseRouteEnum.CreateRelocationTask}>
-                  <Button>Создать заявку</Button>
-                </Link>
-              ) : null
-            }
-          </MatchUserPermissions>
+          {permissions?.relocationTasksCreate && (
+            <Link to={WarehouseRouteEnum.CreateRelocationTask}>
+              <Button>Создать заявку</Button>
+            </Link>
+          )}
+
+          <Button
+            disabled={!permissions?.relocationTasksCreate}
+            onClick={onOpenCreateRelocationTaskByIncidentModal}
+          >
+            Создать заявку на основе инцидента
+          </Button>
         </Space>
 
         <RelocationTaskTable
@@ -165,7 +218,7 @@ const RelocationTaskListPage: FC = () => {
         >
           <RelocationTaskDetails
             open={relocationTaskOpened}
-            onClose={handleCloseRelocationTask}
+            onClose={onCloseRelocationTask}
             relocationTaskId={selectedRelocationTaskId}
           />
         </React.Suspense>
@@ -179,6 +232,24 @@ const RelocationTaskListPage: FC = () => {
             initialValues={initialFilterValues}
             onClose={debouncedToggleOpenFilter}
             onApply={handleApplyFilter}
+          />
+        </React.Suspense>
+      )}
+
+      {createRelocationTaskByIncidentModalOpened && (
+        <React.Suspense
+          fallback={<ModalFallback open tip='Загрузка модалки для создания заявки по инциденту' />}
+        >
+          <CreateRelocationTaskByIncidentModal
+            open={createRelocationTaskByIncidentModalOpened}
+            onCancel={onCloseCreateRelocationTaskByIncidentModal}
+            searchValue={incidentSearchValue}
+            onSearchIncident={onChangeIncidentSearchValue}
+            onChangeIncident={setSelectedIncidentId}
+            incidents={extractPaginationResults(tasks)}
+            incidentsIsLoading={tasksIsFetching}
+            incident={task}
+            incidentIsLoading={taskIsFetching}
           />
         </React.Suspense>
       )}
