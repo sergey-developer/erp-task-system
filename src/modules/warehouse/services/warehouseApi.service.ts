@@ -2,8 +2,6 @@ import { WarehouseApiEnum } from 'modules/warehouse/constants/warehouse'
 import {
   GetWarehouseListQueryArgs,
   GetWarehouseListSuccessResponse,
-  GetWarehouseMyQueryArgs,
-  GetWarehouseMySuccessResponse,
   GetWarehouseQueryArgs,
   GetWarehouseSuccessResponse,
 } from 'modules/warehouse/models'
@@ -27,14 +25,7 @@ const warehouseApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
-    getWarehouseMy: build.query<GetWarehouseMySuccessResponse, GetWarehouseMyQueryArgs>({
-      query: () => ({
-        url: WarehouseApiEnum.GetWarehouseMy,
-        method: HttpMethodEnum.Get,
-      }),
-    }),
   }),
 })
 
-export const { useGetWarehouseListQuery, useGetWarehouseQuery, useGetWarehouseMyQuery } =
-  warehouseApiService
+export const { useGetWarehouseListQuery, useGetWarehouseQuery } = warehouseApiService
