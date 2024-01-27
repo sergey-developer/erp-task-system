@@ -20,7 +20,7 @@ type UseGetTaskListOptions = CustomUseQueryOptions<
   GetTaskListTransformedSuccessResponse
 >
 
-export const useGetTaskList = (
+export const useGetTasks = (
   args: GetTaskListQueryArgs,
   options?: UseGetTaskListOptions,
 ): UseGetTaskListResult => {

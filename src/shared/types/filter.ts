@@ -1,3 +1,3 @@
-export type FilterParams = {
+export type FilterParams = Partial<{
   search: string
-}
+}>

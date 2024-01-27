@@ -6,6 +6,7 @@ export * from './useLazyGetRelocationTaskWaybillM15'
 export * from './useCreateRelocationTaskAttachment'
 export * from './useGetRelocationTaskAttachments'
 export * from './useRelocationTaskStatus'
+export * from './useNavigateToCreateRelocationTaskSimplifiedPage'
 
 export * from './useGetRelocationTaskList'
 

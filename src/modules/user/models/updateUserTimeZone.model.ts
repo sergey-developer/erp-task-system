@@ -1,9 +1,6 @@
-import { IdType } from 'shared/types/common'
+import { BaseUserRequestArgs } from 'modules/user/types'
 
 import { UserModel } from './user.model'
 
-export type UpdateUserTimeZoneMutationArgs = {
-  userId: IdType
-} & Pick<UserModel, 'timezone'>
-
+export type UpdateUserTimeZoneMutationArgs = BaseUserRequestArgs & Pick<UserModel, 'timezone'>
 export type UpdateUserTimeZoneSuccessResponse = UserModel

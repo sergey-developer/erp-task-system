@@ -5,7 +5,7 @@ import React, { FC, useState } from 'react'
 
 import TaskList from 'modules/task/components/TaskList'
 import TaskListMap from 'modules/task/components/TaskListMap'
-import { useGetTaskList, useGetTaskListMap } from 'modules/task/hooks/task'
+import { useGetTaskListMap, useGetTasks } from 'modules/task/hooks/task'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -28,7 +28,7 @@ const TaskListMapPage: FC = () => {
 
   const { currentData: taskListMap = [], isFetching: taskListMapIsFetching } = useGetTaskListMap()
 
-  const { currentData: taskList, isFetching: taskListIsFetching } = useGetTaskList(
+  const { currentData: taskList, isFetching: taskListIsFetching } = useGetTasks(
     { long: coords?.[0], lat: coords?.[1], limit: 1000 },
     { skip: !isShowTaskList },
   )

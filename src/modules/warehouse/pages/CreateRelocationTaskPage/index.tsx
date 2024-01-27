@@ -106,7 +106,7 @@ const CreateRelocationTaskPage: FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const user = useAuthUser()
+  const authUser = useAuthUser()
   const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
@@ -643,10 +643,10 @@ const CreateRelocationTaskPage: FC = () => {
 
   /* Установка значений формы */
   useEffect(() => {
-    if (user && userList.length) {
-      form.setFieldsValue({ executor: user.id })
+    if (authUser && userList.length) {
+      form.setFieldsValue({ executor: authUser.id })
     }
-  }, [form, user, userList.length])
+  }, [form, authUser, userList.length])
 
   const createEquipmentDisabled =
     !selectedRelocateFrom ||

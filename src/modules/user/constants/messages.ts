@@ -17,3 +17,5 @@ export const updateUserTimeZoneMessages: ApiRequestMessages<'commonError'> = {
 export const updateUserStatusMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка обновления статуса пользователя',
 }
+
+export const getWarehouseMSIErrorMsg = 'Ошибка получения склада инженера'
