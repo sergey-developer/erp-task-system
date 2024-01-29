@@ -1,7 +1,7 @@
 import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
 import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 import {
@@ -19,8 +19,8 @@ import { filesFormItemProps } from 'shared/constants/form'
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
+import { filterOptionBy, isFalse, isTrue } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
-import { filterOptionBy } from 'shared/utils/common'
 
 import { EquipmentFormModalFormFields, EquipmentFormModalProps } from './types'
 
@@ -68,6 +68,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   ...props
 }) => {
   const [form] = Form.useForm<EquipmentFormModalFormFields>()
+  const ownerIsObermeisterFormValue = Form.useWatch('ownerIsObermeister', form)
 
   const nomenclatureSelected = Boolean(nomenclature)
 
@@ -110,6 +111,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         isRepaired: undefined,
         usageCounter: undefined,
         owner: undefined,
+        ownerIsObermeister: undefined,
         purpose: undefined,
         comment: undefined,
       })
@@ -129,11 +131,16 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
     )
   }
 
+  const okButtonProps = useMemo(
+    () => ({ loading: isLoading, disabled: imageIsUploading || imageIsDeleting }),
+    [imageIsDeleting, imageIsUploading, isLoading],
+  )
+
   return (
     <BaseModal
       {...props}
       data-testid='equipment-form-modal'
-      okButtonProps={{ loading: isLoading, disabled: imageIsUploading || imageIsDeleting }}
+      okButtonProps={okButtonProps}
       onOk={form.submit}
     >
       <Form<EquipmentFormModalFormFields>
@@ -364,8 +371,21 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 </Form.Item>
               )}
 
-              {!categoryIsConsumable && (
-                <Form.Item data-testid='owner-form-item' label='Владелец оборудования' name='owner'>
+              <Form.Item
+                data-testid='owner-is-obermeister-form-item'
+                label='Владелец оборудования - Obermeister'
+                name='ownerIsObermeister'
+              >
+                <Radio.Group options={yesNoOptions} />
+              </Form.Item>
+
+              {categoryIsConsumable || isTrue(ownerIsObermeisterFormValue) ? null : (
+                <Form.Item
+                  data-testid='owner-form-item'
+                  label='Владелец оборудования'
+                  name='owner'
+                  rules={isFalse(ownerIsObermeisterFormValue) ? onlyRequiredRules : undefined}
+                >
                   <Select
                     placeholder='Выберите владельца оборудования'
                     fieldNames={idAndTitleSelectFieldNames}

@@ -1,3 +1,4 @@
+import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
@@ -37,7 +38,9 @@ export const equipment = (
   isCredited: props?.isCredited || false,
   inventoryNumber: props?.inventoryNumber || fakeWord(),
   usageCounter: props?.usageCounter || fakeInteger(),
-  owner: props?.owner || pick(warehouseFixtures.customer(), 'id', 'title'),
+  owner: isUndefined(props?.owner)
+    ? pick(warehouseFixtures.customer(), 'id', 'title')
+    : props?.owner!,
 
   title: fakeWord(),
   location: pick(catalogsFixtures.location(), 'id', 'title'),
