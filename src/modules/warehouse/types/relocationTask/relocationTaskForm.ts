@@ -34,5 +34,6 @@ export type RelocationTaskFormFields = {
   relocateFrom: IdType
   relocateTo?: IdType
   executor: IdType
+  controller?: IdType
   comment?: string
 }

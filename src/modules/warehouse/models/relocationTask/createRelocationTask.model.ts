@@ -21,6 +21,7 @@ export type CreateRelocationTaskMutationArgs = {
   }[]
 
   relocateToId?: IdType
+  controller?: IdType
   comment?: string
 }
 
