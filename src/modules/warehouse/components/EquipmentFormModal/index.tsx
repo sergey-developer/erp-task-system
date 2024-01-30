@@ -118,7 +118,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
     }
   }
 
-  const handleFinish = async (values: EquipmentFormModalFormFields) => {
+  const handleFinish = async ({ ownerIsObermeister, ...values }: EquipmentFormModalFormFields) => {
     await onSubmit(
       {
         ...values,
