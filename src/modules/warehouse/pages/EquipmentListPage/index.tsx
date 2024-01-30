@@ -1,6 +1,7 @@
 import { useBoolean, useSetState } from 'ahooks'
 import debounce from 'lodash/debounce'
-import React, { FC, useCallback, useState } from 'react'
+import isNumber from 'lodash/isNumber'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
@@ -17,6 +18,7 @@ import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 
+import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
@@ -28,6 +30,8 @@ import {
 } from 'shared/utils/pagination'
 
 const EquipmentDetails = React.lazy(() => import('modules/warehouse/components/EquipmentDetails'))
+
+const initialPaginationParams = getInitialPaginationParams()
 
 const EquipmentListPage: FC = () => {
   const [searchParams] = useSearchParams()
@@ -46,23 +50,43 @@ const EquipmentListPage: FC = () => {
   )
   const debouncedToggleOpenEquipmentDetails = useDebounceFn(toggleOpenEquipmentDetails)
 
-  const [getEquipmentListParams, setGetEquipmentListParams] =
-    useSetState<GetEquipmentListQueryArgs>({
-      ...getInitialPaginationParams(),
-      ...(context?.filter && equipmentFilterToParams(context.filter)),
-      search: context?.search,
-      nomenclature: nomenclatureId,
-      ordering: 'title',
-    })
+  const [equipmentListParams, setEquipmentListParams] = useSetState<GetEquipmentListQueryArgs>({
+    ...initialPaginationParams,
+    ...(context?.filter && equipmentFilterToParams(context.filter)),
+    search: context?.search,
+    nomenclature: nomenclatureId,
+    ordering: 'title',
+    locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter],
+  })
 
   const { currentData: equipmentList, isFetching: equipmentListIsFetching } =
-    useGetEquipmentList(getEquipmentListParams)
+    useGetEquipmentList(equipmentListParams)
+
+  useEffect(() => {
+    if (isNumber(equipmentListParams.nomenclature)) {
+      context?.setEquipmentsXlsxParams({ nomenclature: equipmentListParams.nomenclature })
+    }
+
+    return () => {
+      context?.setEquipmentsXlsxParams({ nomenclature: undefined })
+    }
+  }, [context?.setEquipmentsXlsxParams, equipmentListParams.nomenclature])
+
+  useEffect(() => {
+    if (equipmentListParams.ordering) {
+      context?.setEquipmentsXlsxParams({ ordering: equipmentListParams.ordering })
+    }
+
+    return () => {
+      context?.setEquipmentsXlsxParams({ ordering: undefined })
+    }
+  }, [context?.setEquipmentsXlsxParams, equipmentListParams.ordering])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<EquipmentTableProps['onChange']>[0]) => {
-      setGetEquipmentListParams(calculatePaginationParams(pagination))
+      setEquipmentListParams(calculatePaginationParams(pagination))
     },
-    [setGetEquipmentListParams],
+    [setEquipmentListParams],
   )
 
   const handleTableSort = useCallback(
@@ -71,13 +95,12 @@ const EquipmentListPage: FC = () => {
         const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
         if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
-          setGetEquipmentListParams({
-            ordering: order ? getSort(columnKey as SortableField, order) : undefined,
-          })
+          const ordering = order ? getSort(columnKey as SortableField, order) : undefined
+          setEquipmentListParams({ ordering })
         }
       }
     },
-    [setGetEquipmentListParams],
+    [setEquipmentListParams],
   )
 
   const handleChangeTable = useCallback<EquipmentTableProps['onChange']>(
@@ -104,7 +127,7 @@ const EquipmentListPage: FC = () => {
         dataSource={extractPaginationResults(equipmentList)}
         pagination={equipmentList?.pagination || false}
         loading={equipmentListIsFetching}
-        sort={getEquipmentListParams.ordering}
+        sort={equipmentListParams.ordering}
         onChange={handleChangeTable}
         onRow={handleTableRowClick}
       />

@@ -66,6 +66,7 @@ const NomenclatureFormModal = React.lazy(
 )
 
 const { Search } = Input
+const initialPaginationParams = getInitialPaginationParams()
 
 const NomenclatureListPage: FC = () => {
   const permissions = useMatchUserPermissions([
@@ -79,9 +80,8 @@ const NomenclatureListPage: FC = () => {
     NonNullable<GetNomenclatureGroupListQueryArgs>
   >({})
 
-  const [nomenclatureListParams, setNomenclatureListParams] = useSetState<
-    NonNullable<GetNomenclatureListQueryArgs>
-  >(getInitialPaginationParams())
+  const [nomenclatureListParams, setNomenclatureListParams] =
+    useSetState<NonNullable<GetNomenclatureListQueryArgs>>(initialPaginationParams)
 
   const [hoveredGroupId, setHoveredGroupId] = useState<number>()
   const [editableGroup, setEditableGroup] = useState<NomenclatureGroupListItemModel>()

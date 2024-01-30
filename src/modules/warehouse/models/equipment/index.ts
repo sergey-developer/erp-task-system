@@ -9,6 +9,7 @@ export * from './importEquipmentsByFile.model'
 
 export * from './equipmentList.model'
 export * from './getEquipmentList.model'
+export * from './getEquipmentsXlsx.model'
 
 export * from './equipmentRelocationHistory.model'
 export * from './getEquipmentRelocationHistory.model'

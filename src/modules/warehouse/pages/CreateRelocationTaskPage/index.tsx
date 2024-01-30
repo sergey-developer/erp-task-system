@@ -3,12 +3,14 @@ import { Button, Col, Form, FormProps, Modal, Row, Typography, Upload, UploadPro
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 import stubFalse from 'lodash/stubFalse'
+import moment from 'moment-timezone'
 import { NamePath } from 'rc-field-form/es/interface'
 import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
+import { useAuthUser } from 'modules/auth/hooks'
 import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
@@ -87,16 +89,24 @@ const EquipmentFormModal = React.lazy(
 
 const { Text } = Typography
 
-const initialValues: Pick<RelocationTaskFormFields, 'equipments' | 'equipmentsByFile' | 'type'> = {
+const deadlineAtDate = moment().add(24, 'hours')
+
+const initialValues: Pick<
+  RelocationTaskFormFields,
+  'equipments' | 'equipmentsByFile' | 'type' | 'deadlineAtDate' | 'deadlineAtTime'
+> = {
   type: RelocationTaskTypeEnum.Relocation,
   equipments: [],
   equipmentsByFile: [],
+  deadlineAtDate,
+  deadlineAtTime: deadlineAtDate.clone(),
 }
 
 const CreateRelocationTaskPage: FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
+  const user = useAuthUser()
   const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
@@ -625,6 +635,13 @@ const CreateRelocationTaskPage: FC = () => {
     },
     [form],
   )
+
+  /* Установка значений формы */
+  useEffect(() => {
+    if (user && userList.length) {
+      form.setFieldsValue({ executor: user.id })
+    }
+  }, [form, user, userList.length])
 
   const createEquipmentDisabled =
     !selectedRelocateFrom ||

@@ -24,6 +24,8 @@ import {
   GetEquipmentRelocationHistoryQueryArgs,
   GetEquipmentRelocationHistorySuccessResponse,
   GetEquipmentSuccessResponse,
+  GetEquipmentsXlsxQueryArgs,
+  GetEquipmentsXlsxSuccessResponse,
   ImportEquipmentsByFileMutationArgs,
   ImportEquipmentsByFileSuccessResponse,
   UpdateEquipmentMutationArgs,
@@ -43,6 +45,7 @@ import {
 } from 'modules/warehouse/utils/equipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { baseApiService } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
@@ -106,6 +109,14 @@ const equipmentApiService = baseApiService
         }),
         transformResponse: (response: GetEquipmentListSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
+      }),
+      getEquipmentsXlsx: build.query<GetEquipmentsXlsxSuccessResponse, GetEquipmentsXlsxQueryArgs>({
+        query: (params) => ({
+          url: EquipmentApiEnum.GetEquipmentList,
+          method: HttpMethodEnum.Get,
+          headers: { Accept: MimetypeEnum.Xlsx },
+          params,
+        }),
       }),
       getEquipmentRelocationHistory: build.query<
         GetEquipmentRelocationHistorySuccessResponse,
@@ -208,6 +219,7 @@ export const {
   useImportEquipmentsByFileMutation,
   useUpdateEquipmentMutation,
   useGetEquipmentListQuery,
+  useLazyGetEquipmentsXlsxQuery,
   useGetEquipmentRelocationHistoryQuery,
 
   useGetEquipmentCategoryListQuery,

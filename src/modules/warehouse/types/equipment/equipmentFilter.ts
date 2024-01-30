@@ -12,4 +12,5 @@ export type EquipmentFilterParams = Partial<{
   priceTo: number
   createdAtFrom: string
   createdAtTo: string
+  quantityGt: number
 }>

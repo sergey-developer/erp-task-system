@@ -11,7 +11,7 @@ export const renderUploadedFile: UploadProps['itemRender'] = (originNode, file) 
   return file.error ? null : file.status === 'uploading' ? (
     originNode
   ) : url && name ? (
-    <UploadedAttachment id={file.uid} url={url} name={name} size={size} />
+    <UploadedAttachment key={file.uid} id={file.uid} url={url} name={name} size={size} />
   ) : (
     originNode
   )

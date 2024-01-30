@@ -10,7 +10,7 @@ test('task suspend reason', () => {
     'Ожидание работ вне зоны ответственности ИТ',
   )
   expect(suspendReasonDict[SuspendReasonEnum.AwaitingInitiator]).toBe('Ожидание пользователя')
-  expect(suspendReasonDict[SuspendReasonEnum.AwaitingRelease]).toBe('Ожидание релиза')
+  expect(suspendReasonDict[SuspendReasonEnum.AwaitingRelease]).toBe('Ожидание релиза/доработки')
   expect(suspendReasonDict[SuspendReasonEnum.AwaitingPurchase]).toBe('Ожидание закупки')
   expect(suspendReasonDict[SuspendReasonEnum.AwaitingInformationFromFirstLine]).toBe(
     'Ожидание информации от пользователя, уточнение через 1-ю линию',

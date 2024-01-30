@@ -9,6 +9,7 @@ import {
   WorkTypeModel,
 } from 'modules/warehouse/models'
 
+import { LocationModel } from 'shared/models/catalogs/location'
 import { CurrencyModel } from 'shared/models/currency'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -25,9 +26,11 @@ export type EquipmentModel = {
   isNew: boolean
   isWarranty: boolean
   isRepaired: boolean
+  isCredited: boolean
   purpose: Pick<WorkTypeModel, 'id' | 'title'>
   amount: number
 
+  location: MaybeNull<Pick<LocationModel, 'id' | 'title'>>
   warehouse: MaybeNull<Pick<WarehouseModel, 'id' | 'title'>>
   inventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>
