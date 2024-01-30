@@ -10,6 +10,7 @@ export type AttachmentListItem = {
   lastName?: string
   middleName?: string
   externalId?: MaybeNull<string>
+  remove?: () => void
 }
 
 export type AttachmentListProps = {
