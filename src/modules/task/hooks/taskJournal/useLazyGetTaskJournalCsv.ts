@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
+import { getTaskJournalCsvErrorMsg } from 'modules/task/constants/taskJournal'
 import { GetTaskJournalCsvQueryArgs, GetTaskJournalCsvSuccessResponse } from 'modules/task/models'
 import { useLazyGetTaskJournalCsvQuery } from 'modules/task/services/taskApi.service'
 
-import { commonApiMessages } from 'shared/constants/common'
 import { isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -19,7 +19,7 @@ export const useLazyGetTaskJournalCsv = (): UseLazyGetTaskJournalCsvResult => {
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(commonApiMessages.unknownError)
+      showErrorNotification(getTaskJournalCsvErrorMsg)
     }
   }, [state.error])
 

@@ -1,28 +1,6 @@
-import { CheckboxOptionType } from 'antd/lib/checkbox/Group'
-import { FieldNames } from 'rc-select/lib/Select'
+import { getBooleanOptions, getSelectFieldNames } from 'shared/utils/selectField'
 
-export const idAndTitleSelectFieldNames: Readonly<Pick<FieldNames, 'label' | 'value'>> = {
-  label: 'title',
-  value: 'id',
-}
-
-export const idAndNameSelectFieldNames: Readonly<Pick<FieldNames, 'label' | 'value'>> = {
-  label: 'name',
-  value: 'id',
-}
-
-export const idAndFullNameSelectFieldNames: Readonly<Pick<FieldNames, 'label' | 'value'>> = {
-  label: 'fullName',
-  value: 'id',
-}
-
-export const yesNoOptions: NonNullable<CheckboxOptionType[]> = [
-  {
-    label: 'Да',
-    value: true,
-  },
-  {
-    label: 'Нет',
-    value: false,
-  },
-]
+export const idAndTitleSelectFieldNames = getSelectFieldNames('title')
+export const idAndNameSelectFieldNames = getSelectFieldNames('name')
+export const idAndFullNameSelectFieldNames = getSelectFieldNames('fullName')
+export const yesNoOptions = getBooleanOptions()

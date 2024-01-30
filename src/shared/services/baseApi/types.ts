@@ -34,6 +34,7 @@ export type CustomBaseQueryFn = BaseQueryFn<{
   method?: AxiosRequestConfig['method']
   data?: AxiosRequestConfig['data']
   params?: AxiosRequestConfig['params']
+  headers?: AxiosRequestConfig['headers']
 }>
 
 export type ApiVersionUnion = 'v1'

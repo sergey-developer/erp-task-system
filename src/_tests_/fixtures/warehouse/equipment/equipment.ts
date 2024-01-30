@@ -3,6 +3,7 @@ import pick from 'lodash/pick'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
 
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import currencyFixtures from '_tests_/fixtures/currency'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -19,6 +20,7 @@ export const equipment = (
       | 'isNew'
       | 'isWarranty'
       | 'isRepaired'
+      | 'isCredited'
       | 'usageCounter'
       | 'owner'
     >
@@ -32,11 +34,13 @@ export const equipment = (
   isNew: props?.isNew || false,
   isWarranty: props?.isWarranty || false,
   isRepaired: props?.isRepaired || false,
+  isCredited: props?.isCredited || false,
   inventoryNumber: props?.inventoryNumber || fakeWord(),
   usageCounter: props?.usageCounter || fakeInteger(),
   owner: props?.owner || pick(warehouseFixtures.customer(), 'id', 'title'),
 
   title: fakeWord(),
+  location: pick(catalogsFixtures.location(), 'id', 'title'),
   warehouse: pick(warehouseFixtures.warehouse(), 'id', 'title'),
   condition: EquipmentConditionEnum.Working,
   createdAt: fakeDateString(),

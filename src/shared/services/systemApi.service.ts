@@ -1,6 +1,11 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { SystemApiEnum } from 'shared/constants/system'
-import { GetSystemInfoQueryArgs, GetSystemInfoSuccessResponse } from 'shared/models/system'
+import {
+  GetSystemInfoQueryArgs,
+  GetSystemInfoSuccessResponse,
+  GetSystemSettingsQueryArgs,
+  GetSystemSettingsSuccessResponse,
+} from 'shared/models/system'
 
 import { baseApiService } from './baseApi'
 
@@ -12,7 +17,13 @@ export const systemApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    getSystemSettings: build.query<GetSystemSettingsSuccessResponse, GetSystemSettingsQueryArgs>({
+      query: () => ({
+        url: SystemApiEnum.GetSystemSettings,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
 })
 
-export const { useGetSystemInfoQuery, endpoints } = systemApiService
+export const { useGetSystemInfoQuery, useGetSystemSettingsQuery, endpoints } = systemApiService
