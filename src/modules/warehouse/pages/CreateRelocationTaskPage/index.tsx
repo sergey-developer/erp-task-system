@@ -354,6 +354,7 @@ const CreateRelocationTaskPage: FC = () => {
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
         executor: values.executor,
+        controller: values.controller,
         comment: values.comment,
       }).unwrap()
 
