@@ -1,8 +1,10 @@
 import { PaperClipOutlined } from '@ant-design/icons'
-import { Space, Typography } from 'antd'
+import { Col, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import { AttachmentListItem } from 'modules/task/components/AttachmentList/types'
+
+import { DeleteIcon } from 'components/Icons'
 
 import { getInfo, getInfoOpts } from './utils'
 
@@ -19,30 +21,39 @@ const UploadedAttachment: FC<UploadedAttachmentProps> = ({
   firstName,
   middleName,
   lastName,
+  remove,
 }) => {
   return (
-    <Space data-testid={`attachment-${name}`} size={4} wrap>
-      <Link download href={url} target='_blank'>
-        <Space>
-          <PaperClipOutlined />
-          {name}
-        </Space>
-      </Link>
+    <Space size='middle'>
+      <Space data-testid={`attachment-${name}`} size={4} wrap>
+        <Link download={name} href={url} target='_blank'>
+          <Space>
+            <PaperClipOutlined />
+            {name}
+          </Space>
+        </Link>
 
-      <Text>
-        (
-        {getInfo(
-          {
-            size,
-            createdAt,
-            user: firstName && lastName ? { firstName, middleName, lastName } : undefined,
-          },
-          getInfoOpts,
-        )}
-        )
-      </Text>
+        <Text>
+          (
+          {getInfo(
+            {
+              size,
+              createdAt,
+              user: firstName && lastName ? { firstName, middleName, lastName } : undefined,
+            },
+            getInfoOpts,
+          )}
+          )
+        </Text>
 
-      {externalId === '' && <Text type='secondary'>Не передано в Х5</Text>}
+        {externalId === '' && <Text type='secondary'>Не передано в Х5</Text>}
+      </Space>
+
+      {remove && (
+        <Col>
+          <DeleteIcon $cursor='pointer' onClick={remove} title='Удалить файл' />
+        </Col>
+      )}
     </Space>
   )
 }
