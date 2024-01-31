@@ -394,6 +394,58 @@ describe('Таблица заявок на перемещение оборудо
     })
   })
 
+  describe('Контролер', () => {
+    test('Отображается корректно', () => {
+      render(<RelocationTaskTable {...props} />)
+
+      const headCell = testUtils.getHeadCell('Контролер')
+      const title = testUtils.getColTitle('Контролер')
+      const value = testUtils.getColValue(
+        relocationTaskListItem.id,
+        relocationTaskListItem.controller!.fullName,
+      )
+
+      expect(headCell).toHaveClass(columnWithSortingClass)
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
+    test('При клике на заголовок обработчик вызывается корректно', async () => {
+      const { user } = render(<RelocationTaskTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Контролер')
+
+      expect(props.onChange).toBeCalledTimes(1)
+      expect(props.onChange).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
+    })
+
+    test('Сортировка работает корректно', async () => {
+      const { user } = render(<RelocationTaskTable {...props} />)
+
+      await testUtils.clickColTitle(user, 'Контролер')
+      const headCell = testUtils.getHeadCell('Контролер')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+
+      await testUtils.clickColTitle(user, 'Контролер')
+      expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      await testUtils.clickColTitle(user, 'Контролер')
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
+
+      props.dataSource.forEach((item) => {
+        const row = testUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+  })
+
   describe('Статус', () => {
     test('Отображается корректно', () => {
       render(<RelocationTaskTable {...props} />)
