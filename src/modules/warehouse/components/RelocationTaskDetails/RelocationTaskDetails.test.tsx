@@ -317,6 +317,22 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
+    test('Контролер отображается', async () => {
+      const relocationTask = warehouseFixtures.relocationTask()
+      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+
+      await testUtils.expectRelocationTaskLoadingFinished()
+
+      const label = testUtils.getBlockInfo('controller', /Контролер/)
+      const value = testUtils.getBlockInfo('controller', relocationTask.controller!.fullName)
+
+      expect(label).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
     test('Статус отображается', async () => {
       const relocationTask = warehouseFixtures.relocationTask()
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
