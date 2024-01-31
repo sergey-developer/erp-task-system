@@ -394,6 +394,7 @@ const EditRelocationTaskPage: FC = () => {
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
         executor: values.executor,
+        controller: values.controller,
         comment: values.comment,
       }).unwrap()
 
@@ -690,6 +691,7 @@ const EditRelocationTaskPage: FC = () => {
         relocateFrom: relocationTask.relocateFrom?.id,
         relocateTo: typeIsWriteOff ? undefined : relocationTask.relocateTo?.id,
         executor: relocationTask.executor?.id,
+        controller: relocationTask.controller?.id,
         comment: relocationTask?.comment || undefined,
       })
     }
