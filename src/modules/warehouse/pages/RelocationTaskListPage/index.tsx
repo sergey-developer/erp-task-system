@@ -26,12 +26,12 @@ import Space from 'components/Space'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
 import {
   calculatePaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
-import { MaybeUndefined } from 'shared/types/utils'
 
 const RelocationTaskListFilter = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskListFilter'),
@@ -93,11 +93,11 @@ const RelocationTaskListPage: FC = () => {
   const handleTableSort = useCallback(
     (sorter: Parameters<RelocationTaskTableProps['onChange']>[2]) => {
       if (sorter) {
-        const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
+        const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
+        if (field && (field as string) in sortableFieldToSortValues) {
           setRelocationTaskListParams({
-            ordering: order ? getSort(columnKey as SortableField, order) : undefined,
+            ordering: order ? getSort(field as SortableField, order) : undefined,
           })
         }
       }

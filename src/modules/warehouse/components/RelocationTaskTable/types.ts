@@ -13,6 +13,7 @@ export type RelocationTaskTableItem = Pick<
   | 'relocateFrom'
   | 'relocateTo'
   | 'executor'
+  | 'controller'
   | 'status'
   | 'createdBy'
   | 'createdAt'
