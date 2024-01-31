@@ -19,6 +19,7 @@ export const relocationTaskListItem = (): RelocationTaskListItemModel => ({
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.user(), 'id', 'fullName'),
   executor: pick(userFixtures.user(), 'id', 'fullName', 'phone'),
+  controller: pick(userFixtures.user(), 'id', 'fullName'),
   relocateFrom: { id: fakeId(), title: fakeWord() },
   relocateTo: { id: fakeId(), title: fakeWord() },
   documents: [taskFixtures.attachment()],

@@ -360,6 +360,7 @@ const CreateRelocationTaskPage: FC = () => {
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
         executor: values.executor,
+        controller: values.controller,
         comment: values.comment,
         images: values.images?.length ? extractIdsFromFilesResponse(values.images) : undefined,
       }).unwrap()

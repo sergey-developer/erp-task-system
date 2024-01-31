@@ -171,6 +171,25 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         </Form.Item>
 
         <Form.Item
+          data-testid='controller-form-item'
+          label='Контролер'
+          name='controller'
+          rules={onlyRequiredRules}
+        >
+          <Select
+            fieldNames={userListSelectFieldNames}
+            loading={userListIsLoading}
+            disabled={isLoading || userListIsLoading}
+            options={userList}
+            placeholder='Выберите контролера'
+            showSearch
+            filterOption={filterOptionBy('fullName')}
+          />
+        </Form.Item>
+      </Col>
+
+      <Col span={6}>
+        <Form.Item
           data-testid='comment-form-item'
           label='Комментарий'
           name='comment'

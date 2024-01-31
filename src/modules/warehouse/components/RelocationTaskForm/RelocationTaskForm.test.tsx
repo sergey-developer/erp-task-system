@@ -106,6 +106,21 @@ const getSelectedExecutor = (title: string) =>
 const querySelectedExecutor = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getExecutorFormItem(), title)
 
+// controller field
+const getControllerFormItem = () => within(getContainer()).getByTestId('controller-form-item')
+const getControllerSelectInput = () => selectTestUtils.getSelect(getControllerFormItem())
+const setController = selectTestUtils.clickSelectOption
+const findControllerError = (text: string) => within(getControllerFormItem()).findByText(text)
+
+const openControllerSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getControllerFormItem())
+
+const getSelectedController = (title: string) =>
+  selectTestUtils.getSelectedOptionByTitle(getControllerFormItem(), title)
+
+const querySelectedController = (title: string) =>
+  selectTestUtils.querySelectedOptionByTitle(getControllerFormItem(), title)
+
 // type field
 const getTypeFormItem = () => within(getContainer()).getByTestId('type-form-item')
 const getTypeSelectInput = () => selectTestUtils.getSelect(getTypeFormItem())
@@ -211,6 +226,13 @@ export const testUtils = {
   getSelectedExecutor,
   querySelectedExecutor,
   findExecutorError,
+
+  getControllerSelectInput,
+  setController,
+  findControllerError,
+  openControllerSelect,
+  getSelectedController,
+  querySelectedController,
 
   getCommentTitle,
   getCommentField,
@@ -544,12 +566,67 @@ describe('Форма создания заявки на перемещение �
       mockGetUserListSuccess()
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetCurrencyListSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />)
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
       const error = await testUtils.findExecutorError(validationMessages.required)
+
+      expect(error).toBeInTheDocument()
+    })
+  })
+
+  describe('Контролер', () => {
+    test('Отображается корректно', async () => {
+      const userListItem = userFixtures.userListItem()
+      const userList = [userListItem]
+
+      const { user } = render(
+        <Form>
+          <RelocationTaskForm {...props} userList={userList} />
+        </Form>,
+      )
+
+      const input = testUtils.getControllerSelectInput()
+      await testUtils.openControllerSelect(user)
+      const selectedController = testUtils.querySelectedController(userListItem.fullName)
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(selectedController).not.toBeInTheDocument()
+      userList.forEach((usr) => {
+        const option = selectTestUtils.getSelectOption(usr.fullName)
+        expect(option).toBeInTheDocument()
+      })
+    })
+
+    test('Можно выбрать значение', async () => {
+      const userListItem = userFixtures.userListItem()
+
+      const { user } = render(
+        <Form>
+          <RelocationTaskForm {...props} userList={[userListItem]} />
+        </Form>,
+      )
+
+      await testUtils.openControllerSelect(user)
+      await testUtils.setController(user, userListItem.fullName)
+      const selectedController = testUtils.getSelectedController(userListItem.fullName)
+
+      expect(selectedController).toBeInTheDocument()
+    })
+
+    test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess({ body: [] })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess({ body: [] })
+
+      const { user } = render(<CreateRelocationTaskPage />)
+
+      await createRelocationTaskPageTestUtils.clickSubmitButton(user)
+      const error = await testUtils.findControllerError(validationMessages.required)
 
       expect(error).toBeInTheDocument()
     })
