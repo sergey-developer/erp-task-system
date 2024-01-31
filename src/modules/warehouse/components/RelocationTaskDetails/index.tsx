@@ -318,7 +318,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         label: 'Выполнить заявку',
         disabled:
           !permissions?.relocationTasksUpdate ||
-          !creatorIsCurrentUser ||
+          !executorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
           relocationTaskStatus.isCompleted,
