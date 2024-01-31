@@ -329,7 +329,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         label: 'Вернуть на доработку',
         disabled:
           !permissions?.relocationTasksUpdate ||
-          !executorIsCurrentUser ||
+          !controllerIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenReturnToReworkModal,
       },
