@@ -11,13 +11,13 @@ import { formatDate } from 'shared/utils/date'
 import { RelocationTaskTableItem } from './types'
 
 export const columns: ColumnsType<RelocationTaskTableItem> = [
-  {
-    dataIndex: 'id',
-    title: '№',
-    sorter: true,
-    width: 100,
-    render: (value: RelocationTaskTableItem['id']) => value,
-  },
+  // {
+  //   dataIndex: 'id',
+  //   title: '№',
+  //   sorter: true,
+  //   width: 100,
+  //   render: (value: RelocationTaskTableItem['id']) => value,
+  // },
   {
     dataIndex: 'type',
     title: 'Тип заявки',

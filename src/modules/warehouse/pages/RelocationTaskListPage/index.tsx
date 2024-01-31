@@ -1,5 +1,5 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Button, Input } from 'antd'
+import { Button } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
@@ -42,8 +42,6 @@ const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
 )
 
-const { Search } = Input
-
 const initialFilterValues: RelocationTaskListFilterFormFields = {
   status: undefined,
   type: undefined,
@@ -80,7 +78,8 @@ const RelocationTaskListPage: FC = () => {
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
   const [filterValues, setFilterValues] = useState<RelocationTaskListFilterFormFields>()
 
-  const [searchValue, setSearchValue] = useState<string>()
+  /* Реализуется в другом эпике */
+  // const [searchValue, setSearchValue] = useState<string>()
 
   const [selectedRelocationTaskId, setSelectedRelocationTaskId] =
     useState<MaybeUndefined<IdType>>(relocationTaskId)
@@ -155,11 +154,12 @@ const RelocationTaskListPage: FC = () => {
     toggleOpenFilter()
   }
 
-  const onSearch = (value: string) =>
-    setRelocationTasksParams({
-      search: value || undefined,
-      offset: initialRelocationTasksParams.offset,
-    })
+  /* Реализуется в другом эпике */
+  // const onSearch = (value: string) =>
+  //   setRelocationTasksParams({
+  //     search: value || undefined,
+  //     offset: initialRelocationTasksParams.offset,
+  //   })
 
   return (
     <>
@@ -167,14 +167,15 @@ const RelocationTaskListPage: FC = () => {
         <Space size='middle'>
           <FilterButton onClick={debouncedToggleOpenFilter} />
 
-          <Search
-            allowClear
-            onSearch={onSearch}
-            onChange={(event) => setSearchValue(event.target.value)}
-            value={searchValue}
-            placeholder='Поиск по номеру'
-            disabled={relocationTasksIsFetching}
-          />
+          {/* Реализуется в другом эпике */}
+          {/*<Search*/}
+          {/*  allowClear*/}
+          {/*  onSearch={onSearch}*/}
+          {/*  onChange={(event) => setSearchValue(event.target.value)}*/}
+          {/*  value={searchValue}*/}
+          {/*  placeholder='Поиск по номеру'*/}
+          {/*  disabled={relocationTasksIsFetching}*/}
+          {/*/>*/}
 
           {permissions?.relocationTasksCreate && (
             <Link to={WarehouseRouteEnum.CreateRelocationTask}>
