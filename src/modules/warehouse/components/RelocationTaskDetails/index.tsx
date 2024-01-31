@@ -169,6 +169,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
   const executorIsCurrentUser = useIdBelongAuthUser(relocationTask?.executor?.id)
+  const controllerIsCurrentUser = useIdBelongAuthUser(relocationTask?.controller?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const handleCancelTask = async () => {
@@ -348,7 +349,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         label: 'Подтвердить выполнение',
         disabled:
           !permissions?.relocationTasksUpdate ||
-          !executorIsCurrentUser ||
+          !controllerIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenConfirmExecutionModal,
       },
