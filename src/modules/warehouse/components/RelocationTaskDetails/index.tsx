@@ -429,6 +429,16 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     </Col>
                   </Row>
 
+                  <Row data-testid='controller' align='middle'>
+                    <Col span={8}>
+                      <Text type='secondary'>Контролер:</Text>
+                    </Col>
+
+                    <Col span={16}>
+                      <Text>{valueOrHyphen(relocationTask.controller?.fullName)}</Text>
+                    </Col>
+                  </Row>
+
                   <Row data-testid='status' align='middle'>
                     <Col span={8}>
                       <Text type='secondary'>Статус:</Text>
