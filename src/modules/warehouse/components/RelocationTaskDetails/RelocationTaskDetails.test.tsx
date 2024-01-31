@@ -2271,7 +2271,7 @@ describe('Информация о заявке о перемещении', () =>
         {
           store: getStoreWithAuth(
             {
-              userId: relocationTask.executor!.id,
+              userId: relocationTask.controller!.id,
               userRole: UserRoleEnum.FirstLineSupport,
             },
             undefined,
@@ -2304,7 +2304,7 @@ describe('Информация о заявке о перемещении', () =>
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
-          { store: getStoreWithAuth({ userId: relocationTask.executor!.id }) },
+          { store: getStoreWithAuth({ userId: relocationTask.controller!.id }) },
         )
 
         await testUtils.openMenu(user)
@@ -2312,7 +2312,7 @@ describe('Информация о заявке о перемещении', () =>
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
-      test('Если условия соблюдены, но исполнитель заявки не авторизованный пользователь', async () => {
+      test('Если условия соблюдены, но контролер заявки не авторизованный пользователь', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
@@ -2351,9 +2351,14 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth({ userId: relocationTask.executor!.id }, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) },
-            }),
+            store: getStoreWithAuth(
+              { userId: relocationTask.controller!.id },
+              undefined,
+              undefined,
+              {
+                queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) },
+              },
+            ),
           },
         )
 
@@ -2383,7 +2388,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               {
-                userId: relocationTask.executor!.id,
+                userId: relocationTask.controller!.id,
                 userRole: UserRoleEnum.FirstLineSupport,
               },
               undefined,
@@ -2432,7 +2437,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               {
-                userId: relocationTask.executor!.id,
+                userId: relocationTask.controller!.id,
                 userRole: UserRoleEnum.FirstLineSupport,
               },
               undefined,
@@ -2474,7 +2479,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               {
-                userId: relocationTask.executor!.id,
+                userId: relocationTask.controller!.id,
                 userRole: UserRoleEnum.FirstLineSupport,
               },
               undefined,
@@ -2516,7 +2521,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               {
-                userId: relocationTask.executor!.id,
+                userId: relocationTask.controller!.id,
                 userRole: UserRoleEnum.FirstLineSupport,
               },
               undefined,
@@ -2554,7 +2559,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               {
-                userId: relocationTask.executor!.id,
+                userId: relocationTask.controller!.id,
                 userRole: UserRoleEnum.FirstLineSupport,
               },
               undefined,
