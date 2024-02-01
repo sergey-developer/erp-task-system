@@ -1,9 +1,9 @@
 import { useBoolean } from 'ahooks'
 import { App, Drawer, FormInstance } from 'antd'
 import debounce from 'lodash/debounce'
-import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
+import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
@@ -56,6 +56,7 @@ import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { useSystemSettingsState } from 'shared/hooks/system'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
@@ -65,8 +66,6 @@ import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import { useSystemSettingsState } from '../../../../shared/hooks/system'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
 
@@ -118,9 +117,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     refetch: originRefetchTask,
     currentData: task,
     isFetching: taskIsFetching,
-    isError: isGetTaskError,
+
     startedTimeStamp: getTaskStartedTimeStamp = 0,
-  } = useGetTask(taskId)
+  } = useGetTask(taskId, { onError: originOnClose })
 
   const refetchTask = useDebounceFn(originRefetchTask)
 
@@ -153,6 +152,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       skip: !taskExtendedStatus.isInReclassification || !!createReclassificationRequestResult,
     },
   )
+
+  const [cancelReclassificationRequest, { isLoading: cancelReclassificationRequestIsLoading }] =
+    useCancelReclassificationRequest()
 
   const reclassificationRequest =
     createReclassificationRequestResult || getReclassificationRequestResult
@@ -249,9 +251,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const { data: systemSettings, isFetching: systemSettingsIsFetching } = useSystemSettingsState()
 
-  useEffect(() => {
-    if (isGetTaskError) originOnClose()
-  }, [isGetTaskError, originOnClose])
+  const onCancelReclassificationRequest = () => {
+    if (reclassificationRequest) {
+      cancelReclassificationRequest({ reclassificationRequestId: reclassificationRequest.id })
+    }
+  }
+
+  const openConfirmCancelReclassificationRequestModal = () => {
+    modal.confirm({ title: 'Отменить запрос на переклассификацию', content: 'Вы уверены?' })
+  }
 
   const handleExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
     async (values, setFields) => {
@@ -478,7 +486,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                   comment={reclassificationRequest.comment}
                   date={reclassificationRequest.createdAt}
                   user={reclassificationRequest.user}
-                  onCancel={noop}
+                  onCancel={openConfirmCancelReclassificationRequestModal}
                   cancelBtnDisabled={taskStatus.isAwaiting}
                 />
               </React.Suspense>
@@ -636,6 +644,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             open={requestTaskSuspendModalOpened}
             recordId={task.recordId}
             systemSettings={systemSettings}
+            systemSettingsIsLoading={systemSettingsIsFetching}
             isLoading={createSuspendRequestIsLoading}
             onSubmit={handleCreateTaskSuspendRequest}
             onCancel={closeRequestTaskSuspendModal}
