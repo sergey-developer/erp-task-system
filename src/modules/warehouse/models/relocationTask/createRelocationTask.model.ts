@@ -10,6 +10,7 @@ export type CreateRelocationTaskMutationArgs = {
   deadlineAt: string
   relocateFromId: IdType
   executor: IdType
+  controller: IdType
   equipments: {
     id: IdType
     quantity: number
@@ -21,7 +22,6 @@ export type CreateRelocationTaskMutationArgs = {
   }[]
 
   relocateToId?: IdType
-  controller?: IdType
   comment?: string
 }
 
