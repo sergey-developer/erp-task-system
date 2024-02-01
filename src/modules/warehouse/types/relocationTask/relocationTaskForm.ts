@@ -34,7 +34,7 @@ export type RelocationTaskFormFields = {
   relocateFrom: IdType
   relocateTo?: IdType
   executor: IdType
-  controller?: IdType
+  controller: IdType
   comment?: string
   images?: UploadFile<FileResponse>[]
 }
