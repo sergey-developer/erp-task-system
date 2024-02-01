@@ -10,6 +10,7 @@ export type UpdateRelocationTaskMutationArgs = BaseRelocationTaskRequestArgs & {
   type: RelocationTaskTypeEnum
   deadlineAt: string
   relocateFromId: IdType
+  controller: IdType
   equipments: {
     id: IdType
     quantity: number
@@ -21,7 +22,6 @@ export type UpdateRelocationTaskMutationArgs = BaseRelocationTaskRequestArgs & {
   }[]
 
   relocateToId?: IdType
-  controller?: IdType
   executor?: IdType
   comment?: string
 }
