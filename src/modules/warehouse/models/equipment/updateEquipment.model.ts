@@ -1,10 +1,10 @@
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { EquipmentListItemModel } from 'modules/warehouse/models'
-import { BaseEquipmentRequestArgs } from 'modules/warehouse/types'
+import { EquipmentRequestArgs } from 'modules/warehouse/types'
 
 import { IdType } from 'shared/types/common'
 
-export type UpdateEquipmentMutationArgs = BaseEquipmentRequestArgs & {
+export type UpdateEquipmentMutationArgs = EquipmentRequestArgs & {
   title: string
   nomenclature: IdType
   condition: EquipmentConditionEnum

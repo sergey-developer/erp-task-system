@@ -1,5 +1,5 @@
 import { IdType } from 'shared/types/common'
 
-export type BaseEquipmentRequestArgs = {
+export type EquipmentRequestArgs = {
   equipmentId: IdType
 }

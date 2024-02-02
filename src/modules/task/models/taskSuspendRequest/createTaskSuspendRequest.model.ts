@@ -3,11 +3,11 @@ import {
   SuspendReasonEnum,
 } from 'modules/task/constants/taskSuspendRequest'
 import { SuspendRequestModel } from 'modules/task/models'
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
 import { FieldsErrors } from 'shared/services/baseApi'
 
-export type CreateTaskSuspendRequestMutationArgs = BaseTaskRequestArgs & {
+export type CreateTaskSuspendRequestMutationArgs = TaskRequestArgs & {
   comment: string
   suspendEndAt: string
   suspendReason: SuspendReasonEnum

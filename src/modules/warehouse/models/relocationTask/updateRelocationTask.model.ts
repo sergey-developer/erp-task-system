@@ -1,12 +1,12 @@
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
-import { BaseRelocationTaskRequestArgs } from 'modules/warehouse/types'
+import { RelocationTaskRequestArgs } from 'modules/warehouse/types'
 
 import { IdType } from 'shared/types/common'
 
 import { RelocationTaskModel } from './relocationTask.model'
 
-export type UpdateRelocationTaskMutationArgs = BaseRelocationTaskRequestArgs & {
+export type UpdateRelocationTaskMutationArgs = RelocationTaskRequestArgs & {
   type: RelocationTaskTypeEnum
   deadlineAt: string
   relocateFromId: IdType

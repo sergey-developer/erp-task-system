@@ -1,5 +1,5 @@
 import { IdType } from 'shared/types/common'
 
-export type BaseTaskRequestArgs = {
+export type TaskRequestArgs = {
   taskId: IdType
 }

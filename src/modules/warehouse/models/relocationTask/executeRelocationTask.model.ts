@@ -1,9 +1,9 @@
-import { BaseRelocationTaskRequestArgs } from 'modules/warehouse/types'
+import { RelocationTaskRequestArgs } from 'modules/warehouse/types'
 
 import { FieldsErrors } from 'shared/services/baseApi'
 import { FileToSend } from 'shared/types/file'
 
-export type ExecuteRelocationTaskMutationArgs = BaseRelocationTaskRequestArgs & {
+export type ExecuteRelocationTaskMutationArgs = RelocationTaskRequestArgs & {
   documents: FileToSend[]
 }
 
