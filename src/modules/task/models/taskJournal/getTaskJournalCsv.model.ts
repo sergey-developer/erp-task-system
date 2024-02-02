@@ -1,5 +1,5 @@
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
-export type GetTaskJournalCsvQueryArgs = BaseTaskRequestArgs
+export type GetTaskJournalCsvQueryArgs = TaskRequestArgs
 
 export type GetTaskJournalCsvSuccessResponse = string

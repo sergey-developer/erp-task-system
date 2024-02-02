@@ -518,7 +518,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                     <Space $block direction='vertical'>
                       <AttachmentList
                         data-testid='equipment-image-list'
-                        data={equipmentAttachmentList?.results || []}
+                        data={extractPaginationResults(equipmentAttachmentList)}
                       />
 
                       <Button
@@ -637,7 +637,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
           <AttachmentListModal
             open={imageListModalOpened}
             title='Изображения оборудования'
-            data={totalEquipmentAttachmentList?.results || []}
+            data={extractPaginationResults(totalEquipmentAttachmentList)}
             onCancel={debouncedToggleOpenImageListModal}
           />
         </React.Suspense>
