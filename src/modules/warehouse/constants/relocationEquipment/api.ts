@@ -1,5 +1,5 @@
 export enum RelocationEquipmentApiEnum {
-  GetRelocationEquipmentAttachmentList = '/relocation-equipments/:id/attachments/',
+  GetRelocationEquipmentAttachmentList = '/relocation-equipments/:id/attachments',
 }
 
 export enum RelocationEquipmentApiTagEnum {

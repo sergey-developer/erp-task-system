@@ -1,9 +1,7 @@
-import { generatePath } from 'react-router-dom'
-
 import { WarehouseApiEnum } from 'modules/warehouse/constants/warehouse'
 
 import { IdType } from 'shared/types/common'
-import { appendSlashAtEnd } from 'shared/utils/string'
+import { generateApiPath } from 'shared/utils/api'
 
 export const getWarehouseUrl = (id: IdType): string =>
-  appendSlashAtEnd(generatePath(WarehouseApiEnum.GetWarehouse, { id: String(id) }))
+  generateApiPath(WarehouseApiEnum.GetWarehouse, { id: String(id) })
