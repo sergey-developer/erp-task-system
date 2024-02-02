@@ -1,8 +1,8 @@
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { EquipmentRelocationHistoryModel } from 'modules/warehouse/models'
-import { BaseEquipmentRequestArgs } from 'modules/warehouse/types'
+import { EquipmentRequestArgs } from 'modules/warehouse/types'
 
-export type GetEquipmentRelocationHistoryQueryArgs = BaseEquipmentRequestArgs &
+export type GetEquipmentRelocationHistoryQueryArgs = EquipmentRequestArgs &
   Partial<{
     statuses: RelocationTaskStatusEnum[]
   }>

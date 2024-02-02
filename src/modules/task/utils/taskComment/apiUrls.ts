@@ -1,12 +1,10 @@
-import { generatePath } from 'react-router-dom'
-
 import { TaskApiEnum } from 'modules/task/constants/task'
 
 import { IdType } from 'shared/types/common'
-import { appendSlashAtEnd } from 'shared/utils/string'
+import { generateApiPath } from 'shared/utils/api'
 
 export const createTaskCommentUrl = (taskId: IdType): string =>
-  appendSlashAtEnd(generatePath(TaskApiEnum.CreateTaskComment, { id: String(taskId) }))
+  generateApiPath(TaskApiEnum.CreateTaskComment, { id: String(taskId) })
 
 export const getTaskCommentListUrl = (taskId: IdType): string =>
-  appendSlashAtEnd(generatePath(TaskApiEnum.GetTaskCommentList, { id: String(taskId) }))
+  generateApiPath(TaskApiEnum.GetTaskCommentList, { id: String(taskId) })

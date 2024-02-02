@@ -1,33 +1,33 @@
 export enum TaskApiEnum {
-  GetTask = '/tasks/:id/',
-  ResolveTask = '/tasks/:id/resolution/',
-  TakeTask = '/tasks/:id/execution/',
-  GetWorkPerformedAct = '/tasks/:id/completion_certificate/',
+  GetTask = '/tasks/:id',
+  ResolveTask = '/tasks/:id/resolution',
+  TakeTask = '/tasks/:id/execution',
+  GetWorkPerformedAct = '/tasks/:id/completion_certificate',
 
   GetTaskList = '/tasks/',
   GetTaskListMap = '/tasks/map/',
 
   GetTaskCounters = '/tasks/counters/',
 
-  UpdateTaskWorkGroup = '/tasks/:id/work-group/',
-  DeleteTaskWorkGroup = '/tasks/:id/work-group/',
+  UpdateTaskWorkGroup = '/tasks/:id/work-group',
+  DeleteTaskWorkGroup = '/tasks/:id/work-group',
 
-  UpdateTaskAssignee = '/tasks/:id/assignee/',
+  UpdateTaskAssignee = '/tasks/:id/assignee',
 
-  CreateTaskComment = '/tasks/:id/comments/',
-  GetTaskCommentList = '/tasks/:id/comments/',
+  CreateTaskComment = '/tasks/:id/comments',
+  GetTaskCommentList = '/tasks/:id/comments',
 
-  CreateReclassificationRequest = '/tasks/:id/reclassification-requests/',
-  GetReclassificationRequest = '/tasks/:id/reclassification-request/',
+  CreateReclassificationRequest = '/tasks/:id/reclassification-requests',
+  GetReclassificationRequest = '/tasks/:id/reclassification-request',
 
-  CreateTaskSuspendRequest = '/tasks/:id/suspend_request/',
-  DeleteTaskSuspendRequest = '/tasks/:id/suspend-request/',
+  CreateTaskSuspendRequest = '/tasks/:id/suspend_request',
+  DeleteTaskSuspendRequest = '/tasks/:id/suspend-request',
 
-  GetTaskJournal = '/tasks/:id/journal/',
-  GetTaskJournalCsv = '/tasks/:id/journal/csv/',
+  GetTaskJournal = '/tasks/:id/journal',
+  GetTaskJournalCsv = '/tasks/:id/journal/csv',
 
-  GetSubTaskList = '/tasks/:id/subtasks/',
-  CreateSubTask = '/tasks/:id/subtasks/',
+  GetSubTaskList = '/tasks/:id/subtasks',
+  CreateSubTask = '/tasks/:id/subtasks',
 }
 
 export enum TaskApiTagEnum {

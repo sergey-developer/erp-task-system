@@ -1,4 +1,4 @@
-import { BaseRelocationTaskRequestArgs } from 'modules/warehouse/types'
+import { RelocationTaskRequestArgs } from 'modules/warehouse/types'
 
-export type GetRelocationTaskWaybillM15QueryArgs = BaseRelocationTaskRequestArgs
+export type GetRelocationTaskWaybillM15QueryArgs = RelocationTaskRequestArgs
 export type GetRelocationTaskWaybillM15SuccessResponse = string

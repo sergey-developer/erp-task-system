@@ -1,9 +1,9 @@
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
 import { ErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 
-export type UpdateTaskWorkGroupMutationArgs = BaseTaskRequestArgs & {
+export type UpdateTaskWorkGroupMutationArgs = TaskRequestArgs & {
   workGroup: IdType
   comment?: string
 }
