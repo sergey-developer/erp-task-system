@@ -67,7 +67,9 @@ import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-const BaseModal = React.lazy(() => import('components/Modals/BaseModal'))
+const ConfirmCancelReclassificationRequestModal = React.lazy(
+  () => import('modules/task/components/ConfirmCancelReclassificationRequestModal'),
+)
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
 
@@ -683,15 +685,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             />
           }
         >
-          <BaseModal
+          <ConfirmCancelReclassificationRequestModal
             open={confirmCancelReclassificationRequestModalOpened}
-            title='Отменить запрос на переклассификацию'
             onOk={onCancelReclassificationRequest}
             onCancel={debouncedToggleConfirmCancelReclassificationRequestModal}
             confirmLoading={cancelReclassificationRequestIsLoading}
-          >
-            Вы уверены, что хотите отменить запрос на переклассификацию?
-          </BaseModal>
+          />
         </React.Suspense>
       )}
     </>
