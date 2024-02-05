@@ -14,6 +14,8 @@ export * from './createRelocationTaskITSM.model'
 export * from './relocationTaskList.model'
 export * from './getRelocationTaskList.model'
 
+export * from './relocationTaskAttachment.model'
+
 export * from './relocationEquipmentList.model'
 export * from './getRelocationEquipmentList.model'
 

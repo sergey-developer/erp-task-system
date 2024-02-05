@@ -374,7 +374,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         }
       >
         <Row gutter={40}>
-          <Col span={8}>
+          <Col span={11}>
             <LoadingArea
               data-testid='relocation-task-details-loading'
               isLoading={relocationTaskIsFetching}
@@ -533,7 +533,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             </LoadingArea>
           </Col>
 
-          <Col span={16}>
+          <Col span={13}>
             <Space direction='vertical'>
               <Text strong>Перечень оборудования</Text>
 
