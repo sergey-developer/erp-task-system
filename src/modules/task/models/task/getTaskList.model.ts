@@ -8,6 +8,7 @@ import { TaskListItemModel } from 'modules/task/models'
 
 import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
 import { IdType } from 'shared/types/common'
+import { FilterParams } from 'shared/types/filter'
 import { PaginationParams } from 'shared/types/pagination'
 import { ExtendSortKey } from 'shared/types/sort'
 
@@ -28,10 +29,6 @@ export type GetTaskListSortValue = ExtendSortKey<GetTaskListSortKey>
 
 export type FastFilterQueries = Partial<{
   filter: FastFilterEnum
-}>
-
-export type TaskIdFilterQueries = Partial<{
-  taskId: string
 }>
 
 export type SearchFields = Partial<{
@@ -64,6 +61,6 @@ export type GetTaskListQueryArgs = Partial<
 > &
   ExtendedFilterQueries &
   FastFilterQueries &
-  TaskIdFilterQueries
+  FilterParams
 
 export type GetTaskListSuccessResponse = PaginatedListSuccessResponse<TaskListItemModel>

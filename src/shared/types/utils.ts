@@ -9,7 +9,7 @@ export type NonNullableObject<T extends object> = Required<{
 }>
 
 export type FalsyValue = false | '' | 0 | null | undefined
-export type Truthy<T> = T extends FalsyValue ? never : T
+export type IsTruthyType<T> = T extends FalsyValue ? never : T
 
 export type BooleanMap<Key extends string> = Record<Key, boolean>
 export type BooleanKey<Key extends string> = `is${Key}`
