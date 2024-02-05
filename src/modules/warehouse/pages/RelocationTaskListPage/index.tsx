@@ -6,7 +6,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 
 import { useGetTask, useGetTasks } from 'modules/task/hooks/task'
 import { GetTaskListQueryArgs } from 'modules/task/models'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
 import {
@@ -26,6 +26,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
+import { useGetLocationList } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -47,21 +48,29 @@ const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
 )
 
-const initialFilterValues: Pick<RelocationTaskListFilterFormFields, 'status'> = {
-  status: [
-    RelocationTaskStatusEnum.New,
-    RelocationTaskStatusEnum.Completed,
-    RelocationTaskStatusEnum.Returned,
-  ],
+const initialFilterValues: RelocationTaskListFilterFormFields = {
+  status: undefined,
+  type: undefined,
+  deadlineAt: undefined,
+  locationsFrom: undefined,
+  locationsTo: undefined,
+  controller: undefined,
+  executor: undefined,
+  createdBy: undefined,
+  createdAt: undefined,
 }
 
-const initialRelocationTaskListParams: Pick<
+const initialRelocationTasksParams: Pick<
   GetRelocationTaskListQueryArgs,
   'statuses' | 'ordering' | 'offset' | 'limit'
 > = {
   ...getInitialPaginationParams(),
-  ordering: 'deadline_at',
-  statuses: initialFilterValues.status,
+  ordering: '-deadline_at',
+  statuses: [
+    RelocationTaskStatusEnum.New,
+    RelocationTaskStatusEnum.Completed,
+    RelocationTaskStatusEnum.Returned,
+  ],
 }
 
 const RelocationTaskListPage: FC = () => {
@@ -74,6 +83,9 @@ const RelocationTaskListPage: FC = () => {
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
   const [filterValues, setFilterValues] = useState<RelocationTaskListFilterFormFields>()
+
+  /* Реализуется в другом эпике */
+  // const [searchValue, setSearchValue] = useState<string>()
 
   const [selectedRelocationTaskId, setSelectedRelocationTaskId] =
     useState<MaybeUndefined<IdType>>(relocationTaskId)
@@ -119,9 +131,15 @@ const RelocationTaskListPage: FC = () => {
 
   const onCloseRelocationTask = useDebounceFn(closeRelocationTask)
 
-  const [relocationTaskListParams, setRelocationTaskListParams] =
-    useSetState<GetRelocationTaskListQueryArgs>(initialRelocationTaskListParams)
+  const [relocationTasksParams, setRelocationTasksParams] =
+    useSetState<GetRelocationTaskListQueryArgs>(initialRelocationTasksParams)
 
+  const { currentData: relocationTasks, isFetching: relocationTasksIsFetching } =
+    useGetRelocationTaskList(relocationTasksParams)
+
+  const { currentData: users = [], isFetching: usersIsFetching } = useGetUserList(undefined, {
+    skip: !filterOpened,
+  })
   const { currentData: tasks, isFetching: tasksIsFetching } = useGetTasks(tasksParams, {
     skip: !tasksParams.search,
   })
@@ -130,40 +148,41 @@ const RelocationTaskListPage: FC = () => {
     skip: !selectedIncidentId,
   })
 
-  const { currentData: relocationTaskList, isFetching: relocationTaskListIsFetching } =
-    useGetRelocationTaskList(relocationTaskListParams)
-
-  const handleTablePagination = useCallback(
-    (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {
-      setRelocationTaskListParams(calculatePaginationParams(pagination))
-    },
-    [setRelocationTaskListParams],
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocationList(
+    undefined,
+    { skip: !filterOpened },
   )
 
-  const handleTableSort = useCallback(
+  const onTablePagination = useCallback(
+    (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {
+      setRelocationTasksParams(calculatePaginationParams(pagination))
+    },
+    [setRelocationTasksParams],
+  )
+
+  const onTableSort = useCallback(
     (sorter: Parameters<RelocationTaskTableProps['onChange']>[2]) => {
       if (sorter) {
-        const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
-
-        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
-          setRelocationTaskListParams({
-            ordering: order ? getSort(columnKey as SortableField, order) : undefined,
+        const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
+        if (field && (field as string) in sortableFieldToSortValues) {
+          setRelocationTasksParams({
+            ordering: order ? getSort(field as SortableField, order) : undefined,
           })
         }
       }
     },
-    [setRelocationTaskListParams],
+    [setRelocationTasksParams],
   )
 
-  const handleChangeTable = useCallback<RelocationTaskTableProps['onChange']>(
+  const onChangeTable = useCallback<RelocationTaskTableProps['onChange']>(
     (pagination, _, sorter) => {
-      handleTablePagination(pagination)
-      handleTableSort(sorter)
+      onTablePagination(pagination)
+      onTableSort(sorter)
     },
-    [handleTablePagination, handleTableSort],
+    [onTablePagination, onTableSort],
   )
 
-  const handleTableRowClick = useCallback<RelocationTaskTableProps['onRow']>(
+  const onTableRowClick = useCallback<RelocationTaskTableProps['onRow']>(
     (record) => ({
       onClick: debounce(() => {
         setSelectedRelocationTaskId(record.id)
@@ -173,20 +192,37 @@ const RelocationTaskListPage: FC = () => {
     [toggleOpenRelocationTask],
   )
 
-  const handleApplyFilter = (values: RelocationTaskListFilterFormFields) => {
+  const onApplyFilter = (values: RelocationTaskListFilterFormFields) => {
     setFilterValues(values)
-    setRelocationTaskListParams({
+    setRelocationTasksParams({
       ...relocationTaskListFilterToParams(values),
-      offset: initialRelocationTaskListParams.offset,
+      offset: initialRelocationTasksParams.offset,
     })
     toggleOpenFilter()
   }
+
+  /* Реализуется в другом эпике */
+  // const onSearch = (value: string) =>
+  //   setRelocationTasksParams({
+  //     search: value || undefined,
+  //     offset: initialRelocationTasksParams.offset,
+  //   })
 
   return (
     <>
       <Space data-testid='relocation-task-list-page' $block direction='vertical' size='middle'>
         <Space size='middle'>
           <FilterButton onClick={debouncedToggleOpenFilter} />
+
+          {/* Реализуется в другом эпике */}
+          {/*<Search*/}
+          {/*  allowClear*/}
+          {/*  onSearch={onSearch}*/}
+          {/*  onChange={(event) => setSearchValue(event.target.value)}*/}
+          {/*  value={searchValue}*/}
+          {/*  placeholder='Поиск по номеру'*/}
+          {/*  disabled={relocationTasksIsFetching}*/}
+          {/*/>*/}
 
           {permissions?.relocationTasksCreate && (
             <Link to={WarehouseRouteEnum.CreateRelocationTask}>
@@ -203,12 +239,12 @@ const RelocationTaskListPage: FC = () => {
         </Space>
 
         <RelocationTaskTable
-          dataSource={extractPaginationResults(relocationTaskList)}
-          pagination={relocationTaskList?.pagination || false}
-          loading={relocationTaskListIsFetching}
-          sort={relocationTaskListParams.ordering}
-          onChange={handleChangeTable}
-          onRow={handleTableRowClick}
+          dataSource={extractPaginationResults(relocationTasks)}
+          pagination={relocationTasks?.pagination || false}
+          loading={relocationTasksIsFetching}
+          sort={relocationTasksParams.ordering}
+          onChange={onChangeTable}
+          onRow={onTableRowClick}
         />
       </Space>
 
@@ -230,8 +266,12 @@ const RelocationTaskListPage: FC = () => {
             open={filterOpened}
             values={filterValues}
             initialValues={initialFilterValues}
+            users={users}
+            usersIsLoading={usersIsFetching}
+            locations={locations}
+            locationsIsLoading={locationsIsFetching}
             onClose={debouncedToggleOpenFilter}
-            onApply={handleApplyFilter}
+            onApply={onApplyFilter}
           />
         </React.Suspense>
       )}
