@@ -1,16 +1,19 @@
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { ColumnsType, ColumnType } from 'antd/es/table'
 import isEmpty from 'lodash/isEmpty'
-import React, { FC, useEffect, useMemo, useState } from 'react'
+import React, { CSSProperties, FC, useEffect, useMemo, useState } from 'react'
 import { ResizableProps } from 'react-resizable'
 
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 
-import { localeConfig, scrollConfig } from './constants/common'
+import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
+
+import { localeConfig } from './constants/common'
 import components from './constants/components'
-import { TableStyled } from './styles'
 import { TaskTableListItem, TaskTableProps } from './types'
 import { applySortToColumn, applyWidthToColumn, getColumns } from './utils'
+
+const tableWrapperStyles: Pick<CSSProperties, 'height'> = { height: 'calc(100vh - 320px)' }
 
 const TaskTable: FC<TaskTableProps> = ({ sort, pagination, userRole, ...props }) => {
   const breakpoints = useBreakpoint()
@@ -52,20 +55,21 @@ const TaskTable: FC<TaskTableProps> = ({ sort, pagination, userRole, ...props })
     [columns, sort],
   )
 
+  const paginationParams = useMemo(
+    () => ({ ...pagination, defaultPageSize: DEFAULT_PAGE_SIZE }),
+    [pagination],
+  )
+
   return (
-    <div data-testid='task-table'>
-      <TableStyled<TaskTableListItem>
+    <div data-testid='task-table' style={tableWrapperStyles}>
+      <ParentSizedTable<TaskTableListItem>
         {...props}
         components={components}
         columns={sortedColumns}
         rowKey='id'
         showSorterTooltip={false}
         locale={localeConfig}
-        scroll={scrollConfig}
-        pagination={{
-          ...pagination,
-          defaultPageSize: DEFAULT_PAGE_SIZE,
-        }}
+        pagination={paginationParams}
       />
     </div>
   )
