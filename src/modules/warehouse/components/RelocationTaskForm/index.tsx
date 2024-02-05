@@ -1,16 +1,20 @@
-import { Col, Form, Input, Row, Select } from 'antd'
+import { Col, Form, Input, Row, Select, Typography, Upload } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
+import { renderUploadedFile } from 'modules/attachment/utils'
 import { userListSelectFieldNames } from 'modules/user/constants'
 import { relocationTaskTypeOptions } from 'modules/warehouse/constants/relocationTask'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
+import UploadButton from 'components/Buttons/UploadButton'
 import DatePicker from 'components/DatePicker'
+import Space from 'components/Space'
 import TimePicker from 'components/TimePicker'
 
+import { filesFormItemProps } from 'shared/constants/form'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -21,9 +25,16 @@ import { makeLocationOptions } from './utils'
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 
 const { TextArea } = Input
+const { Text } = Typography
 
 const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   isLoading,
+
+  onUploadImage,
+  imageIsUploading,
+  onDeleteImage,
+  imageIsDeleting,
+  imagesIsLoading,
 
   userList,
   userListIsLoading,
@@ -58,7 +69,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
 
   return (
     <Row data-testid='relocation-task-form' gutter={90}>
-      <Col span={6}>
+      <Col span={8}>
         <Form.Item
           data-testid='type-form-item'
           label='Тип заявки'
@@ -116,7 +127,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         </Form.Item>
       </Col>
 
-      <Col span={6}>
+      <Col span={8}>
         <Form.Item data-testid='deadline-at-form-item' label='Срок выполнения'>
           <Row justify='space-between'>
             <Col span={15}>
@@ -167,6 +178,30 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         >
           <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
         </Form.Item>
+      </Col>
+
+      <Col span={8}>
+        <Space direction='vertical'>
+          <Text type='secondary'>Общие фотографии к перемещению (до 10 штук)</Text>
+
+          <Form.Item name='images' {...filesFormItemProps}>
+            <Upload
+              multiple
+              listType='picture'
+              customRequest={onUploadImage}
+              onRemove={onDeleteImage}
+              itemRender={renderUploadedFile}
+              disabled={isLoading || imageIsUploading || imageIsDeleting || imagesIsLoading}
+              maxCount={10}
+            >
+              <UploadButton
+                label='Добавить фото'
+                loading={imagesIsLoading}
+                disabled={isLoading || imageIsUploading || imageIsDeleting}
+              />
+            </Upload>
+          </Form.Item>
+        </Space>
       </Col>
     </Row>
   )

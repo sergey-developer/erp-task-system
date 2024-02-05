@@ -39,6 +39,7 @@ import {
   useCreateRelocationTaskAttachment,
   useGetRelocationEquipmentList,
   useGetRelocationTask,
+  useGetRelocationTaskAttachments,
   useLazyGetRelocationTaskWaybillM15,
   useRelocationTaskStatus,
 } from 'modules/warehouse/hooks/relocationTask'
@@ -126,17 +127,26 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     { setTrue: openEquipmentImagesModal, setFalse: closeEquipmentImagesModal },
   ] = useBoolean()
 
-  const handleOpenEquipmentImagesModal: RelocationEquipmentTableProps['onClickImages'] =
-    useDebounceFn((event, equipment) => {
+  const onOpenEquipmentImagesModal: RelocationEquipmentTableProps['onClickImages'] = useDebounceFn(
+    (event, equipment) => {
       event.stopPropagation()
       openEquipmentImagesModal()
       setActiveEquipmentRow(equipment)
-    })
+    },
+  )
 
-  const handleCloseEquipmentImagesModal = useDebounceFn(() => {
+  const onCloseEquipmentImagesModal = useDebounceFn(() => {
     closeEquipmentImagesModal()
     setActiveEquipmentRow(undefined)
   })
+
+  const [
+    relocationTaskAttachmentsModalOpened,
+    { setTrue: openRelocationTaskAttachmentsModal, setFalse: closeRelocationTaskAttachmentsModal },
+  ] = useBoolean()
+
+  const onOpenRelocationTaskAttachmentsModal = useDebounceFn(openRelocationTaskAttachmentsModal)
+  const onCloseRelocationTaskAttachmentsModal = useDebounceFn(closeRelocationTaskAttachmentsModal)
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
     useGetRelocationTask({ relocationTaskId })
@@ -150,6 +160,14 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   } = useGetRelocationEquipmentAttachmentList(
     { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
     { skip: !equipmentImagesModalOpened || !activeEquipmentRow },
+  )
+
+  const {
+    currentData: relocationTaskAttachments = [],
+    isFetching: relocationTaskAttachmentsIsFetching,
+  } = useGetRelocationTaskAttachments(
+    { relocationTaskId },
+    { skip: !relocationTaskAttachmentsModalOpened },
   )
 
   const [getWaybillM15, { isFetching: getWaybillM15IsFetching }] =
@@ -528,6 +546,10 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                       </Space>
                     </Col>
                   </Row>
+
+                  <Button onClick={onOpenRelocationTaskAttachmentsModal}>
+                    Посмотреть общие фото
+                  </Button>
                 </Space>
               )}
             </LoadingArea>
@@ -540,7 +562,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
               <RelocationEquipmentTable
                 dataSource={relocationEquipments}
                 loading={relocationEquipmentsIsFetching}
-                onClickImages={handleOpenEquipmentImagesModal}
+                onClickImages={onOpenEquipmentImagesModal}
               />
             </Space>
           </Col>
@@ -624,7 +646,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
           fallback={
             <ModalFallback
               open
-              onCancel={handleCloseEquipmentImagesModal}
+              onCancel={onCloseEquipmentImagesModal}
               tip='Загрузка модалки изображений оборудования'
             />
           }
@@ -633,8 +655,28 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             open={equipmentImagesModalOpened}
             title='Изображения оборудования'
             data={relocationEquipmentAttachmentList}
-            onCancel={handleCloseEquipmentImagesModal}
+            onCancel={onCloseEquipmentImagesModal}
             isLoading={relocationEquipmentAttachmentListIsFetching}
+          />
+        </React.Suspense>
+      )}
+
+      {relocationTaskAttachmentsModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={onCloseRelocationTaskAttachmentsModal}
+              tip='Загрузка модалки общих фотографий к перемещению'
+            />
+          }
+        >
+          <AttachmentListModal
+            open={relocationTaskAttachmentsModalOpened}
+            title='Общие фотографии к перемещению'
+            data={relocationTaskAttachments}
+            onCancel={onCloseRelocationTaskAttachmentsModal}
+            isLoading={relocationTaskAttachmentsIsFetching}
           />
         </React.Suspense>
       )}

@@ -22,6 +22,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { useAuthUser } from 'modules/auth/hooks'
+import { renderUploadedFile } from 'modules/attachment/utils'
 import { getCompleteAt } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
@@ -41,9 +42,9 @@ import {
   useCreateEquipments,
   useGetEquipmentCatalogList,
   useGetEquipmentCategoryList,
-  useGetEquipmentListTemplate,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
+  useLazyGetEquipmentListTemplate,
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useCreateRelocationTaskITSM } from 'modules/warehouse/hooks/relocationTask'
@@ -52,12 +53,14 @@ import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { SimplifiedRelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
+import UploadButton from 'components/Buttons/UploadButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
 import { CANCEL_TEXT, CREATE_TEXT } from 'shared/constants/common'
+import { filesFormItemProps } from 'shared/constants/form'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { useGetCurrencyList } from 'shared/hooks/currency'
@@ -315,7 +318,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   ] = useImportEquipmentsByFile()
 
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
-    useGetEquipmentListTemplate()
+    useLazyGetEquipmentListTemplate()
 
   const onCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
@@ -328,6 +331,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     options,
   ) => {
     await createAttachment({ type: AttachmentTypeEnum.RelocationEquipmentImage }, options)
+  }
+
+  const handleCreateCommonRelocationEquipmentImage: NonNullable<
+    UploadProps['customRequest']
+  > = async (options) => {
+    await createAttachment({ type: AttachmentTypeEnum.RelocationTaskImage }, options)
   }
 
   const onCreateTask = async (values: SimplifiedRelocationTaskFormFields) => {
@@ -345,6 +354,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           attachments: eqp.attachments?.length
             ? extractIdsFromFilesResponse(eqp.attachments)
             : undefined,
+          images: values.equipmentsToShopImages?.length
+            ? extractIdsFromFilesResponse(values.equipmentsToShopImages)
+            : undefined,
         })),
         equipmentsToWarehouse: values.equipmentsToWarehouse?.map((eqp) => ({
           id: eqp.id,
@@ -352,6 +364,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           condition: eqp.condition,
           attachments: eqp.attachments?.length
             ? extractIdsFromFilesResponse(eqp.attachments)
+            : undefined,
+          images: values.equipmentsToWarehouseImages?.length
+            ? extractIdsFromFilesResponse(values.equipmentsToWarehouseImages)
             : undefined,
         })),
       }).unwrap()
@@ -471,9 +486,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
       form.setFieldValue('equipmentsToWarehouseByFile', equipmentsByFile)
       openCreateEquipmentsByFileModal()
-    } catch (error) {
-      console.error(error)
-    }
+    } catch {}
   }
 
   const createEquipments = useDebounceFn<CreateEquipmentsByFileModalProps['onCreate']>(async () => {
@@ -741,6 +754,33 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 equipmentCatalogListIsLoading={equipmentCatalogListFromWarehouseIsFetching}
                 onClickCreateImage={onOpenCreateRelocationEquipmentImagesModal}
               />
+
+              <Space direction='vertical'>
+                <Text type='secondary'>Общие фотографии к перемещению (до 10 штук)</Text>
+
+                <Form.Item name='equipmentsToShopImages' {...filesFormItemProps}>
+                  <Upload
+                    multiple
+                    listType='picture'
+                    customRequest={handleCreateCommonRelocationEquipmentImage}
+                    onRemove={deleteAttachment}
+                    itemRender={renderUploadedFile}
+                    disabled={
+                      createTaskIsLoading || createAttachmentIsLoading || deleteAttachmentIsLoading
+                    }
+                    maxCount={10}
+                  >
+                    <UploadButton
+                      label='Добавить фото'
+                      disabled={
+                        createTaskIsLoading ||
+                        createAttachmentIsLoading ||
+                        deleteAttachmentIsLoading
+                      }
+                    />
+                  </Upload>
+                </Form.Item>
+              </Space>
             </Space>
           </Col>
 
@@ -798,6 +838,27 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 onClickCreateEquipment={onOpenCreateEquipmentModal}
                 onClickCreateImage={onOpenCreateRelocationEquipmentImagesModal}
               />
+
+              <Form.Item name='equipmentsToWarehouseImages' {...filesFormItemProps}>
+                <Upload
+                  multiple
+                  listType='picture'
+                  customRequest={handleCreateCommonRelocationEquipmentImage}
+                  onRemove={deleteAttachment}
+                  itemRender={renderUploadedFile}
+                  disabled={
+                    createTaskIsLoading || createAttachmentIsLoading || deleteAttachmentIsLoading
+                  }
+                  maxCount={10}
+                >
+                  <UploadButton
+                    label='Добавить фото'
+                    disabled={
+                      createTaskIsLoading || createAttachmentIsLoading || deleteAttachmentIsLoading
+                    }
+                  />
+                </Upload>
+              </Form.Item>
             </Space>
           </Col>
 

@@ -1,17 +1,15 @@
 import { FC } from 'react'
 
-import { AttachmentListModel } from 'modules/attachment/models'
-
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
 import AttachmentList from '../AttachmentList'
+import { AttachmentListProps } from '../AttachmentList/types'
 
 export type AttachmentListModalProps = Required<
   Pick<BaseModalProps, 'open' | 'title' | 'onCancel'>
 > &
-  Pick<BaseModalProps, 'isLoading'> & {
-    data: AttachmentListModel
-  }
+  Pick<BaseModalProps, 'isLoading'> &
+  Pick<AttachmentListProps, 'data'>
 
 const AttachmentListModal: FC<AttachmentListModalProps> = ({ data, ...props }) => {
   return (
