@@ -23,11 +23,12 @@ import {
   mockGetRelocationTaskListSuccess,
   mockGetRelocationTaskSuccess,
   mockGetUserListSuccess,
-  mockGetWarehouseMySuccess,
+  mockGetWarehouseMSISuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
+  fakeId,
   fakeWord,
   getStoreWithAuth,
   notificationTestUtils,
@@ -130,7 +131,7 @@ describe('Вкладка списка заявок на перемещение',
       mockGetCurrencyListSuccess()
       mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
-      mockGetWarehouseMySuccess()
+      mockGetWarehouseMSISuccess(fakeId())
 
       const { user } = renderInRoute_latest(
         [

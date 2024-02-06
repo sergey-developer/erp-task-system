@@ -7,13 +7,15 @@ import {
   GetUserMeCodeSuccessResponse,
   GetUserMeQueryArgs,
   GetUserMeSuccessResponse,
+  GetWarehouseMSIQueryArgs,
+  GetWarehouseMSISuccessResponse,
   UpdateUserStatusMutationArgs,
   UpdateUserStatusSuccessResponse,
   UpdateUserTimeZoneMutationArgs,
   UpdateUserTimeZoneSuccessResponse,
   UserModel,
 } from 'modules/user/models'
-import { updateUserStatusUrl, updateUserUrl } from 'modules/user/utils'
+import { getWarehouseMSIUrl, updateUserStatusUrl, updateUserUrl } from 'modules/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
@@ -90,6 +92,13 @@ const userApiService = baseApiService.injectEndpoints({
         },
       },
     ),
+    getWarehouseMSI: build.query<GetWarehouseMSISuccessResponse, GetWarehouseMSIQueryArgs>({
+      query: ({ userId, ...params }) => ({
+        url: getWarehouseMSIUrl(userId),
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
@@ -100,5 +109,6 @@ export const {
   useGetUserListQuery,
   useUpdateUserTimeZoneMutation,
   useUpdateUserStatusMutation,
+  useGetWarehouseMSIQuery,
   endpoints,
 } = userApiService

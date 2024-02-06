@@ -1,8 +1,8 @@
-import { UserStatusModel } from 'shared/models/catalogs/userStatus'
-import { IdType } from 'shared/types/common'
+import { BaseUserRequestArgs } from 'modules/user/types'
 
-export type UpdateUserStatusMutationArgs = {
-  userId: IdType
+import { UserStatusModel } from 'shared/models/catalogs/userStatus'
+
+export type UpdateUserStatusMutationArgs = BaseUserRequestArgs & {
   status: number
 }
 

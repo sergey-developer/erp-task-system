@@ -1,16 +1,9 @@
 import { Image, Space, Typography } from 'antd'
 import { FC } from 'react'
 
-import { AttachmentListModel } from 'modules/attachment/models'
+import { AttachmentListProps } from './types'
 
 const { Text } = Typography
-
-export type AttachmentListProps = {
-  data: AttachmentListModel
-
-  imgWidth?: number
-  imgHeight?: number
-}
 
 const AttachmentList: FC<AttachmentListProps> = ({
   data,
@@ -21,10 +14,11 @@ const AttachmentList: FC<AttachmentListProps> = ({
   return (
     <Space {...props} wrap>
       {data.length ? (
-        data.map((item) => (
+        data.map((item, index) => (
           <Image
-            key={item.id}
-            src={item.thumbnails.mediumThumbnail}
+            key={index}
+            alt={item.name}
+            src={item.thumbnails?.mediumThumbnail}
             preview={{ src: item.url, movable: false }}
             width={imgWidth}
             height={imgHeight}

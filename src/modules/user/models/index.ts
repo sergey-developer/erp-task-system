@@ -12,3 +12,5 @@ export * from './updateUser.model'
 export * from './updateUserTimeZone.model'
 
 export * from './updateUserStatus.model'
+
+export * from './getWarehouseMSI.model'

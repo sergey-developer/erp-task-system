@@ -1,3 +1,6 @@
+import { Moment } from 'moment-timezone'
+
+import { UserListModel } from 'modules/user/models'
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
@@ -5,14 +8,30 @@ import {
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
+import { LocationListModel } from 'shared/models/catalogs/location'
+import { IdType } from 'shared/types/common'
+
 export type RelocationTaskListFilterFormFields = Partial<{
   status: RelocationTaskStatusEnum[]
   type: RelocationTaskTypeEnum[]
+  deadlineAt: Moment[]
+  locationsFrom: IdType[]
+  locationsTo: IdType[]
+  executor: IdType
+  controller: IdType
+  createdBy: IdType
+  createdAt: Moment[]
 }>
 
 export type RelocationTaskListFilterProps = Pick<DrawerFilterProps, 'open' | 'onClose'> & {
   values?: RelocationTaskListFilterFormFields
   initialValues: RelocationTaskListFilterFormFields
+
+  users: UserListModel
+  usersIsLoading: boolean
+
+  locations: LocationListModel
+  locationsIsLoading: boolean
 
   onApply: (values: RelocationTaskListFilterFormFields) => void
 }

@@ -9,14 +9,10 @@ type UseUserRoleResult = ReturnType<typeof getUserRoleMap> & {
 }
 
 export const useUserRole = (): UseUserRoleResult => {
-  const user = useAuthUser()
+  const authUser = useAuthUser()
 
   return useMemo(() => {
-    const role = user?.role
-
-    return {
-      role,
-      ...getUserRoleMap(role),
-    }
-  }, [user?.role])
+    const role = authUser?.role
+    return { role, ...getUserRoleMap(role) }
+  }, [authUser?.role])
 }

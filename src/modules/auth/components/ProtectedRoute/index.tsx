@@ -9,9 +9,7 @@ import { useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
 
 import { CommonLocationState } from 'shared/types/common'
-
-const getFromUrl = (location: ReturnType<typeof useLocation>): string =>
-  location.search ? `${location.pathname}${location.search}` : location.pathname
+import { getUrlByLocation } from 'shared/utils/url'
 
 type ProtectedRouteProps = {
   component: ReactElement
@@ -27,7 +25,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
   redirectPath,
 }) => {
   const location = useLocation()
-  const navigationState: CommonLocationState = { from: getFromUrl(location) }
+  const navigationState: CommonLocationState = { from: getUrlByLocation(location) }
 
   const isLoggedIn = useIsLoggedIn()
   const { data: user } = useUserMeState()

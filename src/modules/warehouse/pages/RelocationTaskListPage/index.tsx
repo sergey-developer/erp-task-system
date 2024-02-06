@@ -4,7 +4,9 @@ import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
-import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
+import { useGetTask, useGetTasks } from 'modules/task/hooks/task'
+import { GetTaskListQueryArgs } from 'modules/task/models'
+import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
 import {
@@ -15,23 +17,34 @@ import {
 import { RelocationTaskTableProps } from 'modules/warehouse/components/RelocationTaskTable/types'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { useGetRelocationTaskList } from 'modules/warehouse/hooks/relocationTask'
+import {
+  useGetRelocationTaskList,
+  useNavigateToCreateRelocationTaskSimplifiedPage,
+} from 'modules/warehouse/hooks/relocationTask'
 import { GetRelocationTaskListQueryArgs } from 'modules/warehouse/models'
-import { relocationTaskListFilterToParams } from 'modules/warehouse/utils/relocationTask'
+import {
+  getRelocationTasksPageLink,
+  relocationTaskListFilterToParams,
+} from 'modules/warehouse/utils/relocationTask'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
+import { useGetLocationList } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
 import {
   calculatePaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
-import { MaybeUndefined } from 'shared/types/utils'
+
+const CreateRelocationTaskByIncidentModal = React.lazy(
+  () => import('modules/warehouse/components/CreateRelocationTaskByIncidentModal'),
+)
 
 const RelocationTaskListFilter = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskListFilter'),
@@ -41,21 +54,29 @@ const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
 )
 
-const initialFilterValues: Pick<RelocationTaskListFilterFormFields, 'status'> = {
-  status: [
-    RelocationTaskStatusEnum.New,
-    RelocationTaskStatusEnum.Completed,
-    RelocationTaskStatusEnum.Returned,
-  ],
+const initialFilterValues: RelocationTaskListFilterFormFields = {
+  status: undefined,
+  type: undefined,
+  deadlineAt: undefined,
+  locationsFrom: undefined,
+  locationsTo: undefined,
+  controller: undefined,
+  executor: undefined,
+  createdBy: undefined,
+  createdAt: undefined,
 }
 
-const initialRelocationTaskListParams: Pick<
+const initialRelocationTasksParams: Pick<
   GetRelocationTaskListQueryArgs,
   'statuses' | 'ordering' | 'offset' | 'limit'
 > = {
   ...getInitialPaginationParams(),
-  ordering: 'deadline_at',
-  statuses: initialFilterValues.status,
+  ordering: '-deadline_at',
+  statuses: [
+    RelocationTaskStatusEnum.New,
+    RelocationTaskStatusEnum.Completed,
+    RelocationTaskStatusEnum.Returned,
+  ],
 }
 
 const RelocationTaskListPage: FC = () => {
@@ -63,57 +84,116 @@ const RelocationTaskListPage: FC = () => {
   const [searchParams] = useSearchParams()
   const relocationTaskId = Number(searchParams.get('viewRelocationTask')) || undefined
 
+  const permissions = useMatchUserPermissions(['RELOCATION_TASKS_CREATE'])
+
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
   const [filterValues, setFilterValues] = useState<RelocationTaskListFilterFormFields>()
 
+  /* Реализуется в другом эпике */
+  // const [searchValue, setSearchValue] = useState<string>()
+
   const [selectedRelocationTaskId, setSelectedRelocationTaskId] =
     useState<MaybeUndefined<IdType>>(relocationTaskId)
+
+  const [incidentSearchValue, setIncidentSearchValue] = useState('')
+  const [selectedIncidentId, setSelectedIncidentId] = useState<IdType>()
+
+  const [tasksParams, setTasksParams] = useSetState<
+    Pick<GetTaskListQueryArgs, 'limit' | 'search' | 'sort'>
+  >({ limit: 10, sort: 'created_at' })
+
+  const debouncedSetTasksParams = useDebounceFn(setTasksParams, [], 500)
+
+  const onChangeIncidentSearchValue = (value: string) => {
+    setIncidentSearchValue(value)
+    if (value.length >= 5) {
+      debouncedSetTasksParams({ search: value })
+    }
+  }
+
+  const [
+    createRelocationTaskByIncidentModalOpened,
+    {
+      setTrue: openCreateRelocationTaskByIncidentModal,
+      setFalse: closeCreateRelocationTaskByIncidentModal,
+    },
+  ] = useBoolean(false)
+
+  const onOpenCreateRelocationTaskByIncidentModal = useDebounceFn(
+    openCreateRelocationTaskByIncidentModal,
+  )
+
+  const onCloseCreateRelocationTaskByIncidentModal = useDebounceFn(() => {
+    closeCreateRelocationTaskByIncidentModal()
+    setSelectedIncidentId(undefined)
+    setTasksParams({ search: undefined })
+  })
 
   const [
     relocationTaskOpened,
     { toggle: toggleOpenRelocationTask, setFalse: closeRelocationTask },
   ] = useBoolean(!!selectedRelocationTaskId)
 
-  const handleCloseRelocationTask = useDebounceFn(closeRelocationTask)
+  const onCloseRelocationTask = useDebounceFn(closeRelocationTask)
 
-  const [relocationTaskListParams, setRelocationTaskListParams] =
-    useSetState<GetRelocationTaskListQueryArgs>(initialRelocationTaskListParams)
+  const [relocationTasksParams, setRelocationTasksParams] =
+    useSetState<GetRelocationTaskListQueryArgs>({
+      ...initialRelocationTasksParams,
+      ordering:
+        (searchParams.get('ordering') as typeof initialRelocationTasksParams.ordering) ??
+        initialRelocationTasksParams.ordering,
+    })
 
-  const { currentData: relocationTaskList, isFetching: relocationTaskListIsFetching } =
-    useGetRelocationTaskList(relocationTaskListParams)
+  const { currentData: relocationTasks, isFetching: relocationTasksIsFetching } =
+    useGetRelocationTaskList(relocationTasksParams)
 
-  const handleTablePagination = useCallback(
-    (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {
-      setRelocationTaskListParams(calculatePaginationParams(pagination))
-    },
-    [setRelocationTaskListParams],
+  const { currentData: users = [], isFetching: usersIsFetching } = useGetUserList(undefined, {
+    skip: !filterOpened,
+  })
+  const { currentData: tasks, isFetching: tasksIsFetching } = useGetTasks(tasksParams, {
+    skip: !tasksParams.search,
+  })
+
+  const { currentData: task, isFetching: taskIsFetching } = useGetTask(selectedIncidentId!, {
+    skip: !selectedIncidentId,
+  })
+
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocationList(
+    undefined,
+    { skip: !filterOpened },
   )
 
-  const handleTableSort = useCallback(
+  const onTablePagination = useCallback(
+    (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {
+      setRelocationTasksParams(calculatePaginationParams(pagination))
+    },
+    [setRelocationTasksParams],
+  )
+
+  const onTableSort = useCallback(
     (sorter: Parameters<RelocationTaskTableProps['onChange']>[2]) => {
       if (sorter) {
-        const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
-
-        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
-          setRelocationTaskListParams({
-            ordering: order ? getSort(columnKey as SortableField, order) : undefined,
+        const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
+        if (field && (field as string) in sortableFieldToSortValues) {
+          setRelocationTasksParams({
+            ordering: order ? getSort(field as SortableField, order) : undefined,
           })
         }
       }
     },
-    [setRelocationTaskListParams],
+    [setRelocationTasksParams],
   )
 
-  const handleChangeTable = useCallback<RelocationTaskTableProps['onChange']>(
+  const onChangeTable = useCallback<RelocationTaskTableProps['onChange']>(
     (pagination, _, sorter) => {
-      handleTablePagination(pagination)
-      handleTableSort(sorter)
+      onTablePagination(pagination)
+      onTableSort(sorter)
     },
-    [handleTablePagination, handleTableSort],
+    [onTablePagination, onTableSort],
   )
 
-  const handleTableRowClick = useCallback<RelocationTaskTableProps['onRow']>(
+  const onTableRowClick = useCallback<RelocationTaskTableProps['onRow']>(
     (record) => ({
       onClick: debounce(() => {
         setSelectedRelocationTaskId(record.id)
@@ -123,14 +203,26 @@ const RelocationTaskListPage: FC = () => {
     [toggleOpenRelocationTask],
   )
 
-  const handleApplyFilter = (values: RelocationTaskListFilterFormFields) => {
+  const onApplyFilter = (values: RelocationTaskListFilterFormFields) => {
     setFilterValues(values)
-    setRelocationTaskListParams({
+    setRelocationTasksParams({
       ...relocationTaskListFilterToParams(values),
-      offset: initialRelocationTaskListParams.offset,
+      offset: initialRelocationTasksParams.offset,
     })
     toggleOpenFilter()
   }
+
+  const onCreateRelocationTaskByIncident = useNavigateToCreateRelocationTaskSimplifiedPage({
+    task,
+    from: getRelocationTasksPageLink({ ordering: '-created_at' }),
+  })
+
+  /* Реализуется в другом эпике */
+  // const onSearch = (value: string) =>
+  //   setRelocationTasksParams({
+  //     search: value || undefined,
+  //     offset: initialRelocationTasksParams.offset,
+  //   })
 
   return (
     <>
@@ -138,24 +230,37 @@ const RelocationTaskListPage: FC = () => {
         <Space size='middle'>
           <FilterButton onClick={debouncedToggleOpenFilter} />
 
-          <MatchUserPermissions expected={['RELOCATION_TASKS_CREATE']}>
-            {({ permissions }) =>
-              permissions.relocationTasksCreate ? (
-                <Link to={WarehouseRouteEnum.CreateRelocationTask}>
-                  <Button>Создать заявку</Button>
-                </Link>
-              ) : null
-            }
-          </MatchUserPermissions>
+          {/* Реализуется в другом эпике */}
+          {/*<Search*/}
+          {/*  allowClear*/}
+          {/*  onSearch={onSearch}*/}
+          {/*  onChange={(event) => setSearchValue(event.target.value)}*/}
+          {/*  value={searchValue}*/}
+          {/*  placeholder='Поиск по номеру'*/}
+          {/*  disabled={relocationTasksIsFetching}*/}
+          {/*/>*/}
+
+          {permissions?.relocationTasksCreate && (
+            <Link to={WarehouseRouteEnum.CreateRelocationTask}>
+              <Button>Создать заявку</Button>
+            </Link>
+          )}
+
+          <Button
+            disabled={!permissions?.relocationTasksCreate}
+            onClick={onOpenCreateRelocationTaskByIncidentModal}
+          >
+            Создать заявку на основе инцидента
+          </Button>
         </Space>
 
         <RelocationTaskTable
-          dataSource={extractPaginationResults(relocationTaskList)}
-          pagination={relocationTaskList?.pagination || false}
-          loading={relocationTaskListIsFetching}
-          sort={relocationTaskListParams.ordering}
-          onChange={handleChangeTable}
-          onRow={handleTableRowClick}
+          dataSource={extractPaginationResults(relocationTasks)}
+          pagination={relocationTasks?.pagination || false}
+          loading={relocationTasksIsFetching}
+          sort={relocationTasksParams.ordering}
+          onChange={onChangeTable}
+          onRow={onTableRowClick}
         />
       </Space>
 
@@ -165,7 +270,7 @@ const RelocationTaskListPage: FC = () => {
         >
           <RelocationTaskDetails
             open={relocationTaskOpened}
-            onClose={handleCloseRelocationTask}
+            onClose={onCloseRelocationTask}
             relocationTaskId={selectedRelocationTaskId}
           />
         </React.Suspense>
@@ -177,8 +282,31 @@ const RelocationTaskListPage: FC = () => {
             open={filterOpened}
             values={filterValues}
             initialValues={initialFilterValues}
+            users={users}
+            usersIsLoading={usersIsFetching}
+            locations={locations}
+            locationsIsLoading={locationsIsFetching}
             onClose={debouncedToggleOpenFilter}
-            onApply={handleApplyFilter}
+            onApply={onApplyFilter}
+          />
+        </React.Suspense>
+      )}
+
+      {createRelocationTaskByIncidentModalOpened && (
+        <React.Suspense
+          fallback={<ModalFallback open tip='Загрузка модалки для создания заявки по инциденту' />}
+        >
+          <CreateRelocationTaskByIncidentModal
+            open={createRelocationTaskByIncidentModalOpened}
+            onFinish={onCreateRelocationTaskByIncident}
+            onCancel={onCloseCreateRelocationTaskByIncidentModal}
+            searchValue={incidentSearchValue}
+            onSearchIncident={onChangeIncidentSearchValue}
+            onChangeIncident={setSelectedIncidentId}
+            incidents={extractPaginationResults(tasks)}
+            incidentsIsLoading={tasksIsFetching}
+            incident={task}
+            incidentIsLoading={taskIsFetching}
           />
         </React.Suspense>
       )}

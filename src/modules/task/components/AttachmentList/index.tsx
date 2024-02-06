@@ -2,17 +2,14 @@ import { Space } from 'antd'
 import React, { FC } from 'react'
 
 import UploadedAttachment from 'modules/attachment/components/UploadedAttachment'
-import { TaskAttachmentListModel } from 'modules/task/models'
 
-export type AttachmentListProps = {
-  data: TaskAttachmentListModel
-}
+import { AttachmentListProps } from './types'
 
 const AttachmentList: FC<AttachmentListProps> = ({ data }) => {
   return (
     <Space data-testid='attachment-list' direction='vertical'>
       {data.map((att, index) => (
-        <UploadedAttachment key={index} {...att} />
+        <UploadedAttachment key={att.id || index} {...att} />
       ))}
     </Space>
   )

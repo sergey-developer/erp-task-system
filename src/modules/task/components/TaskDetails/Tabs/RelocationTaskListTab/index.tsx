@@ -1,5 +1,4 @@
 import { Button, Col, Row, Typography } from 'antd'
-import pick from 'lodash/pick'
 import React, { FC, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -10,12 +9,12 @@ import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
-import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
   useCreateRelocationTaskAttachment,
   useGetRelocationTaskList,
+  useNavigateToCreateRelocationTaskSimplifiedPage,
 } from 'modules/warehouse/hooks/relocationTask'
-import { getRelocationTaskListPageLink } from 'modules/warehouse/utils/relocationTask'
+import { getRelocationTasksPageLink } from 'modules/warehouse/utils/relocationTask'
 
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
@@ -52,32 +51,20 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
 
   const relocationTaskList = extractPaginationResults(paginatedRelocationTaskList)
 
-  const handleClickTask = useCallback(
-    (id: IdType) => navigate(getRelocationTaskListPageLink(id)),
+  const onClickTask = useCallback(
+    (id: IdType) => navigate(getRelocationTasksPageLink({ viewRelocationTask: id })),
     [navigate],
   )
 
-  const handleClickCreate = () =>
-    navigate(WarehouseRouteEnum.CreateRelocationTaskSimplified, {
-      state: {
-        task: pick(
-          task,
-          'id',
-          'recordId',
-          'olaNextBreachTime',
-          'olaEstimatedTime',
-          'olaStatus',
-          'shop',
-          'assignee',
-        ),
-        from: getTaskListPageLink({
-          viewTaskId: task.id,
-          taskDetailsTab: TaskDetailsTabsEnum.RelocationTaskList,
-        }),
-      },
-    })
+  const onClickCreate = useNavigateToCreateRelocationTaskSimplifiedPage({
+    task,
+    from: getTaskListPageLink({
+      viewTaskId: task.id,
+      taskDetailsTab: TaskDetailsTabsEnum.RelocationTaskList,
+    }),
+  })
 
-  const handleCreateAttachment = useCallback<RelocationTaskListProps['onCreateAttachment']>(
+  const onCreateAttachment = useCallback<RelocationTaskListProps['onCreateAttachment']>(
     (id) => async (options) => {
       await createRelocationTaskAttachment({ relocationTaskId: id }, options)
     },
@@ -95,7 +82,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
           <Button
             type='link'
             disabled={!permissions?.relocationTasksCreate || !assigneeIsCurrentUser}
-            onClick={handleClickCreate}
+            onClick={onClickCreate}
           >
             Создать новое перемещение
           </Button>
@@ -108,8 +95,8 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
       >
         <RelocationTaskList
           data={relocationTaskList}
-          onClick={handleClickTask}
-          onCreateAttachment={handleCreateAttachment}
+          onClick={onClickTask}
+          onCreateAttachment={onCreateAttachment}
         />
       </LoadingArea>
     </Space>

@@ -3,7 +3,8 @@ import { screen, within } from '@testing-library/react'
 import attachmentFixtures from '_tests_/fixtures/attachments'
 import { render } from '_tests_/utils'
 
-import AttachmentList, { AttachmentListProps } from './index'
+import AttachmentList from './index'
+import { AttachmentListProps } from './types'
 
 const props: AttachmentListProps = {
   data: attachmentFixtures.attachmentList(),
