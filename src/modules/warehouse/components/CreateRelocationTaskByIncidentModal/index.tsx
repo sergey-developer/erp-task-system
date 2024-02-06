@@ -4,7 +4,6 @@ import { FC } from 'react'
 
 import { TaskListItemModel } from 'modules/task/models'
 import { getFullUserName } from 'modules/user/utils'
-import { useNavigateToCreateRelocationTaskSimplifiedPage } from 'modules/warehouse/hooks/relocationTask'
 
 import LoadingArea from 'components/LoadingArea'
 import BaseModal from 'components/Modals/BaseModal'
@@ -24,6 +23,8 @@ const selectStyles: SelectProps['style'] = { width: '100%' }
 const { Text } = Typography
 
 const CreateRelocationTaskByIncidentModal: FC<CreateRelocationTaskByIncidentModalProps> = ({
+  onFinish,
+
   searchValue,
   onSearchIncident,
   onChangeIncident,
@@ -38,8 +39,6 @@ const CreateRelocationTaskByIncidentModal: FC<CreateRelocationTaskByIncidentModa
 }) => {
   const [form] = useForm<CreateRelocationTaskByIncidentFormFields>()
 
-  const goToCreationPage = useNavigateToCreateRelocationTaskSimplifiedPage({ task: incident })
-
   return (
     <BaseModal
       {...props}
@@ -52,7 +51,7 @@ const CreateRelocationTaskByIncidentModal: FC<CreateRelocationTaskByIncidentModa
         <Form<CreateRelocationTaskByIncidentFormFields>
           form={form}
           layout='vertical'
-          onFinish={goToCreationPage}
+          onFinish={onFinish}
         >
           <Form.Item name='incident' label='Инцидент' rules={onlyRequiredRules}>
             <Select<TaskListItemModel['id'], TaskListItemModel>

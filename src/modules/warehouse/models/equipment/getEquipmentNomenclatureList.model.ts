@@ -8,7 +8,7 @@ import { PaginationParams } from 'shared/types/pagination'
 
 export type GetEquipmentNomenclatureListQueryArgs = PaginationParams &
   EquipmentFilterParams &
-  Partial<FilterParams> & {
+  FilterParams & {
     locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter]
   }
 

@@ -22,8 +22,8 @@ export type GetEquipmentListSortKey =
 export type GetEquipmentListSortValue = ExtendSortKey<GetEquipmentListSortKey>
 
 export type GetEquipmentListQueryArgs = PaginationParams &
-  EquipmentFilterParams &
-  Partial<FilterParams & {
+  EquipmentFilterParams & FilterParams &
+  Partial<{
     nomenclature: IdType
     ordering: GetEquipmentListSortValue
   }> & {

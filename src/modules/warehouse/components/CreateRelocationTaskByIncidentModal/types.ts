@@ -4,7 +4,11 @@ import { TaskListItemModel, TaskListModel, TaskModel } from 'modules/task/models
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { EmptyFn } from 'shared/types/utils'
+
 export type CreateRelocationTaskByIncidentModalProps = BaseModalProps & {
+  onFinish: EmptyFn
+
   incident?: Pick<
     TaskModel,
     | 'id'

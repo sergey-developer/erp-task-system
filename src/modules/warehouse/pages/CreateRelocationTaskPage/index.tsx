@@ -50,7 +50,7 @@ import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import {
   checkRelocationTaskTypeIsWriteOff,
-  getRelocationTaskListPageLink,
+  getRelocationTasksPageLink,
 } from 'modules/warehouse/utils/relocationTask'
 
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -366,7 +366,10 @@ const CreateRelocationTaskPage: FC = () => {
       }).unwrap()
 
       const fromPath = location.state?.from
-      fromPath ? navigate(fromPath) : navigate(getRelocationTaskListPageLink(createdTask.id))
+
+      fromPath
+        ? navigate(fromPath)
+        : navigate(getRelocationTasksPageLink({ viewRelocationTask: createdTask.id }))
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))
