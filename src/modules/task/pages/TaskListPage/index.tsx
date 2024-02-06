@@ -283,7 +283,7 @@ const TaskListPage: FC = () => {
 
   const onTableRow = useCallback<TaskTableProps['onRow']>(
     (record) => ({
-      onClick: debounce(() => setSelectedTaskId(record.id), DEFAULT_DEBOUNCE_VALUE),
+      onMouseUp: debounce(() => setSelectedTaskId(record.id), DEFAULT_DEBOUNCE_VALUE),
       ...(record.isBoundary && { style: tableItemBoundaryStyles }),
     }),
     [],
