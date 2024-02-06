@@ -17,9 +17,15 @@ import {
 import { RelocationTaskTableProps } from 'modules/warehouse/components/RelocationTaskTable/types'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { useGetRelocationTaskList } from 'modules/warehouse/hooks/relocationTask'
+import {
+  useGetRelocationTaskList,
+  useNavigateToCreateRelocationTaskSimplifiedPage,
+} from 'modules/warehouse/hooks/relocationTask'
 import { GetRelocationTaskListQueryArgs } from 'modules/warehouse/models'
-import { relocationTaskListFilterToParams } from 'modules/warehouse/utils/relocationTask'
+import {
+  getRelocationTasksPageLink,
+  relocationTaskListFilterToParams,
+} from 'modules/warehouse/utils/relocationTask'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -132,7 +138,12 @@ const RelocationTaskListPage: FC = () => {
   const onCloseRelocationTask = useDebounceFn(closeRelocationTask)
 
   const [relocationTasksParams, setRelocationTasksParams] =
-    useSetState<GetRelocationTaskListQueryArgs>(initialRelocationTasksParams)
+    useSetState<GetRelocationTaskListQueryArgs>({
+      ...initialRelocationTasksParams,
+      ordering:
+        (searchParams.get('ordering') as typeof initialRelocationTasksParams.ordering) ??
+        initialRelocationTasksParams.ordering,
+    })
 
   const { currentData: relocationTasks, isFetching: relocationTasksIsFetching } =
     useGetRelocationTaskList(relocationTasksParams)
@@ -200,6 +211,11 @@ const RelocationTaskListPage: FC = () => {
     })
     toggleOpenFilter()
   }
+
+  const onCreateRelocationTaskByIncident = useNavigateToCreateRelocationTaskSimplifiedPage({
+    task,
+    from: getRelocationTasksPageLink({ ordering: '-created_at' }),
+  })
 
   /* Реализуется в другом эпике */
   // const onSearch = (value: string) =>
@@ -282,6 +298,7 @@ const RelocationTaskListPage: FC = () => {
         >
           <CreateRelocationTaskByIncidentModal
             open={createRelocationTaskByIncidentModalOpened}
+            onFinish={onCreateRelocationTaskByIncident}
             onCancel={onCloseCreateRelocationTaskByIncidentModal}
             searchValue={incidentSearchValue}
             onSearchIncident={onChangeIncidentSearchValue}
