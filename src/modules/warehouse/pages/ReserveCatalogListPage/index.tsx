@@ -5,12 +5,12 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 const items: CatalogListProps['items'] = [
   {
-    link: WarehouseRouteEnum.EquipmentNomenclatureList,
+    link: WarehouseRouteEnum.EquipmentNomenclatures,
     text: 'Оборудование',
     permissions: ['EQUIPMENTS_READ'],
   },
   {
-    link: WarehouseRouteEnum.RelocationTaskList,
+    link: WarehouseRouteEnum.RelocationTasks,
     text: 'Заявки на перемещение оборудования',
     permissions: ['RELOCATION_TASKS_READ'],
   },
