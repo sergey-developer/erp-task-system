@@ -6,7 +6,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 
 import { useGetTask, useGetTasks } from 'modules/task/hooks/task'
 import { GetTaskListQueryArgs } from 'modules/task/models'
-import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
 import {
@@ -137,7 +137,7 @@ const RelocationTaskListPage: FC = () => {
   const { currentData: relocationTasks, isFetching: relocationTasksIsFetching } =
     useGetRelocationTaskList(relocationTasksParams)
 
-  const { currentData: users = [], isFetching: usersIsFetching } = useGetUserList(undefined, {
+  const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers(undefined, {
     skip: !filterOpened,
   })
   const { currentData: tasks, isFetching: tasksIsFetching } = useGetTasks(tasksParams, {

@@ -4,7 +4,6 @@ import React, { FC, useMemo } from 'react'
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
 import { renderUploadedFile } from 'modules/attachment/utils'
-import { userListSelectFieldNames } from 'modules/user/constants'
 import { relocationTaskTypeOptions } from 'modules/warehouse/constants/relocationTask'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
@@ -15,6 +14,7 @@ import Space from 'components/Space'
 import TimePicker from 'components/TimePicker'
 
 import { filesFormItemProps } from 'shared/constants/form'
+import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -160,7 +160,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           rules={onlyRequiredRules}
         >
           <Select
-            fieldNames={userListSelectFieldNames}
+            fieldNames={idAndFullNameSelectFieldNames}
             loading={userListIsLoading}
             disabled={isLoading || userListIsLoading}
             options={userList}

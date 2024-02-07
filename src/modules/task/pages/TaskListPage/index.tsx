@@ -40,7 +40,7 @@ import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageS
 import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils/parseTasksFiltersStorage'
 import { taskDetailsTabExist } from 'modules/task/utils/task'
 import {
-  useGetUserList,
+  useGetUsers,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
   useUserRole,
@@ -196,7 +196,7 @@ const TaskListPage: FC = () => {
       : undefined,
   })
 
-  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
+  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUsers(
     { isManager: true },
     { skip: !extendedFilterOpened },
   )
