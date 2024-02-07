@@ -56,11 +56,11 @@ describe('Страница списка справочников запасов'
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogs,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogs], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
@@ -80,11 +80,11 @@ describe('Страница списка справочников запасов'
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogs,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogs], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
       )
 
       const link = testUtils.queryEquipmentLink()
@@ -97,7 +97,7 @@ describe('Страница списка справочников запасов'
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogs,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
           {
@@ -105,7 +105,7 @@ describe('Страница списка справочников запасов'
             element: <EquipmentNomenclatureListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogs], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
@@ -127,11 +127,11 @@ describe('Страница списка справочников запасов'
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogs,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogs], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
@@ -151,11 +151,11 @@ describe('Страница списка справочников запасов'
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogs,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogs], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
       )
 
       const link = testUtils.queryRelocationTasksLink()
@@ -168,7 +168,7 @@ describe('Страница списка справочников запасов'
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogs,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
           {
@@ -176,7 +176,7 @@ describe('Страница списка справочников запасов'
             element: <RelocationTaskListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogs], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {

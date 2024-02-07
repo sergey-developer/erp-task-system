@@ -26,9 +26,9 @@ const navMenuCommonConfig: NavMenuItem[] = [
         link: WarehouseRouteEnum.WarehouseCatalogs,
       },
       {
-        key: WarehouseRouteEnum.ReserveCatalogs,
+        key: WarehouseRouteEnum.Reserves,
         text: 'Управление запасами',
-        link: WarehouseRouteEnum.ReserveCatalogs,
+        link: WarehouseRouteEnum.Reserves,
       },
       {
         key: WarehouseRouteEnum.Reports,

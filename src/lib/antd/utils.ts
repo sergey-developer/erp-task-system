@@ -2,11 +2,11 @@ import isNumber from 'lodash/isNumber'
 
 import { AntdPaginatedList } from 'lib/antd/types'
 
-import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
+import { PaginationResponse } from 'shared/models/pagination.model'
 import { PaginationParams } from 'shared/types/pagination'
 
 export const getPaginatedList = <T>(
-  response: PaginatedListSuccessResponse<T>,
+  response: PaginationResponse<T>,
   params?: Partial<PaginationParams>,
 ): AntdPaginatedList<T> => ({
   pagination: {
