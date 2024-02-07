@@ -1,12 +1,16 @@
 import { useSetState } from 'ahooks'
 import { Button, Col, Flex, Form, Popover, Row, Select, Typography } from 'antd'
 import { useForm } from 'antd/es/form/Form'
+import omit from 'lodash/omit'
 import React, { FC, useCallback } from 'react'
 
 import { useAuthUser } from 'modules/auth/hooks'
 import EmployeesActionsReportTable from 'modules/reports/components/EmployeesActionsReportTable'
 import { EmployeesActionsReportTableProps } from 'modules/reports/components/EmployeesActionsReportTable/types'
-import { useGetEmployeesActionsReport } from 'modules/reports/hooks'
+import {
+  useGetEmployeesActionsReport,
+  useLazyGetEmployeesActionsReportXlsx,
+} from 'modules/reports/hooks'
 import { GetEmployeesActionsReportQueryArgs } from 'modules/reports/models'
 import { useGetUsers } from 'modules/user/hooks'
 import { UserListItemModel } from 'modules/user/models'
@@ -17,7 +21,7 @@ import Space from 'components/Space'
 
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
-import { filterOptionBy } from 'shared/utils/common'
+import { clickDownloadLink, filterOptionBy } from 'shared/utils/common'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -25,6 +29,7 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
+import { MimetypeEnum } from '../../../../shared/constants/mimetype'
 import { FormFields } from './types'
 
 const { RangePicker } = DatePicker
@@ -60,6 +65,9 @@ const EmployeesActionsReportPage: FC = () => {
     { skip: !employeeSelected },
   )
 
+  const [getReportXlsx, { isFetching: getReportXlsxIsFetching }] =
+    useLazyGetEmployeesActionsReportXlsx()
+
   const { currentData: users, isFetching: usersIsFetching } = useGetUsers(
     { manager: authUser?.id!, allHierarchySubordinates: true },
     { skip: !authUser?.id },
@@ -72,6 +80,13 @@ const EmployeesActionsReportPage: FC = () => {
       actionTo: values.period?.[1].toISOString(),
       offset: initialPaginationParams.offset,
     })
+  }
+
+  const onExportExcel = async () => {
+    try {
+      const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
+      clickDownloadLink(report, MimetypeEnum.Xlsx, 'Отчет по действиям сотрудника')
+    } catch {}
   }
 
   const onTablePagination = useCallback(
@@ -133,8 +148,12 @@ const EmployeesActionsReportPage: FC = () => {
 
       {employeeSelected && (
         <Col span={24}>
-          <Flex vertical>
+          <Space $block direction='vertical' size='middle'>
             <Title level={5}>Действия сотрудников</Title>
+
+            <Button onClick={onExportExcel} loading={getReportXlsxIsFetching}>
+              Выгрузить в Excel
+            </Button>
 
             <EmployeesActionsReportTable
               dataSource={extractPaginationResults(report)}
@@ -142,7 +161,7 @@ const EmployeesActionsReportPage: FC = () => {
               loading={reportIsFetching}
               onChange={onChangeTable}
             />
-          </Flex>
+          </Space>
         </Col>
       )}
     </Row>
