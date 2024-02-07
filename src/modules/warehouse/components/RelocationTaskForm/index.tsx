@@ -177,7 +177,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           rules={onlyRequiredRules}
         >
           <Select
-            fieldNames={userListSelectFieldNames}
+            fieldNames={idAndFullNameSelectFieldNames}
             loading={userListIsLoading}
             disabled={isLoading || userListIsLoading}
             options={userList}
