@@ -38,11 +38,11 @@ describe('Страница списка складов', () => {
     renderInRoute_latest(
       [
         {
-          path: WarehouseRouteEnum.WarehouseList,
+          path: WarehouseRouteEnum.Warehouses,
           element: <WarehouseListPage />,
         },
       ],
-      { initialEntries: [WarehouseRouteEnum.WarehouseList] },
+      { initialEntries: [WarehouseRouteEnum.Warehouses] },
     )
 
     await warehouseTableTestUtils.expectLoadingFinished()
@@ -60,11 +60,11 @@ describe('Страница списка складов', () => {
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.WarehouseList,
+            path: WarehouseRouteEnum.Warehouses,
             element: <WarehouseListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.WarehouseList] },
+        { initialEntries: [WarehouseRouteEnum.Warehouses] },
       )
 
       await warehouseTableTestUtils.expectLoadingFinished()
@@ -82,11 +82,11 @@ describe('Страница списка складов', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.WarehouseList,
+            path: WarehouseRouteEnum.Warehouses,
             element: <WarehouseListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.WarehouseList] },
+        { initialEntries: [WarehouseRouteEnum.Warehouses] },
       )
 
       await warehouseTableTestUtils.expectLoadingFinished()

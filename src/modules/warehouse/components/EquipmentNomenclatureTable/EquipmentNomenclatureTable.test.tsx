@@ -84,11 +84,11 @@ describe('Таблица номенклатуры оборудования', () 
     renderInRoute_latest(
       [
         {
-          path: WarehouseRouteEnum.EquipmentNomenclatureList,
+          path: WarehouseRouteEnum.EquipmentNomenclatures,
           element: <EquipmentNomenclatureTable {...props} />,
         },
       ],
-      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
     )
 
     const table = testUtils.getContainer()
@@ -108,11 +108,11 @@ describe('Таблица номенклатуры оборудования', () 
     const { user } = renderInRoute_latest(
       [
         {
-          path: WarehouseRouteEnum.EquipmentNomenclatureList,
+          path: WarehouseRouteEnum.EquipmentNomenclatures,
           element: <EquipmentNomenclatureTable {...props} dataSource={equipmentNomenclatureList} />,
         },
       ],
-      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
     )
 
     const table = testUtils.getContainer()
@@ -136,11 +136,11 @@ describe('Таблица номенклатуры оборудования', () 
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclatureTable {...props} />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
       const title = testUtils.getColTitle('Наименование')
@@ -166,15 +166,15 @@ describe('Таблица номенклатуры оборудования', () 
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclatureTable {...props} />,
           },
           {
-            path: WarehouseRouteEnum.EquipmentList,
+            path: WarehouseRouteEnum.Equipments,
             element: <EquipmentListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
       await testUtils.clickTitleLink(
@@ -193,11 +193,11 @@ describe('Таблица номенклатуры оборудования', () 
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclatureTable {...props} />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
       const title = testUtils.getColTitle('Количество оборудования')

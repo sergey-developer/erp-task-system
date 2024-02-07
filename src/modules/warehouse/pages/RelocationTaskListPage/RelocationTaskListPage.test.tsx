@@ -344,7 +344,7 @@ describe('Страница списка заявок на перемещение
         const { user } = renderInRoute_latest(
           [
             {
-              path: WarehouseRouteEnum.RelocationTaskList,
+              path: WarehouseRouteEnum.RelocationTasks,
               element: <RelocationTaskListPage />,
             },
             {
@@ -352,7 +352,7 @@ describe('Страница списка заявок на перемещение
               element: <CreateRelocationTaskPage />,
             },
           ],
-          { initialEntries: [WarehouseRouteEnum.RelocationTaskList], initialIndex: 0 },
+          { initialEntries: [WarehouseRouteEnum.RelocationTasks], initialIndex: 0 },
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {

@@ -74,5 +74,5 @@ export const taskDetailsTabNameDict: Readonly<StringMap<TaskDetailsTabsEnum>> = 
   [TaskDetailsTabsEnum.Resolution]: 'Решение',
   [TaskDetailsTabsEnum.Description]: 'Описание',
   [TaskDetailsTabsEnum.Journal]: 'Журнал',
-  [TaskDetailsTabsEnum.RelocationTaskList]: 'Перемещения',
+  [TaskDetailsTabsEnum.RelocationTasks]: 'Перемещения',
 }

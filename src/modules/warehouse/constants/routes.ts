@@ -1,17 +1,18 @@
 export enum WarehouseRouteEnum {
   ManageWarehouses = '/home/manage-warehouses',
-  WarehouseCatalogList = '/home/manage-warehouses/catalogs',
-  WarehouseList = '/home/manage-warehouses/catalogs/warehouses',
+
+  WarehouseCatalogs = '/home/manage-warehouses/catalogs',
+  Warehouses = '/home/manage-warehouses/catalogs/warehouses',
   Warehouse = '/home/manage-warehouses/catalogs/warehouses/:id',
+  Nomenclatures = '/home/manage-warehouses/catalogs/nomenclature',
 
-  NomenclatureList = '/home/manage-warehouses/catalogs/nomenclature',
-
-  ReserveCatalogList = '/home/manage-warehouses/reserves-catalogs',
-  EquipmentNomenclatureList = '/home/manage-warehouses/reserves-catalogs/equipment-nomenclature',
-  EquipmentList = '/home/manage-warehouses/reserves-catalogs/equipment-nomenclature/:id',
-
-  RelocationTaskList = '/home/manage-warehouses/reserves-catalogs/relocation-tasks',
+  ReserveCatalogs = '/home/manage-warehouses/reserves-catalogs',
+  EquipmentNomenclatures = '/home/manage-warehouses/reserves-catalogs/equipment-nomenclature',
+  Equipments = '/home/manage-warehouses/reserves-catalogs/equipment-nomenclature/:id',
+  RelocationTasks = '/home/manage-warehouses/reserves-catalogs/relocation-tasks',
   CreateRelocationTask = '/home/manage-warehouses/reserves-catalogs/relocation-tasks/create',
   CreateRelocationTaskSimplified = '/home/manage-warehouses/reserves-catalogs/relocation-tasks/create/simplified',
   EditRelocationTask = '/home/manage-warehouses/reserves-catalogs/relocation-tasks/:id/edit',
+
+  Reports = '/home/manage-warehouses/reports',
 }

@@ -13,5 +13,5 @@ export enum NomenclatureApiTriggerEnum {
 }
 
 export enum NomenclatureApiTagEnum {
-  NomenclatureList = 'NomenclatureList',
+  Nomenclatures = 'Nomenclatures',
 }
