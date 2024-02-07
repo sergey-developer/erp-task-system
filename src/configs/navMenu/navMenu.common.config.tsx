@@ -1,5 +1,7 @@
 import { CommonRouteEnum } from 'configs/routes'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { UserPermissions } from 'modules/user/models'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { ReadIcon, UnorderedListIcon } from 'components/Icons'
@@ -19,14 +21,21 @@ const navMenuCommonConfig: NavMenuItem[] = [
     text: 'Управление складами',
     children: [
       {
-        key: WarehouseRouteEnum.WarehouseCatalogList,
+        key: WarehouseRouteEnum.WarehouseCatalogs,
         text: 'Справочники',
-        link: WarehouseRouteEnum.WarehouseCatalogList,
+        link: WarehouseRouteEnum.WarehouseCatalogs,
       },
       {
-        key: WarehouseRouteEnum.ReserveCatalogList,
+        key: WarehouseRouteEnum.ReserveCatalogs,
         text: 'Управление запасами',
-        link: WarehouseRouteEnum.ReserveCatalogList,
+        link: WarehouseRouteEnum.ReserveCatalogs,
+      },
+      {
+        key: WarehouseRouteEnum.Reports,
+        text: 'Отчеты',
+        link: WarehouseRouteEnum.Reports,
+        shouldDisable: (permissions: UserPermissions[]) =>
+          !permissions.includes(UserPermissionsEnum.WarehouseReportsRead),
       },
     ],
   },

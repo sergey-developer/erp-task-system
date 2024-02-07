@@ -447,7 +447,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = renderInRoute_latest(
           [
             {
-              path: WarehouseRouteEnum.RelocationTaskList,
+              path: WarehouseRouteEnum.RelocationTasks,
               element: (
                 <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />
               ),
@@ -457,7 +457,7 @@ describe('Информация о заявке о перемещении', () =>
               element: <TaskListPage />,
             },
           ],
-          { initialEntries: [WarehouseRouteEnum.RelocationTaskList], initialIndex: 0 },
+          { initialEntries: [WarehouseRouteEnum.RelocationTasks], initialIndex: 0 },
         )
 
         await testUtils.expectRelocationTaskLoadingFinished()

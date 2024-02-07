@@ -912,7 +912,7 @@ const EditRelocationTaskPage: FC = () => {
             <Row justify='end' gutter={8}>
               <Col>
                 <Button>
-                  <Link to={WarehouseRouteEnum.RelocationTaskList}>Отменить</Link>
+                  <Link to={WarehouseRouteEnum.RelocationTasks}>Отменить</Link>
                 </Button>
               </Col>
 

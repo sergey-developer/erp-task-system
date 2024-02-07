@@ -65,7 +65,7 @@ export enum TaskDetailsTabsEnum {
   Resolution = 'Resolution',
   Description = 'Description',
   Journal = 'Journal',
-  RelocationTaskList = 'RelocationTaskList',
+  RelocationTasks = 'RelocationTasks',
 }
 
 export enum TaskStorageKeysEnum {

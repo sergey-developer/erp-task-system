@@ -60,7 +60,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
     task,
     from: getTaskListPageLink({
       viewTaskId: task.id,
-      taskDetailsTab: TaskDetailsTabsEnum.RelocationTaskList,
+      taskDetailsTab: TaskDetailsTabsEnum.RelocationTasks,
     }),
   })
 
