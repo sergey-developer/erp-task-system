@@ -1,9 +1,11 @@
 import { useSetState } from 'ahooks'
 import { Button, Col, Flex, Form, Popover, Row, Select, Typography } from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 
 import { useAuthUser } from 'modules/auth/hooks'
+import EmployeesActionsReportTable from 'modules/reports/components/EmployeesActionsReportTable'
+import { EmployeesActionsReportTableProps } from 'modules/reports/components/EmployeesActionsReportTable/types'
 import { useGetEmployeesActionsReport } from 'modules/reports/hooks'
 import { GetEmployeesActionsReportQueryArgs } from 'modules/reports/models'
 import { useGetUsers } from 'modules/user/hooks'
@@ -16,12 +18,17 @@ import Space from 'components/Space'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { filterOptionBy } from 'shared/utils/common'
-import { getInitialPaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  extractPaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 import { FormFields } from './types'
 
 const { RangePicker } = DatePicker
-const { Text } = Typography
+const { Text, Title } = Typography
 
 const initialPaginationParams = getInitialPaginationParams()
 
@@ -36,7 +43,7 @@ const periodHint = (
   </Space>
 )
 
-const EmployeesActionsPage: FC = () => {
+const EmployeesActionsReportPage: FC = () => {
   const authUser = useAuthUser()
 
   const [form] = useForm<FormFields>()
@@ -46,9 +53,11 @@ const EmployeesActionsPage: FC = () => {
     employeeId: 0,
   })
 
+  const employeeSelected = !!reportParams.employeeId
+
   const { currentData: report, isFetching: reportIsFetching } = useGetEmployeesActionsReport(
     reportParams,
-    { skip: !reportParams.employeeId },
+    { skip: !employeeSelected },
   )
 
   const { currentData: users, isFetching: usersIsFetching } = useGetUsers(
@@ -65,8 +74,22 @@ const EmployeesActionsPage: FC = () => {
     })
   }
 
+  const onTablePagination = useCallback(
+    (pagination: Parameters<EmployeesActionsReportTableProps['onChange']>[0]) => {
+      setReportParams(calculatePaginationParams(pagination))
+    },
+    [setReportParams],
+  )
+
+  const onChangeTable = useCallback<EmployeesActionsReportTableProps['onChange']>(
+    (pagination) => {
+      onTablePagination(pagination)
+    },
+    [onTablePagination],
+  )
+
   return (
-    <Row>
+    <Row gutter={[0, 16]}>
       <Col span={7}>
         <Form<FormFields> form={form} onFinish={onClickUpdate}>
           <Form.Item
@@ -107,8 +130,23 @@ const EmployeesActionsPage: FC = () => {
           </Row>
         </Form>
       </Col>
+
+      {employeeSelected && (
+        <Col span={24}>
+          <Flex vertical>
+            <Title level={5}>Действия сотрудников</Title>
+
+            <EmployeesActionsReportTable
+              dataSource={extractPaginationResults(report)}
+              pagination={extractPaginationParams(report)}
+              loading={reportIsFetching}
+              onChange={onChangeTable}
+            />
+          </Flex>
+        </Col>
+      )}
     </Row>
   )
 }
 
-export default EmployeesActionsPage
+export default EmployeesActionsReportPage

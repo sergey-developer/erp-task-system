@@ -52,8 +52,8 @@ const EditRelocationTaskPage = React.lazy(
 )
 
 const ReportsCatalogPage = React.lazy(() => import('modules/warehouse/pages/ReportsCatalogPage'))
-const EmployeesActionsPage = React.lazy(
-  () => import('modules/warehouse/pages/EmployeesActionsPage'),
+const EmployeesActionsReportPage = React.lazy(
+  () => import('modules/warehouse/pages/EmployeesActionsReportPage'),
 )
 
 export const route: Readonly<RouteObject> = {
@@ -262,8 +262,8 @@ export const route: Readonly<RouteObject> = {
           path: WarehouseRouteEnum.EmployeesActions,
           element: (
             <ProtectedRoute
-              component={<EmployeesActionsPage />}
-              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+              component={<EmployeesActionsReportPage />}
+              // permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
             />
           ),
           handle: {
