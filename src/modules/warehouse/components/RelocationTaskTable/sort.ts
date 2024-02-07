@@ -1,4 +1,4 @@
-import { ColumnsType } from 'antd/es/table'
+import { ColumnType } from 'antd/es/table'
 import { SortOrder } from 'antd/es/table/interface'
 import isEqual from 'lodash/isEqual'
 
@@ -8,7 +8,6 @@ import {
 } from 'modules/warehouse/models'
 
 import { SortOrderEnum } from 'shared/constants/sort'
-import { ArrayFirst } from 'shared/types/utils'
 
 import { RelocationTaskTableItem } from './types'
 
@@ -57,9 +56,9 @@ export const sortValueToSortableField = Object.keys(sortableFieldToSortValues).r
 )
 
 export const applySort = (
-  column: ArrayFirst<ColumnsType<RelocationTaskTableItem>>,
+  column: ColumnType<RelocationTaskTableItem>,
   sort: GetRelocationTaskListSortValue,
-): ArrayFirst<ColumnsType<RelocationTaskTableItem>> => {
+): ColumnType<RelocationTaskTableItem> => {
   const sorterResult = parseSort(sort)
 
   if (!isEqual(column.key, sorterResult.columnKey)) return column

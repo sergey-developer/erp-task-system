@@ -11,6 +11,7 @@ import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import {
   calculatePaginationParams,
+  extractPaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
@@ -67,7 +68,7 @@ const EquipmentNomenclatureListPage: FC = () => {
     <div data-testid='equipment-nomenclature-list-page'>
       <EquipmentNomenclatureTable
         dataSource={extractPaginationResults(equipmentNomenclatureList)}
-        pagination={equipmentNomenclatureList?.pagination || false}
+        pagination={extractPaginationParams(equipmentNomenclatureList)}
         loading={equipmentNomenclatureListIsFetching}
         onChange={handleChangeTable}
       />
