@@ -4,7 +4,7 @@ import { EmployeesActionsReportListItemModel } from 'modules/reports/models'
 
 export type EmployeesActionsReportTableItem = Pick<
   EmployeesActionsReportListItemModel,
-  'equipment' | 'relocationTask' | 'roles' | 'quantity'
+  'id' | 'equipment' | 'relocationTask' | 'roles' | 'quantity'
 >
 
 export type EmployeesActionsReportTableProps = Required<
