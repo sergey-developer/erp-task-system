@@ -89,7 +89,7 @@ const EmployeesActionsReportPage: FC = () => {
   )
 
   return (
-    <Row gutter={[0, 16]}>
+    <Row data-testid='employees-actions-report-page' gutter={[0, 16]}>
       <Col span={7}>
         <Form<FormFields> form={form} onFinish={onClickUpdate}>
           <Form.Item
