@@ -1,5 +1,4 @@
 import get from 'lodash/get'
-import isEqual from 'lodash/isEqual'
 import React from 'react'
 import { Link, Navigate, RouteObject } from 'react-router-dom'
 
@@ -173,7 +172,7 @@ export const route: Readonly<RouteObject> = {
                   component={<CreateRelocationTaskSimplifiedPage />}
                   permitted={(user, locationState) =>
                     hasPermissions(user, ['RELOCATION_TASKS_CREATE']) &&
-                    isEqual(get(locationState, 'task.assignee.id'), user.id)
+                    get(locationState, 'task.assignee')
                   }
                 />
               ),
