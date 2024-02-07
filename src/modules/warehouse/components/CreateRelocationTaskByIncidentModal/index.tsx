@@ -45,6 +45,8 @@ const CreateRelocationTaskByIncidentModal: FC<CreateRelocationTaskByIncidentModa
       data-testid='create-relocation-task-by-incident-modal'
       okText='Продолжить'
       onOk={form.submit}
+      okButtonProps={{ disabled: incident && !incident.assignee }}
+      confirmLoading={incidentIsLoading}
       title='Создать заявку на основе инцидента'
     >
       <Space $block direction='vertical' size='middle'>
@@ -114,7 +116,13 @@ const CreateRelocationTaskByIncidentModal: FC<CreateRelocationTaskByIncidentModa
                   <Text type='secondary'>Исполнитель:</Text>
                 </Col>
 
-                {incident.assignee && <Col span={19}>{getFullUserName(incident.assignee)}</Col>}
+                <Col span={19}>
+                  {incident.assignee ? (
+                    getFullUserName(incident.assignee)
+                  ) : (
+                    <Text type='danger'>Не назначен</Text>
+                  )}
+                </Col>
               </Row>
             </Space>
           )}
