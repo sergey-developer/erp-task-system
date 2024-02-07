@@ -1,5 +1,6 @@
 import { FC } from 'react'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import CatalogList, { CatalogListProps } from 'modules/warehouse/components/CatalogList'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
@@ -11,7 +12,7 @@ const items: CatalogListProps['items'] = [
   {
     link: WarehouseRouteEnum.Nomenclatures,
     text: 'Номенклатура',
-    permissions: ['NOMENCLATURES_READ'],
+    permissions: [UserPermissionsEnum.NomenclaturesRead],
   },
 ]
 

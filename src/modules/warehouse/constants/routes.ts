@@ -6,7 +6,7 @@ export enum WarehouseRouteEnum {
   Warehouse = '/home/manage-warehouses/catalogs/warehouses/:id',
   Nomenclatures = '/home/manage-warehouses/catalogs/nomenclature',
 
-  ReserveCatalogs = '/home/manage-warehouses/reserves-catalogs',
+  Reserves = '/home/manage-warehouses/reserves-catalogs',
   EquipmentNomenclatures = '/home/manage-warehouses/reserves-catalogs/equipment-nomenclature',
   Equipments = '/home/manage-warehouses/reserves-catalogs/equipment-nomenclature/:id',
   RelocationTasks = '/home/manage-warehouses/reserves-catalogs/relocation-tasks',
@@ -15,4 +15,5 @@ export enum WarehouseRouteEnum {
   EditRelocationTask = '/home/manage-warehouses/reserves-catalogs/relocation-tasks/:id/edit',
 
   Reports = '/home/manage-warehouses/reports',
+  EmployeesActions = '/home/manage-warehouses/reports/employees-actions',
 }

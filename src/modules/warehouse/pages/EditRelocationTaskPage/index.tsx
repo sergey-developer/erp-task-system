@@ -13,7 +13,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { attachmentsToFiles } from 'modules/attachment/utils'
-import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
@@ -246,7 +246,7 @@ const EditRelocationTaskPage: FC = () => {
     },
   )
 
-  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
+  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUsers({
     isManager: false,
   })
 
