@@ -13,6 +13,8 @@ import { buttonTestUtils, fakeIdStr, fakeWord, radioButtonTestUtils, render } fr
 import RequestTaskReclassificationModal from './index'
 import { RequestTaskReclassificationModalProps } from './types'
 
+export const reasonValues = Object.values(ReclassificationReasonEnum)
+
 const props: Readonly<RequestTaskReclassificationModalProps> = {
   open: true,
   recordId: fakeIdStr(),
@@ -215,7 +217,7 @@ describe('Модалка запроса о переклассификации з
       test('Отображается корректно', () => {
         render(<RequestTaskReclassificationModal {...props} />)
 
-        Object.values(ReclassificationReasonEnum).forEach((reason) => {
+        reasonValues.forEach((reason) => {
           const field = testUtils.getReclassificationReasonField(reason)
           expect(field).toBeInTheDocument()
           expect(field).toBeEnabled()
@@ -236,7 +238,7 @@ describe('Модалка запроса о переклассификации з
       test('Не активно во время загрузки', () => {
         render(<RequestTaskReclassificationModal {...props} isLoading />)
 
-        Object.values(ReclassificationReasonEnum).forEach((reason) => {
+        reasonValues.forEach((reason) => {
           const field = testUtils.getReclassificationReasonField(reason)
           expect(field).toBeDisabled()
         })
