@@ -21,12 +21,6 @@ const props: Readonly<RequestTaskReclassificationModalProps> = {
   onSubmit: jest.fn(),
 }
 
-const notAvailableReasons = [ReclassificationReasonEnum.DivideTask]
-
-export const availableReasons = Object.values(ReclassificationReasonEnum).filter(
-  (reason) => !notAvailableReasons.includes(reason),
-)
-
 const getContainer = () => screen.getByTestId('request-task-reclassification-modal')
 const queryContainer = () => screen.queryByTestId('request-task-reclassification-modal')
 const findContainer = () => screen.findByTestId('request-task-reclassification-modal')
@@ -224,25 +218,16 @@ describe('Модалка запроса о переклассификации з
         Object.values(ReclassificationReasonEnum).forEach((reason) => {
           const field = testUtils.getReclassificationReasonField(reason)
           expect(field).toBeInTheDocument()
+          expect(field).toBeEnabled()
           expect(field.value).toBe(reason)
           expect(field).not.toBeChecked()
-        })
-
-        availableReasons.forEach((reason) => {
-          const field = testUtils.getReclassificationReasonField(reason)
-          expect(field).toBeEnabled()
-        })
-
-        notAvailableReasons.forEach((reason) => {
-          const field = testUtils.getReclassificationReasonField(reason)
-          expect(field).toBeDisabled()
         })
       })
 
       test('Можно выбрать любую доступную причину', async () => {
         const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
-        for await (const reason of availableReasons) {
+        for await (const reason of Object.values(ReclassificationReasonEnum)) {
           const field = await testUtils.setReclassificationReason(user, reason)
           expect(field).toBeChecked()
         }
