@@ -6,10 +6,9 @@ import { ResizableProps } from 'react-resizable'
 
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
 
-import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
-
 import { localeConfig } from './constants/common'
 import components from './constants/components'
+import { TableStyled } from './styles'
 import { TaskTableListItem, TaskTableProps } from './types'
 import { applySortToColumn, applyWidthToColumn, getColumns } from './utils'
 
@@ -62,7 +61,7 @@ const TaskTable: FC<TaskTableProps> = ({ sort, pagination, userRole, ...props })
 
   return (
     <div data-testid='task-table' style={tableWrapperStyles}>
-      <ParentSizedTable<TaskTableListItem>
+      <TableStyled<TaskTableListItem>
         {...props}
         components={components}
         columns={sortedColumns}
