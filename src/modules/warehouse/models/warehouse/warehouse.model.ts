@@ -1,8 +1,11 @@
+import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
+
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type WarehouseModel = {
   id: IdType
+  type: WarehouseTypeEnum
   title: string
   legalEntity: {
     id: IdType

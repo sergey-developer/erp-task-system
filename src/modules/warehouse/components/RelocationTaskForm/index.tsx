@@ -24,6 +24,7 @@ const { TextArea } = Input
 
 const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   isLoading,
+  controllerIsRequired,
 
   userList,
   userListIsLoading,
@@ -163,7 +164,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           data-testid='controller-form-item'
           label='Контролер'
           name='controller'
-          rules={onlyRequiredRules}
+          rules={controllerIsRequired ? onlyRequiredRules : undefined}
         >
           <Select
             fieldNames={userListSelectFieldNames}

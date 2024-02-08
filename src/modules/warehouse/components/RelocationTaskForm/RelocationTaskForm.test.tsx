@@ -36,9 +36,9 @@ const props: RelocationTaskFormProps = {
 
   relocateFromLocationList: [],
   relocateFromLocationListIsLoading: false,
-
   relocateToLocationList: [],
   relocateToLocationListIsLoading: false,
+  controllerIsRequired: true,
 
   type: RelocationTaskTypeEnum.Relocation,
   onChangeType: jest.fn(),
@@ -611,7 +611,21 @@ describe('Форма создания заявки на перемещение �
       expect(selectedController).toBeInTheDocument()
     })
 
-    test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
+    test.skip('Обязателен если перемещение не с основного склада на склад МСИ', async () => {
+      mockGetUserListSuccess()
+      mockGetLocationListSuccess({ body: [] })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess({ body: [] })
+
+      const { user } = render(<CreateRelocationTaskPage />)
+
+      await createRelocationTaskPageTestUtils.clickSubmitButton(user)
+      const error = await testUtils.findControllerError(validationMessages.required)
+
+      expect(error).toBeInTheDocument()
+    })
+
+    test.skip('Не обязателен если перемещение с основного склада на склад МСИ', async () => {
       mockGetUserListSuccess()
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()

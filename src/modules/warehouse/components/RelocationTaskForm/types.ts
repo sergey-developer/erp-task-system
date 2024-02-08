@@ -18,6 +18,7 @@ export type LocationOption = {
 
 export type RelocationTaskFormProps = {
   isLoading: boolean
+  controllerIsRequired: boolean
 
   userList: UserListModel
   userListIsLoading: boolean

@@ -30,6 +30,7 @@ import {
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
@@ -48,6 +49,7 @@ import {
   useGetRelocationTask,
   useUpdateRelocationTask,
 } from 'modules/warehouse/hooks/relocationTask'
+import { useGetWarehouse } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import {
   CreateEquipmentsBadRequestErrorResponse,
@@ -212,6 +214,16 @@ const EditRelocationTaskPage: FC = () => {
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
+
+  const { currentData: relocateToWarehouse, isFetching: relocateToWarehouseIsFetching } =
+    useGetWarehouse(selectedRelocateTo?.value!, {
+      skip: !selectedRelocateTo || !checkLocationTypeIsWarehouse(selectedRelocateTo.type),
+    })
+
+  const { currentData: relocateFromWarehouse, isFetching: relocateFromWarehouseIsFetching } =
+    useGetWarehouse(selectedRelocateFrom?.value!, {
+      skip: !selectedRelocateFrom || !checkLocationTypeIsWarehouse(selectedRelocateFrom.type),
+    })
 
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
     useGetRelocationTask({ relocationTaskId: relocationTaskId! })
@@ -766,6 +778,13 @@ const EditRelocationTaskPage: FC = () => {
     }
   }, [form, relocationEquipmentBalanceList, relocationEquipmentList, relocationTask])
 
+  const isRelocationFromMainToMsi =
+    relocateFromWarehouse?.type === WarehouseTypeEnum.Main &&
+    relocateToWarehouse?.type === WarehouseTypeEnum.Msi
+
+  const controllerIsRequired =
+    relocateToWarehouse && relocateFromWarehouse ? isRelocationFromMainToMsi : true
+
   const createEquipmentDisabled =
     !selectedRelocateFrom ||
     !selectedRelocateTo ||
@@ -822,6 +841,7 @@ const EditRelocationTaskPage: FC = () => {
               relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
               relocateToLocationList={relocateToLocationList}
               relocateToLocationListIsLoading={relocateToLocationListIsFetching}
+              controllerIsRequired={controllerIsRequired}
               type={selectedType}
               onChangeType={handleChangeType}
               onChangeRelocateFrom={handleChangeRelocateFrom}
@@ -891,7 +911,12 @@ const EditRelocationTaskPage: FC = () => {
               </Col>
 
               <Col>
-                <Button type='primary' htmlType='submit' loading={updateTaskIsLoading}>
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                  loading={updateTaskIsLoading}
+                  disabled={relocateFromWarehouseIsFetching || relocateToWarehouseIsFetching}
+                >
                   Сохранить
                 </Button>
               </Col>
