@@ -84,7 +84,7 @@ import {
 
 import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
 import {
-  availableReasons,
+  reasonValues,
   testUtils as taskReclassificationModalTestUtils,
 } from '../../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
 import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
@@ -334,7 +334,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
-              availableReasons[0],
+              reasonValues[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
@@ -373,7 +373,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
-              availableReasons[0],
+              reasonValues[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
@@ -606,7 +606,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
-              availableReasons[0],
+              reasonValues[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
@@ -645,7 +645,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
-              availableReasons[0],
+              reasonValues[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
@@ -784,7 +784,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
-              availableReasons[0],
+              reasonValues[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
@@ -823,7 +823,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskReclassificationModalTestUtils.setComment(user, fakeWord())
             await taskReclassificationModalTestUtils.setReclassificationReason(
               user,
-              availableReasons[0],
+              reasonValues[0],
             )
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
