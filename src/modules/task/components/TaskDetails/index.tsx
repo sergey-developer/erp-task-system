@@ -56,6 +56,7 @@ import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { useSystemSettingsState } from 'shared/hooks/system'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
@@ -65,8 +66,6 @@ import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import { useSystemSettingsState } from '../../../../shared/hooks/system'
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
 
@@ -97,6 +96,7 @@ export type TaskDetailsProps = {
   onClose: EmptyFn
 
   activeTab?: TaskDetailsTabsEnum
+  height?: number
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
@@ -106,6 +106,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   onExpandAdditionalInfo,
 
   activeTab,
+  height,
 
   onClose: originOnClose,
 }) => {
@@ -462,6 +463,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         open={!!taskId}
         onClose={closeTask}
         width={650}
+        styles={height ? { wrapper: { top: 'unset', height } } : undefined}
         title={title}
         mask={false}
       >
@@ -636,6 +638,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             open={requestTaskSuspendModalOpened}
             recordId={task.recordId}
             systemSettings={systemSettings}
+            systemSettingsIsLoading={systemSettingsIsFetching}
             isLoading={createSuspendRequestIsLoading}
             onSubmit={handleCreateTaskSuspendRequest}
             onCancel={closeRequestTaskSuspendModal}
