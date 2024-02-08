@@ -100,6 +100,7 @@ export type TaskDetailsProps = {
   onClose: EmptyFn
 
   activeTab?: TaskDetailsTabsEnum
+  height?: number
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({
@@ -109,6 +110,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   onExpandAdditionalInfo,
 
   activeTab,
+  height,
 
   onClose: originOnClose,
 }) => {
@@ -494,6 +496,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         open={!!taskId}
         onClose={closeTask}
         width={650}
+        styles={height ? { wrapper: { top: 'unset', height } } : undefined}
         title={title}
         mask={false}
       >

@@ -1,11 +1,11 @@
-import { useBoolean, useLocalStorageState, usePrevious, useSetState } from 'ahooks'
+import { useBoolean, useLocalStorageState, usePrevious, useSetState, useSize } from 'ahooks'
 import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
 import pick from 'lodash/pick'
-import React, { FC, useCallback, useMemo, useState } from 'react'
+import React, { FC, useCallback, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
@@ -52,7 +52,11 @@ import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
-import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
+import {
+  DEFAULT_DEBOUNCE_VALUE,
+  FOOTER_HEIGHT,
+  LAYOUT_CONTENT_PADDING_V,
+} from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -80,6 +84,9 @@ const { Search } = Input
 const initialExtendedFilterFormValues = getInitialExtendedFilterFormValues()
 
 const TaskListPage: FC = () => {
+  const tableRef = useRef<HTMLDivElement>(null)
+  const tableSize = useSize(tableRef)
+
   // todo: создать хук для useSearchParams который парсит значения в нужный тип
   const [searchParams] = useSearchParams()
   const viewTaskId = Number(searchParams.get('viewTask')) || undefined
@@ -434,6 +441,7 @@ const TaskListPage: FC = () => {
 
         <Col span={24}>
           <TaskTable
+            ref={tableRef}
             rowClassName={getTableRowClassName}
             sort={taskListQueryArgs.sort}
             onRow={onTableRow}
@@ -454,6 +462,9 @@ const TaskListPage: FC = () => {
             additionalInfoExpanded={additionalInfoExpanded}
             onExpandAdditionalInfo={toggleAdditionalInfoExpanded}
             onClose={closeTask}
+            height={
+              tableSize ? tableSize.height + LAYOUT_CONTENT_PADDING_V + FOOTER_HEIGHT : undefined
+            }
           />
         </React.Suspense>
       )}
