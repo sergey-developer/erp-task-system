@@ -29,6 +29,7 @@ const { Text } = Typography
 
 const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   isLoading,
+  controllerIsRequired,
 
   onUploadImage,
   imageIsUploading,
@@ -174,7 +175,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           data-testid='controller-form-item'
           label='Контролер'
           name='controller'
-          rules={onlyRequiredRules}
+          rules={controllerIsRequired ? onlyRequiredRules : undefined}
         >
           <Select
             fieldNames={idAndFullNameSelectFieldNames}
