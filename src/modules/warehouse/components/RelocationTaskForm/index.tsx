@@ -172,6 +172,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
             disabled={isLoading || userListIsLoading}
             options={userList}
             placeholder='Выберите контролера'
+            allowClear
             showSearch
             filterOption={filterOptionBy('fullName')}
           />

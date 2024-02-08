@@ -218,12 +218,18 @@ const CreateRelocationTaskPage: FC = () => {
 
   const { currentData: relocateToWarehouse, isFetching: relocateToWarehouseIsFetching } =
     useGetWarehouse(selectedRelocateTo?.value!, {
-      skip: !selectedRelocateTo || !checkLocationTypeIsWarehouse(selectedRelocateTo.type),
+      skip:
+        !selectedRelocateTo ||
+        !selectedRelocateFrom ||
+        !checkLocationTypeIsWarehouse(selectedRelocateTo.type),
     })
 
   const { currentData: relocateFromWarehouse, isFetching: relocateFromWarehouseIsFetching } =
     useGetWarehouse(selectedRelocateFrom?.value!, {
-      skip: !selectedRelocateFrom || !checkLocationTypeIsWarehouse(selectedRelocateFrom.type),
+      skip:
+        !selectedRelocateFrom ||
+        !selectedRelocateTo ||
+        !checkLocationTypeIsWarehouse(selectedRelocateFrom.type),
     })
 
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
