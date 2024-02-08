@@ -4339,7 +4339,7 @@ agent-base@6:
   dependencies:
     debug "4"
 
-ahooks@^3.7.9:
+ahooks@^3.6.2:
   version "3.7.10"
   resolved "https://registry.yarnpkg.com/ahooks/-/ahooks-3.7.10.tgz#6ac1dfbcedff8c673367c044ffef41ffae6da483"
   integrity sha512-/HLYif7sFA/5qSuWKrwvjDbf3bq+sdaMrUWS7XGCDRWdC2FrG/i+u5LZdakMYc6UIgJTMQ7tGiJCV7sdU4kSIw==
