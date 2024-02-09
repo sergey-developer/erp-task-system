@@ -5,4 +5,4 @@ export type GetEmployeesActionsReportXlsxQueryArgs = Omit<
   'limit' | 'offset'
 >
 
-export type GetEmployeesActionsReportXlsxSuccessResponse = Blob
+export type GetEmployeesActionsReportXlsxSuccessResponse = string

@@ -44,6 +44,7 @@ const baseQuery =
       return { data: response.data }
     } catch (exception) {
       const error = exception as AxiosError
+      console.log(error)
       const status = error.response?.status || HttpCodeEnum.ServerError
       const errorData = error.response?.data
 

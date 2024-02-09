@@ -21,7 +21,7 @@ import Space from 'components/Space'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
-import { clickDownloadLink } from 'shared/utils/common'
+import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -97,7 +97,12 @@ const EmployeesActionsReportPage: FC = () => {
   const onExportExcel = async () => {
     try {
       const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
-      clickDownloadLink(report, MimetypeEnum.Xlsx, 'Отчет по действиям сотрудника')
+
+      clickDownloadLink(
+        base64ToArrayBuffer(report),
+        MimetypeEnum.Xlsx,
+        'Отчет по действиям сотрудника',
+      )
     } catch {}
   }
 
