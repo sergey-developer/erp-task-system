@@ -18,4 +18,7 @@ export const getEquipmentListPageLink = ({
 }: GetEquipmentListPageLinkParams): string =>
   `${generatePath(WarehouseRouteEnum.Equipments, {
     id: String(id),
-  })}?${qs.stringify({ equipmentNomenclatureTitle: title, viewEquipmentId })}`
+  })}${qs.stringify(
+    { equipmentNomenclatureTitle: title, viewEquipmentId },
+    { addQueryPrefix: true },
+  )}`

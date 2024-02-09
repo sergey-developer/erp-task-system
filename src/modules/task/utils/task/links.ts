@@ -13,5 +13,8 @@ type Params = {
 
 export const getTaskListPageLink = ({ viewTaskId, taskDetailsTab }: Params): string =>
   viewTaskId || taskDetailsTab
-    ? `${CommonRouteEnum.DesktopTaskList}?${qs.stringify({ viewTask: viewTaskId, taskDetailsTab })}`
+    ? `${CommonRouteEnum.DesktopTaskList}${qs.stringify(
+        { viewTask: viewTaskId, taskDetailsTab },
+        { addQueryPrefix: true },
+      )}`
     : CommonRouteEnum.DesktopTaskList

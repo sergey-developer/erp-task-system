@@ -4,7 +4,7 @@ import { IdType } from 'shared/types/common'
 
 export type EmployeesActionsReportListItemModel = {
   id: IdType
-  equipment: Required<Pick<EquipmentModel, 'id' | 'title' | 'serialNumber' | 'inventoryNumber'>>
+  equipment: Pick<EquipmentModel, 'id' | 'title' | 'serialNumber' | 'inventoryNumber'>
   relocationTask: Pick<
     RelocationTaskModel,
     'id' | 'createdAt' | 'relocateFrom' | 'relocateTo' | 'status'
