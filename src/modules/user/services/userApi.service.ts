@@ -93,10 +93,9 @@ const userApiService = baseApiService.injectEndpoints({
       },
     ),
     getWarehouseMSI: build.query<GetWarehouseMSISuccessResponse, GetWarehouseMSIQueryArgs>({
-      query: ({ userId, ...params }) => ({
+      query: ({ userId }) => ({
         url: getWarehouseMSIUrl(userId),
         method: HttpMethodEnum.Get,
-        params,
       }),
     }),
   }),
