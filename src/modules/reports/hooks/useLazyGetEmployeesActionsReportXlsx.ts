@@ -2,7 +2,12 @@ import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
-import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { getEmployeesActionsReportXlsxErrMsg } from '../constants'
@@ -23,6 +28,8 @@ export const useLazyGetEmployeesActionsReportXlsx = (): UseGetEmployeesActionsRe
   useEffect(() => {
     if (isErrorResponse(state.error)) {
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
         showErrorNotification(getEmployeesActionsReportXlsxErrMsg)
       }
     }
