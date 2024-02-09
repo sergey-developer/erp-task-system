@@ -1,5 +1,6 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Col, Button, Row, Typography } from 'antd'
+import { Button, Col, Row, Typography } from 'antd'
+import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
 
 import { useAuthUser } from 'modules/auth/hooks'
@@ -17,17 +18,16 @@ import { useGetUsers } from 'modules/user/hooks'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { clickDownloadLink } from 'shared/utils/common'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { clickDownloadLink } from 'shared/utils/common'
 import {
   calculatePaginationParams,
   extractPaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
-
-import { MimetypeEnum } from 'shared/constants/mimetype'
 
 const EquipmentDetails = React.lazy(() => import('modules/warehouse/components/EquipmentDetails'))
 
