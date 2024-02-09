@@ -36,6 +36,10 @@ const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> 
   const row = getRow(id)
   return row ? within(row).getByText(value) : null
 }
+const clickColValue = async (user: UserEvent, id: IdType, value: NumberOrString) => {
+  const colValue = getColValue(id, value)
+  await user.click(colValue!)
+}
 
 // loading
 const expectLoadingStarted = () => tableTestUtils.expectLoadingStarted(getContainer())
@@ -49,6 +53,7 @@ export const testUtils = {
   getHeadCell,
   getColTitle,
   getColValue,
+  clickColValue,
 
   expectLoadingStarted,
   expectLoadingFinished,
@@ -104,8 +109,7 @@ describe('Таблица отчета действий сотрудников', 
     test('При клике на значение вызывается обработчик', async () => {
       const { user } = render(<EmployeesActionsReportTable {...props} />)
 
-      const value = testUtils.getColValue(reportListItem.id, reportListItem.equipment.title)
-      await user.click(value!)
+      await testUtils.clickColValue(user, reportListItem.id, reportListItem.equipment.title)
 
       expect(props.onClickEquipment).toBeCalledTimes(1)
       expect(props.onClickEquipment).toBeCalledWith(reportListItem.equipment.id)
@@ -154,13 +158,13 @@ describe('Таблица отчета действий сотрудников', 
     test('При клике на значение вызывается обработчик', async () => {
       const { user } = render(<EmployeesActionsReportTable {...props} />)
 
-      const value = testUtils.getColValue(
+      await testUtils.clickColValue(
+        user,
         reportListItem.id,
         `№${reportListItem.relocationTask.id} от ${formatDate(
           reportListItem.relocationTask.createdAt,
         )} (${relocationTaskStatusDict[reportListItem.relocationTask.status]})`,
       )
-      await user.click(value!)
 
       expect(props.onClickRelocationTask).toBeCalledTimes(1)
       expect(props.onClickRelocationTask).toBeCalledWith(reportListItem.relocationTask.id)
