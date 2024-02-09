@@ -1,11 +1,20 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
-import { columns } from './columns'
+import { getColumns } from './columns'
 import { EmployeesActionsReportTableItem, EmployeesActionsReportTableProps } from './types'
 
-const EmployeesActionsReportTable: FC<EmployeesActionsReportTableProps> = (props) => {
+const EmployeesActionsReportTable: FC<EmployeesActionsReportTableProps> = ({
+  onClickEquipment,
+  onClickRelocationTask,
+  ...props
+}) => {
+  const columns = useMemo(
+    () => getColumns({ onClickEquipment, onClickRelocationTask }),
+    [onClickEquipment, onClickRelocationTask],
+  )
+
   return (
     <div data-testid='employees-actions-report-table'>
       <ParentSizedTable<EmployeesActionsReportTableItem> {...props} rowKey='id' columns={columns} />

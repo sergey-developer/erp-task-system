@@ -1,4 +1,4 @@
-import { GetEmployeesActionsReportTransformedSuccessResponse } from 'modules/reports/types'
+import { GetEmployeesActionsReportSuccessResponse } from 'modules/reports/models'
 import { getEmployeesActionsReportUrl } from 'modules/reports/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ const getEmployeesActionsReportMockFn = (employeeId: IdType) =>
 
 export const mockGetEmployeesActionsReportSuccess = (
   employeeId: IdType,
-  options?: Partial<ResponseResolverOptions<GetEmployeesActionsReportTransformedSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetEmployeesActionsReportSuccessResponse>>,
 ) => getSuccessMockFn(getEmployeesActionsReportMockFn(employeeId), options)()
 
 export const mockGetEmployeesActionsReportForbiddenError = (

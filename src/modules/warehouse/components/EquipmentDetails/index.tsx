@@ -6,7 +6,9 @@ import AttachmentList from 'modules/attachment/components/AttachmentList'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { attachmentsToFiles } from 'modules/attachment/utils'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useMatchUserPermissions } from 'modules/user/hooks'
+import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
@@ -40,7 +42,6 @@ import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
-import { EquipmentFormModalProps } from '../EquipmentFormModal/types'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
 
@@ -53,13 +54,16 @@ const EquipmentFormModal = React.lazy(
 )
 
 const EquipmentRelocationHistoryModal = React.lazy(
-  () => import('../EquipmentRelocationHistoryModal'),
+  () => import('modules/warehouse/components/EquipmentRelocationHistoryModal'),
 )
 
 const { Text } = Typography
 
 const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) => {
-  const permissions = useMatchUserPermissions(['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'])
+  const permissions = useMatchUserPermissions([
+    UserPermissionsEnum.EquipmentsRead,
+    UserPermissionsEnum.RelocationTasksRead,
+  ])
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
   const [
@@ -73,16 +77,16 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const [relocationHistoryModalOpened, { toggle: toggleOpenRelocationHistoryModal }] =
     useBoolean(false)
 
-  const debouncedToggleOpenRelocationHistoryModal = useDebounceFn(toggleOpenRelocationHistoryModal)
+  const onToggleOpenRelocationHistoryModal = useDebounceFn(toggleOpenRelocationHistoryModal)
 
   const [
     editEquipmentModalOpened,
     { setTrue: openEditEquipmentModal, setFalse: closeEditEquipmentModal },
   ] = useBoolean(false)
 
-  const debouncedOpenEditEquipmentModal = useDebounceFn(openEditEquipmentModal)
+  const onOpenEditEquipmentModal = useDebounceFn(openEditEquipmentModal)
 
-  const handleCloseEditEquipmentModal = useDebounceFn(() => {
+  const onCloseEditEquipmentModal = useDebounceFn(() => {
     closeEditEquipmentModal()
     setSelectedNomenclatureId(undefined)
     resetUserChangedNomenclature()
@@ -90,7 +94,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   }, [closeEditEquipmentModal])
 
   const [imageListModalOpened, { toggle: toggleOpenImageListModal }] = useBoolean(false)
-  const debouncedToggleOpenImageListModal = useDebounceFn(toggleOpenImageListModal)
+  const onToggleOpenImageListModal = useDebounceFn(toggleOpenImageListModal)
 
   const { currentData: equipment, isFetching: equipmentIsFetching } = useGetEquipment({
     equipmentId,
@@ -196,7 +200,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       { skip: !relocationHistoryModalOpened },
     )
 
-  const handleChangeCategory = useCallback<EquipmentFormModalProps['onChangeCategory']>(
+  const onChangeCategory = useCallback<EquipmentFormModalProps['onChangeCategory']>(
     (category) => {
       setSelectedCategory(category)
       setSelectedNomenclatureId(undefined)
@@ -213,14 +217,14 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     [setUserChangedNomenclature],
   )
 
-  const handleCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
+  const createEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {
       await createAttachment({ type: AttachmentTypeEnum.EquipmentImage }, options)
     },
     [createAttachment],
   )
 
-  const handleEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+  const onEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
       try {
         await updateEquipmentMutation({
@@ -229,7 +233,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
           equipmentId,
         }).unwrap()
 
-        handleCloseEditEquipmentModal()
+        onCloseEditEquipmentModal()
         refetchEquipmentAttachmentList()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
@@ -240,7 +244,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     [
       updateEquipmentMutation,
       equipmentId,
-      handleCloseEditEquipmentModal,
+      onCloseEditEquipmentModal,
       refetchEquipmentAttachmentList,
     ],
   )
@@ -278,7 +282,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
               <Col>{equipment.title}</Col>
 
               <Col>
-                <EditIcon $size='large' onClick={debouncedOpenEditEquipmentModal} />
+                <EditIcon $size='large' onClick={onOpenEditEquipmentModal} />
               </Col>
             </Row>
           )
@@ -351,7 +355,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 <Col>
                   <Button
                     disabled={!permissions?.equipmentsRead || !permissions?.relocationTasksRead}
-                    onClick={debouncedToggleOpenRelocationHistoryModal}
+                    onClick={onToggleOpenRelocationHistoryModal}
                   >
                     История перемещений
                   </Button>
@@ -522,7 +526,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                       />
 
                       <Button
-                        onClick={debouncedToggleOpenImageListModal}
+                        onClick={onToggleOpenImageListModal}
                         loading={totalEquipmentAttachmentListIsFetching}
                       >
                         Просмотреть все фото ({equipmentAttachmentList?.pagination?.total})
@@ -565,7 +569,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
           fallback={
             <ModalFallback
               open
-              onCancel={handleCloseEditEquipmentModal}
+              onCancel={onCloseEditEquipmentModal}
               tip='Загрузка данных для формы оборудования'
             />
           }
@@ -581,7 +585,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
             selectedCategory={selectedCategory}
-            onChangeCategory={handleChangeCategory}
+            onChangeCategory={onChangeCategory}
             warehouseList={warehouseList}
             warehouseListIsLoading={warehouseListIsFetching}
             currencyList={currencyList}
@@ -595,9 +599,9 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             nomenclatureList={extractPaginationResults(nomenclatureList)}
             nomenclatureListIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={onChangeNomenclature}
-            onCancel={handleCloseEditEquipmentModal}
-            onSubmit={handleEditEquipment}
-            onUploadImage={handleCreateEquipmentImage}
+            onCancel={onCloseEditEquipmentModal}
+            onSubmit={onEditEquipment}
+            onUploadImage={createEquipmentImage}
             imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
@@ -610,14 +614,14 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
           fallback={
             <ModalFallback
               open
-              onCancel={debouncedToggleOpenRelocationHistoryModal}
+              onCancel={onToggleOpenRelocationHistoryModal}
               tip='Загрузка данных для истории перемещений'
             />
           }
         >
           <EquipmentRelocationHistoryModal
             open={relocationHistoryModalOpened}
-            onCancel={debouncedToggleOpenRelocationHistoryModal}
+            onCancel={onToggleOpenRelocationHistoryModal}
             dataSource={relocationHistory}
             loading={relocationHistoryIsFetching}
           />
@@ -629,7 +633,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
           fallback={
             <ModalFallback
               open
-              onCancel={debouncedToggleOpenImageListModal}
+              onCancel={onToggleOpenImageListModal}
               tip='Загрузка данных для изображений оборудования'
             />
           }
@@ -638,7 +642,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             open={imageListModalOpened}
             title='Изображения оборудования'
             data={totalEquipmentAttachmentList?.results || []}
-            onCancel={debouncedToggleOpenImageListModal}
+            onCancel={onToggleOpenImageListModal}
           />
         </React.Suspense>
       )}
