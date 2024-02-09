@@ -20,6 +20,8 @@ const props: Readonly<EmployeesActionsReportTableProps> = {
   pagination: {},
   loading: false,
   onChange: jest.fn(),
+  onClickEquipment: jest.fn(),
+  onClickRelocationTask: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('employees-actions-report-table')
@@ -34,6 +36,10 @@ const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> 
   const row = getRow(id)
   return row ? within(row).getByText(value) : null
 }
+const clickColValue = async (user: UserEvent, id: IdType, value: NumberOrString) => {
+  const colValue = getColValue(id, value)
+  await user.click(colValue!)
+}
 
 // loading
 const expectLoadingStarted = () => tableTestUtils.expectLoadingStarted(getContainer())
@@ -47,6 +53,7 @@ export const testUtils = {
   getHeadCell,
   getColTitle,
   getColValue,
+  clickColValue,
 
   expectLoadingStarted,
   expectLoadingFinished,
@@ -88,14 +95,25 @@ describe('Таблица отчета действий сотрудников', 
     })
   })
 
-  test('Колонка оборудование отображается', () => {
-    render(<EmployeesActionsReportTable {...props} />)
+  describe('Колонка оборудование', () => {
+    test('Отображается', () => {
+      render(<EmployeesActionsReportTable {...props} />)
 
-    const title = testUtils.getColTitle('Оборудование')
-    const value = testUtils.getColValue(reportListItem.id, reportListItem.equipment.title)
+      const title = testUtils.getColTitle('Оборудование')
+      const value = testUtils.getColValue(reportListItem.id, reportListItem.equipment.title)
 
-    expect(title).toBeInTheDocument()
-    expect(value).toBeInTheDocument()
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
+    test('При клике на значение вызывается обработчик', async () => {
+      const { user } = render(<EmployeesActionsReportTable {...props} />)
+
+      await testUtils.clickColValue(user, reportListItem.id, reportListItem.equipment.title)
+
+      expect(props.onClickEquipment).toBeCalledTimes(1)
+      expect(props.onClickEquipment).toBeCalledWith(reportListItem.equipment.id)
+    })
   })
 
   test('Колонка серийный № отображается', () => {
@@ -121,19 +139,36 @@ describe('Таблица отчета действий сотрудников', 
     expect(value).toBeInTheDocument()
   })
 
-  test('Колонка перемещение отображается', () => {
-    render(<EmployeesActionsReportTable {...props} />)
+  describe('Колонка перемещение', () => {
+    test('Отображается', () => {
+      render(<EmployeesActionsReportTable {...props} />)
 
-    const title = testUtils.getColTitle('Перемещение')
-    const value = testUtils.getColValue(
-      reportListItem.id,
-      `№${reportListItem.relocationTask.id} от ${formatDate(
-        reportListItem.relocationTask.createdAt,
-      )} (${relocationTaskStatusDict[reportListItem.relocationTask.status]})`,
-    )
+      const title = testUtils.getColTitle('Перемещение')
+      const value = testUtils.getColValue(
+        reportListItem.id,
+        `№${reportListItem.relocationTask.id} от ${formatDate(
+          reportListItem.relocationTask.createdAt,
+        )} (${relocationTaskStatusDict[reportListItem.relocationTask.status]})`,
+      )
 
-    expect(title).toBeInTheDocument()
-    expect(value).toBeInTheDocument()
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
+    test('При клике на значение вызывается обработчик', async () => {
+      const { user } = render(<EmployeesActionsReportTable {...props} />)
+
+      await testUtils.clickColValue(
+        user,
+        reportListItem.id,
+        `№${reportListItem.relocationTask.id} от ${formatDate(
+          reportListItem.relocationTask.createdAt,
+        )} (${relocationTaskStatusDict[reportListItem.relocationTask.status]})`,
+      )
+
+      expect(props.onClickRelocationTask).toBeCalledTimes(1)
+      expect(props.onClickRelocationTask).toBeCalledWith(reportListItem.relocationTask.id)
+    })
   })
 
   test('Колонка роль отображается', () => {
