@@ -145,6 +145,7 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
             <Select
               data-testid='executor-select'
               placeholder='Исполнитель'
+              showSearch
               filterOption={filterOptionBy('fullName')}
               fieldNames={idAndFullNameSelectFieldNames}
               options={users}
@@ -162,6 +163,7 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
             <Select
               data-testid='controller-select'
               placeholder='Контролер'
+              showSearch
               filterOption={filterOptionBy('fullName')}
               fieldNames={idAndFullNameSelectFieldNames}
               options={users}
@@ -179,6 +181,7 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
             <Select
               data-testid='created-by-select'
               placeholder='Инициатор'
+              showSearch
               filterOption={filterOptionBy('fullName')}
               fieldNames={idAndFullNameSelectFieldNames}
               options={users}
