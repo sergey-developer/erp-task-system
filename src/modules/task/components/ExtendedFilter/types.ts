@@ -7,7 +7,7 @@ import {
   TaskOverdueEnum,
 } from 'modules/task/constants/task'
 import { SearchFields } from 'modules/task/models'
-import { UserListModel } from 'modules/user/models'
+import { UsersModel } from 'modules/user/models'
 import { CustomerListModel } from 'modules/warehouse/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
 
@@ -49,7 +49,7 @@ export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClos
   supportGroupList: SupportGroupListModel
   supportGroupListIsLoading: boolean
 
-  userList: UserListModel
+  userList: UsersModel
   userListIsLoading: boolean
 
   workGroupList: WorkGroupListModel

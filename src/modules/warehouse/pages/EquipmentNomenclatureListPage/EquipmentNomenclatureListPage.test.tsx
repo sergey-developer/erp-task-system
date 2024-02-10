@@ -46,11 +46,11 @@ describe('Страница списка номенклатуры оборудо�
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclatureListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -71,11 +71,11 @@ describe('Страница списка номенклатуры оборудо�
         renderInRoute_latest(
           [
             {
-              path: WarehouseRouteEnum.EquipmentNomenclatureList,
+              path: WarehouseRouteEnum.EquipmentNomenclatures,
               element: <EquipmentNomenclatureListPage />,
             },
           ],
-          { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+          { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
         )
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -90,11 +90,11 @@ describe('Страница списка номенклатуры оборудо�
         renderInRoute_latest(
           [
             {
-              path: WarehouseRouteEnum.EquipmentNomenclatureList,
+              path: WarehouseRouteEnum.EquipmentNomenclatures,
               element: <EquipmentNomenclatureListPage />,
             },
           ],
-          { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+          { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
         )
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -117,11 +117,11 @@ describe('Страница списка номенклатуры оборудо�
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclatureListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
       const table = await equipmentNomenclatureTableTestUtils.expectLoadingFinished()

@@ -6,7 +6,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 
 import { useGetTask, useGetTasks } from 'modules/task/hooks/task'
 import { GetTaskListQueryArgs } from 'modules/task/models'
-import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
 import {
@@ -38,6 +38,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import {
   calculatePaginationParams,
+  extractPaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
@@ -148,7 +149,7 @@ const RelocationTaskListPage: FC = () => {
   const { currentData: relocationTasks, isFetching: relocationTasksIsFetching } =
     useGetRelocationTaskList(relocationTasksParams)
 
-  const { currentData: users = [], isFetching: usersIsFetching } = useGetUserList(undefined, {
+  const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers(undefined, {
     skip: !filterOpened,
   })
   const { currentData: tasks, isFetching: tasksIsFetching } = useGetTasks(tasksParams, {
@@ -256,7 +257,7 @@ const RelocationTaskListPage: FC = () => {
 
         <RelocationTaskTable
           dataSource={extractPaginationResults(relocationTasks)}
-          pagination={relocationTasks?.pagination || false}
+          pagination={extractPaginationParams(relocationTasks)}
           loading={relocationTasksIsFetching}
           sort={relocationTasksParams.ordering}
           onChange={onChangeTable}

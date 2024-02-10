@@ -7,8 +7,8 @@ import { Link, useMatches } from 'react-router-dom'
 import { getNavMenuConfig, mapNavMenuConfig } from 'configs/navMenu/utils'
 
 import LogoutButton from 'modules/auth/components/LogoutButton'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { MonitoringRouteEnum } from 'modules/monitoring/constants'
+import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'modules/user/constants'
 import {
   useOnChangeUserStatus,
@@ -65,8 +65,8 @@ const PrivateHeader: FC = () => {
     useUpdateUserStatusMutation()
 
   const navMenuItems = useMemo<NavMenuProps['items']>(
-    () => (userMe?.role ? mapNavMenuConfig(getNavMenuConfig(userMe.role)) : []),
-    [userMe?.role],
+    () => (userMe ? mapNavMenuConfig(getNavMenuConfig(userMe.role), userMe.permissions) : []),
+    [userMe],
   )
 
   const navMenuSelectedKeys = matches.map(({ pathname }) => pathname)

@@ -1,4 +1,4 @@
-import { UserRoleEnum } from './roles'
+import { UserRoleEnum } from './enums'
 
 export const userRoleDict: Record<UserRoleEnum, string> = {
   [UserRoleEnum.FirstLineSupport]: 'Специалист первой линии поддержки',

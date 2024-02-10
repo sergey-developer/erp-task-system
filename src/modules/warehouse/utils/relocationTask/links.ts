@@ -13,7 +13,7 @@ type GetRelocationTasksPageLink = Partial<
 >
 
 export const getRelocationTasksPageLink = (params: GetRelocationTasksPageLink): string =>
-  `${WarehouseRouteEnum.RelocationTaskList}?${qs.stringify(params)}`
+  `${WarehouseRouteEnum.RelocationTasks}?${qs.stringify(params)}`
 
 export const getEditRelocationTaskPageLink = (id: IdType): string =>
   generatePath(WarehouseRouteEnum.EditRelocationTask, { id: String(id) })
