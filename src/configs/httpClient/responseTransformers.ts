@@ -7,7 +7,6 @@ import { checkReasonExist } from 'modules/task/utils/taskSuspendRequest'
 import { hasJsonContentType } from './utils'
 
 const fromJsonTransformer: AxiosResponseTransformer = (data, headers) => {
-  console.log({ headers, data })
   return hasJsonContentType(headers) ? JSON.parse(data) : data
 }
 
