@@ -1,5 +1,6 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Col, Flex, Row, Typography } from 'antd'
+import { Button, Col, Row, Typography } from 'antd'
+import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
 
 import { useAuthUser } from 'modules/auth/hooks'
@@ -7,14 +8,20 @@ import EmployeesActionsReportForm from 'modules/reports/components/EmployeesActi
 import { EmployeesActionsReportFormProps } from 'modules/reports/components/EmployeesActionsReportForm/types'
 import EmployeesActionsReportTable from 'modules/reports/components/EmployeesActionsReportTable'
 import { EmployeesActionsReportTableProps } from 'modules/reports/components/EmployeesActionsReportTable/types'
-import { useGetEmployeesActionsReport } from 'modules/reports/hooks'
+import {
+  useGetEmployeesActionsReport,
+  useLazyGetEmployeesActionsReportXlsx,
+} from 'modules/reports/hooks'
 import { GetEmployeesActionsReportQueryArgs } from 'modules/reports/models'
 import { useGetUsers } from 'modules/user/hooks'
 
 import ModalFallback from 'components/Modals/ModalFallback'
+import Space from 'components/Space'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -70,6 +77,9 @@ const EmployeesActionsReportPage: FC = () => {
     { skip: !employeeSelected },
   )
 
+  const [getReportXlsx, { isFetching: getReportXlsxIsFetching }] =
+    useLazyGetEmployeesActionsReportXlsx()
+
   const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers(
     { manager: authUser?.id!, allHierarchySubordinates: true },
     { skip: !authUser?.id },
@@ -82,6 +92,18 @@ const EmployeesActionsReportPage: FC = () => {
       actionTo: values.period?.[1].toISOString(),
       offset: initialPaginationParams.offset,
     })
+  }
+
+  const onExportExcel = async () => {
+    try {
+      const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
+
+      clickDownloadLink(
+        base64ToArrayBuffer(report),
+        MimetypeEnum.Xlsx,
+        'Отчет по действиям сотрудника',
+      )
+    } catch {}
   }
 
   const onTablePagination = useCallback(
@@ -111,8 +133,12 @@ const EmployeesActionsReportPage: FC = () => {
 
         {employeeSelected && (
           <Col span={24}>
-            <Flex vertical>
+            <Space $block direction='vertical' size='middle'>
               <Title level={5}>Действия сотрудников</Title>
+
+              <Button onClick={onExportExcel} loading={getReportXlsxIsFetching}>
+                Выгрузить в Excel
+              </Button>
 
               <EmployeesActionsReportTable
                 dataSource={extractPaginationResults(report)}
@@ -122,7 +148,7 @@ const EmployeesActionsReportPage: FC = () => {
                 onClickEquipment={onOpenEquipment}
                 onClickRelocationTask={onOpenRelocationTask}
               />
-            </Flex>
+            </Space>
           </Col>
         )}
       </Row>
