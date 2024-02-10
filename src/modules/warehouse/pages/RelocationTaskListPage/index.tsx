@@ -38,6 +38,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import {
   calculatePaginationParams,
+  extractPaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
@@ -257,7 +258,7 @@ const RelocationTaskListPage: FC = () => {
 
         <RelocationTaskTable
           dataSource={extractPaginationResults(relocationTasks)}
-          pagination={relocationTasks?.pagination || false}
+          pagination={extractPaginationParams(relocationTasks)}
           loading={relocationTasksIsFetching}
           sort={relocationTasksParams.ordering}
           onChange={onChangeTable}

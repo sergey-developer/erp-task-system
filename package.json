@@ -82,7 +82,10 @@
       "types",
       "types.ts",
       "models"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^lodash-es$": "lodash"
+    }
   },
   "browserslist": {
     "production": [

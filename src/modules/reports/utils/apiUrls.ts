@@ -1,7 +1,7 @@
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
 
-import { EmployeeReportsApiEnum } from '../constants'
+import { EmployeesReportsApiEnum } from '../constants'
 
 export const getEmployeesActionsReportUrl = (employeeId: IdType): string =>
-  generateApiPath(EmployeeReportsApiEnum.GetEmployeesActionsReport, { id: String(employeeId) })
+  generateApiPath(EmployeesReportsApiEnum.GetEmployeesActionsReport, { id: String(employeeId) })

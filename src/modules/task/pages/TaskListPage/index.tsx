@@ -65,6 +65,7 @@ import { FilterParams } from 'shared/types/filter'
 import { MaybeUndefined } from 'shared/types/utils'
 import {
   calculatePaginationParams,
+  extractPaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
@@ -448,7 +449,7 @@ const TaskListPage: FC = () => {
             dataSource={tasks}
             loading={tasksIsFetching}
             onChange={onChangeTable}
-            pagination={originalTasks?.pagination || false}
+            pagination={extractPaginationParams(originalTasks)}
             userRole={role!}
           />
         </Col>

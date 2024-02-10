@@ -97,7 +97,7 @@ const EquipmentPageLayout: FC = () => {
     navigate(WarehouseRouteEnum.EquipmentNomenclatures)
   }
 
-  const onExportToXlsx = async () => {
+  const onExportExcel = async () => {
     try {
       const equipments = await getEquipmentsXlsx(
         getEquipmentsXlsxParamsByLocation(location, equipmentsXlsxParams),
@@ -121,7 +121,7 @@ const EquipmentPageLayout: FC = () => {
               <Space size='middle'>
                 <FilterButton onClick={toggleFilterOpened} />
 
-                <Button onClick={onExportToXlsx} loading={getEquipmentsXlsxIsFetching}>
+                <Button onClick={onExportExcel} loading={getEquipmentsXlsxIsFetching}>
                   Экспорт в Excel
                 </Button>
               </Space>

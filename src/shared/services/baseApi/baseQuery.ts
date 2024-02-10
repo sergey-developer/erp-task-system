@@ -41,6 +41,7 @@ const baseQuery =
           ? 'blob'
           : undefined,
       })
+
       return { data: response.data }
     } catch (exception) {
       const error = exception as AxiosError
