@@ -263,7 +263,7 @@ export const route: Readonly<RouteObject> = {
           element: (
             <ProtectedRoute
               component={<EmployeesActionsReportPage />}
-              // permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
             />
           ),
           handle: {
