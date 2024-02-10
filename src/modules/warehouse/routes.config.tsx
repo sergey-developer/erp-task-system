@@ -152,10 +152,7 @@ export const route: Readonly<RouteObject> = {
               element: <EquipmentListPage />,
               handle: {
                 crumb: ({ qs }: BreadCrumbArgs) => (
-                  <Breadcrumb
-                    link={WarehouseRouteEnum.Equipments}
-                    text={qs.get('equipmentNomenclatureTitle') || ''}
-                  />
+                  <Breadcrumb link={WarehouseRouteEnum.Equipments} text={qs.get('title') || ''} />
                 ),
               },
             },
