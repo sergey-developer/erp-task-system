@@ -1,2 +1,2 @@
-export * from './useGetLocationList'
-export * from './useLazyGetLocationList'
+export * from './useGetLocations'
+export * from './useLazyGetLocations'

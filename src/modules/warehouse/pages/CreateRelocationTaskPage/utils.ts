@@ -10,7 +10,7 @@ import { GetEquipmentCatalogListQueryArgs } from 'modules/warehouse/models'
 import { checkRelocationTaskTypeIsWarranty } from 'modules/warehouse/utils/relocationTask'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
-import { GetLocationListQueryArgs } from 'shared/models/catalogs/location'
+import { GetLocationsQueryArgs } from 'shared/models/catalogs/location'
 import { MaybeUndefined } from 'shared/types/utils'
 
 const getConditionsByType = (type: RelocationTaskTypeEnum): EquipmentConditionEnum[] => {
@@ -93,14 +93,14 @@ export const getEquipmentCatalogListParams = (
 
 export const getRelocateFromLocationListParams = (
   type: RelocationTaskTypeEnum,
-): Pick<GetLocationListQueryArgs, 'locationTypes' | 'warehouseTypes'> => ({
+): Pick<GetLocationsQueryArgs, 'locationTypes' | 'warehouseTypes'> => ({
   locationTypes: getRelocateFromLocationTypes(type),
   warehouseTypes: getRelocateFromWarehouseTypes(type),
 })
 
 export const getRelocateToLocationListParams = (
   type: RelocationTaskTypeEnum,
-): Pick<GetLocationListQueryArgs, 'locationTypes' | 'warehouseTypes'> => ({
+): Pick<GetLocationsQueryArgs, 'locationTypes' | 'warehouseTypes'> => ({
   locationTypes: getRelocateToLocationTypes(type),
   warehouseTypes: getRelocateToWarehouseTypes(type),
 })

@@ -1,17 +1,14 @@
 import { Moment } from 'moment-timezone'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import {
-  CustomerListModel,
-  EquipmentCategoryListModel,
-  WarehouseListModel,
-} from 'modules/warehouse/models'
+import { CustomerListModel, EquipmentCategoryListModel } from 'modules/warehouse/models'
 
+import { LocationsModel } from 'shared/models/catalogs/location'
 import { EmptyFn } from 'shared/types/utils'
 
 export type EquipmentFilterFormFields = Partial<{
   conditions: EquipmentConditionEnum[]
-  warehouses: number[]
+  locations: number[]
   owners: number[]
   categories: number[]
   isNew: boolean
@@ -29,14 +26,14 @@ export type EquipmentFilterProps = {
   values?: EquipmentFilterFormFields
   initialValues: EquipmentFilterFormFields
 
-  warehouseList: WarehouseListModel
-  warehouseListIsLoading: boolean
+  locations: LocationsModel
+  locationsIsLoading: boolean
 
-  categoryList: EquipmentCategoryListModel
-  categoryListIsLoading: boolean
+  categories: EquipmentCategoryListModel
+  categoriesIsLoading: boolean
 
-  ownerList: CustomerListModel
-  ownerListIsLoading: boolean
+  owners: CustomerListModel
+  ownersIsLoading: boolean
 
   onApply: (values: EquipmentFilterFormFields) => void
   onClose: EmptyFn
