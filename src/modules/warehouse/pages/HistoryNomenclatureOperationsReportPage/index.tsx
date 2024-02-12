@@ -1,6 +1,6 @@
-import { useSetState } from 'ahooks'
+import { useBoolean, useSetState } from 'ahooks'
 import { Col, Row, Typography } from 'antd'
-import React, { FC, useCallback } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 
 import HistoryNomenclatureOperationsReportForm from 'modules/reports/components/HistoryNomenclatureOperationsReportForm'
 import { HistoryNomenclatureOperationsReportFormProps } from 'modules/reports/components/HistoryNomenclatureOperationsReportForm/types'
@@ -10,9 +10,12 @@ import { useGetHistoryNomenclatureOperationsReport } from 'modules/reports/hooks
 import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'modules/reports/models'
 import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
 
+import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { useGetLocationList } from 'shared/hooks/catalogs/location'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { IdType } from 'shared/types/common'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -20,10 +23,39 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
+const EquipmentDetails = React.lazy(() => import('modules/warehouse/components/EquipmentDetails'))
+
+const RelocationTaskDetails = React.lazy(
+  () => import('modules/warehouse/components/RelocationTaskDetails'),
+)
+
 const initialPaginationParams = getInitialPaginationParams()
 const { Title } = Typography
 
 const HistoryNomenclatureOperationsReportPage: FC = () => {
+  const [equipmentId, setEquipmentId] = useState<IdType>()
+  const [equipmentOpened, { setTrue: openEquipment, setFalse: closeEquipment }] = useBoolean(false)
+  const onOpenEquipment = useDebounceFn((id: IdType) => {
+    openEquipment()
+    setEquipmentId(id)
+  })
+  const onCloseEquipment = useDebounceFn(() => {
+    closeEquipment()
+    setEquipmentId(undefined)
+  })
+
+  const [relocationTaskId, setRelocationTaskId] = useState<IdType>()
+  const [relocationTaskOpened, { setTrue: openRelocationTask, setFalse: closeRelocationTask }] =
+    useBoolean(false)
+  const onOpenRelocationTask = useDebounceFn((id: IdType) => {
+    openRelocationTask()
+    setRelocationTaskId(id)
+  })
+  const onCloseRelocationTask = useDebounceFn(() => {
+    closeRelocationTask()
+    setRelocationTaskId(undefined)
+  })
+
   const [reportParams, setReportParams] =
     useSetState<GetHistoryNomenclatureOperationsReportQueryArgs>(initialPaginationParams)
 
@@ -86,13 +118,35 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
                 pagination={extractPaginationParams(report)}
                 loading={reportIsFetching}
                 onChange={onChangeTable}
-                onClickEquipment={() => {}}
-                onClickRelocationTask={() => {}}
+                onClickEquipment={onOpenEquipment}
+                onClickRelocationTask={onOpenRelocationTask}
               />
             </Space>
           </Col>
         )}
       </Row>
+
+      {equipmentOpened && equipmentId && (
+        <React.Suspense fallback={<ModalFallback open tip='Загрузка карточки оборудования' />}>
+          <EquipmentDetails
+            open={equipmentOpened}
+            onClose={onCloseEquipment}
+            equipmentId={equipmentId}
+          />
+        </React.Suspense>
+      )}
+
+      {relocationTaskOpened && relocationTaskId && (
+        <React.Suspense
+          fallback={<ModalFallback open tip='Загрузка карточки заявки на перемещение' />}
+        >
+          <RelocationTaskDetails
+            open={relocationTaskOpened}
+            onClose={onCloseRelocationTask}
+            relocationTaskId={relocationTaskId}
+          />
+        </React.Suspense>
+      )}
     </>
   )
 }

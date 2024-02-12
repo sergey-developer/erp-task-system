@@ -278,7 +278,7 @@ export const route: Readonly<RouteObject> = {
           element: (
             <ProtectedRoute
               component={<HistoryNomenclatureOperationsReportPage />}
-              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+              // permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
             />
           ),
           handle: {
