@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 import { UsersModel } from 'modules/user/models'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 
-import { LocationListItemModel, LocationListModel } from 'shared/models/catalogs/location'
+import { LocationListItemModel, LocationsModel } from 'shared/models/catalogs/location'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 
@@ -31,9 +31,9 @@ export type RelocationTaskFormProps = {
   userList: UsersModel
   userListIsLoading: boolean
 
-  relocateFromLocationList: LocationListModel
+  relocateFromLocationList: LocationsModel
   relocateFromLocationListIsLoading: boolean
-  relocateToLocationList: LocationListModel
+  relocateToLocationList: LocationsModel
   relocateToLocationListIsLoading: boolean
 
   type?: RelocationTaskTypeEnum

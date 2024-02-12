@@ -287,7 +287,7 @@ describe('Информация об оборудовании', () => {
       expect(value).toBeInTheDocument()
     })
 
-    test('Местоположение отображается', async () => {
+    test('Местонахождение отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
@@ -296,7 +296,7 @@ describe('Информация об оборудовании', () => {
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('location')
-      const label = testUtils.getInfoInBlock(block, /Местоположение/)
+      const label = testUtils.getInfoInBlock(block, /Местонахождение/)
       const value = testUtils.getInfoInBlock(block, equipment.location!.title)
 
       expect(label).toBeInTheDocument()

@@ -32,7 +32,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
-import { useGetLocationList } from 'shared/hooks/catalogs/location'
+import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -161,7 +161,7 @@ const RelocationTaskListPage: FC = () => {
     skip: !selectedIncidentId,
   })
 
-  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocationList(
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
     undefined,
     { skip: !filterOpened },
   )

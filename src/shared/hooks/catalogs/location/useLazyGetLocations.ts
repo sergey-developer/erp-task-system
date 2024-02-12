@@ -2,35 +2,32 @@ import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
-import { getLocationListErrorMsg } from 'shared/constants/catalogs'
-import {
-  GetLocationListQueryArgs,
-  GetLocationListSuccessResponse,
-} from 'shared/models/catalogs/location'
+import { getLocationsErrMsg } from 'shared/constants/catalogs'
+import { GetLocationsQueryArgs, GetLocationsSuccessResponse } from 'shared/models/catalogs/location'
 import {
   getErrorDetail,
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
 } from 'shared/services/baseApi'
-import { useLazyGetLocationListQuery } from 'shared/services/catalogsApi.service'
+import { useLazyGetLocationsQuery } from 'shared/services/catalogsApi.service'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetLocationListResult = CustomUseLazyQueryHookResult<
-  MaybeUndefined<GetLocationListQueryArgs>,
-  GetLocationListSuccessResponse
+type UseGetLocationsResult = CustomUseLazyQueryHookResult<
+  MaybeUndefined<GetLocationsQueryArgs>,
+  GetLocationsSuccessResponse
 >
 
-export const useLazyGetLocationList = (): UseGetLocationListResult => {
-  const [trigger, state] = useLazyGetLocationListQuery()
+export const useLazyGetLocations = (): UseGetLocationsResult => {
+  const [trigger, state] = useLazyGetLocationsQuery()
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getLocationListErrorMsg)
+        showErrorNotification(getLocationsErrMsg)
       }
     }
   }, [state.error])

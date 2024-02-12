@@ -58,7 +58,7 @@ import {
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { useLazyGetLocationList } from 'shared/hooks/catalogs/location'
+import { useLazyGetLocations } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
@@ -239,12 +239,12 @@ const CreateRelocationTaskPage: FC = () => {
   const [
     getRelocateFromLocationList,
     { currentData: relocateFromLocationList = [], isFetching: relocateFromLocationListIsFetching },
-  ] = useLazyGetLocationList()
+  ] = useLazyGetLocations()
 
   const [
     getRelocateToLocationList,
     { currentData: relocateToLocationList = [], isFetching: relocateToLocationListIsFetching },
-  ] = useLazyGetLocationList()
+  ] = useLazyGetLocations()
 
   /* сделано через lazy т.к. по каким-то причинам запрос не отправляется снова если один из параметров не изменился */
   useEffect(() => {

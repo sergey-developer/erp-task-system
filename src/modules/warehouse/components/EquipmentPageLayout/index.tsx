@@ -12,7 +12,6 @@ import {
   useGetEquipmentCategoryList,
   useLazyGetEquipmentsXlsx,
 } from 'modules/warehouse/hooks/equipment'
-import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { GetEquipmentsXlsxQueryArgs } from 'modules/warehouse/models'
 import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
 
@@ -21,6 +20,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { clickDownloadLink } from 'shared/utils/common'
 
 import { EquipmentPageContextType } from './context'
@@ -46,7 +46,7 @@ const getEquipmentsXlsxParamsByLocation = (
 const initialFilterValues: EquipmentFilterFormFields = {
   conditions: undefined,
   categories: undefined,
-  warehouses: undefined,
+  locations: undefined,
   owners: undefined,
   priceTo: undefined,
   priceFrom: undefined,
@@ -66,13 +66,15 @@ const EquipmentPageLayout: FC = () => {
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
   const [filterValues, setFilterValues] = useState<EquipmentFilterFormFields>()
 
-  const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
-    useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
+    { ordering: 'title' },
+    { skip: !filterOpened },
+  )
 
-  const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
+  const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
     useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
 
-  const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList(
     undefined,
     { skip: !filterOpened },
   )
@@ -144,12 +146,12 @@ const EquipmentPageLayout: FC = () => {
             visible={filterOpened}
             values={filterValues}
             initialValues={initialFilterValues}
-            warehouseList={warehouseList}
-            warehouseListIsLoading={warehouseListIsFetching}
-            categoryList={equipmentCategoryList}
-            categoryListIsLoading={equipmentCategoryListIsFetching}
-            ownerList={customerList}
-            ownerListIsLoading={customerListIsFetching}
+            locations={locations}
+            locationsIsLoading={locationsIsFetching}
+            categories={equipmentCategories}
+            categoriesIsLoading={equipmentCategoriesIsFetching}
+            owners={customers}
+            ownersIsLoading={customersIsFetching}
             onClose={toggleFilterOpened}
             onApply={onApplyFilter}
           />

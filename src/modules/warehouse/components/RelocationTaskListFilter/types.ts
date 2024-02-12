@@ -8,7 +8,7 @@ import {
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { LocationListModel } from 'shared/models/catalogs/location'
+import { LocationsModel } from 'shared/models/catalogs/location'
 import { IdType } from 'shared/types/common'
 
 export type RelocationTaskListFilterFormFields = Partial<{
@@ -30,7 +30,7 @@ export type RelocationTaskListFilterProps = Pick<DrawerFilterProps, 'open' | 'on
   users: UsersModel
   usersIsLoading: boolean
 
-  locations: LocationListModel
+  locations: LocationsModel
   locationsIsLoading: boolean
 
   onApply: (values: RelocationTaskListFilterFormFields) => void
