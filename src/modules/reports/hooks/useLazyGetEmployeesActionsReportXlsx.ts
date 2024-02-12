@@ -15,7 +15,7 @@ import {
   GetEmployeesActionsReportXlsxQueryArgs,
   GetEmployeesActionsReportXlsxSuccessResponse,
 } from '../models'
-import { useLazyGetEmployeesActionsReportXlsxQuery } from '../services/employeeReportsApi.service'
+import { useLazyGetEmployeesActionsReportXlsxQuery } from '../services/reportsApi.service'
 
 type UseGetEmployeesActionsReportXlsxResult = CustomUseLazyQueryHookResult<
   GetEmployeesActionsReportXlsxQueryArgs,

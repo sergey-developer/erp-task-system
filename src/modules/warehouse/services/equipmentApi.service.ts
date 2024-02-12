@@ -61,7 +61,7 @@ const equipmentApiService = baseApiService
     endpoints: (build) => ({
       getEquipmentNomenclatureList: build.query<
         GetEquipmentNomenclatureListTransformedSuccessResponse,
-        GetEquipmentNomenclatureListQueryArgs
+        MaybeUndefined<GetEquipmentNomenclatureListQueryArgs>
       >({
         query: (params) => ({
           url: EquipmentApiEnum.GetEquipmentNomenclatureList,

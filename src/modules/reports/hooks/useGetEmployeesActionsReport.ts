@@ -12,7 +12,7 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { getEmployeesActionsReportErrMsg } from '../constants'
 import { GetEmployeesActionsReportQueryArgs } from '../models'
-import { useGetEmployeesActionsReportQuery } from '../services/employeeReportsApi.service'
+import { useGetEmployeesActionsReportQuery } from '../services/reportsApi.service'
 import { GetEmployeesActionsReportTransformedSuccessResponse } from '../types'
 
 type UseGetEmployeesActionsReportResult = CustomUseQueryHookResult<

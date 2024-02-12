@@ -12,7 +12,7 @@ import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { filterOptionBy } from 'shared/utils/common'
 
-import { EmployeesActionsReportFormFormFields, EmployeesActionsReportFormProps } from './types'
+import { EmployeesActionsReportFormFields, EmployeesActionsReportFormProps } from './types'
 
 const { RangePicker } = DatePicker
 const { Text } = Typography
@@ -34,10 +34,10 @@ const EmployeesActionsReportForm: FC<EmployeesActionsReportFormProps> = ({
 
   onSubmit,
 }) => {
-  const [form] = useForm<EmployeesActionsReportFormFormFields>()
+  const [form] = useForm<EmployeesActionsReportFormFields>()
 
   return (
-    <Form<EmployeesActionsReportFormFormFields>
+    <Form<EmployeesActionsReportFormFields>
       data-testid='employees-actions-report-form'
       form={form}
       onFinish={onSubmit}
