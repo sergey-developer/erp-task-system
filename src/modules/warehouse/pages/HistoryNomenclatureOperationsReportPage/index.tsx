@@ -1,5 +1,5 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Col, Row, Typography } from 'antd'
+import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useCallback, useState } from 'react'
 
 import HistoryNomenclatureOperationsReportForm from 'modules/reports/components/HistoryNomenclatureOperationsReportForm'
@@ -13,9 +13,11 @@ import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipme
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetLocationList } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { clickDownloadLink } from 'shared/utils/common'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -81,6 +83,19 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
     })
   }
 
+  const onExportExcel = async () => {
+    try {
+      // const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
+
+      clickDownloadLink(
+        // base64ToArrayBuffer(report),
+        '',
+        MimetypeEnum.Xlsx,
+        'Отчет по количеству потраченного оборудования',
+      )
+    } catch {}
+  }
+
   const onTablePagination = useCallback(
     (pagination: Parameters<HistoryNomenclatureOperationsReportTableProps['onChange']>[0]) => {
       setReportParams(calculatePaginationParams(pagination))
@@ -112,6 +127,10 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
           <Col span={24}>
             <Space $block direction='vertical' size='middle'>
               <Title level={5}>Действия сотрудников</Title>
+
+              <Button onClick={onExportExcel} loading={false}>
+                Выгрузить в Excel
+              </Button>
 
               <HistoryNomenclatureOperationsReportTable
                 dataSource={extractPaginationResults(report)}

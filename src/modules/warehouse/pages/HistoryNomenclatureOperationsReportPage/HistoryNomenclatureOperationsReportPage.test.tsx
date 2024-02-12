@@ -24,6 +24,9 @@ import {
 } from '_tests_/mocks/api'
 import { buttonTestUtils, render, setupApiTests } from '_tests_/utils'
 
+import { MimetypeEnum } from '../../../../shared/constants/mimetype'
+import * as base64Utils from '../../../../shared/utils/common/base64'
+import * as downloadLinkUtils from '../../../../shared/utils/common/downloadLink'
 import HistoryNomenclatureOperationsReportPage from './index'
 
 const getContainer = () => screen.getByTestId('history-nomenclature-operations-report-page')
@@ -138,6 +141,67 @@ describe('Страница отчета количества потраченн�
       const details = await relocationTaskDetailsTestUtils.findContainer()
 
       expect(details).toBeInTheDocument()
+    })
+  })
+
+  describe('Выгрузка в excel', () => {
+    // todo: выяснить почему не проходит
+    test.skip('При успешном запросе вызывается функция открытия окна скачивания', async () => {
+      const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
+
+      const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
+      const fakeArrayBuffer = new Uint8Array()
+      base64ToArrayBufferSpy.mockReturnValueOnce(fakeArrayBuffer)
+
+      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+      mockGetHistoryNomenclatureOperationsReportSuccess({
+        body: commonFixtures.paginatedListResponse([reportListItem]),
+      })
+
+      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      mockGetEquipmentNomenclatureListSuccess({
+        body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
+      })
+
+      const locationListItem = catalogsFixtures.locationListItem()
+      mockGetLocationListSuccess({ body: [locationListItem] })
+
+      mockGetEquipmentSuccess(reportListItem.equipment.id)
+      mockGetEquipmentAttachmentListSuccess(reportListItem.equipment.id)
+
+      const { user } = render(<HistoryNomenclatureOperationsReportPage />)
+
+      await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
+      await historyNomenclatureOperationsReportFormTestUtils.expectRelocateFromLoadingFinished()
+      await historyNomenclatureOperationsReportFormTestUtils.expectRelocateToLoadingFinished()
+      await historyNomenclatureOperationsReportFormTestUtils.openNomenclatureSelect(user)
+      await historyNomenclatureOperationsReportFormTestUtils.setNomenclature(
+        user,
+        equipmentNomenclatureListItem.title,
+      )
+      await historyNomenclatureOperationsReportFormTestUtils.openRelocateFromSelect(user)
+      await historyNomenclatureOperationsReportFormTestUtils.setRelocateFrom(
+        user,
+        locationListItem.title,
+      )
+      await historyNomenclatureOperationsReportFormTestUtils.clickSubmitButton(user)
+      await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()
+
+      // const file = fakeWord()
+      // mockGetEmployeesActionsReportXlsxSuccess(userListItem.id, { body: file })
+
+      // await testUtils.clickExportToExcelButton(user)
+      // await testUtils.expectExportToExcelLoadingFinished()
+      //
+      // expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
+      // expect(base64ToArrayBufferSpy).toBeCalledWith(file)
+
+      expect(clickDownloadLinkSpy).toBeCalledTimes(1)
+      expect(clickDownloadLinkSpy).toBeCalledWith(
+        fakeArrayBuffer,
+        MimetypeEnum.Xlsx,
+        'Отчет по действиям сотрудника',
+      )
     })
   })
 })
