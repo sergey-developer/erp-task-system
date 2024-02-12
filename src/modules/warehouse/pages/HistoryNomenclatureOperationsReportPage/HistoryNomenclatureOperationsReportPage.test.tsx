@@ -28,7 +28,7 @@ import { buttonTestUtils, fakeWord, getStoreWithAuth, render, setupApiTests } fr
 
 import EmployeesActionsReportPage from './index'
 
-const getContainer = () => screen.getByTestId('spent-equipment-amount-report-page')
+const getContainer = () => screen.getByTestId('history-nomenclature-operations-report-page')
 
 // export to excel button
 const getExportToExcelButton = () =>

@@ -70,11 +70,11 @@ const EmployeesActionsReportPage: FC = () => {
     employeeId: 0,
   })
 
-  const employeeSelected = !!reportParams.employeeId
+  const isShowReport = !!reportParams.employeeId
 
   const { currentData: report, isFetching: reportIsFetching } = useGetEmployeesActionsReport(
     reportParams,
-    { skip: !employeeSelected },
+    { skip: !isShowReport },
   )
 
   const [getReportXlsx, { isFetching: getReportXlsxIsFetching }] =
@@ -131,7 +131,7 @@ const EmployeesActionsReportPage: FC = () => {
           />
         </Col>
 
-        {employeeSelected && (
+        {isShowReport && (
           <Col span={24}>
             <Space $block direction='vertical' size='middle'>
               <Title level={5}>Действия сотрудников</Title>
