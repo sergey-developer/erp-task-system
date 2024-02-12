@@ -13,7 +13,7 @@ import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipme
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { useGetLocationList } from 'shared/hooks/catalogs/location'
+import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import {
@@ -68,7 +68,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
     useGetEquipmentNomenclatureList()
 
-  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocationList()
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
 
   const onClickUpdate: HistoryNomenclatureOperationsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
