@@ -2,8 +2,8 @@ import { useSetState } from 'ahooks'
 import { Col, Row } from 'antd'
 import React, { FC } from 'react'
 
-import SpentEquipmentAmountReportForm from 'modules/reports/components/SpentEquipmentAmountReportForm'
-import { SpentEquipmentAmountReportFormProps } from 'modules/reports/components/SpentEquipmentAmountReportForm/types'
+import HistoryNomenclatureOperationsReportForm from 'modules/reports/components/HistoryNomenclatureOperationsReportForm'
+import { HistoryNomenclatureOperationsReportFormProps } from 'modules/reports/components/HistoryNomenclatureOperationsReportForm/types'
 import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
 
 import { useGetLocationList } from 'shared/hooks/catalogs/location'
@@ -13,7 +13,7 @@ import { extractPaginationResults, getInitialPaginationParams } from 'shared/uti
 
 const initialPaginationParams = getInitialPaginationParams()
 
-const SpentEquipmentAmountReportPage: FC = () => {
+const HistoryNomenclatureOperationsReportPage: FC = () => {
   const [reportParams, setReportParams] = useSetState<
     Partial<
       PaginationParams & {
@@ -33,7 +33,7 @@ const SpentEquipmentAmountReportPage: FC = () => {
 
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocationList()
 
-  const onClickUpdate: SpentEquipmentAmountReportFormProps['onSubmit'] = (values) => {
+  const onClickUpdate: HistoryNomenclatureOperationsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
       nomenclature: values.nomenclature,
       relocateFrom: values.relocateFrom,
@@ -46,9 +46,9 @@ const SpentEquipmentAmountReportPage: FC = () => {
 
   return (
     <>
-      <Row data-testid='spent-equipment-amount-report-page' gutter={[0, 16]}>
+      <Row data-testid='history-nomenclature-operations-report-page' gutter={[0, 16]}>
         <Col span={7}>
-          <SpentEquipmentAmountReportForm
+          <HistoryNomenclatureOperationsReportForm
             nomenclatures={extractPaginationResults(equipmentNomenclatures)}
             nomenclaturesIsLoading={equipmentNomenclaturesIsFetching}
             locations={locations}
@@ -61,4 +61,4 @@ const SpentEquipmentAmountReportPage: FC = () => {
   )
 }
 
-export default SpentEquipmentAmountReportPage
+export default HistoryNomenclatureOperationsReportPage

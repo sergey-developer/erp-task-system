@@ -10,10 +10,10 @@ import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
 
-import SpentEquipmentAmountReportForm from './index'
-import { SpentEquipmentAmountReportFormProps } from './types'
+import HistoryNomenclatureOperationsReportForm from './index'
+import { HistoryNomenclatureOperationsReportFormProps } from './types'
 
-const props: SpentEquipmentAmountReportFormProps = {
+const props: HistoryNomenclatureOperationsReportFormProps = {
   nomenclatures: [],
   nomenclaturesIsLoading: false,
 
@@ -164,7 +164,7 @@ describe('Форма отчета количества потраченного 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
 
       const { user } = render(
-        <SpentEquipmentAmountReportForm
+        <HistoryNomenclatureOperationsReportForm
           {...props}
           nomenclatures={[equipmentNomenclatureListItem]}
         />,
@@ -178,7 +178,7 @@ describe('Форма отчета количества потраченного 
     })
 
     test('Обязательное поле', async () => {
-      const { user } = render(<SpentEquipmentAmountReportForm {...props} />)
+      const { user } = render(<HistoryNomenclatureOperationsReportForm {...props} />)
       await testUtils.clickSubmitButton(user)
       const error = await testUtils.findNomenclatureError(validationMessages.required)
       expect(error).toBeInTheDocument()
@@ -190,7 +190,7 @@ describe('Форма отчета количества потраченного 
       const locationListItem = catalogsFixtures.locationListItem()
 
       const { user } = render(
-        <SpentEquipmentAmountReportForm {...props} locations={[locationListItem]} />,
+        <HistoryNomenclatureOperationsReportForm {...props} locations={[locationListItem]} />,
       )
 
       await testUtils.openRelocateFromSelect(user)
@@ -201,7 +201,7 @@ describe('Форма отчета количества потраченного 
     })
 
     test('Обязательное поле если объект прибытия не выбран', async () => {
-      const { user } = render(<SpentEquipmentAmountReportForm {...props} />)
+      const { user } = render(<HistoryNomenclatureOperationsReportForm {...props} />)
       await testUtils.clickSubmitButton(user)
       const error = await testUtils.findRelocateFromError(validationMessages.required)
       expect(error).toBeInTheDocument()
@@ -211,7 +211,7 @@ describe('Форма отчета количества потраченного 
       const locationListItem = catalogsFixtures.locationListItem()
 
       const { user } = render(
-        <SpentEquipmentAmountReportForm {...props} locations={[locationListItem]} />,
+        <HistoryNomenclatureOperationsReportForm {...props} locations={[locationListItem]} />,
       )
 
       await testUtils.openRelocateToSelect(user)
@@ -227,7 +227,7 @@ describe('Форма отчета количества потраченного 
       const locationListItem = catalogsFixtures.locationListItem()
 
       const { user } = render(
-        <SpentEquipmentAmountReportForm {...props} locations={[locationListItem]} />,
+        <HistoryNomenclatureOperationsReportForm {...props} locations={[locationListItem]} />,
       )
 
       await testUtils.openRelocateToSelect(user)
@@ -238,7 +238,7 @@ describe('Форма отчета количества потраченного 
     })
 
     test('Обязательное поле если объект выбытия не выбран', async () => {
-      const { user } = render(<SpentEquipmentAmountReportForm {...props} />)
+      const { user } = render(<HistoryNomenclatureOperationsReportForm {...props} />)
       await testUtils.clickSubmitButton(user)
       const error = await testUtils.findRelocateToError(validationMessages.required)
       expect(error).toBeInTheDocument()
@@ -248,7 +248,7 @@ describe('Форма отчета количества потраченного 
       const locationListItem = catalogsFixtures.locationListItem()
 
       const { user } = render(
-        <SpentEquipmentAmountReportForm {...props} locations={[locationListItem]} />,
+        <HistoryNomenclatureOperationsReportForm {...props} locations={[locationListItem]} />,
       )
 
       await testUtils.openRelocateFromSelect(user)
@@ -261,7 +261,7 @@ describe('Форма отчета количества потраченного 
 
   describe('Поле периода', () => {
     test('Можно установить значение', async () => {
-      const { user } = render(<SpentEquipmentAmountReportForm {...props} />)
+      const { user } = render(<HistoryNomenclatureOperationsReportForm {...props} />)
 
       const { startDateField, startDateValue, endDateField, endDateValue } =
         await testUtils.setPeriod(user)

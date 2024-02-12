@@ -56,8 +56,8 @@ const EmployeesActionsReportPage = React.lazy(
   () => import('modules/warehouse/pages/EmployeesActionsReportPage'),
 )
 
-const SpentEquipmentAmountReportPage = React.lazy(
-  () => import('modules/warehouse/pages/SpentEquipmentAmountReportPage'),
+const HistoryNomenclatureOperationsReportPage = React.lazy(
+  () => import('modules/warehouse/pages/HistoryNomenclatureOperationsReportPage'),
 )
 
 export const route: Readonly<RouteObject> = {
@@ -274,17 +274,17 @@ export const route: Readonly<RouteObject> = {
           },
         },
         {
-          path: WarehouseRouteEnum.SpentEquipmentAmount,
+          path: WarehouseRouteEnum.HistoryNomenclatureOperations,
           element: (
             <ProtectedRoute
-              component={<SpentEquipmentAmountReportPage />}
-              // permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+              component={<HistoryNomenclatureOperationsReportPage />}
+              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
             />
           ),
           handle: {
             crumb: () => (
               <Breadcrumb
-                link={WarehouseRouteEnum.SpentEquipmentAmount}
+                link={WarehouseRouteEnum.HistoryNomenclatureOperations}
                 text='Количество потраченного оборудования'
               />
             ),
