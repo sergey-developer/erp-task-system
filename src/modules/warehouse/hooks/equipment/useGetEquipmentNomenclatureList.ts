@@ -8,15 +8,16 @@ import { useGetEquipmentNomenclatureListQuery } from 'modules/warehouse/services
 import { GetEquipmentNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
 
 import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetEquipmentNomenclatureListResult = CustomUseQueryHookResult<
-  GetEquipmentNomenclatureListQueryArgs,
+  MaybeUndefined<GetEquipmentNomenclatureListQueryArgs>,
   GetEquipmentNomenclatureListTransformedSuccessResponse
 >
 
 export const useGetEquipmentNomenclatureList = (
-  args: GetEquipmentNomenclatureListQueryArgs,
+  args?: GetEquipmentNomenclatureListQueryArgs,
 ): UseGetEquipmentNomenclatureListResult => {
   const state = useGetEquipmentNomenclatureListQuery(args)
 

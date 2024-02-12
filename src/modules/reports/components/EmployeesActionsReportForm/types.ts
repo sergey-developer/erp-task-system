@@ -8,10 +8,10 @@ export type EmployeesActionsReportFormProps = {
   users: UsersModel
   usersIsLoading: boolean
 
-  onSubmit: (values: EmployeesActionsReportFormFormFields) => void
+  onSubmit: (values: EmployeesActionsReportFormFields) => void
 }
 
-export type EmployeesActionsReportFormFormFields = {
+export type EmployeesActionsReportFormFields = {
   employee: IdType
   period?: [Moment, Moment]
 }
