@@ -51,8 +51,13 @@ const EditRelocationTaskPage = React.lazy(
 )
 
 const ReportsCatalogPage = React.lazy(() => import('modules/warehouse/pages/ReportsCatalogPage'))
+
 const EmployeesActionsReportPage = React.lazy(
   () => import('modules/warehouse/pages/EmployeesActionsReportPage'),
+)
+
+const SpentEquipmentAmountReportPage = React.lazy(
+  () => import('modules/warehouse/pages/SpentEquipmentAmountReportPage'),
 )
 
 export const route: Readonly<RouteObject> = {
@@ -151,10 +156,7 @@ export const route: Readonly<RouteObject> = {
               element: <EquipmentListPage />,
               handle: {
                 crumb: ({ qs }: BreadCrumbArgs) => (
-                  <Breadcrumb
-                    link={WarehouseRouteEnum.Equipments}
-                    text={qs.get('equipmentNomenclatureTitle') || ''}
-                  />
+                  <Breadcrumb link={WarehouseRouteEnum.Equipments} text={qs.get('title') || ''} />
                 ),
               },
             },
@@ -268,6 +270,23 @@ export const route: Readonly<RouteObject> = {
           handle: {
             crumb: () => (
               <Breadcrumb link={WarehouseRouteEnum.EmployeesActions} text='Действия сотрудников' />
+            ),
+          },
+        },
+        {
+          path: WarehouseRouteEnum.SpentEquipmentAmount,
+          element: (
+            <ProtectedRoute
+              component={<SpentEquipmentAmountReportPage />}
+              // permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+            />
+          ),
+          handle: {
+            crumb: () => (
+              <Breadcrumb
+                link={WarehouseRouteEnum.SpentEquipmentAmount}
+                text='Количество потраченного оборудования'
+              />
             ),
           },
         },

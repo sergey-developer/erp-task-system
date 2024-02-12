@@ -448,7 +448,7 @@ describe('Информация о заявке о перемещении', () =>
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute(
           'href',
-          getTaskListPageLink({ viewTaskId: relocationTask.task!.id }),
+          getTaskListPageLink({ viewTask: relocationTask.task!.id }),
         )
       })
 

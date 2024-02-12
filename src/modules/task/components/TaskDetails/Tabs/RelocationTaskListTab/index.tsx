@@ -59,7 +59,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
   const onClickCreate = useNavigateToCreateRelocationTaskSimplifiedPage({
     task,
     from: getTaskListPageLink({
-      viewTaskId: task.id,
+      viewTask: task.id,
       taskDetailsTab: TaskDetailsTabsEnum.RelocationTasks,
     }),
   })
