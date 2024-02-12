@@ -22,7 +22,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { renderUploadedFile } from 'modules/attachment/utils'
-import { useAuthUser } from 'modules/auth/hooks'
 import { getCompleteAt } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
@@ -121,7 +120,6 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const navigate = useNavigate()
 
   const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
-  const authUser = useAuthUser()
 
   const [form] = Form.useForm<SimplifiedRelocationTaskFormFields>()
 
@@ -222,11 +220,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   )
 
   const { currentData: warehouseMSI, isFetching: warehouseMSIIsFetching } = useGetWarehouseMSI(
-    {
-      userId: authUser?.id!,
-      id: task?.assignee?.id,
-    },
-    { skip: !authUser?.id || !task?.assignee?.id },
+    { userId: task?.assignee?.id! },
+    { skip: !task?.assignee?.id },
   )
 
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
