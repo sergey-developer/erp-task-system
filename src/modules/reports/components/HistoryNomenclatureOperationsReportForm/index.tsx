@@ -12,12 +12,15 @@ import { onlyRequiredRules } from 'shared/constants/validation'
 import { LocationListItemModel } from 'shared/models/catalogs/location'
 import { filterOptionBy } from 'shared/utils/common'
 
-import { SpentEquipmentAmountReportFormFields, SpentEquipmentAmountReportFormProps } from './types'
+import {
+  HistoryNomenclatureOperationsReportFormFields,
+  HistoryNomenclatureOperationsReportFormProps,
+} from './types'
 
 const { RangePicker } = DatePicker
 const { Text } = Typography
 
-const SpentEquipmentAmountReportForm: FC<SpentEquipmentAmountReportFormProps> = ({
+const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsReportFormProps> = ({
   nomenclatures,
   nomenclaturesIsLoading,
 
@@ -26,12 +29,12 @@ const SpentEquipmentAmountReportForm: FC<SpentEquipmentAmountReportFormProps> = 
 
   onSubmit,
 }) => {
-  const [form] = useForm<SpentEquipmentAmountReportFormFields>()
+  const [form] = useForm<HistoryNomenclatureOperationsReportFormFields>()
   const relocateFromFormValue = Form.useWatch('relocateFrom', form)
   const relocateToFormValue = Form.useWatch('relocateTo', form)
 
   return (
-    <Form<SpentEquipmentAmountReportFormFields>
+    <Form<HistoryNomenclatureOperationsReportFormFields>
       data-testid='spent-equipment-amount-report-form'
       form={form}
       onFinish={onSubmit}
@@ -71,6 +74,7 @@ const SpentEquipmentAmountReportForm: FC<SpentEquipmentAmountReportFormProps> = 
           loading={locationsIsLoading}
           options={locations}
           placeholder='Выберите объект выбытия'
+          allowClear
           showSearch
           filterOption={filterOptionBy('title')}
         />
@@ -91,6 +95,7 @@ const SpentEquipmentAmountReportForm: FC<SpentEquipmentAmountReportFormProps> = 
           loading={locationsIsLoading}
           options={locations}
           placeholder='Выберите объект прибытия'
+          allowClear
           showSearch
           filterOption={filterOptionBy('title')}
         />
@@ -122,4 +127,4 @@ const SpentEquipmentAmountReportForm: FC<SpentEquipmentAmountReportFormProps> = 
   )
 }
 
-export default SpentEquipmentAmountReportForm
+export default HistoryNomenclatureOperationsReportForm
