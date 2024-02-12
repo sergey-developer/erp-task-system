@@ -74,6 +74,7 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
           loading={locationsIsLoading}
           options={locations}
           placeholder='Выберите объект выбытия'
+          allowClear
           showSearch
           filterOption={filterOptionBy('title')}
         />
@@ -94,6 +95,7 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
           loading={locationsIsLoading}
           options={locations}
           placeholder='Выберите объект прибытия'
+          allowClear
           showSearch
           filterOption={filterOptionBy('title')}
         />

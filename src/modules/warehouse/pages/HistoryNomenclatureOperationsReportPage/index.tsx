@@ -1,32 +1,37 @@
 import { useSetState } from 'ahooks'
-import { Col, Row } from 'antd'
-import React, { FC } from 'react'
+import { Col, Row, Typography } from 'antd'
+import React, { FC, useCallback } from 'react'
 
 import HistoryNomenclatureOperationsReportForm from 'modules/reports/components/HistoryNomenclatureOperationsReportForm'
 import { HistoryNomenclatureOperationsReportFormProps } from 'modules/reports/components/HistoryNomenclatureOperationsReportForm/types'
+import HistoryNomenclatureOperationsReportTable from 'modules/reports/components/HistoryNomenclatureOperationsReportTable'
+import { HistoryNomenclatureOperationsReportTableProps } from 'modules/reports/components/HistoryNomenclatureOperationsReportTable/types'
+import { useGetHistoryNomenclatureOperationsReport } from 'modules/reports/hooks'
+import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'modules/reports/models'
 import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
 
+import Space from 'components/Space'
+
 import { useGetLocationList } from 'shared/hooks/catalogs/location'
-import { IdType } from 'shared/types/common'
-import { PaginationParams } from 'shared/types/pagination'
-import { extractPaginationResults, getInitialPaginationParams } from 'shared/utils/pagination'
+import {
+  calculatePaginationParams,
+  extractPaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 const initialPaginationParams = getInitialPaginationParams()
+const { Title } = Typography
 
 const HistoryNomenclatureOperationsReportPage: FC = () => {
-  const [reportParams, setReportParams] = useSetState<
-    Partial<
-      PaginationParams & {
-        nomenclature: IdType
-        relocateFrom: IdType
-        relocateTo: IdType
-        createdAtFrom: string
-        createdAtTo: string
-      }
-    >
-  >({
-    ...initialPaginationParams,
-  })
+  const [reportParams, setReportParams] =
+    useSetState<GetHistoryNomenclatureOperationsReportQueryArgs>(initialPaginationParams)
+
+  const isShowReport =
+    !!reportParams.nomenclature && (!!reportParams.relocateFrom || !!reportParams.relocateTo)
+
+  const { currentData: report, isFetching: reportIsFetching } =
+    useGetHistoryNomenclatureOperationsReport(reportParams, { skip: !isShowReport })
 
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
     useGetEquipmentNomenclatureList()
@@ -44,6 +49,20 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
     })
   }
 
+  const onTablePagination = useCallback(
+    (pagination: Parameters<HistoryNomenclatureOperationsReportTableProps['onChange']>[0]) => {
+      setReportParams(calculatePaginationParams(pagination))
+    },
+    [setReportParams],
+  )
+
+  const onChangeTable = useCallback<HistoryNomenclatureOperationsReportTableProps['onChange']>(
+    (pagination) => {
+      onTablePagination(pagination)
+    },
+    [onTablePagination],
+  )
+
   return (
     <>
       <Row data-testid='history-nomenclature-operations-report-page' gutter={[0, 16]}>
@@ -56,6 +75,23 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
             onSubmit={onClickUpdate}
           />
         </Col>
+
+        {isShowReport && (
+          <Col span={24}>
+            <Space $block direction='vertical' size='middle'>
+              <Title level={5}>Действия сотрудников</Title>
+
+              <HistoryNomenclatureOperationsReportTable
+                dataSource={extractPaginationResults(report)}
+                pagination={extractPaginationParams(report)}
+                loading={reportIsFetching}
+                onChange={onChangeTable}
+                onClickEquipment={() => {}}
+                onClickRelocationTask={() => {}}
+              />
+            </Space>
+          </Col>
+        )}
       </Row>
     </>
   )
