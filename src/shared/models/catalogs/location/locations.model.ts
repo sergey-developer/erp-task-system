@@ -7,4 +7,4 @@ export type LocationListItemModel = {
   type: LocationTypeEnum
 }
 
-export type LocationListModel = LocationListItemModel[]
+export type LocationsModel = LocationListItemModel[]

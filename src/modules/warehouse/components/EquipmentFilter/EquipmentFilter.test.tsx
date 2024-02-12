@@ -9,6 +9,7 @@ import {
 import { yesNoOptions } from 'shared/constants/selectField'
 import { getBooleanOptions } from 'shared/utils/selectField'
 
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { buttonTestUtils, radioButtonTestUtils, render, selectTestUtils } from '_tests_/utils'
 
@@ -21,14 +22,14 @@ const props: Readonly<EquipmentFilterProps> = {
   values: {},
   initialValues: {},
 
-  warehouseList: warehouseFixtures.warehouseList(2),
-  warehouseListIsLoading: false,
+  locations: catalogsFixtures.locationList(2),
+  locationsIsLoading: false,
 
-  categoryList: warehouseFixtures.equipmentCategoryList(2),
-  categoryListIsLoading: false,
+  categories: warehouseFixtures.equipmentCategoryList(2),
+  categoriesIsLoading: false,
 
-  ownerList: warehouseFixtures.customerList(2),
-  ownerListIsLoading: false,
+  owners: warehouseFixtures.customerList(2),
+  ownersIsLoading: false,
 
   onClose: jest.fn(),
   onApply: jest.fn(),
@@ -59,28 +60,25 @@ const getSelectedCondition = (title: string) =>
 const querySelectedCondition = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getConditionsSelect(), title)
 
-// warehouses
-const getWarehousesBlock = () => within(getContainer()).getByTestId('warehouses')
-const getWarehousesSelect = () => within(getWarehousesBlock()).getByTestId('warehouses-select')
+// locations
+const getLocationsBlock = () => within(getContainer()).getByTestId('locations')
+const getLocationsSelect = () => within(getLocationsBlock()).getByTestId('locations-select')
 
-const getWarehousesPlaceholder = (): HTMLElement =>
-  within(getWarehousesSelect()).getByText('Выберите склад')
+const getLocationsSelectInput = () => selectTestUtils.getSelect(getLocationsSelect())
 
-const getWarehousesSelectInput = () => selectTestUtils.getSelect(getWarehousesSelect())
+const openLocationsSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getLocationsBlock())
 
-const openWarehousesSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getWarehousesBlock())
+const setLocation = selectTestUtils.clickSelectOption
 
-const setWarehouse = selectTestUtils.clickSelectOption
+const getSelectedLocation = (title: string) =>
+  selectTestUtils.getSelectedOptionByTitle(getLocationsSelect(), title)
 
-const getSelectedWarehouse = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getWarehousesSelect(), title)
+const querySelectedLocation = (title: string) =>
+  selectTestUtils.querySelectedOptionByTitle(getLocationsSelect(), title)
 
-const querySelectedWarehouse = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getWarehousesSelect(), title)
-
-const expectWarehousesLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getWarehousesSelect())
+const expectLocationsLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getLocationsSelect())
 
 // owners
 const getOwnersBlock = () => within(getContainer()).getByTestId('owners')
@@ -209,15 +207,14 @@ export const testUtils = {
   getSelectedCondition,
   querySelectedCondition,
 
-  getWarehousesBlock,
-  getWarehousesSelect,
-  getWarehousesPlaceholder,
-  getWarehousesSelectInput,
-  openWarehousesSelect,
-  setWarehouse,
-  getSelectedWarehouse,
-  querySelectedWarehouse,
-  expectWarehousesLoadingFinished,
+  getLocationsBlock,
+  getLocationsSelect,
+  getLocationsSelectInput,
+  openLocationsSelect,
+  setLocation,
+  getSelectedLocation,
+  querySelectedLocation,
+  expectLocationsLoadingFinished,
 
   getOwnersBlock,
   getOwnersSelect,
@@ -368,87 +365,67 @@ describe('Фильтр списка номенклатуры оборудова�
     })
   })
 
-  describe('Склады', () => {
-    test('Отображается корректно', () => {
+  describe('Местонахождение', () => {
+    test('Отображается', () => {
       render(<EquipmentFilter {...props} />)
 
-      const input = testUtils.getWarehousesSelectInput()
-      const placeholder = testUtils.getWarehousesPlaceholder()
+      const input = testUtils.getLocationsSelectInput()
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
-      expect(placeholder).toBeInTheDocument()
     })
 
     test('Можно выбрать несколько вариантов', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
 
-      await testUtils.openWarehousesSelect(user)
-      await testUtils.setWarehouse(user, props.warehouseList[0].title)
-      await testUtils.setWarehouse(user, props.warehouseList[1].title)
+      await testUtils.openLocationsSelect(user)
+      await testUtils.setLocation(user, props.locations[0].title)
+      await testUtils.setLocation(user, props.locations[1].title)
 
-      const selectedWarehouse1 = testUtils.getSelectedWarehouse(props.warehouseList[0].title)
-      const selectedWarehouse2 = testUtils.getSelectedWarehouse(props.warehouseList[1].title)
+      const value1 = testUtils.getSelectedLocation(props.locations[0].title)
+      const value2 = testUtils.getSelectedLocation(props.locations[1].title)
 
-      expect(selectedWarehouse1).toBeInTheDocument()
-      expect(selectedWarehouse2).toBeInTheDocument()
+      expect(value1).toBeInTheDocument()
+      expect(value2).toBeInTheDocument()
     })
 
     test('Устанавливается значение по умолчанию', () => {
-      render(
-        <EquipmentFilter
-          {...props}
-          initialValues={{
-            warehouses: [props.warehouseList[0].id],
-          }}
-        />,
-      )
-
-      const selectedWarehouse = testUtils.getSelectedWarehouse(props.warehouseList[0].title)
-
-      expect(selectedWarehouse).toBeInTheDocument()
+      render(<EquipmentFilter {...props} initialValues={{ locations: [props.locations[0].id] }} />)
+      const value = testUtils.getSelectedLocation(props.locations[0].title)
+      expect(value).toBeInTheDocument()
     })
 
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(
-        <EquipmentFilter
-          {...props}
-          initialValues={{
-            warehouses: [props.warehouseList[0].id],
-          }}
-        />,
+        <EquipmentFilter {...props} initialValues={{ locations: [props.locations[0].id] }} />,
       )
 
-      await testUtils.openWarehousesSelect(user)
-      await testUtils.setWarehouse(user, props.warehouseList[1].title)
+      await testUtils.openLocationsSelect(user)
+      await testUtils.setLocation(user, props.locations[1].title)
 
-      await testUtils.clickResetButtonIn(user, testUtils.getWarehousesBlock())
+      await testUtils.clickResetButtonIn(user, testUtils.getLocationsBlock())
 
-      const selectedWarehouse1 = testUtils.getSelectedWarehouse(props.warehouseList[0].title)
-      const selectedWarehouse2 = testUtils.querySelectedCondition(props.warehouseList[1].title)
+      const value1 = testUtils.getSelectedLocation(props.locations[0].title)
+      const value2 = testUtils.querySelectedCondition(props.locations[1].title)
 
-      expect(selectedWarehouse1).toBeInTheDocument()
-      expect(selectedWarehouse2).not.toBeInTheDocument()
+      expect(value1).toBeInTheDocument()
+      expect(value2).not.toBeInTheDocument()
     })
 
     test('Переданное значение заменяет значение по умолчанию', () => {
       render(
         <EquipmentFilter
           {...props}
-          initialValues={{
-            warehouses: [props.warehouseList[0].id],
-          }}
-          values={{
-            warehouses: [props.warehouseList[1].id],
-          }}
+          initialValues={{ locations: [props.locations[0].id] }}
+          values={{ locations: [props.locations[1].id] }}
         />,
       )
 
-      const selectedWarehouse1 = testUtils.getSelectedWarehouse(props.warehouseList[1].title)
-      const selectedWarehouse2 = testUtils.querySelectedWarehouse(props.warehouseList[0].title)
+      const value1 = testUtils.getSelectedLocation(props.locations[1].title)
+      const value2 = testUtils.querySelectedLocation(props.locations[0].title)
 
-      expect(selectedWarehouse1).toBeInTheDocument()
-      expect(selectedWarehouse2).not.toBeInTheDocument()
+      expect(value1).toBeInTheDocument()
+      expect(value2).not.toBeInTheDocument()
     })
   })
 
@@ -468,18 +445,18 @@ describe('Фильтр списка номенклатуры оборудова�
       const { user } = render(<EquipmentFilter {...props} />)
 
       await testUtils.openOwnersSelect(user)
-      await testUtils.setOwner(user, props.ownerList[0].title)
-      await testUtils.setOwner(user, props.ownerList[1].title)
+      await testUtils.setOwner(user, props.owners[0].title)
+      await testUtils.setOwner(user, props.owners[1].title)
 
-      const selectedOwner1 = testUtils.getSelectedOwner(props.ownerList[0].title)
-      const selectedOwner2 = testUtils.getSelectedOwner(props.ownerList[1].title)
+      const selectedOwner1 = testUtils.getSelectedOwner(props.owners[0].title)
+      const selectedOwner2 = testUtils.getSelectedOwner(props.owners[1].title)
 
       expect(selectedOwner1).toBeInTheDocument()
       expect(selectedOwner2).toBeInTheDocument()
     })
 
     test('Устанавливается значение по умолчанию', async () => {
-      const initialOwner = props.ownerList[1]
+      const initialOwner = props.owners[1]
       const { user } = render(
         <EquipmentFilter {...props} initialValues={{ owners: [initialOwner.id] }} />,
       )
@@ -490,13 +467,13 @@ describe('Фильтр списка номенклатуры оборудова�
     })
 
     test('Сбрасывается к значению по умолчанию', async () => {
-      const initialOwner = props.ownerList[1]
+      const initialOwner = props.owners[1]
       const { user } = render(
         <EquipmentFilter {...props} initialValues={{ owners: [initialOwner.id] }} />,
       )
 
       await testUtils.openOwnersSelect(user)
-      await testUtils.setOwner(user, props.ownerList[0].title)
+      await testUtils.setOwner(user, props.owners[0].title)
       await testUtils.clickResetButtonIn(user, testUtils.getOwnersBlock())
       const selectedOption = testUtils.getSelectedOwner(initialOwner.title)
       expect(selectedOption).toBeInTheDocument()
@@ -506,13 +483,13 @@ describe('Фильтр списка номенклатуры оборудова�
       const { user } = render(
         <EquipmentFilter
           {...props}
-          initialValues={{ owners: [props.ownerList[1].id] }}
-          values={{ owners: [props.ownerList[0].id] }}
+          initialValues={{ owners: [props.owners[1].id] }}
+          values={{ owners: [props.owners[0].id] }}
         />,
       )
 
       await testUtils.openOwnersSelect(user)
-      const selectedOption = testUtils.getSelectedOwner(props.ownerList[0].title)
+      const selectedOption = testUtils.getSelectedOwner(props.owners[0].title)
       expect(selectedOption).toBeInTheDocument()
     })
   })
@@ -703,18 +680,18 @@ describe('Фильтр списка номенклатуры оборудова�
       const { user } = render(<EquipmentFilter {...props} />)
 
       await testUtils.openCategoriesSelect(user)
-      await testUtils.setCategory(user, props.categoryList[0].title)
-      await testUtils.setCategory(user, props.categoryList[1].title)
+      await testUtils.setCategory(user, props.categories[0].title)
+      await testUtils.setCategory(user, props.categories[1].title)
 
-      const selectedCategory1 = testUtils.getSelectedCategory(props.categoryList[0].title)
-      const selectedCategory2 = testUtils.getSelectedCategory(props.categoryList[1].title)
+      const selectedCategory1 = testUtils.getSelectedCategory(props.categories[0].title)
+      const selectedCategory2 = testUtils.getSelectedCategory(props.categories[1].title)
 
       expect(selectedCategory1).toBeInTheDocument()
       expect(selectedCategory2).toBeInTheDocument()
     })
 
     test('Устанавливается значение по умолчанию', async () => {
-      const initialCategory = props.categoryList[1]
+      const initialCategory = props.categories[1]
       const { user } = render(
         <EquipmentFilter {...props} initialValues={{ categories: [initialCategory.id] }} />,
       )
@@ -725,13 +702,13 @@ describe('Фильтр списка номенклатуры оборудова�
     })
 
     test('Сбрасывается к значению по умолчанию', async () => {
-      const initialCategory = props.categoryList[1]
+      const initialCategory = props.categories[1]
       const { user } = render(
         <EquipmentFilter {...props} initialValues={{ categories: [initialCategory.id] }} />,
       )
 
       await testUtils.openCategoriesSelect(user)
-      await testUtils.setCategory(user, props.categoryList[0].title)
+      await testUtils.setCategory(user, props.categories[0].title)
       await testUtils.clickResetButtonIn(user, testUtils.getCategoriesBlock())
       const selectedOption = testUtils.getSelectedCategory(initialCategory.title)
       expect(selectedOption).toBeInTheDocument()
@@ -741,13 +718,13 @@ describe('Фильтр списка номенклатуры оборудова�
       const { user } = render(
         <EquipmentFilter
           {...props}
-          initialValues={{ categories: [props.categoryList[1].id] }}
-          values={{ categories: [props.categoryList[0].id] }}
+          initialValues={{ categories: [props.categories[1].id] }}
+          values={{ categories: [props.categories[0].id] }}
         />,
       )
 
       await testUtils.openCategoriesSelect(user)
-      const selectedOption = testUtils.getSelectedCategory(props.categoryList[0].title)
+      const selectedOption = testUtils.getSelectedCategory(props.categories[0].title)
       expect(selectedOption).toBeInTheDocument()
     })
   })
