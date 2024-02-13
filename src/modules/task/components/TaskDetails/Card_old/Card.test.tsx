@@ -9,7 +9,7 @@ import { getFullUserName } from 'modules/user/utils'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
-import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
+import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import taskFixtures from '_tests_/fixtures/task'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
@@ -380,7 +380,7 @@ describe('Карточка заявки', () => {
 
     describe('Формирование акта', () => {
       test('Корректно отрабатывает успешный вызов', async () => {
-        const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
+        const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
         const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
         const fakeArrayBuffer = new Uint8Array()
@@ -419,8 +419,8 @@ describe('Карточка заявки', () => {
         expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
         expect(base64ToArrayBufferSpy).toBeCalledWith(fakeFile)
 
-        expect(clickDownloadLinkSpy).toBeCalledTimes(1)
-        expect(clickDownloadLinkSpy).toBeCalledWith(
+        expect(downloadFileSpy).toBeCalledTimes(1)
+        expect(downloadFileSpy).toBeCalledWith(
           fakeArrayBuffer,
           MimetypeEnum.Pdf,
           `Акт о выполненных работах ${task!.id}`,

@@ -37,8 +37,8 @@ import {
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
-import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 import { formatDate } from 'shared/utils/date'
+import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -833,7 +833,7 @@ describe('Информация о заявке о перемещении', () =>
       const m15File = fakeWord()
       mockGetRelocationTaskWaybillM15Success(props.relocationTaskId, { body: m15File })
 
-      const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
+      const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
       const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
       const arrayBuffer = new Uint8Array()
@@ -856,8 +856,8 @@ describe('Информация о заявке о перемещении', () =>
       await waitFor(() => expect(base64ToArrayBufferSpy).toBeCalledTimes(1))
       expect(base64ToArrayBufferSpy).toBeCalledWith(m15File)
 
-      expect(clickDownloadLinkSpy).toBeCalledTimes(1)
-      expect(clickDownloadLinkSpy).toBeCalledWith(
+      expect(downloadFileSpy).toBeCalledTimes(1)
+      expect(downloadFileSpy).toBeCalledWith(
         arrayBuffer,
         MimetypeEnum.Pdf,
         getWaybillM15Filename(props.relocationTaskId),

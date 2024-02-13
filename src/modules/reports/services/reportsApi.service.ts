@@ -8,6 +8,8 @@ import {
   GetEmployeesActionsReportXlsxSuccessResponse,
   GetHistoryNomenclatureOperationsReportQueryArgs,
   GetHistoryNomenclatureOperationsReportSuccessResponse,
+  GetHistoryNomenclatureOperationsReportXlsxQueryArgs,
+  GetHistoryNomenclatureOperationsReportXlsxSuccessResponse,
 } from 'modules/reports/models'
 import {
   GetEmployeesActionsReportTransformedSuccessResponse,
@@ -60,6 +62,17 @@ const reportsApiService = baseApiService.injectEndpoints({
         arg,
       ) => getPaginatedList(response, arg),
     }),
+    getHistoryNomenclatureOperationsReportXlsx: build.query<
+      GetHistoryNomenclatureOperationsReportXlsxSuccessResponse,
+      GetHistoryNomenclatureOperationsReportXlsxQueryArgs
+    >({
+      query: (params) => ({
+        url: ReportsApiEnum.GetHistoryNomenclatureOperationsReport,
+        method: HttpMethodEnum.Get,
+        headers: { Accept: MimetypeEnum.Xlsx },
+        params,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
@@ -69,6 +82,7 @@ export const {
   useLazyGetEmployeesActionsReportXlsxQuery,
 
   useGetHistoryNomenclatureOperationsReportQuery,
+  useLazyGetHistoryNomenclatureOperationsReportXlsxQuery,
 
   endpoints,
 } = reportsApiService
