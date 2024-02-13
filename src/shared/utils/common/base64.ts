@@ -8,6 +8,7 @@ export const parseBase64 = (base64: string): MaybeUndefined<string> => {
   }
 }
 
+// todo: rename to base64ToBytes
 export const base64ToArrayBuffer = (base64: string): Uint8Array => {
   const binaryString = parseBase64(base64) || ''
   const binaryLen = binaryString.length

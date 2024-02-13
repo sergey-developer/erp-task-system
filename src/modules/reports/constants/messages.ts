@@ -6,3 +6,6 @@ export const getEmployeesActionsReportXlsxErrMsg =
 
 export const getHistoryNomenclatureOperationsReportErrMsg =
   'Ошибка получения отчета по истории операций по номенклатуре'
+
+export const getHistoryNomenclatureOperationsReportXlsxErrMsg =
+  'Ошибка получения отчета по истории операций по номенклатуре в формате xlsx'
