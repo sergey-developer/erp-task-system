@@ -64,7 +64,7 @@ const EquipmentPageLayout: FC = () => {
   const [searchValue, setSearchValue] = useState<string>()
 
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
-  const [filterValues, setFilterValues] = useState<EquipmentsFilterFormFields>()
+  const [filterValues, setFilterValues] = useState<EquipmentsFilterFormFields>({})
 
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
     { ordering: 'title' },
