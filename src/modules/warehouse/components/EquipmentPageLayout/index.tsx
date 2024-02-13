@@ -5,22 +5,22 @@ import omit from 'lodash/omit'
 import React, { FC, useMemo, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
+import { EquipmentsFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useGetEquipmentCategoryList,
   useLazyGetEquipmentsXlsx,
 } from 'modules/warehouse/hooks/equipment'
-import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { GetEquipmentsXlsxQueryArgs } from 'modules/warehouse/models'
-import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
+import { equipmentsFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { clickDownloadLink } from 'shared/utils/common'
 
 import { EquipmentPageContextType } from './context'
@@ -43,10 +43,10 @@ const getEquipmentsXlsxParamsByLocation = (
   }
 }
 
-const initialFilterValues: EquipmentFilterFormFields = {
+const initialFilterValues: EquipmentsFilterFormFields = {
   conditions: undefined,
   categories: undefined,
-  warehouses: undefined,
+  locations: undefined,
   owners: undefined,
   priceTo: undefined,
   priceFrom: undefined,
@@ -64,15 +64,17 @@ const EquipmentPageLayout: FC = () => {
   const [searchValue, setSearchValue] = useState<string>()
 
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
-  const [filterValues, setFilterValues] = useState<EquipmentFilterFormFields>()
+  const [filterValues, setFilterValues] = useState<EquipmentsFilterFormFields>({})
 
-  const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
-    useGetWarehouseList({ ordering: 'title' }, { skip: !filterOpened })
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
+    { ordering: 'title' },
+    { skip: !filterOpened },
+  )
 
-  const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
+  const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
     useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
 
-  const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList(
     undefined,
     { skip: !filterOpened },
   )
@@ -84,10 +86,10 @@ const EquipmentPageLayout: FC = () => {
   const [getEquipmentsXlsx, { isFetching: getEquipmentsXlsxIsFetching }] =
     useLazyGetEquipmentsXlsx()
 
-  const onApplyFilter = (values: EquipmentFilterFormFields) => {
+  const onApplyFilter = (values: EquipmentsFilterFormFields) => {
     setFilterValues(values)
     toggleFilterOpened()
-    setEquipmentsXlsxParams(equipmentFilterToParams(values))
+    setEquipmentsXlsxParams(equipmentsFilterToParams(values))
     navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
   }
 
@@ -144,12 +146,12 @@ const EquipmentPageLayout: FC = () => {
             visible={filterOpened}
             values={filterValues}
             initialValues={initialFilterValues}
-            warehouseList={warehouseList}
-            warehouseListIsLoading={warehouseListIsFetching}
-            categoryList={equipmentCategoryList}
-            categoryListIsLoading={equipmentCategoryListIsFetching}
-            ownerList={customerList}
-            ownerListIsLoading={customerListIsFetching}
+            locations={locations}
+            locationsIsLoading={locationsIsFetching}
+            categories={equipmentCategories}
+            categoriesIsLoading={equipmentCategoriesIsFetching}
+            owners={customers}
+            ownersIsLoading={customersIsFetching}
             onClose={toggleFilterOpened}
             onApply={onApplyFilter}
           />

@@ -53,7 +53,7 @@ const EquipmentFormModal = React.lazy(
 )
 
 const EquipmentRelocationHistoryModal = React.lazy(
-  () => import('../EquipmentRelocationHistoryModal'),
+  () => import('modules/warehouse/components/EquipmentRelocationHistoryModal'),
 )
 
 const { Text } = Typography
@@ -331,17 +331,9 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 </Row>
               )}
 
-              <Row data-testid='warehouse'>
-                <Col span={8}>
-                  <Text type='secondary'>Склад:</Text>
-                </Col>
-
-                <Col span={16}>{valueOrHyphen(equipment.warehouse?.title)}</Col>
-              </Row>
-
               <Row data-testid='location'>
                 <Col span={8}>
-                  <Text type='secondary'>Местоположение:</Text>
+                  <Text type='secondary'>Местонахождение:</Text>
                 </Col>
 
                 <Col span={16}>{valueOrHyphen(equipment.location?.title)}</Col>

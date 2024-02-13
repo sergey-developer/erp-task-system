@@ -1,8 +1,8 @@
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 
-export type EquipmentFilterParams = Partial<{
+export type EquipmentsFilterParams = Partial<{
   conditions: EquipmentConditionEnum[]
-  warehouses: number[]
+  locations: number[]
   owners: number[]
   categories: number[]
   isNew: boolean

@@ -9,10 +9,10 @@ import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
-import { getBooleanOptions } from 'shared/utils/selectField'
 import { useSelectAll } from 'shared/hooks/useSelectAll'
+import { getBooleanOptions } from 'shared/utils/selectField'
 
-import { EquipmentFilterFormFields, EquipmentFilterProps } from './types'
+import { EquipmentFilterProps, EquipmentsFilterFormFields } from './types'
 
 const { RangePicker } = DatePicker
 const zeroQuantityOptions = getBooleanOptions('Отображать', 'Не отображать')
@@ -23,38 +23,38 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
   values,
   initialValues,
 
-  warehouseList,
-  warehouseListIsLoading,
+  locations,
+  locationsIsLoading,
 
-  categoryList,
-  categoryListIsLoading,
+  categories,
+  categoriesIsLoading,
 
-  ownerList,
-  ownerListIsLoading,
+  owners,
+  ownersIsLoading,
 
   onClose,
   onApply,
 }) => {
-  const [form] = Form.useForm<EquipmentFilterFormFields>()
-  const warehousesFormValue: EquipmentFilterFormFields['warehouses'] = Form.useWatch(
-    'warehouses',
+  const [form] = Form.useForm<EquipmentsFilterFormFields>()
+  const locationsFormValue: EquipmentsFilterFormFields['locations'] = Form.useWatch(
+    'locations',
     form,
   )
 
-  const onChangeWarehouses: SelectProps['onChange'] = (
-    value: EquipmentFilterFormFields['warehouses'],
-  ) => form.setFieldValue('warehouses', value)
+  const onChangeLocations: SelectProps['onChange'] = (
+    value: EquipmentsFilterFormFields['locations'],
+  ) => form.setFieldValue('locations', value)
 
-  const warehouseOptions = useMemo(
-    () => warehouseList.map((w) => ({ label: w.title, value: w.id })),
-    [warehouseList],
+  const locationOptions = useMemo(
+    () => locations.map((w) => ({ label: w.title, value: w.id })),
+    [locations],
   )
 
-  const warehouseSelectProps = useSelectAll({
+  const locationSelectProps = useSelectAll({
     showSelectAll: true,
-    value: warehousesFormValue,
-    onChange: onChangeWarehouses,
-    options: warehouseOptions,
+    value: locationsFormValue,
+    onChange: onChangeLocations,
+    options: locationOptions,
   })
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
     }
   }, [form, values, initialValues])
 
-  const resetFields = (fields?: Array<keyof EquipmentFilterFormFields>) => () => {
+  const resetFields = (fields?: Array<keyof EquipmentsFilterFormFields>) => () => {
     if (isEmpty(fields)) {
       form.setFieldsValue(initialValues)
     } else {
@@ -83,7 +83,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
       onReset={resetFields()}
       onApply={form.submit}
     >
-      <Form<EquipmentFilterFormFields>
+      <Form<EquipmentsFilterFormFields>
         preserve={false}
         layout='vertical'
         form={form}
@@ -104,14 +104,18 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
           </Form.Item>
         </FilterBlock>
 
-        <FilterBlock data-testid='warehouses' label='Склад' onReset={resetFields(['warehouses'])}>
-          <Form.Item name='warehouses'>
+        <FilterBlock
+          data-testid='locations'
+          label='Местонахождение'
+          onReset={resetFields(['locations'])}
+        >
+          <Form.Item name='locations'>
             <Select
-              {...warehouseSelectProps}
-              data-testid='warehouses-select'
+              {...locationSelectProps}
+              data-testid='locations-select'
               mode='multiple'
-              placeholder='Выберите склад'
-              loading={warehouseListIsLoading}
+              placeholder='Выберите местонахождение'
+              loading={locationsIsLoading}
             />
           </Form.Item>
         </FilterBlock>
@@ -127,8 +131,8 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
               mode='multiple'
               fieldNames={idAndTitleSelectFieldNames}
               placeholder='Выберите владельца оборудования'
-              options={ownerList}
-              loading={ownerListIsLoading}
+              options={owners}
+              loading={ownersIsLoading}
             />
           </Form.Item>
         </FilterBlock>
@@ -170,8 +174,8 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
               mode='multiple'
               fieldNames={idAndTitleSelectFieldNames}
               placeholder='Выберите категорию'
-              options={categoryList}
-              loading={categoryListIsLoading}
+              options={categories}
+              loading={categoriesIsLoading}
             />
           </Form.Item>
         </FilterBlock>
