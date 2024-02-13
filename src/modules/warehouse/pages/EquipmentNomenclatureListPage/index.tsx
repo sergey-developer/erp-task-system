@@ -6,9 +6,8 @@ import { EquipmentNomenclatureTableProps } from 'modules/warehouse/components/Eq
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
 import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
 import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
-import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
+import { equipmentsFilterToParams } from 'modules/warehouse/utils/equipment'
 
-import { LocationTypeEnum } from 'shared/constants/catalogs'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -24,9 +23,8 @@ const EquipmentNomenclatureListPage: FC = () => {
   const [equipmentNomenclatureListParams, setEquipmentNomenclatureListParams] =
     useSetState<GetEquipmentNomenclatureListQueryArgs>({
       ...initialPaginationParams,
-      ...(context?.filter && equipmentFilterToParams(context.filter)),
+      ...(context?.filter && equipmentsFilterToParams(context.filter)),
       search: context?.search,
-      locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter],
     })
 
   useEffect(() => {
@@ -39,7 +37,7 @@ const EquipmentNomenclatureListPage: FC = () => {
   useEffect(() => {
     if (context?.filter) {
       setEquipmentNomenclatureListParams({
-        ...equipmentFilterToParams(context.filter),
+        ...equipmentsFilterToParams(context.filter),
         offset: initialPaginationParams.offset,
       })
     }
