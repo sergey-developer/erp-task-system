@@ -26,7 +26,7 @@ import {
 import { testUtils as confirmExecuteTaskModalTestUtils } from '../../ConfirmExecuteTaskModal/ConfirmExecuteTaskModal.test'
 import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
 import {
-  availableReasons,
+  reasonValues,
   testUtils as taskReclassificationModalTestUtils,
 } from '../../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
 import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
@@ -368,10 +368,7 @@ describe('Карточка заявки', () => {
           await taskReclassificationModalTestUtils.findContainer()
 
           await taskReclassificationModalTestUtils.setComment(user, fakeWord())
-          await taskReclassificationModalTestUtils.setReclassificationReason(
-            user,
-            availableReasons[0],
-          )
+          await taskReclassificationModalTestUtils.setReclassificationReason(user, reasonValues[0])
           await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
           expect(props.createReclassificationRequest).toBeCalledTimes(1)
@@ -395,10 +392,7 @@ describe('Карточка заявки', () => {
           const modal = await taskReclassificationModalTestUtils.findContainer()
 
           await taskReclassificationModalTestUtils.setComment(user, fakeWord())
-          await taskReclassificationModalTestUtils.setReclassificationReason(
-            user,
-            availableReasons[0],
-          )
+          await taskReclassificationModalTestUtils.setReclassificationReason(user, reasonValues[0])
           await taskReclassificationModalTestUtils.clickSubmitButton(user)
           await waitFor(() => expect(modal).not.toBeInTheDocument())
         })
@@ -1110,7 +1104,7 @@ describe('Карточка заявки', () => {
 
       test('Закрывается при клике на кнопку "Отмена"', async () => {
         const { user } = render(
-          <TaskCard{...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
+          <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
           { store: getStoreWithAuth() },
         )
 

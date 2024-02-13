@@ -66,7 +66,7 @@ const RequestTaskReclassificationModal: FC<RequestTaskReclassificationModalProps
               <Radio value={ReclassificationReasonEnum.WrongSupportGroup}>
                 {reclassificationReasonDict[ReclassificationReasonEnum.WrongSupportGroup]}
               </Radio>
-              <Radio value={ReclassificationReasonEnum.DivideTask} disabled>
+              <Radio value={ReclassificationReasonEnum.DivideTask}>
                 {reclassificationReasonDict[ReclassificationReasonEnum.DivideTask]}
               </Radio>
             </Space>
