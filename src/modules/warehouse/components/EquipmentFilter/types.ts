@@ -6,7 +6,7 @@ import { CustomerListModel, EquipmentCategoryListModel } from 'modules/warehouse
 import { LocationsModel } from 'shared/models/catalogs/location'
 import { EmptyFn } from 'shared/types/utils'
 
-export type EquipmentFilterFormFields = Partial<{
+export type EquipmentsFilterFormFields = Partial<{
   conditions: EquipmentConditionEnum[]
   locations: number[]
   owners: number[]
@@ -23,8 +23,8 @@ export type EquipmentFilterFormFields = Partial<{
 export type EquipmentFilterProps = {
   visible: boolean
 
-  values?: EquipmentFilterFormFields
-  initialValues: EquipmentFilterFormFields
+  values?: EquipmentsFilterFormFields
+  initialValues: EquipmentsFilterFormFields
 
   locations: LocationsModel
   locationsIsLoading: boolean
@@ -35,6 +35,6 @@ export type EquipmentFilterProps = {
   owners: CustomerListModel
   ownersIsLoading: boolean
 
-  onApply: (values: EquipmentFilterFormFields) => void
+  onApply: (values: EquipmentsFilterFormFields) => void
   onClose: EmptyFn
 }

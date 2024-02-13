@@ -12,7 +12,7 @@ import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selec
 import { useSelectAll } from 'shared/hooks/useSelectAll'
 import { getBooleanOptions } from 'shared/utils/selectField'
 
-import { EquipmentFilterFormFields, EquipmentFilterProps } from './types'
+import { EquipmentFilterProps, EquipmentsFilterFormFields } from './types'
 
 const { RangePicker } = DatePicker
 const zeroQuantityOptions = getBooleanOptions('Отображать', 'Не отображать')
@@ -35,14 +35,14 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
   onClose,
   onApply,
 }) => {
-  const [form] = Form.useForm<EquipmentFilterFormFields>()
-  const locationsFormValue: EquipmentFilterFormFields['locations'] = Form.useWatch(
+  const [form] = Form.useForm<EquipmentsFilterFormFields>()
+  const locationsFormValue: EquipmentsFilterFormFields['locations'] = Form.useWatch(
     'locations',
     form,
   )
 
   const onChangeLocations: SelectProps['onChange'] = (
-    value: EquipmentFilterFormFields['locations'],
+    value: EquipmentsFilterFormFields['locations'],
   ) => form.setFieldValue('locations', value)
 
   const locationOptions = useMemo(
@@ -65,7 +65,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
     }
   }, [form, values, initialValues])
 
-  const resetFields = (fields?: Array<keyof EquipmentFilterFormFields>) => () => {
+  const resetFields = (fields?: Array<keyof EquipmentsFilterFormFields>) => () => {
     if (isEmpty(fields)) {
       form.setFieldsValue(initialValues)
     } else {
@@ -83,7 +83,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
       onReset={resetFields()}
       onApply={form.submit}
     >
-      <Form<EquipmentFilterFormFields>
+      <Form<EquipmentsFilterFormFields>
         preserve={false}
         layout='vertical'
         form={form}
