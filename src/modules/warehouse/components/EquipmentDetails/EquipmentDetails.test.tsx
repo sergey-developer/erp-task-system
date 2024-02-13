@@ -271,22 +271,6 @@ describe('Информация об оборудовании', () => {
       })
     })
 
-    test('Склад отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
-      mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
-
-      render(<EquipmentDetails {...props} />)
-
-      await testUtils.expectLoadingFinished()
-      const block = testUtils.getBlock('warehouse')
-      const label = testUtils.getInfoInBlock(block, /Склад/)
-      const value = testUtils.getInfoInBlock(block, equipment.warehouse!.title)
-
-      expect(label).toBeInTheDocument()
-      expect(value).toBeInTheDocument()
-    })
-
     test('Местонахождение отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })

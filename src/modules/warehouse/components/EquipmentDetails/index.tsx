@@ -336,14 +336,6 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 </Row>
               )}
 
-              <Row data-testid='warehouse'>
-                <Col span={8}>
-                  <Text type='secondary'>Склад:</Text>
-                </Col>
-
-                <Col span={16}>{valueOrHyphen(equipment.warehouse?.title)}</Col>
-              </Row>
-
               <Row data-testid='location'>
                 <Col span={8}>
                   <Text type='secondary'>Местонахождение:</Text>
