@@ -55,9 +55,9 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { EmptyFn, MaybeNull } from 'shared/types/utils'
-import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
+import { base64ToArrayBuffer } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
-import { extractOriginFiles } from 'shared/utils/file'
+import { extractOriginFiles, downloadFile } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -311,7 +311,7 @@ const TaskCard: FC<TaskCardProps> = ({
           const blob = base64ToArrayBuffer(file)
 
           if (blob) {
-            clickDownloadLink(blob, MimetypeEnum.Pdf, `Акт о выполненных работах ${task.id}`)
+            downloadFile(blob, MimetypeEnum.Pdf, `Акт о выполненных работах ${task.id}`)
           }
         }
       } catch (error) {

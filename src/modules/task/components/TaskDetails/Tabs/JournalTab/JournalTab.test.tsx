@@ -9,7 +9,7 @@ import {
 
 import { commonApiMessages } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import * as downloadLink from 'shared/utils/common/downloadLink'
+import * as downloadLink from 'shared/utils/file/downloadFile'
 
 import taskFixtures from '_tests_/fixtures/task'
 import {
@@ -216,7 +216,7 @@ describe('Вкладка журнала задачи', () => {
     })
 
     describe('При успешной загрузке csv', () => {
-      const clickDownloadLinkSpy = jest.spyOn(downloadLink, 'clickDownloadLink')
+      const downloadFileSpy = jest.spyOn(downloadLink, 'downloadFile')
 
       test('Не показывает сообщение об ошибке', async () => {
         mockGetJournalSuccess(props.taskId, {
@@ -238,8 +238,8 @@ describe('Вкладка журнала задачи', () => {
         await testUtils.expectJournalCsvLoadingStarted(downloadButton)
         await testUtils.expectJournalCsvLoadingFinished(downloadButton)
 
-        expect(clickDownloadLinkSpy).toBeCalledTimes(1)
-        expect(clickDownloadLinkSpy).toBeCalledWith(
+        expect(downloadFileSpy).toBeCalledTimes(1)
+        expect(downloadFileSpy).toBeCalledWith(
           fakeCsv,
           MimetypeEnum.Csv,
           getJournalCsvFilename(props.taskId),
@@ -251,7 +251,7 @@ describe('Вкладка журнала задачи', () => {
     })
 
     describe('При не успешной загрузке csv', () => {
-      const clickDownloadLinkSpy = jest.spyOn(downloadLink, 'clickDownloadLink')
+      const downloadFileSpy = jest.spyOn(downloadLink, 'downloadFile')
 
       test('Показывает сообщение об ошибке', async () => {
         mockGetJournalSuccess(props.taskId, {
@@ -271,7 +271,7 @@ describe('Вкладка журнала задачи', () => {
         await testUtils.expectJournalCsvLoadingStarted(downloadButton)
         await testUtils.expectJournalCsvLoadingFinished(downloadButton)
 
-        expect(clickDownloadLinkSpy).not.toBeCalled()
+        expect(downloadFileSpy).not.toBeCalled()
 
         const notification = await notificationTestUtils.findNotification(getTaskJournalCsvErrorMsg)
         expect(notification).toBeInTheDocument()

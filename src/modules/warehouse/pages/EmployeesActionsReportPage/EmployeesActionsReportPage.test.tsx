@@ -9,8 +9,8 @@ import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocation
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
-import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
 import { formatDate } from 'shared/utils/date'
+import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
@@ -116,7 +116,7 @@ describe('Страница отчета действия сотрудников'
   describe('Выгрузка в excel', () => {
     // todo: выяснить почему не проходит
     test.skip('При успешном запросе вызывается функция открытия окна скачивания', async () => {
-      const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
+      const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
       const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
       const fakeArrayBuffer = new Uint8Array()
@@ -144,8 +144,8 @@ describe('Страница отчета действия сотрудников'
       expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
       expect(base64ToArrayBufferSpy).toBeCalledWith(file)
 
-      expect(clickDownloadLinkSpy).toBeCalledTimes(1)
-      expect(clickDownloadLinkSpy).toBeCalledWith(
+      expect(downloadFileSpy).toBeCalledTimes(1)
+      expect(downloadFileSpy).toBeCalledWith(
         fakeArrayBuffer,
         MimetypeEnum.Xlsx,
         'Отчет по действиям сотрудника',

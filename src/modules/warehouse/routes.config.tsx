@@ -278,14 +278,14 @@ export const route: Readonly<RouteObject> = {
           element: (
             <ProtectedRoute
               component={<HistoryNomenclatureOperationsReportPage />}
-              // permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
             />
           ),
           handle: {
             crumb: () => (
               <Breadcrumb
                 link={WarehouseRouteEnum.HistoryNomenclatureOperations}
-                text='Количество потраченного оборудования'
+                text='Количество потраченных расходных материалов'
               />
             ),
           },

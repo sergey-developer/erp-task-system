@@ -7,7 +7,10 @@ import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/compon
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
+import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
+import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
@@ -24,9 +27,6 @@ import {
 } from '_tests_/mocks/api'
 import { buttonTestUtils, render, setupApiTests } from '_tests_/utils'
 
-import { MimetypeEnum } from '../../../../shared/constants/mimetype'
-import * as base64Utils from '../../../../shared/utils/common/base64'
-import * as downloadLinkUtils from '../../../../shared/utils/common/downloadLink'
 import HistoryNomenclatureOperationsReportPage from './index'
 
 const getContainer = () => screen.getByTestId('history-nomenclature-operations-report-page')
@@ -147,7 +147,7 @@ describe('Страница отчета количества потраченн�
   describe('Выгрузка в excel', () => {
     // todo: выяснить почему не проходит
     test.skip('При успешном запросе вызывается функция открытия окна скачивания', async () => {
-      const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
+      const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
       const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
       const fakeArrayBuffer = new Uint8Array()
@@ -196,8 +196,8 @@ describe('Страница отчета количества потраченн�
       // expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
       // expect(base64ToArrayBufferSpy).toBeCalledWith(file)
 
-      expect(clickDownloadLinkSpy).toBeCalledTimes(1)
-      expect(clickDownloadLinkSpy).toBeCalledWith(
+      expect(downloadFileSpy).toBeCalledTimes(1)
+      expect(downloadFileSpy).toBeCalledWith(
         fakeArrayBuffer,
         MimetypeEnum.Xlsx,
         'Отчет по действиям сотрудника',

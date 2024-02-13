@@ -1,12 +1,16 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
+import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
 
 import HistoryNomenclatureOperationsReportForm from 'modules/reports/components/HistoryNomenclatureOperationsReportForm'
 import { HistoryNomenclatureOperationsReportFormProps } from 'modules/reports/components/HistoryNomenclatureOperationsReportForm/types'
 import HistoryNomenclatureOperationsReportTable from 'modules/reports/components/HistoryNomenclatureOperationsReportTable'
 import { HistoryNomenclatureOperationsReportTableProps } from 'modules/reports/components/HistoryNomenclatureOperationsReportTable/types'
-import { useGetHistoryNomenclatureOperationsReport } from 'modules/reports/hooks'
+import {
+  useGetHistoryNomenclatureOperationsReport,
+  useLazyGetHistoryNomenclatureOperationsReportXlsx,
+} from 'modules/reports/hooks'
 import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'modules/reports/models'
 import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
 
@@ -17,7 +21,8 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetLocationList } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
-import { clickDownloadLink } from 'shared/utils/common'
+import { base64ToArrayBuffer } from 'shared/utils/common'
+import { downloadFile } from 'shared/utils/file'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -67,6 +72,9 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   const { currentData: report, isFetching: reportIsFetching } =
     useGetHistoryNomenclatureOperationsReport(reportParams, { skip: !isShowReport })
 
+  const [getReportXlsx, { isFetching: getReportXlsxIsFetching }] =
+    useLazyGetHistoryNomenclatureOperationsReportXlsx()
+
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
     useGetEquipmentNomenclatureList()
 
@@ -85,11 +93,10 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
 
   const onExportExcel = async () => {
     try {
-      // const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
+      const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
 
-      clickDownloadLink(
-        // base64ToArrayBuffer(report),
-        '',
+      downloadFile(
+        base64ToArrayBuffer(report),
         MimetypeEnum.Xlsx,
         'Отчет по количеству потраченного оборудования',
       )
@@ -126,9 +133,9 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
         {isShowReport && (
           <Col span={24}>
             <Space $block direction='vertical' size='middle'>
-              <Title level={5}>Действия сотрудников</Title>
+              <Title level={5}>Количество потраченного оборудования</Title>
 
-              <Button onClick={onExportExcel} loading={false}>
+              <Button onClick={onExportExcel} loading={getReportXlsxIsFetching}>
                 Выгрузить в Excel
               </Button>
 
