@@ -14,11 +14,10 @@ import {
 import { EquipmentTableProps } from 'modules/warehouse/components/EquipmentTable/types'
 import { useGetEquipmentList } from 'modules/warehouse/hooks/equipment'
 import { GetEquipmentListQueryArgs } from 'modules/warehouse/models'
-import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
+import { equipmentsFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 
-import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
@@ -52,11 +51,10 @@ const EquipmentListPage: FC = () => {
 
   const [equipmentListParams, setEquipmentListParams] = useSetState<GetEquipmentListQueryArgs>({
     ...initialPaginationParams,
-    ...(context?.filter && equipmentFilterToParams(context.filter)),
+    ...(context?.filter && equipmentsFilterToParams(context.filter)),
     search: context?.search,
     nomenclature: nomenclatureId,
     ordering: 'title',
-    locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter],
   })
 
   const { currentData: equipmentList, isFetching: equipmentListIsFetching } =

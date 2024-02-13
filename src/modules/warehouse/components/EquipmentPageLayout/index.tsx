@@ -5,7 +5,7 @@ import omit from 'lodash/omit'
 import React, { FC, useMemo, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import { EquipmentFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
+import { EquipmentsFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
@@ -13,7 +13,7 @@ import {
   useLazyGetEquipmentsXlsx,
 } from 'modules/warehouse/hooks/equipment'
 import { GetEquipmentsXlsxQueryArgs } from 'modules/warehouse/models'
-import { equipmentFilterToParams } from 'modules/warehouse/utils/equipment'
+import { equipmentsFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -43,7 +43,7 @@ const getEquipmentsXlsxParamsByLocation = (
   }
 }
 
-const initialFilterValues: EquipmentFilterFormFields = {
+const initialFilterValues: EquipmentsFilterFormFields = {
   conditions: undefined,
   categories: undefined,
   locations: undefined,
@@ -64,7 +64,7 @@ const EquipmentPageLayout: FC = () => {
   const [searchValue, setSearchValue] = useState<string>()
 
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
-  const [filterValues, setFilterValues] = useState<EquipmentFilterFormFields>()
+  const [filterValues, setFilterValues] = useState<EquipmentsFilterFormFields>({})
 
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
     { ordering: 'title' },
@@ -86,10 +86,10 @@ const EquipmentPageLayout: FC = () => {
   const [getEquipmentsXlsx, { isFetching: getEquipmentsXlsxIsFetching }] =
     useLazyGetEquipmentsXlsx()
 
-  const onApplyFilter = (values: EquipmentFilterFormFields) => {
+  const onApplyFilter = (values: EquipmentsFilterFormFields) => {
     setFilterValues(values)
     toggleFilterOpened()
-    setEquipmentsXlsxParams(equipmentFilterToParams(values))
+    setEquipmentsXlsxParams(equipmentsFilterToParams(values))
     navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
   }
 
