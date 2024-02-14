@@ -536,6 +536,22 @@ describe('Информация об оборудовании', () => {
         expect(value).toBeInTheDocument()
       })
 
+      test('Отображается значение по умолчанию', async () => {
+        const equipment = warehouseFixtures.equipment({ owner: null })
+        mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
+        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+        render(<EquipmentDetails {...props} equipmentId={props.equipmentId} />)
+
+        await testUtils.expectLoadingFinished()
+        const block = testUtils.getBlock('owner')
+        const label = testUtils.getInfoInBlock(block, /Владелец оборудования/)
+        const value = testUtils.getInfoInBlock(block, 'Obermeister')
+
+        expect(label).toBeInTheDocument()
+        expect(value).toBeInTheDocument()
+      })
+
       test('Не отображается если категория расходный материал', async () => {
         const equipment = warehouseFixtures.equipment({
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),

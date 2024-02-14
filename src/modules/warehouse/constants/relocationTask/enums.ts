@@ -11,4 +11,5 @@ export enum RelocationTaskTypeEnum {
   Repair = 'REPAIR',
   Warranty = 'WARRANTY',
   WriteOff = 'WRITE_OFF',
+  Customer = 'CUSTOMER',
 }

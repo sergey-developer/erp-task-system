@@ -1,5 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
+import defaultTo from 'lodash/defaultTo'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import AttachmentList from 'modules/attachment/components/AttachmentList'
@@ -476,7 +477,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                     <Text type='secondary'>Владелец оборудования:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(equipment.owner?.title)}</Col>
+                  <Col span={16}>{defaultTo(equipment.owner?.title, 'Obermeister')}</Col>
                 </Row>
               )}
 

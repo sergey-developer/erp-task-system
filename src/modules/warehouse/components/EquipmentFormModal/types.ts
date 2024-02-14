@@ -38,6 +38,7 @@ export type EquipmentFormModalFormFields = {
   currency?: IdType
   usageCounter?: number
   owner?: IdType
+  ownerIsObermeister?: boolean
   comment?: string
   images?: UploadFile<FileResponse>[]
 }

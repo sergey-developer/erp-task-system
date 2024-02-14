@@ -41,6 +41,7 @@ const props: Readonly<EquipmentFormModalProps> = {
   onDeleteImage: jest.fn(),
   imageIsDeleting: false,
 
+  nomenclature: warehouseFixtures.nomenclature(),
   nomenclatureIsLoading: false,
 
   nomenclatureList: [],
@@ -73,12 +74,10 @@ const editModeProps: Readonly<Pick<EquipmentFormModalProps, 'okText'>> = {
 }
 
 const getContainer = () => screen.getByTestId('equipment-form-modal')
-
 const findContainer = (): Promise<HTMLElement> => screen.findByTestId('equipment-form-modal')
 
 // add button
-const getAddButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), new RegExp(addModeProps.okText as string))
+const getAddButton = () => buttonTestUtils.getButtonIn(getContainer(), new RegExp(/^Добавить$/))
 
 const clickAddButton = async (user: UserEvent) => {
   const button = getAddButton()
@@ -86,8 +85,7 @@ const clickAddButton = async (user: UserEvent) => {
 }
 
 // edit button
-const getEditButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), new RegExp(editModeProps.okText as string))
+const getEditButton = () => buttonTestUtils.getButtonIn(getContainer(), new RegExp(/^Сохранить$/))
 
 const clickEditButton = async (user: UserEvent) => {
   const button = getEditButton()
@@ -285,7 +283,6 @@ const expectCurrencyLoadingFinished = () =>
 
 // is new
 const getIsNewFormItem = () => within(getContainer()).getByTestId('is-new-form-item')
-
 const queryIsNewFormItem = () => within(getContainer()).queryByTestId('is-new-form-item')
 
 const getIsNewField = (text: string) =>
@@ -302,7 +299,6 @@ const findIsNewError = (error: string): Promise<HTMLElement> =>
 
 // is warranty
 const getIsWarrantyFormItem = () => within(getContainer()).getByTestId('is-warranty-form-item')
-
 const queryIsWarrantyFormItem = () => within(getContainer()).queryByTestId('is-warranty-form-item')
 
 const getIsWarrantyField = (text: string) =>
@@ -319,7 +315,6 @@ const findIsWarrantyError = (error: string): Promise<HTMLElement> =>
 
 // is repaired
 const getIsRepairedFormItem = () => within(getContainer()).getByTestId('is-repaired-form-item')
-
 const queryIsRepairedFormItem = () => within(getContainer()).queryByTestId('is-repaired-form-item')
 
 const getIsRepairedField = (text: string) =>
@@ -352,6 +347,19 @@ const setUsageCounter = async (user: UserEvent, value: number) => {
   return field
 }
 
+// owner is obermeister field
+const getOwnerIsObermeisterFormItem = () =>
+  within(getContainer()).getByTestId('owner-is-obermeister-form-item')
+
+const getOwnerIsObermeisterField = (text: string) =>
+  radioButtonTestUtils.getRadioButtonIn(getOwnerIsObermeisterFormItem(), text)
+
+const clickOwnerIsObermeisterField = async (user: UserEvent, text: string) => {
+  const field = getOwnerIsObermeisterField(text)
+  await user.click(field)
+  return field
+}
+
 // owner field
 const getOwnerFormItem = () => within(getContainer()).getByTestId('owner-form-item')
 const queryOwnerFormItem = () => within(getContainer()).queryByTestId('owner-form-item')
@@ -359,6 +367,8 @@ const getOwnerLabel = () => within(getOwnerFormItem()).getByLabelText('Влад�
 const getOwnerSelectInput = () => selectTestUtils.getSelect(getOwnerFormItem())
 const setOwner = selectTestUtils.clickSelectOption
 const getOwnerOption = selectTestUtils.getSelectOption
+const findOwnerError = (error: string): Promise<HTMLElement> =>
+  within(getOwnerFormItem()).findByText(error)
 
 const getSelectedOwner = (value: string): HTMLElement =>
   within(getOwnerFormItem()).getByTitle(value)
@@ -368,7 +378,6 @@ const openOwnerSelect = async (user: UserEvent) => {
 }
 
 const expectOwnerLoadingStarted = () => selectTestUtils.expectLoadingStarted(getOwnerFormItem())
-
 const expectOwnerLoadingFinished = () => selectTestUtils.expectLoadingFinished(getOwnerFormItem())
 
 // purpose field
@@ -545,11 +554,15 @@ export const testUtils = {
   getUsageCounterField,
   setUsageCounter,
 
+  getOwnerIsObermeisterField,
+  clickOwnerIsObermeisterField,
+
   queryOwnerFormItem,
   getOwnerLabel,
   getOwnerSelectInput,
   setOwner,
   getOwnerOption,
+  findOwnerError,
   getSelectedOwner,
   openOwnerSelect,
   expectOwnerLoadingStarted,
@@ -1098,10 +1111,23 @@ describe('Модалка оборудования', () => {
   })
 
   describe('Владелец оборудования', () => {
-    test('Отображается если категория не расходный материал', () => {
+    test('Отображается если категория не расходный материал и поле "владелец оборудования Obermeister" не заполнено', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
       render(<EquipmentFormModal {...props} selectedCategory={category} />)
 
+      const label = testUtils.getOwnerLabel()
+      const input = testUtils.getOwnerSelectInput()
+
+      expect(label).toBeInTheDocument()
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+    })
+
+    test('Отображается если категория не расходный материал и в поле "владелец оборудования Obermeister" выбрано "Нет"', async () => {
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const { user } = render(<EquipmentFormModal {...props} selectedCategory={category} />)
+
+      await testUtils.clickOwnerIsObermeisterField(user, 'Нет')
       const label = testUtils.getOwnerLabel()
       const input = testUtils.getOwnerSelectInput()
 
@@ -1120,6 +1146,16 @@ describe('Модалка оборудования', () => {
       expect(formItem).not.toBeInTheDocument()
     })
 
+    test('Не отображается если в поле "владелец оборудования Obermeister" выбрано "Да"', async () => {
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const { user } = render(<EquipmentFormModal {...props} selectedCategory={category} />)
+
+      await testUtils.clickOwnerIsObermeisterField(user, 'Да')
+      const formItem = testUtils.queryOwnerFormItem()
+
+      expect(formItem).not.toBeInTheDocument()
+    })
+
     test('Можно установить значение', async () => {
       const owner = warehouseFixtures.customerListItem()
       const { user } = render(<EquipmentFormModal {...props} ownerList={[owner]} />)
@@ -1129,6 +1165,19 @@ describe('Модалка оборудования', () => {
       const selectedOwner = testUtils.getSelectedOwner(owner.title)
 
       expect(selectedOwner).toBeInTheDocument()
+    })
+
+    test('Обязательно для заполнения если в поле "владелец оборудования Obermeister" выбрано "Нет"', async () => {
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const { user } = render(
+        <EquipmentFormModal {...props} selectedCategory={category} {...addModeProps} />,
+      )
+
+      await testUtils.clickOwnerIsObermeisterField(user, 'Нет')
+      await testUtils.clickAddButton(user)
+      const notification = await testUtils.findOwnerError(validationMessages.required)
+
+      expect(notification).toBeInTheDocument()
     })
   })
 
