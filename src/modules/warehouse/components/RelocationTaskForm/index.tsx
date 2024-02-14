@@ -29,6 +29,7 @@ const { Text } = Typography
 
 const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   isLoading,
+  controllerIsRequired,
 
   onUploadImage,
   imageIsUploading,
@@ -170,6 +171,26 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           />
         </Form.Item>
 
+        <Form.Item
+          data-testid='controller-form-item'
+          label='Контролер'
+          name='controller'
+          rules={controllerIsRequired ? onlyRequiredRules : undefined}
+        >
+          <Select
+            fieldNames={userListSelectFieldNames}
+            loading={userListIsLoading}
+            disabled={isLoading || userListIsLoading}
+            options={userList}
+            placeholder='Выберите контролера'
+            allowClear
+            showSearch
+            filterOption={filterOptionBy('fullName')}
+          />
+        </Form.Item>
+      </Col>
+
+      <Col span={6}>
         <Form.Item
           data-testid='comment-form-item'
           label='Комментарий'

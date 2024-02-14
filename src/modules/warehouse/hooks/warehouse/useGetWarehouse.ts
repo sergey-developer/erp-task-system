@@ -6,7 +6,12 @@ import { getWarehouseErrorMsg } from 'modules/warehouse/constants/warehouse'
 import { GetWarehouseQueryArgs, GetWarehouseSuccessResponse } from 'modules/warehouse/models'
 import { useGetWarehouseQuery } from 'modules/warehouse/services/warehouseApi.service'
 
-import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetWarehouseResult = CustomUseQueryHookResult<
@@ -27,7 +32,7 @@ export const useGetWarehouse = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isNotFoundError(state.error)) {
+      if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
         showErrorNotification(getWarehouseErrorMsg)

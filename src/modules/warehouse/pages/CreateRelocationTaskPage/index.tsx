@@ -29,6 +29,7 @@ import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
@@ -41,6 +42,7 @@ import {
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useCreateRelocationTask } from 'modules/warehouse/hooks/relocationTask'
+import { useGetWarehouse } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import {
   CreateEquipmentsBadRequestErrorResponse,
@@ -214,6 +216,22 @@ const CreateRelocationTaskPage: FC = () => {
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
   const prevSelectedRelocateFrom = usePrevious(selectedRelocateFrom)
 
+  const { currentData: relocateToWarehouse, isFetching: relocateToWarehouseIsFetching } =
+    useGetWarehouse(selectedRelocateTo?.value!, {
+      skip:
+        !selectedRelocateTo ||
+        !selectedRelocateFrom ||
+        !checkLocationTypeIsWarehouse(selectedRelocateTo.type),
+    })
+
+  const { currentData: relocateFromWarehouse, isFetching: relocateFromWarehouseIsFetching } =
+    useGetWarehouse(selectedRelocateFrom?.value!, {
+      skip:
+        !selectedRelocateFrom ||
+        !selectedRelocateTo ||
+        !checkLocationTypeIsWarehouse(selectedRelocateFrom.type),
+    })
+
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
     isManager: false,
   })
@@ -360,6 +378,7 @@ const CreateRelocationTaskPage: FC = () => {
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
         executor: values.executor,
+        controller: values.controller,
         comment: values.comment,
         images: values.images?.length ? extractIdsFromFilesResponse(values.images) : undefined,
       }).unwrap()
@@ -651,6 +670,13 @@ const CreateRelocationTaskPage: FC = () => {
     }
   }, [form, authUser, userList.length])
 
+  const isRelocationFromMainToMsi =
+    relocateFromWarehouse?.type === WarehouseTypeEnum.Main &&
+    relocateToWarehouse?.type === WarehouseTypeEnum.Msi
+
+  const controllerIsRequired =
+    relocateToWarehouse && relocateFromWarehouse ? isRelocationFromMainToMsi : true
+
   const createEquipmentDisabled =
     !selectedRelocateFrom ||
     !selectedRelocateTo ||
@@ -707,6 +733,7 @@ const CreateRelocationTaskPage: FC = () => {
               relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
               relocateToLocationList={relocateToLocationList}
               relocateToLocationListIsLoading={relocateToLocationListIsFetching}
+              controllerIsRequired={controllerIsRequired}
               type={selectedType}
               onChangeType={handleChangeType}
               onChangeRelocateFrom={handleChangeRelocateFrom}
@@ -779,7 +806,12 @@ const CreateRelocationTaskPage: FC = () => {
               </Col>
 
               <Col>
-                <Button type='primary' htmlType='submit' loading={createTaskIsLoading}>
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                  loading={createTaskIsLoading}
+                  disabled={relocateFromWarehouseIsFetching || relocateToWarehouseIsFetching}
+                >
                   Создать заявку
                 </Button>
               </Col>

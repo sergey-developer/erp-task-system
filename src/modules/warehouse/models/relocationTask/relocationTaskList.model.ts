@@ -24,6 +24,7 @@ export type RelocationTaskListItemModel = {
     title: string
   }>
   executor: MaybeNull<Pick<UserModel, 'id' | 'fullName' | 'phone'>>
+  controller: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   createdBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   documents: MaybeNull<Pick<TaskAttachmentModel, 'id' | 'name' | 'url' | 'size'>[]>
 }

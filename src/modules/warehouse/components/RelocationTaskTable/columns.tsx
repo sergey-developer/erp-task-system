@@ -49,6 +49,12 @@ export const columns: ColumnsType<RelocationTaskTableItem> = [
     render: (value: RelocationTaskTableItem['executor']) => valueOrHyphen(value?.fullName),
   },
   {
+    dataIndex: 'controller',
+    title: 'Контролер',
+    sorter: true,
+    render: (value: RelocationTaskTableItem['controller']) => valueOrHyphen(value?.fullName),
+  },
+  {
     dataIndex: 'status',
     title: 'Статус',
     sorter: true,
