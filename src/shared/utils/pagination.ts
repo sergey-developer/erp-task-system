@@ -30,3 +30,7 @@ export const calculatePaginationParams = ({
 export const extractPaginationResults = <T extends { results: T['results'] }>(
   value?: T,
 ): T['results'] => value?.results || []
+
+export const extractPaginationParams = <T extends { pagination: T['pagination'] }>(
+  value?: T,
+): T['pagination'] => value?.pagination || false

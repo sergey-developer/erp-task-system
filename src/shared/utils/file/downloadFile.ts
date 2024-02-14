@@ -1,8 +1,4 @@
-export const clickDownloadLink = (
-  data: BlobPart,
-  type: string,
-  filename?: string,
-): void => {
+export const downloadFile = (data: BlobPart, type: string, filename?: string): void => {
   const blob = new Blob([data], { type })
   const url = window.URL.createObjectURL(blob)
   const link = document.createElement('a')
@@ -11,5 +7,6 @@ export const clickDownloadLink = (
   link.href = url
   link.click()
 
+  document.removeChild(link)
   window.URL.revokeObjectURL(link.href)
 }

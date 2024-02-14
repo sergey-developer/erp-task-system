@@ -58,17 +58,17 @@ describe('Страница списка справочников складов'
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.WarehouseCatalogList,
+            path: WarehouseRouteEnum.WarehouseCatalogs,
             element: <WarehouseCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogs], initialIndex: 0 },
       )
 
       const link = testUtils.getWarehouseLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', WarehouseRouteEnum.WarehouseList)
+      expect(link).toHaveAttribute('href', WarehouseRouteEnum.Warehouses)
     })
 
     test('При клике переходит на страницу складов', async () => {
@@ -77,15 +77,15 @@ describe('Страница списка справочников складов'
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.WarehouseCatalogList,
+            path: WarehouseRouteEnum.WarehouseCatalogs,
             element: <WarehouseCatalogListPage />,
           },
           {
-            path: WarehouseRouteEnum.WarehouseList,
+            path: WarehouseRouteEnum.Warehouses,
             element: <WarehouseListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogs], initialIndex: 0 },
       )
 
       await testUtils.clickWarehouseLink(user)
@@ -100,11 +100,11 @@ describe('Страница списка справочников складов'
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.WarehouseCatalogList,
+            path: WarehouseRouteEnum.WarehouseCatalogs,
             element: <WarehouseCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogs], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
@@ -117,18 +117,18 @@ describe('Страница списка справочников складов'
       const link = testUtils.getNomenclatureLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', WarehouseRouteEnum.NomenclatureList)
+      expect(link).toHaveAttribute('href', WarehouseRouteEnum.Nomenclatures)
     })
 
     test('Не отображается если нет прав', async () => {
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.WarehouseCatalogList,
+            path: WarehouseRouteEnum.WarehouseCatalogs,
             element: <WarehouseCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogs], initialIndex: 0 },
       )
 
       const link = testUtils.queryNomenclatureLink()
@@ -142,15 +142,15 @@ describe('Страница списка справочников складов'
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.WarehouseCatalogList,
+            path: WarehouseRouteEnum.WarehouseCatalogs,
             element: <WarehouseCatalogListPage />,
           },
           {
-            path: WarehouseRouteEnum.NomenclatureList,
+            path: WarehouseRouteEnum.Nomenclatures,
             element: <NomenclatureListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.WarehouseCatalogs], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {

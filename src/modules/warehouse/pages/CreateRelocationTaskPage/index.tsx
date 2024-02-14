@@ -11,7 +11,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { useAuthUser } from 'modules/auth/hooks'
-import { useGetUserList, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
@@ -232,7 +232,7 @@ const CreateRelocationTaskPage: FC = () => {
         !checkLocationTypeIsWarehouse(selectedRelocateFrom.type),
     })
 
-  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
+  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUsers({
     isManager: false,
   })
 
@@ -801,7 +801,7 @@ const CreateRelocationTaskPage: FC = () => {
             <Row justify='end' gutter={8}>
               <Col>
                 <Button>
-                  <Link to={WarehouseRouteEnum.RelocationTaskList}>Отменить</Link>
+                  <Link to={WarehouseRouteEnum.RelocationTasks}>Отменить</Link>
                 </Button>
               </Col>
 

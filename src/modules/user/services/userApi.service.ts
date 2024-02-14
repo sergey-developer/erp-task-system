@@ -1,12 +1,12 @@
 import { TaskApiTagEnum } from 'modules/task/constants/task'
 import { UserApiEnum } from 'modules/user/constants'
 import {
-  GetUserListQueryArgs,
-  GetUserListSuccessResponse,
   GetUserMeCodeQueryArgs,
   GetUserMeCodeSuccessResponse,
   GetUserMeQueryArgs,
   GetUserMeSuccessResponse,
+  GetUsersQueryArgs,
+  GetUsersSuccessResponse,
   GetWarehouseMSIQueryArgs,
   GetWarehouseMSISuccessResponse,
   UpdateUserStatusMutationArgs,
@@ -19,12 +19,13 @@ import { getWarehouseMSIUrl, updateUserStatusUrl, updateUserUrl } from 'modules/
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 
 const userApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
-    getUserList: build.query<GetUserListSuccessResponse, GetUserListQueryArgs>({
+    getUsers: build.query<GetUsersSuccessResponse, MaybeUndefined<GetUsersQueryArgs>>({
       query: (params) => ({
-        url: UserApiEnum.GetUserList,
+        url: UserApiEnum.GetUsers,
         method: HttpMethodEnum.Get,
         params,
       }),
@@ -105,7 +106,7 @@ const userApiService = baseApiService.injectEndpoints({
 export const {
   useGetUserMeQuery,
   useGetUserMeCodeQuery,
-  useGetUserListQuery,
+  useGetUsersQuery,
   useUpdateUserTimeZoneMutation,
   useUpdateUserStatusMutation,
   useGetWarehouseMSIQuery,

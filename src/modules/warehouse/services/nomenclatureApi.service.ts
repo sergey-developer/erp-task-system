@@ -23,7 +23,7 @@ import { baseApiService } from 'shared/services/baseApi'
 
 const nomenclatureApiService = baseApiService
   .enhanceEndpoints({
-    addTagTypes: [NomenclatureApiTagEnum.NomenclatureList],
+    addTagTypes: [NomenclatureApiTagEnum.Nomenclatures],
   })
   .injectEndpoints({
     endpoints: (build) => ({
@@ -31,7 +31,7 @@ const nomenclatureApiService = baseApiService
         GetNomenclatureListTransformedSuccessResponse,
         GetNomenclatureListQueryArgs
       >({
-        providesTags: (result, error) => (error ? [] : [NomenclatureApiTagEnum.NomenclatureList]),
+        providesTags: (result, error) => (error ? [] : [NomenclatureApiTagEnum.Nomenclatures]),
         query: (params) => ({
           url: NomenclatureApiEnum.GetNomenclatureList,
           method: HttpMethodEnum.Get,
@@ -53,8 +53,7 @@ const nomenclatureApiService = baseApiService
         CreateNomenclatureSuccessResponse,
         CreateNomenclatureMutationArgs
       >({
-        invalidatesTags: (result, error) =>
-          error ? [] : [NomenclatureApiTagEnum.NomenclatureList],
+        invalidatesTags: (result, error) => (error ? [] : [NomenclatureApiTagEnum.Nomenclatures]),
         query: (payload) => ({
           url: NomenclatureApiEnum.CreateNomenclature,
           method: HttpMethodEnum.Post,
@@ -65,8 +64,7 @@ const nomenclatureApiService = baseApiService
         UpdateNomenclatureSuccessResponse,
         UpdateNomenclatureMutationArgs
       >({
-        invalidatesTags: (result, error) =>
-          error ? [] : [NomenclatureApiTagEnum.NomenclatureList],
+        invalidatesTags: (result, error) => (error ? [] : [NomenclatureApiTagEnum.Nomenclatures]),
         query: ({ getListParams, id, ...payload }) => ({
           url: updateNomenclatureUrl(id),
           method: HttpMethodEnum.Patch,
