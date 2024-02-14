@@ -178,7 +178,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           rules={controllerIsRequired ? onlyRequiredRules : undefined}
         >
           <Select
-            fieldNames={userListSelectFieldNames}
+            fieldNames={idAndFullNameSelectFieldNames}
             loading={userListIsLoading}
             disabled={isLoading || userListIsLoading}
             options={userList}

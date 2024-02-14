@@ -18,7 +18,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { useGetLocationList } from 'shared/hooks/catalogs/location'
+import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { base64ToArrayBuffer } from 'shared/utils/common'
@@ -78,7 +78,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
     useGetEquipmentNomenclatureList()
 
-  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocationList()
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
 
   const onClickUpdate: HistoryNomenclatureOperationsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
