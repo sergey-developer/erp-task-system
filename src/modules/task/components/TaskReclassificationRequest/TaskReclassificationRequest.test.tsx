@@ -18,18 +18,13 @@ const props: Readonly<TaskReclassificationRequestProps> = {
   cancelBtnDisabled: false,
 }
 
-const getContainer = () => screen.getByTestId('task-card-reclassification-request')
-
-const findContainer = () => screen.findByTestId('task-card-reclassification-request')
-
-const queryContainer = () => screen.queryByTestId('task-card-reclassification-request')
-
+const getContainer = () => screen.getByTestId('task-reclassification-request')
+const findContainer = () => screen.findByTestId('task-reclassification-request')
+const queryContainer = () => screen.queryByTestId('task-reclassification-request')
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
-
 const getIcon = () => iconTestUtils.getIconByNameIn(getContainer(), 'question-circle')
 
 const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить запрос/i)
-
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)

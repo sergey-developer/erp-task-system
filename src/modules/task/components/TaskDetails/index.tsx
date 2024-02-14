@@ -1,9 +1,9 @@
 import { useBoolean } from 'ahooks'
 import { App, Drawer, FormInstance } from 'antd'
 import debounce from 'lodash/debounce'
-import noop from 'lodash/noop'
 import React, { FC, useCallback, useEffect } from 'react'
 
+import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
@@ -67,6 +67,10 @@ import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+const ConfirmCancelReclassificationRequestModal = React.lazy(
+  () => import('modules/task/components/ConfirmCancelReclassificationRequestModal'),
+)
+
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
 
 const ConfirmExecuteTaskModal = React.lazy(
@@ -119,11 +123,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     refetch: originRefetchTask,
     currentData: task,
     isFetching: taskIsFetching,
-    isError: isGetTaskError,
     startedTimeStamp: getTaskStartedTimeStamp = 0,
-  } = useGetTask(taskId)
+  } = useGetTask(taskId, { onError: originOnClose })
 
-  const refetchTask = useDebounceFn(originRefetchTask)
+  const debouncedRefetchTask = useDebounceFn(originRefetchTask)
 
   const taskStatus = useTaskStatus(task?.status)
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
@@ -149,11 +152,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     currentData: getReclassificationRequestResult,
     isFetching: reclassificationRequestIsFetching,
   } = useGetTaskReclassificationRequest(
-    { taskId },
+    { taskId: task?.id! },
     {
-      skip: !taskExtendedStatus.isInReclassification || !!createReclassificationRequestResult,
+      skip:
+        !task?.id ||
+        !taskExtendedStatus.isInReclassification ||
+        !!createReclassificationRequestResult,
     },
   )
+
+  const [cancelReclassificationRequest, { isLoading: cancelReclassificationRequestIsLoading }] =
+    useCancelReclassificationRequest()
 
   const reclassificationRequest =
     createReclassificationRequestResult || getReclassificationRequestResult
@@ -243,16 +252,40 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const [
     requestTaskSuspendModalOpened,
-    { setTrue: openRequestTaskSuspendModal, setFalse: closeRequestTaskSuspendModal },
+    { toggle: toggleRequestTaskSuspendModal, setFalse: closeRequestTaskSuspendModal },
   ] = useBoolean(false)
 
-  const debouncedOpenRequestTaskSuspendModal = useDebounceFn(openRequestTaskSuspendModal)
+  const debouncedToggleRequestTaskSuspendModal = useDebounceFn(toggleRequestTaskSuspendModal)
 
   const { data: systemSettings, isFetching: systemSettingsIsFetching } = useSystemSettingsState()
 
-  useEffect(() => {
-    if (isGetTaskError) originOnClose()
-  }, [isGetTaskError, originOnClose])
+  const [
+    confirmCancelReclassificationRequestModalOpened,
+    {
+      toggle: toggleConfirmCancelReclassificationRequestModal,
+      setFalse: closeConfirmCancelReclassificationRequestModal,
+    },
+  ] = useBoolean(false)
+
+  const debouncedToggleConfirmCancelReclassificationRequestModal = useDebounceFn(
+    toggleConfirmCancelReclassificationRequestModal,
+  )
+
+  const onCancelReclassificationRequest = async () => {
+    if (!reclassificationRequest) return
+
+    try {
+      await cancelReclassificationRequest({
+        reclassificationRequestId: reclassificationRequest.id,
+      }).unwrap()
+      originRefetchTask()
+      closeConfirmCancelReclassificationRequestModal()
+    } catch (error) {
+      if (isErrorResponse(error) && isNotFoundError(error)) {
+        originRefetchTask()
+      }
+    }
+  }
 
   const handleExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
     async (values, setFields) => {
@@ -449,9 +482,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       extendedStatus={task.extendedStatus}
       olaStatus={task.olaStatus}
       suspendRequest={task.suspendRequest}
-      onReloadTask={refetchTask}
+      onReloadTask={debouncedRefetchTask}
       onExecuteTask={handleOpenExecuteTaskModal}
-      onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
+      onRequestSuspend={debouncedToggleRequestTaskSuspendModal}
       onRequestReclassification={handleOpenTaskReclassificationModal}
     />
   )
@@ -480,7 +513,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                   comment={reclassificationRequest.comment}
                   date={reclassificationRequest.createdAt}
                   user={reclassificationRequest.user}
-                  onCancel={noop}
+                  onCancel={debouncedToggleConfirmCancelReclassificationRequestModal}
                   cancelBtnDisabled={taskStatus.isAwaiting}
                 />
               </React.Suspense>
@@ -642,6 +675,24 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             isLoading={createSuspendRequestIsLoading}
             onSubmit={handleCreateTaskSuspendRequest}
             onCancel={closeRequestTaskSuspendModal}
+          />
+        </React.Suspense>
+      )}
+
+      {confirmCancelReclassificationRequestModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={debouncedToggleConfirmCancelReclassificationRequestModal}
+            />
+          }
+        >
+          <ConfirmCancelReclassificationRequestModal
+            open={confirmCancelReclassificationRequestModalOpened}
+            onOk={onCancelReclassificationRequest}
+            onCancel={debouncedToggleConfirmCancelReclassificationRequestModal}
+            confirmLoading={cancelReclassificationRequestIsLoading}
           />
         </React.Suspense>
       )}

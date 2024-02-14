@@ -22,7 +22,7 @@ const TaskReclassificationRequest: FC<TaskReclassificationRequestProps> = ({
 }) => {
   return (
     <TaskRequest
-      data-testid='task-card-reclassification-request'
+      data-testid='task-reclassification-request'
       icon={<QuestionCircleIcon $size='large' />}
       title='Запрошена переклассификация:'
       comment={comment}
