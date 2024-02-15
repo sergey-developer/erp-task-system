@@ -4,8 +4,8 @@ import isNumber from 'lodash/isNumber'
 import { PaginationParams } from 'shared/types/pagination'
 
 export const getInitialPaginationParams = (
-  defaults?: Partial<PaginationParams>,
-): PaginationParams => ({
+  defaults?: PaginationParams,
+): Required<PaginationParams> => ({
   limit: defaults?.limit || 10,
   offset: defaults?.offset || 0,
 })
@@ -14,7 +14,7 @@ export const calculatePaginationParams = ({
   current,
   pageSize,
 }: Pick<TablePaginationConfig, 'current' | 'pageSize'>): Pick<
-  PaginationParams,
+  Required<PaginationParams>,
   'limit' | 'offset'
 > => {
   if (isNumber(pageSize) && isNumber(current)) {

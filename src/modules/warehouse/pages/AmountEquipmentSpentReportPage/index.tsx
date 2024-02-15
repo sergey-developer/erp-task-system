@@ -3,6 +3,7 @@ import { Button, Col, Row, Typography } from 'antd'
 import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
 
+import { AmountEquipmentSpentReportFilterFormFields } from 'modules/reports/components/AmountEquipmentSpentReportFilter/types'
 import AmountEquipmentSpentReportForm from 'modules/reports/components/AmountEquipmentSpentReportForm'
 import { AmountEquipmentSpentReportFormProps } from 'modules/reports/components/AmountEquipmentSpentReportForm/types'
 import AmountEquipmentSpentReportTable from 'modules/reports/components/AmountEquipmentSpentReportTable'
@@ -12,7 +13,10 @@ import {
   useLazyGetAmountEquipmentSpentReportXlsx,
 } from 'modules/reports/hooks'
 import { GetAmountEquipmentSpentReportQueryArgs } from 'modules/reports/models'
-import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
+import {
+  useGetEquipmentCategoryList,
+  useGetEquipmentNomenclatureList,
+} from 'modules/warehouse/hooks/equipment'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
@@ -30,14 +34,23 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
+import FilterButton from '../../../../components/Buttons/FilterButton'
+
 const EquipmentDetails = React.lazy(() => import('modules/warehouse/components/EquipmentDetails'))
 
 const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
 )
 
-const initialPaginationParams = getInitialPaginationParams()
+const AmountEquipmentSpentReportFilter = React.lazy(
+  () => import('modules/reports/components/AmountEquipmentSpentReportFilter'),
+)
+
 const { Title } = Typography
+const initialPaginationParams = getInitialPaginationParams()
+const initialFilterValues: AmountEquipmentSpentReportFilterFormFields = {
+  categories: undefined,
+}
 
 const AmountEquipmentSpentReportPage: FC = () => {
   const [equipmentId, setEquipmentId] = useState<IdType>()
@@ -63,6 +76,10 @@ const AmountEquipmentSpentReportPage: FC = () => {
     setRelocationTaskId(undefined)
   })
 
+  const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
+  const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
+  const [filterValues, setFilterValues] = useState<AmountEquipmentSpentReportFilterFormFields>()
+
   const [reportParams, setReportParams] =
     useSetState<GetAmountEquipmentSpentReportQueryArgs>(initialPaginationParams)
 
@@ -78,9 +95,12 @@ const AmountEquipmentSpentReportPage: FC = () => {
     useLazyGetAmountEquipmentSpentReportXlsx()
 
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
-    useGetEquipmentNomenclatureList()
+    useGetEquipmentNomenclatureList({ categories: filterValues?.categories })
 
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
+
+  const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
+    useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
 
   const onClickUpdate: AmountEquipmentSpentReportFormProps['onSubmit'] = (values) => {
     setReportParams({
@@ -103,6 +123,12 @@ const AmountEquipmentSpentReportPage: FC = () => {
         'Отчет по количеству потраченного оборудования',
       )
     } catch {}
+  }
+
+  const onApplyFilter = (values: AmountEquipmentSpentReportFilterFormFields) => {
+    setFilterValues(values)
+    setReportParams({ ...values, offset: initialPaginationParams.offset })
+    toggleOpenFilter()
   }
 
   const onTablePagination = useCallback(
@@ -137,9 +163,13 @@ const AmountEquipmentSpentReportPage: FC = () => {
             <Space $block direction='vertical' size='middle'>
               <Title level={5}>Количество потраченного оборудования</Title>
 
-              <Button onClick={onExportExcel} loading={getReportXlsxIsFetching}>
-                Выгрузить в Excel
-              </Button>
+              <Space>
+                <FilterButton onClick={debouncedToggleOpenFilter} />
+
+                <Button onClick={onExportExcel} loading={getReportXlsxIsFetching}>
+                  Выгрузить в Excel
+                </Button>
+              </Space>
 
               <AmountEquipmentSpentReportTable
                 dataSource={extractPaginationResults(report)}
@@ -172,6 +202,20 @@ const AmountEquipmentSpentReportPage: FC = () => {
             open={relocationTaskOpened}
             onClose={onCloseRelocationTask}
             relocationTaskId={relocationTaskId}
+          />
+        </React.Suspense>
+      )}
+
+      {filterOpened && (
+        <React.Suspense fallback={<ModalFallback open tip='Загрузка компонента фильтров' />}>
+          <AmountEquipmentSpentReportFilter
+            open={filterOpened}
+            values={filterValues}
+            initialValues={initialFilterValues}
+            categories={equipmentCategories}
+            categoriesIsLoading={equipmentCategoriesIsFetching}
+            onClose={debouncedToggleOpenFilter}
+            onApply={onApplyFilter}
           />
         </React.Suspense>
       )}
