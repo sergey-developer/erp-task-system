@@ -52,7 +52,7 @@ import { MaybeUndefined } from 'shared/types/utils'
 const equipmentApiService = baseApiService
   .enhanceEndpoints({
     addTagTypes: [
-      EquipmentApiTagEnum.EquipmentList,
+      EquipmentApiTagEnum.Equipments,
       EquipmentApiTagEnum.Equipment,
       EquipmentApiTagEnum.EquipmentCatalogList,
     ],
@@ -61,7 +61,7 @@ const equipmentApiService = baseApiService
     endpoints: (build) => ({
       getEquipmentNomenclatureList: build.query<
         GetEquipmentNomenclatureListTransformedSuccessResponse,
-        GetEquipmentNomenclatureListQueryArgs
+        MaybeUndefined<GetEquipmentNomenclatureListQueryArgs>
       >({
         query: (params) => ({
           url: EquipmentApiEnum.GetEquipmentNomenclatureList,
@@ -101,7 +101,7 @@ const equipmentApiService = baseApiService
         GetEquipmentListTransformedSuccessResponse,
         GetEquipmentListQueryArgs
       >({
-        providesTags: (result, error) => (error ? [] : [EquipmentApiTagEnum.EquipmentList]),
+        providesTags: (result, error) => (error ? [] : [EquipmentApiTagEnum.Equipments]),
         query: (params) => ({
           url: EquipmentApiEnum.GetEquipmentList,
           method: HttpMethodEnum.Get,
@@ -175,7 +175,7 @@ const equipmentApiService = baseApiService
       }),
       updateEquipment: build.mutation<UpdateEquipmentSuccessResponse, UpdateEquipmentMutationArgs>({
         invalidatesTags: (result, error) =>
-          error ? [] : [EquipmentApiTagEnum.EquipmentList, EquipmentApiTagEnum.Equipment],
+          error ? [] : [EquipmentApiTagEnum.Equipments, EquipmentApiTagEnum.Equipment],
         query: ({ equipmentId, ...payload }) => ({
           url: updateEquipmentUrl(equipmentId),
           method: HttpMethodEnum.Put,

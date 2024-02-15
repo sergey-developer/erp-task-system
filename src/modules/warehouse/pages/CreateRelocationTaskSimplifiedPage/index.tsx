@@ -25,7 +25,7 @@ import { renderUploadedFile } from 'modules/attachment/utils'
 import { getCompleteAt } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
-import { useGetUserList, useGetWarehouseMSI, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useGetWarehouseMSI, useMatchUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
@@ -224,7 +224,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     { skip: !task?.assignee?.id },
   )
 
-  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList({
+  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUsers({
     isManager: false,
   })
 

@@ -51,6 +51,7 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 import {
   calculatePaginationParams,
+  extractPaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
@@ -416,7 +417,7 @@ const NomenclatureListPage: FC = () => {
           <Col span={19}>
             <NomenclatureTable
               dataSource={extractPaginationResults(nomenclatureList)}
-              pagination={nomenclatureList?.pagination || false}
+              pagination={extractPaginationParams(nomenclatureList)}
               loading={nomenclatureListIsFetching}
               onChange={handleChangeTable}
               onClickName={debouncedHandleOpenEditNomenclatureModal}

@@ -15,7 +15,7 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useSelectAll } from 'shared/hooks/useSelectAll'
 import { IdType } from 'shared/types/common'
 import { filterOptionBy } from 'shared/utils/common'
-import { clickDownloadLink } from 'shared/utils/common/downloadLink'
+import { downloadFile } from 'shared/utils/file'
 
 import Journal from './Journal'
 import { journalTypeOptions } from './constants'
@@ -54,7 +54,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
       const journalCsv = await getJournalCsv({ taskId }).unwrap()
 
       if (journalCsv) {
-        clickDownloadLink(journalCsv, MimetypeEnum.Csv, getJournalCsvFilename(taskId))
+        downloadFile(journalCsv, MimetypeEnum.Csv, getJournalCsvFilename(taskId))
       }
     } catch {}
   }

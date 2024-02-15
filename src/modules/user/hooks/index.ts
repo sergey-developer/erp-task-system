@@ -3,7 +3,7 @@ export * from './useUserPermissions'
 export * from './useMatchUserPermissions'
 export * from './useOnChangeUserStatus'
 
-export * from './useGetUserList'
+export * from './useGetUsers'
 
 export * from './useGetUserMe'
 export * from './useUserMeState'

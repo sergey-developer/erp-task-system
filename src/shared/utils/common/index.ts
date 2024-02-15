@@ -1,4 +1,3 @@
-export * from './downloadLink'
 export * from './valueOrHyphen'
 export * from './hasProperty'
 export * from './boolean'

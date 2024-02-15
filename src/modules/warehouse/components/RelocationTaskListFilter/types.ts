@@ -1,6 +1,6 @@
 import { Moment } from 'moment-timezone'
 
-import { UserListModel } from 'modules/user/models'
+import { UsersModel } from 'modules/user/models'
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
@@ -27,7 +27,7 @@ export type RelocationTaskListFilterProps = Pick<DrawerFilterProps, 'open' | 'on
   values?: RelocationTaskListFilterFormFields
   initialValues: RelocationTaskListFilterFormFields
 
-  users: UserListModel
+  users: UsersModel
   usersIsLoading: boolean
 
   locations: LocationsModel
