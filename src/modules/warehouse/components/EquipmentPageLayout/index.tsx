@@ -21,7 +21,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { clickDownloadLink } from 'shared/utils/common'
+import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
 
 import { EquipmentPageContextType } from './context'
 
@@ -103,7 +103,7 @@ const EquipmentPageLayout: FC = () => {
         getEquipmentsXlsxParamsByLocation(location, equipmentsXlsxParams),
       ).unwrap()
 
-      clickDownloadLink(equipments, MimetypeEnum.Xlsx, 'Оборудование')
+      clickDownloadLink(base64ToArrayBuffer(equipments), MimetypeEnum.Xlsx, 'Оборудование')
     } catch {}
   }
 
