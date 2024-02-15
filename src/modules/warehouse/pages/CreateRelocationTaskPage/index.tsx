@@ -675,7 +675,7 @@ const CreateRelocationTaskPage: FC = () => {
     relocateToWarehouse?.type === WarehouseTypeEnum.Msi
 
   const controllerIsRequired =
-    relocateToWarehouse && relocateFromWarehouse ? isRelocationFromMainToMsi : true
+    relocateToWarehouse && relocateFromWarehouse ? !isRelocationFromMainToMsi : true
 
   const createEquipmentDisabled =
     !selectedRelocateFrom ||
