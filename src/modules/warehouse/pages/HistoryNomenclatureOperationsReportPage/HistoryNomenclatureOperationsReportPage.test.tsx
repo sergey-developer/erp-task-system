@@ -3,13 +3,12 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as historyNomenclatureOperationsReportFormTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportForm/HistoryNomenclatureOperationsReportForm.test'
 import { testUtils as historyNomenclatureOperationsReportTableTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportTable/HistoryNomenclatureOperationsReportTable.test'
+import { getRelocationColValue } from 'modules/reports/utils'
 import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
-import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
@@ -54,43 +53,36 @@ setupApiTests()
 describe('Страница отчета количества потраченного оборудования', () => {
   describe('Таблица отчета', () => {
     test('При клике на оборудование открывается карточка оборудования', async () => {
-      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
-      mockGetHistoryNomenclatureOperationsReportSuccess({
-        body: commonFixtures.paginatedListResponse([reportListItem]),
-      })
-
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclatureListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
+      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+      mockGetHistoryNomenclatureOperationsReportSuccess(equipmentNomenclatureListItem.id, {
+        body: commonFixtures.paginatedListResponse([reportListItem]),
+      })
+
       const locationListItem = catalogsFixtures.locationListItem()
       mockGetLocationListSuccess({ body: [locationListItem] })
 
-      mockGetEquipmentSuccess(reportListItem.equipment.id)
-      mockGetEquipmentAttachmentListSuccess(reportListItem.equipment.id)
+      mockGetEquipmentSuccess(reportListItem.id)
+      mockGetEquipmentAttachmentListSuccess(reportListItem.id)
 
       const { user } = render(<HistoryNomenclatureOperationsReportPage />)
 
       await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
-      await historyNomenclatureOperationsReportFormTestUtils.expectRelocateFromLoadingFinished()
-      await historyNomenclatureOperationsReportFormTestUtils.expectRelocateToLoadingFinished()
       await historyNomenclatureOperationsReportFormTestUtils.openNomenclatureSelect(user)
       await historyNomenclatureOperationsReportFormTestUtils.setNomenclature(
         user,
         equipmentNomenclatureListItem.title,
-      )
-      await historyNomenclatureOperationsReportFormTestUtils.openRelocateFromSelect(user)
-      await historyNomenclatureOperationsReportFormTestUtils.setRelocateFrom(
-        user,
-        locationListItem.title,
       )
       await historyNomenclatureOperationsReportFormTestUtils.clickSubmitButton(user)
       await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()
       await historyNomenclatureOperationsReportTableTestUtils.clickColValue(
         user,
         reportListItem.id,
-        reportListItem.equipment.title,
+        reportListItem.title,
       )
       const details = await equipmentDetailsTestUtils.findContainer()
 
@@ -98,45 +90,36 @@ describe('Страница отчета количества потраченн�
     })
 
     test('При клике на перемещение открывается карточка заявки на перемещение', async () => {
-      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
-      mockGetHistoryNomenclatureOperationsReportSuccess({
-        body: commonFixtures.paginatedListResponse([reportListItem]),
-      })
-
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclatureListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
+      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+      mockGetHistoryNomenclatureOperationsReportSuccess(equipmentNomenclatureListItem.id, {
+        body: commonFixtures.paginatedListResponse([reportListItem]),
+      })
+
       const locationListItem = catalogsFixtures.locationListItem()
       mockGetLocationListSuccess({ body: [locationListItem] })
 
-      mockGetRelocationTaskSuccess(reportListItem.relocationTask.id)
-      mockGetRelocationEquipmentListSuccess(reportListItem.relocationTask.id)
+      mockGetRelocationTaskSuccess(reportListItem.lastRelocationTask.id)
+      mockGetRelocationEquipmentListSuccess(reportListItem.lastRelocationTask.id)
 
       const { user } = render(<HistoryNomenclatureOperationsReportPage />)
 
       await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
-      await historyNomenclatureOperationsReportFormTestUtils.expectRelocateFromLoadingFinished()
-      await historyNomenclatureOperationsReportFormTestUtils.expectRelocateToLoadingFinished()
       await historyNomenclatureOperationsReportFormTestUtils.openNomenclatureSelect(user)
       await historyNomenclatureOperationsReportFormTestUtils.setNomenclature(
         user,
         equipmentNomenclatureListItem.title,
-      )
-      await historyNomenclatureOperationsReportFormTestUtils.openRelocateFromSelect(user)
-      await historyNomenclatureOperationsReportFormTestUtils.setRelocateFrom(
-        user,
-        locationListItem.title,
       )
       await historyNomenclatureOperationsReportFormTestUtils.clickSubmitButton(user)
       await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()
       await historyNomenclatureOperationsReportTableTestUtils.clickColValue(
         user,
         reportListItem.id,
-        `№${reportListItem.relocationTask.id} от ${formatDate(
-          reportListItem.relocationTask.createdAt,
-        )} (${relocationTaskStatusDict[reportListItem.relocationTask.status]})`,
+        getRelocationColValue(reportListItem.lastRelocationTask),
       )
       const details = await relocationTaskDetailsTestUtils.findContainer()
 
@@ -153,36 +136,29 @@ describe('Страница отчета количества потраченн�
       const fakeArrayBuffer = new Uint8Array()
       base64ToArrayBufferSpy.mockReturnValueOnce(fakeArrayBuffer)
 
-      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
-      mockGetHistoryNomenclatureOperationsReportSuccess({
-        body: commonFixtures.paginatedListResponse([reportListItem]),
-      })
-
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclatureListSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
+      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+      mockGetHistoryNomenclatureOperationsReportSuccess(equipmentNomenclatureListItem.id, {
+        body: commonFixtures.paginatedListResponse([reportListItem]),
+      })
+
       const locationListItem = catalogsFixtures.locationListItem()
       mockGetLocationListSuccess({ body: [locationListItem] })
 
-      mockGetEquipmentSuccess(reportListItem.equipment.id)
-      mockGetEquipmentAttachmentListSuccess(reportListItem.equipment.id)
+      mockGetEquipmentSuccess(reportListItem.id)
+      mockGetEquipmentAttachmentListSuccess(reportListItem.id)
 
       const { user } = render(<HistoryNomenclatureOperationsReportPage />)
 
       await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
-      await historyNomenclatureOperationsReportFormTestUtils.expectRelocateFromLoadingFinished()
-      await historyNomenclatureOperationsReportFormTestUtils.expectRelocateToLoadingFinished()
       await historyNomenclatureOperationsReportFormTestUtils.openNomenclatureSelect(user)
       await historyNomenclatureOperationsReportFormTestUtils.setNomenclature(
         user,
         equipmentNomenclatureListItem.title,
-      )
-      await historyNomenclatureOperationsReportFormTestUtils.openRelocateFromSelect(user)
-      await historyNomenclatureOperationsReportFormTestUtils.setRelocateFrom(
-        user,
-        locationListItem.title,
       )
       await historyNomenclatureOperationsReportFormTestUtils.clickSubmitButton(user)
       await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()

@@ -289,7 +289,7 @@ export const route: Readonly<RouteObject> = {
             crumb: () => (
               <Breadcrumb
                 link={WarehouseRouteEnum.AmountEquipmentSpent}
-                text='Количество потраченных расходных материалов'
+                text='Количество потраченного оборудования'
               />
             ),
           },

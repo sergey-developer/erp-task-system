@@ -98,7 +98,6 @@ const EmployeesActionsReportPage: FC = () => {
   const onExportExcel = async () => {
     try {
       const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
-
       downloadFile(base64ToArrayBuffer(report), MimetypeEnum.Xlsx, 'Отчет по действиям сотрудника')
     } catch {}
   }

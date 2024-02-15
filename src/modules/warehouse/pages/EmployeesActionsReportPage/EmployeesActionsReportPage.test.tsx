@@ -3,13 +3,12 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as employeesActionsReportFormTestUtils } from 'modules/reports/components/EmployeesActionsReportForm/EmployeesActionsReportForm.test'
 import { testUtils as employeesActionsReportTableTestUtils } from 'modules/reports/components/EmployeesActionsReportTable/EmployeesActionsReportTable.test'
+import { getRelocationColValue } from 'modules/reports/utils'
 import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
-import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import commonFixtures from '_tests_/fixtures/common'
@@ -103,9 +102,7 @@ describe('Страница отчета действия сотрудников'
       await employeesActionsReportTableTestUtils.clickColValue(
         user,
         reportListItem.id,
-        `№${reportListItem.relocationTask.id} от ${formatDate(
-          reportListItem.relocationTask.createdAt,
-        )} (${relocationTaskStatusDict[reportListItem.relocationTask.status]})`,
+        getRelocationColValue(reportListItem.relocationTask),
       )
       const details = await relocationTaskDetailsTestUtils.findContainer()
 

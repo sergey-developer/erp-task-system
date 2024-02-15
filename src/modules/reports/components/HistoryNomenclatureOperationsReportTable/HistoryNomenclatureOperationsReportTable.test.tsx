@@ -1,10 +1,13 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+import { getRelocationColValue } from 'modules/reports/utils'
+import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
+import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
+import { getYesNoWord } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import reportsFixtures from '_tests_/fixtures/reports'
@@ -102,7 +105,7 @@ describe('Таблица отчета истории операций по но�
       render(<HistoryNomenclatureOperationsReportTable {...props} />)
 
       const title = testUtils.getColTitle('Оборудование')
-      const value = testUtils.getColValue(reportListItem.id, reportListItem.equipment.title)
+      const value = testUtils.getColValue(reportListItem.id, reportListItem.title)
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -111,23 +114,106 @@ describe('Таблица отчета истории операций по но�
     test('При клике на значение вызывается обработчик', async () => {
       const { user } = render(<HistoryNomenclatureOperationsReportTable {...props} />)
 
-      await testUtils.clickColValue(user, reportListItem.id, reportListItem.equipment.title)
+      await testUtils.clickColValue(user, reportListItem.id, reportListItem.title)
 
       expect(props.onClickEquipment).toBeCalledTimes(1)
-      expect(props.onClickEquipment).toBeCalledWith(reportListItem.equipment.id)
+      expect(props.onClickEquipment).toBeCalledWith(reportListItem.id)
     })
   })
 
-  describe('Колонка перемещение', () => {
+  test('Колонка серийный № отображается', () => {
+    render(<HistoryNomenclatureOperationsReportTable {...props} />)
+
+    const title = testUtils.getColTitle('Серийный №')
+    const value = testUtils.getColValue(reportListItem.id, reportListItem.serialNumber!)
+
+    expect(title).toBeInTheDocument()
+    expect(value).toBeInTheDocument()
+  })
+
+  test('Колонка инвентарный № отображается', () => {
+    render(<HistoryNomenclatureOperationsReportTable {...props} />)
+
+    const title = testUtils.getColTitle('Инвентарный №')
+    const value = testUtils.getColValue(reportListItem.id, reportListItem.inventoryNumber!)
+
+    expect(title).toBeInTheDocument()
+    expect(value).toBeInTheDocument()
+  })
+
+  test('Колонка состояние', () => {
+    render(<HistoryNomenclatureOperationsReportTable {...props} />)
+
+    const title = testUtils.getColTitle('Состояние')
+    const value = testUtils.getColValue(
+      reportListItem.id,
+      equipmentConditionDict[reportListItem.condition],
+    )
+
+    expect(title).toBeInTheDocument()
+    expect(value).toBeInTheDocument()
+  })
+
+  test('Колонка новое', () => {
+    const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem({
+      isNew: true,
+    })
+    render(<HistoryNomenclatureOperationsReportTable {...props} dataSource={[reportListItem]} />)
+
+    const title = testUtils.getColTitle('Новое')
+    const value = testUtils.getColValue(reportListItem.id, getYesNoWord(reportListItem.isNew))
+
+    expect(title).toBeInTheDocument()
+    expect(value).toBeInTheDocument()
+  })
+
+  test('Колонка на гарантии', () => {
+    const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem({
+      isWarranty: true,
+    })
+    render(<HistoryNomenclatureOperationsReportTable {...props} dataSource={[reportListItem]} />)
+
+    const title = testUtils.getColTitle('На гарантии')
+    const value = testUtils.getColValue(reportListItem.id, getYesNoWord(reportListItem.isWarranty))
+
+    expect(title).toBeInTheDocument()
+    expect(value).toBeInTheDocument()
+  })
+
+  test('Колонка отремонтированное', () => {
+    const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem({
+      isRepaired: true,
+    })
+    render(<HistoryNomenclatureOperationsReportTable {...props} dataSource={[reportListItem]} />)
+
+    const title = testUtils.getColTitle('Отремонтированное')
+    const value = testUtils.getColValue(reportListItem.id, getYesNoWord(reportListItem.isRepaired))
+
+    expect(title).toBeInTheDocument()
+    expect(value).toBeInTheDocument()
+  })
+
+  test('Колонка дата оприходования', () => {
+    render(<HistoryNomenclatureOperationsReportTable {...props} />)
+
+    const title = testUtils.getColTitle('Дата оприходования')
+    const value = testUtils.getColValue(
+      reportListItem.id,
+      formatDate(reportListItem.creditedAt, DATE_FORMAT),
+    )
+
+    expect(title).toBeInTheDocument()
+    expect(value).toBeInTheDocument()
+  })
+
+  describe('Колонка последнее перемещение', () => {
     test('Отображается', () => {
       render(<HistoryNomenclatureOperationsReportTable {...props} />)
 
-      const title = testUtils.getColTitle('Перемещение')
+      const title = testUtils.getColTitle('Последнее перемещение')
       const value = testUtils.getColValue(
         reportListItem.id,
-        `№${reportListItem.relocationTask.id} от ${formatDate(
-          reportListItem.relocationTask.createdAt,
-        )} (${relocationTaskStatusDict[reportListItem.relocationTask.status]})`,
+        getRelocationColValue(reportListItem.lastRelocationTask),
       )
 
       expect(title).toBeInTheDocument()
@@ -140,47 +226,19 @@ describe('Таблица отчета истории операций по но�
       await testUtils.clickColValue(
         user,
         reportListItem.id,
-        `№${reportListItem.relocationTask.id} от ${formatDate(
-          reportListItem.relocationTask.createdAt,
-        )} (${relocationTaskStatusDict[reportListItem.relocationTask.status]})`,
+        getRelocationColValue(reportListItem.lastRelocationTask),
       )
 
       expect(props.onClickRelocationTask).toBeCalledTimes(1)
-      expect(props.onClickRelocationTask).toBeCalledWith(reportListItem.relocationTask.id)
+      expect(props.onClickRelocationTask).toBeCalledWith(reportListItem.lastRelocationTask.id)
     })
   })
 
-  test('Колонка объект выбытия отображается', () => {
+  test('Колонка фактическое местонахождение отображается', () => {
     render(<HistoryNomenclatureOperationsReportTable {...props} />)
 
-    const title = testUtils.getColTitle('Объект выбытия')
-    const value = testUtils.getColValue(
-      reportListItem.id,
-      reportListItem.relocationTask.relocateFrom!.title,
-    )
-
-    expect(title).toBeInTheDocument()
-    expect(value).toBeInTheDocument()
-  })
-
-  test('Колонка объект прибытия отображается', () => {
-    render(<HistoryNomenclatureOperationsReportTable {...props} />)
-
-    const title = testUtils.getColTitle('Объект прибытия')
-    const value = testUtils.getColValue(
-      reportListItem.id,
-      reportListItem.relocationTask.relocateTo!.title,
-    )
-
-    expect(title).toBeInTheDocument()
-    expect(value).toBeInTheDocument()
-  })
-
-  test('Колонка количество отображается', () => {
-    render(<HistoryNomenclatureOperationsReportTable {...props} />)
-
-    const title = testUtils.getColTitle('Количество')
-    const value = testUtils.getColValue(reportListItem.id, reportListItem.quantity)
+    const title = testUtils.getColTitle('Фактическое местонахождение')
+    const value = testUtils.getColValue(reportListItem.id, reportListItem.location!.title)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()

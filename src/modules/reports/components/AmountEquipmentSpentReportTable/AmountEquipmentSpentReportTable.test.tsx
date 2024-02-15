@@ -1,11 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
+import { getRelocationColValue } from 'modules/reports/utils'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
-import { formatDate } from 'shared/utils/date'
 
 import reportsFixtures from '_tests_/fixtures/reports'
 import { render, tableTestUtils } from '_tests_/utils'
@@ -123,9 +122,7 @@ describe('Таблица отчета истории операций по но�
       const title = testUtils.getColTitle('Перемещение')
       const value = testUtils.getColValue(
         reportListItem.id,
-        `№${reportListItem.relocationTask.id} от ${formatDate(
-          reportListItem.relocationTask.createdAt,
-        )} (${relocationTaskStatusDict[reportListItem.relocationTask.status]})`,
+        getRelocationColValue(reportListItem.relocationTask),
       )
 
       expect(title).toBeInTheDocument()
@@ -138,9 +135,7 @@ describe('Таблица отчета истории операций по но�
       await testUtils.clickColValue(
         user,
         reportListItem.id,
-        `№${reportListItem.relocationTask.id} от ${formatDate(
-          reportListItem.relocationTask.createdAt,
-        )} (${relocationTaskStatusDict[reportListItem.relocationTask.status]})`,
+        getRelocationColValue(reportListItem.relocationTask),
       )
 
       expect(props.onClickRelocationTask).toBeCalledTimes(1)

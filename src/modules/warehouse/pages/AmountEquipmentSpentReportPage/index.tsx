@@ -87,8 +87,8 @@ const AmountEquipmentSpentReportPage: FC = () => {
       nomenclature: values.nomenclature,
       relocateFrom: values.relocateFrom,
       relocateTo: values.relocateTo,
-      createdAtFrom: values.period?.[0].toISOString(),
-      createdAtTo: values.period?.[1].toISOString(),
+      createdAtFrom: values.period?.[0]?.toISOString(),
+      createdAtTo: values.period?.[1]?.toISOString(),
       offset: initialPaginationParams.offset,
     })
   }

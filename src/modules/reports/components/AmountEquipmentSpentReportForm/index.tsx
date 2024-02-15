@@ -109,7 +109,10 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
             <RangePicker allowEmpty={[true, true]} />
           </Form.Item>
 
-          <Popover content={<Text>Фильтрует список операций по дате создания заявки</Text>}>
+          <Popover
+            placement='right'
+            content={<Text>Фильтрует список операций по дате создания заявки</Text>}
+          >
             <QuestionCircleIconStyled />
           </Popover>
         </Flex>

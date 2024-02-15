@@ -6,7 +6,6 @@ import { DATE_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
 import { validationMessages } from 'shared/constants/validation'
 
-import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
 
@@ -16,9 +15,6 @@ import { HistoryNomenclatureOperationsReportFormProps } from './types'
 const props: HistoryNomenclatureOperationsReportFormProps = {
   nomenclatures: [],
   nomenclaturesIsLoading: false,
-
-  locations: [],
-  locationsIsLoading: false,
 
   onSubmit: jest.fn(),
 }
@@ -46,52 +42,6 @@ const expectNomenclaturesLoadingStarted = () =>
 
 const expectNomenclaturesLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getNomenclatureFormItem())
-
-// relocate from field
-const getRelocateFromFormItem = () => within(getContainer()).getByTestId('relocate-from-form-item')
-const getRelocateFromSelect = () =>
-  within(getRelocateFromFormItem()).getByTestId('relocate-from-select')
-const getRelocateFromSelectInput = () => selectTestUtils.getSelect(getRelocateFromSelect())
-
-const openRelocateFromSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getRelocateFromFormItem())
-
-const setRelocateFrom = selectTestUtils.clickSelectOption
-
-const getSelectedRelocateFrom = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getRelocateFromSelect(), title)
-
-const findRelocateFromError = (error: string) => within(getRelocateFromFormItem()).findByText(error)
-const queryRelocateFromError = (error: string) =>
-  within(getRelocateFromFormItem()).queryByText(error)
-
-const expectRelocateFromLoadingStarted = () =>
-  selectTestUtils.expectLoadingStarted(getRelocateFromFormItem())
-
-const expectRelocateFromLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getRelocateFromFormItem())
-
-// relocate to field
-const getRelocateToFormItem = () => within(getContainer()).getByTestId('relocate-to-form-item')
-const getRelocateToSelect = () => within(getRelocateToFormItem()).getByTestId('relocate-to-select')
-const getRelocateToSelectInput = () => selectTestUtils.getSelect(getRelocateToSelect())
-
-const openRelocateToSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getRelocateToFormItem())
-
-const setRelocateTo = selectTestUtils.clickSelectOption
-
-const getSelectedRelocateTo = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getRelocateToSelect(), title)
-
-const findRelocateToError = (error: string) => within(getRelocateToFormItem()).findByText(error)
-const queryRelocateToError = (error: string) => within(getRelocateToFormItem()).queryByText(error)
-
-const expectRelocateToLoadingStarted = () =>
-  selectTestUtils.expectLoadingStarted(getRelocateToFormItem())
-
-const expectRelocateToLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getRelocateToFormItem())
 
 // period
 const getPeriodFormItem = () => screen.getByTestId('period-form-item')
@@ -135,24 +85,6 @@ export const testUtils = {
   expectNomenclaturesLoadingStarted,
   expectNomenclaturesLoadingFinished,
 
-  getRelocateFromSelectInput,
-  openRelocateFromSelect,
-  setRelocateFrom,
-  getSelectedRelocateFrom,
-  findRelocateFromError,
-  queryRelocateFromError,
-  expectRelocateFromLoadingStarted,
-  expectRelocateFromLoadingFinished,
-
-  getRelocateToSelectInput,
-  openRelocateToSelect,
-  setRelocateTo,
-  getSelectedRelocateTo,
-  findRelocateToError,
-  queryRelocateToError,
-  expectRelocateToLoadingStarted,
-  expectRelocateToLoadingFinished,
-
   setPeriod,
 
   clickSubmitButton,
@@ -182,80 +114,6 @@ describe('Форма отчета истории операций по номе�
       await testUtils.clickSubmitButton(user)
       const error = await testUtils.findNomenclatureError(validationMessages.required)
       expect(error).toBeInTheDocument()
-    })
-  })
-
-  describe('Поле объект выбытия', () => {
-    test('Можно установить значение', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
-
-      const { user } = render(
-        <HistoryNomenclatureOperationsReportForm {...props} locations={[locationListItem]} />,
-      )
-
-      await testUtils.openRelocateFromSelect(user)
-      await testUtils.setRelocateFrom(user, locationListItem.title)
-      const value = testUtils.getSelectedRelocateFrom(locationListItem.title)
-
-      expect(value).toBeInTheDocument()
-    })
-
-    test('Обязательное поле если объект прибытия не выбран', async () => {
-      const { user } = render(<HistoryNomenclatureOperationsReportForm {...props} />)
-      await testUtils.clickSubmitButton(user)
-      const error = await testUtils.findRelocateFromError(validationMessages.required)
-      expect(error).toBeInTheDocument()
-    })
-
-    test('Не обязательное поле если объект прибытия выбран', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
-
-      const { user } = render(
-        <HistoryNomenclatureOperationsReportForm {...props} locations={[locationListItem]} />,
-      )
-
-      await testUtils.openRelocateToSelect(user)
-      await testUtils.setRelocateTo(user, locationListItem.title)
-      await testUtils.clickSubmitButton(user)
-      const error = testUtils.queryRelocateFromError(validationMessages.required)
-      expect(error).not.toBeInTheDocument()
-    })
-  })
-
-  describe('Поле объект прибытия', () => {
-    test('Можно установить значение', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
-
-      const { user } = render(
-        <HistoryNomenclatureOperationsReportForm {...props} locations={[locationListItem]} />,
-      )
-
-      await testUtils.openRelocateToSelect(user)
-      await testUtils.setRelocateTo(user, locationListItem.title)
-      const value = testUtils.getSelectedRelocateTo(locationListItem.title)
-
-      expect(value).toBeInTheDocument()
-    })
-
-    test('Обязательное поле если объект выбытия не выбран', async () => {
-      const { user } = render(<HistoryNomenclatureOperationsReportForm {...props} />)
-      await testUtils.clickSubmitButton(user)
-      const error = await testUtils.findRelocateToError(validationMessages.required)
-      expect(error).toBeInTheDocument()
-    })
-
-    test('Не обязательное поле если объект выбытия выбран', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
-
-      const { user } = render(
-        <HistoryNomenclatureOperationsReportForm {...props} locations={[locationListItem]} />,
-      )
-
-      await testUtils.openRelocateFromSelect(user)
-      await testUtils.setRelocateFrom(user, locationListItem.title)
-      await testUtils.clickSubmitButton(user)
-      const error = testUtils.queryRelocateToError(validationMessages.required)
-      expect(error).not.toBeInTheDocument()
     })
   })
 

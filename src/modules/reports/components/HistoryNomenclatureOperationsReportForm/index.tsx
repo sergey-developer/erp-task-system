@@ -9,7 +9,6 @@ import QuestionCircleIconStyled from 'components/Icons/QuestionCircleIcon'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
-import { LocationListItemModel } from 'shared/models/catalogs/location'
 import { filterOptionBy } from 'shared/utils/common'
 
 import {
@@ -24,14 +23,9 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
   nomenclatures,
   nomenclaturesIsLoading,
 
-  locations,
-  locationsIsLoading,
-
   onSubmit,
 }) => {
   const [form] = useForm<HistoryNomenclatureOperationsReportFormFields>()
-  const relocateFromFormValue = Form.useWatch('relocateFrom', form)
-  const relocateToFormValue = Form.useWatch('relocateTo', form)
 
   return (
     <Form<HistoryNomenclatureOperationsReportFormFields>
@@ -60,48 +54,6 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
       </Form.Item>
 
       <Form.Item
-        data-testid='relocate-from-form-item'
-        name='relocateFrom'
-        label='Объект выбытия'
-        labelCol={{ span: 6 }}
-        labelAlign='left'
-        rules={relocateToFormValue ? undefined : onlyRequiredRules}
-      >
-        <Select<LocationListItemModel['id'], LocationListItemModel>
-          data-testid='relocate-from-select'
-          fieldNames={idAndTitleSelectFieldNames}
-          disabled={locationsIsLoading}
-          loading={locationsIsLoading}
-          options={locations}
-          placeholder='Выберите объект выбытия'
-          allowClear
-          showSearch
-          filterOption={filterOptionBy('title')}
-        />
-      </Form.Item>
-
-      <Form.Item
-        data-testid='relocate-to-form-item'
-        name='relocateTo'
-        label='Объект прибытия'
-        labelCol={{ span: 6 }}
-        labelAlign='left'
-        rules={relocateFromFormValue ? undefined : onlyRequiredRules}
-      >
-        <Select<LocationListItemModel['id'], LocationListItemModel>
-          data-testid='relocate-to-select'
-          fieldNames={idAndTitleSelectFieldNames}
-          disabled={locationsIsLoading}
-          loading={locationsIsLoading}
-          options={locations}
-          placeholder='Выберите объект прибытия'
-          allowClear
-          showSearch
-          filterOption={filterOptionBy('title')}
-        />
-      </Form.Item>
-
-      <Form.Item
         data-testid='period-form-item'
         label='Период'
         labelCol={{ span: 6 }}
@@ -112,7 +64,10 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
             <RangePicker allowEmpty={[true, true]} />
           </Form.Item>
 
-          <Popover content={<Text>Фильтрует список операций по дате создания заявки</Text>}>
+          <Popover
+            placement='right'
+            content={<Text>Фильтрует список операций по дате создания заявки</Text>}
+          >
             <QuestionCircleIconStyled />
           </Popover>
         </Flex>

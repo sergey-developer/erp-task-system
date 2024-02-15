@@ -18,7 +18,6 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { base64ToArrayBuffer } from 'shared/utils/common'
@@ -64,10 +63,12 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   })
 
   const [reportParams, setReportParams] =
-    useSetState<GetHistoryNomenclatureOperationsReportQueryArgs>(initialPaginationParams)
+    useSetState<GetHistoryNomenclatureOperationsReportQueryArgs>({
+      ...initialPaginationParams,
+      nomenclatureId: 0,
+    })
 
-  const isShowReport =
-    !!reportParams.nomenclature && (!!reportParams.relocateFrom || !!reportParams.relocateTo)
+  const isShowReport = !!reportParams.nomenclatureId
 
   const { currentData: report, isFetching: reportIsFetching } =
     useGetHistoryNomenclatureOperationsReport(reportParams, { skip: !isShowReport })
@@ -78,15 +79,11 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
     useGetEquipmentNomenclatureList()
 
-  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
-
   const onClickUpdate: HistoryNomenclatureOperationsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
-      nomenclature: values.nomenclature,
-      relocateFrom: values.relocateFrom,
-      relocateTo: values.relocateTo,
-      createdAtFrom: values.period?.[0].toISOString(),
-      createdAtTo: values.period?.[1].toISOString(),
+      nomenclatureId: values.nomenclature,
+      createdAtFrom: values.period?.[0]?.toISOString(),
+      createdAtTo: values.period?.[1]?.toISOString(),
       offset: initialPaginationParams.offset,
     })
   }
@@ -98,7 +95,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
       downloadFile(
         base64ToArrayBuffer(report),
         MimetypeEnum.Xlsx,
-        'Отчет по количеству потраченного оборудования',
+        'Отчет по истории операций по номенклатуре',
       )
     } catch {}
   }
@@ -124,8 +121,6 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
           <HistoryNomenclatureOperationsReportForm
             nomenclatures={extractPaginationResults(equipmentNomenclatures)}
             nomenclaturesIsLoading={equipmentNomenclaturesIsFetching}
-            locations={locations}
-            locationsIsLoading={locationsIsFetching}
             onSubmit={onClickUpdate}
           />
         </Col>
@@ -133,7 +128,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
         {isShowReport && (
           <Col span={24}>
             <Space $block direction='vertical' size='middle'>
-              <Title level={5}>Количество потраченного оборудования</Title>
+              <Title level={5}>История операций по номенклатуре</Title>
 
               <Button onClick={onExportExcel} loading={getReportXlsxIsFetching}>
                 Выгрузить в Excel
