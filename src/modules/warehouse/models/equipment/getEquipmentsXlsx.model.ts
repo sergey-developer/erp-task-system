@@ -7,4 +7,4 @@ export type GetEquipmentsXlsxQueryArgs = Omit<GetEquipmentListQueryArgs, 'limit'
     locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter]
   }>
 
-export type GetEquipmentsXlsxSuccessResponse = Blob
+export type GetEquipmentsXlsxSuccessResponse = string
