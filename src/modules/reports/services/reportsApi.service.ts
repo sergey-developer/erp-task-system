@@ -2,6 +2,10 @@ import { getPaginatedList } from 'lib/antd/utils'
 
 import { ReportsApiEnum } from 'modules/reports/constants'
 import {
+  GetAmountEquipmentSpentReportQueryArgs,
+  GetAmountEquipmentSpentReportSuccessResponse,
+  GetAmountEquipmentSpentReportXlsxQueryArgs,
+  GetAmountEquipmentSpentReportXlsxSuccessResponse,
   GetEmployeesActionsReportQueryArgs,
   GetEmployeesActionsReportSuccessResponse,
   GetEmployeesActionsReportXlsxQueryArgs,
@@ -12,10 +16,14 @@ import {
   GetHistoryNomenclatureOperationsReportXlsxSuccessResponse,
 } from 'modules/reports/models'
 import {
+  GetAmountEquipmentSpentReportTransformedSuccessResponse,
   GetEmployeesActionsReportTransformedSuccessResponse,
   GetHistoryNomenclatureOperationsReportTransformedSuccessResponse,
 } from 'modules/reports/types'
-import { getEmployeesActionsReportUrl } from 'modules/reports/utils'
+import {
+  getEmployeesActionsReportUrl,
+  getHistoryNomenclatureOperationsReportUrl,
+} from 'modules/reports/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -47,12 +55,36 @@ const reportsApiService = baseApiService.injectEndpoints({
       }),
     }),
 
+    getAmountEquipmentSpentReport: build.query<
+      GetAmountEquipmentSpentReportTransformedSuccessResponse,
+      GetAmountEquipmentSpentReportQueryArgs
+    >({
+      query: (params) => ({
+        url: ReportsApiEnum.GetAmountEquipmentSpentReport,
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+      transformResponse: (response: GetAmountEquipmentSpentReportSuccessResponse, meta, arg) =>
+        getPaginatedList(response, arg),
+    }),
+    getAmountEquipmentSpentReportXlsx: build.query<
+      GetAmountEquipmentSpentReportXlsxSuccessResponse,
+      GetAmountEquipmentSpentReportXlsxQueryArgs
+    >({
+      query: (params) => ({
+        url: ReportsApiEnum.GetAmountEquipmentSpentReport,
+        method: HttpMethodEnum.Get,
+        headers: { Accept: MimetypeEnum.Xlsx },
+        params,
+      }),
+    }),
+
     getHistoryNomenclatureOperationsReport: build.query<
       GetHistoryNomenclatureOperationsReportTransformedSuccessResponse,
       GetHistoryNomenclatureOperationsReportQueryArgs
     >({
-      query: (params) => ({
-        url: ReportsApiEnum.GetHistoryNomenclatureOperationsReport,
+      query: ({ nomenclatureId, ...params }) => ({
+        url: getHistoryNomenclatureOperationsReportUrl(nomenclatureId),
         method: HttpMethodEnum.Get,
         params,
       }),
@@ -66,8 +98,8 @@ const reportsApiService = baseApiService.injectEndpoints({
       GetHistoryNomenclatureOperationsReportXlsxSuccessResponse,
       GetHistoryNomenclatureOperationsReportXlsxQueryArgs
     >({
-      query: (params) => ({
-        url: ReportsApiEnum.GetHistoryNomenclatureOperationsReport,
+      query: ({ nomenclatureId, ...params }) => ({
+        url: getHistoryNomenclatureOperationsReportUrl(nomenclatureId),
         method: HttpMethodEnum.Get,
         headers: { Accept: MimetypeEnum.Xlsx },
         params,
@@ -80,6 +112,9 @@ const reportsApiService = baseApiService.injectEndpoints({
 export const {
   useGetEmployeesActionsReportQuery,
   useLazyGetEmployeesActionsReportXlsxQuery,
+
+  useGetAmountEquipmentSpentReportQuery,
+  useLazyGetAmountEquipmentSpentReportXlsxQuery,
 
   useGetHistoryNomenclatureOperationsReportQuery,
   useLazyGetHistoryNomenclatureOperationsReportXlsxQuery,

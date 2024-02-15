@@ -1,8 +1,9 @@
-import { ReportsApiEnum } from 'modules/reports/constants'
 import { GetHistoryNomenclatureOperationsReportSuccessResponse } from 'modules/reports/models'
+import { getHistoryNomenclatureOperationsReportUrl } from 'modules/reports/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'
+import { IdType } from 'shared/types/common'
 
 import {
   getForbiddenErrorMockFn,
@@ -12,17 +13,20 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const getHistoryNomenclatureOperationsReportMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, ReportsApiEnum.GetHistoryNomenclatureOperationsReport)
+const getHistoryNomenclatureOperationsReportMockFn = (id: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Get, getHistoryNomenclatureOperationsReportUrl(id))
 
 export const mockGetHistoryNomenclatureOperationsReportSuccess = (
+  id: IdType,
   options?: Partial<ResponseResolverOptions<GetHistoryNomenclatureOperationsReportSuccessResponse>>,
-) => getSuccessMockFn(getHistoryNomenclatureOperationsReportMockFn(), options)()
+) => getSuccessMockFn(getHistoryNomenclatureOperationsReportMockFn(id), options)()
 
 export const mockGetHistoryNomenclatureOperationsReportForbiddenError = (
+  id: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
-) => getForbiddenErrorMockFn(getHistoryNomenclatureOperationsReportMockFn(), options)()
+) => getForbiddenErrorMockFn(getHistoryNomenclatureOperationsReportMockFn(id), options)()
 
 export const mockGetHistoryNomenclatureOperationsReportServerError = (
+  id: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(getHistoryNomenclatureOperationsReportMockFn(), options)()
+) => getServerErrorMockFn(getHistoryNomenclatureOperationsReportMockFn(id), options)()

@@ -6,8 +6,8 @@ import { MaybeNull } from 'shared/types/utils'
 import { useUserMeState } from './useUserMeState'
 
 export const useMatchUserPermissions = (
-  expected: UserPermissions[],
+  permissions: UserPermissions[],
 ): MaybeNull<MatchExpectedPermissionsResult> => {
   const { data: userMe } = useUserMeState()
-  return userMe ? getPermissionsObj(userMe, expected) : null
+  return userMe ? getPermissionsObj(userMe, permissions) : null
 }

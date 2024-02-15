@@ -73,7 +73,7 @@ const EmployeesActionsReportForm: FC<EmployeesActionsReportFormProps> = ({
             <RangePicker allowEmpty={[true, true]} />
           </Form.Item>
 
-          <Popover content={periodHint}>
+          <Popover placement='right' content={periodHint}>
             <QuestionCircleIconStyled />
           </Popover>
         </Flex>

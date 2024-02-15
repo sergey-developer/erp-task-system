@@ -6,7 +6,17 @@ import { IdType } from 'shared/types/common'
 
 export type HistoryNomenclatureOperationsReportTableItem = Pick<
   HistoryNomenclatureOperationsReportListItemModel,
-  'id' | 'equipment' | 'relocationTask' | 'quantity'
+  | 'id'
+  | 'title'
+  | 'serialNumber'
+  | 'inventoryNumber'
+  | 'condition'
+  | 'isNew'
+  | 'isWarranty'
+  | 'isRepaired'
+  | 'creditedAt'
+  | 'lastRelocationTask'
+  | 'location'
 >
 
 export type HistoryNomenclatureOperationsReportTableProps = Required<

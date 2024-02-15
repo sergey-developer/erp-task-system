@@ -9,12 +9,12 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import reportsFixtures from '_tests_/fixtures/reports'
 import { render, tableTestUtils } from '_tests_/utils'
 
-import EmployeesActionsReportTable from './index'
-import { EmployeesActionsReportTableProps } from './types'
+import AmountEquipmentSpentReportTable from './index'
+import { AmountEquipmentSpentReportTableProps } from './types'
 
-const reportListItem = reportsFixtures.employeesActionsReportListItem()
+const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
 
-const props: Readonly<EmployeesActionsReportTableProps> = {
+const props: Readonly<AmountEquipmentSpentReportTableProps> = {
   dataSource: [reportListItem],
   pagination: {},
   loading: false,
@@ -23,7 +23,7 @@ const props: Readonly<EmployeesActionsReportTableProps> = {
   onClickRelocationTask: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('employees-actions-report-table')
+const getContainer = () => screen.getByTestId('amount-equipment-spent-report-table')
 
 const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
 const clickRow = async (user: UserEvent, id: IdType) =>
@@ -58,9 +58,9 @@ export const testUtils = {
   expectLoadingFinished,
 }
 
-describe('Таблица отчета действий сотрудников', () => {
+describe('Таблица отчета истории операций по номенклатуре', () => {
   test('Отображается корректно', () => {
-    render(<EmployeesActionsReportTable {...props} />)
+    render(<AmountEquipmentSpentReportTable {...props} />)
 
     const table = testUtils.getContainer()
 
@@ -74,9 +74,9 @@ describe('Таблица отчета действий сотрудников', 
   })
 
   test('Пагинация работает', async () => {
-    const report = reportsFixtures.employeesActionsReport(11)
+    const report = reportsFixtures.amountEquipmentSpentReport(11)
 
-    const { user } = render(<EmployeesActionsReportTable {...props} dataSource={report} />)
+    const { user } = render(<AmountEquipmentSpentReportTable {...props} dataSource={report} />)
 
     const table = testUtils.getContainer()
     await tableTestUtils.clickPaginationNextButtonIn(user, table)
@@ -96,7 +96,7 @@ describe('Таблица отчета действий сотрудников', 
 
   describe('Колонка оборудование', () => {
     test('Отображается', () => {
-      render(<EmployeesActionsReportTable {...props} />)
+      render(<AmountEquipmentSpentReportTable {...props} />)
 
       const title = testUtils.getColTitle('Оборудование')
       const value = testUtils.getColValue(reportListItem.id, reportListItem.equipment.title)
@@ -106,7 +106,7 @@ describe('Таблица отчета действий сотрудников', 
     })
 
     test('При клике на значение вызывается обработчик', async () => {
-      const { user } = render(<EmployeesActionsReportTable {...props} />)
+      const { user } = render(<AmountEquipmentSpentReportTable {...props} />)
 
       await testUtils.clickColValue(user, reportListItem.id, reportListItem.equipment.title)
 
@@ -115,32 +115,9 @@ describe('Таблица отчета действий сотрудников', 
     })
   })
 
-  test('Колонка серийный № отображается', () => {
-    render(<EmployeesActionsReportTable {...props} />)
-
-    const title = testUtils.getColTitle('Серийный №')
-    const value = testUtils.getColValue(reportListItem.id, reportListItem.equipment.serialNumber!)
-
-    expect(title).toBeInTheDocument()
-    expect(value).toBeInTheDocument()
-  })
-
-  test('Колонка инвентарный № отображается', () => {
-    render(<EmployeesActionsReportTable {...props} />)
-
-    const title = testUtils.getColTitle('Инвентарный №')
-    const value = testUtils.getColValue(
-      reportListItem.id,
-      reportListItem.equipment.inventoryNumber!,
-    )
-
-    expect(title).toBeInTheDocument()
-    expect(value).toBeInTheDocument()
-  })
-
   describe('Колонка перемещение', () => {
     test('Отображается', () => {
-      render(<EmployeesActionsReportTable {...props} />)
+      render(<AmountEquipmentSpentReportTable {...props} />)
 
       const title = testUtils.getColTitle('Перемещение')
       const value = testUtils.getColValue(
@@ -153,7 +130,7 @@ describe('Таблица отчета действий сотрудников', 
     })
 
     test('При клике на значение вызывается обработчик', async () => {
-      const { user } = render(<EmployeesActionsReportTable {...props} />)
+      const { user } = render(<AmountEquipmentSpentReportTable {...props} />)
 
       await testUtils.clickColValue(
         user,
@@ -166,18 +143,8 @@ describe('Таблица отчета действий сотрудников', 
     })
   })
 
-  test('Колонка роль отображается', () => {
-    render(<EmployeesActionsReportTable {...props} />)
-
-    const title = testUtils.getColTitle('Роль')
-    const value = testUtils.getColValue(reportListItem.id, reportListItem.roles.join(', '))
-
-    expect(title).toBeInTheDocument()
-    expect(value).toBeInTheDocument()
-  })
-
   test('Колонка объект выбытия отображается', () => {
-    render(<EmployeesActionsReportTable {...props} />)
+    render(<AmountEquipmentSpentReportTable {...props} />)
 
     const title = testUtils.getColTitle('Объект выбытия')
     const value = testUtils.getColValue(
@@ -190,7 +157,7 @@ describe('Таблица отчета действий сотрудников', 
   })
 
   test('Колонка объект прибытия отображается', () => {
-    render(<EmployeesActionsReportTable {...props} />)
+    render(<AmountEquipmentSpentReportTable {...props} />)
 
     const title = testUtils.getColTitle('Объект прибытия')
     const value = testUtils.getColValue(
@@ -203,7 +170,7 @@ describe('Таблица отчета действий сотрудников', 
   })
 
   test('Колонка количество отображается', () => {
-    render(<EmployeesActionsReportTable {...props} />)
+    render(<AmountEquipmentSpentReportTable {...props} />)
 
     const title = testUtils.getColTitle('Количество')
     const value = testUtils.getColValue(reportListItem.id, reportListItem.quantity)

@@ -3,22 +3,22 @@ import { Button, Col, Row, Typography } from 'antd'
 import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
 
-import { useAuthUser } from 'modules/auth/hooks'
-import EmployeesActionsReportForm from 'modules/reports/components/EmployeesActionsReportForm'
-import { EmployeesActionsReportFormProps } from 'modules/reports/components/EmployeesActionsReportForm/types'
-import EmployeesActionsReportTable from 'modules/reports/components/EmployeesActionsReportTable'
-import { EmployeesActionsReportTableProps } from 'modules/reports/components/EmployeesActionsReportTable/types'
+import AmountEquipmentSpentReportForm from 'modules/reports/components/AmountEquipmentSpentReportForm'
+import { AmountEquipmentSpentReportFormProps } from 'modules/reports/components/AmountEquipmentSpentReportForm/types'
+import AmountEquipmentSpentReportTable from 'modules/reports/components/AmountEquipmentSpentReportTable'
+import { AmountEquipmentSpentReportTableProps } from 'modules/reports/components/AmountEquipmentSpentReportTable/types'
 import {
-  useGetEmployeesActionsReport,
-  useLazyGetEmployeesActionsReportXlsx,
+  useGetAmountEquipmentSpentReport,
+  useLazyGetAmountEquipmentSpentReportXlsx,
 } from 'modules/reports/hooks'
-import { GetEmployeesActionsReportQueryArgs } from 'modules/reports/models'
-import { useGetUsers } from 'modules/user/hooks'
+import { GetAmountEquipmentSpentReportQueryArgs } from 'modules/reports/models'
+import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { base64ToArrayBuffer } from 'shared/utils/common'
@@ -36,11 +36,10 @@ const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
 )
 
+const initialPaginationParams = getInitialPaginationParams()
 const { Title } = Typography
 
-const initialPaginationParams = getInitialPaginationParams()
-
-const EmployeesActionsReportPage: FC = () => {
+const AmountEquipmentSpentReportPage: FC = () => {
   const [equipmentId, setEquipmentId] = useState<IdType>()
   const [equipmentOpened, { setTrue: openEquipment, setFalse: closeEquipment }] = useBoolean(false)
   const onOpenEquipment = useDebounceFn((id: IdType) => {
@@ -64,33 +63,32 @@ const EmployeesActionsReportPage: FC = () => {
     setRelocationTaskId(undefined)
   })
 
-  const authUser = useAuthUser()
+  const [reportParams, setReportParams] =
+    useSetState<GetAmountEquipmentSpentReportQueryArgs>(initialPaginationParams)
 
-  const [reportParams, setReportParams] = useSetState<GetEmployeesActionsReportQueryArgs>({
-    ...initialPaginationParams,
-    employeeId: 0,
-  })
+  const isShowReport =
+    !!reportParams.nomenclature && (!!reportParams.relocateFrom || !!reportParams.relocateTo)
 
-  const isShowReport = !!reportParams.employeeId
-
-  const { currentData: report, isFetching: reportIsFetching } = useGetEmployeesActionsReport(
+  const { currentData: report, isFetching: reportIsFetching } = useGetAmountEquipmentSpentReport(
     reportParams,
     { skip: !isShowReport },
   )
 
   const [getReportXlsx, { isFetching: getReportXlsxIsFetching }] =
-    useLazyGetEmployeesActionsReportXlsx()
+    useLazyGetAmountEquipmentSpentReportXlsx()
 
-  const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers(
-    { manager: authUser?.id!, allHierarchySubordinates: true },
-    { skip: !authUser?.id },
-  )
+  const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
+    useGetEquipmentNomenclatureList()
 
-  const onClickUpdate: EmployeesActionsReportFormProps['onSubmit'] = (values) => {
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
+
+  const onClickUpdate: AmountEquipmentSpentReportFormProps['onSubmit'] = (values) => {
     setReportParams({
-      employeeId: values.employee,
-      actionFrom: values.period?.[0]?.toISOString(),
-      actionTo: values.period?.[1]?.toISOString(),
+      nomenclature: values.nomenclature,
+      relocateFrom: values.relocateFrom,
+      relocateTo: values.relocateTo,
+      createdAtFrom: values.period?.[0]?.toISOString(),
+      createdAtTo: values.period?.[1]?.toISOString(),
       offset: initialPaginationParams.offset,
     })
   }
@@ -98,18 +96,23 @@ const EmployeesActionsReportPage: FC = () => {
   const onExportExcel = async () => {
     try {
       const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
-      downloadFile(base64ToArrayBuffer(report), MimetypeEnum.Xlsx, 'Отчет по действиям сотрудника')
+
+      downloadFile(
+        base64ToArrayBuffer(report),
+        MimetypeEnum.Xlsx,
+        'Отчет по количеству потраченного оборудования',
+      )
     } catch {}
   }
 
   const onTablePagination = useCallback(
-    (pagination: Parameters<EmployeesActionsReportTableProps['onChange']>[0]) => {
+    (pagination: Parameters<AmountEquipmentSpentReportTableProps['onChange']>[0]) => {
       setReportParams(calculatePaginationParams(pagination))
     },
     [setReportParams],
   )
 
-  const onChangeTable = useCallback<EmployeesActionsReportTableProps['onChange']>(
+  const onChangeTable = useCallback<AmountEquipmentSpentReportTableProps['onChange']>(
     (pagination) => {
       onTablePagination(pagination)
     },
@@ -118,11 +121,13 @@ const EmployeesActionsReportPage: FC = () => {
 
   return (
     <>
-      <Row data-testid='employees-actions-report-page' gutter={[0, 16]}>
+      <Row data-testid='amount-equipment-spent-report-page' gutter={[0, 16]}>
         <Col span={7}>
-          <EmployeesActionsReportForm
-            users={users}
-            usersIsLoading={usersIsFetching}
+          <AmountEquipmentSpentReportForm
+            nomenclatures={extractPaginationResults(equipmentNomenclatures)}
+            nomenclaturesIsLoading={equipmentNomenclaturesIsFetching}
+            locations={locations}
+            locationsIsLoading={locationsIsFetching}
             onSubmit={onClickUpdate}
           />
         </Col>
@@ -130,13 +135,13 @@ const EmployeesActionsReportPage: FC = () => {
         {isShowReport && (
           <Col span={24}>
             <Space $block direction='vertical' size='middle'>
-              <Title level={5}>Действия сотрудников</Title>
+              <Title level={5}>Количество потраченного оборудования</Title>
 
               <Button onClick={onExportExcel} loading={getReportXlsxIsFetching}>
                 Выгрузить в Excel
               </Button>
 
-              <EmployeesActionsReportTable
+              <AmountEquipmentSpentReportTable
                 dataSource={extractPaginationResults(report)}
                 pagination={extractPaginationParams(report)}
                 loading={reportIsFetching}
@@ -174,4 +179,4 @@ const EmployeesActionsReportPage: FC = () => {
   )
 }
 
-export default EmployeesActionsReportPage
+export default AmountEquipmentSpentReportPage
