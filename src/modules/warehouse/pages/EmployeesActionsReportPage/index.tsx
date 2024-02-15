@@ -88,8 +88,8 @@ const EmployeesActionsReportPage: FC = () => {
   const onClickUpdate: EmployeesActionsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
       employeeId: values.employee,
-      actionFrom: values.period?.[0].toISOString(),
-      actionTo: values.period?.[1].toISOString(),
+      actionFrom: values.period?.[0]?.toISOString(),
+      actionTo: values.period?.[1]?.toISOString(),
       offset: initialPaginationParams.offset,
     })
   }
