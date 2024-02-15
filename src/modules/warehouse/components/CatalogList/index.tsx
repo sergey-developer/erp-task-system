@@ -22,7 +22,7 @@ const CatalogList: FC<CatalogListProps> = ({ items, ...props }) => {
     <div {...props}>
       {items.map(({ link, text, permissions }, index) =>
         !!permissions?.length ? (
-          <MatchUserPermissions key={index} expected={permissions}>
+          <MatchUserPermissions key={index} expectedPermissions={permissions}>
             {({ permissions }) =>
               checkEveryPermissionAllowed(permissions) ? (
                 <CatalogListItem link={link} text={text} />

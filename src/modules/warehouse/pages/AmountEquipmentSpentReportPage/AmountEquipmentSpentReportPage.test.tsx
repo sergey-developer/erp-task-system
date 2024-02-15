@@ -42,7 +42,9 @@ const clickExportToExcelButton = async (user: UserEvent) => {
 const expectExportToExcelLoadingFinished = () =>
   buttonTestUtils.expectLoadingFinished(getExportToExcelButton())
 
-const testUtils = {
+export const testUtils = {
+  getContainer,
+
   getExportToExcelButton,
   clickExportToExcelButton,
   expectExportToExcelLoadingFinished,
