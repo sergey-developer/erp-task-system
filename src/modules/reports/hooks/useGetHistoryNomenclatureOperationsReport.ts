@@ -7,7 +7,12 @@ import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'modules/reports
 import { useGetHistoryNomenclatureOperationsReportQuery } from 'modules/reports/services/reportsApi.service'
 import { GetHistoryNomenclatureOperationsReportTransformedSuccessResponse } from 'modules/reports/types'
 
-import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetHistoryNomenclatureOperationsReportResult = CustomUseQueryHookResult<
@@ -28,7 +33,7 @@ export const useGetHistoryNomenclatureOperationsReport = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isForbiddenError(state.error)) {
+      if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
         showErrorNotification(getHistoryNomenclatureOperationsReportErrMsg)

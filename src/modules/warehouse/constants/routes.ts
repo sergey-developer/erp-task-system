@@ -16,5 +16,6 @@ export enum WarehouseRouteEnum {
 
   Reports = '/home/manage-warehouses/reports',
   EmployeesActions = '/home/manage-warehouses/reports/employees-actions',
+  AmountEquipmentSpent = '/home/manage-warehouses/reports/amount-equipment-spent',
   HistoryNomenclatureOperations = '/home/manage-warehouses/reports/history-nomenclature-operations',
 }

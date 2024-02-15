@@ -5,24 +5,26 @@ import {
   HistoryNomenclatureOperationsReportListItemModel,
   HistoryNomenclatureOperationsReportModel,
 } from 'modules/reports/models'
+import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 
-import { fakeId, fakeInteger } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/utils'
 
+import catalogsFixtures from '../catalogs'
 import warehouseFixtures from '../warehouse'
 
 export const historyNomenclatureOperationsReportListItem =
   (): HistoryNomenclatureOperationsReportListItemModel => ({
     id: fakeId(),
-    quantity: fakeInteger(),
-    equipment: pick(warehouseFixtures.equipment(), 'id', 'title'),
-    relocationTask: pick(
-      warehouseFixtures.relocationTask(),
-      'id',
-      'createdAt',
-      'relocateFrom',
-      'relocateTo',
-      'status',
-    ),
+    title: fakeWord(),
+    condition: EquipmentConditionEnum.Working,
+    isNew: false,
+    isRepaired: false,
+    isWarranty: false,
+    lastRelocationTask: pick(warehouseFixtures.relocationTask(), 'id', 'createdAt', 'status'),
+    creditedAt: fakeDateString(),
+    serialNumber: fakeIdStr(),
+    inventoryNumber: fakeIdStr(),
+    location: pick(catalogsFixtures.location(), 'id', 'title'),
   })
 
 export const historyNomenclatureOperationsReport = (

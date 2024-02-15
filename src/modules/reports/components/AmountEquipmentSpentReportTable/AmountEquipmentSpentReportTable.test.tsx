@@ -10,12 +10,12 @@ import { formatDate } from 'shared/utils/date'
 import reportsFixtures from '_tests_/fixtures/reports'
 import { render, tableTestUtils } from '_tests_/utils'
 
-import HistoryNomenclatureOperationsReportTable from './index'
-import { HistoryNomenclatureOperationsReportTableProps } from './types'
+import AmountEquipmentSpentReportTable from './index'
+import { AmountEquipmentSpentReportTableProps } from './types'
 
-const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
 
-const props: Readonly<HistoryNomenclatureOperationsReportTableProps> = {
+const props: Readonly<AmountEquipmentSpentReportTableProps> = {
   dataSource: [reportListItem],
   pagination: {},
   loading: false,
@@ -24,7 +24,7 @@ const props: Readonly<HistoryNomenclatureOperationsReportTableProps> = {
   onClickRelocationTask: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('history-nomenclature-operations-report-table')
+const getContainer = () => screen.getByTestId('amount-equipment-spent-report-table')
 
 const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
 const clickRow = async (user: UserEvent, id: IdType) =>
@@ -61,7 +61,7 @@ export const testUtils = {
 
 describe('Таблица отчета истории операций по номенклатуре', () => {
   test('Отображается корректно', () => {
-    render(<HistoryNomenclatureOperationsReportTable {...props} />)
+    render(<AmountEquipmentSpentReportTable {...props} />)
 
     const table = testUtils.getContainer()
 
@@ -75,11 +75,9 @@ describe('Таблица отчета истории операций по но�
   })
 
   test('Пагинация работает', async () => {
-    const report = reportsFixtures.historyNomenclatureOperationsReport(11)
+    const report = reportsFixtures.amountEquipmentSpentReport(11)
 
-    const { user } = render(
-      <HistoryNomenclatureOperationsReportTable {...props} dataSource={report} />,
-    )
+    const { user } = render(<AmountEquipmentSpentReportTable {...props} dataSource={report} />)
 
     const table = testUtils.getContainer()
     await tableTestUtils.clickPaginationNextButtonIn(user, table)
@@ -99,7 +97,7 @@ describe('Таблица отчета истории операций по но�
 
   describe('Колонка оборудование', () => {
     test('Отображается', () => {
-      render(<HistoryNomenclatureOperationsReportTable {...props} />)
+      render(<AmountEquipmentSpentReportTable {...props} />)
 
       const title = testUtils.getColTitle('Оборудование')
       const value = testUtils.getColValue(reportListItem.id, reportListItem.equipment.title)
@@ -109,7 +107,7 @@ describe('Таблица отчета истории операций по но�
     })
 
     test('При клике на значение вызывается обработчик', async () => {
-      const { user } = render(<HistoryNomenclatureOperationsReportTable {...props} />)
+      const { user } = render(<AmountEquipmentSpentReportTable {...props} />)
 
       await testUtils.clickColValue(user, reportListItem.id, reportListItem.equipment.title)
 
@@ -120,7 +118,7 @@ describe('Таблица отчета истории операций по но�
 
   describe('Колонка перемещение', () => {
     test('Отображается', () => {
-      render(<HistoryNomenclatureOperationsReportTable {...props} />)
+      render(<AmountEquipmentSpentReportTable {...props} />)
 
       const title = testUtils.getColTitle('Перемещение')
       const value = testUtils.getColValue(
@@ -135,7 +133,7 @@ describe('Таблица отчета истории операций по но�
     })
 
     test('При клике на значение вызывается обработчик', async () => {
-      const { user } = render(<HistoryNomenclatureOperationsReportTable {...props} />)
+      const { user } = render(<AmountEquipmentSpentReportTable {...props} />)
 
       await testUtils.clickColValue(
         user,
@@ -151,7 +149,7 @@ describe('Таблица отчета истории операций по но�
   })
 
   test('Колонка объект выбытия отображается', () => {
-    render(<HistoryNomenclatureOperationsReportTable {...props} />)
+    render(<AmountEquipmentSpentReportTable {...props} />)
 
     const title = testUtils.getColTitle('Объект выбытия')
     const value = testUtils.getColValue(
@@ -164,7 +162,7 @@ describe('Таблица отчета истории операций по но�
   })
 
   test('Колонка объект прибытия отображается', () => {
-    render(<HistoryNomenclatureOperationsReportTable {...props} />)
+    render(<AmountEquipmentSpentReportTable {...props} />)
 
     const title = testUtils.getColTitle('Объект прибытия')
     const value = testUtils.getColValue(
@@ -177,7 +175,7 @@ describe('Таблица отчета истории операций по но�
   })
 
   test('Колонка количество отображается', () => {
-    render(<HistoryNomenclatureOperationsReportTable {...props} />)
+    render(<AmountEquipmentSpentReportTable {...props} />)
 
     const title = testUtils.getColTitle('Количество')
     const value = testUtils.getColValue(reportListItem.id, reportListItem.quantity)
