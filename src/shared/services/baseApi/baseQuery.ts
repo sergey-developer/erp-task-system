@@ -7,7 +7,6 @@ import httpClient from 'lib/httpClient'
 
 import { commonApiMessages } from 'shared/constants/common'
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
-import { MimetypeEnum } from 'shared/constants/mimetype'
 
 import { CustomBaseQueryConfig, CustomBaseQueryFn } from './types'
 import { makeRelativeApiUrl } from './utils'
@@ -37,9 +36,6 @@ const baseQuery =
         data,
         params,
         headers: finalHeaders,
-        responseType: (finalHeaders!['Accept'] as string).includes(MimetypeEnum.Xlsx)
-          ? 'blob'
-          : undefined,
       })
 
       return { data: response.data }

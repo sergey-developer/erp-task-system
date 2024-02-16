@@ -4,12 +4,11 @@ import { PaginationParams } from 'shared/types/pagination'
 
 import { EmployeesActionsReportListItemModel } from './employeesActionsReport.model'
 
-export type GetEmployeesActionsReportQueryArgs = { employeeId: IdType } & Partial<
-  PaginationParams & {
+export type GetEmployeesActionsReportQueryArgs = { employeeId: IdType } & PaginationParams &
+  Partial<{
     actionFrom: string
     actionTo: string
-  }
->
+  }>
 
 export type GetEmployeesActionsReportSuccessResponse =
   PaginationResponse<EmployeesActionsReportListItemModel>

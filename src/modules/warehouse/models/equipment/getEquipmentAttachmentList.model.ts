@@ -5,6 +5,6 @@ import { PaginationResponse } from 'shared/models/pagination.model'
 import { PaginationParams } from 'shared/types/pagination'
 
 export type GetEquipmentAttachmentListQueryArgs = BaseEquipmentRequestArgs &
-  Partial<Pick<PaginationParams, 'limit'>>
+  Pick<PaginationParams, 'limit'>
 
 export type GetEquipmentAttachmentListSuccessResponse = PaginationResponse<AttachmentListItemModel>
