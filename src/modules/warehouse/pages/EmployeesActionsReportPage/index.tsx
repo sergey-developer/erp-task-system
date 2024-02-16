@@ -95,15 +95,14 @@ const EmployeesActionsReportPage: FC = () => {
   }
 
   const onExportExcel = async () => {
-    try {
-      const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
+    const { data } = await getReportXlsx(omit(reportParams, 'offset', 'limit'))
 
-      clickDownloadLink(
-        base64ToArrayBuffer(report),
-        MimetypeEnum.Xlsx,
-        'Отчет по действиям сотрудника',
+    if (data?.value && data?.meta?.response) {
+      const fileName = decodeURIComponent(
+        data.meta.response.headers['content-disposition'].split('filename=')[1],
       )
-    } catch {}
+      clickDownloadLink(base64ToArrayBuffer(data.value), MimetypeEnum.Xlsx, fileName)
+    }
   }
 
   const onTablePagination = useCallback(
