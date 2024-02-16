@@ -18,6 +18,7 @@ import {
 import {
   GetAmountEquipmentSpentReportTransformedSuccessResponse,
   GetEmployeesActionsReportTransformedSuccessResponse,
+  GetEmployeesActionsReportXlsxTransformedSuccessResponse,
   GetHistoryNomenclatureOperationsReportTransformedSuccessResponse,
 } from 'modules/reports/types'
 import {
@@ -44,7 +45,7 @@ const reportsApiService = baseApiService.injectEndpoints({
         getPaginatedList(response, arg),
     }),
     getEmployeesActionsReportXlsx: build.query<
-      GetEmployeesActionsReportXlsxSuccessResponse,
+      GetEmployeesActionsReportXlsxTransformedSuccessResponse,
       GetEmployeesActionsReportXlsxQueryArgs
     >({
       query: ({ employeeId, ...params }) => ({
@@ -52,6 +53,10 @@ const reportsApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
         headers: { Accept: MimetypeEnum.Xlsx },
         params,
+      }),
+      transformResponse: (value: GetEmployeesActionsReportXlsxSuccessResponse, meta) => ({
+        value,
+        meta,
       }),
     }),
 
