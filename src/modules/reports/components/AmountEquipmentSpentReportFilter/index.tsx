@@ -57,7 +57,7 @@ const AmountEquipmentSpentReportFilter: FC<AmountEquipmentSpentReportFilterProps
       >
         <FilterBlock
           data-testid='categories-block'
-          label='Статус'
+          label='Категории'
           onReset={resetFields(['categories'])}
         >
           <Form.Item name='categories'>
