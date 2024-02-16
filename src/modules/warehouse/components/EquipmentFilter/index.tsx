@@ -10,6 +10,7 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 import { useSelectAll } from 'shared/hooks/useSelectAll'
+import { filterOptionBy } from 'shared/utils/common'
 import { getBooleanOptions } from 'shared/utils/selectField'
 
 import { EquipmentFilterProps, EquipmentsFilterFormFields } from './types'
@@ -116,6 +117,8 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
               mode='multiple'
               placeholder='Выберите местонахождение'
               loading={locationsIsLoading}
+              showSearch
+              filterOption={filterOptionBy('label')}
             />
           </Form.Item>
         </FilterBlock>
