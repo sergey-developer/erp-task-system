@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty'
 
-import { TasksFiltersStorageType } from '../taskLocalStorage.service'
+import { TasksFiltersStorageType } from './taskLocalStorage.service'
 
 type ParsedTasksFilterStorageItem = {
   name: keyof TasksFiltersStorageType

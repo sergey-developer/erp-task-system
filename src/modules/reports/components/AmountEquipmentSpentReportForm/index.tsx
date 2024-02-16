@@ -63,6 +63,7 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
         labelCol={{ span: 6 }}
         labelAlign='left'
         rules={relocateToFormValue ? undefined : onlyRequiredRules}
+        dependencies={['relocateTo']}
       >
         <Select<LocationListItemModel['id'], LocationListItemModel>
           data-testid='relocate-from-select'
@@ -84,6 +85,7 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
         labelCol={{ span: 6 }}
         labelAlign='left'
         rules={relocateFromFormValue ? undefined : onlyRequiredRules}
+        dependencies={['relocateFrom']}
       >
         <Select<LocationListItemModel['id'], LocationListItemModel>
           data-testid='relocate-to-select'

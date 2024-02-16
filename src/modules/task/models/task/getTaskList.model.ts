@@ -51,14 +51,13 @@ export type ExtendedFilterQueries = Partial<{
 }> &
   SearchFields
 
-export type GetTaskListQueryArgs = Partial<
-  PaginationParams & {
+export type GetTaskListQueryArgs = PaginationParams &
+  Partial<{
     sort: GetTaskListSortValue
     userId: IdType
     lat: number
     long: number
-  }
-> &
+  }> &
   ExtendedFilterQueries &
   FastFilterQueries &
   FilterParams

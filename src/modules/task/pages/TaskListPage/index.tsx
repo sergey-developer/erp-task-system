@@ -37,7 +37,7 @@ import { useGetTasks } from 'modules/task/hooks/task'
 import { useGetTaskCounters } from 'modules/task/hooks/taskCounters'
 import { ExtendedFilterQueries, FastFilterQueries, GetTaskListQueryArgs } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils/parseTasksFiltersStorage'
+import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils'
 import { taskDetailsTabExist } from 'modules/task/utils/task'
 import {
   useGetUsers,

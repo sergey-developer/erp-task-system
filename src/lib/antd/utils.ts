@@ -7,7 +7,7 @@ import { PaginationParams } from 'shared/types/pagination'
 
 export const getPaginatedList = <T>(
   response: PaginationResponse<T>,
-  params?: Partial<PaginationParams>,
+  params?: PaginationParams,
 ): AntdPaginatedList<T> => ({
   pagination: {
     ...(isNumber(params?.offset) && params?.limit

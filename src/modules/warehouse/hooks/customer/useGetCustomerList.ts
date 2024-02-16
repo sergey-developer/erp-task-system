@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getCustomerListMessages } from 'modules/warehouse/constants/customer'
+import { getCustomersErrMsg } from 'modules/warehouse/constants/customer'
 import { GetCustomerListQueryArgs, GetCustomerListSuccessResponse } from 'modules/warehouse/models'
 import { useGetCustomerListQuery } from 'modules/warehouse/services/customerApiService'
 
@@ -27,7 +27,7 @@ export const useGetCustomerList = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getCustomerListMessages.commonError)
+      showErrorNotification(getCustomersErrMsg)
     }
   }, [state.error])
 
