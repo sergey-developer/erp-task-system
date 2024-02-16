@@ -1,4 +1,4 @@
-import { useBoolean, useSetState } from 'ahooks'
+import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
@@ -8,16 +8,19 @@ import AmountEquipmentSpentReportForm from 'modules/reports/components/AmountEqu
 import { AmountEquipmentSpentReportFormProps } from 'modules/reports/components/AmountEquipmentSpentReportForm/types'
 import AmountEquipmentSpentReportTable from 'modules/reports/components/AmountEquipmentSpentReportTable'
 import { AmountEquipmentSpentReportTableProps } from 'modules/reports/components/AmountEquipmentSpentReportTable/types'
+import { ReportsStorageKeysEnum } from 'modules/reports/constants'
 import {
   useGetAmountEquipmentSpentReport,
   useLazyGetAmountEquipmentSpentReportXlsx,
 } from 'modules/reports/hooks'
 import { GetAmountEquipmentSpentReportQueryArgs } from 'modules/reports/models'
+import { AmountEquipmentSpentReportFiltersStorageType } from 'modules/reports/services/reportsLocalStorage.service'
 import {
   useGetEquipmentCategoryList,
   useGetEquipmentNomenclatureList,
 } from 'modules/warehouse/hooks/equipment'
 
+import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
@@ -25,6 +28,7 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
 import { base64ToArrayBuffer } from 'shared/utils/common'
 import { downloadFile } from 'shared/utils/file'
 import {
@@ -33,8 +37,6 @@ import {
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
-
-import FilterButton from '../../../../components/Buttons/FilterButton'
 
 const EquipmentDetails = React.lazy(() => import('modules/warehouse/components/EquipmentDetails'))
 
@@ -76,12 +78,19 @@ const AmountEquipmentSpentReportPage: FC = () => {
     setRelocationTaskId(undefined)
   })
 
+  const [filtersFromStorage, setFiltersInStorage] = useLocalStorageState<
+    MaybeUndefined<AmountEquipmentSpentReportFiltersStorageType>
+  >(ReportsStorageKeysEnum.AmountEquipmentSpentReportFilters)
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
-  const [filterValues, setFilterValues] = useState<AmountEquipmentSpentReportFilterFormFields>()
+  const [filterValues, setFilterValues] = useState<AmountEquipmentSpentReportFilterFormFields>(
+    filtersFromStorage || {},
+  )
 
-  const [reportParams, setReportParams] =
-    useSetState<GetAmountEquipmentSpentReportQueryArgs>(initialPaginationParams)
+  const [reportParams, setReportParams] = useSetState<GetAmountEquipmentSpentReportQueryArgs>({
+    ...initialPaginationParams,
+    ...filterValues,
+  })
 
   const isShowReport =
     !!reportParams.nomenclature && (!!reportParams.relocateFrom || !!reportParams.relocateTo)
@@ -95,7 +104,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
     useLazyGetAmountEquipmentSpentReportXlsx()
 
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
-    useGetEquipmentNomenclatureList({ categories: filterValues?.categories })
+    useGetEquipmentNomenclatureList(filterValues)
 
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
 
@@ -129,6 +138,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
     setFilterValues(values)
     setReportParams({ ...values, offset: initialPaginationParams.offset })
     toggleOpenFilter()
+    setFiltersInStorage(values)
   }
 
   const onTablePagination = useCallback(
