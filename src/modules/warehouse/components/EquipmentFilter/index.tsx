@@ -10,9 +10,9 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
 import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
 import { useSelectAll } from 'shared/hooks/useSelectAll'
+import { filterOptionBy } from 'shared/utils/common'
 import { getBooleanOptions } from 'shared/utils/selectField'
 
-import { filterOptionBy } from '../../../../shared/utils/common'
 import { EquipmentFilterFormFields, EquipmentFilterProps } from './types'
 
 const { RangePicker } = DatePicker
