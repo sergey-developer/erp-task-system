@@ -38,7 +38,7 @@ const baseQuery =
         headers: finalHeaders,
       })
 
-      return { data: response.data }
+      return { data: response.data, meta: { response } }
     } catch (exception) {
       const error = exception as AxiosError
       const status = error.response?.status || HttpCodeEnum.ServerError
