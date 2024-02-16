@@ -39,12 +39,11 @@ export type GetRelocationTaskListFilter = Partial<{
 }>
 
 export type GetRelocationTaskListQueryArgs = GetRelocationTaskListFilter &
-  Partial<
-    PaginationParams &
-      FilterParams & {
-        ordering: GetRelocationTaskListSortValue
-        taskId: IdType
-      }
-  >
+  PaginationParams &
+  FilterParams &
+  Partial<{
+    ordering: GetRelocationTaskListSortValue
+    taskId: IdType
+  }>
 
 export type GetRelocationTaskListSuccessResponse = PaginationResponse<RelocationTaskListItemModel>
