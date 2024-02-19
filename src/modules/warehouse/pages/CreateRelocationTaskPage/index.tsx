@@ -746,7 +746,7 @@ const CreateRelocationTaskPage: FC = () => {
           </Col>
 
           <Col span={24}>
-            <Space $block direction='vertical' size='middle'>
+            <Space direction='vertical' size='middle'>
               <Row justify='space-between' align='middle'>
                 <Col>
                   <Text strong>Перечень оборудования</Text>
