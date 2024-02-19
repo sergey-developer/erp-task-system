@@ -158,7 +158,7 @@ export const testUtils = {
   clickSubmitButton,
 }
 
-describe('Форма отчета истории операций по номенклатуре', () => {
+describe('Форма отчета количества потраченного оборудования', () => {
   describe('Поле номенклатуры', () => {
     test('Можно установить значение', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()

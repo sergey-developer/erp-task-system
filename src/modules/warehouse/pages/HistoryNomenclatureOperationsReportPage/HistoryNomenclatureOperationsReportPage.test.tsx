@@ -69,7 +69,7 @@ export const testUtils = {
 
 setupApiTests()
 
-describe('Страница отчета количества потраченного оборудования', () => {
+describe('Страница отчета истории операций по номенклатуре', () => {
   describe('Таблица отчета', () => {
     test('При клике на оборудование открывается карточка оборудования', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()

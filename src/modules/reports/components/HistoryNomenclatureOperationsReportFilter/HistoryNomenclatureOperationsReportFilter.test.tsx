@@ -1,4 +1,3 @@
-// owners
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
@@ -146,7 +145,7 @@ export const testUtils = {
   clickApplyButton,
 }
 
-describe('Фильтр истории операций по номенклатуре', () => {
+describe('Фильтр отчета истории операций по номенклатуре', () => {
   describe('Состояние', () => {
     test('Отображается', async () => {
       render(<HistoryNomenclatureOperationsReportFilter {...props} />)
