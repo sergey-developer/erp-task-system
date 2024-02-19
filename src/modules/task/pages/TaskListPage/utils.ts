@@ -70,6 +70,7 @@ export const getTasksByOlaNextBreachTime = (tasks: TaskListModel): TaskTableList
   const olaStatusExpiredTasks: TaskTableListItem[] = []
   const equalCurrentDateTasks: TaskTableListItem[] = []
   const moreThanCurrentDateTasks: TaskTableListItem[] = []
+  const restTasks: TaskTableListItem[] = []
 
   tasks.forEach((task) => {
     const olaNextBreachTimeMoment = moment(task.olaNextBreachTime)
@@ -80,6 +81,8 @@ export const getTasksByOlaNextBreachTime = (tasks: TaskListModel): TaskTableList
       equalCurrentDateTasks.push(task)
     } else if (olaNextBreachTimeMoment.isAfter(currentDate, granularity)) {
       moreThanCurrentDateTasks.push(task)
+    } else {
+      restTasks.push(task)
     }
   })
 
@@ -100,5 +103,7 @@ export const getTasksByOlaNextBreachTime = (tasks: TaskListModel): TaskTableList
       : []),
 
     ...moreThanCurrentDateTasks,
+
+    ...restTasks,
   ]
 }
