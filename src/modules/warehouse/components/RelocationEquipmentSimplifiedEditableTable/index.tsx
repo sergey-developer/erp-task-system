@@ -194,7 +194,6 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
     <EditableProTable<RelocationEquipmentRow>
       data-testid='relocation-equipment-simplified-editable-table'
       rowKey='rowId'
-      virtual
       name={name}
       columns={columns}
       recordCreatorProps={{
