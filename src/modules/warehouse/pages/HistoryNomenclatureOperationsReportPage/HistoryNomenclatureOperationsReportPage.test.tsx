@@ -1,11 +1,16 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as historyNomenclatureOperationsReportFilterTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportFilter/HistoryNomenclatureOperationsReportFilter.test'
 import { testUtils as historyNomenclatureOperationsReportFormTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportForm/HistoryNomenclatureOperationsReportForm.test'
 import { testUtils as historyNomenclatureOperationsReportTableTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportTable/HistoryNomenclatureOperationsReportTable.test'
 import { getRelocationColValue } from 'modules/reports/utils'
 import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
+import {
+  equipmentConditionDict,
+  EquipmentConditionEnum,
+} from 'modules/warehouse/constants/equipment'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
@@ -16,19 +21,29 @@ import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
+  mockGetCustomerListSuccess,
   mockGetEquipmentAttachmentListSuccess,
   mockGetEquipmentNomenclatureListSuccess,
   mockGetEquipmentSuccess,
   mockGetHistoryNomenclatureOperationsReportSuccess,
+  mockGetHistoryNomenclatureOperationsReportXlsxSuccess,
   mockGetLocationListSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, render, setupApiTests } from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render, setupApiTests } from '_tests_/utils'
 
 import HistoryNomenclatureOperationsReportPage from './index'
 
 const getContainer = () => screen.getByTestId('history-nomenclature-operations-report-page')
+
+// filter button
+const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
+
+const clickFilterButton = async (user: UserEvent) => {
+  const button = getFilterButton()
+  await user.click(button)
+}
 
 // export to excel button
 const getExportToExcelButton = () =>
@@ -45,6 +60,8 @@ const expectExportToExcelLoadingFinished = () =>
 export const testUtils = {
   getContainer,
 
+  clickFilterButton,
+
   getExportToExcelButton,
   clickExportToExcelButton,
   expectExportToExcelLoadingFinished,
@@ -52,7 +69,7 @@ export const testUtils = {
 
 setupApiTests()
 
-describe('Страница отчета количества потраченного оборудования', () => {
+describe('Страница отчета истории операций по номенклатуре', () => {
   describe('Таблица отчета', () => {
     test('При клике на оборудование открывается карточка оборудования', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
@@ -129,9 +146,47 @@ describe('Страница отчета количества потраченн�
     })
   })
 
+  describe('Фильтры', () => {
+    test('После применения отображается отчет', async () => {
+      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      mockGetEquipmentNomenclatureListSuccess({
+        body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
+      })
+
+      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+      mockGetHistoryNomenclatureOperationsReportSuccess(equipmentNomenclatureListItem.id, {
+        body: commonFixtures.paginatedListResponse([reportListItem]),
+        once: false,
+      })
+
+      mockGetLocationListSuccess()
+      mockGetCustomerListSuccess()
+
+      const { user } = render(<HistoryNomenclatureOperationsReportPage />)
+
+      await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
+      await historyNomenclatureOperationsReportFormTestUtils.openNomenclatureSelect(user)
+      await historyNomenclatureOperationsReportFormTestUtils.setNomenclature(
+        user,
+        equipmentNomenclatureListItem.title,
+      )
+      await historyNomenclatureOperationsReportFormTestUtils.clickSubmitButton(user)
+      await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()
+      await testUtils.clickFilterButton(user)
+      await historyNomenclatureOperationsReportFilterTestUtils.findContainer()
+      await historyNomenclatureOperationsReportFilterTestUtils.openConditionsSelect(user)
+      await historyNomenclatureOperationsReportFilterTestUtils.setCondition(
+        user,
+        equipmentConditionDict[EquipmentConditionEnum.WrittenOff],
+      )
+      await historyNomenclatureOperationsReportFilterTestUtils.clickApplyButton(user)
+      await historyNomenclatureOperationsReportTableTestUtils.expectLoadingStarted()
+      await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()
+    })
+  })
+
   describe('Выгрузка в excel', () => {
-    // todo: выяснить почему не проходит
-    test.skip('При успешном запросе вызывается функция открытия окна скачивания', async () => {
+    test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
       const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
@@ -148,12 +203,6 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
-
-      mockGetEquipmentSuccess(reportListItem.id)
-      mockGetEquipmentAttachmentListSuccess(reportListItem.id)
-
       const { user } = render(<HistoryNomenclatureOperationsReportPage />)
 
       await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
@@ -165,20 +214,22 @@ describe('Страница отчета количества потраченн�
       await historyNomenclatureOperationsReportFormTestUtils.clickSubmitButton(user)
       await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()
 
-      // const file = fakeWord()
-      // mockGetEmployeesActionsReportXlsxSuccess(userListItem.id, { body: file })
+      const file = fakeWord()
+      mockGetHistoryNomenclatureOperationsReportXlsxSuccess(equipmentNomenclatureListItem.id, {
+        body: file,
+      })
 
-      // await testUtils.clickExportToExcelButton(user)
-      // await testUtils.expectExportToExcelLoadingFinished()
-      //
-      // expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
-      // expect(base64ToArrayBufferSpy).toBeCalledWith(file)
+      await testUtils.clickExportToExcelButton(user)
+      await testUtils.expectExportToExcelLoadingFinished()
+
+      expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
+      expect(base64ToArrayBufferSpy).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
       expect(downloadFileSpy).toBeCalledWith(
         fakeArrayBuffer,
         MimetypeEnum.Xlsx,
-        'Отчет по действиям сотрудника',
+        'Отчет по истории операций по номенклатуре',
       )
     })
   })

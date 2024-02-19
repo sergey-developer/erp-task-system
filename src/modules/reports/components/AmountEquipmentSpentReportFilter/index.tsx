@@ -20,6 +20,7 @@ const AmountEquipmentSpentReportFilter: FC<AmountEquipmentSpentReportFilterProps
 
   categories,
   categoriesIsLoading,
+
   ...props
 }) => {
   const [form] = Form.useForm<AmountEquipmentSpentReportFilterFormFields>()

@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as amountEquipmentSpentReportFilterTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportFilter/AmountEquipmentSpentReportFilter.test'
 import { testUtils as amountEquipmentSpentReportFormTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportForm/AmountEquipmentSpentReportForm.test'
 import { testUtils as amountEquipmentSpentReportTableTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportTable/AmountEquipmentSpentReportTable.test'
 import { getRelocationColValue } from 'modules/reports/utils'
@@ -17,18 +18,28 @@ import reportsFixtures from '_tests_/fixtures/reports'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetAmountEquipmentSpentReportSuccess,
+  mockGetAmountEquipmentSpentReportXlsxSuccess,
   mockGetEquipmentAttachmentListSuccess,
+  mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentNomenclatureListSuccess,
   mockGetEquipmentSuccess,
   mockGetLocationListSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, render, setupApiTests } from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render, setupApiTests } from '_tests_/utils'
 
 import AmountEquipmentSpentReportPage from './index'
 
 const getContainer = () => screen.getByTestId('amount-equipment-spent-report-page')
+
+// filter button
+const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
+
+const clickFilterButton = async (user: UserEvent) => {
+  const button = getFilterButton()
+  await user.click(button)
+}
 
 // export to excel button
 const getExportToExcelButton = () =>
@@ -44,6 +55,8 @@ const expectExportToExcelLoadingFinished = () =>
 
 export const testUtils = {
   getContainer,
+
+  clickFilterButton,
 
   getExportToExcelButton,
   clickExportToExcelButton,
@@ -137,9 +150,56 @@ describe('Страница отчета количества потраченн�
     })
   })
 
+  describe('Фильтры', () => {
+    test('После применения отображается отчет', async () => {
+      const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
+      mockGetAmountEquipmentSpentReportSuccess({
+        body: commonFixtures.paginatedListResponse([reportListItem]),
+        once: false,
+      })
+
+      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      mockGetEquipmentNomenclatureListSuccess({
+        body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
+        once: false,
+      })
+
+      const locationListItem = catalogsFixtures.locationListItem()
+      mockGetLocationListSuccess({ body: [locationListItem] })
+
+      const equipmentCategoryListItem = warehouseFixtures.equipmentCategoryListItem()
+      mockGetEquipmentCategoryListSuccess({ body: [equipmentCategoryListItem] })
+
+      const { user } = render(<AmountEquipmentSpentReportPage />)
+
+      await amountEquipmentSpentReportFormTestUtils.expectNomenclaturesLoadingFinished()
+      await amountEquipmentSpentReportFormTestUtils.expectRelocateFromLoadingFinished()
+      await amountEquipmentSpentReportFormTestUtils.expectRelocateToLoadingFinished()
+      await amountEquipmentSpentReportFormTestUtils.openNomenclatureSelect(user)
+      await amountEquipmentSpentReportFormTestUtils.setNomenclature(
+        user,
+        equipmentNomenclatureListItem.title,
+      )
+      await amountEquipmentSpentReportFormTestUtils.openRelocateFromSelect(user)
+      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(user, locationListItem.title)
+      await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
+      await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
+      await testUtils.clickFilterButton(user)
+      await amountEquipmentSpentReportFilterTestUtils.findContainer()
+      await amountEquipmentSpentReportFilterTestUtils.expectCategoryLoadingFinished()
+      await amountEquipmentSpentReportFilterTestUtils.openCategoriesSelect(user)
+      await amountEquipmentSpentReportFilterTestUtils.setCategory(
+        user,
+        equipmentCategoryListItem.title,
+      )
+      await amountEquipmentSpentReportFilterTestUtils.clickApplyButton(user)
+      await amountEquipmentSpentReportTableTestUtils.expectLoadingStarted()
+      await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
+    })
+  })
+
   describe('Выгрузка в excel', () => {
-    // todo: выяснить почему не проходит
-    test.skip('При успешном запросе вызывается функция открытия окна скачивания', async () => {
+    test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
       const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
@@ -159,9 +219,6 @@ describe('Страница отчета количества потраченн�
       const locationListItem = catalogsFixtures.locationListItem()
       mockGetLocationListSuccess({ body: [locationListItem] })
 
-      mockGetEquipmentSuccess(reportListItem.equipment.id)
-      mockGetEquipmentAttachmentListSuccess(reportListItem.equipment.id)
-
       const { user } = render(<AmountEquipmentSpentReportPage />)
 
       await amountEquipmentSpentReportFormTestUtils.expectNomenclaturesLoadingFinished()
@@ -177,20 +234,20 @@ describe('Страница отчета количества потраченн�
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
 
-      // const file = fakeWord()
-      // mockGetEmployeesActionsReportXlsxSuccess(userListItem.id, { body: file })
+      const file = fakeWord()
+      mockGetAmountEquipmentSpentReportXlsxSuccess({ body: file })
 
-      // await testUtils.clickExportToExcelButton(user)
-      // await testUtils.expectExportToExcelLoadingFinished()
-      //
-      // expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
-      // expect(base64ToArrayBufferSpy).toBeCalledWith(file)
+      await testUtils.clickExportToExcelButton(user)
+      await testUtils.expectExportToExcelLoadingFinished()
+
+      expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
+      expect(base64ToArrayBufferSpy).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
       expect(downloadFileSpy).toBeCalledWith(
         fakeArrayBuffer,
         MimetypeEnum.Xlsx,
-        'Отчет по действиям сотрудника',
+        'Отчет по количеству потраченного оборудования',
       )
     })
   })
