@@ -1,11 +1,16 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as historyNomenclatureOperationsReportFilterTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportFilter/HistoryNomenclatureOperationsReportFilter.test'
 import { testUtils as historyNomenclatureOperationsReportFormTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportForm/HistoryNomenclatureOperationsReportForm.test'
 import { testUtils as historyNomenclatureOperationsReportTableTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportTable/HistoryNomenclatureOperationsReportTable.test'
 import { getRelocationColValue } from 'modules/reports/utils'
 import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
+import {
+  equipmentConditionDict,
+  EquipmentConditionEnum,
+} from 'modules/warehouse/constants/equipment'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
@@ -16,6 +21,7 @@ import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
+  mockGetCustomerListSuccess,
   mockGetEquipmentAttachmentListSuccess,
   mockGetEquipmentNomenclatureListSuccess,
   mockGetEquipmentSuccess,
@@ -31,6 +37,14 @@ import HistoryNomenclatureOperationsReportPage from './index'
 
 const getContainer = () => screen.getByTestId('history-nomenclature-operations-report-page')
 
+// filter button
+const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
+
+const clickFilterButton = async (user: UserEvent) => {
+  const button = getFilterButton()
+  await user.click(button)
+}
+
 // export to excel button
 const getExportToExcelButton = () =>
   buttonTestUtils.getButtonIn(getContainer(), /Выгрузить в Excel/)
@@ -45,6 +59,8 @@ const expectExportToExcelLoadingFinished = () =>
 
 export const testUtils = {
   getContainer,
+
+  clickFilterButton,
 
   getExportToExcelButton,
   clickExportToExcelButton,
@@ -127,6 +143,45 @@ describe('Страница отчета количества потраченн�
       const details = await relocationTaskDetailsTestUtils.findContainer()
 
       expect(details).toBeInTheDocument()
+    })
+  })
+
+  describe('Фильтры', () => {
+    test('После применения отображается отчет', async () => {
+      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      mockGetEquipmentNomenclatureListSuccess({
+        body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
+      })
+
+      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+      mockGetHistoryNomenclatureOperationsReportSuccess(equipmentNomenclatureListItem.id, {
+        body: commonFixtures.paginatedListResponse([reportListItem]),
+        once: false,
+      })
+
+      mockGetLocationListSuccess()
+      mockGetCustomerListSuccess()
+
+      const { user } = render(<HistoryNomenclatureOperationsReportPage />)
+
+      await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
+      await historyNomenclatureOperationsReportFormTestUtils.openNomenclatureSelect(user)
+      await historyNomenclatureOperationsReportFormTestUtils.setNomenclature(
+        user,
+        equipmentNomenclatureListItem.title,
+      )
+      await historyNomenclatureOperationsReportFormTestUtils.clickSubmitButton(user)
+      await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()
+      await testUtils.clickFilterButton(user)
+      await historyNomenclatureOperationsReportFilterTestUtils.findContainer()
+      await historyNomenclatureOperationsReportFilterTestUtils.openConditionsSelect(user)
+      await historyNomenclatureOperationsReportFilterTestUtils.setCondition(
+        user,
+        equipmentConditionDict[EquipmentConditionEnum.WrittenOff],
+      )
+      await historyNomenclatureOperationsReportFilterTestUtils.clickApplyButton(user)
+      await historyNomenclatureOperationsReportTableTestUtils.expectLoadingStarted()
+      await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()
     })
   })
 
