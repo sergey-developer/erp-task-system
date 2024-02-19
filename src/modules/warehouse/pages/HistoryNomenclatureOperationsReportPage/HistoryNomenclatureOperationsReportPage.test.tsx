@@ -20,11 +20,12 @@ import {
   mockGetEquipmentNomenclatureListSuccess,
   mockGetEquipmentSuccess,
   mockGetHistoryNomenclatureOperationsReportSuccess,
+  mockGetHistoryNomenclatureOperationsReportXlsxSuccess,
   mockGetLocationListSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, render, setupApiTests } from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render, setupApiTests } from '_tests_/utils'
 
 import HistoryNomenclatureOperationsReportPage from './index'
 
@@ -130,8 +131,7 @@ describe('Страница отчета количества потраченн�
   })
 
   describe('Выгрузка в excel', () => {
-    // todo: выяснить почему не проходит
-    test.skip('При успешном запросе вызывается функция открытия окна скачивания', async () => {
+    test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
       const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
@@ -148,12 +148,6 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
-
-      mockGetEquipmentSuccess(reportListItem.id)
-      mockGetEquipmentAttachmentListSuccess(reportListItem.id)
-
       const { user } = render(<HistoryNomenclatureOperationsReportPage />)
 
       await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
@@ -165,20 +159,22 @@ describe('Страница отчета количества потраченн�
       await historyNomenclatureOperationsReportFormTestUtils.clickSubmitButton(user)
       await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()
 
-      // const file = fakeWord()
-      // mockGetEmployeesActionsReportXlsxSuccess(userListItem.id, { body: file })
+      const file = fakeWord()
+      mockGetHistoryNomenclatureOperationsReportXlsxSuccess(equipmentNomenclatureListItem.id, {
+        body: file,
+      })
 
-      // await testUtils.clickExportToExcelButton(user)
-      // await testUtils.expectExportToExcelLoadingFinished()
-      //
-      // expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
-      // expect(base64ToArrayBufferSpy).toBeCalledWith(file)
+      await testUtils.clickExportToExcelButton(user)
+      await testUtils.expectExportToExcelLoadingFinished()
+
+      expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
+      expect(base64ToArrayBufferSpy).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
       expect(downloadFileSpy).toBeCalledWith(
         fakeArrayBuffer,
         MimetypeEnum.Xlsx,
-        'Отчет по действиям сотрудника',
+        'Отчет по истории операций по номенклатуре',
       )
     })
   })
