@@ -17,6 +17,7 @@ import reportsFixtures from '_tests_/fixtures/reports'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetAmountEquipmentSpentReportSuccess,
+  mockGetAmountEquipmentSpentReportXlsxSuccess,
   mockGetEquipmentAttachmentListSuccess,
   mockGetEquipmentNomenclatureListSuccess,
   mockGetEquipmentSuccess,
@@ -24,7 +25,7 @@ import {
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, render, setupApiTests } from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render, setupApiTests } from '_tests_/utils'
 
 import AmountEquipmentSpentReportPage from './index'
 
@@ -138,8 +139,7 @@ describe('Страница отчета количества потраченн�
   })
 
   describe('Выгрузка в excel', () => {
-    // todo: выяснить почему не проходит
-    test.skip('При успешном запросе вызывается функция открытия окна скачивания', async () => {
+    test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
       const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
@@ -159,9 +159,6 @@ describe('Страница отчета количества потраченн�
       const locationListItem = catalogsFixtures.locationListItem()
       mockGetLocationListSuccess({ body: [locationListItem] })
 
-      mockGetEquipmentSuccess(reportListItem.equipment.id)
-      mockGetEquipmentAttachmentListSuccess(reportListItem.equipment.id)
-
       const { user } = render(<AmountEquipmentSpentReportPage />)
 
       await amountEquipmentSpentReportFormTestUtils.expectNomenclaturesLoadingFinished()
@@ -177,20 +174,20 @@ describe('Страница отчета количества потраченн�
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
 
-      // const file = fakeWord()
-      // mockGetEmployeesActionsReportXlsxSuccess(userListItem.id, { body: file })
+      const file = fakeWord()
+      mockGetAmountEquipmentSpentReportXlsxSuccess({ body: file })
 
-      // await testUtils.clickExportToExcelButton(user)
-      // await testUtils.expectExportToExcelLoadingFinished()
-      //
-      // expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
-      // expect(base64ToArrayBufferSpy).toBeCalledWith(file)
+      await testUtils.clickExportToExcelButton(user)
+      await testUtils.expectExportToExcelLoadingFinished()
+
+      expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
+      expect(base64ToArrayBufferSpy).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
       expect(downloadFileSpy).toBeCalledWith(
         fakeArrayBuffer,
         MimetypeEnum.Xlsx,
-        'Отчет по действиям сотрудника',
+        'Отчет по количеству потраченного оборудования',
       )
     })
   })
