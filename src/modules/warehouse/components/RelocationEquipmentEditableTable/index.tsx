@@ -154,10 +154,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       title: 'Состояние',
       valueType: 'select',
       formItemProps: { rules: onlyRequiredRules },
-      fieldProps: {
-        disabled: isLoading || typeIsWriteOff || equipmentIsLoading,
-        options: equipmentConditionOptions,
-      },
+      fieldProps: { disabled: isLoading || typeIsWriteOff || equipmentIsLoading, options: equipmentConditionOptions },
     },
     {
       key: 'amount',
@@ -254,7 +251,6 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
     <EditableProTable<RelocationEquipmentRow>
       data-testid='relocation-equipment-editable-table'
       rowKey='rowId'
-      virtual
       name='equipments'
       columns={columns}
       recordCreatorProps={{
