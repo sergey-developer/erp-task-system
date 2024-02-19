@@ -8,6 +8,8 @@ export * from './useGetRelocationTaskAttachments'
 export * from './useRelocationTaskStatus'
 export * from './useNavigateToCreateRelocationTaskSimplifiedPage'
 
+export * from './useUpdateExternalRelocation'
+
 export * from './useGetRelocationTaskList'
 
 export * from './useGetRelocationEquipmentList'

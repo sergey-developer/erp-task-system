@@ -40,3 +40,5 @@ export const getRelocationEquipmentListMessages: ApiRequestMessages<'commonError
 export const getRelocationEquipmentBalanceListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка остатков оборудования по заявке на перемещение',
 }
+
+export const updateExternalRelocationErrMsg = 'Ошибка обновления внешнего перемещения'

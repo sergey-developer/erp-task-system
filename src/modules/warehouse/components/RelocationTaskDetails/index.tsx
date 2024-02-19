@@ -12,7 +12,7 @@ import {
   Upload,
   UploadProps,
 } from 'antd'
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, ReactNode, useCallback, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
@@ -30,6 +30,7 @@ import {
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
   executeRelocationTaskMessages,
+  externalRelocationStatusDict,
   relocationTaskStatusDict,
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
@@ -100,6 +101,35 @@ const ConfirmExecutionRelocationTaskModal = React.lazy(
 )
 
 const { Text } = Typography
+
+type ItemProps = {
+  label: string
+  value: any
+  displayValue?: ReactNode
+  useValueOrHyphen?: boolean
+}
+
+const DetailsItem: FC<ItemProps> = ({
+  value,
+  displayValue = value,
+  label,
+  useValueOrHyphen,
+  ...props
+}) => {
+  return (
+    <Row {...props} align='middle'>
+      <Col span={8}>
+        <Text type='secondary'>{label}</Text>
+      </Col>
+
+      {useValueOrHyphen ? (
+        <Col span={16}>{valueOrHyphen(displayValue || value)}</Col>
+      ) : value ? (
+        <Col span={16}>{displayValue}</Col>
+      ) : null}
+    </Row>
+  )
+}
 
 const dropdownTrigger: DropdownProps['trigger'] = ['click']
 const showUploadListConfig: UploadProps['showUploadList'] = { showRemoveIcon: false }
@@ -402,13 +432,11 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             >
               {relocationTask && (
                 <Space $block direction='vertical' size='middle'>
-                  <Row data-testid='type' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Тип заявки:</Text>
-                    </Col>
-
-                    <Col span={16}>{relocationTaskTypeDict[relocationTask.type]}</Col>
-                  </Row>
+                  <DetailsItem
+                    data-testid='type'
+                    label='Тип заявки:'
+                    value={relocationTaskTypeDict[relocationTask.type]}
+                  />
 
                   <Row data-testid='deadline-at' align='middle'>
                     <Col span={8}>
@@ -490,6 +518,23 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                       </Col>
                     </Row>
                   )}
+
+                  <DetailsItem
+                    data-testid='external-relocation-number'
+                    label='Номер перемещения на портале заказчика:'
+                    value={relocationTask.externalRelocation?.number}
+                  />
+
+                  <DetailsItem
+                    data-testid='external-relocation-status'
+                    label='Статус перемещения на портале заказчика:'
+                    value={relocationTask.externalRelocation?.status}
+                    displayValue={
+                      relocationTask.externalRelocation?.status
+                        ? externalRelocationStatusDict[relocationTask.externalRelocation.status]
+                        : null
+                    }
+                  />
 
                   <Row data-testid='created-by' align='middle'>
                     <Col span={8}>
