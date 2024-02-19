@@ -19,6 +19,7 @@ export type SortableField = keyof Pick<
   | 'relocateFrom'
   | 'relocateTo'
   | 'executor'
+  | 'controller'
   | 'status'
   | 'createdBy'
   | 'createdAt'
@@ -37,6 +38,7 @@ export const sortableFieldToSortValues: Record<
   relocateFrom: ['relocate_from', '-relocate_from'],
   relocateTo: ['relocate_to', '-relocate_to'],
   executor: ['executor', '-executor'],
+  controller: ['controller', '-controller'],
   status: ['status', '-status'],
   createdBy: ['created_by', '-created_by'],
   createdAt: ['created_at', '-created_at'],

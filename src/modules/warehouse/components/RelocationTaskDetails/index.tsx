@@ -187,6 +187,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
   const executorIsCurrentUser = useIdBelongAuthUser(relocationTask?.executor?.id)
+  const controllerIsCurrentUser = useIdBelongAuthUser(relocationTask?.controller?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const handleCancelTask = async () => {
@@ -335,7 +336,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         label: 'Выполнить заявку',
         disabled:
           !permissions?.relocationTasksUpdate ||
-          !creatorIsCurrentUser ||
+          !executorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
           relocationTaskStatus.isCompleted,
@@ -346,7 +347,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         label: 'Вернуть на доработку',
         disabled:
           !permissions?.relocationTasksUpdate ||
-          !executorIsCurrentUser ||
+          !controllerIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenReturnToReworkModal,
       },
@@ -366,7 +367,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         label: 'Подтвердить выполнение',
         disabled:
           !permissions?.relocationTasksUpdate ||
-          !executorIsCurrentUser ||
+          !controllerIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenConfirmExecutionModal,
       },
@@ -444,6 +445,16 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
                     <Col span={16}>
                       <Text>{valueOrHyphen(relocationTask.executor?.fullName)}</Text>
+                    </Col>
+                  </Row>
+
+                  <Row data-testid='controller' align='middle'>
+                    <Col span={8}>
+                      <Text type='secondary'>Контролер:</Text>
+                    </Col>
+
+                    <Col span={16}>
+                      <Text>{valueOrHyphen(relocationTask.controller?.fullName)}</Text>
                     </Col>
                   </Row>
 

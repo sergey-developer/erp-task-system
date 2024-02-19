@@ -20,6 +20,7 @@ export type LocationOption = {
 
 export type RelocationTaskFormProps = {
   isLoading: boolean
+  controllerIsRequired: boolean
 
   onUploadImage: NonNullable<UploadProps['customRequest']>
   imageIsUploading: boolean

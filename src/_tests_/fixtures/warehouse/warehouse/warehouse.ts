@@ -1,11 +1,13 @@
+import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 import { WarehouseModel } from 'modules/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
 export const warehouse = (
-  props?: Partial<Pick<WarehouseModel, 'id'>>,
+  props?: Partial<Pick<WarehouseModel, 'id' | 'type'>>,
 ): WarehouseModel => ({
   id: props?.id || fakeId(),
+  type: props?.type || WarehouseTypeEnum.Main,
 
   title: fakeWord(),
   address: fakeWord(),

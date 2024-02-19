@@ -17,6 +17,7 @@ export type GetRelocationTaskListSortKey =
   | 'relocate_from'
   | 'relocate_to'
   | 'executor'
+  | 'controller'
   | 'status'
   | 'created_by'
   | 'created_at'

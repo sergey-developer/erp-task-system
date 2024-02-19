@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { authUserSelector } from 'modules/auth/selectors'
 import { AuthenticatedUser } from 'modules/auth/types'
 
@@ -9,11 +11,12 @@ type UseAuthUserResult = MaybeNull<{
   role: AuthenticatedUser['userRole']
 }>
 
-/**
- Хук возвращает авторизованного пользователя
- */
-
+/** Возвращает авторизованного пользователя */
 export const useAuthUser = (): UseAuthUserResult => {
   const authUser = useSelector(authUserSelector)
-  return authUser ? { role: authUser.userRole, id: authUser.userId } : null
+
+  return useMemo(
+    () => (authUser ? { role: authUser.userRole, id: authUser.userId } : null),
+    [authUser],
+  )
 }

@@ -26,12 +26,11 @@ import {
 import { testUtils as confirmExecuteTaskModalTestUtils } from '../../ConfirmExecuteTaskModal/ConfirmExecuteTaskModal.test'
 import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
 import {
-  availableReasons,
+  reasonValues,
   testUtils as taskReclassificationModalTestUtils,
 } from '../../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
 import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
-import { testUtils as taskReclassificationRequestTestUtils } from '../../TaskReclassificationRequest/TaskReclassificationRequest.test'
 import { testUtils as taskSecondLineModalTestUtils } from '../../TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskSuspendRequestTestUtils } from '../../TaskSuspendRequest/TaskSuspendRequest.test'
 import { testUtils as additionalInfoTestUtils } from '../AdditionalInfo/AdditionalInfo.test'
@@ -47,7 +46,6 @@ import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/Seco
 import { testUtils as cardTabsTestUtils } from '../Tabs/Tabs.test'
 import {
   activeExecuteTaskItemProps,
-  activeRequestReclassificationItemProps,
   activeRequestSuspendItemProps,
   testUtils as cardTitleTestUtils,
 } from '../Title/Title.test'
@@ -252,157 +250,6 @@ describe('Карточка заявки', () => {
     test('Не отображается если нет данных заявки', () => {
       render(<TaskCard {...props} task={null} />)
       expect(cardTabsTestUtils.queryContainer()).not.toBeInTheDocument()
-    })
-  })
-
-  describe('Переклассификация заявки', () => {
-    describe('Запрос на переклассификацию', () => {
-      test('Отображается если он есть', async () => {
-        render(
-          <TaskCard {...props} reclassificationRequest={taskFixtures.reclassificationRequest()} />,
-        )
-
-        expect(await taskReclassificationRequestTestUtils.findContainer()).toBeInTheDocument()
-      })
-
-      test('Не отображается если его нет', () => {
-        render(<TaskCard {...props} />)
-
-        expect(taskReclassificationRequestTestUtils.queryContainer()).not.toBeInTheDocument()
-      })
-
-      describe('Отображается состояние загрузки', () => {
-        test('При получении запроса на переклассификацию', async () => {
-          render(<TaskCard {...props} reclassificationRequestIsLoading />)
-          await testUtils.expectReclassificationRequestLoadingStarted()
-        })
-
-        test('При создании запроса на переклассификацию', async () => {
-          render(<TaskCard {...props} createReclassificationRequestIsLoading />)
-
-          await testUtils.expectReclassificationRequestLoadingStarted()
-        })
-      })
-    })
-
-    describe('Модалка переклассификации заявки', () => {
-      test('Открывается если есть обращение', async () => {
-        const { user } = render(
-          <TaskCard
-            {...props}
-            task={{
-              ...props.task!,
-              ...activeRequestReclassificationItemProps,
-              parentInteractionExternalId: fakeWord(),
-            }}
-          />,
-          { store: getStoreWithAuth() },
-        )
-
-        await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickRequestReclassificationItem(user)
-        const modal = await taskReclassificationModalTestUtils.findContainer()
-
-        expect(modal).toBeInTheDocument()
-      })
-
-      test('Предупреждение отображается вместо модалки если нет обращения', async () => {
-        const { user } = render(
-          <TaskCard
-            {...props}
-            task={{
-              ...props.task!,
-              ...activeRequestReclassificationItemProps,
-              parentInteractionExternalId: null,
-            }}
-          />,
-          { store: getStoreWithAuth() },
-        )
-
-        await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickRequestReclassificationItem(user)
-        const modal = taskReclassificationModalTestUtils.queryContainer()
-        const warning = within(await screen.findByRole('dialog')).getByText(
-          'Невозможно переклассифицировать заявку без обращения',
-        )
-
-        expect(modal).not.toBeInTheDocument()
-        expect(warning).toBeInTheDocument()
-      })
-
-      test('Закрывается', async () => {
-        const { user } = render(
-          <TaskCard
-            {...props}
-            task={{
-              ...props.task!,
-              ...activeRequestReclassificationItemProps,
-            }}
-          />,
-          { store: getStoreWithAuth() },
-        )
-
-        await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickRequestReclassificationItem(user)
-        const modal = await taskReclassificationModalTestUtils.findContainer()
-        await taskReclassificationModalTestUtils.clickCancelButton(user)
-
-        expect(modal).not.toBeInTheDocument()
-      })
-
-      describe('При успешном запросе', () => {
-        test('Переданный обработчик вызывается корректно', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestReclassificationItemProps,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          await taskReclassificationModalTestUtils.findContainer()
-
-          await taskReclassificationModalTestUtils.setComment(user, fakeWord())
-          await taskReclassificationModalTestUtils.setReclassificationReason(
-            user,
-            availableReasons[0],
-          )
-          await taskReclassificationModalTestUtils.clickSubmitButton(user)
-
-          expect(props.createReclassificationRequest).toBeCalledTimes(1)
-          expect(props.createReclassificationRequest).toBeCalledWith(expect.anything())
-        })
-
-        test('Модалка закрывается', async () => {
-          const { user } = render(
-            <TaskCard
-              {...props}
-              task={{
-                ...props.task!,
-                ...activeRequestReclassificationItemProps,
-              }}
-            />,
-            { store: getStoreWithAuth() },
-          )
-
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestReclassificationItem(user)
-          const modal = await taskReclassificationModalTestUtils.findContainer()
-
-          await taskReclassificationModalTestUtils.setComment(user, fakeWord())
-          await taskReclassificationModalTestUtils.setReclassificationReason(
-            user,
-            availableReasons[0],
-          )
-          await taskReclassificationModalTestUtils.clickSubmitButton(user)
-          await waitFor(() => expect(modal).not.toBeInTheDocument())
-        })
-      })
     })
   })
 
@@ -1110,7 +957,7 @@ describe('Карточка заявки', () => {
 
       test('Закрывается при клике на кнопку "Отмена"', async () => {
         const { user } = render(
-          <TaskCard{...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
+          <TaskCard {...props} task={{ ...props.task!, ...activeRequestSuspendItemProps }} />,
           { store: getStoreWithAuth() },
         )
 
