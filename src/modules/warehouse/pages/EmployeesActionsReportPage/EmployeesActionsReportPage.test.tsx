@@ -113,8 +113,7 @@ describe('Страница отчета действия сотрудников'
   })
 
   describe('Выгрузка в excel', () => {
-    // todo: выяснить почему не проходит
-    test.skip('При успешном запросе вызывается функция открытия окна скачивания', async () => {
+    test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
       const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
