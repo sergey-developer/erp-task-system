@@ -1,6 +1,10 @@
 import { SelectProps } from 'antd'
 
-import { relocationTaskStatusDict, relocationTaskTypeDict } from './dict'
+import {
+  externalRelocationStatusDict,
+  relocationTaskStatusDict,
+  relocationTaskTypeDict,
+} from './dict'
 
 export const relocationTaskStatusOptions: SelectProps['options'] = Object.keys(
   relocationTaskStatusDict,
@@ -13,5 +17,12 @@ export const relocationTaskTypeOptions: SelectProps['options'] = Object.keys(
   relocationTaskTypeDict,
 ).map((key) => ({
   label: relocationTaskTypeDict[key as keyof typeof relocationTaskTypeDict],
+  value: key,
+}))
+
+export const externalRelocationStatusOptions: SelectProps['options'] = Object.keys(
+  externalRelocationStatusDict,
+).map((key) => ({
+  label: externalRelocationStatusDict[key as keyof typeof externalRelocationStatusDict],
   value: key,
 }))

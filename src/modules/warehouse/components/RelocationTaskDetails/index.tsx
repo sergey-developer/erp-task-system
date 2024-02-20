@@ -5,14 +5,17 @@ import {
   Drawer,
   Dropdown,
   DropdownProps,
+  Input,
   MenuProps,
   Row,
+  Select,
   Tooltip,
   Typography,
   Upload,
   UploadProps,
 } from 'antd'
-import React, { FC, ReactNode, useCallback, useState } from 'react'
+import isEqual from 'lodash/isEqual'
+import React, { FC, ReactElement, ReactNode, useCallback, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
@@ -31,6 +34,7 @@ import {
   closeRelocationTaskMessages,
   executeRelocationTaskMessages,
   externalRelocationStatusDict,
+  externalRelocationStatusOptions,
   relocationTaskStatusDict,
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
@@ -43,7 +47,9 @@ import {
   useGetRelocationTaskAttachments,
   useLazyGetRelocationTaskWaybillM15,
   useRelocationTaskStatus,
+  useUpdateExternalRelocation,
 } from 'modules/warehouse/hooks/relocationTask'
+import { UpdateExternalRelocationMutationArgs } from 'modules/warehouse/models'
 import {
   useCancelRelocationTaskMutation,
   useCloseRelocationTaskMutation,
@@ -57,7 +63,7 @@ import {
 } from 'modules/warehouse/utils/relocationTask'
 
 import UploadButton from 'components/Buttons/UploadButton'
-import { MenuIcon } from 'components/Icons'
+import { CheckIcon, CloseIcon, EditIcon, MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
@@ -102,14 +108,14 @@ const ConfirmExecutionRelocationTaskModal = React.lazy(
 
 const { Text } = Typography
 
-type ItemProps = {
+type ReadonlyFieldProps = {
   label: string
   value: any
   displayValue?: ReactNode
   useValueOrHyphen?: boolean
 }
 
-const DetailsItem: FC<ItemProps> = ({
+const ReadonlyField: FC<ReadonlyFieldProps> = ({
   value,
   displayValue = value,
   label,
@@ -128,6 +134,69 @@ const DetailsItem: FC<ItemProps> = ({
         <Col span={16}>{displayValue}</Col>
       ) : null}
     </Row>
+  )
+}
+
+type EditableFieldProps = ReadonlyFieldProps & {
+  renderEditable: ({
+    value,
+  }: Pick<ReadonlyFieldProps, 'value'> & { onChange: (value: any) => void }) => ReactElement
+
+  onSave: (value: any) => Promise<void>
+  isLoading: boolean
+}
+
+const EditableField: FC<EditableFieldProps> = ({
+  renderEditable,
+  value: initialValue,
+  displayValue = initialValue,
+
+  onSave,
+  isLoading,
+
+  ...props
+}) => {
+  const [editable, { setTrue: setEditable, setFalse: setNotEditable }] = useBoolean(false)
+  const [value, setValue] = useState(initialValue)
+
+  const onChange = async () => {
+    await onSave(value)
+    setNotEditable()
+  }
+
+  const onCancel = () => {
+    setValue(initialValue)
+    setNotEditable()
+  }
+
+  return (
+    <ReadonlyField
+      value={initialValue}
+      displayValue={
+        editable ? (
+          <Space>
+            {renderEditable({ value: value, onChange: setValue })}
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <Button
+                type='text'
+                disabled={isEqual(initialValue, value)}
+                icon={<CheckIcon $color='bleuDeFrance' $cursor='pointer' />}
+                onClick={onChange}
+              />
+            )}
+            <CloseIcon $color='fireOpal' onClick={onCancel} />
+          </Space>
+        ) : (
+          <Space>
+            {displayValue}
+            <EditIcon $size='large' $cursor='pointer' $color='bleuDeFrance' onClick={setEditable} />
+          </Space>
+        )
+      }
+      {...props}
+    />
   )
 }
 
@@ -215,10 +284,25 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const [createAttachment] = useCreateRelocationTaskAttachment()
 
+  const [
+    updateExternalRelocationMutation,
+    { isLoading: updateExternalRelocationIsLoading, data: updatedExternalRelocation },
+  ] = useUpdateExternalRelocation()
+
   const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
   const executorIsCurrentUser = useIdBelongAuthUser(relocationTask?.executor?.id)
   const controllerIsCurrentUser = useIdBelongAuthUser(relocationTask?.controller?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
+
+  const onUpdateExternalRelocation =
+    (fieldName: Extract<keyof UpdateExternalRelocationMutationArgs, 'number' | 'status'>) =>
+    async (
+      value:
+        | UpdateExternalRelocationMutationArgs['number']
+        | UpdateExternalRelocationMutationArgs['status'],
+    ) => {
+      await updateExternalRelocationMutation({ relocationTaskId, [fieldName]: value }).unwrap()
+    }
 
   const handleCancelTask = async () => {
     try {
@@ -432,7 +516,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             >
               {relocationTask && (
                 <Space $block direction='vertical' size='middle'>
-                  <DetailsItem
+                  <ReadonlyField
                     data-testid='type'
                     label='Тип заявки:'
                     value={relocationTaskTypeDict[relocationTask.type]}
@@ -519,21 +603,43 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     </Row>
                   )}
 
-                  <DetailsItem
+                  <EditableField
                     data-testid='external-relocation-number'
                     label='Номер перемещения на портале заказчика:'
-                    value={relocationTask.externalRelocation?.number}
+                    value={
+                      updatedExternalRelocation?.number || relocationTask.externalRelocation?.number
+                    }
+                    renderEditable={({ value, onChange }) => (
+                      <Input value={value} onChange={(e) => onChange(e.target.value)} />
+                    )}
+                    onSave={onUpdateExternalRelocation('number')}
+                    isLoading={updateExternalRelocationIsLoading}
                   />
 
-                  <DetailsItem
+                  <EditableField
                     data-testid='external-relocation-status'
                     label='Статус перемещения на портале заказчика:'
-                    value={relocationTask.externalRelocation?.status}
+                    value={
+                      updatedExternalRelocation?.status || relocationTask.externalRelocation?.status
+                    }
                     displayValue={
-                      relocationTask.externalRelocation?.status
+                      updatedExternalRelocation?.status
+                        ? externalRelocationStatusDict[updatedExternalRelocation.status]
+                        : relocationTask.externalRelocation?.status
                         ? externalRelocationStatusDict[relocationTask.externalRelocation.status]
                         : null
                     }
+                    renderEditable={({ value, onChange }) => (
+                      <Select
+                        allowClear
+                        popupMatchSelectWidth={200}
+                        value={value}
+                        onChange={(value) => onChange(value)}
+                        options={externalRelocationStatusOptions}
+                      />
+                    )}
+                    onSave={onUpdateExternalRelocation('status')}
+                    isLoading={updateExternalRelocationIsLoading}
                   />
 
                   <Row data-testid='created-by' align='middle'>
