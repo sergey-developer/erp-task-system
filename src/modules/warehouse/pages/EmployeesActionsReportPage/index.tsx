@@ -18,10 +18,12 @@ import { useGetUsers } from 'modules/user/hooks'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
+import { formatDate } from 'shared/utils/date'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -88,8 +90,8 @@ const EmployeesActionsReportPage: FC = () => {
   const onClickUpdate: EmployeesActionsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
       employeeId: values.employee,
-      actionFrom: values.period?.[0]?.toISOString(),
-      actionTo: values.period?.[1]?.toISOString(),
+      actionFrom: formatDate(values.period?.[0], DATE_FORMAT),
+      actionTo: formatDate(values.period?.[1], DATE_FORMAT),
       offset: initialPaginationParams.offset,
     })
   }
