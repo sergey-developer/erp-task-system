@@ -15,6 +15,8 @@ export enum RelocationTaskApiEnum {
 
   GetRelocationEquipmentList = '/relocation-tasks/:id/equipments',
   GetRelocationEquipmentBalanceList = '/relocation-tasks/:id/equipments/balance',
+
+  UpdateExternalRelocation = '/relocation-tasks/:id/external-relocation',
 }
 
 export enum RelocationTaskApiTagEnum {

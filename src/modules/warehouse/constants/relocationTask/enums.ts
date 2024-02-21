@@ -13,3 +13,12 @@ export enum RelocationTaskTypeEnum {
   WriteOff = 'WRITE_OFF',
   Customer = 'CUSTOMER',
 }
+
+export enum ExternalRelocationStatusEnum {
+  InTransit = 'IN_TRANSIT',
+  ToApprovalSsi = 'TO_APPROVAL_SSI',
+  ToApprovalVsi = 'TO_APPROVAL_VSI',
+  ToApprovalMrp = 'TO_APPROVAL_MRP',
+  Closed = 'CLOSED',
+  Reversed = 'REVERSED',
+}

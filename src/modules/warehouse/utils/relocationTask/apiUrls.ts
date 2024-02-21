@@ -1,7 +1,10 @@
+import { generatePath } from "react-router-dom";
+
 import { RelocationTaskApiEnum } from 'modules/warehouse/constants/relocationTask'
 
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
+import { appendSlashAtEnd } from "shared/utils/string";
 
 export const getRelocationTaskUrl = (id: IdType): string =>
   generateApiPath(RelocationTaskApiEnum.GetRelocationTask, { id: String(id) })
@@ -35,3 +38,6 @@ export const getRelocationEquipmentBalanceListUrl = (id: IdType): string =>
 
 export const updateRelocationTaskUrl = (id: IdType): string =>
   generateApiPath(RelocationTaskApiEnum.UpdateRelocationTask, { id: String(id) })
+
+export const updateExternalRelocationUrl = (id: IdType): string =>
+  appendSlashAtEnd(generatePath(RelocationTaskApiEnum.UpdateExternalRelocation, { id: String(id) }))
