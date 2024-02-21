@@ -884,7 +884,7 @@ const EditRelocationTaskPage: FC = () => {
           </Col>
 
           <Col span={24}>
-            <Space direction='vertical'>
+            <Space $block direction='vertical'>
               <Row justify='space-between' align='middle'>
                 <Col>
                   <Text strong>Перечень оборудования</Text>
