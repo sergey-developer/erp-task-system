@@ -193,6 +193,7 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
   return (
     <EditableProTable<RelocationEquipmentRow>
       data-testid='relocation-equipment-simplified-editable-table'
+      virtual
       rowKey='rowId'
       name={name}
       columns={columns}
