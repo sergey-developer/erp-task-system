@@ -103,7 +103,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
     useLazyGetAmountEquipmentSpentReportXlsx()
 
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
-    useGetEquipmentNomenclatureList(filterValues)
+    useGetEquipmentNomenclatureList({ ...filterValues, limit: 999999 })
 
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
 
