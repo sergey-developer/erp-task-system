@@ -131,6 +131,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         disabled: isLoading || !relocateFromFormValue || equipmentCatalogListIsLoading,
         options: equipmentCatalogOptions,
         showSearch: true,
+        virtual: true,
         onChange: () => form.resetFields(['quantity']),
         filterOption: filterOptionBy('label'),
       }),
