@@ -21,12 +21,14 @@ import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { base64ToArrayBuffer } from 'shared/utils/common'
+import { formatDate } from 'shared/utils/date'
 import { downloadFile } from 'shared/utils/file'
 import {
   calculatePaginationParams,
@@ -116,8 +118,8 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   const onClickUpdate: HistoryNomenclatureOperationsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
       nomenclatureId: values.nomenclature,
-      createdAtFrom: values.period?.[0]?.toISOString(),
-      createdAtTo: values.period?.[1]?.toISOString(),
+      createdAtFrom: formatDate(values.period?.[0], DATE_FORMAT),
+      createdAtTo: formatDate(values.period?.[1], DATE_FORMAT),
       offset: initialPaginationParams.offset,
     })
   }
