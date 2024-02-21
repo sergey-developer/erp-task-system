@@ -5,8 +5,10 @@ import {
   Drawer,
   Dropdown,
   DropdownProps,
+  Input,
   MenuProps,
   Row,
+  Select,
   Tooltip,
   Typography,
   Upload,
@@ -30,6 +32,8 @@ import {
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
   executeRelocationTaskMessages,
+  externalRelocationStatusDict,
+  externalRelocationStatusOptions,
   relocationTaskStatusDict,
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
@@ -42,7 +46,9 @@ import {
   useGetRelocationTaskAttachments,
   useLazyGetRelocationTaskWaybillM15,
   useRelocationTaskStatus,
+  useUpdateExternalRelocation,
 } from 'modules/warehouse/hooks/relocationTask'
+import { UpdateExternalRelocationMutationArgs } from 'modules/warehouse/models'
 import {
   useCancelRelocationTaskMutation,
   useCloseRelocationTaskMutation,
@@ -77,6 +83,8 @@ import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import EditableField from './EditableField'
+import ReadonlyField from './ReadonlyField'
 import { RelocationTaskDetailsProps } from './types'
 
 const AttachmentListModal = React.lazy(
@@ -185,10 +193,25 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const [createAttachment] = useCreateRelocationTaskAttachment()
 
+  const [
+    updateExternalRelocationMutation,
+    { isLoading: updateExternalRelocationIsLoading, data: updatedExternalRelocation },
+  ] = useUpdateExternalRelocation()
+
   const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
   const executorIsCurrentUser = useIdBelongAuthUser(relocationTask?.executor?.id)
   const controllerIsCurrentUser = useIdBelongAuthUser(relocationTask?.controller?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
+
+  const onUpdateExternalRelocation =
+    (fieldName: Extract<keyof UpdateExternalRelocationMutationArgs, 'number' | 'status'>) =>
+    async (
+      value:
+        | UpdateExternalRelocationMutationArgs['number']
+        | UpdateExternalRelocationMutationArgs['status'],
+    ) => {
+      await updateExternalRelocationMutation({ relocationTaskId, [fieldName]: value }).unwrap()
+    }
 
   const handleCancelTask = async () => {
     try {
@@ -402,77 +425,54 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             >
               {relocationTask && (
                 <Space $block direction='vertical' size='middle'>
-                  <Row data-testid='type' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Тип заявки:</Text>
-                    </Col>
+                  <ReadonlyField
+                    data-testid='type'
+                    label='Тип заявки:'
+                    value={relocationTaskTypeDict[relocationTask.type]}
+                  />
 
-                    <Col span={16}>{relocationTaskTypeDict[relocationTask.type]}</Col>
-                  </Row>
+                  <ReadonlyField
+                    data-testid='deadline-at'
+                    label='Срок выполнения:'
+                    value={formatDate(relocationTask.deadlineAt)}
+                  />
 
-                  <Row data-testid='deadline-at' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Срок выполнения:</Text>
-                    </Col>
+                  <ReadonlyField
+                    data-testid='relocate-from'
+                    label='Объект выбытия:'
+                    value={valueOrHyphen(relocationTask.relocateFrom?.title)}
+                  />
 
-                    <Col span={16}>{formatDate(relocationTask.deadlineAt)}</Col>
-                  </Row>
+                  <ReadonlyField
+                    data-testid='relocate-to'
+                    label='Объект прибытия:'
+                    value={valueOrHyphen(relocationTask.relocateTo?.title)}
+                  />
 
-                  <Row data-testid='relocate-from' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Объект выбытия:</Text>
-                    </Col>
+                  <ReadonlyField
+                    data-testid='executor'
+                    label='Исполнитель:'
+                    value={valueOrHyphen(relocationTask.executor?.fullName)}
+                  />
 
-                    <Col span={16}>
-                      <Text>{valueOrHyphen(relocationTask.relocateFrom?.title)}</Text>
-                    </Col>
-                  </Row>
+                  <ReadonlyField
+                    data-testid='controller'
+                    label='Контролер:'
+                    value={valueOrHyphen(relocationTask.controller?.fullName)}
+                  />
 
-                  <Row data-testid='relocate-to' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Объект прибытия:</Text>
-                    </Col>
-
-                    <Col span={16}>
-                      <Text>{valueOrHyphen(relocationTask.relocateTo?.title)}</Text>
-                    </Col>
-                  </Row>
-
-                  <Row data-testid='executor' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Исполнитель:</Text>
-                    </Col>
-
-                    <Col span={16}>
-                      <Text>{valueOrHyphen(relocationTask.executor?.fullName)}</Text>
-                    </Col>
-                  </Row>
-
-                  <Row data-testid='controller' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Контролер:</Text>
-                    </Col>
-
-                    <Col span={16}>
-                      <Text>{valueOrHyphen(relocationTask.controller?.fullName)}</Text>
-                    </Col>
-                  </Row>
-
-                  <Row data-testid='status' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Статус:</Text>
-                    </Col>
-
-                    <Col span={16}>{relocationTaskStatusDict[relocationTask.status]}</Col>
-                  </Row>
+                  <ReadonlyField
+                    data-testid='status'
+                    label='Статус:'
+                    value={relocationTaskStatusDict[relocationTask.status]}
+                  />
 
                   {relocationTask.revision && (
-                    <Row data-testid='return-reason'>
-                      <Col span={8}>
-                        <Text type='secondary'>Причина возврата:</Text>
-                      </Col>
-
-                      <Col span={16}>
+                    <ReadonlyField
+                      data-testid='return-reason'
+                      label='Причина возврата:'
+                      value={relocationTask.revision}
+                      displayValue={
                         <Tooltip
                           title={
                             <Space direction='vertical'>
@@ -487,60 +487,85 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                         >
                           <Text type='warning'>{relocationTask.revision.text}</Text>
                         </Tooltip>
-                      </Col>
-                    </Row>
+                      }
+                    />
                   )}
 
-                  <Row data-testid='created-by' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Инициатор:</Text>
-                    </Col>
+                  <EditableField
+                    data-testid='external-relocation-number'
+                    label='Номер перемещения на портале заказчика:'
+                    value={
+                      updatedExternalRelocation?.number || relocationTask.externalRelocation?.number
+                    }
+                    renderEditable={({ value, onChange }) => (
+                      <Input value={value} onChange={(e) => onChange(e.target.value)} />
+                    )}
+                    onSave={onUpdateExternalRelocation('number')}
+                    isLoading={updateExternalRelocationIsLoading}
+                  />
 
-                    <Col span={16}>
-                      <Text>{valueOrHyphen(relocationTask.createdBy?.fullName)}</Text>
-                    </Col>
-                  </Row>
+                  <EditableField
+                    data-testid='external-relocation-status'
+                    label='Статус перемещения на портале заказчика:'
+                    value={
+                      updatedExternalRelocation?.status || relocationTask.externalRelocation?.status
+                    }
+                    displayValue={
+                      updatedExternalRelocation?.status
+                        ? externalRelocationStatusDict[updatedExternalRelocation.status]
+                        : relocationTask.externalRelocation?.status
+                        ? externalRelocationStatusDict[relocationTask.externalRelocation.status]
+                        : null
+                    }
+                    renderEditable={({ value, onChange }) => (
+                      <Select
+                        allowClear
+                        popupMatchSelectWidth={200}
+                        value={value}
+                        onChange={(value) => onChange(value)}
+                        options={externalRelocationStatusOptions}
+                      />
+                    )}
+                    onSave={onUpdateExternalRelocation('status')}
+                    isLoading={updateExternalRelocationIsLoading}
+                  />
 
-                  <Row data-testid='created-at' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Создано:</Text>
-                    </Col>
+                  <ReadonlyField
+                    data-testid='created-by'
+                    label='Инициатор:'
+                    value={valueOrHyphen(relocationTask.createdBy?.fullName)}
+                  />
 
-                    <Col span={16}>{formatDate(relocationTask.createdAt)}</Col>
-                  </Row>
+                  <ReadonlyField
+                    data-testid='created-at'
+                    label='Создано:'
+                    value={formatDate(relocationTask.createdAt)}
+                  />
 
-                  <Row data-testid='task' align='middle'>
-                    <Col span={8}>
-                      <Text type='secondary'>Заявка ITSM:</Text>
-                    </Col>
-
-                    {relocationTask.task ? (
-                      <Col span={16}>
+                  <ReadonlyField
+                    data-testid='task'
+                    label='Заявка ITSM:'
+                    value={relocationTask.task}
+                    displayValue={
+                      relocationTask.task && (
                         <Link to={getTaskListPageLink({ viewTaskId: relocationTask.task.id })}>
                           {relocationTask.task.recordId}
                         </Link>
-                      </Col>
-                    ) : (
-                      valueOrHyphen(relocationTask.task)
-                    )}
-                  </Row>
+                      )
+                    }
+                  />
 
-                  <Row data-testid='comment'>
-                    <Col span={8}>
-                      <Text type='secondary'>Комментарий:</Text>
-                    </Col>
+                  <ReadonlyField
+                    data-testid='comment'
+                    label='Комментарий:'
+                    value={valueOrHyphen(relocationTask.comment)}
+                  />
 
-                    <Col span={16}>
-                      <Text>{valueOrHyphen(relocationTask.comment)}</Text>
-                    </Col>
-                  </Row>
-
-                  <Row data-testid='documents'>
-                    <Col span={8}>
-                      <Text type='secondary'>Документы:</Text>
-                    </Col>
-
-                    <Col span={16}>
+                  <ReadonlyField
+                    data-testid='documents'
+                    label='Документы:'
+                    value={relocationTask.documents}
+                    displayValue={
                       <Space direction='vertical'>
                         <Upload
                           multiple
@@ -555,8 +580,8 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                           <AttachmentList data={relocationTask.documents} />
                         )}
                       </Space>
-                    </Col>
-                  </Row>
+                    }
+                  />
 
                   <Button onClick={onOpenRelocationTaskAttachmentsModal}>
                     Посмотреть общие фото
