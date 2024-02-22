@@ -113,7 +113,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   )
 
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
-    useGetEquipmentNomenclatureList()
+    useGetEquipmentNomenclatureList({ limit: 999999 })
 
   const onClickUpdate: HistoryNomenclatureOperationsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
