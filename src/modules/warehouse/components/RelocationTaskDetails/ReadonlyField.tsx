@@ -7,11 +7,13 @@ export type ReadonlyFieldProps = {
   label: string
   value: any
   displayValue?: ReactNode
+  forceDisplayValue?: boolean
 }
 
 const ReadonlyField: FC<ReadonlyFieldProps> = ({
   value,
   displayValue = value,
+  forceDisplayValue = false,
   label,
   ...props
 }) => {
@@ -21,7 +23,11 @@ const ReadonlyField: FC<ReadonlyFieldProps> = ({
         <Text type='secondary'>{label}</Text>
       </Col>
 
-      {value && <Col span={16}>{displayValue}</Col>}
+      {forceDisplayValue ? (
+        <Col span={16}>{displayValue}</Col>
+      ) : (
+        value && <Col span={16}>{displayValue}</Col>
+      )}
     </Row>
   )
 }

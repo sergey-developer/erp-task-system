@@ -43,11 +43,13 @@ const EditableField: FC<EditableFieldProps> = ({
 
   return (
     <ReadonlyField
+      {...props}
       value={initialValue}
       displayValue={
         editable ? (
           <Space>
             {renderEditable({ value: value, onChange: setValue })}
+
             {isLoading ? (
               <Spinner />
             ) : (
@@ -67,7 +69,6 @@ const EditableField: FC<EditableFieldProps> = ({
           </Space>
         )
       }
-      {...props}
     />
   )
 }

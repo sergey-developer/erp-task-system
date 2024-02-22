@@ -497,8 +497,13 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     value={
                       updatedExternalRelocation?.number || relocationTask.externalRelocation?.number
                     }
+                    forceDisplayValue
                     renderEditable={({ value, onChange }) => (
-                      <Input value={value} onChange={(e) => onChange(e.target.value)} />
+                      <Input
+                        allowClear
+                        value={value}
+                        onChange={(e) => onChange(e.target.value || undefined)}
+                      />
                     )}
                     onSave={onUpdateExternalRelocation('number')}
                     isLoading={updateExternalRelocationIsLoading}
@@ -510,6 +515,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     value={
                       updatedExternalRelocation?.status || relocationTask.externalRelocation?.status
                     }
+                    forceDisplayValue
                     displayValue={
                       updatedExternalRelocation?.status
                         ? externalRelocationStatusDict[updatedExternalRelocation.status]
