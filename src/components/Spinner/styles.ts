@@ -24,14 +24,14 @@ type SpinnerStyledProps = {
 }
 
 export const SpinnerStyled = styled(Spin)<SpinnerStyledProps>`
-  display: flex;
-
   ${({ $area }) =>
     $area
       ? `
+        display: flex;
         flex-direction: column;
         ${areaStyles[$area]}`
       : ''}
 
-  ${({ $centered }) => ($centered ? 'justify-content: center; align-items: center;' : '')}
+  ${({ $centered }) =>
+    $centered ? 'display: flex; justify-content: center; align-items: center;' : ''}
 `

@@ -14,6 +14,7 @@ import {
   Upload,
   UploadProps,
 } from 'antd'
+import isUndefined from 'lodash/isUndefined'
 import React, { FC, useCallback, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -495,15 +496,13 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     data-testid='external-relocation-number'
                     label='Номер перемещения на портале заказчика:'
                     value={
-                      updatedExternalRelocation?.number || relocationTask.externalRelocation?.number
+                      isUndefined(updatedExternalRelocation?.number)
+                        ? relocationTask.externalRelocation?.number
+                        : updatedExternalRelocation?.number
                     }
                     forceDisplayValue
                     renderEditable={({ value, onChange }) => (
-                      <Input
-                        allowClear
-                        value={value}
-                        onChange={(e) => onChange(e.target.value || undefined)}
-                      />
+                      <Input allowClear value={value} onChange={(e) => onChange(e.target.value)} />
                     )}
                     onSave={onUpdateExternalRelocation('number')}
                     isLoading={updateExternalRelocationIsLoading}
@@ -532,6 +531,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                         options={externalRelocationStatusOptions}
                       />
                     )}
+                    editButtonDisabled={
+                      !relocationTask.externalRelocation && !updatedExternalRelocation?.number
+                    }
                     onSave={onUpdateExternalRelocation('status')}
                     isLoading={updateExternalRelocationIsLoading}
                   />
