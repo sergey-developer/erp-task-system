@@ -20,8 +20,8 @@ export type EditableFieldProps = ReadonlyFieldProps & {
 
 const EditableField: FC<EditableFieldProps> = ({
   renderEditable,
-  value: initialValue,
-  displayValue = initialValue,
+  value,
+  displayValue = value,
 
   onSave,
   isLoading,
@@ -29,31 +29,33 @@ const EditableField: FC<EditableFieldProps> = ({
   ...props
 }) => {
   const [editable, { setTrue: setEditable, setFalse: setNotEditable }] = useBoolean(false)
-  const [value, setValue] = useState(initialValue)
+  const [newValue, setNewValue] = useState(value)
 
   const onChange = async () => {
-    await onSave(value)
+    await onSave(newValue)
     setNotEditable()
   }
 
   const onCancel = () => {
-    setValue(initialValue)
+    setNewValue(value)
     setNotEditable()
   }
 
   return (
     <ReadonlyField
-      value={initialValue}
+      {...props}
+      value={value}
       displayValue={
         editable ? (
           <Space>
-            {renderEditable({ value: value, onChange: setValue })}
+            {renderEditable({ value: newValue, onChange: setNewValue })}
+
             {isLoading ? (
               <Spinner />
             ) : (
               <Button
                 type='text'
-                disabled={isEqual(initialValue, value)}
+                disabled={isEqual(value, newValue)}
                 icon={<CheckIcon $color='bleuDeFrance' $cursor='pointer' />}
                 onClick={onChange}
               />
@@ -67,7 +69,6 @@ const EditableField: FC<EditableFieldProps> = ({
           </Space>
         )
       }
-      {...props}
     />
   )
 }
