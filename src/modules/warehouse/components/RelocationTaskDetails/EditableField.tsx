@@ -10,6 +10,7 @@ import Spinner from 'components/Spinner'
 import ReadonlyField, { ReadonlyFieldProps } from './ReadonlyField'
 
 export type EditableFieldProps = ReadonlyFieldProps & {
+  editButtonDisabled?: boolean
   renderEditable: ({
     value,
   }: Pick<ReadonlyFieldProps, 'value'> & { onChange: (value: any) => void }) => ReactElement
@@ -19,9 +20,11 @@ export type EditableFieldProps = ReadonlyFieldProps & {
 }
 
 const EditableField: FC<EditableFieldProps> = ({
-  renderEditable,
   value,
   displayValue = value,
+
+  editButtonDisabled = false,
+  renderEditable,
 
   onSave,
   isLoading,
@@ -32,8 +35,10 @@ const EditableField: FC<EditableFieldProps> = ({
   const [newValue, setNewValue] = useState(value)
 
   const onChange = async () => {
-    await onSave(newValue)
-    setNotEditable()
+    try {
+      await onSave(newValue)
+      setNotEditable()
+    } catch {}
   }
 
   const onCancel = () => {
@@ -46,26 +51,31 @@ const EditableField: FC<EditableFieldProps> = ({
       {...props}
       value={value}
       displayValue={
-        editable ? (
+        isLoading ? (
+          <Spinner centered={false} />
+        ) : editable ? (
           <Space>
             {renderEditable({ value: newValue, onChange: setNewValue })}
 
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <Button
-                type='text'
-                disabled={isEqual(value, newValue)}
-                icon={<CheckIcon $color='bleuDeFrance' $cursor='pointer' />}
-                onClick={onChange}
-              />
-            )}
-            <CloseIcon $color='fireOpal' onClick={onCancel} />
+            <Button
+              type='text'
+              disabled={isEqual(value, newValue)}
+              icon={<CheckIcon $color='bleuDeFrance' $cursor='pointer' />}
+              onClick={onChange}
+            />
+
+            <Button type='text' icon={<CloseIcon $color='fireOpal' />} onClick={onCancel} />
           </Space>
         ) : (
           <Space>
             {displayValue}
-            <EditIcon $size='large' $cursor='pointer' $color='bleuDeFrance' onClick={setEditable} />
+
+            <Button
+              type='text'
+              disabled={editButtonDisabled}
+              icon={<EditIcon $size='large' $cursor='pointer' $color='bleuDeFrance' />}
+              onClick={setEditable}
+            />
           </Space>
         )
       }
