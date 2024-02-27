@@ -464,13 +464,13 @@ const CreateRelocationTaskPage: FC = () => {
 
   const createEquipments = useDebounceFn<CreateEquipmentsByFileModalProps['onCreate']>(async () => {
     const equipmentsByFile: EquipmentByFileTableRow[] = form.getFieldValue('equipmentsByFile')
-    if (!equipmentsByFile || !selectedRelocateFrom || !selectedRelocateTo) return
+    if (!equipmentsByFile || !selectedRelocateTo) return
 
     try {
       const createdEquipments = await createEquipmentsMutation(
         equipmentsByFile.map(({ rowId, ...eqp }) => ({
           ...eqp,
-          location: selectedRelocateFrom.value,
+          location: selectedRelocateFrom?.value || selectedRelocateTo.value,
           warehouse: selectedRelocateTo.value,
           nomenclature: eqp.nomenclature?.id,
           category: eqp.category?.id,
@@ -523,13 +523,13 @@ const CreateRelocationTaskPage: FC = () => {
 
   const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
-      if (!activeEquipmentRow || !selectedRelocateTo || !selectedRelocateFrom) return
+      if (!activeEquipmentRow || !selectedRelocateTo) return
 
       try {
         const createdEquipment = await createEquipmentMutation({
           ...values,
           images: images?.length ? extractIdsFromFilesResponse(images) : undefined,
-          location: selectedRelocateFrom.value,
+          location: selectedRelocateFrom?.value || selectedRelocateTo.value,
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
