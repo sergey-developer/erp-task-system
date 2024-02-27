@@ -1,6 +1,7 @@
 import pick from 'lodash/pick'
 
 import {
+  ExternalRelocationStatusEnum,
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
 } from 'modules/warehouse/constants/relocationTask'
@@ -8,7 +9,7 @@ import { RelocationTaskModel } from 'modules/warehouse/models'
 
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
-import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/utils'
 
 import { relocationTaskAttachment } from './relocationTaskAttachment'
 
@@ -35,4 +36,9 @@ export const relocationTask = (
     user: pick(userFixtures.user(), 'id', 'fullName', 'phone'),
   },
   task: pick(taskFixtures.task(), 'id', 'recordId'),
+  externalRelocation: {
+    id: fakeId(),
+    number: fakeIdStr(),
+    status: ExternalRelocationStatusEnum.InTransit,
+  },
 })

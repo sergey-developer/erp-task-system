@@ -18,6 +18,7 @@ export { default as UnorderedListIcon } from './UnorderedListIcon'
 export { default as QrcodeIcon } from './QrcodeIcon'
 export { default as ReadIcon } from './ReadIcon'
 export { default as DeleteIcon } from './DeleteIcon'
+export { default as CheckIcon } from './CheckIcon'
 
 export { default as ExclamationCircleIcon } from './ExclamationCircleIcon'
 export { default as CheckCircleIcon } from './CheckCircleIcon'
