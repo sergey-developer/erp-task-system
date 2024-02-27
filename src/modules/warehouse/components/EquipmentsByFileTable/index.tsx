@@ -47,6 +47,7 @@ const EquipmentsByFileTable: FC<EquipmentsByFileTableProps> = ({ errors, onEdit,
   return (
     <Table<EquipmentByFileTableRow>
       data-testid='equipments-by-file-table'
+      virtual
       rowKey='rowId'
       dataSource={dataSource}
       columns={columns}
