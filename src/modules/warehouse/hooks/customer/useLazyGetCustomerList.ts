@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
-import { getCustomerListMessages } from 'modules/warehouse/constants/customer'
+import { getCustomersErrMsg } from 'modules/warehouse/constants/customer'
 import { GetCustomerListQueryArgs, GetCustomerListSuccessResponse } from 'modules/warehouse/models'
 import { useLazyGetCustomerListQuery } from 'modules/warehouse/services/customerApiService'
 
@@ -19,7 +19,7 @@ export const useLazyGetCustomerList = (): UseLazyGetCustomerListResult => {
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getCustomerListMessages.commonError)
+      showErrorNotification(getCustomersErrMsg)
     }
   }, [state.error])
 

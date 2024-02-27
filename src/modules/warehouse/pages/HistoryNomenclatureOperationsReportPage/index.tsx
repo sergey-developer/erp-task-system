@@ -1,26 +1,32 @@
-import { useBoolean, useSetState } from 'ahooks'
+import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
 
+import { HistoryNomenclatureOperationsReportFilterFormFields } from 'modules/reports/components/HistoryNomenclatureOperationsReportFilter/types'
 import HistoryNomenclatureOperationsReportForm from 'modules/reports/components/HistoryNomenclatureOperationsReportForm'
 import { HistoryNomenclatureOperationsReportFormProps } from 'modules/reports/components/HistoryNomenclatureOperationsReportForm/types'
 import HistoryNomenclatureOperationsReportTable from 'modules/reports/components/HistoryNomenclatureOperationsReportTable'
 import { HistoryNomenclatureOperationsReportTableProps } from 'modules/reports/components/HistoryNomenclatureOperationsReportTable/types'
+import { ReportsStorageKeysEnum } from 'modules/reports/constants'
 import {
   useGetHistoryNomenclatureOperationsReport,
   useLazyGetHistoryNomenclatureOperationsReportXlsx,
 } from 'modules/reports/hooks'
 import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'modules/reports/models'
+import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
 
+import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
 import { base64ToArrayBuffer } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { downloadFile } from 'shared/utils/file'
@@ -37,8 +43,17 @@ const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
 )
 
-const initialPaginationParams = getInitialPaginationParams()
+const HistoryNomenclatureOperationsReportFilter = React.lazy(
+  () => import('modules/reports/components/HistoryNomenclatureOperationsReportFilter'),
+)
+
 const { Title } = Typography
+const initialPaginationParams = getInitialPaginationParams()
+const initialFilterValues: HistoryNomenclatureOperationsReportFilterFormFields = {
+  conditions: undefined,
+  locations: undefined,
+  owners: undefined,
+}
 
 const HistoryNomenclatureOperationsReportPage: FC = () => {
   const [equipmentId, setEquipmentId] = useState<IdType>()
@@ -64,9 +79,18 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
     setRelocationTaskId(undefined)
   })
 
+  const [filtersFromStorage, setFiltersInStorage] = useLocalStorageState<
+    MaybeUndefined<HistoryNomenclatureOperationsReportFilterFormFields>
+  >(ReportsStorageKeysEnum.HistoryNomenclatureOperationsReportFilter)
+  const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
+  const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
+  const [filterValues, setFilterValues] =
+    useState<HistoryNomenclatureOperationsReportFilterFormFields>(filtersFromStorage || {})
+
   const [reportParams, setReportParams] =
     useSetState<GetHistoryNomenclatureOperationsReportQueryArgs>({
       ...initialPaginationParams,
+      ...filterValues,
       nomenclatureId: 0,
     })
 
@@ -78,8 +102,18 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   const [getReportXlsx, { isFetching: getReportXlsxIsFetching }] =
     useLazyGetHistoryNomenclatureOperationsReportXlsx()
 
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
+    undefined,
+    { skip: !filterOpened },
+  )
+
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList(
+    undefined,
+    { skip: !filterOpened },
+  )
+
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
-    useGetEquipmentNomenclatureList()
+    useGetEquipmentNomenclatureList({ limit: 999999 })
 
   const onClickUpdate: HistoryNomenclatureOperationsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
@@ -100,6 +134,13 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
         'Отчет по истории операций по номенклатуре',
       )
     } catch {}
+  }
+
+  const onApplyFilter = (values: HistoryNomenclatureOperationsReportFilterFormFields) => {
+    setFilterValues(values)
+    setReportParams({ ...values, offset: initialPaginationParams.offset })
+    toggleOpenFilter()
+    setFiltersInStorage(values)
   }
 
   const onTablePagination = useCallback(
@@ -132,9 +173,13 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
             <Space $block direction='vertical' size='middle'>
               <Title level={5}>История операций по номенклатуре</Title>
 
-              <Button onClick={onExportExcel} loading={getReportXlsxIsFetching}>
-                Выгрузить в Excel
-              </Button>
+              <Space>
+                <FilterButton onClick={debouncedToggleOpenFilter} />
+
+                <Button onClick={onExportExcel} loading={getReportXlsxIsFetching}>
+                  Выгрузить в Excel
+                </Button>
+              </Space>
 
               <HistoryNomenclatureOperationsReportTable
                 dataSource={extractPaginationResults(report)}
@@ -167,6 +212,22 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
             open={relocationTaskOpened}
             onClose={onCloseRelocationTask}
             relocationTaskId={relocationTaskId}
+          />
+        </React.Suspense>
+      )}
+
+      {filterOpened && (
+        <React.Suspense fallback={<ModalFallback open tip='Загрузка компонента фильтров' />}>
+          <HistoryNomenclatureOperationsReportFilter
+            open={filterOpened}
+            values={filterValues}
+            initialValues={initialFilterValues}
+            locations={locations}
+            locationsIsLoading={locationsIsFetching}
+            owners={customers}
+            ownersIsLoading={customersIsFetching}
+            onClose={debouncedToggleOpenFilter}
+            onApply={onApplyFilter}
           />
         </React.Suspense>
       )}

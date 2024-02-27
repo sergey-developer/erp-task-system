@@ -14,7 +14,6 @@ import {
   useLazyGetAmountEquipmentSpentReportXlsx,
 } from 'modules/reports/hooks'
 import { GetAmountEquipmentSpentReportQueryArgs } from 'modules/reports/models'
-import { AmountEquipmentSpentReportFiltersStorageType } from 'modules/reports/services/reportsLocalStorage.service'
 import {
   useGetEquipmentCategoryList,
   useGetEquipmentNomenclatureList,
@@ -81,7 +80,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
   })
 
   const [filtersFromStorage, setFiltersInStorage] = useLocalStorageState<
-    MaybeUndefined<AmountEquipmentSpentReportFiltersStorageType>
+    MaybeUndefined<AmountEquipmentSpentReportFilterFormFields>
   >(ReportsStorageKeysEnum.AmountEquipmentSpentReportFilters)
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)

@@ -58,7 +58,7 @@ export const testUtils = {
   expectLoadingFinished,
 }
 
-describe('Таблица отчета истории операций по номенклатуре', () => {
+describe('Таблица отчета количества потраченного оборудования', () => {
   test('Отображается корректно', () => {
     render(<AmountEquipmentSpentReportTable {...props} />)
 
