@@ -8,7 +8,6 @@ import { RelocationTaskModel } from './relocationTask.model'
 export type CreateRelocationTaskMutationArgs = {
   type: RelocationTaskTypeEnum
   deadlineAt: string
-  relocateFromId: IdType
   executor: IdType
   controller: IdType
   equipments: {
@@ -21,6 +20,7 @@ export type CreateRelocationTaskMutationArgs = {
     attachments?: IdType[]
   }[]
 
+  relocateFromId?: IdType
   relocateToId?: IdType
   comment?: string
   images?: IdType[]

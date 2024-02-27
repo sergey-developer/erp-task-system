@@ -8,3 +8,6 @@ export const checkRelocationTaskTypeIsWarranty = (type?: RelocationTaskTypeEnum)
 
 export const checkRelocationTaskTypeIsCustomer = (type?: RelocationTaskTypeEnum): boolean =>
   type === RelocationTaskTypeEnum.Customer
+
+export const checkRelocationTaskTypeIsEnteringBalances = (type?: RelocationTaskTypeEnum): boolean =>
+  type === RelocationTaskTypeEnum.EnteringBalances

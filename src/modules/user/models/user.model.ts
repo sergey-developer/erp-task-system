@@ -44,6 +44,7 @@ export type UserPermissions =
   | EquipmentUserPermissions
   | RelocationTaskUserPermissions
   | WarehouseReportsUserPermissions
+  | 'ENTERING_BALANCES'
 
 export type UserModel = BaseUserModel & {
   fullName: string

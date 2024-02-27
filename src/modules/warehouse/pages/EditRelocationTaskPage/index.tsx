@@ -59,6 +59,7 @@ import {
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import {
+  checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
   getRelocationTasksPageLink,
 } from 'modules/warehouse/utils/relocationTask'
@@ -211,6 +212,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const [selectedType, setSelectedType] = useState<RelocationTaskFormFields['type']>()
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(selectedType)
+  const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(selectedType)
 
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
@@ -304,7 +306,7 @@ const EditRelocationTaskPage: FC = () => {
         locationId: selectedRelocateFrom?.value,
         ...getEquipmentCatalogListParams(selectedType!),
       },
-      { skip: !selectedRelocateFrom?.value || !selectedType },
+      { skip: typeIsEnteringBalances || !selectedRelocateFrom?.value || !selectedType },
     )
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
@@ -512,13 +514,13 @@ const EditRelocationTaskPage: FC = () => {
 
   const createEquipments = useDebounceFn<CreateEquipmentsByFileModalProps['onCreate']>(async () => {
     const equipmentsByFile: EquipmentByFileTableRow[] = form.getFieldValue('equipmentsByFile')
-    if (!equipmentsByFile || !selectedRelocateFrom || !selectedRelocateTo) return
+    if (!equipmentsByFile || !selectedRelocateTo) return
 
     try {
       const createdEquipments = await createEquipmentsMutation(
         equipmentsByFile.map(({ rowId, ...eqp }) => ({
           ...eqp,
-          location: selectedRelocateFrom.value,
+          location: selectedRelocateFrom?.value || selectedRelocateTo.value,
           warehouse: selectedRelocateTo.value,
           nomenclature: eqp.nomenclature?.id,
           category: eqp.category?.id,
@@ -570,13 +572,13 @@ const EditRelocationTaskPage: FC = () => {
 
   const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
-      if (!activeEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
+      if (!activeEquipmentRow || !selectedRelocateTo) return
 
       try {
         const createdEquipment = await createEquipmentMutation({
           ...values,
           images: images?.length ? extractIdsFromFilesResponse(images) : undefined,
-          location: selectedRelocateFrom.value,
+          location: selectedRelocateFrom?.value || selectedRelocateTo.value,
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
@@ -607,9 +609,9 @@ const EditRelocationTaskPage: FC = () => {
     },
     [
       activeEquipmentRow,
-      selectedRelocateTo?.value,
-      selectedRelocateFrom?.value,
+      selectedRelocateTo,
       createEquipmentMutation,
+      selectedRelocateFrom?.value,
       form,
       typeIsWriteOff,
       handleCloseCreateEquipmentModal,
@@ -695,6 +697,12 @@ const EditRelocationTaskPage: FC = () => {
   const handleChangeType = useCallback<RelocationTaskFormProps['onChangeType']>(
     (value) => {
       setSelectedType(value)
+
+      if (checkRelocationTaskTypeIsEnteringBalances(value)) {
+        const relocateFromValue = undefined
+        form.setFieldValue('relocateFrom', relocateFromValue)
+        setSelectedRelocateFrom(relocateFromValue)
+      }
 
       if (checkRelocationTaskTypeIsWriteOff(value)) {
         const relocateToValue = undefined
@@ -863,6 +871,7 @@ const EditRelocationTaskPage: FC = () => {
         <Row gutter={[40, 40]}>
           <Col span={24}>
             <RelocationTaskForm
+              permissions={permissions}
               isLoading={updateTaskIsLoading || relocationTaskIsFetching}
               userList={userList}
               userListIsLoading={userListIsFetching}
