@@ -112,7 +112,7 @@ const EditRelocationTaskPage: FC = () => {
   const params = useParams<'id'>()
   const relocationTaskId = Number(params?.id) || undefined
 
-  const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
+  const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE', 'ENTERING_BALANCES'])
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
@@ -723,14 +723,15 @@ const EditRelocationTaskPage: FC = () => {
   /* Установка значений формы из заявки */
   useEffect(() => {
     if (relocationTask) {
-      const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
       setSelectedType(relocationTask.type)
+      const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
+      const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(relocationTask.type)
 
       form.setFieldsValue({
         type: relocationTask.type,
         deadlineAtDate: moment(relocationTask.deadlineAt),
         deadlineAtTime: moment(relocationTask.deadlineAt),
-        relocateFrom: relocationTask.relocateFrom?.id,
+        relocateFrom: typeIsEnteringBalances ? undefined : relocationTask.relocateFrom?.id,
         relocateTo: typeIsWriteOff ? undefined : relocationTask.relocateTo?.id,
         executor: relocationTask.executor?.id,
         controller: relocationTask.controller?.id,
@@ -770,16 +771,20 @@ const EditRelocationTaskPage: FC = () => {
   /* Установка значения состояния объекта выбытия */
   useEffect(() => {
     if (relocationTask && relocateFromLocationList.length) {
-      const relocateFromListItem = relocateFromLocationList.find(
-        (l) => l.id === relocationTask.relocateFrom?.id,
-      )
+      const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(relocationTask.type)
 
-      if (relocateFromListItem) {
-        setSelectedRelocateFrom({
-          label: relocateFromListItem.title,
-          type: relocateFromListItem.type,
-          value: relocateFromListItem.id,
-        })
+      if (!typeIsEnteringBalances) {
+        const relocateFromListItem = relocateFromLocationList.find(
+          (l) => l.id === relocationTask.relocateFrom?.id,
+        )
+
+        if (relocateFromListItem) {
+          setSelectedRelocateFrom({
+            label: relocateFromListItem.title,
+            type: relocateFromListItem.type,
+            value: relocateFromListItem.id,
+          })
+        }
       }
     }
   }, [relocateFromLocationList, relocationTask])
