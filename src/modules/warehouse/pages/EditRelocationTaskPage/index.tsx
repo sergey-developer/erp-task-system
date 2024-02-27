@@ -59,6 +59,7 @@ import {
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import {
+  checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
   getRelocationTasksPageLink,
 } from 'modules/warehouse/utils/relocationTask'
@@ -211,6 +212,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const [selectedType, setSelectedType] = useState<RelocationTaskFormFields['type']>()
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(selectedType)
+  const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(selectedType)
 
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
@@ -304,7 +306,7 @@ const EditRelocationTaskPage: FC = () => {
         locationId: selectedRelocateFrom?.value,
         ...getEquipmentCatalogListParams(selectedType!),
       },
-      { skip: !selectedRelocateFrom?.value || !selectedType },
+      { skip: typeIsEnteringBalances || !selectedRelocateFrom?.value || !selectedType },
     )
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
@@ -696,6 +698,12 @@ const EditRelocationTaskPage: FC = () => {
     (value) => {
       setSelectedType(value)
 
+      if (checkRelocationTaskTypeIsEnteringBalances(value)) {
+        const relocateFromValue = undefined
+        form.setFieldValue('relocateFrom', relocateFromValue)
+        setSelectedRelocateFrom(relocateFromValue)
+      }
+
       if (checkRelocationTaskTypeIsWriteOff(value)) {
         const relocateToValue = undefined
         form.setFieldValue('relocateTo', relocateToValue)
@@ -863,6 +871,7 @@ const EditRelocationTaskPage: FC = () => {
         <Row gutter={[40, 40]}>
           <Col span={24}>
             <RelocationTaskForm
+              permissions={permissions}
               isLoading={updateTaskIsLoading || relocationTaskIsFetching}
               userList={userList}
               userListIsLoading={userListIsFetching}

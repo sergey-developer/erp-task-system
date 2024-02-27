@@ -30,6 +30,7 @@ import { RelocationTaskFormProps } from './types'
 
 const props: RelocationTaskFormProps = {
   isLoading: false,
+  permissions: null,
 
   onUploadImage: jest.fn(),
   imageIsUploading: false,

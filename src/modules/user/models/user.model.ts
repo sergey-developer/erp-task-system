@@ -41,6 +41,7 @@ export type UserPermissions =
   | NomenclatureGroupUserPermissions
   | EquipmentUserPermissions
   | RelocationTaskUserPermissions
+  | 'ENTERING_BALANCES'
 
 export type UserModel = BaseUserModel & {
   fullName: string
