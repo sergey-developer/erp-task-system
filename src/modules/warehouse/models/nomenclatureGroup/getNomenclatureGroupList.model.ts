@@ -3,6 +3,6 @@ import { MaybeUndefined } from 'shared/types/utils'
 
 import { NomenclatureGroupListModel } from './nomenclatureGroupList.model'
 
-export type GetNomenclatureGroupListQueryArgs = MaybeUndefined<Partial<FilterParams>>
+export type GetNomenclatureGroupListQueryArgs = MaybeUndefined<FilterParams>
 
 export type GetNomenclatureGroupListSuccessResponse = NomenclatureGroupListModel

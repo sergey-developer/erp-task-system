@@ -1,7 +1,7 @@
 import { UploadProps } from 'antd'
 import { ReactNode } from 'react'
 
-import { UserListModel } from 'modules/user/models'
+import { UsersModel } from 'modules/user/models'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 
 import { LocationListItemModel, LocationsModel } from 'shared/models/catalogs/location'
@@ -28,7 +28,7 @@ export type RelocationTaskFormProps = {
   imageIsDeleting: boolean
   imagesIsLoading?: boolean
 
-  userList: UserListModel
+  userList: UsersModel
   userListIsLoading: boolean
 
   relocateFromLocationList: LocationsModel

@@ -222,7 +222,7 @@ describe('Вкладка списка заявок на перемещение',
             element: <RelocationTaskListTab {...props} />,
           },
           {
-            path: WarehouseRouteEnum.RelocationTaskList,
+            path: WarehouseRouteEnum.RelocationTasks,
             element: <RelocationTaskListPage />,
           },
         ],

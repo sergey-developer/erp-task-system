@@ -24,6 +24,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import {
   calculatePaginationParams,
+  extractPaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
@@ -123,7 +124,7 @@ const EquipmentListPage: FC = () => {
     <div data-testid='equipment-list-page'>
       <EquipmentTable
         dataSource={extractPaginationResults(equipmentList)}
-        pagination={equipmentList?.pagination || false}
+        pagination={extractPaginationParams(equipmentList)}
         loading={equipmentListIsFetching}
         sort={equipmentListParams.ordering}
         onChange={handleChangeTable}

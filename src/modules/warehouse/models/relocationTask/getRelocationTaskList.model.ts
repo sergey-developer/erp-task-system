@@ -4,7 +4,7 @@ import {
 } from 'modules/warehouse/constants/relocationTask'
 import { RelocationTaskListItemModel } from 'modules/warehouse/models'
 
-import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
+import { PaginationResponse } from 'shared/models/pagination.model'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { PaginationParams } from 'shared/types/pagination'
@@ -39,13 +39,11 @@ export type GetRelocationTaskListFilter = Partial<{
 }>
 
 export type GetRelocationTaskListQueryArgs = GetRelocationTaskListFilter &
-  Partial<
-    PaginationParams &
-      FilterParams & {
-        ordering: GetRelocationTaskListSortValue
-        taskId: IdType
-      }
-  >
+  PaginationParams &
+  FilterParams &
+  Partial<{
+    ordering: GetRelocationTaskListSortValue
+    taskId: IdType
+  }>
 
-export type GetRelocationTaskListSuccessResponse =
-  PaginatedListSuccessResponse<RelocationTaskListItemModel>
+export type GetRelocationTaskListSuccessResponse = PaginationResponse<RelocationTaskListItemModel>

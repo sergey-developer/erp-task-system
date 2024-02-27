@@ -71,7 +71,7 @@ describe('Layout номенклатуры оборудования', () => {
     renderInRoute_latest(
       [
         {
-          path: WarehouseRouteEnum.EquipmentNomenclatureList,
+          path: WarehouseRouteEnum.EquipmentNomenclatures,
           element: <EquipmentPageLayout />,
           children: [
             {
@@ -81,7 +81,7 @@ describe('Layout номенклатуры оборудования', () => {
           ],
         },
       ],
-      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
     )
 
     const page = equipmentNomenclatureListPageTestUtils.getContainer()
@@ -153,7 +153,7 @@ describe('Layout номенклатуры оборудования', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatures,
             element: <EquipmentPageLayout />,
             children: [
               {
@@ -163,7 +163,7 @@ describe('Layout номенклатуры оборудования', () => {
             ],
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -194,7 +194,7 @@ describe('Layout номенклатуры оборудования', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatures,
             element: <EquipmentPageLayout />,
             children: [
               {
@@ -202,13 +202,13 @@ describe('Layout номенклатуры оборудования', () => {
                 element: <EquipmentNomenclatureListPage />,
               },
               {
-                path: WarehouseRouteEnum.EquipmentList,
+                path: WarehouseRouteEnum.Equipments,
                 element: <EquipmentListPage />,
               },
             ],
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -263,7 +263,7 @@ describe('Layout номенклатуры оборудования', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatures,
             element: <EquipmentPageLayout />,
             children: [
               {
@@ -271,13 +271,13 @@ describe('Layout номенклатуры оборудования', () => {
                 element: <EquipmentNomenclatureListPage />,
               },
               {
-                path: WarehouseRouteEnum.EquipmentList,
+                path: WarehouseRouteEnum.Equipments,
                 element: <EquipmentListPage />,
               },
             ],
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatureList] },
+        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
