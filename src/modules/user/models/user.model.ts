@@ -41,6 +41,7 @@ export type UserPermissions =
   | NomenclatureGroupUserPermissions
   | EquipmentUserPermissions
   | RelocationTaskUserPermissions
+  | 'TASK_INTERNAL_DESCRIPTION_UPDATE'
 
 export type UserModel = BaseUserModel & {
   fullName: string

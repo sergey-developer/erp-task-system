@@ -25,10 +25,6 @@ import {
 
 import { testUtils as confirmExecuteTaskModalTestUtils } from '../../ConfirmExecuteTaskModal/ConfirmExecuteTaskModal.test'
 import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
-import {
-  reasonValues,
-  testUtils as taskReclassificationModalTestUtils,
-} from '../../RequestTaskReclassificationModal/RequestTaskReclassificationModal.test'
 import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from '../../TaskSecondLineModal/TaskSecondLineModal.test'
@@ -48,7 +44,7 @@ import {
   activeExecuteTaskItemProps,
   activeRequestSuspendItemProps,
   testUtils as cardTitleTestUtils,
-} from '../Title/Title.test'
+} from '../TaskDetailsTitle/TaskDetailsTitle.test'
 import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,

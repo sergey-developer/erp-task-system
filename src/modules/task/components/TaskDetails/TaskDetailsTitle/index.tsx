@@ -11,21 +11,22 @@ import {
   useTaskType,
 } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
-import { useUserRole } from 'modules/user/hooks'
+import { useMatchUserPermissions, useUserRole } from 'modules/user/hooks'
 
 import {
   CheckCircleIcon,
+  EditIcon,
   MenuIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
   SyncIcon,
 } from 'components/Icons'
 
-import { TitleProps } from './types'
+import { MenuActionsKeysEnum, TaskDetailsTitleProps } from './types'
 
 const { Text } = Typography
 
-const Title: FC<TitleProps> = ({
+const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   id,
   type,
   status,
@@ -38,6 +39,7 @@ const Title: FC<TitleProps> = ({
   onExecuteTask,
   onRequestSuspend,
   onRequestReclassification,
+  onChangeDescription,
 }) => {
   const taskType = useTaskType(type)
 
@@ -48,13 +50,14 @@ const Title: FC<TitleProps> = ({
   const suspendRequestExist = !!suspendRequest
   const suspendRequestStatus = useTaskSuspendRequestStatus(suspendRequest?.status)
 
+  const permissions = useMatchUserPermissions(['TASK_INTERNAL_DESCRIPTION_UPDATE'])
   const isAssignedToCurrentUser = useIdBelongAuthUser(assignee?.id)
   const { isEngineerRole, isFirstLineSupportRole } = useUserRole()
 
   const menuProps: MenuProps = {
     items: [
       {
-        key: 1,
+        key: MenuActionsKeysEnum.RequestSuspend,
         disabled:
           (!taskStatus.isNew && !taskStatus.isInProgress) ||
           (!taskType.isIncident && !taskType.isRequest) ||
@@ -65,7 +68,7 @@ const Title: FC<TitleProps> = ({
         onClick: onRequestSuspend,
       },
       {
-        key: 2,
+        key: MenuActionsKeysEnum.ExecuteTask,
         disabled: suspendRequestStatus.isApproved
           ? false
           : (isFirstLineSupportRole && !!workGroup) ||
@@ -81,7 +84,7 @@ const Title: FC<TitleProps> = ({
       ...(taskExtendedStatus.isInReclassification
         ? [
             {
-              key: 3,
+              key: MenuActionsKeysEnum.CancelReclassification,
               disabled: suspendRequestStatus.isApproved
                 ? false
                 : !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
@@ -98,7 +101,7 @@ const Title: FC<TitleProps> = ({
           ]
         : [
             {
-              key: 3,
+              key: MenuActionsKeysEnum.RequestReclassification,
               disabled:
                 !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
                 (isFirstLineSupportRole && !!workGroup) ||
@@ -112,6 +115,15 @@ const Title: FC<TitleProps> = ({
               onClick: onRequestReclassification,
             },
           ]),
+      {
+        key: MenuActionsKeysEnum.ChangeDescription,
+        disabled:
+          !permissions?.taskInternalDescriptionUpdate ||
+          (!taskType.isRequest && !taskType.isIncident),
+        icon: <EditIcon />,
+        label: 'Изменить описание',
+        onClick: onChangeDescription,
+      },
     ],
   }
 
@@ -130,4 +142,4 @@ const Title: FC<TitleProps> = ({
   )
 }
 
-export default Title
+export default TaskDetailsTitle

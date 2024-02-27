@@ -106,7 +106,7 @@ import {
   activeRequestReclassificationItemProps,
   activeRequestSuspendItemProps,
   testUtils as cardTitleTestUtils,
-} from '../Title/Title.test'
+} from '../TaskDetailsTitle/TaskDetailsTitle.test'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
 
 const props: Readonly<TaskCardContainerProps> = {

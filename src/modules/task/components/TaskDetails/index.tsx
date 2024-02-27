@@ -15,7 +15,7 @@ import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
 import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
 import Tabs from 'modules/task/components/TaskDetails/Tabs'
-import Title from 'modules/task/components/TaskDetails/Title'
+import Title from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
@@ -31,6 +31,7 @@ import {
   useTakeTask,
   useTaskExtendedStatus,
   useTaskStatus,
+  useUpdateTaskDescription,
 } from 'modules/task/hooks/task'
 import { useUpdateTaskAssignee } from 'modules/task/hooks/taskAssignee'
 import {
@@ -67,6 +68,8 @@ import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { ChangeTaskDescriptionModalProps } from '../ChangeTaskDescriptionModal/types'
+
 const ConfirmCancelReclassificationRequestModal = React.lazy(
   () => import('modules/task/components/ConfirmCancelReclassificationRequestModal'),
 )
@@ -89,6 +92,10 @@ const TaskReclassificationRequest = React.lazy(
 
 const RequestTaskSuspendModal = React.lazy(
   () => import('modules/task/components/RequestTaskSuspendModal'),
+)
+
+const ChangeTaskDescriptionModal = React.lazy(
+  () => import('modules/task/components/ChangeTaskDescriptionModal'),
 )
 
 export type TaskDetailsProps = {
@@ -117,20 +124,28 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const { modal } = App.useApp()
 
   const userRole = useUserRole()
-  const closeTask = useDebounceFn(originOnClose)
+  const onClose = useDebounceFn(originOnClose)
 
   const {
     refetch: originRefetchTask,
     currentData: task,
     isFetching: taskIsFetching,
+    isError: isGetTaskError,
     startedTimeStamp: getTaskStartedTimeStamp = 0,
-  } = useGetTask(taskId, { onError: originOnClose })
+  } = useGetTask(taskId)
+
+  useEffect(() => {
+    if (isGetTaskError) originOnClose()
+  }, [isGetTaskError, originOnClose])
 
   const debouncedRefetchTask = useDebounceFn(originRefetchTask)
 
   const taskStatus = useTaskStatus(task?.status)
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
+
+  const [updateTaskDescriptionMutation, { isLoading: updateTaskDescriptionIsLoading }] =
+    useUpdateTaskDescription()
 
   const [deleteSuspendRequest, { isLoading: deleteSuspendRequestIsLoading }] =
     useDeleteTaskSuspendRequest()
@@ -237,12 +252,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     openExecuteTaskModal()
   })
 
+  const [changeDescriptionModalOpened, { toggle: toggleChangeDescriptionModal }] = useBoolean(false)
+
+  const debouncedToggleChangeDescriptionModal = useDebounceFn(toggleChangeDescriptionModal)
+
   const [
     taskReclassificationModalOpened,
     { setTrue: openTaskReclassificationModal, setFalse: closeTaskReclassificationModal },
   ] = useBoolean(false)
 
-  const handleOpenTaskReclassificationModal = useDebounceFn(() => {
+  const onOpenTaskReclassificationModal = useDebounceFn(() => {
     if (task) {
       task.parentInteractionExternalId
         ? openTaskReclassificationModal()
@@ -271,7 +290,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     toggleConfirmCancelReclassificationRequestModal,
   )
 
-  const onCancelReclassificationRequest = async () => {
+  const onCancelReclassificationRequest = useCallback(async () => {
     if (!reclassificationRequest) return
 
     try {
@@ -285,7 +304,28 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         originRefetchTask()
       }
     }
-  }
+  }, [
+    cancelReclassificationRequest,
+    closeConfirmCancelReclassificationRequestModal,
+    originRefetchTask,
+    reclassificationRequest,
+  ])
+
+  const onChangeDescription: ChangeTaskDescriptionModalProps['onSubmit'] = useCallback(
+    async (values, setFields) => {
+      if (!task) return
+
+      try {
+        await updateTaskDescriptionMutation({ taskId: task.id, ...values }).unwrap()
+        toggleChangeDescriptionModal()
+      } catch (error) {
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
+        }
+      }
+    },
+    [task, toggleChangeDescriptionModal, updateTaskDescriptionMutation],
+  )
 
   const handleExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
     async (values, setFields) => {
@@ -485,7 +525,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={handleOpenExecuteTaskModal}
       onRequestSuspend={debouncedToggleRequestTaskSuspendModal}
-      onRequestReclassification={handleOpenTaskReclassificationModal}
+      onRequestReclassification={onOpenTaskReclassificationModal}
+      onChangeDescription={debouncedToggleChangeDescriptionModal}
     />
   )
 
@@ -494,7 +535,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       <Drawer
         data-testid='task-details'
         open={!!taskId}
-        onClose={closeTask}
+        onClose={onClose}
         width={650}
         styles={height ? { wrapper: { top: 'unset', height } } : undefined}
         title={title}
@@ -693,6 +734,21 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             onOk={onCancelReclassificationRequest}
             onCancel={debouncedToggleConfirmCancelReclassificationRequestModal}
             confirmLoading={cancelReclassificationRequestIsLoading}
+          />
+        </React.Suspense>
+      )}
+
+      {changeDescriptionModalOpened && task && (
+        <React.Suspense
+          fallback={<ModalFallback open onCancel={debouncedToggleChangeDescriptionModal} />}
+        >
+          <ChangeTaskDescriptionModal
+            open={changeDescriptionModalOpened}
+            onSubmit={onChangeDescription}
+            onCancel={debouncedToggleChangeDescriptionModal}
+            confirmLoading={updateTaskDescriptionIsLoading}
+            description={task.description}
+            previousDescription={task.previousDescription}
           />
         </React.Suspense>
       )}

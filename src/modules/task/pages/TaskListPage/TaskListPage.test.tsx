@@ -22,7 +22,7 @@ import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskD
 import {
   activeExecuteTaskItemProps,
   testUtils as cardTitleTestUtils,
-} from 'modules/task/components/TaskDetails/Title/Title.test'
+} from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
 import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,
