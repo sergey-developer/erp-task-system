@@ -3,11 +3,9 @@ import { useEffect } from 'react'
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
 import { getEmployeesActionsReportXlsxErrMsg } from 'modules/reports/constants'
-import {
-  GetEmployeesActionsReportXlsxQueryArgs,
-  GetEmployeesActionsReportXlsxSuccessResponse,
-} from 'modules/reports/models'
-import { useLazyGetEmployeesActionsReportXlsxQuery } from 'modules/reports/services/reportsApi.service'
+import { GetEmployeesActionsReportXlsxQueryArgs } from 'modules/reports/models'
+import { useLazyGetEmployeesActionsReportXlsxQuery } from 'modules/reports/services/employeeReportsApi.service'
+import { GetEmployeesActionsReportXlsxTransformedSuccessResponse } from 'modules/reports/types'
 
 import {
   getErrorDetail,
@@ -19,7 +17,7 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetEmployeesActionsReportXlsxResult = CustomUseLazyQueryHookResult<
   GetEmployeesActionsReportXlsxQueryArgs,
-  GetEmployeesActionsReportXlsxSuccessResponse
+  GetEmployeesActionsReportXlsxTransformedSuccessResponse
 >
 
 export const useLazyGetEmployeesActionsReportXlsx = (): UseGetEmployeesActionsReportXlsxResult => {

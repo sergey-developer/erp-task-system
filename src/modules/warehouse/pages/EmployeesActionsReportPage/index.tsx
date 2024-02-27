@@ -18,9 +18,11 @@ import { useGetUsers } from 'modules/user/hooks'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { formatDate } from 'shared/utils/date'
 import { base64ToArrayBuffer } from 'shared/utils/common'
 import { downloadFile } from 'shared/utils/file'
 import {
@@ -89,17 +91,21 @@ const EmployeesActionsReportPage: FC = () => {
   const onClickUpdate: EmployeesActionsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
       employeeId: values.employee,
-      actionFrom: values.period?.[0].toISOString(),
-      actionTo: values.period?.[1].toISOString(),
+      actionFrom: formatDate(values.period?.[0], DATE_FORMAT),
+      actionTo: formatDate(values.period?.[1], DATE_FORMAT),
       offset: initialPaginationParams.offset,
     })
   }
 
   const onExportExcel = async () => {
-    try {
-      const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
-      downloadFile(base64ToArrayBuffer(report), MimetypeEnum.Xlsx, 'Отчет по действиям сотрудника')
-    } catch {}
+    const { data } = await getReportXlsx(omit(reportParams, 'offset', 'limit'))
+
+    if (data?.value && data?.meta?.response) {
+      const fileName = decodeURIComponent(
+        data.meta.response.headers['content-disposition'].split('filename=')[1],
+      )
+      downloadFile(base64ToArrayBuffer(data.value), MimetypeEnum.Xlsx, fileName)
+    }
   }
 
   const onTablePagination = useCallback(
