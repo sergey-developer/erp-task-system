@@ -5,6 +5,8 @@ import { MaybeNull } from 'shared/types/utils'
 
 export type TaskModel = BaseTaskModel & {
   olaEstimatedTime: number
+  isOlaNextBreachTimeChanged: MaybeNull<boolean>
+  previousOlaNextBreachTime: MaybeNull<string>
   resolution: { attachments: TaskAttachmentListModel }
   hasRelocationTasks: boolean
   previousDescription: MaybeNull<string>

@@ -57,7 +57,7 @@ import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/serv
 import { EmptyFn, MaybeNull } from 'shared/types/utils'
 import { base64ToArrayBuffer } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
-import { extractOriginFiles, downloadFile } from 'shared/utils/file'
+import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -130,6 +130,8 @@ export type TaskCardProps = {
       | 'shop'
       | 'isDescriptionChanged'
       | 'previousDescription'
+      | 'previousOlaNextBreachTime'
+      | 'isOlaNextBreachTimeChanged'
     >
   >
 
@@ -545,6 +547,8 @@ const TaskCard: FC<TaskCardProps> = ({
                 olaStatus={task.olaStatus}
                 olaEstimatedTime={task.olaEstimatedTime}
                 olaNextBreachTime={task.olaNextBreachTime}
+                previousOlaNextBreachTime={task.previousOlaNextBreachTime}
+                isOlaNextBreachTimeChanged={task.isOlaNextBreachTimeChanged}
                 responseTime={task.responseTime}
                 workGroup={task.workGroup}
                 assignee={task.assignee}

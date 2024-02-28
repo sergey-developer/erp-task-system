@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect } from 'react'
 
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
+import { ChangeTaskDescriptionModalProps } from 'modules/task/components/ChangeTaskDescriptionModal/types'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
@@ -64,11 +65,9 @@ import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 import { base64ToArrayBuffer } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
-import { extractOriginFiles, downloadFile } from 'shared/utils/file'
+import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import { ChangeTaskDescriptionModalProps } from '../ChangeTaskDescriptionModal/types'
 
 const ConfirmCancelReclassificationRequestModal = React.lazy(
   () => import('modules/task/components/ConfirmCancelReclassificationRequestModal'),
@@ -615,6 +614,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     olaStatus={task.olaStatus}
                     olaEstimatedTime={task.olaEstimatedTime}
                     olaNextBreachTime={task.olaNextBreachTime}
+                    previousOlaNextBreachTime={task.previousOlaNextBreachTime}
+                    isOlaNextBreachTimeChanged={task.isOlaNextBreachTimeChanged}
                     responseTime={task.responseTime}
                     workGroup={task.workGroup}
                     assignee={task.assignee}
