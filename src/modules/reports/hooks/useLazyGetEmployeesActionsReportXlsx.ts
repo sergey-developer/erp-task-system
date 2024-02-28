@@ -4,7 +4,7 @@ import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
 import { getEmployeesActionsReportXlsxErrMsg } from 'modules/reports/constants'
 import { GetEmployeesActionsReportXlsxQueryArgs } from 'modules/reports/models'
-import { useLazyGetEmployeesActionsReportXlsxQuery } from 'modules/reports/services/employeeReportsApi.service'
+import { useLazyGetEmployeesActionsReportXlsxQuery } from 'modules/reports/services/reportsApi.service'
 import { GetEmployeesActionsReportXlsxTransformedSuccessResponse } from 'modules/reports/types'
 
 import {
