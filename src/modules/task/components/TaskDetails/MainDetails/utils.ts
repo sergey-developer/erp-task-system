@@ -1,8 +1,9 @@
 import { BlockProps } from 'antd/es/typography/Base'
+import isNumber from 'lodash/isNumber'
 import { DurationFormatSettings } from 'moment-timezone'
 
 import { TaskModel, TaskResponseTimeModel } from 'modules/task/models'
-import { getOlaStatusMap } from 'modules/task/utils/task'
+import { checkOlaStatusHalfExpired } from 'modules/task/utils/task'
 
 import { MaybeNull, Nullable } from 'shared/types/utils'
 import { formatDate, humanizeDuration } from 'shared/utils/date'
@@ -16,22 +17,19 @@ const taskRemainingTimeDurationSettings: DurationFormatSettings = {
 const getTaskRemainingTime = (value: number): string =>
   humanizeDuration(value, 'milliseconds', taskRemainingTimeDurationSettings)
 
-export const getCompleteAt = ({
+export const getTaskCompleteAtDate = ({
   olaStatus,
   olaEstimatedTime,
   olaNextBreachTime,
-}: Pick<TaskModel, 'olaStatus' | 'olaNextBreachTime' | 'olaEstimatedTime'>): string => {
+}: Partial<Pick<TaskModel, 'olaStatus' | 'olaNextBreachTime' | 'olaEstimatedTime'>>): string => {
   if (!olaNextBreachTime) return ''
 
-  const olaStatusMap = getOlaStatusMap(olaStatus)
+  const taskRemainingTime =
+    olaStatus && isNumber(olaEstimatedTime) && checkOlaStatusHalfExpired(olaStatus)
+      ? getTaskRemainingTime(olaEstimatedTime)
+      : null
 
-  const formattedOlaNextBreachTime = formatDate(olaNextBreachTime)
-
-  const taskRemainingTime = olaStatusMap.isHalfExpired
-    ? getTaskRemainingTime(olaEstimatedTime)
-    : null
-
-  return makeString(' ', 'до', formattedOlaNextBreachTime, taskRemainingTime)
+  return makeString(' ', 'до', formatDate(olaNextBreachTime), taskRemainingTime)
 }
 
 const responseTimeDurationSettings: DurationFormatSettings = {

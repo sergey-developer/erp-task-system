@@ -22,7 +22,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { renderUploadedFile } from 'modules/attachment/utils'
-import { getCompleteAt } from 'modules/task/components/TaskDetails/MainDetails/utils'
+import { getTaskCompleteAtDate } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { useGetUsers, useGetWarehouseMSI, useMatchUserPermissions } from 'modules/user/hooks'
@@ -685,7 +685,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
               {task?.olaStatus && isNumber(task?.olaEstimatedTime) && task?.olaNextBreachTime ? (
                 <Text type={getOlaStatusTextType(task.olaStatus)}>
-                  {getCompleteAt({
+                  {getTaskCompleteAtDate({
                     olaStatus: task.olaStatus,
                     olaEstimatedTime: task.olaEstimatedTime,
                     olaNextBreachTime: task.olaNextBreachTime,

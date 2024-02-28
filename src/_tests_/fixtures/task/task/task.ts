@@ -45,6 +45,8 @@ export const task = (
       | 'hasRelocationTasks'
       | 'previousDescription'
       | 'isDescriptionChanged'
+      | 'previousOlaNextBreachTime'
+      | 'isOlaNextBreachTimeChanged'
     >
   >,
 ): Omit<TaskModel, 'responseTime'> & {
@@ -67,6 +69,12 @@ export const task = (
   isDescriptionChanged: isUndefined(props?.isDescriptionChanged)
     ? false
     : props!.isDescriptionChanged,
+  previousOlaNextBreachTime: isUndefined(props?.previousOlaNextBreachTime)
+    ? fakeDateString()
+    : props!.previousOlaNextBreachTime,
+  isOlaNextBreachTimeChanged: isUndefined(props?.isOlaNextBreachTimeChanged)
+    ? false
+    : props!.isOlaNextBreachTimeChanged,
 
   shop: { id: fakeId(), title: fakeWord() },
   attachments: [taskFixtures.attachment()],

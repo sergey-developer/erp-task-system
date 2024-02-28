@@ -28,6 +28,8 @@ const props: Readonly<MainDetailsProps> = {
   olaEstimatedTime: Date.now(),
   olaStatus: TaskOlaStatusEnum.NotExpired,
   olaNextBreachTime: null,
+  previousOlaNextBreachTime: null,
+  isOlaNextBreachTimeChanged: false,
   address: null,
   contactPhone: null,
   portablePhone: null,
