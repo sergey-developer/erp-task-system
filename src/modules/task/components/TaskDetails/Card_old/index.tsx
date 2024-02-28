@@ -128,6 +128,8 @@ export type TaskCardProps = {
       | 'parentInteractionExternalId'
       | 'hasRelocationTasks'
       | 'shop'
+      | 'isDescriptionChanged'
+      | 'previousDescription'
     >
   >
 
