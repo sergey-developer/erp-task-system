@@ -20,6 +20,7 @@ const colors: Readonly<DefaultTheme['colors']> = {
   crayola: '#27AE60',
   darkTangerine: '#FAAD14',
   unitedNationsBlue: '#5792EB',
+  royalOrange: '#F2994A',
 }
 
 const shadows: Readonly<DefaultTheme['shadows']> = {

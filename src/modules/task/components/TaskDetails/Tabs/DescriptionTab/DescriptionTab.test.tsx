@@ -8,9 +8,12 @@ import { buttonTestUtils, fakeWord, render } from '_tests_/utils'
 import DescriptionTab, { DescriptionTabProps } from './index'
 
 const props: Readonly<DescriptionTabProps> = {
+  permissions: {},
   title: fakeWord(),
   taskTitle: fakeWord(),
   description: fakeWord(),
+  previousDescription: fakeWord(),
+  isDescriptionChanged: false,
   attachments: [taskFixtures.attachment()],
 }
 

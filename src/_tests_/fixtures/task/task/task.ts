@@ -43,6 +43,8 @@ export const task = (
       | 'assignee'
       | 'suspendRequest'
       | 'hasRelocationTasks'
+      | 'previousDescription'
+      | 'isDescriptionChanged'
     >
   >,
 ): Omit<TaskModel, 'responseTime'> & {
@@ -59,6 +61,12 @@ export const task = (
     ? taskFixtures.suspendRequest()
     : props!.suspendRequest,
   hasRelocationTasks: isUndefined(props?.hasRelocationTasks) ? true : props!.hasRelocationTasks,
+  previousDescription: isUndefined(props?.previousDescription)
+    ? fakeWord()
+    : props!.previousDescription,
+  isDescriptionChanged: isUndefined(props?.isDescriptionChanged)
+    ? false
+    : props!.isDescriptionChanged,
 
   shop: { id: fakeId(), title: fakeWord() },
   attachments: [taskFixtures.attachment()],

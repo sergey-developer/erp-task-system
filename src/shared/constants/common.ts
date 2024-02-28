@@ -9,6 +9,7 @@ export const DEFAULT_MODAL_WIDTH = 615
 
 export const CANCEL_TEXT = 'Отменить'
 export const CREATE_TEXT = 'Создать'
+export const SAVE_TEXT = 'Сохранить'
 export const ADD_TEXT = 'Добавить'
 export const CONFIRM_TEXT = 'Подтвердить'
 
