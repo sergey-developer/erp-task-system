@@ -13,23 +13,16 @@ import {
   isNotFoundError,
   isServerRangeError,
 } from 'shared/services/baseApi'
-import { EmptyFn } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskResult = CustomUseQueryHookResult<GetTaskQueryArgs, GetTaskSuccessResponse>
-
-type UseGetTaskOptions = CustomUseQueryOptions<GetTaskQueryArgs, GetTaskSuccessResponse> &
-  Partial<{
-    onError: EmptyFn
-  }>
+type UseGetTaskOptions = CustomUseQueryOptions<GetTaskQueryArgs, GetTaskSuccessResponse>
 
 export const useGetTask = (id: GetTaskQueryArgs, options?: UseGetTaskOptions): UseGetTaskResult => {
   const state = useGetTaskQuery(id, options)
 
   useEffect(() => {
     if (!state.error) return
-
-    options?.onError?.()
 
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
@@ -40,7 +33,7 @@ export const useGetTask = (id: GetTaskQueryArgs, options?: UseGetTaskOptions): U
         showErrorNotification(getTaskMessages.commonError)
       }
     }
-  }, [id, state.error, options?.onError])
+  }, [id, state.error])
 
   return state
 }
