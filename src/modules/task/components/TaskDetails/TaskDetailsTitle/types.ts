@@ -2,7 +2,7 @@ import { TaskModel } from 'modules/task/models'
 
 import { EmptyFn } from 'shared/types/utils'
 
-export type TitleProps = Pick<
+export type TaskDetailsTitleProps = Pick<
   TaskModel,
   | 'id'
   | 'status'
@@ -17,4 +17,13 @@ export type TitleProps = Pick<
   onExecuteTask: EmptyFn
   onRequestSuspend: EmptyFn
   onRequestReclassification: EmptyFn
+  onChangeDescription: EmptyFn
+}
+
+export enum MenuActionsKeysEnum {
+  RequestSuspend = 'RequestSuspend',
+  ExecuteTask = 'ExecuteTask',
+  RequestReclassification = 'RequestReclassification',
+  CancelReclassification = 'CancelReclassification',
+  ChangeDescription = 'ChangeDescription',
 }

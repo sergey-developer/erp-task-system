@@ -44,7 +44,7 @@ import {
   activeExecuteTaskItemProps,
   activeRequestSuspendItemProps,
   testUtils as cardTitleTestUtils,
-} from '../Title/Title.test'
+} from '../TaskDetailsTitle/TaskDetailsTitle.test'
 import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,

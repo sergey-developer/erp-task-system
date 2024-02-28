@@ -45,6 +45,7 @@ export type UserPermissions =
   | RelocationTaskUserPermissions
   | WarehouseReportsUserPermissions
   | 'ENTERING_BALANCES'
+  | 'TASK_INTERNAL_DESCRIPTION_UPDATE'
 
 export type UserModel = BaseUserModel & {
   fullName: string

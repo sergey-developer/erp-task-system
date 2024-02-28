@@ -2,6 +2,7 @@ export enum TaskApiEnum {
   GetTask = '/tasks/:id',
   ResolveTask = '/tasks/:id/resolution',
   TakeTask = '/tasks/:id/execution',
+  UpdateTaskDescription = '/tasks/:id/description',
   GetWorkPerformedAct = '/tasks/:id/completion_certificate',
 
   GetTaskList = '/tasks/',

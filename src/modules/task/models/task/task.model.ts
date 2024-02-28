@@ -7,6 +7,7 @@ export type TaskModel = BaseTaskModel & {
   olaEstimatedTime: number
   resolution: { attachments: TaskAttachmentListModel }
   hasRelocationTasks: boolean
+  previousDescription: MaybeNull<string>
   attachments: MaybeNull<TaskAttachmentListModel>
   suspendRequest: MaybeNull<SuspendRequestModel>
   weight: MaybeNull<number>
