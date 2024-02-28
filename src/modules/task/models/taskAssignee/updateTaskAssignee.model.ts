@@ -1,9 +1,9 @@
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-export type UpdateTaskAssigneeMutationArgs = BaseTaskRequestArgs & {
+export type UpdateTaskAssigneeMutationArgs = TaskRequestArgs & {
   assignee: MaybeNull<IdType>
 }
 

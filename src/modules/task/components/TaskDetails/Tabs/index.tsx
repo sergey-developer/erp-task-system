@@ -37,23 +37,31 @@ export type TabsProps = {
     | 'olaEstimatedTime'
     | 'olaStatus'
     | 'shop'
+    | 'isDescriptionChanged'
+    | 'previousDescription'
   >
 
   activeTab?: TaskDetailsTabsEnum
 }
 
 const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description }) => {
-  const permissions = useMatchUserPermissions(['RELOCATION_TASKS_READ'])
+  const permissions = useMatchUserPermissions([
+    'RELOCATION_TASKS_READ',
+    'TASK_HISTORY_DESCRIPTION_READ',
+  ])
 
   const tabsItems: AntdTabsProps['items'] = [
     {
       key: TaskDetailsTabsEnum.Description,
       label: taskDetailsTabNameDict[TaskDetailsTabsEnum.Description],
-      children: (
+      children: permissions && (
         <DescriptionTab
+          permissions={permissions}
           title={taskDetailsTabNameDict[TaskDetailsTabsEnum.Description]}
           taskTitle={task.title}
           description={task.description}
+          previousDescription={task.previousDescription}
+          isDescriptionChanged={task.isDescriptionChanged}
           attachments={task.attachments}
         />
       ),

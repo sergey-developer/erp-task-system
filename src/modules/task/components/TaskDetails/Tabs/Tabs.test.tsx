@@ -44,6 +44,8 @@ const props: Readonly<TabsProps> = {
     olaEstimatedTime: Date.now(),
     olaStatus: TaskOlaStatusEnum.NotExpired,
     shop: taskFixtures.task().shop,
+    isDescriptionChanged: false,
+    previousDescription: fakeWord(),
   },
 }
 

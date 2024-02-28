@@ -8,6 +8,7 @@ export type TaskModel = BaseTaskModel & {
   resolution: { attachments: TaskAttachmentListModel }
   hasRelocationTasks: boolean
   previousDescription: MaybeNull<string>
+  isDescriptionChanged: MaybeNull<boolean>
   attachments: MaybeNull<TaskAttachmentListModel>
   suspendRequest: MaybeNull<SuspendRequestModel>
   weight: MaybeNull<number>

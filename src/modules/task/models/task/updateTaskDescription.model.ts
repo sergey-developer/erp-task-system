@@ -1,6 +1,6 @@
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
-export type UpdateTaskDescriptionMutationArgs = BaseTaskRequestArgs & {
+export type UpdateTaskDescriptionMutationArgs = TaskRequestArgs & {
   internalDescription: string
 }
 
