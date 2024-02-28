@@ -1,3 +1,4 @@
+import { EditTwoTone } from '@ant-design/icons'
 import { Button, Dropdown, Row, Space, Typography } from 'antd'
 import { MenuProps } from 'antd/es/menu'
 import noop from 'lodash/noop'
@@ -15,7 +16,6 @@ import { useMatchUserPermissions, useUserRole } from 'modules/user/hooks'
 
 import {
   CheckCircleIcon,
-  EditIcon,
   MenuIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
@@ -120,7 +120,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
         disabled:
           !permissions?.taskInternalDescriptionUpdate ||
           (!taskType.isRequest && !taskType.isIncident),
-        icon: <EditIcon />,
+        icon: <EditTwoTone />,
         label: 'Изменить описание',
         onClick: onChangeDescription,
       },

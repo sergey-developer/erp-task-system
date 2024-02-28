@@ -15,7 +15,7 @@ import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
 import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
 import Tabs from 'modules/task/components/TaskDetails/Tabs'
-import Title from 'modules/task/components/TaskDetails/TaskDetailsTitle'
+import TaskDetailsTitle from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
@@ -513,7 +513,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   }, [deleteSuspendRequest, task])
 
   const title = task && (
-    <Title
+    <TaskDetailsTitle
       id={task.id}
       type={task.type}
       assignee={task.assignee}

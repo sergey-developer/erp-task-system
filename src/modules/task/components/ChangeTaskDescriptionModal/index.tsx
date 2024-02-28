@@ -5,6 +5,7 @@ import LabeledData from 'components/LabeledData'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { SAVE_TEXT } from 'shared/constants/common'
+import { requiredStringRules } from 'shared/constants/validation'
 
 import { ChangeTaskDescriptionModalFormFields, ChangeTaskDescriptionModalProps } from './types'
 
@@ -30,7 +31,7 @@ const ChangeTaskDescriptionModal: FC<ChangeTaskDescriptionModalProps> = ({
       onOk={form.submit}
       okText={SAVE_TEXT}
     >
-      <Flex vertical>
+      <Flex vertical gap='large'>
         <LabeledData label='Внешнее описание:'>{previousDescription || description}</LabeledData>
 
         <Form<ChangeTaskDescriptionModalFormFields>
@@ -41,7 +42,7 @@ const ChangeTaskDescriptionModal: FC<ChangeTaskDescriptionModalProps> = ({
           }}
           onFinish={onFinish}
         >
-          <Form.Item name='internalDescription' label='Новое описание'>
+          <Form.Item name='internalDescription' rules={requiredStringRules} label='Новое описание'>
             <TextArea placeholder='Расскажите подробнее о задаче' />
           </Form.Item>
         </Form>
