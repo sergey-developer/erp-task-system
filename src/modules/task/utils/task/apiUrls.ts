@@ -12,6 +12,9 @@ export const takeTaskUrl = (taskId: IdType): string =>
 export const updateTaskDescriptionUrl = (taskId: IdType): string =>
   generateApiPath(TaskApiEnum.UpdateTaskDescription, { id: String(taskId) })
 
+export const updateTaskDeadlineUrl = (taskId: IdType): string =>
+  generateApiPath(TaskApiEnum.UpdateTaskDeadline, { id: String(taskId) })
+
 export const resolveTaskUrl = (taskId: IdType): string =>
   generateApiPath(TaskApiEnum.ResolveTask, { id: String(taskId) })
 

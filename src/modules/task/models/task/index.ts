@@ -6,6 +6,7 @@ export * from './getTask.model'
 export * from './resolveTask.model'
 export * from './takeTask.model'
 export * from './updateTaskDescription.model'
+export * from './updateTaskDeadline.model'
 
 export * from './taskList.model'
 export * from './getTaskList.model'

@@ -7,26 +7,26 @@ import BaseModal from 'components/Modals/BaseModal'
 import { SAVE_TEXT } from 'shared/constants/common'
 import { requiredStringRules } from 'shared/constants/validation'
 
-import { ChangeTaskDescriptionModalFormFields, ChangeTaskDescriptionModalProps } from './types'
+import { UpdateTaskDescriptionModalFormFields, UpdateTaskDescriptionModalProps } from './types'
 
 const { TextArea } = Input
 
-const ChangeTaskDescriptionModal: FC<ChangeTaskDescriptionModalProps> = ({
+const UpdateTaskDescriptionModal: FC<UpdateTaskDescriptionModalProps> = ({
   onSubmit,
   description,
   previousDescription,
   ...props
 }) => {
-  const [form] = Form.useForm<ChangeTaskDescriptionModalFormFields>()
+  const [form] = Form.useForm<UpdateTaskDescriptionModalFormFields>()
 
-  const onFinish = async (values: ChangeTaskDescriptionModalFormFields) => {
+  const onFinish = async (values: UpdateTaskDescriptionModalFormFields) => {
     await onSubmit({ internalDescription: values.internalDescription.trim() }, form.setFields)
   }
 
   return (
     <BaseModal
       {...props}
-      data-testid='change-task-description-modal'
+      data-testid='update-task-description-modal'
       title='Изменить описание'
       onOk={form.submit}
       okText={SAVE_TEXT}
@@ -34,7 +34,7 @@ const ChangeTaskDescriptionModal: FC<ChangeTaskDescriptionModalProps> = ({
       <Flex vertical gap='large'>
         <LabeledData label='Внешнее описание:'>{previousDescription || description}</LabeledData>
 
-        <Form<ChangeTaskDescriptionModalFormFields>
+        <Form<UpdateTaskDescriptionModalFormFields>
           form={form}
           layout='vertical'
           initialValues={{
@@ -51,4 +51,4 @@ const ChangeTaskDescriptionModal: FC<ChangeTaskDescriptionModalProps> = ({
   )
 }
 
-export default ChangeTaskDescriptionModal
+export default UpdateTaskDescriptionModal
