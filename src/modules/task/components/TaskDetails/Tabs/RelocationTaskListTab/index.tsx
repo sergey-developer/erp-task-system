@@ -1,6 +1,6 @@
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import RelocationTaskList from 'modules/task/components/RelocationTaskList'
@@ -9,6 +9,7 @@ import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
   useCreateRelocationTaskAttachment,
   useGetRelocationTaskList,
@@ -73,19 +74,25 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
 
   return (
     <Space data-testid='relocation-task-list-tab' size='middle' direction='vertical' $block>
-      <Row justify='space-between' align='middle'>
+      <Row justify='space-between'>
         <Col>
           <Title level={5}>{getTextWithCounter('Перемещения', relocationTaskList)}</Title>
         </Col>
 
         <Col>
-          <Button
-            type='link'
-            disabled={!permissions?.relocationTasksCreate || !assigneeIsCurrentUser}
-            onClick={onClickCreate}
-          >
-            Создать новое перемещение
-          </Button>
+          <Space direction='vertical'>
+            <Link to={WarehouseRouteEnum.CreateDocumentsPackage}>
+              Сформировать пакет документов
+            </Link>
+
+            <Button
+              type='link'
+              disabled={!permissions?.relocationTasksCreate || !assigneeIsCurrentUser}
+              onClick={onClickCreate}
+            >
+              Создать новое перемещение
+            </Button>
+          </Space>
         </Col>
       </Row>
 
