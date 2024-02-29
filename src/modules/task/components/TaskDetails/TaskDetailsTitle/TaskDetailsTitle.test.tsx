@@ -36,7 +36,8 @@ const props: Readonly<TaskDetailsTitleProps> = {
   onReloadTask: jest.fn(),
   onRequestSuspend: jest.fn(),
   onRequestReclassification: jest.fn(),
-  onChangeDescription: jest.fn(),
+  onUpdateDescription: jest.fn(),
+  onUpdateDeadline: jest.fn(),
 }
 
 export const activeExecuteTaskItemProps: Readonly<

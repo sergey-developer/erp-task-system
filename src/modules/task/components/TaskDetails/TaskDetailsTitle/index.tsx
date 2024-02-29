@@ -1,4 +1,3 @@
-import { EditTwoTone } from '@ant-design/icons'
 import { Button, Dropdown, Row, Space, Typography } from 'antd'
 import { MenuProps } from 'antd/es/menu'
 import noop from 'lodash/noop'
@@ -16,6 +15,8 @@ import { useMatchUserPermissions, useUserRole } from 'modules/user/hooks'
 
 import {
   CheckCircleIcon,
+  EditTwoToneIcon,
+  FieldTimeIcon,
   MenuIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
@@ -39,7 +40,8 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   onExecuteTask,
   onRequestSuspend,
   onRequestReclassification,
-  onChangeDescription,
+  onUpdateDescription,
+  onUpdateDeadline,
 }) => {
   const taskType = useTaskType(type)
 
@@ -50,7 +52,10 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   const suspendRequestExist = !!suspendRequest
   const suspendRequestStatus = useTaskSuspendRequestStatus(suspendRequest?.status)
 
-  const permissions = useMatchUserPermissions(['TASK_INTERNAL_DESCRIPTION_UPDATE'])
+  const permissions = useMatchUserPermissions([
+    'TASK_INTERNAL_DESCRIPTION_UPDATE',
+    'TASK_INTERNAL_DEADLINE_UPDATE',
+  ])
   const isAssignedToCurrentUser = useIdBelongAuthUser(assignee?.id)
   const { isEngineerRole, isFirstLineSupportRole } = useUserRole()
 
@@ -116,13 +121,21 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
             },
           ]),
       {
-        key: MenuActionsKeysEnum.ChangeDescription,
+        key: MenuActionsKeysEnum.UpdateDescription,
         disabled:
           !permissions?.taskInternalDescriptionUpdate ||
           (!taskType.isRequest && !taskType.isIncident),
-        icon: <EditTwoTone />,
+        icon: <EditTwoToneIcon />,
         label: 'Изменить описание',
-        onClick: onChangeDescription,
+        onClick: onUpdateDescription,
+      },
+      {
+        key: MenuActionsKeysEnum.UpdateDeadline,
+        disabled:
+          !permissions?.taskInternalDeadlineUpdate || (!taskType.isRequest && !taskType.isIncident),
+        icon: <FieldTimeIcon $color='royalOrange' />,
+        label: 'Изменить внутренний срок выполнения',
+        onClick: onUpdateDeadline,
       },
     ],
   }

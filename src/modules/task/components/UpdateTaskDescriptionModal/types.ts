@@ -4,17 +4,17 @@ import { TaskModel } from 'modules/task/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-export type ChangeTaskDescriptionModalProps = Pick<
+export type UpdateTaskDescriptionModalProps = Pick<
   BaseModalProps,
   'open' | 'onCancel' | 'confirmLoading'
 > &
   Pick<TaskModel, 'description' | 'previousDescription'> & {
     onSubmit: (
-      values: ChangeTaskDescriptionModalFormFields,
+      values: UpdateTaskDescriptionModalFormFields,
       setFields: FormInstance['setFields'],
     ) => Promise<void>
   }
 
-export type ChangeTaskDescriptionModalFormFields = {
+export type UpdateTaskDescriptionModalFormFields = {
   internalDescription: string
 }
