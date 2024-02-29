@@ -7,6 +7,7 @@ export * from './useGetTask'
 export * from './useResolveTask'
 export * from './useTakeTask'
 export * from './useUpdateTaskDescription'
+export * from './useUpdateTaskDeadline'
 
 export * from './useGetTasks'
 export * from './useGetTaskListMap'

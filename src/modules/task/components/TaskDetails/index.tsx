@@ -4,7 +4,6 @@ import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect } from 'react'
 
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
-import { ChangeTaskDescriptionModalProps } from 'modules/task/components/ChangeTaskDescriptionModal/types'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
@@ -19,6 +18,7 @@ import Tabs from 'modules/task/components/TaskDetails/Tabs'
 import TaskDetailsTitle from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
+import { UpdateTaskDescriptionModalProps } from 'modules/task/components/UpdateTaskDescriptionModal/types'
 import {
   getTaskWorkPerformedActMessages,
   TaskDetailsTabsEnum,
@@ -32,6 +32,7 @@ import {
   useTakeTask,
   useTaskExtendedStatus,
   useTaskStatus,
+  useUpdateTaskDeadline,
   useUpdateTaskDescription,
 } from 'modules/task/hooks/task'
 import { useUpdateTaskAssignee } from 'modules/task/hooks/taskAssignee'
@@ -69,6 +70,8 @@ import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { UpdateTaskDeadlineModalProps } from '../UpdateTaskDeadlineModal/types'
+
 const ConfirmCancelReclassificationRequestModal = React.lazy(
   () => import('modules/task/components/ConfirmCancelReclassificationRequestModal'),
 )
@@ -93,8 +96,12 @@ const RequestTaskSuspendModal = React.lazy(
   () => import('modules/task/components/RequestTaskSuspendModal'),
 )
 
-const ChangeTaskDescriptionModal = React.lazy(
-  () => import('modules/task/components/ChangeTaskDescriptionModal'),
+const UpdateTaskDescriptionModal = React.lazy(
+  () => import('modules/task/components/UpdateTaskDescriptionModal'),
+)
+
+const UpdateTaskDeadlineModal = React.lazy(
+  () => import('modules/task/components/UpdateTaskDeadlineModal'),
 )
 
 export type TaskDetailsProps = {
@@ -145,6 +152,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const [updateTaskDescriptionMutation, { isLoading: updateTaskDescriptionIsLoading }] =
     useUpdateTaskDescription()
+
+  const [updateTaskDeadlineMutation, { isLoading: updateTaskDeadlineIsLoading }] =
+    useUpdateTaskDeadline()
 
   const [deleteSuspendRequest, { isLoading: deleteSuspendRequestIsLoading }] =
     useDeleteTaskSuspendRequest()
@@ -251,9 +261,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     openExecuteTaskModal()
   })
 
-  const [changeDescriptionModalOpened, { toggle: toggleChangeDescriptionModal }] = useBoolean(false)
+  const [updateDescriptionModalOpened, { toggle: toggleUpdateDescriptionModal }] = useBoolean(false)
+  const debouncedToggleUpdateDescriptionModal = useDebounceFn(toggleUpdateDescriptionModal)
 
-  const debouncedToggleChangeDescriptionModal = useDebounceFn(toggleChangeDescriptionModal)
+  const [updateDeadlineModalOpened, { toggle: toggleUpdateDeadlineModal }] = useBoolean(false)
+  const debouncedToggleUpdateDeadlineModal = useDebounceFn(toggleUpdateDeadlineModal)
 
   const [
     taskReclassificationModalOpened,
@@ -310,20 +322,45 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     reclassificationRequest,
   ])
 
-  const onChangeDescription: ChangeTaskDescriptionModalProps['onSubmit'] = useCallback(
+  const onUpdateDescription: UpdateTaskDescriptionModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
       if (!task) return
 
       try {
         await updateTaskDescriptionMutation({ taskId: task.id, ...values }).unwrap()
-        toggleChangeDescriptionModal()
+        toggleUpdateDescriptionModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
           setFields(getFieldsErrors(error.data))
         }
       }
     },
-    [task, toggleChangeDescriptionModal, updateTaskDescriptionMutation],
+    [task, toggleUpdateDescriptionModal, updateTaskDescriptionMutation],
+  )
+
+  const onUpdateDeadline: UpdateTaskDeadlineModalProps['onSubmit'] = useCallback(
+    async (values, setFields) => {
+      if (!task) return
+
+      try {
+        await updateTaskDeadlineMutation({
+          taskId: task.id,
+          internalOlaNextBreachTime:
+            values.date && values.time
+              ? mergeDateTime(values.date, values.time).toISOString()
+              : values.date && !values.time
+              ? values.date.toISOString()
+              : null,
+        }).unwrap()
+
+        toggleUpdateDeadlineModal()
+      } catch (error) {
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
+        }
+      }
+    },
+    [task, toggleUpdateDeadlineModal, updateTaskDeadlineMutation],
   )
 
   const handleExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
@@ -525,7 +562,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       onExecuteTask={handleOpenExecuteTaskModal}
       onRequestSuspend={debouncedToggleRequestTaskSuspendModal}
       onRequestReclassification={onOpenTaskReclassificationModal}
-      onChangeDescription={debouncedToggleChangeDescriptionModal}
+      onUpdateDescription={debouncedToggleUpdateDescriptionModal}
+      onUpdateDeadline={debouncedToggleUpdateDeadlineModal}
     />
   )
 
@@ -739,17 +777,32 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         </React.Suspense>
       )}
 
-      {changeDescriptionModalOpened && task && (
+      {updateDescriptionModalOpened && task && (
         <React.Suspense
-          fallback={<ModalFallback open onCancel={debouncedToggleChangeDescriptionModal} />}
+          fallback={<ModalFallback open onCancel={debouncedToggleUpdateDescriptionModal} />}
         >
-          <ChangeTaskDescriptionModal
-            open={changeDescriptionModalOpened}
-            onSubmit={onChangeDescription}
-            onCancel={debouncedToggleChangeDescriptionModal}
+          <UpdateTaskDescriptionModal
+            open={updateDescriptionModalOpened}
+            onSubmit={onUpdateDescription}
+            onCancel={debouncedToggleUpdateDescriptionModal}
             confirmLoading={updateTaskDescriptionIsLoading}
             description={task.description}
             previousDescription={task.previousDescription}
+          />
+        </React.Suspense>
+      )}
+
+      {updateDeadlineModalOpened && task && (
+        <React.Suspense
+          fallback={<ModalFallback open onCancel={debouncedToggleUpdateDeadlineModal} />}
+        >
+          <UpdateTaskDeadlineModal
+            open={updateDeadlineModalOpened}
+            onSubmit={onUpdateDeadline}
+            onCancel={debouncedToggleUpdateDeadlineModal}
+            confirmLoading={updateTaskDeadlineIsLoading}
+            olaNextBreachTime={task.olaNextBreachTime}
+            previousOlaNextBreachTime={task.previousOlaNextBreachTime}
           />
         </React.Suspense>
       )}

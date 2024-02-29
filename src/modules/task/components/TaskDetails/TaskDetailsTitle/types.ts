@@ -17,7 +17,8 @@ export type TaskDetailsTitleProps = Pick<
   onExecuteTask: EmptyFn
   onRequestSuspend: EmptyFn
   onRequestReclassification: EmptyFn
-  onChangeDescription: EmptyFn
+  onUpdateDescription: EmptyFn
+  onUpdateDeadline: EmptyFn
 }
 
 export enum MenuActionsKeysEnum {
@@ -25,5 +26,6 @@ export enum MenuActionsKeysEnum {
   ExecuteTask = 'ExecuteTask',
   RequestReclassification = 'RequestReclassification',
   CancelReclassification = 'CancelReclassification',
-  ChangeDescription = 'ChangeDescription',
+  UpdateDescription = 'UpdateDescription',
+  UpdateDeadline = 'UpdateDeadline',
 }

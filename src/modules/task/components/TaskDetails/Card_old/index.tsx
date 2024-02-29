@@ -470,7 +470,8 @@ const TaskCard: FC<TaskCardProps> = ({
       onExecuteTask={handleOpenExecuteTaskModal}
       onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
       onRequestReclassification={handleOpenTaskReclassificationModal}
-      onChangeDescription={() => {}}
+      onUpdateDescription={() => {}}
+      onUpdateDeadline={() => {}}
     />
   )
 

@@ -46,6 +46,8 @@ import {
   TakeTaskSuccessResponse,
   UpdateTaskAssigneeMutationArgs,
   UpdateTaskAssigneeSuccessResponse,
+  UpdateTaskDeadlineMutationArgs,
+  UpdateTaskDeadlineSuccessResponse,
   UpdateTaskDescriptionMutationArgs,
   UpdateTaskDescriptionSuccessResponse,
   UpdateTaskWorkGroupMutationArgs,
@@ -59,6 +61,7 @@ import {
   getTaskWorkPerformedActUrl,
   resolveTaskUrl,
   takeTaskUrl,
+  updateTaskDeadlineUrl,
   updateTaskDescriptionUrl,
 } from 'modules/task/utils/task'
 import { updateTaskAssigneeUrl } from 'modules/task/utils/taskAssignee'
@@ -225,6 +228,18 @@ const taskApiService = baseApiService
         invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
         query: ({ taskId, ...payload }) => ({
           url: updateTaskDescriptionUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data: payload,
+        }),
+      }),
+
+      updateTaskDeadline: build.mutation<
+        UpdateTaskDeadlineSuccessResponse,
+        UpdateTaskDeadlineMutationArgs
+      >({
+        invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
+        query: ({ taskId, ...payload }) => ({
+          url: updateTaskDeadlineUrl(taskId),
           method: HttpMethodEnum.Post,
           data: payload,
         }),
@@ -409,6 +424,7 @@ export const {
   useResolveTaskMutation,
   useTakeTaskMutation,
   useUpdateTaskDescriptionMutation,
+  useUpdateTaskDeadlineMutation,
 
   useGetTaskCommentListQuery,
   useCreateTaskCommentMutation,
