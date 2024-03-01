@@ -20,9 +20,9 @@ import ModalFallback from 'components/Modals/ModalFallback'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { downloadFile } from 'shared/utils/file'
 import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { base64ToArrayBuffer } from 'shared/utils/common'
-import { downloadFile } from 'shared/utils/file'
 
 import { EquipmentPageContextType } from './context'
 
