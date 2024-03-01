@@ -1,6 +1,8 @@
 export enum WarehouseRouteEnum {
   ManageWarehouses = '/home/manage-warehouses',
 
+  CreateDocumentsPackage = '/home/manage-warehouses/create-documents-package',
+
   WarehouseCatalogs = '/home/manage-warehouses/catalogs',
   Warehouses = '/home/manage-warehouses/catalogs/warehouses',
   Warehouse = '/home/manage-warehouses/catalogs/warehouses/:id',

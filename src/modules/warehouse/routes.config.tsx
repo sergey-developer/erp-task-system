@@ -8,8 +8,9 @@ import { hasPermissions } from 'modules/user/utils'
 import ManageWarehousesLayout from 'modules/warehouse/components/ManageWarehousesLayout'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
-import { BreadCrumbArgs } from 'components/Breadcrumbs'
 import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
+
+import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
 
 const WarehouseCatalogListPage = React.lazy(
   () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
@@ -64,6 +65,10 @@ const HistoryNomenclatureOperationsReportPage = React.lazy(
   () => import('modules/warehouse/pages/HistoryNomenclatureOperationsReportPage'),
 )
 
+const CreateDocumentsPackagePage = React.lazy(
+  () => import('modules/warehouse/pages/CreateDocumentsPackagePage'),
+)
+
 export const route: Readonly<RouteObject> = {
   path: WarehouseRouteEnum.ManageWarehouses,
   element: <ManageWarehousesLayout />,
@@ -71,6 +76,10 @@ export const route: Readonly<RouteObject> = {
     {
       index: true,
       element: <Navigate to={WarehouseRouteEnum.WarehouseCatalogs} />,
+    },
+    {
+      path: WarehouseRouteEnum.CreateDocumentsPackage,
+      element: <ProtectedRoute component={<CreateDocumentsPackagePage />} />,
     },
     {
       path: WarehouseRouteEnum.WarehouseCatalogs,
@@ -96,7 +105,7 @@ export const route: Readonly<RouteObject> = {
               path: WarehouseRouteEnum.Warehouse,
               element: <ProtectedRoute component={<WarehousePage />} />,
               handle: {
-                crumb: ({ qs }: BreadCrumbArgs) => (
+                crumb: ({ qs }: BreadCrumbData) => (
                   <Breadcrumb
                     link={WarehouseRouteEnum.Warehouse}
                     text={qs.get('warehouseTitle') || ''}
@@ -159,7 +168,7 @@ export const route: Readonly<RouteObject> = {
               path: WarehouseRouteEnum.Equipments,
               element: <EquipmentListPage />,
               handle: {
-                crumb: ({ qs }: BreadCrumbArgs) => (
+                crumb: ({ qs }: BreadCrumbData) => (
                   <Breadcrumb link={WarehouseRouteEnum.Equipments} text={qs.get('title') || ''} />
                 ),
               },

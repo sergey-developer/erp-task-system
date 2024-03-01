@@ -39,6 +39,7 @@ import {
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetRelocationEquipmentAttachmentList } from 'modules/warehouse/hooks/relocationEquipment'
 import {
   useCreateRelocationTaskAttachment,
@@ -394,6 +395,11 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
           !controllerIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenConfirmExecutionModal,
+      },
+      {
+        key: 7,
+        label: 'Сформировать пакет документов',
+        onClick: () => navigate(WarehouseRouteEnum.CreateDocumentsPackage),
       },
     ],
   }

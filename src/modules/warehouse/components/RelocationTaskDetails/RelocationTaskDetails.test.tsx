@@ -29,6 +29,8 @@ import {
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import CreateDocumentsPackagePage from 'modules/warehouse/pages/CreateDocumentsPackagePage'
+import { testUtils as createDocumentsPackagePageTestUtils } from 'modules/warehouse/pages/CreateDocumentsPackagePage/CreateDocumentsPackagePage.test'
 import {
   getRelocationTaskTitle,
   getWaybillM15Filename,
@@ -148,6 +150,12 @@ const getConfirmExecutionMenuItem = () => menuTestUtils.getMenuItem('Подтв�
 const clickConfirmExecutionMenuItem = (user: UserEvent) =>
   menuTestUtils.clickMenuItem('Подтвердить выполнение', user)
 
+// create documents package menu item
+const getCreateDocumentsPackageMenuItem = () =>
+  menuTestUtils.getMenuItem('Сформировать пакет документов')
+const clickCreateDocumentsPackageMenuItem = (user: UserEvent) =>
+  menuTestUtils.clickMenuItem('Сформировать пакет документов', user)
+
 // documents
 const getCreateDocumentsButton = () =>
   buttonTestUtils.getAllButtonIn(getBlock('documents'), /Добавить вложение/)[1]
@@ -218,6 +226,9 @@ export const testUtils = {
 
   getConfirmExecutionMenuItem,
   clickConfirmExecutionMenuItem,
+
+  getCreateDocumentsPackageMenuItem,
+  clickCreateDocumentsPackageMenuItem,
 
   getCreateDocumentsButton,
   setDocument,
@@ -2598,6 +2609,47 @@ describe('Информация о заявке о перемещении', () =>
         )
         expect(notification).toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Сформировать пакет документов', () => {
+    test('Пункт меню отображается', async () => {
+      mockGetRelocationTaskSuccess(props.relocationTaskId)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+      )
+
+      await testUtils.openMenu(user)
+      const item = testUtils.getCreateDocumentsPackageMenuItem()
+      expect(item).toBeInTheDocument()
+      expect(item).toBeEnabled()
+    })
+
+    test('При клике переходит на страницу формирования пакета документов', async () => {
+      mockGetRelocationTaskSuccess(props.relocationTaskId)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: WarehouseRouteEnum.RelocationTasks,
+            element: <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          },
+          {
+            path: WarehouseRouteEnum.CreateDocumentsPackage,
+            element: <CreateDocumentsPackagePage />,
+          },
+        ],
+        { initialEntries: [WarehouseRouteEnum.RelocationTasks], initialIndex: 0 },
+      )
+
+      await testUtils.openMenu(user)
+      await testUtils.clickCreateDocumentsPackageMenuItem(user)
+      const page = await createDocumentsPackagePageTestUtils.getContainer()
+
+      expect(page).toBeInTheDocument()
     })
   })
 
