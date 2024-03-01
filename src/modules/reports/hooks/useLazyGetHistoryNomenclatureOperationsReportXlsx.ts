@@ -3,11 +3,9 @@ import { useEffect } from 'react'
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
 import { getHistoryNomenclatureOperationsReportXlsxErrMsg } from 'modules/reports/constants'
-import {
-  GetHistoryNomenclatureOperationsReportXlsxQueryArgs,
-  GetHistoryNomenclatureOperationsReportXlsxSuccessResponse,
-} from 'modules/reports/models'
+import { GetHistoryNomenclatureOperationsReportXlsxQueryArgs } from 'modules/reports/models'
 import { useLazyGetHistoryNomenclatureOperationsReportXlsxQuery } from 'modules/reports/services/reportsApi.service'
+import { GetHistoryNomenclatureOperationsReportXlsxTransformedSuccessResponse } from 'modules/reports/types'
 
 import {
   getErrorDetail,
@@ -19,7 +17,7 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetHistoryNomenclatureOperationsReportXlsxResult = CustomUseLazyQueryHookResult<
   GetHistoryNomenclatureOperationsReportXlsxQueryArgs,
-  GetHistoryNomenclatureOperationsReportXlsxSuccessResponse
+  GetHistoryNomenclatureOperationsReportXlsxTransformedSuccessResponse
 >
 
 export const useLazyGetHistoryNomenclatureOperationsReportXlsx =
