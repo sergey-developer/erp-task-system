@@ -22,8 +22,9 @@ import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
-import { base64ToArrayBuffer, clickDownloadLink } from 'shared/utils/common'
+import { base64ToArrayBuffer } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { downloadFile } from 'shared/utils/file'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -72,11 +73,11 @@ const EmployeesActionsReportPage: FC = () => {
     employeeId: 0,
   })
 
-  const employeeSelected = !!reportParams.employeeId
+  const isShowReport = !!reportParams.employeeId
 
   const { currentData: report, isFetching: reportIsFetching } = useGetEmployeesActionsReport(
     reportParams,
-    { skip: !employeeSelected },
+    { skip: !isShowReport },
   )
 
   const [getReportXlsx, { isFetching: getReportXlsxIsFetching }] =
@@ -90,8 +91,8 @@ const EmployeesActionsReportPage: FC = () => {
   const onClickUpdate: EmployeesActionsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
       employeeId: values.employee,
-      actionFrom: formatDate(values.period?.[0], DATE_FORMAT),
-      actionTo: formatDate(values.period?.[1], DATE_FORMAT),
+      actionFrom: values.period?.[0] ? formatDate(values.period[0], DATE_FORMAT) : undefined,
+      actionTo: values.period?.[1] ? formatDate(values.period[1], DATE_FORMAT) : undefined,
       offset: initialPaginationParams.offset,
     })
   }
@@ -103,7 +104,7 @@ const EmployeesActionsReportPage: FC = () => {
       const fileName = decodeURIComponent(
         data.meta.response.headers['content-disposition'].split('filename=')[1],
       )
-      clickDownloadLink(base64ToArrayBuffer(data.value), MimetypeEnum.Xlsx, fileName)
+      downloadFile(base64ToArrayBuffer(data.value), MimetypeEnum.Xlsx, fileName)
     }
   }
 
@@ -132,7 +133,7 @@ const EmployeesActionsReportPage: FC = () => {
           />
         </Col>
 
-        {employeeSelected && (
+        {isShowReport && (
           <Col span={24}>
             <Space $block direction='vertical' size='middle'>
               <Title level={5}>Действия сотрудников</Title>
