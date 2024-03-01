@@ -118,21 +118,22 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   const onClickUpdate: HistoryNomenclatureOperationsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
       nomenclatureId: values.nomenclature,
-      createdAtFrom: formatDate(values.period?.[0], DATE_FORMAT),
-      createdAtTo: formatDate(values.period?.[1], DATE_FORMAT),
+      createdAtFrom: values.period?.[0] ? formatDate(values.period[0], DATE_FORMAT) : undefined,
+      createdAtTo: values.period?.[1] ? formatDate(values.period[1], DATE_FORMAT) : undefined,
       offset: initialPaginationParams.offset,
     })
   }
 
   const onExportExcel = async () => {
     try {
-      const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
+      const { data } = await getReportXlsx(omit(reportParams, 'offset', 'limit'))
 
-      downloadFile(
-        base64ToArrayBuffer(report),
-        MimetypeEnum.Xlsx,
-        'Отчет по истории операций по номенклатуре',
-      )
+      if (data?.value && data?.meta?.response) {
+        const fileName = decodeURIComponent(
+          data.meta.response.headers['content-disposition'].split('filename=')[1],
+        )
+        downloadFile(base64ToArrayBuffer(data.value), MimetypeEnum.Xlsx, fileName)
+      }
     } catch {}
   }
 
