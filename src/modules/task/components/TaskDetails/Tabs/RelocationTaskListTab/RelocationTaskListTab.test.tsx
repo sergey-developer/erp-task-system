@@ -6,6 +6,8 @@ import { testUtils as relocationTaskListTestUtils } from 'modules/task/component
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { getRelocationTaskListErrorMsg } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import CreateDocumentsPackagePage from 'modules/warehouse/pages/CreateDocumentsPackagePage'
+import { testUtils as createDocumentsPackagePageTestUtils } from 'modules/warehouse/pages/CreateDocumentsPackagePage/CreateDocumentsPackagePage.test'
 import CreateRelocationTaskSimplifiedPage from 'modules/warehouse/pages/CreateRelocationTaskSimplifiedPage'
 import { testUtils as createRelocationTaskSimplifiedPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskSimplifiedPage/CreateRelocationTaskSimplifiedPage.test'
 import RelocationTaskListPage from 'modules/warehouse/pages/RelocationTaskListPage'
@@ -31,6 +33,7 @@ import {
   fakeId,
   fakeWord,
   getStoreWithAuth,
+  linkTestUtils,
   notificationTestUtils,
   render,
   renderInRoute_latest,
@@ -51,11 +54,16 @@ const getContainer = () => screen.getByTestId('relocation-task-list-tab')
 const getCreateTaskButton = () =>
   buttonTestUtils.getButtonIn(getContainer(), 'Создать новое перемещение')
 
+// create documents package link
+const getCreateDocumentsPackageLink = () =>
+  linkTestUtils.getLinkIn(getContainer(), 'Сформировать пакет документов')
+
 export const testUtils = {
   getContainer,
   expectLoadingFinished: spinnerTestUtils.expectLoadingFinished('relocation-task-list-loading'),
 
   getCreateTaskButton,
+  getCreateDocumentsPackageLink,
 }
 
 setupApiTests()
@@ -158,6 +166,48 @@ describe('Вкладка списка заявок на перемещение',
       await user.click(button)
 
       const page = createRelocationTaskSimplifiedPageTestUtils.getContainer()
+      expect(page).toBeInTheDocument()
+    })
+  })
+
+  describe('Кнопка формирования пакета документов', () => {
+    test('Отображается', () => {
+      mockGetRelocationTaskListSuccess()
+
+      render(<RelocationTaskListTab {...props} />)
+
+      const button = testUtils.getCreateDocumentsPackageLink()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('При клике переходит на страницу формирования пакета документов', async () => {
+      mockGetRelocationTaskListSuccess()
+      mockGetUserListSuccess()
+      mockGetCurrencyListSuccess()
+      mockGetLocationListSuccess({ once: false })
+      mockGetEquipmentCatalogListSuccess()
+      mockGetWarehouseMSISuccess(fakeId())
+
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: CommonRouteEnum.DesktopTaskList,
+            element: <RelocationTaskListTab {...props} />,
+          },
+          {
+            path: WarehouseRouteEnum.CreateDocumentsPackage,
+            element: <CreateDocumentsPackagePage />,
+          },
+        ],
+        { initialEntries: [CommonRouteEnum.DesktopTaskList], initialIndex: 0 },
+      )
+
+      const button = testUtils.getCreateDocumentsPackageLink()
+      await user.click(button)
+      const page = await createDocumentsPackagePageTestUtils.getContainer()
+
       expect(page).toBeInTheDocument()
     })
   })

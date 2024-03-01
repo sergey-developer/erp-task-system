@@ -30,6 +30,7 @@ import {
 } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CreateDocumentsPackagePage from 'modules/warehouse/pages/CreateDocumentsPackagePage'
+import { testUtils as createDocumentsPackagePageTestUtils } from 'modules/warehouse/pages/CreateDocumentsPackagePage/CreateDocumentsPackagePage.test'
 import {
   getRelocationTaskTitle,
   getWaybillM15Filename,
@@ -2630,21 +2631,25 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId)
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      const { user } = renderInRoute_latest([
-        {
-          path: WarehouseRouteEnum.RelocationTasks,
-          element: <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
-        },
-        {
-          path: WarehouseRouteEnum.CreateDocumentsPackage,
-          element: <CreateDocumentsPackagePage />,
-        },
-      ])
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: WarehouseRouteEnum.RelocationTasks,
+            element: <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          },
+          {
+            path: WarehouseRouteEnum.CreateDocumentsPackage,
+            element: <CreateDocumentsPackagePage />,
+          },
+        ],
+        { initialEntries: [WarehouseRouteEnum.RelocationTasks], initialIndex: 0 },
+      )
 
       await testUtils.openMenu(user)
       await testUtils.clickCreateDocumentsPackageMenuItem(user)
+      const page = await createDocumentsPackagePageTestUtils.getContainer()
 
-      screen.debug()
+      expect(page).toBeInTheDocument()
     })
   })
 
