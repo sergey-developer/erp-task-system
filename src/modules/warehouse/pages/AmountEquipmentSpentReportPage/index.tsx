@@ -23,12 +23,14 @@ import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { base64ToArrayBuffer } from 'shared/utils/common'
+import { formatDate } from 'shared/utils/date'
 import { downloadFile } from 'shared/utils/file'
 import {
   calculatePaginationParams,
@@ -103,7 +105,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
     useLazyGetAmountEquipmentSpentReportXlsx()
 
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
-    useGetEquipmentNomenclatureList(filterValues)
+    useGetEquipmentNomenclatureList({ ...filterValues, limit: 999999 })
 
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
 
@@ -115,22 +117,21 @@ const AmountEquipmentSpentReportPage: FC = () => {
       nomenclature: values.nomenclature,
       relocateFrom: values.relocateFrom,
       relocateTo: values.relocateTo,
-      createdAtFrom: values.period?.[0]?.toISOString(),
-      createdAtTo: values.period?.[1]?.toISOString(),
+      createdAtFrom: values.period?.[0] ? formatDate(values.period[0], DATE_FORMAT) : undefined,
+      createdAtTo: values.period?.[1] ? formatDate(values.period[1], DATE_FORMAT) : undefined,
       offset: initialPaginationParams.offset,
     })
   }
 
   const onExportExcel = async () => {
-    try {
-      const report = await getReportXlsx(omit(reportParams, 'offset', 'limit')).unwrap()
+    const { data } = await getReportXlsx(omit(reportParams, 'offset', 'limit'))
 
-      downloadFile(
-        base64ToArrayBuffer(report),
-        MimetypeEnum.Xlsx,
-        'Отчет по количеству потраченного оборудования',
+    if (data?.value && data?.meta?.response) {
+      const fileName = decodeURIComponent(
+        data.meta.response.headers['content-disposition'].split('filename=')[1],
       )
-    } catch {}
+      downloadFile(base64ToArrayBuffer(data.value), MimetypeEnum.Xlsx, fileName)
+    }
   }
 
   const onApplyFilter = (values: AmountEquipmentSpentReportFilterFormFields) => {

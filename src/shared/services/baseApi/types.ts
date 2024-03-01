@@ -1,6 +1,6 @@
 import { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/react'
-import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
+import { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios'
 
 import { HttpCodeEnum } from 'shared/constants/http'
 
@@ -29,13 +29,19 @@ export type ErrorResponse<T extends object = {}> = {
  будет такой: MyCustomErrorType | SerialisedError. Решения как убрать тип SerialisedError
  из этого поля пока не найдено, а данный тип будет мешать при обращении к свойствам поля error
  */
-export type CustomBaseQueryFn = BaseQueryFn<{
-  url: string
-  method?: AxiosRequestConfig['method']
-  data?: AxiosRequestConfig['data']
-  params?: AxiosRequestConfig['params']
-  headers?: AxiosRequestConfig['headers']
-}>
+export type CustomBaseQueryFn = BaseQueryFn<
+  {
+    url: string
+    method?: AxiosRequestConfig['method']
+    data?: AxiosRequestConfig['data']
+    params?: AxiosRequestConfig['params']
+    headers?: AxiosRequestConfig['headers']
+  },
+  unknown,
+  unknown,
+  {},
+  { response?: AxiosResponse }
+>
 
 export type ApiVersionUnion = 'v1'
 
