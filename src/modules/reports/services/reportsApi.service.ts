@@ -13,7 +13,6 @@ import {
   GetHistoryNomenclatureOperationsReportQueryArgs,
   GetHistoryNomenclatureOperationsReportSuccessResponse,
   GetHistoryNomenclatureOperationsReportXlsxQueryArgs,
-  GetHistoryNomenclatureOperationsReportXlsxSuccessResponse,
 } from 'modules/reports/models'
 import {
   GetAmountEquipmentSpentReportTransformedSuccessResponse,
@@ -21,6 +20,7 @@ import {
   GetEmployeesActionsReportTransformedSuccessResponse,
   GetEmployeesActionsReportXlsxTransformedSuccessResponse,
   GetHistoryNomenclatureOperationsReportTransformedSuccessResponse,
+  GetHistoryNomenclatureOperationsReportXlsxTransformedSuccessResponse,
 } from 'modules/reports/types'
 import {
   getEmployeesActionsReportUrl,
@@ -105,7 +105,7 @@ const reportsApiService = baseApiService.injectEndpoints({
       ) => getPaginatedList(response, arg),
     }),
     getHistoryNomenclatureOperationsReportXlsx: build.query<
-      GetHistoryNomenclatureOperationsReportXlsxSuccessResponse,
+      GetHistoryNomenclatureOperationsReportXlsxTransformedSuccessResponse,
       GetHistoryNomenclatureOperationsReportXlsxQueryArgs
     >({
       query: ({ nomenclatureId, ...params }) => ({
@@ -113,6 +113,10 @@ const reportsApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
         headers: { Accept: MimetypeEnum.Xlsx },
         params,
+      }),
+      transformResponse: (value: GetAmountEquipmentSpentReportXlsxSuccessResponse, meta) => ({
+        value,
+        meta,
       }),
     }),
   }),
