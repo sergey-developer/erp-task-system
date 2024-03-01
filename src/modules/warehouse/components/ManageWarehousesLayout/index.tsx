@@ -4,12 +4,18 @@ import { Outlet } from 'react-router-dom'
 
 import Breadcrumbs from 'components/Breadcrumbs'
 
+import { useBreadcrumbsMatches } from 'shared/hooks/useBreadcrumbsMatches'
+
 const ManageWarehousesLayout: FC = () => {
+  const matches = useBreadcrumbsMatches()
+
   return (
-    <Row gutter={[16, 16]}>
-      <Col span={24}>
-        <Breadcrumbs />
-      </Col>
+    <Row gutter={[0, 16]}>
+      {!!matches.length && (
+        <Col span={24}>
+          <Breadcrumbs matches={matches} />
+        </Col>
+      )}
 
       <Col span={24}>
         <Outlet />
