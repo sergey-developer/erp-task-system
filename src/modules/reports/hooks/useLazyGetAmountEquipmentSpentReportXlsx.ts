@@ -3,11 +3,9 @@ import { useEffect } from 'react'
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
 import { getAmountEquipmentSpentReportXlsxErrMsg } from 'modules/reports/constants'
-import {
-  GetAmountEquipmentSpentReportXlsxQueryArgs,
-  GetAmountEquipmentSpentReportXlsxSuccessResponse,
-} from 'modules/reports/models'
+import { GetAmountEquipmentSpentReportXlsxQueryArgs } from 'modules/reports/models'
 import { useLazyGetAmountEquipmentSpentReportXlsxQuery } from 'modules/reports/services/reportsApi.service'
+import { GetAmountEquipmentSpentReportXlsxTransformedSuccessResponse } from 'modules/reports/types'
 
 import {
   getErrorDetail,
@@ -19,7 +17,7 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetAmountEquipmentSpentReportXlsxResult = CustomUseLazyQueryHookResult<
   GetAmountEquipmentSpentReportXlsxQueryArgs,
-  GetAmountEquipmentSpentReportXlsxSuccessResponse
+  GetAmountEquipmentSpentReportXlsxTransformedSuccessResponse
 >
 
 export const useLazyGetAmountEquipmentSpentReportXlsx =
