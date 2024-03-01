@@ -91,8 +91,8 @@ const EmployeesActionsReportPage: FC = () => {
   const onClickUpdate: EmployeesActionsReportFormProps['onSubmit'] = (values) => {
     setReportParams({
       employeeId: values.employee,
-      actionFrom: formatDate(values.period?.[0], DATE_FORMAT),
-      actionTo: formatDate(values.period?.[1], DATE_FORMAT),
+      actionFrom: values.period?.[0] ? formatDate(values.period[0], DATE_FORMAT) : undefined,
+      actionTo: values.period?.[1] ? formatDate(values.period[1], DATE_FORMAT) : undefined,
       offset: initialPaginationParams.offset,
     })
   }
