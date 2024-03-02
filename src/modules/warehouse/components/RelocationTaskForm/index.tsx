@@ -5,10 +5,10 @@ import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
 import { renderUploadedFile } from 'modules/attachment/utils'
 import { userListSelectFieldNames } from 'modules/user/constants'
-import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
+  getRelocationTaskTypeOptions,
 } from 'modules/warehouse/utils/relocationTask'
 
 import UploadButton from 'components/Buttons/UploadButton'
@@ -19,10 +19,8 @@ import TimePicker from 'components/TimePicker'
 import { filesFormItemProps } from 'shared/constants/form'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
-import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 
-import { getRelocationTaskTypeOptions } from '../../utils/relocationTask/getRelocationTaskTypeOptions'
 import { LocationOption, LocationOptionGroup, RelocationTaskFormProps } from './types'
 import { makeLocationOptions } from './utils'
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
@@ -55,11 +53,6 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   onChangeRelocateFrom,
   onChangeRelocateTo,
 }) => {
-  const form = Form.useFormInstance<RelocationTaskFormFields>()
-
-  const relocateFromFormValue: MaybeUndefined<RelocationTaskFormFields['relocateFrom']> =
-    Form.useWatch('relocateFrom', form)
-
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(type)
   const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
 
@@ -121,12 +114,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           <Select<IdType, LocationOptionGroup>
             dropdownRender={(menu) => <div data-testid='relocate-to-select-dropdown'>{menu}</div>}
             loading={relocateToLocationListIsLoading}
-            disabled={
-              isLoading ||
-              !relocateFromFormValue ||
-              typeIsWriteOff ||
-              relocateToLocationListIsLoading
-            }
+            disabled={isLoading || typeIsWriteOff || relocateToLocationListIsLoading}
             options={relocateToLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
