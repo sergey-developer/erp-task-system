@@ -2,14 +2,14 @@ import setupMoment from 'lib/moment/setup'
 
 import { TaskOlaStatusEnum } from 'modules/task/constants/task'
 
-import { getCompleteAt } from './utils'
+import { getTaskCompleteAtDate } from './utils'
 
 beforeAll(() => {
   setupMoment()
 })
 
 test('Корректный результат для не просроченной заявки', () => {
-  const result = getCompleteAt({
+  const result = getTaskCompleteAtDate({
     olaNextBreachTime: new Date(2024, 3, 3, 3, 3, 3).toISOString(),
     olaEstimatedTime: 5353455,
     olaStatus: TaskOlaStatusEnum.NotExpired,
@@ -19,7 +19,7 @@ test('Корректный результат для не просроченно
 })
 
 test('Корректный результат для просроченной заявки', () => {
-  const result = getCompleteAt({
+  const result = getTaskCompleteAtDate({
     olaNextBreachTime: new Date(2023, 2, 2, 2, 2, 2).toISOString(),
     olaEstimatedTime: 5353455,
     olaStatus: TaskOlaStatusEnum.Expired,
@@ -29,7 +29,7 @@ test('Корректный результат для просроченной з
 })
 
 test('Корректный результат для заявки у которой прошло более половины времени', () => {
-  const result = getCompleteAt({
+  const result = getTaskCompleteAtDate({
     olaNextBreachTime: new Date(2022, 1, 1, 1, 1, 1).toISOString(),
     olaEstimatedTime: 13926399226,
     olaStatus: TaskOlaStatusEnum.HalfExpired,

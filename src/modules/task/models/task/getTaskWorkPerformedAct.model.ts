@@ -1,6 +1,6 @@
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
-export type GetTaskWorkPerformedActMutationArgs = BaseTaskRequestArgs & {
+export type GetTaskWorkPerformedActMutationArgs = TaskRequestArgs & {
   techResolution: string
 }
 

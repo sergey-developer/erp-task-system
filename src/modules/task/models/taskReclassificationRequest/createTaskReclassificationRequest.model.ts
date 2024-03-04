@@ -1,8 +1,8 @@
 import { ReclassificationReasonEnum } from 'modules/task/constants/taskReclassificationRequest'
 import { TaskReclassificationRequestModel } from 'modules/task/models'
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
-export type CreateTaskReclassificationRequestMutationArgs = BaseTaskRequestArgs & {
+export type CreateTaskReclassificationRequestMutationArgs = TaskRequestArgs & {
   comment: string
   reclassificationReason: ReclassificationReasonEnum
 }

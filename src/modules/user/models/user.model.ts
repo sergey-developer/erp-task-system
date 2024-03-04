@@ -44,6 +44,10 @@ export type UserPermissions =
   | EquipmentUserPermissions
   | RelocationTaskUserPermissions
   | WarehouseReportsUserPermissions
+  | 'TASK_INTERNAL_DESCRIPTION_UPDATE'
+  | 'TASK_HISTORY_DESCRIPTION_READ'
+  | 'TASK_HISTORY_DEADLINE_READ'
+  | 'TASK_INTERNAL_DEADLINE_UPDATE'
 
 export type UserModel = BaseUserModel & {
   fullName: string

@@ -1,4 +1,4 @@
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
-export type DeleteTaskSuspendRequestMutationArgs = BaseTaskRequestArgs
+export type DeleteTaskSuspendRequestMutationArgs = TaskRequestArgs
 export type DeleteTaskSuspendRequestSuccessResponse = void

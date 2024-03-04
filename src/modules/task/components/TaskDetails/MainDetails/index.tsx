@@ -1,4 +1,4 @@
-import { Col, Row, Typography } from 'antd'
+import { Col, Popover, Row, Typography } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import TaskStatus from 'modules/task/components/TaskStatus'
@@ -6,14 +6,15 @@ import { badgeByTaskStatus, iconByTaskStatus } from 'modules/task/components/Tas
 import { taskStatusDict } from 'modules/task/constants/task'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
-import { useUserRole } from 'modules/user/hooks'
+import { useMatchUserPermissions, useUserRole } from 'modules/user/hooks'
 
+import { FieldTimeIcon } from 'components/Icons'
 import LabeledData from 'components/LabeledData'
 import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 
 import { RecordIdStyled } from './styles'
-import { getCompleteAt, parseResponseTime } from './utils'
+import { getTaskCompleteAtDate, parseResponseTime } from './utils'
 
 const { Text, Title } = Typography
 
@@ -34,6 +35,8 @@ export type MainDetailsProps = Pick<
   | 'responseTime'
   | 'workGroup'
   | 'assignee'
+  | 'isOlaNextBreachTimeChanged'
+  | 'previousOlaNextBreachTime'
 >
 
 const MainDetails: FC<MainDetailsProps> = ({
@@ -52,13 +55,16 @@ const MainDetails: FC<MainDetailsProps> = ({
   responseTime: originResponseTime,
   workGroup,
   assignee,
+  previousOlaNextBreachTime,
+  isOlaNextBreachTimeChanged,
 }) => {
   const { isFirstLineSupportRole } = useUserRole()
+  const permissions = useMatchUserPermissions(['TASK_HISTORY_DEADLINE_READ'])
 
   const { olaStatusTextType, completeAt } = useMemo(
     () => ({
       olaStatusTextType: getOlaStatusTextType(olaStatus),
-      completeAt: getCompleteAt({
+      completeAt: getTaskCompleteAtDate({
         olaStatus,
         olaEstimatedTime,
         olaNextBreachTime,
@@ -81,7 +87,25 @@ const MainDetails: FC<MainDetailsProps> = ({
           </RecordIdStyled>
 
           <Space>
-            {olaNextBreachTime && <Text type={olaStatusTextType}>{completeAt}</Text>}
+            {olaNextBreachTime && (
+              <Space>
+                <Text type={olaStatusTextType}>{completeAt}</Text>
+
+                {isOlaNextBreachTimeChanged && (
+                  <Popover
+                    title={<Text type='secondary'>Срок выполнения был изменен</Text>}
+                    content={
+                      permissions?.taskHistoryDeadlineRead &&
+                      `Внешний срок выполнения: ${getTaskCompleteAtDate({
+                        olaNextBreachTime: previousOlaNextBreachTime,
+                      })}`
+                    }
+                  >
+                    <FieldTimeIcon $color='royalOrange' />
+                  </Popover>
+                )}
+              </Space>
+            )}
 
             <TaskStatus
               status={status}
