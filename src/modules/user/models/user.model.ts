@@ -48,6 +48,7 @@ export type UserPermissions =
   | 'TASK_HISTORY_DESCRIPTION_READ'
   | 'TASK_HISTORY_DEADLINE_READ'
   | 'TASK_INTERNAL_DEADLINE_UPDATE'
+  | 'ENTERING_BALANCES'
 
 export type UserModel = BaseUserModel & {
   fullName: string
