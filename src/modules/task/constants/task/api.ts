@@ -32,6 +32,7 @@ export enum TaskApiEnum {
   CreateSubTask = '/tasks/:id/subtasks/',
 
   DeleteInitiationReason = '/initiation-reasons/:id',
+  DeleteCompletedWork = '/completed-works/:id',
 }
 
 export enum TaskApiTagEnum {

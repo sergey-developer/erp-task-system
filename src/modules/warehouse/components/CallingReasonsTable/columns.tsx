@@ -3,17 +3,11 @@ import { ColumnsType } from 'antd/es/table'
 
 import { DeleteIcon } from 'components/Icons'
 
-import { IdType } from 'shared/types/common'
-
-import { CallingReasonsTableItem } from './types'
-
-type GetColumnsParams = {
-  onDelete: (id: IdType) => void
-}
+import { CallingReasonsTableItem, CallingReasonsTableProps } from './types'
 
 export const getColumns = ({
   onDelete,
-}: GetColumnsParams): ColumnsType<CallingReasonsTableItem> => [
+}: Pick<CallingReasonsTableProps, 'onDelete'>): ColumnsType<CallingReasonsTableItem> => [
   {
     dataIndex: 'title',
     title: '№ заявки/причина вызова',
