@@ -1,6 +1,6 @@
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
 import { TaskCompletionDocumentModel } from './taskCompletionDocument.model'
 
-export type GetTaskCompletionDocumentsQueryArgs = BaseTaskRequestArgs
+export type GetTaskCompletionDocumentsQueryArgs = TaskRequestArgs
 export type GetTaskCompletionDocumentsSuccessResponse = TaskCompletionDocumentModel
