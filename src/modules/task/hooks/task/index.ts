@@ -6,6 +6,8 @@ export * from './useTaskExtendedStatus'
 export * from './useGetTask'
 export * from './useResolveTask'
 export * from './useTakeTask'
+export * from './useGetTaskCompletionDocuments'
+export * from './useDeleteInitiationReason'
 
 export * from './useGetTasks'
 export * from './useGetTaskListMap'

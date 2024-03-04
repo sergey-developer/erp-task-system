@@ -1,6 +1,6 @@
 import { Button, Col, Row, Typography } from 'antd'
 import React, { FC, useCallback } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import RelocationTaskList from 'modules/task/components/RelocationTaskList'
@@ -9,7 +9,6 @@ import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
-import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
   useCreateRelocationTaskAttachment,
   useGetRelocationTaskList,
@@ -24,6 +23,7 @@ import { IdType } from 'shared/types/common'
 import { getTextWithCounter } from 'shared/utils/common'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
+import { WarehouseRouteEnum } from '../../../../../warehouse/constants/routes'
 import { RelocationTaskListTabProps } from './types'
 
 const { Title } = Typography
@@ -65,6 +65,9 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
     }),
   })
 
+  const onClickCreateDocumentsPackage = () =>
+    navigate(WarehouseRouteEnum.CreateDocumentsPackage, { state: { task: { id: task.id } } })
+
   const onCreateAttachment = useCallback<RelocationTaskListProps['onCreateAttachment']>(
     (id) => async (options) => {
       await createRelocationTaskAttachment({ relocationTaskId: id }, options)
@@ -81,9 +84,9 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
 
         <Col>
           <Space direction='vertical'>
-            <Link to={WarehouseRouteEnum.CreateDocumentsPackage}>
+            <Button type='link' onClick={onClickCreateDocumentsPackage}>
               Сформировать пакет документов
-            </Link>
+            </Button>
 
             <Button
               type='link'
