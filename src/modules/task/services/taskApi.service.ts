@@ -15,6 +15,10 @@ import {
   CreateTaskReclassificationRequestSuccessResponse,
   CreateTaskSuspendRequestMutationArgs,
   CreateTaskSuspendRequestSuccessResponse,
+  DeleteCompletedWorkMutationArgs,
+  DeleteCompletedWorkSuccessResponse,
+  DeleteInitiationReasonMutationArgs,
+  DeleteInitiationReasonSuccessResponse,
   DeleteTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestSuccessResponse,
   DeleteTaskWorkGroupMutationArgs,
@@ -23,6 +27,8 @@ import {
   GetSubTaskListSuccessResponse,
   GetTaskCommentListQueryArgs,
   GetTaskCommentListSuccessResponse,
+  GetTaskCompletionDocumentsQueryArgs,
+  GetTaskCompletionDocumentsSuccessResponse,
   GetTaskCountersQueryArgs,
   GetTaskCountersSuccessResponse,
   GetTaskJournalCsvQueryArgs,
@@ -56,7 +62,10 @@ import {
 import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import {
   createSubTaskUrl,
+  deleteCompletedWorkUrl,
+  deleteInitiationReasonUrl,
   getSubTaskListUrl,
+  getTaskCompletionDocumentsUrl,
   getTaskUrl,
   getTaskWorkPerformedActUrl,
   resolveTaskUrl,
@@ -258,6 +267,69 @@ const taskApiService = baseApiService
         }),
       }),
 
+      getTaskCompletionDocuments: build.query<
+        GetTaskCompletionDocumentsSuccessResponse,
+        GetTaskCompletionDocumentsQueryArgs
+      >({
+        query: ({ taskId }) => ({
+          url: getTaskCompletionDocumentsUrl(taskId),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
+
+      deleteInitiationReason: build.mutation<
+        DeleteInitiationReasonSuccessResponse,
+        DeleteInitiationReasonMutationArgs
+      >({
+        query: ({ id }) => ({
+          url: deleteInitiationReasonUrl(id),
+          method: HttpMethodEnum.Delete,
+        }),
+        onQueryStarted: async ({ id, taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled
+
+            dispatch(
+              taskApiService.util.updateQueryData(
+                'getTaskCompletionDocuments' as never,
+                taskId as never,
+                (data: GetTaskCompletionDocumentsSuccessResponse) => {
+                  if (data.initiationReasons?.length) {
+                    data.initiationReasons = data.initiationReasons.filter((r) => r.id !== id)
+                  }
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
+      deleteCompletedWork: build.mutation<
+        DeleteCompletedWorkSuccessResponse,
+        DeleteCompletedWorkMutationArgs
+      >({
+        query: ({ id }) => ({
+          url: deleteCompletedWorkUrl(id),
+          method: HttpMethodEnum.Delete,
+        }),
+        onQueryStarted: async ({ id, taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled
+
+            dispatch(
+              taskApiService.util.updateQueryData(
+                'getTaskCompletionDocuments' as never,
+                taskId as never,
+                (data: GetTaskCompletionDocumentsSuccessResponse) => {
+                  if (data.workList?.length) {
+                    data.workList = data.workList.filter((r) => r.id !== id)
+                  }
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
+
       getTaskJournal: build.query<GetTaskJournalSuccessResponse, GetTaskJournalQueryArgs>({
         query: ({ taskId, ...params }) => ({
           url: getTaskJournalUrl(taskId),
@@ -416,10 +488,15 @@ export const {
 
   useGetTaskCountersQuery,
 
+  useGetTaskCompletionDocumentsQuery,
+
   useGetTaskListQuery,
   useGetTaskListMapQuery,
 
   useGetTaskWorkPerformedActMutation,
+
+  useDeleteInitiationReasonMutation,
+  useDeleteCompletedWorkMutation,
 
   useResolveTaskMutation,
   useTakeTaskMutation,

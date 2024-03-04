@@ -6,6 +6,8 @@ export enum TaskApiEnum {
   UpdateTaskDeadline = '/tasks/:id/internal-deadline',
   GetWorkPerformedAct = '/tasks/:id/completion_certificate',
 
+  GetTaskCompletionDocuments = '/tasks/:id/completion-documents',
+
   GetTaskList = '/tasks/',
   GetTaskListMap = '/tasks/map/',
 
@@ -30,6 +32,9 @@ export enum TaskApiEnum {
 
   GetSubTaskList = '/tasks/:id/subtasks',
   CreateSubTask = '/tasks/:id/subtasks',
+
+  DeleteInitiationReason = '/initiation-reasons/:id',
+  DeleteCompletedWork = '/completed-works/:id',
 }
 
 export enum TaskApiTagEnum {

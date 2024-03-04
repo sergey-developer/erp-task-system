@@ -33,7 +33,6 @@ import {
   fakeId,
   fakeWord,
   getStoreWithAuth,
-  linkTestUtils,
   notificationTestUtils,
   render,
   renderInRoute_latest,
@@ -54,16 +53,16 @@ const getContainer = () => screen.getByTestId('relocation-task-list-tab')
 const getCreateTaskButton = () =>
   buttonTestUtils.getButtonIn(getContainer(), 'Создать новое перемещение')
 
-// create documents package link
-const getCreateDocumentsPackageLink = () =>
-  linkTestUtils.getLinkIn(getContainer(), 'Сформировать пакет документов')
+// create documents package button
+const getCreateDocumentsPackageButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), 'Сформировать пакет документов')
 
 export const testUtils = {
   getContainer,
   expectLoadingFinished: spinnerTestUtils.expectLoadingFinished('relocation-task-list-loading'),
 
   getCreateTaskButton,
-  getCreateDocumentsPackageLink,
+  getCreateDocumentsPackageButton,
 }
 
 setupApiTests()
@@ -176,7 +175,7 @@ describe('Вкладка списка заявок на перемещение',
 
       render(<RelocationTaskListTab {...props} />)
 
-      const button = testUtils.getCreateDocumentsPackageLink()
+      const button = testUtils.getCreateDocumentsPackageButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -204,7 +203,7 @@ describe('Вкладка списка заявок на перемещение',
         { initialEntries: [CommonRouteEnum.DesktopTaskList], initialIndex: 0 },
       )
 
-      const button = testUtils.getCreateDocumentsPackageLink()
+      const button = testUtils.getCreateDocumentsPackageButton()
       await user.click(button)
       const page = await createDocumentsPackagePageTestUtils.getContainer()
 

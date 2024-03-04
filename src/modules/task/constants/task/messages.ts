@@ -9,6 +9,12 @@ export const getTaskListMapErrorMsg = 'Ошибка получения спис�
 export const updateTaskDescriptionErrMsg = 'Ошибка изменения описания заявки'
 export const updateTaskDeadlineErrMsg = 'Ошибка изменения срока выполнения заявки'
 
+export const getTaskCompletionDocumentsErrMsg =
+  'Ошибка получения данных о причинах вызова, выполненных работах, потраченном времени и связанных перемещениях оборудования по заявке itsm'
+
+export const deleteInitiationReasonErrMsg = 'Ошибка удаления причины вызова'
+export const deleteCompletedWorkErrMsg = 'Ошибка удаления проведенных работ'
+
 export const getTaskWorkPerformedActMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка формирования акта выполненных работ',
 }
