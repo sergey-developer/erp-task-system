@@ -2,7 +2,7 @@ import { UploadProps } from 'antd'
 import { ReactNode } from 'react'
 
 import { UsersModel } from 'modules/user/models'
-import { MatchExpectedPermissionsResult } from 'modules/user/utils'
+import { MatchedPermissions } from 'modules/user/utils'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 
 import { LocationListItemModel, LocationsModel } from 'shared/models/catalogs/location'
@@ -21,7 +21,7 @@ export type LocationOption = {
 }
 
 export type RelocationTaskFormProps = {
-  permissions: MaybeNull<MatchExpectedPermissionsResult>
+  permissions: MaybeNull<MatchedPermissions>
 
   isLoading: boolean
   controllerIsRequired: boolean
