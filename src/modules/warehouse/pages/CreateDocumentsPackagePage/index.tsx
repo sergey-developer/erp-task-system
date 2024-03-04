@@ -2,9 +2,14 @@ import { Flex, Typography } from 'antd'
 import React, { FC } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { useDeleteInitiationReason, useGetTaskCompletionDocuments } from 'modules/task/hooks/task'
+import {
+  useDeleteCompletedWork,
+  useDeleteInitiationReason,
+  useGetTaskCompletionDocuments,
+} from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
 import CallingReasonsTable from 'modules/warehouse/components/CallingReasonsTable'
+import CompletedWorkTable from 'modules/warehouse/components/CompletedWorkTable'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -19,10 +24,16 @@ const CreateDocumentsPackagePage: FC = () => {
     useGetTaskCompletionDocuments({ taskId: task!.id }, { skip: !task })
 
   const [deleteInitiationReasonMutation] = useDeleteInitiationReason()
+  const [deleteCompletedWorkMutation] = useDeleteCompletedWork()
 
   const onDeleteInitiationReason = async (id: IdType) => {
     if (!task) return
     await deleteInitiationReasonMutation({ taskId: task.id, id })
+  }
+
+  const onDeleteCompletedWork = async (id: IdType) => {
+    if (!task) return
+    await deleteCompletedWorkMutation({ taskId: task.id, id })
   }
 
   return (
@@ -39,6 +50,18 @@ const CreateDocumentsPackagePage: FC = () => {
                 loading={taskCompletionDocumentsIsFetching}
                 dataSource={taskCompletionDocuments?.initiationReasons || []}
                 onDelete={onDeleteInitiationReason}
+              />
+            </Flex>
+          )}
+
+          {task && (
+            <Flex vertical gap='small'>
+              <Title level={5}>Перечень проведенных работ</Title>
+
+              <CompletedWorkTable
+                loading={taskCompletionDocumentsIsFetching}
+                dataSource={taskCompletionDocuments?.workList || []}
+                onDelete={onDeleteCompletedWork}
               />
             </Flex>
           )}

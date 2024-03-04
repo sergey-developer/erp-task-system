@@ -29,3 +29,6 @@ export const getTaskCompletionDocumentsUrl = (taskId: IdType): string =>
 
 export const deleteInitiationReasonUrl = (id: IdType): string =>
   generateApiPath(TaskApiEnum.DeleteInitiationReason, { id: String(id) })
+
+export const deleteCompletedWorkUrl = (id: IdType): string =>
+  generateApiPath(TaskApiEnum.DeleteCompletedWork, { id: String(id) })
