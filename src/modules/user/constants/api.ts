@@ -1,5 +1,5 @@
 export enum UserApiEnum {
-  GetUserList = '/users/',
+  GetUsers = '/users/',
   UpdateUser = '/users/:id/',
   GetUserMe = '/users/me/',
   GetUserMeCode = '/users/me/code/',

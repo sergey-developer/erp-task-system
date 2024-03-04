@@ -33,6 +33,8 @@ import {
   GetRelocationTaskWaybillM15SuccessResponse,
   ReturnRelocationTaskToReworkMutationArgs,
   ReturnRelocationTaskToReworkSuccessResponse,
+  UpdateExternalRelocationMutationArgs,
+  UpdateExternalRelocationSuccessResponse,
   UpdateRelocationTaskMutationArgs,
   UpdateRelocationTaskSuccessResponse,
 } from 'modules/warehouse/models'
@@ -48,6 +50,7 @@ import {
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
   returnRelocationTaskToReworkUrl,
+  updateExternalRelocationUrl,
   updateRelocationTaskUrl,
 } from 'modules/warehouse/utils/relocationTask'
 
@@ -221,6 +224,17 @@ const relocationTaskApiService = baseApiService
         },
       }),
 
+      updateExternalRelocation: build.mutation<
+        UpdateExternalRelocationSuccessResponse,
+        UpdateExternalRelocationMutationArgs
+      >({
+        query: ({ relocationTaskId, ...data }) => ({
+          url: updateExternalRelocationUrl(relocationTaskId),
+          method: HttpMethodEnum.Patch,
+          data,
+        }),
+      }),
+
       getRelocationTaskList: build.query<
         GetRelocationTaskListTransformedSuccessResponse,
         GetRelocationTaskListQueryArgs
@@ -277,8 +291,12 @@ export const {
   useExecuteRelocationTaskMutation,
   useReturnRelocationTaskToReworkMutation,
   useCancelRelocationTaskMutation,
+
+  useUpdateExternalRelocationMutation,
+
   useCreateRelocationTaskAttachmentMutation,
   useGetRelocationTaskAttachmentsQuery,
+
   useLazyGetRelocationTaskWaybillM15Query,
 
   useGetRelocationTaskListQuery,

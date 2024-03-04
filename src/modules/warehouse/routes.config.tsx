@@ -1,14 +1,15 @@
 import get from 'lodash/get'
 import React from 'react'
-import { Link, Navigate, RouteObject } from 'react-router-dom'
+import { Navigate, RouteObject } from 'react-router-dom'
 
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { hasPermissions } from 'modules/user/utils'
-import EquipmentPageLayout from 'modules/warehouse/components/EquipmentPageLayout'
 import ManageWarehousesLayout from 'modules/warehouse/components/ManageWarehousesLayout'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { BreadCrumbArgs } from 'components/Breadcrumbs'
+import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
 
 const WarehouseCatalogListPage = React.lazy(
   () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
@@ -29,6 +30,10 @@ const EquipmentNomenclatureListPage = React.lazy(
   () => import('modules/warehouse/pages/EquipmentNomenclatureListPage'),
 )
 
+const EquipmentPageLayout = React.lazy(
+  () => import('modules/warehouse/components/EquipmentPageLayout'),
+)
+
 const EquipmentListPage = React.lazy(() => import('modules/warehouse/pages/EquipmentListPage'))
 
 const RelocationTaskListPage = React.lazy(
@@ -45,18 +50,32 @@ const EditRelocationTaskPage = React.lazy(
   () => import('modules/warehouse/pages/EditRelocationTaskPage'),
 )
 
+const ReportsCatalogPage = React.lazy(() => import('modules/warehouse/pages/ReportsCatalogPage'))
+
+const EmployeesActionsReportPage = React.lazy(
+  () => import('modules/warehouse/pages/EmployeesActionsReportPage'),
+)
+
+const AmountEquipmentSpentReportPage = React.lazy(
+  () => import('modules/warehouse/pages/AmountEquipmentSpentReportPage'),
+)
+
+const HistoryNomenclatureOperationsReportPage = React.lazy(
+  () => import('modules/warehouse/pages/HistoryNomenclatureOperationsReportPage'),
+)
+
 export const route: Readonly<RouteObject> = {
   path: WarehouseRouteEnum.ManageWarehouses,
   element: <ManageWarehousesLayout />,
   children: [
     {
       index: true,
-      element: <Navigate to={WarehouseRouteEnum.WarehouseCatalogList} />,
+      element: <Navigate to={WarehouseRouteEnum.WarehouseCatalogs} />,
     },
     {
-      path: WarehouseRouteEnum.WarehouseCatalogList,
+      path: WarehouseRouteEnum.WarehouseCatalogs,
       handle: {
-        crumb: () => <Link to={WarehouseRouteEnum.WarehouseCatalogList}>Справочники</Link>,
+        crumb: () => <Breadcrumb link={WarehouseRouteEnum.WarehouseCatalogs} text='Справочники' />,
       },
       children: [
         {
@@ -64,9 +83,9 @@ export const route: Readonly<RouteObject> = {
           element: <ProtectedRoute component={<WarehouseCatalogListPage />} />,
         },
         {
-          path: WarehouseRouteEnum.WarehouseList,
+          path: WarehouseRouteEnum.Warehouses,
           handle: {
-            crumb: () => <Link to={WarehouseRouteEnum.WarehouseList}>Склады</Link>,
+            crumb: () => <Breadcrumb link={WarehouseRouteEnum.Warehouses} text='Склады' />,
           },
           children: [
             {
@@ -77,15 +96,20 @@ export const route: Readonly<RouteObject> = {
               path: WarehouseRouteEnum.Warehouse,
               element: <ProtectedRoute component={<WarehousePage />} />,
               handle: {
-                crumb: ({ qs }: BreadCrumbArgs) => qs.get('warehouseTitle'),
+                crumb: ({ qs }: BreadCrumbArgs) => (
+                  <Breadcrumb
+                    link={WarehouseRouteEnum.Warehouse}
+                    text={qs.get('warehouseTitle') || ''}
+                  />
+                ),
               },
             },
           ],
         },
         {
-          path: WarehouseRouteEnum.NomenclatureList,
+          path: WarehouseRouteEnum.Nomenclatures,
           handle: {
-            crumb: () => <Link to={WarehouseRouteEnum.NomenclatureList}>Номенклатура</Link>,
+            crumb: () => <Breadcrumb link={WarehouseRouteEnum.Nomenclatures} text='Номенклатура' />,
           },
           children: [
             {
@@ -93,7 +117,9 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<NomenclatureListPage />}
-                  permitted={(user) => hasPermissions(user, ['NOMENCLATURES_READ'])}
+                  permitted={(user) =>
+                    hasPermissions(user, [UserPermissionsEnum.NomenclaturesRead])
+                  }
                 />
               ),
             },
@@ -102,9 +128,9 @@ export const route: Readonly<RouteObject> = {
       ],
     },
     {
-      path: WarehouseRouteEnum.ReserveCatalogList,
+      path: WarehouseRouteEnum.Reserves,
       handle: {
-        crumb: () => <Link to={WarehouseRouteEnum.ReserveCatalogList}>Управление запасами</Link>,
+        crumb: () => <Breadcrumb link={WarehouseRouteEnum.Reserves} text='Управление запасами' />,
       },
       children: [
         {
@@ -112,16 +138,16 @@ export const route: Readonly<RouteObject> = {
           element: <ProtectedRoute component={<ReserveCatalogListPage />} />,
         },
         {
-          path: WarehouseRouteEnum.EquipmentNomenclatureList,
+          path: WarehouseRouteEnum.EquipmentNomenclatures,
           element: (
             <ProtectedRoute
               component={<EquipmentPageLayout />}
-              permitted={(user) => hasPermissions(user, ['EQUIPMENTS_READ'])}
+              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.EquipmentsRead])}
             />
           ),
           handle: {
             crumb: () => (
-              <Link to={WarehouseRouteEnum.EquipmentNomenclatureList}>Оборудование</Link>
+              <Breadcrumb link={WarehouseRouteEnum.EquipmentNomenclatures} text='Оборудование' />
             ),
           },
           children: [
@@ -130,19 +156,24 @@ export const route: Readonly<RouteObject> = {
               element: <EquipmentNomenclatureListPage />,
             },
             {
-              path: WarehouseRouteEnum.EquipmentList,
+              path: WarehouseRouteEnum.Equipments,
               element: <EquipmentListPage />,
-              handle: { crumb: ({ qs }: BreadCrumbArgs) => qs.get('equipmentNomenclatureTitle') },
+              handle: {
+                crumb: ({ qs }: BreadCrumbArgs) => (
+                  <Breadcrumb link={WarehouseRouteEnum.Equipments} text={qs.get('title') || ''} />
+                ),
+              },
             },
           ],
         },
         {
-          path: WarehouseRouteEnum.RelocationTaskList,
+          path: WarehouseRouteEnum.RelocationTasks,
           handle: {
             crumb: () => (
-              <Link to={WarehouseRouteEnum.RelocationTaskList}>
-                Заявки на перемещение оборудования
-              </Link>
+              <Breadcrumb
+                link={WarehouseRouteEnum.RelocationTasks}
+                text='Заявки на перемещение оборудования'
+              />
             ),
           },
           children: [
@@ -151,7 +182,9 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<RelocationTaskListPage />}
-                  permitted={(user) => hasPermissions(user, ['RELOCATION_TASKS_READ'])}
+                  permitted={(user) =>
+                    hasPermissions(user, [UserPermissionsEnum.RelocationTasksRead])
+                  }
                 />
               ),
             },
@@ -160,10 +193,19 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<CreateRelocationTaskPage />}
-                  permitted={(user) => hasPermissions(user, ['RELOCATION_TASKS_CREATE'])}
+                  permitted={(user) =>
+                    hasPermissions(user, [UserPermissionsEnum.RelocationTasksCreate])
+                  }
                 />
               ),
-              handle: { crumb: () => 'Создать заявку' },
+              handle: {
+                crumb: () => (
+                  <Breadcrumb
+                    link={WarehouseRouteEnum.CreateRelocationTask}
+                    text='Создать заявку'
+                  />
+                ),
+              },
             },
             {
               path: WarehouseRouteEnum.CreateRelocationTaskSimplified,
@@ -171,24 +213,103 @@ export const route: Readonly<RouteObject> = {
                 <ProtectedRoute
                   component={<CreateRelocationTaskSimplifiedPage />}
                   permitted={(user, locationState) =>
-                    hasPermissions(user, ['RELOCATION_TASKS_CREATE']) &&
+                    hasPermissions(user, [UserPermissionsEnum.RelocationTasksCreate]) &&
                     get(locationState, 'task.assignee')
                   }
                 />
               ),
-              handle: { crumb: () => 'Создать перемещение' },
+              handle: {
+                crumb: () => (
+                  <Breadcrumb
+                    link={WarehouseRouteEnum.CreateRelocationTaskSimplified}
+                    text='Создать перемещение'
+                  />
+                ),
+              },
             },
             {
               path: WarehouseRouteEnum.EditRelocationTask,
               element: (
                 <ProtectedRoute
                   component={<EditRelocationTaskPage />}
-                  permitted={(user) => hasPermissions(user, ['RELOCATION_TASKS_UPDATE'])}
+                  permitted={(user) =>
+                    hasPermissions(user, [UserPermissionsEnum.RelocationTasksUpdate])
+                  }
                 />
               ),
-              handle: { crumb: () => 'Редактировать заявку' },
+              handle: {
+                crumb: () => (
+                  <Breadcrumb
+                    link={WarehouseRouteEnum.EditRelocationTask}
+                    text='Редактировать заявку'
+                  />
+                ),
+              },
             },
           ],
+        },
+      ],
+    },
+    {
+      path: WarehouseRouteEnum.Reports,
+      handle: { crumb: () => <Breadcrumb link={WarehouseRouteEnum.Reports} text='Отчеты' /> },
+      children: [
+        {
+          index: true,
+          element: (
+            <ProtectedRoute
+              component={<ReportsCatalogPage />}
+              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+            />
+          ),
+        },
+        {
+          path: WarehouseRouteEnum.EmployeesActions,
+          element: (
+            <ProtectedRoute
+              component={<EmployeesActionsReportPage />}
+              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+            />
+          ),
+          handle: {
+            crumb: () => (
+              <Breadcrumb link={WarehouseRouteEnum.EmployeesActions} text='Действия сотрудников' />
+            ),
+          },
+        },
+        {
+          path: WarehouseRouteEnum.AmountEquipmentSpent,
+          element: (
+            <ProtectedRoute
+              component={<AmountEquipmentSpentReportPage />}
+              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+            />
+          ),
+          handle: {
+            crumb: () => (
+              <Breadcrumb
+                link={WarehouseRouteEnum.AmountEquipmentSpent}
+                text='Количество потраченного оборудования'
+              />
+            ),
+          },
+        },
+        {
+          path: WarehouseRouteEnum.HistoryNomenclatureOperations,
+          element: (
+            <ProtectedRoute
+              component={<HistoryNomenclatureOperationsReportPage />}
+              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+            />
+          ),
+          handle: {
+            crumb: () => (
+              <Breadcrumb
+                link={WarehouseRouteEnum.HistoryNomenclatureOperations}
+                text='История операций по номенклатуре'
+              />
+            ),
+          },
         },
       ],
     },

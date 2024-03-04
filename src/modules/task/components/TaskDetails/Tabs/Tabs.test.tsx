@@ -115,7 +115,7 @@ describe('Вкладки карточки заявки', () => {
   describe('Вкладка "Перемещения"', () => {
     test('Не отображается если условия не соблюдены', () => {
       render(<Tabs {...props} />)
-      const tab = testUtils.queryNavItem(TaskDetailsTabsEnum.RelocationTaskList)
+      const tab = testUtils.queryNavItem(TaskDetailsTabsEnum.RelocationTasks)
       expect(tab).not.toBeInTheDocument()
     })
 
@@ -128,7 +128,7 @@ describe('Вкладки карточки заявки', () => {
         }),
       })
 
-      const tab = testUtils.getNavItem(TaskDetailsTabsEnum.RelocationTaskList)
+      const tab = testUtils.getNavItem(TaskDetailsTabsEnum.RelocationTasks)
       expect(tab).toBeInTheDocument()
     })
 
@@ -141,8 +141,8 @@ describe('Вкладки карточки заявки', () => {
         }),
       })
 
-      await testUtils.clickTab(user, TaskDetailsTabsEnum.RelocationTaskList)
-      const tab = testUtils.getOpenedTab(TaskDetailsTabsEnum.RelocationTaskList)
+      await testUtils.clickTab(user, TaskDetailsTabsEnum.RelocationTasks)
+      const tab = testUtils.getOpenedTab(TaskDetailsTabsEnum.RelocationTasks)
 
       expect(tab).toBeInTheDocument()
     })

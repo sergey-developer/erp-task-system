@@ -117,8 +117,8 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
     ...(permissions?.relocationTasksRead
       ? [
           {
-            key: TaskDetailsTabsEnum.RelocationTaskList,
-            label: taskDetailsTabNameDict[TaskDetailsTabsEnum.RelocationTaskList],
+            key: TaskDetailsTabsEnum.RelocationTasks,
+            label: taskDetailsTabNameDict[TaskDetailsTabsEnum.RelocationTasks],
             children: (
               <React.Suspense fallback={<Spinner />}>
                 <RelocationTaskListTab

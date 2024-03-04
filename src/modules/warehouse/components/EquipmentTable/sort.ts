@@ -1,11 +1,10 @@
-import { ColumnsType } from 'antd/es/table'
+import { ColumnType } from 'antd/es/table'
 import { SortOrder } from 'antd/es/table/interface'
 import isEqual from 'lodash/isEqual'
 
 import { GetEquipmentListSortKey, GetEquipmentListSortValue } from 'modules/warehouse/models'
 
 import { SortOrderEnum } from 'shared/constants/sort'
-import { ArrayFirst } from 'shared/types/utils'
 
 import { EquipmentTableItem } from './types'
 
@@ -49,9 +48,9 @@ export const sortValueToSortableField = Object.keys(sortableFieldToSortValues).r
 )
 
 export const applySort = (
-  column: ArrayFirst<ColumnsType<EquipmentTableItem>>,
+  column: ColumnType<EquipmentTableItem>,
   sort: GetEquipmentListSortValue,
-): ArrayFirst<ColumnsType<EquipmentTableItem>> => {
+): ColumnType<EquipmentTableItem> => {
   const sorterResult = parseSort(sort)
 
   if (!isEqual(column.key, sorterResult.columnKey)) return column

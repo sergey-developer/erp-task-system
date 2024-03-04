@@ -20,8 +20,9 @@ import ModalFallback from 'components/Modals/ModalFallback'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { downloadFile } from 'shared/utils/file'
 import { useGetLocations } from 'shared/hooks/catalogs/location'
-import { clickDownloadLink } from 'shared/utils/common'
+import { base64ToArrayBuffer } from 'shared/utils/common'
 
 import { EquipmentPageContextType } from './context'
 
@@ -34,9 +35,9 @@ const getEquipmentsXlsxParamsByLocation = (
   params: GetEquipmentsXlsxQueryArgs,
 ): GetEquipmentsXlsxQueryArgs => {
   switch (location.pathname) {
-    case WarehouseRouteEnum.EquipmentList:
+    case WarehouseRouteEnum.Equipments:
       return params
-    case WarehouseRouteEnum.EquipmentNomenclatureList:
+    case WarehouseRouteEnum.EquipmentNomenclatures:
       return omit(params, 'nomenclature', 'ordering')
     default:
       return params
@@ -90,22 +91,22 @@ const EquipmentPageLayout: FC = () => {
     setFilterValues(values)
     toggleFilterOpened()
     setEquipmentsXlsxParams(equipmentsFilterToParams(values))
-    navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
+    navigate(WarehouseRouteEnum.EquipmentNomenclatures)
   }
 
   const onSearch: SearchProps['onSearch'] = (value) => {
     setSearchValue(value)
     setEquipmentsXlsxParams({ search: value })
-    navigate(WarehouseRouteEnum.EquipmentNomenclatureList)
+    navigate(WarehouseRouteEnum.EquipmentNomenclatures)
   }
 
-  const onExportToXlsx = async () => {
+  const onExportExcel = async () => {
     try {
       const equipments = await getEquipmentsXlsx(
         getEquipmentsXlsxParamsByLocation(location, equipmentsXlsxParams),
       ).unwrap()
 
-      clickDownloadLink(equipments, MimetypeEnum.Xlsx, 'Оборудование')
+      downloadFile(base64ToArrayBuffer(equipments), MimetypeEnum.Xlsx, 'Оборудование')
     } catch {}
   }
 
@@ -123,7 +124,7 @@ const EquipmentPageLayout: FC = () => {
               <Space size='middle'>
                 <FilterButton onClick={toggleFilterOpened} />
 
-                <Button onClick={onExportToXlsx} loading={getEquipmentsXlsxIsFetching}>
+                <Button onClick={onExportExcel} loading={getEquipmentsXlsxIsFetching}>
                   Экспорт в Excel
                 </Button>
               </Space>

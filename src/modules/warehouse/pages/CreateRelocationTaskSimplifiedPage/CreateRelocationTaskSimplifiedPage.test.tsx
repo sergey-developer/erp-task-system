@@ -8,7 +8,7 @@ import { getEquipmentListTemplateErrorMsg } from 'modules/warehouse/constants/eq
 import { CANCEL_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
-import * as downloadLinkUtils from 'shared/utils/common/downloadLink'
+import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import {
   mockGetCurrencyListSuccess,
@@ -147,7 +147,7 @@ describe('Упрощенная страница создания заявки н
       const file = fakeWord()
       mockGetEquipmentListTemplateSuccess({ body: file })
 
-      const clickDownloadLinkSpy = jest.spyOn(downloadLinkUtils, 'clickDownloadLink')
+      const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
       const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
       const arrayBuffer = new Uint8Array()
@@ -164,8 +164,8 @@ describe('Упрощенная страница создания заявки н
       await waitFor(() => expect(base64ToArrayBufferSpy).toBeCalledTimes(1))
       expect(base64ToArrayBufferSpy).toBeCalledWith(file)
 
-      expect(clickDownloadLinkSpy).toBeCalledTimes(1)
-      expect(clickDownloadLinkSpy).toBeCalledWith(
+      expect(downloadFileSpy).toBeCalledTimes(1)
+      expect(downloadFileSpy).toBeCalledWith(
         arrayBuffer,
         MimetypeEnum.Xls,
         'Шаблон загрузки оборудования',

@@ -3,8 +3,8 @@ export * from './getUserMe.model'
 export * from './userCode.model'
 export * from './getUserMeCode.model'
 
-export * from './userList.model'
-export * from './getUserList.model'
+export * from './users.model'
+export * from './getUsers.model'
 
 export * from './user.model'
 export * from './updateUser.model'

@@ -37,10 +37,10 @@ import { useGetTasks } from 'modules/task/hooks/task'
 import { useGetTaskCounters } from 'modules/task/hooks/taskCounters'
 import { ExtendedFilterQueries, FastFilterQueries, GetTaskListQueryArgs } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils/parseTasksFiltersStorage'
+import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils'
 import { taskDetailsTabExist } from 'modules/task/utils/task'
 import {
-  useGetUserList,
+  useGetUsers,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
   useUserRole,
@@ -65,6 +65,7 @@ import { FilterParams } from 'shared/types/filter'
 import { MaybeUndefined } from 'shared/types/utils'
 import {
   calculatePaginationParams,
+  extractPaginationParams,
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
@@ -203,7 +204,7 @@ const TaskListPage: FC = () => {
       : undefined,
   })
 
-  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUserList(
+  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUsers(
     { isManager: true },
     { skip: !extendedFilterOpened },
   )
@@ -448,7 +449,7 @@ const TaskListPage: FC = () => {
             dataSource={tasks}
             loading={tasksIsFetching}
             onChange={onChangeTable}
-            pagination={originalTasks?.pagination || false}
+            pagination={extractPaginationParams(originalTasks)}
             userRole={role!}
           />
         </Col>

@@ -6,7 +6,7 @@ import {
 } from 'modules/task/constants/task'
 import { TaskListItemModel } from 'modules/task/models'
 
-import { PaginatedListSuccessResponse } from 'shared/models/pagination.model'
+import { PaginationResponse } from 'shared/models/pagination.model'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { PaginationParams } from 'shared/types/pagination'
@@ -51,16 +51,15 @@ export type ExtendedFilterQueries = Partial<{
 }> &
   SearchFields
 
-export type GetTaskListQueryArgs = Partial<
-  PaginationParams & {
+export type GetTaskListQueryArgs = PaginationParams &
+  Partial<{
     sort: GetTaskListSortValue
     userId: IdType
     lat: number
     long: number
-  }
-> &
+  }> &
   ExtendedFilterQueries &
   FastFilterQueries &
   FilterParams
 
-export type GetTaskListSuccessResponse = PaginatedListSuccessResponse<TaskListItemModel>
+export type GetTaskListSuccessResponse = PaginationResponse<TaskListItemModel>

@@ -35,12 +35,15 @@ type RelocationTaskUserPermissions =
   | 'RELOCATION_TASKS_CREATE'
   | 'RELOCATION_TASKS_UPDATE'
 
+type WarehouseReportsUserPermissions = 'WAREHOUSE_REPORTS_READ'
+
 // todo: переделать на enum
 export type UserPermissions =
   | NomenclatureUserPermissions
   | NomenclatureGroupUserPermissions
   | EquipmentUserPermissions
   | RelocationTaskUserPermissions
+  | WarehouseReportsUserPermissions
 
 export type UserModel = BaseUserModel & {
   fullName: string

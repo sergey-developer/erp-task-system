@@ -1,4 +1,8 @@
-import { RelocationTaskStatusEnum, RelocationTaskTypeEnum } from './enums'
+import {
+  ExternalRelocationStatusEnum,
+  RelocationTaskStatusEnum,
+  RelocationTaskTypeEnum,
+} from './enums'
 
 export const relocationTaskStatusDict: Record<RelocationTaskStatusEnum, string> = {
   [RelocationTaskStatusEnum.New]: 'Новая',
@@ -14,4 +18,13 @@ export const relocationTaskTypeDict: Record<RelocationTaskTypeEnum, string> = {
   [RelocationTaskTypeEnum.Warranty]: 'Гарантийное обслуживание',
   [RelocationTaskTypeEnum.WriteOff]: 'Списание',
   [RelocationTaskTypeEnum.Customer]: 'Поступление от заказчика',
+}
+
+export const externalRelocationStatusDict: Record<ExternalRelocationStatusEnum, string> = {
+  [ExternalRelocationStatusEnum.InTransit]: 'В пути',
+  [ExternalRelocationStatusEnum.ToApprovalSsi]: 'На согласовании ССИ',
+  [ExternalRelocationStatusEnum.ToApprovalVsi]: 'На согласовании ВСИ',
+  [ExternalRelocationStatusEnum.ToApprovalMrp]: 'На согласовании МРП',
+  [ExternalRelocationStatusEnum.Closed]: 'Закрыто',
+  [ExternalRelocationStatusEnum.Reversed]: 'Сторнировано',
 }

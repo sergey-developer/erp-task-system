@@ -26,7 +26,7 @@ import {
   tasksUpdateVariantsIntervals,
 } from 'modules/task/constants/task'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils/parseTasksFiltersStorage'
+import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 
 import FilterButton from 'components/Buttons/FilterButton'

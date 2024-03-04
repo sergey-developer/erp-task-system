@@ -46,3 +46,6 @@ export const getRelocationEquipmentBalanceListUrl = (id: IdType): string =>
 
 export const updateRelocationTaskUrl = (id: IdType): string =>
   appendSlashAtEnd(generatePath(RelocationTaskApiEnum.UpdateRelocationTask, { id: String(id) }))
+
+export const updateExternalRelocationUrl = (id: IdType): string =>
+  appendSlashAtEnd(generatePath(RelocationTaskApiEnum.UpdateExternalRelocation, { id: String(id) }))

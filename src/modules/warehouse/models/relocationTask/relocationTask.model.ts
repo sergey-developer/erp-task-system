@@ -1,6 +1,7 @@
 import { TaskModel } from 'modules/task/models'
 import { UserModel } from 'modules/user/models'
 import {
+  ExternalRelocationStatusEnum,
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
 } from 'modules/warehouse/constants/relocationTask'
@@ -9,6 +10,12 @@ import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 import { RelocationTaskAttachmentModel } from './relocationTaskAttachment.model'
+
+type ExternalRelocationModel = {
+  id: IdType
+  number: MaybeNull<string>
+  status: MaybeNull<ExternalRelocationStatusEnum>
+}
 
 export type RelocationTaskModel = {
   id: IdType
@@ -37,4 +44,5 @@ export type RelocationTaskModel = {
     user: Pick<UserModel, 'id' | 'fullName' | 'phone'>
   }>
   task: MaybeNull<Pick<TaskModel, 'id' | 'recordId'>>
+  externalRelocation: MaybeNull<ExternalRelocationModel>
 }

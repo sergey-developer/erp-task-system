@@ -56,11 +56,11 @@ describe('Страница списка справочников запасов'
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
@@ -73,18 +73,18 @@ describe('Страница списка справочников запасов'
       const link = testUtils.getEquipmentLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', WarehouseRouteEnum.EquipmentNomenclatureList)
+      expect(link).toHaveAttribute('href', WarehouseRouteEnum.EquipmentNomenclatures)
     })
 
     test('Не отображается если нет прав', async () => {
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
       )
 
       const link = testUtils.queryEquipmentLink()
@@ -97,15 +97,15 @@ describe('Страница списка справочников запасов'
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatureList,
+            path: WarehouseRouteEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclatureListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
@@ -127,11 +127,11 @@ describe('Страница списка справочников запасов'
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
@@ -144,18 +144,18 @@ describe('Страница списка справочников запасов'
       const link = testUtils.getRelocationTasksLink()
 
       expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', WarehouseRouteEnum.RelocationTaskList)
+      expect(link).toHaveAttribute('href', WarehouseRouteEnum.RelocationTasks)
     })
 
     test('Не отображается если нет прав', async () => {
       renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
       )
 
       const link = testUtils.queryRelocationTasksLink()
@@ -168,15 +168,15 @@ describe('Страница списка справочников запасов'
       const { user } = renderInRoute_latest(
         [
           {
-            path: WarehouseRouteEnum.ReserveCatalogList,
+            path: WarehouseRouteEnum.Reserves,
             element: <ReserveCatalogListPage />,
           },
           {
-            path: WarehouseRouteEnum.RelocationTaskList,
+            path: WarehouseRouteEnum.RelocationTasks,
             element: <RelocationTaskListPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ReserveCatalogList], initialIndex: 0 },
+        { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
