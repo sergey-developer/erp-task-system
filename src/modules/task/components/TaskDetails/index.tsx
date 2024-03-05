@@ -348,8 +348,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           internalOlaNextBreachTime:
             values.date && values.time
               ? mergeDateTime(values.date, values.time).toISOString()
-              : values.date && !values.time
-              ? values.date.toISOString()
               : null,
         }).unwrap()
 

@@ -2,16 +2,16 @@ import { Rule } from 'rc-field-form/es/interface'
 
 import { dateValidator, timeValidator } from 'shared/utils/validation/dateTime'
 
-export const dateRules: Rule[] = [
+export const dateRules = (required: boolean): Rule[] => [
   {
     type: 'date',
-    validator: dateValidator({ required: false }),
+    validator: dateValidator({ required }),
   },
 ]
 
-export const timeRules: Rule[] = [
+export const timeRules = (required: boolean): Rule[] => [
   ({ getFieldValue }) => ({
     type: 'date',
-    validator: timeValidator({ dateGetter: getFieldValue, dateFieldName: 'date', required: false }),
+    validator: timeValidator({ dateGetter: getFieldValue, dateFieldName: 'date', required }),
   }),
 ]

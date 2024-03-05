@@ -23,6 +23,8 @@ const UpdateTaskDeadlineModal: FC<UpdateTaskDeadlineModalProps> = ({
   ...props
 }) => {
   const [form] = Form.useForm<UpdateTaskDeadlineModalFormFields>()
+  const dateFormValue = Form.useWatch('date', form)
+  const timeFormValue = Form.useWatch('time', form)
 
   const initialDate = previousOlaNextBreachTime
     ? olaNextBreachTime
@@ -58,13 +60,13 @@ const UpdateTaskDeadlineModal: FC<UpdateTaskDeadlineModalProps> = ({
           <Form.Item label='Внутренний срок выполнения:'>
             <Row justify='space-between'>
               <Col span={15}>
-                <Form.Item name='date' rules={dateRules}>
+                <Form.Item name='date' rules={dateRules(!!timeFormValue)}>
                   <DatePicker />
                 </Form.Item>
               </Col>
 
               <Col span={8}>
-                <Form.Item name='time' dependencies={['date']} rules={timeRules}>
+                <Form.Item name='time' dependencies={['date']} rules={timeRules(!!dateFormValue)}>
                   <TimePicker format={TIME_PICKER_FORMAT} placeholder='Время' />
                 </Form.Item>
               </Col>
