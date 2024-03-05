@@ -15,5 +15,8 @@ export * from './getTaskListMap.model'
 
 export * from './getTaskWorkPerformedAct.model'
 
+export * from './initiationReason.model'
+export * from './createInitiationReason.model'
 export * from './deleteInitiationReason.model'
+
 export * from './deleteCompletedWork.model'

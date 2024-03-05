@@ -11,7 +11,7 @@ export type NomenclatureGroupFormModalProps = Required<
 > & {
   onSubmit: (
     values: NomenclatureGroupFormModalFormFields,
-    setFields: FormInstance['setFields'],
+    setFields: FormInstance<NomenclatureGroupFormModalFormFields>['setFields'],
   ) => Promise<void>
 
   initialValues?: NomenclatureGroupFormModalFormFields

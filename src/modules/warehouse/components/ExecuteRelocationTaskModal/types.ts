@@ -10,7 +10,7 @@ export type ExecuteRelocationTaskModalProps = Required<Pick<ModalProps, 'open'>>
 
   onSubmit: (
     values: ExecuteRelocationTaskModalFormFields,
-    setFields: FormInstance['setFields'],
+    setFields: FormInstance<ExecuteRelocationTaskModalFormFields>['setFields'],
   ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
 }

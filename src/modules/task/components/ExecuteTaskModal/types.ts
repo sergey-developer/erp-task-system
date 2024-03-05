@@ -16,7 +16,7 @@ export type ExecuteTaskModalProps = Required<Pick<BaseModalProps, 'open'>> &
     isLoading: boolean
     onSubmit: (
       values: ExecuteTaskModalFormFields,
-      setFields: FormInstance['setFields'],
+      setFields: FormInstance<ExecuteTaskModalFormFields>['setFields'],
     ) => Promise<void>
     onCancel: NonNullable<ModalProps['onCancel']>
     onGetAct: (values: Pick<ExecuteTaskModalFormFields, 'techResolution'>) => Promise<void>

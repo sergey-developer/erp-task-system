@@ -63,7 +63,7 @@ import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 import { base64ToArrayBuffer } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
-import { extractOriginFiles, downloadFile } from 'shared/utils/file'
+import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -373,7 +373,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const handleTransferTaskToSecondLine = useCallback(
     async (
       values: TaskSecondLineFormFields,
-      setFields: FormInstance['setFields'],
+      setFields: FormInstance<TaskSecondLineFormFields>['setFields'],
       closeTaskSecondLineModal: EmptyFn,
     ) => {
       if (!task) return
@@ -396,7 +396,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const handleTransferTaskToFirstLine = useCallback(
     async (
       values: TaskFirstLineFormFields,
-      setFields: FormInstance['setFields'],
+      setFields: FormInstance<TaskFirstLineFormFields>['setFields'],
       closeTaskFirstLineModal: EmptyFn,
     ) => {
       if (!task) return
