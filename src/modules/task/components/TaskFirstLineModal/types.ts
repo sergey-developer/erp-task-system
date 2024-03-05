@@ -13,6 +13,6 @@ export type TaskFirstLineModalProps = Pick<ModalProps, 'onCancel'> &
     isLoading: boolean
     onSubmit: (
       values: TaskFirstLineFormFields,
-      setFields: FormInstance['setFields'],
+      setFields: FormInstance<TaskFirstLineFormFields>['setFields'],
     ) => Promise<void>
   }

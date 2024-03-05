@@ -8,6 +8,6 @@ export type ReturnRelocationTaskToReworkModalProps = Required<
   isLoading: boolean
   onSubmit: (
     values: ReturnRelocationTaskToReworkFormFields,
-    setFields: FormInstance['setFields'],
+    setFields: FormInstance<ReturnRelocationTaskToReworkFormFields>['setFields'],
   ) => Promise<void>
 }

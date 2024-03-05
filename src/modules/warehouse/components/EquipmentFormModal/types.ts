@@ -51,7 +51,7 @@ export type EquipmentFormModalProps = Required<
 
     onSubmit: (
       values: EquipmentFormModalFormFields,
-      setFields: FormInstance['setFields'],
+      setFields: FormInstance<EquipmentFormModalFormFields>['setFields'],
     ) => Promise<void> | void
 
     onUploadImage: NonNullable<UploadProps['customRequest']>

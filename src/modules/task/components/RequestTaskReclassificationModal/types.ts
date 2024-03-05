@@ -12,7 +12,7 @@ export type RequestTaskReclassificationModalProps = Required<Pick<BaseModalProps
   Pick<TaskModel, 'recordId'> & {
     onSubmit: (
       values: RequestTaskReclassificationFormFields,
-      setFields: FormInstance['setFields'],
+      setFields: FormInstance<RequestTaskReclassificationFormFields>['setFields'],
     ) => Promise<void>
     onCancel: NonNullable<ModalProps['onCancel']>
     isLoading: boolean

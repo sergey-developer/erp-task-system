@@ -41,6 +41,6 @@ export type NomenclatureFormModalProps = Required<Pick<BaseModalProps, 'open' | 
 
   onSubmit: (
     values: NomenclatureFormModalFormFields,
-    setFields: FormInstance['setFields'],
+    setFields: FormInstance<NomenclatureFormModalFormFields>['setFields'],
   ) => Promise<void>
 }

@@ -14,7 +14,7 @@ export type TaskSecondLineModalProps = Pick<TaskModel, 'id' | 'recordId'> & {
   isLoading: boolean
   onSubmit: (
     values: TaskSecondLineFormFields,
-    setFields: FormInstance['setFields'],
+    setFields: FormInstance<TaskSecondLineFormFields>['setFields'],
   ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
 }
