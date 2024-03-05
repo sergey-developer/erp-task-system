@@ -63,9 +63,6 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
 }) => {
   const form = Form.useFormInstance<RelocationTaskFormFields>()
 
-  const relocateFromFormValue: MaybeUndefined<RelocationTaskFormFields['relocateFrom']> =
-    Form.useWatch('relocateFrom', form)
-
   const typeFormValue: MaybeUndefined<RelocationTaskFormFields['type']> = Form.useWatch(
     'type',
     form,
@@ -128,7 +125,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
           : undefined,
         allowClear: false,
         loading: equipmentCatalogListIsLoading,
-        disabled: isLoading || !relocateFromFormValue || equipmentCatalogListIsLoading,
+        disabled: isLoading || equipmentCatalogListIsLoading,
         options: equipmentCatalogOptions,
         showSearch: true,
         onChange: () => form.resetFields(['quantity']),
@@ -154,7 +151,10 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       title: 'Состояние',
       valueType: 'select',
       formItemProps: { rules: onlyRequiredRules },
-      fieldProps: { disabled: isLoading || typeIsWriteOff || equipmentIsLoading, options: equipmentConditionOptions },
+      fieldProps: {
+        disabled: isLoading || typeIsWriteOff || equipmentIsLoading,
+        options: equipmentConditionOptions,
+      },
     },
     {
       key: 'amount',
