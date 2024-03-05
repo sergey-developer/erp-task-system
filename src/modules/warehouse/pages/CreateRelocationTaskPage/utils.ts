@@ -47,6 +47,8 @@ const getRelocateFromLocationTypes = (
       return [LocationTypeEnum.Warehouse]
     case RelocationTaskTypeEnum.Customer:
       return [LocationTypeEnum.Shop]
+    case RelocationTaskTypeEnum.EnteringBalances:
+      return undefined
   }
 }
 
@@ -61,6 +63,7 @@ const getRelocateFromWarehouseTypes = (
     case RelocationTaskTypeEnum.Relocation:
     case RelocationTaskTypeEnum.Warranty:
     case RelocationTaskTypeEnum.Customer:
+    case RelocationTaskTypeEnum.EnteringBalances:
       return undefined
   }
 }
@@ -72,11 +75,11 @@ const getRelocateToLocationTypes = (
     case RelocationTaskTypeEnum.Relocation:
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
     case RelocationTaskTypeEnum.Repair:
+    case RelocationTaskTypeEnum.Customer:
+    case RelocationTaskTypeEnum.EnteringBalances:
       return [LocationTypeEnum.Warehouse]
     case RelocationTaskTypeEnum.Warranty:
       return [LocationTypeEnum.ServiceCenter]
-    case RelocationTaskTypeEnum.Customer:
-      return [LocationTypeEnum.Warehouse]
     case RelocationTaskTypeEnum.WriteOff:
       return undefined
   }
@@ -91,6 +94,8 @@ const getRelocateToWarehouseTypes = (
       return [WarehouseTypeEnum.Main, WarehouseTypeEnum.Msi]
     case RelocationTaskTypeEnum.Repair:
       return [WarehouseTypeEnum.Repair]
+    case RelocationTaskTypeEnum.EnteringBalances:
+      return [WarehouseTypeEnum.Main, WarehouseTypeEnum.Repair, WarehouseTypeEnum.Msi]
     case RelocationTaskTypeEnum.WriteOff:
     case RelocationTaskTypeEnum.Warranty:
       return undefined

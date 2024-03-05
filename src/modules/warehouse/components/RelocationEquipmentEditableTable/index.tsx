@@ -63,9 +63,6 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
 }) => {
   const form = Form.useFormInstance<RelocationTaskFormFields>()
 
-  const relocateFromFormValue: MaybeUndefined<RelocationTaskFormFields['relocateFrom']> =
-    Form.useWatch('relocateFrom', form)
-
   const typeFormValue: MaybeUndefined<RelocationTaskFormFields['type']> = Form.useWatch(
     'type',
     form,
@@ -128,7 +125,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
           : undefined,
         allowClear: false,
         loading: equipmentCatalogListIsLoading,
-        disabled: isLoading || !relocateFromFormValue || equipmentCatalogListIsLoading,
+        disabled: isLoading || equipmentCatalogListIsLoading,
         options: equipmentCatalogOptions,
         showSearch: true,
         virtual: true,
