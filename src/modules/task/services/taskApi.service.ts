@@ -7,6 +7,8 @@ import {
   TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
 import {
+  CreateInitiationReasonMutationArgs,
+  CreateInitiationReasonSuccessResponse,
   CreateSubTaskMutationArgs,
   CreateSubTaskSuccessResponse,
   CreateTaskCommentMutationArgs,
@@ -61,6 +63,7 @@ import {
 } from 'modules/task/models'
 import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import {
+  createInitiationReasonUrl,
   createSubTaskUrl,
   deleteCompletedWorkUrl,
   deleteInitiationReasonUrl,
@@ -277,6 +280,33 @@ const taskApiService = baseApiService
         }),
       }),
 
+      createInitiationReason: build.mutation<
+        CreateInitiationReasonSuccessResponse,
+        CreateInitiationReasonMutationArgs
+      >({
+        query: ({ taskId, ...data }) => ({
+          url: createInitiationReasonUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+        onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled
+
+            dispatch(
+              taskApiService.util.updateQueryData(
+                'getTaskCompletionDocuments' as never,
+                { taskId } as never,
+                (docs: GetTaskCompletionDocumentsSuccessResponse) => {
+                  Array.isArray(docs.initiationReasons)
+                    ? docs.initiationReasons.push(data)
+                    : (docs.initiationReasons = [data])
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
       deleteInitiationReason: build.mutation<
         DeleteInitiationReasonSuccessResponse,
         DeleteInitiationReasonMutationArgs
@@ -292,7 +322,7 @@ const taskApiService = baseApiService
             dispatch(
               taskApiService.util.updateQueryData(
                 'getTaskCompletionDocuments' as never,
-                taskId as never,
+                { taskId } as never,
                 (data: GetTaskCompletionDocumentsSuccessResponse) => {
                   if (data.initiationReasons?.length) {
                     data.initiationReasons = data.initiationReasons.filter((r) => r.id !== id)
@@ -303,6 +333,7 @@ const taskApiService = baseApiService
           } catch {}
         },
       }),
+
       deleteCompletedWork: build.mutation<
         DeleteCompletedWorkSuccessResponse,
         DeleteCompletedWorkMutationArgs
@@ -495,7 +526,9 @@ export const {
 
   useGetTaskWorkPerformedActMutation,
 
+  useCreateInitiationReasonMutation,
   useDeleteInitiationReasonMutation,
+
   useDeleteCompletedWorkMutation,
 
   useResolveTaskMutation,

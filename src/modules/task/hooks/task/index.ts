@@ -8,8 +8,12 @@ export * from './useResolveTask'
 export * from './useTakeTask'
 export * from './useUpdateTaskDescription'
 export * from './useUpdateTaskDeadline'
+
 export * from './useGetTaskCompletionDocuments'
+
+export * from './useCreateInitiationReason'
 export * from './useDeleteInitiationReason'
+
 export * from './useDeleteCompletedWork'
 
 export * from './useGetTasks'

@@ -447,7 +447,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const handleTransferTaskToSecondLine = useCallback(
     async (
       values: TaskSecondLineFormFields,
-      setFields: FormInstance['setFields'],
+      setFields: FormInstance<TaskSecondLineFormFields>['setFields'],
       closeTaskSecondLineModal: EmptyFn,
     ) => {
       if (!task) return
@@ -470,7 +470,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const handleTransferTaskToFirstLine = useCallback(
     async (
       values: TaskFirstLineFormFields,
-      setFields: FormInstance['setFields'],
+      setFields: FormInstance<TaskFirstLineFormFields>['setFields'],
       closeTaskFirstLineModal: EmptyFn,
     ) => {
       if (!task) return

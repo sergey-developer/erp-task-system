@@ -15,7 +15,7 @@ export type RequestTaskSuspendModalProps = Required<Pick<BaseModalProps, 'open'>
   recordId: string
   onSubmit: (
     values: RequestTaskSuspendFormFields,
-    setFields: FormInstance['setFields'],
+    setFields: FormInstance<RequestTaskSuspendFormFields>['setFields'],
   ) => Promise<void>
   onCancel: NonNullable<ModalProps['onCancel']>
   isLoading: boolean
