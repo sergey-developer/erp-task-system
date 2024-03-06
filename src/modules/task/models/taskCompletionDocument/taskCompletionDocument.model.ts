@@ -1,20 +1,13 @@
-import { InitiationReasonModel } from 'modules/task/models'
+import { CompletedWorkModel, InitiationReasonModel } from 'modules/task/models'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { EquipmentModel, MeasurementUnitModel } from 'modules/warehouse/models'
+import { EquipmentModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type TaskCompletionDocumentModel = {
   initiationReasons: MaybeNull<InitiationReasonModel[]>
-  workList: MaybeNull<
-    {
-      id: IdType
-      title: string
-      quantity: string
-      measurementUnit: Pick<MeasurementUnitModel, 'id' | 'title'>
-    }[]
-  >
+  workList: MaybeNull<CompletedWorkModel[]>
   relocationTasks: MaybeNull<
     {
       id: IdType

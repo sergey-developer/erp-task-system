@@ -13,6 +13,7 @@ export const getTaskCompletionDocumentsErrMsg =
 export const createInitiationReasonErrMsg = 'Ошибка создания причины вызова'
 export const deleteInitiationReasonErrMsg = 'Ошибка удаления причины вызова'
 
+export const createCompletedWorkErrMsg = 'Ошибка создания проведенных работ'
 export const deleteCompletedWorkErrMsg = 'Ошибка удаления проведенных работ'
 
 export const getTaskWorkPerformedActMessages: ApiRequestMessages<'commonError'> = {
