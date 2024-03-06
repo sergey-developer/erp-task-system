@@ -319,7 +319,7 @@ const taskApiService = baseApiService
             dispatch(
               taskApiService.util.updateQueryData(
                 'getTaskCompletionDocuments' as never,
-                taskId as never,
+                { taskId } as never,
                 (data: GetTaskCompletionDocumentsSuccessResponse) => {
                   if (data.workList?.length) {
                     data.workList = data.workList.filter((r) => r.id !== id)
