@@ -56,7 +56,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   equipmentCatalogListIsLoading,
 
   canCreateEquipment,
-  addEquipmentBtnDisabled,
+  createEquipmentBtnDisabled,
   onClickCreateEquipment,
 
   onClickCreateImage,
@@ -113,7 +113,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
               <Space $block direction='vertical'>
                 <CreateEquipmentButton
                   type='link'
-                  disabled={addEquipmentBtnDisabled}
+                  disabled={createEquipmentBtnDisabled}
                   onClick={() => onClickCreateEquipment({ rowIndex: config.rowIndex })}
                 >
                   Добавить оборудование
