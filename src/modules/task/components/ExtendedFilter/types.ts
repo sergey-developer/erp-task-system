@@ -25,6 +25,7 @@ export type TasksFilterSupportGroupFormFields = Partial<{
 export type TasksFilterFormFields = TasksFilterSupportGroupFormFields &
   Partial<{
     completeAt: Moment[]
+    creationDate: Moment[]
     searchField: keyof SearchFields
     searchValue: string
     status: TaskExtendedStatusEnum[]
