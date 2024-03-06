@@ -7,6 +7,8 @@ import {
   TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
 import {
+  CreateCompletedWorkMutationArgs,
+  CreateCompletedWorkSuccessResponse,
   CreateInitiationReasonMutationArgs,
   CreateInitiationReasonSuccessResponse,
   CreateSubTaskMutationArgs,
@@ -59,6 +61,7 @@ import {
 } from 'modules/task/models'
 import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import {
+  createCompletedWorkUrl,
   createInitiationReasonUrl,
   createSubTaskUrl,
   deleteCompletedWorkUrl,
@@ -304,6 +307,31 @@ const taskApiService = baseApiService
         },
       }),
 
+      createCompletedWork: build.mutation<
+        CreateCompletedWorkSuccessResponse,
+        CreateCompletedWorkMutationArgs
+      >({
+        query: ({ taskId, ...data }) => ({
+          url: createCompletedWorkUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+        onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled
+
+            dispatch(
+              taskApiService.util.updateQueryData(
+                'getTaskCompletionDocuments' as never,
+                { taskId } as never,
+                (docs: GetTaskCompletionDocumentsSuccessResponse) => {
+                  Array.isArray(docs.workList) ? docs.workList.push(data) : (docs.workList = [data])
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
       deleteCompletedWork: build.mutation<
         DeleteCompletedWorkSuccessResponse,
         DeleteCompletedWorkMutationArgs
@@ -319,7 +347,7 @@ const taskApiService = baseApiService
             dispatch(
               taskApiService.util.updateQueryData(
                 'getTaskCompletionDocuments' as never,
-                taskId as never,
+                { taskId } as never,
                 (data: GetTaskCompletionDocumentsSuccessResponse) => {
                   if (data.workList?.length) {
                     data.workList = data.workList.filter((r) => r.id !== id)
@@ -489,16 +517,15 @@ export const {
 
   useGetTaskCountersQuery,
 
-  useGetTaskCompletionDocumentsQuery,
-
   useGetTaskListQuery,
   useGetTaskListMapQuery,
 
   useGetTaskWorkPerformedActMutation,
 
+  useGetTaskCompletionDocumentsQuery,
   useCreateInitiationReasonMutation,
   useDeleteInitiationReasonMutation,
-
+  useCreateCompletedWorkMutation,
   useDeleteCompletedWorkMutation,
 
   useResolveTaskMutation,

@@ -34,6 +34,7 @@ export enum TaskApiEnum {
   CreateInitiationReason = '/tasks/:id/initiation-reasons',
   DeleteInitiationReason = '/initiation-reasons/:id',
 
+  CreateCompletedWork = '/tasks/:id/completed-works',
   DeleteCompletedWork = '/completed-works/:id',
 }
 
