@@ -80,6 +80,7 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 import {
+  checkCreateEquipmentBtnEnabled,
   getEquipmentCatalogListParams,
   getEquipmentFormInitialValues,
   getRelocateFromLocationListParams,
@@ -827,10 +828,11 @@ const EditRelocationTaskPage: FC = () => {
   const controllerIsRequired =
     relocateToWarehouse && relocateFromWarehouse ? !isRelocationFromMainToMsi : true
 
-  const createEquipmentDisabled =
-    !selectedRelocateFrom ||
-    !selectedRelocateTo ||
-    !checkLocationTypeIsWarehouse(selectedRelocateTo.type)
+  const createEquipmentBtnEnabled = checkCreateEquipmentBtnEnabled(
+    typeIsEnteringBalances,
+    selectedRelocateFrom,
+    selectedRelocateTo,
+  )
 
   const equipmentImagesFormPath: FormItemProps['name'] =
     createRelocationEquipmentImagesModalOpened && activeEquipmentRow
@@ -914,7 +916,7 @@ const EditRelocationTaskPage: FC = () => {
                         onChange={importEquipmentsByFile}
                       >
                         <Button
-                          disabled={createEquipmentDisabled}
+                          disabled={!createEquipmentBtnEnabled}
                           loading={importEquipmentsByFileIsLoading}
                         >
                           Добавить из Excel
@@ -943,7 +945,7 @@ const EditRelocationTaskPage: FC = () => {
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
                 canCreateEquipment={!!permissions?.equipmentsCreate}
-                addEquipmentBtnDisabled={createEquipmentDisabled}
+                createEquipmentBtnDisabled={!createEquipmentBtnEnabled}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
                 onClickCreateImage={handleOpenCreateRelocationEquipmentImagesModal}
               />

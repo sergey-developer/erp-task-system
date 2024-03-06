@@ -151,6 +151,16 @@ const ExtendedFilter: FC<TasksFilterProps> = ({
         </FilterBlock>
 
         <FilterBlock
+          data-testid='creation-date-block'
+          label='Период создания'
+          onReset={resetFields(['creationDate'])}
+        >
+          <Form.Item name='creationDate'>
+            <RangePicker allowClear={false} />
+          </Form.Item>
+        </FilterBlock>
+
+        <FilterBlock
           data-testid='is-assigned-block'
           label='Назначенный'
           onReset={resetFields(['isAssigned'])}

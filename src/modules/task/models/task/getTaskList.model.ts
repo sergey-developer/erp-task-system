@@ -40,6 +40,8 @@ export type SearchFields = Partial<{
 export type ExtendedFilterQueries = Partial<{
   completeAtFrom: string
   completeAtTo: string
+  dateFrom: string
+  dateTo: string
   status: TaskExtendedStatusEnum[]
   isOverdue: TaskOverdueEnum[]
   isAssigned: TaskAssignedEnum[]
