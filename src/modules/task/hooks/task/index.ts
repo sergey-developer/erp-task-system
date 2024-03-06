@@ -14,6 +14,7 @@ export * from './useGetTaskCompletionDocuments'
 export * from './useCreateInitiationReason'
 export * from './useDeleteInitiationReason'
 
+export * from './useCreateCompletedWork'
 export * from './useDeleteCompletedWork'
 
 export * from './useGetTasks'

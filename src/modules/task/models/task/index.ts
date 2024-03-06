@@ -20,4 +20,6 @@ export * from './initiationReason.model'
 export * from './createInitiationReason.model'
 export * from './deleteInitiationReason.model'
 
+export * from './completedWork.model'
+export * from './createCompletedWork.model'
 export * from './deleteCompletedWork.model'

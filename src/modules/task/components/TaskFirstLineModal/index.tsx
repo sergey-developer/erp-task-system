@@ -11,7 +11,7 @@ import { TaskFirstLineFormFields, TaskFirstLineModalProps } from './types'
 const { Text, Link } = Typography
 const { TextArea } = Input
 
-const okBtnText: string = 'Вернуть заявку'
+const okBtnText = 'Вернуть заявку'
 
 const descriptionValidationRules: Rule[] = [
   {
@@ -54,8 +54,8 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
           <Text>Укажите причину возврата. Нажмите кнопку «{okBtnText}».</Text>
 
           <Text type='danger'>
-            Заявка исчезнет из вашей очереди заявок. Просмотр заявки и работа с
-            ней будут недоступны.
+            Заявка исчезнет из вашей очереди заявок. Просмотр заявки и работа с ней будут
+            недоступны.
           </Text>
         </Space>
 
@@ -71,10 +71,7 @@ const TaskFirstLineModal: FC<TaskFirstLineModalProps> = ({
             label='Причина возврата'
             rules={descriptionValidationRules}
           >
-            <TextArea
-              placeholder='Расскажите подробнее о задаче'
-              disabled={isLoading}
-            />
+            <TextArea placeholder='Расскажите подробнее о задаче' disabled={isLoading} />
           </Form.Item>
         </Form>
       </Space>

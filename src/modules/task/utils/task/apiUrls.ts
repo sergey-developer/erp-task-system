@@ -38,3 +38,6 @@ export const deleteInitiationReasonUrl = (id: IdType): string =>
 
 export const deleteCompletedWorkUrl = (id: IdType): string =>
   generateApiPath(TaskApiEnum.DeleteCompletedWork, { id: String(id) })
+
+export const createCompletedWorkUrl = (id: IdType): string =>
+  generateApiPath(TaskApiEnum.CreateCompletedWork, { id: String(id) })
