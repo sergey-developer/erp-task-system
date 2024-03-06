@@ -2,16 +2,16 @@ import { FormInstance } from 'antd'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-export type CreateCallingReasonProps = Required<
+export type CreateCallingReasonModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel' | 'confirmLoading'>
 > & {
   onSubmit: (
-    values: CreateCallingReasonFormFields,
-    setFields: FormInstance<CreateCallingReasonFormFields>['setFields'],
+    values: CreateCallingReasonModalFormFields,
+    setFields: FormInstance<CreateCallingReasonModalFormFields>['setFields'],
   ) => Promise<void>
 }
 
-export type CreateCallingReasonFormFields = {
+export type CreateCallingReasonModalFormFields = {
   title: string
   equipmentType: string
   malfunction: string

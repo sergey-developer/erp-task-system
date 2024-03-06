@@ -6,12 +6,12 @@ import BaseModal from 'components/Modals/BaseModal'
 import { ADD_TEXT } from 'shared/constants/common'
 import { onlyRequiredRules } from 'shared/constants/validation'
 
-import { CreateCallingReasonFormFields, CreateCallingReasonProps } from './types'
+import { CreateCallingReasonModalFormFields, CreateCallingReasonModalProps } from './types'
 
-const CreateCallingReason: FC<CreateCallingReasonProps> = ({ onSubmit, ...props }) => {
-  const [form] = Form.useForm<CreateCallingReasonFormFields>()
+const CreateCallingReasonModal: FC<CreateCallingReasonModalProps> = ({ onSubmit, ...props }) => {
+  const [form] = Form.useForm<CreateCallingReasonModalFormFields>()
 
-  const onFinish = async (values: CreateCallingReasonFormFields) => {
+  const onFinish = async (values: CreateCallingReasonModalFormFields) => {
     await onSubmit(
       {
         title: values.title.trim(),
@@ -25,7 +25,7 @@ const CreateCallingReason: FC<CreateCallingReasonProps> = ({ onSubmit, ...props 
 
   return (
     <BaseModal {...props} title='Добавление причины вызова' onOk={form.submit} okText={ADD_TEXT}>
-      <Form<CreateCallingReasonFormFields> layout='vertical' form={form} onFinish={onFinish}>
+      <Form<CreateCallingReasonModalFormFields> layout='vertical' form={form} onFinish={onFinish}>
         <Form.Item name='title' label='№ заявки/причина вызова' rules={onlyRequiredRules}>
           <Input placeholder='Введите текст' />
         </Form.Item>
@@ -46,4 +46,4 @@ const CreateCallingReason: FC<CreateCallingReasonProps> = ({ onSubmit, ...props 
   )
 }
 
-export default CreateCallingReason
+export default CreateCallingReasonModal
