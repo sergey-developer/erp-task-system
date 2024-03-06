@@ -5,7 +5,6 @@ import LabeledData from 'components/LabeledData'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { SAVE_TEXT } from 'shared/constants/common'
-import { onlyRequiredRules } from 'shared/constants/validation'
 
 import { UpdateTaskDescriptionModalFormFields, UpdateTaskDescriptionModalProps } from './types'
 
@@ -42,7 +41,7 @@ const UpdateTaskDescriptionModal: FC<UpdateTaskDescriptionModalProps> = ({
           }}
           onFinish={onFinish}
         >
-          <Form.Item name='internalDescription' rules={onlyRequiredRules} label='Новое описание'>
+          <Form.Item name='internalDescription' label='Новое описание'>
             <TextArea placeholder='Расскажите подробнее о задаче' />
           </Form.Item>
         </Form>
