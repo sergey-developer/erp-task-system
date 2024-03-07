@@ -266,10 +266,10 @@ const CreateRelocationTaskPage: FC = () => {
   const { currentData: equipmentCatalogList = [], isFetching: equipmentCatalogListIsFetching } =
     useGetEquipmentCatalogList(
       {
-        locationId: selectedRelocateFrom?.value,
+        locationId: selectedRelocateFrom?.value || selectedRelocateTo?.value,
         ...getEquipmentCatalogListParams(selectedType),
       },
-      { skip: typeIsEnteringBalances || !selectedRelocateFrom?.value },
+      { skip: !selectedRelocateFrom?.value && !selectedRelocateTo?.value },
     )
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
