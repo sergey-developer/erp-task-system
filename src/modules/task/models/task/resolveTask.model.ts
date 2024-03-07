@@ -4,6 +4,8 @@ import { ErrorData } from 'shared/services/baseApi'
 import { FileToSend } from 'shared/types/file'
 
 export type ResolveTaskMutationArgs = BaseTaskRequestArgs & {
+  spentHours: number
+  spentMinutes: number
   techResolution: string
   userResolution?: string
   attachments?: FileToSend[]
@@ -12,6 +14,11 @@ export type ResolveTaskMutationArgs = BaseTaskRequestArgs & {
 export type ResolveTaskSuccessResponse = void
 
 export type ResolveTaskBadRequestErrorResponse = Omit<
-  ErrorData<Pick<ResolveTaskMutationArgs, 'techResolution' | 'userResolution' | 'attachments'>>,
+  ErrorData<
+    Pick<
+      ResolveTaskMutationArgs,
+      'spentHours' | 'spentMinutes' | 'techResolution' | 'userResolution' | 'attachments'
+    >
+  >,
   'errorList'
 >

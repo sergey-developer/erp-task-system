@@ -1,39 +1,28 @@
-import { Button, Col, Form, Input, Row, Typography, Upload } from 'antd'
+import { Button, Col, Flex, Form, Input, InputNumber, Row, Typography, Upload } from 'antd'
 import stubFalse from 'lodash/stubFalse'
-import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
 import { useTaskType } from 'modules/task/hooks/task'
 
 import UploadButton from 'components/Buttons/UploadButton'
+import LabeledData from 'components/LabeledData'
 import BaseModal from 'components/Modals/BaseModal'
 import Space from 'components/Space'
 
 import { filesFormItemProps } from 'shared/constants/form'
-import { validationSizes } from 'shared/constants/validation'
 
 import { ExecuteTaskModalFormFields, ExecuteTaskModalProps } from './types'
+import {
+  spentHoursRules,
+  spentMinutesRules,
+  techResolutionRules,
+  userResolutionRules,
+} from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
 const okBtnText = 'Выполнить заявку'
-
-const techResolutionValidationRules: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: validationSizes.string.long,
-  },
-]
-
-const userResolutionValidationRules: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: validationSizes.string.long,
-  },
-]
 
 const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
   onGetAct,
@@ -116,11 +105,31 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
           onFinish={handleFinish}
           preserve={false}
         >
+          <Form.Item label='Затраченное время'>
+            <Flex gap='middle'>
+              <LabeledData block={false} label='Часов' labelPosition='right' direction='horizontal'>
+                <Form.Item data-testid='spent-hours' rules={spentHoursRules} name='spentHours'>
+                  <InputNumber style={{ width: 60 }} defaultValue={1} min={0} />
+                </Form.Item>
+              </LabeledData>
+
+              <LabeledData block={false} label='Минут' labelPosition='right' direction='horizontal'>
+                <Form.Item
+                  data-testid='spent-minutes'
+                  rules={spentMinutesRules}
+                  name='spentMinutes'
+                >
+                  <InputNumber style={{ width: 60 }} min={0} max={59} />
+                </Form.Item>
+              </LabeledData>
+            </Flex>
+          </Form.Item>
+
           <Form.Item
             data-testid='tech-resolution'
             label='Техническое решение'
             name='techResolution'
-            rules={techResolutionValidationRules}
+            rules={techResolutionRules}
           >
             <TextArea placeholder='Расскажите о работах на объекте' disabled={isLoading} />
           </Form.Item>
@@ -130,7 +139,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
               data-testid='user-resolution'
               label='Решение для пользователя'
               name='userResolution'
-              rules={userResolutionValidationRules}
+              rules={userResolutionRules}
             >
               <TextArea placeholder='Расскажите заявителю о решении' disabled={isLoading} />
             </Form.Item>
