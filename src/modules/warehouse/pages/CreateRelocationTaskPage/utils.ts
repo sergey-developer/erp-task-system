@@ -3,6 +3,7 @@ import isNumber from 'lodash/isNumber'
 
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
+import { LocationOption } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
@@ -15,6 +16,7 @@ import {
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { GetLocationsQueryArgs } from 'shared/models/catalogs/location'
 import { MaybeUndefined } from 'shared/types/utils'
+import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 
 const getConditionsByType = (
   type: RelocationTaskTypeEnum,
@@ -47,6 +49,8 @@ const getRelocateFromLocationTypes = (
       return [LocationTypeEnum.Warehouse]
     case RelocationTaskTypeEnum.Customer:
       return [LocationTypeEnum.Shop]
+    case RelocationTaskTypeEnum.EnteringBalances:
+      return undefined
   }
 }
 
@@ -61,6 +65,7 @@ const getRelocateFromWarehouseTypes = (
     case RelocationTaskTypeEnum.Relocation:
     case RelocationTaskTypeEnum.Warranty:
     case RelocationTaskTypeEnum.Customer:
+    case RelocationTaskTypeEnum.EnteringBalances:
       return undefined
   }
 }
@@ -72,11 +77,11 @@ const getRelocateToLocationTypes = (
     case RelocationTaskTypeEnum.Relocation:
       return [LocationTypeEnum.Warehouse, LocationTypeEnum.Shop]
     case RelocationTaskTypeEnum.Repair:
+    case RelocationTaskTypeEnum.Customer:
+    case RelocationTaskTypeEnum.EnteringBalances:
       return [LocationTypeEnum.Warehouse]
     case RelocationTaskTypeEnum.Warranty:
       return [LocationTypeEnum.ServiceCenter]
-    case RelocationTaskTypeEnum.Customer:
-      return [LocationTypeEnum.Warehouse]
     case RelocationTaskTypeEnum.WriteOff:
       return undefined
   }
@@ -91,6 +96,8 @@ const getRelocateToWarehouseTypes = (
       return [WarehouseTypeEnum.Main, WarehouseTypeEnum.Msi]
     case RelocationTaskTypeEnum.Repair:
       return [WarehouseTypeEnum.Repair]
+    case RelocationTaskTypeEnum.EnteringBalances:
+      return [WarehouseTypeEnum.Main, WarehouseTypeEnum.Repair, WarehouseTypeEnum.Msi]
     case RelocationTaskTypeEnum.WriteOff:
     case RelocationTaskTypeEnum.Warranty:
       return undefined
@@ -142,3 +149,12 @@ export const getEquipmentFormInitialValues = (
         comment: equipment.comment || undefined,
       }
     : {}
+
+export const checkCreateEquipmentBtnEnabled = (
+  typeIsEnteringBalances: boolean,
+  relocateFrom?: LocationOption,
+  relocateTo?: LocationOption,
+): boolean =>
+  (!!relocateFrom || typeIsEnteringBalances) &&
+  !!relocateTo &&
+  checkLocationTypeIsWarehouse(relocateTo.type)

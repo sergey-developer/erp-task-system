@@ -56,15 +56,12 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   equipmentCatalogListIsLoading,
 
   canCreateEquipment,
-  addEquipmentBtnDisabled,
+  createEquipmentBtnDisabled,
   onClickCreateEquipment,
 
   onClickCreateImage,
 }) => {
   const form = Form.useFormInstance<RelocationTaskFormFields>()
-
-  const relocateFromFormValue: MaybeUndefined<RelocationTaskFormFields['relocateFrom']> =
-    Form.useWatch('relocateFrom', form)
 
   const typeFormValue: MaybeUndefined<RelocationTaskFormFields['type']> = Form.useWatch(
     'type',
@@ -116,7 +113,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
               <Space $block direction='vertical'>
                 <CreateEquipmentButton
                   type='link'
-                  disabled={addEquipmentBtnDisabled}
+                  disabled={createEquipmentBtnDisabled}
                   onClick={() => onClickCreateEquipment({ rowIndex: config.rowIndex })}
                 >
                   Добавить оборудование
@@ -128,7 +125,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
           : undefined,
         allowClear: false,
         loading: equipmentCatalogListIsLoading,
-        disabled: isLoading || !relocateFromFormValue || equipmentCatalogListIsLoading,
+        disabled: isLoading || equipmentCatalogListIsLoading,
         options: equipmentCatalogOptions,
         showSearch: true,
         virtual: true,

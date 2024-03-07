@@ -72,6 +72,7 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 import {
+  checkCreateEquipmentBtnEnabled,
   getEquipmentCatalogListParams,
   getEquipmentFormInitialValues,
   getRelocateFromLocationListParams,
@@ -265,10 +266,10 @@ const CreateRelocationTaskPage: FC = () => {
   const { currentData: equipmentCatalogList = [], isFetching: equipmentCatalogListIsFetching } =
     useGetEquipmentCatalogList(
       {
-        locationId: selectedRelocateFrom?.value,
+        locationId: selectedRelocateFrom?.value || selectedRelocateTo?.value,
         ...getEquipmentCatalogListParams(selectedType),
       },
-      { skip: typeIsEnteringBalances || !selectedRelocateFrom?.value },
+      { skip: !selectedRelocateFrom?.value && !selectedRelocateTo?.value },
     )
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
@@ -685,10 +686,11 @@ const CreateRelocationTaskPage: FC = () => {
   const controllerIsRequired =
     relocateToWarehouse && relocateFromWarehouse ? !isRelocationFromMainToMsi : true
 
-  const createEquipmentDisabled =
-    !selectedRelocateFrom ||
-    !selectedRelocateTo ||
-    !checkLocationTypeIsWarehouse(selectedRelocateTo.type)
+  const createEquipmentBtnEnabled = checkCreateEquipmentBtnEnabled(
+    typeIsEnteringBalances,
+    selectedRelocateFrom,
+    selectedRelocateTo,
+  )
 
   const equipmentImagesFormPath =
     createRelocationEquipmentImagesModalOpened && activeEquipmentRow
@@ -771,7 +773,7 @@ const CreateRelocationTaskPage: FC = () => {
                         onChange={importEquipmentsByFile}
                       >
                         <Button
-                          disabled={createEquipmentDisabled}
+                          disabled={!createEquipmentBtnEnabled}
                           loading={importEquipmentsByFileIsLoading}
                         >
                           Добавить из Excel
@@ -799,7 +801,7 @@ const CreateRelocationTaskPage: FC = () => {
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
                 canCreateEquipment={!!permissions?.equipmentsCreate}
-                addEquipmentBtnDisabled={createEquipmentDisabled}
+                createEquipmentBtnDisabled={!createEquipmentBtnEnabled}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
                 onClickCreateImage={handleOpenCreateRelocationEquipmentImagesModal}
               />
