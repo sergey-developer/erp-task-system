@@ -888,6 +888,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
+            spentHours: [fakeWord()],
+            spentMinutes: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
             attachments: [fakeWord()],
@@ -1025,6 +1027,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
+            spentHours: [fakeWord()],
+            spentMinutes: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
             attachments: [fakeWord()],
@@ -1162,6 +1166,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
+            spentHours: [fakeWord()],
+            spentMinutes: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
             attachments: [fakeWord()],
@@ -1299,6 +1305,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
+            spentHours: [fakeWord()],
+            spentMinutes: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
             attachments: [fakeWord()],

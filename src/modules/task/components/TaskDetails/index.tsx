@@ -368,6 +368,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       try {
         await resolveTask({
           taskId: task.id,
+          ...values,
           techResolution: values.techResolution.trim(),
           userResolution: values.userResolution?.trim(),
           attachments: values.attachments?.length

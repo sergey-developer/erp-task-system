@@ -12,6 +12,7 @@ export const validationTemplateMessages = {
 export const validationMessages = {
   required: 'Обязательное поле',
   canNotBeEmpty: 'Поле не может быть пустым',
+  integer: 'Значение не является целым числом',
   url: { incorrect: 'Не корректная ссылка' },
   email: { incorrect: 'Не корректный email' },
   date: { canNotBeInPast: 'Дата не может быть в прошлом времени' },
