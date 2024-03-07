@@ -1,5 +1,5 @@
 import { useBoolean } from 'ahooks'
-import { Button, Flex, Typography } from 'antd'
+import { Button, Col, Flex, Row, Typography } from 'antd'
 import get from 'lodash/get'
 import React, { FC } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -25,6 +25,8 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { Nullable } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
+
+import DocumentsPackageRelocationEquipmentTable from '../../components/DocumentsPackageRelocationEquipmentTable'
 
 const CreateCallingReasonModal = React.lazy(
   () => import('modules/task/components/CreateCallingReasonModal'),
@@ -106,42 +108,62 @@ const CreateDocumentsPackagePage: FC = () => {
   return (
     <>
       <Flex data-testid='create-documents-package-page' vertical>
-        <Flex vertical gap={112}>
+        <Flex vertical gap={100}>
           <Flex vertical gap='large'>
             <Title level={4}>Основные данные о выполненных работах</Title>
 
             {task && (
-              <Flex vertical gap='small' align='start'>
-                <Title level={5}>Причины вызова</Title>
+              <Row>
+                <Col span={15}>
+                  <Flex vertical gap='small' align='start'>
+                    <Title level={5}>Причины вызова</Title>
 
-                <CallingReasonsTable
-                  loading={taskCompletionDocumentsIsFetching}
-                  dataSource={taskCompletionDocuments?.initiationReasons || []}
-                  onDelete={onDeleteInitiationReason}
-                />
+                    <CallingReasonsTable
+                      loading={taskCompletionDocumentsIsFetching}
+                      dataSource={taskCompletionDocuments?.initiationReasons || []}
+                      onDelete={onDeleteInitiationReason}
+                    />
 
-                <Button type='link' onClick={debouncedToggleCreateReasonModal}>
-                  Добавить причину
-                </Button>
-              </Flex>
+                    <Button type='link' onClick={debouncedToggleCreateReasonModal}>
+                      Добавить причину
+                    </Button>
+                  </Flex>
+                </Col>
+              </Row>
             )}
 
             {task && (
-              <Flex vertical gap='small' align='start'>
-                <Title level={5}>Перечень проведенных работ</Title>
+              <Row>
+                <Col span={10}>
+                  <Flex vertical gap='small' align='start'>
+                    <Title level={5}>Перечень проведенных работ</Title>
 
-                <CompletedWorkTable
-                  loading={taskCompletionDocumentsIsFetching}
-                  dataSource={taskCompletionDocuments?.workList || []}
-                  onDelete={onDeleteCompletedWork}
-                />
+                    <CompletedWorkTable
+                      loading={taskCompletionDocumentsIsFetching}
+                      dataSource={taskCompletionDocuments?.workList || []}
+                      onDelete={onDeleteCompletedWork}
+                    />
 
-                <Button type='link' onClick={debouncedToggleCreateCompletedWorkModal}>
-                  Добавить работы
-                </Button>
-              </Flex>
+                    <Button type='link' onClick={debouncedToggleCreateCompletedWorkModal}>
+                      Добавить работы
+                    </Button>
+                  </Flex>
+                </Col>
+              </Row>
             )}
           </Flex>
+
+          <Row>
+            <Col span={12}>
+              <Flex vertical gap='middle'>
+                <Title level={4}>Перемещения</Title>
+
+                {taskCompletionDocuments?.relocationTasks?.map((task) => (
+                  <DocumentsPackageRelocationEquipmentTable key={task.id} task={task} />
+                ))}
+              </Flex>
+            </Col>
+          </Row>
         </Flex>
       </Flex>
 

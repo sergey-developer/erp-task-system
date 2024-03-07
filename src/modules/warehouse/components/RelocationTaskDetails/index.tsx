@@ -59,7 +59,7 @@ import {
 } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
-  getRelocationTaskTitle,
+  getRelocateFromTo,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
 
@@ -412,7 +412,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         placement='bottom'
         title={
           <Space>
-            <Text>{getRelocationTaskTitle(relocationTask)}</Text>
+            <Text>{getRelocateFromTo(relocationTask)}</Text>
             {relocationTaskIsFetching && <Spinner centered={false} />}
           </Space>
         }

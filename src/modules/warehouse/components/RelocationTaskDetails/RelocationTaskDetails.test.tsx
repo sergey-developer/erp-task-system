@@ -31,10 +31,7 @@ import {
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CreateDocumentsPackagePage from 'modules/warehouse/pages/CreateDocumentsPackagePage'
 import { testUtils as createDocumentsPackagePageTestUtils } from 'modules/warehouse/pages/CreateDocumentsPackagePage/CreateDocumentsPackagePage.test'
-import {
-  getRelocationTaskTitle,
-  getWaybillM15Filename,
-} from 'modules/warehouse/utils/relocationTask'
+import { getRelocateFromTo, getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -260,9 +257,7 @@ describe('Информация о заявке о перемещении', () =>
       render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
 
       await testUtils.expectRelocationTaskLoadingFinished()
-      const title = within(testUtils.getContainer()).getByText(
-        getRelocationTaskTitle(relocationTask),
-      )
+      const title = within(testUtils.getContainer()).getByText(getRelocateFromTo(relocationTask))
 
       expect(title).toBeInTheDocument()
     })
