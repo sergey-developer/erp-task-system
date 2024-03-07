@@ -9,21 +9,25 @@ const { Text } = Typography
 
 type LabeledDataProps = Pick<SpaceProps, 'size' | 'direction' | 'align' | 'onClick'> & {
   label: string
+  labelPosition?: 'left' | 'right'
   block?: boolean
 }
 
 const LabeledData: FCWithChildren<LabeledDataProps> = ({
   children,
   label,
+  labelPosition = 'left',
   direction = 'vertical',
   block = true,
   ...props
 }) => {
+  const labelComponent = <Text type='secondary'>{label}</Text>
+
   return (
     <Space direction={direction} $block={block} {...props}>
-      <Text type='secondary'>{label}</Text>
-
+      {labelPosition === 'left' && labelComponent}
       {children}
+      {labelPosition === 'right' && labelComponent}
     </Space>
   )
 }
