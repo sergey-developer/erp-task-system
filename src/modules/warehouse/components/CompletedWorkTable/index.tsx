@@ -10,7 +10,12 @@ const CompletedWorkTable: FC<CompletedWorkTableProps> = ({ onDelete, ...props })
 
   return (
     <div data-testid='completed-work-table'>
-      <ParentSizedTable<CompletedWorkTableItem> {...props} rowKey='id' columns={columns} />
+      <ParentSizedTable<CompletedWorkTableItem>
+        {...props}
+        rowKey='id'
+        columns={columns}
+        pagination={false}
+      />
     </div>
   )
 }

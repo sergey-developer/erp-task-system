@@ -59,7 +59,7 @@ import {
 } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
-  getRelocationTaskTitle,
+  getRelocateFromTo,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
 
@@ -399,7 +399,10 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       {
         key: 7,
         label: 'Сформировать пакет документов',
-        onClick: () => navigate(WarehouseRouteEnum.CreateDocumentsPackage),
+        onClick: () =>
+          navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
+            state: { relocationTask: { id: relocationTaskId } },
+          }),
       },
     ],
   }
@@ -412,7 +415,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         placement='bottom'
         title={
           <Space>
-            <Text>{getRelocationTaskTitle(relocationTask)}</Text>
+            <Text>{getRelocateFromTo(relocationTask)}</Text>
             {relocationTaskIsFetching && <Spinner centered={false} />}
           </Space>
         }
