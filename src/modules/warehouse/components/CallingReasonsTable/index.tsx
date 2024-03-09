@@ -10,7 +10,12 @@ const CallingReasonsTable: FC<CallingReasonsTableProps> = ({ onDelete, ...props 
 
   return (
     <div data-testid='calling-reasons-table'>
-      <ParentSizedTable<CallingReasonsTableItem> {...props} rowKey='id' columns={columns} />
+      <ParentSizedTable<CallingReasonsTableItem>
+        {...props}
+        rowKey='id'
+        columns={columns}
+        pagination={false}
+      />
     </div>
   )
 }
