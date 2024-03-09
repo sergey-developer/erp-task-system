@@ -1,6 +1,6 @@
-import { BaseRelocationTaskRequestArgs } from 'modules/warehouse/types'
+import { RelocationTaskRequestArgs } from 'modules/warehouse/types'
 
 import { RelocationCompletionDocumentModel } from './relocationCompletionDocument.model'
 
-export type GetRelocationCompletionDocumentsQueryArgs = BaseRelocationTaskRequestArgs
+export type GetRelocationCompletionDocumentsQueryArgs = RelocationTaskRequestArgs
 export type GetRelocationCompletionDocumentsSuccessResponse = RelocationCompletionDocumentModel
