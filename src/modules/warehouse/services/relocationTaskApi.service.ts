@@ -19,6 +19,8 @@ import {
   CreateRelocationTaskSuccessResponse,
   ExecuteRelocationTaskMutationArgs,
   ExecuteRelocationTaskSuccessResponse,
+  GetRelocationCompletionDocumentsQueryArgs,
+  GetRelocationCompletionDocumentsSuccessResponse,
   GetRelocationEquipmentBalanceListQueryArgs,
   GetRelocationEquipmentBalanceListSuccessResponse,
   GetRelocationEquipmentListQueryArgs,
@@ -44,6 +46,7 @@ import {
   closeRelocationTaskUrl,
   createRelocationTaskAttachmentUrl,
   executeRelocationTaskUrl,
+  getRelocationCompletionDocumentsUrl,
   getRelocationEquipmentBalanceListUrl,
   getRelocationEquipmentListUrl,
   getRelocationTaskAttachmentsUrl,
@@ -279,6 +282,16 @@ const relocationTaskApiService = baseApiService
           method: HttpMethodEnum.Get,
         }),
       }),
+
+      getRelocationCompletionDocuments: build.query<
+        GetRelocationCompletionDocumentsSuccessResponse,
+        GetRelocationCompletionDocumentsQueryArgs
+      >({
+        query: ({ relocationTaskId }) => ({
+          url: getRelocationCompletionDocumentsUrl(relocationTaskId),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
     }),
   })
 
@@ -296,6 +309,8 @@ export const {
 
   useCreateRelocationTaskAttachmentMutation,
   useGetRelocationTaskAttachmentsQuery,
+
+  useGetRelocationCompletionDocumentsQuery,
 
   useLazyGetRelocationTaskWaybillM15Query,
 

@@ -1,50 +1,51 @@
-import { Button, Flex, Table, Typography } from 'antd'
+import { Button, Table, TableProps } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskCompletionDocumentRelocationTask } from 'modules/task/models'
 import {
   equipmentConditionDict,
   EquipmentConditionEnum,
 } from 'modules/warehouse/constants/equipment'
-import { getRelocateFromTo } from 'modules/warehouse/utils/relocationTask'
+import { RelocationCompletionDocumentModel } from 'modules/warehouse/models'
 
-const { Title } = Typography
+import { ArrayFirst } from 'shared/types/utils'
 
-export type DocumentsPackageRelocationEquipmentTableProps = {
-  task: TaskCompletionDocumentRelocationTask
-}
+export type DocumentsPackageRelocationEquipmentTableProps = Pick<TableProps, 'dataSource'>
 
 const DocumentsPackageRelocationEquipmentTable: FC<
   DocumentsPackageRelocationEquipmentTableProps
-> = ({ task }) => {
+> = (props) => {
   return (
-    <Flex vertical>
-      <Title level={5}>{getRelocateFromTo(task, 'Перемещение оборудования')}</Title>
-
+    <div data-testid='documents-package-relocation-equipment-table'>
       <Table
+        {...props}
         rowKey='id'
-        dataSource={task.relocationEquipments}
         pagination={false}
         columns={[
           {
             dataIndex: 'equipment',
             title: 'Наименование',
             render: (
-              value: TaskCompletionDocumentRelocationTask['relocationEquipments'][number]['equipment'],
+              value: ArrayFirst<
+                RelocationCompletionDocumentModel['relocationEquipments']
+              >['equipment'],
             ) => value.title,
           },
           {
             dataIndex: 'equipment',
             title: 'Серийный номер',
             render: (
-              value: TaskCompletionDocumentRelocationTask['relocationEquipments'][number]['equipment'],
+              value: ArrayFirst<
+                RelocationCompletionDocumentModel['relocationEquipments']
+              >['equipment'],
             ) => value.serialNumber,
           },
           {
             dataIndex: 'condition',
             title: 'Состояние',
             render: (
-              value: TaskCompletionDocumentRelocationTask['relocationEquipments'][number]['condition'],
+              value: ArrayFirst<
+                RelocationCompletionDocumentModel['relocationEquipments']
+              >['condition'],
             ) => equipmentConditionDict[value],
           },
           {
@@ -52,7 +53,9 @@ const DocumentsPackageRelocationEquipmentTable: FC<
             dataIndex: 'condition',
             width: 150,
             render: (
-              value: TaskCompletionDocumentRelocationTask['relocationEquipments'][number]['condition'],
+              value: ArrayFirst<
+                RelocationCompletionDocumentModel['relocationEquipments']
+              >['condition'],
             ) => (
               <Button
                 disabled={
@@ -66,7 +69,7 @@ const DocumentsPackageRelocationEquipmentTable: FC<
           },
         ]}
       />
-    </Flex>
+    </div>
   )
 }
 

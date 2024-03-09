@@ -12,5 +12,7 @@ export * from './useUpdateExternalRelocation'
 
 export * from './useGetRelocationTaskList'
 
+export * from './useGetRelocationCompletionDocuments'
+
 export * from './useGetRelocationEquipmentList'
 export * from './useGetRelocationEquipmentBalanceList'

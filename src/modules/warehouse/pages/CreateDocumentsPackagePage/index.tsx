@@ -16,17 +16,20 @@ import {
 import { TaskModel } from 'modules/task/models'
 import CallingReasonsTable from 'modules/warehouse/components/CallingReasonsTable'
 import CompletedWorkTable from 'modules/warehouse/components/CompletedWorkTable'
+import DocumentsPackageRelocationEquipmentTable from 'modules/warehouse/components/DocumentsPackageRelocationEquipmentTable'
 import { useGetMeasurementUnitList } from 'modules/warehouse/hooks/measurementUnit'
+import { useGetRelocationCompletionDocuments } from 'modules/warehouse/hooks/relocationTask'
+import { RelocationTaskModel } from 'modules/warehouse/models'
+import { getRelocateFromTo } from 'modules/warehouse/utils/relocationTask'
 
 import ModalFallback from 'components/Modals/ModalFallback'
+import Spinner from 'components/Spinner'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { Nullable } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
-
-import DocumentsPackageRelocationEquipmentTable from '../../components/DocumentsPackageRelocationEquipmentTable'
 
 const CreateCallingReasonModal = React.lazy(
   () => import('modules/task/components/CreateCallingReasonModal'),
@@ -41,6 +44,10 @@ const { Title } = Typography
 const CreateDocumentsPackagePage: FC = () => {
   const location = useLocation()
   const task: Nullable<Pick<TaskModel, 'id'>> = get(location, 'state.task')
+  const relocationTask: Nullable<Pick<RelocationTaskModel, 'id'>> = get(
+    location,
+    'state.relocationTask',
+  )
 
   const [createReasonModalOpened, { toggle: toggleCreateReasonModal }] = useBoolean(false)
   const debouncedToggleCreateReasonModal = useDebounceFn(toggleCreateReasonModal)
@@ -51,6 +58,14 @@ const CreateDocumentsPackagePage: FC = () => {
 
   const { currentData: taskCompletionDocuments, isFetching: taskCompletionDocumentsIsFetching } =
     useGetTaskCompletionDocuments({ taskId: task?.id! }, { skip: !task?.id })
+
+  const {
+    currentData: relocationCompletionDocument,
+    isFetching: relocationCompletionDocumentIsFetching,
+  } = useGetRelocationCompletionDocuments(
+    { relocationTaskId: relocationTask?.id! },
+    { skip: !relocationTask?.id },
+  )
 
   const { currentData: measurementUnits = [], isFetching: measurementUnitsIsFetching } =
     useGetMeasurementUnitList(undefined, { skip: !createCompletedWorkModalOpened })
@@ -158,9 +173,39 @@ const CreateDocumentsPackagePage: FC = () => {
               <Flex vertical gap='middle'>
                 <Title level={4}>Перемещения</Title>
 
-                {taskCompletionDocuments?.relocationTasks?.map((task) => (
-                  <DocumentsPackageRelocationEquipmentTable key={task.id} task={task} />
-                ))}
+                {taskCompletionDocumentsIsFetching || relocationCompletionDocumentIsFetching ? (
+                  <Spinner />
+                ) : (
+                  <>
+                    {taskCompletionDocuments?.relocationTasks &&
+                      taskCompletionDocuments.relocationTasks.map((task) => (
+                        <Flex key={task.id} vertical gap='small'>
+                          <Title level={5}>
+                            {getRelocateFromTo(task, 'Перемещение оборудования')}
+                          </Title>
+
+                          <DocumentsPackageRelocationEquipmentTable
+                            dataSource={task.relocationEquipments}
+                          />
+                        </Flex>
+                      ))}
+
+                    {relocationCompletionDocument && (
+                      <Flex vertical gap='small'>
+                        <Title level={5}>
+                          {getRelocateFromTo(
+                            relocationCompletionDocument,
+                            'Перемещение оборудования',
+                          )}
+                        </Title>
+
+                        <DocumentsPackageRelocationEquipmentTable
+                          dataSource={relocationCompletionDocument.relocationEquipments}
+                        />
+                      </Flex>
+                    )}
+                  </>
+                )}
               </Flex>
             </Col>
           </Row>

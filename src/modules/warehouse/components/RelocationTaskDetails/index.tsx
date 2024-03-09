@@ -399,7 +399,10 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
       {
         key: 7,
         label: 'Сформировать пакет документов',
-        onClick: () => navigate(WarehouseRouteEnum.CreateDocumentsPackage),
+        onClick: () =>
+          navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
+            state: { relocationTask: { id: relocationTaskId } },
+          }),
       },
     ],
   }
