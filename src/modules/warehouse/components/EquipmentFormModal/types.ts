@@ -20,7 +20,7 @@ import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { ArrayFirst } from 'shared/types/utils'
 
-export type EquipmentFormModalFormFields = {
+export type EquipmentFormFields = {
   title: string
   nomenclature: IdType
   condition: EquipmentConditionEnum
@@ -50,8 +50,8 @@ export type EquipmentFormModalProps = Required<
     mode: 'create' | 'edit'
 
     onSubmit: (
-      values: EquipmentFormModalFormFields,
-      setFields: FormInstance<EquipmentFormModalFormFields>['setFields'],
+      values: EquipmentFormFields,
+      setFields: FormInstance<EquipmentFormFields>['setFields'],
     ) => Promise<void> | void
 
     onUploadImage: NonNullable<UploadProps['customRequest']>
@@ -83,7 +83,7 @@ export type EquipmentFormModalProps = Required<
     nomenclatureListIsLoading: boolean
     onChangeNomenclature: (id: IdType) => void
 
-    values?: Partial<Pick<EquipmentFormModalFormFields, 'title' | 'images'>>
-    initialValues?: Partial<EquipmentFormModalFormFields>
+    values?: Partial<Pick<EquipmentFormFields, 'title' | 'images'>>
+    initialValues?: Partial<EquipmentFormFields>
     errors?: ArrayFirst<CreateEquipmentsBadRequestErrorResponse>
   }

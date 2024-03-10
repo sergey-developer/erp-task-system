@@ -13,12 +13,12 @@ export type CreateCompletedWorkModalProps = Required<
   measurementUnitsIsLoading: boolean
 
   onSubmit: (
-    values: CreateCompletedWorkModalFormFields,
-    setFields: FormInstance<CreateCompletedWorkModalFormFields>['setFields'],
+    values: CreateCompletedWorkFormFields,
+    setFields: FormInstance<CreateCompletedWorkFormFields>['setFields'],
   ) => Promise<void>
 }
 
-export type CreateCompletedWorkModalFormFields = {
+export type CreateCompletedWorkFormFields = {
   title: string
   quantity: number
   measurementUnit: IdType

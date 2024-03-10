@@ -43,6 +43,10 @@ const CreateCompletedWorkModal = React.lazy(
   () => import('modules/task/components/CreateCompletedWorkModal'),
 )
 
+const CreateTechnicalExaminationModal = React.lazy(
+  () => import('modules/warehouse/components/CreateTechnicalExaminationModal'),
+)
+
 const { Title } = Typography
 
 const CreateDocumentsPackagePage: FC = () => {
@@ -59,6 +63,12 @@ const CreateDocumentsPackagePage: FC = () => {
   const [createCompletedWorkModalOpened, { toggle: toggleCreateCompletedWorkModal }] =
     useBoolean(false)
   const debouncedToggleCreateCompletedWorkModal = useDebounceFn(toggleCreateCompletedWorkModal)
+
+  const [createTechnicalExaminationModalOpened, { toggle: toggleCreateTechnicalExaminationModal }] =
+    useBoolean(false)
+  const debouncedToggleCreateTechnicalExaminationModal = useDebounceFn(
+    toggleCreateTechnicalExaminationModal,
+  )
 
   const { currentData: taskCompletionDocuments, isFetching: taskCompletionDocumentsIsFetching } =
     useGetTaskCompletionDocuments({ taskId: task?.id! }, { skip: !task?.id })
@@ -127,96 +137,104 @@ const CreateDocumentsPackagePage: FC = () => {
   return (
     <>
       <Flex data-testid='create-documents-package-page' vertical>
-        <Flex vertical gap={100}>
-          <Flex vertical gap='large'>
-            <Title level={4}>Основные данные о выполненных работах</Title>
+        <Flex vertical gap='middle'>
+          <Title level={4}>Основные данные о выполненных работах</Title>
 
-            {task && (
-              <Row>
-                <Col span={15}>
-                  <Flex vertical gap='small' align='start'>
-                    <Title level={5}>Причины вызова</Title>
+          <Flex vertical gap={100}>
+            <Flex vertical gap='large'>
+              {task && (
+                <Row>
+                  <Col span={15}>
+                    <Flex vertical gap='small' align='start'>
+                      <Title level={5}>Причины вызова</Title>
 
-                    <React.Suspense fallback={<Spinner tip='Загрузка таблицы...' />}>
-                      <CallingReasonsTable
-                        loading={taskCompletionDocumentsIsFetching}
-                        dataSource={taskCompletionDocuments?.initiationReasons || []}
-                        onDelete={onDeleteInitiationReason}
-                      />
-                    </React.Suspense>
+                      <React.Suspense fallback={<Spinner tip='Загрузка таблицы...' />}>
+                        <CallingReasonsTable
+                          loading={taskCompletionDocumentsIsFetching}
+                          dataSource={taskCompletionDocuments?.initiationReasons || []}
+                          onDelete={onDeleteInitiationReason}
+                        />
+                      </React.Suspense>
 
-                    <Button type='link' onClick={debouncedToggleCreateReasonModal}>
-                      Добавить причину
-                    </Button>
-                  </Flex>
-                </Col>
-              </Row>
-            )}
+                      <Button type='link' onClick={debouncedToggleCreateReasonModal}>
+                        Добавить причину
+                      </Button>
+                    </Flex>
+                  </Col>
+                </Row>
+              )}
 
-            {task && (
-              <Row>
-                <Col span={10}>
-                  <Flex vertical gap='small' align='start'>
-                    <Title level={5}>Перечень проведенных работ</Title>
+              {task && (
+                <Row>
+                  <Col span={10}>
+                    <Flex vertical gap='small' align='start'>
+                      <Title level={5}>Перечень проведенных работ</Title>
 
-                    <React.Suspense fallback={<Spinner tip='Загрузка таблицы...' />}>
-                      <CompletedWorkTable
-                        loading={taskCompletionDocumentsIsFetching}
-                        dataSource={taskCompletionDocuments?.workList || []}
-                        onDelete={onDeleteCompletedWork}
-                      />
-                    </React.Suspense>
+                      <React.Suspense fallback={<Spinner tip='Загрузка таблицы...' />}>
+                        <CompletedWorkTable
+                          loading={taskCompletionDocumentsIsFetching}
+                          dataSource={taskCompletionDocuments?.workList || []}
+                          onDelete={onDeleteCompletedWork}
+                        />
+                      </React.Suspense>
 
-                    <Button type='link' onClick={debouncedToggleCreateCompletedWorkModal}>
-                      Добавить работы
-                    </Button>
-                  </Flex>
-                </Col>
-              </Row>
-            )}
-          </Flex>
+                      <Button type='link' onClick={debouncedToggleCreateCompletedWorkModal}>
+                        Добавить работы
+                      </Button>
+                    </Flex>
+                  </Col>
+                </Row>
+              )}
+            </Flex>
 
-          <Row>
-            <Col span={12}>
-              <Flex vertical gap='middle'>
-                <Title level={4}>Перемещения</Title>
+            <Row>
+              <Col span={12}>
+                <Flex vertical gap='middle'>
+                  <Title level={4}>Перемещения</Title>
 
-                {taskCompletionDocumentsIsFetching || relocationCompletionDocumentIsFetching ? (
-                  <Spinner />
-                ) : (
-                  <>
-                    {taskCompletionDocuments?.relocationTasks &&
-                      taskCompletionDocuments.relocationTasks.map((task) => (
-                        <Flex key={task.id} vertical gap='small'>
+                  {taskCompletionDocumentsIsFetching || relocationCompletionDocumentIsFetching ? (
+                    <Spinner />
+                  ) : (
+                    <>
+                      {taskCompletionDocuments?.relocationTasks &&
+                        taskCompletionDocuments.relocationTasks.map((task) => (
+                          <Flex key={task.id} vertical gap='small'>
+                            <Title level={5}>
+                              {getRelocateFromTo(task, 'Перемещение оборудования')}
+                            </Title>
+
+                            <DocumentsPackageRelocationEquipmentTable
+                              dataSource={task.relocationEquipments}
+                              onClickTechnicalExamination={
+                                debouncedToggleCreateTechnicalExaminationModal
+                              }
+                            />
+                          </Flex>
+                        ))}
+
+                      {relocationCompletionDocument && (
+                        <Flex vertical gap='small'>
                           <Title level={5}>
-                            {getRelocateFromTo(task, 'Перемещение оборудования')}
+                            {getRelocateFromTo(
+                              relocationCompletionDocument,
+                              'Перемещение оборудования',
+                            )}
                           </Title>
 
                           <DocumentsPackageRelocationEquipmentTable
-                            dataSource={task.relocationEquipments}
+                            dataSource={relocationCompletionDocument.relocationEquipments}
+                            onClickTechnicalExamination={
+                              debouncedToggleCreateTechnicalExaminationModal
+                            }
                           />
                         </Flex>
-                      ))}
-
-                    {relocationCompletionDocument && (
-                      <Flex vertical gap='small'>
-                        <Title level={5}>
-                          {getRelocateFromTo(
-                            relocationCompletionDocument,
-                            'Перемещение оборудования',
-                          )}
-                        </Title>
-
-                        <DocumentsPackageRelocationEquipmentTable
-                          dataSource={relocationCompletionDocument.relocationEquipments}
-                        />
-                      </Flex>
-                    )}
-                  </>
-                )}
-              </Flex>
-            </Col>
-          </Row>
+                      )}
+                    </>
+                  )}
+                </Flex>
+              </Col>
+            </Row>
+          </Flex>
         </Flex>
       </Flex>
 
@@ -244,6 +262,21 @@ const CreateDocumentsPackagePage: FC = () => {
             onCancel={debouncedToggleCreateCompletedWorkModal}
             onSubmit={onCreateCompletedWork}
             confirmLoading={createCompletedWorkIsLoading}
+          />
+        </React.Suspense>
+      )}
+
+      {createTechnicalExaminationModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback open onCancel={debouncedToggleCreateTechnicalExaminationModal} />
+          }
+        >
+          <CreateTechnicalExaminationModal
+            open={createTechnicalExaminationModalOpened}
+            onCancel={debouncedToggleCreateTechnicalExaminationModal}
+            onSubmit={async () => {}}
+            isLoading={false}
           />
         </React.Suspense>
       )}

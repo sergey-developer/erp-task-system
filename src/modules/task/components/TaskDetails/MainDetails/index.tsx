@@ -8,7 +8,7 @@ import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { useUserRole } from 'modules/user/hooks'
 
-import LabeledData from 'components/LabeledData'
+import Label from 'components/Label'
 import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 
@@ -113,21 +113,21 @@ const MainDetails: FC<MainDetailsProps> = ({
 
       <Row justify='space-between'>
         <Col span={11}>
-          <LabeledData label='Адрес'>
+          <Label label='Адрес'>
             <Text strong>{name}</Text>
 
             <Text>{address ? address : 'Не определено'}</Text>
-          </LabeledData>
+          </Label>
         </Col>
 
         <Col span={11}>
-          <LabeledData label='Заявитель'>
+          <Label label='Заявитель'>
             <Text strong>{contactService}</Text>
 
             {contactPhone && <Text>{contactPhone}</Text>}
 
             {portablePhone && <Text>{portablePhone}</Text>}
-          </LabeledData>
+          </Label>
         </Col>
       </Row>
     </Space>
