@@ -14,8 +14,6 @@ import {
   useGetTaskCompletionDocuments,
 } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
-import CallingReasonsTable from 'modules/warehouse/components/CallingReasonsTable'
-import CompletedWorkTable from 'modules/warehouse/components/CompletedWorkTable'
 import DocumentsPackageRelocationEquipmentTable from 'modules/warehouse/components/DocumentsPackageRelocationEquipmentTable'
 import { useGetMeasurementUnitList } from 'modules/warehouse/hooks/measurementUnit'
 import { useGetRelocationCompletionDocuments } from 'modules/warehouse/hooks/relocationTask'
@@ -31,10 +29,16 @@ import { IdType } from 'shared/types/common'
 import { Nullable } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
 
+const CallingReasonsTable = React.lazy(
+  () => import('modules/warehouse/components/CallingReasonsTable'),
+)
 const CreateCallingReasonModal = React.lazy(
   () => import('modules/task/components/CreateCallingReasonModal'),
 )
 
+const CompletedWorkTable = React.lazy(
+  () => import('modules/warehouse/components/CompletedWorkTable'),
+)
 const CreateCompletedWorkModal = React.lazy(
   () => import('modules/task/components/CreateCompletedWorkModal'),
 )
@@ -133,11 +137,13 @@ const CreateDocumentsPackagePage: FC = () => {
                   <Flex vertical gap='small' align='start'>
                     <Title level={5}>Причины вызова</Title>
 
-                    <CallingReasonsTable
-                      loading={taskCompletionDocumentsIsFetching}
-                      dataSource={taskCompletionDocuments?.initiationReasons || []}
-                      onDelete={onDeleteInitiationReason}
-                    />
+                    <React.Suspense fallback={<Spinner tip='Загрузка таблицы...' />}>
+                      <CallingReasonsTable
+                        loading={taskCompletionDocumentsIsFetching}
+                        dataSource={taskCompletionDocuments?.initiationReasons || []}
+                        onDelete={onDeleteInitiationReason}
+                      />
+                    </React.Suspense>
 
                     <Button type='link' onClick={debouncedToggleCreateReasonModal}>
                       Добавить причину
@@ -153,11 +159,13 @@ const CreateDocumentsPackagePage: FC = () => {
                   <Flex vertical gap='small' align='start'>
                     <Title level={5}>Перечень проведенных работ</Title>
 
-                    <CompletedWorkTable
-                      loading={taskCompletionDocumentsIsFetching}
-                      dataSource={taskCompletionDocuments?.workList || []}
-                      onDelete={onDeleteCompletedWork}
-                    />
+                    <React.Suspense fallback={<Spinner tip='Загрузка таблицы...' />}>
+                      <CompletedWorkTable
+                        loading={taskCompletionDocumentsIsFetching}
+                        dataSource={taskCompletionDocuments?.workList || []}
+                        onDelete={onDeleteCompletedWork}
+                      />
+                    </React.Suspense>
 
                     <Button type='link' onClick={debouncedToggleCreateCompletedWorkModal}>
                       Добавить работы
