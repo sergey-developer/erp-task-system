@@ -59,7 +59,10 @@ const MainDetails: FC<MainDetailsProps> = ({
   isOlaNextBreachTimeChanged,
 }) => {
   const { isFirstLineSupportRole } = useUserRole()
-  const permissions = useMatchUserPermissions(['TASK_HISTORY_DEADLINE_READ'])
+  const permissions = useMatchUserPermissions([
+    'TASK_HISTORY_DEADLINE_READ',
+    'TASK_HISTORY_DEADLINE_UPDATE',
+  ])
 
   const { olaStatusTextType, completeAt } = useMemo(
     () => ({
@@ -95,7 +98,8 @@ const MainDetails: FC<MainDetailsProps> = ({
                   <Popover
                     title={<Text type='secondary'>Срок выполнения был изменен</Text>}
                     content={
-                      permissions?.taskHistoryDeadlineRead &&
+                      (permissions?.taskHistoryDeadlineRead ||
+                        permissions?.taskHistoryDeadlineUpdate) &&
                       `Внешний срок выполнения: ${getTaskCompleteAtDate({
                         olaNextBreachTime: previousOlaNextBreachTime,
                       })}`
