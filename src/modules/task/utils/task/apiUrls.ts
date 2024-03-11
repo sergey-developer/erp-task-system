@@ -27,6 +27,9 @@ export const createSubTaskUrl = (taskId: IdType): string =>
 export const getTaskCompletionDocumentsUrl = (taskId: IdType): string =>
   generateApiPath(TaskApiEnum.GetTaskCompletionDocuments, { id: String(taskId) })
 
+export const createTaskCompletionDocumentsUrl = (taskId: IdType): string =>
+  generateApiPath(TaskApiEnum.CreateTaskCompletionDocuments, { id: String(taskId) })
+
 export const createInitiationReasonUrl = (taskId: IdType): string =>
   generateApiPath(TaskApiEnum.CreateInitiationReason, { id: String(taskId) })
 

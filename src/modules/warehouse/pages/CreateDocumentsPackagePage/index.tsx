@@ -9,6 +9,7 @@ import { CreateCompletedWorkModalProps } from 'modules/task/components/CreateCom
 import {
   useCreateCompletedWork,
   useCreateInitiationReason,
+  useCreateTaskCompletionDocuments,
   useDeleteCompletedWork,
   useDeleteInitiationReason,
   useGetTaskCompletionDocuments,
@@ -21,7 +22,10 @@ import {
   useCreateRelocationEquipmentTechnicalExamination,
   useGetRelocationEquipmentTechnicalExamination,
 } from 'modules/warehouse/hooks/relocationEquipment'
-import { useGetRelocationCompletionDocuments } from 'modules/warehouse/hooks/relocationTask'
+import {
+  useCreateRelocationTaskCompletionDocuments,
+  useGetRelocationTaskCompletionDocuments,
+} from 'modules/warehouse/hooks/relocationTask'
 import { RelocationTaskModel } from 'modules/warehouse/models'
 import { getRelocateFromTo } from 'modules/warehouse/utils/relocationTask'
 
@@ -106,7 +110,7 @@ const CreateDocumentsPackagePage: FC = () => {
   const {
     currentData: relocationCompletionDocument,
     isFetching: relocationCompletionDocumentIsFetching,
-  } = useGetRelocationCompletionDocuments(
+  } = useGetRelocationTaskCompletionDocuments(
     { relocationTaskId: relocationTask?.id! },
     { skip: !relocationTask?.id },
   )
@@ -121,6 +125,11 @@ const CreateDocumentsPackagePage: FC = () => {
   const [createCompletedWorkMutation, { isLoading: createCompletedWorkIsLoading }] =
     useCreateCompletedWork()
   const [deleteCompletedWorkMutation] = useDeleteCompletedWork()
+
+  const [createTaskCompletionDocumentsMutation, {}] = useCreateTaskCompletionDocuments()
+
+  const [createRelocationTaskCompletionDocumentsMutation, {}] =
+    useCreateRelocationTaskCompletionDocuments()
 
   const onDeleteInitiationReason = async (id: IdType) => {
     if (!task) return

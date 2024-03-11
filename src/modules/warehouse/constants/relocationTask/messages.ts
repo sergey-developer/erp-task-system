@@ -6,8 +6,11 @@ export const createRelocationTaskITSMErrorMsg =
   'Ошибка создания заявки на перемещение, связанной с заявкой itsm'
 export const updateRelocationTaskErrorMsg = 'Ошибка обновления заявки на перемещение'
 
-export const getRelocationCompletionDocumentsErrMsg =
+export const getRelocationTaskCompletionDocumentsErrMsg =
   'Ошибка получения данных о перемещении и перемещаемом оборудовании для формирования пакета документов'
+
+export const createRelocationTaskCompletionDocumentsErrMsg =
+  'Ошибка формирования акта о выполненных работах'
 
 export const getRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения заявки на перемещение',

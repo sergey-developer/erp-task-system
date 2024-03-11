@@ -15,6 +15,8 @@ import {
   CreateSubTaskSuccessResponse,
   CreateTaskCommentMutationArgs,
   CreateTaskCommentSuccessResponse,
+  CreateTaskCompletionDocumentsMutationArgs,
+  CreateTaskCompletionDocumentsSuccessResponse,
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskReclassificationRequestSuccessResponse,
   CreateTaskSuspendRequestMutationArgs,
@@ -64,6 +66,7 @@ import {
   createCompletedWorkUrl,
   createInitiationReasonUrl,
   createSubTaskUrl,
+  createTaskCompletionDocumentsUrl,
   deleteCompletedWorkUrl,
   deleteInitiationReasonUrl,
   getSubTaskListUrl,
@@ -250,6 +253,15 @@ const taskApiService = baseApiService
         query: ({ taskId }) => ({
           url: getTaskCompletionDocumentsUrl(taskId),
           method: HttpMethodEnum.Get,
+        }),
+      }),
+      createTaskCompletionDocuments: build.mutation<
+        CreateTaskCompletionDocumentsSuccessResponse,
+        CreateTaskCompletionDocumentsMutationArgs
+      >({
+        query: ({ taskId }) => ({
+          url: createTaskCompletionDocumentsUrl(taskId),
+          method: HttpMethodEnum.Post,
         }),
       }),
 
@@ -523,6 +535,7 @@ export const {
   useGetTaskWorkPerformedActMutation,
 
   useGetTaskCompletionDocumentsQuery,
+  useCreateTaskCompletionDocumentsMutation,
   useCreateInitiationReasonMutation,
   useDeleteInitiationReasonMutation,
   useCreateCompletedWorkMutation,
