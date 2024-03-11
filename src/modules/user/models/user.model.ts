@@ -43,6 +43,7 @@ export type UserPermissions =
   | RelocationTaskUserPermissions
   | 'TASK_INTERNAL_DESCRIPTION_UPDATE'
   | 'TASK_HISTORY_DESCRIPTION_READ'
+  | 'TASK_HISTORY_DESCRIPTION_UPDATE'
 
 export type UserModel = BaseUserModel & {
   fullName: string

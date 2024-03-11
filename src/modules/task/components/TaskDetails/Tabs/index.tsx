@@ -48,6 +48,7 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
   const permissions = useMatchUserPermissions([
     'RELOCATION_TASKS_READ',
     'TASK_HISTORY_DESCRIPTION_READ',
+    'TASK_HISTORY_DESCRIPTION_UPDATE',
   ])
 
   const tabsItems: AntdTabsProps['items'] = [

@@ -42,7 +42,11 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
         {isDescriptionChanged && (
           <Popover
             title={<Text type='secondary'>Описание было изменено</Text>}
-            content={permissions.taskHistoryDescriptionRead && previousDescription}
+            content={
+              (permissions.taskHistoryDescriptionRead ||
+                permissions.taskHistoryDescriptionUpdate) &&
+              previousDescription
+            }
           >
             <EditIcon $color='royalOrange' $cursor='pointer' />
           </Popover>
