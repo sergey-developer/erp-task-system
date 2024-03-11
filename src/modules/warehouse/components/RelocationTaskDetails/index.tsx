@@ -60,6 +60,7 @@ import {
 import {
   getEditRelocationTaskPageLink,
   getRelocateFromTo,
+  getRelocationTasksPageLink,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
 
@@ -401,7 +402,10 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         label: 'Сформировать пакет документов',
         onClick: () =>
           navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
-            state: { relocationTask: { id: relocationTaskId } },
+            state: {
+              relocationTask: { id: relocationTaskId },
+              from: getRelocationTasksPageLink({ viewRelocationTask: relocationTaskId }),
+            },
           }),
       },
     ],

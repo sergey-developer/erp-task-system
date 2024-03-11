@@ -1,5 +1,5 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Flex, Row, Typography } from 'antd'
+import { Button, Col, Flex, Row, Space, Typography } from 'antd'
 import get from 'lodash/get'
 import React, { FC, useState } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -37,6 +37,8 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { Nullable } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
+
+import GoBackButton from '../../../../components/Buttons/GoBackButton'
 
 const CallingReasonsTable = React.lazy(
   () => import('modules/warehouse/components/CallingReasonsTable'),
@@ -126,10 +128,15 @@ const CreateDocumentsPackagePage: FC = () => {
     useCreateCompletedWork()
   const [deleteCompletedWorkMutation] = useDeleteCompletedWork()
 
-  const [createTaskCompletionDocumentsMutation, {}] = useCreateTaskCompletionDocuments()
+  const [
+    createTaskCompletionDocumentsMutation,
+    { isLoading: createTaskCompletionDocumentsIsLoading },
+  ] = useCreateTaskCompletionDocuments()
 
-  const [createRelocationTaskCompletionDocumentsMutation, {}] =
-    useCreateRelocationTaskCompletionDocuments()
+  const [
+    createRelocationTaskCompletionDocumentsMutation,
+    { isLoading: createRelocationTaskCompletionDocumentsIsLoading },
+  ] = useCreateRelocationTaskCompletionDocuments()
 
   const onDeleteInitiationReason = async (id: IdType) => {
     if (!task) return
@@ -195,7 +202,7 @@ const CreateDocumentsPackagePage: FC = () => {
 
   return (
     <>
-      <Flex data-testid='create-documents-package-page' vertical>
+      <Flex data-testid='create-documents-package-page' vertical gap='large'>
         <Flex vertical gap='middle'>
           <Title level={4}>Основные данные о выполненных работах</Title>
 
@@ -291,6 +298,16 @@ const CreateDocumentsPackagePage: FC = () => {
             </Row>
           </Flex>
         </Flex>
+
+        <Row justify='end'>
+          <Col>
+            <Space>
+              <GoBackButton />
+
+              <Button type='primary'>Сформировать пакет документов</Button>
+            </Space>
+          </Col>
+        </Row>
       </Flex>
 
       {createReasonModalOpened && (

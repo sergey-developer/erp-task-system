@@ -9,6 +9,7 @@ import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
   useCreateRelocationTaskAttachment,
   useGetRelocationTaskList,
@@ -23,7 +24,6 @@ import { IdType } from 'shared/types/common'
 import { getTextWithCounter } from 'shared/utils/common'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
-import { WarehouseRouteEnum } from '../../../../../warehouse/constants/routes'
 import { RelocationTaskListTabProps } from './types'
 
 const { Title } = Typography
@@ -66,7 +66,15 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
   })
 
   const onClickCreateDocumentsPackage = () =>
-    navigate(WarehouseRouteEnum.CreateDocumentsPackage, { state: { task: { id: task.id } } })
+    navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
+      state: {
+        task: { id: task.id },
+        from: getTaskListPageLink({
+          viewTask: task.id,
+          taskDetailsTab: TaskDetailsTabsEnum.RelocationTasks,
+        }),
+      },
+    })
 
   const onCreateAttachment = useCallback<RelocationTaskListProps['onCreateAttachment']>(
     (id) => async (options) => {
