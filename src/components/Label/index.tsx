@@ -7,13 +7,13 @@ import { FCWithChildren } from 'shared/types/utils'
 
 const { Text } = Typography
 
-type LabeledDataProps = Pick<SpaceProps, 'size' | 'direction' | 'align' | 'onClick'> & {
+type LabelProps = Pick<SpaceProps, 'size' | 'direction' | 'align' | 'onClick'> & {
   label: string
   labelPosition?: 'left' | 'right'
   block?: boolean
 }
 
-const LabeledData: FCWithChildren<LabeledDataProps> = ({
+const Label: FCWithChildren<LabelProps> = ({
   children,
   label,
   labelPosition = 'left',
@@ -32,4 +32,4 @@ const LabeledData: FCWithChildren<LabeledDataProps> = ({
   )
 }
 
-export default LabeledData
+export default Label

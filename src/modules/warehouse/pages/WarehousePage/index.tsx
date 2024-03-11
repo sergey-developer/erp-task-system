@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useParams } from 'react-router-dom'
 
-import LabeledData from 'components/LabeledData'
+import Label from 'components/Label'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
@@ -25,19 +25,17 @@ const WarehousePage: FC = () => {
       <LoadingArea data-testid='warehouse-loading' isLoading={warehouseIsFetching}>
         {warehouse && (
           <Space $block direction='vertical'>
-            <LabeledData label='Наименование объекта'>{warehouse.title}</LabeledData>
+            <Label label='Наименование объекта'>{warehouse.title}</Label>
 
-            <LabeledData label='Родительский склад'>
-              {valueOrHyphen(warehouse.parent?.title)}
-            </LabeledData>
+            <Label label='Родительский склад'>{valueOrHyphen(warehouse.parent?.title)}</Label>
 
-            <LabeledData label='Юридическое лицо'>{warehouse.legalEntity.title}</LabeledData>
+            <Label label='Юридическое лицо'>{warehouse.legalEntity.title}</Label>
 
-            <LabeledData label='Адрес'>{warehouse.address}</LabeledData>
+            <Label label='Адрес'>{warehouse.address}</Label>
 
-            <LabeledData label='Договор'>{warehouse.contract}</LabeledData>
+            <Label label='Договор'>{warehouse.contract}</Label>
 
-            <LabeledData label='Прочие данные'>{warehouse.notes}</LabeledData>
+            <Label label='Прочие данные'>{warehouse.notes}</Label>
           </Space>
         )}
       </LoadingArea>

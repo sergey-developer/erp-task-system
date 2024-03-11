@@ -5,7 +5,7 @@ import { TaskModel } from 'modules/task/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-export type ExecuteTaskModalFormFields = {
+export type ExecuteTaskFormFields = {
   spentHours: number
   spentMinutes: number
   techResolution: string
@@ -18,11 +18,11 @@ export type ExecuteTaskModalProps = Required<Pick<BaseModalProps, 'open'>> &
     isLoading: boolean
 
     onSubmit: (
-      values: ExecuteTaskModalFormFields,
-      setFields: FormInstance<ExecuteTaskModalFormFields>['setFields'],
+      values: ExecuteTaskFormFields,
+      setFields: FormInstance<ExecuteTaskFormFields>['setFields'],
     ) => Promise<void>
     onCancel: NonNullable<ModalProps['onCancel']>
 
-    onGetAct: (values: Pick<ExecuteTaskModalFormFields, 'techResolution'>) => Promise<void>
+    onGetAct: (values: Pick<ExecuteTaskFormFields, 'techResolution'>) => Promise<void>
     getActIsLoading: boolean
   }

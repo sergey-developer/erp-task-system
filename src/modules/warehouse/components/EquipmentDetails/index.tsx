@@ -32,6 +32,7 @@ import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { SAVE_TEXT } from 'shared/constants/common'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -571,7 +572,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             open={editEquipmentModalOpened}
             mode='edit'
             title='Редактирование оборудования'
-            okText='Сохранить'
+            okText={SAVE_TEXT}
             isLoading={updateEquipmentIsLoading}
             initialValues={getEquipmentFormInitialValues(equipment)}
             values={equipmentFormValues}

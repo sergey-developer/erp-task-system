@@ -1,9 +1,17 @@
 import { RelocationEquipmentApiTagEnum } from 'modules/warehouse/constants/relocationEquipment'
 import {
+  CreateRelocationEquipmentTechnicalExaminationMutationArgs,
+  CreateRelocationEquipmentTechnicalExaminationSuccessResponse,
   GetRelocationEquipmentAttachmentListQueryArgs,
   GetRelocationEquipmentAttachmentListSuccessResponse,
+  GetRelocationEquipmentTechnicalExaminationQueryArgs,
+  GetRelocationEquipmentTechnicalExaminationSuccessResponse,
 } from 'modules/warehouse/models/relocationEquipment'
-import { getRelocationEquipmentAttachmentListUrl } from 'modules/warehouse/utils/relocationEquipment'
+import {
+  createRelocationEquipmentTechnicalExaminationUrl,
+  getRelocationEquipmentAttachmentListUrl,
+  getRelocationEquipmentTechnicalExaminationUrl,
+} from 'modules/warehouse/utils/relocationEquipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
@@ -21,7 +29,33 @@ const relocationEquipmentApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    getRelocationEquipmentTechnicalExamination: build.query<
+      GetRelocationEquipmentTechnicalExaminationSuccessResponse,
+      GetRelocationEquipmentTechnicalExaminationQueryArgs
+    >({
+      query: ({ relocationEquipmentId }) => ({
+        url: getRelocationEquipmentTechnicalExaminationUrl(relocationEquipmentId),
+        method: HttpMethodEnum.Get,
+      }),
+      transformResponse: (
+        baseQueryReturnValue: GetRelocationEquipmentTechnicalExaminationSuccessResponse,
+      ) => baseQueryReturnValue || undefined,
+    }),
+    createRelocationEquipmentTechnicalExamination: build.mutation<
+      CreateRelocationEquipmentTechnicalExaminationSuccessResponse,
+      CreateRelocationEquipmentTechnicalExaminationMutationArgs
+    >({
+      query: ({ relocationEquipmentId, ...data }) => ({
+        url: createRelocationEquipmentTechnicalExaminationUrl(relocationEquipmentId),
+        method: HttpMethodEnum.Post,
+        data,
+      }),
+    }),
   }),
 })
 
-export const { useGetRelocationEquipmentAttachmentListQuery } = relocationEquipmentApiService
+export const {
+  useGetRelocationEquipmentAttachmentListQuery,
+  useGetRelocationEquipmentTechnicalExaminationQuery,
+  useCreateRelocationEquipmentTechnicalExaminationMutation,
+} = relocationEquipmentApiService

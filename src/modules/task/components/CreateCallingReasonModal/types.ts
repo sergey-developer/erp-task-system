@@ -6,12 +6,12 @@ export type CreateCallingReasonModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel' | 'confirmLoading'>
 > & {
   onSubmit: (
-    values: CreateCallingReasonModalFormFields,
-    setFields: FormInstance<CreateCallingReasonModalFormFields>['setFields'],
+    values: CreateCallingReasonFormFields,
+    setFields: FormInstance<CreateCallingReasonFormFields>['setFields'],
   ) => Promise<void>
 }
 
-export type CreateCallingReasonModalFormFields = {
+export type CreateCallingReasonFormFields = {
   title: string
   equipmentType: string
   malfunction: string
