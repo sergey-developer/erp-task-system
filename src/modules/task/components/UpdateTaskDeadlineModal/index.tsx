@@ -7,7 +7,7 @@ import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 import { getTaskCompleteAtDate } from 'modules/task/components/TaskDetails/MainDetails/utils'
 
 import DatePicker from 'components/DatePicker'
-import LabeledData from 'components/LabeledData'
+import Label from 'components/Label'
 import BaseModal from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
@@ -45,11 +45,11 @@ const UpdateTaskDeadlineModal: FC<UpdateTaskDeadlineModalProps> = ({
       okText={SAVE_TEXT}
     >
       <Flex vertical gap='large'>
-        <LabeledData label='Внешний срок выполнения:'>
+        <Label label='Внешний срок выполнения:'>
           {getTaskCompleteAtDate({
             olaNextBreachTime: previousOlaNextBreachTime || olaNextBreachTime,
           })}
-        </LabeledData>
+        </Label>
 
         <Form<UpdateTaskDeadlineModalFormFields>
           form={form}

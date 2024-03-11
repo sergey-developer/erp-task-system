@@ -1,7 +1,7 @@
 import { Flex, Form, Input } from 'antd'
 import React, { FC } from 'react'
 
-import LabeledData from 'components/LabeledData'
+import Label from 'components/Label'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { SAVE_TEXT } from 'shared/constants/common'
@@ -31,7 +31,7 @@ const UpdateTaskDescriptionModal: FC<UpdateTaskDescriptionModalProps> = ({
       okText={SAVE_TEXT}
     >
       <Flex vertical gap='large'>
-        <LabeledData label='Внешнее описание:'>{previousDescription || description}</LabeledData>
+        <Label label='Внешнее описание:'>{previousDescription || description}</Label>
 
         <Form<UpdateTaskDescriptionModalFormFields>
           form={form}
