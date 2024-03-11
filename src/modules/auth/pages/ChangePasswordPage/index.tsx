@@ -9,6 +9,7 @@ import { useUpdatePasswordMutation } from 'modules/auth/services/authApi.service
 
 import { BaseCard } from 'components/Card/BaseCard'
 
+import { SAVE_TEXT } from 'shared/constants/common'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showSuccessNotification } from 'shared/utils/notifications'
@@ -94,7 +95,7 @@ const ChangePasswordPage: FC = () => {
               size='large'
               loading={updatePasswordIsLoading}
             >
-              Сохранить
+              {SAVE_TEXT}
             </Button>
           </Form>
         </Space>

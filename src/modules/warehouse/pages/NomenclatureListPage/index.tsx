@@ -39,6 +39,7 @@ import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { SAVE_TEXT } from 'shared/constants/common'
 import { useGetCountryList } from 'shared/hooks/country'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
@@ -460,7 +461,7 @@ const NomenclatureListPage: FC = () => {
           <NomenclatureGroupFormModal
             open={editNomenclatureGroupModalOpened}
             title='Редактирование номенклатурной группы'
-            okText='Сохранить'
+            okText={SAVE_TEXT}
             initialValues={{ title: editableGroup.title }}
             isLoading={updateNomenclatureGroupIsLoading}
             onCancel={debouncedToggleEditNomenclatureGroupModal}
@@ -509,7 +510,7 @@ const NomenclatureListPage: FC = () => {
           <NomenclatureFormModal
             open={editNomenclatureModalOpened}
             title='Редактирование номенклатурной позиции'
-            okText='Сохранить'
+            okText={SAVE_TEXT}
             isLoading={updateNomenclatureIsLoading}
             submitBtnDisabled={!permissions?.nomenclaturesUpdate}
             nomenclature={nomenclature}

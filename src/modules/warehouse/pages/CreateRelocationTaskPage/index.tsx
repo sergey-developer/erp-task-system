@@ -58,6 +58,7 @@ import {
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { SAVE_TEXT } from 'shared/constants/common'
 import { useLazyGetLocations } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -888,7 +889,7 @@ const CreateRelocationTaskPage: FC = () => {
             open={editEquipmentByFileModalOpened}
             mode='create'
             title='Изменить добавляемое оборудование'
-            okText='Сохранить'
+            okText={SAVE_TEXT}
             initialValues={getEquipmentFormInitialValues(editableEquipmentByFile)}
             values={equipmentByFileFormValues}
             categoryList={equipmentCategoryList}

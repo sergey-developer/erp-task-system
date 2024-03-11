@@ -5,13 +5,13 @@ import React, { FC } from 'react'
 import { useTaskType } from 'modules/task/hooks/task'
 
 import UploadButton from 'components/Buttons/UploadButton'
-import LabeledData from 'components/LabeledData'
+import Label from 'components/Label'
 import BaseModal from 'components/Modals/BaseModal'
 import Space from 'components/Space'
 
 import { filesFormItemProps } from 'shared/constants/form'
 
-import { ExecuteTaskModalFormFields, ExecuteTaskModalProps } from './types'
+import { ExecuteTaskFormFields, ExecuteTaskModalProps } from './types'
 import {
   spentHoursRules,
   spentMinutesRules,
@@ -36,7 +36,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
   recordId,
   type,
 }) => {
-  const [form] = Form.useForm<ExecuteTaskModalFormFields>()
+  const [form] = Form.useForm<ExecuteTaskFormFields>()
   const techResolutionFormValue = Form.useWatch('techResolution', form)
 
   const taskType = useTaskType(type)
@@ -47,7 +47,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
     </Text>
   )
 
-  const handleFinish = async (values: ExecuteTaskModalFormFields) => {
+  const handleFinish = async (values: ExecuteTaskFormFields) => {
     await onSubmit(values, form.setFields)
   }
 
@@ -99,7 +99,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
           </Text>
         </Space>
 
-        <Form<ExecuteTaskModalFormFields>
+        <Form<ExecuteTaskFormFields>
           form={form}
           layout='vertical'
           onFinish={handleFinish}
@@ -107,13 +107,13 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
         >
           <Form.Item label='Затраченное время'>
             <Flex gap='middle'>
-              <LabeledData block={false} label='Часов' labelPosition='right' direction='horizontal'>
+              <Label block={false} label='Часов' labelPosition='right' direction='horizontal'>
                 <Form.Item data-testid='spent-hours' rules={spentHoursRules} name='spentHours'>
                   <InputNumber style={{ width: 60 }} defaultValue={1} min={0} />
                 </Form.Item>
-              </LabeledData>
+              </Label>
 
-              <LabeledData block={false} label='Минут' labelPosition='right' direction='horizontal'>
+              <Label block={false} label='Минут' labelPosition='right' direction='horizontal'>
                 <Form.Item
                   data-testid='spent-minutes'
                   rules={spentMinutesRules}
@@ -121,7 +121,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
                 >
                   <InputNumber style={{ width: 60 }} min={0} max={59} />
                 </Form.Item>
-              </LabeledData>
+              </Label>
             </Flex>
           </Form.Item>
 

@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
+import { SAVE_TEXT } from 'shared/constants/common'
 import { validationSizes } from 'shared/constants/validation'
 
 import { CancelSubTaskFormFields, CancelSubTaskModalProps } from './types'
@@ -44,7 +45,7 @@ const CancelSubTaskModal: FC<CancelSubTaskModalProps> = ({
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}
-      okText='Сохранить'
+      okText={SAVE_TEXT}
       onCancel={onCancel}
     >
       <Form<CancelSubTaskFormFields>

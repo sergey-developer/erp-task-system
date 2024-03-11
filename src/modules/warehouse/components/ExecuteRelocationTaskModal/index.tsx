@@ -9,16 +9,16 @@ import Space from 'components/Space'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { getFilesFromEvent } from 'shared/utils/form'
 
-import { ExecuteRelocationTaskModalFormFields, ExecuteRelocationTaskModalProps } from './types'
+import { ExecuteRelocationTaskFormFields, ExecuteRelocationTaskModalProps } from './types'
 
 const ExecuteRelocationTaskModal: FC<ExecuteRelocationTaskModalProps> = ({
   isLoading,
   onSubmit,
   ...props
 }) => {
-  const [form] = Form.useForm<ExecuteRelocationTaskModalFormFields>()
+  const [form] = Form.useForm<ExecuteRelocationTaskFormFields>()
 
-  const handleFinish = async (values: ExecuteRelocationTaskModalFormFields) => {
+  const handleFinish = async (values: ExecuteRelocationTaskFormFields) => {
     await onSubmit(values, form.setFields)
   }
 
@@ -32,7 +32,7 @@ const ExecuteRelocationTaskModal: FC<ExecuteRelocationTaskModalProps> = ({
       okText='Выполнить заявку'
     >
       <Space $block direction='vertical' size='large'>
-        <Form<ExecuteRelocationTaskModalFormFields>
+        <Form<ExecuteRelocationTaskFormFields>
           form={form}
           layout='vertical'
           onFinish={handleFinish}

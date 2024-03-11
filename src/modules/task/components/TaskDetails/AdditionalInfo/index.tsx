@@ -5,7 +5,7 @@ import { TaskModel } from 'modules/task/models'
 
 import Expandable from 'components/Expandable'
 import { MapPointIcon } from 'components/Icons'
-import LabeledData from 'components/LabeledData'
+import Label from 'components/Label'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -132,9 +132,9 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Link>
               </Space>
 
-              <LabeledData label='Наименование группы поддержки Х5'>
+              <Label label='Наименование группы поддержки Х5'>
                 <Text strong>{valueOrHyphen(supportGroup)}</Text>
-              </LabeledData>
+              </Label>
             </Space>
           </Col>
         </Row>
@@ -147,21 +147,21 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
           <Col span={18}>
             <Row gutter={20}>
               <Col span={8}>
-                <LabeledData label='Уровень 1'>
+                <Label label='Уровень 1'>
                   <Text>{productClassifier1}</Text>
-                </LabeledData>
+                </Label>
               </Col>
 
               <Col span={8}>
-                <LabeledData label='Уровень 2'>
+                <Label label='Уровень 2'>
                   <Text>{productClassifier2}</Text>
-                </LabeledData>
+                </Label>
               </Col>
 
               <Col span={8}>
-                <LabeledData label='Уровень 3'>
+                <Label label='Уровень 3'>
                   <Text>{productClassifier3}</Text>
-                </LabeledData>
+                </Label>
               </Col>
             </Row>
           </Col>
@@ -169,31 +169,31 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
 
         <Row align='bottom' justify='space-between'>
           <Col span={5}>
-            <LabeledData label='Приоритет заявки' size={0}>
-              <LabeledData label='Вес:' direction='horizontal'>
+            <Label label='Приоритет заявки' size={0}>
+              <Label label='Вес:' direction='horizontal'>
                 <Text>{valueOrHyphen(weight)}</Text>
-              </LabeledData>
-            </LabeledData>
+              </Label>
+            </Label>
           </Col>
 
           <Col span={18}>
             <Row gutter={20}>
               <Col span={8}>
-                <LabeledData label='Влияние'>
+                <Label label='Влияние'>
                   <Text>{valueOrHyphen(impact)}</Text>
-                </LabeledData>
+                </Label>
               </Col>
 
               <Col span={8}>
-                <LabeledData label='Срочность'>
+                <Label label='Срочность'>
                   <Text>{valueOrHyphen(severity)}</Text>
-                </LabeledData>
+                </Label>
               </Col>
 
               <Col span={8}>
-                <LabeledData label='Приоритет'>
+                <Label label='Приоритет'>
                   <Text>{valueOrHyphen(priority)}</Text>
-                </LabeledData>
+                </Label>
               </Col>
             </Row>
           </Col>

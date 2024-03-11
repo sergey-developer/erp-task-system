@@ -8,12 +8,15 @@ export const DEFAULT_DEBOUNCE_VALUE = 150
 export const DEFAULT_MODAL_WIDTH = 615
 
 export const CANCEL_TEXT = 'Отменить'
+export const SAVE_TEXT = 'Сохранить'
 export const CREATE_TEXT = 'Создать'
 export const ADD_TEXT = 'Добавить'
 export const CONFIRM_TEXT = 'Подтвердить'
 
 export const LAYOUT_CONTENT_PADDING_V = 32
 export const FOOTER_HEIGHT = 32
+
+export const HYPHEN = '-'
 
 export const commonEllipsisConfig: Pick<EllipsisConfig, 'rows' | 'expandable'> = {
   rows: 4,

@@ -5,7 +5,7 @@ import AttachmentList from 'modules/task/components/AttachmentList'
 import { useTaskType } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
 
-import LabeledData from 'components/LabeledData'
+import Label from 'components/Label'
 
 import { commonEllipsisConfig } from 'shared/constants/common'
 import { renderStringWithLineBreak } from 'shared/utils/string'
@@ -35,19 +35,19 @@ const ResolutionTab: FC<ResolutionTabProps> = ({
       </Space>
 
       {!!techResolution && (
-        <LabeledData label='Техническое решение'>
+        <Label label='Техническое решение'>
           <Paragraph ellipsis={commonEllipsisConfig}>
             {renderStringWithLineBreak(techResolution)}
           </Paragraph>
-        </LabeledData>
+        </Label>
       )}
 
       {!!userResolution && !taskType.isIncidentTask && !taskType.isRequestTask && (
-        <LabeledData label='Решение для пользователя'>
+        <Label label='Решение для пользователя'>
           <Paragraph ellipsis={commonEllipsisConfig}>
             {renderStringWithLineBreak(userResolution)}
           </Paragraph>
-        </LabeledData>
+        </Label>
       )}
 
       {!techResolution && !userResolution && '-'}

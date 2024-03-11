@@ -15,7 +15,7 @@ import { testUtils as confirmExecutionRelocationTaskModalTestUtils } from 'modul
 import { testUtils as executeRelocationTaskModalTestUtils } from 'modules/warehouse/components/ExecuteRelocationTaskModal/ExecuteRelocationTaskModal.test'
 import { testUtils as relocationEquipmentTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentTable/RelocationEquipmentTable.test'
 import { testUtils as returnRelocationTaskToReworkModalTestUtils } from 'modules/warehouse/components/ReturnRelocationTaskToReworkModal/ReturnRelocationTaskToReworkModal.test'
-import { getRelocationEquipmentAttachmentListErrorMsg } from 'modules/warehouse/constants/relocationEquipment'
+import { getRelocationEquipmentAttachmentListErrMsg } from 'modules/warehouse/constants/relocationEquipment'
 import {
   cancelRelocationTaskMessages,
   closeRelocationTaskMessages,
@@ -777,7 +777,7 @@ describe('Информация о заявке о перемещении', () =>
           await attachmentListModalTestUtils.findContainer()
 
           const notification = await notificationTestUtils.findNotification(
-            getRelocationEquipmentAttachmentListErrorMsg,
+            getRelocationEquipmentAttachmentListErrMsg,
           )
           expect(notification).toBeInTheDocument()
         })

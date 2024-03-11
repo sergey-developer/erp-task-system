@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
+import { SAVE_TEXT } from 'shared/constants/common'
 import { validationSizes } from 'shared/constants/validation'
 
 import { ReworkSubTaskFormFields, ReworkSubTaskModalProps } from './types'
@@ -44,7 +45,7 @@ const ReworkSubTaskModal: FC<ReworkSubTaskModalProps> = ({
       title={modalTitle}
       confirmLoading={isLoading}
       onOk={form.submit}
-      okText='Сохранить'
+      okText={SAVE_TEXT}
       onCancel={onCancel}
     >
       <Form<ReworkSubTaskFormFields>
@@ -59,10 +60,7 @@ const ReworkSubTaskModal: FC<ReworkSubTaskModalProps> = ({
           name='returnReason'
           rules={returnReasonValidationRules}
         >
-          <TextArea
-            placeholder='Опишите причину возврата'
-            disabled={isLoading}
-          />
+          <TextArea placeholder='Опишите причину возврата' disabled={isLoading} />
         </Form.Item>
       </Form>
     </BaseModal>

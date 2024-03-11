@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { TaskJournalEntryModel } from 'modules/task/models'
 
-import LabeledData from 'components/LabeledData'
+import Label from 'components/Label'
 import Space from 'components/Space'
 
 import { commonEllipsisConfig } from 'shared/constants/common'
@@ -50,22 +50,22 @@ const JournalEntry: FC<JournalEntryProps> = ({
 
       <Row gutter={10}>
         <Col span={8}>
-          <LabeledData label='Тип'>
+          <Label label='Тип'>
             <Text>{type}</Text>
-          </LabeledData>
+          </Label>
         </Col>
 
         <Col span={8}>
-          <LabeledData label='Где добавлено'>
+          <Label label='Где добавлено'>
             <Text>{sourceSystem}</Text>
-          </LabeledData>
+          </Label>
         </Col>
 
         {author && (
           <Col span={8}>
-            <LabeledData label='Кем добавлено'>
+            <Label label='Кем добавлено'>
               <Text>{author}</Text>
-            </LabeledData>
+            </Label>
           </Col>
         )}
       </Row>

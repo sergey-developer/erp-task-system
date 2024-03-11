@@ -7,7 +7,7 @@ import { ADD_TEXT } from 'shared/constants/common'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 
-import { CreateCompletedWorkModalFormFields, CreateCompletedWorkModalProps } from './types'
+import { CreateCompletedWorkFormFields, CreateCompletedWorkModalProps } from './types'
 import { quantityRules, titleRules } from './validation'
 
 const CreateCompletedWorkModal: FC<CreateCompletedWorkModalProps> = ({
@@ -16,15 +16,15 @@ const CreateCompletedWorkModal: FC<CreateCompletedWorkModalProps> = ({
   measurementUnitsIsLoading,
   ...props
 }) => {
-  const [form] = Form.useForm<CreateCompletedWorkModalFormFields>()
+  const [form] = Form.useForm<CreateCompletedWorkFormFields>()
 
-  const onFinish = async (values: CreateCompletedWorkModalFormFields) => {
+  const onFinish = async (values: CreateCompletedWorkFormFields) => {
     await onSubmit({ ...values, title: values.title.trim() }, form.setFields)
   }
 
   return (
     <BaseModal {...props} title='Добавление причины вызова' onOk={form.submit} okText={ADD_TEXT}>
-      <Form<CreateCompletedWorkModalFormFields> layout='vertical' form={form} onFinish={onFinish}>
+      <Form<CreateCompletedWorkFormFields> layout='vertical' form={form} onFinish={onFinish}>
         <Form.Item name='title' label='Наименование работ' rules={titleRules}>
           <Input placeholder='Введите текст' />
         </Form.Item>

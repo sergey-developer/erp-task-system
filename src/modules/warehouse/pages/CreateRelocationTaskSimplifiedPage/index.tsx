@@ -58,7 +58,7 @@ import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
-import { CANCEL_TEXT, CREATE_TEXT } from 'shared/constants/common'
+import { CANCEL_TEXT, CREATE_TEXT, SAVE_TEXT } from 'shared/constants/common'
 import { filesFormItemProps } from 'shared/constants/form'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
@@ -917,7 +917,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             open={editEquipmentByFileModalOpened}
             mode='create'
             title='Изменить добавляемое оборудование'
-            okText='Сохранить'
+            okText={SAVE_TEXT}
             initialValues={getEquipmentFormInitialValues(editableEquipmentByFile)}
             values={equipmentByFileFormValues}
             categoryList={equipmentCategoryList}

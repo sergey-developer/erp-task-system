@@ -13,7 +13,7 @@ import { SubTaskModel } from 'modules/task/models'
 import { makeUserByFullName } from 'modules/user/utils'
 
 import Expandable from 'components/Expandable'
-import LabeledData from 'components/LabeledData'
+import Label from 'components/Label'
 import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 
@@ -139,9 +139,9 @@ const SubTask: FC<SubTaskProps> = ({
             </Col>
 
             <Col span={12}>
-              <LabeledData direction='horizontal' label='Дата создания:'>
+              <Label direction='horizontal' label='Дата создания:'>
                 {createdAt}
-              </LabeledData>
+              </Label>
             </Col>
           </Row>
         </Space>
@@ -185,17 +185,17 @@ const SubTask: FC<SubTaskProps> = ({
 
       <Row gutter={10}>
         <Col span={12}>
-          <LabeledData label='Группа поддержки'>{supportGroup?.name}</LabeledData>
+          <Label label='Группа поддержки'>{supportGroup?.name}</Label>
         </Col>
 
         {externalAssigneeName && (
           <Col span={12}>
-            <LabeledData label='Исполнитель'>
+            <Label label='Исполнитель'>
               <TaskAssignee
                 {...makeUserByFullName(externalAssigneeName)}
                 phone={externalAssigneePhone}
               />
-            </LabeledData>
+            </Label>
           </Col>
         )}
       </Row>
