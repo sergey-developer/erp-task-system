@@ -1,10 +1,11 @@
 import { Flex, Form, Input, InputNumber, Radio } from 'antd'
-import React, { FC } from 'react'
+import get from 'lodash/get'
+import React, { FC, useEffect } from 'react'
 
 import Label from 'components/Label'
 import BaseModal from 'components/Modals/BaseModal'
 
-import { SAVE_TEXT } from 'shared/constants/common'
+import { HYPHEN, SAVE_TEXT } from 'shared/constants/common'
 import { yesNoOptions } from 'shared/constants/selectField'
 import {
   onlyNotEmptyStringRules,
@@ -18,12 +19,36 @@ import { restorationActionRules, restorationCostRules } from './validation'
 const CreateTechnicalExaminationModal: FC<CreateTechnicalExaminationModalProps> = ({
   isLoading,
   onSubmit,
+
+  technicalExamination,
+  technicalExaminationIsLoading,
+
   ...props
 }) => {
   const [form] = Form.useForm<CreateTechnicalExaminationFormFields>()
 
+  useEffect(() => {
+    if (technicalExamination) {
+      form.setFieldsValue({
+        malfunction: technicalExamination.malfunction,
+        hasMechanicalDamage: technicalExamination.hasMechanicalDamage,
+        restorationAction: technicalExamination.restorationAction,
+        restorationCost: technicalExamination.restorationCost,
+        conclusion: technicalExamination.conclusion || undefined,
+      })
+    }
+  }, [form, technicalExamination])
+
   const onFinish = async (values: CreateTechnicalExaminationFormFields) => {
-    await onSubmit(values, form.setFields)
+    await onSubmit(
+      {
+        ...values,
+        malfunction: values.malfunction.trim(),
+        restorationAction: values.restorationAction.trim(),
+        conclusion: values.conclusion?.trim(),
+      },
+      form.setFields,
+    )
   }
 
   return (
@@ -34,13 +59,20 @@ const CreateTechnicalExaminationModal: FC<CreateTechnicalExaminationModalProps> 
       okText={SAVE_TEXT}
       onOk={form.submit}
       confirmLoading={isLoading}
+      isLoading={technicalExaminationIsLoading}
     >
       <Flex vertical gap='large'>
-        <Label label='Наименование'>Наименование</Label>
+        <Label label='Наименование'>
+          {get(technicalExamination, 'relocationEquipment.equipment.title', HYPHEN)}
+        </Label>
 
-        <Label label='Серийный номер'>Серийный номер</Label>
+        <Label label='Серийный номер'>
+          {get(technicalExamination, 'relocationEquipment.equipment.serialNumber', HYPHEN)}
+        </Label>
 
-        <Label label='Инвентарный номер'>Инвентарный номер</Label>
+        <Label label='Инвентарный номер'>
+          {get(technicalExamination, 'relocationEquipment.equipment.inventoryNumber', HYPHEN)}
+        </Label>
 
         <Form<CreateTechnicalExaminationFormFields>
           layout='vertical'

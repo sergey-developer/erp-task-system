@@ -1,7 +1,7 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Flex, Row, Typography } from 'antd'
 import get from 'lodash/get'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { CreateCallingReasonModalProps } from 'modules/task/components/CreateCallingReasonModal/types'
@@ -28,6 +28,8 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { Nullable } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
+
+import { useGetRelocationEquipmentTechnicalExamination } from '../../hooks/relocationEquipment'
 
 const CallingReasonsTable = React.lazy(
   () => import('modules/warehouse/components/CallingReasonsTable'),
@@ -64,11 +66,33 @@ const CreateDocumentsPackagePage: FC = () => {
     useBoolean(false)
   const debouncedToggleCreateCompletedWorkModal = useDebounceFn(toggleCreateCompletedWorkModal)
 
-  const [createTechnicalExaminationModalOpened, { toggle: toggleCreateTechnicalExaminationModal }] =
-    useBoolean(false)
-  const debouncedToggleCreateTechnicalExaminationModal = useDebounceFn(
-    toggleCreateTechnicalExaminationModal,
-  )
+  // technical examination
+  const [selectedRelocationEquipmentId, setSelectedRelocationEquipmentId] = useState<IdType>()
+
+  const [
+    createTechnicalExaminationModalOpened,
+    {
+      setTrue: openCreateTechnicalExaminationModal,
+      setFalse: closeCreateTechnicalExaminationModal,
+    },
+  ] = useBoolean(false)
+
+  const onOpenCreateTechnicalExaminationModal = useDebounceFn((id: IdType) => {
+    openCreateTechnicalExaminationModal()
+    setSelectedRelocationEquipmentId(id)
+  })
+  const onCloseCreateTechnicalExaminationModal = useDebounceFn(() => {
+    closeCreateTechnicalExaminationModal()
+    setSelectedRelocationEquipmentId(undefined)
+  })
+
+  const { currentData: technicalExamination, isFetching: technicalExaminationIsFetching } =
+    useGetRelocationEquipmentTechnicalExamination(
+      {
+        relocationEquipmentId: selectedRelocationEquipmentId!,
+      },
+      { skip: !selectedRelocationEquipmentId || !createTechnicalExaminationModalOpened },
+    )
 
   const { currentData: taskCompletionDocuments, isFetching: taskCompletionDocumentsIsFetching } =
     useGetTaskCompletionDocuments({ taskId: task?.id! }, { skip: !task?.id })
@@ -205,9 +229,7 @@ const CreateDocumentsPackagePage: FC = () => {
 
                             <DocumentsPackageRelocationEquipmentTable
                               dataSource={task.relocationEquipments}
-                              onClickTechnicalExamination={
-                                debouncedToggleCreateTechnicalExaminationModal
-                              }
+                              onClickTechnicalExamination={onOpenCreateTechnicalExaminationModal}
                             />
                           </Flex>
                         ))}
@@ -223,9 +245,7 @@ const CreateDocumentsPackagePage: FC = () => {
 
                           <DocumentsPackageRelocationEquipmentTable
                             dataSource={relocationCompletionDocument.relocationEquipments}
-                            onClickTechnicalExamination={
-                              debouncedToggleCreateTechnicalExaminationModal
-                            }
+                            onClickTechnicalExamination={onOpenCreateTechnicalExaminationModal}
                           />
                         </Flex>
                       )}
@@ -268,15 +288,15 @@ const CreateDocumentsPackagePage: FC = () => {
 
       {createTechnicalExaminationModalOpened && (
         <React.Suspense
-          fallback={
-            <ModalFallback open onCancel={debouncedToggleCreateTechnicalExaminationModal} />
-          }
+          fallback={<ModalFallback open onCancel={onCloseCreateTechnicalExaminationModal} />}
         >
           <CreateTechnicalExaminationModal
             open={createTechnicalExaminationModalOpened}
-            onCancel={debouncedToggleCreateTechnicalExaminationModal}
+            onCancel={onCloseCreateTechnicalExaminationModal}
             onSubmit={async () => {}}
             isLoading={false}
+            technicalExamination={technicalExamination}
+            technicalExaminationIsLoading={technicalExaminationIsFetching}
           />
         </React.Suspense>
       )}

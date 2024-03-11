@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getRelocationEquipmentAttachmentListErrorMsg } from 'modules/warehouse/constants/relocationEquipment'
+import { getRelocationEquipmentAttachmentListErrMsg } from 'modules/warehouse/constants/relocationEquipment'
 import {
   GetRelocationEquipmentAttachmentListQueryArgs,
   GetRelocationEquipmentAttachmentListSuccessResponse,
@@ -38,7 +38,7 @@ export const useGetRelocationEquipmentAttachmentList = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getRelocationEquipmentAttachmentListErrorMsg)
+        showErrorNotification(getRelocationEquipmentAttachmentListErrMsg)
       }
     }
   }, [state.error])

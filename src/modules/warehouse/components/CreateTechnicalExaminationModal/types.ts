@@ -1,5 +1,7 @@
 import { FormInstance } from 'antd'
 
+import { RelocationEquipmentTechnicalExaminationModel } from 'modules/warehouse/models/relocationEquipment'
+
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
 export type CreateTechnicalExaminationFormFields = {
@@ -17,4 +19,7 @@ export type CreateTechnicalExaminationModalProps = Required<
     values: CreateTechnicalExaminationFormFields,
     setFields: FormInstance<CreateTechnicalExaminationFormFields>['setFields'],
   ) => Promise<void>
+
+  technicalExamination?: RelocationEquipmentTechnicalExaminationModel
+  technicalExaminationIsLoading: boolean
 }
