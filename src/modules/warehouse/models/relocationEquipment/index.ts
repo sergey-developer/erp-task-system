@@ -3,3 +3,4 @@ export * from './getRelocationEquipmentAttachmentList.model'
 
 export * from './relocationEquipmentTechnicalExamination.model'
 export * from './getRelocationEquipmentTechnicalExamination.model'
+export * from './createRelocationEquipmentTechnicalExamination.model'

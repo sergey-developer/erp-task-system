@@ -14,8 +14,13 @@ import {
   useGetTaskCompletionDocuments,
 } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
+import { CreateTechnicalExaminationModalProps } from 'modules/warehouse/components/CreateTechnicalExaminationModal/types'
 import DocumentsPackageRelocationEquipmentTable from 'modules/warehouse/components/DocumentsPackageRelocationEquipmentTable'
 import { useGetMeasurementUnitList } from 'modules/warehouse/hooks/measurementUnit'
+import {
+  useCreateRelocationEquipmentTechnicalExamination,
+  useGetRelocationEquipmentTechnicalExamination,
+} from 'modules/warehouse/hooks/relocationEquipment'
 import { useGetRelocationCompletionDocuments } from 'modules/warehouse/hooks/relocationTask'
 import { RelocationTaskModel } from 'modules/warehouse/models'
 import { getRelocateFromTo } from 'modules/warehouse/utils/relocationTask'
@@ -28,8 +33,6 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { Nullable } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
-
-import { useGetRelocationEquipmentTechnicalExamination } from '../../hooks/relocationEquipment'
 
 const CallingReasonsTable = React.lazy(
   () => import('modules/warehouse/components/CallingReasonsTable'),
@@ -94,6 +97,9 @@ const CreateDocumentsPackagePage: FC = () => {
       { skip: !selectedRelocationEquipmentId || !createTechnicalExaminationModalOpened },
     )
 
+  const [createTechnicalExaminationMutation, { isLoading: createTechnicalExaminationIsLoading }] =
+    useCreateRelocationEquipmentTechnicalExamination()
+
   const { currentData: taskCompletionDocuments, isFetching: taskCompletionDocumentsIsFetching } =
     useGetTaskCompletionDocuments({ taskId: task?.id! }, { skip: !task?.id })
 
@@ -151,6 +157,26 @@ const CreateDocumentsPackagePage: FC = () => {
     try {
       await createCompletedWorkMutation({ taskId: task.id, ...values }).unwrap()
       toggleCreateCompletedWorkModal()
+    } catch (error) {
+      if (isErrorResponse(error) && isBadRequestError(error)) {
+        setFields(getFieldsErrors(error.data))
+      }
+    }
+  }
+
+  const onCreateTechnicalExamination: CreateTechnicalExaminationModalProps['onSubmit'] = async (
+    values,
+    setFields,
+  ) => {
+    if (!selectedRelocationEquipmentId) return
+
+    try {
+      await createTechnicalExaminationMutation({
+        relocationEquipmentId: selectedRelocationEquipmentId,
+        ...values,
+      }).unwrap()
+
+      onCloseCreateTechnicalExaminationModal()
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         setFields(getFieldsErrors(error.data))
@@ -293,8 +319,8 @@ const CreateDocumentsPackagePage: FC = () => {
           <CreateTechnicalExaminationModal
             open={createTechnicalExaminationModalOpened}
             onCancel={onCloseCreateTechnicalExaminationModal}
-            onSubmit={async () => {}}
-            isLoading={false}
+            onSubmit={onCreateTechnicalExamination}
+            isLoading={createTechnicalExaminationIsLoading}
             technicalExamination={technicalExamination}
             technicalExaminationIsLoading={technicalExaminationIsFetching}
           />

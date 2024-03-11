@@ -1,11 +1,14 @@
 import { RelocationEquipmentApiTagEnum } from 'modules/warehouse/constants/relocationEquipment'
 import {
+  CreateRelocationEquipmentTechnicalExaminationMutationArgs,
+  CreateRelocationEquipmentTechnicalExaminationSuccessResponse,
   GetRelocationEquipmentAttachmentListQueryArgs,
   GetRelocationEquipmentAttachmentListSuccessResponse,
   GetRelocationEquipmentTechnicalExaminationQueryArgs,
   GetRelocationEquipmentTechnicalExaminationSuccessResponse,
 } from 'modules/warehouse/models/relocationEquipment'
 import {
+  createRelocationEquipmentTechnicalExaminationUrl,
   getRelocationEquipmentAttachmentListUrl,
   getRelocationEquipmentTechnicalExaminationUrl,
 } from 'modules/warehouse/utils/relocationEquipment'
@@ -38,10 +41,21 @@ const relocationEquipmentApiService = baseApiService.injectEndpoints({
         baseQueryReturnValue: GetRelocationEquipmentTechnicalExaminationSuccessResponse,
       ) => baseQueryReturnValue || undefined,
     }),
+    createRelocationEquipmentTechnicalExamination: build.mutation<
+      CreateRelocationEquipmentTechnicalExaminationSuccessResponse,
+      CreateRelocationEquipmentTechnicalExaminationMutationArgs
+    >({
+      query: ({ relocationEquipmentId, ...data }) => ({
+        url: createRelocationEquipmentTechnicalExaminationUrl(relocationEquipmentId),
+        method: HttpMethodEnum.Post,
+        data,
+      }),
+    }),
   }),
 })
 
 export const {
   useGetRelocationEquipmentAttachmentListQuery,
   useGetRelocationEquipmentTechnicalExaminationQuery,
+  useCreateRelocationEquipmentTechnicalExaminationMutation,
 } = relocationEquipmentApiService

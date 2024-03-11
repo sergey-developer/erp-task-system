@@ -10,3 +10,6 @@ export const getRelocationEquipmentAttachmentListUrl = (id: IdType): string =>
 
 export const getRelocationEquipmentTechnicalExaminationUrl = (id: IdType): string =>
   generateApiPath(RelocationEquipmentApiEnum.GetTechnicalExamination, { id: String(id) })
+
+export const createRelocationEquipmentTechnicalExaminationUrl = (id: IdType): string =>
+  generateApiPath(RelocationEquipmentApiEnum.CreateTechnicalExamination, { id: String(id) })
