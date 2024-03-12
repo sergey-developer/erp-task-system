@@ -57,7 +57,6 @@
     "@types/react-dom": "^18.0.0",
     "@types/react-resizable": "^3.0.3",
     "@types/styled-components": "^5.1.25",
-    "babel-plugin-jsx-remove-data-test-id": "^3.0.0",
     "chance": "^1.1.8",
     "msw": "^1.2.5",
     "prettier": "^2.6.2",
