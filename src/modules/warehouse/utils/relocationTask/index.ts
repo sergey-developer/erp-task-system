@@ -1,4 +1,4 @@
-export * from './links'
+export * from './pagesLinks'
 export * from './apiUrls'
 export * from './relocationTaskListFilter'
 export * from './getWaybillM15Filename'
