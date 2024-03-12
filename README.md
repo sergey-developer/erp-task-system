@@ -179,8 +179,6 @@ RTK query не умеет правильно доставать ReturnType из 
 - Для удобства нахождения элементов, к ним добавляется
 дата атрибут `data-testid`, он используется для написания `unit-tests`
 с помощью `react-testing-library` и для `e2e-tests`, которые пишутся тестировщиком.
-  - В `production` окружении данный атрибут удаляется
-с помощью babel плагина `babel-plugin-jsx-remove-data-test-id`
 
 ## Сборка проекта
 Этим занимается [webpack](https://webpack.js.org/), конфиг которого настраивается с помощью [craco](https://www.npmjs.com/package/@craco/craco), файл `craco.config.ts`.

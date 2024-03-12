@@ -1,4 +1,3 @@
-import { when } from '@craco/craco'
 import path from 'path'
 import { RetryChunkLoadPlugin } from 'webpack-retry-chunk-load-plugin'
 
@@ -12,11 +11,6 @@ require('react-scripts/config/env')
 const resolvePath = (p: string) => path.resolve(__dirname, p)
 
 module.exports = {
-  ...when(process.env.REACT_APP_ENVIRONMENT === 'production', () => ({
-    babel: {
-      plugins: ['babel-plugin-jsx-remove-data-test-id'],
-    },
-  })),
   webpack: {
     plugins: {
       add: [new RetryChunkLoadPlugin({ maxRetries: 3 })],
