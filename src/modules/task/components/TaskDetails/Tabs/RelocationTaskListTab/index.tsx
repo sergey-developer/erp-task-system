@@ -1,4 +1,5 @@
 import { Button, Col, Row, Typography } from 'antd'
+import pick from 'lodash/pick'
 import React, { FC, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -68,7 +69,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
   const onClickCreateDocumentsPackage = () =>
     navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
       state: {
-        task: { id: task.id },
+        task: pick(task, 'id', 'recordId'),
         from: getTaskListPageLink({
           viewTask: task.id,
           taskDetailsTab: TaskDetailsTabsEnum.RelocationTasks,

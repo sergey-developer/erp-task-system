@@ -7,11 +7,13 @@ export type GoBackButtonProps = Pick<ButtonProps, 'type'> & {
   text?: string
 }
 
+const goBackValue = -1
+
 const GoBackButton: FC<GoBackButtonProps> = ({ text = 'Назад', ...props }) => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const onClick = () => navigate(get(location, 'state.from', -1))
+  const onClick = () => navigate(get(location, 'state.from', goBackValue))
 
   return (
     <Button {...props} onClick={onClick}>

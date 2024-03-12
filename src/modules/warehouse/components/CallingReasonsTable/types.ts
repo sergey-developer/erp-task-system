@@ -13,5 +13,6 @@ export type CallingReasonsTableItem = Pick<
 export type CallingReasonsTableProps = Required<
   Pick<TableProps<CallingReasonsTableItem>, 'dataSource' | 'loading'>
 > & {
+  disabled: boolean
   onDelete: (id: IdType) => Promise<void>
 }

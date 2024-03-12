@@ -12,5 +12,6 @@ export type DocumentsPackageRelocationEquipmentTableProps = Pick<
   TableProps<DocumentsPackageRelocationEquipmentTableItem>,
   'dataSource'
 > & {
+  disabled: boolean
   onClickTechnicalExamination: (id: DocumentsPackageRelocationEquipmentTableItem['id']) => void
 }
