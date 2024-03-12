@@ -18,6 +18,7 @@ declare module 'styled-components' {
       crayola: string
       darkTangerine: string
       unitedNationsBlue: string
+      royalOrange: string
     }
     shadows: {
       shadow1: string

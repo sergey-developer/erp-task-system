@@ -4,9 +4,11 @@ import React, { FC, useMemo } from 'react'
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
 import { renderUploadedFile } from 'modules/attachment/utils'
-import { relocationTaskTypeOptions } from 'modules/warehouse/constants/relocationTask'
-import { RelocationTaskFormFields } from 'modules/warehouse/types'
-import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
+import {
+  checkRelocationTaskTypeIsEnteringBalances,
+  checkRelocationTaskTypeIsWriteOff,
+  getRelocationTaskTypeOptions,
+} from 'modules/warehouse/utils/relocationTask'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import DatePicker from 'components/DatePicker'
@@ -17,7 +19,6 @@ import { filesFormItemProps } from 'shared/constants/form'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
-import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 
 import { LocationOption, LocationOptionGroup, RelocationTaskFormProps } from './types'
@@ -28,6 +29,7 @@ const { TextArea } = Input
 const { Text } = Typography
 
 const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
+  permissions,
   isLoading,
   controllerIsRequired,
 
@@ -51,12 +53,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   onChangeRelocateFrom,
   onChangeRelocateTo,
 }) => {
-  const form = Form.useFormInstance<RelocationTaskFormFields>()
-
-  const relocateFromFormValue: MaybeUndefined<RelocationTaskFormFields['relocateFrom']> =
-    Form.useWatch('relocateFrom', form)
-
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(type)
+  const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
 
   const relocateFromLocationOptions = useMemo(
     () => makeLocationOptions(relocateFromLocationList),
@@ -68,9 +66,14 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     [relocateToLocationList],
   )
 
+  const typeOptions = useMemo(
+    () => (permissions ? getRelocationTaskTypeOptions(permissions) : []),
+    [permissions],
+  )
+
   return (
     <Row data-testid='relocation-task-form' gutter={90}>
-      <Col span={8}>
+      <Col span={6}>
         <Form.Item
           data-testid='type-form-item'
           label='Тип заявки'
@@ -78,7 +81,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           rules={onlyRequiredRules}
         >
           <Select
-            options={relocationTaskTypeOptions}
+            options={typeOptions}
             placeholder='Выберите тип'
             value={type}
             onChange={onChangeType}
@@ -90,12 +93,12 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           data-testid='relocate-from-form-item'
           label='Объект выбытия'
           name='relocateFrom'
-          rules={onlyRequiredRules}
+          rules={typeIsEnteringBalances ? undefined : onlyRequiredRules}
         >
           <Select<IdType, LocationOptionGroup>
             dropdownRender={(menu) => <div data-testid='relocate-from-select-dropdown'>{menu}</div>}
             loading={relocateFromLocationListIsLoading}
-            disabled={isLoading || relocateFromLocationListIsLoading}
+            disabled={typeIsEnteringBalances || isLoading || relocateFromLocationListIsLoading}
             options={relocateFromLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
@@ -111,12 +114,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           <Select<IdType, LocationOptionGroup>
             dropdownRender={(menu) => <div data-testid='relocate-to-select-dropdown'>{menu}</div>}
             loading={relocateToLocationListIsLoading}
-            disabled={
-              isLoading ||
-              !relocateFromFormValue ||
-              typeIsWriteOff ||
-              relocateToLocationListIsLoading
-            }
+            disabled={isLoading || typeIsWriteOff || relocateToLocationListIsLoading}
             options={relocateToLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
@@ -128,7 +126,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         </Form.Item>
       </Col>
 
-      <Col span={8}>
+      <Col span={6}>
         <Form.Item data-testid='deadline-at-form-item' label='Срок выполнения'>
           <Row justify='space-between'>
             <Col span={15}>
@@ -201,7 +199,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         </Form.Item>
       </Col>
 
-      <Col span={8}>
+      <Col span={6}>
         <Space direction='vertical'>
           <Text type='secondary'>Общие фотографии к перемещению (до 10 штук)</Text>
 

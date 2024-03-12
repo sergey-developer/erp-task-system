@@ -43,6 +43,10 @@ export const endTimeRules: Rule[] = [
   ({ getFieldValue }) => ({
     type: 'date',
     required: true,
-    validator: timeValidator(getFieldValue, 'endDate'),
+    validator: timeValidator({
+      dateGetter: getFieldValue,
+      dateFieldName: 'endDate',
+      required: true,
+    }),
   }),
 ]

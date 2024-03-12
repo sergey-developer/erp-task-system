@@ -59,6 +59,7 @@ import {
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import {
+  checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
   getRelocationTasksPageLink,
 } from 'modules/warehouse/utils/relocationTask'
@@ -79,6 +80,7 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 import {
+  checkCreateEquipmentBtnEnabled,
   getEquipmentCatalogListParams,
   getEquipmentFormInitialValues,
   getRelocateFromLocationListParams,
@@ -111,7 +113,7 @@ const EditRelocationTaskPage: FC = () => {
   const params = useParams<'id'>()
   const relocationTaskId = Number(params?.id) || undefined
 
-  const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE'])
+  const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE', 'ENTERING_BALANCES'])
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
@@ -211,6 +213,7 @@ const EditRelocationTaskPage: FC = () => {
 
   const [selectedType, setSelectedType] = useState<RelocationTaskFormFields['type']>()
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(selectedType)
+  const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(selectedType)
 
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
@@ -301,10 +304,10 @@ const EditRelocationTaskPage: FC = () => {
   const { currentData: equipmentCatalogList = [], isFetching: equipmentCatalogListIsFetching } =
     useGetEquipmentCatalogList(
       {
-        locationId: selectedRelocateFrom?.value,
+        locationId: selectedRelocateFrom?.value || selectedRelocateTo?.value,
         ...getEquipmentCatalogListParams(selectedType!),
       },
-      { skip: !selectedRelocateFrom?.value || !selectedType },
+      { skip: !selectedType || (!selectedRelocateFrom?.value && !selectedRelocateTo?.value) },
     )
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
@@ -512,13 +515,13 @@ const EditRelocationTaskPage: FC = () => {
 
   const createEquipments = useDebounceFn<CreateEquipmentsByFileModalProps['onCreate']>(async () => {
     const equipmentsByFile: EquipmentByFileTableRow[] = form.getFieldValue('equipmentsByFile')
-    if (!equipmentsByFile || !selectedRelocateFrom || !selectedRelocateTo) return
+    if (!equipmentsByFile || !selectedRelocateTo) return
 
     try {
       const createdEquipments = await createEquipmentsMutation(
         equipmentsByFile.map(({ rowId, ...eqp }) => ({
           ...eqp,
-          location: selectedRelocateFrom.value,
+          location: selectedRelocateFrom?.value || selectedRelocateTo.value,
           warehouse: selectedRelocateTo.value,
           nomenclature: eqp.nomenclature?.id,
           category: eqp.category?.id,
@@ -570,13 +573,13 @@ const EditRelocationTaskPage: FC = () => {
 
   const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
     async ({ images, ...values }, setFields) => {
-      if (!activeEquipmentRow || !selectedRelocateTo?.value || !selectedRelocateFrom?.value) return
+      if (!activeEquipmentRow || !selectedRelocateTo) return
 
       try {
         const createdEquipment = await createEquipmentMutation({
           ...values,
           images: images?.length ? extractIdsFromFilesResponse(images) : undefined,
-          location: selectedRelocateFrom.value,
+          location: selectedRelocateFrom?.value || selectedRelocateTo.value,
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
@@ -607,9 +610,9 @@ const EditRelocationTaskPage: FC = () => {
     },
     [
       activeEquipmentRow,
-      selectedRelocateTo?.value,
-      selectedRelocateFrom?.value,
+      selectedRelocateTo,
       createEquipmentMutation,
+      selectedRelocateFrom?.value,
       form,
       typeIsWriteOff,
       handleCloseCreateEquipmentModal,
@@ -696,6 +699,12 @@ const EditRelocationTaskPage: FC = () => {
     (value) => {
       setSelectedType(value)
 
+      if (checkRelocationTaskTypeIsEnteringBalances(value)) {
+        const relocateFromValue = undefined
+        form.setFieldValue('relocateFrom', relocateFromValue)
+        setSelectedRelocateFrom(relocateFromValue)
+      }
+
       if (checkRelocationTaskTypeIsWriteOff(value)) {
         const relocateToValue = undefined
         form.setFieldValue('relocateTo', relocateToValue)
@@ -715,14 +724,15 @@ const EditRelocationTaskPage: FC = () => {
   /* Установка значений формы из заявки */
   useEffect(() => {
     if (relocationTask) {
-      const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
       setSelectedType(relocationTask.type)
+      const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
+      const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(relocationTask.type)
 
       form.setFieldsValue({
         type: relocationTask.type,
         deadlineAtDate: moment(relocationTask.deadlineAt),
         deadlineAtTime: moment(relocationTask.deadlineAt),
-        relocateFrom: relocationTask.relocateFrom?.id,
+        relocateFrom: typeIsEnteringBalances ? undefined : relocationTask.relocateFrom?.id,
         relocateTo: typeIsWriteOff ? undefined : relocationTask.relocateTo?.id,
         executor: relocationTask.executor?.id,
         controller: relocationTask.controller?.id,
@@ -762,16 +772,20 @@ const EditRelocationTaskPage: FC = () => {
   /* Установка значения состояния объекта выбытия */
   useEffect(() => {
     if (relocationTask && relocateFromLocationList.length) {
-      const relocateFromListItem = relocateFromLocationList.find(
-        (l) => l.id === relocationTask.relocateFrom?.id,
-      )
+      const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(relocationTask.type)
 
-      if (relocateFromListItem) {
-        setSelectedRelocateFrom({
-          label: relocateFromListItem.title,
-          type: relocateFromListItem.type,
-          value: relocateFromListItem.id,
-        })
+      if (!typeIsEnteringBalances) {
+        const relocateFromListItem = relocateFromLocationList.find(
+          (l) => l.id === relocationTask.relocateFrom?.id,
+        )
+
+        if (relocateFromListItem) {
+          setSelectedRelocateFrom({
+            label: relocateFromListItem.title,
+            type: relocateFromListItem.type,
+            value: relocateFromListItem.id,
+          })
+        }
       }
     }
   }, [relocateFromLocationList, relocationTask])
@@ -814,10 +828,11 @@ const EditRelocationTaskPage: FC = () => {
   const controllerIsRequired =
     relocateToWarehouse && relocateFromWarehouse ? !isRelocationFromMainToMsi : true
 
-  const createEquipmentDisabled =
-    !selectedRelocateFrom ||
-    !selectedRelocateTo ||
-    !checkLocationTypeIsWarehouse(selectedRelocateTo.type)
+  const createEquipmentBtnEnabled = checkCreateEquipmentBtnEnabled(
+    typeIsEnteringBalances,
+    selectedRelocateFrom,
+    selectedRelocateTo,
+  )
 
   const equipmentImagesFormPath: FormItemProps['name'] =
     createRelocationEquipmentImagesModalOpened && activeEquipmentRow
@@ -863,6 +878,7 @@ const EditRelocationTaskPage: FC = () => {
         <Row gutter={[40, 40]}>
           <Col span={24}>
             <RelocationTaskForm
+              permissions={permissions}
               isLoading={updateTaskIsLoading || relocationTaskIsFetching}
               userList={userList}
               userListIsLoading={userListIsFetching}
@@ -900,7 +916,7 @@ const EditRelocationTaskPage: FC = () => {
                         onChange={importEquipmentsByFile}
                       >
                         <Button
-                          disabled={createEquipmentDisabled}
+                          disabled={!createEquipmentBtnEnabled}
                           loading={importEquipmentsByFileIsLoading}
                         >
                           Добавить из Excel
@@ -929,7 +945,7 @@ const EditRelocationTaskPage: FC = () => {
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
                 canCreateEquipment={!!permissions?.equipmentsCreate}
-                addEquipmentBtnDisabled={createEquipmentDisabled}
+                createEquipmentBtnDisabled={!createEquipmentBtnEnabled}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
                 onClickCreateImage={handleOpenCreateRelocationEquipmentImagesModal}
               />

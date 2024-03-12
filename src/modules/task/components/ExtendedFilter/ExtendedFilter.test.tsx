@@ -278,6 +278,42 @@ const completeAt = {
   expectHasCorrectInitialValues: expectCompleteAtHasCorrectInitialValues,
 }
 
+// creation date
+const getCreationDateBlock = () => screen.getByTestId('creation-date-block')
+
+const getCreationStartDateField = (): HTMLInputElement =>
+  within(getCreationDateBlock()).getByPlaceholderText('Начальная дата')
+
+const getCreationEndDateField = (): HTMLInputElement =>
+  within(getCreationDateBlock()).getByPlaceholderText('Конечная дата')
+
+const setCreationDate = async (user: UserEvent) => {
+  const startDateField = getCreationStartDateField()
+  const endDateField = getCreationEndDateField()
+
+  const startDateValue = '2022-09-10'
+  const endDateValue = '2022-09-11'
+
+  await user.type(startDateField, startDateValue)
+  await user.type(endDateField, endDateValue)
+  await user.tab()
+
+  return { startDateField, startDateValue, endDateField, endDateValue }
+}
+
+const expectCreationDateHasCorrectInitialValues = () => {
+  expect(getCreationStartDateField()).not.toHaveValue()
+  expect(getCreationEndDateField()).not.toHaveValue()
+}
+
+const creationDate = {
+  getContainer: getCreationDateBlock,
+  getStartDateField: getCreationStartDateField,
+  getEndDateField: getCreationEndDateField,
+  setValue: setCreationDate,
+  expectHasCorrectInitialValues: expectCreationDateHasCorrectInitialValues,
+}
+
 // work group
 const getWorkGroupFieldContainer = () => screen.getByTestId('work-group-block')
 
@@ -425,6 +461,7 @@ export const testUtils = {
   assigned,
   overdue,
   completeAt,
+  creationDate,
   workGroup,
   manager,
 }
@@ -845,6 +882,89 @@ describe('Расширенный фильтр', () => {
           const checkbox = checkboxTestUtils.getCheckboxIn(container, new RegExp(value))
           expect(checkbox).not.toBeChecked()
         })
+      })
+    })
+  })
+
+  describe('Период создания', () => {
+    test('Отображается', () => {
+      render(<ExtendedFilter {...props} />)
+
+      const startDateField = testUtils.creationDate.getStartDateField()
+      const endDateField = testUtils.creationDate.getEndDateField()
+
+      expect(startDateField).toBeInTheDocument()
+      expect(startDateField).toBeEnabled()
+
+      expect(endDateField).toBeInTheDocument()
+      expect(endDateField).toBeEnabled()
+    })
+
+    test('Имеет корректные значения по умолчанию', () => {
+      render(<ExtendedFilter {...props} />)
+      testUtils.creationDate.expectHasCorrectInitialValues()
+    })
+
+    test('Переданное значение перезаписывает значение по умолчанию', () => {
+      render(
+        <ExtendedFilter
+          {...props}
+          formValues={{
+            ...props.formValues,
+            creationDate: [moment(), moment()],
+          }}
+        />,
+      )
+
+      const startDateField = testUtils.creationDate.getStartDateField()
+      const endDateField = testUtils.creationDate.getEndDateField()
+
+      expect(startDateField).toHaveValue()
+      expect(endDateField).toHaveValue()
+    })
+
+    test('Доступен для редактирования', () => {
+      render(<ExtendedFilter {...props} />)
+
+      const startDateField = testUtils.creationDate.getStartDateField()
+      const endDateField = testUtils.creationDate.getEndDateField()
+
+      expect(startDateField).toBeEnabled()
+      expect(endDateField).toBeEnabled()
+    })
+
+    test('Можно выбрать даты', async () => {
+      const { user } = render(<ExtendedFilter {...props} />)
+
+      const { startDateField, startDateValue, endDateField, endDateValue } =
+        await testUtils.creationDate.setValue(user)
+
+      expect(startDateField).toHaveDisplayValue(startDateValue)
+      expect(endDateField).toHaveDisplayValue(endDateValue)
+    })
+
+    describe('Сбрасывает значения', () => {
+      test('Кнопка "Сбросить"', async () => {
+        const { user } = render(<ExtendedFilter {...props} />)
+
+        const { startDateValue, endDateValue } = await testUtils.creationDate.setValue(user)
+
+        const container = testUtils.creationDate.getContainer()
+        await testUtils.clickResetButtonIn(user, container)
+
+        expect(testUtils.creationDate.getStartDateField()).not.toHaveDisplayValue(startDateValue)
+        expect(testUtils.creationDate.getEndDateField()).not.toHaveDisplayValue(endDateValue)
+      })
+
+      test('Кнопка "Сбросить всё"', async () => {
+        const { user } = render(<ExtendedFilter {...props} />)
+
+        const { startDateValue, endDateValue } = await testUtils.creationDate.setValue(user)
+
+        await testUtils.clickResetAllButton(user)
+
+        expect(testUtils.creationDate.getStartDateField()).not.toHaveDisplayValue(startDateValue)
+        expect(testUtils.creationDate.getEndDateField()).not.toHaveDisplayValue(endDateValue)
       })
     })
   })

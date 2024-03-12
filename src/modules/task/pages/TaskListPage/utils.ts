@@ -26,12 +26,14 @@ import { formatDate } from 'shared/utils/date'
 export const mapFilterToQueryArgs = (
   fields: Partial<TasksFilterFormFields>,
 ): ExtendedFilterQueries => {
-  const { completeAt, searchField, searchValue, ...restFields } = fields
+  const { completeAt, creationDate, searchField, searchValue, ...restFields } = fields
 
   return {
     ...restFields,
     completeAtFrom: completeAt?.[0] ? formatDate(completeAt[0], DATE_FILTER_FORMAT) : undefined,
     completeAtTo: completeAt?.[1] ? formatDate(completeAt[1], DATE_FILTER_FORMAT) : undefined,
+    dateFrom: creationDate?.[0] ? formatDate(creationDate[0], DATE_FILTER_FORMAT) : undefined,
+    dateTo: creationDate?.[1] ? formatDate(creationDate[1], DATE_FILTER_FORMAT) : undefined,
     ...(searchField && searchValue && { [searchField]: searchValue }),
   }
 }
@@ -52,6 +54,7 @@ export const getInitialExtendedFilterFormValues = (
   tasksFiltersStorage?: Nullable<TasksFiltersStorageType>,
 ): Readonly<TasksFilterFormFields> => ({
   completeAt: [],
+  creationDate: [],
   searchField: DEFAULT_SEARCH_FIELD,
   searchValue: undefined,
   status: [],

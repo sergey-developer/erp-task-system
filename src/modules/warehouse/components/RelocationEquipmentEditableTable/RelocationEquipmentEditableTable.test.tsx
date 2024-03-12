@@ -21,7 +21,7 @@ const props: RelocationEquipmentEditableTableProps = {
   equipmentCatalogListIsLoading: false,
 
   canCreateEquipment: false,
-  addEquipmentBtnDisabled: false,
+  createEquipmentBtnDisabled: false,
   onClickCreateEquipment: jest.fn(),
 
   onClickCreateImage: jest.fn(),

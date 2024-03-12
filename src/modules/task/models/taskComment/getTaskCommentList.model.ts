@@ -1,6 +1,6 @@
 import { TaskCommentModel } from 'modules/task/models'
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
-export type GetTaskCommentListQueryArgs = BaseTaskRequestArgs
+export type GetTaskCommentListQueryArgs = TaskRequestArgs
 
 export type GetTaskCommentListSuccessResponse = TaskCommentModel[]

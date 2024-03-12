@@ -16,7 +16,7 @@ import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
 import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
 import Tabs from 'modules/task/components/TaskDetails/Tabs'
-import Title from 'modules/task/components/TaskDetails/Title'
+import Title from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import {
@@ -57,7 +57,7 @@ import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/serv
 import { EmptyFn, MaybeNull } from 'shared/types/utils'
 import { base64ToArrayBuffer } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
-import { extractOriginFiles, downloadFile } from 'shared/utils/file'
+import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -128,6 +128,10 @@ export type TaskCardProps = {
       | 'parentInteractionExternalId'
       | 'hasRelocationTasks'
       | 'shop'
+      | 'isDescriptionChanged'
+      | 'previousDescription'
+      | 'previousOlaNextBreachTime'
+      | 'isOlaNextBreachTimeChanged'
     >
   >
 
@@ -466,6 +470,8 @@ const TaskCard: FC<TaskCardProps> = ({
       onExecuteTask={handleOpenExecuteTaskModal}
       onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
       onRequestReclassification={handleOpenTaskReclassificationModal}
+      onUpdateDescription={() => {}}
+      onUpdateDeadline={() => {}}
     />
   )
 
@@ -542,6 +548,8 @@ const TaskCard: FC<TaskCardProps> = ({
                 olaStatus={task.olaStatus}
                 olaEstimatedTime={task.olaEstimatedTime}
                 olaNextBreachTime={task.olaNextBreachTime}
+                previousOlaNextBreachTime={task.previousOlaNextBreachTime}
+                isOlaNextBreachTimeChanged={task.isOlaNextBreachTimeChanged}
                 responseTime={task.responseTime}
                 workGroup={task.workGroup}
                 assignee={task.assignee}
