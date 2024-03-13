@@ -6,6 +6,7 @@ export enum TaskApiEnum {
   UpdateTaskDeadline = '/tasks/:id/internal-deadline',
   GetWorkPerformedAct = '/tasks/:id/completion_certificate',
 
+  CreateTaskCompletionDocuments = '/tasks/:id/completion-documents',
   GetTaskCompletionDocuments = '/tasks/:id/completion-documents',
 
   GetTaskList = '/tasks/',

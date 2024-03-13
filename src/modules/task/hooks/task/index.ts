@@ -10,6 +10,7 @@ export * from './useUpdateTaskDescription'
 export * from './useUpdateTaskDeadline'
 
 export * from './useGetTaskCompletionDocuments'
+export * from './useCreateTaskCompletionDocuments'
 
 export * from './useCreateInitiationReason'
 export * from './useDeleteInitiationReason'

@@ -4,7 +4,7 @@ import { EquipmentModel } from 'modules/warehouse/models'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-export type RelocationCompletionDocumentModel = {
+export type RelocationTaskCompletionDocumentModel = {
   id: IdType
   relocateFrom: MaybeNull<{
     id: IdType

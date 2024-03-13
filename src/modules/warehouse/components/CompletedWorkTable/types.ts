@@ -13,5 +13,6 @@ export type CompletedWorkTableItem = Pick<
 export type CompletedWorkTableProps = Required<
   Pick<TableProps<CompletedWorkTableItem>, 'dataSource' | 'loading'>
 > & {
+  disabled: boolean
   onDelete: (id: IdType) => Promise<void>
 }
