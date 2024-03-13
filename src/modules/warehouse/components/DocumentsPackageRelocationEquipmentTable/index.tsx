@@ -9,10 +9,10 @@ import {
 
 const DocumentsPackageRelocationEquipmentTable: FC<
   DocumentsPackageRelocationEquipmentTableProps
-> = ({ onClickTechnicalExamination, ...props }) => {
+> = ({ onClickTechnicalExamination, disabled, ...props }) => {
   const columns = useMemo(
-    () => getColumns({ onClickTechnicalExamination }),
-    [onClickTechnicalExamination],
+    () => getColumns({ onClickTechnicalExamination, disabled }),
+    [disabled, onClickTechnicalExamination],
   )
 
   return (

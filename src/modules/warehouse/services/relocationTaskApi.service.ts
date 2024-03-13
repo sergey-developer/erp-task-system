@@ -13,20 +13,22 @@ import {
   CloseRelocationTaskSuccessResponse,
   CreateRelocationTaskAttachmentMutationArgs,
   CreateRelocationTaskAttachmentSuccessResponse,
+  CreateRelocationTaskCompletionDocumentsMutationArgs,
+  CreateRelocationTaskCompletionDocumentsSuccessResponse,
   CreateRelocationTaskITSMMutationArgs,
   CreateRelocationTaskITSMSuccessResponse,
   CreateRelocationTaskMutationArgs,
   CreateRelocationTaskSuccessResponse,
   ExecuteRelocationTaskMutationArgs,
   ExecuteRelocationTaskSuccessResponse,
-  GetRelocationCompletionDocumentsQueryArgs,
-  GetRelocationCompletionDocumentsSuccessResponse,
   GetRelocationEquipmentBalanceListQueryArgs,
   GetRelocationEquipmentBalanceListSuccessResponse,
   GetRelocationEquipmentListQueryArgs,
   GetRelocationEquipmentListSuccessResponse,
   GetRelocationTaskAttachmentsQueryArgs,
   GetRelocationTaskAttachmentsSuccessResponse,
+  GetRelocationTaskCompletionDocumentsQueryArgs,
+  GetRelocationTaskCompletionDocumentsSuccessResponse,
   GetRelocationTaskListQueryArgs,
   GetRelocationTaskListSuccessResponse,
   GetRelocationTaskQueryArgs,
@@ -45,11 +47,12 @@ import {
   cancelRelocationTaskUrl,
   closeRelocationTaskUrl,
   createRelocationTaskAttachmentUrl,
+  createRelocationTaskCompletionDocumentsUrl,
   executeRelocationTaskUrl,
-  getRelocationCompletionDocumentsUrl,
   getRelocationEquipmentBalanceListUrl,
   getRelocationEquipmentListUrl,
   getRelocationTaskAttachmentsUrl,
+  getRelocationTaskCompletionDocumentsUrl,
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
   returnRelocationTaskToReworkUrl,
@@ -283,13 +286,22 @@ const relocationTaskApiService = baseApiService
         }),
       }),
 
-      getRelocationCompletionDocuments: build.query<
-        GetRelocationCompletionDocumentsSuccessResponse,
-        GetRelocationCompletionDocumentsQueryArgs
+      getRelocationTaskCompletionDocuments: build.query<
+        GetRelocationTaskCompletionDocumentsSuccessResponse,
+        GetRelocationTaskCompletionDocumentsQueryArgs
       >({
         query: ({ relocationTaskId }) => ({
-          url: getRelocationCompletionDocumentsUrl(relocationTaskId),
+          url: getRelocationTaskCompletionDocumentsUrl(relocationTaskId),
           method: HttpMethodEnum.Get,
+        }),
+      }),
+      createRelocationTaskCompletionDocuments: build.mutation<
+        CreateRelocationTaskCompletionDocumentsSuccessResponse,
+        CreateRelocationTaskCompletionDocumentsMutationArgs
+      >({
+        query: ({ relocationTaskId }) => ({
+          url: createRelocationTaskCompletionDocumentsUrl(relocationTaskId),
+          method: HttpMethodEnum.Post,
         }),
       }),
     }),
@@ -310,7 +322,8 @@ export const {
   useCreateRelocationTaskAttachmentMutation,
   useGetRelocationTaskAttachmentsQuery,
 
-  useGetRelocationCompletionDocumentsQuery,
+  useGetRelocationTaskCompletionDocumentsQuery,
+  useCreateRelocationTaskCompletionDocumentsMutation,
 
   useLazyGetRelocationTaskWaybillM15Query,
 

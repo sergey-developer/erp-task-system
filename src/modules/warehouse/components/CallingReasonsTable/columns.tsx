@@ -7,7 +7,11 @@ import { CallingReasonsTableItem, CallingReasonsTableProps } from './types'
 
 export const getColumns = ({
   onDelete,
-}: Pick<CallingReasonsTableProps, 'onDelete'>): ColumnsType<CallingReasonsTableItem> => [
+  disabled,
+}: Pick<
+  CallingReasonsTableProps,
+  'onDelete' | 'disabled'
+>): ColumnsType<CallingReasonsTableItem> => [
   {
     dataIndex: 'title',
     title: '№ заявки/причина вызова',
@@ -32,7 +36,11 @@ export const getColumns = ({
         title='Вы действительно хотите удалить причину вызова?'
         onConfirm={() => onDelete(record.id)}
       >
-        <Button type='text' icon={<DeleteIcon $cursor='pointer' $color='fireOpal' />} />
+        <Button
+          type='text'
+          icon={<DeleteIcon $cursor='pointer' $color='fireOpal' />}
+          disabled={disabled}
+        />
       </Popconfirm>
     ),
   },

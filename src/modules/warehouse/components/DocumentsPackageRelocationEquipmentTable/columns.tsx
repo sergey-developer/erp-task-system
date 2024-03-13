@@ -14,9 +14,10 @@ import {
 
 export const getColumns = ({
   onClickTechnicalExamination,
+  disabled,
 }: Pick<
   DocumentsPackageRelocationEquipmentTableProps,
-  'onClickTechnicalExamination'
+  'onClickTechnicalExamination' | 'disabled'
 >): ColumnsType<DocumentsPackageRelocationEquipmentTableItem> => [
   {
     dataIndex: 'equipment',
@@ -42,7 +43,9 @@ export const getColumns = ({
     render: (value: DocumentsPackageRelocationEquipmentTableItem['condition'], record) => (
       <Button
         disabled={
-          value !== EquipmentConditionEnum.Broken && value !== EquipmentConditionEnum.NonRepairable
+          disabled ||
+          (value !== EquipmentConditionEnum.Broken &&
+            value !== EquipmentConditionEnum.NonRepairable)
         }
         onClick={() => onClickTechnicalExamination(record.id)}
       >

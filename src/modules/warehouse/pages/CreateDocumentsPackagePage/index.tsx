@@ -1,5 +1,5 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Flex, Row, Typography } from 'antd'
+import { Button, Col, Flex, Row, Space, Typography } from 'antd'
 import get from 'lodash/get'
 import React, { FC, useState } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -9,6 +9,7 @@ import { CreateCompletedWorkModalProps } from 'modules/task/components/CreateCom
 import {
   useCreateCompletedWork,
   useCreateInitiationReason,
+  useCreateTaskCompletionDocuments,
   useDeleteCompletedWork,
   useDeleteInitiationReason,
   useGetTaskCompletionDocuments,
@@ -21,18 +22,26 @@ import {
   useCreateRelocationEquipmentTechnicalExamination,
   useGetRelocationEquipmentTechnicalExamination,
 } from 'modules/warehouse/hooks/relocationEquipment'
-import { useGetRelocationCompletionDocuments } from 'modules/warehouse/hooks/relocationTask'
+import {
+  useCreateRelocationTaskCompletionDocuments,
+  useGetRelocationTaskCompletionDocuments,
+} from 'modules/warehouse/hooks/relocationTask'
 import { RelocationTaskModel } from 'modules/warehouse/models'
 import { getRelocateFromTo } from 'modules/warehouse/utils/relocationTask'
 
+import GoBackButton from 'components/Buttons/GoBackButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Spinner from 'components/Spinner'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
-import { Nullable } from 'shared/types/utils'
+import { MaybeUndefined, Nullable } from 'shared/types/utils'
 import { getFieldsErrors } from 'shared/utils/form'
+
+import { MimetypeEnum } from '../../../../shared/constants/mimetype'
+import { base64ToArrayBuffer } from '../../../../shared/utils/common'
+import { downloadFile } from '../../../../shared/utils/file'
 
 const CallingReasonsTable = React.lazy(
   () => import('modules/warehouse/components/CallingReasonsTable'),
@@ -56,7 +65,7 @@ const { Title } = Typography
 
 const CreateDocumentsPackagePage: FC = () => {
   const location = useLocation()
-  const task: Nullable<Pick<TaskModel, 'id'>> = get(location, 'state.task')
+  const task: Nullable<Pick<TaskModel, 'id' | 'recordId'>> = get(location, 'state.task')
   const relocationTask: Nullable<Pick<RelocationTaskModel, 'id'>> = get(
     location,
     'state.relocationTask',
@@ -106,7 +115,7 @@ const CreateDocumentsPackagePage: FC = () => {
   const {
     currentData: relocationCompletionDocument,
     isFetching: relocationCompletionDocumentIsFetching,
-  } = useGetRelocationCompletionDocuments(
+  } = useGetRelocationTaskCompletionDocuments(
     { relocationTaskId: relocationTask?.id! },
     { skip: !relocationTask?.id },
   )
@@ -121,6 +130,19 @@ const CreateDocumentsPackagePage: FC = () => {
   const [createCompletedWorkMutation, { isLoading: createCompletedWorkIsLoading }] =
     useCreateCompletedWork()
   const [deleteCompletedWorkMutation] = useDeleteCompletedWork()
+
+  const [
+    createTaskCompletionDocumentsMutation,
+    { isLoading: createTaskCompletionDocumentsIsLoading },
+  ] = useCreateTaskCompletionDocuments()
+
+  const [
+    createRelocationTaskCompletionDocumentsMutation,
+    { isLoading: createRelocationTaskCompletionDocumentsIsLoading },
+  ] = useCreateRelocationTaskCompletionDocuments()
+
+  const createDocumentsIsLoading =
+    createTaskCompletionDocumentsIsLoading || createRelocationTaskCompletionDocumentsIsLoading
 
   const onDeleteInitiationReason = async (id: IdType) => {
     if (!task) return
@@ -184,9 +206,28 @@ const CreateDocumentsPackagePage: FC = () => {
     }
   }
 
+  const onCreateDocumentsPackage = async () => {
+    try {
+      let base64: MaybeUndefined<string>
+      let fileName: MaybeUndefined<string>
+
+      if (task) {
+        base64 = await createTaskCompletionDocumentsMutation({ taskId: task.id }).unwrap()
+        fileName = `Пакет документов по инциденту №${task.recordId}`
+      } else if (relocationTask) {
+        base64 = await createRelocationTaskCompletionDocumentsMutation({
+          relocationTaskId: relocationTask.id,
+        }).unwrap()
+        fileName = `Пакет документов по перемещению №${relocationTask.id}`
+      }
+
+      if (base64) downloadFile(base64ToArrayBuffer(base64), MimetypeEnum.Pdf, fileName)
+    } catch {}
+  }
+
   return (
     <>
-      <Flex data-testid='create-documents-package-page' vertical>
+      <Flex data-testid='create-documents-package-page' vertical gap='large'>
         <Flex vertical gap='middle'>
           <Title level={4}>Основные данные о выполненных работах</Title>
 
@@ -203,10 +244,15 @@ const CreateDocumentsPackagePage: FC = () => {
                           loading={taskCompletionDocumentsIsFetching}
                           dataSource={taskCompletionDocuments?.initiationReasons || []}
                           onDelete={onDeleteInitiationReason}
+                          disabled={createDocumentsIsLoading}
                         />
                       </React.Suspense>
 
-                      <Button type='link' onClick={debouncedToggleCreateReasonModal}>
+                      <Button
+                        type='link'
+                        onClick={debouncedToggleCreateReasonModal}
+                        disabled={createDocumentsIsLoading}
+                      >
                         Добавить причину
                       </Button>
                     </Flex>
@@ -225,10 +271,15 @@ const CreateDocumentsPackagePage: FC = () => {
                           loading={taskCompletionDocumentsIsFetching}
                           dataSource={taskCompletionDocuments?.workList || []}
                           onDelete={onDeleteCompletedWork}
+                          disabled={createDocumentsIsLoading}
                         />
                       </React.Suspense>
 
-                      <Button type='link' onClick={debouncedToggleCreateCompletedWorkModal}>
+                      <Button
+                        type='link'
+                        onClick={debouncedToggleCreateCompletedWorkModal}
+                        disabled={createDocumentsIsLoading}
+                      >
                         Добавить работы
                       </Button>
                     </Flex>
@@ -237,15 +288,16 @@ const CreateDocumentsPackagePage: FC = () => {
               )}
             </Flex>
 
-            <Row>
-              <Col span={12}>
-                <Flex vertical gap='middle'>
-                  <Title level={4}>Перемещения</Title>
+            {taskCompletionDocumentsIsFetching || relocationCompletionDocumentIsFetching ? (
+              <Spinner tip='Загрузка перемещений...' />
+            ) : (
+              (taskCompletionDocuments?.relocationTasks?.length ||
+                relocationCompletionDocument) && (
+                <Row>
+                  <Col span={12}>
+                    <Flex vertical gap='middle'>
+                      <Title level={4}>Перемещения</Title>
 
-                  {taskCompletionDocumentsIsFetching || relocationCompletionDocumentIsFetching ? (
-                    <Spinner />
-                  ) : (
-                    <>
                       {taskCompletionDocuments?.relocationTasks &&
                         taskCompletionDocuments.relocationTasks.map((task) => (
                           <Flex key={task.id} vertical gap='small'>
@@ -256,6 +308,7 @@ const CreateDocumentsPackagePage: FC = () => {
                             <DocumentsPackageRelocationEquipmentTable
                               dataSource={task.relocationEquipments}
                               onClickTechnicalExamination={onOpenCreateTechnicalExaminationModal}
+                              disabled={createDocumentsIsLoading}
                             />
                           </Flex>
                         ))}
@@ -272,16 +325,34 @@ const CreateDocumentsPackagePage: FC = () => {
                           <DocumentsPackageRelocationEquipmentTable
                             dataSource={relocationCompletionDocument.relocationEquipments}
                             onClickTechnicalExamination={onOpenCreateTechnicalExaminationModal}
+                            disabled={createDocumentsIsLoading}
                           />
                         </Flex>
                       )}
-                    </>
-                  )}
-                </Flex>
-              </Col>
-            </Row>
+                    </Flex>
+                  </Col>
+                </Row>
+              )
+            )}
           </Flex>
         </Flex>
+
+        <Row justify='end'>
+          <Col>
+            <Space>
+              <GoBackButton />
+
+              <Button
+                type='primary'
+                loading={createDocumentsIsLoading}
+                disabled={!task && !relocationTask}
+                onClick={onCreateDocumentsPackage}
+              >
+                Сформировать пакет документов
+              </Button>
+            </Space>
+          </Col>
+        </Row>
       </Flex>
 
       {createReasonModalOpened && (

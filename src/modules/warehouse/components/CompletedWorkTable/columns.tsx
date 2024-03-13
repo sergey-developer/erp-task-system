@@ -7,7 +7,8 @@ import { CompletedWorkTableItem, CompletedWorkTableProps } from './types'
 
 export const getColumns = ({
   onDelete,
-}: Pick<CompletedWorkTableProps, 'onDelete'>): ColumnsType<CompletedWorkTableItem> => [
+  disabled,
+}: Pick<CompletedWorkTableProps, 'onDelete' | 'disabled'>): ColumnsType<CompletedWorkTableItem> => [
   {
     dataIndex: 'title',
     title: 'Наименование работ',
@@ -29,7 +30,11 @@ export const getColumns = ({
         title='Вы действительно хотите удалить работы?'
         onConfirm={() => onDelete(record.id)}
       >
-        <Button type='text' icon={<DeleteIcon $cursor='pointer' $color='fireOpal' />} />
+        <Button
+          type='text'
+          icon={<DeleteIcon $cursor='pointer' $color='fireOpal' />}
+          disabled={disabled}
+        />
       </Popconfirm>
     ),
   },
