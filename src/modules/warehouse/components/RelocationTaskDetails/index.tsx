@@ -78,7 +78,7 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/services/baseApi'
-import { base64ToArrayBuffer, valueOrHyphen } from 'shared/utils/common'
+import { base64ToBytes, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -260,11 +260,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     const { data } = await getWaybillM15({ relocationTaskId })
 
     if (data) {
-      downloadFile(
-        base64ToArrayBuffer(data),
-        MimetypeEnum.Pdf,
-        getWaybillM15Filename(relocationTaskId),
-      )
+      downloadFile(base64ToBytes(data), MimetypeEnum.Pdf, getWaybillM15Filename(relocationTaskId))
     }
   }, [relocationTaskId])
 
