@@ -345,6 +345,7 @@ const CreateDocumentsPackagePage: FC = () => {
               <Button
                 type='primary'
                 loading={createDocumentsIsLoading}
+                disabled={!task && !relocationTask}
                 onClick={onCreateDocumentsPackage}
               >
                 Сформировать пакет документов
