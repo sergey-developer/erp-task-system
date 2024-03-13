@@ -7,7 +7,7 @@ import { FileTextIcon, ReadIcon, UnorderedListIcon } from 'components/Icons'
 
 import { NavMenuItem } from './types'
 
-const navMenuCommonConfig: NavMenuItem[] = [
+const navMenuConfig: NavMenuItem[] = [
   {
     key: TasksRoutesEnum.DesktopTasks,
     icon: UnorderedListIcon,
@@ -49,4 +49,4 @@ const navMenuCommonConfig: NavMenuItem[] = [
   },
 ]
 
-export default navMenuCommonConfig
+export default navMenuConfig

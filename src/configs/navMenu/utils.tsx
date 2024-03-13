@@ -5,7 +5,7 @@ import { UserPermissionsEnum } from 'modules/user/constants'
 
 import { NavMenuProps } from 'components/NavMenu'
 
-import { NavMenuItem } from '../types'
+import { NavMenuItem } from './types'
 
 export const mapNavMenuConfig = (
   items: NavMenuItem[],
