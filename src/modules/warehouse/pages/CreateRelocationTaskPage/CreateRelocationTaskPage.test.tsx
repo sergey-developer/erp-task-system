@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as createEquipmentsByFileModalTestUtils } from 'modules/warehouse/components/CreateEquipmentsByFileModal/CreateEquipmentsByFileModal.test'
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
 import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
@@ -155,7 +156,9 @@ describe('Страница создания заявки на перемещен
 
       render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+          },
         }),
       })
 
@@ -194,7 +197,9 @@ describe('Страница создания заявки на перемещен
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+          },
         }),
       })
 
@@ -220,7 +225,9 @@ describe('Страница создания заявки на перемещен
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+          },
         }),
       })
 
@@ -242,7 +249,9 @@ describe('Страница создания заявки на перемещен
 
       render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+          },
         }),
       })
 
@@ -274,7 +283,9 @@ describe('Страница создания заявки на перемещен
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+          },
         }),
       })
 
@@ -303,7 +314,9 @@ describe('Страница создания заявки на перемещен
 
         render(<CreateRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+            queries: {
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+            },
           }),
         })
 
@@ -323,7 +336,9 @@ describe('Страница создания заявки на перемещен
 
         const { user } = render(<CreateRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+            queries: {
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+            },
           }),
         })
 
@@ -347,7 +362,9 @@ describe('Страница создания заявки на перемещен
 
         const { user } = render(<CreateRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+            queries: {
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+            },
           }),
         })
 
@@ -377,7 +394,9 @@ describe('Страница создания заявки на перемещен
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+          },
         }),
       })
 
@@ -412,7 +431,9 @@ describe('Страница создания заявки на перемещен
 
         const { user } = render(<CreateRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+            queries: {
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+            },
           }),
         })
 
@@ -444,7 +465,9 @@ describe('Страница создания заявки на перемещен
 
         const { user } = render(<CreateRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+            queries: {
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+            },
           }),
         })
 

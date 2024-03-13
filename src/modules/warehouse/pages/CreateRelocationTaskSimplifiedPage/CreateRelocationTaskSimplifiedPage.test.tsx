@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
 import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import { getEquipmentListTemplateErrorMsg } from 'modules/warehouse/constants/equipment'
@@ -116,7 +117,9 @@ describe('Упрощенная страница создания заявки н
 
       render(<CreateRelocationTaskSimplifiedPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+          },
         }),
       })
 
@@ -155,7 +158,9 @@ describe('Упрощенная страница создания заявки н
 
       const { user } = render(<CreateRelocationTaskSimplifiedPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+          },
         }),
       })
 
@@ -181,7 +186,9 @@ describe('Упрощенная страница создания заявки н
 
       const { user } = render(<CreateRelocationTaskSimplifiedPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_CREATE'] }) },
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
+          },
         }),
       })
 

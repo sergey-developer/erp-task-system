@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { UserPermissions } from 'modules/user/models'
+import { UserPermissionsEnum } from 'modules/user/constants'
 
 import { NavMenuProps } from 'components/NavMenu'
 
@@ -9,16 +9,23 @@ import { NavMenuItem } from '../types'
 
 export const mapNavMenuConfig = (
   items: NavMenuItem[],
-  permissions: UserPermissions[],
+  permissions: UserPermissionsEnum[],
 ): NavMenuProps['items'] =>
-  items.map(({ key, icon: Icon, link, text, children, shouldDisable }) => {
-    const disabled = shouldDisable?.(permissions)
+  items.reduce<NavMenuProps['items']>(
+    (acc, { key, icon: Icon, link, text, children, disabled, visible }) => {
+      if (!visible || visible(permissions)) {
+        const isDisabled = disabled?.(permissions)
 
-    return {
-      key,
-      label: link && !disabled ? <Link to={link}>{text}</Link> : text,
-      icon: Icon && <Icon $size='large' />,
-      children: children && mapNavMenuConfig(children, permissions),
-      disabled,
-    }
-  })
+        acc.push({
+          key,
+          label: link && !isDisabled ? <Link to={link}>{text}</Link> : text,
+          icon: Icon && <Icon $size='large' />,
+          children: children && mapNavMenuConfig(children, permissions),
+          disabled: isDisabled,
+        })
+      }
+
+      return acc
+    },
+    [],
+  )

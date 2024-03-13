@@ -5,7 +5,6 @@ export enum UserRoleEnum {
   HeadOfDepartment = 'HEAD_OF_DEPARTMENT',
 }
 
-//todo: reuse everywhere
 export enum UserPermissionsEnum {
   WarehouseReportsRead = 'WAREHOUSE_REPORTS_READ',
 
@@ -27,4 +26,17 @@ export enum UserPermissionsEnum {
   NomenclaturesCreate = 'NOMENCLATURES_CREATE',
   NomenclaturesDelete = 'NOMENCLATURES_DELETE',
   NomenclaturesUpdate = 'NOMENCLATURES_UPDATE',
+
+  TaskInternalDescriptionUpdate = 'TASK_INTERNAL_DESCRIPTION_UPDATE',
+  TaskHistoryDescriptionRead = 'TASK_HISTORY_DESCRIPTION_READ',
+  TaskHistoryDescriptionUpdate = 'TASK_HISTORY_DESCRIPTION_UPDATE',
+  TaskHistoryDeadlineRead = 'TASK_HISTORY_DEADLINE_READ',
+  TaskHistoryDeadlineUpdate = 'TASK_HISTORY_DEADLINE_UPDATE',
+  TaskInternalDeadlineUpdate = 'TASK_INTERNAL_DEADLINE_UPDATE',
+
+  EnteringBalances = 'ENTERING_BALANCES',
+
+  FiscalAccumulatorTasksRead = 'FISCAL_ACCUMULATOR_TASKS_READ',
+
+  ReportMainIndicatorsRead = 'REPORT_MAIN_INDICATORS_READ',
 }

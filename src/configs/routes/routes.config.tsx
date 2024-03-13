@@ -4,6 +4,8 @@ import { Navigate, RouteObject } from 'react-router-dom'
 import { route as authRoute } from 'modules/auth/routes.config'
 import { route as fiscalAccumulatorRoute } from 'modules/fiscalAccumulator/routes.config'
 import { route as monitoringRoute } from 'modules/monitoring/routes.config'
+import { route as reportsRoute } from 'modules/reports/routes.config'
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import { route as taskRoute } from 'modules/task/routes.config'
 import { route as warehouseRoute } from 'modules/warehouse/routes.config'
 
@@ -30,12 +32,13 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <Navigate to={CommonRouteEnum.DesktopTaskList} />,
+            element: <Navigate to={TasksRoutesEnum.DesktopTaskList} />,
           },
           taskRoute,
           fiscalAccumulatorRoute,
           warehouseRoute,
           monitoringRoute,
+          reportsRoute,
         ],
       },
     ],

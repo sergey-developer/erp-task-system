@@ -2,7 +2,7 @@ import { Col, Radio, Row } from 'antd'
 import React, { FC } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import { CommonRouteEnum } from 'configs/routes'
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
 
 import Space from 'components/Space'
 
@@ -25,8 +25,8 @@ const TaskListLayout: FC = () => {
             onChange={(event) => navigate(event.target.value)}
             defaultValue={location.pathname}
           >
-            <Radio.Button value={CommonRouteEnum.DesktopTaskList}>Реестр</Radio.Button>
-            <Radio.Button value={CommonRouteEnum.DesktopTaskListMap}>Карта</Radio.Button>
+            <Radio.Button value={TasksRoutesEnum.DesktopTaskList}>Реестр</Radio.Button>
+            <Radio.Button value={TasksRoutesEnum.DesktopTaskListMap}>Карта</Radio.Button>
           </Radio.Group>
         </Col>
       </Row>
