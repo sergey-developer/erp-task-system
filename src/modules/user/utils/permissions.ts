@@ -1,16 +1,18 @@
 import { camelizeKeys } from 'humps'
 
-import { UserModel, UserPermissions } from 'modules/user/models'
+import { UserModel } from 'modules/user/models'
 
 import { Camelize, Writeable } from 'shared/types/utils'
 
+import { UserPermissionsEnum } from '../constants'
+
 export type MatchedPermissions = Readonly<
-  Camelize<Partial<Record<Lowercase<UserPermissions>, boolean>>>
+  Camelize<Partial<Record<Lowercase<UserPermissionsEnum>, boolean>>>
 >
 
 export const getPermissionsObj = (
   user: UserModel,
-  permissions: UserModel['permissions'],
+  permissions: UserPermissionsEnum[],
 ): MatchedPermissions =>
   camelizeKeys(
     permissions.reduce<Writeable<MatchedPermissions>>((acc, perm) => {
@@ -23,5 +25,16 @@ export const getPermissionsObj = (
 export const checkEveryPermissionAllowed = (permissions: MatchedPermissions): boolean =>
   Object.values(permissions).every(Boolean)
 
-export const hasPermissions = (user: UserModel, permissions: UserModel['permissions']) =>
-  checkEveryPermissionAllowed(getPermissionsObj(user, permissions))
+export const checkSomePermissionAllowed = (permissions: MatchedPermissions): boolean =>
+  Object.values(permissions).some(Boolean)
+
+export const hasPermissions = (
+  user: UserModel,
+  permissions: UserModel['permissions'],
+  checkEvery: boolean = true,
+) => {
+  const permissionsObj = getPermissionsObj(user, permissions)
+  return checkEvery
+    ? checkEveryPermissionAllowed(permissionsObj)
+    : checkSomePermissionAllowed(permissionsObj)
+}

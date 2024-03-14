@@ -6,6 +6,7 @@ import { CommonRouteEnum } from 'configs/routes'
 import { testUtils as logoutButtonTestUtils } from 'modules/auth/components/LogoutButton/LogoutButton.test'
 import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/LoginPage.test'
 import { FiscalAccumulatorRouteEnum } from 'modules/fiscalAccumulator/constants'
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 
@@ -169,7 +170,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(CommonRouteEnum.DesktopTaskList)
+          expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
         })
       })
 
@@ -251,7 +252,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(CommonRouteEnum.DesktopTaskList)
+          expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
         })
       })
 
@@ -353,7 +354,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(CommonRouteEnum.DesktopTaskList)
+          expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
         })
       })
 
@@ -455,7 +456,7 @@ describe('PrivateHeader', () => {
           await privateLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
-          expect(getCurrentRoute()).toBe(CommonRouteEnum.DesktopTaskList)
+          expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
         })
       })
 

@@ -1,6 +1,7 @@
 import { screen, waitFor } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { testUtils as relocationTaskListFilterTestUtils } from 'modules/warehouse/components/RelocationTaskListFilter/RelocationTaskListFilter.test'
 import { testUtils as relocationTaskTableTestUtils } from 'modules/warehouse/components/RelocationTaskTable/RelocationTaskTable.test'
@@ -315,7 +316,7 @@ describe('Страница списка заявок на перемещение
         render(<RelocationTaskListPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksCreate] }),
             },
           }),
         })
@@ -356,7 +357,7 @@ describe('Страница списка заявок на перемещение
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksCreate] }),
               },
             }),
           },

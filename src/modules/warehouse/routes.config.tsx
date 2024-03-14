@@ -5,10 +5,12 @@ import { Navigate, RouteObject } from 'react-router-dom'
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { hasPermissions } from 'modules/user/utils'
-import ManageWarehousesLayout from 'modules/warehouse/components/ManageWarehousesLayout'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
+import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
+
+import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
 
 import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
 
@@ -71,7 +73,7 @@ const CreateDocumentsPackagePage = React.lazy(
 
 export const route: Readonly<RouteObject> = {
   path: WarehouseRouteEnum.ManageWarehouses,
-  element: <ManageWarehousesLayout />,
+  element: <BreadcrumbsLayout />,
   children: [
     {
       index: true,

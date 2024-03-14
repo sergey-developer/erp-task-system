@@ -27,7 +27,7 @@ import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
-import { base64ToArrayBuffer } from 'shared/utils/common'
+import { base64ToBytes } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { downloadFile } from 'shared/utils/file'
 import {
@@ -132,7 +132,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
         const fileName = decodeURIComponent(
           data.meta.response.headers['content-disposition'].split('filename=')[1],
         )
-        downloadFile(base64ToArrayBuffer(data.value), MimetypeEnum.Xlsx, fileName)
+        downloadFile(base64ToBytes(data.value), MimetypeEnum.Xlsx, fileName)
       }
     } catch {}
   }
