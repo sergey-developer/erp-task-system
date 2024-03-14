@@ -1,6 +1,5 @@
+import { Table } from 'antd'
 import { FC, useMemo } from 'react'
-
-import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
 import { getColumns } from './columns'
 import { CallingReasonsTableItem, CallingReasonsTableProps } from './types'
@@ -10,12 +9,7 @@ const CallingReasonsTable: FC<CallingReasonsTableProps> = ({ onDelete, disabled,
 
   return (
     <div data-testid='calling-reasons-table'>
-      <ParentSizedTable<CallingReasonsTableItem>
-        {...props}
-        rowKey='id'
-        columns={columns}
-        pagination={false}
-      />
+      <Table<CallingReasonsTableItem> {...props} rowKey='id' columns={columns} pagination={false} />
     </div>
   )
 }

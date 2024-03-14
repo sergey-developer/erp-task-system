@@ -33,15 +33,14 @@ import GoBackButton from 'components/Buttons/GoBackButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Spinner from 'components/Spinner'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined, Nullable } from 'shared/types/utils'
+import { base64ToArrayBuffer } from 'shared/utils/common'
+import { downloadFile } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
-
-import { MimetypeEnum } from '../../../../shared/constants/mimetype'
-import { base64ToArrayBuffer } from '../../../../shared/utils/common'
-import { downloadFile } from '../../../../shared/utils/file'
 
 const CallingReasonsTable = React.lazy(
   () => import('modules/warehouse/components/CallingReasonsTable'),
