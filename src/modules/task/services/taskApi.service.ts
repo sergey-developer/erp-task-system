@@ -1,3 +1,5 @@
+import { decamelize } from 'humps'
+
 import { getPaginatedList } from 'lib/antd/utils'
 
 import {
@@ -157,14 +159,20 @@ const taskApiService = baseApiService
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.TaskCounters],
-        query: ({ taskId, techResolution, userResolution, attachments }) => {
+        query: ({
+          taskId,
+          techResolution,
+          userResolution,
+          spentHours,
+          spentMinutes,
+          attachments,
+        }) => {
           const formData = new FormData()
 
-          formData.append('tech_resolution', techResolution)
-
-          if (userResolution) {
-            formData.append('user_resolution', userResolution)
-          }
+          formData.append(decamelize('techResolution'), techResolution)
+          formData.append(decamelize('spentHours'), String(spentHours))
+          formData.append(decamelize('spentMinutes'), String(spentMinutes))
+          if (userResolution) formData.append(decamelize(userResolution), userResolution)
 
           if (attachments?.length) {
             attachments.forEach((att) => formData.append('attachments', att))
