@@ -89,10 +89,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
     state: { isLoading: takeTaskIsLoading },
   } = useTakeTask()
 
-  const {
-    fn: resolveTask,
-    state: { isLoading: isTaskResolving },
-  } = useResolveTask()
+  const [resolveTask, { isLoading: taskIsResolving }] = useResolveTask()
 
   const {
     fn: updateWorkGroup,
@@ -130,7 +127,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
       takeTask={takeTask}
       takeTaskIsLoading={takeTaskIsLoading}
       resolveTask={resolveTask}
-      isTaskResolving={isTaskResolving}
+      taskIsResolving={taskIsResolving}
       getTaskWorkPerformedAct={getTaskWorkPerformedAct}
       taskWorkPerformedActIsLoading={taskWorkPerformedActIsLoading}
       updateAssignee={updateAssignee}

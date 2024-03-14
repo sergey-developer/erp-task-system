@@ -199,10 +199,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     state: { isLoading: takeTaskIsLoading },
   } = useTakeTask()
 
-  const {
-    fn: resolveTask,
-    state: { isLoading: isTaskResolving },
-  } = useResolveTask()
+  const [resolveTask, { isLoading: taskIsResolving }] = useResolveTask()
 
   const {
     fn: updateWorkGroup,
@@ -374,18 +371,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           attachments: values.attachments?.length
             ? extractOriginFiles(values.attachments)
             : undefined,
-        })
+        }).unwrap()
 
         originOnClose()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -710,7 +701,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             open={executeTaskModalOpened}
             type={task.type}
             recordId={task.recordId}
-            isLoading={isTaskResolving}
+            isLoading={taskIsResolving}
             onCancel={handleCloseExecuteTaskModal}
             onSubmit={handleExecuteTask}
             onGetAct={handleGetAct}

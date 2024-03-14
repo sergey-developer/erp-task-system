@@ -36,7 +36,6 @@ import {
   DeleteTaskWorkGroupMutationArgs,
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
-  ResolveTaskMutationArgs,
   TakeTaskMutationArgs,
   TaskAssigneeModel,
   TaskModel,
@@ -152,8 +151,8 @@ export type TaskCardProps = {
   takeTask: (data: TakeTaskMutationArgs) => Promise<void>
   takeTaskIsLoading: boolean
 
-  resolveTask: (data: ResolveTaskMutationArgs) => Promise<void>
-  isTaskResolving: boolean
+  resolveTask: any
+  taskIsResolving: boolean
 
   getTaskWorkPerformedAct: CustomMutationTrigger<
     GetTaskWorkPerformedActMutationArgs,
@@ -186,7 +185,7 @@ const TaskCard: FC<TaskCardProps> = ({
   takeTask,
   takeTaskIsLoading,
   resolveTask,
-  isTaskResolving,
+  taskIsResolving,
 
   getTaskWorkPerformedAct,
   taskWorkPerformedActIsLoading,
@@ -611,7 +610,7 @@ const TaskCard: FC<TaskCardProps> = ({
                     open={executeTaskModalOpened}
                     type={task.type}
                     recordId={task.recordId}
-                    isLoading={isTaskResolving}
+                    isLoading={taskIsResolving}
                     onCancel={handleCloseExecuteTaskModal}
                     onSubmit={handleExecuteTask}
                     onGetAct={handleGetAct}

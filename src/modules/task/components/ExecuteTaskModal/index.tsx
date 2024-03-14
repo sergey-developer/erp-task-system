@@ -1,3 +1,4 @@
+import { useMount } from 'ahooks'
 import { Button, Col, Flex, Form, Input, InputNumber, Row, Typography, Upload } from 'antd'
 import stubFalse from 'lodash/stubFalse'
 import React, { FC } from 'react'
@@ -38,6 +39,10 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
 }) => {
   const [form] = Form.useForm<ExecuteTaskFormFields>()
   const techResolutionFormValue = Form.useWatch('techResolution', form)
+
+  useMount(() => {
+    form.setFieldsValue({ spentHours: 1, spentMinutes: 0 })
+  })
 
   const taskType = useTaskType(type)
 
@@ -109,7 +114,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
             <Flex gap='middle'>
               <Label block={false} label='Часов' labelPosition='right' direction='horizontal'>
                 <Form.Item data-testid='spent-hours' rules={spentHoursRules} name='spentHours'>
-                  <InputNumber style={{ width: 60 }} defaultValue={1} min={0} />
+                  <InputNumber style={{ width: 60 }} min={0} />
                 </Form.Item>
               </Label>
 
