@@ -21,6 +21,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { getTaskListPageLink } from 'modules/task/utils/task'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { ExecuteRelocationTaskModalProps } from 'modules/warehouse/components/ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from 'modules/warehouse/components/RelocationEquipmentTable'
@@ -78,7 +79,7 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/services/baseApi'
-import { base64ToArrayBuffer, valueOrHyphen } from 'shared/utils/common'
+import { base64ToBytes, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -116,7 +117,10 @@ const showUploadListConfig: UploadProps['showUploadList'] = { showRemoveIcon: fa
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
   const navigate = useNavigate()
 
-  const permissions = useMatchUserPermissions(['RELOCATION_TASKS_READ', 'RELOCATION_TASKS_UPDATE'])
+  const permissions = useMatchUserPermissions([
+    UserPermissionsEnum.RelocationTasksRead,
+    UserPermissionsEnum.RelocationTasksUpdate,
+  ])
 
   const [cancelTaskModalOpened, { toggle: toggleOpenCancelTaskModal }] = useBoolean()
   const debouncedToggleOpenCancelTaskModal = useDebounceFn(toggleOpenCancelTaskModal)
@@ -260,11 +264,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     const { data } = await getWaybillM15({ relocationTaskId })
 
     if (data) {
-      downloadFile(
-        base64ToArrayBuffer(data),
-        MimetypeEnum.Pdf,
-        getWaybillM15Filename(relocationTaskId),
-      )
+      downloadFile(base64ToBytes(data), MimetypeEnum.Pdf, getWaybillM15Filename(relocationTaskId))
     }
   }, [relocationTaskId])
 

@@ -1,15 +1,14 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { CommonRouteEnum } from 'configs/routes'
-
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as taskAttachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/Card_old/Card.test'
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TaskListPage from 'modules/task/pages/TaskListPage'
 import { getTaskListPageLink } from 'modules/task/utils/task'
-import { UserRoleEnum } from 'modules/user/constants'
+import { UserPermissionsEnum, UserRoleEnum } from 'modules/user/constants'
 import { testUtils as cancelRelocationTaskModalTestUtils } from 'modules/warehouse/components/CancelRelocationTaskModal/CancelRelocationTaskModal.test'
 import { testUtils as confirmExecutionRelocationTaskModalTestUtils } from 'modules/warehouse/components/ConfirmExecutionRelocationTaskModal/ConfirmExecutionRelocationTaskModal.test'
 import { testUtils as executeRelocationTaskModalTestUtils } from 'modules/warehouse/components/ExecuteRelocationTaskModal/ExecuteRelocationTaskModal.test'
@@ -469,7 +468,7 @@ describe('Информация о заявке о перемещении', () =>
               ),
             },
             {
-              path: CommonRouteEnum.DesktopTaskList,
+              path: TasksRoutesEnum.DesktopTaskList,
               element: <TaskListPage />,
             },
           ],
@@ -802,7 +801,7 @@ describe('Информация о заявке о перемещении', () =>
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksRead] }),
             },
           }),
         },
@@ -835,7 +834,7 @@ describe('Информация о заявке о перемещении', () =>
 
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
-      const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
+      const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToBytes')
       const arrayBuffer = new Uint8Array()
       base64ToArrayBufferSpy.mockReturnValueOnce(arrayBuffer)
 
@@ -844,7 +843,7 @@ describe('Информация о заявке о перемещении', () =>
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksRead] }),
             },
           }),
         },
@@ -879,7 +878,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksRead] }),
               },
             }),
           },
@@ -906,7 +905,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksRead] }),
               },
             }),
           },
@@ -929,7 +928,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksRead] }),
               },
             }),
           },
@@ -981,7 +980,7 @@ describe('Информация о заявке о перемещении', () =>
             undefined,
             {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
               },
             },
           ),
@@ -1027,7 +1026,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
               },
             }),
           },
@@ -1054,7 +1053,13 @@ describe('Информация о заявке о перемещении', () =>
               { userId: relocationTask.createdBy!.id },
               undefined,
               undefined,
-              { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
+              {
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
+                },
+              },
             ),
           },
         )
@@ -1080,7 +1085,13 @@ describe('Информация о заявке о перемещении', () =>
               { userId: relocationTask.createdBy!.id },
               undefined,
               undefined,
-              { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
+              {
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
+                },
+              },
             ),
           },
         )
@@ -1106,7 +1117,13 @@ describe('Информация о заявке о перемещении', () =>
               { userId: relocationTask.createdBy!.id },
               undefined,
               undefined,
-              { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
+              {
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
+                },
+              },
             ),
           },
         )
@@ -1153,7 +1170,7 @@ describe('Информация о заявке о перемещении', () =>
             undefined,
             {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
               },
             },
           ),
@@ -1201,7 +1218,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
               },
             }),
           },
@@ -1227,7 +1244,9 @@ describe('Информация о заявке о перемещении', () =>
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
             store: getStoreWithAuth({ userId: relocationTask.executor!.id }, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) },
+              queries: {
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
+              },
             }),
           },
         )
@@ -1250,7 +1269,9 @@ describe('Информация о заявке о перемещении', () =>
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
             store: getStoreWithAuth({ userId: relocationTask.executor!.id }, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) },
+              queries: {
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
+              },
             }),
           },
         )
@@ -1273,7 +1294,9 @@ describe('Информация о заявке о перемещении', () =>
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
             store: getStoreWithAuth({ userId: relocationTask.executor!.id }, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) },
+              queries: {
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
+              },
             }),
           },
         )
@@ -1307,7 +1330,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -1358,7 +1383,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -1407,7 +1434,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -1451,7 +1480,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -1491,7 +1522,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -1548,7 +1581,7 @@ describe('Информация о заявке о перемещении', () =>
             undefined,
             {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
               },
             },
           ),
@@ -1596,7 +1629,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
               },
             }),
           },
@@ -1626,7 +1659,11 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               undefined,
               {
-                queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) },
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
+                },
               },
             ),
           },
@@ -1658,7 +1695,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -1706,7 +1745,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -1755,7 +1796,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -1799,7 +1842,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -1843,7 +1888,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -1900,7 +1947,7 @@ describe('Информация о заявке о перемещении', () =>
             undefined,
             {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
               },
             },
           ),
@@ -1948,7 +1995,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
               },
             }),
           },
@@ -1977,7 +2024,13 @@ describe('Информация о заявке о перемещении', () =>
               { userId: relocationTask.createdBy!.id },
               undefined,
               undefined,
-              { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
+              {
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
+                },
+              },
             ),
           },
         )
@@ -2003,7 +2056,13 @@ describe('Информация о заявке о перемещении', () =>
               { userId: relocationTask.createdBy!.id },
               undefined,
               undefined,
-              { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
+              {
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
+                },
+              },
             ),
           },
         )
@@ -2029,7 +2088,13 @@ describe('Информация о заявке о перемещении', () =>
               { userId: relocationTask.createdBy!.id },
               undefined,
               undefined,
-              { queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) } },
+              {
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
+                },
+              },
             ),
           },
         )
@@ -2067,7 +2132,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -2116,7 +2183,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -2158,7 +2227,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -2200,7 +2271,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -2238,7 +2311,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -2293,7 +2368,7 @@ describe('Информация о заявке о перемещении', () =>
             undefined,
             {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
               },
             },
           ),
@@ -2341,7 +2416,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
               },
             }),
           },
@@ -2371,7 +2446,11 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               undefined,
               {
-                queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }) },
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
+                },
               },
             ),
           },
@@ -2410,7 +2489,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -2459,7 +2540,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -2501,7 +2584,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -2543,7 +2628,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),
@@ -2581,7 +2668,9 @@ describe('Информация о заявке о перемещении', () =>
               undefined,
               {
                 queries: {
-                  ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_UPDATE'] }),
+                  ...getUserMeQueryMock({
+                    permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+                  }),
                 },
               },
             ),

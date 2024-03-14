@@ -4,6 +4,7 @@ import { SearchProps } from 'antd/lib/input/Search'
 import sortBy from 'lodash/sortBy'
 import React, { FC, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
+import { UserPermissionsEnum } from 'modules/user/constants/enums'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { NomenclatureFormModalProps } from 'modules/warehouse/components/NomenclatureFormModal/types'
 import { NomenclatureGroupFormModalProps } from 'modules/warehouse/components/NomenclatureGroupFormModal/types'
@@ -71,10 +72,10 @@ const nomenclaturesInitialPaginationParams = getInitialPaginationParams()
 
 const NomenclatureListPage: FC = () => {
   const permissions = useMatchUserPermissions([
-    'NOMENCLATURES_CREATE',
-    'NOMENCLATURES_UPDATE',
-    'NOMENCLATURE_GROUPS_CREATE',
-    'NOMENCLATURE_GROUPS_UPDATE',
+    UserPermissionsEnum.NomenclaturesCreate,
+    UserPermissionsEnum.NomenclaturesUpdate,
+    UserPermissionsEnum.NomenclatureGroupsCreate,
+    UserPermissionsEnum.NomenclatureGroupsUpdate,
   ])
 
   const [getNomenclatureGroupListParams, setGetNomenclatureGroupListParams] = useSetState<

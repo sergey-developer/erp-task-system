@@ -5,11 +5,12 @@ import { Navigate, RouteObject } from 'react-router-dom'
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { hasPermissions } from 'modules/user/utils'
-import ManageWarehousesLayout from 'modules/warehouse/components/ManageWarehousesLayout'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
-import { BreadCrumbArgs } from 'components/Breadcrumbs'
 import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
+import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
+
+import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
 
 const WarehouseCatalogListPage = React.lazy(
   () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
@@ -66,7 +67,7 @@ const HistoryNomenclatureOperationsReportPage = React.lazy(
 
 export const route: Readonly<RouteObject> = {
   path: WarehouseRouteEnum.ManageWarehouses,
-  element: <ManageWarehousesLayout />,
+  element: <BreadcrumbsLayout />,
   children: [
     {
       index: true,
@@ -96,7 +97,7 @@ export const route: Readonly<RouteObject> = {
               path: WarehouseRouteEnum.Warehouse,
               element: <ProtectedRoute component={<WarehousePage />} />,
               handle: {
-                crumb: ({ qs }: BreadCrumbArgs) => (
+                crumb: ({ qs }: BreadCrumbData) => (
                   <Breadcrumb
                     link={WarehouseRouteEnum.Warehouse}
                     text={qs.get('warehouseTitle') || ''}
@@ -159,7 +160,7 @@ export const route: Readonly<RouteObject> = {
               path: WarehouseRouteEnum.Equipments,
               element: <EquipmentListPage />,
               handle: {
-                crumb: ({ qs }: BreadCrumbArgs) => (
+                crumb: ({ qs }: BreadCrumbData) => (
                   <Breadcrumb link={WarehouseRouteEnum.Equipments} text={qs.get('title') || ''} />
                 ),
               },

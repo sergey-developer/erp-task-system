@@ -1,3 +1,5 @@
+import { Base64Type } from 'shared/types/common'
+
 import { GetEmployeesActionsReportQueryArgs } from './getEmployeesActionsReport.model'
 
 export type GetEmployeesActionsReportXlsxQueryArgs = Omit<
@@ -5,4 +7,4 @@ export type GetEmployeesActionsReportXlsxQueryArgs = Omit<
   'limit' | 'offset'
 >
 
-export type GetEmployeesActionsReportXlsxSuccessResponse = string
+export type GetEmployeesActionsReportXlsxSuccessResponse = Base64Type

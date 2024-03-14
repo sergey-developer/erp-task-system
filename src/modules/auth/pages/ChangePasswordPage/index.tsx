@@ -2,10 +2,9 @@ import { Button, Form, Input, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { CommonRouteEnum } from 'configs/routes'
-
 import { UPDATE_PASSWORD_SUCCESS_MSG } from 'modules/auth/constants'
 import { useUpdatePasswordMutation } from 'modules/auth/services/authApi.service'
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
 
 import { BaseCard } from 'components/Card/BaseCard'
 
@@ -37,7 +36,7 @@ const ChangePasswordPage: FC = () => {
         password: values.password.trim(),
       }).unwrap()
 
-      navigate(CommonRouteEnum.DesktopTaskList)
+      navigate(TasksRoutesEnum.DesktopTaskList)
       showSuccessNotification(UPDATE_PASSWORD_SUCCESS_MSG)
     } catch (error) {
       if (isErrorResponse(error)) {

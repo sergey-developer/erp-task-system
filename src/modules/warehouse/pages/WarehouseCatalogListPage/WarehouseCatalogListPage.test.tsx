@@ -2,6 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import {
@@ -108,7 +109,7 @@ describe('Страница списка справочников складов'
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_READ'] }),
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.NomenclaturesRead] }),
             },
           }),
         },
@@ -154,7 +155,7 @@ describe('Страница списка справочников складов'
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_READ'] }),
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.NomenclaturesRead] }),
             },
           }),
         },

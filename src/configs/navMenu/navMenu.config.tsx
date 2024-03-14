@@ -1,19 +1,27 @@
-import { CommonRouteEnum } from 'configs/routes'
-
+import { ReportsRoutesEnum } from 'modules/reports/constants'
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { UserPermissions } from 'modules/user/models'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
-import { ReadIcon, UnorderedListIcon } from 'components/Icons'
+import { FileTextIcon, ReadIcon, UnorderedListIcon } from 'components/Icons'
 
 import { NavMenuItem } from './types'
 
-const navMenuCommonConfig: NavMenuItem[] = [
+const navMenuConfig: NavMenuItem[] = [
   {
-    key: CommonRouteEnum.DesktopTasks,
+    key: TasksRoutesEnum.DesktopTasks,
     icon: UnorderedListIcon,
-    link: CommonRouteEnum.DesktopTaskList,
+    link: TasksRoutesEnum.DesktopTaskList,
     text: 'Рабочий стол',
+  },
+  {
+    key: ReportsRoutesEnum.Reports,
+    icon: FileTextIcon,
+    link: ReportsRoutesEnum.Reports,
+    text: 'Отчёты',
+    visible: (permissions: UserPermissionsEnum[]) =>
+      permissions.includes(UserPermissionsEnum.FiscalAccumulatorTasksRead) ||
+      permissions.includes(UserPermissionsEnum.ReportMainIndicatorsRead),
   },
   {
     key: WarehouseRouteEnum.ManageWarehouses,
@@ -32,13 +40,13 @@ const navMenuCommonConfig: NavMenuItem[] = [
       },
       {
         key: WarehouseRouteEnum.Reports,
-        text: 'Отчеты',
+        text: 'Отчёты',
         link: WarehouseRouteEnum.Reports,
-        shouldDisable: (permissions: UserPermissions[]) =>
+        disabled: (permissions: UserPermissionsEnum[]) =>
           !permissions.includes(UserPermissionsEnum.WarehouseReportsRead),
       },
     ],
   },
 ]
 
-export default navMenuCommonConfig
+export default navMenuConfig

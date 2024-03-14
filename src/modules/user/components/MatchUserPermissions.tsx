@@ -1,13 +1,13 @@
 import { FC, ReactElement } from 'react'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useMatchUserPermissions } from 'modules/user/hooks'
-import { UserPermissions } from 'modules/user/models'
 import { MatchedPermissions } from 'modules/user/utils'
 
 import { MaybeNull } from 'shared/types/utils'
 
 type MatchUserPermissionsProps = {
-  expectedPermissions: UserPermissions[]
+  expectedPermissions: UserPermissionsEnum[]
   children: (props: { permissions: MatchedPermissions }) => MaybeNull<ReactElement>
 }
 

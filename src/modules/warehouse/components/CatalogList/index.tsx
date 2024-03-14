@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
-import { UserPermissions } from 'modules/user/models'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { checkEveryPermissionAllowed } from 'modules/user/utils'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
@@ -10,7 +10,7 @@ import CatalogListItem from './CatalogListItem'
 export type CatalogItem = {
   link: WarehouseRouteEnum
   text: string
-  permissions?: UserPermissions[]
+  permissions?: UserPermissionsEnum[]
 }
 
 export type CatalogListProps = {
