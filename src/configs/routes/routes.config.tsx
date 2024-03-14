@@ -2,12 +2,11 @@ import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
 import { route as authRoute } from 'modules/auth/routes.config'
-import { route as fiscalAccumulatorRoute } from 'modules/fiscalAccumulator/routes.config'
 import { route as monitoringRoute } from 'modules/monitoring/routes.config'
 import { route as reportsRoute } from 'modules/reports/routes.config'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
-import { route as taskRoute } from 'modules/task/routes.config'
-import { route as warehouseRoute } from 'modules/warehouse/routes.config'
+import { route as tasksRoute } from 'modules/task/routes.config'
+import { route as warehousesRoute } from 'modules/warehouse/routes.config'
 
 import ErrorBoundary from 'components/ErrorBoundary'
 import HomeLayout from 'components/Layouts/HomeLayout'
@@ -34,9 +33,8 @@ export const routes: RouteObject[] = [
             index: true,
             element: <Navigate to={TasksRoutesEnum.DesktopTaskList} />,
           },
-          taskRoute,
-          fiscalAccumulatorRoute,
-          warehouseRoute,
+          tasksRoute,
+          warehousesRoute,
           monitoringRoute,
           reportsRoute,
         ],

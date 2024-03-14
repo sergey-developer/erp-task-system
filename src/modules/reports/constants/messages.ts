@@ -15,3 +15,6 @@ export const getHistoryNomenclatureOperationsReportErrMsg =
 
 export const getHistoryNomenclatureOperationsReportXlsxErrMsg =
   'Ошибка получения отчета по истории операций по номенклатуре в формате xlsx'
+
+export const getFiscalAccumulatorTasksErrMsg =
+  'Ошибка получения списка задач по фискальным накопителям'

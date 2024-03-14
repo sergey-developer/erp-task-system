@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/fiscalAccumulator/components/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
-import { getFiscalAccumulatorTasksErrorMsg } from 'modules/fiscalAccumulator/constants'
+import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/reports/components/FiscalAccumulatorTaskTable/FiscalAccumulatorTaskTable.test'
+import { getFiscalAccumulatorTasksErrMsg } from 'modules/reports/constants'
 import { testUtils as taskTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
@@ -11,7 +11,7 @@ import {
   TasksFiltersStorageType,
 } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 
-import fiscalAccumulatorFixtures from '_tests_/fixtures/fiscalAccumulator'
+import reportsFixtures from '_tests_/fixtures/reports'
 import {
   mockGetFiscalAccumulatorTasksServerError,
   mockGetFiscalAccumulatorTasksSuccess,
@@ -50,7 +50,7 @@ notificationTestUtils.setupNotifications()
 
 describe('Страница заявок фискальных накопителей', () => {
   test('При успешном запросе таблица отображается корректно', async () => {
-    const fiscalAccumulatorTasks = [fiscalAccumulatorFixtures.fiscalAccumulatorTaskListItem()]
+    const fiscalAccumulatorTasks = [reportsFixtures.fiscalAccumulatorTaskListItem()]
     mockGetFiscalAccumulatorTasksSuccess({ body: fiscalAccumulatorTasks })
 
     render(<FiscalAccumulatorTasksPage />)
@@ -74,7 +74,7 @@ describe('Страница заявок фискальных накопител�
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
 
       const notification = await notificationTestUtils.findNotification(
-        getFiscalAccumulatorTasksErrorMsg,
+        getFiscalAccumulatorTasksErrMsg,
       )
 
       expect(notification).toBeInTheDocument()
@@ -82,7 +82,7 @@ describe('Страница заявок фискальных накопител�
   })
 
   test('При клике на заявку открывается карточка заявки', async () => {
-    const fiscalAccumulatorTaskListItem = fiscalAccumulatorFixtures.fiscalAccumulatorTaskListItem()
+    const fiscalAccumulatorTaskListItem = reportsFixtures.fiscalAccumulatorTaskListItem()
     mockGetFiscalAccumulatorTasksSuccess({ body: [fiscalAccumulatorTaskListItem] })
 
     const { user } = render(<FiscalAccumulatorTasksPage />)

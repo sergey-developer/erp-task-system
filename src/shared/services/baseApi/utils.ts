@@ -63,20 +63,20 @@ export const makeAbsoluteApiUrl = (
 ): string =>
   makeString('', env.get<string>('apiUrl'), makeRelativeApiUrl(path, basePath, apiVersion))
 
-export const isServerRangeError = (error: ErrorResponse): boolean =>
+export const isServerRangeError = (error: Pick<ErrorResponse, 'status'>): boolean =>
   inRange(error.status, HttpCodeEnum.ServerError, HttpCodeEnum.InvalidSSLCertificate)
 
-export const isClientRangeError = (error: ErrorResponse): boolean =>
+export const isClientRangeError = (error: Pick<ErrorResponse, 'status'>): boolean =>
   inRange(error.status, HttpCodeEnum.BadRequest, HttpCodeEnum.ClientClosedRequest)
 
-export const isNotFoundError = (error: ErrorResponse): boolean =>
+export const isNotFoundError = (error: Pick<ErrorResponse, 'status'>): boolean =>
   isEqual(error.status, HttpCodeEnum.NotFound)
 
-export const isBadRequestError = (error: ErrorResponse): boolean =>
+export const isBadRequestError = (error: Pick<ErrorResponse, 'status'>): boolean =>
   isEqual(error.status, HttpCodeEnum.BadRequest)
 
-export const isUnauthorizedError = (error: ErrorResponse): boolean =>
+export const isUnauthorizedError = (error: Pick<ErrorResponse, 'status'>): boolean =>
   isEqual(error.status, HttpCodeEnum.Unauthorized)
 
-export const isForbiddenError = (error: ErrorResponse): boolean =>
+export const isForbiddenError = (error: Pick<ErrorResponse, 'status'>): boolean =>
   isEqual(error.status, HttpCodeEnum.Forbidden)

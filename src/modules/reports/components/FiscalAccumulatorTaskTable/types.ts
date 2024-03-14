@@ -1,6 +1,6 @@
 import { TableProps } from 'antd'
 
-import { FiscalAccumulatorTaskListItemModel } from 'modules/fiscalAccumulator/models'
+import { FiscalAccumulatorTaskListItemModel } from 'modules/reports/models'
 
 export type FiscalAccumulatorTaskTableItem = Pick<
   FiscalAccumulatorTaskListItemModel,
