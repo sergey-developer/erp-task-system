@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const CatalogItemWrapperStyled = styled.div`
+export const CatalogWrapperStyled = styled.div`
   font-size: 20px;
   padding: 5px 10px;
 

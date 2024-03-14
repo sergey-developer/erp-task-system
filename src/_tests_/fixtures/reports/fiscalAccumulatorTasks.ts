@@ -1,6 +1,6 @@
 import pick from 'lodash/pick'
 
-import { FiscalAccumulatorTaskListItemModel } from 'modules/fiscalAccumulator/models'
+import { FiscalAccumulatorTaskListItemModel } from 'modules/reports/models'
 
 import {
   fakeAddress,

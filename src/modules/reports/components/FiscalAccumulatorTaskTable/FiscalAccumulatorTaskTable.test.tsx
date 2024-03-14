@@ -6,13 +6,13 @@ import { getFullUserName } from 'modules/user/utils'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
-import fiscalAccumulatorFixtures from '_tests_/fixtures/fiscalAccumulator'
+import reportsFixtures from '_tests_/fixtures/reports'
 import { iconTestUtils, render, tableTestUtils } from '_tests_/utils'
 
 import FiscalAccumulatorTaskTable from './index'
 import { FiscalAccumulatorTaskTableItem, FiscalAccumulatorTaskTableProps } from './types'
 
-const fiscalAccumulatorTaskListItem = fiscalAccumulatorFixtures.fiscalAccumulatorTaskListItem()
+const fiscalAccumulatorTaskListItem = reportsFixtures.fiscalAccumulatorTaskListItem()
 
 const props: Readonly<FiscalAccumulatorTaskTableProps> = {
   dataSource: [fiscalAccumulatorTaskListItem],

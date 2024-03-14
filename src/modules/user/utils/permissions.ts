@@ -28,7 +28,7 @@ export const checkEveryPermissionAllowed = (permissions: MatchedPermissions): bo
 export const checkSomePermissionAllowed = (permissions: MatchedPermissions): boolean =>
   Object.values(permissions).some(Boolean)
 
-export const hasPermissions = (
+export const userHasPermissions = (
   user: UserModel,
   permissions: UserModel['permissions'],
   checkEvery: boolean = true,
