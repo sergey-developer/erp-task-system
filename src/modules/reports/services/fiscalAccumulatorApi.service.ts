@@ -1,8 +1,8 @@
-import { FiscalAccumulatorApiEnum } from 'modules/fiscalAccumulator/constants'
+import { ReportsApiEnum } from 'modules/reports/constants'
 import {
   GetFiscalAccumulatorTasksQueryArgs,
   GetFiscalAccumulatorTasksSuccessResponse,
-} from 'modules/fiscalAccumulator/models'
+} from 'modules/reports/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
@@ -15,7 +15,7 @@ const fiscalAccumulatorApiService = baseApiService.injectEndpoints({
       MaybeUndefined<GetFiscalAccumulatorTasksQueryArgs>
     >({
       query: (params) => ({
-        url: FiscalAccumulatorApiEnum.GetFiscalAccumulatorTasks,
+        url: ReportsApiEnum.GetFiscalAccumulatorTasksReport,
         method: HttpMethodEnum.Get,
         params,
       }),

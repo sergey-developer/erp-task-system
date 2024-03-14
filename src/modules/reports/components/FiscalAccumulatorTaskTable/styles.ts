@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import {
   fiscalAccumulatorFormatColorDict,
   FiscalAccumulatorFormatEnum,
-} from 'modules/fiscalAccumulator/constants'
+} from 'modules/reports/constants'
 
 import { MaybeNull } from 'shared/types/utils'
 

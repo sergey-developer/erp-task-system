@@ -1,4 +1,4 @@
-import { FiscalAccumulatorFormatEnum } from 'modules/fiscalAccumulator/constants'
+import { FiscalAccumulatorFormatEnum } from 'modules/reports/constants'
 
 import theme from 'styles/theme'
 

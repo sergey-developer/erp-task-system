@@ -3,38 +3,33 @@ import { FC } from 'react'
 import MatchUserPermissions from 'modules/user/components/MatchUserPermissions'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { checkEveryPermissionAllowed } from 'modules/user/utils'
-import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
-import CatalogListItem from './CatalogListItem'
+import Catalog, { CatalogProps } from './Catalog'
 
-export type CatalogItem = {
-  link: WarehouseRouteEnum
-  text: string
+type CatalogItem = CatalogProps & {
   permissions?: UserPermissionsEnum[]
 }
 
-export type CatalogListProps = {
+export type CatalogsProps = {
   items: CatalogItem[]
 }
 
-const CatalogList: FC<CatalogListProps> = ({ items, ...props }) => {
+const Catalogs: FC<CatalogsProps> = ({ items, ...props }) => {
   return (
     <div {...props}>
       {items.map(({ link, text, permissions }, index) =>
         !!permissions?.length ? (
           <MatchUserPermissions key={index} expectedPermissions={permissions}>
             {({ permissions }) =>
-              checkEveryPermissionAllowed(permissions) ? (
-                <CatalogListItem link={link} text={text} />
-              ) : null
+              checkEveryPermissionAllowed(permissions) ? <Catalog link={link} text={text} /> : null
             }
           </MatchUserPermissions>
         ) : (
-          <CatalogListItem key={index} link={link} text={text} />
+          <Catalog key={index} link={link} text={text} />
         ),
       )}
     </div>
   )
 }
 
-export default CatalogList
+export default Catalogs

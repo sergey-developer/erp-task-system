@@ -4,17 +4,17 @@ import debounce from 'lodash/debounce'
 import pick from 'lodash/pick'
 import React, { FC, useCallback, useState } from 'react'
 
-import FiscalAccumulatorTaskTable from 'modules/fiscalAccumulator/components/FiscalAccumulatorTaskTable'
+import FiscalAccumulatorTaskTable from 'modules/reports/components/FiscalAccumulatorTaskTable'
 import {
   FiscalAccumulatorTaskTableItem,
   FiscalAccumulatorTaskTableProps,
-} from 'modules/fiscalAccumulator/components/FiscalAccumulatorTaskTable/types'
+} from 'modules/reports/components/FiscalAccumulatorTaskTable/types'
 import {
   FiscalAccumulatorTasksFilterFormFields,
   FiscalAccumulatorTasksFilterProps,
-} from 'modules/fiscalAccumulator/components/FiscalAccumulatorTasksFilter/types'
-import { useGetFiscalAccumulatorTasks } from 'modules/fiscalAccumulator/hooks'
-import { GetFiscalAccumulatorTasksQueryArgs } from 'modules/fiscalAccumulator/models'
+} from 'modules/reports/components/FiscalAccumulatorTasksFilter/types'
+import { useGetFiscalAccumulatorTasks } from 'modules/reports/hooks'
+import { GetFiscalAccumulatorTasksQueryArgs } from 'modules/reports/models'
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
@@ -39,7 +39,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 
 const FiscalAccumulatorTasksFilter = React.lazy(
-  () => import('modules/fiscalAccumulator/components/FiscalAccumulatorTasksFilter'),
+  () => import('modules/reports/components/FiscalAccumulatorTasksFilter'),
 )
 
 const TaskDetails = React.lazy(() => import('modules/task/components/TaskDetails'))

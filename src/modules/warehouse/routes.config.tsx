@@ -4,7 +4,7 @@ import { Navigate, RouteObject } from 'react-router-dom'
 
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { hasPermissions } from 'modules/user/utils'
+import { userHasPermissions } from 'modules/user/utils'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
@@ -127,7 +127,7 @@ export const route: Readonly<RouteObject> = {
                 <ProtectedRoute
                   component={<NomenclatureListPage />}
                   permitted={(user) =>
-                    hasPermissions(user, [UserPermissionsEnum.NomenclaturesRead])
+                    userHasPermissions(user, [UserPermissionsEnum.NomenclaturesRead])
                   }
                 />
               ),
@@ -151,7 +151,7 @@ export const route: Readonly<RouteObject> = {
           element: (
             <ProtectedRoute
               component={<EquipmentPageLayout />}
-              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.EquipmentsRead])}
+              permitted={(user) => userHasPermissions(user, [UserPermissionsEnum.EquipmentsRead])}
             />
           ),
           handle: {
@@ -192,7 +192,7 @@ export const route: Readonly<RouteObject> = {
                 <ProtectedRoute
                   component={<RelocationTaskListPage />}
                   permitted={(user) =>
-                    hasPermissions(user, [UserPermissionsEnum.RelocationTasksRead])
+                    userHasPermissions(user, [UserPermissionsEnum.RelocationTasksRead])
                   }
                 />
               ),
@@ -203,7 +203,7 @@ export const route: Readonly<RouteObject> = {
                 <ProtectedRoute
                   component={<CreateRelocationTaskPage />}
                   permitted={(user) =>
-                    hasPermissions(user, [UserPermissionsEnum.RelocationTasksCreate])
+                    userHasPermissions(user, [UserPermissionsEnum.RelocationTasksCreate])
                   }
                 />
               ),
@@ -222,7 +222,7 @@ export const route: Readonly<RouteObject> = {
                 <ProtectedRoute
                   component={<CreateRelocationTaskSimplifiedPage />}
                   permitted={(user, locationState) =>
-                    hasPermissions(user, [UserPermissionsEnum.RelocationTasksCreate]) &&
+                    userHasPermissions(user, [UserPermissionsEnum.RelocationTasksCreate]) &&
                     get(locationState, 'task.assignee')
                   }
                 />
@@ -242,7 +242,7 @@ export const route: Readonly<RouteObject> = {
                 <ProtectedRoute
                   component={<EditRelocationTaskPage />}
                   permitted={(user) =>
-                    hasPermissions(user, [UserPermissionsEnum.RelocationTasksUpdate])
+                    userHasPermissions(user, [UserPermissionsEnum.RelocationTasksUpdate])
                   }
                 />
               ),
@@ -268,7 +268,9 @@ export const route: Readonly<RouteObject> = {
           element: (
             <ProtectedRoute
               component={<ReportsCatalogPage />}
-              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+              permitted={(user) =>
+                userHasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])
+              }
             />
           ),
         },
@@ -277,7 +279,9 @@ export const route: Readonly<RouteObject> = {
           element: (
             <ProtectedRoute
               component={<EmployeesActionsReportPage />}
-              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+              permitted={(user) =>
+                userHasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])
+              }
             />
           ),
           handle: {
@@ -291,7 +295,9 @@ export const route: Readonly<RouteObject> = {
           element: (
             <ProtectedRoute
               component={<AmountEquipmentSpentReportPage />}
-              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+              permitted={(user) =>
+                userHasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])
+              }
             />
           ),
           handle: {
@@ -308,7 +314,9 @@ export const route: Readonly<RouteObject> = {
           element: (
             <ProtectedRoute
               component={<HistoryNomenclatureOperationsReportPage />}
-              permitted={(user) => hasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])}
+              permitted={(user) =>
+                userHasPermissions(user, [UserPermissionsEnum.WarehouseReportsRead])
+              }
             />
           ),
           handle: {

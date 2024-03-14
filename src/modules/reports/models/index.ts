@@ -9,3 +9,6 @@ export * from './getHistoryNomenclatureOperationsReportXlsx.model'
 export * from './amountEquipmentSpentReport.model'
 export * from './getAmountEquipmentSpentReport.model'
 export * from './getAmountEquipmentSpentReportXlsx.model'
+
+export * from './fiscalAccumulatorTasks.model'
+export * from './getFiscalAccumulatorTasks.model'
