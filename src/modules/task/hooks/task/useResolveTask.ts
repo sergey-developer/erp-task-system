@@ -1,12 +1,13 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { resolveTaskMessages } from 'modules/task/constants/task'
-import { ResolveTaskMutationArgs } from 'modules/task/models'
-import { taskResolutionApiPermissions } from 'modules/task/permissions'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
+
+import { resolveTaskErrMsg } from 'modules/task/constants/task'
+import { ResolveTaskMutationArgs, ResolveTaskSuccessResponse } from 'modules/task/models'
 import { useResolveTaskMutation } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
 import {
+  getErrorDetail,
   isBadRequestError,
   isErrorResponse,
   isForbiddenError,
@@ -14,33 +15,27 @@ import {
 } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useResolveTask = () => {
-  const permissions = useUserPermissions(taskResolutionApiPermissions)
+type UseResolveTaskResult = CustomUseMutationResult<
+  ResolveTaskMutationArgs,
+  ResolveTaskSuccessResponse
+>
+
+export const useResolveTask = (): UseResolveTaskResult => {
   const [mutation, state] = useResolveTaskMutation()
-
-  const fn = useCallback(
-    async (data: ResolveTaskMutationArgs) => {
-      if (!permissions.canUpdate) return
-
-      await mutation(data).unwrap()
-    },
-    [mutation, permissions.canUpdate],
-  )
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
       if (
-        (isBadRequestError(state.error) ||
-          isForbiddenError(state.error) ||
-          isNotFoundError(state.error)) &&
-        state.error.data.detail
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
       ) {
-        showErrorNotification(state.error.data.detail)
+        showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(resolveTaskMessages.commonError)
+        showErrorNotification(resolveTaskErrMsg)
       }
     }
   }, [state.error])
 
-  return { fn, state }
+  return [mutation, state]
 }
