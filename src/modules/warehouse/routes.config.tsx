@@ -12,8 +12,6 @@ import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
 
 import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
 
-import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
-
 const WarehouseCatalogListPage = React.lazy(
   () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
 )
