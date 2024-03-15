@@ -1,7 +1,7 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Flex, Row, Space, Typography } from 'antd'
 import get from 'lodash/get'
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { CreateCallingReasonModalProps } from 'modules/task/components/CreateCallingReasonModal/types'
@@ -17,6 +17,7 @@ import {
 import { TaskModel } from 'modules/task/models'
 import { CreateTechnicalExaminationModalProps } from 'modules/warehouse/components/CreateTechnicalExaminationModal/types'
 import DocumentsPackageRelocationEquipmentTable from 'modules/warehouse/components/DocumentsPackageRelocationEquipmentTable'
+import { DocumentsPackageRelocationEquipmentTableItem } from 'modules/warehouse/components/DocumentsPackageRelocationEquipmentTable/types'
 import { useGetMeasurementUnitList } from 'modules/warehouse/hooks/measurementUnit'
 import {
   useCreateRelocationEquipmentTechnicalExamination,
@@ -78,7 +79,8 @@ const CreateDocumentsPackagePage: FC = () => {
   const debouncedToggleCreateCompletedWorkModal = useDebounceFn(toggleCreateCompletedWorkModal)
 
   // technical examination
-  const [selectedRelocationEquipmentId, setSelectedRelocationEquipmentId] = useState<IdType>()
+  const [selectedRelocationEquipment, setSelectedRelocationEquipment] =
+    useState<DocumentsPackageRelocationEquipmentTableItem>()
 
   const [
     createTechnicalExaminationModalOpened,
@@ -88,21 +90,23 @@ const CreateDocumentsPackagePage: FC = () => {
     },
   ] = useBoolean(false)
 
-  const onOpenCreateTechnicalExaminationModal = useDebounceFn((id: IdType) => {
-    openCreateTechnicalExaminationModal()
-    setSelectedRelocationEquipmentId(id)
-  })
+  const onOpenCreateTechnicalExaminationModal = useDebounceFn(
+    (relocationEquipment: DocumentsPackageRelocationEquipmentTableItem) => {
+      openCreateTechnicalExaminationModal()
+      setSelectedRelocationEquipment(relocationEquipment)
+    },
+  )
   const onCloseCreateTechnicalExaminationModal = useDebounceFn(() => {
     closeCreateTechnicalExaminationModal()
-    setSelectedRelocationEquipmentId(undefined)
+    setSelectedRelocationEquipment(undefined)
   })
 
   const { currentData: technicalExamination, isFetching: technicalExaminationIsFetching } =
     useGetRelocationEquipmentTechnicalExamination(
       {
-        relocationEquipmentId: selectedRelocationEquipmentId!,
+        relocationEquipmentId: selectedRelocationEquipment?.id!,
       },
-      { skip: !selectedRelocationEquipmentId || !createTechnicalExaminationModalOpened },
+      { skip: !selectedRelocationEquipment || !createTechnicalExaminationModalOpened },
     )
 
   const [createTechnicalExaminationMutation, { isLoading: createTechnicalExaminationIsLoading }] =
@@ -185,25 +189,31 @@ const CreateDocumentsPackagePage: FC = () => {
     }
   }
 
-  const onCreateTechnicalExamination: CreateTechnicalExaminationModalProps['onSubmit'] = async (
-    values,
-    setFields,
-  ) => {
-    if (!selectedRelocationEquipmentId) return
+  const onCreateTechnicalExamination = useCallback<
+    CreateTechnicalExaminationModalProps['onSubmit']
+  >(
+    async (values, setFields) => {
+      if (!selectedRelocationEquipment) return
 
-    try {
-      await createTechnicalExaminationMutation({
-        relocationEquipmentId: selectedRelocationEquipmentId,
-        ...values,
-      }).unwrap()
+      try {
+        await createTechnicalExaminationMutation({
+          relocationEquipmentId: selectedRelocationEquipment.id,
+          ...values,
+        }).unwrap()
 
-      onCloseCreateTechnicalExaminationModal()
-    } catch (error) {
-      if (isErrorResponse(error) && isBadRequestError(error)) {
-        setFields(getFieldsErrors(error.data))
+        onCloseCreateTechnicalExaminationModal()
+      } catch (error) {
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
+        }
       }
-    }
-  }
+    },
+    [
+      createTechnicalExaminationMutation,
+      onCloseCreateTechnicalExaminationModal,
+      selectedRelocationEquipment,
+    ],
+  )
 
   const onCreateDocumentsPackage = async () => {
     try {
@@ -393,6 +403,7 @@ const CreateDocumentsPackagePage: FC = () => {
             isLoading={createTechnicalExaminationIsLoading}
             technicalExamination={technicalExamination}
             technicalExaminationIsLoading={technicalExaminationIsFetching}
+            relocationEquipment={selectedRelocationEquipment}
           />
         </React.Suspense>
       )}
