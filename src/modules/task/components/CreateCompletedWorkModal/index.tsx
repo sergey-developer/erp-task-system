@@ -23,7 +23,7 @@ const CreateCompletedWorkModal: FC<CreateCompletedWorkModalProps> = ({
   }
 
   return (
-    <BaseModal {...props} title='Добавление причины вызова' onOk={form.submit} okText={ADD_TEXT}>
+    <BaseModal {...props} title='Добавление работ' onOk={form.submit} okText={ADD_TEXT}>
       <Form<CreateCompletedWorkFormFields> layout='vertical' form={form} onFinish={onFinish}>
         <Form.Item name='title' label='Наименование работ' rules={titleRules}>
           <Input placeholder='Введите текст' />
