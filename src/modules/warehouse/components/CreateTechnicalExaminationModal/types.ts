@@ -1,5 +1,6 @@
 import { FormInstance } from 'antd'
 
+import { DocumentsPackageRelocationEquipmentTableItem } from 'modules/warehouse/components/DocumentsPackageRelocationEquipmentTable/types'
 import { RelocationEquipmentTechnicalExaminationModel } from 'modules/warehouse/models/relocationEquipment'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
@@ -22,4 +23,6 @@ export type CreateTechnicalExaminationModalProps = Required<
 
   technicalExamination?: RelocationEquipmentTechnicalExaminationModel
   technicalExaminationIsLoading: boolean
+
+  relocationEquipment?: DocumentsPackageRelocationEquipmentTableItem
 }

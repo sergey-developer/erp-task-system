@@ -47,7 +47,7 @@ export const getColumns = ({
           (value !== EquipmentConditionEnum.Broken &&
             value !== EquipmentConditionEnum.NonRepairable)
         }
-        onClick={() => onClickTechnicalExamination(record.id)}
+        onClick={() => onClickTechnicalExamination(record)}
       >
         Данные АТЭ
       </Button>
