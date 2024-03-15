@@ -13,5 +13,7 @@ export type DocumentsPackageRelocationEquipmentTableProps = Pick<
   'dataSource'
 > & {
   disabled: boolean
-  onClickTechnicalExamination: (id: DocumentsPackageRelocationEquipmentTableItem['id']) => void
+  onClickTechnicalExamination: (
+    relocationEquipment: DocumentsPackageRelocationEquipmentTableItem,
+  ) => void
 }

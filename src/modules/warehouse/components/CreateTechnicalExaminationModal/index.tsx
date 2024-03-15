@@ -1,11 +1,10 @@
 import { Flex, Form, Input, InputNumber, Radio } from 'antd'
-import get from 'lodash/get'
 import React, { FC, useEffect } from 'react'
 
 import Label from 'components/Label'
 import BaseModal from 'components/Modals/BaseModal'
 
-import { HYPHEN, SAVE_TEXT } from 'shared/constants/common'
+import { SAVE_TEXT } from 'shared/constants/common'
 import { yesNoOptions } from 'shared/constants/selectField'
 import {
   onlyNotEmptyStringRules,
@@ -22,6 +21,8 @@ const CreateTechnicalExaminationModal: FC<CreateTechnicalExaminationModalProps> 
 
   technicalExamination,
   technicalExaminationIsLoading,
+
+  relocationEquipment,
 
   ...props
 }) => {
@@ -63,15 +64,18 @@ const CreateTechnicalExaminationModal: FC<CreateTechnicalExaminationModalProps> 
     >
       <Flex vertical gap='large'>
         <Label label='Наименование'>
-          {get(technicalExamination, 'relocationEquipment.equipment.title', HYPHEN)}
+          {technicalExamination?.relocationEquipment.equipment.title ||
+            relocationEquipment?.equipment.title}
         </Label>
 
         <Label label='Серийный номер'>
-          {get(technicalExamination, 'relocationEquipment.equipment.serialNumber', HYPHEN)}
+          {technicalExamination?.relocationEquipment.equipment.serialNumber ||
+            relocationEquipment?.equipment.serialNumber}
         </Label>
 
         <Label label='Инвентарный номер'>
-          {get(technicalExamination, 'relocationEquipment.equipment.inventoryNumber', HYPHEN)}
+          {technicalExamination?.relocationEquipment.equipment.inventoryNumber ||
+            relocationEquipment?.equipment.inventoryNumber}
         </Label>
 
         <Form<CreateTechnicalExaminationFormFields>

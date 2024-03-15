@@ -17,6 +17,6 @@ export type RelocationTaskCompletionDocumentModel = {
   relocationEquipments: {
     id: IdType
     condition: EquipmentConditionEnum
-    equipment: Pick<EquipmentModel, 'id' | 'title' | 'serialNumber'>
+    equipment: Pick<EquipmentModel, 'id' | 'title' | 'serialNumber' | 'inventoryNumber'>
   }[]
 }
