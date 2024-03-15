@@ -12,3 +12,15 @@ export * from './getAmountEquipmentSpentReportXlsx.model'
 
 export * from './fiscalAccumulatorTasks.model'
 export * from './getFiscalAccumulatorTasks.model'
+
+export * from './macroregionsMtsrReport.model'
+export * from './getMacroregionsMtsrReport.model'
+
+export * from './supportGroupsMtsrReport.model'
+export * from './getSupportGroupsMtsrReport.model'
+
+export * from './workGroupsMtsrReport.model'
+export * from './getWorkGroupsMtsrReport.model'
+
+export * from './usersMtsrReport.model'
+export * from './getUsersMtsrReport.model'

@@ -8,6 +8,7 @@ import DatePicker from 'components/DatePicker'
 import QuestionCircleIconStyled from 'components/Icons/QuestionCircleIcon'
 import Space from 'components/Space'
 
+import { UPDATE_TEXT } from 'shared/constants/common'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { filterOptionBy } from 'shared/utils/common'
@@ -81,7 +82,7 @@ const EmployeesActionsReportForm: FC<EmployeesActionsReportFormProps> = ({
 
       <Row justify='end'>
         <Col>
-          <Button htmlType='submit'>Обновить</Button>
+          <Button htmlType='submit'>{UPDATE_TEXT}</Button>
         </Col>
       </Row>
     </Form>

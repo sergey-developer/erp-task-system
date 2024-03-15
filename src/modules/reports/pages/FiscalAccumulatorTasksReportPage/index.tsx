@@ -4,17 +4,17 @@ import debounce from 'lodash/debounce'
 import pick from 'lodash/pick'
 import React, { FC, useCallback, useState } from 'react'
 
-import FiscalAccumulatorTaskTable from 'modules/reports/components/FiscalAccumulatorTaskTable'
 import {
-  FiscalAccumulatorTaskTableItem,
-  FiscalAccumulatorTaskTableProps,
-} from 'modules/reports/components/FiscalAccumulatorTaskTable/types'
+  FiscalAccumulatorTasksReportFilterFormFields,
+  FiscalAccumulatorTasksReportFilterProps,
+} from 'modules/reports/components/FiscalAccumulatorTasksReportFilter/types'
+import FiscalAccumulatorTasksReportTable from 'modules/reports/components/FiscalAccumulatorTasksReportTable'
 import {
-  FiscalAccumulatorTasksFilterFormFields,
-  FiscalAccumulatorTasksFilterProps,
-} from 'modules/reports/components/FiscalAccumulatorTasksFilter/types'
-import { useGetFiscalAccumulatorTasks } from 'modules/reports/hooks'
-import { GetFiscalAccumulatorTasksQueryArgs } from 'modules/reports/models'
+  FiscalAccumulatorTasksReportTableItem,
+  FiscalAccumulatorTasksReportTableProps,
+} from 'modules/reports/components/FiscalAccumulatorTasksReportTable/types'
+import { useGetFiscalAccumulatorTasksReport } from 'modules/reports/hooks'
+import { GetFiscalAccumulatorTasksReportQueryArgs } from 'modules/reports/models'
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
@@ -38,23 +38,23 @@ import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 
-const FiscalAccumulatorTasksFilter = React.lazy(
-  () => import('modules/reports/components/FiscalAccumulatorTasksFilter'),
+const FiscalAccumulatorTasksReportFilter = React.lazy(
+  () => import('modules/reports/components/FiscalAccumulatorTasksReportFilter'),
 )
 
 const TaskDetails = React.lazy(() => import('modules/task/components/TaskDetails'))
 
-const initialFilterValues: Readonly<FiscalAccumulatorTasksFilterFormFields> = {
+const initialFilterValues: Readonly<FiscalAccumulatorTasksReportFilterFormFields> = {
   customers: [],
   macroregions: [],
   supportGroups: [],
 }
 
-const FiscalAccumulatorTasksPage: FC = () => {
+const FiscalAccumulatorTasksReportPage: FC = () => {
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
 
-  const [selectedTask, setSelectedTask] = useState<FiscalAccumulatorTaskTableItem>()
+  const [selectedTask, setSelectedTask] = useState<FiscalAccumulatorTasksReportTableItem>()
   const [taskOpened, { setTrue: openTask, setFalse: originCloseTask }] = useBoolean(false)
   const closeTask = useDebounceFn(originCloseTask)
 
@@ -74,13 +74,15 @@ const FiscalAccumulatorTasksPage: FC = () => {
     tasksFiltersStorage?.macroregions,
   )
 
-  const [filterValues, setFilterValues] = useSetState<FiscalAccumulatorTasksFilterFormFields>({
-    ...initialFilterValues,
-    ...tasksFiltersStorage,
-  })
+  const [filterValues, setFilterValues] = useSetState<FiscalAccumulatorTasksReportFilterFormFields>(
+    {
+      ...initialFilterValues,
+      ...tasksFiltersStorage,
+    },
+  )
 
   const [fiscalAccumulatorTasksQueryArgs, setFiscalAccumulatorTasksQueryArgs] =
-    useSetState<GetFiscalAccumulatorTasksQueryArgs>(tasksFiltersStorage || {})
+    useSetState<GetFiscalAccumulatorTasksReportQueryArgs>(tasksFiltersStorage || {})
 
   const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList(
     undefined,
@@ -104,13 +106,13 @@ const FiscalAccumulatorTasksPage: FC = () => {
     currentData: fiscalAccumulatorTasks = [],
     isFetching: fiscalAccumulatorTasksIsFetching,
     refetch: refetchFiscalAccumulatorTasks,
-  } = useGetFiscalAccumulatorTasks(fiscalAccumulatorTasksQueryArgs, {
+  } = useGetFiscalAccumulatorTasksReport(fiscalAccumulatorTasksQueryArgs, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
   })
 
-  const handleApplyFilter: FiscalAccumulatorTasksFilterProps['onSubmit'] = (values) => {
+  const handleApplyFilter: FiscalAccumulatorTasksReportFilterProps['onSubmit'] = (values) => {
     setFilterValues(values)
     setFiscalAccumulatorTasksQueryArgs(values)
     setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
@@ -125,7 +127,7 @@ const FiscalAccumulatorTasksPage: FC = () => {
     setTasksFiltersStorage((prevState) => ({ ...prevState, [filter.name]: undefined }))
   }
 
-  const onClickRow = useCallback<FiscalAccumulatorTaskTableProps['onRow']>(
+  const onClickRow = useCallback<FiscalAccumulatorTasksReportTableProps['onRow']>(
     (record) => ({
       onClick: debounce(() => {
         setSelectedTask(record)
@@ -137,7 +139,7 @@ const FiscalAccumulatorTasksPage: FC = () => {
 
   return (
     <>
-      <Row data-testid='fiscal-accumulator-tasks-page' gutter={[24, 24]}>
+      <Row data-testid='fiscal-accumulator-tasks-report-page' gutter={[24, 24]}>
         <Col span={24}>
           <Row justify='space-between' gutter={[16, 16]}>
             <Col>
@@ -171,7 +173,7 @@ const FiscalAccumulatorTasksPage: FC = () => {
         </Col>
 
         <Col span={24}>
-          <FiscalAccumulatorTaskTable
+          <FiscalAccumulatorTasksReportTable
             loading={fiscalAccumulatorTasksIsFetching}
             dataSource={fiscalAccumulatorTasks}
             onRow={onClickRow}
@@ -181,7 +183,7 @@ const FiscalAccumulatorTasksPage: FC = () => {
 
       {filterOpened && (
         <React.Suspense fallback={<ModalFallback open onCancel={debouncedToggleOpenFilter} />}>
-          <FiscalAccumulatorTasksFilter
+          <FiscalAccumulatorTasksReportFilter
             open={filterOpened}
             values={filterValues}
             initialValues={initialFilterValues}
@@ -213,4 +215,4 @@ const FiscalAccumulatorTasksPage: FC = () => {
   )
 }
 
-export default FiscalAccumulatorTasksPage
+export default FiscalAccumulatorTasksReportPage

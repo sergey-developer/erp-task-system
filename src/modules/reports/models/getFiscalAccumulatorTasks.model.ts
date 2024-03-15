@@ -2,10 +2,10 @@ import { IdType } from 'shared/types/common'
 
 import { FiscalAccumulatorTasksModel } from './fiscalAccumulatorTasks.model'
 
-export type GetFiscalAccumulatorTasksQueryArgs = Partial<{
+export type GetFiscalAccumulatorTasksReportQueryArgs = Partial<{
   customers: IdType[]
   macroregions: IdType[]
   supportGroups: IdType[]
 }>
 
-export type GetFiscalAccumulatorTasksSuccessResponse = FiscalAccumulatorTasksModel
+export type GetFiscalAccumulatorTasksReportSuccessResponse = FiscalAccumulatorTasksModel

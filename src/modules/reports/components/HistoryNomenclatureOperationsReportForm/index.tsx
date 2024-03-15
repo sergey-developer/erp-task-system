@@ -7,6 +7,7 @@ import { EquipmentNomenclatureListItemModel } from 'modules/warehouse/models'
 import DatePicker from 'components/DatePicker'
 import QuestionCircleIconStyled from 'components/Icons/QuestionCircleIcon'
 
+import { UPDATE_TEXT } from 'shared/constants/common'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { filterOptionBy } from 'shared/utils/common'
@@ -75,7 +76,7 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
 
       <Row justify='end'>
         <Col>
-          <Button htmlType='submit'>Обновить</Button>
+          <Button htmlType='submit'>{UPDATE_TEXT}</Button>
         </Col>
       </Row>
     </Form>
