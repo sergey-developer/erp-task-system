@@ -65,7 +65,12 @@ const setPeriod = async (user: UserEvent) => {
   await user.type(endDateField, endDateValue)
   await user.tab()
 
-  return { startDateField, startDateValue, endDateField, endDateValue }
+  return {
+    startDateField,
+    startDateValue,
+    endDateField,
+    endDateValue,
+  }
 }
 
 const findPeriodError = (error: string) => within(getPeriodFormItem()).findByText(error)
@@ -150,7 +155,7 @@ describe('Форма отчета MTSR', () => {
     })
   })
 
-  describe('Поле периода', () => {
+  describe('Период', () => {
     test('Можно установить значение', async () => {
       const { user } = render(<MtsrReportForm {...props} />)
 
@@ -169,5 +174,20 @@ describe('Форма отчета MTSR', () => {
 
       expect(error).toBeInTheDocument()
     })
+  })
+
+  test('Обработчик вызывается если заполнены обязательные поля', async () => {
+    const { user } = render(<MtsrReportForm {...props} />)
+
+    await testUtils.setPeriod(user)
+    await testUtils.clickSubmitButton(user)
+
+    expect(props.onSubmit).toBeCalledTimes(1)
+  })
+
+  test('Обработчик не вызывается если не заполнены обязательные поля', async () => {
+    const { user } = render(<MtsrReportForm {...props} />)
+    await testUtils.clickSubmitButton(user)
+    expect(props.onSubmit).not.toBeCalled()
   })
 })
