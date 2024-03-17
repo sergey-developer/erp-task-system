@@ -8,9 +8,12 @@ import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 import { idAndNameSelectFieldNames, idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { IdType } from 'shared/types/common'
 
-import { FiscalAccumulatorTasksFilterFormFields, FiscalAccumulatorTasksFilterProps } from './types'
+import {
+  FiscalAccumulatorTasksReportFilterFormFields,
+  FiscalAccumulatorTasksReportFilterProps,
+} from './types'
 
-const FiscalAccumulatorTasksFilter: FC<FiscalAccumulatorTasksFilterProps> = ({
+const FiscalAccumulatorTasksReportFilter: FC<FiscalAccumulatorTasksReportFilterProps> = ({
   values,
   initialValues,
 
@@ -29,7 +32,7 @@ const FiscalAccumulatorTasksFilter: FC<FiscalAccumulatorTasksFilterProps> = ({
 
   ...props
 }) => {
-  const [form] = Form.useForm<FiscalAccumulatorTasksFilterFormFields>()
+  const [form] = Form.useForm<FiscalAccumulatorTasksReportFilterFormFields>()
 
   useEffect(() => {
     if (!isEqual(initialValues, values)) {
@@ -37,9 +40,10 @@ const FiscalAccumulatorTasksFilter: FC<FiscalAccumulatorTasksFilterProps> = ({
     }
   }, [form, values, initialValues])
 
-  const resetFields = (fields?: Array<keyof FiscalAccumulatorTasksFilterFormFields>) => () => {
-    form.resetFields(fields)
-  }
+  const resetFields =
+    (fields?: Array<keyof FiscalAccumulatorTasksReportFilterFormFields>) => () => {
+      form.resetFields(fields)
+    }
 
   const handleChangeCustomers = (value: IdType[]) => {
     resetFields(['macroregions', 'supportGroups'])()
@@ -66,11 +70,11 @@ const FiscalAccumulatorTasksFilter: FC<FiscalAccumulatorTasksFilterProps> = ({
   return (
     <DrawerFilter
       {...props}
-      data-testid='fiscal-accumulator-filter'
+      data-testid='fiscal-accumulator-tasks-report-filter'
       onReset={handleResetAll}
       onApply={form.submit}
     >
-      <Form<FiscalAccumulatorTasksFilterFormFields>
+      <Form<FiscalAccumulatorTasksReportFilterFormFields>
         preserve={false}
         layout='vertical'
         form={form}
@@ -123,4 +127,4 @@ const FiscalAccumulatorTasksFilter: FC<FiscalAccumulatorTasksFilterProps> = ({
   )
 }
 
-export default FiscalAccumulatorTasksFilter
+export default FiscalAccumulatorTasksReportFilter

@@ -16,5 +16,17 @@ export const getHistoryNomenclatureOperationsReportErrMsg =
 export const getHistoryNomenclatureOperationsReportXlsxErrMsg =
   'Ошибка получения отчета по истории операций по номенклатуре в формате xlsx'
 
-export const getFiscalAccumulatorTasksErrMsg =
+export const getFiscalAccumulatorTasksReportErrMsg =
   'Ошибка получения списка задач по фискальным накопителям'
+
+export const getUsersMtsrReportErrMsg =
+  'Ошибка получения данных для отчета основных показателей на уровне пользователей'
+
+export const getWorkGroupsMtsrReportErrMsg =
+  'Ошибка получения данных для отчета основных показателей на уровне рабочих групп'
+
+export const getSupportGroupsMtsrReportErrMsg =
+  'Ошибка получения данных для отчета основных показателей на уровне групп поддержки'
+
+export const getMacroregionsMtsrReportErrMsg =
+  'Ошибка получения данных для отчета основных показателей на уровне макрорегионов'

@@ -9,8 +9,13 @@ import Catalogs, { CatalogsProps } from 'components/Catalogs'
 const items: CatalogsProps['items'] = [
   {
     link: ReportsRoutesEnum.FiscalAccumulatorTasksReport,
-    text: 'Отчет по фискальным накопителям',
+    text: 'Отчёт по фискальным накопителям',
     permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead],
+  },
+  {
+    link: ReportsRoutesEnum.MtsrReport,
+    text: 'Отчёт основных показателей',
+    // permissions: [UserPermissionsEnum.ReportMtsrRead],
   },
 ]
 

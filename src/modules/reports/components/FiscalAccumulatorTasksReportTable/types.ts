@@ -2,7 +2,7 @@ import { TableProps } from 'antd'
 
 import { FiscalAccumulatorTaskListItemModel } from 'modules/reports/models'
 
-export type FiscalAccumulatorTaskTableItem = Pick<
+export type FiscalAccumulatorTasksReportTableItem = Pick<
   FiscalAccumulatorTaskListItemModel,
   | 'id'
   | 'blockingIn'
@@ -21,8 +21,8 @@ export type FiscalAccumulatorTaskTableItem = Pick<
   | 'comment'
 >
 
-export type FiscalAccumulatorTaskTableProps = Required<
-  Pick<TableProps<FiscalAccumulatorTaskTableItem>, 'loading' | 'onRow'>
+export type FiscalAccumulatorTasksReportTableProps = Required<
+  Pick<TableProps<FiscalAccumulatorTasksReportTableItem>, 'loading' | 'onRow'>
 > & {
-  dataSource: NonNullable<TableProps<FiscalAccumulatorTaskTableItem>['dataSource']>
+  dataSource: NonNullable<TableProps<FiscalAccumulatorTasksReportTableItem>['dataSource']>
 }
