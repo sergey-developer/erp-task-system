@@ -19,16 +19,12 @@ const MtsrReportForm: FC<MtsrReportFormProps> = ({
 }) => {
   const [form] = Form.useForm<MtsrReportFormFields>()
 
-  const onFinish = async (values: MtsrReportFormFields) => {
-    await onSubmit(values, form.setFields)
-  }
-
   return (
     <Form<MtsrReportFormFields>
       data-testid='mtsr-report-form'
       form={form}
       initialValues={initialValues}
-      onFinish={onFinish}
+      onFinish={onSubmit}
     >
       <Form.Item data-testid='customers-form-item' name='customers' label='Клиенты'>
         <Select
