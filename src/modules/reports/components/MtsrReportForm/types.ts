@@ -1,4 +1,3 @@
-import { FormInstance } from 'antd'
 import { Moment } from 'moment-timezone'
 
 import { CustomerListModel } from 'modules/warehouse/models'
@@ -16,8 +15,5 @@ export type MtsrReportFormProps = {
   customers: CustomerListModel
   customersIsLoading: boolean
 
-  onSubmit: (
-    values: MtsrReportFormFields,
-    setFields: FormInstance<MtsrReportFormFields>['setFields'],
-  ) => Promise<void>
+  onSubmit: (values: MtsrReportFormFields) => void
 }
