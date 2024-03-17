@@ -11,6 +11,7 @@ import { useCreateRelocationTaskCompletionDocumentsMutation } from 'modules/ware
 
 import {
   getErrorDetail,
+  isBadRequestError,
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
@@ -28,7 +29,11 @@ export const useCreateRelocationTaskCompletionDocuments =
 
     useEffect(() => {
       if (isErrorResponse(state.error)) {
-        if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
+        if (
+          isBadRequestError(state.error) ||
+          isForbiddenError(state.error) ||
+          isNotFoundError(state.error)
+        ) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
           showErrorNotification(createRelocationTaskCompletionDocumentsErrMsg)
