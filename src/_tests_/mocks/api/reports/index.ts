@@ -6,3 +6,8 @@ export * from './getHistoryNomenclatureOperationsReportXlsx.mock'
 
 export * from './getAmountEquipmentSpentReport.mock'
 export * from './getAmountEquipmentSpentReportXlsx.mock'
+
+export * from './getMacroregionsMtsrReport.mock'
+export * from './getSupportGroupsMtsrReport.mock'
+export * from './getWorkGroupsMtsrReport.mock'
+export * from './getUsersMtsrReport.mock'

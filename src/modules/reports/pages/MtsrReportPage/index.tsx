@@ -1,13 +1,9 @@
 import { useSetState } from 'ahooks'
-import { Col, Flex, Row } from 'antd'
-import moment from 'moment-timezone'
-import { FC, useCallback, useState } from 'react'
+import { Col, Flex, Radio, RadioGroupProps, Row } from 'antd'
+import React, { FC, useCallback, useState } from 'react'
 
 import MtsrReportForm from 'modules/reports/components/MtsrReportForm'
-import {
-  MtsrReportFormFields,
-  MtsrReportFormProps,
-} from 'modules/reports/components/MtsrReportForm/types'
+import { MtsrReportFormProps } from 'modules/reports/components/MtsrReportForm/types'
 import MtsrReportTable from 'modules/reports/components/MtsrReportTable'
 import {
   getSort,
@@ -16,62 +12,106 @@ import {
 } from 'modules/reports/components/MtsrReportTable/sort'
 import { MtsrReportTableProps } from 'modules/reports/components/MtsrReportTable/types'
 import {
-  GetMacroregionsMtsrReportQueryArgs,
-  GetSupportGroupsMtsrReportQueryArgs,
-  GetUsersMtsrReportQueryArgs,
-  GetWorkGroupsMtsrReportQueryArgs,
-} from 'modules/reports/models'
+  useGetMacroregionsMtsrReport,
+  useGetSupportGroupsMtsrReport,
+  useGetUsersMtsrReport,
+  useGetWorkGroupsMtsrReport,
+} from 'modules/reports/hooks'
+import { GetMtsrReportBaseQueryArgs } from 'modules/reports/types'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
 
-const mtsrReportFormInitialValues: MtsrReportFormFields = {
-  period: [moment().set('date', 1), moment()],
-}
-
-type GetMtsrReportQueryArgs =
-  | GetMacroregionsMtsrReportQueryArgs
-  | GetSupportGroupsMtsrReportQueryArgs
-  | GetWorkGroupsMtsrReportQueryArgs
-  | GetUsersMtsrReportQueryArgs
+import {
+  getMtsrReportInitialQueryArgs,
+  initialLevelObjects,
+  mtsrReportFormInitialValues,
+  mtsrReportLevelDict,
+  MtsrReportLevelEnum,
+} from './constants'
 
 const MtsrReportPage: FC = () => {
-  const [selectedTableRowsKeys, setSelectedTableRowsKeys] = useState<IdType[]>([])
+  const [selectedReportLevel, setSelectedReportLevel] = useState<MtsrReportLevelEnum>(
+    MtsrReportLevelEnum.Macroregions,
+  )
 
-  const [mtsrReportQueryArgs, setMtsrReportQueryArgs] = useSetState<GetMtsrReportQueryArgs>({
-    dateStart: formatDate(mtsrReportFormInitialValues.period[0], DATE_FORMAT),
-    dateEnd: formatDate(mtsrReportFormInitialValues.period[1], DATE_FORMAT),
-    ordering: '-average_execution_time',
-  })
+  const [selectedReportLevelObjects, setSelectedReportLevelObjects] =
+    useSetState<typeof initialLevelObjects>(initialLevelObjects)
+
+  const [baseMtsrReportQueryArgs, setBaseMtsrReportQueryArgs] =
+    useSetState<GetMtsrReportBaseQueryArgs>(getMtsrReportInitialQueryArgs)
+
+  const { currentData: macroregionsMtsrReport = [], isFetching: macroregionsMtsrReportIsFetching } =
+    useGetMacroregionsMtsrReport(baseMtsrReportQueryArgs, {
+      skip: selectedReportLevel !== MtsrReportLevelEnum.Macroregions,
+    })
+
+  const {
+    currentData: supportGroupsMtsrReport = [],
+    isFetching: supportGroupsMtsrReportIsFetching,
+  } = useGetSupportGroupsMtsrReport(
+    {
+      ...baseMtsrReportQueryArgs,
+      macroregions: selectedReportLevelObjects[MtsrReportLevelEnum.Macroregions],
+    },
+    {
+      skip: selectedReportLevel !== MtsrReportLevelEnum.SupportGroups,
+    },
+  )
+
+  const { currentData: workGroupsMtsrReport = [], isFetching: workGroupsMtsrReportIsFetching } =
+    useGetWorkGroupsMtsrReport(
+      {
+        ...baseMtsrReportQueryArgs,
+        macroregions: selectedReportLevelObjects[MtsrReportLevelEnum.Macroregions],
+        supportGroups: selectedReportLevelObjects[MtsrReportLevelEnum.SupportGroups],
+      },
+      {
+        skip: selectedReportLevel !== MtsrReportLevelEnum.WorkGroups,
+      },
+    )
+
+  const { currentData: usersMtsrReport = [], isFetching: usersMtsrReportIsFetching } =
+    useGetUsersMtsrReport(
+      {
+        ...baseMtsrReportQueryArgs,
+        macroregions: selectedReportLevelObjects[MtsrReportLevelEnum.Macroregions],
+        supportGroups: selectedReportLevelObjects[MtsrReportLevelEnum.SupportGroups],
+        workGroups: selectedReportLevelObjects[MtsrReportLevelEnum.WorkGroups],
+      },
+      {
+        skip: selectedReportLevel !== MtsrReportLevelEnum.Users,
+      },
+    )
 
   const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList()
 
   const onClickUpdate = useCallback<MtsrReportFormProps['onSubmit']>(
     (values) => {
-      setMtsrReportQueryArgs({
+      setBaseMtsrReportQueryArgs({
         customers: values.customers,
         dateStart: formatDate(values.period[0], DATE_FORMAT),
         dateEnd: formatDate(values.period[1], DATE_FORMAT),
       })
     },
-    [setMtsrReportQueryArgs],
+    [setBaseMtsrReportQueryArgs],
   )
 
   const onTableSort = useCallback(
     (sorter: Parameters<MtsrReportTableProps['onChange']>[2]) => {
       if (sorter) {
-        const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
+        const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
-          setMtsrReportQueryArgs({
-            ordering: order ? getSort(columnKey as SortableField, order) : undefined,
+        if (field && (field as string) in sortableFieldToSortValues) {
+          setBaseMtsrReportQueryArgs({
+            ordering: order ? getSort(field as SortableField, order) : undefined,
           })
         }
       }
     },
-    [setMtsrReportQueryArgs],
+    [setBaseMtsrReportQueryArgs],
   )
 
   const onChangeTable = useCallback<MtsrReportTableProps['onChange']>(
@@ -81,9 +121,25 @@ const MtsrReportPage: FC = () => {
     [onTableSort],
   )
 
-  const onSelectTableRow = useCallback<MtsrReportTableProps['onSelect']>((selectedRowKeys) => {
-    setSelectedTableRowsKeys(selectedRowKeys as IdType[])
-  }, [])
+  const onSelectTableRow = useCallback<MtsrReportTableProps['onSelect']>(
+    (selectedRowKeys) => {
+      setSelectedReportLevelObjects({ [selectedReportLevel]: selectedRowKeys as IdType[] })
+    },
+    [selectedReportLevel, setSelectedReportLevelObjects],
+  )
+
+  const onChangeReportLevel: RadioGroupProps['onChange'] = ({ target: { value } }) => {
+    setSelectedReportLevel(value as MtsrReportLevelEnum)
+  }
+
+  const report =
+    macroregionsMtsrReport || supportGroupsMtsrReport || workGroupsMtsrReport || usersMtsrReport
+
+  const reportIsLoading =
+    macroregionsMtsrReportIsFetching ||
+    supportGroupsMtsrReportIsFetching ||
+    workGroupsMtsrReportIsFetching ||
+    usersMtsrReportIsFetching
 
   return (
     <Flex data-testid='mtsr-report-page' vertical gap='large'>
@@ -98,32 +154,24 @@ const MtsrReportPage: FC = () => {
         </Col>
       </Row>
 
-      <MtsrReportTable
-        dataSource={[
-          {
-            id: 1,
-            title: 'title1',
-            completedTasks: 1,
-            allTasks: 1,
-            averageExecutionTime: 1,
-            overdueTasks: 1,
-            returnedAmount: 1,
-          },
-          {
-            id: 2,
-            title: 'title2',
-            completedTasks: 2,
-            allTasks: 2,
-            averageExecutionTime: 2,
-            overdueTasks: 2,
-            returnedAmount: 2,
-          },
-        ]}
-        loading={false}
-        onChange={onChangeTable}
-        onSelect={onSelectTableRow}
-        sort={mtsrReportQueryArgs?.ordering}
-      />
+      <Flex vertical gap='middle'>
+        <Radio.Group buttonStyle='solid' value={selectedReportLevel} onChange={onChangeReportLevel}>
+          {Object.keys(mtsrReportLevelDict).map((key) => (
+            <Radio.Button key={key} value={key}>
+              {mtsrReportLevelDict[key as MtsrReportLevelEnum]}
+            </Radio.Button>
+          ))}
+        </Radio.Group>
+
+        <MtsrReportTable
+          dataSource={report}
+          loading={reportIsLoading}
+          onChange={onChangeTable}
+          onSelect={onSelectTableRow}
+          selectedRowKeys={selectedReportLevelObjects[selectedReportLevel] as React.Key[]}
+          sort={baseMtsrReportQueryArgs?.ordering}
+        />
+      </Flex>
     </Flex>
   )
 }
