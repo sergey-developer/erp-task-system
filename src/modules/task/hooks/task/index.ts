@@ -9,5 +9,14 @@ export * from './useTakeTask'
 export * from './useUpdateTaskDescription'
 export * from './useUpdateTaskDeadline'
 
+export * from './useGetTaskCompletionDocuments'
+export * from './useCreateTaskCompletionDocuments'
+
+export * from './useCreateInitiationReason'
+export * from './useDeleteInitiationReason'
+
+export * from './useCreateCompletedWork'
+export * from './useDeleteCompletedWork'
+
 export * from './useGetTasks'
 export * from './useGetTaskListMap'

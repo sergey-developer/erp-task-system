@@ -1,26 +1,18 @@
 import { Space } from 'antd'
 import { FC, Fragment } from 'react'
-import { useMatches, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
+import { BreadcrumbMatch } from 'shared/hooks/useBreadcrumbsMatches'
 import { checkLastItem } from 'shared/utils/common'
 
-export type BreadCrumbArgs = {
-  qs: ReturnType<typeof useSearchParams>[0]
+type BreadcrumbsProps = {
+  matches: BreadcrumbMatch[]
 }
 
-const Breadcrumbs: FC = () => {
-  const matches = useMatches()
+const Breadcrumbs: FC<BreadcrumbsProps> = ({ matches }) => {
   const [searchParams] = useSearchParams()
 
-  const crumbs = matches
-    .filter((match) => {
-      const handle = match.handle as any
-      return Boolean(handle?.crumb)
-    })
-    .map((match) => {
-      const handle = match.handle as any
-      return handle.crumb({ qs: searchParams } as BreadCrumbArgs)
-    })
+  const crumbs = matches.map((match) => match.handle.crumb({ qs: searchParams }))
 
   return !!crumbs.length ? (
     <Space>

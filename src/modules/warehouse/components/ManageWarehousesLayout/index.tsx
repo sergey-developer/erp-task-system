@@ -1,20 +1,20 @@
-import { Col, Row } from 'antd'
+import { Flex } from 'antd'
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import Breadcrumbs from 'components/Breadcrumbs'
 
-const ManageWarehousesLayout: FC = () => {
-  return (
-    <Row gutter={[16, 16]}>
-      <Col span={24}>
-        <Breadcrumbs />
-      </Col>
+import { useBreadcrumbsMatches } from 'shared/hooks/useBreadcrumbsMatches'
 
-      <Col span={24}>
-        <Outlet />
-      </Col>
-    </Row>
+const ManageWarehousesLayout: FC = () => {
+  const matches = useBreadcrumbsMatches()
+
+  return (
+    <Flex vertical gap='middle'>
+      {!!matches.length && <Breadcrumbs matches={matches} />}
+
+      <Outlet />
+    </Flex>
   )
 }
 

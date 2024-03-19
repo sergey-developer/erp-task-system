@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { NomenclatureGroupFormModalProps, NomenclatureGroupFormModalFormFields } from './types'
+import { NomenclatureGroupFormFields, NomenclatureGroupFormModalProps } from './types'
 import { nameValidationRules } from './validation'
 
 const NomenclatureGroupFormModal: FC<NomenclatureGroupFormModalProps> = ({
@@ -12,9 +12,9 @@ const NomenclatureGroupFormModal: FC<NomenclatureGroupFormModalProps> = ({
   initialValues,
   ...props
 }) => {
-  const [form] = Form.useForm<NomenclatureGroupFormModalFormFields>()
+  const [form] = Form.useForm<NomenclatureGroupFormFields>()
 
-  const handleFinish = async (values: NomenclatureGroupFormModalFormFields) => {
+  const handleFinish = async (values: NomenclatureGroupFormFields) => {
     await onSubmit(values, form.setFields)
   }
 
@@ -25,7 +25,7 @@ const NomenclatureGroupFormModal: FC<NomenclatureGroupFormModalProps> = ({
       onOk={form.submit}
       confirmLoading={isLoading}
     >
-      <Form<NomenclatureGroupFormModalFormFields>
+      <Form<NomenclatureGroupFormFields>
         form={form}
         initialValues={initialValues}
         layout='vertical'

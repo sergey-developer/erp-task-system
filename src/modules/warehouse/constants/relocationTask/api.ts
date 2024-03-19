@@ -7,6 +7,8 @@ export enum RelocationTaskApiEnum {
   GetRelocationTaskWaybillM15 = '/relocation-tasks/:id/m-15/',
   GetRelocationTaskAttachments = '/relocation-tasks/:id/attachments/',
   CreateRelocationTaskAttachment = '/relocation-tasks/:id/attachments/',
+  CreateRelocationTaskCompletionDocuments = '/relocation-tasks/:id/completion-documents',
+  GetRelocationTaskCompletionDocuments = '/relocation-tasks/:id/completion-documents',
   CreateRelocationTaskITSM = '/relocation-tasks/itsm/',
   CreateRelocationTask = '/relocation-tasks/',
   UpdateRelocationTask = '/relocation-tasks/:id/',

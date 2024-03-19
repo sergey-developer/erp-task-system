@@ -199,10 +199,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     state: { isLoading: takeTaskIsLoading },
   } = useTakeTask()
 
-  const {
-    fn: resolveTask,
-    state: { isLoading: isTaskResolving },
-  } = useResolveTask()
+  const [resolveTask, { isLoading: taskIsResolving }] = useResolveTask()
 
   const {
     fn: updateWorkGroup,
@@ -368,23 +365,18 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       try {
         await resolveTask({
           taskId: task.id,
+          ...values,
           techResolution: values.techResolution.trim(),
           userResolution: values.userResolution?.trim(),
           attachments: values.attachments?.length
             ? extractOriginFiles(values.attachments)
             : undefined,
-        })
+        }).unwrap()
 
         originOnClose()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-
-            if (error.data.detail) {
-              showErrorNotification(error.data.detail)
-            }
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -447,7 +439,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const handleTransferTaskToSecondLine = useCallback(
     async (
       values: TaskSecondLineFormFields,
-      setFields: FormInstance['setFields'],
+      setFields: FormInstance<TaskSecondLineFormFields>['setFields'],
       closeTaskSecondLineModal: EmptyFn,
     ) => {
       if (!task) return
@@ -470,7 +462,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const handleTransferTaskToFirstLine = useCallback(
     async (
       values: TaskFirstLineFormFields,
-      setFields: FormInstance['setFields'],
+      setFields: FormInstance<TaskFirstLineFormFields>['setFields'],
       closeTaskFirstLineModal: EmptyFn,
     ) => {
       if (!task) return
@@ -709,7 +701,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             open={executeTaskModalOpened}
             type={task.type}
             recordId={task.recordId}
-            isLoading={isTaskResolving}
+            isLoading={taskIsResolving}
             onCancel={handleCloseExecuteTaskModal}
             onSubmit={handleExecuteTask}
             onGetAct={handleGetAct}

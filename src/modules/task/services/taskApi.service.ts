@@ -1,3 +1,5 @@
+import { decamelize } from 'humps'
+
 import { getPaginatedList } from 'lib/antd/utils'
 
 import {
@@ -7,14 +9,24 @@ import {
   TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
 import {
+  CreateCompletedWorkMutationArgs,
+  CreateCompletedWorkSuccessResponse,
+  CreateInitiationReasonMutationArgs,
+  CreateInitiationReasonSuccessResponse,
   CreateSubTaskMutationArgs,
   CreateSubTaskSuccessResponse,
   CreateTaskCommentMutationArgs,
   CreateTaskCommentSuccessResponse,
+  CreateTaskCompletionDocumentsMutationArgs,
+  CreateTaskCompletionDocumentsSuccessResponse,
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskReclassificationRequestSuccessResponse,
   CreateTaskSuspendRequestMutationArgs,
   CreateTaskSuspendRequestSuccessResponse,
+  DeleteCompletedWorkMutationArgs,
+  DeleteCompletedWorkSuccessResponse,
+  DeleteInitiationReasonMutationArgs,
+  DeleteInitiationReasonSuccessResponse,
   DeleteTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestSuccessResponse,
   DeleteTaskWorkGroupMutationArgs,
@@ -23,6 +35,8 @@ import {
   GetSubTaskListSuccessResponse,
   GetTaskCommentListQueryArgs,
   GetTaskCommentListSuccessResponse,
+  GetTaskCompletionDocumentsQueryArgs,
+  GetTaskCompletionDocumentsSuccessResponse,
   GetTaskCountersQueryArgs,
   GetTaskCountersSuccessResponse,
   GetTaskJournalCsvQueryArgs,
@@ -55,8 +69,14 @@ import {
 } from 'modules/task/models'
 import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 import {
+  createCompletedWorkUrl,
+  createInitiationReasonUrl,
   createSubTaskUrl,
+  createTaskCompletionDocumentsUrl,
+  deleteCompletedWorkUrl,
+  deleteInitiationReasonUrl,
   getSubTaskListUrl,
+  getTaskCompletionDocumentsUrl,
   getTaskUrl,
   getTaskWorkPerformedActUrl,
   resolveTaskUrl,
@@ -145,14 +165,20 @@ const taskApiService = baseApiService
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.TaskCounters],
-        query: ({ taskId, techResolution, userResolution, attachments }) => {
+        query: ({
+          taskId,
+          techResolution,
+          userResolution,
+          spentHours,
+          spentMinutes,
+          attachments,
+        }) => {
           const formData = new FormData()
 
-          formData.append('tech_resolution', techResolution)
-
-          if (userResolution) {
-            formData.append('user_resolution', userResolution)
-          }
+          formData.append(decamelize('techResolution'), techResolution)
+          formData.append(decamelize('spentHours'), String(spentHours))
+          formData.append(decamelize('spentMinutes'), String(spentMinutes))
+          if (userResolution) formData.append(decamelize(userResolution), userResolution)
 
           if (attachments?.length) {
             attachments.forEach((att) => formData.append('attachments', att))
@@ -256,6 +282,131 @@ const taskApiService = baseApiService
           method: HttpMethodEnum.Post,
           data: payload,
         }),
+      }),
+
+      getTaskCompletionDocuments: build.query<
+        GetTaskCompletionDocumentsSuccessResponse,
+        GetTaskCompletionDocumentsQueryArgs
+      >({
+        query: ({ taskId }) => ({
+          url: getTaskCompletionDocumentsUrl(taskId),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
+      createTaskCompletionDocuments: build.mutation<
+        CreateTaskCompletionDocumentsSuccessResponse,
+        CreateTaskCompletionDocumentsMutationArgs
+      >({
+        query: ({ taskId }) => ({
+          url: createTaskCompletionDocumentsUrl(taskId),
+          method: HttpMethodEnum.Post,
+        }),
+      }),
+
+      createInitiationReason: build.mutation<
+        CreateInitiationReasonSuccessResponse,
+        CreateInitiationReasonMutationArgs
+      >({
+        query: ({ taskId, ...data }) => ({
+          url: createInitiationReasonUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+        onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled
+
+            dispatch(
+              taskApiService.util.updateQueryData(
+                'getTaskCompletionDocuments' as never,
+                { taskId } as never,
+                (docs: GetTaskCompletionDocumentsSuccessResponse) => {
+                  Array.isArray(docs.initiationReasons)
+                    ? docs.initiationReasons.push(data)
+                    : (docs.initiationReasons = [data])
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
+      deleteInitiationReason: build.mutation<
+        DeleteInitiationReasonSuccessResponse,
+        DeleteInitiationReasonMutationArgs
+      >({
+        query: ({ id }) => ({
+          url: deleteInitiationReasonUrl(id),
+          method: HttpMethodEnum.Delete,
+        }),
+        onQueryStarted: async ({ id, taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled
+
+            dispatch(
+              taskApiService.util.updateQueryData(
+                'getTaskCompletionDocuments' as never,
+                { taskId } as never,
+                (data: GetTaskCompletionDocumentsSuccessResponse) => {
+                  if (data.initiationReasons?.length) {
+                    data.initiationReasons = data.initiationReasons.filter((r) => r.id !== id)
+                  }
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
+
+      createCompletedWork: build.mutation<
+        CreateCompletedWorkSuccessResponse,
+        CreateCompletedWorkMutationArgs
+      >({
+        query: ({ taskId, ...data }) => ({
+          url: createCompletedWorkUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+        onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled
+
+            dispatch(
+              taskApiService.util.updateQueryData(
+                'getTaskCompletionDocuments' as never,
+                { taskId } as never,
+                (docs: GetTaskCompletionDocumentsSuccessResponse) => {
+                  Array.isArray(docs.workList) ? docs.workList.push(data) : (docs.workList = [data])
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
+      deleteCompletedWork: build.mutation<
+        DeleteCompletedWorkSuccessResponse,
+        DeleteCompletedWorkMutationArgs
+      >({
+        query: ({ id }) => ({
+          url: deleteCompletedWorkUrl(id),
+          method: HttpMethodEnum.Delete,
+        }),
+        onQueryStarted: async ({ id, taskId }, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled
+
+            dispatch(
+              taskApiService.util.updateQueryData(
+                'getTaskCompletionDocuments' as never,
+                { taskId } as never,
+                (data: GetTaskCompletionDocumentsSuccessResponse) => {
+                  if (data.workList?.length) {
+                    data.workList = data.workList.filter((r) => r.id !== id)
+                  }
+                },
+              ),
+            )
+          } catch {}
+        },
       }),
 
       getTaskJournal: build.query<GetTaskJournalSuccessResponse, GetTaskJournalQueryArgs>({
@@ -420,6 +571,13 @@ export const {
   useGetTaskListMapQuery,
 
   useGetTaskWorkPerformedActMutation,
+
+  useGetTaskCompletionDocumentsQuery,
+  useCreateTaskCompletionDocumentsMutation,
+  useCreateInitiationReasonMutation,
+  useDeleteInitiationReasonMutation,
+  useCreateCompletedWorkMutation,
+  useDeleteCompletedWorkMutation,
 
   useResolveTaskMutation,
   useTakeTaskMutation,

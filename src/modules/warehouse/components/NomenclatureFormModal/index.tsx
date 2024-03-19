@@ -6,7 +6,7 @@ import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 
-import { NomenclatureFormModalFormFields, NomenclatureFormModalProps } from './types'
+import { NomenclatureFormFields, NomenclatureFormModalProps } from './types'
 import {
   groupValidationRules,
   measurementUnitValidationRules,
@@ -34,7 +34,7 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
 
   ...props
 }) => {
-  const [form] = Form.useForm<NomenclatureFormModalFormFields>()
+  const [form] = Form.useForm<NomenclatureFormFields>()
   const equipmentHasSerialNumberValue = Form.useWatch('equipmentHasSerialNumber', form)
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
     country,
     equipmentHasSerialNumber,
     ...values
-  }: NomenclatureFormModalFormFields) => {
+  }: NomenclatureFormFields) => {
     await onSubmit(
       {
         ...values,
@@ -86,7 +86,7 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
       isLoading={nomenclatureIsLoading}
       footer={nomenclatureIsLoading ? null : undefined}
     >
-      <Form<NomenclatureFormModalFormFields>
+      <Form<NomenclatureFormFields>
         form={form}
         layout='vertical'
         onFinish={handleFinish}

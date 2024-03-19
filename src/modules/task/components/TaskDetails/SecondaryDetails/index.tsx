@@ -16,14 +16,14 @@ export type SecondaryDetailsProps = Pick<
 > & {
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
-    setFields: FormInstance['setFields'],
+    setFields: FormInstance<TaskFirstLineFormFields>['setFields'],
     closeTaskFirstLineModal: EmptyFn,
   ) => Promise<void>
   transferTaskToFirstLineIsLoading: boolean
 
   transferTaskToSecondLine: (
     values: TaskSecondLineFormFields,
-    setFields: FormInstance['setFields'],
+    setFields: FormInstance<TaskSecondLineFormFields>['setFields'],
     closeTaskSecondLineModal: EmptyFn,
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean

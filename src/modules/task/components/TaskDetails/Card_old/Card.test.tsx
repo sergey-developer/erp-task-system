@@ -72,7 +72,7 @@ const props: Readonly<TaskCardProps> = {
   updateAssigneeIsLoading: false,
 
   resolveTask: jest.fn(),
-  isTaskResolving: false,
+  taskIsResolving: false,
 
   takeTask: jest.fn(),
   takeTaskIsLoading: false,

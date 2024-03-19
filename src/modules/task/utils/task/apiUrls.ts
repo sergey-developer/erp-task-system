@@ -29,3 +29,21 @@ export const getSubTaskListUrl = (taskId: IdType): string =>
 
 export const createSubTaskUrl = (taskId: IdType): string =>
   appendSlashAtEnd(generatePath(TaskApiEnum.CreateSubTask, { id: String(taskId) }))
+
+export const getTaskCompletionDocumentsUrl = (taskId: IdType): string =>
+  generateApiPath(TaskApiEnum.GetTaskCompletionDocuments, { id: String(taskId) })
+
+export const createTaskCompletionDocumentsUrl = (taskId: IdType): string =>
+  generateApiPath(TaskApiEnum.CreateTaskCompletionDocuments, { id: String(taskId) })
+
+export const createInitiationReasonUrl = (taskId: IdType): string =>
+  generateApiPath(TaskApiEnum.CreateInitiationReason, { id: String(taskId) })
+
+export const deleteInitiationReasonUrl = (id: IdType): string =>
+  generateApiPath(TaskApiEnum.DeleteInitiationReason, { id: String(id) })
+
+export const deleteCompletedWorkUrl = (id: IdType): string =>
+  generateApiPath(TaskApiEnum.DeleteCompletedWork, { id: String(id) })
+
+export const createCompletedWorkUrl = (id: IdType): string =>
+  generateApiPath(TaskApiEnum.CreateCompletedWork, { id: String(id) })

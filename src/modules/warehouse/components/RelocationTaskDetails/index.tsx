@@ -39,6 +39,7 @@ import {
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetRelocationEquipmentAttachmentList } from 'modules/warehouse/hooks/relocationEquipment'
 import {
   useCreateRelocationTaskAttachment,
@@ -58,7 +59,8 @@ import {
 } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
-  getRelocationTaskTitle,
+  getRelocateFromTo,
+  getRelocationTasksPageLink,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
 
@@ -395,6 +397,17 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenConfirmExecutionModal,
       },
+      {
+        key: 7,
+        label: 'Сформировать пакет документов',
+        onClick: () =>
+          navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
+            state: {
+              relocationTask: { id: relocationTaskId },
+              from: getRelocationTasksPageLink({ viewRelocationTask: relocationTaskId }),
+            },
+          }),
+      },
     ],
   }
 
@@ -406,7 +419,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         placement='bottom'
         title={
           <Space>
-            <Text>{getRelocationTaskTitle(relocationTask)}</Text>
+            <Text>{getRelocateFromTo(relocationTask)}</Text>
             {relocationTaskIsFetching && <Spinner centered={false} />}
           </Space>
         }
@@ -417,7 +430,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         }
       >
         <Row gutter={40}>
-          <Col span={11}>
+          <Col span={10}>
             <LoadingArea
               data-testid='relocation-task-details-loading'
               isLoading={relocationTaskIsFetching}
@@ -599,7 +612,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             </LoadingArea>
           </Col>
 
-          <Col span={13}>
+          <Col span={14}>
             <Space direction='vertical'>
               <Text strong>Перечень оборудования</Text>
 

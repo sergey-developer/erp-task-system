@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
-import { getRelocationTaskTitle } from 'modules/warehouse/utils/relocationTask'
+import { getRelocateFromTo } from 'modules/warehouse/utils/relocationTask'
 
 import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
@@ -87,7 +87,7 @@ describe('RelocationTaskList', () => {
 
   test('Заголовок отображается', () => {
     render(<RelocationTaskList {...props} />)
-    const text = getRelocationTaskTitle(relocationTaskListItem)
+    const text = getRelocateFromTo(relocationTaskListItem)
     const value = testUtils.getChildInListItem(relocationTaskListItem.id, text)
     expect(value).toBeInTheDocument()
   })

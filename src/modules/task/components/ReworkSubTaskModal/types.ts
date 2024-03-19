@@ -15,6 +15,6 @@ export type ReworkSubTaskModalProps = Pick<SubTaskModel, 'recordId'> & {
   onCancel: NonNullable<ModalProps['onCancel']>
   onSubmit: (
     values: ReworkSubTaskFormFields,
-    setFields: FormInstance['setFields'],
+    setFields: FormInstance<ReworkSubTaskFormFields>['setFields'],
   ) => Promise<void>
 }

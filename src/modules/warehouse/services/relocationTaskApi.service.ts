@@ -13,6 +13,8 @@ import {
   CloseRelocationTaskSuccessResponse,
   CreateRelocationTaskAttachmentMutationArgs,
   CreateRelocationTaskAttachmentSuccessResponse,
+  CreateRelocationTaskCompletionDocumentsMutationArgs,
+  CreateRelocationTaskCompletionDocumentsSuccessResponse,
   CreateRelocationTaskITSMMutationArgs,
   CreateRelocationTaskITSMSuccessResponse,
   CreateRelocationTaskMutationArgs,
@@ -25,6 +27,8 @@ import {
   GetRelocationEquipmentListSuccessResponse,
   GetRelocationTaskAttachmentsQueryArgs,
   GetRelocationTaskAttachmentsSuccessResponse,
+  GetRelocationTaskCompletionDocumentsQueryArgs,
+  GetRelocationTaskCompletionDocumentsSuccessResponse,
   GetRelocationTaskListQueryArgs,
   GetRelocationTaskListSuccessResponse,
   GetRelocationTaskQueryArgs,
@@ -43,10 +47,12 @@ import {
   cancelRelocationTaskUrl,
   closeRelocationTaskUrl,
   createRelocationTaskAttachmentUrl,
+  createRelocationTaskCompletionDocumentsUrl,
   executeRelocationTaskUrl,
   getRelocationEquipmentBalanceListUrl,
   getRelocationEquipmentListUrl,
   getRelocationTaskAttachmentsUrl,
+  getRelocationTaskCompletionDocumentsUrl,
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
   returnRelocationTaskToReworkUrl,
@@ -279,6 +285,25 @@ const relocationTaskApiService = baseApiService
           method: HttpMethodEnum.Get,
         }),
       }),
+
+      getRelocationTaskCompletionDocuments: build.query<
+        GetRelocationTaskCompletionDocumentsSuccessResponse,
+        GetRelocationTaskCompletionDocumentsQueryArgs
+      >({
+        query: ({ relocationTaskId }) => ({
+          url: getRelocationTaskCompletionDocumentsUrl(relocationTaskId),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
+      createRelocationTaskCompletionDocuments: build.mutation<
+        CreateRelocationTaskCompletionDocumentsSuccessResponse,
+        CreateRelocationTaskCompletionDocumentsMutationArgs
+      >({
+        query: ({ relocationTaskId }) => ({
+          url: createRelocationTaskCompletionDocumentsUrl(relocationTaskId),
+          method: HttpMethodEnum.Post,
+        }),
+      }),
     }),
   })
 
@@ -296,6 +321,9 @@ export const {
 
   useCreateRelocationTaskAttachmentMutation,
   useGetRelocationTaskAttachmentsQuery,
+
+  useGetRelocationTaskCompletionDocumentsQuery,
+  useCreateRelocationTaskCompletionDocumentsMutation,
 
   useLazyGetRelocationTaskWaybillM15Query,
 
