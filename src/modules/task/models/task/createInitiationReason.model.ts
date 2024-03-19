@@ -1,8 +1,8 @@
-import { BaseTaskRequestArgs } from 'modules/task/types'
+import { TaskRequestArgs } from 'modules/task/types'
 
 import { InitiationReasonModel } from './initiationReason.model'
 
-export type CreateInitiationReasonMutationArgs = BaseTaskRequestArgs & {
+export type CreateInitiationReasonMutationArgs = TaskRequestArgs & {
   title: string
   equipmentType: string
   malfunction: string
