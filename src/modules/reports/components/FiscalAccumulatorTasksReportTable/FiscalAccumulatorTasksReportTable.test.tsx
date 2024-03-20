@@ -9,26 +9,31 @@ import { formatDate } from 'shared/utils/date'
 import reportsFixtures from '_tests_/fixtures/reports'
 import { iconTestUtils, render, tableTestUtils } from '_tests_/utils'
 
-import FiscalAccumulatorTaskTable from './index'
-import { FiscalAccumulatorTaskTableItem, FiscalAccumulatorTaskTableProps } from './types'
+import FiscalAccumulatorTasksReportTable from './index'
+import {
+  FiscalAccumulatorTasksReportTableItem,
+  FiscalAccumulatorTasksReportTableProps,
+} from './types'
 
 const fiscalAccumulatorTaskListItem = reportsFixtures.fiscalAccumulatorTaskListItem()
 
-const props: Readonly<FiscalAccumulatorTaskTableProps> = {
+const props: Readonly<FiscalAccumulatorTasksReportTableProps> = {
   dataSource: [fiscalAccumulatorTaskListItem],
   loading: false,
   onRow: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('fiscal-accumulator-task-table')
+const getContainer = () => screen.getByTestId('fiscal-accumulator-tasks-report-table')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
-const getRow = (id: FiscalAccumulatorTaskTableItem['olaNextBreachTime']) =>
+const getRow = (id: FiscalAccumulatorTasksReportTableItem['olaNextBreachTime']) =>
   tableTestUtils.getRowIn(getContainer(), id)
 
-const clickRow = async (user: UserEvent, id: FiscalAccumulatorTaskTableItem['olaNextBreachTime']) =>
-  tableTestUtils.clickRowIn(getContainer(), user, id)
+const clickRow = async (
+  user: UserEvent,
+  id: FiscalAccumulatorTasksReportTableItem['olaNextBreachTime'],
+) => tableTestUtils.clickRowIn(getContainer(), user, id)
 
 const getHeadCell = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access
@@ -44,7 +49,7 @@ const clickColTitle = async (user: UserEvent, title: string) => {
 }
 
 const getColValue = (
-  id: FiscalAccumulatorTaskTableItem['olaNextBreachTime'],
+  id: FiscalAccumulatorTasksReportTableItem['olaNextBreachTime'],
   value: NumberOrString,
 ): MaybeNull<HTMLElement> => {
   const row = getRow(id)
@@ -72,7 +77,7 @@ export const testUtils = {
 
 describe('Таблица заявок фискальных накопителей', () => {
   test('Отображается корректно', () => {
-    render(<FiscalAccumulatorTaskTable {...props} />)
+    render(<FiscalAccumulatorTasksReportTable {...props} />)
 
     const table = testUtils.getContainer()
 
@@ -87,7 +92,7 @@ describe('Таблица заявок фискальных накопителе�
   describe('Колонка', () => {
     describe('Блокировка через', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('Блокировка через')
         const value = testUtils.getColValue(
@@ -102,7 +107,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('Крайний срок', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('Крайний срок')
         const value = testUtils.getColValue(
@@ -117,7 +122,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('ИНЦ', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('ИНЦ')
         const value = testUtils.getColValue(
@@ -132,7 +137,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('SAP ID', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('SAP ID')
         const value = testUtils.getColValue(
@@ -147,7 +152,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('Клиент', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('Клиент')
         const value = testUtils.getColValue(
@@ -162,7 +167,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('Адрес', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('Адрес')
         const value = testUtils.getColValue(
@@ -177,7 +182,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('ФН', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('ФН')
         const value = testUtils.getColValue(
@@ -192,7 +197,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('Срок / Всего ФД', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('Срок / Всего ФД')
         const value = testUtils.getColValue(
@@ -207,7 +212,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('МР', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('МР')
         const value = testUtils.getColValue(
@@ -222,7 +227,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('Группа поддержки', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('Группа поддержки')
         const value = testUtils.getColValue(
@@ -236,7 +241,7 @@ describe('Таблица заявок фискальных накопителе�
     })
 
     test('Исполнитель отображается', () => {
-      render(<FiscalAccumulatorTaskTable {...props} />)
+      render(<FiscalAccumulatorTasksReportTable {...props} />)
 
       const title = testUtils.getColTitle('Исполнитель')
       const value = testUtils.getColValue(
@@ -250,7 +255,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('Категория', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('Категория')
         const value = testUtils.getColValue(
@@ -265,7 +270,7 @@ describe('Таблица заявок фискальных накопителе�
 
     describe('Дата создания заявки', () => {
       test('Отображается корректно', () => {
-        render(<FiscalAccumulatorTaskTable {...props} />)
+        render(<FiscalAccumulatorTasksReportTable {...props} />)
 
         const title = testUtils.getColTitle('Дата создания заявки')
         const value = testUtils.getColValue(
@@ -279,7 +284,7 @@ describe('Таблица заявок фискальных накопителе�
     })
 
     test('Комментарий отображается', () => {
-      render(<FiscalAccumulatorTaskTable {...props} />)
+      render(<FiscalAccumulatorTasksReportTable {...props} />)
 
       const title = testUtils.getColTitle('Комментарий')
       const value = testUtils.getColValue(

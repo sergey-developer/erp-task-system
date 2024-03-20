@@ -11,9 +11,11 @@ import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
 
 import { ReportsRoutesEnum } from './constants'
 
-const FiscalAccumulatorTasksPage = React.lazy(
-  () => import('modules/reports/pages/FiscalAccumulatorTasksPage'),
+const FiscalAccumulatorTasksReportPage = React.lazy(
+  () => import('modules/reports/pages/FiscalAccumulatorTasksReportPage'),
 )
+
+const MtsrReportPage = React.lazy(() => import('modules/reports/pages/MtsrReportPage'))
 
 export const route: Readonly<RouteObject> = {
   path: ReportsRoutesEnum.Reports,
@@ -25,16 +27,16 @@ export const route: Readonly<RouteObject> = {
       element: (
         <ProtectedRoute
           component={<ReportsPage />}
-          permitted={(user) =>
-            userHasPermissions(
-              user,
-              [
-                UserPermissionsEnum.FiscalAccumulatorTasksRead,
-                UserPermissionsEnum.ReportMainIndicatorsRead,
-              ],
-              false,
-            )
-          }
+          // permitted={(user) =>
+          //   userHasPermissions(
+          //     user,
+          //     [
+          //       UserPermissionsEnum.FiscalAccumulatorTasksRead,
+          //       UserPermissionsEnum.ReportMainIndicatorsRead,
+          //     ],
+          //     false,
+          //   )
+          // }
         />
       ),
     },
@@ -42,7 +44,7 @@ export const route: Readonly<RouteObject> = {
       path: ReportsRoutesEnum.FiscalAccumulatorTasksReport,
       element: (
         <ProtectedRoute
-          component={<FiscalAccumulatorTasksPage />}
+          component={<FiscalAccumulatorTasksReportPage />}
           permitted={(user) =>
             userHasPermissions(user, [UserPermissionsEnum.FiscalAccumulatorTasksRead])
           }
@@ -52,8 +54,24 @@ export const route: Readonly<RouteObject> = {
         crumb: () => (
           <Breadcrumb
             link={ReportsRoutesEnum.FiscalAccumulatorTasksReport}
-            text='Отчет по фискальным накопителям'
+            text='Отчёт по фискальным накопителям'
           />
+        ),
+      },
+    },
+    {
+      path: ReportsRoutesEnum.MtsrReport,
+      element: (
+        <ProtectedRoute
+          component={<MtsrReportPage />}
+          // permitted={(user) =>
+          //   userHasPermissions(user, [UserPermissionsEnum.ReportMtsrRead])
+          // }
+        />
+      ),
+      handle: {
+        crumb: () => (
+          <Breadcrumb link={ReportsRoutesEnum.MtsrReport} text='Отчёт основных показателей' />
         ),
       },
     },

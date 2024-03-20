@@ -6,17 +6,17 @@ import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 import { MacroregionListModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 
-export type FiscalAccumulatorTasksFilterFormFields = Partial<{
+export type FiscalAccumulatorTasksReportFilterFormFields = Partial<{
   customers: IdType[]
   macroregions: IdType[]
   supportGroups: IdType[]
 }>
 
-export type FiscalAccumulatorTasksFilterProps = Required<
+export type FiscalAccumulatorTasksReportFilterProps = Required<
   Pick<DrawerFilterProps, 'open' | 'onClose'>
 > & {
-  values: FiscalAccumulatorTasksFilterFormFields
-  initialValues: FiscalAccumulatorTasksFilterFormFields
+  values: FiscalAccumulatorTasksReportFilterFormFields
+  initialValues: FiscalAccumulatorTasksReportFilterFormFields
 
   customers: CustomerListModel
   customersIsLoading: boolean
@@ -29,5 +29,5 @@ export type FiscalAccumulatorTasksFilterProps = Required<
   supportGroups: SupportGroupListModel
   supportGroupsIsLoading: boolean
 
-  onSubmit: (values: FiscalAccumulatorTasksFilterFormFields) => void
+  onSubmit: (values: FiscalAccumulatorTasksReportFilterFormFields) => void
 }
