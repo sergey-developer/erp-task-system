@@ -7,7 +7,7 @@ import {
 } from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
 import {
   getTaskMessages,
-  resolveTaskMessages,
+  resolveTaskErrMsg,
   TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
 import { updateTaskAssigneeMessages } from 'modules/task/constants/taskAssignee'
@@ -888,6 +888,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
+            spentHours: [fakeWord()],
+            spentMinutes: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
             attachments: [fakeWord()],
@@ -967,9 +969,7 @@ describe('Контейнер детальной карточки заявки', 
           await executeTaskModalTestUtils.setAttachment(user)
           await executeTaskModalTestUtils.clickSubmitButton(user)
 
-          const notification = await notificationTestUtils.findNotification(
-            resolveTaskMessages.commonError,
-          )
+          const notification = await notificationTestUtils.findNotification(resolveTaskErrMsg)
           expect(notification).toBeInTheDocument()
         })
       })
@@ -1025,6 +1025,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
+            spentHours: [fakeWord()],
+            spentMinutes: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
             attachments: [fakeWord()],
@@ -1104,9 +1106,7 @@ describe('Контейнер детальной карточки заявки', 
           await executeTaskModalTestUtils.setAttachment(user)
           await executeTaskModalTestUtils.clickSubmitButton(user)
 
-          const notification = await notificationTestUtils.findNotification(
-            resolveTaskMessages.commonError,
-          )
+          const notification = await notificationTestUtils.findNotification(resolveTaskErrMsg)
           expect(notification).toBeInTheDocument()
         })
       })
@@ -1162,6 +1162,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
+            spentHours: [fakeWord()],
+            spentMinutes: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
             attachments: [fakeWord()],
@@ -1241,9 +1243,7 @@ describe('Контейнер детальной карточки заявки', 
           await executeTaskModalTestUtils.setAttachment(user)
           await executeTaskModalTestUtils.clickSubmitButton(user)
 
-          const notification = await notificationTestUtils.findNotification(
-            resolveTaskMessages.commonError,
-          )
+          const notification = await notificationTestUtils.findNotification(resolveTaskErrMsg)
           expect(notification).toBeInTheDocument()
         })
       })
@@ -1299,6 +1299,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const badRequestResponse: Required<ResolveTaskBadRequestErrorResponse> = {
             detail: [fakeWord()],
+            spentHours: [fakeWord()],
+            spentMinutes: [fakeWord()],
             userResolution: [fakeWord()],
             techResolution: [fakeWord()],
             attachments: [fakeWord()],
@@ -1378,9 +1380,7 @@ describe('Контейнер детальной карточки заявки', 
           await executeTaskModalTestUtils.setAttachment(user)
           await executeTaskModalTestUtils.clickSubmitButton(user)
 
-          const notification = await notificationTestUtils.findNotification(
-            resolveTaskMessages.commonError,
-          )
+          const notification = await notificationTestUtils.findNotification(resolveTaskErrMsg)
           expect(notification).toBeInTheDocument()
         })
       })

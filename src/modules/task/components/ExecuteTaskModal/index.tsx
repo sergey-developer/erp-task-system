@@ -1,39 +1,29 @@
-import { Button, Col, Form, Input, Row, Typography, Upload } from 'antd'
+import { useMount } from 'ahooks'
+import { Button, Col, Flex, Form, Input, InputNumber, Row, Typography, Upload } from 'antd'
 import stubFalse from 'lodash/stubFalse'
-import { Rule } from 'rc-field-form/es/interface'
 import React, { FC } from 'react'
 
 import { useTaskType } from 'modules/task/hooks/task'
 
 import UploadButton from 'components/Buttons/UploadButton'
+import Label from 'components/Label'
 import BaseModal from 'components/Modals/BaseModal'
 import Space from 'components/Space'
 
 import { filesFormItemProps } from 'shared/constants/form'
-import { validationSizes } from 'shared/constants/validation'
 
-import { ExecuteTaskModalFormFields, ExecuteTaskModalProps } from './types'
+import { ExecuteTaskFormFields, ExecuteTaskModalProps } from './types'
+import {
+  spentHoursRules,
+  spentMinutesRules,
+  techResolutionRules,
+  userResolutionRules,
+} from './validation'
 
 const { Text, Link } = Typography
 const { TextArea } = Input
 
 const okBtnText = 'Выполнить заявку'
-
-const techResolutionValidationRules: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: validationSizes.string.long,
-  },
-]
-
-const userResolutionValidationRules: Rule[] = [
-  {
-    required: true,
-    whitespace: true,
-    max: validationSizes.string.long,
-  },
-]
 
 const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
   onGetAct,
@@ -47,8 +37,12 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
   recordId,
   type,
 }) => {
-  const [form] = Form.useForm<ExecuteTaskModalFormFields>()
+  const [form] = Form.useForm<ExecuteTaskFormFields>()
   const techResolutionFormValue = Form.useWatch('techResolution', form)
+
+  useMount(() => {
+    form.setFieldsValue({ spentHours: 1, spentMinutes: 0 })
+  })
 
   const taskType = useTaskType(type)
 
@@ -58,7 +52,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
     </Text>
   )
 
-  const handleFinish = async (values: ExecuteTaskModalFormFields) => {
+  const handleFinish = async (values: ExecuteTaskFormFields) => {
     await onSubmit(values, form.setFields)
   }
 
@@ -110,17 +104,37 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
           </Text>
         </Space>
 
-        <Form<ExecuteTaskModalFormFields>
+        <Form<ExecuteTaskFormFields>
           form={form}
           layout='vertical'
           onFinish={handleFinish}
           preserve={false}
         >
+          <Form.Item label='Затраченное время'>
+            <Flex gap='middle'>
+              <Label block={false} label='Часов' labelPosition='right' direction='horizontal'>
+                <Form.Item data-testid='spent-hours' rules={spentHoursRules} name='spentHours'>
+                  <InputNumber style={{ width: 60 }} min={0} />
+                </Form.Item>
+              </Label>
+
+              <Label block={false} label='Минут' labelPosition='right' direction='horizontal'>
+                <Form.Item
+                  data-testid='spent-minutes'
+                  rules={spentMinutesRules}
+                  name='spentMinutes'
+                >
+                  <InputNumber style={{ width: 60 }} min={0} max={59} />
+                </Form.Item>
+              </Label>
+            </Flex>
+          </Form.Item>
+
           <Form.Item
             data-testid='tech-resolution'
             label='Техническое решение'
             name='techResolution'
-            rules={techResolutionValidationRules}
+            rules={techResolutionRules}
           >
             <TextArea placeholder='Расскажите о работах на объекте' disabled={isLoading} />
           </Form.Item>
@@ -130,7 +144,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
               data-testid='user-resolution'
               label='Решение для пользователя'
               name='userResolution'
-              rules={userResolutionValidationRules}
+              rules={userResolutionRules}
             >
               <TextArea placeholder='Расскажите заявителю о решении' disabled={isLoading} />
             </Form.Item>

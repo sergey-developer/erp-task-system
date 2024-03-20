@@ -6,10 +6,10 @@ import AttachmentList from 'modules/task/components/AttachmentList'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { makeUserByFullName } from 'modules/user/utils'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
-import { getRelocationTaskTitle } from 'modules/warehouse/utils/relocationTask'
+import { getRelocateFromTo } from 'modules/warehouse/utils/relocationTask'
 
 import UploadButton from 'components/Buttons/UploadButton'
-import LabeledData from 'components/LabeledData'
+import Label from 'components/Label'
 import Space from 'components/Space'
 
 import { checkLastItem } from 'shared/utils/common'
@@ -36,16 +36,16 @@ const RelocationTaskList: FC<RelocationTaskListProps> = ({ data, onClick, onCrea
             <Space $block direction='vertical'>
               <Text type='secondary'>до {formatDate(item.deadlineAt)}</Text>
 
-              <Text strong>{getRelocationTaskTitle(item)}</Text>
+              <Text strong>{getRelocateFromTo(item)}</Text>
 
               <Row justify='space-between'>
                 <Col span={12}>
                   <Space $block direction='vertical'>
-                    <LabeledData label='Статус:' direction='horizontal'>
+                    <Label label='Статус:' direction='horizontal'>
                       <Text>{relocationTaskStatusDict[item.status]}</Text>
-                    </LabeledData>
+                    </Label>
 
-                    <LabeledData label='Документы:' onClick={(event) => event.stopPropagation()}>
+                    <Label label='Документы:' onClick={(event) => event.stopPropagation()}>
                       <Upload
                         multiple
                         customRequest={onCreateAttachment(item.id)}
@@ -56,24 +56,24 @@ const RelocationTaskList: FC<RelocationTaskListProps> = ({ data, onClick, onCrea
                       </Upload>
 
                       {!!item.documents?.length && <AttachmentList data={item.documents} />}
-                    </LabeledData>
+                    </Label>
                   </Space>
                 </Col>
 
                 <Col span={12}>
                   <Space $block direction='vertical' align='center'>
-                    <LabeledData label='Дата создания:' direction='horizontal'>
+                    <Label label='Дата создания:' direction='horizontal'>
                       {formatDate(item.createdAt)}
-                    </LabeledData>
+                    </Label>
 
-                    <LabeledData label='Исполнитель:'>
+                    <Label label='Исполнитель:'>
                       {item.executor && (
                         <TaskAssignee
                           {...makeUserByFullName(item.executor.fullName)}
                           phone={item.executor.phone}
                         />
                       )}
-                    </LabeledData>
+                    </Label>
                   </Space>
                 </Col>
               </Row>

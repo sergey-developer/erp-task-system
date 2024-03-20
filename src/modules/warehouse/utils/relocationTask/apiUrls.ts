@@ -23,6 +23,12 @@ export const cancelRelocationTaskUrl = (id: IdType): string =>
 export const closeRelocationTaskUrl = (id: IdType): string =>
   appendSlashAtEnd(generatePath(RelocationTaskApiEnum.CloseRelocationTask, { id: String(id) }))
 
+export const getRelocationTaskCompletionDocumentsUrl = (id: IdType): string =>
+  generateApiPath(RelocationTaskApiEnum.GetRelocationTaskCompletionDocuments, { id: String(id) })
+
+export const createRelocationTaskCompletionDocumentsUrl = (id: IdType): string =>
+  generateApiPath(RelocationTaskApiEnum.CreateRelocationTaskCompletionDocuments, { id: String(id) })
+
 export const getRelocationTaskAttachmentsUrl = (id: IdType): string =>
   generateApiPath(RelocationTaskApiEnum.GetRelocationTaskAttachments, { id: String(id) })
 

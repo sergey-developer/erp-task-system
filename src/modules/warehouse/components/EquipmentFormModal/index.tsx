@@ -22,7 +22,7 @@ import { IdType } from 'shared/types/common'
 import { filterOptionBy, isFalse, isTrue } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
 
-import { EquipmentFormModalFormFields, EquipmentFormModalProps } from './types'
+import { EquipmentFormFields, EquipmentFormModalProps } from './types'
 
 const { TextArea } = Input
 
@@ -67,7 +67,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   ...props
 }) => {
-  const [form] = Form.useForm<EquipmentFormModalFormFields>()
+  const [form] = Form.useForm<EquipmentFormFields>()
   const ownerIsObermeisterFormValue = Form.useWatch('ownerIsObermeister', form)
 
   const nomenclatureSelected = Boolean(nomenclature)
@@ -118,7 +118,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
     }
   }
 
-  const handleFinish = async ({ ownerIsObermeister, ...values }: EquipmentFormModalFormFields) => {
+  const handleFinish = async ({ ownerIsObermeister, ...values }: EquipmentFormFields) => {
     await onSubmit(
       {
         ...values,
@@ -143,7 +143,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
       okButtonProps={okButtonProps}
       onOk={form.submit}
     >
-      <Form<EquipmentFormModalFormFields>
+      <Form<EquipmentFormFields>
         form={form}
         initialValues={initialValues}
         layout='vertical'
