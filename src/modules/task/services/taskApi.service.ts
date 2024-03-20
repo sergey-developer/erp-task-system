@@ -178,7 +178,7 @@ const taskApiService = baseApiService
           formData.append(decamelize('techResolution'), techResolution)
           formData.append(decamelize('spentHours'), String(spentHours))
           formData.append(decamelize('spentMinutes'), String(spentMinutes))
-          if (userResolution) formData.append(decamelize(userResolution), userResolution)
+          if (userResolution) formData.append(decamelize('userResolution'), userResolution)
 
           if (attachments?.length) {
             attachments.forEach((att) => formData.append('attachments', att))
