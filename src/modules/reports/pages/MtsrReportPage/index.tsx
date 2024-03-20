@@ -31,11 +31,21 @@ import {
   mtsrReportLevelDict,
   MtsrReportLevelEnum,
 } from './constants'
+import {
+  checkIsMacroregionsReportLevel,
+  checkIsSupportGroupsReportLevel,
+  checkIsUsersReportLevel,
+  checkIsWorkGroupsReportLevel,
+} from './utils'
 
 const MtsrReportPage: FC = () => {
   const [selectedReportLevel, setSelectedReportLevel] = useState<MtsrReportLevelEnum>(
     MtsrReportLevelEnum.Macroregions,
   )
+  const isMacroregionsReportLevel = checkIsMacroregionsReportLevel(selectedReportLevel)
+  const isSupportGroupsReportLevel = checkIsSupportGroupsReportLevel(selectedReportLevel)
+  const isWorkGroupsReportLevel = checkIsWorkGroupsReportLevel(selectedReportLevel)
+  const isUsersReportLevel = checkIsUsersReportLevel(selectedReportLevel)
 
   const [selectedReportLevelObjects, setSelectedReportLevelObjects] =
     useSetState<typeof initialLevelObjects>(initialLevelObjects)
@@ -44,9 +54,7 @@ const MtsrReportPage: FC = () => {
     useSetState<GetMtsrReportBaseQueryArgs>(getMtsrReportInitialQueryArgs)
 
   const { currentData: macroregionsMtsrReport = [], isFetching: macroregionsMtsrReportIsFetching } =
-    useGetMacroregionsMtsrReport(baseMtsrReportQueryArgs, {
-      skip: selectedReportLevel !== MtsrReportLevelEnum.Macroregions,
-    })
+    useGetMacroregionsMtsrReport(baseMtsrReportQueryArgs, { skip: !isMacroregionsReportLevel })
 
   const {
     currentData: supportGroupsMtsrReport = [],
@@ -56,9 +64,7 @@ const MtsrReportPage: FC = () => {
       ...baseMtsrReportQueryArgs,
       macroregions: selectedReportLevelObjects[MtsrReportLevelEnum.Macroregions],
     },
-    {
-      skip: selectedReportLevel !== MtsrReportLevelEnum.SupportGroups,
-    },
+    { skip: !isSupportGroupsReportLevel },
   )
 
   const { currentData: workGroupsMtsrReport = [], isFetching: workGroupsMtsrReportIsFetching } =
@@ -68,9 +74,7 @@ const MtsrReportPage: FC = () => {
         macroregions: selectedReportLevelObjects[MtsrReportLevelEnum.Macroregions],
         supportGroups: selectedReportLevelObjects[MtsrReportLevelEnum.SupportGroups],
       },
-      {
-        skip: selectedReportLevel !== MtsrReportLevelEnum.WorkGroups,
-      },
+      { skip: !isWorkGroupsReportLevel },
     )
 
   const { currentData: usersMtsrReport = [], isFetching: usersMtsrReportIsFetching } =
@@ -81,9 +85,7 @@ const MtsrReportPage: FC = () => {
         supportGroups: selectedReportLevelObjects[MtsrReportLevelEnum.SupportGroups],
         workGroups: selectedReportLevelObjects[MtsrReportLevelEnum.WorkGroups],
       },
-      {
-        skip: selectedReportLevel !== MtsrReportLevelEnum.Users,
-      },
+      { skip: !isUsersReportLevel },
     )
 
   const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList()
@@ -132,8 +134,15 @@ const MtsrReportPage: FC = () => {
     setSelectedReportLevel(value as MtsrReportLevelEnum)
   }
 
-  const report =
-    macroregionsMtsrReport || supportGroupsMtsrReport || workGroupsMtsrReport || usersMtsrReport
+  const report = isMacroregionsReportLevel
+    ? macroregionsMtsrReport
+    : isSupportGroupsReportLevel
+    ? supportGroupsMtsrReport
+    : isWorkGroupsReportLevel
+    ? workGroupsMtsrReport
+    : isUsersReportLevel
+    ? usersMtsrReport
+    : []
 
   const reportIsLoading =
     macroregionsMtsrReportIsFetching ||
