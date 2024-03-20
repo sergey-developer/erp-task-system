@@ -23,6 +23,7 @@ const props: Readonly<MtsrReportTableProps> = {
   loading: false,
   onChange: jest.fn(),
   onSelect: jest.fn(),
+  selectedRowKeys: [],
 }
 
 const getContainer = () => screen.getByTestId('mtsr-report-table')
@@ -105,6 +106,25 @@ describe('Таблица заявок на перемещение оборудо
     expect(row).toHaveClass('ant-table-row-selected')
     expect(props.onSelect).toBeCalledTimes(1)
     expect(props.onSelect).toBeCalledWith([mtsrReportItem.id], [mtsrReportItem], { type: 'single' })
+  })
+
+  test('Можно передать выбранные строки', async () => {
+    const mtsrReportItem1 = reportsFixtures.getMtsrReportItem()
+    const mtsrReportItem2 = reportsFixtures.getMtsrReportItem()
+
+    const { user } = render(
+      <MtsrReportTable
+        {...props}
+        dataSource={[mtsrReportItem1, mtsrReportItem2]}
+        selectedRowKeys={[mtsrReportItem2.id]}
+      />,
+    )
+
+    const row1 = await testUtils.selectRow(user, mtsrReportItem2.id)
+    const row2 = testUtils.getRow(mtsrReportItem1.id)
+
+    expect(row1).toHaveClass('ant-table-row-selected')
+    expect(row2).not.toHaveClass('ant-table-row-selected')
   })
 
   describe('Наименование', () => {

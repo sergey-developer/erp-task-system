@@ -18,5 +18,6 @@ export type MtsrReportTableProps = Required<
   Pick<TableProps<MtsrReportTableItem>, 'dataSource' | 'loading' | 'onChange'>
 > & {
   onSelect: NonNullable<TableRowSelection<MtsrReportTableItem>['onChange']>
+  selectedRowKeys: NonNullable<TableRowSelection<MtsrReportTableItem>['selectedRowKeys']>
   sort?: GetMtsrReportBaseSortValue
 }
