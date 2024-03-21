@@ -1,9 +1,11 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as mtsrReportFormTestUtils } from 'modules/reports/components/MtsrReportForm/MtsrReportForm.test'
 import { testUtils as mtsrReportTableTestUtils } from 'modules/reports/components/MtsrReportTable/MtsrReportTable.test'
 
 import reportsFixtures from '_tests_/fixtures/reports'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCustomerListSuccess,
   mockGetMacroregionsMtsrReportSuccess,
@@ -36,6 +38,26 @@ const testUtils = {
 setupApiTests()
 
 describe('Страница отчета MTSR', () => {
+  test('Можно обновить отчёт после изменения формы', async () => {
+    const mtsrReport = [reportsFixtures.getMtsrReportItem()]
+    mockGetMacroregionsMtsrReportSuccess({ once: false, body: mtsrReport })
+
+    const customerListItem = warehouseFixtures.customerListItem()
+    mockGetCustomerListSuccess({ body: [customerListItem] })
+
+    const { user } = render(<MtsrReportPage />)
+
+    await mtsrReportTableTestUtils.expectLoadingFinished()
+    await mtsrReportFormTestUtils.expectCustomersLoadingFinished()
+    await mtsrReportFormTestUtils.openCustomersSelect(user)
+    await mtsrReportFormTestUtils.setCustomer(user, customerListItem.title)
+    await mtsrReportFormTestUtils.setPeriod(user)
+    await mtsrReportFormTestUtils.clickSubmitButton(user)
+    await mtsrReportTableTestUtils.expectLoadingStarted()
+    await mtsrReportTableTestUtils.expectLoadingFinished()
+    mtsrReportTableTestUtils.expectRowsRendered(mtsrReport)
+  })
+
   test('По умолчанию выбран нужный уровень', () => {
     mockGetMacroregionsMtsrReportSuccess()
     mockGetCustomerListSuccess()
@@ -60,33 +82,21 @@ describe('Страница отчета MTSR', () => {
     const { user } = render(<MtsrReportPage />)
 
     await mtsrReportTableTestUtils.expectLoadingFinished()
-    mtsrReport1.forEach((item) => {
-      const row = mtsrReportTableTestUtils.getRow(item.id)
-      expect(row).toBeInTheDocument()
-    })
+    mtsrReportTableTestUtils.expectRowsRendered(mtsrReport1)
 
     await testUtils.clickLevelButton(user, MtsrReportLevelEnum.SupportGroups)
     await mtsrReportTableTestUtils.expectLoadingStarted()
     await mtsrReportTableTestUtils.expectLoadingFinished()
-    mtsrReport2.forEach((item) => {
-      const row = mtsrReportTableTestUtils.getRow(item.id)
-      expect(row).toBeInTheDocument()
-    })
+    mtsrReportTableTestUtils.expectRowsRendered(mtsrReport2)
 
     await testUtils.clickLevelButton(user, MtsrReportLevelEnum.WorkGroups)
     await mtsrReportTableTestUtils.expectLoadingStarted()
     await mtsrReportTableTestUtils.expectLoadingFinished()
-    mtsrReport3.forEach((item) => {
-      const row = mtsrReportTableTestUtils.getRow(item.id)
-      expect(row).toBeInTheDocument()
-    })
+    mtsrReportTableTestUtils.expectRowsRendered(mtsrReport3)
 
     await testUtils.clickLevelButton(user, MtsrReportLevelEnum.Users)
     await mtsrReportTableTestUtils.expectLoadingStarted()
     await mtsrReportTableTestUtils.expectLoadingFinished()
-    mtsrReport4.forEach((item) => {
-      const row = mtsrReportTableTestUtils.getRow(item.id)
-      expect(row).toBeInTheDocument()
-    })
+    mtsrReportTableTestUtils.expectRowsRendered(mtsrReport4)
   })
 })
