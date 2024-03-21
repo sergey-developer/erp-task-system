@@ -15,7 +15,7 @@ const items: CatalogsProps['items'] = [
   {
     link: ReportsRoutesEnum.MtsrReport,
     text: 'Отчёт основных показателей',
-    // permissions: [UserPermissionsEnum.ReportMtsrRead],
+    permissions: [UserPermissionsEnum.ReportMtsrRead],
   },
 ]
 
