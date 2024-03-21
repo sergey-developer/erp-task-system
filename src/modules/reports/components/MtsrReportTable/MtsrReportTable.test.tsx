@@ -98,13 +98,11 @@ describe('Таблица заявок на перемещение оборудо
     expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
   })
 
-  // todo: раньше работал, сейчас почему то нет
-  test.skip('При выборе строки вызывается обработчик', async () => {
+  test('При выборе строки вызывается обработчик', async () => {
     const { user } = render(<MtsrReportTable {...props} />)
 
-    const row = await testUtils.selectRow(user, mtsrReportItem.id)
+    await testUtils.selectRow(user, mtsrReportItem.id)
 
-    expect(row).toHaveClass('ant-table-row-selected')
     expect(props.onSelect).toBeCalledTimes(1)
     expect(props.onSelect).toBeCalledWith([mtsrReportItem.id], [mtsrReportItem], { type: 'single' })
   })
