@@ -5,9 +5,15 @@ import React from 'react'
 import { ReportsRoutesEnum } from 'modules/reports/constants'
 import FiscalAccumulatorTasksReportPage from 'modules/reports/pages/FiscalAccumulatorTasksReportPage'
 import { testUtils as fiscalAccumulatorTasksReportPageTestUtils } from 'modules/reports/pages/FiscalAccumulatorTasksReportPage/FiscalAccumulatorTasksReportPage.test'
+import MtsrReportPage from 'modules/reports/pages/MtsrReportPage'
+import { testUtils as mtsrReportPageTestUtils } from 'modules/reports/pages/MtsrReportPage/MtsrReportPage.test'
 import { UserPermissionsEnum } from 'modules/user/constants'
 
-import { mockGetFiscalAccumulatorTasksSuccess } from '_tests_/mocks/api'
+import {
+  mockGetCustomerListSuccess,
+  mockGetFiscalAccumulatorTasksSuccess,
+  mockGetMacroregionsMtsrReportSuccess,
+} from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { getStoreWithAuth, linkTestUtils, render, renderInRoute_latest } from '_tests_/utils'
 
@@ -103,6 +109,64 @@ describe('Страница отчётов', () => {
 
       await testUtils.clickFiscalAccumulatorTasksReportPageLink(user)
       const page = fiscalAccumulatorTasksReportPageTestUtils.getContainer()
+
+      expect(page).toBeInTheDocument()
+    })
+  })
+
+  describe('Отчёт основных показателей', () => {
+    test('Отображается при наличии прав', async () => {
+      render(<ReportsPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({
+              permissions: [UserPermissionsEnum.ReportMtsrRead],
+            }),
+          },
+        }),
+      })
+
+      const link = testUtils.getMtsrReportPageLink()
+
+      expect(link).toBeInTheDocument()
+      expect(link).toHaveAttribute('href', ReportsRoutesEnum.MtsrReport)
+    })
+
+    test('Не отображается если нет прав', async () => {
+      render(<ReportsPage />)
+      const link = testUtils.queryMtsrReportPageLink()
+      expect(link).not.toBeInTheDocument()
+    })
+
+    test('При клике переходит на страницу отчёта основных показателей', async () => {
+      mockGetMacroregionsMtsrReportSuccess()
+      mockGetCustomerListSuccess()
+
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: ReportsRoutesEnum.Reports,
+            element: <ReportsPage />,
+          },
+          {
+            path: ReportsRoutesEnum.MtsrReport,
+            element: <MtsrReportPage />,
+          },
+        ],
+        { initialEntries: [ReportsRoutesEnum.Reports], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({
+                permissions: [UserPermissionsEnum.ReportMtsrRead],
+              }),
+            },
+          }),
+        },
+      )
+
+      await testUtils.clickMtsrReportPageLink(user)
+      const page = mtsrReportPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
     })

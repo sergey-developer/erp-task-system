@@ -28,7 +28,7 @@ const clickLevelButton = async (user: UserEvent, name: MtsrReportLevelEnum) => {
   await user.click(button)
 }
 
-const testUtils = {
+export const testUtils = {
   getContainer,
 
   getLevelButton,
