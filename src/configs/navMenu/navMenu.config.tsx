@@ -19,9 +19,9 @@ const navMenuConfig: NavMenuItem[] = [
     icon: FileTextIcon,
     link: ReportsRoutesEnum.Reports,
     text: 'Отчёты',
-    // visible: (permissions: UserPermissionsEnum[]) =>
-    //   permissions.includes(UserPermissionsEnum.FiscalAccumulatorTasksRead) ||
-    //   permissions.includes(UserPermissionsEnum.ReportMainIndicatorsRead),
+    visible: (permissions: UserPermissionsEnum[]) =>
+      permissions.includes(UserPermissionsEnum.FiscalAccumulatorTasksRead) ||
+      permissions.includes(UserPermissionsEnum.ReportMainIndicatorsRead),
   },
   {
     key: WarehouseRouteEnum.ManageWarehouses,
