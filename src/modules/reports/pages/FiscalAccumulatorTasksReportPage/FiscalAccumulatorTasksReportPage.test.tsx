@@ -29,6 +29,8 @@ const clickUpdateTasksButton = async (user: UserEvent) => {
 }
 
 export const testUtils = {
+  getContainer,
+
   getUpdateTasksButton,
   clickUpdateTasksButton,
 }

@@ -1,6 +1,7 @@
 import { within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import { iconTestUtils } from '_tests_/utils'
@@ -20,6 +21,16 @@ const clickRowIn = async (container: HTMLElement, user: UserEvent, id: NumberOrS
 
 const getHeadCell = (container: HTMLElement, text: string) =>
   within(container).getByText(text).parentElement?.parentElement
+
+const expectRowsRendered = <T extends { id: IdType }>(
+  container: HTMLElement,
+  data: T[] | ReadonlyArray<T>,
+) => {
+  data.forEach((item) => {
+    const row = getRowIn(container, item.id)
+    expect(row).toBeInTheDocument()
+  })
+}
 
 // pagination
 const getPaginationIn = (table: HTMLElement): MaybeNull<HTMLElement> =>
@@ -50,6 +61,8 @@ const utils = {
   clickRowIn,
 
   getHeadCell,
+
+  expectRowsRendered,
 
   getPaginationIn,
   getPaginationNextButtonIn,

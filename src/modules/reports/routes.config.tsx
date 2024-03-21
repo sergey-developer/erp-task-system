@@ -27,16 +27,16 @@ export const route: Readonly<RouteObject> = {
       element: (
         <ProtectedRoute
           component={<ReportsPage />}
-          // permitted={(user) =>
-          //   userHasPermissions(
-          //     user,
-          //     [
-          //       UserPermissionsEnum.FiscalAccumulatorTasksRead,
-          //       UserPermissionsEnum.ReportMainIndicatorsRead,
-          //     ],
-          //     false,
-          //   )
-          // }
+          permitted={(user) =>
+            userHasPermissions(
+              user,
+              [
+                UserPermissionsEnum.FiscalAccumulatorTasksRead,
+                UserPermissionsEnum.ReportMainIndicatorsRead,
+              ],
+              false,
+            )
+          }
         />
       ),
     },
@@ -64,9 +64,7 @@ export const route: Readonly<RouteObject> = {
       element: (
         <ProtectedRoute
           component={<MtsrReportPage />}
-          // permitted={(user) =>
-          //   userHasPermissions(user, [UserPermissionsEnum.ReportMtsrRead])
-          // }
+          permitted={(user) => userHasPermissions(user, [UserPermissionsEnum.ReportMtsrRead])}
         />
       ),
       handle: {
