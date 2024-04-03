@@ -120,7 +120,7 @@ describe('Страница отчётов', () => {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({
-              permissions: [UserPermissionsEnum.ReportMtsrRead],
+              permissions: [UserPermissionsEnum.ReportMainIndicatorsRead],
             }),
           },
         }),
@@ -158,7 +158,7 @@ describe('Страница отчётов', () => {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({
-                permissions: [UserPermissionsEnum.ReportMtsrRead],
+                permissions: [UserPermissionsEnum.ReportMainIndicatorsRead],
               }),
             },
           }),

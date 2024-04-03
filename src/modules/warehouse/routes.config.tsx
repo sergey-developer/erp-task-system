@@ -261,7 +261,7 @@ export const route: Readonly<RouteObject> = {
     },
     {
       path: WarehouseRouteEnum.Reports,
-      handle: { crumb: () => <Breadcrumb link={WarehouseRouteEnum.Reports} text='Отчеты' /> },
+      handle: { crumb: () => <Breadcrumb link={WarehouseRouteEnum.Reports} text='Отчёты' /> },
       children: [
         {
           index: true,
