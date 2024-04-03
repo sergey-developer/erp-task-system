@@ -64,7 +64,9 @@ export const route: Readonly<RouteObject> = {
       element: (
         <ProtectedRoute
           component={<MtsrReportPage />}
-          permitted={(user) => userHasPermissions(user, [UserPermissionsEnum.ReportMtsrRead])}
+          permitted={(user) =>
+            userHasPermissions(user, [UserPermissionsEnum.ReportMainIndicatorsRead])
+          }
         />
       ),
       handle: {
