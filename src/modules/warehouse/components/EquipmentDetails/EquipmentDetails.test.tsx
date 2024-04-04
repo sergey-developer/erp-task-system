@@ -1059,7 +1059,12 @@ describe('Информация об оборудовании', () => {
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
+            ...getUserMeQueryMock({
+              permissions: [
+                UserPermissionsEnum.EquipmentsRead,
+                UserPermissionsEnum.RelocationTasksRead,
+              ],
+            }),
           },
         }),
       })
