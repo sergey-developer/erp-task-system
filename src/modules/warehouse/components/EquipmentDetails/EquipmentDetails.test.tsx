@@ -3,6 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import {
@@ -1028,7 +1029,12 @@ describe('Информация об оборудовании', () => {
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
+            ...getUserMeQueryMock({
+              permissions: [
+                UserPermissionsEnum.EquipmentsRead,
+                UserPermissionsEnum.RelocationTasksRead,
+              ],
+            }),
           },
         }),
       })
