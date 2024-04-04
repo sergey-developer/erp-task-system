@@ -65,7 +65,7 @@ import { CardStyled, DividerStyled, RootWrapperStyled } from './styles'
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
 
 const ConfirmExecuteTaskModal = React.lazy(
-  () => import('modules/task/components/ConfirmExecuteTaskModal'),
+  () => import('modules/task/components/ConfirmExecuteTaskReclassificationTasksModal'),
 )
 
 const TaskSuspendRequest = React.lazy(() => import('modules/task/components/TaskSuspendRequest'))
@@ -632,7 +632,7 @@ const TaskCard: FC<TaskCardProps> = ({
                     open={confirmExecuteTaskModalOpened}
                     recordId={task.recordId}
                     onCancel={debouncedCloseConfirmExecuteTaskModal}
-                    onConfirm={handleConfirmExecuteTask}
+                    onOk={handleConfirmExecuteTask}
                   />
                 </React.Suspense>
               )}
