@@ -32,7 +32,6 @@ import {
 import ChangePasswordPage from './index'
 
 const getContainer = () => screen.getByTestId('change-password-card')
-
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // new password
@@ -79,7 +78,7 @@ const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSaveB
 
 const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSaveButton())
 
-const testUtils = {
+export const testUtils = {
   getContainer,
   getChildByText,
 

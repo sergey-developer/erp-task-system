@@ -11,7 +11,7 @@ import Space from 'components/Space'
 const { Text } = Typography
 
 export type TaskAssigneeProps = Pick<TaskAssigneeModel, 'firstName' | 'lastName' | 'middleName'> &
-  Partial<Pick<TaskAssigneeModel, 'id' | 'role' | 'phone' | 'email' | 'avatar'>> & {
+  Partial<Pick<TaskAssigneeModel, 'id' | 'position' | 'phone' | 'email' | 'avatar'>> & {
     hasPopover?: boolean
   }
 
@@ -19,7 +19,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   firstName,
   lastName,
   middleName,
-  role,
+  position,
   email,
   phone,
   avatar,
@@ -35,7 +35,9 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
       <Space direction='vertical'>
         {hasPopover ? (
           <Popover
-            content={<UserShortInfo email={email} phone={phone} role={role} skip={['fio']} />}
+            content={
+              <UserShortInfo email={email} phone={phone} position={position} skip={['fio']} />
+            }
           >
             {fullName}
           </Popover>

@@ -52,13 +52,20 @@ export type UserPermissions =
   | 'TASK_INTERNAL_DEADLINE_UPDATE'
   | 'ENTERING_BALANCES'
 
+export type UserPositionModel = {
+  id: IdType
+  title: string
+}
+
 export type UserModel = BaseUserModel & {
   fullName: string
   role: UserRoleEnum
   email: string
   timezone: string
   isStaff: boolean
-  phone: MaybeNull<string>
   status: UserStatusModel
   permissions: UserPermissions[]
+
+  phone: MaybeNull<string>
+  position: MaybeNull<UserPositionModel>
 }
