@@ -4,6 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
+import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
@@ -33,6 +34,8 @@ import {
   mockGetEquipmentRelocationHistorySuccess,
   mockGetEquipmentServerError,
   mockGetEquipmentSuccess,
+  mockGetRelocationEquipmentListSuccess,
+  mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -887,7 +890,7 @@ describe('Информация об оборудовании', () => {
       expect(button).toBeDisabled()
     })
 
-    test('При клике открывается модалка', async () => {
+    test('При клике на кнопку открывается модалка', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId)
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
@@ -907,7 +910,7 @@ describe('Информация об оборудовании', () => {
       expect(modal).toBeInTheDocument()
     })
 
-    test('При успешном запрос данные отображаются', async () => {
+    test('При успешном запросе данные отображаются', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
@@ -1008,6 +1011,39 @@ describe('Информация об оборудовании', () => {
         )
         expect(notification).toBeInTheDocument()
       })
+    })
+
+    test('При клике на строку истории открывается карточка заявки на перемещение', async () => {
+      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+      const equipmentRelocationHistoryItem = warehouseFixtures.equipmentRelocationHistoryItem()
+      mockGetEquipmentRelocationHistorySuccess(props.equipmentId, {
+        body: [equipmentRelocationHistoryItem],
+      })
+
+      mockGetRelocationTaskSuccess(equipmentRelocationHistoryItem.id)
+      mockGetRelocationEquipmentListSuccess(equipmentRelocationHistoryItem.id)
+
+      const { user } = render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ', 'RELOCATION_TASKS_READ'] }),
+          },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      await testUtils.clickRelocationHistoryButton(user)
+      await equipmentRelocationHistoryModalTestUtils.findContainer()
+      await equipmentRelocationHistoryModalTestUtils.expectLoadingFinished()
+      await equipmentRelocationHistoryModalTestUtils.clickRow(
+        user,
+        equipmentRelocationHistoryItem.id,
+      )
+      const relocationTaskDetails = await relocationTaskDetailsTestUtils.findContainer()
+
+      expect(relocationTaskDetails).toBeInTheDocument()
     })
   })
 })

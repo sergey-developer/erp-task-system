@@ -1,4 +1,5 @@
 import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 
@@ -17,6 +18,7 @@ const props: EquipmentRelocationHistoryModalProps = {
   loading: false,
   dataSource: [warehouseFixtures.equipmentRelocationHistoryItem()],
   onCancel: jest.fn(),
+  onRow: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('equipment-relocation-history-modal')
@@ -24,6 +26,8 @@ const findContainer = () => screen.findByTestId('equipment-relocation-history-mo
 
 const getTable = () => within(getContainer()).getByTestId('equipment-relocation-history-table')
 const getRow = (id: IdType) => tableTestUtils.getRowIn(getTable(), id)
+const clickRow = async (user: UserEvent, id: IdType) =>
+  tableTestUtils.clickRowIn(getTable(), user, id)
 const getColTitle = (text: string) => within(getTable()).getByText(text)
 const getColValue = (id: IdType, value: NumberOrString): HTMLElement =>
   within(getRow(id)).getByText(value)
@@ -38,6 +42,7 @@ export const testUtils = {
 
   getTable,
   getRow,
+  clickRow,
   getColTitle,
   getColValue,
 
@@ -132,6 +137,18 @@ describe('Модалка истории заявок на перемещение
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+    })
+
+    test('При клике на строку вызывается обработчик', async () => {
+      const { user } = render(<EquipmentRelocationHistoryModal {...props} />)
+
+      await testUtils.clickRow(user, props.dataSource[0].id)
+
+      expect(props.onRow).toBeCalled()
+      expect(props.onRow).toBeCalledWith(
+        props.dataSource[0],
+        props.dataSource!.indexOf(props.dataSource[0]),
+      )
     })
   })
 })
