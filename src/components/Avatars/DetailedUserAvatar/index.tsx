@@ -4,16 +4,20 @@ import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
 import { AuthRouteEnum } from 'modules/auth/constants/routes'
-import { userRoleDict } from 'modules/user/constants'
 import { UserModel } from 'modules/user/models'
 import { getFullUserName, getUserAbbr } from 'modules/user/utils'
+
+import { valueOrHyphen } from 'shared/utils/common'
 
 import { overlayInnerStyle, UserAvatarStyled } from './styles'
 
 const { Text } = Typography
 
 export type DetailedUserAvatarProps = Pick<PopoverProps, 'placement'> & {
-  profile: Pick<UserModel, 'firstName' | 'lastName' | 'middleName' | 'email' | 'role' | 'avatar'>
+  profile: Pick<
+    UserModel,
+    'firstName' | 'lastName' | 'middleName' | 'email' | 'position' | 'avatar'
+  >
 }
 
 const DetailedUserAvatar: FC<DetailedUserAvatarProps> = ({
@@ -23,7 +27,6 @@ const DetailedUserAvatar: FC<DetailedUserAvatarProps> = ({
   return (
     <Popover
       overlayInnerStyle={overlayInnerStyle}
-      // trigger={['click']}
       placement={placement}
       title={getFullUserName(pick(profile, 'firstName', 'lastName', 'middleName'))}
       content={
@@ -34,8 +37,8 @@ const DetailedUserAvatar: FC<DetailedUserAvatarProps> = ({
           </Space>
 
           <Space>
-            <Text type='secondary'>Роль:</Text>
-            <Text>{userRoleDict[profile.role]}</Text>
+            <Text type='secondary'>Должность:</Text>
+            <Text>{valueOrHyphen(profile.position?.title)}</Text>
           </Space>
 
           <Divider />
