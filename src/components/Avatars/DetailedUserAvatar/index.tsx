@@ -30,7 +30,7 @@ const DetailedUserAvatar: FC<DetailedUserAvatarProps> = ({
       placement={placement}
       title={getFullUserName(pick(profile, 'firstName', 'lastName', 'middleName'))}
       content={
-        <Space data-testid='detailed-user-avatar-popover-content' direction='vertical'>
+        <Space direction='vertical'>
           <Space>
             <Text type='secondary'>Email:</Text>
             <Text>{profile.email}</Text>
