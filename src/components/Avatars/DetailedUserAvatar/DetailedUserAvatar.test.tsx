@@ -4,10 +4,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { CommonRouteEnum } from 'configs/routes'
 
 import { AuthRouteEnum } from 'modules/auth/constants/routes'
-
-import { testUtils as privateLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
-
-import App from 'app/App'
+import ChangePasswordPage from 'modules/auth/pages/ChangePasswordPage'
+import { testUtils as changePasswordPageTestUtils } from 'modules/auth/pages/ChangePasswordPage/ChangePasswordPage.test'
 
 import userFixtures from '_tests_/fixtures/user'
 import {
@@ -15,7 +13,7 @@ import {
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
 } from '_tests_/mocks/api'
-import { render, renderInRoute, setupApiTests } from '_tests_/utils'
+import { render, renderInRoute_latest, setupApiTests } from '_tests_/utils'
 
 import DetailedUserAvatar, { DetailedUserAvatarProps } from './index'
 
@@ -74,19 +72,19 @@ describe('Детальный аватар пользователя', () => {
       mockGetTimeZoneListSuccess()
       mockGetUserMeSuccess({ body: userFixtures.user() })
 
-      const { user, checkRouteChanged, getCurrentRoute } = renderInRoute(
-        <App />,
-        CommonRouteEnum.DesktopTaskList,
-        { useBrowserRouter: false },
+      const { user } = renderInRoute_latest(
+        [
+          { path: CommonRouteEnum.Home, element: <DetailedUserAvatar {...props} /> },
+          { path: AuthRouteEnum.ChangePassword, element: <ChangePasswordPage /> },
+        ],
+        { initialEntries: [CommonRouteEnum.Home], initialIndex: 0 },
       )
 
-      await privateLayoutTestUtils.expectLoadingStarted()
-      await privateLayoutTestUtils.expectLoadingFinished()
       await testUtils.openPopover(user)
       await testUtils.clickChangePasswordLink(user)
 
-      expect(checkRouteChanged()).toBe(true)
-      expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
+      const changePasswordPage = changePasswordPageTestUtils.getContainer()
+      expect(changePasswordPage).toBeInTheDocument()
     })
   })
 })
