@@ -1,5 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import moment from 'moment-timezone'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
@@ -177,7 +178,10 @@ describe('Таблица заявок на перемещение оборудо
 
       const headCell = testUtils.getHeadCell('MTSR')
       const title = testUtils.getColTitle('MTSR')
-      const value = testUtils.getColValue(mtsrReportItem.id, mtsrReportItem.averageExecutionTime)
+      const value = testUtils.getColValue(
+        mtsrReportItem.id,
+        parseFloat(moment.duration(mtsrReportItem.averageExecutionTime).asHours().toFixed(2)),
+      )
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()

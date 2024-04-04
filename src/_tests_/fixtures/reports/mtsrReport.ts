@@ -9,5 +9,5 @@ export const getMtsrReportItem = (): BaseMtsrReportItemModel => ({
   completedTasks: fakeInteger(),
   allTasks: fakeInteger(),
   returnedAmount: fakeInteger(),
-  averageExecutionTime: fakeInteger(),
+  averageExecutionTime: '272 07:45:28.494421',
 })

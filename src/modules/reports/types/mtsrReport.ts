@@ -4,7 +4,7 @@ import { ExtendSortKey } from 'shared/types/sort'
 export type BaseMtsrReportItemModel = {
   id: IdType
   title: string
-  averageExecutionTime: number
+  averageExecutionTime: string
   returnedAmount: number
   allTasks: number
   completedTasks: number

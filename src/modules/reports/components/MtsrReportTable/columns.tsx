@@ -1,4 +1,5 @@
 import { ColumnsType } from 'antd/es/table'
+import moment from 'moment-timezone'
 
 import { MtsrReportTableItem } from './types'
 
@@ -13,6 +14,7 @@ export const columns: ColumnsType<MtsrReportTableItem> = [
     dataIndex: 'averageExecutionTime',
     title: 'MTSR',
     sorter: true,
+    render: (value) => parseFloat(moment.duration(value).asHours().toFixed(2)),
   },
   {
     dataIndex: 'returnedAmount',
