@@ -1,5 +1,4 @@
 import { TaskWorkGroupModel } from 'modules/task/models'
-import { UserRoleEnum } from 'modules/user/constants'
 
 import { fakeEmail, fakeId, fakePhone, fakeWord } from '_tests_/utils'
 
@@ -12,7 +11,7 @@ export const workGroup = (props?: Partial<Pick<TaskWorkGroupModel, 'id'>>): Task
     firstName: fakeWord(),
     lastName: fakeWord(),
     middleName: fakeWord(),
-    role: UserRoleEnum.FirstLineSupport,
+    position: fakeWord(),
     email: fakeEmail(),
     phone: fakePhone(),
   },
@@ -21,7 +20,7 @@ export const workGroup = (props?: Partial<Pick<TaskWorkGroupModel, 'id'>>): Task
     firstName: fakeWord(),
     lastName: fakeWord(),
     middleName: fakeWord(),
-    role: UserRoleEnum.FirstLineSupport,
+    position: fakeWord(),
     email: fakeEmail(),
     phone: fakePhone(),
   },
