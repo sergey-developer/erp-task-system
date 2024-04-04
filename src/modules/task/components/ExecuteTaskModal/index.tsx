@@ -52,7 +52,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
     </Text>
   )
 
-  const handleFinish = async (values: ExecuteTaskFormFields) => {
+  const onFinish = async (values: ExecuteTaskFormFields) => {
     await onSubmit(values, form.setFields)
   }
 
@@ -104,12 +104,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
           </Text>
         </Space>
 
-        <Form<ExecuteTaskFormFields>
-          form={form}
-          layout='vertical'
-          onFinish={handleFinish}
-          preserve={false}
-        >
+        <Form<ExecuteTaskFormFields> form={form} layout='vertical' onFinish={onFinish}>
           <Form.Item label='Затраченное время'>
             <Flex gap='middle'>
               <Label block={false} label='Часов' labelPosition='right' direction='horizontal'>

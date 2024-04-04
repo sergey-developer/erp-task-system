@@ -23,7 +23,7 @@ import {
   spinnerTestUtils,
 } from '_tests_/utils'
 
-import { testUtils as confirmExecuteTaskModalTestUtils } from '../../ConfirmExecuteTaskModal/ConfirmExecuteTaskModal.test'
+import { testUtils as confirmExecuteTaskModalTestUtils } from '../../ConfirmExecuteTaskReclassificationTasksModal/ConfirmExecuteTaskReclassificationTasksModal.test'
 import { testUtils as executeTaskModalTestUtils } from '../../ExecuteTaskModal/ExecuteTaskModal.test'
 import { testUtils as requestTaskSuspendModalTestUtils } from '../../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as taskFirstLineModalTestUtils } from '../../TaskFirstLineModal/TaskFirstLineModal.test'
@@ -41,8 +41,8 @@ import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.te
 import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
 import { testUtils as cardTabsTestUtils } from '../Tabs/Tabs.test'
 import {
-  activeExecuteTaskItemProps,
   activeRequestSuspendItemProps,
+  canExecuteTaskProps,
   testUtils as cardTitleTestUtils,
 } from '../TaskDetailsTitle/TaskDetailsTitle.test'
 import {
@@ -255,7 +255,7 @@ describe('Карточка заявки', () => {
         const task = taskFixtures.task({ hasRelocationTasks: true })
 
         const { user } = render(
-          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
+          <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
             store: getStoreWithAuth({
               userId: task.assignee!.id,
@@ -264,7 +264,7 @@ describe('Карточка заявки', () => {
         )
 
         await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
         const modal = await executeTaskModalTestUtils.findContainer()
 
         expect(modal).toBeInTheDocument()
@@ -274,7 +274,7 @@ describe('Карточка заявки', () => {
         const task = taskFixtures.task({ hasRelocationTasks: true })
 
         const { user } = render(
-          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
+          <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
             store: getStoreWithAuth({
               userId: task.assignee!.id,
@@ -283,7 +283,7 @@ describe('Карточка заявки', () => {
         )
 
         await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
         const modal = await executeTaskModalTestUtils.findContainer()
         await executeTaskModalTestUtils.clickCancelButton(user)
 
@@ -296,14 +296,14 @@ describe('Карточка заявки', () => {
         const task = taskFixtures.task({ hasRelocationTasks: false })
 
         const { user } = render(
-          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
+          <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
             store: getStoreWithAuth({ userId: task.assignee!.id }),
           },
         )
 
         await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
         const modal = await confirmExecuteTaskModalTestUtils.findContainer()
 
         expect(modal).toBeInTheDocument()
@@ -313,14 +313,14 @@ describe('Карточка заявки', () => {
         const task = taskFixtures.task({ hasRelocationTasks: false })
 
         const { user } = render(
-          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
+          <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
             store: getStoreWithAuth({ userId: task.assignee!.id }),
           },
         )
 
         await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
         const modal = await confirmExecuteTaskModalTestUtils.findContainer()
         await confirmExecuteTaskModalTestUtils.clickCancelButton(user)
 
@@ -331,14 +331,14 @@ describe('Карточка заявки', () => {
         const task = taskFixtures.task({ hasRelocationTasks: false })
 
         const { user } = render(
-          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
+          <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
             store: getStoreWithAuth({ userId: task.assignee!.id }),
           },
         )
 
         await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
         const confirmModal = await confirmExecuteTaskModalTestUtils.findContainer()
         await confirmExecuteTaskModalTestUtils.clickConfirmButton(user)
         const executeTaskModal = await executeTaskModalTestUtils.findContainer()
@@ -353,7 +353,7 @@ describe('Карточка заявки', () => {
         const task = taskFixtures.task({ hasRelocationTasks: true })
 
         const { user } = render(
-          <TaskCard {...props} task={{ ...task, ...activeExecuteTaskItemProps }} />,
+          <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
             store: getStoreWithAuth({
               userId: task.assignee!.id,
@@ -362,7 +362,7 @@ describe('Карточка заявки', () => {
         )
 
         await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
         await executeTaskModalTestUtils.findContainer()
 
         await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -396,7 +396,7 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard
             {...props}
-            task={{ ...task, ...activeExecuteTaskItemProps }}
+            task={{ ...task, ...canExecuteTaskProps }}
             getTaskWorkPerformedAct={getTaskWorkPerformedActMock as any}
           />,
           {
@@ -407,7 +407,7 @@ describe('Карточка заявки', () => {
         )
 
         await cardTitleTestUtils.openMenu(user)
-        await cardTitleTestUtils.clickExecuteTaskItem(user)
+        await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
         await executeTaskModalTestUtils.findContainer()
 
         await executeTaskModalTestUtils.setTechResolution(user, fakeWord())

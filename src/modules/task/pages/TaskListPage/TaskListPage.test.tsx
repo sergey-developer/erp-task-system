@@ -20,7 +20,7 @@ import {
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/Card_old/Card.test'
 import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import {
-  activeExecuteTaskItemProps,
+  canExecuteTaskProps,
   testUtils as cardTitleTestUtils,
 } from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
 import {
@@ -432,13 +432,13 @@ describe('Страница реестра заявок', () => {
       const task = taskFixtures.task({
         id: taskListItem.id,
         hasRelocationTasks: true,
-        ...activeExecuteTaskItemProps,
+        ...canExecuteTaskProps,
       })
       mockGetTaskSuccess(task.id, { body: task })
       mockResolveTaskSuccess(task.id)
 
       const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth({ userId: activeExecuteTaskItemProps.assignee!.id }),
+        store: getStoreWithAuth({ userId: canExecuteTaskProps.assignee!.id }),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -447,7 +447,7 @@ describe('Страница реестра заявок', () => {
       await taskDetailsTestUtils.findContainer()
       await taskDetailsTestUtils.expectTaskLoadingFinished()
       await cardTitleTestUtils.openMenu(user)
-      await cardTitleTestUtils.clickExecuteTaskItem(user)
+      await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
       await executeTaskModalTestUtils.findContainer()
       await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
       await executeTaskModalTestUtils.setTechResolution(user, fakeWord())

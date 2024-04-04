@@ -18,6 +18,7 @@ import Tabs from 'modules/task/components/TaskDetails/Tabs'
 import TaskDetailsTitle from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
+import { UpdateTaskDeadlineModalProps } from 'modules/task/components/UpdateTaskDeadlineModal/types'
 import { UpdateTaskDescriptionModalProps } from 'modules/task/components/UpdateTaskDescriptionModal/types'
 import {
   getTaskWorkPerformedActMessages,
@@ -58,19 +59,18 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useSystemSettingsState } from 'shared/hooks/system'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
-import { base64ToArrayBuffer } from 'shared/utils/common'
+import { base64ToArrayBuffer, isFalse, isTrue } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
-
-import { UpdateTaskDeadlineModalProps } from '../UpdateTaskDeadlineModal/types'
 
 const ConfirmCancelReclassificationRequestModal = React.lazy(
   () => import('modules/task/components/ConfirmCancelReclassificationRequestModal'),
@@ -78,8 +78,12 @@ const ConfirmCancelReclassificationRequestModal = React.lazy(
 
 const ExecuteTaskModal = React.lazy(() => import('modules/task/components/ExecuteTaskModal'))
 
-const ConfirmExecuteTaskModal = React.lazy(
-  () => import('modules/task/components/ConfirmExecuteTaskModal'),
+const ConfirmExecuteTaskReclassificationTasksModal = React.lazy(
+  () => import('modules/task/components/ConfirmExecuteTaskReclassificationTasksModal'),
+)
+
+const ConfirmExecuteTaskRegistrationFNModal = React.lazy(
+  () => import('modules/task/components/ConfirmExecuteTaskRegistrationFNModal'),
 )
 
 const TaskSuspendRequest = React.lazy(() => import('modules/task/components/TaskSuspendRequest'))
@@ -234,29 +238,66 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     { setTrue: openExecuteTaskModal, setFalse: closeExecuteTaskModal },
   ] = useBoolean(false)
 
-  const handleCloseExecuteTaskModal = useDebounceFn(closeExecuteTaskModal)
+  const onCloseExecuteTaskModal = useDebounceFn(closeExecuteTaskModal)
 
   const [
-    confirmExecuteTaskModalOpened,
-    { setTrue: openConfirmExecuteTaskModal, setFalse: closeConfirmExecuteTaskModal },
+    confirmExecuteTaskReclassificationTasksModalOpened,
+    {
+      setTrue: openConfirmExecuteTaskReclassificationTasksModal,
+      setFalse: closeConfirmExecuteTaskReclassificationTasksModal,
+    },
   ] = useBoolean(false)
 
-  const debouncedCloseConfirmExecuteTaskModal = useDebounceFn(closeConfirmExecuteTaskModal)
-
-  const handleOpenExecuteTaskModal = useCallback(
-    () =>
-      debounce(() => {
-        if (task) {
-          task.hasRelocationTasks ? openExecuteTaskModal() : openConfirmExecuteTaskModal()
-        }
-      })(),
-    [openConfirmExecuteTaskModal, openExecuteTaskModal, task],
+  const debouncedCloseConfirmExecuteTaskReclassificationTasksModal = useDebounceFn(
+    closeConfirmExecuteTaskReclassificationTasksModal,
   )
 
-  const handleConfirmExecuteTask = useDebounceFn(() => {
-    closeConfirmExecuteTaskModal()
+  const [
+    confirmExecuteTaskRegistrationFNModalOpened,
+    {
+      setTrue: openConfirmExecuteTaskRegistrationFNModal,
+      setFalse: closeConfirmExecuteTaskRegistrationFNModal,
+    },
+  ] = useBoolean(false)
+
+  const debouncedCloseConfirmExecuteTaskRegistrationFNModal = useDebounceFn(
+    closeConfirmExecuteTaskRegistrationFNModal,
+  )
+
+  const onOpenExecuteTaskModal = useCallback(
+    () =>
+      debounce(() => {
+        if (!task) return
+
+        isTrue(task.fiscalAccumulator?.isRequestSended) &&
+        isFalse(task.fiscalAccumulator?.isRequestApproved)
+          ? openConfirmExecuteTaskRegistrationFNModal()
+          : task.hasRelocationTasks
+          ? openExecuteTaskModal()
+          : openConfirmExecuteTaskReclassificationTasksModal()
+      }, DEFAULT_DEBOUNCE_VALUE)(),
+    [
+      openConfirmExecuteTaskReclassificationTasksModal,
+      openConfirmExecuteTaskRegistrationFNModal,
+      openExecuteTaskModal,
+      task,
+    ],
+  )
+
+  const onConfirmExecuteTaskReclassificationTasks = useDebounceFn(() => {
+    closeConfirmExecuteTaskReclassificationTasksModal()
     openExecuteTaskModal()
   })
+
+  const onConfirmExecuteTaskRegistrationFN = useDebounceFn(() => {
+    closeConfirmExecuteTaskRegistrationFNModal()
+
+    if (task) {
+      task.hasRelocationTasks
+        ? openExecuteTaskModal()
+        : openConfirmExecuteTaskReclassificationTasksModal()
+    }
+  }, [task])
 
   const [updateDescriptionModalOpened, { toggle: toggleUpdateDescriptionModal }] = useBoolean(false)
   const debouncedToggleUpdateDescriptionModal = useDebounceFn(toggleUpdateDescriptionModal)
@@ -358,7 +399,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [task, toggleUpdateDeadlineModal, updateTaskDeadlineMutation],
   )
 
-  const handleExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
+  const onExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
     async (values, setFields) => {
       if (!task) return
 
@@ -383,7 +424,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [task, originOnClose, resolveTask],
   )
 
-  const handleGetAct = useCallback<ExecuteTaskModalProps['onGetAct']>(
+  const onGetAct = useCallback<ExecuteTaskModalProps['onGetAct']>(
     async (values) => {
       if (!task) return
 
@@ -413,7 +454,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [getTaskWorkPerformedAct, task],
   )
 
-  const handleReclassificationRequestSubmit = useCallback<
+  const onReclassificationRequestSubmit = useCallback<
     RequestTaskReclassificationModalProps['onSubmit']
   >(
     async (values, setFields) => {
@@ -436,7 +477,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [closeTaskReclassificationModal, createReclassificationRequest, task],
   )
 
-  const handleTransferTaskToSecondLine = useCallback(
+  const onTransferTaskToSecondLine = useCallback(
     async (
       values: TaskSecondLineFormFields,
       setFields: FormInstance<TaskSecondLineFormFields>['setFields'],
@@ -459,7 +500,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [task, originOnClose, updateWorkGroup],
   )
 
-  const handleTransferTaskToFirstLine = useCallback(
+  const onTransferTaskToFirstLine = useCallback(
     async (
       values: TaskFirstLineFormFields,
       setFields: FormInstance<TaskFirstLineFormFields>['setFields'],
@@ -482,7 +523,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [originOnClose, deleteWorkGroup, task],
   )
 
-  const handleUpdateAssignee = useCallback(
+  const onUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
       if (!task) return
 
@@ -493,7 +534,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [task, updateAssignee],
   )
 
-  const handleTakeTask = useCallback(async () => {
+  const onTakeTask = useCallback(async () => {
     if (!task) return
 
     try {
@@ -501,7 +542,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     } catch {}
   }, [takeTask, task])
 
-  const handleCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
+  const onCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
     async (values: RequestTaskSuspendFormFields, setFields) => {
       if (!task) return
 
@@ -533,7 +574,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [closeRequestTaskSuspendModal, createSuspendRequest, task],
   )
 
-  const handleDeleteTaskSuspendRequest = useDebounceFn(async () => {
+  const onDeleteTaskSuspendRequest = useDebounceFn(async () => {
     if (!task) return
     await deleteSuspendRequest({ taskId: task.id })
   }, [deleteSuspendRequest, task])
@@ -549,7 +590,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       olaStatus={task.olaStatus}
       suspendRequest={task.suspendRequest}
       onReloadTask={debouncedRefetchTask}
-      onExecuteTask={handleOpenExecuteTaskModal}
+      onExecuteTask={onOpenExecuteTaskModal}
       onRequestSuspend={debouncedToggleRequestTaskSuspendModal}
       onRequestReclassification={onOpenTaskReclassificationModal}
       onUpdateDescription={debouncedToggleUpdateDescriptionModal}
@@ -611,14 +652,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                       taskSuspendRequestStatus.isNew || taskSuspendRequestStatus.isInProgress
                         ? {
                             text: 'Отменить запрос',
-                            onClick: handleDeleteTaskSuspendRequest,
+                            onClick: onDeleteTaskSuspendRequest,
                             loading: deleteSuspendRequestIsLoading,
                             disabled: userRole.isEngineerRole,
                           }
                         : taskSuspendRequestStatus.isApproved
                         ? {
                             text: 'Вернуть в работу',
-                            onClick: handleTakeTask,
+                            onClick: onTakeTask,
                             loading: takeTaskIsLoading,
                           }
                         : undefined
@@ -676,13 +717,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     extendedStatus={task.extendedStatus}
                     assignee={task.assignee}
                     workGroup={task.workGroup}
-                    transferTaskToFirstLine={handleTransferTaskToFirstLine}
+                    transferTaskToFirstLine={onTransferTaskToFirstLine}
                     transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
-                    transferTaskToSecondLine={handleTransferTaskToSecondLine}
+                    transferTaskToSecondLine={onTransferTaskToSecondLine}
                     transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
-                    updateAssignee={handleUpdateAssignee}
+                    updateAssignee={onUpdateAssignee}
                     updateAssigneeIsLoading={updateAssigneeIsLoading}
-                    takeTask={handleTakeTask}
+                    takeTask={onTakeTask}
                     takeTaskIsLoading={takeTaskIsLoading}
                     taskSuspendRequestStatus={task.suspendRequest?.status}
                   />
@@ -696,29 +737,48 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       </Drawer>
 
       {executeTaskModalOpened && task && (
-        <React.Suspense fallback={<ModalFallback open onCancel={handleCloseExecuteTaskModal} />}>
+        <React.Suspense fallback={<ModalFallback open onCancel={onCloseExecuteTaskModal} />}>
           <ExecuteTaskModal
             open={executeTaskModalOpened}
             type={task.type}
             recordId={task.recordId}
             isLoading={taskIsResolving}
-            onCancel={handleCloseExecuteTaskModal}
-            onSubmit={handleExecuteTask}
-            onGetAct={handleGetAct}
+            onCancel={onCloseExecuteTaskModal}
+            onSubmit={onExecuteTask}
+            onGetAct={onGetAct}
             getActIsLoading={taskWorkPerformedActIsLoading}
           />
         </React.Suspense>
       )}
 
-      {confirmExecuteTaskModalOpened && task && (
+      {confirmExecuteTaskReclassificationTasksModalOpened && task && (
         <React.Suspense
-          fallback={<ModalFallback open onCancel={debouncedCloseConfirmExecuteTaskModal} />}
+          fallback={
+            <ModalFallback
+              open
+              onCancel={debouncedCloseConfirmExecuteTaskReclassificationTasksModal}
+            />
+          }
         >
-          <ConfirmExecuteTaskModal
-            open={confirmExecuteTaskModalOpened}
+          <ConfirmExecuteTaskReclassificationTasksModal
+            open={confirmExecuteTaskReclassificationTasksModalOpened}
             recordId={task.recordId}
-            onCancel={debouncedCloseConfirmExecuteTaskModal}
-            onConfirm={handleConfirmExecuteTask}
+            onCancel={debouncedCloseConfirmExecuteTaskReclassificationTasksModal}
+            onOk={onConfirmExecuteTaskReclassificationTasks}
+          />
+        </React.Suspense>
+      )}
+
+      {confirmExecuteTaskRegistrationFNModalOpened && task && (
+        <React.Suspense
+          fallback={
+            <ModalFallback open onCancel={debouncedCloseConfirmExecuteTaskRegistrationFNModal} />
+          }
+        >
+          <ConfirmExecuteTaskRegistrationFNModal
+            open={confirmExecuteTaskRegistrationFNModalOpened}
+            onCancel={debouncedCloseConfirmExecuteTaskRegistrationFNModal}
+            onOk={onConfirmExecuteTaskRegistrationFN}
           />
         </React.Suspense>
       )}
@@ -729,7 +789,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             open={taskReclassificationModalOpened}
             recordId={task.recordId}
             isLoading={createReclassificationRequestIsLoading}
-            onSubmit={handleReclassificationRequestSubmit}
+            onSubmit={onReclassificationRequestSubmit}
             onCancel={closeTaskReclassificationModal}
           />
         </React.Suspense>
@@ -743,7 +803,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             systemSettings={systemSettings}
             systemSettingsIsLoading={systemSettingsIsFetching}
             isLoading={createSuspendRequestIsLoading}
-            onSubmit={handleCreateTaskSuspendRequest}
+            onSubmit={onCreateTaskSuspendRequest}
             onCancel={closeRequestTaskSuspendModal}
           />
         </React.Suspense>
