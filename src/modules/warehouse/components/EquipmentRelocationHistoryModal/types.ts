@@ -11,5 +11,5 @@ export type EquipmentRelocationHistoryTableItem = Pick<
 
 export type EquipmentRelocationHistoryModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel'> &
-    Pick<TableProps<EquipmentRelocationHistoryTableItem>, 'dataSource' | 'loading'>
+    Pick<TableProps<EquipmentRelocationHistoryTableItem>, 'dataSource' | 'loading' | 'onRow'>
 >

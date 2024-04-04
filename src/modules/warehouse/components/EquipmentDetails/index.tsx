@@ -1,5 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
+import debounce from 'lodash/debounce'
 import defaultTo from 'lodash/defaultTo'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -10,6 +11,7 @@ import { attachmentsToFiles } from 'modules/attachment/utils'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
+import { EquipmentRelocationHistoryModalProps } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/types'
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
@@ -32,7 +34,7 @@ import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { SAVE_TEXT } from 'shared/constants/common'
+import { DEFAULT_DEBOUNCE_VALUE, SAVE_TEXT } from 'shared/constants/common'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -59,6 +61,10 @@ const EquipmentRelocationHistoryModal = React.lazy(
   () => import('modules/warehouse/components/EquipmentRelocationHistoryModal'),
 )
 
+const RelocationTaskDetails = React.lazy(
+  () => import('modules/warehouse/components/RelocationTaskDetails'),
+)
+
 const { Text } = Typography
 
 const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) => {
@@ -80,6 +86,23 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     useBoolean(false)
 
   const onToggleOpenRelocationHistoryModal = useDebounceFn(toggleOpenRelocationHistoryModal)
+
+  const [relocationTaskId, setRelocationTaskId] = useState<IdType>()
+  const [relocationTaskOpened, { setTrue: openRelocationTask, setFalse: closeRelocationTask }] =
+    useBoolean(false)
+
+  const onOpenRelocationTask = useCallback(
+    (id: IdType) => {
+      openRelocationTask()
+      setRelocationTaskId(id)
+    },
+    [openRelocationTask],
+  )
+
+  const onCloseRelocationTask = useDebounceFn(() => {
+    closeRelocationTask()
+    setRelocationTaskId(undefined)
+  })
 
   const [
     editEquipmentModalOpened,
@@ -249,6 +272,15 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       onCloseEditEquipmentModal,
       refetchEquipmentAttachmentList,
     ],
+  )
+
+  const onClickEquipmentRelocationHistoryRow = useCallback<
+    EquipmentRelocationHistoryModalProps['onRow']
+  >(
+    (record) => ({
+      onClick: debounce(() => onOpenRelocationTask(record.id), DEFAULT_DEBOUNCE_VALUE),
+    }),
+    [onOpenRelocationTask],
   )
 
   const hiddenFields: FieldsMaybeHidden[] = equipment?.category
@@ -618,6 +650,19 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onCancel={onToggleOpenRelocationHistoryModal}
             dataSource={relocationHistory}
             loading={relocationHistoryIsFetching}
+            onRow={onClickEquipmentRelocationHistoryRow}
+          />
+        </React.Suspense>
+      )}
+
+      {relocationTaskOpened && relocationTaskId && (
+        <React.Suspense
+          fallback={<ModalFallback open tip='Загрузка карточки заявки на перемещение' />}
+        >
+          <RelocationTaskDetails
+            open={relocationTaskOpened}
+            onClose={onCloseRelocationTask}
+            relocationTaskId={relocationTaskId}
           />
         </React.Suspense>
       )}

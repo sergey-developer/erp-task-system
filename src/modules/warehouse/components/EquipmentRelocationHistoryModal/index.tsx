@@ -11,12 +11,13 @@ const EquipmentRelocationHistoryModal: FC<EquipmentRelocationHistoryModalProps> 
   onCancel,
   loading,
   dataSource,
+  onRow,
 }) => {
   return (
     <BaseModal
       data-testid='equipment-relocation-history-modal'
       footer={null}
-      width={1100}
+      width='90%'
       open={open}
       onCancel={onCancel}
       title='История заявок на перемещение'
@@ -27,6 +28,7 @@ const EquipmentRelocationHistoryModal: FC<EquipmentRelocationHistoryModalProps> 
           dataSource={dataSource}
           rowKey='id'
           columns={columns}
+          onRow={onRow}
         />
       </div>
     </BaseModal>
