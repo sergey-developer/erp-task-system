@@ -1,13 +1,30 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
-import { fakeId, render, spinnerTestUtils } from '_tests_/utils'
+import { testUtils as confirmExecuteTaskReclassificationTasksModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskReclassificationTasksModal/ConfirmExecuteTaskReclassificationTasksModal.test'
+import { testUtils as confirmExecuteTaskRegistrationFNModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskRegistrationFNModal/ConfirmExecuteTaskRegistrationFNModal.test'
+import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 
-import taskFixtures from '../../../../_tests_/fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 import {
   mockGetTaskReclassificationRequestSuccess,
   mockGetTaskSuccess,
-} from '../../../../_tests_/mocks/api'
-import { TaskExtendedStatusEnum } from '../../constants/task'
+  mockResolveTaskSuccess,
+} from '_tests_/mocks/api'
+import {
+  fakeId,
+  fakeWord,
+  getStoreWithAuth,
+  menuTestUtils,
+  render,
+  setupApiTests,
+  spinnerTestUtils,
+} from '_tests_/utils'
+
+import {
+  canExecuteTaskProps,
+  testUtils as cardTitleTestUtils,
+} from './TaskDetailsTitle/TaskDetailsTitle.test'
 import TaskDetails, { TaskDetailsProps } from './index'
 
 const taskId = fakeId()
@@ -23,7 +40,9 @@ const props: TaskDetailsProps = {
 }
 
 const findContainer = () => screen.findByTestId('task-details')
+const getContainer = () => screen.getByTestId('task-details')
 
+// loading
 const expectTaskLoadingStarted = spinnerTestUtils.expectLoadingStarted('task-loading')
 const expectTaskLoadingFinished = spinnerTestUtils.expectLoadingFinished('task-loading')
 
@@ -35,6 +54,7 @@ const expectReclassificationRequestLoadingFinished = spinnerTestUtils.expectLoad
 )
 
 export const testUtils = {
+  getContainer,
   findContainer,
 
   expectTaskLoadingStarted,
@@ -43,7 +63,139 @@ export const testUtils = {
   expectReclassificationRequestLoadingFinished,
 }
 
+setupApiTests()
+
 describe('Карточка заявки', () => {
+  describe('Выполнить заявку', () => {
+    test('Кнопка активная если условия соблюдены', async () => {
+      const task = taskFixtures.task({ id: props.taskId, ...canExecuteTaskProps })
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const { user } = render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth({ userId: task.assignee!.id }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      await cardTitleTestUtils.openMenu(user)
+      const menuItem = cardTitleTestUtils.getExecuteTaskMenuItem()
+
+      expect(menuItem).toBeInTheDocument()
+      menuTestUtils.expectMenuItemNotDisabled(menuItem)
+    })
+
+    describe('Кнопка не активна если условия соблюдены', () => {
+      test('Но пользователь не является исполнителем заявки', async () => {
+        const task = taskFixtures.task({ id: props.taskId, ...canExecuteTaskProps })
+        mockGetTaskSuccess(props.taskId, { body: task })
+
+        const { user } = render(<TaskDetails {...props} />)
+
+        await testUtils.expectTaskLoadingFinished()
+        await cardTitleTestUtils.openMenu(user)
+        const menuItem = cardTitleTestUtils.getExecuteTaskMenuItem()
+
+        menuTestUtils.expectMenuItemDisabled(menuItem)
+      })
+
+      test(`Но статус заявки не ${TaskStatusEnum.InProgress}`, async () => {
+        const task = taskFixtures.task({
+          id: props.taskId,
+          ...canExecuteTaskProps,
+          status: TaskStatusEnum.New,
+        })
+        mockGetTaskSuccess(props.taskId, { body: task })
+
+        const { user } = render(<TaskDetails {...props} />, {
+          store: getStoreWithAuth({ userId: task.assignee!.id }),
+        })
+
+        await testUtils.expectTaskLoadingFinished()
+        await cardTitleTestUtils.openMenu(user)
+        const menuItem = cardTitleTestUtils.getExecuteTaskMenuItem()
+
+        menuTestUtils.expectMenuItemDisabled(menuItem)
+      })
+
+      test(`Но расширенный статус заявки ${TaskExtendedStatusEnum.InReclassification}`, async () => {
+        const task = taskFixtures.task({
+          id: props.taskId,
+          ...canExecuteTaskProps,
+          extendedStatus: TaskExtendedStatusEnum.InReclassification,
+        })
+        mockGetTaskSuccess(props.taskId, { body: task })
+        mockGetTaskReclassificationRequestSuccess(props.taskId)
+
+        const { user } = render(<TaskDetails {...props} />, {
+          store: getStoreWithAuth({ userId: task.assignee!.id }),
+        })
+
+        await testUtils.expectTaskLoadingFinished()
+        await cardTitleTestUtils.openMenu(user)
+        const menuItem = cardTitleTestUtils.getExecuteTaskMenuItem()
+
+        menuTestUtils.expectMenuItemDisabled(menuItem)
+      })
+    })
+
+    test('Модалка выполнения заявки открывается после показа всех предупреждений', async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        ...canExecuteTaskProps,
+        hasRelocationTasks: false,
+        fiscalAccumulator: {
+          isRequestSended: true,
+          isRequestApproved: false,
+        },
+      })
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const { user } = render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth({ userId: task.assignee!.id }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      await cardTitleTestUtils.openMenu(user)
+      await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
+
+      const confirmExecuteTaskRegistrationFNModal =
+        await confirmExecuteTaskRegistrationFNModalTestUtils.findContainer()
+      expect(confirmExecuteTaskRegistrationFNModal).toBeInTheDocument()
+      await confirmExecuteTaskRegistrationFNModalTestUtils.clickConfirmButton(user)
+
+      const confirmExecuteTaskReclassificationTasksModal =
+        await confirmExecuteTaskReclassificationTasksModalTestUtils.findContainer()
+      expect(confirmExecuteTaskReclassificationTasksModal).toBeInTheDocument()
+      await confirmExecuteTaskReclassificationTasksModalTestUtils.clickConfirmButton(user)
+
+      const executeTaskDrawer = await executeTaskModalTestUtils.findContainer()
+      expect(executeTaskDrawer).toBeInTheDocument()
+    })
+
+    test('После успешного запроса закрывается модалка и вызывается обработчик закрытия карточки заявки', async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        ...canExecuteTaskProps,
+        hasRelocationTasks: true,
+      })
+      mockGetTaskSuccess(props.taskId, { body: task })
+      mockResolveTaskSuccess(props.taskId)
+
+      const { user } = render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth({ userId: task.assignee!.id }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      await cardTitleTestUtils.openMenu(user)
+      await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
+
+      await executeTaskModalTestUtils.findContainer()
+      await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+      await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+      await executeTaskModalTestUtils.clickSubmitButton(user)
+      await waitFor(() => expect(props.onClose).toBeCalledTimes(1))
+    })
+  })
+
   describe('Переклассификация заявки', () => {
     describe('Отмена запроса', () => {
       test('При нажатии на кнопку отмены в заявке открывается модалка подтверждения', async () => {
