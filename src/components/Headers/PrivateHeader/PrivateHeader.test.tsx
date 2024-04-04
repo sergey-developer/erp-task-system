@@ -43,9 +43,7 @@ const getContainer = () => screen.getByTestId('private-header')
 
 // nav menu
 const getNavMenuContainer = () => within(getContainer()).getByRole('menu')
-
 const getNavMenuItem = (name: string) => within(getNavMenuContainer()).getByText(name)
-
 const queryNavMenuItem = (name: string) => within(getNavMenuContainer()).queryByText(name)
 
 const clickNavMenuItem = async (user: UserEvent, name: string) => {
