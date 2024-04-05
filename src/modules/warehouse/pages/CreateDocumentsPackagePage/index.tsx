@@ -39,7 +39,7 @@ import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined, Nullable } from 'shared/types/utils'
-import { base64ToArrayBuffer } from 'shared/utils/common'
+import { base64ToBytes } from 'shared/utils/common'
 import { downloadFile } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 
@@ -230,7 +230,7 @@ const CreateDocumentsPackagePage: FC = () => {
         fileName = `Пакет документов по перемещению №${relocationTask.id}`
       }
 
-      if (base64) downloadFile(base64ToArrayBuffer(base64), MimetypeEnum.Pdf, fileName)
+      if (base64) downloadFile(base64ToBytes(base64), MimetypeEnum.Pdf, fileName)
     } catch {}
   }
 

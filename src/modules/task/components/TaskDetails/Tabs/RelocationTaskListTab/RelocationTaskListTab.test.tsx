@@ -194,7 +194,7 @@ describe('Вкладка списка заявок на перемещение',
       const { user } = renderInRoute_latest(
         [
           {
-            path: CommonRouteEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTaskList,
             element: <RelocationTaskListTab {...props} />,
           },
           {
@@ -202,7 +202,7 @@ describe('Вкладка списка заявок на перемещение',
             element: <CreateDocumentsPackagePage />,
           },
         ],
-        { initialEntries: [CommonRouteEnum.DesktopTaskList], initialIndex: 0 },
+        { initialEntries: [TasksRoutesEnum.DesktopTaskList], initialIndex: 0 },
       )
 
       const button = testUtils.getCreateDocumentsPackageButton()
