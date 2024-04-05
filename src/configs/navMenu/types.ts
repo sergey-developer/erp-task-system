@@ -1,6 +1,6 @@
 import { JSXElementConstructor } from 'react'
 
-import { UserPermissions } from 'modules/user/models'
+import { UserPermissionsEnum } from 'modules/user/constants'
 
 export type NavMenuItem = {
   text: string
@@ -8,5 +8,6 @@ export type NavMenuItem = {
   link?: string
   icon?: JSXElementConstructor<any>
   children?: NavMenuItem[]
-  shouldDisable?: (permissions: UserPermissions[]) => boolean
+  disabled?: (permissions: UserPermissionsEnum[]) => boolean
+  visible?: (permissions: UserPermissionsEnum[]) => boolean
 }

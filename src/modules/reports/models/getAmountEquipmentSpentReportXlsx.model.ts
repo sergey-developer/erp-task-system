@@ -1,3 +1,5 @@
+import { Base64Type } from 'shared/types/common'
+
 import { GetAmountEquipmentSpentReportQueryArgs } from './getAmountEquipmentSpentReport.model'
 
 export type GetAmountEquipmentSpentReportXlsxQueryArgs = Omit<
@@ -5,4 +7,4 @@ export type GetAmountEquipmentSpentReportXlsxQueryArgs = Omit<
   'limit' | 'offset'
 >
 
-export type GetAmountEquipmentSpentReportXlsxSuccessResponse = string
+export type GetAmountEquipmentSpentReportXlsxSuccessResponse = Base64Type

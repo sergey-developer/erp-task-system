@@ -11,6 +11,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { useAuthUser } from 'modules/auth/hooks'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
@@ -112,7 +113,10 @@ const CreateRelocationTaskPage: FC = () => {
   const navigate = useNavigate()
 
   const authUser = useAuthUser()
-  const permissions = useMatchUserPermissions(['EQUIPMENTS_CREATE', 'ENTERING_BALANCES'])
+  const permissions = useMatchUserPermissions([
+    UserPermissionsEnum.EquipmentsCreate,
+    UserPermissionsEnum.EnteringBalances,
+  ])
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
 

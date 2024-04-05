@@ -22,8 +22,8 @@ import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import { base64ToBytes } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-import { base64ToArrayBuffer } from 'shared/utils/common'
 import { downloadFile } from 'shared/utils/file'
 import {
   calculatePaginationParams,
@@ -104,7 +104,7 @@ const EmployeesActionsReportPage: FC = () => {
       const fileName = decodeURIComponent(
         data.meta.response.headers['content-disposition'].split('filename=')[1],
       )
-      downloadFile(base64ToArrayBuffer(data.value), MimetypeEnum.Xlsx, fileName)
+      downloadFile(base64ToBytes(data.value), MimetypeEnum.Xlsx, fileName)
     }
   }
 

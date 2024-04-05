@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as nomenclatureModalTestUtils } from 'modules/warehouse/components/NomenclatureFormModal/NomenclatureFormModal.test'
 import { testUtils as nomenclatureGroupModalTestUtils } from 'modules/warehouse/components/NomenclatureGroupFormModal/NomenclatureGroupFormModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
@@ -179,7 +180,7 @@ describe('Страница списка номенклатур', () => {
       render(<NomenclatureListPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.NomenclatureGroupsCreate] }),
           },
         }),
       })
@@ -207,7 +208,7 @@ describe('Страница списка номенклатур', () => {
       const { user } = render(<NomenclatureListPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.NomenclatureGroupsCreate] }),
           },
         }),
       })
@@ -232,7 +233,7 @@ describe('Страница списка номенклатур', () => {
       const { user } = render(<NomenclatureListPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.NomenclatureGroupsCreate] }),
           },
         }),
       })
@@ -268,7 +269,9 @@ describe('Страница списка номенклатур', () => {
         const { user } = render(<NomenclatureListPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
+              ...getUserMeQueryMock({
+                permissions: [UserPermissionsEnum.NomenclatureGroupsCreate],
+              }),
             },
           }),
         })
@@ -299,7 +302,9 @@ describe('Страница списка номенклатур', () => {
         const { user } = render(<NomenclatureListPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
+              ...getUserMeQueryMock({
+                permissions: [UserPermissionsEnum.NomenclatureGroupsCreate],
+              }),
             },
           }),
         })
@@ -322,7 +327,9 @@ describe('Страница списка номенклатур', () => {
         const { user } = render(<NomenclatureListPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['NOMENCLATURE_GROUPS_CREATE'] }),
+              ...getUserMeQueryMock({
+                permissions: [UserPermissionsEnum.NomenclatureGroupsCreate],
+              }),
             },
           }),
         })
@@ -349,7 +356,7 @@ describe('Страница списка номенклатур', () => {
       render(<NomenclatureListPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_CREATE'] }),
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.NomenclaturesCreate] }),
           },
         }),
       })
@@ -377,7 +384,7 @@ describe('Страница списка номенклатур', () => {
       const { user } = render(<NomenclatureListPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock({ permissions: ['NOMENCLATURES_CREATE'] }),
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.NomenclaturesCreate] }),
           },
         }),
       })

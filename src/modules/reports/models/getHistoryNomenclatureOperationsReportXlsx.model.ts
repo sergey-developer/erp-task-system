@@ -1,3 +1,5 @@
+import { Base64Type } from 'shared/types/common'
+
 import { GetHistoryNomenclatureOperationsReportQueryArgs } from './getHistoryNomenclatureOperationsReport.model'
 
 export type GetHistoryNomenclatureOperationsReportXlsxQueryArgs = Omit<
@@ -5,4 +7,4 @@ export type GetHistoryNomenclatureOperationsReportXlsxQueryArgs = Omit<
   'limit' | 'offset'
 >
 
-export type GetHistoryNomenclatureOperationsReportXlsxSuccessResponse = string
+export type GetHistoryNomenclatureOperationsReportXlsxSuccessResponse = Base64Type

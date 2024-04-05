@@ -11,7 +11,7 @@ import { useLazyGetEquipmentListTemplateQuery } from 'modules/warehouse/services
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { isErrorResponse } from 'shared/services/baseApi'
-import { base64ToArrayBuffer } from 'shared/utils/common'
+import { base64ToBytes } from 'shared/utils/common'
 import { downloadFile } from 'shared/utils/file'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -36,7 +36,7 @@ export const useLazyGetEquipmentListTemplate = (): UseLazyGetEquipmentListTempla
     const { data } = await trigger()
 
     if (data) {
-      downloadFile(base64ToArrayBuffer(data), MimetypeEnum.Xls, 'Шаблон загрузки оборудования')
+      downloadFile(base64ToBytes(data), MimetypeEnum.Xls, 'Шаблон загрузки оборудования')
     }
   }, [trigger])
 

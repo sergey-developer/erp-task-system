@@ -4,7 +4,8 @@ import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useCallback, useMemo } from 'react'
 import { Link, useMatches } from 'react-router-dom'
 
-import { getNavMenuConfig, mapNavMenuConfig } from 'configs/navMenu/utils'
+import { navMenuConfig } from 'configs/navMenu'
+import { mapNavMenuConfig } from 'configs/navMenu/utils'
 
 import LogoutButton from 'modules/auth/components/LogoutButton'
 import { MonitoringRouteEnum } from 'modules/monitoring/constants'
@@ -65,7 +66,7 @@ const PrivateHeader: FC = () => {
     useUpdateUserStatusMutation()
 
   const navMenuItems = useMemo<NavMenuProps['items']>(
-    () => (userMe ? mapNavMenuConfig(getNavMenuConfig(userMe.role), userMe.permissions) : []),
+    () => (userMe ? mapNavMenuConfig(navMenuConfig, userMe.permissions) : []),
     [userMe],
   )
 
