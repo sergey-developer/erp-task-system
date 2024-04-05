@@ -56,7 +56,8 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
     'TASK_INTERNAL_DESCRIPTION_UPDATE',
     'TASK_INTERNAL_DEADLINE_UPDATE',
   ])
-  const isAssignedToCurrentUser = useIdBelongAuthUser(assignee?.id)
+  const assigneeIsCurrentUser = useIdBelongAuthUser(assignee?.id)
+  const hasWorkGroup = !!workGroup
   const { isEngineerRole, isFirstLineSupportRole } = useUserRole()
 
   const menuProps: MenuProps = {
@@ -66,19 +67,31 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
         disabled:
           (!taskStatus.isNew && !taskStatus.isInProgress) ||
           (!taskType.isIncident && !taskType.isRequest) ||
-          (isFirstLineSupportRole && !!workGroup) ||
+          (isFirstLineSupportRole && hasWorkGroup) ||
           suspendRequestExist,
         icon: <PauseCircleIcon $size='middle' />,
         label: 'Запросить перевод в ожидание',
         onClick: onRequestSuspend,
       },
       {
+        key: MenuActionsKeysEnum.RegisterFN,
+        disabled: !(
+          (taskType.isIncident || taskType.isRequest) &&
+          taskStatus.isInProgress &&
+          assigneeIsCurrentUser &&
+          hasWorkGroup
+        ),
+        icon: <CheckCircleIcon $color='crayola' />,
+        label: 'Зарегистрировать ФН',
+        onClick: () => {},
+      },
+      {
         key: MenuActionsKeysEnum.ExecuteTask,
         disabled: suspendRequestStatus.isApproved
           ? false
-          : (isFirstLineSupportRole && !!workGroup) ||
+          : (isFirstLineSupportRole && hasWorkGroup) ||
             !taskStatus.isInProgress ||
-            !isAssignedToCurrentUser ||
+            !assigneeIsCurrentUser ||
             taskExtendedStatus.isInReclassification ||
             suspendRequestStatus.isNew ||
             suspendRequestStatus.isInProgress,
@@ -109,7 +122,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
               key: MenuActionsKeysEnum.RequestReclassification,
               disabled:
                 !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
-                (isFirstLineSupportRole && !!workGroup) ||
+                (isFirstLineSupportRole && hasWorkGroup) ||
                 taskOlaStatus.isHalfExpired ||
                 taskType.isRequestTask ||
                 taskType.isIncidentTask ||

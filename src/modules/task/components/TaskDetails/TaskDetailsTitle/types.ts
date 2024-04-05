@@ -23,6 +23,7 @@ export type TaskDetailsTitleProps = Pick<
 
 export enum MenuActionsKeysEnum {
   RequestSuspend = 'RequestSuspend',
+  RegisterFN = 'RegisterFN',
   ExecuteTask = 'ExecuteTask',
   RequestReclassification = 'RequestReclassification',
   CancelReclassification = 'CancelReclassification',
