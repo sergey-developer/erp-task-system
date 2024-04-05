@@ -15,6 +15,7 @@ export type TaskDetailsTitleProps = Pick<
 > & {
   onReloadTask: EmptyFn
   onExecuteTask: EmptyFn
+  onRegisterFN: EmptyFn
   onRequestSuspend: EmptyFn
   onRequestReclassification: EmptyFn
   onUpdateDescription: EmptyFn

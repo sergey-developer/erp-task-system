@@ -17,6 +17,7 @@ import {
   CheckCircleIcon,
   EditTwoToneIcon,
   FieldTimeIcon,
+  MailIcon,
   MenuIcon,
   PauseCircleIcon,
   QuestionCircleIcon,
@@ -38,6 +39,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   assignee,
   onReloadTask,
   onExecuteTask,
+  onRegisterFN,
   onRequestSuspend,
   onRequestReclassification,
   onUpdateDescription,
@@ -81,9 +83,9 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
           assigneeIsCurrentUser &&
           hasWorkGroup
         ),
-        icon: <CheckCircleIcon $color='crayola' />,
+        icon: <MailIcon />,
         label: 'Зарегистрировать ФН',
-        onClick: () => {},
+        onClick: onRegisterFN,
       },
       {
         key: MenuActionsKeysEnum.ExecuteTask,

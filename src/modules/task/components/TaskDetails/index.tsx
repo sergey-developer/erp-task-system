@@ -591,6 +591,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       suspendRequest={task.suspendRequest}
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={onOpenExecuteTaskModal}
+      onRegisterFN={() => {}}
       onRequestSuspend={debouncedToggleRequestTaskSuspendModal}
       onRequestReclassification={onOpenTaskReclassificationModal}
       onUpdateDescription={debouncedToggleUpdateDescriptionModal}
