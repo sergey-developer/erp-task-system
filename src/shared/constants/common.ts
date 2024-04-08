@@ -12,6 +12,7 @@ export const CREATE_TEXT = 'Создать'
 export const SAVE_TEXT = 'Сохранить'
 export const UPDATE_TEXT = 'Обновить'
 export const ADD_TEXT = 'Добавить'
+export const SEND_TEXT = 'Отправить'
 export const CONFIRM_TEXT = 'Подтвердить'
 
 export const LAYOUT_CONTENT_PADDING_V = 32

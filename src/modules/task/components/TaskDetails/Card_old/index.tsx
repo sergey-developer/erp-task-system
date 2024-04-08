@@ -468,6 +468,7 @@ const TaskCard: FC<TaskCardProps> = ({
       suspendRequest={task.suspendRequest}
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={handleOpenExecuteTaskModal}
+      onRegisterFN={() => {}}
       onRequestSuspend={debouncedOpenRequestTaskSuspendModal}
       onRequestReclassification={handleOpenTaskReclassificationModal}
       onUpdateDescription={() => {}}
