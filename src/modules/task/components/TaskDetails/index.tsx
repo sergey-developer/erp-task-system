@@ -72,6 +72,12 @@ import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { CreateRegistrationFNRequestModalProps } from '../CreateRegistrationFNRequestModal/types'
+
+const CreateRegistrationFNRequestModal = React.lazy(
+  () => import('modules/task/components/CreateRegistrationFNRequestModal'),
+)
+
 const ConfirmCancelReclassificationRequestModal = React.lazy(
   () => import('modules/task/components/ConfirmCancelReclassificationRequestModal'),
 )
@@ -234,6 +240,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   ])
 
   const [
+    createRegistrationFNRequestModalOpened,
+    { toggle: toggleCreateRegistrationFNRequestModal },
+  ] = useBoolean(false)
+
+  const debouncedToggleCreateRegistrationFNRequestModal = useDebounceFn(
+    toggleCreateRegistrationFNRequestModal,
+  )
+
+  const [
     executeTaskModalOpened,
     { setTrue: openExecuteTaskModal, setFalse: closeExecuteTaskModal },
   ] = useBoolean(false)
@@ -337,6 +352,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const debouncedToggleConfirmCancelReclassificationRequestModal = useDebounceFn(
     toggleConfirmCancelReclassificationRequestModal,
+  )
+
+  const onCreateRegistrationFNRequestModal = useCallback<
+    CreateRegistrationFNRequestModalProps['onSubmit']
+  >(
+    async (values, setFields) => {
+      try {
+        toggleCreateRegistrationFNRequestModal()
+      } catch {}
+    },
+    [toggleCreateRegistrationFNRequestModal],
   )
 
   const onCancelReclassificationRequest = useCallback(async () => {
@@ -591,7 +617,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       suspendRequest={task.suspendRequest}
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={onOpenExecuteTaskModal}
-      onRegisterFN={() => {}}
+      onRegisterFN={debouncedToggleCreateRegistrationFNRequestModal}
       onRequestSuspend={debouncedToggleRequestTaskSuspendModal}
       onRequestReclassification={onOpenTaskReclassificationModal}
       onUpdateDescription={debouncedToggleUpdateDescriptionModal}
@@ -854,6 +880,26 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             confirmLoading={updateTaskDeadlineIsLoading}
             olaNextBreachTime={task.olaNextBreachTime}
             previousOlaNextBreachTime={task.previousOlaNextBreachTime}
+          />
+        </React.Suspense>
+      )}
+
+      {createRegistrationFNRequestModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback open onCancel={debouncedToggleCreateRegistrationFNRequestModal} />
+          }
+        >
+          <CreateRegistrationFNRequestModal
+            open={createRegistrationFNRequestModalOpened}
+            onSubmit={onCreateRegistrationFNRequestModal}
+            onCancel={debouncedToggleCreateRegistrationFNRequestModal}
+            onCreateAttachment={() => {}}
+            confirmLoading={false}
+            changeTypes={[{ id: 1, title: 'title1' }]}
+            changeTypesIsLoading={false}
+            email={['email1', 'email2']}
+            emailAsCopy={['emailAsCopy1', 'emailAsCopy2']}
           />
         </React.Suspense>
       )}

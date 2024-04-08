@@ -69,10 +69,6 @@ const addModeProps: Readonly<Pick<EquipmentFormModalProps, 'okText'>> = {
   okText: 'Добавить',
 }
 
-const editModeProps: Readonly<Pick<EquipmentFormModalProps, 'okText'>> = {
-  okText: 'Сохранить',
-}
-
 const getContainer = () => screen.getByTestId('equipment-form-modal')
 const findContainer = (): Promise<HTMLElement> => screen.findByTestId('equipment-form-modal')
 
@@ -153,9 +149,7 @@ const expectNomenclatureLoadingFinished = () =>
 
 // title field
 const getTitleFormItem = () => within(getContainer()).getByTestId('title-form-item')
-
 const getTitleLabel = () => within(getTitleFormItem()).getByLabelText('Наименование')
-
 const getTitleField = () => within(getTitleFormItem()).getByPlaceholderText('Введите наименование')
 
 const setTitle = async (user: UserEvent, value: string) => {
@@ -250,9 +244,7 @@ const getMeasurementUnitLabel = () => within(getMeasurementUnitFormItem()).getBy
 
 // price field
 const getPriceFormItem = () => within(getContainer()).getByTestId('price-form-item')
-
 const getPriceLabel = () => within(getPriceFormItem()).getByLabelText('Стоимость')
-
 const getPriceField = () => within(getPriceFormItem()).getByPlaceholderText('Введите стоимость')
 
 const setPrice = async (user: UserEvent, value: number) => {
@@ -1238,7 +1230,7 @@ describe('Модалка оборудования', () => {
   })
 
   describe('Изображения оборудования', () => {
-    test('Отображается корректно', async () => {
+    test('Кнопка и заголовок отображаются', async () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
       const nomenclature = warehouseFixtures.nomenclature()
 

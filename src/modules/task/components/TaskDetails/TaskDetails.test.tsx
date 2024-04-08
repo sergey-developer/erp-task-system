@@ -2,6 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 
 import { testUtils as confirmExecuteTaskReclassificationTasksModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskReclassificationTasksModal/ConfirmExecuteTaskReclassificationTasksModal.test'
 import { testUtils as confirmExecuteTaskRegistrationFNModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskRegistrationFNModal/ConfirmExecuteTaskRegistrationFNModal.test'
+import { testUtils as createRegistrationFNRequestModalTestUtils } from 'modules/task/components/CreateRegistrationFNRequestModal/CreateRegistrationFNRequestModal.test'
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 
@@ -23,6 +24,7 @@ import {
 
 import {
   canExecuteTaskProps,
+  canRegisterFNItemProps,
   testUtils as cardTitleTestUtils,
 } from './TaskDetailsTitle/TaskDetailsTitle.test'
 import TaskDetails, { TaskDetailsProps } from './index'
@@ -193,6 +195,29 @@ describe('Карточка заявки', () => {
       await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
       await executeTaskModalTestUtils.clickSubmitButton(user)
       await waitFor(() => expect(props.onClose).toBeCalledTimes(1))
+    })
+  })
+
+  describe('Зарегистрировать ФН', () => {
+    test('После успешного запроса закрывается модалка', async () => {
+      const task = taskFixtures.task({ id: props.taskId, ...canRegisterFNItemProps })
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const { user } = render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth({ userId: canRegisterFNItemProps.assignee!.id }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      await cardTitleTestUtils.openMenu(user)
+      await cardTitleTestUtils.clickRegisterFNMenuItem(user)
+
+      const modal = await createRegistrationFNRequestModalTestUtils.findContainer()
+      await createRegistrationFNRequestModalTestUtils.openChangeTypeSelect(user)
+      await createRegistrationFNRequestModalTestUtils.setChangeType(user, 'title1')
+      await createRegistrationFNRequestModalTestUtils.setAttachment(user)
+      await createRegistrationFNRequestModalTestUtils.clickSubmitButton(user)
+
+      expect(modal).not.toBeInTheDocument()
     })
   })
 
