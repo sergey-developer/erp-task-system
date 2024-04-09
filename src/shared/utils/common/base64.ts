@@ -1,6 +1,7 @@
+import { Base64Type } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 
-export const parseBase64 = (base64: string): MaybeUndefined<string> => {
+export const parseBase64 = (base64: Base64Type): MaybeUndefined<string> => {
   try {
     return window.atob(base64)
   } catch (error) {
@@ -8,8 +9,7 @@ export const parseBase64 = (base64: string): MaybeUndefined<string> => {
   }
 }
 
-// todo: rename to base64ToBytes
-export const base64ToArrayBuffer = (base64: string): Uint8Array => {
+export const base64ToBytes = (base64: Base64Type): Uint8Array => {
   const binaryString = parseBase64(base64) || ''
   const binaryLen = binaryString.length
   const bytes = new Uint8Array(binaryLen)

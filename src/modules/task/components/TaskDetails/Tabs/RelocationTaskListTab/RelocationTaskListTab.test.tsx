@@ -1,8 +1,8 @@
 import { screen, within } from '@testing-library/react'
 
-import { CommonRouteEnum } from 'configs/routes'
-
 import { testUtils as relocationTaskListTestUtils } from 'modules/task/components/RelocationTaskList/RelocationTaskList.test'
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { getRelocationTaskListErrorMsg } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
@@ -99,7 +99,7 @@ describe('Вкладка списка заявок на перемещение',
       render(<RelocationTaskListTab {...props} />, {
         store: getStoreWithAuth({ userId: props.task.assignee!.id }, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksCreate] }),
           },
         }),
       })
@@ -124,7 +124,9 @@ describe('Вкладка списка заявок на перемещение',
 
       render(<RelocationTaskListTab {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }) },
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksCreate] }),
+          },
         }),
       })
 
@@ -143,7 +145,7 @@ describe('Вкладка списка заявок на перемещение',
       const { user } = renderInRoute_latest(
         [
           {
-            path: CommonRouteEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTaskList,
             element: <RelocationTaskListTab {...props} />,
           },
           {
@@ -151,11 +153,11 @@ describe('Вкладка списка заявок на перемещение',
             element: <CreateRelocationTaskSimplifiedPage />,
           },
         ],
-        { initialEntries: [CommonRouteEnum.DesktopTaskList], initialIndex: 0 },
+        { initialEntries: [TasksRoutesEnum.DesktopTaskList], initialIndex: 0 },
         {
           store: getStoreWithAuth({ userId: props.task.assignee!.id }, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_CREATE'] }),
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksCreate] }),
             },
           }),
         },
@@ -192,7 +194,7 @@ describe('Вкладка списка заявок на перемещение',
       const { user } = renderInRoute_latest(
         [
           {
-            path: CommonRouteEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTaskList,
             element: <RelocationTaskListTab {...props} />,
           },
           {
@@ -200,7 +202,7 @@ describe('Вкладка списка заявок на перемещение',
             element: <CreateDocumentsPackagePage />,
           },
         ],
-        { initialEntries: [CommonRouteEnum.DesktopTaskList], initialIndex: 0 },
+        { initialEntries: [TasksRoutesEnum.DesktopTaskList], initialIndex: 0 },
       )
 
       const button = testUtils.getCreateDocumentsPackageButton()
@@ -267,7 +269,7 @@ describe('Вкладка списка заявок на перемещение',
       const { user } = renderInRoute_latest(
         [
           {
-            path: CommonRouteEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTaskList,
             element: <RelocationTaskListTab {...props} />,
           },
           {
@@ -275,7 +277,7 @@ describe('Вкладка списка заявок на перемещение',
             element: <RelocationTaskListPage />,
           },
         ],
-        { initialEntries: [CommonRouteEnum.DesktopTaskList], initialIndex: 0 },
+        { initialEntries: [TasksRoutesEnum.DesktopTaskList], initialIndex: 0 },
       )
 
       await testUtils.expectLoadingFinished()

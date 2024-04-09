@@ -1,10 +1,11 @@
 import { FC } from 'react'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import CatalogList, { CatalogListProps } from 'modules/warehouse/components/CatalogList'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
-const items: CatalogListProps['items'] = [
+import Catalogs, { CatalogsProps } from 'components/Catalogs'
+
+const items: CatalogsProps['items'] = [
   {
     link: WarehouseRouteEnum.EquipmentNomenclatures,
     text: 'Оборудование',
@@ -20,7 +21,7 @@ const items: CatalogListProps['items'] = [
 const ReserveCatalogListPage: FC = () => {
   return (
     <div data-testid='reserve-catalog-list-page'>
-      <CatalogList data-testid='reserve-catalog-list' items={items} />
+      <Catalogs data-testid='reserve-catalog-list' items={items} />
     </div>
   )
 }

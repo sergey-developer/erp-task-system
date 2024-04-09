@@ -1,9 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { CommonRouteEnum } from 'configs/routes'
-
 import { AuthRouteEnum } from 'modules/auth/constants/routes'
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
 
 import { testUtils as privateLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
@@ -76,7 +75,7 @@ describe('Детальный аватар пользователя', () => {
 
       const { user, checkRouteChanged, getCurrentRoute } = renderInRoute(
         <App />,
-        CommonRouteEnum.DesktopTaskList,
+        TasksRoutesEnum.DesktopTaskList,
         { useBrowserRouter: false },
       )
 

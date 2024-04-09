@@ -13,6 +13,14 @@ import {
   GetHistoryNomenclatureOperationsReportQueryArgs,
   GetHistoryNomenclatureOperationsReportSuccessResponse,
   GetHistoryNomenclatureOperationsReportXlsxQueryArgs,
+  GetMacroregionsMtsrReportQueryArgs,
+  GetMacroregionsMtsrReportSuccessResponse,
+  GetSupportGroupsMtsrReportQueryArgs,
+  GetSupportGroupsMtsrReportSuccessResponse,
+  GetUsersMtsrReportQueryArgs,
+  GetUsersMtsrReportSuccessResponse,
+  GetWorkGroupsMtsrReportQueryArgs,
+  GetWorkGroupsMtsrReportSuccessResponse,
 } from 'modules/reports/models'
 import {
   GetAmountEquipmentSpentReportTransformedSuccessResponse,
@@ -119,6 +127,46 @@ const reportsApiService = baseApiService.injectEndpoints({
         meta,
       }),
     }),
+
+    getMacroregionsMtsrReport: build.query<
+      GetMacroregionsMtsrReportSuccessResponse,
+      GetMacroregionsMtsrReportQueryArgs
+    >({
+      query: (params) => ({
+        url: ReportsApiEnum.GetMacroregionsMtsrReport,
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+    }),
+    getSupportGroupsMtsrReport: build.query<
+      GetSupportGroupsMtsrReportSuccessResponse,
+      GetSupportGroupsMtsrReportQueryArgs
+    >({
+      query: (params) => ({
+        url: ReportsApiEnum.GetSupportGroupsMtsrReport,
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+    }),
+    getWorkGroupsMtsrReport: build.query<
+      GetWorkGroupsMtsrReportSuccessResponse,
+      GetWorkGroupsMtsrReportQueryArgs
+    >({
+      query: (params) => ({
+        url: ReportsApiEnum.GetWorkGroupsMtsrReport,
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+    }),
+    getUsersMtsrReport: build.query<GetUsersMtsrReportSuccessResponse, GetUsersMtsrReportQueryArgs>(
+      {
+        query: (params) => ({
+          url: ReportsApiEnum.GetUsersMtsrReport,
+          method: HttpMethodEnum.Get,
+          params,
+        }),
+      },
+    ),
   }),
   overrideExisting: false,
 })
@@ -132,6 +180,11 @@ export const {
 
   useGetHistoryNomenclatureOperationsReportQuery,
   useLazyGetHistoryNomenclatureOperationsReportXlsxQuery,
+
+  useGetMacroregionsMtsrReportQuery,
+  useGetSupportGroupsMtsrReportQuery,
+  useGetWorkGroupsMtsrReportQuery,
+  useGetUsersMtsrReportQuery,
 
   endpoints,
 } = reportsApiService
