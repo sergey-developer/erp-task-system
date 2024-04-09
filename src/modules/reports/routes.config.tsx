@@ -4,7 +4,7 @@ import { RouteObject } from 'react-router-dom'
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import ReportsPage from 'modules/reports/pages/ReportsPage'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { userHasPermissions } from 'modules/user/utils'
+import { checkRoleIsFirstLineSupport, userHasPermissions } from 'modules/user/utils'
 
 import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
 import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
@@ -28,14 +28,8 @@ export const route: Readonly<RouteObject> = {
         <ProtectedRoute
           component={<ReportsPage />}
           permitted={(user) =>
-            userHasPermissions(
-              user,
-              [
-                UserPermissionsEnum.FiscalAccumulatorTasksRead,
-                UserPermissionsEnum.ReportMainIndicatorsRead,
-              ],
-              false,
-            )
+            !checkRoleIsFirstLineSupport(user.role) ||
+            userHasPermissions(user, [UserPermissionsEnum.ReportMainIndicatorsRead], false)
           }
         />
       ),
@@ -45,9 +39,7 @@ export const route: Readonly<RouteObject> = {
       element: (
         <ProtectedRoute
           component={<FiscalAccumulatorTasksReportPage />}
-          permitted={(user) =>
-            userHasPermissions(user, [UserPermissionsEnum.FiscalAccumulatorTasksRead])
-          }
+          permitted={(user) => !checkRoleIsFirstLineSupport(user.role)}
         />
       ),
       handle: {
