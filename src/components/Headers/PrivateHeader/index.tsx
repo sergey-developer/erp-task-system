@@ -66,7 +66,7 @@ const PrivateHeader: FC = () => {
     useUpdateUserStatusMutation()
 
   const navMenuItems = useMemo<NavMenuProps['items']>(
-    () => (userMe ? mapNavMenuConfig(navMenuConfig, userMe.permissions) : []),
+    () => (userMe ? mapNavMenuConfig(navMenuConfig, userMe.permissions, userMe.role) : []),
     [userMe],
   )
 
