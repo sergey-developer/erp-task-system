@@ -3,4 +3,5 @@ export enum CatalogsApiEnum {
   GetSubTaskTemplateList = '/catalogs/templates/',
   GetUserStatusList = '/catalogs/statuses/',
   GetLocations = '/catalogs/locations/',
+  GetFaChangeTypes = '/fa-change-types/',
 }
