@@ -1,6 +1,6 @@
 import { ReportsRoutesEnum } from 'modules/reports/constants'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
-import { UserPermissionsEnum } from 'modules/user/constants'
+import { UserPermissionsEnum, UserRoleEnum } from 'modules/user/constants'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { FileTextIcon, ReadIcon, UnorderedListIcon } from 'components/Icons'
@@ -19,9 +19,10 @@ const navMenuConfig: NavMenuItem[] = [
     icon: FileTextIcon,
     link: ReportsRoutesEnum.Reports,
     text: 'Отчёты',
-    visible: (permissions: UserPermissionsEnum[]) =>
-      permissions.includes(UserPermissionsEnum.FiscalAccumulatorTasksRead) ||
-      permissions.includes(UserPermissionsEnum.ReportMainIndicatorsRead),
+    visible: (permissions, role) =>
+      [UserRoleEnum.Engineer, UserRoleEnum.SeniorEngineer, UserRoleEnum.HeadOfDepartment].includes(
+        role,
+      ) || permissions.includes(UserPermissionsEnum.ReportMainIndicatorsRead),
   },
   {
     key: WarehouseRouteEnum.ManageWarehouses,

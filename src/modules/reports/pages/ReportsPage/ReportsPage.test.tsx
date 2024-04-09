@@ -7,7 +7,7 @@ import FiscalAccumulatorTasksReportPage from 'modules/reports/pages/FiscalAccumu
 import { testUtils as fiscalAccumulatorTasksReportPageTestUtils } from 'modules/reports/pages/FiscalAccumulatorTasksReportPage/FiscalAccumulatorTasksReportPage.test'
 import MtsrReportPage from 'modules/reports/pages/MtsrReportPage'
 import { testUtils as mtsrReportPageTestUtils } from 'modules/reports/pages/MtsrReportPage/MtsrReportPage.test'
-import { UserPermissionsEnum } from 'modules/user/constants'
+import { UserPermissionsEnum, UserRoleEnum } from 'modules/user/constants'
 
 import {
   mockGetCustomerListSuccess,
@@ -58,15 +58,18 @@ export const testUtils = {
 
 describe('Страница отчётов', () => {
   describe('Отчёт по фискальным накопителям', () => {
-    test('Отображается при наличии прав', async () => {
+    test(`Не отображается для роли ${UserRoleEnum.FirstLineSupport}`, async () => {
       render(<ReportsPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: {
-            ...getUserMeQueryMock({
-              permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead],
-            }),
-          },
-        }),
+        store: getStoreWithAuth({ userRole: UserRoleEnum.FirstLineSupport }),
+      })
+
+      const link = testUtils.queryFiscalAccumulatorTasksReportPageLink()
+      expect(link).not.toBeInTheDocument()
+    })
+
+    test(`Отображается для роли ${UserRoleEnum.Engineer}`, async () => {
+      render(<ReportsPage />, {
+        store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }),
       })
 
       const link = testUtils.getFiscalAccumulatorTasksReportPageLink()
@@ -75,10 +78,26 @@ describe('Страница отчётов', () => {
       expect(link).toHaveAttribute('href', ReportsRoutesEnum.FiscalAccumulatorTasksReport)
     })
 
-    test('Не отображается если нет прав', async () => {
-      render(<ReportsPage />)
-      const link = testUtils.queryFiscalAccumulatorTasksReportPageLink()
-      expect(link).not.toBeInTheDocument()
+    test(`Отображается для роли ${UserRoleEnum.SeniorEngineer}`, async () => {
+      render(<ReportsPage />, {
+        store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
+      })
+
+      const link = testUtils.getFiscalAccumulatorTasksReportPageLink()
+
+      expect(link).toBeInTheDocument()
+      expect(link).toHaveAttribute('href', ReportsRoutesEnum.FiscalAccumulatorTasksReport)
+    })
+
+    test(`Отображается для роли ${UserRoleEnum.HeadOfDepartment}`, async () => {
+      render(<ReportsPage />, {
+        store: getStoreWithAuth({ userRole: UserRoleEnum.HeadOfDepartment }),
+      })
+
+      const link = testUtils.getFiscalAccumulatorTasksReportPageLink()
+
+      expect(link).toBeInTheDocument()
+      expect(link).toHaveAttribute('href', ReportsRoutesEnum.FiscalAccumulatorTasksReport)
     })
 
     test('При клике переходит на страницу отчёта по фискальным накопителям', async () => {
@@ -97,13 +116,7 @@ describe('Страница отчётов', () => {
         ],
         { initialEntries: [ReportsRoutesEnum.Reports], initialIndex: 0 },
         {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({
-                permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead],
-              }),
-            },
-          }),
+          store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }),
         },
       )
 
