@@ -22,7 +22,7 @@ export type SimplifiedRelocationTaskEquipment = {
 }
 
 export type SimplifiedRelocationTaskFormFields = {
-  controller?: IdType
+  controller: IdType
   comment?: string
 
   equipmentsToShop?: SimplifiedRelocationTaskEquipment[]
