@@ -9,6 +9,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/task'
+import { UserPermissionsEnum } from 'modules/user/constants'
 
 import taskFixtures from '_tests_/fixtures/task'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
@@ -125,7 +126,7 @@ describe('Вкладки карточки заявки', () => {
       render(<Tabs {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksRead] }),
           },
         }),
       })
@@ -138,7 +139,7 @@ describe('Вкладки карточки заявки', () => {
       const { user } = render(<Tabs {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksRead] }),
           },
         }),
       })

@@ -11,6 +11,7 @@ import {
   useTaskType,
 } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useMatchUserPermissions, useUserRole } from 'modules/user/hooks'
 
 import {
@@ -55,8 +56,8 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   const suspendRequestStatus = useTaskSuspendRequestStatus(suspendRequest?.status)
 
   const permissions = useMatchUserPermissions([
-    'TASK_INTERNAL_DESCRIPTION_UPDATE',
-    'TASK_INTERNAL_DEADLINE_UPDATE',
+    UserPermissionsEnum.TaskInternalDescriptionUpdate,
+    UserPermissionsEnum.TaskInternalDeadlineUpdate,
   ])
   const assigneeIsCurrentUser = useIdBelongAuthUser(assignee?.id)
   const hasWorkGroup = !!workGroup

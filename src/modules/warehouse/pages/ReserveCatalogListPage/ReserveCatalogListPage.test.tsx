@@ -2,6 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { mockGetEquipmentNomenclatureListSuccess } from '_tests_/mocks/api'
@@ -64,7 +65,7 @@ describe('Страница списка справочников запасов'
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ'] }),
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
             },
           }),
         },
@@ -109,7 +110,7 @@ describe('Страница списка справочников запасов'
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['EQUIPMENTS_READ'] }),
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
             },
           }),
         },
@@ -135,7 +136,7 @@ describe('Страница списка справочников запасов'
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksRead] }),
             },
           }),
         },
@@ -180,7 +181,7 @@ describe('Страница списка справочников запасов'
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: ['RELOCATION_TASKS_READ'] }),
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksRead] }),
             },
           }),
         },

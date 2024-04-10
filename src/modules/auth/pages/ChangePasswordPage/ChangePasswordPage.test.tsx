@@ -1,14 +1,13 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { CommonRouteEnum } from 'configs/routes'
-
 import {
   INCORRECT_PASSWORD_ERROR_MSG,
   UPDATE_PASSWORD_SUCCESS_MSG,
   updatePasswordMessages,
 } from 'modules/auth/constants'
 import { AuthRouteEnum } from 'modules/auth/constants/routes'
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
 
 import { validationMessages } from 'shared/constants/validation'
 
@@ -228,7 +227,7 @@ describe('Страница смены пароля', () => {
 
       expect(notification).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(true)
-      expect(getCurrentRoute()).toBe(CommonRouteEnum.DesktopTaskList)
+      expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
     })
   })
 

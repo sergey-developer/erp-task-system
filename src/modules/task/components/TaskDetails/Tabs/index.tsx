@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 
 import { taskDetailsTabNameDict, TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { TaskModel } from 'modules/task/models'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 
 import Spinner from 'components/Spinner'
@@ -46,9 +47,9 @@ export type TabsProps = {
 
 const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description }) => {
   const permissions = useMatchUserPermissions([
-    'RELOCATION_TASKS_READ',
-    'TASK_HISTORY_DESCRIPTION_READ',
-    'TASK_HISTORY_DESCRIPTION_UPDATE',
+    UserPermissionsEnum.RelocationTasksRead,
+    UserPermissionsEnum.TaskHistoryDescriptionRead,
+    UserPermissionsEnum.TaskHistoryDescriptionUpdate,
   ])
 
   const tabsItems: AntdTabsProps['items'] = [

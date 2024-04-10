@@ -66,7 +66,7 @@ import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
-import { base64ToArrayBuffer, isFalse, isTrue } from 'shared/utils/common'
+import { base64ToBytes, isFalse, isTrue } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -461,7 +461,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }).unwrap()
 
         if (file) {
-          const blob = base64ToArrayBuffer(file)
+          const blob = base64ToBytes(file)
 
           if (blob) {
             downloadFile(blob, MimetypeEnum.Pdf, `Акт о выполненных работах ${task.id}`)

@@ -4,6 +4,7 @@ import React from 'react'
 
 import { CommonRouteEnum } from 'configs/routes'
 
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TaskListMapPage from 'modules/task/pages/TaskListMapPage'
 import { testUtils as taskListMapPageTestUtils } from 'modules/task/pages/TaskListMapPage/TaskListMapPage.test'
 import TaskListPage from 'modules/task/pages/TaskListPage'
@@ -59,7 +60,7 @@ describe('TaskListLayout', () => {
       const button = testUtils.getTaskListButton()
 
       expect(button).toBeInTheDocument()
-      expect(button).toHaveAttribute('value', CommonRouteEnum.DesktopTaskList)
+      expect(button).toHaveAttribute('value', TasksRoutesEnum.DesktopTaskList)
     })
 
     test('При клике переходит на страницу реестра заявок', async () => {
@@ -70,19 +71,19 @@ describe('TaskListLayout', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: CommonRouteEnum.DesktopTasks,
+            path: TasksRoutesEnum.DesktopTasks,
             element: <TaskListLayout />,
           },
           {
-            path: CommonRouteEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTaskList,
             element: <TaskListPage />,
           },
           {
-            path: CommonRouteEnum.DesktopTaskListMap,
+            path: TasksRoutesEnum.DesktopTaskListMap,
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [CommonRouteEnum.DesktopTasks], initialIndex: 0 },
+        { initialEntries: [TasksRoutesEnum.DesktopTasks], initialIndex: 0 },
       )
 
       await testUtils.clickTaskListButton(user)
@@ -104,7 +105,7 @@ describe('TaskListLayout', () => {
       const button = testUtils.getTaskListMapButton()
 
       expect(button).toBeInTheDocument()
-      expect(button).toHaveAttribute('value', CommonRouteEnum.DesktopTaskListMap)
+      expect(button).toHaveAttribute('value', TasksRoutesEnum.DesktopTaskListMap)
     })
 
     test('При клике переходит на страницу карты с заявками', async () => {
@@ -115,19 +116,19 @@ describe('TaskListLayout', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: CommonRouteEnum.DesktopTasks,
+            path: TasksRoutesEnum.DesktopTasks,
             element: <TaskListLayout />,
           },
           {
-            path: CommonRouteEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTaskList,
             element: <TaskListPage />,
           },
           {
-            path: CommonRouteEnum.DesktopTaskListMap,
+            path: TasksRoutesEnum.DesktopTaskListMap,
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [CommonRouteEnum.DesktopTasks], initialIndex: 0 },
+        { initialEntries: [TasksRoutesEnum.DesktopTasks], initialIndex: 0 },
       )
 
       await testUtils.clickTaskListMapButton(user)

@@ -189,7 +189,7 @@ describe('Страница отчета истории операций по н�
     test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
-      const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToArrayBuffer')
+      const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToBytes')
       const fakeArrayBuffer = new Uint8Array()
       base64ToArrayBufferSpy.mockReturnValueOnce(fakeArrayBuffer)
 
