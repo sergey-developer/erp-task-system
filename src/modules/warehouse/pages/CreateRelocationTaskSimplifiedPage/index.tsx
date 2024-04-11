@@ -701,7 +701,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
               <Col span={8}>
                 <Form.Item
                   data-testid='controller-form-item'
-                  rules={equipmentsToShopFormValue?.length ? onlyRequiredRules : undefined}
+                  rules={onlyRequiredRules}
                   label='Контролер'
                   name='controller'
                 >
