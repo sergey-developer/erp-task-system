@@ -47,3 +47,12 @@ export const deleteCompletedWorkUrl = (id: IdType): string =>
 
 export const createCompletedWorkUrl = (id: IdType): string =>
   generateApiPath(TaskApiEnum.CreateCompletedWork, { id: String(id) })
+
+export const createTaskRegistrationFNRequestUrl = (id: IdType): string =>
+  generateApiPath(TaskApiEnum.CreateTaskRegistrationFNRequest, { id: String(id) })
+
+export const getTaskRegistrationRequestRecipientsFNUrl = (id: IdType): string =>
+  generateApiPath(TaskApiEnum.GetTaskRegistrationRequestRecipientsFN, { id: String(id) })
+
+export const createTaskAttachmentUrl = (id: IdType): string =>
+  generateApiPath(TaskApiEnum.CreateTaskAttachment, { id: String(id) })
