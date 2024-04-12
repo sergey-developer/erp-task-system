@@ -1,17 +1,23 @@
 import { FormInstance, UploadProps } from 'antd'
+import { UploadFile } from 'antd/es/upload'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { FaChangeTypesModel } from 'shared/models/catalogs/faChangeTypes'
 import { IdType } from 'shared/types/common'
+import { FileResponse } from 'shared/types/file'
 
 export type CreateRegistrationFNRequestModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel' | 'confirmLoading'>
 > & {
-  changeTypes: { id: number; title: string }[]
+  values: Partial<Pick<CreateRegistrationFNRequestFormFields, 'changeType'>>
+
+  changeTypes: FaChangeTypesModel
   changeTypesIsLoading: boolean
 
   email: string[]
   emailAsCopy: string[]
+  recipientsIsLoading: boolean
 
   onCreateAttachment: NonNullable<UploadProps['customRequest']>
 
@@ -22,6 +28,6 @@ export type CreateRegistrationFNRequestModalProps = Required<
 }
 
 export type CreateRegistrationFNRequestFormFields = {
-  changeType: string
-  attachments: IdType[]
+  changeType: IdType
+  attachments: UploadFile<FileResponse>[]
 }

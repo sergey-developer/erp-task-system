@@ -19,6 +19,8 @@ export enum TaskApiEnum {
 
   UpdateTaskAssignee = '/tasks/:id/assignee',
 
+  CreateTaskAttachment = '/tasks/:id/attachments',
+
   CreateTaskComment = '/tasks/:id/comments',
   GetTaskCommentList = '/tasks/:id/comments',
 
@@ -39,6 +41,9 @@ export enum TaskApiEnum {
 
   CreateCompletedWork = '/tasks/:id/completed-works',
   DeleteCompletedWork = '/completed-works/:id',
+
+  CreateTaskRegistrationFNRequest = '/tasks/:id/fa-registrations',
+  GetTaskRegistrationRequestRecipientsFN = '/tasks/:id/fa-notice-recipients',
 }
 
 export enum TaskApiTagEnum {

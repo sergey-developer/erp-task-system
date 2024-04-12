@@ -1,11 +1,11 @@
 import { Flex, Form, Select, Space, Typography, Upload } from 'antd'
-import stubFalse from 'lodash/stubFalse'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import { renderUploadedFile } from 'modules/attachment/utils'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import Label from 'components/Label'
+import LoadingArea from 'components/LoadingArea'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { SEND_TEXT } from 'shared/constants/common'
@@ -21,11 +21,14 @@ import {
 const { Text } = Typography
 
 const CreateRegistrationFNRequestModal: FC<CreateRegistrationFNRequestModalProps> = ({
+  values,
+
   changeTypes,
   changeTypesIsLoading,
 
   email,
   emailAsCopy,
+  recipientsIsLoading,
 
   onCreateAttachment,
 
@@ -38,6 +41,10 @@ const CreateRegistrationFNRequestModal: FC<CreateRegistrationFNRequestModalProps
   const onFinish = async (values: CreateRegistrationFNRequestFormFields) => {
     await onSubmit(values, form.setFields)
   }
+
+  useEffect(() => {
+    form.setFieldsValue(values)
+  }, [form, values])
 
   return (
     <BaseModal
@@ -80,7 +87,6 @@ const CreateRegistrationFNRequestModal: FC<CreateRegistrationFNRequestModalProps
             {...filesFormItemProps}
           >
             <Upload
-              beforeUpload={stubFalse}
               multiple
               disabled={isLoading}
               customRequest={onCreateAttachment}
@@ -93,11 +99,15 @@ const CreateRegistrationFNRequestModal: FC<CreateRegistrationFNRequestModalProps
 
         <Flex justify='space-between'>
           <Label data-testid='email' label='Получатели:'>
-            <Space direction='vertical'>{email.map((e) => e)}</Space>
+            <LoadingArea isLoading={recipientsIsLoading}>
+              <Space direction='vertical'>{email.map((e) => e)}</Space>
+            </LoadingArea>
           </Label>
 
           <Label data-testid='email-as-copy' label='Получатели копии:'>
-            <Space direction='vertical'>{emailAsCopy.map((e) => e)}</Space>
+            <LoadingArea isLoading={recipientsIsLoading}>
+              <Space direction='vertical'>{emailAsCopy.map((e) => e)}</Space>
+            </LoadingArea>
           </Label>
         </Flex>
       </Flex>

@@ -67,7 +67,7 @@ export const task = (
   fiscalAccumulator: isUndefined(props?.fiscalAccumulator)
     ? {
         isRequestApproved: false,
-        isRequestSended: false,
+        isRequestSent: false,
       }
     : props!.fiscalAccumulator,
   previousDescription: isUndefined(props?.previousDescription)
