@@ -6,17 +6,20 @@ import { validationMessages } from 'shared/constants/validation'
 
 import { buttonTestUtils, fakeEmail, fakeWord, render, selectTestUtils } from '_tests_/utils'
 
+import catalogsFixtures from '../../../../_tests_/fixtures/catalogs'
 import CreateRegistrationFNRequestModal from './index'
 import { CreateRegistrationFNRequestModalProps } from './types'
 
 const props: CreateRegistrationFNRequestModalProps = {
   open: true,
   confirmLoading: false,
+  values: {},
   onSubmit: jest.fn(),
   onCancel: jest.fn(),
 
   email: [],
   emailAsCopy: [],
+  recipientsIsLoading: false,
 
   changeTypes: [],
   changeTypesIsLoading: false,
@@ -141,7 +144,7 @@ describe('Модалка создания запроса на регистрац
 
   describe('Тип замены ФН', () => {
     test('Можно выбрать значение', async () => {
-      const changeType = { id: 1, title: 'title' }
+      const changeType = catalogsFixtures.faChangeTypeListItem()
 
       const { user } = render(
         <CreateRegistrationFNRequestModal {...props} changeTypes={[changeType]} />,

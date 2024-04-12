@@ -22,6 +22,7 @@ export { default as DeleteIcon } from './DeleteIcon'
 export { default as CheckIcon } from './CheckIcon'
 export { default as FieldTimeIcon } from './FieldTimeIcon'
 export { default as MailIcon } from './MailIcon'
+export { default as FileTextIcon } from './FileTextIcon'
 
 export { default as ExclamationCircleIcon } from './ExclamationCircleIcon'
 export { default as CheckCircleIcon } from './CheckCircleIcon'

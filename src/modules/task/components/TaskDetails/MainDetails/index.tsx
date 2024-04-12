@@ -6,6 +6,7 @@ import { badgeByTaskStatus, iconByTaskStatus } from 'modules/task/components/Tas
 import { taskStatusDict } from 'modules/task/constants/task'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useMatchUserPermissions, useUserRole } from 'modules/user/hooks'
 
 import { FieldTimeIcon } from 'components/Icons'
@@ -60,8 +61,8 @@ const MainDetails: FC<MainDetailsProps> = ({
 }) => {
   const { isFirstLineSupportRole } = useUserRole()
   const permissions = useMatchUserPermissions([
-    'TASK_HISTORY_DEADLINE_READ',
-    'TASK_HISTORY_DEADLINE_UPDATE',
+    UserPermissionsEnum.TaskHistoryDeadlineRead,
+    UserPermissionsEnum.TaskHistoryDeadlineUpdate,
   ])
 
   const { olaStatusTextType, completeAt } = useMemo(

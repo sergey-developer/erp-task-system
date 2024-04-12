@@ -15,6 +15,10 @@ import {
 } from 'shared/models/catalogs/userStatus'
 import { MaybeUndefined } from 'shared/types/utils'
 
+import {
+  GetFaChangeTypesQueryArgs,
+  GetFaChangeTypesSuccessResponse,
+} from '../models/catalogs/faChangeTypes'
 import { baseApiService } from './baseApi'
 
 export const catalogsApiService = baseApiService.injectEndpoints({
@@ -48,6 +52,15 @@ export const catalogsApiService = baseApiService.injectEndpoints({
         params,
       }),
     }),
+    getFaChangeTypes: build.query<
+      GetFaChangeTypesSuccessResponse,
+      MaybeUndefined<GetFaChangeTypesQueryArgs>
+    >({
+      query: () => ({
+        url: CatalogsApiEnum.GetFaChangeTypes,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
 })
 
@@ -60,6 +73,8 @@ export const {
 
   useGetLocationsQuery,
   useLazyGetLocationsQuery,
+
+  useGetFaChangeTypesQuery,
 
   endpoints,
 } = catalogsApiService

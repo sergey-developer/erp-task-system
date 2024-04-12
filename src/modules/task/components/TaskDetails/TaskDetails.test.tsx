@@ -145,7 +145,7 @@ describe('Карточка заявки', () => {
         ...canExecuteTaskProps,
         hasRelocationTasks: false,
         fiscalAccumulator: {
-          isRequestSended: true,
+          isRequestSent: true,
           isRequestApproved: false,
         },
       })

@@ -4,6 +4,7 @@ import moment from 'moment-timezone'
 
 import { DATE_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
+import { UPDATE_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
 import userFixtures from '_tests_/fixtures/user'
@@ -69,7 +70,7 @@ const setPeriod = async (user: UserEvent) => {
 
 // submit button
 const clickSubmitButton = async (user: UserEvent) => {
-  const button = buttonTestUtils.getButtonIn(getContainer(), 'Обновить')
+  const button = buttonTestUtils.getButtonIn(getContainer(), UPDATE_TEXT)
   await user.click(button)
 }
 
