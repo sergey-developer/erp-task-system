@@ -78,12 +78,12 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
       },
       {
         key: MenuActionsKeysEnum.RegisterFN,
-        // disabled: !(
-        //   (taskType.isIncident || taskType.isRequest) &&
-        //   taskStatus.isInProgress &&
-        //   assigneeIsCurrentUser &&
-        //   hasWorkGroup
-        // ),
+        disabled: !(
+          (taskType.isIncident || taskType.isRequest) &&
+          taskStatus.isInProgress &&
+          assigneeIsCurrentUser &&
+          hasWorkGroup
+        ),
         icon: <MailIcon />,
         label: 'Зарегистрировать ФН',
         onClick: onRegisterFN,
