@@ -554,9 +554,10 @@ const taskApiService = baseApiService
         CreateTaskRegistrationFNRequestSuccessResponse,
         CreateTaskRegistrationFNRequestMutationArgs
       >({
-        query: ({ taskId }) => ({
+        query: ({ taskId, ...data }) => ({
           url: createTaskRegistrationFNRequestUrl(taskId),
           method: HttpMethodEnum.Post,
+          data,
         }),
       }),
       getTaskRegistrationRequestRecipientsFN: build.query<

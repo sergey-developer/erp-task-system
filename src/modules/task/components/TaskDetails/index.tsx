@@ -420,6 +420,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   >(
     async (values, setFields) => {
       if (!task) return
+
       try {
         await createTaskRegistrationFNRequest({
           taskId: task.id,
