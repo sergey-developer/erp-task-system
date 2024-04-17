@@ -19,11 +19,13 @@ export type GetInventorizationsSortKey =
 
 export type GetInventorizationsSortValue = ExtendSortKey<GetInventorizationsSortKey>
 
+export type GetInventorizationsFilter = Partial<{
+  types: InventorizationTypeEnum[]
+  statuses: InventorizationStatusEnum[]
+}>
+
 export type GetInventorizationsQueryArgs = PaginationParams &
   SortParams<GetInventorizationsSortValue> &
-  Partial<{
-    types: InventorizationTypeEnum[]
-    statuses: InventorizationStatusEnum[]
-  }>
+  GetInventorizationsFilter
 
 export type GetInventorizationsSuccessResponse = PaginationResponse<InventorizationListItemModel>
