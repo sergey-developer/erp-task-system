@@ -254,7 +254,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     { skip: !task?.id || !createRegistrationFNRequestModalOpened },
   )
 
-  const [createTaskAttachment] = useCreateTaskAttachment()
+  const [createTaskAttachment, { isLoading: createTaskAttachmentIsLoading }] =
+    useCreateTaskAttachment()
 
   const [createTaskRegistrationFNRequest, { isLoading: createTaskRegistrationFNRequestIsLoading }] =
     useCreateTaskRegistrationFNRequest()
@@ -971,6 +972,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             onCancel={debouncedToggleCreateRegistrationFNRequestModal}
             values={createRegistrationFNRequestValues}
             onCreateAttachment={onCreateTaskAttachment}
+            createAttachmentIsLoading={createTaskAttachmentIsLoading}
             confirmLoading={createTaskRegistrationFNRequestIsLoading}
             changeTypes={faChangeTypes}
             changeTypesIsLoading={faChangeTypesIsFetching}

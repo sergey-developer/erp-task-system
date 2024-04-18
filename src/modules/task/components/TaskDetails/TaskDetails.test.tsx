@@ -11,12 +11,12 @@ import taskFixtures from '_tests_/fixtures/task'
 import {
   mockCreateTaskAttachmentSuccess,
   mockCreateTaskRegistrationFNRequestSuccess,
+  mockGetFaChangeTypesSuccess,
   mockGetTaskReclassificationRequestSuccess,
   mockGetTaskRegistrationRequestRecipientsFNSuccess,
   mockGetTaskSuccess,
   mockResolveTaskSuccess,
 } from '_tests_/mocks/api'
-import { mockGetFaChangeTypesSuccess } from '_tests_/mocks/api/catalogs/faChangeTypes'
 import {
   fakeId,
   fakeWord,

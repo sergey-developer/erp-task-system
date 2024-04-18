@@ -25,6 +25,7 @@ const props: CreateRegistrationFNRequestModalProps = {
   changeTypesIsLoading: false,
 
   onCreateAttachment: jest.fn(),
+  createAttachmentIsLoading: false,
 }
 
 const getContainer = () => screen.getByTestId('create-registration-fn-request-modal')
