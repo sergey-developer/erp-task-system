@@ -20,6 +20,7 @@ export type CreateRegistrationFNRequestModalProps = Required<
   recipientsIsLoading: boolean
 
   onCreateAttachment: NonNullable<UploadProps['customRequest']>
+  createAttachmentIsLoading: boolean
 
   onSubmit: (
     values: CreateRegistrationFNRequestFormFields,
