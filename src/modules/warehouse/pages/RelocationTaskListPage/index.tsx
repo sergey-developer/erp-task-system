@@ -242,14 +242,14 @@ const RelocationTaskListPage: FC = () => {
           {/*  disabled={relocationTasksIsFetching}*/}
           {/*/>*/}
 
-          {permissions?.relocationTasksCreate && (
+          {permissions.relocationTasksCreate && (
             <Link to={WarehouseRouteEnum.CreateRelocationTask}>
               <Button>Создать заявку</Button>
             </Link>
           )}
 
           <Button
-            disabled={!permissions?.relocationTasksCreate}
+            disabled={!permissions.relocationTasksCreate}
             onClick={onOpenCreateRelocationTaskByIncidentModal}
           >
             Создать заявку на основе инцидента

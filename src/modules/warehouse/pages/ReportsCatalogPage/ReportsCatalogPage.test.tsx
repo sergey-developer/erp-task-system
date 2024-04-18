@@ -4,10 +4,7 @@ import React from 'react'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
-import {
-  mockGetEquipmentNomenclatureListSuccess,
-  mockGetLocationListSuccess,
-} from '_tests_/mocks/api'
+import { mockGetEquipmentNomenclaturesSuccess, mockGetLocationListSuccess } from '_tests_/mocks/api'
 import { linkTestUtils, renderInRoute_latest } from '_tests_/utils'
 
 import AmountEquipmentSpentReportPage from '../AmountEquipmentSpentReportPage'
@@ -77,7 +74,7 @@ describe('Страница каталога отчетов', () => {
     })
 
     test('При клике переходит на страницу списка отчета по истории операций по номенклатуре', async () => {
-      mockGetEquipmentNomenclatureListSuccess()
+      mockGetEquipmentNomenclaturesSuccess()
 
       const { user } = renderInRoute_latest(
         [
@@ -159,7 +156,7 @@ describe('Страница каталога отчетов', () => {
     })
 
     test('При клике переходит на страницу списка отчета действий сотрудников', async () => {
-      mockGetEquipmentNomenclatureListSuccess()
+      mockGetEquipmentNomenclaturesSuccess()
       mockGetLocationListSuccess()
 
       const { user } = renderInRoute_latest(

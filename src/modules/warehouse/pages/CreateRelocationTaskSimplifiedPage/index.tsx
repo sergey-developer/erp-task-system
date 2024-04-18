@@ -798,7 +798,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                   </Space>
                 </Col>
 
-                {permissions?.equipmentsCreate && (
+                {permissions.equipmentsCreate && (
                   <Col>
                     <Space>
                       <Upload
@@ -830,7 +830,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 equipmentIsLoading={equipmentIsFetching}
                 equipmentCatalogList={equipmentCatalogListToWarehouse}
                 equipmentCatalogListIsLoading={equipmentCatalogListToWarehouseIsFetching}
-                canCreateEquipment={!!permissions?.equipmentsCreate}
+                canCreateEquipment={!!permissions.equipmentsCreate}
                 onClickCreateEquipment={onOpenCreateEquipmentModal}
                 onClickCreateImage={onOpenCreateRelocationEquipmentImagesModal}
               />

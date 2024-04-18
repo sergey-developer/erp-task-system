@@ -6,7 +6,7 @@ import { getUsersErrMsg } from 'modules/user/constants'
 import { GetUsersQueryArgs, GetUsersSuccessResponse } from 'modules/user/models'
 import { useGetUsersQuery } from 'modules/user/services/userApi.service'
 
-import { isErrorResponse } from 'shared/services/baseApi'
+import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -28,7 +28,11 @@ export const useGetUsers = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getUsersErrMsg)
+      if (isBadRequestError(state.error)) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(getUsersErrMsg)
+      }
     }
   }, [state.error])
 

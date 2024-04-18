@@ -1,6 +1,6 @@
 import { ApiRequestMessages } from 'shared/types/messages'
 
-export const getEquipmentNomenclaturesErrorMsg = 'Ошибка получения списка номенклатуры оборудования'
+export const getEquipmentNomenclaturesErrMsg = 'Ошибка получения списка номенклатуры оборудования'
 
 export const getEquipmentCategoryListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка категорий оборудования',

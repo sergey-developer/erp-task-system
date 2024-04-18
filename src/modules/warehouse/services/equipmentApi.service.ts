@@ -18,8 +18,8 @@ import {
   GetEquipmentListSuccessResponse,
   GetEquipmentListTemplateQueryArgs,
   GetEquipmentListTemplateSuccessResponse,
-  GetEquipmentNomenclatureListQueryArgs,
-  GetEquipmentNomenclatureListSuccessResponse,
+  GetEquipmentNomenclaturesQueryArgs,
+  GetEquipmentNomenclaturesSuccessResponse,
   GetEquipmentQueryArgs,
   GetEquipmentRelocationHistoryQueryArgs,
   GetEquipmentRelocationHistorySuccessResponse,
@@ -34,7 +34,7 @@ import {
 import {
   GetEquipmentAttachmentListTransformedSuccessResponse,
   GetEquipmentListTransformedSuccessResponse,
-  GetEquipmentNomenclatureListTransformedSuccessResponse,
+  GetEquipmentNomenclaturesTransformedSuccessResponse,
   ImportEquipmentsByFileTransformedSuccessResponse,
 } from 'modules/warehouse/types'
 import {
@@ -59,16 +59,16 @@ const equipmentApiService = baseApiService
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getEquipmentNomenclatureList: build.query<
-        GetEquipmentNomenclatureListTransformedSuccessResponse,
-        MaybeUndefined<GetEquipmentNomenclatureListQueryArgs>
+      getEquipmentNomenclatures: build.query<
+        GetEquipmentNomenclaturesTransformedSuccessResponse,
+        MaybeUndefined<GetEquipmentNomenclaturesQueryArgs>
       >({
         query: (params) => ({
-          url: EquipmentApiEnum.GetEquipmentNomenclatureList,
+          url: EquipmentApiEnum.GetEquipmentNomenclatures,
           method: HttpMethodEnum.Get,
           params,
         }),
-        transformResponse: (response: GetEquipmentNomenclatureListSuccessResponse, meta, arg) =>
+        transformResponse: (response: GetEquipmentNomenclaturesSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
 
@@ -206,7 +206,7 @@ const equipmentApiService = baseApiService
   })
 
 export const {
-  useGetEquipmentNomenclatureListQuery,
+  useGetEquipmentNomenclaturesQuery,
 
   useGetEquipmentCatalogListQuery,
 

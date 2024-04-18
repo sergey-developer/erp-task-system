@@ -1,12 +1,12 @@
 import { Moment } from 'moment-timezone'
 
-import { EquipmentNomenclatureListModel } from 'modules/warehouse/models'
+import { EquipmentNomenclaturesModel } from 'modules/warehouse/models'
 
 import { LocationsModel } from 'shared/models/catalogs/location'
 import { IdType } from 'shared/types/common'
 
 export type AmountEquipmentSpentReportFormProps = {
-  nomenclatures: EquipmentNomenclatureListModel
+  nomenclatures: EquipmentNomenclaturesModel
   nomenclaturesIsLoading: boolean
 
   locations: LocationsModel

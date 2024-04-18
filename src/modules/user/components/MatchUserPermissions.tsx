@@ -13,7 +13,7 @@ type MatchUserPermissionsProps = {
 
 const MatchUserPermissions: FC<MatchUserPermissionsProps> = ({ children, expectedPermissions }) => {
   const permissions = useMatchUserPermissions(expectedPermissions)
-  return permissions ? children({ permissions }) : null
+  return children({ permissions })
 }
 
 export default MatchUserPermissions

@@ -21,7 +21,7 @@ import {
   mockGetAmountEquipmentSpentReportXlsxSuccess,
   mockGetEquipmentAttachmentListSuccess,
   mockGetEquipmentCategoryListSuccess,
-  mockGetEquipmentNomenclatureListSuccess,
+  mockGetEquipmentNomenclaturesSuccess,
   mockGetEquipmentSuccess,
   mockGetLocationListSuccess,
   mockGetRelocationEquipmentListSuccess,
@@ -74,7 +74,7 @@ describe('Страница отчета количества потраченн�
       })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -115,7 +115,7 @@ describe('Страница отчета количества потраченн�
       })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -159,7 +159,7 @@ describe('Страница отчета количества потраченн�
       })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
         once: false,
       })
@@ -212,7 +212,7 @@ describe('Страница отчета количества потраченн�
       })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 

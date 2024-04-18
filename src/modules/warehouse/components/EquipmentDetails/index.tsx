@@ -348,7 +348,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
               <Row data-testid='relocation-history'>
                 <Col>
                   <Button
-                    disabled={!permissions?.equipmentsRead || !permissions?.relocationTasksRead}
+                    disabled={!permissions.equipmentsRead || !permissions.relocationTasksRead}
                     onClick={onToggleOpenRelocationHistoryModal}
                   >
                     История перемещений
