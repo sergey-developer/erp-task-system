@@ -4,8 +4,8 @@ import { FC, useCallback, useEffect } from 'react'
 import EquipmentNomenclatureTable from 'modules/warehouse/components/EquipmentNomenclatureTable'
 import { EquipmentNomenclatureTableProps } from 'modules/warehouse/components/EquipmentNomenclatureTable/types'
 import { useEquipmentPageContext } from 'modules/warehouse/components/EquipmentPageLayout/context'
-import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
-import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
+import { useGetEquipmentNomenclatures } from 'modules/warehouse/hooks/equipment'
+import { GetEquipmentNomenclaturesQueryArgs } from 'modules/warehouse/models'
 import { equipmentsFilterToParams } from 'modules/warehouse/utils/equipment'
 
 import {
@@ -21,7 +21,7 @@ const EquipmentNomenclatureListPage: FC = () => {
   const context = useEquipmentPageContext()
 
   const [equipmentNomenclatureListParams, setEquipmentNomenclatureListParams] =
-    useSetState<GetEquipmentNomenclatureListQueryArgs>({
+    useSetState<GetEquipmentNomenclaturesQueryArgs>({
       ...initialPaginationParams,
       ...(context?.filter && equipmentsFilterToParams(context.filter)),
       search: context?.search,
@@ -46,7 +46,7 @@ const EquipmentNomenclatureListPage: FC = () => {
   const {
     currentData: equipmentNomenclatureList,
     isFetching: equipmentNomenclatureListIsFetching,
-  } = useGetEquipmentNomenclatureList(equipmentNomenclatureListParams)
+  } = useGetEquipmentNomenclatures(equipmentNomenclatureListParams)
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<EquipmentNomenclatureTableProps['onChange']>[0]) => {

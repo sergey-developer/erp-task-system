@@ -343,14 +343,14 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             <Text>Сформировать накладную М-15</Text>
           </Space>
         ),
-        disabled: !permissions?.relocationTasksRead,
+        disabled: !permissions.relocationTasksRead,
         onClick: handleGetWaybillM15,
       },
       {
         key: 2,
         label: 'Изменить заявку',
         disabled:
-          !permissions?.relocationTasksUpdate ||
+          !permissions.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -361,7 +361,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 3,
         label: 'Выполнить заявку',
         disabled:
-          !permissions?.relocationTasksUpdate ||
+          !permissions.relocationTasksUpdate ||
           !executorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -372,7 +372,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 4,
         label: 'Вернуть на доработку',
         disabled:
-          !permissions?.relocationTasksUpdate ||
+          !permissions.relocationTasksUpdate ||
           !controllerIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenReturnToReworkModal,
@@ -381,7 +381,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 5,
         label: 'Отменить заявку',
         disabled:
-          !permissions?.relocationTasksUpdate ||
+          !permissions.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -392,7 +392,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 6,
         label: 'Подтвердить выполнение',
         disabled:
-          !permissions?.relocationTasksUpdate ||
+          !permissions.relocationTasksUpdate ||
           !controllerIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenConfirmExecutionModal,

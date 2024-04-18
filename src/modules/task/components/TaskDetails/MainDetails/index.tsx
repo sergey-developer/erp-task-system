@@ -99,8 +99,8 @@ const MainDetails: FC<MainDetailsProps> = ({
                   <Popover
                     title={<Text type='secondary'>Срок выполнения был изменен</Text>}
                     content={
-                      (permissions?.taskHistoryDeadlineRead ||
-                        permissions?.taskHistoryDeadlineUpdate) &&
+                      (permissions.taskHistoryDeadlineRead ||
+                        permissions.taskHistoryDeadlineUpdate) &&
                       `Внешний срок выполнения: ${getTaskCompleteAtDate({
                         olaNextBreachTime: previousOlaNextBreachTime,
                       })}`

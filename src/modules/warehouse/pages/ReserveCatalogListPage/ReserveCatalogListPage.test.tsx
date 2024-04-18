@@ -12,7 +12,7 @@ import RelocationTaskListPage from 'modules/warehouse/pages/RelocationTaskListPa
 import { testUtils as relocationTaskListPageTestUtils } from 'modules/warehouse/pages/RelocationTaskListPage/RelocationTaskListPage.test'
 
 import {
-  mockGetEquipmentNomenclatureListSuccess,
+  mockGetEquipmentNomenclaturesSuccess,
   mockGetInventorizationsSuccess,
   mockGetRelocationTaskListSuccess,
 } from '_tests_/mocks/api'
@@ -113,7 +113,7 @@ describe('Страница списка справочников запасов'
     })
 
     test('При клике переходит на страницу списка номенклатуры оборудования', async () => {
-      mockGetEquipmentNomenclatureListSuccess()
+      mockGetEquipmentNomenclaturesSuccess()
 
       const { user } = renderInRoute_latest(
         [
