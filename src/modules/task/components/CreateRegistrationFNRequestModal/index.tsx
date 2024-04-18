@@ -1,12 +1,12 @@
 import { Flex, Form, Select, Space, Typography, Upload } from 'antd'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
 
 import { renderUploadedFile } from 'modules/attachment/utils'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import Label from 'components/Label'
 import LoadingArea from 'components/LoadingArea'
-import BaseModal from 'components/Modals/BaseModal'
+import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { SEND_TEXT } from 'shared/constants/common'
 import { filesFormItemProps } from 'shared/constants/form'
@@ -31,6 +31,7 @@ const CreateRegistrationFNRequestModal: FC<CreateRegistrationFNRequestModalProps
   recipientsIsLoading,
 
   onCreateAttachment,
+  createAttachmentIsLoading,
 
   ...modalProps
 }) => {
@@ -46,6 +47,11 @@ const CreateRegistrationFNRequestModal: FC<CreateRegistrationFNRequestModalProps
     form.setFieldsValue(values)
   }, [form, values])
 
+  const okButtonProps: BaseModalProps['okButtonProps'] = useMemo(
+    () => ({ disabled: createAttachmentIsLoading }),
+    [createAttachmentIsLoading],
+  )
+
   return (
     <BaseModal
       {...modalProps}
@@ -53,6 +59,7 @@ const CreateRegistrationFNRequestModal: FC<CreateRegistrationFNRequestModalProps
       title='Отправка запроса на регистрацию ФН'
       onOk={form.submit}
       okText={SEND_TEXT}
+      okButtonProps={okButtonProps}
     >
       <Flex vertical gap='large'>
         <Text>
@@ -75,6 +82,7 @@ const CreateRegistrationFNRequestModal: FC<CreateRegistrationFNRequestModalProps
               fieldNames={idAndTitleSelectFieldNames}
               loading={changeTypesIsLoading}
               options={changeTypes}
+              disabled={isLoading || changeTypesIsLoading}
               placeholder='Выберите из списка'
             />
           </Form.Item>
