@@ -1,4 +1,6 @@
 import { Col, Form, Row, Select } from 'antd'
+import sortBy from 'lodash/sortBy'
+import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
@@ -43,6 +45,27 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
   const { confirmLoading: isLoading } = props
 
   const [form] = Form.useForm<CreateInventorizationRequestFormFields>()
+
+  const equipmentNomenclaturesMock = sortBy(
+    nomenclatures
+      .map((nom, index) => {
+        if (index % 2 !== 0) return { ...nom, group: { id: 1, title: 'Nomenclature 1' } }
+        else if (index % 2 === 0) return { ...nom, group: { id: 2, title: 'Nomenclature 2' } }
+        return nom
+      })
+      .reduce<DefaultOptionType[]>((acc, nom) => {
+        const optionGroup = acc.find((item) => item.label === nom.group.title)
+        const option = { label: nom.title, value: nom.id }
+
+        optionGroup
+          ? optionGroup.options!.push(option)
+          : acc.push({ title: nom.group.title, label: nom.group.title, options: [option] })
+
+        return acc
+      }, [])
+      .map((group) => ({ ...group, options: sortBy(group.options, 'label') })),
+    'label',
+  )
 
   const onFinish = async (values: CreateInventorizationRequestFormFields) => {
     await onSubmit(values, form.setFields)
@@ -95,11 +118,10 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
           <Select
             mode='multiple'
             placeholder='Выберите номенклатуру'
-            options={nomenclatures}
+            options={equipmentNomenclaturesMock}
             loading={nomenclaturesIsLoading}
             disabled={isLoading || nomenclaturesIsLoading}
-            fieldNames={idAndTitleSelectFieldNames}
-            filterOption={filterOptionBy('title')}
+            filterOption={filterOptionBy('label')}
           />
         </Form.Item>
 

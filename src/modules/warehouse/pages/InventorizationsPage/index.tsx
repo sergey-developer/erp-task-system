@@ -33,6 +33,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import { IdType } from 'shared/types/common'
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import {
@@ -41,8 +42,6 @@ import {
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
-
-import { IdType } from '../../../../shared/types/common'
 
 const InventorizationsFilter = React.lazy(
   () => import('modules/warehouse/components/InventorizationsFilter'),
