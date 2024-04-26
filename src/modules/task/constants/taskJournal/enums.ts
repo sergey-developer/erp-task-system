@@ -20,6 +20,9 @@ export enum TaskJournalTypeEnum {
   AwaitingCanceled = 'AWAITING_CANCELED',
   AutoEscalation = 'AUTO_ESCALATION',
   ReassignmentSupportGroup = 'REASSIGNMENT_SUPPORT_GROUP',
+  FiscalAccumulatorRegistered = 'FISCAL_ACCUMULATOR_REGISTERED',
+  FiscalAccumulatorChangeRequest = 'FISCAL_ACCUMULATOR_CHANGE_REQUEST',
+  FiscalAccumulatorChangeNotification = 'FISCAL_ACCUMULATOR_CHANGE_NOTIFICATION',
   Other = 'OTHER',
 }
 
