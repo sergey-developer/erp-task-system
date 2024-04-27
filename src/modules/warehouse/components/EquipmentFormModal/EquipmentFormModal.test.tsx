@@ -21,6 +21,7 @@ import {
   radioButtonTestUtils,
   render,
   selectTestUtils,
+  spinnerTestUtils,
 } from '_tests_/utils'
 
 import EquipmentFormModal from './index'
@@ -122,7 +123,7 @@ const expectCategoryLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getCategoryFormItem())
 
 // nomenclature field
-const getNomenclatureFormItem = () => within(getContainer()).getByTestId('nomenclature-form-item')
+const getNomenclatureFormItem = () => within(getContainer()).getByTestId('nomenclatures-form-item')
 const getNomenclatureLabel = () => within(getNomenclatureFormItem()).getByLabelText('Номенклатура')
 const getNomenclatureSelectInput = () => selectTestUtils.getSelect(getNomenclatureFormItem())
 const setNomenclature = selectTestUtils.clickSelectOption
@@ -141,11 +142,17 @@ const openNomenclatureSelect = async (user: UserEvent) => {
 const findNomenclatureError = (error: string): Promise<HTMLElement> =>
   within(getNomenclatureFormItem()).findByText(error)
 
-const expectNomenclatureLoadingStarted = () =>
+const expectNomenclaturesLoadingStarted = () =>
   selectTestUtils.expectLoadingStarted(getNomenclatureFormItem())
 
-const expectNomenclatureLoadingFinished = () =>
+const expectNomenclaturesLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getNomenclatureFormItem())
+
+const expectNomenclatureLoadingStarted = () =>
+  spinnerTestUtils.expectLoadingStarted('nomenclature-loading')
+
+const expectNomenclatureLoadingFinished = () =>
+  spinnerTestUtils.expectLoadingFinished('nomenclature-loading')
 
 // title field
 const getTitleFormItem = () => within(getContainer()).getByTestId('title-form-item')
@@ -477,6 +484,8 @@ export const testUtils = {
   querySelectedNomenclature,
   openNomenclatureSelect,
   findNomenclatureError,
+  expectNomenclaturesLoadingStarted,
+  expectNomenclaturesLoadingFinished,
   expectNomenclatureLoadingStarted,
   expectNomenclatureLoadingFinished,
 
@@ -655,7 +664,10 @@ describe('Модалка оборудования', () => {
 
   describe('Наименование', () => {
     test('Отображается корректно', () => {
-      render(<EquipmentFormModal {...props} />)
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      render(<EquipmentFormModal {...props} category={category} nomenclature={nomenclature} />)
 
       const label = testUtils.getTitleLabel()
       const field = testUtils.getTitleField()
@@ -667,7 +679,12 @@ describe('Модалка оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<EquipmentFormModal {...props} />)
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      const { user } = render(
+        <EquipmentFormModal {...props} category={category} nomenclature={nomenclature} />,
+      )
 
       const value = fakeWord()
       const field = await testUtils.setTitle(user, value)
@@ -679,14 +696,24 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const field = testUtils.getTitleField()
       expect(field).toBeDisabled()
     })
 
     test('Показывается ошибка если поле не заполнено', async () => {
-      const { user } = render(<EquipmentFormModal {...props} {...addModeProps} />)
+      const category = warehouseFixtures.equipmentCategoryListItem()
+      const nomenclature = warehouseFixtures.nomenclature()
+
+      const { user } = render(
+        <EquipmentFormModal
+          {...props}
+          {...addModeProps}
+          category={category}
+          nomenclature={nomenclature}
+        />,
+      )
 
       await testUtils.clickAddButton(user)
       const error = await testUtils.findTitleError(validationMessages.required)
@@ -698,7 +725,7 @@ describe('Модалка оборудования', () => {
   describe('Инвентарный номер', () => {
     test('Отображается если категория не расходный материал', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const label = testUtils.getInventoryNumberLabel()
       const field = testUtils.getInventoryNumberField()
@@ -713,7 +740,7 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const formItem = testUtils.queryInventoryNumberFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -733,9 +760,7 @@ describe('Модалка оборудования', () => {
     test('Отображается если условия соблюдены', () => {
       const nomenclature = warehouseFixtures.nomenclature({ equipmentHasSerialNumber: true })
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(
-        <EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />,
-      )
+      render(<EquipmentFormModal {...props} nomenclature={nomenclature} category={category} />)
 
       const label = testUtils.getSerialNumberLabel()
       const field = testUtils.getSerialNumberField()
@@ -749,9 +774,7 @@ describe('Модалка оборудования', () => {
     test('Не отображается если у оборудования нет серийного номера', () => {
       const nomenclature = warehouseFixtures.nomenclature()
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(
-        <EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />,
-      )
+      render(<EquipmentFormModal {...props} nomenclature={nomenclature} category={category} />)
 
       const formItem = testUtils.querySerialNumberFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -762,9 +785,7 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(
-        <EquipmentFormModal {...props} nomenclature={nomenclature} selectedCategory={category} />,
-      )
+      render(<EquipmentFormModal {...props} nomenclature={nomenclature} category={category} />)
 
       const formItem = testUtils.querySerialNumberFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -834,7 +855,7 @@ describe('Модалка оборудования', () => {
         const category = warehouseFixtures.equipmentCategoryListItem({
           code: EquipmentCategoryEnum.Consumable,
         })
-        render(<EquipmentFormModal {...props} selectedCategory={category} />)
+        render(<EquipmentFormModal {...props} category={category} />)
 
         const label = testUtils.getQuantityLabel()
         const field = testUtils.getQuantityField()
@@ -847,7 +868,7 @@ describe('Модалка оборудования', () => {
 
       test('Не отображается если категория не расходный материал', () => {
         const category = warehouseFixtures.equipmentCategoryListItem()
-        render(<EquipmentFormModal {...props} selectedCategory={category} />)
+        render(<EquipmentFormModal {...props} category={category} />)
 
         const formItem = testUtils.queryQuantityFormItem()
         expect(formItem).not.toBeInTheDocument()
@@ -857,7 +878,7 @@ describe('Модалка оборудования', () => {
         const category = warehouseFixtures.equipmentCategoryListItem({
           code: EquipmentCategoryEnum.Consumable,
         })
-        const { user } = render(<EquipmentFormModal {...props} selectedCategory={category} />)
+        const { user } = render(<EquipmentFormModal {...props} category={category} />)
 
         const value = fakeInteger()
         const field = await testUtils.setQuantity(user, value)
@@ -886,7 +907,7 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const label = testUtils.getMeasurementUnitLabel()
       expect(label).toBeInTheDocument()
@@ -894,7 +915,7 @@ describe('Модалка оборудования', () => {
 
     test('Не отображается если категория не расходный материал', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const formItem = testUtils.queryMeasurementUnitFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -951,7 +972,7 @@ describe('Модалка оборудования', () => {
   describe('Новое', () => {
     test('Отображается если категория не расходный материал', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       yesNoOptions.forEach((opt) => {
         const field = testUtils.getIsNewField(opt.label as string)
@@ -965,7 +986,7 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const formItem = testUtils.queryIsNewFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -991,7 +1012,7 @@ describe('Модалка оборудования', () => {
   describe('На гарантии', () => {
     test('Отображается если категория не расходный материал', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       yesNoOptions.forEach((opt) => {
         const field = testUtils.getIsWarrantyField(opt.label as string)
@@ -1005,7 +1026,7 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const formItem = testUtils.queryIsWarrantyFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -1031,7 +1052,7 @@ describe('Модалка оборудования', () => {
   describe('Отремонтированное', () => {
     test('Отображается если категория не расходный материал', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       yesNoOptions.forEach((opt) => {
         const field = testUtils.getIsRepairedField(opt.label as string)
@@ -1045,7 +1066,7 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const formItem = testUtils.queryIsRepairedFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -1071,7 +1092,7 @@ describe('Модалка оборудования', () => {
   describe('Счетчик пробега текущий', () => {
     test('Отображается если категория не расходный материал', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const label = testUtils.getUsageCounterLabel()
       const field = testUtils.getUsageCounterField()
@@ -1086,7 +1107,7 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const formItem = testUtils.queryUsageCounterFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -1105,7 +1126,7 @@ describe('Модалка оборудования', () => {
   describe('Владелец оборудования', () => {
     test('Отображается если категория не расходный материал и поле "владелец оборудования Obermeister" не заполнено', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const label = testUtils.getOwnerLabel()
       const input = testUtils.getOwnerSelectInput()
@@ -1117,7 +1138,7 @@ describe('Модалка оборудования', () => {
 
     test('Отображается если категория не расходный материал и в поле "владелец оборудования Obermeister" выбрано "Нет"', async () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      const { user } = render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      const { user } = render(<EquipmentFormModal {...props} category={category} />)
 
       await testUtils.clickOwnerIsObermeisterField(user, 'Нет')
       const label = testUtils.getOwnerLabel()
@@ -1132,7 +1153,7 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      render(<EquipmentFormModal {...props} category={category} />)
 
       const formItem = testUtils.queryOwnerFormItem()
       expect(formItem).not.toBeInTheDocument()
@@ -1140,7 +1161,7 @@ describe('Модалка оборудования', () => {
 
     test('Не отображается если в поле "владелец оборудования Obermeister" выбрано "Да"', async () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      const { user } = render(<EquipmentFormModal {...props} selectedCategory={category} />)
+      const { user } = render(<EquipmentFormModal {...props} category={category} />)
 
       await testUtils.clickOwnerIsObermeisterField(user, 'Да')
       const formItem = testUtils.queryOwnerFormItem()
@@ -1162,7 +1183,7 @@ describe('Модалка оборудования', () => {
     test('Обязательно для заполнения если в поле "владелец оборудования Obermeister" выбрано "Нет"', async () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
       const { user } = render(
-        <EquipmentFormModal {...props} selectedCategory={category} {...addModeProps} />,
+        <EquipmentFormModal {...props} category={category} {...addModeProps} />,
       )
 
       await testUtils.clickOwnerIsObermeisterField(user, 'Нет')
@@ -1234,9 +1255,7 @@ describe('Модалка оборудования', () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
       const nomenclature = warehouseFixtures.nomenclature()
 
-      render(
-        <EquipmentFormModal {...props} selectedCategory={category} nomenclature={nomenclature} />,
-      )
+      render(<EquipmentFormModal {...props} category={category} nomenclature={nomenclature} />)
 
       const label = testUtils.getImagesLabel()
       const button = testUtils.getAddImagesButton()
@@ -1251,7 +1270,7 @@ describe('Модалка оборудования', () => {
       const nomenclature = warehouseFixtures.nomenclature()
 
       const { user } = render(
-        <EquipmentFormModal {...props} selectedCategory={category} nomenclature={nomenclature} />,
+        <EquipmentFormModal {...props} category={category} nomenclature={nomenclature} />,
       )
 
       const { input, file } = await testUtils.setImage(user)
@@ -1269,7 +1288,7 @@ describe('Модалка оборудования', () => {
       const nomenclature = warehouseFixtures.nomenclature()
 
       const { user } = render(
-        <EquipmentFormModal {...props} selectedCategory={category} nomenclature={nomenclature} />,
+        <EquipmentFormModal {...props} category={category} nomenclature={nomenclature} />,
       )
 
       await testUtils.setImage(user)
@@ -1284,12 +1303,7 @@ describe('Модалка оборудования', () => {
       const nomenclature = warehouseFixtures.nomenclature()
 
       render(
-        <EquipmentFormModal
-          {...props}
-          selectedCategory={category}
-          nomenclature={nomenclature}
-          isLoading
-        />,
+        <EquipmentFormModal {...props} category={category} nomenclature={nomenclature} isLoading />,
       )
 
       const button = testUtils.getAddImagesButton()
@@ -1306,7 +1320,7 @@ describe('Модалка оборудования', () => {
       render(
         <EquipmentFormModal
           {...props}
-          selectedCategory={category}
+          category={category}
           nomenclature={nomenclature}
           imageIsDeleting
         />,

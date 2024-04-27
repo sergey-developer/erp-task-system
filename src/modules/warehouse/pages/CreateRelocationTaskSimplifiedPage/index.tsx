@@ -329,9 +329,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     await createAttachment({ type: AttachmentTypeEnum.RelocationEquipmentImage }, options)
   }
 
-  const onCreateCommonRelocationEquipmentImage: NonNullable<
-    UploadProps['customRequest']
-  > = async (options) => {
+  const onCreateCommonRelocationEquipmentImage: NonNullable<UploadProps['customRequest']> = async (
+    options,
+  ) => {
     await createAttachment({ type: AttachmentTypeEnum.RelocationTaskImage }, options)
   }
 
@@ -887,7 +887,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             values={createEquipmentFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
-            selectedCategory={selectedCategory}
+            category={selectedCategory}
             onChangeCategory={onChangeCategory}
             currencyList={currencyList}
             currencyListIsLoading={currencyListIsFetching}
@@ -923,7 +923,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             values={equipmentByFileFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
-            selectedCategory={selectedCategory}
+            category={selectedCategory}
             onChangeCategory={onChangeCategory}
             currencyList={currencyList}
             currencyListIsLoading={currencyListIsFetching}

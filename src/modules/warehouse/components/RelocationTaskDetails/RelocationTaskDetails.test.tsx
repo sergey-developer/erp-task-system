@@ -680,8 +680,10 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationEquipmentListSuccess(props.relocationTaskId, {
           body: relocationEquipmentList,
         })
+
+        const relocationEquipmentAttachments = warehouseFixtures.relocationEquipmentAttachments()
         mockGetRelocationEquipmentAttachmentsSuccess(relocationEquipmentListItem.id, {
-          body: warehouseFixtures.relocationEquipmentAttachments(),
+          body: relocationEquipmentAttachments,
         })
 
         const { user } = render(
@@ -695,9 +697,11 @@ describe('Информация о заявке о перемещении', () =>
         )
         const modal = await attachmentListModalTestUtils.findContainer()
         await attachmentListModalTestUtils.expectLoadingFinished()
-        const images = attachmentListTestUtils.getAllIn(modal)
 
-        expect(images).toHaveLength(relocationEquipmentList.length)
+        relocationEquipmentAttachments.forEach((item) => {
+          const image = attachmentListTestUtils.getIn(modal, item.name)
+          expect(image).toBeInTheDocument()
+        })
       })
 
       describe('При не успешном запросе', () => {

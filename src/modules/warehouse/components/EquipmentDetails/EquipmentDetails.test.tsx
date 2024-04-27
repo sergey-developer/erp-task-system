@@ -114,7 +114,7 @@ const clickRelocationHistoryButton = async (user: UserEvent) => {
 }
 
 // loading
-const expectLoadingStarted = spinnerTestUtils.expectLoadingFinished('equipment-details-loading')
+const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('equipment-details-loading')
 const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('equipment-details-loading')
 
 export const testUtils = {
@@ -614,15 +614,18 @@ describe('Информация об оборудовании', () => {
 
         render(<EquipmentDetails {...props} />)
 
+        await testUtils.expectLoadingStarted()
         await testUtils.expectLoadingFinished()
-        await testUtils.expectEquipmentImageListLoadingFinished()
 
         const block = testUtils.getBlock('images')
         const label = testUtils.getInfoInBlock(block, /Изображения оборудования/)
-        const images = attachmentListTestUtils.getAllIn(testUtils.getEquipmentImageList())
+        const imagesContainer = testUtils.getEquipmentImageList()
 
         expect(label).toBeInTheDocument()
-        expect(images).toHaveLength(attachmentList.length)
+        attachmentList.forEach((item) => {
+          const image = attachmentListTestUtils.getIn(imagesContainer, item.name)
+          expect(image).toBeInTheDocument()
+        })
       })
 
       describe('При не успешном запросе', () => {
@@ -636,8 +639,8 @@ describe('Информация об оборудовании', () => {
 
           render(<EquipmentDetails {...props} />)
 
+          await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
-          await testUtils.expectEquipmentImageListLoadingFinished()
 
           const notification = await notificationTestUtils.findNotification(errorMsg)
           expect(notification).toBeInTheDocument()
@@ -653,8 +656,8 @@ describe('Информация об оборудовании', () => {
 
           render(<EquipmentDetails {...props} />)
 
+          await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
-          await testUtils.expectEquipmentImageListLoadingFinished()
 
           const notification = await notificationTestUtils.findNotification(errorMsg)
           expect(notification).toBeInTheDocument()
@@ -666,8 +669,8 @@ describe('Информация об оборудовании', () => {
 
           render(<EquipmentDetails {...props} />)
 
+          await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
-          await testUtils.expectEquipmentImageListLoadingFinished()
 
           const notification = await notificationTestUtils.findNotification(
             getEquipmentAttachmentListErrorMsg,
@@ -689,8 +692,8 @@ describe('Информация об оборудовании', () => {
 
           render(<EquipmentDetails {...props} />)
 
+          await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
-          await testUtils.expectEquipmentImageListLoadingFinished()
 
           const button = testUtils.getViewAllImagesButton()
 
@@ -702,26 +705,26 @@ describe('Информация об оборудовании', () => {
         test('Модалка отображается корректно', async () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
 
-          const attachmentListResponse = commonFixtures.paginatedListResponse(
-            attachmentFixtures.attachmentList(),
-          )
+          const attachmentList = attachmentFixtures.attachmentList()
           mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
-            body: attachmentListResponse,
+            body: commonFixtures.paginatedListResponse(attachmentList),
             once: false,
           })
 
           const { user } = render(<EquipmentDetails {...props} />)
 
+          await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
-          await testUtils.expectEquipmentImageListLoadingFinished()
           await testUtils.clickViewAllImagesButton(user)
 
           const modal = await attachmentListModalTestUtils.findContainer()
           expect(modal).toBeInTheDocument()
 
           await testUtils.expectTotalEquipmentImageListLoadingFinished()
-          const images = attachmentListTestUtils.getAllIn(modal)
-          expect(images).toHaveLength(attachmentListResponse.count)
+          attachmentList.forEach((item) => {
+            const image = attachmentListTestUtils.getIn(modal, item.name)
+            expect(image).toBeInTheDocument()
+          })
         })
       })
     })
