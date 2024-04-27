@@ -6,12 +6,17 @@ import { testUtils as createRegistrationFNRequestModalTestUtils } from 'modules/
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import taskFixtures from '_tests_/fixtures/task'
 import {
+  mockCreateTaskAttachmentSuccess,
+  mockCreateTaskRegistrationFNRequestSuccess,
   mockGetTaskReclassificationRequestSuccess,
+  mockGetTaskRegistrationRequestRecipientsFNSuccess,
   mockGetTaskSuccess,
   mockResolveTaskSuccess,
 } from '_tests_/mocks/api'
+import { mockGetFaChangeTypesSuccess } from '_tests_/mocks/api/catalogs'
 import {
   fakeId,
   fakeWord,
@@ -203,6 +208,16 @@ describe('Карточка заявки', () => {
       const task = taskFixtures.task({ id: props.taskId, ...canRegisterFNItemProps })
       mockGetTaskSuccess(props.taskId, { body: task })
 
+      const faChangeTypeListItem = catalogsFixtures.faChangeTypeListItem()
+      mockGetFaChangeTypesSuccess({ body: [faChangeTypeListItem] })
+
+      mockGetTaskRegistrationRequestRecipientsFNSuccess(props.taskId, {
+        body: taskFixtures.registrationRequestRecipientsFN(),
+      })
+
+      mockCreateTaskAttachmentSuccess(props.taskId)
+      mockCreateTaskRegistrationFNRequestSuccess(props.taskId)
+
       const { user } = render(<TaskDetails {...props} />, {
         store: getStoreWithAuth({ userId: canRegisterFNItemProps.assignee!.id }),
       })
@@ -213,11 +228,14 @@ describe('Карточка заявки', () => {
 
       const modal = await createRegistrationFNRequestModalTestUtils.findContainer()
       await createRegistrationFNRequestModalTestUtils.openChangeTypeSelect(user)
-      await createRegistrationFNRequestModalTestUtils.setChangeType(user, 'title1')
+      await createRegistrationFNRequestModalTestUtils.setChangeType(
+        user,
+        faChangeTypeListItem.title,
+      )
       await createRegistrationFNRequestModalTestUtils.setAttachment(user)
       await createRegistrationFNRequestModalTestUtils.clickSubmitButton(user)
 
-      expect(modal).not.toBeInTheDocument()
+      await waitFor(() => expect(modal).not.toBeInTheDocument())
     })
   })
 
