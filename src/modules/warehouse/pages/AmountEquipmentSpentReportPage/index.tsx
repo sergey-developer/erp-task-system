@@ -58,10 +58,12 @@ const initialFilterValues: AmountEquipmentSpentReportFilterFormFields = {
 const AmountEquipmentSpentReportPage: FC = () => {
   const [equipmentId, setEquipmentId] = useState<IdType>()
   const [equipmentOpened, { setTrue: openEquipment, setFalse: closeEquipment }] = useBoolean(false)
+
   const onOpenEquipment = useDebounceFn((id: IdType) => {
     openEquipment()
     setEquipmentId(id)
   })
+
   const onCloseEquipment = useDebounceFn(() => {
     closeEquipment()
     setEquipmentId(undefined)
@@ -70,10 +72,12 @@ const AmountEquipmentSpentReportPage: FC = () => {
   const [relocationTaskId, setRelocationTaskId] = useState<IdType>()
   const [relocationTaskOpened, { setTrue: openRelocationTask, setFalse: closeRelocationTask }] =
     useBoolean(false)
+
   const onOpenRelocationTask = useDebounceFn((id: IdType) => {
     openRelocationTask()
     setRelocationTaskId(id)
   })
+
   const onCloseRelocationTask = useDebounceFn(() => {
     closeRelocationTask()
     setRelocationTaskId(undefined)

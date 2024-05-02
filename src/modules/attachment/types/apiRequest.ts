@@ -1,5 +1,5 @@
 import { IdType } from 'shared/types/common'
 
-export type BaseAttachmentRequestArgs = {
+export type AttachmentRequestArgs = {
   attachmentId: IdType
 }

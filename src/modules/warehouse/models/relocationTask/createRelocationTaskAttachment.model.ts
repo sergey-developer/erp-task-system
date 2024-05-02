@@ -1,9 +1,9 @@
-import { BaseRelocationTaskRequestArgs } from 'modules/warehouse/types'
+import { RelocationTaskRequestArgs } from 'modules/warehouse/types'
 
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 
-export type CreateRelocationTaskAttachmentMutationArgs = BaseRelocationTaskRequestArgs & {
+export type CreateRelocationTaskAttachmentMutationArgs = RelocationTaskRequestArgs & {
   file: FileToSend
 }
 

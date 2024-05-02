@@ -7,10 +7,6 @@ export const TableStyled: typeof ParentSizedTable = styled(ParentSizedTable)`
     border-collapse: collapse;
   }
 
-  .ant-table-cell-row-hover {
-    background: unset !important;
-  }
-
   .react-resizable {
     position: relative;
     background-clip: padding-box;

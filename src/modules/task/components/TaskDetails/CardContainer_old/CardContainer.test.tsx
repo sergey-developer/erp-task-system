@@ -102,9 +102,9 @@ import {
 } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskCardTestUtils } from '../Card_old/Card.test'
 import {
-  activeExecuteTaskItemProps,
   activeRequestReclassificationItemProps,
   activeRequestSuspendItemProps,
+  canExecuteTaskProps,
   testUtils as cardTitleTestUtils,
 } from '../TaskDetailsTitle/TaskDetailsTitle.test'
 import TaskCardContainer, { TaskCardContainerProps } from './index'
@@ -845,7 +845,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -862,7 +862,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -882,7 +882,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -910,7 +910,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -944,7 +944,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -961,7 +961,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -982,7 +982,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -999,7 +999,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -1019,7 +1019,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1047,7 +1047,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -1081,7 +1081,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1098,7 +1098,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -1119,7 +1119,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1136,7 +1136,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -1156,7 +1156,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1184,7 +1184,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -1218,7 +1218,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1235,7 +1235,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -1256,7 +1256,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1273,7 +1273,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -1293,7 +1293,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1321,7 +1321,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -1355,7 +1355,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const task = taskFixtures.task({
             id: props.taskId,
-            ...activeExecuteTaskItemProps,
+            ...canExecuteTaskProps,
           })
           mockGetTaskSuccess(props.taskId, { body: task })
 
@@ -1372,7 +1372,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingFinished()
 
           await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickExecuteTaskItem(user)
+          await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
           await executeTaskModalTestUtils.findContainer()
 
           await executeTaskModalTestUtils.setTechResolution(user, fakeWord())

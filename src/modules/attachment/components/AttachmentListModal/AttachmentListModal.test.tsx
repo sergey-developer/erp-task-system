@@ -30,9 +30,11 @@ describe('Модалка списка вложений', () => {
 
     const container = testUtils.getContainer()
     const title = within(container).getByText(props.title as string)
-    const images = attachmentListTestUtils.getAllIn(container)
 
     expect(title).toBeInTheDocument()
-    expect(images).toHaveLength(props.data.length)
+    props.data.forEach((item) => {
+      const image = attachmentListTestUtils.getIn(container, item.name)
+      expect(image).toBeInTheDocument()
+    })
   })
 })

@@ -17,10 +17,9 @@ import {
   canSelectAssigneeProps,
   testUtils as assigneeBlockTestUtils,
 } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
-import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/Card_old/Card.test'
 import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import {
-  activeExecuteTaskItemProps,
+  canExecuteTaskProps,
   testUtils as cardTitleTestUtils,
 } from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
 import {
@@ -35,7 +34,11 @@ import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/componen
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
-import { FastFilterEnum, taskExtendedStatusDict } from 'modules/task/constants/task'
+import {
+  FastFilterEnum,
+  taskExtendedStatusDict,
+  TaskOlaStatusEnum,
+} from 'modules/task/constants/task'
 import { TaskCountersKeys } from 'modules/task/models'
 import {
   taskLocalStorageService,
@@ -282,7 +285,7 @@ describe('Страница реестра заявок', () => {
     test('Сбрасывает расширенный фильтр', async () => {
       const workGroupListItem = workGroupFixtures.workGroupListItem()
       mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
-      mockGetTaskCountersSuccess()
+      mockGetTaskCountersSuccess({ once: false })
       mockGetTaskListSuccess({ once: false })
       mockGetCustomerListSuccess({ once: false })
       mockGetSupportGroupListSuccess({ once: false })
@@ -292,9 +295,7 @@ describe('Страница реестра заявок', () => {
       mockGetUserListSuccess({ body: [userListItem], once: false })
 
       const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth({
-          userRole: UserRoleEnum.SeniorEngineer,
-        }),
+        store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
       })
 
       await fastFilterListTestUtils.expectLoadingFinished()
@@ -306,9 +307,7 @@ describe('Страница реестра заявок', () => {
       await extendedFilterTestUtils.manager.expectLoadingFinished()
 
       await extendedFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
-
       await extendedFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
-
       await extendedFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
 
       const { startDateValue, endDateValue } = await extendedFilterTestUtils.completeAt.setValue(
@@ -333,6 +332,7 @@ describe('Страница реестра заявок', () => {
       await extendedFilterTestUtils.clickApplyButton(user)
       await taskTableTestUtils.expectLoadingFinished()
 
+      await fastFilterListTestUtils.expectLoadingFinished()
       await fastFilterListTestUtils.setFilter(user, FastFilterEnum.Free)
       await taskTableTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingFinished()
@@ -392,7 +392,7 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.expectLoadingFinished()
       await fastFilterListTestUtils.expectLoadingFinished()
       await taskTableTestUtils.clickRow(user, taskListItem.id)
-      const taskCard = await taskCardTestUtils.findContainer()
+      const taskCard = await taskDetailsTestUtils.findContainer()
 
       await fastFilterListTestUtils.setFilter(user, FastFilterEnum.Free)
 
@@ -432,13 +432,13 @@ describe('Страница реестра заявок', () => {
       const task = taskFixtures.task({
         id: taskListItem.id,
         hasRelocationTasks: true,
-        ...activeExecuteTaskItemProps,
+        ...canExecuteTaskProps,
       })
       mockGetTaskSuccess(task.id, { body: task })
       mockResolveTaskSuccess(task.id)
 
       const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth({ userId: activeExecuteTaskItemProps.assignee!.id }),
+        store: getStoreWithAuth({ userId: canExecuteTaskProps.assignee!.id }),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -447,7 +447,7 @@ describe('Страница реестра заявок', () => {
       await taskDetailsTestUtils.findContainer()
       await taskDetailsTestUtils.expectTaskLoadingFinished()
       await cardTitleTestUtils.openMenu(user)
-      await cardTitleTestUtils.clickExecuteTaskItem(user)
+      await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
       await executeTaskModalTestUtils.findContainer()
       await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
       await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -752,7 +752,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await taskTableTestUtils.clickRow(user, taskListItem.id)
-        const taskCard = await taskCardTestUtils.findContainer()
+        const taskCard = await taskDetailsTestUtils.findContainer()
 
         await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
@@ -1206,7 +1206,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await taskTableTestUtils.clickRow(user, taskListItem.id)
-        const taskCard = await taskCardTestUtils.findContainer()
+        const taskCard = await taskDetailsTestUtils.findContainer()
         await testUtils.setSearchValue(user, fakeWord(), true)
         await waitFor(() => {
           expect(taskCard).not.toBeInTheDocument()
@@ -1293,10 +1293,9 @@ describe('Страница реестра заявок', () => {
         await waitFor(() => fastFilterListTestUtils.expectFilterNotChecked(fastFilter))
         await waitFor(() => expect(input).toBeEnabled())
         await user.clear(input)
-
-        await waitFor(() => {
-          fastFilterListTestUtils.expectFilterChecked(fastFilter)
-        })
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        await waitFor(() => fastFilterListTestUtils.expectFilterChecked(fastFilter))
       })
 
       test('Делает кнопку открытия расширенного фильтра активной', async () => {
@@ -1313,18 +1312,14 @@ describe('Страница реестра заявок', () => {
         const input = await testUtils.setSearchValue(user, fakeWord(), true)
         await waitFor(() => expect(button).toBeDisabled())
         await waitFor(() => expect(input).toBeEnabled())
-
         await user.clear(input)
-
-        await waitFor(() => {
-          expect(button).toBeEnabled()
-        })
+        await waitFor(() => expect(button).toBeEnabled())
       })
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
         const workGroupListItem = workGroupFixtures.workGroupListItem()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
-        mockGetTaskCountersSuccess()
+        mockGetTaskCountersSuccess({ once: false })
         mockGetTaskListSuccess({ once: false })
         mockGetCustomerListSuccess({ once: false })
         mockGetSupportGroupListSuccess({ once: false })
@@ -1343,11 +1338,8 @@ describe('Страница реестра заявок', () => {
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
         await extendedFilterTestUtils.manager.expectLoadingFinished()
-
         await extendedFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
-
         await extendedFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
-
         await extendedFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
 
         const { startDateValue, endDateValue } = await extendedFilterTestUtils.completeAt.setValue(
@@ -1383,18 +1375,13 @@ describe('Страница реестра заявок', () => {
         await extendedFilterTestUtils.manager.expectLoadingFinished()
 
         const statusField = extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)
-        await waitFor(() => {
-          expect(statusField).toBeChecked()
-        })
+        await waitFor(() => expect(statusField).toBeChecked())
 
         expect(extendedFilterTestUtils.assigned.getField(taskAssignedDict.True)).toBeChecked()
-
         expect(extendedFilterTestUtils.overdue.getField(taskOverdueDict.False)).toBeChecked()
 
         const startDateField = extendedFilterTestUtils.completeAt.getStartDateField()
-        await waitFor(() => {
-          expect(startDateField).toHaveDisplayValue(startDateValue)
-        })
+        await waitFor(() => expect(startDateField).toHaveDisplayValue(startDateValue))
 
         expect(extendedFilterTestUtils.completeAt.getEndDateField()).toHaveDisplayValue(
           endDateValue,
@@ -1429,23 +1416,21 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Применяет быстрый фильтр если он был применён ранее', async () => {
-        mockGetTaskListSuccess()
+        mockGetTaskListSuccess({ once: false })
         mockGetTaskCountersSuccess({ body: taskFixtures.taskCounters() })
 
         const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
 
+        await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterListTestUtils.expectLoadingFinished()
         await testUtils.setSearchValue(user, fakeWord(), true)
         const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.FirstLine)
-        await waitFor(() => {
-          fastFilterListTestUtils.expectFilterNotChecked(fastFilter)
-        })
-
+        await waitFor(() => fastFilterListTestUtils.expectFilterNotChecked(fastFilter))
         await testUtils.clickSearchClearButton(user)
-        await waitFor(() => {
-          fastFilterListTestUtils.expectFilterChecked(fastFilter)
-        })
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        await waitFor(() => fastFilterListTestUtils.expectFilterChecked(fastFilter))
       })
 
       test('Делает кнопку открытия расширенного фильтра активной', async () => {
@@ -1454,25 +1439,22 @@ describe('Страница реестра заявок', () => {
 
         const { user } = render(<TaskListPage />)
 
+        await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         const extendedFilterButton = testUtils.getExtendedFilterButton()
         await waitFor(() => expect(extendedFilterButton).toBeEnabled())
-
         await testUtils.setSearchValue(user, fakeWord(), true)
-        await waitFor(() => {
-          expect(extendedFilterButton).toBeDisabled()
-        })
-
+        await waitFor(() => expect(extendedFilterButton).toBeDisabled())
         await testUtils.clickSearchClearButton(user)
-        await waitFor(() => {
-          expect(extendedFilterButton).toBeEnabled()
-        })
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        await waitFor(() => expect(extendedFilterButton).toBeEnabled())
       })
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
         const workGroupListItem = workGroupFixtures.workGroupListItem()
         mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
-        mockGetTaskCountersSuccess()
+        mockGetTaskCountersSuccess({ once: false })
         mockGetTaskListSuccess({ once: false })
         mockGetCustomerListSuccess({ once: false })
         mockGetMacroregionListSuccess({ once: false })
@@ -1491,11 +1473,8 @@ describe('Страница реестра заявок', () => {
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
         await extendedFilterTestUtils.manager.expectLoadingFinished()
-
         await extendedFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
-
         await extendedFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
-
         await extendedFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
 
         const { startDateValue, endDateValue } = await extendedFilterTestUtils.completeAt.setValue(
@@ -1524,11 +1503,10 @@ describe('Страница реестра заявок', () => {
         await testUtils.setSearchValue(user, fakeWord(), true)
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickSearchClearButton(user)
+        await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
 
         expect(testUtils.getExtendedFilterButton()).toBeEnabled()
-        /* по какой-то причине тест проходит только с двойным кликом */
-        await testUtils.clickExtendedFilterButton(user)
         await testUtils.clickExtendedFilterButton(user)
         await extendedFilterTestUtils.findContainer()
         await extendedFilterTestUtils.workGroup.expectLoadingFinished()
@@ -1624,7 +1602,7 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingFinished()
       await taskTableTestUtils.clickRow(user, taskListItem.id)
-      const taskCard = await taskCardTestUtils.findContainer()
+      const taskCard = await taskDetailsTestUtils.findContainer()
       await testUtils.clickUpdateTasksButton(user)
 
       await waitFor(() => expect(taskCard).not.toBeInTheDocument())
@@ -1651,8 +1629,8 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.expectLoadingFinished()
       await updateTasksButtonTestUtils.openDropdown(user, testUtils.getContainer())
       await updateTasksButtonTestUtils.clickAutoUpdateItem(user)
-      await fastFilterListTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingStarted()
+      await fastFilterListTestUtils.expectLoadingStarted()
     })
   })
 
@@ -1707,10 +1685,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         const row = await taskTableTestUtils.clickRow(user, taskListItem.id)
-
-        await waitFor(() => {
-          expect(row).toHaveClass('table-row--selected')
-        })
+        await waitFor(() => expect(row).toHaveClass('ant-table-row-selected'))
       })
 
       test('Открывается карточка заявки', async () => {
@@ -1729,7 +1704,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingFinished()
         await taskTableTestUtils.clickRow(user, taskListItem.id)
 
-        const taskCard = await taskCardTestUtils.findContainer()
+        const taskCard = await taskDetailsTestUtils.findContainer()
         expect(taskCard).toBeInTheDocument()
       })
     })
@@ -2108,9 +2083,7 @@ describe('Страница реестра заявок', () => {
 
         test('Разделение списка отображается при сортировке по полю', async () => {
           mockGetTaskCountersSuccess()
-          const item1 = taskFixtures.taskListItem({
-            olaNextBreachTime: moment().subtract(1, 'day').toISOString(),
-          })
+          const item1 = taskFixtures.taskListItem({ olaStatus: TaskOlaStatusEnum.Expired })
           const item2 = taskFixtures.taskListItem({ olaNextBreachTime: moment().toISOString() })
           const item3 = taskFixtures.taskListItem({
             olaNextBreachTime: moment().add(1, 'day').toISOString(),

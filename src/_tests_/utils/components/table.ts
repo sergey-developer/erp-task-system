@@ -16,8 +16,11 @@ const getRowIn = (container: HTMLElement, id: NumberOrString): HTMLElement => {
   }
 }
 
-const clickRowIn = async (container: HTMLElement, user: UserEvent, id: NumberOrString) =>
-  user.click(getRowIn(container, id))
+const clickRowIn = async (container: HTMLElement, user: UserEvent, id: NumberOrString) => {
+  const row = getRowIn(container, id)
+  await user.click(row)
+  return row
+}
 
 const getHeadCell = (container: HTMLElement, text: string) =>
   within(container).getByText(text).parentElement?.parentElement

@@ -1,8 +1,8 @@
 export enum NomenclatureApiEnum {
   GetNomenclatureList = '/nomenclatures/',
-  GetNomenclature = '/nomenclatures/:id/',
+  GetNomenclature = '/nomenclatures/:id',
   CreateNomenclature = '/nomenclatures/',
-  UpdateNomenclature = '/nomenclatures/:id/',
+  UpdateNomenclature = '/nomenclatures/:id',
 }
 
 export enum NomenclatureApiTriggerEnum {

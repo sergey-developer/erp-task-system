@@ -47,6 +47,7 @@ export const task = (
       | 'isDescriptionChanged'
       | 'previousOlaNextBreachTime'
       | 'isOlaNextBreachTimeChanged'
+      | 'fiscalAccumulator'
     >
   >,
 ): Omit<TaskModel, 'responseTime'> & {
@@ -63,6 +64,12 @@ export const task = (
     ? taskFixtures.suspendRequest()
     : props!.suspendRequest,
   hasRelocationTasks: isUndefined(props?.hasRelocationTasks) ? true : props!.hasRelocationTasks,
+  fiscalAccumulator: isUndefined(props?.fiscalAccumulator)
+    ? {
+        isRequestApproved: false,
+        isRequestSent: false,
+      }
+    : props!.fiscalAccumulator,
   previousDescription: isUndefined(props?.previousDescription)
     ? fakeWord()
     : props!.previousDescription,

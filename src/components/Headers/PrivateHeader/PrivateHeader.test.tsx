@@ -10,7 +10,7 @@ import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserRoleEnum } from 'modules/user/constants'
 
-import { testUtils as privateLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
+import { testUtils as homeLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
 import { MaybeNull } from 'shared/types/utils'
 
@@ -44,9 +44,7 @@ const getContainer = () => screen.getByTestId('private-header')
 
 // nav menu
 const getNavMenuContainer = () => within(getContainer()).getByRole('menu')
-
 const getNavMenuItem = (name: string) => within(getNavMenuContainer()).getByText(name)
-
 const queryNavMenuItem = (name: string) => within(getNavMenuContainer()).queryByText(name)
 
 const clickNavMenuItem = async (user: UserEvent, name: string) => {
@@ -148,7 +146,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
         })
@@ -167,7 +165,7 @@ describe('PrivateHeader', () => {
             useBrowserRouter: false,
           })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
           expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
@@ -187,7 +185,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.queryNavMenuItem('Отчёт по ФН')).not.toBeInTheDocument()
         })
@@ -206,7 +204,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Управление складами')).toBeInTheDocument()
         })
@@ -230,7 +228,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
         })
@@ -249,7 +247,7 @@ describe('PrivateHeader', () => {
             useBrowserRouter: false,
           })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
           expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
@@ -269,7 +267,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
         })
@@ -288,7 +286,7 @@ describe('PrivateHeader', () => {
             useBrowserRouter: false,
           })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
 
           expect(getCurrentRoute()).toBe(ReportsRoutesEnum.FiscalAccumulatorTasksReport)
@@ -308,7 +306,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Управление складами')).toBeInTheDocument()
         })
@@ -332,7 +330,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
         })
@@ -351,7 +349,7 @@ describe('PrivateHeader', () => {
             useBrowserRouter: false,
           })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
           expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
@@ -371,7 +369,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
         })
@@ -390,7 +388,7 @@ describe('PrivateHeader', () => {
             useBrowserRouter: false,
           })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
 
           expect(getCurrentRoute()).toBe(ReportsRoutesEnum.FiscalAccumulatorTasksReport)
@@ -410,7 +408,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Управление складами')).toBeInTheDocument()
         })
@@ -434,7 +432,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
         })
@@ -453,7 +451,7 @@ describe('PrivateHeader', () => {
             useBrowserRouter: false,
           })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Рабочий стол')
 
           expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
@@ -473,7 +471,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
         })
@@ -492,7 +490,7 @@ describe('PrivateHeader', () => {
             useBrowserRouter: false,
           })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
 
           expect(getCurrentRoute()).toBe(ReportsRoutesEnum.FiscalAccumulatorTasksReport)
@@ -512,7 +510,7 @@ describe('PrivateHeader', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
 
           expect(testUtils.getNavMenuItem('Управление складами')).toBeInTheDocument()
         })

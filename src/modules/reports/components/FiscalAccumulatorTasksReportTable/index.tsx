@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Flex, Table } from 'antd'
 import React, { FC } from 'react'
 
 import { columns } from './columns'
@@ -18,15 +18,16 @@ const FiscalAccumulatorTasksReportTable: FC<FiscalAccumulatorTasksReportTablePro
   onRow,
 }) => {
   return (
-    <Table<FiscalAccumulatorTasksReportTableItem>
-      data-testid='fiscal-accumulator-tasks-report-table'
-      rowKey={getRowKey}
-      dataSource={dataSource}
-      components={components}
-      columns={columns}
-      loading={loading}
-      onRow={onRow}
-    />
+    <Flex data-testid='fiscal-accumulator-tasks-report-table'>
+      <Table<FiscalAccumulatorTasksReportTableItem>
+        rowKey={getRowKey}
+        dataSource={dataSource}
+        components={components}
+        columns={columns}
+        loading={loading}
+        onRow={onRow}
+      />
+    </Flex>
   )
 }
 

@@ -73,7 +73,7 @@ const initialRelocationTasksParams: Pick<
   'statuses' | 'ordering' | 'offset' | 'limit'
 > = {
   ...getInitialPaginationParams(),
-  ordering: '-deadline_at',
+  ordering: 'deadline_at',
   statuses: [
     RelocationTaskStatusEnum.New,
     RelocationTaskStatusEnum.Completed,
@@ -153,6 +153,7 @@ const RelocationTaskListPage: FC = () => {
   const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers(undefined, {
     skip: !filterOpened,
   })
+
   const { currentData: tasks, isFetching: tasksIsFetching } = useGetTasks(tasksParams, {
     skip: !tasksParams.search,
   })

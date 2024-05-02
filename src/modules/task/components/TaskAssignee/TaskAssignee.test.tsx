@@ -1,7 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
 import { testUtils as userShortInfoTestUtils } from 'modules/task/components/UserShortInfo/UserShortInfo.test'
-import { userRoleDict } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
 import userFixtures from '_tests_/fixtures/user'
@@ -9,8 +8,11 @@ import { render } from '_tests_/utils'
 
 import TaskAssignee, { TaskAssigneeProps } from './index'
 
+const user = userFixtures.user()
+
 const props: TaskAssigneeProps = {
-  ...userFixtures.user(),
+  ...user,
+  position: user.position!.title,
   hasPopover: false,
 }
 
@@ -42,7 +44,7 @@ describe('Исполнитель заявки', () => {
 
     const email = within(userShortInfo).getByText(props.email!)
     const phone = within(userShortInfo).getByText(props.phone!)
-    const role = within(userShortInfo).getByText(userRoleDict[props.role!])
+    const position = within(userShortInfo).getByText(props.position!)
     const fio = within(userShortInfo).queryByText(
       getFullUserName({
         firstName: props.firstName,
@@ -53,7 +55,7 @@ describe('Исполнитель заявки', () => {
 
     expect(email).toBeInTheDocument()
     expect(phone).toBeInTheDocument()
-    expect(role).toBeInTheDocument()
+    expect(position).toBeInTheDocument()
     expect(fio).not.toBeInTheDocument()
   })
 })

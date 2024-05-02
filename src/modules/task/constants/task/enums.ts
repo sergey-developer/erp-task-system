@@ -59,6 +59,14 @@ export enum TaskOverdueEnum {
   NotOverdue = 'False',
 }
 
+export enum TaskAttachmentTypeEnum {
+  Description = 'DESCRIPTION',
+  Resolution = 'RESOLUTION',
+  Comment = 'COMMENT',
+  Journal = 'JOURNAL',
+  Interaction = 'INTERACTION',
+}
+
 export enum TaskDetailsTabsEnum {
   SubTaskList = 'SubTaskList',
   CommentList = 'CommentList',

@@ -15,6 +15,7 @@ import reportsFixtures from '_tests_/fixtures/reports'
 import {
   mockGetFiscalAccumulatorTasksServerError,
   mockGetFiscalAccumulatorTasksSuccess,
+  mockGetTaskSuccess,
 } from '_tests_/mocks/api'
 import { fakeId, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
@@ -86,6 +87,7 @@ describe('Страница заявок фискальных накопител�
   test('При клике на заявку открывается карточка заявки', async () => {
     const fiscalAccumulatorTaskListItem = reportsFixtures.fiscalAccumulatorTaskListItem()
     mockGetFiscalAccumulatorTasksSuccess({ body: [fiscalAccumulatorTaskListItem] })
+    mockGetTaskSuccess(fiscalAccumulatorTaskListItem.id)
 
     const { user } = render(<FiscalAccumulatorTasksReportPage />)
 
