@@ -39,4 +39,6 @@ export enum UserPermissionsEnum {
   FiscalAccumulatorTasksRead = 'FISCAL_ACCUMULATOR_TASKS_READ',
 
   ReportMainIndicatorsRead = 'REPORT_MAIN_INDICATORS_READ',
+
+  InventorizationRead = 'INVENTORIZATION_READ',
 }
