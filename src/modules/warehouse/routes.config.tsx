@@ -69,6 +69,10 @@ const CreateDocumentsPackagePage = React.lazy(
   () => import('modules/warehouse/pages/CreateDocumentsPackagePage'),
 )
 
+const InventorizationsPage = React.lazy(
+  () => import('modules/warehouse/pages/InventorizationsPage'),
+)
+
 export const route: Readonly<RouteObject> = {
   path: WarehouseRouteEnum.ManageWarehouses,
   element: <BreadcrumbsLayout />,
@@ -254,6 +258,27 @@ export const route: Readonly<RouteObject> = {
                   />
                 ),
               },
+            },
+          ],
+        },
+        {
+          path: WarehouseRouteEnum.Inventorizations,
+          handle: {
+            crumb: () => (
+              <Breadcrumb link={WarehouseRouteEnum.Inventorizations} text='Инвентаризация' />
+            ),
+          },
+          children: [
+            {
+              index: true,
+              element: (
+                <ProtectedRoute
+                  component={<InventorizationsPage />}
+                  // permitted={(user) =>
+                  //   userHasPermissions(user, [UserPermissionsEnum.InventorizationRead])
+                  // }
+                />
+              ),
             },
           ],
         },
