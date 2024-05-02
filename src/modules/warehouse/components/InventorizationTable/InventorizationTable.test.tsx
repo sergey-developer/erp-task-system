@@ -29,6 +29,7 @@ const props: Readonly<InventorizationTableProps> = {
   pagination: {},
   loading: false,
   onChange: jest.fn(),
+  onRow: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('inventorization-table')
