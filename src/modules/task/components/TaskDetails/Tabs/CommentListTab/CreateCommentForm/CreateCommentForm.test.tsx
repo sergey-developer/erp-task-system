@@ -35,10 +35,7 @@ const setComment = async (user: UserEvent, comment: string) => {
 const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
 
 const getAddAttachmentsButton = () =>
-  buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
-
-const getAddAttachmentsZoneButton = () =>
-  buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[0]
+  buttonTestUtils.getButtonIn(getAttachmentsFormItem(), /Добавить вложение/)
 
 const clickAddAttachmentsButton = async (user: UserEvent) => {
   const button = getAddAttachmentsButton()
@@ -49,9 +46,9 @@ const setAttachment = async (
   user: UserEvent,
   file: File = new File([], fakeWord(), { type: 'image/png' }),
 ) => {
-  const button = getAddAttachmentsZoneButton()
+  const formItem = getAttachmentsFormItem()
   // eslint-disable-next-line testing-library/no-node-access
-  const input = button.querySelector('input[type="file"]') as HTMLInputElement
+  const input = formItem.querySelector('input[type="file"]') as HTMLInputElement
   await user.upload(input, file)
   return { input, file }
 }

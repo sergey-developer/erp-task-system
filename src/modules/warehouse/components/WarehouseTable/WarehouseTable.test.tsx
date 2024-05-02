@@ -64,7 +64,6 @@ const clickTitleLink = async (user: UserEvent, id: IdType, title: string) => {
 
 // loading
 const expectLoadingStarted = () => iconTestUtils.expectLoadingStartedIn(getContainer())
-
 const expectLoadingFinished = () => iconTestUtils.expectLoadingFinishedIn(getContainer())
 
 export const testUtils = {

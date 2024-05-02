@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { validationMessages } from 'shared/constants/validation'
 
-import { render, buttonTestUtils } from '_tests_/utils'
+import { buttonTestUtils, render } from '_tests_/utils'
 
 import ExecuteRelocationTaskModal from './index'
 import { ExecuteRelocationTaskModalProps } from './types'
@@ -40,10 +40,7 @@ const clickSubmitButton = async (user: UserEvent) => {
 const getDocumentsFormItem = () => within(getContainer()).getByTestId('documents-form-item')
 
 const getAddDocumentsButton = () =>
-  buttonTestUtils.getAllButtonIn(getDocumentsFormItem(), /Добавить вложение/)[1]
-
-const getAddDocumentsZoneButton = () =>
-  buttonTestUtils.getAllButtonIn(getDocumentsFormItem(), /Добавить вложение/)[0]
+  buttonTestUtils.getButtonIn(getDocumentsFormItem(), /Добавить вложение/)
 
 const clickAddDocumentsButton = async (user: UserEvent) => {
   const button = getAddDocumentsButton()
@@ -54,9 +51,9 @@ const setDocument = async (
   user: UserEvent,
   file: File = new File([], '', { type: 'image/png' }),
 ) => {
-  const button = getAddDocumentsZoneButton()
+  const formItem = getDocumentsFormItem()
   // eslint-disable-next-line testing-library/no-node-access
-  const input = button.querySelector('input[type="file"]') as HTMLInputElement
+  const input = formItem.querySelector('input[type="file"]') as HTMLInputElement
   await user.upload(input, file)
   return { input, file }
 }

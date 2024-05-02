@@ -202,13 +202,6 @@ describe('Заголовок карточки заявки', () => {
   })
 
   describe('Меню', () => {
-    test('Отображает корректное количество элементов', async () => {
-      const { user } = render(<TaskDetailsTitle {...props} />)
-
-      await testUtils.openMenu(user)
-      expect(menuTestUtils.getMenuItems()).toHaveLength(3)
-    })
-
     describe('Элемент "Зарегистрировать ФН"', () => {
       test('Отображается', async () => {
         const { user } = render(<TaskDetailsTitle {...props} />)

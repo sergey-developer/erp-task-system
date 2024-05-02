@@ -46,7 +46,7 @@ export type TaskTableColumnKey =
 export type TaskTableProps = Required<
   Pick<
     TableProps<TaskTableListItem>,
-    'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow' | 'rowClassName'
+    'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'
   >
 > & {
   sort?: GetTaskListSortValue

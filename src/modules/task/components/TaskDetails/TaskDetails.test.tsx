@@ -209,7 +209,9 @@ describe('Карточка заявки', () => {
       const faChangeTypeListItem = catalogsFixtures.faChangeTypeListItem()
       mockGetFaChangeTypesSuccess({ body: [faChangeTypeListItem] })
 
-      mockGetTaskRegistrationRequestRecipientsFNSuccess(props.taskId)
+      mockGetTaskRegistrationRequestRecipientsFNSuccess(props.taskId, {
+        body: taskFixtures.registrationRequestRecipientsFN(),
+      })
       mockCreateTaskRegistrationFNRequestSuccess(props.taskId)
       mockCreateTaskAttachmentSuccess(props.taskId)
 
