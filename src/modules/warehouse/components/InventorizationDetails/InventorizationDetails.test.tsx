@@ -1,15 +1,31 @@
 import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import {
   inventorizationStatusDict,
+  InventorizationStatusEnum,
   inventorizationTypeDict,
 } from 'modules/warehouse/constants/inventorization'
+import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import ExecuteInventorizationPage from 'modules/warehouse/pages/ExecuteInventorizationPage'
+import { testUtils as executeInventorizationPageTestUtils } from 'modules/warehouse/pages/ExecuteInventorizationPage/ExecuteInventorizationPage.test'
 
 import { formatDate } from 'shared/utils/date'
 
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetInventorizationSuccess } from '_tests_/mocks/api'
-import { fakeId, render, setupApiTests, spinnerTestUtils } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
+import {
+  buttonTestUtils,
+  fakeId,
+  getStoreWithAuth,
+  render,
+  renderInRoute_latest,
+  setupApiTests,
+  spinnerTestUtils,
+} from '_tests_/utils'
 
 import InventorizationDetails, { InventorizationDetailsProps } from './index'
 
@@ -26,11 +42,21 @@ const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished(
   'inventorization-details-loading',
 )
 
+const getExecuteInventorizationButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), 'Провести инвентаризацию')
+const clickExecuteInventorizationButton = async (user: UserEvent) => {
+  const button = getExecuteInventorizationButton()
+  await user.click(button)
+}
+
 export const testUtils = {
   getContainer,
   findContainer,
 
   expectLoadingFinished,
+
+  getExecuteInventorizationButton,
+  clickExecuteInventorizationButton,
 }
 
 setupApiTests()
@@ -39,7 +65,11 @@ describe('Карточка инвентаризации', () => {
   test('Заголовок отображается', () => {
     mockGetInventorizationSuccess(props.inventorizationId)
 
-    render(<InventorizationDetails {...props} />)
+    render(<InventorizationDetails {...props} />, {
+      store: getStoreWithAuth(undefined, undefined, undefined, {
+        queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
+      }),
+    })
 
     const title = within(getContainer()).getByText('Поручение на инвентаризацию')
     expect(title).toBeInTheDocument()
@@ -49,7 +79,11 @@ describe('Карточка инвентаризации', () => {
     const inventorization = warehouseFixtures.inventorization()
     mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
 
-    render(<InventorizationDetails {...props} />)
+    render(<InventorizationDetails {...props} />, {
+      store: getStoreWithAuth(undefined, undefined, undefined, {
+        queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
+      }),
+    })
 
     await testUtils.expectLoadingFinished()
 
@@ -109,6 +143,137 @@ describe('Карточка инвентаризации', () => {
       const nomenclatureTitle = within(container).getByText(n.title)
       expect(nomenclatureGroupTitle).toBeInTheDocument()
       expect(nomenclatureTitle).toBeInTheDocument()
+    })
+  })
+
+  describe('Провести инвентаризацию', () => {
+    test('Кнопка отображается', () => {
+      mockGetInventorizationSuccess(props.inventorizationId)
+
+      render(<InventorizationDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
+        }),
+      })
+
+      const button = testUtils.getExecuteInventorizationButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeDisabled()
+    })
+
+    test('Кнопка активная если условия соблюдены', async () => {
+      const inventorization = warehouseFixtures.inventorization({
+        status: InventorizationStatusEnum.New,
+      })
+      mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+
+      render(<InventorizationDetails {...props} />, {
+        store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
+          },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      const button = testUtils.getExecuteInventorizationButton()
+
+      expect(button).toBeEnabled()
+    })
+
+    describe('Кнопка не активна если условия соблюдены', () => {
+      test(`Но статус не ${InventorizationStatusEnum.New} или ${InventorizationStatusEnum.InProgress}`, async () => {
+        const inventorization = warehouseFixtures.inventorization({
+          status: InventorizationStatusEnum.Closed,
+        })
+        mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+
+        render(<InventorizationDetails {...props} />, {
+          store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
+            },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        const button = testUtils.getExecuteInventorizationButton()
+
+        expect(button).toBeDisabled()
+      })
+
+      test('Но исполнитель не текущий пользователь', async () => {
+        const inventorization = warehouseFixtures.inventorization({
+          status: InventorizationStatusEnum.New,
+        })
+        mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+
+        render(<InventorizationDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
+            },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        const button = testUtils.getExecuteInventorizationButton()
+
+        expect(button).toBeDisabled()
+      })
+
+      test(`Но нет прав ${UserPermissionsEnum.InventorizationUpdate}`, async () => {
+        const inventorization = warehouseFixtures.inventorization({
+          status: InventorizationStatusEnum.New,
+        })
+        mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+
+        render(<InventorizationDetails {...props} />, {
+          store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        const button = testUtils.getExecuteInventorizationButton()
+
+        expect(button).toBeDisabled()
+      })
+    })
+
+    test('При клике переходил на страницу выполнения инвентаризации', async () => {
+      const inventorization = warehouseFixtures.inventorization({
+        status: InventorizationStatusEnum.New,
+      })
+      mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: WarehouseRouteEnum.Inventorizations,
+            element: <InventorizationDetails {...props} />,
+          },
+          {
+            path: WarehouseRouteEnum.ExecuteInventorization,
+            element: <ExecuteInventorizationPage />,
+          },
+        ],
+        { initialEntries: [WarehouseRouteEnum.Inventorizations], initialIndex: 0 },
+        {
+          store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
+            },
+          }),
+        },
+      )
+
+      await testUtils.expectLoadingFinished()
+      await testUtils.clickExecuteInventorizationButton(user)
+      const page = executeInventorizationPageTestUtils.getContainer()
+
+      expect(page).toBeEnabled()
     })
   })
 })

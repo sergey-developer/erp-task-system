@@ -14,6 +14,7 @@ import {
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import commonFixtures from '_tests_/fixtures/common'
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetInventorizationsForbiddenError,
@@ -21,9 +22,11 @@ import {
   mockGetInventorizationsSuccess,
   mockGetInventorizationSuccess,
 } from '_tests_/mocks/api/warehouse'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeWord,
+  getStoreWithAuth,
   notificationTestUtils,
   render,
   setupApiTests,
@@ -240,7 +243,11 @@ describe('Страница списка инвентаризаций', () => {
 
       mockGetInventorizationSuccess(inventorizationListItem.id)
 
-      const { user } = render(<InventorizationsPage />)
+      const { user } = render(<InventorizationsPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
+        }),
+      })
 
       await inventorizationTableTestUtils.expectLoadingFinished()
       await inventorizationTableTestUtils.clickRow(user, inventorizationListItem.id)

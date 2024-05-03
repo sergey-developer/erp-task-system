@@ -4,9 +4,9 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { SEND_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { buttonTestUtils, fakeEmail, fakeWord, render, selectTestUtils } from '_tests_/utils'
 
-import catalogsFixtures from '../../../../_tests_/fixtures/catalogs'
 import CreateRegistrationFNRequestModal from './index'
 import { CreateRegistrationFNRequestModalProps } from './types'
 
