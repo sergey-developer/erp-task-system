@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { testUtils as inventorizationDetailsTestUtils } from 'modules/warehouse/components/InventorizationDetails/InventorizationDetails.test'
 import { testUtils as inventorizationTableTestUtils } from 'modules/warehouse/components/InventorizationTable/InventorizationTable.test'
 import { testUtils as inventorizationsFilterTestUtils } from 'modules/warehouse/components/InventorizationsFilter/InventorizationsFilter.test'
 import {
@@ -18,6 +19,7 @@ import {
   mockGetInventorizationsForbiddenError,
   mockGetInventorizationsServerError,
   mockGetInventorizationsSuccess,
+  mockGetInventorizationSuccess,
 } from '_tests_/mocks/api/warehouse'
 import {
   buttonTestUtils,
@@ -226,6 +228,25 @@ describe('Страница списка инвентаризаций', () => {
         const row = inventorizationTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Карточка инвентаризации', () => {
+    test('Открывается при клике на строку', async () => {
+      const inventorizationListItem = warehouseFixtures.inventorizationListItem()
+      mockGetInventorizationsSuccess({
+        body: commonFixtures.paginatedListResponse([inventorizationListItem]),
+      })
+
+      mockGetInventorizationSuccess(inventorizationListItem.id)
+
+      const { user } = render(<InventorizationsPage />)
+
+      await inventorizationTableTestUtils.expectLoadingFinished()
+      await inventorizationTableTestUtils.clickRow(user, inventorizationListItem.id)
+      const details = await inventorizationDetailsTestUtils.findContainer()
+
+      expect(details).toBeInTheDocument()
     })
   })
 })

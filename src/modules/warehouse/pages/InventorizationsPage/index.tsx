@@ -31,6 +31,7 @@ import { IdType } from 'shared/types/common'
 import {
   calculatePaginationParams,
   extractPaginationParams,
+  extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
@@ -140,22 +141,7 @@ const InventorizationsPage: FC = () => {
 
         <InventorizationTable
           ref={tableRef}
-          dataSource={[
-            {
-              id: 1,
-              type: InventorizationTypeEnum.Internal,
-              status: InventorizationStatusEnum.New,
-              createdAt: new Date().toISOString(),
-              deadlineAt: new Date().toISOString(),
-              createdBy: { id: 1, fullName: 'createdBy' },
-              executor: { id: 1, fullName: 'createdBy' },
-              warehouses: [
-                { id: 1, title: 'warehouse 1' },
-                { id: 2, title: 'warehouse 2' },
-              ],
-            },
-          ]}
-          // dataSource={extractPaginationResults(inventorizations)}
+          dataSource={extractPaginationResults(inventorizations)}
           pagination={extractPaginationParams(inventorizations)}
           loading={inventorizationsIsFetching}
           sort={getInventorizationsQueryArgs.ordering}
