@@ -41,7 +41,10 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
       styles={height ? { wrapper: { top: 'unset', height } } : undefined}
       mask={false}
     >
-      <LoadingArea isLoading={inventorizationIsFetching}>
+      <LoadingArea
+        data-testid='inventorization-details-loading'
+        isLoading={inventorizationIsFetching}
+      >
         {inventorization && (
           <Flex vertical gap='middle'>
             <Flex vertical gap='middle'>
