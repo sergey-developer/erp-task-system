@@ -41,4 +41,5 @@ export enum UserPermissionsEnum {
   ReportMainIndicatorsRead = 'REPORT_MAIN_INDICATORS_READ',
 
   InventorizationRead = 'INVENTORIZATION_READ',
+  InventorizationUpdate = 'INVENTORIZATION_UPDATE',
 }
