@@ -1,13 +1,14 @@
 import { FC } from 'react'
 import { useParams } from 'react-router-dom'
 
+import { useGetWarehouse } from 'modules/warehouse/hooks/warehouse'
+
 import Label from 'components/Label'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
 import { valueOrHyphen } from 'shared/utils/common'
 
-import { useGetWarehouse } from '../../hooks/warehouse'
 import { WrapperStyled } from './styles'
 
 const WarehousePage: FC = () => {
