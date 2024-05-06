@@ -5,4 +5,14 @@ import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types
 
 export const getExecuteInventorizationPageLocationState = (
   inventorization: InventorizationModel,
-): ExecuteInventorizationPageLocationState => pick(inventorization, 'executor', 'status')
+): NonNullable<ExecuteInventorizationPageLocationState> =>
+  pick(
+    inventorization,
+    'executor',
+    'status',
+    'type',
+    'deadlineAt',
+    'createdAt',
+    'createdBy',
+    'warehouses',
+  )

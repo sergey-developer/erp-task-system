@@ -19,7 +19,7 @@ const items: CatalogsProps['items'] = [
   {
     link: WarehouseRouteEnum.Inventorizations,
     text: 'Инвентаризация',
-    permissions: [UserPermissionsEnum.InventorizationRead],
+    // permissions: [UserPermissionsEnum.InventorizationRead],
   },
 ]
 
