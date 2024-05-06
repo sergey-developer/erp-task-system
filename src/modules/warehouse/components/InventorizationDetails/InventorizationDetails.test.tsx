@@ -10,6 +10,7 @@ import {
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import ExecuteInventorizationPage from 'modules/warehouse/pages/ExecuteInventorizationPage'
 import { testUtils as executeInventorizationPageTestUtils } from 'modules/warehouse/pages/ExecuteInventorizationPage/ExecuteInventorizationPage.test'
+import { mapInventorizationWarehousesTitles } from 'modules/warehouse/utils/inventorization'
 
 import { formatDate } from 'shared/utils/date'
 
@@ -94,7 +95,7 @@ describe('Карточка инвентаризации', () => {
 
     const warehousesLabel = within(container).getByText('Склады:')
     const warehousesValue = within(container).getByText(
-      inventorization.warehouses.map((w) => w.title).join(', '),
+      mapInventorizationWarehousesTitles(inventorization.warehouses),
     )
 
     const deadlineAtLabel = within(container).getByText('Срок выполнения:')

@@ -9,10 +9,7 @@ import { useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
 
 import { CommonLocationState } from 'shared/types/common'
-import { IsTruthyType } from 'shared/types/utils'
 import { getPathByLocation } from 'shared/utils/url'
-
-type VerifyLocationState<T> = T extends IsTruthyType<T> ? T : unknown
 
 type ProtectedRouteProps<LocationState> = {
   component: ReactElement
@@ -26,9 +23,9 @@ function ProtectedRoute<LocationState>({
   permitted,
   onlyGuest = false,
   redirectPath,
-}: ProtectedRouteProps<VerifyLocationState<LocationState>>) {
+}: ProtectedRouteProps<LocationState>) {
   const location = useLocation()
-  const locationState = location.state as VerifyLocationState<LocationState>
+  const locationState = location.state as LocationState
   const navigationState: CommonLocationState = { from: getPathByLocation(location) }
 
   const isLoggedIn = useIsLoggedIn()
