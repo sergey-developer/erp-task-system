@@ -11,12 +11,12 @@ import taskFixtures from '_tests_/fixtures/task'
 import {
   mockCreateTaskAttachmentSuccess,
   mockCreateTaskRegistrationFNRequestSuccess,
+  mockGetFaChangeTypesSuccess,
   mockGetTaskReclassificationRequestSuccess,
   mockGetTaskRegistrationRequestRecipientsFNSuccess,
   mockGetTaskSuccess,
   mockResolveTaskSuccess,
 } from '_tests_/mocks/api'
-import { mockGetFaChangeTypesSuccess } from '_tests_/mocks/api/catalogs'
 import {
   fakeId,
   fakeWord,
@@ -34,10 +34,8 @@ import {
 } from './TaskDetailsTitle/TaskDetailsTitle.test'
 import TaskDetails, { TaskDetailsProps } from './index'
 
-const taskId = fakeId()
-
 const props: TaskDetailsProps = {
-  taskId,
+  taskId: fakeId(),
 
   additionalInfoExpanded: false,
   onExpandAdditionalInfo: jest.fn(),

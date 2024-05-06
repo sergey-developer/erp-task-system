@@ -4,9 +4,9 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { SEND_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { buttonTestUtils, fakeEmail, fakeWord, render, selectTestUtils } from '_tests_/utils'
 
-import catalogsFixtures from '../../../../_tests_/fixtures/catalogs'
 import CreateRegistrationFNRequestModal from './index'
 import { CreateRegistrationFNRequestModalProps } from './types'
 
@@ -25,6 +25,7 @@ const props: CreateRegistrationFNRequestModalProps = {
   changeTypesIsLoading: false,
 
   onCreateAttachment: jest.fn(),
+  createAttachmentIsLoading: false,
 }
 
 const getContainer = () => screen.getByTestId('create-registration-fn-request-modal')
@@ -177,8 +178,8 @@ describe('Модалка создания запроса на регистрац
       expect(input.files!.item(0)).toBe(file)
       expect(input.files).toHaveLength(1)
       expect(uploadedFile).toBeInTheDocument()
-      // expect(props.onCreateAttachment).toBeCalledTimes(1)
-      // expect(props.onCreateAttachment).toBeCalledWith(expect.anything())
+      expect(props.onCreateAttachment).toBeCalledTimes(1)
+      expect(props.onCreateAttachment).toBeCalledWith(expect.anything())
     })
 
     test('Удаление работает', async () => {
