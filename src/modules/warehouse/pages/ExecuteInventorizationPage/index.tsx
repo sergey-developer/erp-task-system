@@ -1,7 +1,8 @@
-import { Col, Flex, Row, Typography } from 'antd'
+import { Col, Flex, Row, Tabs, Typography } from 'antd'
 import React, { FC } from 'react'
 import { useLocation } from 'react-router-dom'
 
+import ExecuteInventorizationReviseTab from 'modules/warehouse/components/ExecuteInventorizationReviseTab'
 import {
   inventorizationStatusDict,
   inventorizationTypeDict,
@@ -13,12 +14,18 @@ import { formatDate } from 'shared/utils/date'
 
 const { Text } = Typography
 
+enum ExecuteInventorizationPageTabsEnum {
+  Revise = 'Revise',
+  Discrepancies = 'Discrepancies',
+  Relocations = 'Relocations',
+}
+
 const ExecuteInventorizationPage: FC = () => {
   const location = useLocation()
   const inventorization = location.state as ExecuteInventorizationPageLocationState
 
   return (
-    <div data-testid='execute-inventorization-page'>
+    <Flex data-testid='execute-inventorization-page' vertical gap='small'>
       <Row gutter={16}>
         {inventorization && (
           <Col span={6}>
@@ -96,7 +103,29 @@ const ExecuteInventorizationPage: FC = () => {
           </Col>
         )}
       </Row>
-    </div>
+
+      <Tabs
+        type='card'
+        defaultActiveKey={ExecuteInventorizationPageTabsEnum.Revise}
+        items={[
+          {
+            key: ExecuteInventorizationPageTabsEnum.Revise,
+            label: 'Сверка',
+            children: <ExecuteInventorizationReviseTab />,
+          },
+          {
+            key: ExecuteInventorizationPageTabsEnum.Discrepancies,
+            label: 'Расхождения',
+            children: ExecuteInventorizationPageTabsEnum.Discrepancies,
+          },
+          {
+            key: ExecuteInventorizationPageTabsEnum.Relocations,
+            label: 'Перемещения',
+            children: ExecuteInventorizationPageTabsEnum.Relocations,
+          },
+        ]}
+      />
+    </Flex>
   )
 }
 
