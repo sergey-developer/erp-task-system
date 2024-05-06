@@ -15,6 +15,7 @@ import {
   checkInventorizationStatusIsNew,
   getExecuteInventorizationPageLink,
   getExecuteInventorizationPageLocationState,
+  mapInventorizationWarehousesTitles,
 } from 'modules/warehouse/utils/inventorization'
 
 import LoadingArea from 'components/LoadingArea'
@@ -104,7 +105,9 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                   <Text type='secondary'>Склады:</Text>
                 </Col>
 
-                <Col span={14}>{inventorization.warehouses.map((w) => w.title).join(', ')}</Col>
+                <Col span={14}>
+                  {mapInventorizationWarehousesTitles(inventorization.warehouses)}
+                </Col>
               </Row>
 
               <Row align='middle'>
