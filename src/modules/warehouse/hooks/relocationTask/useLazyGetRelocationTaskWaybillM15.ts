@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
-import { getRelocationTaskWaybillM15ErrorMsg } from 'modules/warehouse/constants/relocationTask'
+import { getRelocationTaskWaybillM15ErrMsg } from 'modules/warehouse/constants/relocationTask'
 import {
   GetRelocationTaskWaybillM15QueryArgs,
   GetRelocationTaskWaybillM15SuccessResponse,
@@ -27,7 +27,7 @@ export const useLazyGetRelocationTaskWaybillM15 = (): UseLazyGetRelocationTaskWa
       } else if (isNotFoundError(state.error) && state.error.data.detail) {
         showErrorNotification(state.error.data.detail)
       } else {
-        showErrorNotification(getRelocationTaskWaybillM15ErrorMsg)
+        showErrorNotification(getRelocationTaskWaybillM15ErrMsg)
       }
     }
   }, [state.error])

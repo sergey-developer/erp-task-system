@@ -5,7 +5,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { getTaskMessages } from 'modules/task/constants/task'
 import { GetTaskQueryArgs, GetTaskSuccessResponse } from 'modules/task/models'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
-import { getTaskNotFoundErrorMsg, getTaskServerErrorMsg } from 'modules/task/utils/task'
+import { getTaskNotFoundErrMsg, getTaskServerErrMsg } from 'modules/task/utils/task'
 
 import {
   isBadRequestError,
@@ -26,9 +26,9 @@ export const useGetTask = (id: GetTaskQueryArgs, options?: UseGetTaskOptions): U
 
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
-        showErrorNotification(getTaskNotFoundErrorMsg(id))
+        showErrorNotification(getTaskNotFoundErrMsg(id))
       } else if (isBadRequestError(state.error) || isServerRangeError(state.error)) {
-        showErrorNotification(getTaskServerErrorMsg(id))
+        showErrorNotification(getTaskServerErrMsg(id))
       } else {
         showErrorNotification(getTaskMessages.commonError)
       }

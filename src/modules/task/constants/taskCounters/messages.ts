@@ -1,1 +1,1 @@
-export const getTaskCountersErrorMsg = 'Ошибка получения количества заявок для быстрых фильтров'
+export const getTaskCountersErrMsg = 'Ошибка получения количества заявок для быстрых фильтров'

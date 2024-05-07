@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 
 import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
 import { testUtils as equipmentTableTestUtils } from 'modules/warehouse/components/EquipmentTable/EquipmentTable.test'
-import { getEquipmentsErrorMsg } from 'modules/warehouse/constants/equipment'
+import { getEquipmentsErrMsg } from 'modules/warehouse/constants/equipment'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import commonFixtures from '_tests_/fixtures/common'
@@ -68,7 +68,7 @@ describe('Страница списка оборудования', () => {
         render(<EquipmentListPage />)
 
         await equipmentTableTestUtils.expectLoadingFinished()
-        const notification = await notificationTestUtils.findNotification(getEquipmentsErrorMsg)
+        const notification = await notificationTestUtils.findNotification(getEquipmentsErrMsg)
 
         expect(notification).toBeInTheDocument()
       })

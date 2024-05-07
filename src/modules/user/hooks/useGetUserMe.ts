@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getUserMeErrorMsg } from 'modules/user/constants'
+import { getUserMeErrMsg } from 'modules/user/constants'
 import { GetUserMeQueryArgs, GetUserMeSuccessResponse } from 'modules/user/models'
 import { useGetUserMeQuery } from 'modules/user/services/userApi.service'
 
@@ -17,7 +17,7 @@ export const useGetUserMe = (options?: UseGetUserMeOptions): UseGetUserMeResult 
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getUserMeErrorMsg)
+      showErrorNotification(getUserMeErrMsg)
     }
   }, [state.error])
 

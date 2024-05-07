@@ -12,8 +12,8 @@ import {
   GetEquipmentAttachmentListSuccessResponse,
   GetEquipmentCatalogListQueryArgs,
   GetEquipmentCatalogListSuccessResponse,
-  GetEquipmentCategoryListQueryArgs,
-  GetEquipmentCategoryListSuccessResponse,
+  GetEquipmentCategoriesQueryArgs,
+  GetEquipmentCategoriesSuccessResponse,
   GetEquipmentListQueryArgs,
   GetEquipmentListSuccessResponse,
   GetEquipmentListTemplateQueryArgs,
@@ -183,12 +183,12 @@ const equipmentApiService = baseApiService
         }),
       }),
 
-      getEquipmentCategoryList: build.query<
-        GetEquipmentCategoryListSuccessResponse,
-        GetEquipmentCategoryListQueryArgs
+      getEquipmentCategories: build.query<
+        GetEquipmentCategoriesSuccessResponse,
+        GetEquipmentCategoriesQueryArgs
       >({
         query: () => ({
-          url: EquipmentApiEnum.GetEquipmentCategoryList,
+          url: EquipmentApiEnum.GetEquipmentCategories,
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -222,7 +222,7 @@ export const {
   useLazyGetEquipmentsXlsxQuery,
   useGetEquipmentRelocationHistoryQuery,
 
-  useGetEquipmentCategoryListQuery,
+  useGetEquipmentCategoriesQuery,
 
   useLazyGetEquipmentListTemplateQuery,
 } = equipmentApiService

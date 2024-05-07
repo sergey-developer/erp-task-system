@@ -6,6 +6,7 @@ import { getLocationsErrMsg } from 'shared/constants/catalogs'
 import { GetLocationsQueryArgs, GetLocationsSuccessResponse } from 'shared/models/catalogs/location'
 import {
   getErrorDetail,
+  isBadRequestError,
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
@@ -32,7 +33,11 @@ export const useGetLocations = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
+      if (
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
+      ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
         showErrorNotification(getLocationsErrMsg)

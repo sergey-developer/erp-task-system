@@ -1,10 +1,10 @@
 import { ApiRequestMessages } from 'shared/types/messages'
 
-export const getRelocationTaskListErrorMsg = 'Ошибка получения списка заявок на перемещение'
-export const createRelocationTaskErrorMsg = 'Ошибка создания заявки на перемещение'
-export const createRelocationTaskITSMErrorMsg =
+export const getRelocationTaskListErrMsg = 'Ошибка получения списка заявок на перемещение'
+export const createRelocationTaskErrMsg = 'Ошибка создания заявки на перемещение'
+export const createRelocationTaskITSMErrMsg =
   'Ошибка создания заявки на перемещение, связанной с заявкой itsm'
-export const updateRelocationTaskErrorMsg = 'Ошибка обновления заявки на перемещение'
+export const updateRelocationTaskErrMsg = 'Ошибка обновления заявки на перемещение'
 
 export const getRelocationTaskCompletionDocumentsErrMsg =
   'Ошибка получения данных о перемещении и перемещаемом оборудовании для формирования пакета документов'
@@ -15,7 +15,7 @@ export const createRelocationTaskCompletionDocumentsErrMsg =
 export const getRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения заявки на перемещение',
 }
-export const getRelocationTaskAttachmentsErrorMsg =
+export const getRelocationTaskAttachmentsErrMsg =
   'Ошибка получения вложений по заявке на перемещение'
 
 export const returnRelocationTaskToReworkMessages: ApiRequestMessages<'commonError'> = {
@@ -34,10 +34,10 @@ export const closeRelocationTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка закрытия заявки на перемещение',
 }
 
-export const createRelocationTaskAttachmentErrorMsg =
+export const createRelocationTaskAttachmentErrMsg =
   'Ошибка создания вложения к заявке на перемещение'
 
-export const getRelocationTaskWaybillM15ErrorMsg = 'Ошибка формирования накладной М-15'
+export const getRelocationTaskWaybillM15ErrMsg = 'Ошибка формирования накладной М-15'
 
 export const getRelocationEquipmentListMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения списка оборудования по заявке на перемещение',

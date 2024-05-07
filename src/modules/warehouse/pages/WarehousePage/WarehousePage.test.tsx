@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { getWarehouseErrorMsg } from 'modules/warehouse/constants/warehouse'
+import { getWarehouseErrMsg } from 'modules/warehouse/constants/warehouse'
 import { getWarehousePageLink } from 'modules/warehouse/utils/warehouse'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -227,7 +227,7 @@ describe('Страница склада', () => {
 
       await testUtils.expectLoadingFinished()
 
-      const notification = await notificationTestUtils.findNotification(getWarehouseErrorMsg)
+      const notification = await notificationTestUtils.findNotification(getWarehouseErrMsg)
       expect(notification).toBeInTheDocument()
     })
   })

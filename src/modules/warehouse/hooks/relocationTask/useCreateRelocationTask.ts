@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { createRelocationTaskErrorMsg } from 'modules/warehouse/constants/relocationTask'
+import { createRelocationTaskErrMsg } from 'modules/warehouse/constants/relocationTask'
 import {
   CreateRelocationTaskMutationArgs,
   CreateRelocationTaskSuccessResponse,
@@ -35,7 +35,7 @@ export const useCreateRelocationTask = (): UseCreateRelocationTaskResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createRelocationTaskErrorMsg)
+        showErrorNotification(createRelocationTaskErrMsg)
       }
     }
   }, [state.error])
