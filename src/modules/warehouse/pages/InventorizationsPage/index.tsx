@@ -68,8 +68,10 @@ const InventorizationsPage: FC = () => {
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
   const [filterValues, setFilterValues] = useState<InventorizationsFilterFormFields>()
 
-  const [inventorizationDetailsOpened, { toggle: toggleOpenInventorizationDetails }] =
-    useBoolean(false)
+  const [
+    inventorizationDetailsOpened,
+    { setTrue: openInventorizationDetails, toggle: toggleOpenInventorizationDetails },
+  ] = useBoolean(false)
   const debouncedToggleOpenInventorizationDetails = useDebounceFn(toggleOpenInventorizationDetails)
 
   const [inventorizationId, setInventorizationId] = useState<IdType>()
@@ -113,10 +115,10 @@ const InventorizationsPage: FC = () => {
     (record) => ({
       onClick: debounce(() => {
         setInventorizationId(record.id)
-        toggleOpenInventorizationDetails()
+        openInventorizationDetails()
       }, DEFAULT_DEBOUNCE_VALUE),
     }),
-    [toggleOpenInventorizationDetails],
+    [openInventorizationDetails],
   )
 
   const onApplyFilter = useCallback<InventorizationsFilterProps['onApply']>(
