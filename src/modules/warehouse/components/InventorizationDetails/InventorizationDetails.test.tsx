@@ -140,7 +140,7 @@ describe('Карточка инвентаризации', () => {
 
     expect(nomenclaturesLabel).toBeInTheDocument()
     inventorization.nomenclatures.forEach((n) => {
-      const nomenclatureGroupTitle = within(container).getByText(n.nomenclaturesGroup.title)
+      const nomenclatureGroupTitle = within(container).getByText(n.group.title)
       const nomenclatureTitle = within(container).getByText(n.title)
       expect(nomenclatureGroupTitle).toBeInTheDocument()
       expect(nomenclatureTitle).toBeInTheDocument()
