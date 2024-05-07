@@ -2,16 +2,20 @@ import { screen, within } from '@testing-library/react'
 import * as reactRouterDom from 'react-router-dom'
 
 import {
+  inventorizationStatusDict,
+  inventorizationTypeDict,
+} from 'modules/warehouse/constants/inventorization'
+import {
   getExecuteInventorizationPageLocationState,
   mapInventorizationWarehousesTitles,
 } from 'modules/warehouse/utils/inventorization'
+
+import { formatDate } from 'shared/utils/date'
 
 import { useLocationResult } from '_tests_/fixtures/useLocation'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render } from '_tests_/utils'
 
-import { formatDate } from '../../../../shared/utils/date'
-import { inventorizationStatusDict, inventorizationTypeDict } from '../../constants/inventorization'
 import ExecuteInventorizationPage from './index'
 
 const getContainer = () => screen.getByTestId('execute-inventorization-page')
