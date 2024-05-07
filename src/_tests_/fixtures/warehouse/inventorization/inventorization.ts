@@ -8,7 +8,7 @@ import { InventorizationModel } from 'modules/warehouse/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeId } from '_tests_/utils'
 
 export const inventorization = (): InventorizationModel => ({
   id: fakeId(),
@@ -23,7 +23,5 @@ export const inventorization = (): InventorizationModel => ({
   executor: pick(userFixtures.user(), 'id', 'fullName'),
   deadlineAt: fakeDateString(),
   completedAt: fakeDateString(),
-  nomenclatures: [
-    { id: fakeId(), title: fakeWord(), nomenclaturesGroup: { id: fakeId(), title: fakeWord() } },
-  ],
+  nomenclatures: [pick(warehouseFixtures.nomenclature(), 'id', 'title', 'group')],
 })
