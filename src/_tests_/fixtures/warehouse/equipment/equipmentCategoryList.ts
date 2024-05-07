@@ -1,10 +1,7 @@
 import times from 'lodash/times'
 
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
-import {
-  EquipmentCategoryListItemModel,
-  EquipmentCategoryListModel,
-} from 'modules/warehouse/models'
+import { EquipmentCategoryListItemModel, EquipmentCategoriesModel } from 'modules/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
@@ -17,5 +14,5 @@ export const equipmentCategoryListItem = (
   title: fakeWord(),
 })
 
-export const equipmentCategoryList = (length: number = 1): EquipmentCategoryListModel =>
+export const equipmentCategoryList = (length: number = 1): EquipmentCategoriesModel =>
   times(length, () => equipmentCategoryListItem())

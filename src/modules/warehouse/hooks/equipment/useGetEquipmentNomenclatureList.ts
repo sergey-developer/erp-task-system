@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 
-import { getEquipmentNomenclaturesErrorMsg } from 'modules/warehouse/constants/equipment'
+import { getEquipmentNomenclaturesErrMsg } from 'modules/warehouse/constants/equipment'
 import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
 import { useGetEquipmentNomenclatureListQuery } from 'modules/warehouse/services/equipmentApi.service'
 import { GetEquipmentNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
@@ -26,7 +26,7 @@ export const useGetEquipmentNomenclatureList = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentNomenclaturesErrorMsg)
+        showErrorNotification(getEquipmentNomenclaturesErrMsg)
       }
     }
   }, [state.error])

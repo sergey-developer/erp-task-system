@@ -1,5 +1,4 @@
-import { EquipmentCategoryListModel } from 'modules/warehouse/models'
+import { EquipmentCategoriesModel } from 'modules/warehouse/models'
 
-export type GetEquipmentCategoryListQueryArgs = void
-
-export type GetEquipmentCategoryListSuccessResponse = EquipmentCategoryListModel
+export type GetEquipmentCategoriesQueryArgs = void
+export type GetEquipmentCategoriesSuccessResponse = EquipmentCategoriesModel

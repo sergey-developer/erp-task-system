@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getTaskJournalErrorMsg } from 'modules/task/constants/taskJournal'
+import { getTaskJournalErrMsg } from 'modules/task/constants/taskJournal'
 import { GetTaskJournalQueryArgs, GetTaskJournalSuccessResponse } from 'modules/task/models'
 import { useGetTaskJournalQuery } from 'modules/task/services/taskApi.service'
 
@@ -30,7 +30,7 @@ export const useGetTaskJournal = (
       if (isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getTaskJournalErrorMsg)
+        showErrorNotification(getTaskJournalErrMsg)
       }
     }
   }, [state.error])

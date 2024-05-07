@@ -1,2 +1,2 @@
-export const getTaskJournalErrorMsg = 'Ошибка получения записей журнала по заявке'
-export const getTaskJournalCsvErrorMsg = 'Ошибка получения записей журнала по заявке в формате CSV'
+export const getTaskJournalErrMsg = 'Ошибка получения записей журнала по заявке'
+export const getTaskJournalCsvErrMsg = 'Ошибка получения записей журнала по заявке в формате CSV'

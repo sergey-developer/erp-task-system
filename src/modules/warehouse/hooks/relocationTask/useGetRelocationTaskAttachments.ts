@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getRelocationTaskAttachmentsErrorMsg } from 'modules/warehouse/constants/relocationTask'
+import { getRelocationTaskAttachmentsErrMsg } from 'modules/warehouse/constants/relocationTask'
 import {
   GetRelocationTaskAttachmentsQueryArgs,
   GetRelocationTaskAttachmentsSuccessResponse,
@@ -40,7 +40,7 @@ export const useGetRelocationTaskAttachments = (
       } else if (isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getRelocationTaskAttachmentsErrorMsg)
+        showErrorNotification(getRelocationTaskAttachmentsErrMsg)
       }
     }
   }, [state.error])

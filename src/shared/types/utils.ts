@@ -4,10 +4,10 @@ export type Nullable<T> = T | null | undefined
 export type MaybeNull<T> = T | null
 export type MaybeUndefined<T> = T | undefined
 
-export type NumericalString = `${number}` | number
+export type NumericalString = `${number}`
 
-export type NonNullableObject<T extends object> = Required<{
-  [K in keyof T]: NonNullable<T[K]>
+export type SetNonNullable<BaseType, Keys extends keyof BaseType = keyof BaseType> = Required<{
+  [Key in Keys]: Key extends Keys ? NonNullable<BaseType[Key]> : BaseType[Key]
 }>
 
 export type FalsyValue = false | '' | 0 | null | undefined

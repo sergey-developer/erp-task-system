@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 
 import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
-import { getEquipmentNomenclaturesErrorMsg } from 'modules/warehouse/constants/equipment'
+import { getEquipmentNomenclaturesErrMsg } from 'modules/warehouse/constants/equipment'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import commonFixtures from '_tests_/fixtures/common'
@@ -99,7 +99,7 @@ describe('Страница списка номенклатуры оборудо�
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(
-          getEquipmentNomenclaturesErrorMsg,
+          getEquipmentNomenclaturesErrMsg,
         )
 
         expect(notification).toBeInTheDocument()

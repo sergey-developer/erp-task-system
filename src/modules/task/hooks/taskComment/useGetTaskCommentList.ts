@@ -5,8 +5,8 @@ import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
 import { GetTaskCommentListQueryArgs, GetTaskCommentListSuccessResponse } from 'modules/task/models'
 import { taskCommentApiPermissions } from 'modules/task/permissions'
 import { useGetTaskCommentListQuery } from 'modules/task/services/taskApi.service'
-import { getTaskNotFoundErrorMsg } from 'modules/task/utils/task'
-import { getTaskCommentListServerErrorMsg } from 'modules/task/utils/taskComment'
+import { getTaskNotFoundErrMsg } from 'modules/task/utils/task'
+import { getTaskCommentListServerErrMsg } from 'modules/task/utils/taskComment'
 import { useUserPermissions } from 'modules/user/hooks'
 
 import { commonApiMessages } from 'shared/constants/common'
@@ -32,9 +32,9 @@ export const useGetTaskCommentList = (
 
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
-        showErrorNotification(getTaskNotFoundErrorMsg(args.taskId))
+        showErrorNotification(getTaskNotFoundErrMsg(args.taskId))
       } else if (isServerRangeError(state.error)) {
-        showErrorNotification(getTaskCommentListServerErrorMsg(args.taskId))
+        showErrorNotification(getTaskCommentListServerErrMsg(args.taskId))
       } else {
         showErrorNotification(commonApiMessages.unknownError)
       }

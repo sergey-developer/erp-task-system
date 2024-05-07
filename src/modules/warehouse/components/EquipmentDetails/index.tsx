@@ -19,7 +19,7 @@ import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useGetEquipment,
   useGetEquipmentAttachmentList,
-  useGetEquipmentCategoryList,
+  useGetEquipmentCategories,
   useGetEquipmentRelocationHistory,
   useUpdateEquipment,
 } from 'modules/warehouse/hooks/equipment'
@@ -129,7 +129,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     useGetWarehouseList({ ordering: 'title' }, { skip: !editEquipmentModalOpened })
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
-    useGetEquipmentCategoryList(undefined, { skip: !editEquipmentModalOpened })
+    useGetEquipmentCategories(undefined, { skip: !editEquipmentModalOpened })
 
   const { currentData: currencyList = [], isFetching: currencyListIsFetching } = useGetCurrencyList(
     undefined,
