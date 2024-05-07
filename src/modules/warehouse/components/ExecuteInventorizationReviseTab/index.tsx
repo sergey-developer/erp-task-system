@@ -1,12 +1,14 @@
 import { useSetState } from 'ahooks'
-import { Flex, Typography } from 'antd'
-import { FC, useCallback } from 'react'
+import { Col, Flex, Input, Row, Typography } from 'antd'
+import { SearchProps } from 'antd/es/input'
+import React, { FC, useCallback, useState } from 'react'
 
 import { useGetEquipmentCategories } from 'modules/warehouse/hooks/equipment'
 import { useGetInventorizationEquipments } from 'modules/warehouse/hooks/inventorization'
 import { GetInventorizationEquipmentsQueryArgs } from 'modules/warehouse/models'
 
 import { useGetLocations } from 'shared/hooks/catalogs/location'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import {
   calculatePaginationParams,
@@ -23,14 +25,15 @@ type ExecuteInventorizationReviseTabProps = {
 }
 
 const { Title } = Typography
+const { Search } = Input
 
 const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> = ({
   inventorizationId,
 }) => {
+  const [searchValue, setSearchValue] = useState<string>()
+
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
-    {
-      responsibilityArea: false,
-    },
+    { responsibilityArea: false },
     { skip: true },
   )
 
@@ -62,9 +65,30 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     [onTablePagination],
   )
 
+  const onSearch = useDebounceFn<NonNullable<SearchProps['onSearch']>>(
+    (value) => setGetInventorizationEquipmentsParams({ search: value || undefined }),
+    [setGetInventorizationEquipmentsParams],
+  )
+
+  const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) =>
+    setSearchValue(event.target.value)
+
   return (
     <Flex vertical gap='small'>
       <Title level={5}>Перечень оборудования для сверки</Title>
+
+      <Row>
+        <Col span={5}>
+          <Search
+            allowClear
+            onSearch={onSearch}
+            onChange={onChangeSearch}
+            value={searchValue}
+            placeholder='Поиск оборудования'
+            disabled={inventorizationEquipmentsIsFetching}
+          />
+        </Col>
+      </Row>
 
       <ReviseEquipmentTable
         pagination={extractPaginationParams(paginatedInventorizationEquipments)}
