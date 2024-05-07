@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getTaskListMapErrorMsg } from 'modules/task/constants/task'
+import { getTaskListMapErrMsg } from 'modules/task/constants/task'
 import { GetTaskListMapQueryArgs, GetTaskListMapSuccessResponse } from 'modules/task/models'
 import { useGetTaskListMapQuery } from 'modules/task/services/taskApi.service'
 
@@ -27,7 +27,7 @@ export const useGetTaskListMap = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getTaskListMapErrorMsg)
+      showErrorNotification(getTaskListMapErrMsg)
     }
   }, [state.error])
 

@@ -4,7 +4,7 @@ import { testUtils as relocationTaskListTestUtils } from 'modules/task/component
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
-import { getRelocationTaskListErrorMsg } from 'modules/warehouse/constants/relocationTask'
+import { getRelocationTaskListErrMsg } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CreateDocumentsPackagePage from 'modules/warehouse/pages/CreateDocumentsPackagePage'
 import { testUtils as createDocumentsPackagePageTestUtils } from 'modules/warehouse/pages/CreateDocumentsPackagePage/CreateDocumentsPackagePage.test'
@@ -250,7 +250,7 @@ describe('Вкладка списка заявок на перемещение',
 
         await testUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(
-          getRelocationTaskListErrorMsg,
+          getRelocationTaskListErrMsg,
         )
 
         expect(notification).toBeInTheDocument()

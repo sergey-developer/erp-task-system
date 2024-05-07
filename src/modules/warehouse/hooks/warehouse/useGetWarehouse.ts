@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getWarehouseErrorMsg } from 'modules/warehouse/constants/warehouse'
+import { getWarehouseErrMsg } from 'modules/warehouse/constants/warehouse'
 import { GetWarehouseQueryArgs, GetWarehouseSuccessResponse } from 'modules/warehouse/models'
 import { useGetWarehouseQuery } from 'modules/warehouse/services/warehouseApi.service'
 
@@ -35,7 +35,7 @@ export const useGetWarehouse = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getWarehouseErrorMsg)
+        showErrorNotification(getWarehouseErrMsg)
       }
     }
   }, [state.error])

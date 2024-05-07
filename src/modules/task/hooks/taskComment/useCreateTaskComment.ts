@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { createTaskCommentErrorMsg } from 'modules/task/constants/taskComment'
+import { createTaskCommentErrMsg } from 'modules/task/constants/taskComment'
 import {
   CreateTaskCommentMutationArgs,
   CreateTaskCommentSuccessResponse,
@@ -35,7 +35,7 @@ export const useCreateTaskComment = (): UseCreateTaskCommentResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createTaskCommentErrorMsg)
+        showErrorNotification(createTaskCommentErrMsg)
       }
     }
   }, [state.error])

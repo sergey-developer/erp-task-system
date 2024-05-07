@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getEquipmentAttachmentListErrorMsg } from 'modules/warehouse/constants/equipment'
+import { getEquipmentAttachmentListErrMsg } from 'modules/warehouse/constants/equipment'
 import { GetEquipmentAttachmentListQueryArgs } from 'modules/warehouse/models'
 import { useGetEquipmentAttachmentListQuery } from 'modules/warehouse/services/equipmentApi.service'
 import { GetEquipmentAttachmentListTransformedSuccessResponse } from 'modules/warehouse/types'
@@ -36,7 +36,7 @@ export const useGetEquipmentAttachmentList = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentAttachmentListErrorMsg)
+        showErrorNotification(getEquipmentAttachmentListErrMsg)
       }
     }
   }, [state.error])
