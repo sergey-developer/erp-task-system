@@ -212,8 +212,9 @@ describe('Карточка заявки', () => {
       mockGetTaskRegistrationRequestRecipientsFNSuccess(props.taskId, {
         body: taskFixtures.registrationRequestRecipientsFN(),
       })
-      mockCreateTaskRegistrationFNRequestSuccess(props.taskId)
+
       mockCreateTaskAttachmentSuccess(props.taskId)
+      mockCreateTaskRegistrationFNRequestSuccess(props.taskId)
 
       const { user } = render(<TaskDetails {...props} />, {
         store: getStoreWithAuth({ userId: canRegisterFNItemProps.assignee!.id }),

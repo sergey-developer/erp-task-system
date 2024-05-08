@@ -23,14 +23,14 @@ import {
   mockGetLocationListSuccess,
   mockGetUserListSuccess,
 } from '_tests_/mocks/api'
-import { fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/utils'
 
 import RelocationTaskForm from './index'
 import { RelocationTaskFormProps } from './types'
 
 const props: RelocationTaskFormProps = {
   isLoading: false,
-  permissions: null,
+  permissions: {},
 
   onUploadImage: jest.fn(),
   imageIsUploading: false,
@@ -76,6 +76,11 @@ const setDeadlineAtDate = async (user: UserEvent, value: string) => {
   return field
 }
 
+const clearDeadlineAtDate = async (user: UserEvent) => {
+  const formItem = getDeadlineAtDateFormItem()
+  await buttonTestUtils.clickCloseButtonIn(formItem, user)
+}
+
 const getDeadlineAtTimeFormItem = () =>
   within(getDeadlineAtFormItem()).getByTestId('deadline-at-time-form-item')
 
@@ -90,6 +95,11 @@ const setDeadlineAtTime = async (user: UserEvent, value: string) => {
   await user.type(field, value)
   await user.tab()
   return field
+}
+
+const clearDeadlineAtTime = async (user: UserEvent) => {
+  const formItem = getDeadlineAtTimeFormItem()
+  await buttonTestUtils.clickCloseButtonIn(formItem, user)
 }
 
 // executor field
@@ -156,7 +166,6 @@ const expectRelocateFromLoadingFinished = () =>
 // relocate to field
 const getRelocateToFormItem = () => within(getContainer()).getByTestId('relocate-to-form-item')
 const getRelocateToSelectInput = () => selectTestUtils.getSelect(getRelocateToFormItem())
-const findRelocateToError = (text: string) => within(getRelocateToFormItem()).findByText(text)
 
 const setRelocateTo = (user: UserEvent, name: string) =>
   selectTestUtils.clickSelectOption(user, name, undefined, 'relocate-to-select-dropdown')
@@ -197,12 +206,16 @@ export const testUtils = {
   getSelectedType,
 
   getDeadlineAtTitle,
+  getDeadlineAtDateFormItem,
   getDeadlineAtDateField,
   findDeadlineAtDateError,
   setDeadlineAtDate,
+  clearDeadlineAtDate,
+
   getDeadlineAtTimeField,
   findDeadlineAtTimeError,
   setDeadlineAtTime,
+  clearDeadlineAtTime,
 
   getRelocateFromSelectInput,
   openRelocateFromSelect,
@@ -218,7 +231,6 @@ export const testUtils = {
   setRelocateTo,
   getSelectedRelocateTo,
   querySelectedRelocateTo,
-  findRelocateToError,
   expectRelocateToLoadingFinished,
 
   getExecutorSelectInput,
@@ -278,12 +290,13 @@ describe('Форма создания заявки на перемещение �
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           mockGetUserListSuccess()
-          mockGetLocationListSuccess({ body: [] })
+          mockGetLocationListSuccess({ body: [], once: false })
           mockGetEquipmentCatalogListSuccess()
-          mockGetCurrencyListSuccess()
+          mockGetCurrencyListSuccess({ body: [] })
 
           const { user } = render(<CreateRelocationTaskPage />)
 
+          await testUtils.clearDeadlineAtDate(user)
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
           const error = await testUtils.findDeadlineAtDateError(validationMessages.required)
 
@@ -339,12 +352,13 @@ describe('Форма создания заявки на перемещение �
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           mockGetUserListSuccess()
-          mockGetLocationListSuccess({ body: [] })
+          mockGetLocationListSuccess({ body: [], once: false })
           mockGetEquipmentCatalogListSuccess()
-          mockGetCurrencyListSuccess()
+          mockGetCurrencyListSuccess({ body: [] })
 
           const { user } = render(<CreateRelocationTaskPage />)
 
+          await testUtils.clearDeadlineAtTime(user)
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
           const error = await testUtils.findDeadlineAtTimeError(validationMessages.required)
 
@@ -455,9 +469,9 @@ describe('Форма создания заявки на перемещение �
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess({ body: catalogsFixtures.locationList() })
+      mockGetLocationListSuccess({ body: catalogsFixtures.locationList(), once: false })
       mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetCurrencyListSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />)
 
@@ -507,20 +521,6 @@ describe('Форма создания заявки на перемещение �
 
       expect(selectedRelocateTo).toBeInTheDocument()
     })
-
-    test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
-      mockGetUserListSuccess()
-      mockGetLocationListSuccess({ body: catalogsFixtures.locationList() })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
-
-      const { user } = render(<CreateRelocationTaskPage />)
-
-      await createRelocationTaskPageTestUtils.clickSubmitButton(user)
-      const error = await testUtils.findRelocateToError(validationMessages.required)
-
-      expect(error).toBeInTheDocument()
-    })
   })
 
   describe('Исполнитель', () => {
@@ -565,7 +565,7 @@ describe('Форма создания заявки на перемещение �
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
@@ -620,7 +620,7 @@ describe('Форма создания заявки на перемещение �
 
     test.skip('Обязателен если перемещение не с основного склада на склад МСИ', async () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
@@ -634,7 +634,7 @@ describe('Форма создания заявки на перемещение �
 
     test.skip('Не обязателен если перемещение с основного склада на склад МСИ', async () => {
       mockGetUserListSuccess()
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
