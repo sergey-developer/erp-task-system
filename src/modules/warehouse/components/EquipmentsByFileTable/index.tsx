@@ -2,6 +2,8 @@ import { Space, Table, TableProps, Tooltip, Typography } from 'antd'
 import { GetComponentProps } from 'rc-table/lib/interface'
 import React, { FC, useMemo } from 'react'
 
+import { env } from 'configs/env'
+
 import { ValidationErrors } from 'shared/services/baseApi'
 
 import { getColumns } from './columns'
@@ -47,7 +49,7 @@ const EquipmentsByFileTable: FC<EquipmentsByFileTableProps> = ({ errors, onEdit,
   return (
     <Table<EquipmentByFileTableRow>
       data-testid='equipments-by-file-table'
-      virtual
+      virtual={!env.isTest}
       rowKey='rowId'
       dataSource={dataSource}
       columns={columns}
