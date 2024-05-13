@@ -3,7 +3,7 @@ import { TaskTableColumnKey } from '../types'
 export type AllColumnWidthMap = TaskTableColumnKey
 
 export const defaultColumnWidthMap: Record<AllColumnWidthMap, number> = {
-  noop: 25,
+  noop: 30,
   id: 80,
   recordId: 140,
   name: 120,

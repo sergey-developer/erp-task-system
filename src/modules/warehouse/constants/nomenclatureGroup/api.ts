@@ -1,7 +1,7 @@
 export enum NomenclatureGroupApiEnum {
   GetNomenclatureGroupList = '/nomenclature-groups/',
   CreateNomenclatureGroup = '/nomenclature-groups/',
-  UpdateNomenclatureGroup = '/nomenclature-groups/:id/',
+  UpdateNomenclatureGroup = '/nomenclature-groups/:id',
 }
 
 export enum NomenclatureGroupApiTriggerEnum {

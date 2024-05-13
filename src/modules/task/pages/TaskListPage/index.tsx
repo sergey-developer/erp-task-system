@@ -19,7 +19,7 @@ import {
   SortableField,
   sortableFieldToSortValues,
 } from 'modules/task/components/TaskTable/constants/sort'
-import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
+import { TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort, parseSort } from 'modules/task/components/TaskTable/utils'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
@@ -293,8 +293,9 @@ const TaskListPage: FC = () => {
     (record) => ({
       onMouseUp: debounce(() => setSelectedTaskId(record.id), DEFAULT_DEBOUNCE_VALUE),
       ...(record.isBoundary && { style: tableItemBoundaryStyles }),
+      className: isEqual(record.id, selectedTaskId) ? 'ant-table-row-selected' : '',
     }),
-    [],
+    [selectedTaskId],
   )
 
   const closeTask = useCallback(() => {
@@ -345,12 +346,6 @@ const TaskListPage: FC = () => {
 
   const searchFilterApplied: boolean = isEqual(appliedFilterType, FilterTypeEnum.Search)
 
-  const getTableRowClassName = useCallback(
-    (record: TaskTableListItem): string =>
-      isEqual(record.id, selectedTaskId) ? 'table-row--selected' : '',
-    [selectedTaskId],
-  )
-
   const onRemoveTasksFilter = (filter: TasksFilterStorageItem) => {
     setTasksFiltersStorage((prevState) => ({ ...prevState, [filter.name]: undefined }))
     setExtendedFilterFormValues({ [filter.name]: undefined })
@@ -374,9 +369,9 @@ const TaskListPage: FC = () => {
     <>
       <Row data-testid='task-list-page' gutter={[0, 40]}>
         <Col span={24}>
-          <Row className='task-list-page-header' justify='space-between' align='bottom'>
+          <Row className='task-list-page-header' justify='space-between' gutter={[0, 20]}>
             <Col xxl={16} xl={14}>
-              <Row align='middle' gutter={[16, 16]}>
+              <Row gutter={[16, 16]}>
                 <Col span={17}>
                   <Row gutter={[16, 16]}>
                     {tasksFiltersStorage && (
@@ -443,7 +438,6 @@ const TaskListPage: FC = () => {
         <Col span={24}>
           <TaskTable
             ref={tableRef}
-            rowClassName={getTableRowClassName}
             sort={taskListQueryArgs.sort}
             onRow={onTableRow}
             dataSource={tasks}

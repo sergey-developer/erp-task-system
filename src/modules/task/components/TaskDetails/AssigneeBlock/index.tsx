@@ -150,7 +150,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
               {canSelectAssignee ? (
                 <SelectStyled
                   defaultValue={selectedAssignee}
-                  bordered={false}
+                  variant='borderless'
                   placeholder={assignee ? null : NOT_ASSIGNED_TEXT}
                   onSelect={setSelectedAssignee}
                 >

@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as taskAttachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
-import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/Card_old/Card.test'
+import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TaskListPage from 'modules/task/pages/TaskListPage'
 import { getTaskListPageLink } from 'modules/task/utils/task'
@@ -65,6 +65,7 @@ import {
   mockGetRelocationEquipmentListServerError,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskAttachmentsSuccess,
+  mockGetRelocationTaskCompletionDocumentsSuccess,
   mockGetRelocationTaskForbiddenError,
   mockGetRelocationTaskNotFoundError,
   mockGetRelocationTaskServerError,
@@ -153,28 +154,28 @@ const clickCreateDocumentsPackageMenuItem = (user: UserEvent) =>
   menuTestUtils.clickMenuItem('Сформировать пакет документов', user)
 
 // documents
-const getCreateDocumentsButton = () =>
-  buttonTestUtils.getAllButtonIn(getBlock('documents'), /Добавить вложение/)[1]
+const getDocumentsBlock = () => getBlock('documents')
 
-const getCreateDocumentsZoneButton = () =>
-  buttonTestUtils.getAllButtonIn(getBlock('documents'), /Добавить вложение/)[0]
+const getCreateDocumentsButton = () =>
+  buttonTestUtils.getButtonIn(getDocumentsBlock(), /Добавить вложение/)
 
 const setDocument = async (
   user: UserEvent,
   file: File = new File([], '', { type: 'image/png' }),
 ) => {
-  const button = getCreateDocumentsZoneButton()
+  const block = getDocumentsBlock()
   // eslint-disable-next-line testing-library/no-node-access
-  const input = button.querySelector('input[type="file"]') as HTMLInputElement
+  const input = block.querySelector('input[type="file"]') as HTMLInputElement
   await user.upload(input, file)
   return { input, file }
 }
 
-const getUploadedDocument = (filename: string) => within(getBlock('documents')).getByTitle(filename)
+const getUploadedDocument = (filename: string) => within(getDocumentsBlock()).getByTitle(filename)
 
 // common photos button
 const getCommonPhotosButton = () =>
   buttonTestUtils.getButtonIn(getContainer(), /Посмотреть общие фото/)
+
 const clickCommonPhotosButton = async (user: UserEvent) => {
   const button = getCommonPhotosButton()
   await user.click(button)
@@ -680,9 +681,12 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationEquipmentListSuccess(props.relocationTaskId, {
           body: relocationEquipmentList,
         })
-        mockGetRelocationEquipmentAttachmentsSuccess(relocationEquipmentListItem.id, {
-          body: warehouseFixtures.relocationEquipmentAttachments(),
-        })
+
+        const relocationEquipmentAttachments = warehouseFixtures.relocationEquipmentAttachments()
+        mockGetRelocationEquipmentAttachmentsSuccess(
+          relocationEquipmentListItem.relocationEquipmentId,
+          { body: relocationEquipmentAttachments },
+        )
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -695,9 +699,11 @@ describe('Информация о заявке о перемещении', () =>
         )
         const modal = await attachmentListModalTestUtils.findContainer()
         await attachmentListModalTestUtils.expectLoadingFinished()
-        const images = attachmentListTestUtils.getAllIn(modal)
 
-        expect(images).toHaveLength(relocationEquipmentList.length)
+        relocationEquipmentAttachments.forEach((item) => {
+          const image = attachmentListTestUtils.getIn(modal, item.name)
+          expect(image).toBeInTheDocument()
+        })
       })
 
       describe('При не успешном запросе', () => {
@@ -709,9 +715,10 @@ describe('Информация о заявке о перемещении', () =>
           })
 
           const errorMsg = fakeWord()
-          mockGetRelocationEquipmentAttachmentsForbiddenError(relocationEquipmentListItem.id, {
-            body: { detail: errorMsg },
-          })
+          mockGetRelocationEquipmentAttachmentsForbiddenError(
+            relocationEquipmentListItem.relocationEquipmentId,
+            { body: { detail: errorMsg } },
+          )
 
           const { user } = render(
             <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -736,9 +743,10 @@ describe('Информация о заявке о перемещении', () =>
           })
 
           const errorMsg = fakeWord()
-          mockGetRelocationEquipmentAttachmentsNotFoundError(relocationEquipmentListItem.id, {
-            body: { detail: errorMsg },
-          })
+          mockGetRelocationEquipmentAttachmentsNotFoundError(
+            relocationEquipmentListItem.relocationEquipmentId,
+            { body: { detail: errorMsg } },
+          )
 
           const { user } = render(
             <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -762,7 +770,9 @@ describe('Информация о заявке о перемещении', () =>
             body: [relocationEquipmentListItem],
           })
 
-          mockGetRelocationEquipmentAttachmentsServerError(relocationEquipmentListItem.id)
+          mockGetRelocationEquipmentAttachmentsServerError(
+            relocationEquipmentListItem.relocationEquipmentId,
+          )
 
           const { user } = render(
             <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -2714,6 +2724,7 @@ describe('Информация о заявке о перемещении', () =>
     test('При клике переходит на страницу формирования пакета документов', async () => {
       mockGetRelocationTaskSuccess(props.relocationTaskId)
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+      mockGetRelocationTaskCompletionDocumentsSuccess(props.relocationTaskId)
 
       const { user } = renderInRoute_latest(
         [

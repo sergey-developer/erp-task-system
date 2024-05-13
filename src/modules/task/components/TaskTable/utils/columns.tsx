@@ -41,7 +41,6 @@ export const getColumns = (role: UserRoleEnum): ColumnsType<TaskTableListItem> =
           />
         )
       },
-      align: 'center',
     },
     {
       key: 'id',

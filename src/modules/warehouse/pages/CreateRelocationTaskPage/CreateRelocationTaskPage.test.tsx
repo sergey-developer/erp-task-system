@@ -44,11 +44,7 @@ import CreateRelocationTaskPage from './index'
 const getContainer = () => screen.getByTestId('create-relocation-task-page')
 
 // add by excel button
-const getAddByExcelButton = () =>
-  buttonTestUtils.getAllButtonIn(getContainer(), /Добавить из Excel/)[1]
-
-const getAddByExcelZoneButton = () =>
-  buttonTestUtils.getAllButtonIn(getContainer(), /Добавить из Excel/)[0]
+const getAddByExcelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Добавить из Excel/)
 
 const queryAddByExcelButton = () =>
   buttonTestUtils.queryButtonIn(getContainer(), /Добавить из Excel/)
@@ -57,9 +53,9 @@ const setExcelFile = async (
   user: UserEvent,
   file: File = new File([], fakeWord(), { type: 'image/png' }),
 ) => {
-  const button = getAddByExcelZoneButton()
+  const container = getContainer()
   // eslint-disable-next-line testing-library/no-node-access
-  const input = button.querySelector('input[type="file"]') as HTMLInputElement
+  const input = container.querySelector('input[type="file"]') as HTMLInputElement
   await user.upload(input, file)
   return { input, file }
 }

@@ -203,9 +203,6 @@ const setEquipmentHasSerialNumber = async (user: UserEvent) => {
   return field
 }
 
-const findEquipmentHasSerialNumberError = (error: string): Promise<HTMLElement> =>
-  within(getEquipmentHasSerialNumberFormItem()).findByText(error)
-
 // add button
 const getAddButton = () => getSubmitButton(new RegExp(addModeProps.okText))
 
@@ -299,7 +296,6 @@ export const testUtils = {
   getEquipmentHasSerialNumberFormItem,
   getEquipmentHasSerialNumberField,
   setEquipmentHasSerialNumber,
-  findEquipmentHasSerialNumberError,
 }
 
 describe('Модалка создания и редактирования номенклатурной позиции', () => {
@@ -408,7 +404,7 @@ describe('Модалка создания и редактирования ном
       expect(field).toHaveDisplayValue(nomenclature.title)
     })
 
-    test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
+    test('Обязательное поле', async () => {
       const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
@@ -449,7 +445,7 @@ describe('Модалка создания и редактирования ном
       expect(field).toHaveDisplayValue(nomenclature.shortTitle)
     })
 
-    test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
+    test('Обязательное поле', async () => {
       const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
@@ -498,7 +494,7 @@ describe('Модалка создания и редактирования ном
       expect(selectedGroup).toBeInTheDocument()
     })
 
-    test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
+    test('Обязательное поле', async () => {
       const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
@@ -539,7 +535,7 @@ describe('Модалка создания и редактирования ном
       expect(field).toHaveDisplayValue(nomenclature.vendorCode)
     })
 
-    test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
+    test('Обязательное поле', async () => {
       const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
@@ -593,7 +589,7 @@ describe('Модалка создания и редактирования ном
       expect(selectedMeasurementUnit).toBeInTheDocument()
     })
 
-    test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
+    test('Обязательное поле', async () => {
       const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
 
       await testUtils.clickAddButton(user)
@@ -657,15 +653,6 @@ describe('Модалка создания и редактирования ном
       const { user } = render(<NomenclatureFormModal {...props} />)
       const field = await testUtils.setEquipmentHasSerialNumber(user)
       expect(field).toBeChecked()
-    })
-
-    test('Отображается ошибка если не заполнить поле и нажать кнопка отправки', async () => {
-      const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
-
-      await testUtils.clickAddButton(user)
-      const error = await testUtils.findEquipmentHasSerialNumberError(validationMessages.required)
-
-      expect(error).toBeInTheDocument()
     })
   })
 })

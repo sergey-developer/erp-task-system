@@ -22,4 +22,8 @@ export type TaskModel = BaseTaskModel & {
     id: IdType
     title: string
   }>
+  fiscalAccumulator: MaybeNull<{
+    isRequestSent: MaybeNull<boolean>
+    isRequestApproved: MaybeNull<boolean>
+  }>
 }

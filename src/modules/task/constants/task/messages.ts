@@ -9,6 +9,8 @@ export const getTaskListMapErrorMsg = 'Ошибка получения спис�
 export const updateTaskDescriptionErrMsg = 'Ошибка изменения описания заявки'
 export const updateTaskDeadlineErrMsg = 'Ошибка изменения срока выполнения заявки'
 
+export const createTaskAttachmentErrMsg = 'Ошибка загрузки вложения заявки'
+
 export const getTaskCompletionDocumentsErrMsg =
   'Ошибка получения данных о причинах вызова, выполненных работах, потраченном времени и связанных перемещениях оборудования по заявке itsm'
 
@@ -25,6 +27,12 @@ export const getTaskWorkPerformedActMessages: ApiRequestMessages<'commonError'> 
 }
 
 export const resolveTaskErrMsg = 'Невозможно выполнить заявку'
+
+export const createTaskRegistrationFNRequestErrMsg =
+  'Ошибка создания запроса на регистрацию фискального накопителя'
+
+export const getTaskRegistrationRequestRecipientsFNErrMsg =
+  'Ошибка получения списков получателей запроса на регистрацию ФН'
 
 export const createSubTaskMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Не удалось создать задание',

@@ -36,7 +36,7 @@ const clickMenuButtonIn = async (container: HTMLElement, user: UserEvent) => {
 }
 
 // close button
-const getCloseButtonIn = (container: HTMLElement) => getButtonIn(container, 'Close')
+const getCloseButtonIn = (container: HTMLElement) => getButtonIn(container, /close/i)
 
 const clickCloseButtonIn = async (container: HTMLElement, user: UserEvent) => {
   const button = getCloseButtonIn(container)

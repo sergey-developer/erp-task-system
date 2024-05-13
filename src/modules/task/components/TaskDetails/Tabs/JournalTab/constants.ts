@@ -29,6 +29,9 @@ export const journalEntryTypeDict: Readonly<StringMap<TaskJournalTypeEnum>> = {
   [TaskJournalTypeEnum.AwaitingCanceled]: 'Перевод в ожидание отменен',
   [TaskJournalTypeEnum.AutoEscalation]: 'Автоэскалация',
   [TaskJournalTypeEnum.ReassignmentSupportGroup]: 'Переназначение на другую ГП',
+  [TaskJournalTypeEnum.FiscalAccumulatorRegistered]: 'Регистрация ФН',
+  [TaskJournalTypeEnum.FiscalAccumulatorChangeRequest]: 'Запрос на замену ФН',
+  [TaskJournalTypeEnum.FiscalAccumulatorChangeNotification]: 'Уведомление по замене ФН',
   [TaskJournalTypeEnum.Other]: 'Другое',
 }
 

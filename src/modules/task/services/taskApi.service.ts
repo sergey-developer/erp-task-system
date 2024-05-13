@@ -15,12 +15,16 @@ import {
   CreateInitiationReasonSuccessResponse,
   CreateSubTaskMutationArgs,
   CreateSubTaskSuccessResponse,
+  CreateTaskAttachmentMutationArgs,
+  CreateTaskAttachmentSuccessResponse,
   CreateTaskCommentMutationArgs,
   CreateTaskCommentSuccessResponse,
   CreateTaskCompletionDocumentsMutationArgs,
   CreateTaskCompletionDocumentsSuccessResponse,
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskReclassificationRequestSuccessResponse,
+  CreateTaskRegistrationFNRequestMutationArgs,
+  CreateTaskRegistrationFNRequestSuccessResponse,
   CreateTaskSuspendRequestMutationArgs,
   CreateTaskSuspendRequestSuccessResponse,
   DeleteCompletedWorkMutationArgs,
@@ -50,6 +54,8 @@ import {
   GetTaskQueryArgs,
   GetTaskReclassificationRequestQueryArgs,
   GetTaskReclassificationRequestSuccessResponse,
+  GetTaskRegistrationRequestRecipientsFNQueryArgs,
+  GetTaskRegistrationRequestRecipientsFNSuccessResponse,
   GetTaskSuccessResponse,
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
@@ -72,11 +78,14 @@ import {
   createCompletedWorkUrl,
   createInitiationReasonUrl,
   createSubTaskUrl,
+  createTaskAttachmentUrl,
   createTaskCompletionDocumentsUrl,
+  createTaskRegistrationFNRequestUrl,
   deleteCompletedWorkUrl,
   deleteInitiationReasonUrl,
   getSubTaskListUrl,
   getTaskCompletionDocumentsUrl,
+  getTaskRegistrationRequestRecipientsFNUrl,
   getTaskUrl,
   getTaskWorkPerformedActUrl,
   resolveTaskUrl,
@@ -524,6 +533,44 @@ const taskApiService = baseApiService
         }),
       }),
 
+      createTaskAttachment: build.mutation<
+        CreateTaskAttachmentSuccessResponse,
+        CreateTaskAttachmentMutationArgs
+      >({
+        query: ({ taskId, file, parentType }) => {
+          const formData = new FormData()
+          formData.append('file', file)
+          formData.append(decamelize('parentType'), parentType)
+
+          return {
+            url: createTaskAttachmentUrl(taskId),
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
+
+      createTaskRegistrationFNRequest: build.mutation<
+        CreateTaskRegistrationFNRequestSuccessResponse,
+        CreateTaskRegistrationFNRequestMutationArgs
+      >({
+        invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
+        query: ({ taskId, ...data }) => ({
+          url: createTaskRegistrationFNRequestUrl(taskId),
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+      }),
+      getTaskRegistrationRequestRecipientsFN: build.query<
+        GetTaskRegistrationRequestRecipientsFNSuccessResponse,
+        GetTaskRegistrationRequestRecipientsFNQueryArgs
+      >({
+        query: ({ taskId }) => ({
+          url: getTaskRegistrationRequestRecipientsFNUrl(taskId),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
+
       [TaskApiTriggerEnum.GetSubTaskList]: build.query<
         GetSubTaskListSuccessResponse,
         GetSubTaskListQueryArgs
@@ -603,6 +650,11 @@ export const {
 
   useCreateSubTaskMutation,
   useGetSubTaskListQuery,
+
+  useCreateTaskRegistrationFNRequestMutation,
+  useGetTaskRegistrationRequestRecipientsFNQuery,
+
+  useCreateTaskAttachmentMutation,
 } = taskApiService
 
 export default taskApiService

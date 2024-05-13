@@ -1,7 +1,7 @@
-import { BaseSubTaskRequestArgs, TaskRequestArgs } from 'modules/task/types'
+import { SubTaskRequestArgs, TaskRequestArgs } from 'modules/task/types'
 
 export type ReworkSubTaskMutationArgs = TaskRequestArgs &
-  BaseSubTaskRequestArgs & {
+  SubTaskRequestArgs & {
     returnReason: string
   }
 
