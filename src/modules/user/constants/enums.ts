@@ -1,3 +1,5 @@
+import { TaskActionsPermissionsEnum } from 'modules/task/constants/task'
+
 export enum UserRoleEnum {
   FirstLineSupport = 'FIRST_LINE_SUPPORT',
   Engineer = 'ENGINEER',
@@ -40,3 +42,5 @@ export enum UserPermissionsEnum {
 
   ReportMainIndicatorsRead = 'REPORT_MAIN_INDICATORS_READ',
 }
+
+export type UserActionsPermissions = TaskActionsPermissionsEnum
