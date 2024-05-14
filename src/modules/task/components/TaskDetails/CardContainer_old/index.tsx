@@ -84,11 +84,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
   const getTaskCalledAfterSuccessfullyRequestCreation =
     getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
 
-  const {
-    fn: takeTask,
-    state: { isLoading: takeTaskIsLoading },
-  } = useTakeTask()
-
+  const [takeTask, { isLoading: takeTaskIsLoading }] = useTakeTask()
   const [resolveTask, { isLoading: taskIsResolving }] = useResolveTask()
 
   const {

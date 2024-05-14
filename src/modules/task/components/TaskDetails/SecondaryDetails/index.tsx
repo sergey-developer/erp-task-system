@@ -7,6 +7,7 @@ import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineMo
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
+import { UserActionsModel } from 'modules/user/models'
 
 import { EmptyFn } from 'shared/types/utils'
 
@@ -14,6 +15,8 @@ export type SecondaryDetailsProps = Pick<
   TaskModel,
   'id' | 'recordId' | 'workGroup' | 'assignee' | 'status' | 'extendedStatus'
 > & {
+  userActions: UserActionsModel
+
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
     setFields: FormInstance<TaskFirstLineFormFields>['setFields'],
@@ -60,9 +63,11 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
   updateAssigneeIsLoading,
 
   taskSuspendRequestStatus,
+
+  userActions,
 }) => {
   return (
-    <Row data-testid='task-card-secondary-details' justify='space-between'>
+    <Row data-testid='task-details-secondary-details' justify='space-between'>
       <Col span={11}>
         <WorkGroupBlock
           id={id}
@@ -80,6 +85,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
 
       <Col span={11}>
         <AssigneeBlock
+          id={id}
           status={status}
           extendedStatus={extendedStatus}
           assignee={assignee}
@@ -89,6 +95,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           takeTask={takeTask}
           takeTaskIsLoading={takeTaskIsLoading}
           taskSuspendRequestStatus={taskSuspendRequestStatus}
+          userActions={userActions}
         />
       </Col>
     </Row>

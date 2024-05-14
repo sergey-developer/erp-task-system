@@ -1,11 +1,13 @@
 import * as baseUser from './baseUser'
 import * as user from './user'
-import * as userList from './userList'
+import * as userActions from './userActions'
+import * as users from './users'
 
 const userFixtures = {
-  ...user,
   ...baseUser,
-  ...userList,
+  ...user,
+  ...users,
+  ...userActions,
 } as const
 
 export default userFixtures

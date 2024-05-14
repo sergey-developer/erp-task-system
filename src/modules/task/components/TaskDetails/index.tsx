@@ -57,7 +57,7 @@ import {
   TaskAssigneeModel,
 } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
-import { useUserRole } from 'modules/user/hooks'
+import { useGetUserActions, useUserRole } from 'modules/user/hooks'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -77,6 +77,8 @@ import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { downloadFile, extractIdsFromFilesResponse, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { useAuthUser } from '../../../auth/hooks'
 
 const CreateRegistrationFNRequestModal = React.lazy(
   () => import('modules/task/components/CreateRegistrationFNRequestModal'),
@@ -144,7 +146,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const { modal } = App.useApp()
 
   const userRole = useUserRole()
+  const authUser = useAuthUser()
   const onClose = useDebounceFn(originOnClose)
+
+  const { currentData: userActions, isFetching: userActionsIsFetching } = useGetUserActions(
+    { userId: authUser?.id! },
+    { skip: !authUser },
+  )
 
   const {
     refetch: originRefetchTask,
@@ -208,11 +216,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const getTaskCalledAfterSuccessfullyRequestCreation =
     getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
 
-  const {
-    fn: takeTask,
-    state: { isLoading: takeTaskIsLoading },
-  } = useTakeTask()
-
+  const [takeTask, { isLoading: takeTaskIsLoading }] = useTakeTask()
   const [resolveTask, { isLoading: taskIsResolving }] = useResolveTask()
 
   const {
@@ -615,10 +619,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const onTakeTask = useCallback(async () => {
     if (!task) return
-
-    try {
-      await takeTask({ taskId: task.id })
-    } catch {}
+    await takeTask({ taskId: task.id })
   }, [takeTask, task])
 
   const onCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
@@ -734,7 +735,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
           <LoadingArea
             data-testid='task-loading'
-            isLoading={taskIsFetching}
+            isLoading={taskIsFetching || userActionsIsFetching}
             tip='Загрузка заявки...'
           >
             <Space direction='vertical' $block size='middle'>
@@ -771,7 +772,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                 </React.Suspense>
               )}
 
-              {task && (
+              {task && userActions && (
                 <Space data-testid='task' direction='vertical' $block size='middle'>
                   <MainDetails
                     recordId={task.recordId}
@@ -829,6 +830,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     takeTask={onTakeTask}
                     takeTaskIsLoading={takeTaskIsLoading}
                     taskSuspendRequestStatus={task.suspendRequest?.status}
+                    userActions={userActions}
                   />
 
                   <Tabs task={task} activeTab={activeTab} />
