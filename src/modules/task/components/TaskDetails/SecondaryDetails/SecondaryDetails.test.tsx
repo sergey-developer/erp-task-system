@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react'
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 
+import userFixtures from '_tests_/fixtures/user'
 import { fakeId, fakeIdStr, render } from '_tests_/utils'
 
 import { testUtils as assigneeTestUtils } from '../AssigneeBlock/AssigneeBlock.test'
@@ -25,11 +26,11 @@ const props: Readonly<SecondaryDetailsProps> = {
   updateAssigneeIsLoading: false,
   taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
   workGroup: null,
+  userActions: userFixtures.userActions(),
 }
 
-const getContainer = () => screen.getByTestId('task-card-secondary-details')
-
-const queryContainer = () => screen.queryByTestId('task-card-secondary-details')
+const getContainer = () => screen.getByTestId('task-details-secondary-details')
+const queryContainer = () => screen.queryByTestId('task-details-secondary-details')
 
 export const testUtils = {
   getContainer,

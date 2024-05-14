@@ -36,7 +36,6 @@ import {
   DeleteTaskWorkGroupMutationArgs,
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
-  TakeTaskMutationArgs,
   TaskAssigneeModel,
   TaskModel,
   TaskReclassificationRequestModel,
@@ -53,7 +52,7 @@ import Spinner from 'components/Spinner'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
-import { EmptyFn, MaybeNull } from 'shared/types/utils'
+import { AnyFn, EmptyFn, MaybeNull } from 'shared/types/utils'
 import { base64ToBytes } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { downloadFile, extractOriginFiles } from 'shared/utils/file'
@@ -148,7 +147,7 @@ export type TaskCardProps = {
   cancelSuspendRequest: CustomMutationTrigger<DeleteTaskSuspendRequestMutationArgs, any>
   cancelSuspendRequestIsLoading: boolean
 
-  takeTask: (data: TakeTaskMutationArgs) => Promise<void>
+  takeTask: AnyFn
   takeTaskIsLoading: boolean
 
   resolveTask: any
@@ -578,6 +577,7 @@ const TaskCard: FC<TaskCardProps> = ({
 
               {!additionalInfoExpanded && <DividerStyled />}
 
+              {/* @ts-ignore */}
               <SecondaryDetails
                 id={task.id}
                 recordId={task.recordId}

@@ -2,7 +2,11 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
-import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
+import {
+  TaskActionsPermissionsEnum,
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { TaskWorkGroupModel } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
@@ -11,26 +15,14 @@ import { getFullUserName } from 'modules/user/utils'
 import { ArrayFirst, NonNullableObject } from 'shared/types/utils'
 
 import taskFixtures from '_tests_/fixtures/task'
-import { fakeId, getStoreWithAuth, render, selectTestUtils, buttonTestUtils } from '_tests_/utils'
+import userFixtures from '_tests_/fixtures/user'
+import { buttonTestUtils, fakeId, getStoreWithAuth, render, selectTestUtils } from '_tests_/utils'
 
 import AssigneeBlock, { AssigneeBlockProps } from './index'
 
-const props: Readonly<
-  NonNullableObject<
-    Pick<
-      AssigneeBlockProps,
-      | 'takeTask'
-      | 'takeTaskIsLoading'
-      | 'updateAssignee'
-      | 'updateAssigneeIsLoading'
-      | 'status'
-      | 'extendedStatus'
-      | 'assignee'
-      | 'workGroup'
-      | 'taskSuspendRequestStatus'
-    >
-  >
-> = {
+const props: Readonly<NonNullableObject<AssigneeBlockProps>> = {
+  id: fakeId(),
+  userActions: userFixtures.userActions(),
   takeTask: jest.fn(),
   takeTaskIsLoading: false,
   updateAssignee: jest.fn(),
@@ -43,10 +35,17 @@ const props: Readonly<
 }
 
 export const activeTakeTaskButtonProps: Readonly<
-  Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>
+  Pick<AssigneeBlockProps, 'assignee' | 'status' | 'extendedStatus' | 'userActions'>
 > = {
+  assignee: null,
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
+  userActions: userFixtures.userActions({
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanExecute]: [props.id],
+    },
+  }),
 }
 
 export const activeAssignOnMeButtonProps: Readonly<
@@ -140,26 +139,18 @@ const refuseTaskExpectLoadingStarted = () =>
 
 // assignee select
 const getAssigneeSelect = () => selectTestUtils.getSelect(getContainer())
-
 const queryAssigneeSelect = () => selectTestUtils.querySelect(getContainer())
-
 const findAssigneeSelect = () => selectTestUtils.findSelect(getContainer())
-
 const getSelectedAssignee = () => selectTestUtils.getSelectedOption(getContainer())
-
 const openAssigneeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getContainer())
-
 const selectAssignee = selectTestUtils.clickSelectOption
-
 const getAssigneeOption = selectTestUtils.getSelectOptionById
-
 const getAllAssigneeOption = selectTestUtils.getAllSelectOption
 
 const expectAssigneeSelectLoadingStarted = () =>
   selectTestUtils.expectLoadingStarted(getContainer())
 
 const expectAssigneeSelectDisabled = () => selectTestUtils.selectDisabledIn(getContainer())
-
 const expectAssigneeSelectNotDisabled = () => selectTestUtils.selectNotDisabledIn(getContainer())
 
 export const testUtils = {
@@ -430,57 +421,19 @@ describe('Блок "Исполнитель заявки"', () => {
   })
 
   describe('Кнопка "В работу"', () => {
-    describe('Отображается для пользователя с ролью', () => {
-      test(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
-        render(<AssigneeBlock {...props} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
-          }),
-        })
-
-        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
-      })
-
-      test(`Роль - ${UserRoleEnum.Engineer}`, () => {
-        render(<AssigneeBlock {...props} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.Engineer,
-          }),
-        })
-
-        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
-      })
-
-      test(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
-        render(<AssigneeBlock {...props} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          }),
-        })
-
-        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
-      })
-
-      test(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
-        render(<AssigneeBlock {...props} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.HeadOfDepartment,
-          }),
-        })
-
-        expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
-      })
+    test('Отображается', () => {
+      render(<AssigneeBlock {...props} />)
+      const button = testUtils.getTakeTaskButton()
+      expect(button).toBeInTheDocument()
     })
 
     test('Активна если условия соблюдены', () => {
       render(<AssigneeBlock {...props} {...activeTakeTaskButtonProps} />, {
-        store: getStoreWithAuth({
-          userId: props.assignee!.id,
-          userRole: UserRoleEnum.FirstLineSupport,
-        }),
+        store: getStoreWithAuth({ userId: props.assignee!.id }),
       })
 
-      expect(testUtils.getTakeTaskButton()).toBeEnabled()
+      const button = testUtils.getTakeTaskButton()
+      expect(button).toBeEnabled()
     })
 
     describe('Не активна если условия соблюдены', () => {
@@ -492,22 +445,22 @@ describe('Блок "Исполнитель заявки"', () => {
             status={TaskStatusEnum.InProgress}
           />,
           {
-            store: getStoreWithAuth({
-              userId: props.assignee!.id,
-              userRole: UserRoleEnum.FirstLineSupport,
-            }),
+            store: getStoreWithAuth({ userId: props.assignee!.id }),
           },
         )
 
         expect(testUtils.getTakeTaskButton()).toBeDisabled()
       })
 
-      test('Но исполнитель заявки назначен и не является авторизованным пользователем', () => {
-        render(<AssigneeBlock {...props} {...activeTakeTaskButtonProps} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
-          }),
-        })
+      test('Но исполнитель назначен и не является авторизованным пользователем', () => {
+        render(
+          <AssigneeBlock
+            {...props}
+            {...activeTakeTaskButtonProps}
+            assignee={taskFixtures.assignee()}
+          />,
+          { store: getStoreWithAuth() },
+        )
 
         expect(testUtils.getTakeTaskButton()).toBeDisabled()
       })
@@ -528,6 +481,20 @@ describe('Блок "Исполнитель заявки"', () => {
         )
 
         expect(testUtils.getTakeTaskButton()).toBeDisabled()
+      })
+
+      test(`Но ${TaskActionsPermissionsEnum.CanExecute} не содержит id заявки`, () => {
+        render(
+          <AssigneeBlock
+            {...props}
+            {...activeTakeTaskButtonProps}
+            userActions={userFixtures.userActions()}
+          />,
+          { store: getStoreWithAuth({ userId: props.assignee!.id }) },
+        )
+
+        const button = testUtils.getTakeTaskButton()
+        expect(button).toBeDisabled()
       })
 
       test.todo('Но статус заявки на ожидание "Новый"')
