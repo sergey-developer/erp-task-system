@@ -18,6 +18,7 @@ import {
   fakeWord,
   getStoreWithAuth,
   render,
+  setupApiTests,
 } from '_tests_/utils'
 
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
@@ -113,6 +114,8 @@ export const testUtils = {
   clickSecondLineButton,
   expectSecondLineLoadingStarted,
 }
+
+setupApiTests()
 
 describe('Блок рабочей группы', () => {
   test('Заголовок отображается', () => {
@@ -292,6 +295,8 @@ describe('Блок рабочей группы', () => {
       })
 
       test('При клике открывается модальное окно', async () => {
+        mockGetWorkGroupListSuccess()
+
         const { user } = render(
           <WorkGroupBlock
             {...props}
@@ -306,8 +311,9 @@ describe('Блок рабочей группы', () => {
         )
 
         await testUtils.clickSecondLineButton(user)
+        const modal = await taskSecondLineModalTestUtils.findContainer()
 
-        expect(await taskSecondLineModalTestUtils.findContainer()).toBeInTheDocument()
+        expect(modal).toBeInTheDocument()
       })
     })
 
