@@ -92,8 +92,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
         key: MenuActionsKeysEnum.ExecuteTask,
         disabled: suspendRequestStatus.isApproved
           ? false
-          : (isFirstLineSupportRole && hasWorkGroup) ||
-            !taskStatus.isInProgress ||
+          : !taskStatus.isInProgress ||
             !assigneeIsCurrentUser ||
             taskExtendedStatus.isInReclassification ||
             suspendRequestStatus.isNew ||
