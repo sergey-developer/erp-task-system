@@ -8,6 +8,8 @@ import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequ
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import { UserActionsModel } from 'modules/user/models'
 
 import Space from 'components/Space'
@@ -61,19 +63,19 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
   const authUser = useAuthUser()
+  const permissions = useMatchUserPermissions([UserPermissionsEnum.AnyAssigneeTasksUpdate])
 
   const selectedAssigneeIsCurrentAssignee = isEqual(selectedAssignee, currentAssignee)
   const currentAssigneeIsCurrentUser = useIdBelongAuthUser(currentAssignee)
   const selectedAssigneeIsCurrentUser = useIdBelongAuthUser(selectedAssignee)
-  const seniorEngineerFromWorkGroupIsCurrentUser = useIdBelongAuthUser(workGroup?.seniorEngineer.id)
-  const headOfDepartmentFromWorkGroupIsCurrentUser = useIdBelongAuthUser(workGroup?.groupLead.id)
 
   const workGroupMembers = workGroup?.members || []
 
   const canSelectAssignee =
+    !!workGroup &&
     !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
-    (seniorEngineerFromWorkGroupIsCurrentUser || headOfDepartmentFromWorkGroupIsCurrentUser)
+    permissions.anyAssigneeTasksUpdate
 
   const onAssignOnMe = async () => {
     if (authUser) {
