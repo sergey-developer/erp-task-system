@@ -35,8 +35,8 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { useDrawerHeightByTable } from 'shared/hooks/useDrawerHeightByTable'
-import { IdType } from 'shared/types/common'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import { IdType } from 'shared/types/common'
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import {
@@ -139,19 +139,25 @@ const InventorizationsPage: FC = () => {
   const onCreateInventorization = useCallback<CreateInventorizationRequestModalProps['onSubmit']>(
     async ({ deadlineAtDate, deadlineAtTime, ...values }, setFields) => {
       try {
-        await createInventorizationMutation({
+        const newInventorization = await createInventorizationMutation({
           ...values,
           deadlineAt: mergeDateTime(deadlineAtDate, deadlineAtTime).toISOString(),
         }).unwrap()
 
         toggleOpenCreateInventorizationRequestModal()
+        setInventorizationId(newInventorization.id)
+        openInventorizationDetails()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
           setFields(getFieldsErrors(error.data))
         }
       }
     },
-    [createInventorizationMutation, toggleOpenCreateInventorizationRequestModal],
+    [
+      createInventorizationMutation,
+      openInventorizationDetails,
+      toggleOpenCreateInventorizationRequestModal,
+    ],
   )
 
   const onTablePagination = useCallback(
