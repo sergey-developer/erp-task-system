@@ -103,7 +103,7 @@ describe('Таблица номенклатуры оборудования', () 
   })
 
   test('Пагинация работает', async () => {
-    const equipmentNomenclatureList = warehouseFixtures.equipmentNomenclatureList(11)
+    const equipmentNomenclatureList = warehouseFixtures.equipmentNomenclatures(11)
 
     const { user } = renderInRoute_latest(
       [

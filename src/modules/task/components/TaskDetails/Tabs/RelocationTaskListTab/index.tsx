@@ -100,7 +100,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
 
             <Button
               type='link'
-              disabled={!permissions?.relocationTasksCreate || !assigneeIsCurrentUser}
+              disabled={!permissions.relocationTasksCreate || !assigneeIsCurrentUser}
               onClick={onClickCreate}
             >
               Создать новое перемещение

@@ -17,7 +17,7 @@ import {
   mockGetCustomerListSuccess,
   mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentListSuccess,
-  mockGetEquipmentNomenclatureListSuccess,
+  mockGetEquipmentNomenclaturesSuccess,
   mockGetLocationListSuccess,
 } from '_tests_/mocks/api'
 import {
@@ -67,7 +67,7 @@ setupApiTests()
 
 describe('Layout номенклатуры оборудования', () => {
   test('Отображает дочерний роут', () => {
-    mockGetEquipmentNomenclatureListSuccess()
+    mockGetEquipmentNomenclaturesSuccess()
 
     renderInRoute_latest(
       [
@@ -130,7 +130,7 @@ describe('Layout номенклатуры оборудования', () => {
       mockGetEquipmentCategoryListSuccess({
         body: warehouseFixtures.equipmentCategoryList(),
       })
-      mockGetEquipmentNomenclatureListSuccess()
+      mockGetEquipmentNomenclaturesSuccess()
 
       const { user } = render(<EquipmentPageLayout />)
 
@@ -150,7 +150,7 @@ describe('Layout номенклатуры оборудования', () => {
       mockGetLocationListSuccess({ body: [locationListItem] })
 
       mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategoryList() })
-      mockGetEquipmentNomenclatureListSuccess({ once: false })
+      mockGetEquipmentNomenclaturesSuccess({ once: false })
 
       const { user } = renderInRoute_latest(
         [
@@ -187,7 +187,7 @@ describe('Layout номенклатуры оборудования', () => {
       mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategoryList() })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
         once: false,
       })
@@ -256,7 +256,7 @@ describe('Layout номенклатуры оборудования', () => {
 
     test('После применения переходит на страницу списка номенклатуры оборудования', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
         once: false,
       })

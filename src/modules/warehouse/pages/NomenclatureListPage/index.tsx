@@ -188,7 +188,7 @@ const NomenclatureListPage: FC = () => {
           key: id,
           label: title,
           title,
-          itemIcon: id === hoveredGroupId && permissions?.nomenclatureGroupsUpdate && (
+          itemIcon: id === hoveredGroupId && permissions.nomenclatureGroupsUpdate && (
             <EditIcon title='Редактировать группу' onClick={handleClickEdit(group)} />
           ),
           onMouseEnter: () => setHoveredGroupId(id),
@@ -201,7 +201,7 @@ const NomenclatureListPage: FC = () => {
     debouncedToggleEditNomenclatureGroupModal,
     hoveredGroupId,
     nomenclatureGroupList,
-    permissions?.nomenclatureGroupsUpdate,
+    permissions.nomenclatureGroupsUpdate,
   ])
 
   const handleClickGroup: MenuProps['onClick'] = (data) => {
@@ -374,11 +374,11 @@ const NomenclatureListPage: FC = () => {
             onSearch={handleChangeSearch}
           />
 
-          {permissions?.nomenclatureGroupsCreate && (
+          {permissions.nomenclatureGroupsCreate && (
             <Button onClick={debouncedToggleCreateNomenclatureGroupModal}>Добавить группу</Button>
           )}
 
-          {permissions?.nomenclaturesCreate && (
+          {permissions.nomenclaturesCreate && (
             <Button onClick={debouncedToggleCreateNomenclatureModal}>Добавить номенклатуру</Button>
           )}
         </Space>
@@ -512,7 +512,7 @@ const NomenclatureListPage: FC = () => {
             title='Редактирование номенклатурной позиции'
             okText={SAVE_TEXT}
             isLoading={updateNomenclatureIsLoading}
-            submitBtnDisabled={!permissions?.nomenclaturesUpdate}
+            submitBtnDisabled={!permissions.nomenclaturesUpdate}
             nomenclature={nomenclature}
             nomenclatureIsLoading={nomenclatureIsFetching}
             groups={allNomenclatureGroupList}

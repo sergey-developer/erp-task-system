@@ -8,7 +8,7 @@ export * from './useGetEquipmentList'
 export * from './useLazyGetEquipmentsXlsx'
 export * from './useGetEquipmentRelocationHistory'
 
-export * from './useGetEquipmentNomenclatureList'
+export * from './useGetEquipmentNomenclatures'
 
 export * from './useGetEquipmentCatalogList'
 
