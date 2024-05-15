@@ -8,7 +8,7 @@ import BaseModal from 'components/Modals/BaseModal'
 import { filesFormItemProps } from 'shared/constants/form'
 import { FileResponse } from 'shared/types/file'
 
-const bodyStyle: ModalProps['bodyStyle'] = { paddingTop: 20 }
+const modalStyles: ModalProps['styles'] = { body: { paddingTop: 20 } }
 
 export type CreateAttachmentListModalProps = Required<
   Pick<ModalProps, 'open' | 'title' | 'onCancel'>
@@ -46,7 +46,7 @@ const CreateAttachmentListModal: FC<CreateAttachmentListModalProps> = ({
       data-testid='create-attachment-list-modal'
       width={450}
       footer={null}
-      bodyStyle={bodyStyle}
+      styles={modalStyles}
       isLoading={isLoading}
     >
       <Form form={form}>

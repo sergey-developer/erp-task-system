@@ -83,9 +83,8 @@ const NomenclatureListPage: FC = () => {
     NonNullable<GetNomenclatureGroupListQueryArgs>
   >({})
 
-  const [nomenclatureListParams, setNomenclatureListParams] = useSetState<
-    NonNullable<GetNomenclatureListQueryArgs>
-  >(nomenclaturesInitialPaginationParams)
+  const [nomenclatureListParams, setNomenclatureListParams] =
+    useSetState<NonNullable<GetNomenclatureListQueryArgs>>(nomenclaturesInitialPaginationParams)
 
   const [hoveredGroupId, setHoveredGroupId] = useState<number>()
   const [editableGroup, setEditableGroup] = useState<NomenclatureGroupListItemModel>()

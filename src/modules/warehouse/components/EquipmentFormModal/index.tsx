@@ -41,7 +41,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   categoryList,
   categoryListIsLoading,
-  selectedCategory,
+  category,
   onChangeCategory,
 
   warehouseList,
@@ -72,8 +72,8 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   const nomenclatureSelected = Boolean(nomenclature)
 
-  const categorySelected = Boolean(selectedCategory)
-  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
+  const categorySelected = Boolean(category)
+  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(category?.code)
 
   useEffect(() => {
     if (values?.title) form.setFieldsValue({ title: values.title })
@@ -166,7 +166,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          data-testid='nomenclature-form-item'
+          data-testid='nomenclatures-form-item'
           label='Номенклатура'
           name='nomenclature'
           rules={onlyRequiredRules}
@@ -184,7 +184,11 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
           />
         </Form.Item>
 
-        <LoadingArea isLoading={nomenclatureIsLoading} tip='Загрузка номенклатуры...'>
+        <LoadingArea
+          data-testid='nomenclature-loading'
+          isLoading={nomenclatureIsLoading}
+          tip='Загрузка номенклатуры...'
+        >
           {categorySelected && nomenclatureSelected && (
             <>
               <Form.Item

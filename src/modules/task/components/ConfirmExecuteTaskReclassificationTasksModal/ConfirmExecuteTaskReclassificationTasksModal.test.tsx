@@ -5,17 +5,19 @@ import { CANCEL_TEXT, CONFIRM_TEXT } from 'shared/constants/common'
 
 import { buttonTestUtils, fakeIdStr, render } from '_tests_/utils'
 
-import ConfirmExecuteTaskModal, { ConfirmExecuteTaskModalProps } from './index'
+import ConfirmExecuteTaskReclassificationTasksModal, {
+  ConfirmExecuteTaskReclassificationTasksModalProps,
+} from './index'
 
-const props: Readonly<ConfirmExecuteTaskModalProps> = {
+const props: Readonly<ConfirmExecuteTaskReclassificationTasksModalProps> = {
   open: true,
   recordId: fakeIdStr(),
   onCancel: jest.fn(),
-  onConfirm: jest.fn(),
+  onOk: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('confirm-execute-task-modal')
-const findContainer = () => screen.findByTestId('confirm-execute-task-modal')
+const getContainer = () => screen.getByTestId('confirm-execute-task-reclassification-tasks-modal')
+const findContainer = () => screen.findByTestId('confirm-execute-task-reclassification-tasks-modal')
 
 // cancel button
 const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
@@ -46,7 +48,7 @@ export const testUtils = {
 
 describe('Модалка подтверждения выполнения заявки', () => {
   test('Заголовок и текст отображается', () => {
-    render(<ConfirmExecuteTaskModal {...props} />)
+    render(<ConfirmExecuteTaskReclassificationTasksModal {...props} />)
 
     const container = testUtils.getContainer()
     const text =
@@ -59,7 +61,7 @@ describe('Модалка подтверждения выполнения зая�
 
   describe('Кнопка отмены', () => {
     test('Отображается', () => {
-      render(<ConfirmExecuteTaskModal {...props} />)
+      render(<ConfirmExecuteTaskReclassificationTasksModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -68,7 +70,7 @@ describe('Модалка подтверждения выполнения зая�
     })
 
     test('Обработчик вызывается', async () => {
-      const { user } = render(<ConfirmExecuteTaskModal {...props} />)
+      const { user } = render(<ConfirmExecuteTaskReclassificationTasksModal {...props} />)
       await testUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
@@ -76,7 +78,7 @@ describe('Модалка подтверждения выполнения зая�
 
   describe('Кнопка подтверждения', () => {
     test('Отображается', () => {
-      render(<ConfirmExecuteTaskModal {...props} />)
+      render(<ConfirmExecuteTaskReclassificationTasksModal {...props} />)
 
       const button = testUtils.getConfirmButton()
 
@@ -85,9 +87,9 @@ describe('Модалка подтверждения выполнения зая�
     })
 
     test('При клике обработчик вызывается', async () => {
-      const { user } = render(<ConfirmExecuteTaskModal {...props} />)
+      const { user } = render(<ConfirmExecuteTaskReclassificationTasksModal {...props} />)
       await testUtils.clickConfirmButton(user)
-      expect(props.onConfirm).toBeCalledTimes(1)
+      expect(props.onOk).toBeCalledTimes(1)
     })
   })
 })

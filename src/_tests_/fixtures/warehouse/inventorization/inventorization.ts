@@ -22,4 +22,6 @@ export const inventorization = (): InventorizationModel => ({
   type: InventorizationTypeEnum.Internal,
   executor: pick(userFixtures.user(), 'id', 'fullName'),
   deadlineAt: fakeDateString(),
+  completedAt: fakeDateString(),
+  nomenclatures: [pick(warehouseFixtures.nomenclature(), 'id', 'title', 'group')],
 })

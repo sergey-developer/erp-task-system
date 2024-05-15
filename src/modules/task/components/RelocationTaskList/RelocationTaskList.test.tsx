@@ -39,19 +39,16 @@ const clickListItem = async (user: UserEvent, id: IdType) => {
 
 // documents
 const getCreateDocumentsButton = (id: IdType) =>
-  buttonTestUtils.getAllButtonIn(getListItem(id), /Добавить вложение/)[1]
-
-const getCreateDocumentsZoneButton = (id: IdType) =>
-  buttonTestUtils.getAllButtonIn(getListItem(id), /Добавить вложение/)[0]
+  buttonTestUtils.getButtonIn(getListItem(id), /Добавить вложение/)
 
 const setDocument = async (
   id: IdType,
   user: UserEvent,
   file: File = new File([], '', { type: 'image/png' }),
 ) => {
-  const button = getCreateDocumentsZoneButton(id)
+  const listItem = getListItem(id)
   // eslint-disable-next-line testing-library/no-node-access
-  const input = button.querySelector('input[type="file"]') as HTMLInputElement
+  const input = listItem.querySelector('input[type="file"]') as HTMLInputElement
   await user.upload(input, file)
   return { input, file }
 }
@@ -71,7 +68,7 @@ export const testUtils = {
   getUploadedDocument,
 }
 
-describe('RelocationTaskList', () => {
+describe('Список заявок на перемещение', () => {
   test('Если список пуст отображается соответствующий текст', () => {
     render(<RelocationTaskList {...props} data={[]} />)
     const text = within(getContainer()).getByText('Перемещений нет')

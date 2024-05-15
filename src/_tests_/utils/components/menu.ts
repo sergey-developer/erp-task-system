@@ -3,6 +3,10 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 const getMenu = () => screen.getByRole('menu')
 const findMenu = () => screen.findByRole('menu')
+const openMenu = async (user: UserEvent, button: HTMLElement) => {
+  await user.hover(button)
+  return findMenu()
+}
 const getMenuItem = (name: string | RegExp) => within(getMenu()).getByRole('menuitem', { name })
 const queryMenuItem = (name: string | RegExp) => within(getMenu()).queryByRole('menuitem', { name })
 const getMenuItems = () => within(getMenu()).getAllByRole('menuitem')
@@ -19,6 +23,7 @@ const expectMenuItemNotDisabled = (item: HTMLElement) => expect(item).not.toHave
 const testUtils = {
   getMenu,
   findMenu,
+  openMenu,
   getMenuItem,
   queryMenuItem,
   getMenuItems,

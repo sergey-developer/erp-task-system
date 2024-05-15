@@ -1014,7 +1014,7 @@ const EditRelocationTaskPage: FC = () => {
             values={createEquipmentFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
-            selectedCategory={selectedCategory}
+            category={selectedCategory}
             onChangeCategory={handleChangeCategory}
             currencyList={currencyList}
             currencyListIsLoading={currencyListIsFetching}
@@ -1050,7 +1050,7 @@ const EditRelocationTaskPage: FC = () => {
             values={equipmentByFileFormValues}
             categoryList={equipmentCategoryList}
             categoryListIsLoading={equipmentCategoryListIsFetching}
-            selectedCategory={selectedCategory}
+            category={selectedCategory}
             onChangeCategory={handleChangeCategory}
             currencyList={currencyList}
             currencyListIsLoading={currencyListIsFetching}

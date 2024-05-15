@@ -33,7 +33,6 @@ const props: Readonly<Omit<TaskTableProps, 'sort'>> = {
   onRow: jest.fn(),
   onChange: jest.fn(),
   pagination: false,
-  rowClassName: '',
   userRole: UserRoleEnum.FirstLineSupport,
 }
 
@@ -1192,9 +1191,7 @@ describe('Таблица заявок', () => {
     })
 
     test('При клике на номер страницы вызывается обработчик', async () => {
-      const { user } = render(
-        <TaskTable {...props} pagination={paginationProps} />,
-      )
+      const { user } = render(<TaskTable {...props} pagination={paginationProps} />)
 
       await testUtils.clickPaginationPageButton(user, '2')
       expect(props.onChange).toBeCalledTimes(1)

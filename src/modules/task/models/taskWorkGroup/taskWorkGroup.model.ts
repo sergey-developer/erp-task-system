@@ -1,17 +1,19 @@
-import { UserModel } from 'modules/user/models'
+import { UserModel, UserPositionModel } from 'modules/user/models'
 
 import { IdType } from 'shared/types/common'
+import { MaybeNull } from 'shared/types/utils'
 
 export type TaskWorkGroupModel = {
   id: IdType
   name: string
-  groupLead: Pick<
-    UserModel,
-    'id' | 'firstName' | 'lastName' | 'middleName' | 'role' | 'phone' | 'email'
-  >
+  groupLead: Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {
+    position: MaybeNull<UserPositionModel['title']>
+  }
   seniorEngineer: Pick<
     UserModel,
-    'id' | 'firstName' | 'lastName' | 'middleName' | 'role' | 'phone' | 'email'
-  >
+    'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'
+  > & {
+    position: MaybeNull<UserPositionModel['title']>
+  }
   members: Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>[]
 }

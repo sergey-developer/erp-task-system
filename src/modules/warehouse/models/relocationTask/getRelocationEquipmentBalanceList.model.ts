@@ -1,5 +1,5 @@
 import { RelocationEquipmentBalanceListModel } from 'modules/warehouse/models'
-import { BaseRelocationTaskRequestArgs } from 'modules/warehouse/types'
+import { RelocationTaskRequestArgs } from 'modules/warehouse/types'
 
-export type GetRelocationEquipmentBalanceListQueryArgs = BaseRelocationTaskRequestArgs
+export type GetRelocationEquipmentBalanceListQueryArgs = RelocationTaskRequestArgs
 export type GetRelocationEquipmentBalanceListSuccessResponse = RelocationEquipmentBalanceListModel
