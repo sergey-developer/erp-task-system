@@ -224,11 +224,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     state: { isLoading: updateWorkGroupIsLoading },
   } = useUpdateTaskWorkGroup()
 
-  const {
-    fn: deleteWorkGroup,
-    state: { isLoading: deleteWorkGroupIsLoading },
-  } = useDeleteTaskWorkGroup()
-
+  const [deleteWorkGroup, { isLoading: deleteWorkGroupIsLoading }] = useDeleteTaskWorkGroup()
   const [updateAssignee, { isLoading: updateAssigneeIsLoading }] = useUpdateTaskAssignee()
 
   // create registration FN request modal

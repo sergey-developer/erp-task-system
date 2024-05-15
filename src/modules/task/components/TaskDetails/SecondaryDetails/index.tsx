@@ -80,6 +80,7 @@ const SecondaryDetails: FC<SecondaryDetailsProps> = ({
           transferTaskToSecondLine={transferTaskToSecondLine}
           transferTaskToSecondLineIsLoading={transferTaskToSecondLineIsLoading}
           taskSuspendRequestStatus={taskSuspendRequestStatus}
+          userActions={userActions}
         />
       </Col>
 
