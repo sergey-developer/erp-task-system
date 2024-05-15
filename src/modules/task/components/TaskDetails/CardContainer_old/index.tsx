@@ -97,10 +97,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
     state: { isLoading: deleteWorkGroupIsLoading },
   } = useDeleteTaskWorkGroup()
 
-  const {
-    fn: updateAssignee,
-    state: { isLoading: updateAssigneeIsLoading },
-  } = useUpdateTaskAssignee()
+  const [updateAssignee, { isLoading: updateAssigneeIsLoading }] = useUpdateTaskAssignee()
 
   const [getTaskWorkPerformedAct, { isLoading: taskWorkPerformedActIsLoading }] =
     useGetTaskWorkPerformedActMutation()

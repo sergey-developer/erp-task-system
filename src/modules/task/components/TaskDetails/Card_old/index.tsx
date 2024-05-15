@@ -39,7 +39,6 @@ import {
   TaskAssigneeModel,
   TaskModel,
   TaskReclassificationRequestModel,
-  UpdateTaskAssigneeMutationArgs,
   UpdateTaskWorkGroupMutationArgs,
 } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
@@ -159,7 +158,7 @@ export type TaskCardProps = {
   >
   taskWorkPerformedActIsLoading: boolean
 
-  updateAssignee: (data: UpdateTaskAssigneeMutationArgs) => Promise<void>
+  updateAssignee: AnyFn
   updateAssigneeIsLoading: boolean
 
   updateWorkGroup: (data: UpdateTaskWorkGroupMutationArgs) => Promise<void>
