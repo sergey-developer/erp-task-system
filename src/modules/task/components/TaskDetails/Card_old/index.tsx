@@ -33,13 +33,11 @@ import {
   CreateTaskSuspendRequestBadRequestErrorResponse,
   CreateTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestMutationArgs,
-  DeleteTaskWorkGroupMutationArgs,
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
   TaskAssigneeModel,
   TaskModel,
   TaskReclassificationRequestModel,
-  UpdateTaskWorkGroupMutationArgs,
 } from 'modules/task/models'
 import { useUserRole } from 'modules/user/hooks'
 
@@ -161,9 +159,9 @@ export type TaskCardProps = {
   updateAssignee: AnyFn
   updateAssigneeIsLoading: boolean
 
-  updateWorkGroup: (data: UpdateTaskWorkGroupMutationArgs) => Promise<void>
+  updateWorkGroup: AnyFn
   updateWorkGroupIsLoading: boolean
-  deleteWorkGroup: (data: DeleteTaskWorkGroupMutationArgs) => Promise<void>
+  deleteWorkGroup: AnyFn
   deleteWorkGroupIsLoading: boolean
 
   additionalInfoExpanded: boolean
