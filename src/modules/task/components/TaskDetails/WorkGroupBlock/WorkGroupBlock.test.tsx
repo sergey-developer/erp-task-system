@@ -5,7 +5,7 @@ import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/component
 import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
-import { userRoleDict, UserRoleEnum } from 'modules/user/constants'
+import { UserRoleEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
 import taskFixtures from '_tests_/fixtures/task'
@@ -140,9 +140,7 @@ describe('Блок рабочей группы', () => {
         const groupLeadTitle = within(groupLeadInfo).getByText('Руководитель группы')
         const groupLeadEmail = within(groupLeadInfo).getByText(workGroup.groupLead.email)
         const groupLeadPhone = within(groupLeadInfo).getByText(workGroup.groupLead.phone!)
-        const groupLeadRole = within(groupLeadInfo).getByText(
-          userRoleDict[workGroup.groupLead.role],
-        )
+        const groupLeadPosition = within(groupLeadInfo).getByText(workGroup.groupLead.position!)
         const groupLeadFio = within(groupLeadInfo).queryByText(
           getFullUserName({
             firstName: workGroup.groupLead.firstName,
@@ -159,8 +157,8 @@ describe('Блок рабочей группы', () => {
         const seniorEngineerPhone = within(seniorEngineerInfo).getByText(
           workGroup.seniorEngineer.phone!,
         )
-        const seniorEngineerRole = within(seniorEngineerInfo).getByText(
-          userRoleDict[workGroup.seniorEngineer.role],
+        const seniorEngineerPosition = within(seniorEngineerInfo).getByText(
+          workGroup.seniorEngineer.position!,
         )
         const seniorEngineerFio = within(seniorEngineerInfo).queryByText(
           getFullUserName({
@@ -173,12 +171,12 @@ describe('Блок рабочей группы', () => {
         expect(groupLeadTitle).toBeInTheDocument()
         expect(groupLeadEmail).toBeInTheDocument()
         expect(groupLeadPhone).toBeInTheDocument()
-        expect(groupLeadRole).toBeInTheDocument()
+        expect(groupLeadPosition).toBeInTheDocument()
         expect(groupLeadFio).toBeInTheDocument()
         expect(seniorEngineerTitle).toBeInTheDocument()
         expect(seniorEngineerEmail).toBeInTheDocument()
         expect(seniorEngineerPhone).toBeInTheDocument()
-        expect(seniorEngineerRole).toBeInTheDocument()
+        expect(seniorEngineerPosition).toBeInTheDocument()
         expect(seniorEngineerFio).toBeInTheDocument()
       })
     })

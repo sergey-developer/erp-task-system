@@ -42,6 +42,7 @@ const querySelectedCategory = (title: string) =>
 
 const expectCategoryLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getCategoriesSelect())
+
 // reset button
 const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сбросить все/)
 

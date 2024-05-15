@@ -22,14 +22,11 @@ const props: Readonly<ExecuteTaskModalProps> = {
 }
 
 const getContainer = () => screen.getByTestId('execute-task-modal')
-
 const findContainer = () => screen.findByTestId('execute-task-modal')
-
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 // close button
 const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
-
 const clickCloseButton = async (user: UserEvent) => {
   const button = getCloseButton()
   await user.click(button)
@@ -38,7 +35,6 @@ const clickCloseButton = async (user: UserEvent) => {
 
 // cancel button
 const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Отменить/)
-
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
@@ -47,23 +43,19 @@ const clickCancelButton = async (user: UserEvent) => {
 
 // get act button
 const getGetActButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сформировать акт/)
-
 const clickGetActButton = async (user: UserEvent) => {
   const button = getGetActButton()
   await user.click(button)
 }
 
 const expectGetActLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getGetActButton())
-
 const expectGetActLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getGetActButton())
 
 // submit button
 const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /Выполнить заявку/)
-
 const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
-  return button
 }
 
 // tech resolution
@@ -109,18 +101,15 @@ const setUserResolution = async (user: UserEvent, value: string) => {
 const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
 
 const getAddAttachmentsButton = () =>
-  buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[1]
-
-const getAddAttachmentsZoneButton = () =>
-  buttonTestUtils.getAllButtonIn(getAttachmentsFormItem(), /Добавить вложение/)[0]
+  buttonTestUtils.getButtonIn(getAttachmentsFormItem(), /Добавить вложение/)
 
 const setAttachment = async (
   user: UserEvent,
   file: File = new File([], '', { type: 'image/png' }),
 ) => {
-  const button = getAddAttachmentsZoneButton()
+  const formItem = getAttachmentsFormItem()
   // eslint-disable-next-line testing-library/no-node-access
-  const input = button.querySelector('input[type="file"]') as HTMLInputElement
+  const input = formItem.querySelector('input[type="file"]') as HTMLInputElement
   await user.upload(input, file)
   return { input, file }
 }

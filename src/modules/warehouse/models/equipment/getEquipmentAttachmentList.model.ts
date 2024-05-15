@@ -1,10 +1,10 @@
 import { AttachmentListItemModel } from 'modules/attachment/models'
-import { BaseEquipmentRequestArgs } from 'modules/warehouse/types'
+import { EquipmentRequestArgs } from 'modules/warehouse/types'
 
 import { PaginationResponse } from 'shared/models/pagination.model'
 import { PaginationParams } from 'shared/types/pagination'
 
-export type GetEquipmentAttachmentListQueryArgs = BaseEquipmentRequestArgs &
+export type GetEquipmentAttachmentListQueryArgs = EquipmentRequestArgs &
   Pick<PaginationParams, 'limit'>
 
 export type GetEquipmentAttachmentListSuccessResponse = PaginationResponse<AttachmentListItemModel>

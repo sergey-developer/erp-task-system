@@ -5,6 +5,7 @@ import { testUtils as attachmentListTestUtils } from 'modules/attachment/compone
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
+import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
@@ -34,6 +35,8 @@ import {
   mockGetEquipmentRelocationHistorySuccess,
   mockGetEquipmentServerError,
   mockGetEquipmentSuccess,
+  mockGetRelocationEquipmentListSuccess,
+  mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -111,7 +114,7 @@ const clickRelocationHistoryButton = async (user: UserEvent) => {
 }
 
 // loading
-const expectLoadingStarted = spinnerTestUtils.expectLoadingFinished('equipment-details-loading')
+const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('equipment-details-loading')
 const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('equipment-details-loading')
 
 export const testUtils = {
@@ -611,15 +614,18 @@ describe('Информация об оборудовании', () => {
 
         render(<EquipmentDetails {...props} />)
 
+        await testUtils.expectLoadingStarted()
         await testUtils.expectLoadingFinished()
-        await testUtils.expectEquipmentImageListLoadingFinished()
 
         const block = testUtils.getBlock('images')
         const label = testUtils.getInfoInBlock(block, /Изображения оборудования/)
-        const images = attachmentListTestUtils.getAllIn(testUtils.getEquipmentImageList())
+        const imagesContainer = testUtils.getEquipmentImageList()
 
         expect(label).toBeInTheDocument()
-        expect(images).toHaveLength(attachmentList.length)
+        attachmentList.forEach((item) => {
+          const image = attachmentListTestUtils.getIn(imagesContainer, item.name)
+          expect(image).toBeInTheDocument()
+        })
       })
 
       describe('При не успешном запросе', () => {
@@ -633,8 +639,8 @@ describe('Информация об оборудовании', () => {
 
           render(<EquipmentDetails {...props} />)
 
+          await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
-          await testUtils.expectEquipmentImageListLoadingFinished()
 
           const notification = await notificationTestUtils.findNotification(errorMsg)
           expect(notification).toBeInTheDocument()
@@ -650,8 +656,8 @@ describe('Информация об оборудовании', () => {
 
           render(<EquipmentDetails {...props} />)
 
+          await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
-          await testUtils.expectEquipmentImageListLoadingFinished()
 
           const notification = await notificationTestUtils.findNotification(errorMsg)
           expect(notification).toBeInTheDocument()
@@ -663,8 +669,8 @@ describe('Информация об оборудовании', () => {
 
           render(<EquipmentDetails {...props} />)
 
+          await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
-          await testUtils.expectEquipmentImageListLoadingFinished()
 
           const notification = await notificationTestUtils.findNotification(
             getEquipmentAttachmentListErrorMsg,
@@ -686,8 +692,8 @@ describe('Информация об оборудовании', () => {
 
           render(<EquipmentDetails {...props} />)
 
+          await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
-          await testUtils.expectEquipmentImageListLoadingFinished()
 
           const button = testUtils.getViewAllImagesButton()
 
@@ -699,26 +705,26 @@ describe('Информация об оборудовании', () => {
         test('Модалка отображается корректно', async () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
 
-          const attachmentListResponse = commonFixtures.paginatedListResponse(
-            attachmentFixtures.attachmentList(),
-          )
+          const attachmentList = attachmentFixtures.attachmentList()
           mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
-            body: attachmentListResponse,
+            body: commonFixtures.paginatedListResponse(attachmentList),
             once: false,
           })
 
           const { user } = render(<EquipmentDetails {...props} />)
 
+          await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
-          await testUtils.expectEquipmentImageListLoadingFinished()
           await testUtils.clickViewAllImagesButton(user)
 
           const modal = await attachmentListModalTestUtils.findContainer()
           expect(modal).toBeInTheDocument()
 
           await testUtils.expectTotalEquipmentImageListLoadingFinished()
-          const images = attachmentListTestUtils.getAllIn(modal)
-          expect(images).toHaveLength(attachmentListResponse.count)
+          attachmentList.forEach((item) => {
+            const image = attachmentListTestUtils.getIn(modal, item.name)
+            expect(image).toBeInTheDocument()
+          })
         })
       })
     })
@@ -893,7 +899,7 @@ describe('Информация об оборудовании', () => {
       expect(button).toBeDisabled()
     })
 
-    test('При клике открывается модалка', async () => {
+    test('При клике на кнопку открывается модалка', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId)
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
@@ -918,7 +924,7 @@ describe('Информация об оборудовании', () => {
       expect(modal).toBeInTheDocument()
     })
 
-    test('При успешном запрос данные отображаются', async () => {
+    test('При успешном запросе данные отображаются', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
@@ -1039,6 +1045,44 @@ describe('Информация об оборудовании', () => {
         )
         expect(notification).toBeInTheDocument()
       })
+    })
+
+    test('При клике на строку истории открывается карточка заявки на перемещение', async () => {
+      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+      const equipmentRelocationHistoryItem = warehouseFixtures.equipmentRelocationHistoryItem()
+      mockGetEquipmentRelocationHistorySuccess(props.equipmentId, {
+        body: [equipmentRelocationHistoryItem],
+      })
+
+      mockGetRelocationTaskSuccess(equipmentRelocationHistoryItem.id)
+      mockGetRelocationEquipmentListSuccess(equipmentRelocationHistoryItem.id)
+
+      const { user } = render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({
+              permissions: [
+                UserPermissionsEnum.EquipmentsRead,
+                UserPermissionsEnum.RelocationTasksRead,
+              ],
+            }),
+          },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      await testUtils.clickRelocationHistoryButton(user)
+      await equipmentRelocationHistoryModalTestUtils.findContainer()
+      await equipmentRelocationHistoryModalTestUtils.expectLoadingFinished()
+      await equipmentRelocationHistoryModalTestUtils.clickRow(
+        user,
+        equipmentRelocationHistoryItem.id,
+      )
+      const relocationTaskDetails = await relocationTaskDetailsTestUtils.findContainer()
+
+      expect(relocationTaskDetails).toBeInTheDocument()
     })
   })
 })

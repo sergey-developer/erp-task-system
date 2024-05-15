@@ -10,10 +10,10 @@ const props: AttachmentListProps = {
   data: attachmentFixtures.attachmentList(),
 }
 
-const getAllIn = (container: HTMLElement) => within(container).getAllByRole('img', { name: '' })
+const getIn = (container: HTMLElement, name: string) => within(container).getByRole('img', { name })
 
 export const testUtils = {
-  getAllIn,
+  getIn,
 }
 
 describe('Список вложений', () => {
@@ -21,8 +21,9 @@ describe('Список вложений', () => {
     render(<AttachmentList {...props} data-testid='attachment-list' />)
 
     const container = screen.getByTestId('attachment-list')
-    const images = testUtils.getAllIn(container)
-
-    expect(images).toHaveLength(props.data.length)
+    props.data.forEach((item) => {
+      const image = testUtils.getIn(container, item.name)
+      expect(image).toBeInTheDocument()
+    })
   })
 })

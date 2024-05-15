@@ -158,7 +158,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                 <UserShortInfo
                   testId='user-short-info-group-lead'
                   title='Руководитель группы'
-                  role={workGroup.groupLead.role}
+                  position={workGroup.groupLead.position}
                   phone={workGroup.groupLead.phone}
                   email={workGroup.groupLead.email}
                   firstName={workGroup.groupLead.firstName}
@@ -171,7 +171,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                 <UserShortInfo
                   testId='user-short-info-senior-engineer'
                   title='Старший инженер группы'
-                  role={workGroup.seniorEngineer.role}
+                  position={workGroup.seniorEngineer.position}
                   phone={workGroup.seniorEngineer.phone}
                   email={workGroup.seniorEngineer.email}
                   firstName={workGroup.seniorEngineer.firstName}

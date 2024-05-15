@@ -18,7 +18,7 @@ export type InventorizationListItemModel = {
   executor: Pick<UserModel, 'id' | 'fullName'>
   createdBy: Pick<UserModel, 'id' | 'fullName'>
   completedAt: MaybeNull<string>
-  returnReason: MaybeNull<string>
+  revisionReason: MaybeNull<string>
 }
 
 export type InventorizationsModel = InventorizationListItemModel[]

@@ -13,6 +13,9 @@ export type InventorizationTableItem = Pick<
 >
 
 export type InventorizationTableProps = Required<
-  Pick<TableProps<InventorizationTableItem>, 'dataSource' | 'loading' | 'onChange' | 'pagination'>
+  Pick<
+    TableProps<InventorizationTableItem>,
+    'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'
+  >
 > &
   TableSortProps<GetInventorizationsSortValue>

@@ -1,10 +1,10 @@
 export enum TaskApiEnum {
-  GetTask = '/tasks/:id/',
-  ResolveTask = '/tasks/:id/resolution/',
-  TakeTask = '/tasks/:id/execution/',
+  GetTask = '/tasks/:id',
+  ResolveTask = '/tasks/:id/resolution',
+  TakeTask = '/tasks/:id/execution',
   UpdateTaskDescription = '/tasks/:id/description',
   UpdateTaskDeadline = '/tasks/:id/internal-deadline',
-  GetWorkPerformedAct = '/tasks/:id/completion_certificate/',
+  GetWorkPerformedAct = '/tasks/:id/completion_certificate',
 
   CreateTaskCompletionDocuments = '/tasks/:id/completion-documents',
   GetTaskCompletionDocuments = '/tasks/:id/completion-documents',
@@ -14,31 +14,36 @@ export enum TaskApiEnum {
 
   GetTaskCounters = '/tasks/counters/',
 
-  UpdateTaskWorkGroup = '/tasks/:id/work-group/',
-  DeleteTaskWorkGroup = '/tasks/:id/work-group/',
+  UpdateTaskWorkGroup = '/tasks/:id/work-group',
+  DeleteTaskWorkGroup = '/tasks/:id/work-group',
 
-  UpdateTaskAssignee = '/tasks/:id/assignee/',
+  UpdateTaskAssignee = '/tasks/:id/assignee',
 
-  CreateTaskComment = '/tasks/:id/comments/',
-  GetTaskCommentList = '/tasks/:id/comments/',
+  CreateTaskAttachment = '/tasks/:id/attachments',
 
-  CreateReclassificationRequest = '/tasks/:id/reclassification-requests/',
-  GetReclassificationRequest = '/tasks/:id/reclassification-request/',
+  CreateTaskComment = '/tasks/:id/comments',
+  GetTaskCommentList = '/tasks/:id/comments',
 
-  CreateTaskSuspendRequest = '/tasks/:id/suspend_request/',
-  DeleteTaskSuspendRequest = '/tasks/:id/suspend-request/',
+  CreateReclassificationRequest = '/tasks/:id/reclassification-requests',
+  GetReclassificationRequest = '/tasks/:id/reclassification-request',
 
-  GetTaskJournal = '/tasks/:id/journal/',
-  GetTaskJournalCsv = '/tasks/:id/journal/csv/',
+  CreateTaskSuspendRequest = '/tasks/:id/suspend_request',
+  DeleteTaskSuspendRequest = '/tasks/:id/suspend-request',
 
-  GetSubTaskList = '/tasks/:id/subtasks/',
-  CreateSubTask = '/tasks/:id/subtasks/',
+  GetTaskJournal = '/tasks/:id/journal',
+  GetTaskJournalCsv = '/tasks/:id/journal/csv',
+
+  GetSubTaskList = '/tasks/:id/subtasks',
+  CreateSubTask = '/tasks/:id/subtasks',
 
   CreateInitiationReason = '/tasks/:id/initiation-reasons',
   DeleteInitiationReason = '/initiation-reasons/:id',
 
   CreateCompletedWork = '/tasks/:id/completed-works',
   DeleteCompletedWork = '/completed-works/:id',
+
+  CreateTaskRegistrationFNRequest = '/tasks/:id/fa-registrations',
+  GetTaskRegistrationRequestRecipientsFN = '/tasks/:id/fa-notice-recipients',
 }
 
 export enum TaskApiTagEnum {

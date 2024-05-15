@@ -61,7 +61,7 @@ export type EquipmentFormModalProps = Required<
 
     categoryList: EquipmentCategoryListModel
     categoryListIsLoading: boolean
-    selectedCategory?: EquipmentCategoryListItemModel
+    category?: EquipmentCategoryListItemModel
     onChangeCategory: (category: EquipmentCategoryListItemModel) => void
 
     warehouseList?: WarehouseListModel

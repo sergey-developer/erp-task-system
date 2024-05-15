@@ -1,11 +1,11 @@
-import { useBoolean, useLocalStorageState, usePrevious, useSetState, useSize } from 'ahooks'
+import { useBoolean, useLocalStorageState, usePrevious, useSetState } from 'ahooks'
 import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
 import pick from 'lodash/pick'
-import React, { FC, useCallback, useMemo, useRef, useState } from 'react'
+import React, { FC, useCallback, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
@@ -19,7 +19,7 @@ import {
   SortableField,
   sortableFieldToSortValues,
 } from 'modules/task/components/TaskTable/constants/sort'
-import { TaskTableListItem, TaskTableProps } from 'modules/task/components/TaskTable/types'
+import { TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort, parseSort } from 'modules/task/components/TaskTable/utils'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
@@ -52,14 +52,11 @@ import { useGetWorkGroupList } from 'modules/workGroup/hooks'
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
-import {
-  DEFAULT_DEBOUNCE_VALUE,
-  FOOTER_HEIGHT,
-  LAYOUT_CONTENT_PADDING_V,
-} from 'shared/constants/common'
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useGetMacroregionList } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { useDrawerHeightByTable } from 'shared/hooks/useDrawerHeightByTable'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -85,8 +82,7 @@ const { Search } = Input
 const initialExtendedFilterFormValues = getInitialExtendedFilterFormValues()
 
 const TaskListPage: FC = () => {
-  const tableRef = useRef<HTMLDivElement>(null)
-  const tableSize = useSize(tableRef)
+  const { tableRef, drawerHeight } = useDrawerHeightByTable()
 
   // todo: создать хук для useSearchParams который парсит значения в нужный тип
   const [searchParams] = useSearchParams()
@@ -293,8 +289,9 @@ const TaskListPage: FC = () => {
     (record) => ({
       onMouseUp: debounce(() => setSelectedTaskId(record.id), DEFAULT_DEBOUNCE_VALUE),
       ...(record.isBoundary && { style: tableItemBoundaryStyles }),
+      className: isEqual(record.id, selectedTaskId) ? 'ant-table-row-selected' : '',
     }),
-    [],
+    [selectedTaskId],
   )
 
   const closeTask = useCallback(() => {
@@ -345,12 +342,6 @@ const TaskListPage: FC = () => {
 
   const searchFilterApplied: boolean = isEqual(appliedFilterType, FilterTypeEnum.Search)
 
-  const getTableRowClassName = useCallback(
-    (record: TaskTableListItem): string =>
-      isEqual(record.id, selectedTaskId) ? 'table-row--selected' : '',
-    [selectedTaskId],
-  )
-
   const onRemoveTasksFilter = (filter: TasksFilterStorageItem) => {
     setTasksFiltersStorage((prevState) => ({ ...prevState, [filter.name]: undefined }))
     setExtendedFilterFormValues({ [filter.name]: undefined })
@@ -374,9 +365,9 @@ const TaskListPage: FC = () => {
     <>
       <Row data-testid='task-list-page' gutter={[0, 40]}>
         <Col span={24}>
-          <Row className='task-list-page-header' justify='space-between' align='bottom'>
+          <Row className='task-list-page-header' justify='space-between' gutter={[0, 20]}>
             <Col xxl={16} xl={14}>
-              <Row align='middle' gutter={[16, 16]}>
+              <Row gutter={[16, 16]}>
                 <Col span={17}>
                   <Row gutter={[16, 16]}>
                     {tasksFiltersStorage && (
@@ -443,7 +434,6 @@ const TaskListPage: FC = () => {
         <Col span={24}>
           <TaskTable
             ref={tableRef}
-            rowClassName={getTableRowClassName}
             sort={taskListQueryArgs.sort}
             onRow={onTableRow}
             dataSource={tasks}
@@ -463,9 +453,7 @@ const TaskListPage: FC = () => {
             additionalInfoExpanded={additionalInfoExpanded}
             onExpandAdditionalInfo={toggleAdditionalInfoExpanded}
             onClose={closeTask}
-            height={
-              tableSize ? tableSize.height + LAYOUT_CONTENT_PADDING_V + FOOTER_HEIGHT : undefined
-            }
+            height={drawerHeight}
           />
         </React.Suspense>
       )}

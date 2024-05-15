@@ -8,10 +8,11 @@ export const DEFAULT_DEBOUNCE_VALUE = 150
 export const DEFAULT_MODAL_WIDTH = 615
 
 export const CANCEL_TEXT = 'Отменить'
-export const SAVE_TEXT = 'Сохранить'
 export const CREATE_TEXT = 'Создать'
+export const SAVE_TEXT = 'Сохранить'
 export const UPDATE_TEXT = 'Обновить'
 export const ADD_TEXT = 'Добавить'
+export const SEND_TEXT = 'Отправить'
 export const CONFIRM_TEXT = 'Подтвердить'
 
 export const LAYOUT_CONTENT_PADDING_V = 32

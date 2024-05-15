@@ -9,7 +9,7 @@ import {
 } from 'modules/user/constants'
 
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
-import { testUtils as privateLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
+import { testUtils as homeLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
 import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 
@@ -49,7 +49,7 @@ describe('Private app', () => {
 
         render(<App />, { useBrowserRouter: false })
 
-        await privateLayoutTestUtils.expectLoadingFinished()
+        await homeLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingStarted()
       })
 
@@ -67,7 +67,7 @@ describe('Private app', () => {
 
         const { user } = render(<App />, { useBrowserRouter: false })
 
-        await privateLayoutTestUtils.expectLoadingFinished()
+        await homeLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         await privateHeaderTestUtils.openTimeZoneSelect(user)
         await privateHeaderTestUtils.setTimeZone(user, fakeTimeZoneListItem.label)
@@ -89,7 +89,7 @@ describe('Private app', () => {
 
         const { user } = render(<App />, { useBrowserRouter: false })
 
-        await privateLayoutTestUtils.expectLoadingFinished()
+        await homeLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         await taskTableTestUtils.expectLoadingFinished()
         // await taskCardTestUtils.expectLoadingStarted()
@@ -112,7 +112,7 @@ describe('Private app', () => {
 
         render(<App />, { useBrowserRouter: false })
 
-        await privateLayoutTestUtils.expectLoadingFinished()
+        await homeLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         const option = privateHeaderTestUtils.getSelectedTimeZone()
 
@@ -131,7 +131,7 @@ describe('Private app', () => {
 
         const { user } = render(<App />, { useBrowserRouter: false })
 
-        await privateLayoutTestUtils.expectLoadingFinished()
+        await homeLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         await privateHeaderTestUtils.openTimeZoneSelect(user)
         const options = privateHeaderTestUtils.getAllTimeZoneOption()
@@ -159,7 +159,7 @@ describe('Private app', () => {
 
         const { user } = render(<App />, { useBrowserRouter: false })
 
-        await privateLayoutTestUtils.expectLoadingFinished()
+        await homeLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         const currentTimeZoneOption = privateHeaderTestUtils.getSelectedTimeZone()
 
@@ -189,7 +189,7 @@ describe('Private app', () => {
 
         const { user } = render(<App />, { useBrowserRouter: false })
 
-        await privateLayoutTestUtils.expectLoadingFinished()
+        await homeLayoutTestUtils.expectLoadingFinished()
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
         await privateHeaderTestUtils.openTimeZoneSelect(user)
         await privateHeaderTestUtils.setTimeZone(user, fakeTimeZoneListItem.label)
@@ -220,7 +220,7 @@ describe('Private app', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.getUserStatusSelectContainer()
 
           expect(selectContainer).toBeInTheDocument()
@@ -243,7 +243,7 @@ describe('Private app', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           await privateHeaderTestUtils.expectUserStatusLoadingFinished()
           const selectedUserStatus = privateHeaderTestUtils.getSelectedUserStatus()
 
@@ -273,7 +273,7 @@ describe('Private app', () => {
 
               const { user } = render(<App />, { useBrowserRouter: false })
 
-              await privateLayoutTestUtils.expectLoadingFinished()
+              await homeLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
               await privateHeaderTestUtils.openUserStatusSelect(user)
               await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
@@ -308,7 +308,7 @@ describe('Private app', () => {
               const { user } = render(<App />, { useBrowserRouter: false })
 
               taskLocalStorageService.setTasksFilters({ customers: [fakeId()] })
-              await privateLayoutTestUtils.expectLoadingFinished()
+              await homeLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
 
               expect(taskLocalStorageService.getTasksFilters()).toBeTruthy()
@@ -347,7 +347,7 @@ describe('Private app', () => {
 
               const { user } = render(<App />, { useBrowserRouter: false })
 
-              await privateLayoutTestUtils.expectLoadingFinished()
+              await homeLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
               await privateHeaderTestUtils.openUserStatusSelect(user)
               await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
@@ -388,7 +388,7 @@ describe('Private app', () => {
 
               const { user } = render(<App />, { useBrowserRouter: false })
 
-              await privateLayoutTestUtils.expectLoadingFinished()
+              await homeLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
               await privateHeaderTestUtils.openUserStatusSelect(user)
               await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
@@ -429,7 +429,7 @@ describe('Private app', () => {
 
               const { user } = render(<App />, { useBrowserRouter: false })
 
-              await privateLayoutTestUtils.expectLoadingFinished()
+              await homeLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
               await privateHeaderTestUtils.openUserStatusSelect(user)
               await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
@@ -465,7 +465,7 @@ describe('Private app', () => {
 
               const { user } = render(<App />, { useBrowserRouter: false })
 
-              await privateLayoutTestUtils.expectLoadingFinished()
+              await homeLayoutTestUtils.expectLoadingFinished()
               await privateHeaderTestUtils.expectUserStatusLoadingFinished()
               await privateHeaderTestUtils.openUserStatusSelect(user)
               await privateHeaderTestUtils.setUserStatus(user, fakeUserStatus1.title)
@@ -500,7 +500,7 @@ describe('Private app', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()
 
           expect(selectContainer).not.toBeInTheDocument()
@@ -522,7 +522,7 @@ describe('Private app', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()
 
           expect(selectContainer).not.toBeInTheDocument()
@@ -544,7 +544,7 @@ describe('Private app', () => {
 
           render(<App />, { useBrowserRouter: false })
 
-          await privateLayoutTestUtils.expectLoadingFinished()
+          await homeLayoutTestUtils.expectLoadingFinished()
           const selectContainer = privateHeaderTestUtils.queryUserStatusSelectContainer()
 
           expect(selectContainer).not.toBeInTheDocument()

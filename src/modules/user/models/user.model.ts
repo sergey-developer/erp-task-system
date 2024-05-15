@@ -12,13 +12,20 @@ export type BaseUserModel = {
   avatar: MaybeNull<string>
 }
 
+export type UserPositionModel = {
+  id: IdType
+  title: string
+}
+
 export type UserModel = BaseUserModel & {
   fullName: string
   role: UserRoleEnum
   email: string
   timezone: string
   isStaff: boolean
-  phone: MaybeNull<string>
   status: UserStatusModel
   permissions: UserPermissionsEnum[]
+
+  phone: MaybeNull<string>
+  position: MaybeNull<UserPositionModel>
 }

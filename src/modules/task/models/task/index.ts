@@ -23,3 +23,9 @@ export * from './deleteInitiationReason.model'
 export * from './completedWork.model'
 export * from './createCompletedWork.model'
 export * from './deleteCompletedWork.model'
+
+export * from './createTaskAttachment.model'
+
+export * from './taskRegistrationRequestRecipientsFN.model'
+export * from './getTaskRegistrationRequestRecipientsFN.model'
+export * from './createTaskRegistrationFNRequest.model'

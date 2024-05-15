@@ -1,4 +1,4 @@
 export enum AttachmentApiEnum {
   CreateAttachment = '/attachments/',
-  DeleteAttachment = '/attachments/:id/',
+  DeleteAttachment = '/attachments/:id',
 }
