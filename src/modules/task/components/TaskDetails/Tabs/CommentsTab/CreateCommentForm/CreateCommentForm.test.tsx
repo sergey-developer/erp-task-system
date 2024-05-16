@@ -14,12 +14,11 @@ const props: Readonly<CreateCommentFormProps> = {
 }
 
 const getContainer = () => screen.getByTestId('create-comment-form')
-
+const queryContainer = () => screen.queryByTestId('create-comment-form')
 const findChildByText = (text: string) => within(getContainer()).findByText(text)
 
 // comment
 const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
-
 const findCommentError = (error: string) => within(getCommentFormItem()).findByText(error)
 
 const getCommentField = () =>
@@ -84,6 +83,7 @@ const expectLoadingFinished = async () => {
 
 export const testUtils = {
   getContainer,
+  queryContainer,
   findChildByText,
 
   getCommentFormItem,
@@ -105,7 +105,7 @@ export const testUtils = {
   expectLoadingFinished,
 }
 
-describe('Форма добавления комментария', () => {
+describe('Форма добавления комментария заявки', () => {
   describe('Поле ввода комментария', () => {
     test('Отображается корректно', () => {
       render(<CreateCommentForm {...props} />)

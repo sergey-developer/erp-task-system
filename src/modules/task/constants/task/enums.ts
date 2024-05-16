@@ -69,7 +69,7 @@ export enum TaskAttachmentTypeEnum {
 
 export enum TaskDetailsTabsEnum {
   SubTaskList = 'SubTaskList',
-  CommentList = 'CommentList',
+  Comments = 'Comments',
   Resolution = 'Resolution',
   Description = 'Description',
   Journal = 'Journal',
