@@ -12,6 +12,7 @@ import { TaskModel } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 
 import taskFixtures from '_tests_/fixtures/task'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeId,
@@ -21,7 +22,6 @@ import {
   render,
 } from '_tests_/utils'
 
-import { getUserMeQueryMock } from '../../../../../_tests_/mocks/state/user'
 import TaskDetailsTitle from './index'
 import { TaskDetailsTitleProps } from './types'
 
