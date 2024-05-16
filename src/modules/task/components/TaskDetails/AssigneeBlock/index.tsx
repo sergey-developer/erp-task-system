@@ -63,7 +63,11 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
   const authUser = useAuthUser()
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.AnyAssigneeTasksUpdate])
+
+  const permissions = useMatchUserPermissions([
+    UserPermissionsEnum.AnyAssigneeTasksUpdate,
+    UserPermissionsEnum.SelfAssigneeTasksUpdate,
+  ])
 
   const selectedAssigneeIsCurrentAssignee = isEqual(selectedAssignee, currentAssignee)
   const currentAssigneeIsCurrentUser = useIdBelongAuthUser(currentAssignee)
@@ -96,23 +100,42 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
         </Col>
 
         <Col>
-          <Button
-            type='link'
-            loading={updateAssigneeIsLoading}
-            disabled={
-              taskSuspendRequestStatus.isApproved
-                ? false
-                : taskStatus.isClosed ||
-                  taskStatus.isCompleted ||
-                  taskStatus.isAwaiting ||
-                  taskExtendedStatus.isInReclassification ||
-                  taskSuspendRequestStatus.isNew ||
-                  taskSuspendRequestStatus.isInProgress
-            }
-            onClick={currentAssigneeIsCurrentUser ? undefined : onAssignOnMe}
-          >
-            {currentAssigneeIsCurrentUser ? 'Отказаться от заявки' : 'Назначить на себя'}
-          </Button>
+          {currentAssigneeIsCurrentUser ? (
+            <Button
+              type='link'
+              disabled={
+                taskSuspendRequestStatus.isApproved
+                  ? false
+                  : taskStatus.isClosed ||
+                    taskStatus.isCompleted ||
+                    taskStatus.isAwaiting ||
+                    taskExtendedStatus.isInReclassification ||
+                    taskSuspendRequestStatus.isNew ||
+                    taskSuspendRequestStatus.isInProgress
+              }
+            >
+              Отказаться от заявки
+            </Button>
+          ) : (
+            <Button
+              type='link'
+              loading={updateAssigneeIsLoading}
+              disabled={
+                taskSuspendRequestStatus.isApproved
+                  ? false
+                  : (!permissions.selfAssigneeTasksUpdate && !permissions.anyAssigneeTasksUpdate) ||
+                    taskStatus.isClosed ||
+                    taskStatus.isCompleted ||
+                    taskStatus.isAwaiting ||
+                    taskExtendedStatus.isInReclassification ||
+                    taskSuspendRequestStatus.isNew ||
+                    taskSuspendRequestStatus.isInProgress
+              }
+              onClick={onAssignOnMe}
+            >
+              Назначить на себя
+            </Button>
+          )}
         </Col>
       </Row>
 
