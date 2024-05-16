@@ -8,3 +8,5 @@ export * from './updateUserStatus.mock'
 export * from './getUserList.mock'
 
 export * from './getWarehouseMSI.mock'
+
+export * from './getUserActions.mock'

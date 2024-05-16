@@ -38,7 +38,6 @@ import {
   testUtils as assigneeBlockTestUtils,
 } from '../AssigneeBlock/AssigneeBlock.test'
 import { testUtils as mainDetailsTestUtils } from '../MainDetails/MainDetails.test'
-import { testUtils as secondaryDetailsTestUtils } from '../SecondaryDetails/SecondaryDetails.test'
 import { testUtils as cardTabsTestUtils } from '../Tabs/Tabs.test'
 import {
   activeRequestSuspendItemProps,
@@ -210,18 +209,6 @@ describe('Карточка заявки', () => {
     test('Не отображается если нет данных заявки', () => {
       render(<TaskCard {...props} task={null} />)
       expect(mainDetailsTestUtils.queryContainer()).not.toBeInTheDocument()
-    })
-  })
-
-  describe('Блок вторичной информации заявки', () => {
-    test('Отображается', () => {
-      render(<TaskCard {...props} />)
-      expect(secondaryDetailsTestUtils.getContainer()).toBeInTheDocument()
-    })
-
-    test('Не отображается если нет данных заявки', () => {
-      render(<TaskCard {...props} task={null} />)
-      expect(secondaryDetailsTestUtils.queryContainer()).not.toBeInTheDocument()
     })
   })
 

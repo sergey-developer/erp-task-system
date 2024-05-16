@@ -1,8 +1,9 @@
 import { useBoolean } from 'ahooks'
-import { App, Drawer, FormInstance } from 'antd'
+import { App, Col, Drawer, FormInstance, Row } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
 
+import { useAuthUser } from 'modules/auth/hooks'
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
 import { CreateRegistrationFNRequestModalProps } from 'modules/task/components/CreateRegistrationFNRequestModal/types'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
@@ -14,7 +15,6 @@ import {
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
 import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
-import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
 import Tabs from 'modules/task/components/TaskDetails/Tabs'
 import TaskDetailsTitle from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
@@ -78,7 +78,8 @@ import { downloadFile, extractIdsFromFilesResponse, extractOriginFiles } from 's
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { useAuthUser } from '../../../auth/hooks'
+import AssigneeBlock from './AssigneeBlock'
+import WorkGroupBlock from './WorkGroupBlock'
 
 const CreateRegistrationFNRequestModal = React.lazy(
   () => import('modules/task/components/CreateRegistrationFNRequestModal'),
@@ -807,24 +808,39 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     onExpand={onExpandAdditionalInfo}
                   />
 
-                  <SecondaryDetails
-                    id={task.id}
-                    recordId={task.recordId}
-                    status={task.status}
-                    extendedStatus={task.extendedStatus}
-                    assignee={task.assignee}
-                    workGroup={task.workGroup}
-                    transferTaskToFirstLine={onTransferTaskToFirstLine}
-                    transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
-                    transferTaskToSecondLine={onTransferTaskToSecondLine}
-                    transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
-                    updateAssignee={onUpdateAssignee}
-                    updateAssigneeIsLoading={updateAssigneeIsLoading}
-                    takeTask={onTakeTask}
-                    takeTaskIsLoading={takeTaskIsLoading}
-                    taskSuspendRequestStatus={task.suspendRequest?.status}
-                    userActions={userActions}
-                  />
+                  <Row justify='space-between'>
+                    <Col span={11}>
+                      <WorkGroupBlock
+                        id={task.id}
+                        recordId={task.recordId}
+                        status={task.status}
+                        extendedStatus={task.extendedStatus}
+                        workGroup={task.workGroup}
+                        transferTaskToFirstLine={onTransferTaskToFirstLine}
+                        transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
+                        transferTaskToSecondLine={onTransferTaskToSecondLine}
+                        transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
+                        taskSuspendRequestStatus={task.suspendRequest?.status}
+                        userActions={userActions}
+                      />
+                    </Col>
+
+                    <Col span={11}>
+                      <AssigneeBlock
+                        id={task.id}
+                        status={task.status}
+                        extendedStatus={task.extendedStatus}
+                        assignee={task.assignee}
+                        workGroup={task.workGroup}
+                        updateAssignee={onUpdateAssignee}
+                        updateAssigneeIsLoading={updateAssigneeIsLoading}
+                        takeTask={onTakeTask}
+                        takeTaskIsLoading={takeTaskIsLoading}
+                        taskSuspendRequestStatus={task.suspendRequest?.status}
+                        userActions={userActions}
+                      />
+                    </Col>
+                  </Row>
 
                   <Tabs task={task} activeTab={activeTab} />
                 </Space>

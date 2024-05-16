@@ -15,11 +15,11 @@ import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequ
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskModel } from 'modules/task/models'
-import { taskWorkGroupPermissions } from 'modules/task/permissions'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import { UserActionsModel } from 'modules/user/models'
 
 import ModalFallback from 'components/Modals/ModalFallback'
-import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -72,6 +72,8 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
 
   userActions,
 }) => {
+  const permissions = useMatchUserPermissions([UserPermissionsEnum.PutFirstLineTasksOnSecondLine])
+
   const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] = useBoolean(false)
   const debouncedToggleOpenTaskFirstLineModal = useDebounceFn(toggleOpenTaskFirstLineModal)
 
@@ -107,7 +109,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
           </Col>
 
           <Col>
-            {hasWorkGroup && !taskStatus.isClosed && !taskStatus.isCompleted ? (
+            {hasWorkGroup && !taskStatus.isClosed && !taskStatus.isCompleted && (
               <Button
                 type='link'
                 onClick={debouncedToggleOpenTaskFirstLineModal}
@@ -124,29 +126,26 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
               >
                 Вернуть на I линию
               </Button>
-            ) : null}
+            )}
 
-            <Permissions config={taskWorkGroupPermissions.transferToSecondLineBtn}>
-              {() =>
-                hasWorkGroup ? null : (
-                  <Button
-                    type='link'
-                    onClick={debouncedToggleOpenTaskSecondLineModal}
-                    loading={transferTaskToSecondLineIsLoading}
-                    disabled={
-                      taskSuspendRequestStatus.isApproved
-                        ? false
-                        : taskSuspendRequestStatus.isNew ||
-                          taskSuspendRequestStatus.isInProgress ||
-                          taskExtendedStatus.isInReclassification ||
-                          (!taskStatus.isNew && !taskStatus.isInProgress)
-                    }
-                  >
-                    Перевести на II линию
-                  </Button>
-                )
-              }
-            </Permissions>
+            {!hasWorkGroup && (
+              <Button
+                type='link'
+                onClick={debouncedToggleOpenTaskSecondLineModal}
+                loading={transferTaskToSecondLineIsLoading}
+                disabled={
+                  taskSuspendRequestStatus.isApproved
+                    ? false
+                    : !permissions.putFirstLineTasksOnSecondLine ||
+                      taskSuspendRequestStatus.isNew ||
+                      taskSuspendRequestStatus.isInProgress ||
+                      taskExtendedStatus.isInReclassification ||
+                      (!taskStatus.isNew && !taskStatus.isInProgress)
+                }
+              >
+                Перевести на II линию
+              </Button>
+            )}
           </Col>
         </Row>
 

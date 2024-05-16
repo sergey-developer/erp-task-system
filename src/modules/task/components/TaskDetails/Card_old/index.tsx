@@ -14,7 +14,6 @@ import {
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
 import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
-import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
 import Tabs from 'modules/task/components/TaskDetails/Tabs'
 import Title from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
@@ -573,25 +572,6 @@ const TaskCard: FC<TaskCardProps> = ({
               />
 
               {!additionalInfoExpanded && <DividerStyled />}
-
-              {/* @ts-ignore */}
-              <SecondaryDetails
-                id={task.id}
-                recordId={task.recordId}
-                status={task.status}
-                extendedStatus={task.extendedStatus}
-                assignee={task.assignee}
-                workGroup={task.workGroup}
-                transferTaskToFirstLine={handleTransferTaskToFirstLine}
-                transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
-                transferTaskToSecondLine={handleTransferTaskToSecondLine}
-                transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
-                updateAssignee={handleUpdateAssignee}
-                updateAssigneeIsLoading={updateAssigneeIsLoading}
-                takeTask={handleTakeTask}
-                takeTaskIsLoading={takeTaskIsLoading}
-                taskSuspendRequestStatus={task.suspendRequest?.status}
-              />
 
               <Tabs task={task} activeTab={activeTab} />
 

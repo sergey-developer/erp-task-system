@@ -13,5 +13,5 @@ export const taskActionsPermissions: UserActionsModel['tasks'] = {
 }
 
 export const userActions = (props?: Partial<UserActionsModel>): UserActionsModel => ({
-  tasks: props?.tasks ? { ...taskActionsPermissions, ...props?.tasks } : taskActionsPermissions,
+  tasks: props?.tasks ? { ...taskActionsPermissions, ...props.tasks } : taskActionsPermissions,
 })
