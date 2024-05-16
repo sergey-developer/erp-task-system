@@ -10,7 +10,7 @@ import {
   resolveTaskErrMsg,
   TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
-import { updateTaskAssigneeMessages } from 'modules/task/constants/taskAssignee'
+import { updateTaskAssigneeErrMsg } from 'modules/task/constants/taskAssignee'
 import { createReclassificationRequestMessages } from 'modules/task/constants/taskReclassificationRequest'
 import {
   createSuspendRequestErrMsg,
@@ -2077,7 +2077,7 @@ describe('Контейнер детальной карточки заявки', 
         await taskCardTestUtils.expectLoadingFinished()
 
         expect(
-          notificationTestUtils.queryNotification(updateTaskAssigneeMessages.commonError),
+          notificationTestUtils.queryNotification(updateTaskAssigneeErrMsg),
         ).not.toBeInTheDocument()
       })
     })
@@ -2118,7 +2118,7 @@ describe('Контейнер детальной карточки заявки', 
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(
-          await notificationTestUtils.findNotification(updateTaskAssigneeMessages.commonError),
+          await notificationTestUtils.findNotification(updateTaskAssigneeErrMsg),
         ).toBeInTheDocument()
       })
     })
@@ -2152,7 +2152,7 @@ describe('Контейнер детальной карточки заявки', 
         await taskCardTestUtils.expectLoadingFinished()
 
         expect(
-          notificationTestUtils.queryNotification(updateTaskAssigneeMessages.commonError),
+          notificationTestUtils.queryNotification(updateTaskAssigneeErrMsg),
         ).not.toBeInTheDocument()
       })
     })
@@ -2182,7 +2182,7 @@ describe('Контейнер детальной карточки заявки', 
 
         taskCardTestUtils.expectLoadingNotStarted()
         expect(
-          await notificationTestUtils.findNotification(updateTaskAssigneeMessages.commonError),
+          await notificationTestUtils.findNotification(updateTaskAssigneeErrMsg),
         ).toBeInTheDocument()
       })
     })

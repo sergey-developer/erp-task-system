@@ -84,11 +84,7 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
   const getTaskCalledAfterSuccessfullyRequestCreation =
     getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
 
-  const {
-    fn: takeTask,
-    state: { isLoading: takeTaskIsLoading },
-  } = useTakeTask()
-
+  const [takeTask, { isLoading: takeTaskIsLoading }] = useTakeTask()
   const [resolveTask, { isLoading: taskIsResolving }] = useResolveTask()
 
   const {
@@ -96,15 +92,8 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
     state: { isLoading: updateWorkGroupIsLoading },
   } = useUpdateTaskWorkGroup()
 
-  const {
-    fn: deleteWorkGroup,
-    state: { isLoading: deleteWorkGroupIsLoading },
-  } = useDeleteTaskWorkGroup()
-
-  const {
-    fn: updateAssignee,
-    state: { isLoading: updateAssigneeIsLoading },
-  } = useUpdateTaskAssignee()
+  const [deleteWorkGroup, { isLoading: deleteWorkGroupIsLoading }] = useDeleteTaskWorkGroup()
+  const [updateAssignee, { isLoading: updateAssigneeIsLoading }] = useUpdateTaskAssignee()
 
   const [getTaskWorkPerformedAct, { isLoading: taskWorkPerformedActIsLoading }] =
     useGetTaskWorkPerformedActMutation()

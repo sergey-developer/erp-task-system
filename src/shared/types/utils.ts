@@ -28,8 +28,11 @@ export type NumberOrString = number | string
 export type ArrayFirst<T extends any[] | readonly any[]> = T['length'] extends 0 ? never : T[0]
 
 export type Writeable<T> = { -readonly [P in keyof T]: T[P] }
-
 export type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> }
+
+export type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K]
+}
 
 /* Типы взяты из https://www.npmjs.com/package/camelize-ts */
 type CamelCase<S extends string> = S extends `${infer P1}_${infer P2}${infer P3}`

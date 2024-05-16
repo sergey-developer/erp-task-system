@@ -15,17 +15,17 @@ import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequ
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskModel } from 'modules/task/models'
-import { taskWorkGroupPermissions } from 'modules/task/permissions'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useMatchUserPermissions } from 'modules/user/hooks'
+import { UserActionsModel } from 'modules/user/models'
 
 import ModalFallback from 'components/Modals/ModalFallback'
-import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { EmptyFn } from 'shared/types/utils'
 
 const TaskFirstLineModal = React.lazy(() => import('modules/task/components/TaskFirstLineModal'))
-
 const TaskSecondLineModal = React.lazy(() => import('modules/task/components/TaskSecondLineModal'))
 
 const { Text } = Typography
@@ -48,6 +48,8 @@ export type WorkGroupBlockProps = Pick<
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
 
+  userActions: UserActionsModel
+
   taskSuspendRequestStatus?: SuspendRequestStatusEnum
   workGroup?: TaskModel['workGroup']
 }
@@ -67,29 +69,31 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   transferTaskToSecondLineIsLoading,
 
   taskSuspendRequestStatus: rawTaskSuspendRequestStatus,
+
+  userActions,
 }) => {
+  const permissions = useMatchUserPermissions([UserPermissionsEnum.PutFirstLineTasksOnSecondLine])
+
   const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] = useBoolean(false)
+  const debouncedToggleOpenTaskFirstLineModal = useDebounceFn(toggleOpenTaskFirstLineModal)
 
   const [isTaskSecondLineModalOpened, { toggle: toggleOpenTaskSecondLineModal }] = useBoolean(false)
+  const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(toggleOpenTaskSecondLineModal)
 
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
 
-  const hasWorkGroup: boolean = !!workGroup
+  const hasWorkGroup = !!workGroup
 
-  const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(toggleOpenTaskSecondLineModal)
-
-  const debouncedToggleOpenTaskFirstLineModal = useDebounceFn(toggleOpenTaskFirstLineModal)
-
-  const handleTransferTaskToSecondLine: TaskSecondLineModalProps['onSubmit'] = async (
+  const onReturnTaskToSecondLine: TaskSecondLineModalProps['onSubmit'] = async (
     values,
     setFields,
   ) => {
     await transferTaskToSecondLine(values, setFields, toggleOpenTaskSecondLineModal)
   }
 
-  const handleTransferTaskToFirstLine: TaskFirstLineModalProps['onSubmit'] = async (
+  const onReturnTaskToFirstLine: TaskFirstLineModalProps['onSubmit'] = async (
     values,
     setFields,
   ) => {
@@ -105,49 +109,43 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
           </Col>
 
           <Col>
-            <Permissions config={taskWorkGroupPermissions.transferToFirstLineBtn}>
-              {() =>
-                hasWorkGroup && !taskStatus.isClosed && !taskStatus.isCompleted ? (
-                  <Button
-                    type='link'
-                    onClick={debouncedToggleOpenTaskFirstLineModal}
-                    loading={transferTaskToFirstLineIsLoading}
-                    disabled={
-                      taskSuspendRequestStatus.isApproved
-                        ? false
-                        : taskSuspendRequestStatus.isNew ||
-                          taskSuspendRequestStatus.isInProgress ||
-                          taskStatus.isAwaiting ||
-                          taskExtendedStatus.isInReclassification
-                    }
-                  >
-                    Вернуть на I линию
-                  </Button>
-                ) : null
-              }
-            </Permissions>
+            {hasWorkGroup && !taskStatus.isClosed && !taskStatus.isCompleted && (
+              <Button
+                type='link'
+                onClick={debouncedToggleOpenTaskFirstLineModal}
+                loading={transferTaskToFirstLineIsLoading}
+                disabled={
+                  taskSuspendRequestStatus.isApproved ||
+                  userActions.tasks.CAN_PUT_ON_FIRST_LINE.includes(id)
+                    ? false
+                    : taskSuspendRequestStatus.isNew ||
+                      taskSuspendRequestStatus.isInProgress ||
+                      taskStatus.isAwaiting ||
+                      taskExtendedStatus.isInReclassification
+                }
+              >
+                Вернуть на I линию
+              </Button>
+            )}
 
-            <Permissions config={taskWorkGroupPermissions.transferToSecondLineBtn}>
-              {() =>
-                hasWorkGroup ? null : (
-                  <Button
-                    type='link'
-                    onClick={debouncedToggleOpenTaskSecondLineModal}
-                    loading={transferTaskToSecondLineIsLoading}
-                    disabled={
-                      taskSuspendRequestStatus.isApproved
-                        ? false
-                        : taskSuspendRequestStatus.isNew ||
-                          taskSuspendRequestStatus.isInProgress ||
-                          taskExtendedStatus.isInReclassification ||
-                          (!taskStatus.isNew && !taskStatus.isInProgress)
-                    }
-                  >
-                    Перевести на II линию
-                  </Button>
-                )
-              }
-            </Permissions>
+            {!hasWorkGroup && (
+              <Button
+                type='link'
+                onClick={debouncedToggleOpenTaskSecondLineModal}
+                loading={transferTaskToSecondLineIsLoading}
+                disabled={
+                  taskSuspendRequestStatus.isApproved
+                    ? false
+                    : !permissions.putFirstLineTasksOnSecondLine ||
+                      taskSuspendRequestStatus.isNew ||
+                      taskSuspendRequestStatus.isInProgress ||
+                      taskExtendedStatus.isInReclassification ||
+                      (!taskStatus.isNew && !taskStatus.isInProgress)
+                }
+              >
+                Перевести на II линию
+              </Button>
+            )}
           </Col>
         </Row>
 
@@ -200,7 +198,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
           <TaskFirstLineModal
             recordId={recordId}
             isLoading={transferTaskToFirstLineIsLoading}
-            onSubmit={handleTransferTaskToFirstLine}
+            onSubmit={onReturnTaskToFirstLine}
             onCancel={debouncedToggleOpenTaskFirstLineModal}
           />
         </React.Suspense>
@@ -219,7 +217,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
             id={id}
             recordId={recordId}
             onCancel={debouncedToggleOpenTaskSecondLineModal}
-            onSubmit={handleTransferTaskToSecondLine}
+            onSubmit={onReturnTaskToSecondLine}
             isLoading={transferTaskToSecondLineIsLoading}
           />
         </React.Suspense>
