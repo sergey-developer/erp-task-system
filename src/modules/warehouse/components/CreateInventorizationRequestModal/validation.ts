@@ -6,7 +6,7 @@ export const deadlineAtDateRules: Rule[] = [
   {
     type: 'date',
     required: true,
-    validator: dateValidator({ required: true }),
+    validator: dateValidator({ required: true, canBeInPast: true }),
   },
 ]
 
@@ -18,6 +18,7 @@ export const deadlineAtTimeRules: Rule[] = [
       dateGetter: getFieldValue,
       dateFieldName: 'deadlineAtDate',
       required: true,
+      canBeInPast: true,
     }),
   }),
 ]
