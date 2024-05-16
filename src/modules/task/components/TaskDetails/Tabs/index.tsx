@@ -14,7 +14,7 @@ import ResolutionTab from './ResolutionTab'
 import { TabsStyled } from './styles'
 
 const JournalTab = React.lazy(() => import('./JournalTab'))
-const CommentListTab = React.lazy(() => import('./CommentListTab'))
+const CommentsTab = React.lazy(() => import('./CommentsTab'))
 const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
 const RelocationTaskListTab = React.lazy(() => import('./RelocationTaskListTab'))
 
@@ -69,12 +69,12 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
       ),
     },
     {
-      key: TaskDetailsTabsEnum.CommentList,
-      label: taskDetailsTabNameDict[TaskDetailsTabsEnum.CommentList],
+      key: TaskDetailsTabsEnum.Comments,
+      label: taskDetailsTabNameDict[TaskDetailsTabsEnum.Comments],
       children: (
-        <React.Suspense fallback={<Spinner />}>
-          <CommentListTab
-            title={taskDetailsTabNameDict[TaskDetailsTabsEnum.CommentList]}
+        <React.Suspense fallback={<Spinner tip='Загрузка вкладки комментариев' />}>
+          <CommentsTab
+            title={taskDetailsTabNameDict[TaskDetailsTabsEnum.Comments]}
             taskId={task.id}
           />
         </React.Suspense>
@@ -97,7 +97,7 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
       key: TaskDetailsTabsEnum.Journal,
       label: taskDetailsTabNameDict[TaskDetailsTabsEnum.Journal],
       children: (
-        <React.Suspense fallback={<Spinner />}>
+        <React.Suspense fallback={<Spinner tip='Загрузка вкладки журнала' />}>
           <JournalTab taskId={task.id} />
         </React.Suspense>
       ),
@@ -106,7 +106,7 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
       key: TaskDetailsTabsEnum.SubTaskList,
       label: taskDetailsTabNameDict[TaskDetailsTabsEnum.SubTaskList],
       children: (
-        <React.Suspense fallback={<Spinner />}>
+        <React.Suspense fallback={<Spinner tip='Загрузка вкладки задач заявок' />}>
           <SubTaskListTab
             task={pick(
               task,
@@ -130,7 +130,7 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
             key: TaskDetailsTabsEnum.RelocationTasks,
             label: taskDetailsTabNameDict[TaskDetailsTabsEnum.RelocationTasks],
             children: (
-              <React.Suspense fallback={<Spinner />}>
+              <React.Suspense fallback={<Spinner tip='Загрузка вкладки заявок на перемещение' />}>
                 <RelocationTaskListTab
                   task={pick(
                     task,

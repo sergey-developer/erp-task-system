@@ -12,19 +12,19 @@ import { CreateCommentFormFields, CreateCommentFormProps } from './types'
 
 const { TextArea } = Input
 
-const commentValidationRules: Rule[] = [{ required: true, whitespace: true, max: 10000 }]
+const commentRules: Rule[] = [{ required: true, whitespace: true, max: 10000 }]
 
 const CreateCommentForm: FC<CreateCommentFormProps> = ({ onSubmit, isLoading }) => {
   const [form] = Form.useForm<CreateCommentFormFields>()
 
-  const handleFinish = async (values: CreateCommentFormFields) => {
+  const onFinish = async (values: CreateCommentFormFields) => {
     await onSubmit(values, form)
   }
 
   return (
     <Space data-testid='create-comment-form' direction='vertical' size='middle' $block>
-      <Form<CreateCommentFormFields> form={form} layout='vertical' onFinish={handleFinish}>
-        <Form.Item data-testid='comment-form-item' name='comment' rules={commentValidationRules}>
+      <Form<CreateCommentFormFields> form={form} layout='vertical' onFinish={onFinish}>
+        <Form.Item data-testid='comment-form-item' name='comment' rules={commentRules}>
           <TextArea placeholder='Дополните информацию о заявке' disabled={isLoading} />
         </Form.Item>
 
