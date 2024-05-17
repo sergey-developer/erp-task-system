@@ -1,1 +1,1 @@
-export * from './useGetWorkGroupList'
+export * from './useGetWorkGroups'

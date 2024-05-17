@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getTaskListErrorMsg } from 'modules/task/constants/task'
+import { getTaskListErrMsg } from 'modules/task/constants/task'
 import { GetTaskListQueryArgs } from 'modules/task/models'
 import { useGetTaskListQuery } from 'modules/task/services/taskApi.service'
 import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
 
-import { isErrorResponse } from 'shared/services/baseApi'
+import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskListResult = CustomUseQueryHookResult<
@@ -28,7 +28,11 @@ export const useGetTasks = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getTaskListErrorMsg)
+      if (isBadRequestError(state.error)) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(getTaskListErrMsg)
+      }
     }
   }, [state.error])
 

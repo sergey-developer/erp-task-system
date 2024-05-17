@@ -1,9 +1,9 @@
 import get from 'lodash/get'
 import moment from 'moment-timezone'
 
-import { DEFAULT_SEARCH_FIELD } from 'modules/task/components/ExtendedFilter/constants'
-import { TasksFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
 import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
+import { DEFAULT_SEARCH_FIELD } from 'modules/task/components/TasksFilter/constants'
+import { TasksFilterFormFields } from 'modules/task/components/TasksFilter/types'
 import { FastFilterEnum } from 'modules/task/constants/task'
 import { ExtendedFilterQueries, TaskListModel } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'

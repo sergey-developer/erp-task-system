@@ -13,7 +13,7 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import taskFixtures from '_tests_/fixtures/task'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
+import { mockGetWorkGroupsSuccess } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
   cardTestUtils,
@@ -626,7 +626,7 @@ describe('Карточка заявки', () => {
     describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
         const workGroupList = workGroupFixtures.workGroupList()
-        mockGetWorkGroupListSuccess({ body: workGroupList })
+        mockGetWorkGroupsSuccess({ body: workGroupList })
 
         const { user } = render(
           <TaskCard
