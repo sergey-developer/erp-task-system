@@ -12,7 +12,7 @@ export const applySortToColumn = (
 ): ColumnType<TaskTableListItem> => {
   const sorterResult = parseSort(sort)
 
-  if (!isEqual(column.key, sorterResult.columnKey)) return column
+  if (!isEqual(column.dataIndex, sorterResult.columnKey)) return column
 
   return {
     ...column,

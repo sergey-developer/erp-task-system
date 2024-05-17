@@ -43,7 +43,6 @@ import {
   useMatchUserPermissions,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
-  useUserRole,
 } from 'modules/user/hooks'
 import { checkUserStatusOffline } from 'modules/user/utils'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -102,7 +101,6 @@ const TasksPage: FC = () => {
     ? (searchParams.get('taskDetailsTab') as TaskDetailsTabsEnum)
     : undefined
 
-  const { role } = useUserRole()
   const [autoUpdateEnabled, { toggle: toggleAutoUpdateEnabled }] = useBoolean(false)
 
   const [selectedTaskId, setSelectedTaskId] = useState<MaybeUndefined<IdType>>(viewTaskId)
@@ -238,7 +236,7 @@ const TasksPage: FC = () => {
     useGetMacroregionList({ customers: selectedCustomers }, { skip: !tasksFilterOpened })
 
   const { data: workGroups = [], isFetching: workGroupsIsFetching } = useGetWorkGroups(undefined, {
-    skip: (!permissions.selfWorkGroupsRead || !permissions.anyWorkGroupsRead) && !tasksFilterOpened,
+    skip: !tasksFilterOpened,
   })
 
   const onApplyFilter: TasksFilterProps['onSubmit'] = (values) => {
@@ -312,19 +310,12 @@ const TasksPage: FC = () => {
 
   const onTableSort = useCallback(
     (sorter: Parameters<TaskTableProps['onChange']>[2]) => {
-      /**
-       * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
-       * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
-       * при изначальной реализации
-       */
-      if (sorter) {
-        const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
+      const { field, order } = isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
-          setGetTasksQueryArgs({
-            sort: getSort(columnKey as SortableField, order || SortOrderEnum.Ascend),
-          })
-        }
+      if (field && (field as string) in sortableFieldToSortValues) {
+        setGetTasksQueryArgs({
+          sort: getSort(field as SortableField, order || SortOrderEnum.Ascend),
+        })
       }
     },
     [setGetTasksQueryArgs],
@@ -452,7 +443,6 @@ const TasksPage: FC = () => {
             loading={tasksIsFetching}
             onChange={onChangeTable}
             pagination={extractPaginationParams(originalTasks)}
-            userRole={role!}
           />
         </Col>
       </Row>

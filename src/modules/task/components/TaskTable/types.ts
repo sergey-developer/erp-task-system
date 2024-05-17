@@ -1,7 +1,6 @@
 import { TableProps } from 'antd'
 
 import { GetTasksSortValue, TaskListItemModel } from 'modules/task/models'
-import { UserRoleEnum } from 'modules/user/constants'
 
 export type TaskTableListItem = Pick<
   TaskListItemModel,
@@ -50,5 +49,4 @@ export type TaskTableProps = Required<
   >
 > & {
   sort?: GetTasksSortValue
-  userRole: UserRoleEnum
 }

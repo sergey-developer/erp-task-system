@@ -15,9 +15,9 @@ import { applySortToColumn, applyWidthToColumn, getColumns } from './utils'
 const tableWrapperStyles: Pick<CSSProperties, 'height'> = { height: 'calc(100vh - 320px)' }
 
 const TaskTable = forwardRef<HTMLDivElement, TaskTableProps>(
-  ({ sort, pagination, userRole, ...props }, ref) => {
+  ({ sort, pagination, ...props }, ref) => {
     const breakpoints = useBreakpoint()
-    const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>(getColumns(userRole))
+    const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>(getColumns())
 
     const handleResize =
       (index: number): ResizableProps['onResize'] =>
