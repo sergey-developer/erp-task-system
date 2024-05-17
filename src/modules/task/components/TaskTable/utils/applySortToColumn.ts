@@ -1,14 +1,14 @@
 import { ColumnType } from 'antd/es/table'
 import isEqual from 'lodash/isEqual'
 
-import { GetTaskListSortValue } from 'modules/task/models'
+import { GetTasksSortValue } from 'modules/task/models'
 
 import { TaskTableListItem } from '../types'
 import { parseSort } from './parseSort'
 
 export const applySortToColumn = (
   column: ColumnType<TaskTableListItem>,
-  sort: GetTaskListSortValue,
+  sort: GetTasksSortValue,
 ): ColumnType<TaskTableListItem> => {
   const sorterResult = parseSort(sort)
 

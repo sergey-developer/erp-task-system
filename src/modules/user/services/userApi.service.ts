@@ -42,7 +42,7 @@ const userApiService = baseApiService.injectEndpoints({
       UpdateUserTimeZoneMutationArgs
     >({
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.Task],
+        error ? [] : [TaskApiTagEnum.Tasks, TaskApiTagEnum.Task],
       query: ({ userId, ...payload }) => ({
         url: updateUserUrl(userId),
         method: HttpMethodEnum.Patch,

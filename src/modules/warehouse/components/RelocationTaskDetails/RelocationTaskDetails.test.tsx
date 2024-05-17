@@ -6,7 +6,7 @@ import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/co
 import { testUtils as taskAttachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
-import TaskListPage from 'modules/task/pages/TaskListPage'
+import TasksPage from 'modules/task/pages/TasksPage'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum, UserRoleEnum } from 'modules/user/constants'
 import { testUtils as cancelRelocationTaskModalTestUtils } from 'modules/warehouse/components/CancelRelocationTaskModal/CancelRelocationTaskModal.test'
@@ -75,7 +75,7 @@ import {
   mockGetRelocationTaskWaybillM15ServerError,
   mockGetRelocationTaskWaybillM15Success,
   mockGetTaskCountersSuccess,
-  mockGetTaskListSuccess,
+  mockGetTasksSuccess,
   mockGetTaskSuccess,
   mockReturnRelocationTaskToReworkBadRequestError,
   mockReturnRelocationTaskToReworkForbiddenError,
@@ -463,7 +463,7 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
         mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
         mockGetTaskSuccess(relocationTask.task!.id)
-        mockGetTaskListSuccess()
+        mockGetTasksSuccess()
         mockGetTaskCountersSuccess()
 
         const { user } = renderInRoute_latest(
@@ -476,7 +476,7 @@ describe('Информация о заявке о перемещении', () =>
             },
             {
               path: TasksRoutesEnum.DesktopTaskList,
-              element: <TaskListPage />,
+              element: <TasksPage />,
             },
           ],
           { initialEntries: [WarehouseRouteEnum.RelocationTasks], initialIndex: 0 },

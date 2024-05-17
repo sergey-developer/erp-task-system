@@ -8,4 +8,4 @@ export type TaskListItemModel = BaseTaskModel & {
   }
 }
 
-export type TaskListModel = TaskListItemModel[]
+export type TasksModel = TaskListItemModel[]

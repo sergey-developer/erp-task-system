@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 import { CSSProperties, forwardRef, useEffect, useMemo, useState } from 'react'
 import { ResizableProps } from 'react-resizable'
 
-import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
+import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TasksPage/constants'
 
 import { localeConfig } from './constants/common'
 import components from './constants/components'

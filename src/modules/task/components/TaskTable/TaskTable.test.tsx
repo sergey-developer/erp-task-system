@@ -5,7 +5,7 @@ import { TablePaginationConfig } from 'antd'
 import { parseResponseTime } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
 import { TaskExtendedStatusEnum, taskStatusDict, TaskStatusEnum } from 'modules/task/constants/task'
-import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TaskListPage/constants'
+import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TasksPage/constants'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getShortUserName } from 'modules/user/utils'
 

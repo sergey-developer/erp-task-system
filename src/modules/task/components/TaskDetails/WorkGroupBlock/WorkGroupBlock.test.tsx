@@ -52,9 +52,26 @@ export const showFirstLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup' | '
   status: TaskStatusEnum.New,
 }
 
+export const forceActiveFirstLineButtonProps: Pick<
+  WorkGroupBlockProps,
+  'userActions' | 'taskSuspendRequestStatus'
+> = {
+  userActions: userFixtures.userActions({
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [props.id],
+    },
+  }),
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Approved,
+}
+
 export const activeFirstLineButtonProps: Pick<WorkGroupBlockProps, 'status' | 'extendedStatus'> = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
+}
+
+export const disableFirstLineButtonProps: Pick<WorkGroupBlockProps, 'status'> = {
+  status: TaskStatusEnum.Awaiting,
 }
 
 // second line button
@@ -493,12 +510,12 @@ describe('Блок рабочей группы', () => {
     })
 
     describe('Всегда активна если', () => {
-      test('Статус запроса на ожидание "Одобрено"', () => {
+      test('Статус запроса на ожидание "Одобрено" и id заявки есть в "CAN_PUT_ON_FIRST_LINE"', () => {
         render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.Approved}
+            {...forceActiveFirstLineButtonProps}
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -509,18 +526,17 @@ describe('Блок рабочей группы', () => {
 
         expect(testUtils.getFirstLineButton()).toBeEnabled()
       })
+    })
 
-      test('Если id заявки есть в юзер экшенах', () => {
+    describe('Не может быть всегда активна если', () => {
+      test('Статус запроса на ожидание "Одобрено" но id заявки нет в "CAN_PUT_ON_FIRST_LINE"', () => {
         render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
-            userActions={userFixtures.userActions({
-              tasks: {
-                ...userFixtures.taskActionsPermissions,
-                [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [props.id],
-              },
-            })}
+            {...disableFirstLineButtonProps}
+            {...forceActiveFirstLineButtonProps}
+            userActions={userFixtures.userActions()}
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -529,7 +545,26 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        expect(testUtils.getFirstLineButton()).toBeEnabled()
+        expect(testUtils.getFirstLineButton()).toBeDisabled()
+      })
+
+      test('id заявки есть в "CAN_PUT_ON_FIRST_LINE" но статус запроса на ожидание не "Одобрено"', () => {
+        render(
+          <WorkGroupBlock
+            {...props}
+            {...showFirstLineButtonProps}
+            {...disableFirstLineButtonProps}
+            {...forceActiveFirstLineButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            }),
+          },
+        )
+
+        expect(testUtils.getFirstLineButton()).toBeDisabled()
       })
     })
 

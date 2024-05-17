@@ -6,7 +6,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/task'
-import { GetTaskListSuccessResponse, TaskListItemModel } from 'modules/task/models'
+import { GetTasksSuccessResponse, TaskListItemModel } from 'modules/task/models'
 
 import commonFixtures from '_tests_/fixtures/common'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
@@ -75,9 +75,9 @@ export const taskListItem = (
   parentInteractionExternalId: fakeWord(),
 })
 
-export const taskList = (length: number = 1): TaskListItemModel[] =>
+export const tasks = (length: number = 1): TaskListItemModel[] =>
   times(length, () => taskListItem())
 
-export const taskListResponse = (
-  list: GetTaskListSuccessResponse['results'],
-): GetTaskListSuccessResponse => commonFixtures.paginatedListResponse(list)
+export const getTasksResponse = (
+  list: GetTasksSuccessResponse['results'],
+): GetTasksSuccessResponse => commonFixtures.paginatedListResponse(list)

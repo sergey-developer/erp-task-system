@@ -6,7 +6,7 @@ import TaskListLayout from 'modules/task/components/TaskListLayout'
 
 import { TasksRoutesEnum } from './constants/routes'
 
-const TaskListPage = React.lazy(() => import('modules/task/pages/TaskListPage'))
+const TasksPage = React.lazy(() => import('modules/task/pages/TasksPage'))
 const TaskListMapPage = React.lazy(() => import('modules/task/pages/TaskListMapPage'))
 
 export const route: Readonly<RouteObject> = {
@@ -19,7 +19,7 @@ export const route: Readonly<RouteObject> = {
     },
     {
       path: TasksRoutesEnum.DesktopTaskList,
-      element: <ProtectedRoute component={<TaskListPage />} />,
+      element: <ProtectedRoute component={<TasksPage />} />,
     },
     {
       path: TasksRoutesEnum.DesktopTaskListMap,
