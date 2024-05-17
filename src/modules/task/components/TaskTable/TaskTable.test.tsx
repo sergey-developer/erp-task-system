@@ -535,7 +535,6 @@ describe('Таблица заявок', () => {
     describe('Исполнитель', () => {
       test('Отображает заголовок', () => {
         render(<TaskTable {...props} />)
-
         expect(testUtils.getColTitle('Исполнитель')).toBeInTheDocument()
       })
 
@@ -875,45 +874,19 @@ describe('Таблица заявок', () => {
     })
 
     describe('Срок реакции', () => {
-      describe('Не отображается', () => {
-        test(`Для роли ${UserRoleEnum.Engineer}`, () => {
-          render(<TaskTable {...props} userRole={UserRoleEnum.Engineer} />)
-
-          expect(testUtils.queryColTitle('Срок реакции')).not.toBeInTheDocument()
-        })
-
-        test(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
-          render(<TaskTable {...props} userRole={UserRoleEnum.SeniorEngineer} />)
-
-          expect(testUtils.queryColTitle('Срок реакции')).not.toBeInTheDocument()
-        })
-
-        test(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
-          render(<TaskTable {...props} userRole={UserRoleEnum.HeadOfDepartment} />)
-
-          expect(testUtils.queryColTitle('Срок реакции')).not.toBeInTheDocument()
-        })
-      })
-
-      test('Заголовок отображается если условия соблюдены', () => {
+      test('Заголовок отображается', () => {
         render(<TaskTable {...props} />)
         expect(testUtils.getColTitle('Срок реакции')).toBeInTheDocument()
       })
 
-      test('Значение отображается если условия соблюдены', () => {
+      test('Значение отображается если нет исполнителя и рабочей группы', () => {
         const fakeTaskTableItem: typeof taskTableItem = {
           ...taskTableItem,
           workGroup: null,
           assignee: null,
         }
 
-        render(
-          <TaskTable
-            {...props}
-            dataSource={[fakeTaskTableItem]}
-            userRole={UserRoleEnum.FirstLineSupport}
-          />,
-        )
+        render(<TaskTable {...props} dataSource={[fakeTaskTableItem]} />)
 
         const responseTime = parseResponseTime(
           fakeTaskTableItem.responseTime!,
@@ -923,20 +896,14 @@ describe('Таблица заявок', () => {
       })
 
       describe('Значение не отображается', () => {
-        test(`Для роли ${UserRoleEnum.FirstLineSupport} если есть исполнитель`, () => {
+        test('Если есть исполнитель и нету рабочей группы', () => {
           const fakeTaskTableItem: typeof taskTableItem = {
             ...taskTableItem,
             workGroup: null,
             assignee: taskFixtures.assignee(),
           }
 
-          render(
-            <TaskTable
-              {...props}
-              dataSource={[fakeTaskTableItem]}
-              userRole={UserRoleEnum.FirstLineSupport}
-            />,
-          )
+          render(<TaskTable {...props} dataSource={[fakeTaskTableItem]} />)
 
           const responseTime = parseResponseTime(
             fakeTaskTableItem.responseTime!,
@@ -945,11 +912,27 @@ describe('Таблица заявок', () => {
 
           expect(testUtils.queryChildByText(responseTime!.value)).not.toBeInTheDocument()
         })
+
+        test('Если есть рабочая группа и нет исполнителя', () => {
+          const fakeTaskTableItem: typeof taskTableItem = {
+            ...taskTableItem,
+            workGroup: taskFixtures.workGroup(),
+            assignee: null,
+          }
+
+          render(<TaskTable {...props} dataSource={[fakeTaskTableItem]} />)
+
+          const responseTime = parseResponseTime(
+            fakeTaskTableItem.responseTime!,
+            fakeTaskTableItem.workGroup!,
+          )
+
+          expect(responseTime).toBeNull()
+        })
       })
 
       test('Сортировка отключена', () => {
         render(<TaskTable {...props} />)
-
         const headCol = testUtils.getHeadCol('Срок реакции')
         expect(headCol).not.toHaveClass(columnWithSortingClass)
       })

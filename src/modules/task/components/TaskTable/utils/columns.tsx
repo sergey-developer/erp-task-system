@@ -99,28 +99,17 @@ export const getColumns = (role: UserRoleEnum): ColumnsType<TaskTableListItem> =
             ellipsis: true,
           },
         ]),
-    ...(isFirstLineSupportRole
-      ? [
-          {
-            key: 'responseTime',
-            dataIndex: 'responseTime',
-            title: 'Срок реакции',
-            render: (
-              value: TaskTableListItem['responseTime'],
-              { workGroup, assignee }: TaskTableListItem,
-            ) => {
-              if (!!assignee) return null
-
-              const responseTime = parseResponseTime(value, workGroup)
-
-              return responseTime ? (
-                <Text type={responseTime.type}>{responseTime.value}</Text>
-              ) : null
-            },
-            ellipsis: true,
-          },
-        ]
-      : []),
+    {
+      key: 'responseTime',
+      dataIndex: 'responseTime',
+      title: 'Срок реакции',
+      render: (value: TaskTableListItem['responseTime'], { workGroup, assignee }) => {
+        if (!!assignee) return null
+        const responseTime = parseResponseTime(value, workGroup)
+        return responseTime ? <Text type={responseTime.type}>{responseTime.value}</Text> : null
+      },
+      ellipsis: true,
+    },
     {
       key: 'olaNextBreachTime',
       dataIndex: 'olaNextBreachTime',
