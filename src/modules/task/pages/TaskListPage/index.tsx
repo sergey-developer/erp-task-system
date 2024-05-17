@@ -9,10 +9,6 @@ import React, { FC, useCallback, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
-import {
-  TasksFilterFormFields,
-  TasksFilterProps,
-} from 'modules/task/components/ExtendedFilter/types'
 import FastFilterList from 'modules/task/components/FastFilterList'
 import TaskTable from 'modules/task/components/TaskTable'
 import {
@@ -21,6 +17,7 @@ import {
 } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort, parseSort } from 'modules/task/components/TaskTable/utils'
+import { TasksFilterFormFields, TasksFilterProps } from 'modules/task/components/TasksFilter/types'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
 } from 'modules/task/components/TasksFiltersStorage'
@@ -39,15 +36,17 @@ import { ExtendedFilterQueries, FastFilterQueries, GetTaskListQueryArgs } from '
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils'
 import { taskDetailsTabExist } from 'modules/task/utils/task'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import {
   useGetUsers,
+  useMatchUserPermissions,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
   useUserRole,
 } from 'modules/user/hooks'
 import { checkUserStatusOffline } from 'modules/user/utils'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
-import { useGetWorkGroupList } from 'modules/workGroup/hooks'
+import { useGetWorkGroups } from 'modules/workGroup/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -79,12 +78,17 @@ import {
 } from './utils'
 
 const TaskDetails = React.lazy(() => import('modules/task/components/TaskDetails'))
-const ExtendedFilter = React.lazy(() => import('modules/task/components/ExtendedFilter'))
+const TasksFilter = React.lazy(() => import('modules/task/components/TasksFilter'))
 
 const { Search } = Input
 const initialExtendedFilterFormValues = getInitialExtendedFilterFormValues()
 
 const TaskListPage: FC = () => {
+  const permissions = useMatchUserPermissions([
+    UserPermissionsEnum.SelfWorkGroupsRead,
+    UserPermissionsEnum.AnyWorkGroupsRead,
+  ])
+
   const tableRef = useRef<HTMLDivElement>(null)
   const tableSize = useSize(tableRef)
 
@@ -108,6 +112,7 @@ const TaskListPage: FC = () => {
   const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
 
   const [extendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
+  const debouncedToggleOpenExtendedFilter = useDebounceFn(toggleOpenExtendedFilter)
 
   const [tasksFiltersStorage, setTasksFiltersStorage] = useLocalStorageState<
     MaybeUndefined<TasksFiltersStorageType>
@@ -227,12 +232,10 @@ const TaskListPage: FC = () => {
   const { currentData: macroregionList = [], isFetching: macroregionListIsFetching } =
     useGetMacroregionList({ customers: selectedCustomers }, { skip: !extendedFilterOpened })
 
-  const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroupList(
-    undefined,
-    { skip: !extendedFilterOpened },
-  )
-
-  const debouncedToggleOpenExtendedFilter = useDebounceFn(toggleOpenExtendedFilter)
+  const { data: workGroups = [], isFetching: workGroupsIsFetching } = useGetWorkGroups(undefined, {
+    skip:
+      (!permissions.selfWorkGroupsRead || !permissions.anyWorkGroupsRead) && !extendedFilterOpened,
+  })
 
   const onApplyFilter: TasksFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
@@ -468,22 +471,23 @@ const TaskListPage: FC = () => {
         <React.Suspense
           fallback={<ModalFallback open onCancel={debouncedToggleOpenExtendedFilter} />}
         >
-          <ExtendedFilter
+          <TasksFilter
             open={extendedFilterOpened}
+            permissions={permissions}
             formValues={extendedFilterFormValues}
             initialFormValues={initialExtendedFilterFormValues}
-            customerList={customerList}
-            customerListIsLoading={customerListIsFetching}
+            customers={customerList}
+            customersIsLoading={customerListIsFetching}
             onChangeCustomers={setSelectedCustomers}
-            macroregionList={macroregionList}
-            macroregionListIsLoading={macroregionListIsFetching}
+            macroregions={macroregionList}
+            macroregionsIsLoading={macroregionListIsFetching}
             onChangeMacroregions={setSelectedMacroregions}
-            supportGroupList={supportGroupList}
-            supportGroupListIsLoading={supportGroupListIsFetching}
-            userList={userList}
-            userListIsLoading={userListIsFetching}
-            workGroupList={workGroupList}
-            workGroupListIsLoading={workGroupListIsFetching}
+            supportGroups={supportGroupList}
+            supportGroupsIsLoading={supportGroupListIsFetching}
+            users={userList}
+            usersIsLoading={userListIsFetching}
+            workGroups={workGroups}
+            workGroupsIsLoading={workGroupsIsFetching}
             onClose={debouncedToggleOpenExtendedFilter}
             onSubmit={onApplyFilter}
           />

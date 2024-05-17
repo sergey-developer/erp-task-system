@@ -15,7 +15,7 @@ import { getFullUserName } from 'modules/user/utils'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
+import { mockGetWorkGroupsSuccess } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
@@ -411,7 +411,7 @@ describe('Блок рабочей группы', () => {
     })
 
     test('При клике открывается модальное окно', async () => {
-      mockGetWorkGroupListSuccess()
+      mockGetWorkGroupsSuccess()
 
       const { user } = render(
         <WorkGroupBlock
@@ -440,7 +440,7 @@ describe('Блок рабочей группы', () => {
   describe('Модалка перевода на 2-ю линию', () => {
     test('При отправке обработчик вызывается', async () => {
       const workGroupList = workGroupFixtures.workGroupList()
-      mockGetWorkGroupListSuccess({ body: workGroupList })
+      mockGetWorkGroupsSuccess({ body: workGroupList })
 
       const { user } = render(
         <WorkGroupBlock

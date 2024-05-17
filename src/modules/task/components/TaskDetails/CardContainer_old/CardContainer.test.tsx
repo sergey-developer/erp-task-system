@@ -27,7 +27,7 @@ import {
 import { getTaskNotFoundErrorMsg, getTaskServerErrorMsg } from 'modules/task/utils/task'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
-import { getWorkGroupListMessages } from 'modules/workGroup/constants'
+import { getWorkGroupsErrMsg } from 'modules/workGroup/constants'
 
 import { commonApiMessages } from 'shared/constants/common'
 
@@ -56,8 +56,8 @@ import {
   mockGetTaskReclassificationRequestSuccess,
   mockGetTaskServerError,
   mockGetTaskSuccess,
-  mockGetWorkGroupListServerError,
-  mockGetWorkGroupListSuccess,
+  mockGetWorkGroupsServerError,
+  mockGetWorkGroupsSuccess,
   mockResolveTaskBadRequestError,
   mockResolveTaskServerError,
   mockResolveTaskSuccess,
@@ -124,13 +124,13 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       describe('При не успешном запросе', () => {
         test('Отображается уведомление об ошибке', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({ id: props.taskId }),
           })
 
-          mockGetWorkGroupListServerError()
+          mockGetWorkGroupsServerError()
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
@@ -141,9 +141,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          const notification = await notificationTestUtils.findNotification(
-            getWorkGroupListMessages.commonError,
-          )
+          const notification = await notificationTestUtils.findNotification(getWorkGroupsErrMsg)
 
           expect(notification).toBeInTheDocument()
         })
@@ -153,13 +151,13 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       describe('При не успешном запросе', () => {
         test('Отображается уведомление об ошибке', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({ id: props.taskId }),
           })
 
-          mockGetWorkGroupListServerError()
+          mockGetWorkGroupsServerError()
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
@@ -170,9 +168,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          const notification = await notificationTestUtils.findNotification(
-            getWorkGroupListMessages.commonError,
-          )
+          const notification = await notificationTestUtils.findNotification(getWorkGroupsErrMsg)
           expect(notification).toBeInTheDocument()
         })
       })
@@ -181,13 +177,13 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
       describe('При не успешном запросе', () => {
         test('Отображается уведомление об ошибке', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({ id: props.taskId }),
           })
 
-          mockGetWorkGroupListServerError()
+          mockGetWorkGroupsServerError()
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
@@ -198,9 +194,7 @@ describe('Контейнер детальной карточки заявки', 
           await taskCardTestUtils.expectLoadingStarted()
           await taskCardTestUtils.expectLoadingFinished()
 
-          const notification = await notificationTestUtils.findNotification(
-            getWorkGroupListMessages.commonError,
-          )
+          const notification = await notificationTestUtils.findNotification(getWorkGroupsErrMsg)
           expect(notification).toBeInTheDocument()
         })
       })
@@ -213,7 +207,7 @@ describe('Контейнер детальной карточки заявки', 
         describe('Запрос отправляется если условия соблюдены', () => {
           describe('При успешном запросе', () => {
             test('Запрос отображается', async () => {
-              mockGetWorkGroupListSuccess({ body: [] })
+              mockGetWorkGroupsSuccess({ body: [] })
 
               mockGetTaskSuccess(props.taskId, {
                 body: taskFixtures.task({
@@ -242,7 +236,7 @@ describe('Контейнер детальной карточки заявки', 
 
           describe('При не успешном запросе', () => {
             test('Обрабатывается неизвестная ошибка', async () => {
-              mockGetWorkGroupListSuccess({ body: [] })
+              mockGetWorkGroupsSuccess({ body: [] })
 
               mockGetTaskSuccess(props.taskId, {
                 body: taskFixtures.task({
@@ -273,7 +267,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('Запрос не отправляется если условия соблюдены', () => {
           test('Но расширенный статус заявка не "На переклассификации"', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -304,7 +298,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('Создание запроса на переклассификацию', () => {
         describe('При успешном запросе', () => {
           test('Отображается запрос и закрывается модалка', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -346,7 +340,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('При не успешном запросе', () => {
           test('Обрабатывается ошибка 404', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -391,7 +385,7 @@ describe('Контейнер детальной карточки заявки', 
         describe('Запрос отправляется если условия соблюдены', () => {
           describe('При успешном запросе', () => {
             test('Запрос отображается', async () => {
-              mockGetWorkGroupListSuccess({ body: [] })
+              mockGetWorkGroupsSuccess({ body: [] })
 
               mockGetTaskSuccess(props.taskId, {
                 body: taskFixtures.task({
@@ -420,7 +414,7 @@ describe('Контейнер детальной карточки заявки', 
 
           describe('При не успешном запросе', () => {
             test('Обрабатывается неизвестная ошибка', async () => {
-              mockGetWorkGroupListSuccess({ body: [] })
+              mockGetWorkGroupsSuccess({ body: [] })
 
               mockGetTaskSuccess(props.taskId, {
                 body: taskFixtures.task({
@@ -451,7 +445,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('Запрос не отправляется если условия соблюдены', () => {
           test('Но расширенный статус заявка не "На переклассификации"', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -485,7 +479,7 @@ describe('Контейнер детальной карточки заявки', 
         describe('Запрос отправляется если условия соблюдены', () => {
           describe('При успешном запросе', () => {
             test('Запрос отображается', async () => {
-              mockGetWorkGroupListSuccess({ body: [] })
+              mockGetWorkGroupsSuccess({ body: [] })
 
               mockGetTaskSuccess(props.taskId, {
                 body: taskFixtures.task({
@@ -514,7 +508,7 @@ describe('Контейнер детальной карточки заявки', 
 
           describe('При не успешном запросе', () => {
             test('Обрабатывается неизвестная ошибка', async () => {
-              mockGetWorkGroupListSuccess({ body: [] })
+              mockGetWorkGroupsSuccess({ body: [] })
 
               mockGetTaskSuccess(props.taskId, {
                 body: taskFixtures.task({
@@ -545,7 +539,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('Запрос не отправляется если условия соблюдены', () => {
           test('Но расширенный статус заявка не "На переклассификации"', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -576,7 +570,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('Создание запроса на переклассификацию', () => {
         describe('При успешном запросе', () => {
           test('Отображается запрос и закрывается модалка', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -618,7 +612,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('При не успешном запросе', () => {
           test('Обрабатывается ошибка 404', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -663,7 +657,7 @@ describe('Контейнер детальной карточки заявки', 
         describe('Запрос отправляется если условия соблюдены', () => {
           describe('При успешном запросе', () => {
             test('Запрос отображается', async () => {
-              mockGetWorkGroupListSuccess({ body: [] })
+              mockGetWorkGroupsSuccess({ body: [] })
 
               mockGetTaskSuccess(props.taskId, {
                 body: taskFixtures.task({
@@ -692,7 +686,7 @@ describe('Контейнер детальной карточки заявки', 
 
           describe('При не успешном запросе', () => {
             test('Обрабатывается неизвестная ошибка', async () => {
-              mockGetWorkGroupListSuccess({ body: [] })
+              mockGetWorkGroupsSuccess({ body: [] })
 
               mockGetTaskSuccess(props.taskId, {
                 body: taskFixtures.task({
@@ -723,7 +717,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('Запрос не отправляется если условия соблюдены', () => {
           test('Но расширенный статус заявка не "На переклассификации"', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -754,7 +748,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('Создание запроса на переклассификацию', () => {
         describe('При успешном запросе', () => {
           test('Отображается запрос и закрывается модалка', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -796,7 +790,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('При не успешном запросе', () => {
           test('Обрабатывается ошибка 404', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -841,7 +835,7 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       describe('При успешном запросе', () => {
         test('Обработчик вызывается корректно', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -878,7 +872,7 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -940,7 +934,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -978,7 +972,7 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
       describe('При успешном запросе', () => {
         test('Обработчик вызывается корректно', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -1015,7 +1009,7 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -1077,7 +1071,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -1115,7 +1109,7 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       describe('При успешном запросе', () => {
         test('Обработчик вызывается корректно', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -1152,7 +1146,7 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -1214,7 +1208,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -1252,7 +1246,7 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
       describe('При успешном запросе', () => {
         test('Обработчик вызывается корректно', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -1289,7 +1283,7 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -1351,7 +1345,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           const task = taskFixtures.task({
             id: props.taskId,
@@ -1391,7 +1385,7 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
       describe('При успешном запросе', () => {
         test('Отображается основной блок заявки', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({ id: props.taskId }),
@@ -1412,7 +1406,7 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Не отображается основной блок заявки', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1428,7 +1422,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 404', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1447,7 +1441,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 400', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1466,7 +1460,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 500', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1484,7 +1478,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskForbiddenError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1503,7 +1497,7 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       test('При успешном перезапросе заявки отображается основной блок заявки', async () => {
-        mockGetWorkGroupListSuccess({ body: [] })
+        mockGetWorkGroupsSuccess({ body: [] })
 
         mockGetTaskSuccess(props.taskId, {
           body: taskFixtures.task({ id: props.taskId }),
@@ -1531,7 +1525,7 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
       describe('При успешном запросе', () => {
         test('Отображается основной блок заявки', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({ id: props.taskId }),
@@ -1552,7 +1546,7 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Не отображается основной блок заявки', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1568,7 +1562,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 404', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1587,7 +1581,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 400', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1605,7 +1599,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 500', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1623,7 +1617,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskForbiddenError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1642,7 +1636,7 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       test('При успешном перезапросе заявки отображается основной блок заявки', async () => {
-        mockGetWorkGroupListSuccess({ body: [] })
+        mockGetWorkGroupsSuccess({ body: [] })
 
         mockGetTaskSuccess(props.taskId, {
           body: taskFixtures.task({ id: props.taskId }),
@@ -1670,7 +1664,7 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
       describe('При успешном запросе', () => {
         test('Отображается основной блок заявки', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({ id: props.taskId }),
@@ -1691,7 +1685,7 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Не отображается основной блок заявки', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1707,7 +1701,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 404', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1726,7 +1720,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 400', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1744,7 +1738,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 500', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1762,7 +1756,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskForbiddenError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1781,7 +1775,7 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       test('При успешном перезапросе заявки отображается основной блок заявки', async () => {
-        mockGetWorkGroupListSuccess({ body: [] })
+        mockGetWorkGroupsSuccess({ body: [] })
 
         mockGetTaskSuccess(props.taskId, {
           body: taskFixtures.task({ id: props.taskId }),
@@ -1809,7 +1803,7 @@ describe('Контейнер детальной карточки заявки', 
     describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
       describe('При успешном запросе', () => {
         test('Отображается основной блок заявки', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({ id: props.taskId }),
@@ -1830,7 +1824,7 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Не отображается основной блок заявки', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1846,7 +1840,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 404', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskNotFoundError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1864,7 +1858,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 400', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskBadRequestError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1882,7 +1876,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается ошибка 500', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskServerError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1900,7 +1894,7 @@ describe('Контейнер детальной карточки заявки', 
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
           mockGetTaskForbiddenError(props.taskId)
 
           render(<TaskCardContainer {...props} />, {
@@ -1919,7 +1913,7 @@ describe('Контейнер детальной карточки заявки', 
       })
 
       test('При успешном перезапросе заявки отображается основной блок заявки', async () => {
-        mockGetWorkGroupListSuccess({ body: [] })
+        mockGetWorkGroupsSuccess({ body: [] })
 
         mockGetTaskSuccess(props.taskId, {
           body: taskFixtures.task({ id: props.taskId }),
@@ -1955,7 +1949,7 @@ describe('Контейнер детальной карточки заявки', 
 
         mockGetTaskSuccess(props.taskId, { body: task })
 
-        mockGetWorkGroupListSuccess({ body: [] })
+        mockGetWorkGroupsSuccess({ body: [] })
         mockTakeTaskSuccess(props.taskId)
 
         const { user } = render(<TaskCardContainer {...props} />, {
@@ -1986,7 +1980,7 @@ describe('Контейнер детальной карточки заявки', 
 
         mockGetTaskSuccess(props.taskId, { body: task })
 
-        mockGetWorkGroupListSuccess({ body: [] })
+        mockGetWorkGroupsSuccess({ body: [] })
         mockTakeTaskServerError(props.taskId)
 
         const { user } = render(<TaskCardContainer {...props} />, {
@@ -2015,7 +2009,7 @@ describe('Контейнер детальной карточки заявки', 
 
         mockGetTaskSuccess(props.taskId, { body: task })
 
-        mockGetWorkGroupListSuccess({ body: [] })
+        mockGetWorkGroupsSuccess({ body: [] })
 
         const errorMessage = fakeWord()
         mockTakeTaskForbiddenError(props.taskId, {
@@ -2136,7 +2130,7 @@ describe('Контейнер детальной карточки заявки', 
           once: false,
         })
 
-        mockGetWorkGroupListSuccess({ body: [] })
+        mockGetWorkGroupsSuccess({ body: [] })
         mockUpdateTaskAssigneeSuccess(props.taskId)
 
         const { user } = render(<TaskCardContainer {...props} />, {
@@ -2167,7 +2161,7 @@ describe('Контейнер детальной карточки заявки', 
           }),
         })
 
-        mockGetWorkGroupListSuccess({ body: [] })
+        mockGetWorkGroupsSuccess({ body: [] })
         mockUpdateTaskAssigneeServerError(props.taskId)
 
         const { user } = render(<TaskCardContainer {...props} />, {
@@ -2193,7 +2187,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При успешном запросе', () => {
         test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2234,7 +2228,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2279,7 +2273,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается ошибка 404', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2320,7 +2314,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается ошибка 500', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2362,7 +2356,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается неизвестная ошибка', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2407,7 +2401,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При успешном запросе', () => {
         test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2448,7 +2442,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2491,7 +2485,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается ошибка 404', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2532,7 +2526,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается ошибка 500', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2574,7 +2568,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается неизвестная ошибка', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2619,7 +2613,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При успешном запросе', () => {
         test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2660,7 +2654,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2703,7 +2697,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается ошибка 404', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2744,7 +2738,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается ошибка 500', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2786,7 +2780,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается неизвестная ошибка', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2831,7 +2825,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При успешном запросе', () => {
         test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2872,7 +2866,7 @@ describe('Контейнер детальной карточки заявки', 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 400', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2916,7 +2910,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается ошибка 404', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -2958,7 +2952,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается ошибка 500', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -3000,7 +2994,7 @@ describe('Контейнер детальной карточки заявки', 
 
         test('Обрабатывается неизвестная ошибка', async () => {
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup] })
+          mockGetWorkGroupsSuccess({ body: [workGroup] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -3056,7 +3050,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
+          mockGetWorkGroupsSuccess({ body: [workGroup], once: false })
 
           mockUpdateTaskWorkGroupSuccess(props.taskId)
 
@@ -3094,7 +3088,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
+          mockGetWorkGroupsSuccess({ body: [workGroup], once: false })
 
           const badRequestResponse: UpdateTaskWorkGroupBadRequestErrorResponse['data'] = {
             workGroup: [fakeWord()],
@@ -3139,7 +3133,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
+          mockGetWorkGroupsSuccess({ body: [workGroup], once: false })
 
           mockUpdateTaskWorkGroupServerError(props.taskId)
 
@@ -3174,7 +3168,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           const workGroup = workGroupFixtures.workGroupListItem()
-          mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
+          mockGetWorkGroupsSuccess({ body: [workGroup], once: false })
 
           mockUpdateTaskWorkGroupForbiddenError(props.taskId)
 
@@ -3206,7 +3200,7 @@ describe('Контейнер детальной карточки заявки', 
       describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
         describe('При успешном запросе', () => {
           test('Созданный запрос отображается', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3244,7 +3238,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('При не успешном запросе', () => {
           test('Обрабатывается ошибка 404', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3280,7 +3274,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается ошибка 400', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3362,7 +3356,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3402,7 +3396,7 @@ describe('Контейнер детальной карточки заявки', 
       describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
         describe('При успешном запросе', () => {
           test('Созданный запрос отображается', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3440,7 +3434,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('При не успешном запросе', () => {
           test('Обрабатывается ошибка 404', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3476,7 +3470,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается ошибка 400', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3558,7 +3552,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3598,7 +3592,7 @@ describe('Контейнер детальной карточки заявки', 
       describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
         describe('При успешном запросе', () => {
           test('Созданный запрос отображается', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3636,7 +3630,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('При не успешном запросе', () => {
           test('Обрабатывается ошибка 404', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3672,7 +3666,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается ошибка 400', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3754,7 +3748,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3794,7 +3788,7 @@ describe('Контейнер детальной карточки заявки', 
       describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
         describe('При успешном запросе', () => {
           test('Созданный запрос отображается', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3832,7 +3826,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('При не успешном запросе', () => {
           test('Обрабатывается ошибка 404', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3868,7 +3862,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается ошибка 400', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3952,7 +3946,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -3994,7 +3988,7 @@ describe('Контейнер детальной карточки заявки', 
       describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
         describe('При успешном запросе', () => {
           test('Заявка перезапрашивается с сервера', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4024,7 +4018,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('При не успешном запросе', () => {
           test('Обрабатывается ошибка 404', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4056,7 +4050,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается ошибка 400', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4089,7 +4083,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4122,7 +4116,7 @@ describe('Контейнер детальной карточки заявки', 
       describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
         describe('При успешном запросе', () => {
           test('Заявка перезапрашивается с сервера', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4152,7 +4146,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('При не успешном запросе', () => {
           test('Обрабатывается ошибка 404', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4184,7 +4178,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается ошибка 400', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4217,7 +4211,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4250,7 +4244,7 @@ describe('Контейнер детальной карточки заявки', 
       describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
         describe('При успешном запросе', () => {
           test('Заявка перезапрашивается с сервера', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4280,7 +4274,7 @@ describe('Контейнер детальной карточки заявки', 
 
         describe('При не успешном запросе', () => {
           test('Обрабатывается ошибка 404', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4312,7 +4306,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается ошибка 400', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4345,7 +4339,7 @@ describe('Контейнер детальной карточки заявки', 
           })
 
           test('Обрабатывается неизвестная ошибка', async () => {
-            mockGetWorkGroupListSuccess({ body: [] })
+            mockGetWorkGroupsSuccess({ body: [] })
 
             mockGetTaskSuccess(props.taskId, {
               body: taskFixtures.task({
@@ -4379,7 +4373,7 @@ describe('Контейнер детальной карточки заявки', 
     describe('Вернуть в работу', () => {
       describe('При успешном запросе', () => {
         test('Заявка перезапрашивается с сервера', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({
@@ -4408,7 +4402,7 @@ describe('Контейнер детальной карточки заявки', 
 
       describe('При не успешном запросе', () => {
         test('Обрабатывается неизвестная ошибка', async () => {
-          mockGetWorkGroupListSuccess({ body: [] })
+          mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
             body: taskFixtures.task({

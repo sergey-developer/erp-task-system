@@ -2,12 +2,9 @@ import { Form, Input, Radio, Select } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
-import { extendedFilterPermissions } from 'modules/task/permissions'
-
 import DatePicker from 'components/DatePicker'
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
-import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
 import {
@@ -29,26 +26,28 @@ import { TasksFilterFormFields, TasksFilterProps } from './types'
 
 const { RangePicker } = DatePicker
 
-const ExtendedFilter: FC<TasksFilterProps> = ({
+const TasksFilter: FC<TasksFilterProps> = ({
+  permissions,
+
   formValues,
   initialFormValues,
 
-  workGroupList,
-  workGroupListIsLoading,
+  workGroups,
+  workGroupsIsLoading,
 
-  userList,
-  userListIsLoading,
+  users,
+  usersIsLoading,
 
-  customerList,
-  customerListIsLoading,
+  customers,
+  customersIsLoading,
   onChangeCustomers,
 
-  macroregionList,
-  macroregionListIsLoading,
+  macroregions,
+  macroregionsIsLoading,
   onChangeMacroregions,
 
-  supportGroupList,
-  supportGroupListIsLoading,
+  supportGroups,
+  supportGroupsIsLoading,
 
   onSubmit,
 
@@ -111,8 +110,8 @@ const ExtendedFilter: FC<TasksFilterProps> = ({
             <Select
               mode='multiple'
               fieldNames={idAndTitleSelectFieldNames}
-              loading={customerListIsLoading}
-              options={customerList}
+              loading={customersIsLoading}
+              options={customers}
               placeholder='Выберите из списка'
               onChange={handleChangeCustomers}
             />
@@ -122,8 +121,8 @@ const ExtendedFilter: FC<TasksFilterProps> = ({
             <Select
               mode='multiple'
               fieldNames={idAndTitleSelectFieldNames}
-              loading={macroregionListIsLoading}
-              options={macroregionList}
+              loading={macroregionsIsLoading}
+              options={macroregions}
               placeholder='Выберите из списка'
               onChange={handleChangeMacroregions}
             />
@@ -137,8 +136,8 @@ const ExtendedFilter: FC<TasksFilterProps> = ({
             <Select
               mode='multiple'
               fieldNames={idAndNameSelectFieldNames}
-              loading={supportGroupListIsLoading}
-              options={supportGroupList}
+              loading={supportGroupsIsLoading}
+              options={supportGroups}
               placeholder='Выберите из списка'
             />
           </Form.Item>
@@ -190,27 +189,25 @@ const ExtendedFilter: FC<TasksFilterProps> = ({
           </Form.Item>
         </FilterBlock>
 
-        <Permissions config={extendedFilterPermissions.workGroup}>
-          {() => (
-            <FilterBlock
-              data-testid='work-group-block'
-              label='Рабочая группа'
-              onReset={resetFields(['workGroupId'])}
-            >
-              <Form.Item name='workGroupId'>
-                <Select
-                  data-testid='work-group-select'
-                  fieldNames={idAndNameSelectFieldNames}
-                  loading={workGroupListIsLoading}
-                  options={workGroupList}
-                  placeholder='Рабочая группа'
-                  showSearch
-                  filterOption={filterOptionBy('name')}
-                />
-              </Form.Item>
-            </FilterBlock>
-          )}
-        </Permissions>
+        {(permissions.selfWorkGroupsRead || permissions.anyWorkGroupsRead) && (
+          <FilterBlock
+            data-testid='work-group-block'
+            label='Рабочая группа'
+            onReset={resetFields(['workGroupId'])}
+          >
+            <Form.Item name='workGroupId'>
+              <Select
+                data-testid='work-group-select'
+                fieldNames={idAndNameSelectFieldNames}
+                loading={workGroupsIsLoading}
+                options={workGroups}
+                placeholder='Рабочая группа'
+                showSearch
+                filterOption={filterOptionBy('name')}
+              />
+            </Form.Item>
+          </FilterBlock>
+        )}
 
         <FilterBlock
           data-testid='search-by-column-block'
@@ -237,8 +234,8 @@ const ExtendedFilter: FC<TasksFilterProps> = ({
             <Select
               data-testid='manager-select'
               fieldNames={idAndFullNameSelectFieldNames}
-              loading={userListIsLoading}
-              options={userList}
+              loading={usersIsLoading}
+              options={users}
               placeholder='Руководитель'
               showSearch
               filterOption={filterOptionBy('fullName')}
@@ -250,4 +247,4 @@ const ExtendedFilter: FC<TasksFilterProps> = ({
   )
 }
 
-export default ExtendedFilter
+export default TasksFilter

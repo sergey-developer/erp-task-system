@@ -4,12 +4,6 @@ import { camelize } from 'humps'
 import moment from 'moment-timezone'
 
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
-import { testUtils as extendedFilterTestUtils } from 'modules/task/components/ExtendedFilter/ExtendedFilter.test'
-import {
-  searchFieldDict,
-  taskAssignedDict,
-  taskOverdueDict,
-} from 'modules/task/components/ExtendedFilter/constants'
 import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilterList/FastFilterList.test'
 import {
   activeAssignButtonProps,
@@ -32,6 +26,12 @@ import {
 import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/components/TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
+import { testUtils as tasksFilterTestUtils } from 'modules/task/components/TasksFilter/TasksFilter.test'
+import {
+  searchFieldDict,
+  taskAssignedDict,
+  taskOverdueDict,
+} from 'modules/task/components/TasksFilter/constants'
 import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 import {
@@ -44,7 +44,7 @@ import {
   taskLocalStorageService,
   TasksFiltersStorageType,
 } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { UserRoleEnum } from 'modules/user/constants'
+import { UserPermissionsEnum, UserRoleEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
 import commonFixtures from '_tests_/fixtures/common'
@@ -62,13 +62,15 @@ import {
   mockGetTaskCountersSuccess,
   mockGetTaskListSuccess,
   mockGetTaskSuccess,
+  mockGetUserActionsSuccess,
   mockGetUserListSuccess,
-  mockGetWorkGroupListSuccess,
+  mockGetWorkGroupsSuccess,
   mockResolveTaskSuccess,
   mockTakeTaskSuccess,
   mockUpdateTaskAssigneeSuccess,
   mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeId,
@@ -152,21 +154,16 @@ jest.mock('modules/task/constants/task/tasksUpdateVariants', () => {
 setupApiTests()
 
 describe('Страница реестра заявок', () => {
-  test('Отображается корректно', () => {
-    mockGetTaskCountersSuccess()
-    mockGetTaskListSuccess()
-
-    render(<TaskListPage />)
-
-    expect(testUtils.getContainer()).toBeInTheDocument()
-  })
-
   describe('Быстрый фильтр', () => {
     test('Отображается', async () => {
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
 
-      render(<TaskListPage />, { store: getStoreWithAuth() })
+      render(<TaskListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        }),
+      })
 
       await fastFilterListTestUtils.expectLoadingFinished()
 
@@ -177,7 +174,11 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
 
-      render(<TaskListPage />, { store: getStoreWithAuth() })
+      render(<TaskListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        }),
+      })
 
       await waitFor(() => fastFilterListTestUtils.expectAllFiltersDisabled())
       await taskTableTestUtils.expectLoadingFinished()
@@ -189,7 +190,11 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess({ body: taskCounters })
       mockGetTaskListSuccess()
 
-      render(<TaskListPage />, { store: getStoreWithAuth() })
+      render(<TaskListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        }),
+      })
 
       await fastFilterListTestUtils.expectLoadingFinished()
 
@@ -208,7 +213,9 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess()
 
         render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRoleEnum.FirstLineSupport }),
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          }),
         })
 
         await taskTableTestUtils.expectLoadingFinished()
@@ -284,7 +291,7 @@ describe('Страница реестра заявок', () => {
 
     test('Сбрасывает расширенный фильтр', async () => {
       const workGroupListItem = workGroupFixtures.workGroupListItem()
-      mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
+      mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess({ once: false })
       mockGetTaskListSuccess({ once: false })
       mockGetCustomerListSuccess({ once: false })
@@ -302,34 +309,29 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.expectLoadingFinished()
 
       await testUtils.clickExtendedFilterButton(user)
-      await extendedFilterTestUtils.findContainer()
-      await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-      await extendedFilterTestUtils.manager.expectLoadingFinished()
+      await tasksFilterTestUtils.findContainer()
+      await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+      await tasksFilterTestUtils.manager.expectLoadingFinished()
 
-      await extendedFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
-      await extendedFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
-      await extendedFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
+      await tasksFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
+      await tasksFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
+      await tasksFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
 
-      const { startDateValue, endDateValue } = await extendedFilterTestUtils.completeAt.setValue(
-        user,
-      )
+      const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(user)
 
       const { keyword: searchByColumnKeywordValue } =
-        await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
+        await tasksFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-      await extendedFilterTestUtils.searchByColumn.setColumnValue(
-        user,
-        searchFieldDict.searchByName,
-      )
+      await tasksFilterTestUtils.searchByColumn.setColumnValue(user, searchFieldDict.searchByName)
 
-      const workGroupField = await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-      await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-      await extendedFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
+      const workGroupField = await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+      await tasksFilterTestUtils.workGroup.openField(user, workGroupField)
+      await tasksFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
 
-      await extendedFilterTestUtils.manager.openField(user)
-      await extendedFilterTestUtils.manager.setValue(user, userListItem.fullName)
+      await tasksFilterTestUtils.manager.openField(user)
+      await tasksFilterTestUtils.manager.setValue(user, userListItem.fullName)
 
-      await extendedFilterTestUtils.clickApplyButton(user)
+      await tasksFilterTestUtils.clickApplyButton(user)
       await taskTableTestUtils.expectLoadingFinished()
 
       await fastFilterListTestUtils.expectLoadingFinished()
@@ -338,45 +340,41 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.expectLoadingFinished()
 
       await testUtils.clickExtendedFilterButton(user)
-      await extendedFilterTestUtils.findContainer()
-      await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-      await extendedFilterTestUtils.manager.expectLoadingFinished()
+      await tasksFilterTestUtils.findContainer()
+      await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+      await tasksFilterTestUtils.manager.expectLoadingFinished()
 
       await waitFor(() => {
-        expect(
-          extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!),
-        ).not.toBeChecked()
+        expect(tasksFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)).not.toBeChecked()
       })
 
-      expect(extendedFilterTestUtils.assigned.getField(taskAssignedDict.True)).not.toBeChecked()
+      expect(tasksFilterTestUtils.assigned.getField(taskAssignedDict.True)).not.toBeChecked()
 
-      expect(extendedFilterTestUtils.overdue.getField(taskOverdueDict.False)).not.toBeChecked()
+      expect(tasksFilterTestUtils.overdue.getField(taskOverdueDict.False)).not.toBeChecked()
 
-      expect(extendedFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
+      expect(tasksFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
         startDateValue,
       )
 
-      expect(extendedFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(
-        endDateValue,
-      )
+      expect(tasksFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(endDateValue)
 
-      expect(extendedFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(
+      expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(
         searchByColumnKeywordValue,
       )
 
       expect(
-        extendedFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
+        tasksFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
       ).not.toBeChecked()
 
       expect(
-        selectTestUtils.getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
+        selectTestUtils.getSelectedOption(tasksFilterTestUtils.workGroup.getField()),
       ).not.toBeInTheDocument()
 
-      expect(extendedFilterTestUtils.manager.getSelected()).not.toBeInTheDocument()
+      expect(tasksFilterTestUtils.manager.getSelected()).not.toBeInTheDocument()
     })
 
     test('Закрывает карточку заявки', async () => {
-      mockGetWorkGroupListSuccess()
+      mockGetWorkGroupsSuccess()
       mockGetTaskCountersSuccess()
 
       const taskListItem = taskFixtures.taskListItem()
@@ -508,7 +506,7 @@ describe('Страница реестра заявок', () => {
       mockGetTaskSuccess(task.id, { body: task })
 
       const workGroup = workGroupFixtures.workGroupListItem()
-      mockGetWorkGroupListSuccess({ body: [workGroup], once: false })
+      mockGetWorkGroupsSuccess({ body: [workGroup], once: false })
 
       mockUpdateTaskWorkGroupSuccess(task.id)
 
@@ -654,7 +652,11 @@ describe('Страница реестра заявок', () => {
       mockGetTaskListSuccess()
       mockGetTaskCountersSuccess()
 
-      render(<TaskListPage />)
+      render(<TaskListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingFinished()
       const button = testUtils.getExtendedFilterButton()
@@ -667,13 +669,20 @@ describe('Страница реестра заявок', () => {
       mockGetUserListSuccess()
       mockGetTaskListSuccess()
       mockGetTaskCountersSuccess()
-      mockGetWorkGroupListSuccess()
+      mockGetWorkGroupsSuccess()
+      mockGetCustomerListSuccess()
+      mockGetSupportGroupListSuccess()
+      mockGetMacroregionListSuccess()
 
-      const { user } = render(<TaskListPage />)
+      const { user } = render(<TaskListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingFinished()
       await testUtils.clickExtendedFilterButton(user)
-      const filter = await extendedFilterTestUtils.findContainer()
+      const filter = await tasksFilterTestUtils.findContainer()
 
       expect(filter).toBeInTheDocument()
     })
@@ -682,7 +691,11 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
 
-      render(<TaskListPage />, { store: getStoreWithAuth() })
+      render(<TaskListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await waitFor(() => expect(testUtils.getExtendedFilterButton()).toBeDisabled())
       await taskTableTestUtils.expectLoadingFinished()
@@ -696,49 +709,58 @@ describe('Страница реестра заявок', () => {
       test.skip('Отправляется запрос', async () => {
         mockGetTaskListSuccess({ once: false })
         mockGetTaskCountersSuccess()
-        mockGetWorkGroupListSuccess()
+        mockGetWorkGroupsSuccess()
         mockGetUserListSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.clickApplyButton(user)
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.clickApplyButton(user)
         await taskTableTestUtils.expectLoadingStarted()
       })
 
       test('Фильтр закрывается', async () => {
         mockGetUserListSuccess()
         mockGetTaskListSuccess({ once: false })
-        mockGetTaskCountersSuccess()
-        mockGetWorkGroupListSuccess()
+        mockGetTaskCountersSuccess({ once: false })
+        mockGetWorkGroupsSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<TaskListPage />)
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickExtendedFilterButton(user)
-        const filter = await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.clickApplyButton(user)
+        const filter = await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.clickApplyButton(user)
 
-        await waitFor(() => {
-          expect(filter).not.toBeInTheDocument()
-        })
+        await waitFor(() => expect(filter).not.toBeInTheDocument())
       })
 
       test('Карточка заявки закрывается', async () => {
-        mockGetWorkGroupListSuccess()
-        mockGetTaskCountersSuccess()
+        mockGetWorkGroupsSuccess()
+        mockGetTaskCountersSuccess({ once: false })
         mockGetUserListSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
+
+        const currentUser = userFixtures.user()
+        mockGetUserActionsSuccess(currentUser.id)
 
         const taskListItem = taskFixtures.taskListItem()
         mockGetTaskListSuccess({
@@ -747,7 +769,11 @@ describe('Страница реестра заявок', () => {
         })
         mockGetTaskSuccess(taskListItem.id)
 
-        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
@@ -755,63 +781,65 @@ describe('Страница реестра заявок', () => {
         const taskCard = await taskDetailsTestUtils.findContainer()
 
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.clickApplyButton(user)
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.clickApplyButton(user)
 
-        await waitFor(() => {
-          expect(taskCard).not.toBeInTheDocument()
-        })
+        await waitFor(() => expect(taskCard).not.toBeInTheDocument())
       })
 
       test('Быстрый фильтр сбрасывается', async () => {
         mockGetUserListSuccess()
         mockGetTaskListSuccess({ once: false })
-        mockGetTaskCountersSuccess()
-        mockGetWorkGroupListSuccess()
+        mockGetTaskCountersSuccess({ once: false })
+        mockGetWorkGroupsSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterListTestUtils.expectLoadingFinished()
         const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.FirstLine)
         fastFilterListTestUtils.expectFilterChecked(fastFilter)
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.clickApplyButton(user)
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.clickApplyButton(user)
 
-        await waitFor(() => {
-          fastFilterListTestUtils.expectFilterNotChecked(fastFilter)
-        })
+        await waitFor(() => fastFilterListTestUtils.expectFilterNotChecked(fastFilter))
       })
 
       test('Закрывается нажав кнопку закрытия', async () => {
         mockGetUserListSuccess()
-        mockGetWorkGroupListSuccess()
+        mockGetWorkGroupsSuccess()
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<TaskListPage />)
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickExtendedFilterButton(user)
-        const filter = await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.closeFilter(user)
+        const filter = await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.closeFilter(user)
 
-        await waitFor(() => {
-          expect(filter).not.toBeInTheDocument()
-        })
+        await waitFor(() => expect(filter).not.toBeInTheDocument())
       })
 
       test('Значения сохраняются если другой фильтр не применялся', async () => {
         const workGroupListItem = workGroupFixtures.workGroupListItem()
-        mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
-        mockGetTaskCountersSuccess()
+        mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
+        mockGetTaskCountersSuccess({ once: false })
         mockGetTaskListSuccess({ once: false })
         mockGetCustomerListSuccess({ once: false })
         mockGetMacroregionListSuccess({ once: false })
@@ -821,81 +849,78 @@ describe('Страница реестра заявок', () => {
         mockGetUserListSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: [UserPermissionsEnum.SelfWorkGroupsRead] }),
+              ),
+            },
+          }),
         })
 
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-        await extendedFilterTestUtils.manager.expectLoadingFinished()
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.manager.expectLoadingFinished()
 
-        await extendedFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
+        await tasksFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
+        await tasksFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
+        await tasksFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
 
-        await extendedFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
-
-        await extendedFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
-
-        const { startDateValue, endDateValue } = await extendedFilterTestUtils.completeAt.setValue(
+        const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(
           user,
         )
 
         const { keyword: searchByColumnKeywordValue } =
-          await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
+          await tasksFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-        await extendedFilterTestUtils.searchByColumn.setColumnValue(
-          user,
-          searchFieldDict.searchByName,
-        )
+        await tasksFilterTestUtils.searchByColumn.setColumnValue(user, searchFieldDict.searchByName)
 
-        const workGroupField = await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-        await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        await extendedFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
+        const workGroupField = await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.workGroup.openField(user, workGroupField)
+        await tasksFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
 
-        await extendedFilterTestUtils.manager.openField(user)
-        await extendedFilterTestUtils.manager.setValue(user, userListItem.fullName)
+        await tasksFilterTestUtils.manager.openField(user)
+        await tasksFilterTestUtils.manager.setValue(user, userListItem.fullName)
 
-        await extendedFilterTestUtils.clickApplyButton(user)
+        await tasksFilterTestUtils.clickApplyButton(user)
         // await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-        await extendedFilterTestUtils.manager.expectLoadingFinished()
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.manager.expectLoadingFinished()
 
-        const statusField = extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)
+        const statusField = tasksFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)
         await waitFor(() => {
           expect(statusField).toBeChecked()
         })
 
-        expect(extendedFilterTestUtils.assigned.getField(taskAssignedDict.True)).toBeChecked()
+        expect(tasksFilterTestUtils.assigned.getField(taskAssignedDict.True)).toBeChecked()
 
-        expect(extendedFilterTestUtils.overdue.getField(taskOverdueDict.False)).toBeChecked()
+        expect(tasksFilterTestUtils.overdue.getField(taskOverdueDict.False)).toBeChecked()
 
-        const startDateField = extendedFilterTestUtils.completeAt.getStartDateField()
+        const startDateField = tasksFilterTestUtils.completeAt.getStartDateField()
         await waitFor(() => {
           expect(startDateField).toHaveDisplayValue(startDateValue)
         })
 
-        expect(extendedFilterTestUtils.completeAt.getEndDateField()).toHaveDisplayValue(
-          endDateValue,
-        )
+        expect(tasksFilterTestUtils.completeAt.getEndDateField()).toHaveDisplayValue(endDateValue)
 
-        expect(extendedFilterTestUtils.searchByColumn.getKeywordField()).toHaveDisplayValue(
+        expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).toHaveDisplayValue(
           searchByColumnKeywordValue,
         )
 
         expect(
-          extendedFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
+          tasksFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
         ).toBeChecked()
 
         expect(
-          selectTestUtils.getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
+          selectTestUtils.getSelectedOption(tasksFilterTestUtils.workGroup.getField()),
         ).toHaveTextContent(workGroupListItem.name)
 
-        expect(extendedFilterTestUtils.manager.getSelected()).toHaveTextContent(
-          userListItem.fullName,
-        )
+        expect(tasksFilterTestUtils.manager.getSelected()).toHaveTextContent(userListItem.fullName)
       })
 
       test('Сохраняется фильтр групп поддержки', async () => {
@@ -908,15 +933,19 @@ describe('Страница реестра заявок', () => {
         const supportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [supportGroupListItem], once: false })
 
-        mockGetWorkGroupListSuccess()
-        mockGetTaskCountersSuccess()
+        mockGetWorkGroupsSuccess()
+        mockGetTaskCountersSuccess({ once: false })
         mockGetUserListSuccess()
         mockGetTaskListSuccess({
           body: commonFixtures.paginatedListResponse(taskFixtures.taskList()),
           once: false,
         })
 
-        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
@@ -924,24 +953,22 @@ describe('Страница реестра заявок', () => {
         await waitFor(() => expect(button).toBeEnabled())
         await user.click(button)
 
-        const filter = await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.expectCustomersLoadingFinished()
-        await extendedFilterTestUtils.expectMacroregionsLoadingFinished()
-        await extendedFilterTestUtils.expectSupportGroupsLoadingFinished()
+        const filter = await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.expectCustomersLoadingFinished()
+        await tasksFilterTestUtils.expectMacroregionsLoadingFinished()
+        await tasksFilterTestUtils.expectSupportGroupsLoadingFinished()
 
-        await extendedFilterTestUtils.openCustomersSelect(user)
-        await extendedFilterTestUtils.setCustomer(user, customerListItem.title)
+        await tasksFilterTestUtils.openCustomersSelect(user)
+        await tasksFilterTestUtils.setCustomer(user, customerListItem.title)
 
-        await extendedFilterTestUtils.openMacroregionsSelect(user)
-        await extendedFilterTestUtils.setMacroregion(user, macroregionListItem.title)
+        await tasksFilterTestUtils.openMacroregionsSelect(user)
+        await tasksFilterTestUtils.setMacroregion(user, macroregionListItem.title)
 
-        await extendedFilterTestUtils.openSupportGroupsSelect(user)
-        await extendedFilterTestUtils.setSupportGroup(user, supportGroupListItem.name)
-        await extendedFilterTestUtils.clickApplyButton(user)
+        await tasksFilterTestUtils.openSupportGroupsSelect(user)
+        await tasksFilterTestUtils.setSupportGroup(user, supportGroupListItem.name)
+        await tasksFilterTestUtils.clickApplyButton(user)
 
-        await waitFor(() => {
-          expect(filter).not.toBeInTheDocument()
-        })
+        await waitFor(() => expect(filter).not.toBeInTheDocument())
 
         const filters = taskLocalStorageService.getTasksFilters()!
         expect(filters.customers).toEqual(expect.arrayContaining([customerListItem.id]))
@@ -952,7 +979,7 @@ describe('Страница реестра заявок', () => {
 
     test('Значения не сохраняются если фильтр не был применён', async () => {
       const workGroupListItem = workGroupFixtures.workGroupListItem()
-      mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
+      mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess()
       mockGetTaskListSuccess()
       mockGetCustomerListSuccess({ once: false })
@@ -963,101 +990,100 @@ describe('Страница реестра заявок', () => {
       mockGetUserListSuccess({ body: [userListItem], once: false })
 
       const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock(
+              userFixtures.user({ permissions: [UserPermissionsEnum.SelfWorkGroupsRead] }),
+            ),
+          },
+        }),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
       await testUtils.clickExtendedFilterButton(user)
-      const filter = await extendedFilterTestUtils.findContainer()
-      await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-      await extendedFilterTestUtils.manager.expectLoadingFinished()
+      const filter = await tasksFilterTestUtils.findContainer()
+      await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+      await tasksFilterTestUtils.manager.expectLoadingFinished()
 
-      await extendedFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
+      await tasksFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
+      await tasksFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
+      await tasksFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
 
-      await extendedFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
-
-      await extendedFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
-
-      const { startDateValue, endDateValue } = await extendedFilterTestUtils.completeAt.setValue(
-        user,
-      )
+      const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(user)
 
       const { keyword: searchByColumnKeywordValue } =
-        await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
+        await tasksFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-      await extendedFilterTestUtils.searchByColumn.setColumnValue(
-        user,
-        searchFieldDict.searchByName,
-      )
+      await tasksFilterTestUtils.searchByColumn.setColumnValue(user, searchFieldDict.searchByName)
 
-      const workGroupField = await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-      await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-      await extendedFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
+      const workGroupField = await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+      await tasksFilterTestUtils.workGroup.openField(user, workGroupField)
+      await tasksFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
 
-      await extendedFilterTestUtils.manager.openField(user)
-      await extendedFilterTestUtils.manager.setValue(user, userListItem.fullName)
+      await tasksFilterTestUtils.manager.openField(user)
+      await tasksFilterTestUtils.manager.setValue(user, userListItem.fullName)
 
-      await extendedFilterTestUtils.closeFilter(user)
+      await tasksFilterTestUtils.closeFilter(user)
       await waitFor(() => {
         expect(filter).not.toBeInTheDocument()
       })
 
       await testUtils.clickExtendedFilterButton(user)
-      await extendedFilterTestUtils.findContainer()
-      await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-      await extendedFilterTestUtils.manager.expectLoadingFinished()
+      await tasksFilterTestUtils.findContainer()
+      await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+      await tasksFilterTestUtils.manager.expectLoadingFinished()
 
-      expect(extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)).not.toBeChecked()
+      expect(tasksFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)).not.toBeChecked()
+      expect(tasksFilterTestUtils.assigned.getField(taskAssignedDict.True)).not.toBeChecked()
+      expect(tasksFilterTestUtils.overdue.getField(taskOverdueDict.False)).not.toBeChecked()
 
-      expect(extendedFilterTestUtils.assigned.getField(taskAssignedDict.True)).not.toBeChecked()
-
-      expect(extendedFilterTestUtils.overdue.getField(taskOverdueDict.False)).not.toBeChecked()
-
-      expect(extendedFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
+      expect(tasksFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
         startDateValue,
       )
 
-      expect(extendedFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(
-        endDateValue,
-      )
+      expect(tasksFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(endDateValue)
 
-      expect(extendedFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(
+      expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(
         searchByColumnKeywordValue,
       )
 
       expect(
-        extendedFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
+        tasksFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
       ).not.toBeChecked()
 
       expect(
-        selectTestUtils.getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
+        selectTestUtils.getSelectedOption(tasksFilterTestUtils.workGroup.getField()),
       ).not.toBeInTheDocument()
 
-      expect(extendedFilterTestUtils.manager.getSelected()).not.toBeInTheDocument()
+      expect(tasksFilterTestUtils.manager.getSelected()).not.toBeInTheDocument()
     })
 
     describe('Имеет корректные значения по умолчанию', () => {
-      test('Фильтры которые отображаются для любой роли', async () => {
+      test('Для отображения не нужны права', async () => {
         mockGetUserListSuccess()
-        mockGetWorkGroupListSuccess()
+        mockGetWorkGroupsSuccess()
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<TaskListPage />)
+        const { user } = render(<TaskListPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.findContainer()
 
-        extendedFilterTestUtils.status.expectHasCorrectInitialValues()
-        extendedFilterTestUtils.assigned.expectHasCorrectInitialValues()
-        extendedFilterTestUtils.overdue.expectHasCorrectInitialValues()
-        extendedFilterTestUtils.completeAt.expectHasCorrectInitialValues()
-        extendedFilterTestUtils.searchByColumn.expectHasCorrectInitialValues()
-        expect(extendedFilterTestUtils.manager.getSelected()).not.toBeInTheDocument()
+        tasksFilterTestUtils.status.expectHasCorrectInitialValues()
+        tasksFilterTestUtils.assigned.expectHasCorrectInitialValues()
+        tasksFilterTestUtils.overdue.expectHasCorrectInitialValues()
+        tasksFilterTestUtils.completeAt.expectHasCorrectInitialValues()
+        tasksFilterTestUtils.searchByColumn.expectHasCorrectInitialValues()
+        expect(tasksFilterTestUtils.manager.getSelected()).not.toBeInTheDocument()
       })
 
       test('Фильтр по рабочей группе', async () => {
@@ -1067,22 +1093,24 @@ describe('Страница реестра заявок', () => {
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
-        mockGetWorkGroupListSuccess({
+        mockGetWorkGroupsSuccess({
           body: workGroupFixtures.workGroupList(),
         })
 
         const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: [UserPermissionsEnum.SelfWorkGroupsRead] }),
+              ),
+            },
           }),
         })
 
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
-
-        const workGroupField = await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-
+        await tasksFilterTestUtils.findContainer()
+        const workGroupField = await tasksFilterTestUtils.workGroup.expectLoadingFinished()
         const selectedOption = selectTestUtils.getSelectedOption(workGroupField)
 
         expect(selectedOption).not.toBeInTheDocument()
@@ -1189,7 +1217,7 @@ describe('Страница реестра заявок', () => {
 
     describe('После применения', () => {
       test('Карточка заявки закрывается', async () => {
-        mockGetWorkGroupListSuccess()
+        mockGetWorkGroupsSuccess()
         mockGetTaskCountersSuccess()
 
         const taskListItem = taskFixtures.taskListItem()
@@ -1318,7 +1346,7 @@ describe('Страница реестра заявок', () => {
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
         const workGroupListItem = workGroupFixtures.workGroupListItem()
-        mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
+        mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetTaskListSuccess({ once: false })
         mockGetCustomerListSuccess({ once: false })
@@ -1335,33 +1363,30 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-        await extendedFilterTestUtils.manager.expectLoadingFinished()
-        await extendedFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
-        await extendedFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
-        await extendedFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.manager.expectLoadingFinished()
+        await tasksFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
+        await tasksFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
+        await tasksFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
 
-        const { startDateValue, endDateValue } = await extendedFilterTestUtils.completeAt.setValue(
+        const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(
           user,
         )
 
         const { keyword: searchByColumnKeywordValue } =
-          await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
+          await tasksFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-        await extendedFilterTestUtils.searchByColumn.setColumnValue(
-          user,
-          searchFieldDict.searchByName,
-        )
+        await tasksFilterTestUtils.searchByColumn.setColumnValue(user, searchFieldDict.searchByName)
 
-        const workGroupField = await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-        await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        await extendedFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
+        const workGroupField = await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.workGroup.openField(user, workGroupField)
+        await tasksFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
 
-        await extendedFilterTestUtils.manager.openField(user)
-        await extendedFilterTestUtils.manager.setValue(user, userListItem.fullName)
+        await tasksFilterTestUtils.manager.openField(user)
+        await tasksFilterTestUtils.manager.setValue(user, userListItem.fullName)
 
-        await extendedFilterTestUtils.clickApplyButton(user)
+        await tasksFilterTestUtils.clickApplyButton(user)
         await taskTableTestUtils.expectLoadingFinished()
 
         const searchInput = await testUtils.setSearchValue(user, fakeWord({ length: 1 }), true)
@@ -1370,38 +1395,34 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingFinished()
 
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-        await extendedFilterTestUtils.manager.expectLoadingFinished()
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.manager.expectLoadingFinished()
 
-        const statusField = extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)
+        const statusField = tasksFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)
         await waitFor(() => expect(statusField).toBeChecked())
 
-        expect(extendedFilterTestUtils.assigned.getField(taskAssignedDict.True)).toBeChecked()
-        expect(extendedFilterTestUtils.overdue.getField(taskOverdueDict.False)).toBeChecked()
+        expect(tasksFilterTestUtils.assigned.getField(taskAssignedDict.True)).toBeChecked()
+        expect(tasksFilterTestUtils.overdue.getField(taskOverdueDict.False)).toBeChecked()
 
-        const startDateField = extendedFilterTestUtils.completeAt.getStartDateField()
+        const startDateField = tasksFilterTestUtils.completeAt.getStartDateField()
         await waitFor(() => expect(startDateField).toHaveDisplayValue(startDateValue))
 
-        expect(extendedFilterTestUtils.completeAt.getEndDateField()).toHaveDisplayValue(
-          endDateValue,
-        )
+        expect(tasksFilterTestUtils.completeAt.getEndDateField()).toHaveDisplayValue(endDateValue)
 
-        expect(extendedFilterTestUtils.searchByColumn.getKeywordField()).toHaveDisplayValue(
+        expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).toHaveDisplayValue(
           searchByColumnKeywordValue,
         )
 
         expect(
-          extendedFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
+          tasksFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
         ).toBeChecked()
 
         expect(
-          selectTestUtils.getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
+          selectTestUtils.getSelectedOption(tasksFilterTestUtils.workGroup.getField()),
         ).toHaveTextContent(workGroupListItem.name)
 
-        expect(extendedFilterTestUtils.manager.getSelected()).toHaveTextContent(
-          userListItem.fullName,
-        )
+        expect(tasksFilterTestUtils.manager.getSelected()).toHaveTextContent(userListItem.fullName)
       })
     })
 
@@ -1453,7 +1474,7 @@ describe('Страница реестра заявок', () => {
 
       test('Применяет расширенный фильтр если он был применён ранее', async () => {
         const workGroupListItem = workGroupFixtures.workGroupListItem()
-        mockGetWorkGroupListSuccess({ body: [workGroupListItem], once: false })
+        mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetTaskListSuccess({ once: false })
         mockGetCustomerListSuccess({ once: false })
@@ -1470,34 +1491,31 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-        await extendedFilterTestUtils.manager.expectLoadingFinished()
-        await extendedFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
-        await extendedFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
-        await extendedFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.manager.expectLoadingFinished()
+        await tasksFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
+        await tasksFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
+        await tasksFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
 
-        const { startDateValue, endDateValue } = await extendedFilterTestUtils.completeAt.setValue(
+        const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(
           user,
         )
 
         const { keyword: searchByColumnKeywordValue } =
-          await extendedFilterTestUtils.searchByColumn.setKeywordValue(user)
+          await tasksFilterTestUtils.searchByColumn.setKeywordValue(user)
 
-        await extendedFilterTestUtils.searchByColumn.setColumnValue(
-          user,
-          searchFieldDict.searchByName,
-        )
+        await tasksFilterTestUtils.searchByColumn.setColumnValue(user, searchFieldDict.searchByName)
 
-        const workGroupField = await extendedFilterTestUtils.workGroup.expectLoadingFinished()
+        const workGroupField = await tasksFilterTestUtils.workGroup.expectLoadingFinished()
 
-        await extendedFilterTestUtils.workGroup.openField(user, workGroupField)
-        await extendedFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
+        await tasksFilterTestUtils.workGroup.openField(user, workGroupField)
+        await tasksFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
 
-        await extendedFilterTestUtils.manager.openField(user)
-        await extendedFilterTestUtils.manager.setValue(user, userListItem.fullName)
+        await tasksFilterTestUtils.manager.openField(user)
+        await tasksFilterTestUtils.manager.setValue(user, userListItem.fullName)
 
-        await extendedFilterTestUtils.clickApplyButton(user)
+        await tasksFilterTestUtils.clickApplyButton(user)
         await taskTableTestUtils.expectLoadingFinished()
 
         await testUtils.setSearchValue(user, fakeWord(), true)
@@ -1508,39 +1526,35 @@ describe('Страница реестра заявок', () => {
 
         expect(testUtils.getExtendedFilterButton()).toBeEnabled()
         await testUtils.clickExtendedFilterButton(user)
-        await extendedFilterTestUtils.findContainer()
-        await extendedFilterTestUtils.workGroup.expectLoadingFinished()
-        await extendedFilterTestUtils.manager.expectLoadingFinished()
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.manager.expectLoadingFinished()
 
-        const statusField = extendedFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)
+        const statusField = tasksFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)
         await waitFor(() => expect(statusField).toBeChecked())
 
-        expect(extendedFilterTestUtils.assigned.getField(taskAssignedDict.True)).toBeChecked()
+        expect(tasksFilterTestUtils.assigned.getField(taskAssignedDict.True)).toBeChecked()
 
-        expect(extendedFilterTestUtils.overdue.getField(taskOverdueDict.False)).toBeChecked()
+        expect(tasksFilterTestUtils.overdue.getField(taskOverdueDict.False)).toBeChecked()
 
-        const startDateField = extendedFilterTestUtils.completeAt.getStartDateField()
+        const startDateField = tasksFilterTestUtils.completeAt.getStartDateField()
         await waitFor(() => expect(startDateField).toHaveDisplayValue(startDateValue))
 
-        expect(extendedFilterTestUtils.completeAt.getEndDateField()).toHaveDisplayValue(
-          endDateValue,
-        )
+        expect(tasksFilterTestUtils.completeAt.getEndDateField()).toHaveDisplayValue(endDateValue)
 
-        expect(extendedFilterTestUtils.searchByColumn.getKeywordField()).toHaveDisplayValue(
+        expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).toHaveDisplayValue(
           searchByColumnKeywordValue,
         )
 
         expect(
-          extendedFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
+          tasksFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
         ).toBeChecked()
 
         expect(
-          selectTestUtils.getSelectedOption(extendedFilterTestUtils.workGroup.getField()),
+          selectTestUtils.getSelectedOption(tasksFilterTestUtils.workGroup.getField()),
         ).toHaveTextContent(workGroupListItem.name)
 
-        expect(extendedFilterTestUtils.manager.getSelected()).toHaveTextContent(
-          userListItem.fullName,
-        )
+        expect(tasksFilterTestUtils.manager.getSelected()).toHaveTextContent(userListItem.fullName)
       })
     })
   })
@@ -1587,7 +1601,7 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Закрывает карточку заявки', async () => {
-      mockGetWorkGroupListSuccess()
+      mockGetWorkGroupsSuccess()
       mockGetTaskCountersSuccess({ once: false })
 
       const taskListItem = taskFixtures.taskListItem()
@@ -1672,7 +1686,7 @@ describe('Страница реестра заявок', () => {
     describe('При клике на строку', () => {
       test('Ей добавляется новый класс', async () => {
         mockGetTaskCountersSuccess()
-        mockGetWorkGroupListSuccess()
+        mockGetWorkGroupsSuccess()
 
         const taskListItem = taskFixtures.taskListItem()
         mockGetTaskListSuccess({
@@ -1690,7 +1704,7 @@ describe('Страница реестра заявок', () => {
 
       test('Открывается карточка заявки', async () => {
         mockGetTaskCountersSuccess()
-        mockGetWorkGroupListSuccess()
+        mockGetWorkGroupsSuccess()
 
         const taskListItem = taskFixtures.taskListItem()
         mockGetTaskListSuccess({
