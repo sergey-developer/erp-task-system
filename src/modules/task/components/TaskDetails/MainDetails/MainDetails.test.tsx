@@ -38,9 +38,9 @@ const props: Readonly<MainDetailsProps> = {
   assignee: null,
 }
 
-const getContainer = () => screen.getByTestId('task-card-main-details')
+const getContainer = () => screen.getByTestId('task-details-main-details')
 
-const queryContainer = () => screen.queryByTestId('task-card-main-details')
+const queryContainer = () => screen.queryByTestId('task-details-main-details')
 
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 

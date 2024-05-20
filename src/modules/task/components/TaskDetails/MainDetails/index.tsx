@@ -83,7 +83,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   )
 
   return (
-    <Space data-testid='task-card-main-details' direction='vertical' size='middle' $block>
+    <Space data-testid='task-details-main-details' direction='vertical' size='middle' $block>
       <Space direction='vertical' $block>
         <SeparatedText>
           <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>

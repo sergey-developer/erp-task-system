@@ -452,6 +452,7 @@ const TaskCard: FC<TaskCardProps> = ({
   }, [cancelSuspendRequest, task])
 
   const cardTitle = !taskIsLoading && task && (
+    // @ts-ignore
     <Title
       id={task.id}
       type={task.type}

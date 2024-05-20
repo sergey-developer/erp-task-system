@@ -23,7 +23,7 @@ const TaskSuspendRequest: FC<TaskSuspendRequestProps> = ({
 }) => {
   return (
     <TaskRequest
-      data-testid='task-card-suspend-request'
+      data-testid='task-details-suspend-request'
       icon={<PauseCircleIcon $size='large' />}
       title={title}
       comment={comment}
