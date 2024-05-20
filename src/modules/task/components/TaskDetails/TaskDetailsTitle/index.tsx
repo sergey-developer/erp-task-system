@@ -38,6 +38,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   olaStatus,
   suspendRequest,
   assignee,
+  userActions,
   onReloadTask,
   onExecuteTask,
   onRegisterFN,
@@ -59,6 +60,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
     UserPermissionsEnum.TaskInternalDescriptionUpdate,
     UserPermissionsEnum.TaskInternalDeadlineUpdate,
   ])
+
   const assigneeIsCurrentUser = useIdBelongAuthUser(assignee?.id)
   const hasWorkGroup = !!workGroup
   const { isEngineerRole, isFirstLineSupportRole } = useUserRole()
@@ -67,11 +69,14 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
     items: [
       {
         key: MenuActionsKeysEnum.RequestSuspend,
-        disabled:
-          (!taskStatus.isNew && !taskStatus.isInProgress) ||
-          (!taskType.isIncident && !taskType.isRequest) ||
-          (isFirstLineSupportRole && hasWorkGroup) ||
-          suspendRequestExist,
+        disabled: suspendRequestStatus.isApproved
+          ? false
+          : (!taskStatus.isNew && !taskStatus.isInProgress) ||
+            (!taskType.isIncident && !taskType.isRequest) ||
+            taskExtendedStatus.isInReclassification ||
+            suspendRequestStatus.isNew ||
+            suspendRequestStatus.isInProgress ||
+            !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE.includes(id),
         icon: <PauseCircleIcon $size='middle' />,
         label: 'Запросить перевод в ожидание',
         onClick: onRequestSuspend,

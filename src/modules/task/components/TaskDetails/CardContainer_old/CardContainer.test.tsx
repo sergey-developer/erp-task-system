@@ -13,8 +13,8 @@ import {
 import { updateTaskAssigneeErrMsg } from 'modules/task/constants/taskAssignee'
 import { createReclassificationRequestMessages } from 'modules/task/constants/taskReclassificationRequest'
 import {
-  createSuspendRequestErrorMsg,
-  deleteSuspendRequestErrorMsg,
+  createSuspendRequestErrMsg,
+  deleteSuspendRequestErrMsg,
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/taskSuspendRequest'
@@ -3269,7 +3269,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
             ).toBeInTheDocument()
           })
 
@@ -3315,7 +3315,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
             ).toBeInTheDocument()
 
             expect(
@@ -3465,7 +3465,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
             ).toBeInTheDocument()
           })
 
@@ -3511,7 +3511,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
             ).toBeInTheDocument()
 
             expect(
@@ -3661,7 +3661,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
             ).toBeInTheDocument()
           })
 
@@ -3707,7 +3707,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
             ).toBeInTheDocument()
 
             expect(
@@ -3857,7 +3857,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
             ).toBeInTheDocument()
           })
 
@@ -3905,7 +3905,7 @@ describe('Контейнер детальной карточки заявки', 
             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
             expect(
-              await notificationTestUtils.findNotification(createSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
             ).toBeInTheDocument()
 
             expect(
@@ -4045,7 +4045,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             expect(
-              await notificationTestUtils.findNotification(deleteSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(deleteSuspendRequestErrMsg),
             ).toBeInTheDocument()
           })
 
@@ -4173,7 +4173,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             expect(
-              await notificationTestUtils.findNotification(deleteSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(deleteSuspendRequestErrMsg),
             ).toBeInTheDocument()
           })
 
@@ -4301,7 +4301,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskCardTestUtils.expectLoadingFinished()
 
             expect(
-              await notificationTestUtils.findNotification(deleteSuspendRequestErrorMsg),
+              await notificationTestUtils.findNotification(deleteSuspendRequestErrMsg),
             ).toBeInTheDocument()
           })
 
