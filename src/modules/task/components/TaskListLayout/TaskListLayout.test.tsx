@@ -7,13 +7,13 @@ import { CommonRouteEnum } from 'configs/routes'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TaskListMapPage from 'modules/task/pages/TaskListMapPage'
 import { testUtils as taskListMapPageTestUtils } from 'modules/task/pages/TaskListMapPage/TaskListMapPage.test'
-import TaskListPage from 'modules/task/pages/TaskListPage'
-import { testUtils as taskListPageTestUtils } from 'modules/task/pages/TaskListPage/TaskListPage.test'
+import TasksPage from 'modules/task/pages/TasksPage'
+import { testUtils as taskListPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
 
 import {
   mockGetTaskCountersSuccess,
   mockGetTaskListMapSuccess,
-  mockGetTaskListSuccess,
+  mockGetTasksSuccess,
 } from '_tests_/mocks/api'
 import { radioButtonTestUtils, renderInRoute_latest, setupApiTests } from '_tests_/utils'
 
@@ -64,7 +64,7 @@ describe('TaskListLayout', () => {
     })
 
     test('При клике переходит на страницу реестра заявок', async () => {
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
       mockGetTaskListMapSuccess()
 
@@ -76,7 +76,7 @@ describe('TaskListLayout', () => {
           },
           {
             path: TasksRoutesEnum.DesktopTaskList,
-            element: <TaskListPage />,
+            element: <TasksPage />,
           },
           {
             path: TasksRoutesEnum.DesktopTaskListMap,
@@ -109,7 +109,7 @@ describe('TaskListLayout', () => {
     })
 
     test('При клике переходит на страницу карты с заявками', async () => {
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
       mockGetTaskListMapSuccess()
 
@@ -121,7 +121,7 @@ describe('TaskListLayout', () => {
           },
           {
             path: TasksRoutesEnum.DesktopTaskList,
-            element: <TaskListPage />,
+            element: <TasksPage />,
           },
           {
             path: TasksRoutesEnum.DesktopTaskListMap,

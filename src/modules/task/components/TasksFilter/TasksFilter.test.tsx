@@ -7,7 +7,7 @@ import {
   taskExtendedStatusDict,
   TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
-import { getInitialExtendedFilterFormValues } from 'modules/task/pages/TaskListPage/utils'
+import { getInitialTasksFilterValues } from 'modules/task/pages/TasksPage/utils'
 import { UserPermissionsEnum } from 'modules/user/constants'
 
 import macroregionFixtures from '_tests_/fixtures/macroregion'
@@ -40,8 +40,8 @@ const props: Readonly<TasksFilterProps> = {
 
   permissions: {},
 
-  formValues: getInitialExtendedFilterFormValues(),
-  initialFormValues: getInitialExtendedFilterFormValues(),
+  formValues: getInitialTasksFilterValues(),
+  initialFormValues: getInitialTasksFilterValues(),
 
   users: [],
   usersIsLoading: false,
@@ -104,14 +104,12 @@ const clickApplyButton = async (user: UserEvent) => {
 const getSupportGroupBlock = () => within(getContainer()).getByTestId('support-group-block')
 // support group. customers
 const getCustomersFormItem = () => screen.getByTestId('customers-form-item')
-
 const getCustomersSelect = () => selectTestUtils.getSelect(getCustomersFormItem())
 
 const openCustomersSelect = (user: UserEvent) =>
   selectTestUtils.openSelect(user, getCustomersFormItem())
 
 const setCustomer = selectTestUtils.clickSelectOption
-
 const getSelectedCustomer = () => selectTestUtils.getSelectedOption(getCustomersFormItem())
 
 const expectCustomersLoadingStarted = () =>
@@ -122,14 +120,12 @@ const expectCustomersLoadingFinished = () =>
 
 // support group. macroregions
 const getMacroregionsFormItem = () => screen.getByTestId('macroregions-form-item')
-
 const getMacroregionsSelect = () => selectTestUtils.getSelect(getMacroregionsFormItem())
 
 const openMacroregionsSelect = (user: UserEvent) =>
   selectTestUtils.openSelect(user, getMacroregionsFormItem())
 
 const setMacroregion = selectTestUtils.clickSelectOption
-
 const getSelectedMacroregion = () => selectTestUtils.getSelectedOption(getMacroregionsFormItem())
 
 const expectMacroregionsLoadingStarted = () =>
@@ -140,14 +136,12 @@ const expectMacroregionsLoadingFinished = () =>
 
 // support group. supportGroups
 const getSupportGroupsFormItem = () => screen.getByTestId('support-groups-form-item')
-
 const getSupportGroupsSelect = () => selectTestUtils.getSelect(getSupportGroupsFormItem())
 
 const openSupportGroupsSelect = (user: UserEvent) =>
   selectTestUtils.openSelect(user, getSupportGroupsFormItem())
 
 const setSupportGroup = selectTestUtils.clickSelectOption
-
 const getSelectedSupportGroup = () => selectTestUtils.getSelectedOption(getSupportGroupsFormItem())
 
 const expectSupportGroupsLoadingStarted = () =>

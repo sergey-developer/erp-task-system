@@ -1,3 +1,3 @@
 export * from './task'
-export * from './taskList'
+export * from './tasks'
 export * from './taskTable'

@@ -4,7 +4,7 @@ import { camelize } from 'humps'
 import moment from 'moment-timezone'
 
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
-import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilterList/FastFilterList.test'
+import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilters/FastFilters.test'
 import {
   activeAssignButtonProps,
   activeTakeTaskButtonProps,
@@ -44,7 +44,7 @@ import {
   taskLocalStorageService,
   TasksFiltersStorageType,
 } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { UserPermissionsEnum, UserRoleEnum } from 'modules/user/constants'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
 import commonFixtures from '_tests_/fixtures/common'
@@ -60,7 +60,7 @@ import {
   mockGetMacroregionListSuccess,
   mockGetSupportGroupListSuccess,
   mockGetTaskCountersSuccess,
-  mockGetTaskListSuccess,
+  mockGetTasksSuccess,
   mockGetTaskSuccess,
   mockGetUserActionsSuccess,
   mockGetUserListSuccess,
@@ -82,7 +82,7 @@ import {
 } from '_tests_/utils'
 
 import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
-import TaskListPage from './index'
+import TasksPage from './index'
 
 const getContainer = () => screen.getByTestId('task-list-page')
 
@@ -157,26 +157,25 @@ describe('Страница реестра заявок', () => {
   describe('Быстрый фильтр', () => {
     test('Отображается', async () => {
       mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
 
-      render(<TaskListPage />, {
+      render(<TasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
       await fastFilterListTestUtils.expectLoadingFinished()
-
       expect(fastFilterListTestUtils.getContainer()).toBeInTheDocument()
     })
 
     test('Не активный во время загрузки заявок', async () => {
       mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
 
-      render(<TaskListPage />, {
+      render(<TasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
@@ -188,11 +187,20 @@ describe('Страница реестра заявок', () => {
     test('Количество заявок отображается корректно', async () => {
       const taskCounters = taskFixtures.taskCounters()
       mockGetTaskCountersSuccess({ body: taskCounters })
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
 
-      render(<TaskListPage />, {
+      render(<TasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          queries: {
+            ...getUserMeQueryMock(
+              userFixtures.user({
+                permissions: [
+                  UserPermissionsEnum.FirstLineTasksRead,
+                  UserPermissionsEnum.SecondLineTasksRead,
+                ],
+              }),
+            ),
+          },
         }),
       })
 
@@ -207,80 +215,41 @@ describe('Страница реестра заявок', () => {
       })
     })
 
-    describe('Имеет корректное значение по умолчанию', () => {
-      test(`Роль - ${UserRoleEnum.FirstLineSupport}`, async () => {
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess()
+    test('Имеет корректное значение по умолчанию', async () => {
+      mockGetTaskCountersSuccess()
+      mockGetTasksSuccess()
 
-        render(<TaskListPage />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
-          }),
-        })
-
-        await taskTableTestUtils.expectLoadingFinished()
-        await fastFilterListTestUtils.expectLoadingFinished()
-
-        fastFilterListTestUtils.expectFilterChecked(
-          fastFilterListTestUtils.getCheckableTag(FastFilterEnum.FirstLine),
-        )
+      render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock(
+              userFixtures.user({
+                permissions: [
+                  UserPermissionsEnum.FirstLineTasksRead,
+                  UserPermissionsEnum.SecondLineTasksRead,
+                ],
+              }),
+            ),
+          },
+        }),
       })
 
-      test(`Роль - ${UserRoleEnum.Engineer}`, async () => {
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess()
+      await taskTableTestUtils.expectLoadingFinished()
+      await fastFilterListTestUtils.expectLoadingFinished()
 
-        render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }),
-        })
-
-        await taskTableTestUtils.expectLoadingFinished()
-        await fastFilterListTestUtils.expectLoadingFinished()
-
-        fastFilterListTestUtils.expectFilterChecked(
-          fastFilterListTestUtils.getCheckableTag(FastFilterEnum.Mine),
-        )
-      })
-
-      test(`Роль - ${UserRoleEnum.SeniorEngineer}`, async () => {
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess()
-
-        render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
-        })
-
-        await taskTableTestUtils.expectLoadingFinished()
-        await fastFilterListTestUtils.expectLoadingFinished()
-
-        fastFilterListTestUtils.expectFilterChecked(
-          fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All),
-        )
-      })
-
-      test(`Роль - ${UserRoleEnum.HeadOfDepartment}`, async () => {
-        mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess()
-
-        render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRoleEnum.HeadOfDepartment }),
-        })
-
-        await taskTableTestUtils.expectLoadingFinished()
-        await fastFilterListTestUtils.expectLoadingFinished()
-
-        fastFilterListTestUtils.expectFilterChecked(
-          fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All),
-        )
-      })
+      fastFilterListTestUtils.expectFilterChecked(
+        fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All),
+      )
     })
 
     test('При смене фильтра отправляется запрос', async () => {
       mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess({ once: false })
+      mockGetTasksSuccess({ once: false })
 
-      const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth(),
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -293,7 +262,7 @@ describe('Страница реестра заявок', () => {
       const workGroupListItem = workGroupFixtures.workGroupListItem()
       mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess({ once: false })
-      mockGetTaskListSuccess({ once: false })
+      mockGetTasksSuccess({ once: false })
       mockGetCustomerListSuccess({ once: false })
       mockGetSupportGroupListSuccess({ once: false })
       mockGetMacroregionListSuccess({ once: false })
@@ -301,8 +270,14 @@ describe('Страница реестра заявок', () => {
       const userListItem = userFixtures.userListItem()
       mockGetUserListSuccess({ body: [userListItem], once: false })
 
-      const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock(
+              userFixtures.user({ permissions: [UserPermissionsEnum.SelfWorkGroupsRead] }),
+            ),
+          },
+        }),
       })
 
       await fastFilterListTestUtils.expectLoadingFinished()
@@ -378,13 +353,17 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess()
 
       const taskListItem = taskFixtures.taskListItem()
-      mockGetTaskListSuccess({
+      mockGetTasksSuccess({
         once: false,
-        body: taskFixtures.taskListResponse([taskListItem]),
+        body: taskFixtures.getTasksResponse([taskListItem]),
       })
       mockGetTaskSuccess(taskListItem.id)
 
-      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingFinished()
@@ -401,9 +380,13 @@ describe('Страница реестра заявок', () => {
 
     test('Сбрасывает значение поля поиска', async () => {
       mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess({ once: false })
+      mockGetTasksSuccess({ once: false })
 
-      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingFinished()
       await fastFilterListTestUtils.expectLoadingFinished()
@@ -422,7 +405,7 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess({ once: false })
 
       const taskListItem = taskFixtures.taskListItem()
-      mockGetTaskListSuccess({
+      mockGetTasksSuccess({
         body: commonFixtures.paginatedListResponse([taskListItem]),
         once: false,
       })
@@ -435,8 +418,13 @@ describe('Страница реестра заявок', () => {
       mockGetTaskSuccess(task.id, { body: task })
       mockResolveTaskSuccess(task.id)
 
-      const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth({ userId: canExecuteTaskProps.assignee!.id }),
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(
+          { userId: canExecuteTaskProps.assignee!.id },
+          undefined,
+          undefined,
+          { queries: { ...getUserMeQueryMock(userFixtures.user()) } },
+        ),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -459,7 +447,7 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess({ once: false })
 
       const taskListItem = taskFixtures.taskListItem()
-      mockGetTaskListSuccess({
+      mockGetTasksSuccess({
         body: commonFixtures.paginatedListResponse([taskListItem]),
         once: false,
       })
@@ -472,7 +460,14 @@ describe('Страница реестра заявок', () => {
       mockGetTaskSuccess(task.id, { body: task })
       mockDeleteTaskWorkGroupSuccess(task.id)
 
-      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingFinished()
       await fastFilterListTestUtils.expectLoadingFinished()
@@ -493,7 +488,7 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess({ once: false })
 
       const taskListItem = taskFixtures.taskListItem()
-      mockGetTaskListSuccess({
+      mockGetTasksSuccess({
         body: commonFixtures.paginatedListResponse([taskListItem]),
         once: false,
       })
@@ -510,7 +505,14 @@ describe('Страница реестра заявок', () => {
 
       mockUpdateTaskWorkGroupSuccess(task.id)
 
-      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingFinished()
       await fastFilterListTestUtils.expectLoadingFinished()
@@ -534,7 +536,7 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess({ once: false })
 
       const taskListItem = taskFixtures.taskListItem()
-      mockGetTaskListSuccess({
+      mockGetTasksSuccess({
         body: commonFixtures.paginatedListResponse([taskListItem]),
         once: false,
       })
@@ -543,10 +545,12 @@ describe('Страница реестра заявок', () => {
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockTakeTaskSuccess(task.id)
 
-      const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth({
-          userId: task.assignee!.id,
-          userRole: UserRoleEnum.FirstLineSupport,
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
 
@@ -566,7 +570,7 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess({ once: false })
 
       const taskListItem = taskFixtures.taskListItem()
-      mockGetTaskListSuccess({
+      mockGetTasksSuccess({
         body: commonFixtures.paginatedListResponse([taskListItem]),
         once: false,
       })
@@ -583,11 +587,15 @@ describe('Страница реестра заявок', () => {
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockUpdateTaskAssigneeSuccess(task.id)
 
-      const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth({
-          userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-          userRole: UserRoleEnum.SeniorEngineer,
-        }),
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(
+          { userId: canSelectAssigneeProps.workGroup.seniorEngineer.id },
+          undefined,
+          undefined,
+          {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          },
+        ),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -606,7 +614,7 @@ describe('Страница реестра заявок', () => {
       mockGetTaskCountersSuccess({ once: false })
 
       const taskListItem = taskFixtures.taskListItem()
-      mockGetTaskListSuccess({
+      mockGetTasksSuccess({
         body: commonFixtures.paginatedListResponse([taskListItem]),
         once: false,
       })
@@ -621,11 +629,15 @@ describe('Страница реестра заявок', () => {
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockUpdateTaskAssigneeSuccess(task.id)
 
-      const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth({
-          userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-          userRole: UserRoleEnum.SeniorEngineer,
-        }),
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(
+          { userId: canSelectAssigneeProps.workGroup.seniorEngineer.id },
+          undefined,
+          undefined,
+          {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          },
+        ),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -649,10 +661,10 @@ describe('Страница реестра заявок', () => {
 
   describe('Кнопка расширенных фильтров', () => {
     test('Отображается корректно', async () => {
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
 
-      render(<TaskListPage />, {
+      render(<TasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -667,14 +679,14 @@ describe('Страница реестра заявок', () => {
 
     test('Открывает расширенный фильтр', async () => {
       mockGetUserListSuccess()
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
       mockGetWorkGroupsSuccess()
       mockGetCustomerListSuccess()
       mockGetSupportGroupListSuccess()
       mockGetMacroregionListSuccess()
 
-      const { user } = render(<TaskListPage />, {
+      const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -689,9 +701,9 @@ describe('Страница реестра заявок', () => {
 
     test('Не активна во время загрузки заявок', async () => {
       mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
 
-      render(<TaskListPage />, {
+      render(<TasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -707,7 +719,7 @@ describe('Страница реестра заявок', () => {
     describe('После применения', () => {
       /* не работает по какой-то причине */
       test.skip('Отправляется запрос', async () => {
-        mockGetTaskListSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess()
         mockGetWorkGroupsSuccess()
         mockGetUserListSuccess()
@@ -715,7 +727,7 @@ describe('Страница реестра заявок', () => {
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<TaskListPage />, {
+        const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
@@ -730,14 +742,14 @@ describe('Страница реестра заявок', () => {
 
       test('Фильтр закрывается', async () => {
         mockGetUserListSuccess()
-        mockGetTaskListSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetWorkGroupsSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<TaskListPage />, {
+        const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
@@ -763,13 +775,13 @@ describe('Страница реестра заявок', () => {
         mockGetUserActionsSuccess(currentUser.id)
 
         const taskListItem = taskFixtures.taskListItem()
-        mockGetTaskListSuccess({
-          body: taskFixtures.taskListResponse([taskListItem]),
+        mockGetTasksSuccess({
+          body: taskFixtures.getTasksResponse([taskListItem]),
           once: false,
         })
         mockGetTaskSuccess(taskListItem.id)
 
-        const { user } = render(<TaskListPage />, {
+        const { user } = render(<TasksPage />, {
           store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
             queries: { ...getUserMeQueryMock(currentUser) },
           }),
@@ -789,14 +801,14 @@ describe('Страница реестра заявок', () => {
 
       test('Быстрый фильтр сбрасывается', async () => {
         mockGetUserListSuccess()
-        mockGetTaskListSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetWorkGroupsSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<TaskListPage />, {
+        const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
@@ -804,25 +816,29 @@ describe('Страница реестра заявок', () => {
 
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterListTestUtils.expectLoadingFinished()
-        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.FirstLine)
+        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All)
         fastFilterListTestUtils.expectFilterChecked(fastFilter)
         await testUtils.clickExtendedFilterButton(user)
         await tasksFilterTestUtils.findContainer()
         await tasksFilterTestUtils.clickApplyButton(user)
 
-        await waitFor(() => fastFilterListTestUtils.expectFilterNotChecked(fastFilter))
+        await waitFor(() =>
+          fastFilterListTestUtils.expectFilterNotChecked(
+            fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All),
+          ),
+        )
       })
 
       test('Закрывается нажав кнопку закрытия', async () => {
         mockGetUserListSuccess()
         mockGetWorkGroupsSuccess()
         mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess()
+        mockGetTasksSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<TaskListPage />, {
+        const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
@@ -840,7 +856,7 @@ describe('Страница реестра заявок', () => {
         const workGroupListItem = workGroupFixtures.workGroupListItem()
         mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess({ once: false })
-        mockGetTaskListSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
         mockGetCustomerListSuccess({ once: false })
         mockGetMacroregionListSuccess({ once: false })
         mockGetSupportGroupListSuccess({ once: false })
@@ -848,7 +864,7 @@ describe('Страница реестра заявок', () => {
         const userListItem = userFixtures.userListItem()
         mockGetUserListSuccess({ body: [userListItem], once: false })
 
-        const { user } = render(<TaskListPage />, {
+        const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock(
@@ -936,12 +952,12 @@ describe('Страница реестра заявок', () => {
         mockGetWorkGroupsSuccess()
         mockGetTaskCountersSuccess({ once: false })
         mockGetUserListSuccess()
-        mockGetTaskListSuccess({
-          body: commonFixtures.paginatedListResponse(taskFixtures.taskList()),
+        mockGetTasksSuccess({
+          body: commonFixtures.paginatedListResponse(taskFixtures.tasks()),
           once: false,
         })
 
-        const { user } = render(<TaskListPage />, {
+        const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
@@ -981,7 +997,7 @@ describe('Страница реестра заявок', () => {
       const workGroupListItem = workGroupFixtures.workGroupListItem()
       mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetCustomerListSuccess({ once: false })
       mockGetMacroregionListSuccess({ once: false })
       mockGetSupportGroupListSuccess({ once: false })
@@ -989,7 +1005,7 @@ describe('Страница реестра заявок', () => {
       const userListItem = userFixtures.userListItem()
       mockGetUserListSuccess({ body: [userListItem], once: false })
 
-      const { user } = render(<TaskListPage />, {
+      const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock(
@@ -1063,12 +1079,12 @@ describe('Страница реестра заявок', () => {
         mockGetUserListSuccess()
         mockGetWorkGroupsSuccess()
         mockGetTaskCountersSuccess()
-        mockGetTaskListSuccess()
+        mockGetTasksSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
         mockGetSupportGroupListSuccess()
 
-        const { user } = render(<TaskListPage />, {
+        const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
@@ -1088,7 +1104,7 @@ describe('Страница реестра заявок', () => {
 
       test('Фильтр по рабочей группе', async () => {
         mockGetUserListSuccess()
-        mockGetTaskListSuccess()
+        mockGetTasksSuccess()
         mockGetTaskCountersSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionListSuccess()
@@ -1097,7 +1113,7 @@ describe('Страница реестра заявок', () => {
           body: workGroupFixtures.workGroupList(),
         })
 
-        const { user } = render(<TaskListPage />, {
+        const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock(
@@ -1120,17 +1136,17 @@ describe('Страница реестра заявок', () => {
 
   describe('Сохраненные фильтры', () => {
     test('Не отображаются если их нет', () => {
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
 
-      render(<TaskListPage />)
+      render(<TasksPage />)
 
       const filters = tasksFiltersStorageTestUtils.queryContainer()
       expect(filters).not.toBeInTheDocument()
     })
 
     test('Отображаются если есть', async () => {
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
 
       const savedTasksFilters: TasksFiltersStorageType = {
@@ -1140,7 +1156,7 @@ describe('Страница реестра заявок', () => {
       }
       taskLocalStorageService.setTasksFilters(savedTasksFilters)
 
-      render(<TaskListPage />)
+      render(<TasksPage />)
 
       Object.keys(savedTasksFilters).forEach((filterName) => {
         const customersFilter = tasksFiltersStorageTestUtils.getFilter(
@@ -1151,12 +1167,12 @@ describe('Страница реестра заявок', () => {
     })
 
     test('После удаления перезапрашиваются заявки и счетчик заявок', async () => {
-      mockGetTaskListSuccess({ once: false })
+      mockGetTasksSuccess({ once: false })
       mockGetTaskCountersSuccess({ once: false })
 
       taskLocalStorageService.setTasksFilters({ customers: [fakeId()] })
 
-      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+      const { user } = render(<TasksPage />, { store: getStoreWithAuth() })
 
       await fastFilterListTestUtils.expectLoadingFinished()
       await taskTableTestUtils.expectLoadingFinished()
@@ -1176,10 +1192,14 @@ describe('Страница реестра заявок', () => {
 
   describe('Поиск заявки по номеру', () => {
     test('Поле поиска отображается корректно', async () => {
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
 
-      render(<TaskListPage />)
+      render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingFinished()
@@ -1191,10 +1211,14 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Можно ввести значение', async () => {
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
 
-      const { user } = render(<TaskListPage />)
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingFinished()
@@ -1206,9 +1230,13 @@ describe('Страница реестра заявок', () => {
 
     test('Поле не активно во время загрузки заявок', async () => {
       mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
 
-      render(<TaskListPage />, { store: getStoreWithAuth() })
+      render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await waitFor(() => expect(testUtils.getSearchInput()).toBeDisabled())
       await taskTableTestUtils.expectLoadingFinished()
@@ -1221,14 +1249,16 @@ describe('Страница реестра заявок', () => {
         mockGetTaskCountersSuccess()
 
         const taskListItem = taskFixtures.taskListItem()
-        mockGetTaskListSuccess({
-          body: taskFixtures.taskListResponse([taskListItem]),
+        mockGetTasksSuccess({
+          body: taskFixtures.getTasksResponse([taskListItem]),
           once: false,
         })
         mockGetTaskSuccess(taskListItem.id)
 
-        const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth(),
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
         })
 
         await taskTableTestUtils.expectLoadingStarted()
@@ -1245,10 +1275,12 @@ describe('Страница реестра заявок', () => {
         /* не работает по какой-то причине */
         test.skip('При нажатии на кнопку поиска', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+          mockGetTasksSuccess({ once: false })
 
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
+          const { user } = render(<TasksPage />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
           })
 
           await taskTableTestUtils.expectLoadingStarted()
@@ -1262,10 +1294,12 @@ describe('Страница реестра заявок', () => {
 
         test('При нажатии клавиши "Enter"', async () => {
           mockGetTaskCountersSuccess()
-          mockGetTaskListSuccess({ once: false })
+          mockGetTasksSuccess({ once: false })
 
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
+          const { user } = render(<TasksPage />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
           })
 
           await taskTableTestUtils.expectLoadingFinished()
@@ -1275,26 +1309,30 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Кнопка открытия расширенного фильтра недоступна', async () => {
-        const { user } = render(<TaskListPage />)
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.setSearchValue(user, fakeWord(), true)
-
         const extendedFilterButton = testUtils.getExtendedFilterButton()
-
-        await waitFor(() => {
-          expect(extendedFilterButton).toBeDisabled()
-        })
+        await waitFor(() => expect(extendedFilterButton).toBeDisabled())
       })
 
       test('Быстрый фильтр перестаёт быть выбранным', async () => {
-        mockGetTaskListSuccess()
+        mockGetTasksSuccess()
         mockGetTaskCountersSuccess()
 
-        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterListTestUtils.expectLoadingFinished()
-        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.FirstLine)
+        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All)
         fastFilterListTestUtils.expectFilterChecked(fastFilter)
         await testUtils.setSearchValue(user, fakeWord(), true)
 
@@ -1306,17 +1344,21 @@ describe('Страница реестра заявок', () => {
 
     describe('Очищение поля через клавиатуру', () => {
       test('Применяет быстрый фильтр если он был применён ранее', async () => {
-        mockGetTaskListSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess()
 
-        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterListTestUtils.expectLoadingFinished()
 
         const input = await testUtils.setSearchValue(user, fakeWord({ length: 1 }), true)
 
-        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.FirstLine)
+        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All)
 
         await waitFor(() => fastFilterListTestUtils.expectFilterNotChecked(fastFilter))
         await waitFor(() => expect(input).toBeEnabled())
@@ -1327,10 +1369,14 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Делает кнопку открытия расширенного фильтра активной', async () => {
-        mockGetTaskListSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess()
 
-        const { user } = render(<TaskListPage />)
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
@@ -1348,7 +1394,7 @@ describe('Страница реестра заявок', () => {
         const workGroupListItem = workGroupFixtures.workGroupListItem()
         mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess({ once: false })
-        mockGetTaskListSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
         mockGetCustomerListSuccess({ once: false })
         mockGetSupportGroupListSuccess({ once: false })
         mockGetMacroregionListSuccess({ once: false })
@@ -1356,8 +1402,10 @@ describe('Страница реестра заявок', () => {
         const userListItem = userFixtures.userListItem()
         mockGetUserListSuccess({ body: [userListItem], once: false })
 
-        const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
         })
 
         await taskTableTestUtils.expectLoadingStarted()
@@ -1428,7 +1476,11 @@ describe('Страница реестра заявок', () => {
 
     describe('Сброс значения через кнопку', () => {
       test('Очищает поле ввода', async () => {
-        const { user } = render(<TaskListPage />)
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         const input = await testUtils.setSearchValue(user, fakeWord())
         await testUtils.clickSearchClearButton(user)
@@ -1437,16 +1489,20 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Применяет быстрый фильтр если он был применён ранее', async () => {
-        mockGetTaskListSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ body: taskFixtures.taskCounters() })
 
-        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterListTestUtils.expectLoadingFinished()
         await testUtils.setSearchValue(user, fakeWord(), true)
-        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.FirstLine)
+        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All)
         await waitFor(() => fastFilterListTestUtils.expectFilterNotChecked(fastFilter))
         await testUtils.clickSearchClearButton(user)
         await taskTableTestUtils.expectLoadingStarted()
@@ -1455,10 +1511,14 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Делает кнопку открытия расширенного фильтра активной', async () => {
-        mockGetTaskListSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess()
 
-        const { user } = render(<TaskListPage />)
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
@@ -1476,7 +1536,7 @@ describe('Страница реестра заявок', () => {
         const workGroupListItem = workGroupFixtures.workGroupListItem()
         mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess({ once: false })
-        mockGetTaskListSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
         mockGetCustomerListSuccess({ once: false })
         mockGetMacroregionListSuccess({ once: false })
         mockGetSupportGroupListSuccess({ once: false })
@@ -1484,8 +1544,10 @@ describe('Страница реестра заявок', () => {
         const userListItem = userFixtures.userListItem()
         mockGetUserListSuccess({ body: [userListItem], once: false })
 
-        const { user } = render(<TaskListPage />, {
-          store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
         })
 
         await taskTableTestUtils.expectLoadingStarted()
@@ -1561,10 +1623,14 @@ describe('Страница реестра заявок', () => {
 
   describe('Кнопка обновления заявок', () => {
     test('Отображается корректно', async () => {
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
 
-      render(<TaskListPage />)
+      render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingFinished()
       const button = testUtils.getUpdateTasksButton()
@@ -1575,10 +1641,12 @@ describe('Страница реестра заявок', () => {
 
     test('Перезагружает заявки', async () => {
       mockGetTaskCountersSuccess({ once: false })
-      mockGetTaskListSuccess({ once: false })
+      mockGetTasksSuccess({ once: false })
 
-      const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth(),
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -1588,10 +1656,12 @@ describe('Страница реестра заявок', () => {
 
     test('Перезагружает количество заявок для быстрых фильтров', async () => {
       mockGetTaskCountersSuccess({ once: false })
-      mockGetTaskListSuccess({ once: false })
+      mockGetTasksSuccess({ once: false })
 
-      const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth(),
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -1604,14 +1674,21 @@ describe('Страница реестра заявок', () => {
       mockGetWorkGroupsSuccess()
       mockGetTaskCountersSuccess({ once: false })
 
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id)
+
       const taskListItem = taskFixtures.taskListItem()
-      mockGetTaskListSuccess({
-        body: taskFixtures.taskListResponse([taskListItem]),
+      mockGetTasksSuccess({
+        body: taskFixtures.getTasksResponse([taskListItem]),
         once: false,
       })
       mockGetTaskSuccess(taskListItem.id)
 
-      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingFinished()
@@ -1624,9 +1701,13 @@ describe('Страница реестра заявок', () => {
 
     test('Не активна во время загрузки заявок', async () => {
       mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
 
-      render(<TaskListPage />, { store: getStoreWithAuth() })
+      render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await waitFor(() => expect(testUtils.getUpdateTasksButton()).toBeDisabled())
       await taskTableTestUtils.expectLoadingFinished()
@@ -1635,9 +1716,13 @@ describe('Страница реестра заявок', () => {
 
     test('Автообновление работает', async () => {
       mockGetTaskCountersSuccess({ once: false })
-      mockGetTaskListSuccess({ once: false })
+      mockGetTasksSuccess({ once: false })
 
-      const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await fastFilterListTestUtils.expectLoadingFinished()
       await taskTableTestUtils.expectLoadingFinished()
@@ -1651,9 +1736,13 @@ describe('Страница реестра заявок', () => {
   describe('Кнопка создания заявки', () => {
     test('Отображается корректно', () => {
       mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
 
-      render(<TaskListPage />)
+      render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       const button = testUtils.getCreateTaskButton()
 
@@ -1664,14 +1753,18 @@ describe('Страница реестра заявок', () => {
 
   describe('Таблица заявок', () => {
     test('Отображается корректно', async () => {
-      const taskList = taskFixtures.taskList(2)
+      const taskList = taskFixtures.tasks(2)
 
       mockGetTaskCountersSuccess()
-      mockGetTaskListSuccess({
-        body: taskFixtures.taskListResponse(taskList),
+      mockGetTasksSuccess({
+        body: taskFixtures.getTasksResponse(taskList),
       })
 
-      render(<TaskListPage />, { store: getStoreWithAuth() })
+      render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await taskTableTestUtils.expectLoadingStarted()
       const taskTable = await taskTableTestUtils.expectLoadingFinished()
@@ -1689,12 +1782,16 @@ describe('Страница реестра заявок', () => {
         mockGetWorkGroupsSuccess()
 
         const taskListItem = taskFixtures.taskListItem()
-        mockGetTaskListSuccess({
-          body: taskFixtures.taskListResponse([taskListItem]),
+        mockGetTasksSuccess({
+          body: taskFixtures.getTasksResponse([taskListItem]),
         })
         mockGetTaskSuccess(taskListItem.id)
 
-        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
@@ -1706,13 +1803,20 @@ describe('Страница реестра заявок', () => {
         mockGetTaskCountersSuccess()
         mockGetWorkGroupsSuccess()
 
+        const currentUser = userFixtures.user()
+        mockGetUserActionsSuccess(currentUser.id)
+
         const taskListItem = taskFixtures.taskListItem()
-        mockGetTaskListSuccess({
-          body: taskFixtures.taskListResponse([taskListItem]),
+        mockGetTasksSuccess({
+          body: taskFixtures.getTasksResponse([taskListItem]),
         })
         mockGetTaskSuccess(taskListItem.id)
 
-        const { user } = render(<TaskListPage />, { store: getStoreWithAuth() })
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
 
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
@@ -1723,498 +1827,352 @@ describe('Страница реестра заявок', () => {
       })
     })
 
-    describe('Колонка', () => {
-      describe('Заявка', () => {
-        test('После сортировки список отображается корректно', async () => {
-          mockGetTaskCountersSuccess()
+    test('Колонка - заявка. После сортировки список отображается корректно', async () => {
+      mockGetTaskCountersSuccess()
 
-          const taskList = taskFixtures.taskList()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskList),
-          })
+      const taskList = taskFixtures.tasks()
+      mockGetTasksSuccess({
+        once: false,
+        body: taskFixtures.getTasksResponse(taskList),
+      })
 
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickColTitle(user, 'Заявка')
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickColTitle(user, 'Заявка')
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
 
-          taskList.forEach((item) => {
-            const row = taskTableTestUtils.getRow(item.id)
-            expect(row).toBeInTheDocument()
-          })
+      taskList.forEach((item) => {
+        const row = taskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+
+    test('Колонка - внешний номер. После сортировки список отображается корректно', async () => {
+      mockGetTaskCountersSuccess()
+
+      const taskList = taskFixtures.tasks()
+      mockGetTasksSuccess({
+        once: false,
+        body: taskFixtures.getTasksResponse(taskList),
+      })
+
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickColTitle(user, 'Внеш.номер')
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+
+      taskList.forEach((item) => {
+        const row = taskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+
+    test('Колонка - объект. После сортировки список отображается корректно', async () => {
+      mockGetTaskCountersSuccess()
+
+      const taskList = taskFixtures.tasks()
+      mockGetTasksSuccess({
+        once: false,
+        body: taskFixtures.getTasksResponse(taskList),
+      })
+
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickColTitle(user, 'Объект')
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+
+      taskList.forEach((item) => {
+        const row = taskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+
+    test('Колонка - тема. После сортировки список отображается корректно', async () => {
+      mockGetTaskCountersSuccess()
+
+      const taskList = taskFixtures.tasks()
+      mockGetTasksSuccess({
+        once: false,
+        body: taskFixtures.getTasksResponse(taskList),
+      })
+
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickColTitle(user, 'Тема')
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+
+      taskList.forEach((item) => {
+        const row = taskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+
+    test('Колонка - исполнитель. После сортировки список отображается корректно', async () => {
+      mockGetTaskCountersSuccess()
+
+      const taskList = taskFixtures.tasks()
+      mockGetTasksSuccess({
+        once: false,
+        body: taskFixtures.getTasksResponse(taskList),
+      })
+
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickColTitle(user, 'Исполнитель')
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+
+      taskList.forEach((item) => {
+        const row = taskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+
+    test('Колонка - рабочая группа. После сортировки список отображается корректно', async () => {
+      mockGetTaskCountersSuccess()
+
+      const taskList = taskFixtures.tasks()
+      mockGetTasksSuccess({
+        once: false,
+        body: taskFixtures.getTasksResponse(taskList),
+      })
+
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickColTitle(user, 'Рабочая группа')
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+
+      taskList.forEach((item) => {
+        const row = taskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+
+    test('Колонка - группа поддержки. После сортировки список отображается корректно', async () => {
+      mockGetTaskCountersSuccess()
+
+      const taskList = taskFixtures.tasks()
+      mockGetTasksSuccess({
+        once: false,
+        body: taskFixtures.getTasksResponse(taskList),
+      })
+
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickColTitle(user, 'Группа поддержки')
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+
+      taskList.forEach((item) => {
+        const row = taskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
+
+    describe('Колонка - выполнить до', () => {
+      test('После сортировки список отображается корректно', async () => {
+        mockGetTaskCountersSuccess()
+
+        const taskList = taskFixtures.tasks()
+        mockGetTasksSuccess({
+          once: false,
+          body: taskFixtures.getTasksResponse(taskList),
+        })
+
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        await taskTableTestUtils.clickColTitle(user, 'Выполнить до')
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+
+        taskList.forEach((item) => {
+          const row = taskTableTestUtils.getRow(item.id)
+          expect(row).toBeInTheDocument()
         })
       })
 
-      describe('Внешний номер', () => {
-        test('После сортировки список отображается корректно', async () => {
-          mockGetTaskCountersSuccess()
-
-          const taskList = taskFixtures.taskList()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskList),
-          })
-
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickColTitle(user, 'Внеш.номер')
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-
-          taskList.forEach((item) => {
-            const row = taskTableTestUtils.getRow(item.id)
-            expect(row).toBeInTheDocument()
-          })
+      test('Разделение списка отображается при сортировке по полю', async () => {
+        mockGetTaskCountersSuccess()
+        const item1 = taskFixtures.taskListItem({ olaStatus: TaskOlaStatusEnum.Expired })
+        const item2 = taskFixtures.taskListItem({ olaNextBreachTime: moment().toISOString() })
+        const item3 = taskFixtures.taskListItem({
+          olaNextBreachTime: moment().add(1, 'day').toISOString(),
         })
+        mockGetTasksSuccess({
+          once: false,
+          body: taskFixtures.getTasksResponse([item1, item2, item3]),
+        })
+
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        const row1 = taskTableTestUtils.getRow(item1.id)
+        const row2 = taskTableTestUtils.getRow(item2.id)
+        const row3 = taskTableTestUtils.getRow(item3.id)
+
+        expect(row1).toHaveStyle(tableItemBoundaryStyles)
+        expect(row2).toHaveStyle(tableItemBoundaryStyles)
+        expect(row3).not.toHaveStyle(tableItemBoundaryStyles)
       })
 
-      describe('Объект', () => {
-        test('После сортировки список отображается корректно', async () => {
-          mockGetTaskCountersSuccess()
-
-          const taskList = taskFixtures.taskList()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskList),
-          })
-
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickColTitle(user, 'Объект')
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-
-          taskList.forEach((item) => {
-            const row = taskTableTestUtils.getRow(item.id)
-            expect(row).toBeInTheDocument()
-          })
+      test('Разделение списка не отображается без сортировки по полю', async () => {
+        mockGetTaskCountersSuccess()
+        const item1 = taskFixtures.taskListItem({
+          olaNextBreachTime: moment().subtract(1, 'day').toISOString(),
         })
+        const item2 = taskFixtures.taskListItem({ olaNextBreachTime: moment().toISOString() })
+        const item3 = taskFixtures.taskListItem({
+          olaNextBreachTime: moment().add(1, 'day').toISOString(),
+        })
+        mockGetTasksSuccess({
+          once: false,
+          body: taskFixtures.getTasksResponse([item1, item2, item3]),
+        })
+
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await taskTableTestUtils.clickColTitle(user, 'Комментарий')
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        const row1 = taskTableTestUtils.getRow(item1.id)
+        const row2 = taskTableTestUtils.getRow(item2.id)
+        const row3 = taskTableTestUtils.getRow(item3.id)
+
+        expect(row1).not.toHaveStyle(tableItemBoundaryStyles)
+        expect(row2).not.toHaveStyle(tableItemBoundaryStyles)
+        expect(row3).not.toHaveStyle(tableItemBoundaryStyles)
+      })
+    })
+
+    test('Колонка - комментарий. После сортировки список отображается корректно', async () => {
+      mockGetTaskCountersSuccess()
+
+      const taskList = taskFixtures.tasks()
+      mockGetTasksSuccess({
+        once: false,
+        body: taskFixtures.getTasksResponse(taskList),
       })
 
-      describe('Тема', () => {
-        test('После сортировки список отображается корректно', async () => {
-          mockGetTaskCountersSuccess()
-
-          const taskList = taskFixtures.taskList()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskList),
-          })
-
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickColTitle(user, 'Тема')
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-
-          taskList.forEach((item) => {
-            const row = taskTableTestUtils.getRow(item.id)
-            expect(row).toBeInTheDocument()
-          })
-        })
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
       })
 
-      describe('Исполнитель', () => {
-        test('После сортировки список отображается корректно', async () => {
-          mockGetTaskCountersSuccess()
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickColTitle(user, 'Комментарий')
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
 
-          const taskList = taskFixtures.taskList()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskList),
-          })
+      taskList.forEach((item) => {
+        const row = taskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
+      })
+    })
 
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
+    test('Колонка - дата создания. После сортировки список отображается корректно', async () => {
+      mockGetTaskCountersSuccess()
 
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickColTitle(user, 'Исполнитель')
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-
-          taskList.forEach((item) => {
-            const row = taskTableTestUtils.getRow(item.id)
-            expect(row).toBeInTheDocument()
-          })
-        })
+      const taskList = taskFixtures.tasks()
+      mockGetTasksSuccess({
+        once: false,
+        body: taskFixtures.getTasksResponse(taskList),
       })
 
-      describe('Рабочая группа', () => {
-        describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
-          test('Не отображается', async () => {
-            mockGetTaskCountersSuccess()
-
-            const taskList = taskFixtures.taskList()
-            mockGetTaskListSuccess({
-              once: false,
-              body: taskFixtures.taskListResponse(taskList),
-            })
-
-            render(<TaskListPage />, {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
-              }),
-            })
-
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-
-            expect(taskTableTestUtils.queryColTitle('Рабочая группа')).not.toBeInTheDocument()
-          })
-        })
-
-        describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
-          test('После сортировки список отображается корректно', async () => {
-            mockGetTaskCountersSuccess()
-
-            const taskList = taskFixtures.taskList()
-            mockGetTaskListSuccess({
-              once: false,
-              body: taskFixtures.taskListResponse(taskList),
-            })
-
-            const { user } = render(<TaskListPage />, {
-              store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }),
-            })
-
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-            await taskTableTestUtils.clickColTitle(user, 'Рабочая группа')
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-
-            taskList.forEach((item) => {
-              const row = taskTableTestUtils.getRow(item.id)
-              expect(row).toBeInTheDocument()
-            })
-          })
-        })
-
-        describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
-          test('После сортировки список отображается корректно', async () => {
-            mockGetTaskCountersSuccess()
-
-            const taskList = taskFixtures.taskList()
-            mockGetTaskListSuccess({
-              once: false,
-              body: taskFixtures.taskListResponse(taskList),
-            })
-
-            const { user } = render(<TaskListPage />, {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
-              }),
-            })
-
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-            await taskTableTestUtils.clickColTitle(user, 'Рабочая группа')
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-
-            taskList.forEach((item) => {
-              const row = taskTableTestUtils.getRow(item.id)
-              expect(row).toBeInTheDocument()
-            })
-          })
-        })
-
-        describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
-          test('После сортировки список отображается корректно', async () => {
-            mockGetTaskCountersSuccess()
-
-            const taskList = taskFixtures.taskList()
-            mockGetTaskListSuccess({
-              once: false,
-              body: taskFixtures.taskListResponse(taskList),
-            })
-
-            const { user } = render(<TaskListPage />, {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
-              }),
-            })
-
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-            await taskTableTestUtils.clickColTitle(user, 'Рабочая группа')
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-
-            taskList.forEach((item) => {
-              const row = taskTableTestUtils.getRow(item.id)
-              expect(row).toBeInTheDocument()
-            })
-          })
-        })
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
       })
 
-      describe('Группа поддержки', () => {
-        describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
-          test('После сортировки список отображается корректно', async () => {
-            mockGetTaskCountersSuccess()
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
+      await taskTableTestUtils.clickColTitle(user, 'Дата создания')
+      await taskTableTestUtils.expectLoadingStarted()
+      await taskTableTestUtils.expectLoadingFinished()
 
-            const taskList = taskFixtures.taskList()
-            mockGetTaskListSuccess({
-              once: false,
-              body: taskFixtures.taskListResponse(taskList),
-            })
-
-            const { user } = render(<TaskListPage />, {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
-              }),
-            })
-
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-            await taskTableTestUtils.clickColTitle(user, 'Группа поддержки')
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-
-            taskList.forEach((item) => {
-              const row = taskTableTestUtils.getRow(item.id)
-              expect(row).toBeInTheDocument()
-            })
-          })
-        })
-
-        describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
-          test('Не отображается', async () => {
-            mockGetTaskCountersSuccess()
-
-            const taskList = taskFixtures.taskList()
-            mockGetTaskListSuccess({
-              once: false,
-              body: taskFixtures.taskListResponse(taskList),
-            })
-
-            render(<TaskListPage />, {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
-              }),
-            })
-
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-
-            expect(taskTableTestUtils.queryColTitle('Группа поддержки')).not.toBeInTheDocument()
-          })
-        })
-
-        describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
-          test('Не отображается', async () => {
-            mockGetTaskCountersSuccess()
-
-            const taskList = taskFixtures.taskList()
-            mockGetTaskListSuccess({
-              once: false,
-              body: taskFixtures.taskListResponse(taskList),
-            })
-
-            render(<TaskListPage />, {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
-              }),
-            })
-
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-
-            expect(taskTableTestUtils.queryColTitle('Группа поддержки')).not.toBeInTheDocument()
-          })
-        })
-
-        describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
-          test('Не отображается', async () => {
-            mockGetTaskCountersSuccess()
-
-            const taskList = taskFixtures.taskList()
-            mockGetTaskListSuccess({
-              once: false,
-              body: taskFixtures.taskListResponse(taskList),
-            })
-
-            render(<TaskListPage />, {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
-              }),
-            })
-
-            await taskTableTestUtils.expectLoadingStarted()
-            await taskTableTestUtils.expectLoadingFinished()
-
-            expect(taskTableTestUtils.queryColTitle('Группа поддержки')).not.toBeInTheDocument()
-          })
-        })
-      })
-
-      describe('Выполнить до', () => {
-        test('После сортировки список отображается корректно', async () => {
-          mockGetTaskCountersSuccess()
-
-          const taskList = taskFixtures.taskList()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskList),
-          })
-
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickColTitle(user, 'Выполнить до')
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-
-          taskList.forEach((item) => {
-            const row = taskTableTestUtils.getRow(item.id)
-            expect(row).toBeInTheDocument()
-          })
-        })
-
-        test('Разделение списка отображается при сортировке по полю', async () => {
-          mockGetTaskCountersSuccess()
-          const item1 = taskFixtures.taskListItem({ olaStatus: TaskOlaStatusEnum.Expired })
-          const item2 = taskFixtures.taskListItem({ olaNextBreachTime: moment().toISOString() })
-          const item3 = taskFixtures.taskListItem({
-            olaNextBreachTime: moment().add(1, 'day').toISOString(),
-          })
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse([item1, item2, item3]),
-          })
-
-          render(<TaskListPage />)
-
-          await taskTableTestUtils.expectLoadingFinished()
-          const row1 = taskTableTestUtils.getRow(item1.id)
-          const row2 = taskTableTestUtils.getRow(item2.id)
-          const row3 = taskTableTestUtils.getRow(item3.id)
-
-          expect(row1).toHaveStyle(tableItemBoundaryStyles)
-          expect(row2).toHaveStyle(tableItemBoundaryStyles)
-          expect(row3).not.toHaveStyle(tableItemBoundaryStyles)
-        })
-
-        test('Разделение списка не отображается без сортировки по полю', async () => {
-          mockGetTaskCountersSuccess()
-          const item1 = taskFixtures.taskListItem({
-            olaNextBreachTime: moment().subtract(1, 'day').toISOString(),
-          })
-          const item2 = taskFixtures.taskListItem({ olaNextBreachTime: moment().toISOString() })
-          const item3 = taskFixtures.taskListItem({
-            olaNextBreachTime: moment().add(1, 'day').toISOString(),
-          })
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse([item1, item2, item3]),
-          })
-
-          const { user } = render(<TaskListPage />)
-
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickColTitle(user, 'Комментарий')
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-          const row1 = taskTableTestUtils.getRow(item1.id)
-          const row2 = taskTableTestUtils.getRow(item2.id)
-          const row3 = taskTableTestUtils.getRow(item3.id)
-
-          expect(row1).not.toHaveStyle(tableItemBoundaryStyles)
-          expect(row2).not.toHaveStyle(tableItemBoundaryStyles)
-          expect(row3).not.toHaveStyle(tableItemBoundaryStyles)
-        })
-      })
-
-      describe('Комментарий', () => {
-        test('После сортировки список отображается корректно', async () => {
-          mockGetTaskCountersSuccess()
-
-          const taskList = taskFixtures.taskList()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskList),
-          })
-
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickColTitle(user, 'Комментарий')
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-
-          taskList.forEach((item) => {
-            const row = taskTableTestUtils.getRow(item.id)
-            expect(row).toBeInTheDocument()
-          })
-        })
-      })
-
-      describe('Дата создания', () => {
-        test('После сортировки список отображается корректно', async () => {
-          mockGetTaskCountersSuccess()
-
-          const taskList = taskFixtures.taskList()
-          mockGetTaskListSuccess({
-            once: false,
-            body: taskFixtures.taskListResponse(taskList),
-          })
-
-          const { user } = render(<TaskListPage />, {
-            store: getStoreWithAuth(),
-          })
-
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-          await taskTableTestUtils.clickColTitle(user, 'Дата создания')
-          await taskTableTestUtils.expectLoadingStarted()
-          await taskTableTestUtils.expectLoadingFinished()
-
-          taskList.forEach((item) => {
-            const row = taskTableTestUtils.getRow(item.id)
-            expect(row).toBeInTheDocument()
-          })
-        })
+      taskList.forEach((item) => {
+        const row = taskTableTestUtils.getRow(item.id)
+        expect(row).toBeInTheDocument()
       })
     })
 
     test('Пагинация работает', async () => {
       mockGetTaskCountersSuccess()
 
-      const taskList = taskFixtures.taskList(DEFAULT_PAGE_SIZE + 1)
-      mockGetTaskListSuccess({
+      const taskList = taskFixtures.tasks(DEFAULT_PAGE_SIZE + 1)
+      mockGetTasksSuccess({
         once: false,
-        body: taskFixtures.taskListResponse(taskList),
+        body: taskFixtures.getTasksResponse(taskList),
       })
 
-      const { user } = render(<TaskListPage />, {
-        store: getStoreWithAuth(),
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
       })
 
       await taskTableTestUtils.expectLoadingStarted()

@@ -6,36 +6,32 @@ import React, { FC, useMemo } from 'react'
 import { TaskCountersKeys } from 'modules/task/models'
 
 import FilterTag from './FastFilterListItem'
-import { fastFiltersConfig } from './constants'
-import { FastFilterItem, FastFilterListProps } from './types'
+import { FastFilterItem, FastFiltersProps } from './types'
 
-const FastFilterList: FC<FastFilterListProps> = ({
-  data,
+const FastFilters: FC<FastFiltersProps> = ({
+  config,
+  counters: initialCounters,
   isShowCounters,
   isLoading,
   onChange,
   selectedFilter,
   disabled,
-  userRole,
+  permissions,
 }) => {
   const filters: FastFilterItem[] = useMemo(() => {
-    const counters = (data || {}) as NonNullable<typeof data>
+    const counters = (initialCounters || {}) as NonNullable<typeof initialCounters>
 
-    return fastFiltersConfig.reduce<FastFilterItem[]>((acc, { filter, roles, text }) => {
+    return config.reduce<FastFilterItem[]>((acc, { filter, canShow, text }) => {
       const taskCounterKey = camelize(filter.toLowerCase()) as TaskCountersKeys
       const taskCounterValue = isShowCounters ? counters[taskCounterKey] : null
+      const result = { text, value: filter, amount: taskCounterValue }
 
-      if (userRole && roles.includes(userRole)) {
-        acc.push({
-          text,
-          value: filter,
-          amount: taskCounterValue,
-        })
-      }
+      if (!canShow) acc.push(result)
+      else if (canShow(permissions)) acc.push(result)
 
       return acc
     }, [])
-  }, [data, isShowCounters, userRole])
+  }, [config, initialCounters, isShowCounters, permissions])
 
   return (
     <Space data-testid='fast-filter-list' wrap>
@@ -55,4 +51,4 @@ const FastFilterList: FC<FastFilterListProps> = ({
   )
 }
 
-export default FastFilterList
+export default FastFilters

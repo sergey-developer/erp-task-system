@@ -12,7 +12,7 @@ import { FilterParams } from 'shared/types/filter'
 import { PaginationParams } from 'shared/types/pagination'
 import { ExtendSortKey } from 'shared/types/sort'
 
-export type GetTaskListSortKey =
+export type GetTasksSortKey =
   | 'id'
   | 'name'
   | 'title'
@@ -25,7 +25,7 @@ export type GetTaskListSortKey =
   | 'created_at'
   | 'ola_next_breach_time'
 
-export type GetTaskListSortValue = ExtendSortKey<GetTaskListSortKey>
+export type GetTasksSortValue = ExtendSortKey<GetTasksSortKey>
 
 export type FastFilterQueries = Partial<{
   filter: FastFilterEnum
@@ -37,7 +37,7 @@ export type SearchFields = Partial<{
   searchByTitle: string
 }>
 
-export type ExtendedFilterQueries = Partial<{
+export type TasksFilterQueries = Partial<{
   completeAtFrom: string
   completeAtTo: string
   dateFrom: string
@@ -53,15 +53,15 @@ export type ExtendedFilterQueries = Partial<{
 }> &
   SearchFields
 
-export type GetTaskListQueryArgs = PaginationParams &
+export type GetTasksQueryArgs = PaginationParams &
   Partial<{
-    sort: GetTaskListSortValue
+    sort: GetTasksSortValue
     userId: IdType
     lat: number
     long: number
   }> &
-  ExtendedFilterQueries &
+  TasksFilterQueries &
   FastFilterQueries &
   FilterParams
 
-export type GetTaskListSuccessResponse = PaginationResponse<TaskListItemModel>
+export type GetTasksSuccessResponse = PaginationResponse<TaskListItemModel>
