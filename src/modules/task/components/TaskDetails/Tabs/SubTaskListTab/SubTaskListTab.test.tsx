@@ -410,7 +410,7 @@ describe('Вкладка списка заданий заявки', () => {
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
+          store: getStoreWithAuth(props.task.assignee!),
         },
       )
 
@@ -434,7 +434,7 @@ describe('Вкладка списка заданий заявки', () => {
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
+          store: getStoreWithAuth(props.task.assignee!),
         },
       )
 
@@ -462,7 +462,7 @@ describe('Вкладка списка заданий заявки', () => {
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
+          store: getStoreWithAuth(props.task.assignee!),
         },
       )
 
@@ -492,7 +492,7 @@ describe('Вкладка списка заданий заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task.assignee!.id,
+              id: props.task.assignee!.id,
             }),
           },
         )
@@ -523,7 +523,7 @@ describe('Вкладка списка заданий заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task.assignee!.id,
+              id: props.task.assignee!.id,
             }),
           },
         )
@@ -570,7 +570,7 @@ describe('Вкладка списка заданий заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task.assignee!.id,
+              id: props.task.assignee!.id,
             }),
           },
         )
@@ -610,7 +610,7 @@ describe('Вкладка списка заданий заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task.assignee!.id,
+              id: props.task.assignee!.id,
             }),
           },
         )
@@ -645,7 +645,7 @@ describe('Вкладка списка заданий заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task.assignee!.id,
+              id: props.task.assignee!.id,
             }),
           },
         )
@@ -679,7 +679,7 @@ describe('Вкладка списка заданий заявки', () => {
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
+          store: getStoreWithAuth(props.task.assignee!),
         },
       )
 
@@ -703,7 +703,7 @@ describe('Вкладка списка заданий заявки', () => {
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
+          store: getStoreWithAuth(props.task.assignee!),
         },
       )
 
@@ -731,7 +731,7 @@ describe('Вкладка списка заданий заявки', () => {
           }}
         />,
         {
-          store: getStoreWithAuth({ userId: props.task.assignee!.id }),
+          store: getStoreWithAuth(props.task.assignee!),
         },
       )
 
@@ -761,7 +761,7 @@ describe('Вкладка списка заданий заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task.assignee!.id,
+              id: props.task.assignee!.id,
             }),
           },
         )
@@ -792,7 +792,7 @@ describe('Вкладка списка заданий заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task.assignee!.id,
+              id: props.task.assignee!.id,
             }),
           },
         )
@@ -838,7 +838,7 @@ describe('Вкладка списка заданий заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task.assignee!.id,
+              id: props.task.assignee!.id,
             }),
           },
         )
@@ -876,7 +876,7 @@ describe('Вкладка списка заданий заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task.assignee!.id,
+              id: props.task.assignee!.id,
             }),
           },
         )
@@ -911,7 +911,7 @@ describe('Вкладка списка заданий заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: props.task.assignee!.id,
+              id: props.task.assignee!.id,
             }),
           },
         )

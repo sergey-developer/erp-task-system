@@ -134,7 +134,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -161,7 +161,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -187,7 +187,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -222,7 +222,7 @@ describe('Контейнер детальной карточки заявки', 
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.FirstLineSupport,
+                  role: UserRoleEnum.FirstLineSupport,
                 }),
               })
 
@@ -249,7 +249,7 @@ describe('Контейнер детальной карточки заявки', 
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.FirstLineSupport,
+                  role: UserRoleEnum.FirstLineSupport,
                 }),
               })
 
@@ -278,7 +278,7 @@ describe('Контейнер детальной карточки заявки', 
 
             render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -314,7 +314,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -353,7 +353,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -400,7 +400,7 @@ describe('Контейнер детальной карточки заявки', 
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.Engineer,
+                  role: UserRoleEnum.Engineer,
                 }),
               })
 
@@ -427,7 +427,7 @@ describe('Контейнер детальной карточки заявки', 
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.Engineer,
+                  role: UserRoleEnum.Engineer,
                 }),
               })
 
@@ -456,7 +456,7 @@ describe('Контейнер детальной карточки заявки', 
 
             render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
+                role: UserRoleEnum.Engineer,
               }),
             })
 
@@ -494,7 +494,7 @@ describe('Контейнер детальной карточки заявки', 
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.SeniorEngineer,
+                  role: UserRoleEnum.SeniorEngineer,
                 }),
               })
 
@@ -521,7 +521,7 @@ describe('Контейнер детальной карточки заявки', 
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.SeniorEngineer,
+                  role: UserRoleEnum.SeniorEngineer,
                 }),
               })
 
@@ -550,7 +550,7 @@ describe('Контейнер детальной карточки заявки', 
 
             render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -586,7 +586,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -625,7 +625,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -672,7 +672,7 @@ describe('Контейнер детальной карточки заявки', 
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.HeadOfDepartment,
+                  role: UserRoleEnum.HeadOfDepartment,
                 }),
               })
 
@@ -699,7 +699,7 @@ describe('Контейнер детальной карточки заявки', 
 
               render(<TaskCardContainer {...props} />, {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.HeadOfDepartment,
+                  role: UserRoleEnum.HeadOfDepartment,
                 }),
               })
 
@@ -728,7 +728,7 @@ describe('Контейнер детальной карточки заявки', 
 
             render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -764,7 +764,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -803,7 +803,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -847,8 +847,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.FirstLineSupport,
+              id: task.assignee!.id,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -895,8 +895,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.FirstLineSupport,
+              id: task.assignee!.id,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -946,8 +946,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.FirstLineSupport,
+              id: task.assignee!.id,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -984,8 +984,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.Engineer,
+              id: task.assignee!.id,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -1032,8 +1032,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.Engineer,
+              id: task.assignee!.id,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -1083,8 +1083,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.Engineer,
+              id: task.assignee!.id,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -1121,8 +1121,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.SeniorEngineer,
+              id: task.assignee!.id,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -1169,8 +1169,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.SeniorEngineer,
+              id: task.assignee!.id,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -1220,8 +1220,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.SeniorEngineer,
+              id: task.assignee!.id,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -1258,8 +1258,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.HeadOfDepartment,
+              id: task.assignee!.id,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1306,8 +1306,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.HeadOfDepartment,
+              id: task.assignee!.id,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1357,8 +1357,8 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
-              userRole: UserRoleEnum.HeadOfDepartment,
+              id: task.assignee!.id,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1393,7 +1393,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -1411,7 +1411,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -1427,7 +1427,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -1446,7 +1446,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -1465,7 +1465,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -1483,7 +1483,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -1506,7 +1506,7 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
+            role: UserRoleEnum.FirstLineSupport,
           }),
         })
 
@@ -1533,7 +1533,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -1551,7 +1551,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -1567,7 +1567,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -1586,7 +1586,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -1604,7 +1604,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -1622,7 +1622,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -1645,7 +1645,7 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userRole: UserRoleEnum.Engineer,
+            role: UserRoleEnum.Engineer,
           }),
         })
 
@@ -1672,7 +1672,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -1690,7 +1690,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -1706,7 +1706,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -1725,7 +1725,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -1743,7 +1743,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -1761,7 +1761,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -1784,7 +1784,7 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
+            role: UserRoleEnum.SeniorEngineer,
           }),
         })
 
@@ -1811,7 +1811,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1829,7 +1829,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1845,7 +1845,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1863,7 +1863,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1881,7 +1881,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1899,7 +1899,7 @@ describe('Контейнер детальной карточки заявки', 
 
           render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -1922,7 +1922,7 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userRole: UserRoleEnum.HeadOfDepartment,
+            role: UserRoleEnum.HeadOfDepartment,
           }),
         })
 
@@ -1954,8 +1954,8 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userId: task.assignee!.id,
-            userRole: UserRoleEnum.FirstLineSupport,
+            id: task.assignee!.id,
+            role: UserRoleEnum.FirstLineSupport,
           }),
         })
 
@@ -1985,8 +1985,8 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userId: task.assignee!.id,
-            userRole: UserRoleEnum.FirstLineSupport,
+            id: task.assignee!.id,
+            role: UserRoleEnum.FirstLineSupport,
           }),
         })
 
@@ -2018,8 +2018,8 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userId: task.assignee!.id,
-            userRole: UserRoleEnum.FirstLineSupport,
+            id: task.assignee!.id,
+            role: UserRoleEnum.FirstLineSupport,
           }),
         })
 
@@ -2053,8 +2053,8 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-            userRole: UserRoleEnum.SeniorEngineer,
+            id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+            role: UserRoleEnum.SeniorEngineer,
           }),
         })
 
@@ -2095,8 +2095,8 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-            userRole: UserRoleEnum.SeniorEngineer,
+            id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+            role: UserRoleEnum.SeniorEngineer,
           }),
         })
 
@@ -2135,7 +2135,7 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
+            role: UserRoleEnum.FirstLineSupport,
           }),
         })
 
@@ -2166,7 +2166,7 @@ describe('Контейнер детальной карточки заявки', 
 
         const { user } = render(<TaskCardContainer {...props} />, {
           store: getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
+            role: UserRoleEnum.FirstLineSupport,
           }),
         })
 
@@ -2200,7 +2200,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -2246,7 +2246,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -2289,7 +2289,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -2330,7 +2330,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -2369,7 +2369,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -2414,7 +2414,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -2458,7 +2458,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -2501,7 +2501,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -2542,7 +2542,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -2581,7 +2581,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           })
 
@@ -2626,7 +2626,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -2670,7 +2670,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -2713,7 +2713,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -2754,7 +2754,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -2793,7 +2793,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           })
 
@@ -2838,7 +2838,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -2882,7 +2882,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -2926,7 +2926,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -2968,7 +2968,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -3007,7 +3007,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           })
 
@@ -3056,7 +3056,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -3100,7 +3100,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -3139,7 +3139,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -3174,7 +3174,7 @@ describe('Контейнер детальной карточки заявки', 
 
           const { user } = render(<TaskCardContainer {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -3215,7 +3215,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -3251,7 +3251,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -3297,7 +3297,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -3369,7 +3369,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -3411,7 +3411,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
+                role: UserRoleEnum.Engineer,
               }),
             })
 
@@ -3447,7 +3447,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
+                role: UserRoleEnum.Engineer,
               }),
             })
 
@@ -3493,7 +3493,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
+                role: UserRoleEnum.Engineer,
               }),
             })
 
@@ -3565,7 +3565,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
+                role: UserRoleEnum.Engineer,
               }),
             })
 
@@ -3607,7 +3607,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -3643,7 +3643,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -3689,7 +3689,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -3761,7 +3761,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -3803,7 +3803,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -3839,7 +3839,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -3887,7 +3887,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -3959,7 +3959,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -4004,7 +4004,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -4034,7 +4034,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -4068,7 +4068,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -4098,7 +4098,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+                role: UserRoleEnum.FirstLineSupport,
               }),
             })
 
@@ -4132,7 +4132,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -4162,7 +4162,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -4196,7 +4196,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -4226,7 +4226,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
+                role: UserRoleEnum.SeniorEngineer,
               }),
             })
 
@@ -4260,7 +4260,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -4290,7 +4290,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -4324,7 +4324,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 
@@ -4354,7 +4354,7 @@ describe('Контейнер детальной карточки заявки', 
 
             const { user } = render(<TaskCardContainer {...props} />, {
               store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
+                role: UserRoleEnum.HeadOfDepartment,
               }),
             })
 

@@ -12,6 +12,7 @@ import {
 import { UserPermissionsEnum } from 'modules/user/constants'
 
 import taskFixtures from '_tests_/fixtures/task'
+import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetJournalSuccess,
   mockGetRelocationTaskListSuccess,
@@ -55,6 +56,7 @@ const props: Readonly<TabsProps> = {
     isDescriptionChanged: false,
     previousDescription: fakeWord(),
   },
+  userActions: userFixtures.userActions(),
 }
 
 const getContainer = () => screen.getByTestId('task-details-tabs')

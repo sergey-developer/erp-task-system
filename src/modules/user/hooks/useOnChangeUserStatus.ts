@@ -10,8 +10,6 @@ export const useOnChangeUserStatus = (fn: UseOnChangeUserStatusFn) => {
   const { data } = useUserMeState()
 
   useUpdateEffect(() => {
-    if (data) {
-      fn(data.status)
-    }
-  }, [fn, data?.status.id])
+    if (data) fn(data.status)
+  }, [fn, data?.status])
 }
