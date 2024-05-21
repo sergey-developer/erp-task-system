@@ -50,26 +50,21 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
   const { currentData: supportGroupList, isFetching: supportGroupListIsFetching } =
     useGetSupportGroupList({ hasTemplate: true })
 
-  const {
-    fn: createSubTask,
-    state: { isLoading: createSubTaskIsLoading },
-  } = useCreateSubTask()
+  const [createSubTask, { isLoading: createSubTaskIsLoading }] = useCreateSubTask()
 
-  const handleFinish = async ({ title, description, templateX5 }: CreateSubTaskFormFields) => {
+  const onFinish = async ({ title, description, templateX5 }: CreateSubTaskFormFields) => {
     try {
       await createSubTask({
         taskId: task.id,
         title: title.trim(),
         description: description.trim(),
         templateX5,
-      })
+      }).unwrap()
 
       onCancel()
     } catch (error) {
-      if (isErrorResponse(error)) {
-        if (isBadRequestError(error)) {
-          form.setFields(getFieldsErrors(error.data))
-        }
+      if (isErrorResponse(error) && isBadRequestError(error)) {
+        form.setFields(getFieldsErrors(error.data))
       }
     }
   }
@@ -88,8 +83,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
         form={form}
         initialValues={initialFormValues}
         layout='vertical'
-        onFinish={handleFinish}
-        preserve={false}
+        onFinish={onFinish}
       >
         <Form.Item
           data-testid='support-group-form-item'

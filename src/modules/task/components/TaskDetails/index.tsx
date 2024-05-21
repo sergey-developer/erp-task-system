@@ -843,7 +843,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     </Col>
                   </Row>
 
-                  <Tabs task={task} activeTab={activeTab} />
+                  <Tabs task={task} activeTab={activeTab} userActions={userActions} />
                 </Space>
               )}
             </Space>
