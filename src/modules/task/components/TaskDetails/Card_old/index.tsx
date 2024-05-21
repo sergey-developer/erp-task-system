@@ -472,6 +472,7 @@ const TaskCard: FC<TaskCardProps> = ({
     />
   )
 
+  // @ts-ignore
   return (
     <RootWrapperStyled>
       <CardStyled data-testid='task-card' title={cardTitle} loading={taskIsLoading}>
@@ -574,6 +575,7 @@ const TaskCard: FC<TaskCardProps> = ({
 
               {!additionalInfoExpanded && <DividerStyled />}
 
+              {/* @ts-ignore */}
               <Tabs task={task} activeTab={activeTab} />
 
               {executeTaskModalOpened && (

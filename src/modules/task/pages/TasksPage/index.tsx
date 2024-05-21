@@ -90,9 +90,6 @@ const TasksPage: FC = () => {
     UserPermissionsEnum.WorkGroupTasksRead,
   ])
 
-  const tableRef = useRef<HTMLDivElement>(null)
-  const tableSize = useSize(tableRef)
-
   // todo: создать хук для useSearchParams который парсит значения в нужный тип
   const [searchParams] = useSearchParams()
   const viewTaskId = Number(searchParams.get('viewTask')) || undefined
