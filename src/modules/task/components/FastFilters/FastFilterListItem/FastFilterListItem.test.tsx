@@ -2,7 +2,7 @@ import { FastFilterEnum } from 'modules/task/constants/task'
 
 import { fakeWord, render } from '_tests_/utils'
 
-import { testUtils } from '../FastFilterList.test'
+import { testUtils } from '../FastFilters.test'
 import FastFilterListItem, { FastFilterListItemProps } from './'
 
 export const props: Readonly<

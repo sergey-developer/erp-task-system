@@ -1,1 +1,1 @@
-export * from './getWorkGroupList.mock'
+export * from './getWorkGroups.mock'

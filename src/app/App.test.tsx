@@ -18,7 +18,7 @@ import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetSystemInfoSuccess,
   mockGetTaskCountersSuccess,
-  mockGetTaskListSuccess,
+  mockGetTasksSuccess,
   mockGetTimeZoneListSuccess,
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
@@ -286,7 +286,7 @@ describe('Private app', () => {
             })
 
             test('Если выбран статус OFFLINE, то удаляются фильтры заявок из localStorage', async () => {
-              mockGetTaskListSuccess()
+              mockGetTasksSuccess()
               mockGetTaskCountersSuccess()
               mockGetUserMeCodeSuccess()
               mockGetSystemInfoSuccess()

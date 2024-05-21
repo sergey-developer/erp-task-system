@@ -1,15 +1,12 @@
 import get from 'lodash/get'
 import moment from 'moment-timezone'
 
-import { DEFAULT_SEARCH_FIELD } from 'modules/task/components/ExtendedFilter/constants'
-import { TasksFilterFormFields } from 'modules/task/components/ExtendedFilter/types'
 import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
-import { FastFilterEnum } from 'modules/task/constants/task'
-import { ExtendedFilterQueries, TaskListModel } from 'modules/task/models'
+import { DEFAULT_SEARCH_FIELD } from 'modules/task/components/TasksFilter/constants'
+import { TasksFilterFormFields } from 'modules/task/components/TasksFilter/types'
+import { TasksFilterQueries, TasksModel } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { checkOlaStatusExpired } from 'modules/task/utils/task'
-import { UserRoleEnum } from 'modules/user/constants'
-import { getUserRoleMap } from 'modules/user/utils'
 
 import { DATE_FILTER_FORMAT } from 'shared/constants/dateTime'
 import { Nullable } from 'shared/types/utils'
@@ -20,12 +17,12 @@ import { formatDate } from 'shared/utils/date'
  * query параметрами расширенной фильтрации
  * @function mapFilterToQueryArgs
  * @param {TasksFilterFormFields} fields - объект со значениями формы расширенной фильтрации
- * @returns {ExtendedFilterQueries} объект с query параметрами расширенной фильтрации
+ * @returns {TasksFilterQueries} объект с query параметрами расширенной фильтрации
  */
 
 export const mapFilterToQueryArgs = (
   fields: Partial<TasksFilterFormFields>,
-): ExtendedFilterQueries => {
+): TasksFilterQueries => {
   const { completeAt, creationDate, searchField, searchValue, ...restFields } = fields
 
   return {
@@ -38,19 +35,7 @@ export const mapFilterToQueryArgs = (
   }
 }
 
-export const getInitialFastFilter = (role?: UserRoleEnum): FastFilterEnum => {
-  if (!role) return FastFilterEnum.All
-
-  const { isFirstLineSupportRole, isEngineerRole } = getUserRoleMap(role)
-
-  return isFirstLineSupportRole
-    ? FastFilterEnum.FirstLine
-    : isEngineerRole
-    ? FastFilterEnum.Mine
-    : FastFilterEnum.All
-}
-
-export const getInitialExtendedFilterFormValues = (
+export const getInitialTasksFilterValues = (
   tasksFiltersStorage?: Nullable<TasksFiltersStorageType>,
 ): Readonly<TasksFilterFormFields> => ({
   completeAt: [],
@@ -67,7 +52,7 @@ export const getInitialExtendedFilterFormValues = (
   supportGroups: get(tasksFiltersStorage, 'supportGroups', []),
 })
 
-export const getTasksByOlaNextBreachTime = (tasks: TaskListModel): TaskTableListItem[] => {
+export const getTasksByOlaNextBreachTime = (tasks: TasksModel): TaskTableListItem[] => {
   const currentDate = moment()
   const granularity = 'day'
   const olaStatusExpiredTasks: TaskTableListItem[] = []

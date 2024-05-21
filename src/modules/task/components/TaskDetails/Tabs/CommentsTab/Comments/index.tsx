@@ -12,19 +12,14 @@ import Comment from './Comment'
 
 const { Text } = Typography
 
-export type CommentListProps = {
+export type CommentsProps = {
   comments: TaskCommentModel[]
   isLoading: boolean
 }
 
-const CommentList: FC<CommentListProps> = ({ isLoading, comments }) => {
+const Comments: FC<CommentsProps> = ({ isLoading, comments }) => {
   return (
-    <Space
-      data-testid='task-comment-list'
-      size='large'
-      direction='vertical'
-      $block
-    >
+    <Space data-testid='task-comments' size='large' direction='vertical' $block>
       {!isLoading && !comments.length ? (
         <Text>Комментариев пока нет</Text>
       ) : (
@@ -42,4 +37,4 @@ const CommentList: FC<CommentListProps> = ({ isLoading, comments }) => {
   )
 }
 
-export default CommentList
+export default Comments

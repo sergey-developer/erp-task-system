@@ -57,7 +57,7 @@ import {
   TaskAssigneeModel,
 } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
-import { useGetUserActions, useUserRole } from 'modules/user/hooks'
+import { useGetUserActions } from 'modules/user/hooks'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -146,7 +146,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 }) => {
   const { modal } = App.useApp()
 
-  const userRole = useUserRole()
   const authUser = useAuthUser()
   const onClose = useDebounceFn(originOnClose)
 
@@ -632,16 +631,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
         closeRequestTaskSuspendModal()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(
-              getFieldsErrors(
-                getFormErrorsFromBadRequestError(
-                  error.data as CreateTaskSuspendRequestBadRequestErrorResponse,
-                ),
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(
+            getFieldsErrors(
+              getFormErrorsFromBadRequestError(
+                error.data as CreateTaskSuspendRequestBadRequestErrorResponse,
               ),
-            )
-          }
+            ),
+          )
         }
       }
     },
@@ -667,7 +664,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [createTaskAttachment, task],
   )
 
-  const title = task && (
+  const title = task && userActions && (
     <TaskDetailsTitle
       id={task.id}
       type={task.type}
@@ -677,6 +674,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       extendedStatus={task.extendedStatus}
       olaStatus={task.olaStatus}
       suspendRequest={task.suspendRequest}
+      userActions={userActions}
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={onOpenExecuteTaskModal}
       onRegisterFN={debouncedToggleCreateRegistrationFNRequestModal}
@@ -733,7 +731,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             tip='Загрузка заявки...'
           >
             <Space direction='vertical' $block size='middle'>
-              {task?.suspendRequest && (
+              {task?.suspendRequest && userActions && (
                 <React.Suspense fallback={<Spinner area='block' />}>
                   <TaskSuspendRequest
                     title={
@@ -752,13 +750,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                             text: 'Отменить запрос',
                             onClick: onDeleteTaskSuspendRequest,
                             loading: deleteSuspendRequestIsLoading,
-                            disabled: userRole.isEngineerRole,
+                            disabled:
+                              !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE.includes(taskId),
                           }
                         : taskSuspendRequestStatus.isApproved
                         ? {
                             text: 'Вернуть в работу',
                             onClick: onTakeTask,
                             loading: takeTaskIsLoading,
+                            disabled:
+                              !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE.includes(taskId),
                           }
                         : undefined
                     }
@@ -842,7 +843,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     </Col>
                   </Row>
 
-                  <Tabs task={task} activeTab={activeTab} />
+                  <Tabs task={task} activeTab={activeTab} userActions={userActions} />
                 </Space>
               )}
             </Space>

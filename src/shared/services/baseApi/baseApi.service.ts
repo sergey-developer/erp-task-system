@@ -11,7 +11,7 @@ export const baseApiService = createApi({
   keepUnusedDataFor: CACHE_TIME_LIFE,
   tagTypes: [
     TaskApiTagEnum.Task,
-    TaskApiTagEnum.TaskList,
+    TaskApiTagEnum.Tasks,
     RelocationEquipmentApiTagEnum.RelocationEquipmentAttachmentList,
   ],
   endpoints: () => ({}),

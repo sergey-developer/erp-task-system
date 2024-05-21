@@ -5,7 +5,7 @@ import React, { FC, useCallback, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
 import { useGetTask, useGetTasks } from 'modules/task/hooks/task'
-import { GetTaskListQueryArgs } from 'modules/task/models'
+import { GetTasksQueryArgs } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
@@ -102,7 +102,7 @@ const RelocationTaskListPage: FC = () => {
   const [selectedIncidentId, setSelectedIncidentId] = useState<IdType>()
 
   const [tasksParams, setTasksParams] = useSetState<
-    Pick<GetTaskListQueryArgs, 'limit' | 'search' | 'sort'>
+    Pick<GetTasksQueryArgs, 'limit' | 'search' | 'sort'>
   >({ limit: 10, sort: 'created_at' })
 
   const debouncedSetTasksParams = useDebounceFn(setTasksParams, [], 500)

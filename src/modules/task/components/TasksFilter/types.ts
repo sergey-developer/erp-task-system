@@ -8,6 +8,7 @@ import {
 } from 'modules/task/constants/task'
 import { SearchFields } from 'modules/task/models'
 import { UsersModel } from 'modules/user/models'
+import { MatchedPermissions } from 'modules/user/utils'
 import { CustomerListModel } from 'modules/warehouse/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
 
@@ -36,25 +37,27 @@ export type TasksFilterFormFields = TasksFilterSupportGroupFormFields &
   }>
 
 export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClose'>> & {
+  permissions: MatchedPermissions
+
   formValues: TasksFilterFormFields
   initialFormValues: TasksFilterFormFields
 
-  customerList: CustomerListModel
-  customerListIsLoading: boolean
+  customers: CustomerListModel
+  customersIsLoading: boolean
   onChangeCustomers: (value: IdType[]) => void
 
-  macroregionList: MacroregionListModel
-  macroregionListIsLoading: boolean
+  macroregions: MacroregionListModel
+  macroregionsIsLoading: boolean
   onChangeMacroregions: (value: IdType[]) => void
 
-  supportGroupList: SupportGroupListModel
-  supportGroupListIsLoading: boolean
+  supportGroups: SupportGroupListModel
+  supportGroupsIsLoading: boolean
 
-  userList: UsersModel
-  userListIsLoading: boolean
+  users: UsersModel
+  usersIsLoading: boolean
 
-  workGroupList: WorkGroupListModel
-  workGroupListIsLoading: boolean
+  workGroups: WorkGroupListModel
+  workGroupsIsLoading: boolean
 
   onSubmit: (values: TasksFilterFormFields) => void
 }

@@ -9,11 +9,8 @@ import React, { FC, useCallback, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
-import {
-  TasksFilterFormFields,
-  TasksFilterProps,
-} from 'modules/task/components/ExtendedFilter/types'
-import FastFilterList from 'modules/task/components/FastFilterList'
+import FastFilters from 'modules/task/components/FastFilters'
+import { fastFiltersConfig } from 'modules/task/components/FastFilters/config'
 import TaskTable from 'modules/task/components/TaskTable'
 import {
   SortableField,
@@ -21,6 +18,7 @@ import {
 } from 'modules/task/components/TaskTable/constants/sort'
 import { TaskTableProps } from 'modules/task/components/TaskTable/types'
 import { getSort, parseSort } from 'modules/task/components/TaskTable/utils'
+import { TasksFilterFormFields, TasksFilterProps } from 'modules/task/components/TasksFilter/types'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
 } from 'modules/task/components/TasksFiltersStorage'
@@ -35,19 +33,20 @@ import {
 } from 'modules/task/constants/task'
 import { useGetTasks } from 'modules/task/hooks/task'
 import { useGetTaskCounters } from 'modules/task/hooks/taskCounters'
-import { ExtendedFilterQueries, FastFilterQueries, GetTaskListQueryArgs } from 'modules/task/models'
+import { FastFilterQueries, GetTasksQueryArgs, TasksFilterQueries } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils'
 import { taskDetailsTabExist } from 'modules/task/utils/task'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import {
   useGetUsers,
+  useMatchUserPermissions,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
-  useUserRole,
 } from 'modules/user/hooks'
 import { checkUserStatusOffline } from 'modules/user/utils'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
-import { useGetWorkGroupList } from 'modules/workGroup/hooks'
+import { useGetWorkGroups } from 'modules/workGroup/hooks'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -69,20 +68,30 @@ import {
 
 import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
 import {
-  getInitialExtendedFilterFormValues,
-  getInitialFastFilter,
+  getInitialTasksFilterValues,
   getTasksByOlaNextBreachTime,
   mapFilterToQueryArgs,
 } from './utils'
 
 const TaskDetails = React.lazy(() => import('modules/task/components/TaskDetails'))
-const ExtendedFilter = React.lazy(() => import('modules/task/components/ExtendedFilter'))
+const TasksFilter = React.lazy(() => import('modules/task/components/TasksFilter'))
 
 const { Search } = Input
-const initialExtendedFilterFormValues = getInitialExtendedFilterFormValues()
+const initialTasksFilterValues = getInitialTasksFilterValues()
 
-const TaskListPage: FC = () => {
+const TasksPage: FC = () => {
   const { tableRef, drawerHeight } = useDrawerHeightByTable()
+
+  const permissions = useMatchUserPermissions([
+    UserPermissionsEnum.SelfWorkGroupsRead,
+    UserPermissionsEnum.AnyWorkGroupsRead,
+    UserPermissionsEnum.FirstLineTasksRead,
+    UserPermissionsEnum.SecondLineTasksRead,
+    UserPermissionsEnum.WorkGroupTasksRead,
+  ])
+
+  const tableRef = useRef<HTMLDivElement>(null)
+  const tableSize = useSize(tableRef)
 
   // todo: создать хук для useSearchParams который парсит значения в нужный тип
   const [searchParams] = useSearchParams()
@@ -91,7 +100,6 @@ const TaskListPage: FC = () => {
     ? (searchParams.get('taskDetailsTab') as TaskDetailsTabsEnum)
     : undefined
 
-  const { role } = useUserRole()
   const [autoUpdateEnabled, { toggle: toggleAutoUpdateEnabled }] = useBoolean(false)
 
   const [selectedTaskId, setSelectedTaskId] = useState<MaybeUndefined<IdType>>(viewTaskId)
@@ -100,14 +108,18 @@ const TaskListPage: FC = () => {
   const [activeTaskDetailsTab, setActiveTaskDetailsTab] =
     useState<MaybeUndefined<TaskDetailsTabsEnum>>(taskDetailsTab)
 
-  const initialFastFilter = getInitialFastFilter(role)
+  const initialFastFilter = FastFilterEnum.All
   const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
 
-  const [extendedFilterOpened, { toggle: toggleOpenExtendedFilter }] = useBoolean(false)
+  const [tasksFilterOpened, { toggle: toggleOpenTasksFilter }] = useBoolean(false)
+  const debouncedToggleOpenTasksFilter = useDebounceFn(toggleOpenTasksFilter)
 
   const [tasksFiltersStorage, setTasksFiltersStorage] = useLocalStorageState<
     MaybeUndefined<TasksFiltersStorageType>
   >(TaskStorageKeysEnum.TasksFilters)
+  const parsedTasksFiltersStorage = tasksFiltersStorage
+    ? parseTasksFiltersStorage(tasksFiltersStorage)
+    : []
 
   const [selectedCustomers, setSelectedCustomers] = useState<MaybeUndefined<IdType[]>>(
     tasksFiltersStorage?.customers,
@@ -116,13 +128,12 @@ const TaskListPage: FC = () => {
     tasksFiltersStorage?.macroregions,
   )
 
-  const [extendedFilterFormValues, setExtendedFilterFormValues] =
-    useSetState<TasksFilterFormFields>({
-      ...initialExtendedFilterFormValues,
-      ...tasksFiltersStorage,
-    })
+  const [tasksFilterValues, setTasksFilterValues] = useSetState<TasksFilterFormFields>({
+    ...initialTasksFilterValues,
+    ...tasksFiltersStorage,
+  })
 
-  const [taskListQueryArgs, setTaskListQueryArgs] = useSetState<GetTaskListQueryArgs>(() => ({
+  const [getTasksQueryArgs, setGetTasksQueryArgs] = useSetState<GetTasksQueryArgs>(() => ({
     filter: initialFastFilter,
     ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
     ...tasksFiltersStorage,
@@ -136,8 +147,8 @@ const TaskListPage: FC = () => {
 
   // todo: refactor to avoid setting undefined
   const triggerFilterChange = useCallback(
-    (filterQueryParams: ExtendedFilterQueries | FastFilterQueries | FilterParams) => {
-      setTaskListQueryArgs((prevState) => ({
+    (filterQueryParams: TasksFilterQueries | FastFilterQueries | FilterParams) => {
+      setGetTasksQueryArgs((prevState) => ({
         ...prevState,
         offset: 0,
         completeAtFrom: undefined,
@@ -155,7 +166,7 @@ const TaskListPage: FC = () => {
         ...filterQueryParams,
       }))
     },
-    [setTaskListQueryArgs],
+    [setGetTasksQueryArgs],
   )
 
   const onChangeUserStatus = useCallback<UseOnChangeUserStatusFn>(
@@ -163,18 +174,18 @@ const TaskListPage: FC = () => {
       if (checkUserStatusOffline(status)) {
         setTasksFiltersStorage(undefined)
         const initialSupportGroupFilters = pick(
-          initialExtendedFilterFormValues,
+          initialTasksFilterValues,
           'customers',
           'macroregions',
           'supportGroups',
         )
-        setExtendedFilterFormValues(initialSupportGroupFilters)
+        setTasksFilterValues(initialSupportGroupFilters)
         setSelectedCustomers(initialSupportGroupFilters.customers)
         setSelectedMacroregions(initialSupportGroupFilters.macroregions)
         triggerFilterChange(initialSupportGroupFilters)
       }
     },
-    [setExtendedFilterFormValues, setTasksFiltersStorage, triggerFilterChange],
+    [setTasksFilterValues, setTasksFiltersStorage, triggerFilterChange],
   )
 
   useOnChangeUserStatus(onChangeUserStatus)
@@ -194,7 +205,7 @@ const TaskListPage: FC = () => {
     currentData: originalTasks,
     isFetching: tasksIsFetching,
     refetch: refetchTaskList,
-  } = useGetTasks(taskListQueryArgs, {
+  } = useGetTasks(getTasksQueryArgs, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
@@ -202,12 +213,12 @@ const TaskListPage: FC = () => {
 
   const { currentData: userList = [], isFetching: userListIsFetching } = useGetUsers(
     { isManager: true },
-    { skip: !extendedFilterOpened },
+    { skip: !tasksFilterOpened },
   )
 
   const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
     undefined,
-    { skip: !extendedFilterOpened },
+    { skip: !tasksFilterOpened },
   )
 
   const { currentData: supportGroupList = [], isFetching: supportGroupListIsFetching } =
@@ -217,33 +228,30 @@ const TaskListPage: FC = () => {
         macroregions: selectedMacroregions,
         assignedToUser: true,
       },
-      { skip: !extendedFilterOpened },
+      { skip: !tasksFilterOpened },
     )
 
   const { currentData: macroregionList = [], isFetching: macroregionListIsFetching } =
-    useGetMacroregionList({ customers: selectedCustomers }, { skip: !extendedFilterOpened })
+    useGetMacroregionList({ customers: selectedCustomers }, { skip: !tasksFilterOpened })
 
-  const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroupList(
-    undefined,
-    { skip: !extendedFilterOpened },
-  )
-
-  const debouncedToggleOpenExtendedFilter = useDebounceFn(toggleOpenExtendedFilter)
+  const { data: workGroups = [], isFetching: workGroupsIsFetching } = useGetWorkGroups(undefined, {
+    skip: !tasksFilterOpened,
+  })
 
   const onApplyFilter: TasksFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
-    setExtendedFilterFormValues(values)
+    setTasksFilterValues(values)
     triggerFilterChange(mapFilterToQueryArgs(values))
     setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
     setFastFilter(undefined)
-    toggleOpenExtendedFilter()
+    toggleOpenTasksFilter()
     closeTask()
   }
 
   const resetExtendedFilterToInitialValues = () => {
-    setExtendedFilterFormValues(initialExtendedFilterFormValues)
-    setSelectedCustomers(initialExtendedFilterFormValues.customers)
-    setSelectedMacroregions(initialExtendedFilterFormValues.macroregions)
+    setTasksFilterValues(initialTasksFilterValues)
+    setSelectedCustomers(initialTasksFilterValues.customers)
+    setSelectedMacroregions(initialTasksFilterValues.macroregions)
   }
 
   const onFastFilterChange = (value: FastFilterEnum) => {
@@ -266,7 +274,7 @@ const TaskListPage: FC = () => {
         setAppliedFilterType(prevAppliedFilterType)
 
         const prevFilter = isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)
-          ? mapFilterToQueryArgs(extendedFilterFormValues)
+          ? mapFilterToQueryArgs(tasksFilterValues)
           : isEqual(prevAppliedFilterType, FilterTypeEnum.Fast)
           ? { filter: fastFilter }
           : {}
@@ -276,7 +284,7 @@ const TaskListPage: FC = () => {
 
       closeTask()
     },
-    [prevAppliedFilterType, extendedFilterFormValues, fastFilter],
+    [prevAppliedFilterType, tasksFilterValues, fastFilter],
   )
 
   const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) => {
@@ -301,29 +309,22 @@ const TaskListPage: FC = () => {
 
   const onTableSort = useCallback(
     (sorter: Parameters<TaskTableProps['onChange']>[2]) => {
-      /**
-       * При сортировке по возрастанию (ascend), поля sorter.column и sorter.order равны undefined
-       * Пока не ясно почему так происходит, но данная проблема уже была до рефакторинга сортировки,
-       * при изначальной реализации
-       */
-      if (sorter) {
-        const { columnKey, order } = isArray(sorter) ? sorter[0] : sorter
+      const { field, order } = isArray(sorter) ? sorter[0] : sorter
 
-        if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
-          setTaskListQueryArgs({
-            sort: getSort(columnKey as SortableField, order || SortOrderEnum.Ascend),
-          })
-        }
+      if (field && (field as string) in sortableFieldToSortValues) {
+        setGetTasksQueryArgs({
+          sort: getSort(field as SortableField, order || SortOrderEnum.Ascend),
+        })
       }
     },
-    [setTaskListQueryArgs],
+    [setGetTasksQueryArgs],
   )
 
   const onTablePagination = useCallback(
     (pagination: Parameters<TaskTableProps['onChange']>[0]) => {
-      setTaskListQueryArgs(calculatePaginationParams(pagination))
+      setGetTasksQueryArgs(calculatePaginationParams(pagination))
     },
-    [setTaskListQueryArgs],
+    [setGetTasksQueryArgs],
   )
 
   const onChangeTable = useCallback<TaskTableProps['onChange']>(
@@ -344,7 +345,7 @@ const TaskListPage: FC = () => {
 
   const onRemoveTasksFilter = (filter: TasksFilterStorageItem) => {
     setTasksFiltersStorage((prevState) => ({ ...prevState, [filter.name]: undefined }))
-    setExtendedFilterFormValues({ [filter.name]: undefined })
+    setTasksFilterValues({ [filter.name]: undefined })
     if (filter.name === 'customers') setSelectedCustomers([])
     if (filter.name === 'macroregions') setSelectedMacroregions([])
     triggerFilterChange({ [filter.name]: undefined })
@@ -352,14 +353,14 @@ const TaskListPage: FC = () => {
 
   const tasks = useMemo(() => {
     const extractedTasks = extractPaginationResults(originalTasks)
-    const columnKey = taskListQueryArgs.sort
-      ? parseSort(taskListQueryArgs.sort).columnKey
+    const columnKey = getTasksQueryArgs.sort
+      ? parseSort(getTasksQueryArgs.sort).columnKey
       : undefined
 
     return columnKey === 'olaNextBreachTime'
       ? getTasksByOlaNextBreachTime(extractedTasks)
       : extractedTasks
-  }, [originalTasks, taskListQueryArgs.sort])
+  }, [originalTasks, getTasksQueryArgs.sort])
 
   return (
     <>
@@ -370,24 +371,25 @@ const TaskListPage: FC = () => {
               <Row gutter={[16, 16]}>
                 <Col span={17}>
                   <Row gutter={[16, 16]}>
-                    {tasksFiltersStorage && (
+                    {!!parsedTasksFiltersStorage.length && (
                       <Col>
                         <TasksFiltersStorage
-                          filters={parseTasksFiltersStorage(tasksFiltersStorage)}
+                          filters={parsedTasksFiltersStorage}
                           onClose={onRemoveTasksFilter}
                         />
                       </Col>
                     )}
 
                     <Col>
-                      <FastFilterList
-                        data={taskCounters}
-                        selectedFilter={taskListQueryArgs.filter}
+                      <FastFilters
+                        config={fastFiltersConfig}
+                        counters={taskCounters}
+                        selectedFilter={getTasksQueryArgs.filter}
                         onChange={onFastFilterChange}
                         isShowCounters={!isGetTaskCountersError}
                         disabled={tasksIsFetching}
                         isLoading={taskCountersIsFetching}
-                        userRole={role}
+                        permissions={permissions}
                       />
                     </Col>
                   </Row>
@@ -395,7 +397,7 @@ const TaskListPage: FC = () => {
 
                 <Col xl={5} xxl={3}>
                   <FilterButton
-                    onClick={debouncedToggleOpenExtendedFilter}
+                    onClick={debouncedToggleOpenTasksFilter}
                     disabled={tasksIsFetching || searchFilterApplied}
                   />
                 </Col>
@@ -434,13 +436,12 @@ const TaskListPage: FC = () => {
         <Col span={24}>
           <TaskTable
             ref={tableRef}
-            sort={taskListQueryArgs.sort}
+            sort={getTasksQueryArgs.sort}
             onRow={onTableRow}
             dataSource={tasks}
             loading={tasksIsFetching}
             onChange={onChangeTable}
             pagination={extractPaginationParams(originalTasks)}
-            userRole={role!}
           />
         </Col>
       </Row>
@@ -458,27 +459,26 @@ const TaskListPage: FC = () => {
         </React.Suspense>
       )}
 
-      {extendedFilterOpened && (
-        <React.Suspense
-          fallback={<ModalFallback open onCancel={debouncedToggleOpenExtendedFilter} />}
-        >
-          <ExtendedFilter
-            open={extendedFilterOpened}
-            formValues={extendedFilterFormValues}
-            initialFormValues={initialExtendedFilterFormValues}
-            customerList={customerList}
-            customerListIsLoading={customerListIsFetching}
+      {tasksFilterOpened && (
+        <React.Suspense fallback={<ModalFallback open onCancel={debouncedToggleOpenTasksFilter} />}>
+          <TasksFilter
+            open={tasksFilterOpened}
+            permissions={permissions}
+            formValues={tasksFilterValues}
+            initialFormValues={initialTasksFilterValues}
+            customers={customerList}
+            customersIsLoading={customerListIsFetching}
             onChangeCustomers={setSelectedCustomers}
-            macroregionList={macroregionList}
-            macroregionListIsLoading={macroregionListIsFetching}
+            macroregions={macroregionList}
+            macroregionsIsLoading={macroregionListIsFetching}
             onChangeMacroregions={setSelectedMacroregions}
-            supportGroupList={supportGroupList}
-            supportGroupListIsLoading={supportGroupListIsFetching}
-            userList={userList}
-            userListIsLoading={userListIsFetching}
-            workGroupList={workGroupList}
-            workGroupListIsLoading={workGroupListIsFetching}
-            onClose={debouncedToggleOpenExtendedFilter}
+            supportGroups={supportGroupList}
+            supportGroupsIsLoading={supportGroupListIsFetching}
+            users={userList}
+            usersIsLoading={userListIsFetching}
+            workGroups={workGroups}
+            workGroupsIsLoading={workGroupsIsFetching}
+            onClose={debouncedToggleOpenTasksFilter}
             onSubmit={onApplyFilter}
           />
         </React.Suspense>
@@ -487,4 +487,4 @@ const TaskListPage: FC = () => {
   )
 }
 
-export default TaskListPage
+export default TasksPage

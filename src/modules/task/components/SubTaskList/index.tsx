@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { SubTaskModel } from 'modules/task/models'
+import { MatchedPermissions } from 'modules/user/utils'
 
 import Space from 'components/Space'
 
@@ -22,6 +23,7 @@ export type SubTaskListProps = {
   isError: boolean
   onClickCancel: (subTask: SubTaskModel) => void
   onClickRework: (subTask: SubTaskModel) => void
+  permissions: MatchedPermissions
 
   taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
@@ -35,6 +37,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
   onClickCancel,
   onClickRework,
   taskSuspendRequestStatus,
+  permissions,
 }) => {
   return (
     <Space data-testid='sub-task-list' $block direction='vertical'>
@@ -62,6 +65,7 @@ const SubTaskList: FC<SubTaskListProps> = ({
                 returnReason={item.returnReason}
                 cancelReason={item.cancelReason}
                 taskSuspendRequestStatus={taskSuspendRequestStatus}
+                permissions={permissions}
               />
 
               {!checkLastItem(index, array) && <Divider />}

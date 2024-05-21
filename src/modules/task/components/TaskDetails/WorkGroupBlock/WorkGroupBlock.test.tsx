@@ -15,7 +15,7 @@ import { getFullUserName } from 'modules/user/utils'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
+import { mockGetWorkGroupsSuccess } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
@@ -52,9 +52,26 @@ export const showFirstLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup' | '
   status: TaskStatusEnum.New,
 }
 
+export const forceActiveFirstLineButtonProps: Pick<
+  WorkGroupBlockProps,
+  'userActions' | 'taskSuspendRequestStatus'
+> = {
+  userActions: userFixtures.userActions({
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [props.id],
+    },
+  }),
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Approved,
+}
+
 export const activeFirstLineButtonProps: Pick<WorkGroupBlockProps, 'status' | 'extendedStatus'> = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
+}
+
+export const disableFirstLineButtonProps: Pick<WorkGroupBlockProps, 'status'> = {
+  status: TaskStatusEnum.Awaiting,
 }
 
 // second line button
@@ -411,7 +428,7 @@ describe('Блок рабочей группы', () => {
     })
 
     test('При клике открывается модальное окно', async () => {
-      mockGetWorkGroupListSuccess()
+      mockGetWorkGroupsSuccess()
 
       const { user } = render(
         <WorkGroupBlock
@@ -440,7 +457,7 @@ describe('Блок рабочей группы', () => {
   describe('Модалка перевода на 2-ю линию', () => {
     test('При отправке обработчик вызывается', async () => {
       const workGroupList = workGroupFixtures.workGroupList()
-      mockGetWorkGroupListSuccess({ body: workGroupList })
+      mockGetWorkGroupsSuccess({ body: workGroupList })
 
       const { user } = render(
         <WorkGroupBlock
@@ -493,12 +510,12 @@ describe('Блок рабочей группы', () => {
     })
 
     describe('Всегда активна если', () => {
-      test('Статус запроса на ожидание "Одобрено"', () => {
+      test('Статус запроса на ожидание "Одобрено" и id заявки есть в "CAN_PUT_ON_FIRST_LINE"', () => {
         render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.Approved}
+            {...forceActiveFirstLineButtonProps}
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -509,18 +526,17 @@ describe('Блок рабочей группы', () => {
 
         expect(testUtils.getFirstLineButton()).toBeEnabled()
       })
+    })
 
-      test('Если id заявки есть в юзер экшенах', () => {
+    describe('Не может быть всегда активна если', () => {
+      test('Статус запроса на ожидание "Одобрено" но id заявки нет в "CAN_PUT_ON_FIRST_LINE"', () => {
         render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
-            userActions={userFixtures.userActions({
-              tasks: {
-                ...userFixtures.taskActionsPermissions,
-                [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [props.id],
-              },
-            })}
+            {...disableFirstLineButtonProps}
+            {...forceActiveFirstLineButtonProps}
+            userActions={userFixtures.userActions()}
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -529,7 +545,26 @@ describe('Блок рабочей группы', () => {
           },
         )
 
-        expect(testUtils.getFirstLineButton()).toBeEnabled()
+        expect(testUtils.getFirstLineButton()).toBeDisabled()
+      })
+
+      test('id заявки есть в "CAN_PUT_ON_FIRST_LINE" но статус запроса на ожидание не "Одобрено"', () => {
+        render(
+          <WorkGroupBlock
+            {...props}
+            {...showFirstLineButtonProps}
+            {...disableFirstLineButtonProps}
+            {...forceActiveFirstLineButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            }),
+          },
+        )
+
+        expect(testUtils.getFirstLineButton()).toBeDisabled()
       })
     })
 

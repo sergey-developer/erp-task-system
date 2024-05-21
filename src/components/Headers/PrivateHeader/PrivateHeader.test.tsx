@@ -21,7 +21,7 @@ import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetSystemInfoSuccess,
   mockGetTaskCountersSuccess,
-  mockGetTaskListSuccess,
+  mockGetTasksSuccess,
   mockGetTimeZoneListSuccess,
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
@@ -540,7 +540,7 @@ describe('PrivateHeader', () => {
       mockGetSystemInfoSuccess()
       mockGetTimeZoneListSuccess()
       mockGetUserStatusListSuccess()
-      mockGetTaskListSuccess()
+      mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
       mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
       mockLogoutSuccess()

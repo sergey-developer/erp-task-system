@@ -9,8 +9,8 @@ import taskFixtures from '_tests_/fixtures/task'
 import { render } from '_tests_/utils'
 
 import {
-  activeCancelButtonProps,
-  activeReworkButtonProps,
+  showCancelButtonProps,
+  showReworkButtonProps,
   testUtils as subTaskTestUtils,
 } from './SubTask.test'
 import SubTaskList, { SubTaskListProps } from './index'
@@ -24,10 +24,10 @@ const props: Readonly<SubTaskListProps> = {
   onClickCancel: jest.fn(),
   onClickRework: jest.fn(),
   taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
+  permissions: {},
 }
 
 const getContainer = () => screen.getByTestId('sub-task-list')
-
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 export const testUtils = {
@@ -56,9 +56,7 @@ describe('Список подзадач', () => {
 
   test('Верно отображает дату создания', () => {
     render(<SubTaskList {...props} />)
-
     const formattedCreatedAt = formatDate(props.list[0].createdAt)
-
     expect(subTaskTestUtils.getChildByText(new RegExp(formattedCreatedAt))).toBeInTheDocument()
   })
 
@@ -69,7 +67,6 @@ describe('Список подзадач', () => {
 
   test('При ошибке получения списка отображается соответствующее сообщение', () => {
     render(<SubTaskList {...props} list={[]} isError />)
-
     expect(testUtils.getChildByText('Не удалось получить задания')).toBeInTheDocument()
   })
 
@@ -77,15 +74,15 @@ describe('Список подзадач', () => {
     test('Обработчик кнопки вызывается корректно', async () => {
       const subTask = {
         ...taskFixtures.subTask(),
-        status: activeReworkButtonProps.status,
+        status: showReworkButtonProps.status,
       }
 
       const { user } = render(
         <SubTaskList
           {...props}
           list={[subTask]}
-          taskStatus={activeReworkButtonProps.taskStatus}
-          currentUserIsTaskAssignee={activeReworkButtonProps.currentUserIsTaskAssignee}
+          taskStatus={showReworkButtonProps.taskStatus}
+          currentUserIsTaskAssignee={showReworkButtonProps.currentUserIsTaskAssignee}
         />,
       )
 
@@ -100,15 +97,15 @@ describe('Список подзадач', () => {
     test('Обработчик кнопки вызывается корректно', async () => {
       const subTask = {
         ...taskFixtures.subTask(),
-        status: activeCancelButtonProps.status,
+        status: showCancelButtonProps.status,
       }
 
       const { user } = render(
         <SubTaskList
           {...props}
           list={[subTask]}
-          taskStatus={activeCancelButtonProps.taskStatus}
-          currentUserIsTaskAssignee={activeCancelButtonProps.currentUserIsTaskAssignee}
+          taskStatus={showCancelButtonProps.taskStatus}
+          currentUserIsTaskAssignee={showCancelButtonProps.currentUserIsTaskAssignee}
         />,
       )
 

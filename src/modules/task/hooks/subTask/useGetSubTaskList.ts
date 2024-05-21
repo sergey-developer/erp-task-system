@@ -1,13 +1,18 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
+import { getSubTasksErrMsg } from 'modules/task/constants/task'
 import { GetSubTaskListQueryArgs, GetSubTaskListSuccessResponse } from 'modules/task/models'
-import { subTaskApiPermissions } from 'modules/task/permissions'
 import { useGetSubTaskListQuery } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { isErrorResponse } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetSubTaskListResult = CustomUseQueryHookResult<
@@ -15,13 +20,28 @@ type UseGetSubTaskListResult = CustomUseQueryHookResult<
   GetSubTaskListSuccessResponse
 >
 
-export const useGetSubTaskList = (id: GetSubTaskListQueryArgs): UseGetSubTaskListResult => {
-  const permissions = useUserPermissions(subTaskApiPermissions)
-  const state = useGetSubTaskListQuery(id, { skip: !permissions.canGetList })
+type UseGetCountryListOptions = CustomUseQueryOptions<
+  GetSubTaskListQueryArgs,
+  GetSubTaskListSuccessResponse
+>
+
+export const useGetSubTaskList = (
+  args: GetSubTaskListQueryArgs,
+  options?: UseGetCountryListOptions,
+): UseGetSubTaskListResult => {
+  const state = useGetSubTaskListQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification('Не удалось получить задания')
+      if (
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
+      ) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(getSubTasksErrMsg)
+      }
     }
   }, [state.error])
 

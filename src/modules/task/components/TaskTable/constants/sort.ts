@@ -1,4 +1,4 @@
-import { GetTaskListSortKey, GetTaskListSortValue } from 'modules/task/models'
+import { GetTasksSortKey, GetTasksSortValue } from 'modules/task/models'
 
 import { TaskTableListItem } from '../types'
 
@@ -19,7 +19,7 @@ export type SortableField = keyof Pick<
 
 export const sortableFieldToSortValues: Record<
   SortableField,
-  [GetTaskListSortKey, Exclude<GetTaskListSortValue, GetTaskListSortKey>]
+  [GetTasksSortKey, Exclude<GetTasksSortValue, GetTasksSortKey>]
 > = {
   id: ['id', '-id'],
   name: ['name', '-name'],
@@ -44,5 +44,5 @@ export const sortValueToSortableField = Object.keys(sortableFieldToSortValues).r
 
     return acc
   },
-  {} as Record<GetTaskListSortValue, SortableField>,
+  {} as Record<GetTasksSortValue, SortableField>,
 )
