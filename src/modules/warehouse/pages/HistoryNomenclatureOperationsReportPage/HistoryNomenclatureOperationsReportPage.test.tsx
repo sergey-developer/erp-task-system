@@ -23,7 +23,7 @@ import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCustomerListSuccess,
   mockGetEquipmentAttachmentListSuccess,
-  mockGetEquipmentNomenclatureListSuccess,
+  mockGetEquipmentNomenclaturesSuccess,
   mockGetEquipmentSuccess,
   mockGetHistoryNomenclatureOperationsReportSuccess,
   mockGetHistoryNomenclatureOperationsReportXlsxSuccess,
@@ -73,7 +73,7 @@ describe('Страница отчета истории операций по н�
   describe('Таблица отчета', () => {
     test('При клике на оборудование открывается карточка оборудования', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -110,7 +110,7 @@ describe('Страница отчета истории операций по н�
 
     test('При клике на перемещение открывается карточка заявки на перемещение', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -149,7 +149,7 @@ describe('Страница отчета истории операций по н�
   describe('Фильтры', () => {
     test('После применения отображается отчет', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -194,7 +194,7 @@ describe('Страница отчета истории операций по н�
       base64ToArrayBufferSpy.mockReturnValueOnce(fakeArrayBuffer)
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 

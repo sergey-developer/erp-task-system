@@ -124,7 +124,7 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
         </React.Suspense>
       ),
     },
-    ...(permissions?.relocationTasksRead
+    ...(permissions.relocationTasksRead
       ? [
           {
             key: TaskDetailsTabsEnum.RelocationTasks,
