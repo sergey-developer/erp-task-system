@@ -575,7 +575,7 @@ const taskApiService = baseApiService
         GetSubTaskListSuccessResponse,
         GetSubTaskListQueryArgs
       >({
-        query: (taskId) => ({
+        query: ({ taskId }) => ({
           url: getSubTaskListUrl(taskId),
           method: HttpMethodEnum.Get,
         }),
@@ -596,7 +596,7 @@ const taskApiService = baseApiService
             dispatch(
               baseApiService.util.updateQueryData(
                 TaskApiTriggerEnum.GetSubTaskList as never,
-                taskId as never,
+                { taskId } as never,
                 (subTaskList: SubTaskModel[]) => {
                   subTaskList.unshift(newSubTask)
                 },

@@ -6,6 +6,7 @@ import { taskDetailsTabNameDict, TaskDetailsTabsEnum } from 'modules/task/consta
 import { TaskModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useMatchUserPermissions } from 'modules/user/hooks'
+import { UserActionsModel } from 'modules/user/models'
 
 import Spinner from 'components/Spinner'
 
@@ -41,11 +42,15 @@ export type TabsProps = {
     | 'isDescriptionChanged'
     | 'previousDescription'
   >
-
+  userActions: UserActionsModel
   activeTab?: TaskDetailsTabsEnum
 }
 
-const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description }) => {
+const Tabs: FC<TabsProps> = ({
+  task,
+  activeTab = TaskDetailsTabsEnum.Description,
+  userActions,
+}) => {
   const permissions = useMatchUserPermissions([
     UserPermissionsEnum.RelocationTasksRead,
     UserPermissionsEnum.TaskHistoryDescriptionRead,
@@ -120,6 +125,8 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
               'description',
               'suspendRequest',
             )}
+            userActions={userActions}
+            permissions={permissions}
           />
         </React.Suspense>
       ),

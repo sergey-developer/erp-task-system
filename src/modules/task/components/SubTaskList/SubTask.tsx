@@ -10,7 +10,7 @@ import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequ
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { SubTaskModel } from 'modules/task/models'
-import { makeUserByFullName } from 'modules/user/utils'
+import { makeUserByFullName, MatchedPermissions } from 'modules/user/utils'
 
 import Expandable from 'components/Expandable'
 import Label from 'components/Label'
@@ -28,6 +28,7 @@ export type SubTaskProps = Omit<SubTaskModel, 'id'> & {
   currentUserIsTaskAssignee: boolean
   onClickCancel: EmptyFn
   onClickRework: EmptyFn
+  permissions: MatchedPermissions
   taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 
@@ -50,6 +51,7 @@ const SubTask: FC<SubTaskProps> = ({
   returnReason,
   cancelReason,
   taskSuspendRequestStatus: rawTaskSuspendRequestStatus,
+  permissions,
 }) => {
   const taskStatus = useTaskStatus(rawTaskStatus)
   const taskExtendedStatus = useTaskExtendedStatus(rawTaskExtendedStatus)
@@ -57,21 +59,18 @@ const SubTask: FC<SubTaskProps> = ({
   const subTaskStatus = useTaskStatus(status)
 
   const [showDescription, { toggle: toggleShowDescription }] = useBoolean(false)
-
   const [showTechResolution, { toggle: toggleShowTechResolution }] = useBoolean(false)
-
   const [showReturnReason, { toggle: toggleShowReturnReason }] = useBoolean(false)
-
   const [showCancelReason, { toggle: toggleShowCancelReason }] = useBoolean(false)
 
   const isShowCancelBtn =
-    currentUserIsTaskAssignee &&
+    (currentUserIsTaskAssignee || permissions.anySubtasksDelete) &&
     subTaskStatus.isNew &&
     !taskStatus.isCompleted &&
     !taskStatus.isClosed
 
   const isShowReworkBtn =
-    currentUserIsTaskAssignee &&
+    (currentUserIsTaskAssignee || permissions.anySubtasksRework) &&
     subTaskStatus.isCompleted &&
     !taskStatus.isCompleted &&
     !taskStatus.isClosed

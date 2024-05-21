@@ -36,6 +36,7 @@ export const createTaskRegistrationFNRequestErrMsg =
 export const getTaskRegistrationRequestRecipientsFNErrMsg =
   'Ошибка получения списков получателей запроса на регистрацию ФН'
 
-export const createSubTaskMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Не удалось создать задание',
-}
+export const getSubTasksErrMsg = 'Не удалось получить список заданий'
+export const createSubTaskErrMsg = 'Не удалось создать задание'
+export const cancelSubTaskErrMsg = 'Не удалось отменить задание'
+export const reworkSubTaskErrMsg = 'Не удалось вернуть задание на доработку'
