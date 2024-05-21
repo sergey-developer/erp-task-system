@@ -56,14 +56,10 @@ const props: Readonly<SubTaskListTabProps> = {
 }
 
 const activeCreateSubTaskButtonTaskProps: {
-  task: Pick<
-    SubTaskListTabProps['task'],
-    'assignee' | 'status' | 'extendedStatus' | 'type' | 'suspendRequest'
-  >
+  task: Pick<SubTaskListTabProps['task'], 'status' | 'extendedStatus' | 'type' | 'suspendRequest'>
   userActions: SubTaskListTabProps['userActions']
 } = {
   task: {
-    assignee: taskFixtures.assignee(),
     status: TaskStatusEnum.InProgress,
     extendedStatus: TaskExtendedStatusEnum.New,
     type: TaskTypeEnum.Request,
