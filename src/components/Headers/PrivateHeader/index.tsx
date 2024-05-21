@@ -22,7 +22,7 @@ import {
   useUpdateUserStatusMutation,
   useUpdateUserTimeZoneMutation,
 } from 'modules/user/services/userApi.service'
-import { checkUserStatusOffline, getUserRoleMap } from 'modules/user/utils'
+import { checkUserStatusOffline } from 'modules/user/utils'
 
 import DetailedUserAvatar from 'components/Avatars/DetailedUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -52,7 +52,6 @@ const PrivateHeader: FC = () => {
 
   const { data: userMeCode } = useUserMeCodeState()
   const { data: userMe } = useUserMeState()
-  const { isFirstLineSupportRole } = getUserRoleMap(userMe?.role)
 
   const { data: timeZoneList, isFetching: timeZoneListIsFetching } = useTimeZoneListState()
 
@@ -88,7 +87,7 @@ const PrivateHeader: FC = () => {
     [userStatusList],
   )
 
-  const handleUpdateTimeZone = async (timezone: UserModel['timezone']) => {
+  const onUpdateTimeZone = async (timezone: UserModel['timezone']) => {
     if (!userMe) return
 
     try {
@@ -101,7 +100,7 @@ const PrivateHeader: FC = () => {
     }
   }
 
-  const handleUpdateUserStatus = async (statusId: number) => {
+  const onUpdateUserStatus = async (statusId: number) => {
     if (!userMe) return
 
     try {
@@ -150,21 +149,19 @@ const PrivateHeader: FC = () => {
               disabled={timeZoneListIsFetching || updateUserTimeZoneIsLoading}
               options={timeZoneList}
               value={userMe?.timezone || null}
-              onChange={(value) => handleUpdateTimeZone(value as string)}
+              onChange={(value) => onUpdateTimeZone(value as string)}
               dropdownStyle={timeZoneDropdownStyles}
             />
 
-            {isFirstLineSupportRole && (
-              <Select
-                data-testid='user-status-select'
-                aria-label='Статус пользователя'
-                options={userStatusOptions}
-                loading={userStatusListIsFetching}
-                disabled={updateUserStatusIsLoading}
-                value={userMe?.status.id}
-                onSelect={handleUpdateUserStatus}
-              />
-            )}
+            <Select
+              data-testid='user-status-select'
+              aria-label='Статус пользователя'
+              options={userStatusOptions}
+              loading={userStatusListIsFetching}
+              disabled={updateUserStatusIsLoading}
+              value={userMe?.status.id}
+              onSelect={onUpdateUserStatus}
+            />
 
             {userMeCode && <Text title='user code'>{userMeCode.code}</Text>}
 

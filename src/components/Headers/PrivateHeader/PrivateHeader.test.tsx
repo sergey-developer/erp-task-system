@@ -8,18 +8,21 @@ import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/Lo
 import { ReportsRoutesEnum } from 'modules/reports/constants'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { UserRoleEnum } from 'modules/user/constants'
+import { updateUserStatusMessages, UserRoleEnum } from 'modules/user/constants'
 
 import { testUtils as homeLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
+import { UserStatusCodeEnum } from 'shared/constants/catalogs'
 import { MaybeNull } from 'shared/types/utils'
 
 import App from 'app/App'
 
 import authFixtures from '_tests_/fixtures/auth'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetSystemInfoSuccess,
+  mockGetSystemSettingsSuccess,
   mockGetTaskCountersSuccess,
   mockGetTasksSuccess,
   mockGetTimeZoneListSuccess,
@@ -28,17 +31,23 @@ import {
   mockGetUserStatusListSuccess,
   mockLoginSuccess,
   mockLogoutSuccess,
+  mockUpdateUserStatusBadRequestError,
+  mockUpdateUserStatusNotFoundError,
+  mockUpdateUserStatusServerError,
+  mockUpdateUserStatusSuccess,
+  mockUpdateUserStatusUnauthorizedError,
 } from '_tests_/mocks/api'
 import {
   fakeEmail,
+  fakeId,
   fakeWord,
+  getStoreWithAuth,
+  notificationTestUtils,
   render,
   renderInRoute,
   selectTestUtils,
   setupApiTests,
 } from '_tests_/utils'
-
-import PrivateHeader from './index'
 
 const getContainer = () => screen.getByTestId('private-header')
 
@@ -84,7 +93,6 @@ const openUserStatusSelect = (user: UserEvent) =>
   selectTestUtils.openSelect(user, getUserStatusSelectContainer())
 
 const setUserStatus = selectTestUtils.clickSelectOption
-
 const getAllUserStatusOption = selectTestUtils.getAllSelectOption
 
 const expectUserStatusLoadingStarted = () =>
@@ -129,8 +137,9 @@ export const testUtils = {
 }
 
 setupApiTests()
+notificationTestUtils.setupNotifications()
 
-describe('PrivateHeader', () => {
+describe('Хэдер авторизованного пользователя', () => {
   describe('Меню навигации', () => {
     describe(`Для роли ${UserRoleEnum.FirstLineSupport}`, () => {
       describe('Рабочий стол', () => {
@@ -522,14 +531,281 @@ describe('PrivateHeader', () => {
   })
 
   describe('Селект выбора временной зоны', () => {
-    // todo: поправить
-    test.skip('Отображается', () => {
-      render(<PrivateHeader />)
+    test('Отображается', async () => {
+      mockGetUserMeCodeSuccess()
+      mockGetSystemInfoSuccess()
+      mockGetSystemSettingsSuccess()
+      mockGetTimeZoneListSuccess()
+      mockGetUserStatusListSuccess()
+      mockGetUserMeSuccess({ body: userFixtures.user() })
 
+      render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
+
+      await homeLayoutTestUtils.expectLoadingFinished()
       const field = testUtils.getTimeZoneSelect()
 
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
+    })
+  })
+
+  describe('Селект выбора статуса пользователя', () => {
+    test('Отображается', async () => {
+      mockGetUserMeCodeSuccess()
+      mockGetSystemInfoSuccess()
+      mockGetSystemSettingsSuccess()
+      mockGetTimeZoneListSuccess()
+      mockGetUserStatusListSuccess()
+      mockGetUserMeSuccess({ body: userFixtures.user() })
+
+      render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
+
+      await homeLayoutTestUtils.expectLoadingFinished()
+      const selectContainer = testUtils.getUserStatusSelectContainer()
+
+      expect(selectContainer).toBeInTheDocument()
+    })
+
+    test('Отображает установленный статус', async () => {
+      mockGetUserMeCodeSuccess()
+      mockGetSystemInfoSuccess()
+      mockGetSystemSettingsSuccess()
+      mockGetTimeZoneListSuccess()
+
+      const fakeUserStatus = catalogsFixtures.userStatusListItem()
+      mockGetUserStatusListSuccess({ body: [fakeUserStatus] })
+
+      mockGetUserMeSuccess({
+        body: userFixtures.user({ status: fakeUserStatus }),
+      })
+
+      render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
+
+      await homeLayoutTestUtils.expectLoadingFinished()
+      await testUtils.expectUserStatusLoadingFinished()
+      const selectedUserStatus = testUtils.getSelectedUserStatus()
+
+      expect(selectedUserStatus).toHaveTextContent(new RegExp(fakeUserStatus.title))
+    })
+
+    describe('Выбор статуса', () => {
+      describe('При успешном запросе', () => {
+        test('Меняется выбранный статус', async () => {
+          mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
+          mockGetSystemSettingsSuccess()
+          mockGetTimeZoneListSuccess()
+
+          const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+          const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
+          mockGetUserStatusListSuccess({
+            body: [fakeUserStatus1, fakeUserStatus2],
+          })
+
+          const fakeUser = userFixtures.user({ status: fakeUserStatus2 })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockUpdateUserStatusSuccess(fakeUser.id)
+
+          const { user } = render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
+
+          await homeLayoutTestUtils.expectLoadingFinished()
+          await testUtils.expectUserStatusLoadingFinished()
+          await testUtils.openUserStatusSelect(user)
+          await testUtils.setUserStatus(user, fakeUserStatus1.title)
+          await testUtils.expectUserStatusSelectDisabled()
+          await testUtils.expectUserStatusSelectNotDisabled()
+
+          const selectedUserStatus = testUtils.getSelectedUserStatus()
+
+          expect(selectedUserStatus).toHaveTextContent(new RegExp(fakeUserStatus1.title))
+        })
+
+        test('Если выбран статус OFFLINE, то удаляются фильтры заявок из localStorage', async () => {
+          mockGetTasksSuccess()
+          mockGetTaskCountersSuccess()
+          mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
+          mockGetSystemSettingsSuccess()
+          mockGetTimeZoneListSuccess()
+
+          const userStatus = catalogsFixtures.userStatusListItem({
+            code: UserStatusCodeEnum.Offline,
+          })
+          mockGetUserStatusListSuccess({ body: [userStatus] })
+
+          const fakeUser = userFixtures.user({ status: userStatus })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockUpdateUserStatusSuccess(fakeUser.id)
+
+          const { user } = render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
+
+          taskLocalStorageService.setTasksFilters({ customers: [fakeId()] })
+          await homeLayoutTestUtils.expectLoadingFinished()
+          await testUtils.expectUserStatusLoadingFinished()
+
+          expect(taskLocalStorageService.getTasksFilters()).toBeTruthy()
+
+          await testUtils.openUserStatusSelect(user)
+          await testUtils.setUserStatus(user, userStatus.title, true)
+          await testUtils.expectUserStatusSelectDisabled()
+          await testUtils.expectUserStatusSelectNotDisabled()
+
+          expect(taskLocalStorageService.getTasksFilters()).toBeNull()
+        })
+      })
+
+      describe('При не успешном запросе', () => {
+        test('Обрабатывается ошибка 400', async () => {
+          mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
+          mockGetSystemSettingsSuccess()
+          mockGetTimeZoneListSuccess()
+
+          const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+          const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
+          mockGetUserStatusListSuccess({
+            body: [fakeUserStatus1, fakeUserStatus2],
+          })
+
+          const fakeUser = userFixtures.user({ status: fakeUserStatus2 })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          const badRequestErrorMessage = fakeWord()
+          mockUpdateUserStatusBadRequestError(fakeUser.id, {
+            body: { detail: [badRequestErrorMessage] },
+          })
+
+          const { user } = render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
+
+          await homeLayoutTestUtils.expectLoadingFinished()
+          await testUtils.expectUserStatusLoadingFinished()
+          await testUtils.openUserStatusSelect(user)
+          await testUtils.setUserStatus(user, fakeUserStatus1.title)
+          await testUtils.expectUserStatusSelectDisabled()
+          await testUtils.expectUserStatusSelectNotDisabled()
+
+          const selectedUserStatus = testUtils.getSelectedUserStatus()
+
+          expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
+
+          const notification = await notificationTestUtils.findNotification(badRequestErrorMessage)
+          expect(notification).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка 401', async () => {
+          mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
+          mockGetSystemSettingsSuccess()
+          mockGetTimeZoneListSuccess()
+
+          const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+          const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
+          mockGetUserStatusListSuccess({
+            body: [fakeUserStatus1, fakeUserStatus2],
+          })
+
+          const fakeUser = userFixtures.user({ status: fakeUserStatus2 })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          const unauthorizedErrorMessage = fakeWord()
+          mockUpdateUserStatusUnauthorizedError(fakeUser.id, {
+            body: { detail: unauthorizedErrorMessage },
+          })
+
+          const { user } = render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
+
+          await homeLayoutTestUtils.expectLoadingFinished()
+          await testUtils.expectUserStatusLoadingFinished()
+          await testUtils.openUserStatusSelect(user)
+          await testUtils.setUserStatus(user, fakeUserStatus1.title)
+          await testUtils.expectUserStatusSelectDisabled()
+          await testUtils.expectUserStatusSelectNotDisabled()
+
+          const selectedUserStatus = testUtils.getSelectedUserStatus()
+
+          expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
+
+          const notification = await notificationTestUtils.findNotification(
+            unauthorizedErrorMessage,
+          )
+          expect(notification).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка 404', async () => {
+          mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
+          mockGetSystemSettingsSuccess()
+          mockGetTimeZoneListSuccess()
+
+          const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+          const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
+          mockGetUserStatusListSuccess({
+            body: [fakeUserStatus1, fakeUserStatus2],
+          })
+
+          const fakeUser = userFixtures.user({ status: fakeUserStatus2 })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          const errorMessage = fakeWord()
+          mockUpdateUserStatusNotFoundError(fakeUser.id, {
+            body: { detail: errorMessage },
+          })
+
+          const { user } = render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
+
+          await homeLayoutTestUtils.expectLoadingFinished()
+          await testUtils.expectUserStatusLoadingFinished()
+          await testUtils.openUserStatusSelect(user)
+          await testUtils.setUserStatus(user, fakeUserStatus1.title)
+          await testUtils.expectUserStatusSelectDisabled()
+          await testUtils.expectUserStatusSelectNotDisabled()
+
+          const selectedUserStatus = testUtils.getSelectedUserStatus()
+
+          expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
+
+          const notification = await notificationTestUtils.findNotification(errorMessage)
+          expect(notification).toBeInTheDocument()
+        })
+
+        test('Обрабатывается ошибка 500', async () => {
+          mockGetUserMeCodeSuccess()
+          mockGetSystemInfoSuccess()
+          mockGetSystemSettingsSuccess()
+          mockGetTimeZoneListSuccess()
+
+          const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
+          const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
+          mockGetUserStatusListSuccess({
+            body: [fakeUserStatus1, fakeUserStatus2],
+          })
+
+          const fakeUser = userFixtures.user({ status: fakeUserStatus2 })
+          mockGetUserMeSuccess({ body: fakeUser })
+
+          mockUpdateUserStatusServerError(fakeUser.id)
+
+          const { user } = render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
+
+          await homeLayoutTestUtils.expectLoadingFinished()
+          await testUtils.expectUserStatusLoadingFinished()
+          await testUtils.openUserStatusSelect(user)
+          await testUtils.setUserStatus(user, fakeUserStatus1.title)
+          await testUtils.expectUserStatusSelectDisabled()
+          await testUtils.expectUserStatusSelectNotDisabled()
+
+          const selectedUserStatus = testUtils.getSelectedUserStatus()
+
+          expect(selectedUserStatus).not.toHaveTextContent(new RegExp(fakeUserStatus1.title))
+
+          const notification = await notificationTestUtils.findNotification(
+            updateUserStatusMessages.commonError,
+          )
+          expect(notification).toBeInTheDocument()
+        })
+      })
     })
   })
 
