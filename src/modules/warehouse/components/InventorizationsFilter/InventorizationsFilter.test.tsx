@@ -2,62 +2,61 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import {
-  relocationTaskStatusDict,
-  RelocationTaskStatusEnum,
-  relocationTaskTypeDict,
-  RelocationTaskTypeEnum,
-} from 'modules/warehouse/constants/relocationTask'
+  inventorizationStatusDict,
+  InventorizationStatusEnum,
+  inventorizationTypeDict,
+  InventorizationTypeEnum,
+} from 'modules/warehouse/constants/inventorization'
 
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
 
-import RelocationTaskListFilter from './index'
-import { RelocationTaskListFilterProps } from './types'
+import InventorizationsFilter from './index'
+import { InventorizationsFilterProps } from './types'
 
-const props: Readonly<RelocationTaskListFilterProps> = {
+const props: Readonly<InventorizationsFilterProps> = {
   open: true,
 
   values: {},
   initialValues: {},
 
-  users: [],
-  usersIsLoading: false,
-
-  locations: [],
-  locationsIsLoading: false,
-
   onClose: jest.fn(),
   onApply: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('relocation-task-list-filter')
-const queryContainer = () => screen.queryByTestId('relocation-task-list-filter')
-const findContainer = (): Promise<HTMLElement> => screen.findByTestId('relocation-task-list-filter')
+const getContainer = () => screen.getByTestId('inventorizations-filter')
+const queryContainer = () => screen.queryByTestId('inventorizations-filter')
+const findContainer = (): Promise<HTMLElement> => screen.findByTestId('inventorizations-filter')
 
 // status block
 const getStatusBlock = (): HTMLElement => within(getContainer()).getByTestId('status-block')
-const getStatusSelect = (): HTMLElement => within(getStatusBlock()).getByTestId('status-select')
-const getStatusSelectInput = () => selectTestUtils.getSelect(getStatusSelect())
+const getStatusSelectInput = () => selectTestUtils.getSelect(getStatusBlock())
 const openStatusSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getStatusBlock())
 const setStatus = selectTestUtils.clickSelectOption
 
+const unSetStatus = async (user: UserEvent, title: string) => {
+  const status = getSelectedStatus(title)
+  // eslint-disable-next-line testing-library/no-node-access
+  const closeIcon = status.querySelector('.ant-select-selection-item-remove')
+  if (closeIcon) await user.click(closeIcon)
+}
+
 const getSelectedStatus = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getStatusSelect(), title)
+  selectTestUtils.getSelectedOptionByTitle(getStatusBlock(), title)
 
 const querySelectedStatus = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getStatusSelect(), title)
+  selectTestUtils.querySelectedOptionByTitle(getStatusBlock(), title)
 
 // type block
 const getTypeBlock = (): HTMLElement => within(getContainer()).getByTestId('type-block')
-const getTypeSelect = (): HTMLElement => within(getTypeBlock()).getByTestId('type-select')
-const getTypeSelectInput = () => selectTestUtils.getSelect(getTypeSelect())
+const getTypeSelectInput = () => selectTestUtils.getSelect(getTypeBlock())
 const openTypeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getTypeBlock())
 const setType = selectTestUtils.clickSelectOption
 
 const getSelectedType = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getTypeSelect(), title)
+  selectTestUtils.getSelectedOptionByTitle(getTypeBlock(), title)
 
 const querySelectedType = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getTypeSelect(), title)
+  selectTestUtils.querySelectedOptionByTitle(getTypeBlock(), title)
 
 // reset button
 const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сбросить все/)
@@ -94,15 +93,14 @@ export const testUtils = {
   findContainer,
 
   getStatusBlock,
-  getStatusSelect,
   getStatusSelectInput,
   openStatusSelect,
   setStatus,
+  unSetStatus,
   getSelectedStatus,
   querySelectedStatus,
 
   getTypeBlock,
-  getTypeSelect,
   getTypeSelectInput,
   openTypeSelect,
   setType,
@@ -122,8 +120,8 @@ export const testUtils = {
 
 describe('Фильтр списка заявок на перемещение оборудования', () => {
   describe('Статус', () => {
-    test('Отображается корректно', () => {
-      render(<RelocationTaskListFilter {...props} />)
+    test('Отображается', () => {
+      render(<InventorizationsFilter {...props} />)
 
       const input = testUtils.getStatusSelectInput()
 
@@ -132,17 +130,20 @@ describe('Фильтр списка заявок на перемещение о�
     })
 
     test('Можно выбрать несколько вариантов', async () => {
-      const { user } = render(<RelocationTaskListFilter {...props} />)
+      const { user } = render(<InventorizationsFilter {...props} />)
 
       await testUtils.openStatusSelect(user)
-      await testUtils.setStatus(user, relocationTaskStatusDict[RelocationTaskStatusEnum.New])
-      await testUtils.setStatus(user, relocationTaskStatusDict[RelocationTaskStatusEnum.Completed])
+      await testUtils.setStatus(user, inventorizationStatusDict[InventorizationStatusEnum.New])
+      await testUtils.setStatus(
+        user,
+        inventorizationStatusDict[InventorizationStatusEnum.Completed],
+      )
 
       const status1 = testUtils.getSelectedStatus(
-        relocationTaskStatusDict[RelocationTaskStatusEnum.New],
+        inventorizationStatusDict[InventorizationStatusEnum.New],
       )
       const status2 = testUtils.getSelectedStatus(
-        relocationTaskStatusDict[RelocationTaskStatusEnum.Completed],
+        inventorizationStatusDict[InventorizationStatusEnum.Completed],
       )
 
       expect(status1).toBeInTheDocument()
@@ -151,14 +152,14 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Устанавливается значение по умолчанию', () => {
       render(
-        <RelocationTaskListFilter
+        <InventorizationsFilter
           {...props}
-          initialValues={{ status: [RelocationTaskStatusEnum.New] }}
+          initialValues={{ statuses: [InventorizationStatusEnum.New] }}
         />,
       )
 
       const status = testUtils.getSelectedStatus(
-        relocationTaskStatusDict[RelocationTaskStatusEnum.New],
+        inventorizationStatusDict[InventorizationStatusEnum.New],
       )
 
       expect(status).toBeInTheDocument()
@@ -166,22 +167,22 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(
-        <RelocationTaskListFilter
+        <InventorizationsFilter
           {...props}
-          initialValues={{ status: [RelocationTaskStatusEnum.New] }}
+          initialValues={{ statuses: [InventorizationStatusEnum.New] }}
         />,
       )
 
       await testUtils.openStatusSelect(user)
-      await testUtils.setStatus(user, relocationTaskStatusDict[RelocationTaskStatusEnum.Canceled])
+      await testUtils.setStatus(user, inventorizationStatusDict[InventorizationStatusEnum.Canceled])
 
       await testUtils.clickResetButtonIn(user, testUtils.getStatusBlock())
 
       const status1 = testUtils.getSelectedStatus(
-        relocationTaskStatusDict[RelocationTaskStatusEnum.New],
+        inventorizationStatusDict[InventorizationStatusEnum.New],
       )
       const status2 = testUtils.querySelectedStatus(
-        relocationTaskStatusDict[RelocationTaskStatusEnum.Canceled],
+        inventorizationStatusDict[InventorizationStatusEnum.Canceled],
       )
 
       expect(status1).toBeInTheDocument()
@@ -190,18 +191,18 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Переданное значение заменяет значение по умолчанию', () => {
       render(
-        <RelocationTaskListFilter
+        <InventorizationsFilter
           {...props}
-          initialValues={{ status: [RelocationTaskStatusEnum.New] }}
-          values={{ status: [RelocationTaskStatusEnum.Completed] }}
+          initialValues={{ statuses: [InventorizationStatusEnum.New] }}
+          values={{ statuses: [InventorizationStatusEnum.Completed] }}
         />,
       )
 
       const status1 = testUtils.getSelectedStatus(
-        relocationTaskStatusDict[RelocationTaskStatusEnum.Completed],
+        inventorizationStatusDict[InventorizationStatusEnum.Completed],
       )
       const status2 = testUtils.querySelectedStatus(
-        relocationTaskStatusDict[RelocationTaskStatusEnum.New],
+        inventorizationStatusDict[InventorizationStatusEnum.New],
       )
 
       expect(status1).toBeInTheDocument()
@@ -210,8 +211,8 @@ describe('Фильтр списка заявок на перемещение о�
   })
 
   describe('Тип заявки', () => {
-    test('Отображается корректно', () => {
-      render(<RelocationTaskListFilter {...props} />)
+    test('Отображается', () => {
+      render(<InventorizationsFilter {...props} />)
 
       const input = testUtils.getTypeSelectInput()
 
@@ -220,16 +221,18 @@ describe('Фильтр списка заявок на перемещение о�
     })
 
     test('Можно выбрать несколько вариантов', async () => {
-      const { user } = render(<RelocationTaskListFilter {...props} />)
+      const { user } = render(<InventorizationsFilter {...props} />)
 
       await testUtils.openTypeSelect(user)
-      await testUtils.setType(user, relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation])
-      await testUtils.setType(user, relocationTaskTypeDict[RelocationTaskTypeEnum.Repair])
+      await testUtils.setType(user, inventorizationTypeDict[InventorizationTypeEnum.Internal])
+      await testUtils.setType(user, inventorizationTypeDict[InventorizationTypeEnum.External])
 
       const type1 = testUtils.getSelectedType(
-        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+        inventorizationTypeDict[InventorizationTypeEnum.Internal],
       )
-      const type2 = testUtils.getSelectedType(relocationTaskTypeDict[RelocationTaskTypeEnum.Repair])
+      const type2 = testUtils.getSelectedType(
+        inventorizationTypeDict[InventorizationTypeEnum.External],
+      )
 
       expect(type1).toBeInTheDocument()
       expect(type2).toBeInTheDocument()
@@ -237,14 +240,14 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Устанавливается значение по умолчанию', () => {
       render(
-        <RelocationTaskListFilter
+        <InventorizationsFilter
           {...props}
-          initialValues={{ type: [RelocationTaskTypeEnum.Relocation] }}
+          initialValues={{ types: [InventorizationTypeEnum.Internal] }}
         />,
       )
 
       const type = testUtils.getSelectedType(
-        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+        inventorizationTypeDict[InventorizationTypeEnum.Internal],
       )
 
       expect(type).toBeInTheDocument()
@@ -252,42 +255,42 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(
-        <RelocationTaskListFilter
+        <InventorizationsFilter
           {...props}
-          initialValues={{ type: [RelocationTaskTypeEnum.Repair] }}
+          initialValues={{ types: [InventorizationTypeEnum.Internal] }}
         />,
       )
 
       await testUtils.openTypeSelect(user)
-      await testUtils.setType(user, relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation])
+      await testUtils.setType(user, inventorizationTypeDict[InventorizationTypeEnum.External])
 
       await testUtils.clickResetButtonIn(user, testUtils.getTypeBlock())
 
-      const type1 = testUtils.querySelectedType(
-        relocationTaskTypeDict[RelocationTaskTypeEnum.Repair],
+      const type1 = testUtils.getSelectedType(
+        inventorizationTypeDict[InventorizationTypeEnum.Internal],
       )
       const type2 = testUtils.querySelectedType(
-        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+        inventorizationTypeDict[InventorizationTypeEnum.External],
       )
 
-      expect(type1).not.toBeInTheDocument()
+      expect(type1).toBeInTheDocument()
       expect(type2).not.toBeInTheDocument()
     })
 
     test('Переданное значение заменяет значение по умолчанию', () => {
       render(
-        <RelocationTaskListFilter
+        <InventorizationsFilter
           {...props}
-          initialValues={{ type: [RelocationTaskTypeEnum.Repair] }}
-          values={{ type: [RelocationTaskTypeEnum.Relocation] }}
+          initialValues={{ types: [InventorizationTypeEnum.Internal] }}
+          values={{ types: [InventorizationTypeEnum.External] }}
         />,
       )
 
       const type1 = testUtils.getSelectedType(
-        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+        inventorizationTypeDict[InventorizationTypeEnum.External],
       )
       const type2 = testUtils.querySelectedType(
-        relocationTaskTypeDict[RelocationTaskTypeEnum.Repair],
+        inventorizationTypeDict[InventorizationTypeEnum.Internal],
       )
 
       expect(type1).toBeInTheDocument()
@@ -296,8 +299,8 @@ describe('Фильтр списка заявок на перемещение о�
   })
 
   describe('Кнопка применить', () => {
-    test('Отображается корректно', () => {
-      render(<RelocationTaskListFilter {...props} />)
+    test('Отображается', () => {
+      render(<InventorizationsFilter {...props} />)
 
       const button = testUtils.getApplyButton()
 
@@ -305,8 +308,8 @@ describe('Фильтр списка заявок на перемещение о�
       expect(button).toBeEnabled()
     })
 
-    test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<RelocationTaskListFilter {...props} />)
+    test('Обработчик вызывается', async () => {
+      const { user } = render(<InventorizationsFilter {...props} />)
 
       await testUtils.clickApplyButton(user)
 
@@ -316,8 +319,8 @@ describe('Фильтр списка заявок на перемещение о�
   })
 
   describe('Кнопка сбросить всё', () => {
-    test('Отображается корректно', () => {
-      render(<RelocationTaskListFilter {...props} />)
+    test('Отображается', () => {
+      render(<InventorizationsFilter {...props} />)
 
       const button = testUtils.getResetAllButton()
 
@@ -327,15 +330,15 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Сбрасывает значения полей', async () => {
       const { user } = render(
-        <RelocationTaskListFilter
+        <InventorizationsFilter
           {...props}
           initialValues={{
-            status: [RelocationTaskStatusEnum.New],
-            type: [RelocationTaskTypeEnum.Relocation],
+            statuses: [InventorizationStatusEnum.New],
+            types: [InventorizationTypeEnum.Internal],
           }}
           values={{
-            status: [RelocationTaskStatusEnum.Completed],
-            type: [RelocationTaskTypeEnum.Repair],
+            statuses: [InventorizationStatusEnum.Completed],
+            types: [InventorizationTypeEnum.External],
           }}
         />,
       )
@@ -343,16 +346,16 @@ describe('Фильтр списка заявок на перемещение о�
       await testUtils.clickResetAllButton(user)
 
       const status1 = testUtils.getSelectedStatus(
-        relocationTaskStatusDict[RelocationTaskStatusEnum.New],
+        inventorizationStatusDict[InventorizationStatusEnum.New],
       )
       const status2 = testUtils.querySelectedStatus(
-        relocationTaskStatusDict[RelocationTaskStatusEnum.Completed],
+        inventorizationStatusDict[InventorizationStatusEnum.Completed],
       )
       const type1 = testUtils.getSelectedType(
-        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+        inventorizationTypeDict[InventorizationTypeEnum.Internal],
       )
       const type2 = testUtils.querySelectedType(
-        relocationTaskTypeDict[RelocationTaskTypeEnum.Repair],
+        inventorizationTypeDict[InventorizationTypeEnum.External],
       )
 
       expect(status1).toBeInTheDocument()
@@ -363,8 +366,8 @@ describe('Фильтр списка заявок на перемещение о�
   })
 
   describe('Кнопка закрытия', () => {
-    test('Отображается корректно', () => {
-      render(<RelocationTaskListFilter {...props} />)
+    test('Отображается', () => {
+      render(<InventorizationsFilter {...props} />)
 
       const button = testUtils.getCloseButton()
 
@@ -372,8 +375,8 @@ describe('Фильтр списка заявок на перемещение о�
       expect(button).toBeEnabled()
     })
 
-    test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<RelocationTaskListFilter {...props} />)
+    test('Обработчик вызывается', async () => {
+      const { user } = render(<InventorizationsFilter {...props} />)
       await testUtils.clickCloseButton(user)
       expect(props.onClose).toBeCalledTimes(1)
     })
