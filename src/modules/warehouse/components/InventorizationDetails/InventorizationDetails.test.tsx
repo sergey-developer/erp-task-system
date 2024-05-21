@@ -170,7 +170,7 @@ describe('Карточка инвентаризации', () => {
       mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
 
       render(<InventorizationDetails {...props} />, {
-        store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+        store: getStoreWithAuth({ id: inventorization.executor.id }, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
           },
@@ -191,7 +191,7 @@ describe('Карточка инвентаризации', () => {
         mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
 
         render(<InventorizationDetails {...props} />, {
-          store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+          store: getStoreWithAuth({ id: inventorization.executor.id }, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
             },
@@ -231,7 +231,7 @@ describe('Карточка инвентаризации', () => {
         mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
 
         render(<InventorizationDetails {...props} />, {
-          store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+          store: getStoreWithAuth({ id: inventorization.executor.id }, undefined, undefined, {
             queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
           }),
         })
@@ -262,7 +262,7 @@ describe('Карточка инвентаризации', () => {
         ],
         { initialEntries: [WarehouseRouteEnum.Inventorizations], initialIndex: 0 },
         {
-          store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+          store: getStoreWithAuth({ id: inventorization.executor.id }, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
             },
