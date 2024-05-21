@@ -97,7 +97,7 @@ describe('Вкладка списка заявок на перемещение',
       mockGetRelocationTaskListSuccess()
 
       render(<RelocationTaskListTab {...props} />, {
-        store: getStoreWithAuth({ userId: props.task.assignee!.id }, undefined, undefined, {
+        store: getStoreWithAuth(props.task.assignee!, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksCreate] }),
           },
@@ -112,7 +112,7 @@ describe('Вкладка списка заявок на перемещение',
       mockGetRelocationTaskListSuccess()
 
       render(<RelocationTaskListTab {...props} />, {
-        store: getStoreWithAuth({ userId: props.task.assignee!.id }),
+        store: getStoreWithAuth(props.task.assignee!),
       })
 
       const button = testUtils.getCreateTaskButton()
@@ -155,7 +155,7 @@ describe('Вкладка списка заявок на перемещение',
         ],
         { initialEntries: [TasksRoutesEnum.DesktopTaskList], initialIndex: 0 },
         {
-          store: getStoreWithAuth({ userId: props.task.assignee!.id }, undefined, undefined, {
+          store: getStoreWithAuth(props.task.assignee!, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksCreate] }),
             },

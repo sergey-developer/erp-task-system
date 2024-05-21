@@ -60,7 +60,7 @@ describe('Страница отчётов', () => {
   describe('Отчёт по фискальным накопителям', () => {
     test(`Не отображается для роли ${UserRoleEnum.FirstLineSupport}`, async () => {
       render(<ReportsPage />, {
-        store: getStoreWithAuth({ userRole: UserRoleEnum.FirstLineSupport }),
+        store: getStoreWithAuth({ role: UserRoleEnum.FirstLineSupport }),
       })
 
       const link = testUtils.queryFiscalAccumulatorTasksReportPageLink()
@@ -69,7 +69,7 @@ describe('Страница отчётов', () => {
 
     test(`Отображается для роли ${UserRoleEnum.Engineer}`, async () => {
       render(<ReportsPage />, {
-        store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }),
+        store: getStoreWithAuth({ role: UserRoleEnum.Engineer }),
       })
 
       const link = testUtils.getFiscalAccumulatorTasksReportPageLink()
@@ -80,7 +80,7 @@ describe('Страница отчётов', () => {
 
     test(`Отображается для роли ${UserRoleEnum.SeniorEngineer}`, async () => {
       render(<ReportsPage />, {
-        store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
+        store: getStoreWithAuth({ role: UserRoleEnum.SeniorEngineer }),
       })
 
       const link = testUtils.getFiscalAccumulatorTasksReportPageLink()
@@ -91,7 +91,7 @@ describe('Страница отчётов', () => {
 
     test(`Отображается для роли ${UserRoleEnum.HeadOfDepartment}`, async () => {
       render(<ReportsPage />, {
-        store: getStoreWithAuth({ userRole: UserRoleEnum.HeadOfDepartment }),
+        store: getStoreWithAuth({ role: UserRoleEnum.HeadOfDepartment }),
       })
 
       const link = testUtils.getFiscalAccumulatorTasksReportPageLink()
@@ -116,7 +116,7 @@ describe('Страница отчётов', () => {
         ],
         { initialEntries: [ReportsRoutesEnum.Reports], initialIndex: 0 },
         {
-          store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }),
+          store: getStoreWithAuth({ role: UserRoleEnum.Engineer }),
         },
       )
 

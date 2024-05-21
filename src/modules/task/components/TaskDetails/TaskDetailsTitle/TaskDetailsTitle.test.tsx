@@ -254,7 +254,7 @@ describe('Заголовок карточки заявки', () => {
 
       test('При клике вызывается обработчик', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canRegisterFNItemProps} />, {
-          store: getStoreWithAuth({ userId: canRegisterFNItemProps.assignee!.id }),
+          store: getStoreWithAuth(canRegisterFNItemProps.assignee!),
         })
 
         await testUtils.openMenu(user)
@@ -264,7 +264,7 @@ describe('Заголовок карточки заявки', () => {
 
       test('Активен если условия соблюдены', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canRegisterFNItemProps} />, {
-          store: getStoreWithAuth({ userId: canRegisterFNItemProps.assignee!.id }),
+          store: getStoreWithAuth(canRegisterFNItemProps.assignee!),
         })
 
         await testUtils.openMenu(user)
@@ -279,7 +279,7 @@ describe('Заголовок карточки заявки', () => {
               {...canRegisterFNItemProps}
               type={TaskTypeEnum.RequestTask}
             />,
-            { store: getStoreWithAuth({ userId: canRegisterFNItemProps.assignee!.id }) },
+            { store: getStoreWithAuth(canRegisterFNItemProps.assignee!) },
           )
 
           await testUtils.openMenu(user)
@@ -289,7 +289,7 @@ describe('Заголовок карточки заявки', () => {
         test(`Но заявка не в статусе ${TaskStatusEnum.InProgress}`, async () => {
           const { user } = render(
             <TaskDetailsTitle {...props} {...canRegisterFNItemProps} status={TaskStatusEnum.New} />,
-            { store: getStoreWithAuth({ userId: canRegisterFNItemProps.assignee!.id }) },
+            { store: getStoreWithAuth(canRegisterFNItemProps.assignee!) },
           )
 
           await testUtils.openMenu(user)
@@ -310,7 +310,7 @@ describe('Заголовок карточки заявки', () => {
         test('Но нету рабочей группы', async () => {
           const { user } = render(
             <TaskDetailsTitle {...props} {...canRegisterFNItemProps} workGroup={null} />,
-            { store: getStoreWithAuth({ userId: canRegisterFNItemProps.assignee!.id }) },
+            { store: getStoreWithAuth(canRegisterFNItemProps.assignee!) },
           )
 
           await testUtils.openMenu(user)
@@ -337,14 +337,9 @@ describe('Заголовок карточки заявки', () => {
 
       test('При клике вызывается обработчик', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canExecuteTaskProps} />, {
-          store: getStoreWithAuth(
-            { userId: canExecuteTaskProps.assignee!.id },
-            undefined,
-            undefined,
-            {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            },
-          ),
+          store: getStoreWithAuth({ id: canExecuteTaskProps.assignee!.id }, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          }),
         })
 
         await testUtils.openMenu(user)
@@ -354,14 +349,9 @@ describe('Заголовок карточки заявки', () => {
 
       test('Активен если условия соблюдены', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canExecuteTaskProps} />, {
-          store: getStoreWithAuth(
-            { userId: canExecuteTaskProps.assignee!.id },
-            undefined,
-            undefined,
-            {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            },
-          ),
+          store: getStoreWithAuth({ id: canExecuteTaskProps.assignee!.id }, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          }),
         })
 
         await testUtils.openMenu(user)
@@ -374,7 +364,7 @@ describe('Заголовок карточки заявки', () => {
             <TaskDetailsTitle {...props} {...canExecuteTaskProps} status={TaskStatusEnum.New} />,
             {
               store: getStoreWithAuth(
-                { userId: canExecuteTaskProps.assignee!.id },
+                { id: canExecuteTaskProps.assignee!.id },
                 undefined,
                 undefined,
                 {
@@ -408,7 +398,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(
-                { userId: canExecuteTaskProps.assignee!.id },
+                { id: canExecuteTaskProps.assignee!.id },
                 undefined,
                 undefined,
                 {
@@ -433,7 +423,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(
-                { userId: canExecuteTaskProps.assignee!.id },
+                { id: canExecuteTaskProps.assignee!.id },
                 undefined,
                 undefined,
                 {
@@ -458,7 +448,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(
-                { userId: canExecuteTaskProps.assignee!.id },
+                { id: canExecuteTaskProps.assignee!.id },
                 undefined,
                 undefined,
                 {

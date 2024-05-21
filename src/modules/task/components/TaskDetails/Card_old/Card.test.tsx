@@ -245,7 +245,7 @@ describe('Карточка заявки', () => {
           <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
+              id: task.assignee!.id,
             }),
           },
         )
@@ -264,7 +264,7 @@ describe('Карточка заявки', () => {
           <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
+              id: task.assignee!.id,
             }),
           },
         )
@@ -285,7 +285,7 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
-            store: getStoreWithAuth({ userId: task.assignee!.id }),
+            store: getStoreWithAuth(task.assignee!),
           },
         )
 
@@ -302,7 +302,7 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
-            store: getStoreWithAuth({ userId: task.assignee!.id }),
+            store: getStoreWithAuth(task.assignee!),
           },
         )
 
@@ -320,7 +320,7 @@ describe('Карточка заявки', () => {
         const { user } = render(
           <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
-            store: getStoreWithAuth({ userId: task.assignee!.id }),
+            store: getStoreWithAuth(task.assignee!),
           },
         )
 
@@ -343,7 +343,7 @@ describe('Карточка заявки', () => {
           <TaskCard {...props} task={{ ...task, ...canExecuteTaskProps }} />,
           {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
+              id: task.assignee!.id,
             }),
           },
         )
@@ -388,7 +388,7 @@ describe('Карточка заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userId: task.assignee!.id,
+              id: task.assignee!.id,
             }),
           },
         )
@@ -429,8 +429,8 @@ describe('Карточка заявки', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<TaskCard {...props} {...activeTakeTaskButtonProps} />, {
         store: getStoreWithAuth({
-          userId: props.task!.assignee!.id,
-          userRole: UserRoleEnum.FirstLineSupport,
+          id: props.task!.assignee!.id,
+          role: UserRoleEnum.FirstLineSupport,
         }),
       })
 
@@ -454,8 +454,8 @@ describe('Карточка заявки', () => {
         />,
         {
           store: getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-            userId: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+            role: UserRoleEnum.SeniorEngineer,
+            id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
           }),
         },
       )
@@ -508,7 +508,7 @@ describe('Карточка заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           },
         )
@@ -540,7 +540,7 @@ describe('Карточка заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+              role: UserRoleEnum.Engineer,
             }),
           },
         )
@@ -572,7 +572,7 @@ describe('Карточка заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+              role: UserRoleEnum.SeniorEngineer,
             }),
           },
         )
@@ -604,7 +604,7 @@ describe('Карточка заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+              role: UserRoleEnum.HeadOfDepartment,
             }),
           },
         )
@@ -639,7 +639,7 @@ describe('Карточка заявки', () => {
           />,
           {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           },
         )
@@ -781,7 +781,7 @@ describe('Карточка заявки', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.FirstLineSupport,
+                  role: UserRoleEnum.FirstLineSupport,
                 }),
               },
             )
@@ -804,7 +804,7 @@ describe('Карточка заявки', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.SeniorEngineer,
+                  role: UserRoleEnum.SeniorEngineer,
                 }),
               },
             )
@@ -827,7 +827,7 @@ describe('Карточка заявки', () => {
               />,
               {
                 store: getStoreWithAuth({
-                  userRole: UserRoleEnum.HeadOfDepartment,
+                  role: UserRoleEnum.HeadOfDepartment,
                 }),
               },
             )
@@ -850,7 +850,7 @@ describe('Карточка заявки', () => {
                   }),
                 }}
               />,
-              { store: getStoreWithAuth({ userRole: UserRoleEnum.Engineer }) },
+              { store: getStoreWithAuth({ role: UserRoleEnum.Engineer }) },
             )
 
             await taskSuspendRequestTestUtils.findContainer()
