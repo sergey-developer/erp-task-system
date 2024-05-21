@@ -419,12 +419,9 @@ describe('Страница реестра заявок', () => {
       mockResolveTaskSuccess(task.id)
 
       const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth(
-          { userId: canExecuteTaskProps.assignee!.id },
-          undefined,
-          undefined,
-          { queries: { ...getUserMeQueryMock(userFixtures.user()) } },
-        ),
+        store: getStoreWithAuth({ id: canExecuteTaskProps.assignee!.id }, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -464,7 +461,7 @@ describe('Страница реестра заявок', () => {
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
       const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+        store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
@@ -509,7 +506,7 @@ describe('Страница реестра заявок', () => {
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
       const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+        store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
@@ -549,7 +546,7 @@ describe('Страница реестра заявок', () => {
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
       const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+        store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
@@ -589,7 +586,7 @@ describe('Страница реестра заявок', () => {
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(
-          { userId: canSelectAssigneeProps.workGroup.seniorEngineer.id },
+          { id: canSelectAssigneeProps.workGroup.seniorEngineer.id },
           undefined,
           undefined,
           {
@@ -631,7 +628,7 @@ describe('Страница реестра заявок', () => {
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(
-          { userId: canSelectAssigneeProps.workGroup.seniorEngineer.id },
+          { id: canSelectAssigneeProps.workGroup.seniorEngineer.id },
           undefined,
           undefined,
           {
@@ -782,7 +779,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskSuccess(taskListItem.id)
 
         const { user } = render(<TasksPage />, {
-          store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+          store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
             queries: { ...getUserMeQueryMock(currentUser) },
           }),
         })
@@ -1685,7 +1682,7 @@ describe('Страница реестра заявок', () => {
       mockGetTaskSuccess(taskListItem.id)
 
       const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+        store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
@@ -1813,7 +1810,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskSuccess(taskListItem.id)
 
         const { user } = render(<TasksPage />, {
-          store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+          store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
             queries: { ...getUserMeQueryMock(currentUser) },
           }),
         })

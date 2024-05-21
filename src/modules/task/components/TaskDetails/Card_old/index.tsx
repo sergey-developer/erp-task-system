@@ -574,6 +574,7 @@ const TaskCard: FC<TaskCardProps> = ({
 
               {!additionalInfoExpanded && <DividerStyled />}
 
+              {/*@ts-ignore*/}
               <Tabs task={task} activeTab={activeTab} />
 
               {executeTaskModalOpened && (

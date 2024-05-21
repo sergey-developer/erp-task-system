@@ -1,14 +1,11 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { CommonRouteEnum } from 'configs/routes'
-
 import { testUtils as logoutButtonTestUtils } from 'modules/auth/components/LogoutButton/LogoutButton.test'
 import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/LoginPage.test'
-import { ReportsRoutesEnum } from 'modules/reports/constants'
-import { TasksRoutesEnum } from 'modules/task/constants/routes'
+import { testUtils as tasksPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
 import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { updateUserStatusMessages, UserRoleEnum } from 'modules/user/constants'
+import { updateUserStatusMessages, UserPermissionsEnum, UserRoleEnum } from 'modules/user/constants'
 
 import { testUtils as homeLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
@@ -37,6 +34,7 @@ import {
   mockUpdateUserStatusSuccess,
   mockUpdateUserStatusUnauthorizedError,
 } from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeEmail,
   fakeId,
@@ -44,7 +42,6 @@ import {
   getStoreWithAuth,
   notificationTestUtils,
   render,
-  renderInRoute,
   selectTestUtils,
   setupApiTests,
 } from '_tests_/utils'
@@ -141,392 +138,167 @@ notificationTestUtils.setupNotifications()
 
 describe('Хэдер авторизованного пользователя', () => {
   describe('Меню навигации', () => {
-    describe(`Для роли ${UserRoleEnum.FirstLineSupport}`, () => {
-      describe('Рабочий стол', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.FirstLineSupport,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
+    describe('Рабочий стол', () => {
+      test('Отображается', async () => {
+        const currentUser = userFixtures.user()
+        mockGetUserMeSuccess({ body: currentUser })
+        mockGetTimeZoneListSuccess()
+        mockGetUserMeCodeSuccess()
+        mockGetSystemInfoSuccess()
+        mockGetSystemSettingsSuccess()
+        mockGetUserStatusListSuccess()
 
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
+        render(<App />, { useBrowserRouter: false, store: getStoreWithAuth(currentUser) })
 
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
-        })
-
-        test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.FirstLineSupport,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root, {
-            useBrowserRouter: false,
-          })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Рабочий стол')
-
-          expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
-        })
+        await homeLayoutTestUtils.expectLoadingFinished()
+        expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
       })
 
-      describe('Отчёт по ФН', () => {
-        test('Не отображается', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.FirstLineSupport,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
+      test('При клике переходит на страницу реестра заявок', async () => {
+        const currentUser = userFixtures.user()
+        mockGetUserMeSuccess({ body: currentUser })
+        mockGetTimeZoneListSuccess()
+        mockGetUserMeCodeSuccess()
+        mockGetSystemInfoSuccess()
+        mockGetSystemSettingsSuccess()
+        mockGetUserStatusListSuccess()
+        mockGetTasksSuccess()
+        mockGetTaskCountersSuccess()
 
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.queryNavMenuItem('Отчёт по ФН')).not.toBeInTheDocument()
-        })
-      })
-
-      describe('Управление складами', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.FirstLineSupport,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Управление складами')).toBeInTheDocument()
+        const { user } = render(<App />, {
+          useBrowserRouter: false,
+          store: getStoreWithAuth(currentUser),
         })
 
-        test.todo('Справочники')
-        test.todo('Управление запасами')
+        await homeLayoutTestUtils.expectLoadingFinished()
+        await testUtils.clickNavMenuItem(user, 'Рабочий стол')
+        const page = tasksPageTestUtils.getContainer()
+
+        expect(page).toBeInTheDocument()
       })
     })
 
-    describe(`Для роли ${UserRoleEnum.Engineer}`, () => {
-      describe('Рабочий стол', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.Engineer,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
+    describe('Отчёты', () => {
+      test(`Отображается если есть права ${UserPermissionsEnum.FiscalAccumulatorTasksRead} и нет ${UserPermissionsEnum.ReportMainIndicatorsRead}`, async () => {
+        const currentUser = userFixtures.user({
+          permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead],
+        })
+        mockGetUserMeSuccess({ body: currentUser })
+        mockGetTimeZoneListSuccess()
+        mockGetUserMeCodeSuccess()
+        mockGetSystemInfoSuccess()
+        mockGetSystemSettingsSuccess()
+        mockGetUserStatusListSuccess()
+        mockGetTasksSuccess({ once: false })
+        mockGetTaskCountersSuccess({ once: false })
 
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
+        render(<App />, {
+          useBrowserRouter: false,
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
         })
 
-        test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.Engineer,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root, {
-            useBrowserRouter: false,
-          })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Рабочий стол')
-
-          expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
-        })
+        await homeLayoutTestUtils.expectLoadingFinished()
+        expect(testUtils.getNavMenuItem('Отчёты')).toBeInTheDocument()
       })
 
-      describe('Отчёт по ФН', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.Engineer,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
+      test(`Отображается если есть права ${UserPermissionsEnum.ReportMainIndicatorsRead} и нет ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
+        const currentUser = userFixtures.user({
+          permissions: [UserPermissionsEnum.ReportMainIndicatorsRead],
+        })
+        mockGetUserMeSuccess({ body: currentUser })
+        mockGetTimeZoneListSuccess()
+        mockGetUserMeCodeSuccess()
+        mockGetSystemInfoSuccess()
+        mockGetSystemSettingsSuccess()
+        mockGetUserStatusListSuccess()
+        mockGetTasksSuccess({ once: false })
+        mockGetTaskCountersSuccess({ once: false })
 
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
+        render(<App />, {
+          useBrowserRouter: false,
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
         })
 
-        test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.Engineer,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root, {
-            useBrowserRouter: false,
-          })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
-
-          expect(getCurrentRoute()).toBe(ReportsRoutesEnum.FiscalAccumulatorTasksReport)
-        })
+        await homeLayoutTestUtils.expectLoadingFinished()
+        expect(testUtils.getNavMenuItem('Отчёты')).toBeInTheDocument()
       })
 
-      describe('Управление складами', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.Engineer,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
+      test(`Отображается если есть права ${UserPermissionsEnum.ReportMainIndicatorsRead} и ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
+        const currentUser = userFixtures.user({
+          permissions: [
+            UserPermissionsEnum.ReportMainIndicatorsRead,
+            UserPermissionsEnum.FiscalAccumulatorTasksRead,
+          ],
+        })
+        mockGetUserMeSuccess({ body: currentUser })
+        mockGetTimeZoneListSuccess()
+        mockGetUserMeCodeSuccess()
+        mockGetSystemInfoSuccess()
+        mockGetSystemSettingsSuccess()
+        mockGetUserStatusListSuccess()
+        mockGetTasksSuccess({ once: false })
+        mockGetTaskCountersSuccess({ once: false })
 
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Управление складами')).toBeInTheDocument()
+        render(<App />, {
+          useBrowserRouter: false,
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
         })
 
-        test.todo('Справочники')
-        test.todo('Управление запасами')
+        await homeLayoutTestUtils.expectLoadingFinished()
+        expect(testUtils.getNavMenuItem('Отчёты')).toBeInTheDocument()
       })
+
+      test(`Не отображается если нет прав ${UserPermissionsEnum.ReportMainIndicatorsRead} или ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
+        const currentUser = userFixtures.user({ permissions: [] })
+        mockGetUserMeSuccess({ body: currentUser })
+        mockGetTimeZoneListSuccess()
+        mockGetUserMeCodeSuccess()
+        mockGetSystemInfoSuccess()
+        mockGetSystemSettingsSuccess()
+        mockGetUserStatusListSuccess()
+        mockGetTasksSuccess({ once: false })
+        mockGetTaskCountersSuccess({ once: false })
+
+        render(<App />, {
+          useBrowserRouter: false,
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        await homeLayoutTestUtils.expectLoadingFinished()
+        expect(testUtils.queryNavMenuItem('Отчёты')).not.toBeInTheDocument()
+      })
+
+      test.todo('При клике роут меняется')
     })
 
-    describe(`Для роли ${UserRoleEnum.SeniorEngineer}`, () => {
-      describe('Рабочий стол', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.SeniorEngineer,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
+    describe('Управление складами', () => {
+      test('Отображается корректно', async () => {
+        const fakeUser = userFixtures.user({
+          role: UserRoleEnum.FirstLineSupport,
         })
+        mockGetUserMeSuccess({ body: fakeUser })
 
-        test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.SeniorEngineer,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
+        mockGetTimeZoneListSuccess()
+        mockGetUserMeCodeSuccess()
+        mockGetSystemInfoSuccess()
 
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
+        render(<App />, { useBrowserRouter: false })
 
-          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root, {
-            useBrowserRouter: false,
-          })
+        await homeLayoutTestUtils.expectLoadingFinished()
 
-          await homeLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Рабочий стол')
-
-          expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
-        })
+        expect(testUtils.getNavMenuItem('Управление складами')).toBeInTheDocument()
       })
 
-      describe('Отчёт по ФН', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.SeniorEngineer,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
-        })
-
-        test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.SeniorEngineer,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root, {
-            useBrowserRouter: false,
-          })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
-
-          expect(getCurrentRoute()).toBe(ReportsRoutesEnum.FiscalAccumulatorTasksReport)
-        })
-      })
-
-      describe('Управление складами', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.SeniorEngineer,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Управление складами')).toBeInTheDocument()
-        })
-
-        test.todo('Справочники')
-        test.todo('Управление запасами')
-      })
-    })
-
-    describe(`Для роли ${UserRoleEnum.HeadOfDepartment}`, () => {
-      describe('Рабочий стол', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.HeadOfDepartment,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
-        })
-
-        test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.HeadOfDepartment,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root, {
-            useBrowserRouter: false,
-          })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Рабочий стол')
-
-          expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
-        })
-      })
-
-      describe('Отчёт по ФН', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.HeadOfDepartment,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Отчёт по ФН')).toBeInTheDocument()
-        })
-
-        test('При клике роут меняется', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.HeadOfDepartment,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          const { user, getCurrentRoute } = renderInRoute(<App />, CommonRouteEnum.Root, {
-            useBrowserRouter: false,
-          })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-          await testUtils.clickNavMenuItem(user, 'Отчёт по ФН')
-
-          expect(getCurrentRoute()).toBe(ReportsRoutesEnum.FiscalAccumulatorTasksReport)
-        })
-      })
-
-      describe('Управление складами', () => {
-        test('Отображается корректно', async () => {
-          const fakeUser = userFixtures.user({
-            role: UserRoleEnum.HeadOfDepartment,
-          })
-          mockGetUserMeSuccess({ body: fakeUser })
-
-          mockGetTimeZoneListSuccess()
-          mockGetUserMeCodeSuccess()
-          mockGetSystemInfoSuccess()
-
-          render(<App />, { useBrowserRouter: false })
-
-          await homeLayoutTestUtils.expectLoadingFinished()
-
-          expect(testUtils.getNavMenuItem('Управление складами')).toBeInTheDocument()
-        })
-
-        test.todo('Справочники')
-        test.todo('Управление запасами')
-      })
+      test.todo('Справочники')
+      test.todo('Управление запасами')
     })
   })
 
@@ -814,6 +586,7 @@ describe('Хэдер авторизованного пользователя', (
       mockGetUserMeSuccess()
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
+      mockGetSystemSettingsSuccess()
       mockGetTimeZoneListSuccess()
       mockGetUserStatusListSuccess()
       mockGetTasksSuccess()

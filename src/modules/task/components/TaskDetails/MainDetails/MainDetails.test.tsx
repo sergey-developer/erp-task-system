@@ -85,7 +85,7 @@ describe('Блок детальной информации заявки', () => 
       render(
         <MainDetails {...props} responseTime={fakeResponseTime} workGroup={null} assignee={null} />,
         {
-          store: getStoreWithAuth({ userRole: UserRoleEnum.FirstLineSupport }),
+          store: getStoreWithAuth({ role: UserRoleEnum.FirstLineSupport }),
         },
       )
 
@@ -124,7 +124,7 @@ describe('Блок детальной информации заявки', () => 
           />,
           {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           },
         )

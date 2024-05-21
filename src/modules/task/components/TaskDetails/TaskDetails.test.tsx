@@ -110,7 +110,7 @@ describe('Карточка заявки', () => {
     mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
 
     render(<TaskDetails {...props} />, {
-      store: getStoreWithAuth({ userId }, undefined, undefined, {
+      store: getStoreWithAuth({ id: userId }, undefined, undefined, {
         queries: { ...getUserMeQueryMock({ permissions: [] }) },
       }),
     })
@@ -129,7 +129,7 @@ describe('Карточка заявки', () => {
     mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
 
     render(<TaskDetails {...props} />, {
-      store: getStoreWithAuth({ userId }, undefined, undefined, {
+      store: getStoreWithAuth({ id: userId }, undefined, undefined, {
         queries: { ...getUserMeQueryMock({ permissions: [] }) },
       }),
     })
@@ -149,7 +149,7 @@ describe('Карточка заявки', () => {
       mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
 
       const { user } = render(<TaskDetails {...props} />, {
-        store: getStoreWithAuth({ userId }, undefined, undefined, {
+        store: getStoreWithAuth({ id: userId }, undefined, undefined, {
           queries: { ...getUserMeQueryMock({ permissions: [] }) },
         }),
       })
@@ -171,7 +171,7 @@ describe('Карточка заявки', () => {
         mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
 
         const { user } = render(<TaskDetails {...props} />, {
-          store: getStoreWithAuth({ userId }, undefined, undefined, {
+          store: getStoreWithAuth({ id: userId }, undefined, undefined, {
             queries: { ...getUserMeQueryMock({ permissions: [] }) },
           }),
         })
@@ -195,7 +195,7 @@ describe('Карточка заявки', () => {
         mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
 
         const { user } = render(<TaskDetails {...props} />, {
-          store: getStoreWithAuth({ userId }, undefined, undefined, {
+          store: getStoreWithAuth({ id: userId }, undefined, undefined, {
             queries: { ...getUserMeQueryMock({ permissions: [] }) },
           }),
         })
@@ -220,7 +220,7 @@ describe('Карточка заявки', () => {
         mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
 
         const { user } = render(<TaskDetails {...props} />, {
-          store: getStoreWithAuth({ userId }, undefined, undefined, {
+          store: getStoreWithAuth({ id: userId }, undefined, undefined, {
             queries: { ...getUserMeQueryMock({ permissions: [] }) },
           }),
         })
@@ -249,7 +249,7 @@ describe('Карточка заявки', () => {
       mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
 
       const { user } = render(<TaskDetails {...props} />, {
-        store: getStoreWithAuth({ userId }, undefined, undefined, {
+        store: getStoreWithAuth({ id: userId }, undefined, undefined, {
           queries: { ...getUserMeQueryMock({ permissions: [] }) },
         }),
       })
@@ -285,7 +285,7 @@ describe('Карточка заявки', () => {
       mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
 
       const { user } = render(<TaskDetails {...props} />, {
-        store: getStoreWithAuth({ userId }, undefined, undefined, {
+        store: getStoreWithAuth({ id: userId }, undefined, undefined, {
           queries: { ...getUserMeQueryMock({ permissions: [] }) },
         }),
       })
@@ -321,7 +321,7 @@ describe('Карточка заявки', () => {
       mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
 
       const { user } = render(<TaskDetails {...props} />, {
-        store: getStoreWithAuth({ userId }, undefined, undefined, {
+        store: getStoreWithAuth({ id: userId }, undefined, undefined, {
           queries: { ...getUserMeQueryMock({ permissions: [] }) },
         }),
       })
@@ -399,7 +399,7 @@ describe('Карточка заявки', () => {
           })
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({ userId }, undefined, undefined, {
+            store: getStoreWithAuth({ id: userId }, undefined, undefined, {
               queries: { ...getUserMeQueryMock(userFixtures.user()) },
             }),
           })
@@ -435,7 +435,7 @@ describe('Карточка заявки', () => {
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -481,7 +481,7 @@ describe('Карточка заявки', () => {
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -551,7 +551,7 @@ describe('Карточка заявки', () => {
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -594,7 +594,7 @@ describe('Карточка заявки', () => {
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -624,7 +624,7 @@ describe('Карточка заявки', () => {
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -658,7 +658,7 @@ describe('Карточка заявки', () => {
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
@@ -686,7 +686,7 @@ describe('Карточка заявки', () => {
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+              role: UserRoleEnum.FirstLineSupport,
             }),
           })
 
