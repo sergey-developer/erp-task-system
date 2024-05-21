@@ -1,5 +1,6 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Flex, Space } from 'antd'
+import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 
 import InventorizationTable from 'modules/warehouse/components/InventorizationTable'
@@ -23,7 +24,10 @@ import { GetInventorizationsQueryArgs } from 'modules/warehouse/models'
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { useDrawerHeightByTable } from 'shared/hooks/useDrawerHeightByTable'
+import { IdType } from 'shared/types/common'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -33,6 +37,10 @@ import {
 
 const InventorizationsFilter = React.lazy(
   () => import('modules/warehouse/components/InventorizationsFilter'),
+)
+
+const InventorizationDetails = React.lazy(
+  () => import('modules/warehouse/components/InventorizationDetails'),
 )
 
 const initialFilterValues: Pick<InventorizationsFilterFormFields, 'types' | 'statuses'> = {
@@ -54,9 +62,19 @@ const initialGetInventorizationsQueryArgs: Partial<
 }
 
 const InventorizationsPage: FC = () => {
+  const { tableRef, drawerHeight } = useDrawerHeightByTable()
+
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
   const [filterValues, setFilterValues] = useState<InventorizationsFilterFormFields>()
+
+  const [
+    inventorizationDetailsOpened,
+    { setTrue: openInventorizationDetails, toggle: toggleOpenInventorizationDetails },
+  ] = useBoolean(false)
+  const debouncedToggleOpenInventorizationDetails = useDebounceFn(toggleOpenInventorizationDetails)
+
+  const [inventorizationId, setInventorizationId] = useState<IdType>()
 
   const [getInventorizationsQueryArgs, setGetInventorizationsQueryArgs] =
     useSetState<GetInventorizationsQueryArgs>(initialGetInventorizationsQueryArgs)
@@ -93,6 +111,16 @@ const InventorizationsPage: FC = () => {
     [onTablePagination, onTableSort],
   )
 
+  const onClickTableRow = useCallback<InventorizationTableProps['onRow']>(
+    (record) => ({
+      onClick: debounce(() => {
+        setInventorizationId(record.id)
+        openInventorizationDetails()
+      }, DEFAULT_DEBOUNCE_VALUE),
+    }),
+    [openInventorizationDetails],
+  )
+
   const onApplyFilter = useCallback<InventorizationsFilterProps['onApply']>(
     (values) => {
       setFilterValues(values)
@@ -114,22 +142,35 @@ const InventorizationsPage: FC = () => {
         </Space>
 
         <InventorizationTable
+          ref={tableRef}
           dataSource={extractPaginationResults(inventorizations)}
           pagination={extractPaginationParams(inventorizations)}
           loading={inventorizationsIsFetching}
           sort={getInventorizationsQueryArgs.ordering}
           onChange={onChangeTable}
+          onRow={onClickTableRow}
         />
       </Flex>
 
       {filterOpened && (
-        <React.Suspense fallback={<ModalFallback open tip='Загрузка компонента фильтров' />}>
+        <React.Suspense fallback={<ModalFallback open tip='Загрузка фильтров' />}>
           <InventorizationsFilter
             open={filterOpened}
             values={filterValues}
             initialValues={initialFilterValues}
             onClose={debouncedToggleOpenFilter}
             onApply={onApplyFilter}
+          />
+        </React.Suspense>
+      )}
+
+      {inventorizationDetailsOpened && inventorizationId && (
+        <React.Suspense fallback={<ModalFallback open tip='Загрузка карточки инвентаризации' />}>
+          <InventorizationDetails
+            open={inventorizationDetailsOpened}
+            onClose={debouncedToggleOpenInventorizationDetails}
+            height={drawerHeight}
+            inventorizationId={inventorizationId}
           />
         </React.Suspense>
       )}

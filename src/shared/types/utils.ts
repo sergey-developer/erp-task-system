@@ -4,6 +4,8 @@ export type Nullable<T> = T | null | undefined
 export type MaybeNull<T> = T | null
 export type MaybeUndefined<T> = T | undefined
 
+export type NumericalString = `${number}` | number
+
 export type NonNullableObject<T extends object> = Required<{
   [K in keyof T]: NonNullable<T[K]>
 }>

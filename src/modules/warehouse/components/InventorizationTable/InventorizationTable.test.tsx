@@ -29,10 +29,13 @@ const props: Readonly<InventorizationTableProps> = {
   pagination: {},
   loading: false,
   onChange: jest.fn(),
+  onRow: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('inventorization-table')
 const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const clickRow = async (user: UserEvent, id: IdType) =>
+  tableTestUtils.clickRowIn(getContainer(), user, id)
 const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
 const getColTitle = (text: string) => within(getContainer()).getByText(text)
 const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> => {
@@ -57,6 +60,7 @@ const expectLoadingFinished = async (): Promise<HTMLElement> => {
 export const testUtils = {
   getContainer,
   getRow,
+  clickRow,
   getHeadCell,
   getColTitle,
   getColValue,
@@ -68,7 +72,10 @@ export const testUtils = {
 
 afterEach(() => {
   const onChange = props.onChange as jest.Mock
+  const onRow = props.onRow as jest.Mock
+
   onChange.mockReset()
+  onRow.mockReset()
 })
 
 describe('Таблица инвентаризаций', () => {
@@ -451,5 +458,16 @@ describe('Таблица инвентаризаций', () => {
         expect(row).toBeInTheDocument()
       })
     })
+  })
+
+  test('При клике на строку вызывается обработчик', async () => {
+    const { user } = render(<InventorizationTable {...props} />)
+
+    const index = 0
+    const item = props.dataSource[index]
+    await testUtils.clickRow(user, item.id)
+
+    expect(props.onRow).toBeCalled()
+    expect(props.onRow).toBeCalledWith(item, index)
   })
 })

@@ -2,10 +2,13 @@ import { getPaginatedList } from 'lib/antd/utils'
 
 import { InventorizationApiEnum } from 'modules/warehouse/constants/inventorization'
 import {
+  GetInventorizationQueryArgs,
   GetInventorizationsQueryArgs,
   GetInventorizationsSuccessResponse,
+  GetInventorizationSuccessResponse,
 } from 'modules/warehouse/models'
 import { GetInventorizationsTransformedSuccessResponse } from 'modules/warehouse/types'
+import { getInventorizationUrl } from 'modules/warehouse/utils/inventorization'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
@@ -25,7 +28,15 @@ const inventorizationApiService = baseApiService.injectEndpoints({
       transformResponse: (response: GetInventorizationsSuccessResponse, meta, arg) =>
         getPaginatedList(response, arg),
     }),
+    getInventorization: build.query<GetInventorizationSuccessResponse, GetInventorizationQueryArgs>(
+      {
+        query: ({ inventorizationId }) => ({
+          url: getInventorizationUrl(inventorizationId),
+          method: HttpMethodEnum.Get,
+        }),
+      },
+    ),
   }),
 })
 
-export const { useGetInventorizationsQuery } = inventorizationApiService
+export const { useGetInventorizationsQuery, useGetInventorizationQuery } = inventorizationApiService
