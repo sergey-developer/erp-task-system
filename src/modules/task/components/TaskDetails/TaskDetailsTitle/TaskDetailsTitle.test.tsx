@@ -669,44 +669,6 @@ describe('Заголовок карточки заявки', () => {
       })
     })
 
-    describe('Отменить переклассификацию', () => {
-      test('Отображается корректно если условия соблюдены', async () => {
-        const { user } = render(
-          <TaskDetailsTitle
-            {...props}
-            extendedStatus={TaskExtendedStatusEnum.InReclassification}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
-            }),
-          },
-        )
-
-        await testUtils.openMenu(user)
-        const item = testUtils.getCancelReclassificationItem()
-        const icon = testUtils.getMenuItemIcon(item, 'question-circle')
-
-        expect(item).toBeInTheDocument()
-        expect(icon).toBeInTheDocument()
-      })
-
-      test('Не отображается если нет запроса на переклассификацию', async () => {
-        const { user } = render(
-          <TaskDetailsTitle {...props} extendedStatus={TaskExtendedStatusEnum.New} />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
-            }),
-          },
-        )
-
-        await testUtils.openMenu(user)
-
-        expect(testUtils.queryCancelReclassificationItem()).not.toBeInTheDocument()
-      })
-    })
-
     describe('Запросить перевод в ожидание', () => {
       test('Отображается', async () => {
         const { user } = render(<TaskDetailsTitle {...props} />, {

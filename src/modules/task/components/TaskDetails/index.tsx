@@ -37,7 +37,6 @@ import {
   useResolveTask,
   useTakeTask,
   useTaskExtendedStatus,
-  useTaskStatus,
   useUpdateTaskDeadline,
   useUpdateTaskDescription,
 } from 'modules/task/hooks/task'
@@ -69,7 +68,12 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetFaChangeTypes } from 'shared/hooks/catalogs/faChangeTypes'
 import { useSystemSettingsState } from 'shared/hooks/system'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isBadRequestError,
+  isErrorResponse,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 import { base64ToBytes, isFalse, isTrue } from 'shared/utils/common'
@@ -168,7 +172,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const debouncedRefetchTask = useDebounceFn(originRefetchTask)
 
-  const taskStatus = useTaskStatus(task?.status)
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
@@ -184,15 +187,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const [createSuspendRequest, { isLoading: createSuspendRequestIsLoading }] =
     useCreateTaskSuspendRequest()
 
-  const {
-    fn: createReclassificationRequest,
-    state: {
+  const [
+    createReclassificationRequest,
+    {
       isLoading: createReclassificationRequestIsLoading,
       data: createReclassificationRequestResult,
       reset: resetCreateReclassificationRequestData,
       fulfilledTimeStamp: createReclassificationRequestFulfilledTimeStamp = 0,
     },
-  } = useCreateTaskReclassificationRequest()
+  ] = useCreateTaskReclassificationRequest()
 
   const {
     currentData: getReclassificationRequestResult,
@@ -518,12 +521,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           }
         }
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isNotFoundError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          } else {
-            showErrorNotification(getTaskWorkPerformedActMessages.commonError)
-          }
+        if (isErrorResponse(error) && isNotFoundError(error)) {
+          showErrorNotification(getErrorDetail(error))
+        } else {
+          showErrorNotification(getTaskWorkPerformedActMessages.commonError)
         }
       }
     },
@@ -540,13 +541,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         await createReclassificationRequest({
           taskId: task.id,
           ...values,
-        })
+        }).unwrap()
         closeTaskReclassificationModal()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -566,10 +565,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         closeTaskSecondLineModal()
         originOnClose()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -589,10 +586,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         closeTaskFirstLineModal()
         originOnClose()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -708,18 +703,24 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         <Space direction='vertical' $block size='middle'>
           <LoadingArea
             data-testid='task-reclassification-request-loading'
-            isLoading={reclassificationRequestIsFetching || createReclassificationRequestIsLoading}
+            isLoading={
+              reclassificationRequestIsFetching ||
+              createReclassificationRequestIsLoading ||
+              userActionsIsFetching
+            }
             tip='Загрузка запроса на переклассификацию...'
             area='block'
           >
-            {reclassificationRequest && (
+            {reclassificationRequest && userActions && (
               <React.Suspense fallback={<Spinner area='block' />}>
                 <TaskReclassificationRequest
                   comment={reclassificationRequest.comment}
                   date={reclassificationRequest.createdAt}
                   user={reclassificationRequest.user}
                   onCancel={debouncedToggleConfirmCancelReclassificationRequestModal}
-                  cancelBtnDisabled={taskStatus.isAwaiting}
+                  cancelBtnDisabled={
+                    !userActions.tasks.CAN_RECLASSIFICATION_REQUESTS_CREATE.includes(taskId)
+                  }
                 />
               </React.Suspense>
             )}

@@ -28,7 +28,6 @@ import {
 import { useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import {
-  CreateTaskReclassificationRequestMutationArgs,
   CreateTaskSuspendRequestBadRequestErrorResponse,
   CreateTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestMutationArgs,
@@ -133,9 +132,7 @@ export type TaskCardProps = {
   refetchTask: EmptyFn
   reclassificationRequest: MaybeNull<TaskReclassificationRequestModel>
   reclassificationRequestIsLoading: boolean
-  createReclassificationRequest: (
-    data: CreateTaskReclassificationRequestMutationArgs,
-  ) => Promise<void>
+  createReclassificationRequest: AnyFn
   createReclassificationRequestIsLoading: boolean
 
   createSuspendRequest: CustomMutationTrigger<CreateTaskSuspendRequestMutationArgs, any>

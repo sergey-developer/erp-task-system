@@ -61,15 +61,15 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
   const [createSuspendRequest, { isLoading: createSuspendRequestIsLoading }] =
     useCreateTaskSuspendRequest()
 
-  const {
-    fn: createReclassificationRequest,
-    state: {
+  const [
+    createReclassificationRequest,
+    {
       isLoading: createReclassificationRequestIsLoading,
-      data: createReclassificationRequestResult = null,
+      data: createReclassificationRequestResult,
       reset: resetCreateReclassificationRequestData,
       fulfilledTimeStamp: createReclassificationRequestFulfilledTimeStamp = 0,
     },
-  } = useCreateTaskReclassificationRequest()
+  ] = useCreateTaskReclassificationRequest()
 
   const {
     currentData: getReclassificationRequestResult = null,

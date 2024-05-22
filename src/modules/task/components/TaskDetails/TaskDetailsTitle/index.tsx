@@ -1,6 +1,5 @@
 import { Button, Dropdown, Row, Space, Typography } from 'antd'
 import { MenuProps } from 'antd/es/menu'
-import noop from 'lodash/noop'
 import React, { FC } from 'react'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
@@ -12,7 +11,7 @@ import {
 } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions, useUserRole } from 'modules/user/hooks'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 
 import {
   CheckCircleIcon,
@@ -62,7 +61,6 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
 
   const assigneeIsCurrentUser = useIdBelongAuthUser(assignee?.id)
   const hasWorkGroup = !!workGroup
-  const { isEngineerRole } = useUserRole()
 
   const menuProps: MenuProps = {
     items: [
@@ -105,25 +103,8 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
         label: 'Выполнить заявку',
         onClick: onExecuteTask,
       },
-      ...(taskExtendedStatus.isInReclassification
+      ...(!taskExtendedStatus.isInReclassification
         ? [
-            {
-              key: MenuActionsKeysEnum.CancelReclassification,
-              disabled: suspendRequestStatus.isApproved
-                ? false
-                : !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
-                  taskOlaStatus.isHalfExpired ||
-                  taskType.isRequestTask ||
-                  taskType.isIncidentTask ||
-                  isEngineerRole ||
-                  suspendRequestStatus.isNew ||
-                  suspendRequestStatus.isInProgress,
-              icon: <QuestionCircleIcon />,
-              label: 'Отменить переклассификацию',
-              onClick: noop,
-            },
-          ]
-        : [
             {
               key: MenuActionsKeysEnum.RequestReclassification,
               disabled:
@@ -137,7 +118,8 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
               label: 'Запросить переклассификацию',
               onClick: onRequestReclassification,
             },
-          ]),
+          ]
+        : []),
       {
         key: MenuActionsKeysEnum.UpdateDescription,
         disabled:
