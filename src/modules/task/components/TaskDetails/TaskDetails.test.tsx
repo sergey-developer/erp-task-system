@@ -1,11 +1,13 @@
 import { screen, waitFor } from '@testing-library/react'
 
+import { testUtils as confirmCancelReclassificationRequestModalTestUtils } from 'modules/task/components/ConfirmCancelReclassificationRequestModal/ConfirmCancelReclassificationRequestModal.test'
 import { testUtils as confirmExecuteTaskReclassificationTasksModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskReclassificationTasksModal/ConfirmExecuteTaskReclassificationTasksModal.test'
 import { testUtils as confirmExecuteTaskRegistrationFNModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskRegistrationFNModal/ConfirmExecuteTaskRegistrationFNModal.test'
 import { testUtils as createRegistrationFNRequestModalTestUtils } from 'modules/task/components/CreateRegistrationFNRequestModal/CreateRegistrationFNRequestModal.test'
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
 import { testUtils as assigneeBlockTestUtils } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { testUtils as workGroupBlockTestUtils } from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
+import { testUtils as taskReclassificationRequestTestUtils } from 'modules/task/components/TaskReclassificationRequest/TaskReclassificationRequest.test'
 import {
   takeTaskErrMsg,
   TaskActionsPermissionsEnum,
@@ -27,6 +29,7 @@ import catalogsFixtures from '_tests_/fixtures/catalogs'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import {
+  mockCancelReclassificationRequestSuccess,
   mockCreateTaskAttachmentSuccess,
   mockCreateTaskRegistrationFNRequestSuccess,
   mockCreateTaskSuspendRequestBadRequestError,
@@ -349,30 +352,44 @@ describe('Карточка заявки', () => {
 
   describe('Переклассификация заявки', () => {
     describe('Отмена запроса', () => {
-      // todo: поправить
-      test.skip('При нажатии на кнопку отмены в заявке открывается модалка подтверждения', async () => {
+      test('После подтверждения отмены перезапрашивается заявка и закрывается модалка подтверждения', async () => {
         mockGetTaskSuccess(props.taskId, {
           body: taskFixtures.task({
             id: props.taskId,
             extendedStatus: TaskExtendedStatusEnum.InReclassification,
           }),
+          once: false,
         })
 
-        mockGetTaskReclassificationRequestSuccess(props.taskId, {
-          body: taskFixtures.reclassificationRequest(),
+        const reclassificationRequest = taskFixtures.reclassificationRequest()
+        mockGetTaskReclassificationRequestSuccess(props.taskId, { body: reclassificationRequest })
+
+        const currentUser = userFixtures.user()
+        mockGetUserActionsSuccess(currentUser.id, {
+          body: {
+            tasks: {
+              ...userFixtures.taskActionsPermissions,
+              [TaskActionsPermissionsEnum.CanReclassificationRequestsCreate]: [props.taskId],
+            },
+          },
         })
 
-        render(<TaskDetails {...props} />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        mockCancelReclassificationRequestSuccess(reclassificationRequest.id)
+
+        const { user } = render(<TaskDetails {...props} />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
           }),
         })
 
+        await testUtils.expectReclassificationRequestLoadingFinished()
+        await taskReclassificationRequestTestUtils.findContainer()
+        await taskReclassificationRequestTestUtils.clickCancelButton(user)
+        const modal = await confirmCancelReclassificationRequestModalTestUtils.findContainer()
+        await confirmCancelReclassificationRequestModalTestUtils.clickConfirmButton(user)
         await testUtils.expectTaskLoadingStarted()
         await testUtils.expectTaskLoadingFinished()
-        // await testUtils.expectReclassificationRequestLoadingStarted()
-        // await testUtils.expectReclassificationRequestLoadingFinished()
-        // await taskReclassificationRequestTestUtils.findContainer()
+        expect(modal).not.toBeInTheDocument()
       })
     })
   })

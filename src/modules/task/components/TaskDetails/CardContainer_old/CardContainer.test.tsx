@@ -11,7 +11,7 @@ import {
   TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
 import { updateTaskAssigneeErrMsg } from 'modules/task/constants/taskAssignee'
-import { createReclassificationRequestMessages } from 'modules/task/constants/taskReclassificationRequest'
+import { createReclassificationRequestErrMsg } from 'modules/task/constants/taskReclassificationRequest'
 import {
   createSuspendRequestErrMsg,
   deleteSuspendRequestErrMsg,
@@ -372,7 +372,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
             const notification = await notificationTestUtils.findNotification(
-              createReclassificationRequestMessages.notFoundError,
+              createReclassificationRequestErrMsg,
             )
             expect(notification).toBeInTheDocument()
           })
@@ -644,7 +644,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
             const notification = await notificationTestUtils.findNotification(
-              createReclassificationRequestMessages.notFoundError,
+              createReclassificationRequestErrMsg,
             )
             expect(notification).toBeInTheDocument()
           })
@@ -822,7 +822,7 @@ describe('Контейнер детальной карточки заявки', 
             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 
             const notification = await notificationTestUtils.findNotification(
-              createReclassificationRequestMessages.notFoundError,
+              createReclassificationRequestErrMsg,
             )
             expect(notification).toBeInTheDocument()
           })
