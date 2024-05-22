@@ -10,7 +10,6 @@ import {
 } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { TaskModel } from 'modules/task/models'
-import { UserRoleEnum } from 'modules/user/constants'
 
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
@@ -56,14 +55,30 @@ export const canExecuteTaskProps: Pick<
   suspendRequest: null,
 }
 
-export const activeRequestReclassificationItemProps: Readonly<
-  Pick<TaskDetailsTitleProps, 'status' | 'olaStatus' | 'type' | 'suspendRequest' | 'workGroup'>
+export const showRequestReclassificationItemProps: Readonly<
+  Pick<TaskDetailsTitleProps, 'extendedStatus'>
 > = {
-  status: TaskStatusEnum.New,
+  extendedStatus: TaskExtendedStatusEnum.New,
+}
+
+export const hideRequestReclassificationItemProps: Readonly<
+  Pick<TaskDetailsTitleProps, 'extendedStatus'>
+> = {
+  extendedStatus: TaskExtendedStatusEnum.InReclassification,
+}
+
+export const activeRequestReclassificationItemProps: Readonly<
+  Pick<TaskDetailsTitleProps, 'olaStatus' | 'type' | 'suspendRequest' | 'userActions'>
+> = {
   olaStatus: TaskOlaStatusEnum.NotExpired,
   type: TaskTypeEnum.Request,
   suspendRequest: null,
-  workGroup: null,
+  userActions: {
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanReclassificationRequestsCreate]: [props.id],
+    },
+  },
 }
 
 export const activeRequestSuspendItemProps: Readonly<
@@ -467,7 +482,7 @@ describe('Заголовок карточки заявки', () => {
     describe('Запросить переклассификацию', () => {
       test('Отображается если условия соблюдены', async () => {
         const { user } = render(
-          <TaskDetailsTitle {...props} extendedStatus={TaskExtendedStatusEnum.New} />,
+          <TaskDetailsTitle {...props} {...showRequestReclassificationItemProps} />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -485,10 +500,7 @@ describe('Заголовок карточки заявки', () => {
 
       test('Не отображается если есть запрос на переклассификацию', async () => {
         const { user } = render(
-          <TaskDetailsTitle
-            {...props}
-            extendedStatus={TaskExtendedStatusEnum.InReclassification}
-          />,
+          <TaskDetailsTitle {...props} {...hideRequestReclassificationItemProps} />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -497,16 +509,15 @@ describe('Заголовок карточки заявки', () => {
         )
 
         await testUtils.openMenu(user)
-
         expect(testUtils.queryRequestReclassificationItem()).not.toBeInTheDocument()
       })
 
-      test('При клике обработчик вызывается корректно', async () => {
+      test('При клике обработчик вызывается', async () => {
         const { user } = render(
           <TaskDetailsTitle
             {...props}
+            {...showRequestReclassificationItemProps}
             {...activeRequestReclassificationItemProps}
-            extendedStatus={TaskExtendedStatusEnum.New}
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -522,7 +533,11 @@ describe('Заголовок карточки заявки', () => {
 
       test('Активен если условия соблюдены', async () => {
         const { user } = render(
-          <TaskDetailsTitle {...props} {...activeRequestReclassificationItemProps} />,
+          <TaskDetailsTitle
+            {...props}
+            {...showRequestReclassificationItemProps}
+            {...activeRequestReclassificationItemProps}
+          />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -535,48 +550,11 @@ describe('Заголовок карточки заявки', () => {
       })
 
       describe('Не активен если условия соблюдены', () => {
-        test(`Если роль пользователя ${UserRoleEnum.FirstLineSupport} и есть рабочая группа`, async () => {
+        test(`Но ola статус не ${TaskOlaStatusEnum.NotExpired}`, async () => {
           const { user } = render(
             <TaskDetailsTitle
               {...props}
-              {...activeRequestReclassificationItemProps}
-              workGroup={taskFixtures.workGroup()}
-            />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
-              }),
-            },
-          )
-
-          await testUtils.openMenu(user)
-
-          menuTestUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
-        })
-
-        test(`Но заявка не в статусе - ${TaskStatusEnum.New}`, async () => {
-          const { user } = render(
-            <TaskDetailsTitle
-              {...props}
-              {...activeRequestReclassificationItemProps}
-              status={TaskStatusEnum.InProgress}
-            />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
-              }),
-            },
-          )
-
-          await testUtils.openMenu(user)
-
-          menuTestUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
-        })
-
-        test(`Но заявка не имеет ola статуса - ${TaskOlaStatusEnum.NotExpired}`, async () => {
-          const { user } = render(
-            <TaskDetailsTitle
-              {...props}
+              {...showRequestReclassificationItemProps}
               {...activeRequestReclassificationItemProps}
               olaStatus={TaskOlaStatusEnum.Expired}
             />,
@@ -588,33 +566,14 @@ describe('Заголовок карточки заявки', () => {
           )
 
           await testUtils.openMenu(user)
-
           menuTestUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
-        test(`Но заявка имеет ola статус - ${TaskOlaStatusEnum.HalfExpired}`, async () => {
+        test(`Но тип заявки ${TaskTypeEnum.RequestTask}`, async () => {
           const { user } = render(
             <TaskDetailsTitle
               {...props}
-              {...activeRequestReclassificationItemProps}
-              olaStatus={TaskOlaStatusEnum.HalfExpired}
-            />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
-              }),
-            },
-          )
-
-          await testUtils.openMenu(user)
-
-          menuTestUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
-        })
-
-        test(`Но тип заявки - ${TaskTypeEnum.RequestTask}`, async () => {
-          const { user } = render(
-            <TaskDetailsTitle
-              {...props}
+              {...showRequestReclassificationItemProps}
               {...activeRequestReclassificationItemProps}
               type={TaskTypeEnum.RequestTask}
             />,
@@ -626,14 +585,14 @@ describe('Заголовок карточки заявки', () => {
           )
 
           await testUtils.openMenu(user)
-
           menuTestUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
-        test(`Но тип заявки - ${TaskTypeEnum.IncidentTask}`, async () => {
+        test(`Но тип заявки ${TaskTypeEnum.IncidentTask}`, async () => {
           const { user } = render(
             <TaskDetailsTitle
               {...props}
+              {...showRequestReclassificationItemProps}
               {...activeRequestReclassificationItemProps}
               type={TaskTypeEnum.IncidentTask}
             />,
@@ -649,9 +608,14 @@ describe('Заголовок карточки заявки', () => {
           menuTestUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
-        test(`Но у пользователя роль - ${UserRoleEnum.Engineer}`, async () => {
+        test(`Но статус запроса на ожидание ${SuspendRequestStatusEnum.New}`, async () => {
           const { user } = render(
-            <TaskDetailsTitle {...props} {...activeRequestReclassificationItemProps} />,
+            <TaskDetailsTitle
+              {...props}
+              {...showRequestReclassificationItemProps}
+              {...activeRequestReclassificationItemProps}
+              suspendRequest={taskFixtures.suspendRequest({ status: SuspendRequestStatusEnum.New })}
+            />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
                 queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -663,12 +627,34 @@ describe('Заголовок карточки заявки', () => {
           menuTestUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
         })
 
-        test('Но у заявки есть запрос на ожидание', async () => {
+        test(`Но статус запроса на ожидание ${SuspendRequestStatusEnum.InProgress}`, async () => {
           const { user } = render(
             <TaskDetailsTitle
               {...props}
+              {...showRequestReclassificationItemProps}
               {...activeRequestReclassificationItemProps}
-              suspendRequest={taskFixtures.suspendRequest()}
+              suspendRequest={taskFixtures.suspendRequest({
+                status: SuspendRequestStatusEnum.InProgress,
+              })}
+            />,
+            {
+              store: getStoreWithAuth(undefined, undefined, undefined, {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              }),
+            },
+          )
+
+          await testUtils.openMenu(user)
+          menuTestUtils.expectMenuItemDisabled(testUtils.getRequestReclassificationItem())
+        })
+
+        test('Но у заявки нет прав', async () => {
+          const { user } = render(
+            <TaskDetailsTitle
+              {...props}
+              {...showRequestReclassificationItemProps}
+              {...activeRequestReclassificationItemProps}
+              userActions={userFixtures.userActions()}
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {

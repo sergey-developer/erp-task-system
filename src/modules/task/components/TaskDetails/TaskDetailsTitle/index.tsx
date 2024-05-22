@@ -53,7 +53,6 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskOlaStatus = useTaskOlaStatus(olaStatus)
 
-  const suspendRequestExist = !!suspendRequest
   const suspendRequestStatus = useTaskSuspendRequestStatus(suspendRequest?.status)
 
   const permissions = useMatchUserPermissions([
@@ -63,7 +62,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
 
   const assigneeIsCurrentUser = useIdBelongAuthUser(assignee?.id)
   const hasWorkGroup = !!workGroup
-  const { isEngineerRole, isFirstLineSupportRole } = useUserRole()
+  const { isEngineerRole } = useUserRole()
 
   const menuProps: MenuProps = {
     items: [
@@ -128,13 +127,12 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
             {
               key: MenuActionsKeysEnum.RequestReclassification,
               disabled:
-                !(taskStatus.isNew && taskOlaStatus.isNotExpired) ||
-                (isFirstLineSupportRole && hasWorkGroup) ||
-                taskOlaStatus.isHalfExpired ||
+                !taskOlaStatus.isNotExpired ||
                 taskType.isRequestTask ||
                 taskType.isIncidentTask ||
-                isEngineerRole ||
-                suspendRequestExist,
+                suspendRequestStatus.isNew ||
+                suspendRequestStatus.isInProgress ||
+                !userActions.tasks.CAN_RECLASSIFICATION_REQUESTS_CREATE.includes(id),
               icon: <QuestionCircleIcon />,
               label: 'Запросить переклассификацию',
               onClick: onRequestReclassification,
