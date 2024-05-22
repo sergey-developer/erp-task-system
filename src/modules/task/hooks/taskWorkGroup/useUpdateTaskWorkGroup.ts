@@ -1,12 +1,16 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { updateTaskWorkGroupMessages } from 'modules/task/constants/taskWorkGroup'
-import { UpdateTaskWorkGroupMutationArgs } from 'modules/task/models'
-import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
+
+import { updateTaskWorkGroupErrMsg } from 'modules/task/constants/taskWorkGroup'
+import {
+  UpdateTaskWorkGroupMutationArgs,
+  UpdateTaskWorkGroupSuccessResponse,
+} from 'modules/task/models'
 import { useUpdateTaskWorkGroupMutation } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
 import {
+  getErrorDetail,
   isBadRequestError,
   isErrorResponse,
   isForbiddenError,
@@ -14,33 +18,27 @@ import {
 } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useUpdateTaskWorkGroup = () => {
-  const permissions = useUserPermissions(taskWorkGroupApiPermissions)
+type UseUpdateTaskWorkGroupResult = CustomUseMutationResult<
+  UpdateTaskWorkGroupMutationArgs,
+  UpdateTaskWorkGroupSuccessResponse
+>
+
+export const useUpdateTaskWorkGroup = (): UseUpdateTaskWorkGroupResult => {
   const [mutation, state] = useUpdateTaskWorkGroupMutation()
-
-  const fn = useCallback(
-    async (data: UpdateTaskWorkGroupMutationArgs) => {
-      if (!permissions.canUpdate) return
-
-      await mutation(data).unwrap()
-    },
-    [mutation, permissions.canUpdate],
-  )
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
       if (
-        (isBadRequestError(state.error) ||
-          isForbiddenError(state.error) ||
-          isNotFoundError(state.error)) &&
-        state.error.data.detail
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
       ) {
-        showErrorNotification(state.error.data.detail)
+        showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(updateTaskWorkGroupMessages.commonError)
+        showErrorNotification(updateTaskWorkGroupErrMsg)
       }
     }
   }, [state.error])
 
-  return { fn, state }
+  return [mutation, state]
 }
