@@ -5,7 +5,7 @@ import { testUtils as logoutButtonTestUtils } from 'modules/auth/components/Logo
 import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/LoginPage.test'
 import { testUtils as tasksPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
 import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { updateUserStatusMessages, UserPermissionsEnum, UserRoleEnum } from 'modules/user/constants'
+import { updateUserStatusMessages, UserPermissionsEnum } from 'modules/user/constants'
 
 import { testUtils as homeLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
@@ -281,9 +281,7 @@ describe('Хэдер авторизованного пользователя', (
 
     describe('Управление складами', () => {
       test('Отображается корректно', async () => {
-        const fakeUser = userFixtures.user({
-          role: UserRoleEnum.FirstLineSupport,
-        })
+        const fakeUser = userFixtures.user({})
         mockGetUserMeSuccess({ body: fakeUser })
 
         mockGetTimeZoneListSuccess()

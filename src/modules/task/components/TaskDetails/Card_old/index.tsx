@@ -37,7 +37,6 @@ import {
   TaskModel,
   TaskReclassificationRequestModel,
 } from 'modules/task/models'
-import { useUserRole } from 'modules/user/hooks'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -212,8 +211,6 @@ const TaskCard: FC<TaskCardProps> = ({
   const { modal } = App.useApp()
   const taskStatus = useTaskStatus(task?.status)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
-
-  const userRole = useUserRole()
 
   const debouncedRefetchTask = useDebounceFn(refetchTask)
 
@@ -513,7 +510,6 @@ const TaskCard: FC<TaskCardProps> = ({
                         text: 'Отменить запрос',
                         onClick: handleCancelTaskSuspendRequest,
                         loading: cancelSuspendRequestIsLoading,
-                        disabled: userRole.isEngineerRole,
                       }
                     : taskSuspendRequestStatus.isApproved
                     ? {
