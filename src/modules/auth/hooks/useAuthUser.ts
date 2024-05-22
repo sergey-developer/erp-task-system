@@ -8,15 +8,10 @@ import { MaybeNull } from 'shared/types/utils'
 
 type UseAuthUserResult = MaybeNull<{
   id: AuthenticatedUser['userId']
-  role: AuthenticatedUser['userRole']
 }>
 
 /** Возвращает авторизованного пользователя */
 export const useAuthUser = (): UseAuthUserResult => {
   const authUser = useSelector(authUserSelector)
-
-  return useMemo(
-    () => (authUser ? { role: authUser.userRole, id: authUser.userId } : null),
-    [authUser],
-  )
+  return useMemo(() => (authUser ? { id: authUser.userId } : null), [authUser])
 }

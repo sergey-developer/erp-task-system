@@ -21,7 +21,6 @@ import {
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/taskSuspendRequest'
 import { CreateTaskSuspendRequestBadRequestErrorResponse } from 'modules/task/models'
-import { UserRoleEnum } from 'modules/user/constants'
 
 import { commonApiMessages } from 'shared/constants/common'
 
@@ -455,9 +454,7 @@ describe('Карточка заявки', () => {
           mockCreateTaskSuspendRequestNotFoundError(props.taskId)
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({
-              role: UserRoleEnum.FirstLineSupport,
-            }),
+            store: getStoreWithAuth({}),
           })
 
           await testUtils.expectTaskLoadingFinished()
@@ -501,9 +498,7 @@ describe('Карточка заявки', () => {
           })
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({
-              role: UserRoleEnum.FirstLineSupport,
-            }),
+            store: getStoreWithAuth({}),
           })
 
           await testUtils.expectTaskLoadingFinished()
@@ -571,9 +566,7 @@ describe('Карточка заявки', () => {
           mockCreateTaskSuspendRequestServerError(props.taskId)
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({
-              role: UserRoleEnum.FirstLineSupport,
-            }),
+            store: getStoreWithAuth({}),
           })
 
           await testUtils.expectTaskLoadingFinished()

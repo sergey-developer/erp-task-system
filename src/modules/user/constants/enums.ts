@@ -1,12 +1,5 @@
 import { TaskActionsPermissionsEnum } from 'modules/task/constants/task'
 
-export enum UserRoleEnum {
-  FirstLineSupport = 'FIRST_LINE_SUPPORT',
-  Engineer = 'ENGINEER',
-  SeniorEngineer = 'SENIOR_ENGINEER',
-  HeadOfDepartment = 'HEAD_OF_DEPARTMENT',
-}
-
 export enum UserPermissionsEnum {
   WarehouseReportsRead = 'WAREHOUSE_REPORTS_READ',
 
