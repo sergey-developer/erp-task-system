@@ -1,5 +1,4 @@
-import { ApiRequestMessages } from 'shared/types/messages'
+export const createReclassificationRequestErrMsg =
+  'Невозможно создать запрос на переклассификацию - заявка не найдена'
 
-export const createReclassificationRequestMessages: ApiRequestMessages<'notFoundError'> = {
-  notFoundError: 'Невозможно создать запрос на переклассификацию - заявка не найдена',
-}
+export const getReclassificationRequestErrMsg = 'Ошибка получения запроса на переклассификацию'
