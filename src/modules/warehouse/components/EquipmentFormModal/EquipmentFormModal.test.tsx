@@ -45,26 +45,26 @@ const props: Readonly<EquipmentFormModalProps> = {
   nomenclature: warehouseFixtures.nomenclature(),
   nomenclatureIsLoading: false,
 
-  nomenclatureList: [],
-  nomenclatureListIsLoading: false,
+  nomenclatures: [],
+  nomenclaturesIsLoading: false,
   onChangeNomenclature: jest.fn(),
 
-  categoryList: [],
-  categoryListIsLoading: false,
+  categories: [],
+  categoriesIsLoading: false,
   category: warehouseFixtures.equipmentCategoryListItem(),
   onChangeCategory: jest.fn(),
 
-  currencyList: [],
-  currencyListIsLoading: false,
+  currencies: [],
+  currenciesIsLoading: false,
 
-  ownerList: [],
-  ownerListIsLoading: false,
+  owners: [],
+  ownersIsLoading: false,
 
-  workTypeList: [],
-  workTypeListIsLoading: false,
+  workTypes: [],
+  workTypesIsLoading: false,
 
-  warehouseList: [],
-  warehouseListIsLoading: false,
+  warehouses: [],
+  warehousesIsLoading: false,
 }
 
 const addModeProps: Readonly<Pick<EquipmentFormModalProps, 'okText'>> = {
@@ -610,7 +610,7 @@ describe('Модалка оборудования', () => {
 
     test('Можно установить значение', async () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      const { user } = render(<EquipmentFormModal {...props} categoryList={[category]} />)
+      const { user } = render(<EquipmentFormModal {...props} categories={[category]} />)
 
       await testUtils.openCategorySelect(user)
       await testUtils.setCategory(user, category.title)
@@ -643,7 +643,7 @@ describe('Модалка оборудования', () => {
 
     test('Можно установить значение', async () => {
       const nomenclature = warehouseFixtures.nomenclatureListItem()
-      const { user } = render(<EquipmentFormModal {...props} nomenclatureList={[nomenclature]} />)
+      const { user } = render(<EquipmentFormModal {...props} nomenclatures={[nomenclature]} />)
 
       await testUtils.openNomenclatureSelect(user)
       await testUtils.setNomenclature(user, nomenclature.title)
@@ -933,7 +933,7 @@ describe('Модалка оборудования', () => {
     test('Можно установить значение', async () => {
       const currency = currencyFixtures.currencyListItem()
 
-      const { user } = render(<EquipmentFormModal {...props} currencyList={[currency]} />)
+      const { user } = render(<EquipmentFormModal {...props} currencies={[currency]} />)
 
       await testUtils.openCurrencySelect(user)
       await testUtils.setCurrency(user, currency.title)
@@ -1141,7 +1141,7 @@ describe('Модалка оборудования', () => {
 
     test('Можно установить значение', async () => {
       const owner = warehouseFixtures.customerListItem()
-      const { user } = render(<EquipmentFormModal {...props} ownerList={[owner]} />)
+      const { user } = render(<EquipmentFormModal {...props} owners={[owner]} />)
 
       await testUtils.openOwnerSelect(user)
       await testUtils.setOwner(user, owner.title)
@@ -1175,7 +1175,7 @@ describe('Модалка оборудования', () => {
 
     test('Можно установить значение', async () => {
       const workType = warehouseFixtures.workTypeListItem()
-      const { user } = render(<EquipmentFormModal {...props} workTypeList={[workType]} />)
+      const { user } = render(<EquipmentFormModal {...props} workTypes={[workType]} />)
 
       await testUtils.openPurposeSelect(user)
       await testUtils.setPurpose(user, workType.title)
