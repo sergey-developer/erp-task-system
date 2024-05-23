@@ -263,10 +263,10 @@ describe('Фильтр списка заявок на перемещение о�
 
       await testUtils.clickResetButtonIn(user, testUtils.getTypeBlock())
 
-      const type1 = testUtils.querySelectedStatus(
+      const type1 = testUtils.querySelectedType(
         relocationTaskTypeDict[RelocationTaskTypeEnum.Repair],
       )
-      const type2 = testUtils.querySelectedStatus(
+      const type2 = testUtils.querySelectedType(
         relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
       )
 

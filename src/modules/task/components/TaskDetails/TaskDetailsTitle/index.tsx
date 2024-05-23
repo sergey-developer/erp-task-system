@@ -139,7 +139,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
       {
         key: MenuActionsKeysEnum.UpdateDescription,
         disabled:
-          !permissions?.taskInternalDescriptionUpdate ||
+          !permissions.taskInternalDescriptionUpdate ||
           (!taskType.isRequest && !taskType.isIncident),
         icon: <EditTwoToneIcon />,
         label: 'Изменить описание',
@@ -148,7 +148,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
       {
         key: MenuActionsKeysEnum.UpdateDeadline,
         disabled:
-          !permissions?.taskInternalDeadlineUpdate || (!taskType.isRequest && !taskType.isIncident),
+          !permissions.taskInternalDeadlineUpdate || (!taskType.isRequest && !taskType.isIncident),
         icon: <FieldTimeIcon $color='royalOrange' />,
         label: 'Изменить внутренний срок выполнения',
         onClick: onUpdateDeadline,

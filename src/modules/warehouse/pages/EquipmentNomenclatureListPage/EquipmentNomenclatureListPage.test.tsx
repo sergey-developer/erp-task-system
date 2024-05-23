@@ -1,15 +1,15 @@
 import { screen } from '@testing-library/react'
 
 import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
-import { getEquipmentNomenclaturesErrorMsg } from 'modules/warehouse/constants/equipment'
+import { getEquipmentNomenclaturesErrMsg } from 'modules/warehouse/constants/equipment'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
-  mockGetEquipmentNomenclatureListForbiddenError,
-  mockGetEquipmentNomenclatureListServerError,
-  mockGetEquipmentNomenclatureListSuccess,
+  mockGetEquipmentNomenclaturesForbiddenError,
+  mockGetEquipmentNomenclaturesServerError,
+  mockGetEquipmentNomenclaturesSuccess,
 } from '_tests_/mocks/api'
 import {
   fakeWord,
@@ -39,7 +39,7 @@ describe('Страница списка номенклатуры оборудо�
     test('При успешном запросе отображается верное количество', async () => {
       const equipmentNomenclatureList = [warehouseFixtures.equipmentNomenclatureListItem()]
 
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse(equipmentNomenclatureList),
       })
 
@@ -64,7 +64,7 @@ describe('Страница списка номенклатуры оборудо�
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 403', async () => {
         const errorMessage = fakeWord()
-        mockGetEquipmentNomenclatureListForbiddenError({
+        mockGetEquipmentNomenclaturesForbiddenError({
           body: { detail: errorMessage },
         })
 
@@ -85,7 +85,7 @@ describe('Страница списка номенклатуры оборудо�
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        mockGetEquipmentNomenclatureListServerError()
+        mockGetEquipmentNomenclaturesServerError()
 
         renderInRoute_latest(
           [
@@ -99,7 +99,7 @@ describe('Страница списка номенклатуры оборудо�
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(
-          getEquipmentNomenclaturesErrorMsg,
+          getEquipmentNomenclaturesErrMsg,
         )
 
         expect(notification).toBeInTheDocument()
@@ -107,9 +107,9 @@ describe('Страница списка номенклатуры оборудо�
     })
 
     test('Пагинация работает', async () => {
-      const equipmentNomenclatureList = warehouseFixtures.equipmentNomenclatureList(11)
+      const equipmentNomenclatureList = warehouseFixtures.equipmentNomenclatures(11)
 
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse(equipmentNomenclatureList),
         once: false,
       })
