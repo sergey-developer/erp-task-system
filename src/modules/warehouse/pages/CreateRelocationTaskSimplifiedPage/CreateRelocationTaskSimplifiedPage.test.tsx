@@ -1,5 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import * as reactRouterDom from 'react-router-dom'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
@@ -11,6 +12,9 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
+import taskFixtures from '_tests_/fixtures/task'
+import userFixtures from '_tests_/fixtures/user'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
   mockGetEquipmentCatalogListSuccess,
@@ -18,6 +22,7 @@ import {
   mockGetEquipmentListTemplateSuccess,
   mockGetLocationListSuccess,
   mockGetUserListSuccess,
+  mockGetWarehouseMSISuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -26,12 +31,30 @@ import {
   getStoreWithAuth,
   notificationTestUtils,
   render,
+  selectTestUtils,
   setupApiTests,
 } from '_tests_/utils'
 
 import CreateRelocationTaskSimplifiedPage from './index'
 
 const getContainer = () => screen.getByTestId('create-relocation-task-simplified-page')
+
+// controller field
+const getControllerFormItem = () => within(getContainer()).getByTestId('controller-form-item')
+const getControllerSelectInput = () => selectTestUtils.getSelect(getControllerFormItem())
+const setController = selectTestUtils.clickSelectOption
+const findControllerError = (text: string) => within(getControllerFormItem()).findByText(text)
+
+const openControllerSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getControllerFormItem())
+
+const queryControllerOption = selectTestUtils.querySelectOption
+
+const getSelectedController = (title: string) =>
+  selectTestUtils.getSelectedOptionByTitle(getControllerFormItem(), title)
+
+const expectControllersLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getControllerFormItem())
 
 // download template button
 const getDownloadTemplateButton = () =>
@@ -62,6 +85,14 @@ const clickCancelButton = async (user: UserEvent) => {
 export const testUtils = {
   getContainer,
 
+  getControllerSelectInput,
+  setController,
+  findControllerError,
+  openControllerSelect,
+  queryControllerOption,
+  getSelectedController,
+  expectControllersLoadingFinished,
+
   getDownloadTemplateButton,
   queryDownloadTemplateButton,
   clickDownloadTemplateButton,
@@ -72,6 +103,14 @@ export const testUtils = {
   getCancelButton,
   clickCancelButton,
 }
+
+jest.mock('react-router-dom', () => ({
+  __esModule: true,
+  ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn().mockReturnValue({
+    state: { task: taskFixtures.task() },
+  }),
+}))
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -88,6 +127,43 @@ describe('Упрощенная страница создания заявки н
 
       const form = relocationTaskFormTestUtils.getContainer()
       expect(form).toBeInTheDocument()
+    })
+
+    test('Нельзя выбрать исполнителя заявки и текущего пользователя', async () => {
+      const locationStateTask = taskFixtures.task()
+      jest.spyOn(reactRouterDom, 'useLocation').mockReturnValue({
+        key: fakeWord(),
+        pathname: fakeWord(),
+        hash: fakeWord(),
+        search: fakeWord(),
+        state: { task: locationStateTask },
+      })
+
+      const taskAssigneeUser = userFixtures.userListItem({ id: locationStateTask.assignee!.id })
+      const currentUser = userFixtures.userListItem()
+      mockGetUserListSuccess({ body: [taskAssigneeUser, currentUser] })
+      mockGetLocationListSuccess()
+      mockGetEquipmentCatalogListSuccess()
+      mockGetCurrencyListSuccess()
+      mockGetEquipmentCatalogListSuccess({
+        body: warehouseFixtures.equipmentCatalogList(),
+        once: false,
+      })
+
+      const warehouseMSI = warehouseFixtures.warehouse()
+      mockGetWarehouseMSISuccess(locationStateTask.assignee!.id, { body: warehouseMSI })
+
+      const { user } = render(<CreateRelocationTaskSimplifiedPage />, {
+        store: getStoreWithAuth({ userId: currentUser.id }),
+      })
+
+      await testUtils.expectControllersLoadingFinished()
+      await testUtils.openControllerSelect(user)
+      const option1 = testUtils.queryControllerOption(taskAssigneeUser.fullName)
+      const option2 = testUtils.queryControllerOption(currentUser.fullName)
+
+      expect(option1).not.toBeInTheDocument()
+      expect(option2).not.toBeInTheDocument()
     })
   })
 
