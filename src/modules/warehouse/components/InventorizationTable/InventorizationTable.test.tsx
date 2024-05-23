@@ -120,12 +120,12 @@ describe('Таблица инвентаризаций', () => {
     expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
   })
 
-  describe('Тип заявки', () => {
+  describe('Тип', () => {
     test('Отображается', () => {
       render(<InventorizationTable {...props} />)
 
-      const headCell = testUtils.getHeadCell('Тип заявки')
-      const title = testUtils.getColTitle('Тип заявки')
+      const headCell = testUtils.getHeadCell('Тип')
+      const title = testUtils.getColTitle('Тип')
       const value = testUtils.getColValue(
         inventorizationListItem.id,
         inventorizationTypeDict[inventorizationListItem.type],
@@ -140,7 +140,7 @@ describe('Таблица инвентаризаций', () => {
     test('При клике на заголовок вызывается обработчик', async () => {
       const { user } = render(<InventorizationTable {...props} />)
 
-      await testUtils.clickColTitle(user, 'Тип заявки')
+      await testUtils.clickColTitle(user, 'Тип')
 
       expect(props.onChange).toBeCalledTimes(1)
       expect(props.onChange).toBeCalledWith(
@@ -154,14 +154,14 @@ describe('Таблица инвентаризаций', () => {
     test('Сортировка работает', async () => {
       const { user } = render(<InventorizationTable {...props} />)
 
-      await testUtils.clickColTitle(user, 'Тип заявки')
-      const headCell = testUtils.getHeadCell('Тип заявки')
+      await testUtils.clickColTitle(user, 'Тип')
+      const headCell = testUtils.getHeadCell('Тип')
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
 
-      await testUtils.clickColTitle(user, 'Тип заявки')
+      await testUtils.clickColTitle(user, 'Тип')
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
-      await testUtils.clickColTitle(user, 'Тип заявки')
+      await testUtils.clickColTitle(user, 'Тип')
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
 
