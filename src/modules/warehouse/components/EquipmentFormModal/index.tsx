@@ -39,28 +39,28 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   onDeleteImage,
   imageIsDeleting,
 
-  categoryList,
-  categoryListIsLoading,
+  categories,
+  categoriesIsLoading,
   category,
   onChangeCategory,
 
-  warehouseList,
-  warehouseListIsLoading,
+  warehouses,
+  warehousesIsLoading,
 
-  currencyList,
-  currencyListIsLoading,
+  currencies,
+  currenciesIsLoading,
 
-  ownerList,
-  ownerListIsLoading,
+  owners,
+  ownersIsLoading,
 
-  workTypeList,
-  workTypeListIsLoading,
+  workTypes,
+  workTypesIsLoading,
 
   nomenclature,
   nomenclatureIsLoading,
 
-  nomenclatureList,
-  nomenclatureListIsLoading,
+  nomenclatures,
+  nomenclaturesIsLoading,
   onChangeNomenclature,
 
   onSubmit,
@@ -158,9 +158,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
           <Select<IdType, EquipmentCategoryListItemModel>
             placeholder='Выберите категорию'
             fieldNames={idAndTitleSelectFieldNames}
-            options={categoryList}
-            loading={categoryListIsLoading}
-            disabled={isLoading || categoryListIsLoading}
+            options={categories}
+            loading={categoriesIsLoading}
+            disabled={isLoading || categoriesIsLoading}
             onChange={handleChangeCategory}
           />
         </Form.Item>
@@ -175,9 +175,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
             virtual
             placeholder='Выберите номенклатуру'
             fieldNames={idAndTitleSelectFieldNames}
-            options={nomenclatureList}
-            loading={nomenclatureListIsLoading}
-            disabled={isLoading || nomenclatureListIsLoading}
+            options={nomenclatures}
+            loading={nomenclaturesIsLoading}
+            disabled={isLoading || nomenclaturesIsLoading}
             onChange={onChangeNomenclature}
             showSearch
             filterOption={filterOptionBy('title')}
@@ -234,9 +234,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   <Select<IdType, WarehouseListItemModel>
                     placeholder='Выберите склад'
                     fieldNames={idAndTitleSelectFieldNames}
-                    options={warehouseList}
-                    loading={warehouseListIsLoading}
-                    disabled={isLoading || warehouseListIsLoading}
+                    options={warehouses}
+                    loading={warehousesIsLoading}
+                    disabled={isLoading || warehousesIsLoading}
                   />
                 </Form.Item>
               )}
@@ -317,9 +317,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                       <Select
                         placeholder='Выберите валюту'
                         fieldNames={idAndTitleSelectFieldNames}
-                        options={currencyList}
-                        loading={currencyListIsLoading}
-                        disabled={isLoading || currencyListIsLoading}
+                        options={currencies}
+                        loading={currenciesIsLoading}
+                        disabled={isLoading || currenciesIsLoading}
                       />
                     </Form.Item>
                   </Col>
@@ -393,9 +393,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   <Select
                     placeholder='Выберите владельца оборудования'
                     fieldNames={idAndTitleSelectFieldNames}
-                    options={ownerList}
-                    loading={ownerListIsLoading}
-                    disabled={isLoading || ownerListIsLoading}
+                    options={owners}
+                    loading={ownersIsLoading}
+                    disabled={isLoading || ownersIsLoading}
                     showSearch
                     filterOption={filterOptionBy('title')}
                   />
@@ -411,9 +411,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 <Select
                   placeholder='Выберите назначение оборудования'
                   fieldNames={idAndTitleSelectFieldNames}
-                  options={workTypeList}
-                  loading={workTypeListIsLoading}
-                  disabled={isLoading || workTypeListIsLoading}
+                  options={workTypes}
+                  loading={workTypesIsLoading}
+                  disabled={isLoading || workTypesIsLoading}
                 />
               </Form.Item>
 
