@@ -885,12 +885,13 @@ const EditRelocationTaskPage: FC = () => {
             <RelocationTaskForm
               permissions={permissions}
               isLoading={updateTaskIsLoading || relocationTaskIsFetching}
-              userList={userList}
-              userListIsLoading={userListIsFetching}
+              usersIsLoading={userListIsFetching}
               relocateFromLocationList={relocateFromLocationList}
               relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
               relocateToLocationList={relocateToLocationList}
               relocateToLocationListIsLoading={relocateToLocationListIsFetching}
+              executorOptions={[]}
+              controllerOptions={[]}
               controllerIsRequired={controllerIsRequired}
               type={selectedType}
               onChangeType={handleChangeType}

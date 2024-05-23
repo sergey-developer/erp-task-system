@@ -2,10 +2,11 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { Form } from 'antd'
 
+import { IdType } from 'shared/types/common'
+import { MaybeNull, NumberOrString } from 'shared/types/utils'
+
 import { buttonTestUtils, render, tableTestUtils } from '_tests_/utils'
 
-import { IdType } from '../../../../shared/types/common'
-import { MaybeNull, NumberOrString } from '../../../../shared/types/utils'
 import RelocationEquipmentEditableTable from './index'
 import { RelocationEquipmentEditableTableProps } from './types'
 

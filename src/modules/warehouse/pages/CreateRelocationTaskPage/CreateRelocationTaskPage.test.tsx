@@ -17,6 +17,7 @@ import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
@@ -119,7 +120,11 @@ describe('Страница создания заявки на перемещен
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
-      render(<CreateRelocationTaskPage />)
+      render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       const form = relocationTaskFormTestUtils.getContainer()
       expect(form).toBeInTheDocument()
