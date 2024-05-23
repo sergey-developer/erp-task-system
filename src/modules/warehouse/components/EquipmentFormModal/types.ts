@@ -59,28 +59,28 @@ export type EquipmentFormModalProps = Required<
     onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
     imageIsDeleting: boolean
 
-    categoryList: EquipmentCategoriesModel
-    categoryListIsLoading: boolean
+    categories: EquipmentCategoriesModel
+    categoriesIsLoading: boolean
     category?: EquipmentCategoryListItemModel
     onChangeCategory: (category: EquipmentCategoryListItemModel) => void
 
-    warehouseList?: WarehouseListModel
-    warehouseListIsLoading?: boolean
+    warehouses?: WarehouseListModel
+    warehousesIsLoading?: boolean
 
-    currencyList: CurrencyListModel
-    currencyListIsLoading: boolean
+    currencies: CurrencyListModel
+    currenciesIsLoading: boolean
 
-    ownerList: CustomerListModel
-    ownerListIsLoading: boolean
+    owners: CustomerListModel
+    ownersIsLoading: boolean
 
-    workTypeList: WorkTypeListModel
-    workTypeListIsLoading: boolean
+    workTypes: WorkTypeListModel
+    workTypesIsLoading: boolean
 
     nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>
     nomenclatureIsLoading: boolean
 
-    nomenclatureList: NomenclatureListModel
-    nomenclatureListIsLoading: boolean
+    nomenclatures: NomenclatureListModel
+    nomenclaturesIsLoading: boolean
     onChangeNomenclature: (id: IdType) => void
 
     values?: Partial<Pick<EquipmentFormFields, 'title' | 'images'>>
