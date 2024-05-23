@@ -31,6 +31,10 @@ const { Text } = Typography
 const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   permissions,
   isLoading,
+
+  executorOptions,
+
+  controllerOptions,
   controllerIsRequired,
 
   onUploadImage,
@@ -39,8 +43,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   imageIsDeleting,
   imagesIsLoading,
 
-  userList,
-  userListIsLoading,
+  usersIsLoading,
 
   relocateFromLocationList,
   relocateFromLocationListIsLoading,
@@ -160,9 +163,9 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         >
           <Select
             fieldNames={idAndFullNameSelectFieldNames}
-            loading={userListIsLoading}
-            disabled={isLoading || userListIsLoading}
-            options={userList}
+            loading={usersIsLoading}
+            disabled={isLoading || usersIsLoading}
+            options={executorOptions}
             placeholder='Выберите исполнителя'
             showSearch
             filterOption={filterOptionBy('fullName')}
@@ -177,9 +180,9 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         >
           <Select
             fieldNames={idAndFullNameSelectFieldNames}
-            loading={userListIsLoading}
-            disabled={isLoading || userListIsLoading}
-            options={userList}
+            loading={usersIsLoading}
+            disabled={isLoading || usersIsLoading}
+            options={controllerOptions}
             placeholder='Выберите контролера'
             allowClear
             showSearch
