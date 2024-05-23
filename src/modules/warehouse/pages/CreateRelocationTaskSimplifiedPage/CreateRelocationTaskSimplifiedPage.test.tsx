@@ -35,6 +35,7 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
+import { useLocationResult } from '../../../../_tests_/fixtures/useLocation'
 import CreateRelocationTaskSimplifiedPage from './index'
 
 const getContainer = () => screen.getByTestId('create-relocation-task-simplified-page')
@@ -107,9 +108,7 @@ export const testUtils = {
 jest.mock('react-router-dom', () => ({
   __esModule: true,
   ...jest.requireActual('react-router-dom'),
-  useLocation: jest.fn().mockReturnValue({
-    state: { task: taskFixtures.task() },
-  }),
+  useLocation: jest.fn(),
 }))
 
 setupApiTests()
@@ -131,13 +130,9 @@ describe('Упрощенная страница создания заявки н
 
     test('Нельзя выбрать исполнителя заявки и текущего пользователя', async () => {
       const locationStateTask = taskFixtures.task()
-      jest.spyOn(reactRouterDom, 'useLocation').mockReturnValue({
-        key: fakeWord(),
-        pathname: fakeWord(),
-        hash: fakeWord(),
-        search: fakeWord(),
-        state: { task: locationStateTask },
-      })
+      jest
+        .spyOn(reactRouterDom, 'useLocation')
+        .mockReturnValue(useLocationResult({ state: { task: locationStateTask } }))
 
       const taskAssigneeUser = userFixtures.userListItem({ id: locationStateTask.assignee!.id })
       const currentUser = userFixtures.userListItem()
@@ -154,7 +149,9 @@ describe('Упрощенная страница создания заявки н
       mockGetWarehouseMSISuccess(locationStateTask.assignee!.id, { body: warehouseMSI })
 
       const { user } = render(<CreateRelocationTaskSimplifiedPage />, {
-        store: getStoreWithAuth({ userId: currentUser.id }),
+        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
       })
 
       await testUtils.expectControllersLoadingFinished()
