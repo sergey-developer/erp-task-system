@@ -149,7 +149,7 @@ describe('Упрощенная страница создания заявки н
       mockGetWarehouseMSISuccess(locationStateTask.assignee!.id, { body: warehouseMSI })
 
       const { user } = render(<CreateRelocationTaskSimplifiedPage />, {
-        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })

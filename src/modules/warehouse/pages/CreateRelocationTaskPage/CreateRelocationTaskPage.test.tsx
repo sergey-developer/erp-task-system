@@ -143,7 +143,7 @@ describe('Страница создания заявки на перемещен
       })
 
       const { user } = render(<CreateRelocationTaskPage />, {
-        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
@@ -178,7 +178,7 @@ describe('Страница создания заявки на перемещен
       })
 
       const { user } = render(<CreateRelocationTaskPage />, {
-        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
