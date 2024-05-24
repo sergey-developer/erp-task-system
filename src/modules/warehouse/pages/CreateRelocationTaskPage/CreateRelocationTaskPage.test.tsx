@@ -129,6 +129,73 @@ describe('Страница создания заявки на перемещен
       const form = relocationTaskFormTestUtils.getContainer()
       expect(form).toBeInTheDocument()
     })
+
+    test('Контроллером нельзя выбрать исполнителя и текущего пользователя', async () => {
+      const executorUser = userFixtures.userListItem()
+      const currentUser = userFixtures.userListItem()
+      const otherUser = userFixtures.userListItem()
+      mockGetUserListSuccess({ body: [executorUser, currentUser, otherUser] })
+      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentCatalogListSuccess({
+        body: warehouseFixtures.equipmentCatalogList(),
+        once: false,
+      })
+
+      const { user } = render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await relocationTaskFormTestUtils.expectExecutorsLoadingFinished()
+      await relocationTaskFormTestUtils.expectControllersLoadingFinished()
+      await relocationTaskFormTestUtils.openExecutorSelect(user)
+      await relocationTaskFormTestUtils.setExecutor(user, executorUser.fullName)
+      await relocationTaskFormTestUtils.openControllerSelect(user)
+      const executorOption = relocationTaskFormTestUtils.queryControllerOption(
+        executorUser.fullName,
+      )
+      const currentUserOption = relocationTaskFormTestUtils.queryControllerOption(
+        currentUser.fullName,
+      )
+      const otherUserOption = relocationTaskFormTestUtils.getControllerOption(otherUser.fullName)
+
+      expect(otherUserOption).toBeInTheDocument()
+      expect(executorOption).not.toBeInTheDocument()
+      expect(currentUserOption).not.toBeInTheDocument()
+    })
+
+    test('Исполнителем нельзя выбрать контроллера', async () => {
+      const controllerUser = userFixtures.userListItem()
+      const currentUser = userFixtures.userListItem()
+      mockGetUserListSuccess({ body: [controllerUser, currentUser] })
+      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentCatalogListSuccess({
+        body: warehouseFixtures.equipmentCatalogList(),
+        once: false,
+      })
+
+      const { user } = render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await relocationTaskFormTestUtils.expectExecutorsLoadingFinished()
+      await relocationTaskFormTestUtils.expectControllersLoadingFinished()
+      await relocationTaskFormTestUtils.openControllerSelect(user)
+      await relocationTaskFormTestUtils.setController(user, controllerUser.fullName)
+      await relocationTaskFormTestUtils.openExecutorSelect(user)
+      const currentUserOption = relocationTaskFormTestUtils.getExecutorOption(currentUser.fullName)
+      const controllerOption = relocationTaskFormTestUtils.queryExecutorOption(
+        controllerUser.fullName,
+      )
+
+      expect(currentUserOption).toBeInTheDocument()
+      expect(controllerOption).not.toBeInTheDocument()
+    })
   })
 
   describe('Перечень оборудования', () => {

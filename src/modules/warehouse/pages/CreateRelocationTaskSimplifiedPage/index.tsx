@@ -669,7 +669,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     [createEquipmentModalOpened, nomenclature],
   )
 
-  const usersOptions = useMemo(
+  const controllerOptions = useMemo(
     () => users.filter((usr) => usr.id !== authUser?.id && usr.id !== task?.assignee?.id),
     [authUser?.id, task?.assignee?.id, users],
   )
@@ -714,7 +714,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 >
                   <Select
                     placeholder='Выберите значение'
-                    options={usersOptions}
+                    options={controllerOptions}
                     loading={usersIsFetching}
                     disabled={usersIsFetching || createTaskIsLoading}
                     fieldNames={idAndFullNameSelectFieldNames}
