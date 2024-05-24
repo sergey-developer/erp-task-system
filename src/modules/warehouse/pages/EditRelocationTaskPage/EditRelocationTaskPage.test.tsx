@@ -18,6 +18,7 @@ import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
@@ -45,7 +46,6 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import userFixtures from '../../../../_tests_/fixtures/user'
 import EditRelocationTaskPage from './index'
 
 const getContainer = () => screen.getByTestId('edit-relocation-task-page')
