@@ -1,7 +1,7 @@
 import { Moment } from 'moment-timezone'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { CustomerListModel, EquipmentCategoryListModel } from 'modules/warehouse/models'
+import { CustomerListModel, EquipmentCategoriesModel } from 'modules/warehouse/models'
 
 import { LocationsModel } from 'shared/models/catalogs/location'
 import { EmptyFn } from 'shared/types/utils'
@@ -29,7 +29,7 @@ export type EquipmentFilterProps = {
   locations: LocationsModel
   locationsIsLoading: boolean
 
-  categories: EquipmentCategoryListModel
+  categories: EquipmentCategoriesModel
   categoriesIsLoading: boolean
 
   owners: CustomerListModel

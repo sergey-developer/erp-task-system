@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { updateEquipmentErrorMsg } from 'modules/warehouse/constants/equipment'
+import { updateEquipmentErrMsg } from 'modules/warehouse/constants/equipment'
 import {
   UpdateEquipmentMutationArgs,
   UpdateEquipmentSuccessResponse,
@@ -35,7 +35,7 @@ export const useUpdateEquipment = (): UseUpdateEquipmentResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(updateEquipmentErrorMsg)
+        showErrorNotification(updateEquipmentErrMsg)
       }
     }
   }, [state.error])

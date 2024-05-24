@@ -8,15 +8,15 @@ import { TaskWorkGroupModel } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
-import { ArrayFirst, NonNullableObject } from 'shared/types/utils'
+import { ArrayFirst, SetNonNullable } from 'shared/types/utils'
 
 import taskFixtures from '_tests_/fixtures/task'
-import { fakeId, getStoreWithAuth, render, selectTestUtils, buttonTestUtils } from '_tests_/utils'
+import { buttonTestUtils, fakeId, getStoreWithAuth, render, selectTestUtils } from '_tests_/utils'
 
 import AssigneeBlock, { AssigneeBlockProps } from './index'
 
 const props: Readonly<
-  NonNullableObject<
+  SetNonNullable<
     Pick<
       AssigneeBlockProps,
       | 'takeTask'
@@ -57,17 +57,16 @@ export const activeAssignOnMeButtonProps: Readonly<
 }
 
 export const activeAssignButtonProps: Readonly<
-  NonNullableObject<Pick<AssigneeBlockProps, 'status' | 'extendedStatus' | 'assignee'>>
+  SetNonNullable<Pick<AssigneeBlockProps, 'status' | 'extendedStatus' | 'assignee'>>
 > = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
   assignee: taskFixtures.assignee(),
 }
 
-const showRefuseTaskButtonProps: Readonly<NonNullableObject<Pick<AssigneeBlockProps, 'assignee'>>> =
-  {
-    assignee: taskFixtures.assignee(),
-  }
+const showRefuseTaskButtonProps: Readonly<SetNonNullable<Pick<AssigneeBlockProps, 'assignee'>>> = {
+  assignee: taskFixtures.assignee(),
+}
 
 const activeRefuseTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>> =
   {
@@ -76,7 +75,7 @@ const activeRefuseTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'status' | 
   }
 
 export const canSelectAssigneeProps: Readonly<
-  NonNullableObject<Pick<AssigneeBlockProps, 'status' | 'workGroup'>>
+  SetNonNullable<Pick<AssigneeBlockProps, 'status' | 'workGroup'>>
 > = {
   status: TaskStatusEnum.New,
   workGroup: taskFixtures.workGroup(),

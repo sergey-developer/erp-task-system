@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 
 import { CustomUseMutationState } from 'lib/rtk-query/types'
 
-import { createAttachmentErrorMsg } from 'modules/attachment/constants'
+import { createAttachmentErrMsg } from 'modules/attachment/constants'
 import {
   CreateAttachmentMutationArgs,
   CreateAttachmentSuccessResponse,
@@ -36,7 +36,7 @@ export const useCreateAttachment = (): UseCreateAttachmentResult => {
       if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createAttachmentErrorMsg)
+        showErrorNotification(createAttachmentErrMsg)
       }
     }
   }, [state.error])

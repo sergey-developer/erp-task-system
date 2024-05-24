@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
 import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
-import { getEquipmentListTemplateErrorMsg } from 'modules/warehouse/constants/equipment'
+import { getEquipmentListTemplateErrMsg } from 'modules/warehouse/constants/equipment'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -194,7 +194,7 @@ describe('Упрощенная страница создания заявки н
 
       await testUtils.clickDownloadTemplateButton(user)
       const notification = await notificationTestUtils.findNotification(
-        getEquipmentListTemplateErrorMsg,
+        getEquipmentListTemplateErrMsg,
       )
 
       expect(notification).toBeInTheDocument()

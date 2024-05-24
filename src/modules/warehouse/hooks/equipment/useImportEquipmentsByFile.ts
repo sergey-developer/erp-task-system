@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { importEquipmentsByFileErrorMsg } from 'modules/warehouse/constants/equipment'
+import { importEquipmentsByFileErrMsg } from 'modules/warehouse/constants/equipment'
 import { ImportEquipmentsByFileMutationArgs } from 'modules/warehouse/models'
 import { useImportEquipmentsByFileMutation } from 'modules/warehouse/services/equipmentApi.service'
 import { ImportEquipmentsByFileTransformedSuccessResponse } from 'modules/warehouse/types'
@@ -23,7 +23,7 @@ export const useImportEquipmentsByFile = (): UseImportEquipmentsByFileResult => 
       if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(importEquipmentsByFileErrorMsg)
+        showErrorNotification(importEquipmentsByFileErrMsg)
       }
     }
   }, [state.error])

@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { CustomUseQueryStateResult } from 'lib/rtk-query/types'
 
-import { getEquipmentListTemplateErrorMsg } from 'modules/warehouse/constants/equipment'
+import { getEquipmentListTemplateErrMsg } from 'modules/warehouse/constants/equipment'
 import {
   GetEquipmentListTemplateQueryArgs,
   GetEquipmentListTemplateSuccessResponse,
@@ -28,7 +28,7 @@ export const useLazyGetEquipmentListTemplate = (): UseLazyGetEquipmentListTempla
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getEquipmentListTemplateErrorMsg)
+      showErrorNotification(getEquipmentListTemplateErrMsg)
     }
   }, [state.error])
 

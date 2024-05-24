@@ -1,11 +1,22 @@
-import { Card, Col, Drawer, DrawerProps, Flex, Row, Typography } from 'antd'
+import { Button, Card, Col, Drawer, DrawerProps, Flex, Row, Typography } from 'antd'
 import React, { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import {
   inventorizationStatusDict,
   inventorizationTypeDict,
 } from 'modules/warehouse/constants/inventorization'
 import { useGetInventorization } from 'modules/warehouse/hooks/inventorization'
+import {
+  checkInventorizationStatusIsInProgress,
+  checkInventorizationStatusIsNew,
+  getExecuteInventorizationPageLink,
+  getExecuteInventorizationPageLocationState,
+  mapInventorizationWarehousesTitles,
+} from 'modules/warehouse/utils/inventorization'
 
 import LoadingArea from 'components/LoadingArea'
 
@@ -27,10 +38,42 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
   inventorizationId,
   ...props
 }) => {
+  const navigate = useNavigate()
+  const permissions = useMatchUserPermissions([UserPermissionsEnum.InventorizationUpdate])
+
   const { currentData: inventorization, isFetching: inventorizationIsFetching } =
     useGetInventorization({ inventorizationId })
 
   const nomenclatures = inventorization ? groupNomenclatures(inventorization.nomenclatures) : {}
+
+  const executorIsCurrentUser = useIdBelongAuthUser(inventorization?.executor.id)
+
+  const onClickExecuteInventorization = () =>
+    navigate(getExecuteInventorizationPageLink(inventorizationId), {
+      state: getExecuteInventorizationPageLocationState(inventorization!),
+    })
+
+  const drawerFooter = (
+    <Row justify='end'>
+      <Col>
+        <Button
+          type='primary'
+          disabled={
+            !(
+              !!inventorization &&
+              permissions.inventorizationUpdate &&
+              executorIsCurrentUser &&
+              (checkInventorizationStatusIsNew(inventorization.status) ||
+                checkInventorizationStatusIsInProgress(inventorization.status))
+            )
+          }
+          onClick={onClickExecuteInventorization}
+        >
+          Провести инвентаризацию
+        </Button>
+      </Col>
+    </Row>
+  )
 
   return (
     <Drawer
@@ -40,6 +83,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
       title='Поручение на инвентаризацию'
       styles={height ? { wrapper: { top: 'unset', height } } : undefined}
       mask={false}
+      footer={drawerFooter}
     >
       <LoadingArea
         data-testid='inventorization-details-loading'
@@ -61,7 +105,9 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                   <Text type='secondary'>Склады:</Text>
                 </Col>
 
-                <Col span={14}>{inventorization.warehouses.map((w) => w.title).join(', ')}</Col>
+                <Col span={14}>
+                  {mapInventorizationWarehousesTitles(inventorization.warehouses)}
+                </Col>
               </Row>
 
               <Row align='middle'>

@@ -1,1 +1,1 @@
-export const createTaskCommentErrorMsg = 'Возникла ошибка при добавлении комментария'
+export const createTaskCommentErrMsg = 'Возникла ошибка при добавлении комментария'

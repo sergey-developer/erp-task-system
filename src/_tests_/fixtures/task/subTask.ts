@@ -3,14 +3,14 @@ import times from 'lodash/times'
 import { TaskStatusEnum } from 'modules/task/constants/task'
 import { SubTaskModel } from 'modules/task/models'
 
-import { NonNullableObject } from 'shared/types/utils'
+import { SetNonNullable } from 'shared/types/utils'
 
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import { fakeDateString, fakeId, fakeIdStr, fakePhone, fakeWord } from '_tests_/utils'
 
 export const subTask = (
   props?: Partial<Pick<SubTaskModel, 'status'>>,
-): NonNullableObject<SubTaskModel> => ({
+): SetNonNullable<SubTaskModel> => ({
   status: props?.status || TaskStatusEnum.New,
 
   id: fakeId(),
@@ -27,5 +27,5 @@ export const subTask = (
   cancelReason: fakeWord(),
 })
 
-export const subTaskList = (length: number = 1): NonNullableObject<SubTaskModel>[] =>
+export const subTaskList = (length: number = 1): SetNonNullable<SubTaskModel>[] =>
   times(length, () => subTask())

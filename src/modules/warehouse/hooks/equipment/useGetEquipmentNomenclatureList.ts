@@ -1,0 +1,35 @@
+import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+
+import { getEquipmentNomenclaturesErrMsg } from 'modules/warehouse/constants/equipment'
+import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
+import { useGetEquipmentNomenclatureListQuery } from 'modules/warehouse/services/equipmentApi.service'
+import { GetEquipmentNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
+
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
+import { showErrorNotification } from 'shared/utils/notifications'
+
+type UseGetEquipmentNomenclatureListResult = CustomUseQueryHookResult<
+  MaybeUndefined<GetEquipmentNomenclatureListQueryArgs>,
+  GetEquipmentNomenclatureListTransformedSuccessResponse
+>
+
+export const useGetEquipmentNomenclatureList = (
+  args?: GetEquipmentNomenclatureListQueryArgs,
+): UseGetEquipmentNomenclatureListResult => {
+  const state = useGetEquipmentNomenclatureListQuery(args)
+
+  useEffect(() => {
+    if (isErrorResponse(state.error)) {
+      if (isForbiddenError(state.error)) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(getEquipmentNomenclaturesErrMsg)
+      }
+    }
+  }, [state.error])
+
+  return state
+}
