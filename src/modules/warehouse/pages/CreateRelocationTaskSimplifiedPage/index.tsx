@@ -22,6 +22,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { renderUploadedFile } from 'modules/attachment/utils'
+import { useAuthUser } from 'modules/auth/hooks'
 import { getTaskCompleteAtDate } from 'modules/task/components/TaskDetails/MainDetails/utils'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
@@ -74,7 +75,6 @@ import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
-import { useAuthUser } from '../../../auth/hooks'
 import { getEquipmentFormInitialValues } from '../CreateRelocationTaskPage/utils'
 
 const CreateEquipmentsByFileModal = React.lazy(
@@ -669,7 +669,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     [createEquipmentModalOpened, nomenclature],
   )
 
-  const usersOptions = useMemo(
+  const controllerOptions = useMemo(
     () => users.filter((usr) => usr.id !== authUser?.id && usr.id !== task?.assignee?.id),
     [authUser?.id, task?.assignee?.id, users],
   )
@@ -714,7 +714,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 >
                   <Select
                     placeholder='Выберите значение'
-                    options={usersOptions}
+                    options={controllerOptions}
                     loading={usersIsFetching}
                     disabled={usersIsFetching || createTaskIsLoading}
                     fieldNames={idAndFullNameSelectFieldNames}

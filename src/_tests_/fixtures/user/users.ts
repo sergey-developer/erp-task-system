@@ -4,8 +4,11 @@ import { UserListItemModel, UsersModel } from 'modules/user/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
-export const userListItem = (): UserListItemModel => ({
-  id: fakeId(),
+export const userListItem = (
+  props?: Partial<Pick<UserListItemModel, 'id'>>,
+): UserListItemModel => ({
+  id: props?.id || fakeId(),
+
   fullName: fakeWord(),
 })
 

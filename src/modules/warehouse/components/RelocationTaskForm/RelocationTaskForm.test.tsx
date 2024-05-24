@@ -38,13 +38,16 @@ const props: RelocationTaskFormProps = {
   imageIsDeleting: false,
   imagesIsLoading: false,
 
-  userList: [],
-  userListIsLoading: false,
+  usersIsLoading: false,
 
   relocateFromLocationList: [],
   relocateFromLocationListIsLoading: false,
   relocateToLocationList: [],
   relocateToLocationListIsLoading: false,
+
+  executorOptions: [],
+
+  controllerOptions: [],
   controllerIsRequired: true,
 
   type: RelocationTaskTypeEnum.Relocation,
@@ -117,6 +120,15 @@ const getSelectedExecutor = (title: string) =>
 const querySelectedExecutor = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getExecutorFormItem(), title)
 
+const getExecutorOption = (name: string | RegExp) =>
+  selectTestUtils.getSelectOption(name, screen.getByTestId('executor-select-dropdown'))
+
+const queryExecutorOption = (name: string | RegExp) =>
+  selectTestUtils.querySelectOption(name, screen.getByTestId('executor-select-dropdown'))
+
+const expectExecutorsLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getControllerFormItem())
+
 // controller field
 const getControllerFormItem = () => within(getContainer()).getByTestId('controller-form-item')
 const getControllerSelectInput = () => selectTestUtils.getSelect(getControllerFormItem())
@@ -131,6 +143,15 @@ const getSelectedController = (title: string) =>
 
 const querySelectedController = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getControllerFormItem(), title)
+
+const getControllerOption = (name: string | RegExp) =>
+  selectTestUtils.getSelectOption(name, screen.getByTestId('controller-select-dropdown'))
+
+const queryControllerOption = (name: string | RegExp) =>
+  selectTestUtils.querySelectOption(name, screen.getByTestId('controller-select-dropdown'))
+
+const expectControllersLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getControllerFormItem())
 
 // type field
 const getTypeFormItem = () => within(getContainer()).getByTestId('type-form-item')
@@ -239,6 +260,9 @@ export const testUtils = {
   getSelectedExecutor,
   querySelectedExecutor,
   findExecutorError,
+  getExecutorOption,
+  queryExecutorOption,
+  expectExecutorsLoadingFinished,
 
   getControllerSelectInput,
   setController,
@@ -246,6 +270,9 @@ export const testUtils = {
   openControllerSelect,
   getSelectedController,
   querySelectedController,
+  getControllerOption,
+  queryControllerOption,
+  expectControllersLoadingFinished,
 
   getCommentTitle,
   getCommentField,
@@ -530,7 +557,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} userList={userList} />
+          <RelocationTaskForm {...props} executorOptions={userList} />
         </Form>,
       )
 
@@ -552,7 +579,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} userList={[userListItem]} />
+          <RelocationTaskForm {...props} executorOptions={[userListItem]} />
         </Form>,
       )
 
@@ -585,7 +612,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} userList={userList} />
+          <RelocationTaskForm {...props} controllerOptions={userList} />
         </Form>,
       )
 
@@ -607,7 +634,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} userList={[userListItem]} />
+          <RelocationTaskForm {...props} controllerOptions={[userListItem]} />
         </Form>,
       )
 
