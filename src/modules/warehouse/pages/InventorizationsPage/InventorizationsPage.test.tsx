@@ -241,7 +241,7 @@ describe('Страница списка инвентаризаций', () => {
         body: commonFixtures.paginatedListResponse([inventorizationListItem]),
       })
 
-      mockGetInventorizationSuccess(inventorizationListItem.id)
+      mockGetInventorizationSuccess({ inventorizationId: inventorizationListItem.id })
 
       const { user } = render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {

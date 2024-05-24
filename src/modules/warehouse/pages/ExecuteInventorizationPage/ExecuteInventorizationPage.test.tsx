@@ -90,4 +90,7 @@ describe('Страница проведения инвентаризации', (
     expect(warehousesLabel).toBeInTheDocument()
     expect(warehousesValue).toBeInTheDocument()
   })
+
+  test.todo('Отображается верная вкладка по умолчанию')
+  test.todo('Вкладка расхождения открывается')
 })

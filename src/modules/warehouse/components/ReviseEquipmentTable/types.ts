@@ -4,14 +4,17 @@ import { InventorizationEquipmentListItemModel } from 'modules/warehouse/models'
 
 import { SetNonNullable } from 'shared/types/utils'
 
-export type InventorizationEquipmentTableItem = InventorizationEquipmentListItemModel
+export type ReviseEquipmentTableItem = Pick<
+  InventorizationEquipmentListItemModel,
+  'id' | 'equipment' | 'locationPlan' | 'quantity'
+>
 
-export type ActiveInventorizationEquipmentRow = {
+export type ActiveReviseEquipmentTableRow = {
   rowIndex: number
-  tableName: EditableProTableProps<InventorizationEquipmentTableItem, any>['name']
+  tableName: EditableProTableProps<ReviseEquipmentTableItem, any>['name']
 }
 
 export type ReviseEquipmentTableProps = SetNonNullable<
-  EditableProTableProps<InventorizationEquipmentTableItem, any>,
+  EditableProTableProps<ReviseEquipmentTableItem, any>,
   'pagination' | 'dataSource' | 'onTableChange' | 'loading'
 >

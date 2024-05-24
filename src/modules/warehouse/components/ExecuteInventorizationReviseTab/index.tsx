@@ -6,10 +6,10 @@ import React, { FC, useCallback, useState } from 'react'
 import { useGetEquipmentCategories } from 'modules/warehouse/hooks/equipment'
 import { useGetInventorizationEquipments } from 'modules/warehouse/hooks/inventorization'
 import { GetInventorizationEquipmentsQueryArgs } from 'modules/warehouse/models'
+import { InventorizationRequestArgs } from 'modules/warehouse/types'
 
 import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import { IdType } from 'shared/types/common'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -20,9 +20,10 @@ import {
 import ReviseEquipmentTable from '../ReviseEquipmentTable'
 import { ReviseEquipmentTableProps } from '../ReviseEquipmentTable/types'
 
-type ExecuteInventorizationReviseTabProps = {
-  inventorizationId: IdType
-}
+export type ExecuteInventorizationReviseTabProps = Pick<
+  InventorizationRequestArgs,
+  'inventorizationId'
+>
 
 const { Title } = Typography
 const { Search } = Input
@@ -74,7 +75,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     setSearchValue(event.target.value)
 
   return (
-    <Flex vertical gap='small'>
+    <Flex data-testid='execute-inventorization-revise-tab' vertical gap='small'>
       <Title level={5}>Перечень оборудования для сверки</Title>
 
       <Row>
