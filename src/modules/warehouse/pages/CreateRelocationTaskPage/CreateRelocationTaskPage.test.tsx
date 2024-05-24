@@ -6,8 +6,8 @@ import { testUtils as createEquipmentsByFileModalTestUtils } from 'modules/wareh
 import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
 import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import {
-  getEquipmentListTemplateErrorMsg,
-  importEquipmentsByFileErrorMsg,
+  getEquipmentListTemplateErrMsg,
+  importEquipmentsByFileErrMsg,
 } from 'modules/warehouse/constants/equipment'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
@@ -229,7 +229,7 @@ describe('Страница создания заявки на перемещен
 
       await testUtils.clickDownloadTemplateButton(user)
       const notification = await notificationTestUtils.findNotification(
-        getEquipmentListTemplateErrorMsg,
+        getEquipmentListTemplateErrMsg,
       )
 
       expect(notification).toBeInTheDocument()
@@ -479,7 +479,7 @@ describe('Страница создания заявки на перемещен
         await testUtils.expectAddByExcelLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(
-          importEquipmentsByFileErrorMsg,
+          importEquipmentsByFileErrMsg,
         )
         expect(notification).toBeInTheDocument()
       })

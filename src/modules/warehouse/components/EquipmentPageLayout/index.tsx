@@ -9,7 +9,7 @@ import { EquipmentsFilterFormFields } from 'modules/warehouse/components/Equipme
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
-  useGetEquipmentCategoryList,
+  useGetEquipmentCategories,
   useLazyGetEquipmentsXlsx,
 } from 'modules/warehouse/hooks/equipment'
 import { GetEquipmentsXlsxQueryArgs } from 'modules/warehouse/models'
@@ -73,7 +73,7 @@ const EquipmentPageLayout: FC = () => {
   )
 
   const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
-    useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
+    useGetEquipmentCategories(undefined, { skip: !filterOpened })
 
   const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList(
     undefined,

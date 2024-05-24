@@ -42,4 +42,5 @@ export enum UserPermissionsEnum {
 
   InventorizationRead = 'INVENTORIZATION_READ',
   InventorizationCreate = 'INVENTORIZATION_CREATE',
+  InventorizationUpdate = 'INVENTORIZATION_UPDATE',
 }

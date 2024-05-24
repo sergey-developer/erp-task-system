@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getWarehouseListErrorMsg } from 'modules/warehouse/constants/warehouse'
+import { getWarehouseListErrMsg } from 'modules/warehouse/constants/warehouse'
 import {
   GetWarehouseListQueryArgs,
   GetWarehouseListSuccessResponse,
@@ -30,7 +30,7 @@ export const useGetWarehouseList = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getWarehouseListErrorMsg)
+      showErrorNotification(getWarehouseListErrMsg)
     }
   }, [state.error])
 
