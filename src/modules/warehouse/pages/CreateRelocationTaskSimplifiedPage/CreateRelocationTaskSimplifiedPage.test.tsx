@@ -128,7 +128,7 @@ describe('Упрощенная страница создания заявки н
       expect(form).toBeInTheDocument()
     })
 
-    test('Нельзя выбрать исполнителя заявки и текущего пользователя', async () => {
+    test('Контроллером нельзя выбрать исполнителя заявки и текущего пользователя', async () => {
       const locationStateTask = taskFixtures.task()
       jest
         .spyOn(reactRouterDom, 'useLocation')

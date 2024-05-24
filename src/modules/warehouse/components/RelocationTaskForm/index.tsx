@@ -162,6 +162,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           rules={onlyRequiredRules}
         >
           <Select
+            dropdownRender={(menu) => <div data-testid='executor-select-dropdown'>{menu}</div>}
             fieldNames={idAndFullNameSelectFieldNames}
             loading={usersIsLoading}
             disabled={isLoading || usersIsLoading}
@@ -179,6 +180,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           rules={controllerIsRequired ? onlyRequiredRules : undefined}
         >
           <Select
+            dropdownRender={(menu) => <div data-testid='controller-select-dropdown'>{menu}</div>}
             fieldNames={idAndFullNameSelectFieldNames}
             loading={usersIsLoading}
             disabled={isLoading || usersIsLoading}
