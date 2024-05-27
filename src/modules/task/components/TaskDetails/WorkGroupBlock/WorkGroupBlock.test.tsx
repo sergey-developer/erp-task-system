@@ -510,12 +510,30 @@ describe('Блок рабочей группы', () => {
     })
 
     describe('Всегда активна если', () => {
-      test('Статус запроса на ожидание "Одобрено" и id заявки есть в "CAN_PUT_ON_FIRST_LINE"', () => {
+      test(`Статус запроса на ожидание "Одобрено" и id заявки есть в ${TaskActionsPermissionsEnum.CanPutOnFirstLine}`, () => {
         render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
             {...forceActiveFirstLineButtonProps}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            }),
+          },
+        )
+
+        expect(testUtils.getFirstLineButton()).toBeEnabled()
+      })
+
+      test(`Статуса запроса на ожидание нет и id заявки есть в ${TaskActionsPermissionsEnum.CanPutOnFirstLine}`, () => {
+        render(
+          <WorkGroupBlock
+            {...props}
+            {...showFirstLineButtonProps}
+            {...forceActiveFirstLineButtonProps}
+            taskSuspendRequestStatus={undefined}
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
