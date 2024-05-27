@@ -115,7 +115,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                 onClick={debouncedToggleOpenTaskFirstLineModal}
                 loading={transferTaskToFirstLineIsLoading}
                 disabled={
-                  taskSuspendRequestStatus.isApproved &&
+                  (!rawTaskSuspendRequestStatus || taskSuspendRequestStatus.isApproved) &&
                   userActions.tasks.CAN_PUT_ON_FIRST_LINE.includes(id)
                     ? false
                     : taskSuspendRequestStatus.isNew ||
