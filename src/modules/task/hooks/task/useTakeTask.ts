@@ -21,8 +21,6 @@ export const useTakeTask = (): UseTakeTaskResult => {
   const [mutation, state] = useTakeTaskMutation()
 
   useEffect(() => {
-    if (!state.error) return
-
     if (isErrorResponse(state.error)) {
       if (
         isBadRequestError(state.error) ||

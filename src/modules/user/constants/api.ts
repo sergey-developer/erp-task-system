@@ -7,3 +7,7 @@ export enum UserApiEnum {
   GetWarehouseMSI = '/users/:id/mobile-warehouse',
   GetUserActions = '/users/:id/actions',
 }
+
+export enum UsersApiTagEnum {
+  UserActions = 'UserActions',
+}
