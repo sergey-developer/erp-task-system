@@ -232,7 +232,9 @@ const TasksPage: FC = () => {
     useGetMacroregionList({ customers: selectedCustomers }, { skip: !tasksFilterOpened })
 
   const { data: workGroups = [], isFetching: workGroupsIsFetching } = useGetWorkGroups(undefined, {
-    skip: !tasksFilterOpened,
+    skip: tasksFilterOpened
+      ? !permissions.selfWorkGroupsRead && !permissions.anyWorkGroupsRead
+      : !tasksFilterOpened,
   })
 
   const onApplyFilter: TasksFilterProps['onSubmit'] = (values) => {
