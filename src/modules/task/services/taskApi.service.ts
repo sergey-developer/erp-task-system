@@ -105,6 +105,7 @@ import {
   deleteTaskSuspendRequestUrl,
 } from 'modules/task/utils/taskSuspendRequest'
 import { deleteTaskWorkGroupUrl, updateTaskWorkGroupUrl } from 'modules/task/utils/taskWorkGroup'
+import { UsersApiTagEnum } from 'modules/user/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService, ErrorResponse, isNotFoundError } from 'shared/services/baseApi'
@@ -285,11 +286,13 @@ const taskApiService = baseApiService
         UpdateTaskAssigneeMutationArgs
       >({
         invalidatesTags: (result, error) =>
-          error ? [] : [TaskApiTagEnum.Task, TaskApiTagEnum.TaskCounters],
-        query: ({ taskId, ...payload }) => ({
+          error
+            ? []
+            : [TaskApiTagEnum.Task, TaskApiTagEnum.TaskCounters, UsersApiTagEnum.UserActions],
+        query: ({ taskId, ...data }) => ({
           url: updateTaskAssigneeUrl(taskId),
           method: HttpMethodEnum.Post,
-          data: payload,
+          data,
         }),
       }),
 

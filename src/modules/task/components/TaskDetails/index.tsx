@@ -556,7 +556,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       if (!task) return
 
       try {
-        await updateWorkGroup({ taskId: task.id, ...values })
+        await updateWorkGroup({ taskId: task.id, ...values }).unwrap()
         closeTaskSecondLineModal()
         originOnClose()
       } catch (error) {
@@ -577,7 +577,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       if (!task) return
 
       try {
-        await deleteWorkGroup({ taskId: task.id, ...values })
+        await deleteWorkGroup({ taskId: task.id, ...values }).unwrap()
         closeTaskFirstLineModal()
         originOnClose()
       } catch (error) {
@@ -592,10 +592,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const onUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
       if (!task) return
-
-      try {
-        await updateAssignee({ taskId: task.id, assignee })
-      } catch {}
+      await updateAssignee({ taskId: task.id, assignee })
     },
     [task, updateAssignee],
   )

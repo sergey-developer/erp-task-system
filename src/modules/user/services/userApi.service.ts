@@ -1,5 +1,5 @@
 import { TaskApiTagEnum } from 'modules/task/constants/task'
-import { UserApiEnum } from 'modules/user/constants'
+import { UserApiEnum, UsersApiTagEnum } from 'modules/user/constants'
 import {
   GetUserActionsQueryArgs,
   GetUserActionsSuccessResponse,
@@ -107,6 +107,7 @@ const userApiService = baseApiService.injectEndpoints({
       }),
     }),
     getUserActions: build.query<GetUserActionsSuccessResponse, GetUserActionsQueryArgs>({
+      providesTags: (result, error) => (error ? [] : [UsersApiTagEnum.UserActions]),
       query: ({ userId }) => ({
         url: getUserActionsUrl(userId),
         method: HttpMethodEnum.Get,

@@ -32,7 +32,7 @@ export const renderUploadedFile: UploadProps['itemRender'] = (
     originNode
   )
 }
-
+// todo: объединить логику 2х фун-ций в одну
 export const renderUploadedReadonlyFile: UploadProps['itemRender'] = (originNode, file) => {
   const attrs = getFileAttrs(file)
 
