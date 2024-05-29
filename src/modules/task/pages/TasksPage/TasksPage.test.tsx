@@ -681,7 +681,7 @@ describe('Страница реестра заявок', () => {
       mockGetWorkGroupsSuccess()
       mockGetCustomerListSuccess()
       mockGetSupportGroupListSuccess()
-      mockGetMacroregionListSuccess()
+      mockGetMacroregionsSuccess()
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
