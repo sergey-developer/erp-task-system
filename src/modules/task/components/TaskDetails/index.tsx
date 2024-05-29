@@ -197,17 +197,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     },
   ] = useCreateTaskReclassificationRequest()
 
+  const canGetTaskReclassificationRequest =
+    !!task?.id && taskExtendedStatus.isInReclassification && !createReclassificationRequestResult
+
   const {
     currentData: getReclassificationRequestResult,
     isFetching: reclassificationRequestIsFetching,
   } = useGetTaskReclassificationRequest(
     { taskId: task?.id! },
-    {
-      skip:
-        !task?.id ||
-        !taskExtendedStatus.isInReclassification ||
-        !!createReclassificationRequestResult,
-    },
+    { skip: !canGetTaskReclassificationRequest },
   )
 
   const [cancelReclassificationRequest, { isLoading: cancelReclassificationRequestIsLoading }] =
@@ -698,7 +696,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             isLoading={
               reclassificationRequestIsFetching ||
               createReclassificationRequestIsLoading ||
-              userActionsIsFetching
+              (canGetTaskReclassificationRequest && userActionsIsFetching)
             }
             tip='Загрузка запроса на переклассификацию...'
             area='block'
