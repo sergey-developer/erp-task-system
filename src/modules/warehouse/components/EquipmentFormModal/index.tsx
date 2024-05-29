@@ -52,6 +52,10 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   ownerList,
   ownerListIsLoading,
+  onChangeOwner,
+
+  macroregions,
+  macroregionsIsLoading,
 
   workTypeList,
   workTypeListIsLoading,
@@ -68,6 +72,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   ...props
 }) => {
   const [form] = Form.useForm<EquipmentFormFields>()
+  const ownerFormValue = Form.useWatch('owner', form)
   const ownerIsObermeisterFormValue = Form.useWatch('ownerIsObermeister', form)
 
   const nomenclatureSelected = Boolean(nomenclature)
@@ -112,6 +117,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         usageCounter: undefined,
         owner: undefined,
         ownerIsObermeister: undefined,
+        macroregion: undefined,
         purpose: undefined,
         comment: undefined,
       })
@@ -396,6 +402,26 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                     options={ownerList}
                     loading={ownerListIsLoading}
                     disabled={isLoading || ownerListIsLoading}
+                    showSearch
+                    filterOption={filterOptionBy('title')}
+                    onChange={onChangeOwner}
+                  />
+                </Form.Item>
+              )}
+
+              {ownerFormValue && (
+                <Form.Item
+                  data-testid='macroregion-form-item'
+                  label='Макрорегион'
+                  name='macroregion'
+                  rules={isFalse(ownerIsObermeisterFormValue) ? onlyRequiredRules : undefined}
+                >
+                  <Select
+                    placeholder='Выберите макрорегион'
+                    fieldNames={idAndTitleSelectFieldNames}
+                    options={macroregions}
+                    loading={macroregionsIsLoading}
+                    disabled={isLoading || macroregionsIsLoading}
                     showSearch
                     filterOption={filterOptionBy('title')}
                   />

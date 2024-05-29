@@ -5,4 +5,4 @@ export type MacroregionListItemModel = {
   title: string
 }
 
-export type MacroregionListModel = MacroregionListItemModel[]
+export type MacroregionsModel = MacroregionListItemModel[]

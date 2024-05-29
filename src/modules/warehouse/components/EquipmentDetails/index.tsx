@@ -618,6 +618,9 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
             ownerListIsLoading={customerListIsFetching}
+            onChangeOwner={() => {}}
+            macroregions={[]}
+            macroregionsIsLoading={false}
             workTypeList={workTypeList}
             workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}

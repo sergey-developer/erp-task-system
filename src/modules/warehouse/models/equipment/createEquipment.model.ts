@@ -22,6 +22,7 @@ export type CreateEquipmentMutationArgs = {
   currency?: IdType
   usageCounter?: number
   owner?: IdType
+  macroregion?: IdType
   comment?: string
   images?: IdType[]
 }

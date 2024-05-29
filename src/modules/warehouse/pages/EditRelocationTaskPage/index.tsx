@@ -1020,6 +1020,9 @@ const EditRelocationTaskPage: FC = () => {
             currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
             ownerListIsLoading={customerListIsFetching}
+            onChangeOwner={() => {}}
+            macroregions={[]}
+            macroregionsIsLoading={false}
             workTypeList={workTypeList}
             workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
@@ -1056,6 +1059,9 @@ const EditRelocationTaskPage: FC = () => {
             currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
             ownerListIsLoading={customerListIsFetching}
+            onChangeOwner={() => {}}
+            macroregions={[]}
+            macroregionsIsLoading={false}
             workTypeList={workTypeList}
             workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}

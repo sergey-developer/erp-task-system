@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { MacroregionListItemModel, MacroregionListModel } from 'shared/models/macroregion'
+import { MacroregionListItemModel, MacroregionsModel } from 'shared/models/macroregion'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 
@@ -9,5 +9,5 @@ export const macroregionListItem = (): MacroregionListItemModel => ({
   title: fakeWord(),
 })
 
-export const macroregionList = (length: number = 1): MacroregionListModel =>
+export const macroregions = (length: number = 1): MacroregionsModel =>
   times(length, () => macroregionListItem())

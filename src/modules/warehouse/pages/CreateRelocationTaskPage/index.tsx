@@ -63,6 +63,7 @@ import Space from 'components/Space'
 import { SAVE_TEXT } from 'shared/constants/common'
 import { useLazyGetLocations } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
+import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
@@ -121,6 +122,8 @@ const CreateRelocationTaskPage: FC = () => {
   const [form] = Form.useForm<RelocationTaskFormFields>()
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
+
+  const [selectedOwnerId, setSelectedOwnerId] = useState<IdType>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
   const [
@@ -332,6 +335,11 @@ const CreateRelocationTaskPage: FC = () => {
     selectedCategory,
     selectedNomenclatureId,
   ])
+
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
+    { customers: [selectedOwnerId!] },
+    { skip: !selectedOwnerId },
+  )
 
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
@@ -879,6 +887,9 @@ const CreateRelocationTaskPage: FC = () => {
             currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
             ownerListIsLoading={customerListIsFetching}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypeList={workTypeList}
             workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
@@ -915,6 +926,9 @@ const CreateRelocationTaskPage: FC = () => {
             currencyListIsLoading={currencyListIsFetching}
             ownerList={customerList}
             ownerListIsLoading={customerListIsFetching}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypeList={workTypeList}
             workTypeListIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
