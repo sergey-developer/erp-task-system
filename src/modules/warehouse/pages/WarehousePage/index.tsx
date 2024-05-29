@@ -1,5 +1,8 @@
+import { Flex, Typography } from 'antd'
 import { FC } from 'react'
 import { useParams } from 'react-router-dom'
+
+import { useGetWarehouse } from 'modules/warehouse/hooks/warehouse'
 
 import Label from 'components/Label'
 import LoadingArea from 'components/LoadingArea'
@@ -7,8 +10,9 @@ import Space from 'components/Space'
 
 import { valueOrHyphen } from 'shared/utils/common'
 
-import { useGetWarehouse } from '../../hooks/warehouse'
 import { WrapperStyled } from './styles'
+
+const { Text } = Typography
 
 const WarehousePage: FC = () => {
   // todo: создать хук который будет возвращать распарсеные значения
@@ -33,9 +37,19 @@ const WarehousePage: FC = () => {
 
             <Label label='Адрес'>{warehouse.address}</Label>
 
-            <Label label='Договор'>{warehouse.contract}</Label>
+            <Label label='Макрорегионы'>
+              {valueOrHyphen(warehouse.macroregions, (macroregions) => (
+                <Flex vertical gap='small'>
+                  {macroregions.map((m) => (
+                    <Text key={m.id}>{m.title}</Text>
+                  ))}
+                </Flex>
+              ))}
+            </Label>
 
-            <Label label='Прочие данные'>{warehouse.notes}</Label>
+            <Label label='Договор'>{valueOrHyphen(warehouse.contract)}</Label>
+
+            <Label label='Прочие данные'>{valueOrHyphen(warehouse.notes)}</Label>
           </Space>
         )}
       </LoadingArea>
