@@ -1,5 +1,6 @@
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 
+import { MacroregionListItemModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -18,4 +19,5 @@ export type WarehouseModel = {
   }>
   contract: MaybeNull<string>
   notes: MaybeNull<string>
+  macroregions: MaybeNull<Pick<MacroregionListItemModel, 'id' | 'title'>[]>
 }
