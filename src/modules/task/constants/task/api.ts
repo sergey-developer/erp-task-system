@@ -27,7 +27,7 @@ export enum TaskApiEnum {
   CreateReclassificationRequest = '/tasks/:id/reclassification-requests',
   GetReclassificationRequest = '/tasks/:id/reclassification-request',
 
-  CreateTaskSuspendRequest = '/tasks/:id/suspend_request',
+  CreateTaskSuspendRequest = '/tasks/:id/suspend-request',
   DeleteTaskSuspendRequest = '/tasks/:id/suspend-request',
 
   GetTaskJournal = '/tasks/:id/journal',
