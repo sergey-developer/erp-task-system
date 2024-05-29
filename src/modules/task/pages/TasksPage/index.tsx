@@ -53,7 +53,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
-import { useGetMacroregionList } from 'shared/hooks/macroregion'
+import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { useDrawerHeightByTable } from 'shared/hooks/useDrawerHeightByTable'
 import { IdType } from 'shared/types/common'
@@ -228,8 +228,10 @@ const TasksPage: FC = () => {
       { skip: !tasksFilterOpened },
     )
 
-  const { currentData: macroregionList = [], isFetching: macroregionListIsFetching } =
-    useGetMacroregionList({ customers: selectedCustomers }, { skip: !tasksFilterOpened })
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
+    { customers: selectedCustomers },
+    { skip: !tasksFilterOpened },
+  )
 
   const { data: workGroups = [], isFetching: workGroupsIsFetching } = useGetWorkGroups(undefined, {
     skip: tasksFilterOpened
@@ -468,8 +470,8 @@ const TasksPage: FC = () => {
             customers={customerList}
             customersIsLoading={customerListIsFetching}
             onChangeCustomers={setSelectedCustomers}
-            macroregions={macroregionList}
-            macroregionsIsLoading={macroregionListIsFetching}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             onChangeMacroregions={setSelectedMacroregions}
             supportGroups={supportGroupList}
             supportGroupsIsLoading={supportGroupListIsFetching}

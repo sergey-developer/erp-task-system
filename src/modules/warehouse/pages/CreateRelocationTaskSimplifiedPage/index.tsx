@@ -65,6 +65,7 @@ import { filesFormItemProps } from 'shared/constants/form'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { useGetCurrencyList } from 'shared/hooks/currency'
+import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
@@ -133,6 +134,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     Form.useWatch('equipmentsToWarehouse', form)
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
+
+  const [selectedOwnerId, setSelectedOwnerId] = useState<IdType>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
   const [
@@ -301,6 +304,11 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     selectedNomenclatureId,
     editEquipmentByFileModalOpened,
   ])
+
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
+    { customers: [selectedOwnerId!] },
+    { skip: !selectedOwnerId },
+  )
 
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
@@ -900,6 +908,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             currenciesIsLoading={currenciesIsFetching}
             owners={customers}
             ownersIsLoading={customersIsFetching}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypes={workTypes}
             workTypesIsLoading={workTypesIsFetching}
             nomenclature={nomenclature}
@@ -936,6 +947,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             currenciesIsLoading={currenciesIsFetching}
             owners={customers}
             ownersIsLoading={customersIsFetching}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypes={workTypes}
             workTypesIsLoading={workTypesIsFetching}
             nomenclature={nomenclature}

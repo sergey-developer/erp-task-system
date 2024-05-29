@@ -1,23 +1,22 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MacroregionApiEnum } from 'shared/constants/macroregion'
-import {
-  GetMacroregionListQueryArgs,
-  GetMacroregionListSuccessResponse,
-} from 'shared/models/macroregion'
+import { GetMacroregionsQueryArgs, GetMacroregionsSuccessResponse } from 'shared/models/macroregion'
 import { baseApiService } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 
 const macroregionApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({
-    getMacroregionList: build.query<GetMacroregionListSuccessResponse, GetMacroregionListQueryArgs>(
-      {
-        query: (params) => ({
-          url: MacroregionApiEnum.GetMacroregionList,
-          method: HttpMethodEnum.Get,
-          params,
-        }),
-      },
-    ),
+    getMacroregions: build.query<
+      GetMacroregionsSuccessResponse,
+      MaybeUndefined<GetMacroregionsQueryArgs>
+    >({
+      query: (params) => ({
+        url: MacroregionApiEnum.GetMacroregions,
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+    }),
   }),
 })
 
-export const { useGetMacroregionListQuery } = macroregionApiService
+export const { useGetMacroregionsQuery } = macroregionApiService

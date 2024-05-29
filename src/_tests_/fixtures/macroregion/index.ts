@@ -1,4 +1,4 @@
-import * as macroregionList from './macroregionList'
+import * as macroregionList from './macroregions'
 
 const macroregionFixtures = {
   ...macroregionList,
