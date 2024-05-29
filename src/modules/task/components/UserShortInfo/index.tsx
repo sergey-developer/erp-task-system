@@ -1,20 +1,18 @@
-import { Typography } from 'antd'
+import { Flex, Typography } from 'antd'
 import React, { FC, ReactNode } from 'react'
 
 import { UserModel } from 'modules/user/models'
 import { getFullUserName } from 'modules/user/utils'
-
-import Space from 'components/Space'
 
 import { MaybeNull } from 'shared/types/utils'
 
 const { Text } = Typography
 
 const renderInfo = (label: string, value: any): ReactNode => (
-  <Space>
+  <Flex gap='small'>
     <Text underline>{label}:</Text>
     <Text>{value || 'Не определено'}</Text>
-  </Space>
+  </Flex>
 )
 
 type UserShortInfoProps = Partial<
@@ -40,10 +38,10 @@ const UserShortInfo: FC<UserShortInfoProps> = ({
   testId,
 }) => {
   return (
-    <Space data-testid={testId || 'user-short-info'} direction='vertical'>
+    <Flex data-testid={testId || 'user-short-info'} vertical gap='small'>
       {title && <Text strong>{title}</Text>}
 
-      <Space direction='vertical'>
+      <Flex vertical>
         {renderInfo('Должность', position || null)}
 
         {!skip?.includes('fio') &&
@@ -55,8 +53,8 @@ const UserShortInfo: FC<UserShortInfoProps> = ({
         {renderInfo('Телефон', phone)}
 
         {renderInfo('Почта', email)}
-      </Space>
-    </Space>
+      </Flex>
+    </Flex>
   )
 }
 
