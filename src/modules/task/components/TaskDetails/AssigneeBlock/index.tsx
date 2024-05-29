@@ -1,20 +1,21 @@
 import { Button, Col, Row, Typography } from 'antd'
 import isEqual from 'lodash/isEqual'
-import React, { FC, useState } from 'react'
+import pick from 'lodash/pick'
+import React, { FC, useMemo, useState } from 'react'
 
 import { useAuthUser, useIdBelongAuthUser } from 'modules/auth/hooks'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
-import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
+import { TaskAssigneeModel, TaskModel, TaskWorkGroupModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { UserActionsModel } from 'modules/user/models'
 
 import Space from 'components/Space'
 
-import { SelectStyled } from './styles'
+import { DropdownSelectWrapperStyled, SelectStyled } from './styles'
 
 const { Text } = Typography
 
@@ -55,9 +56,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
 
   userActions,
 }) => {
-  const currentAssignee = assignee?.id
-
-  const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
+  const [selectedAssigneeId, setSelectedAssigneeId] = useState(assignee?.id)
 
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
@@ -69,11 +68,9 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
     UserPermissionsEnum.SelfAssigneeTasksUpdate,
   ])
 
-  const selectedAssigneeIsCurrentAssignee = isEqual(selectedAssignee, currentAssignee)
-  const currentAssigneeIsCurrentUser = useIdBelongAuthUser(currentAssignee)
-  const selectedAssigneeIsCurrentUser = useIdBelongAuthUser(selectedAssignee)
-
-  const workGroupMembers = workGroup?.members || []
+  const selectedAssigneeIsCurrentAssignee = isEqual(selectedAssigneeId, assignee?.id)
+  const currentAssigneeIsCurrentUser = useIdBelongAuthUser(assignee?.id)
+  const selectedAssigneeIsCurrentUser = useIdBelongAuthUser(selectedAssigneeId)
 
   const canSelectAssignee =
     !!workGroup &&
@@ -81,15 +78,28 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
     !taskStatus.isCompleted &&
     permissions.anyAssigneeTasksUpdate
 
+  const workGroupMembers: TaskWorkGroupModel['members'] = useMemo(
+    () =>
+      canSelectAssignee
+        ? assignee && !workGroup?.members.find((m) => m.id === assignee.id)
+          ? [
+              ...workGroup.members,
+              pick(assignee, 'id', 'firstName', 'lastName', 'middleName', 'phone'),
+            ]
+          : workGroup.members
+        : [],
+    [assignee, canSelectAssignee, workGroup?.members],
+  )
+
   const onAssignOnMe = async () => {
     if (authUser) {
       await updateAssignee(authUser.id)
-      setSelectedAssignee(authUser.id)
+      setSelectedAssigneeId(authUser.id)
     }
   }
 
   const onClickAssigneeButton = async () => {
-    if (selectedAssignee) await updateAssignee(selectedAssignee)
+    if (selectedAssigneeId) await updateAssignee(selectedAssigneeId)
   }
 
   return (
@@ -142,15 +152,18 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
       <Space direction='vertical' size='middle' $block>
         {canSelectAssignee ? (
           <SelectStyled
-            defaultValue={selectedAssignee}
+            defaultValue={selectedAssigneeId}
             variant='borderless'
+            dropdownRender={(menu) => (
+              <DropdownSelectWrapperStyled>{menu}</DropdownSelectWrapperStyled>
+            )}
             placeholder={assignee ? null : NOT_ASSIGNED_TEXT}
-            onSelect={setSelectedAssignee}
+            onSelect={setSelectedAssigneeId}
           >
             {workGroupMembers.map((member) => {
-              const currentAssigneeInWorkGroup = isEqual(member.id, currentAssignee)
-              const authUserInWorkGroup = isEqual(member.id, authUser!.id)
-              const disabled = currentAssigneeInWorkGroup || authUserInWorkGroup
+              const currentAssigneeIsMember = isEqual(member.id, assignee?.id)
+              const authUserIsMember = isEqual(member.id, authUser!.id)
+              const disabled = currentAssigneeIsMember || authUserIsMember
 
               return (
                 <SelectStyled.Option
@@ -180,7 +193,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                 ? false
                 : !(
                     taskStatus.isNew &&
-                    (currentAssigneeIsCurrentUser || !currentAssignee) &&
+                    (currentAssigneeIsCurrentUser || !assignee) &&
                     !taskExtendedStatus.isInReclassification &&
                     userActions.tasks.CAN_EXECUTE.includes(id)
                   ) ||
@@ -202,7 +215,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
                 taskSuspendRequestStatus.isApproved
                   ? false
                   : taskStatus.isAwaiting ||
-                    !selectedAssignee ||
+                    !selectedAssigneeId ||
                     selectedAssigneeIsCurrentUser ||
                     selectedAssigneeIsCurrentAssignee ||
                     taskExtendedStatus.isInReclassification ||
