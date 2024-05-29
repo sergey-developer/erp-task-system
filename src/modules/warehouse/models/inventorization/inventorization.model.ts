@@ -18,9 +18,5 @@ export type InventorizationModel = {
   executor: Pick<UserModel, 'id' | 'fullName'>
   createdBy: Pick<UserModel, 'id' | 'fullName'>
   completedAt: MaybeNull<string>
-  nomenclatures: Array<
-    Pick<NomenclatureModel, 'id' | 'title'> & {
-      nomenclaturesGroup: Pick<NomenclatureModel['group'], 'id' | 'title'>
-    }
-  >
+  nomenclatures: Array<Pick<NomenclatureModel, 'id' | 'title' | 'group'>>
 }
