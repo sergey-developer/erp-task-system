@@ -1,2 +1,2 @@
-export * from './macroregionList.model'
-export * from './getMacroregionList.model'
+export * from './macroregions.model'
+export * from './getMacroregions.model'

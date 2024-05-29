@@ -16,6 +16,7 @@ import {
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { CurrencyListModel } from 'shared/models/currency'
+import { MacroregionsModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { ArrayFirst } from 'shared/types/utils'
@@ -39,6 +40,7 @@ export type EquipmentFormFields = {
   usageCounter?: number
   owner?: IdType
   ownerIsObermeister?: boolean
+  macroregion?: IdType
   comment?: string
   images?: UploadFile<FileResponse>[]
 }
@@ -72,6 +74,10 @@ export type EquipmentFormModalProps = Required<
 
     ownerList: CustomerListModel
     ownerListIsLoading: boolean
+    onChangeOwner: (id: IdType) => void
+
+    macroregions: MacroregionsModel
+    macroregionsIsLoading: boolean
 
     workTypeList: WorkTypeListModel
     workTypeListIsLoading: boolean

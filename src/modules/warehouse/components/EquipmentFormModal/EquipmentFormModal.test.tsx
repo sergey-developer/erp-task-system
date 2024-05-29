@@ -59,6 +59,10 @@ const props: Readonly<EquipmentFormModalProps> = {
 
   ownerList: [],
   ownerListIsLoading: false,
+  onChangeOwner: jest.fn(),
+
+  macroregions: [],
+  macroregionsIsLoading: false,
 
   workTypeList: [],
   workTypeListIsLoading: false,
