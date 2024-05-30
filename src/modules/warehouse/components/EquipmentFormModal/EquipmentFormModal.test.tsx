@@ -1202,7 +1202,7 @@ describe('Модалка оборудования', () => {
   describe('Макрорегион', () => {
     test('Отображается если выбран владелец оборудования', async () => {
       const owner = warehouseFixtures.customerListItem()
-      const { user } = render(<EquipmentFormModal {...props} ownerList={[owner]} />)
+      const { user } = render(<EquipmentFormModal {...props} owners={[owner]} />)
 
       await testUtils.openOwnerSelect(user)
       await testUtils.setOwner(user, owner.title)
@@ -1225,7 +1225,7 @@ describe('Модалка оборудования', () => {
       const macroregionListItem = macroregionFixtures.macroregionListItem()
 
       const { user } = render(
-        <EquipmentFormModal {...props} macroregions={[macroregionListItem]} ownerList={[owner]} />,
+        <EquipmentFormModal {...props} macroregions={[macroregionListItem]} owners={[owner]} />,
       )
 
       await testUtils.openOwnerSelect(user)
@@ -1241,9 +1241,7 @@ describe('Модалка оборудования', () => {
     test('Обязательно для заполнения если в поле "владелец оборудования Obermeister" выбрано "Нет"', async () => {
       const owner = warehouseFixtures.customerListItem()
 
-      const { user } = render(
-        <EquipmentFormModal {...props} ownerList={[owner]} {...addModeProps} />,
-      )
+      const { user } = render(<EquipmentFormModal {...props} owners={[owner]} {...addModeProps} />)
 
       await testUtils.clickOwnerIsObermeisterField(user, 'Нет')
       await testUtils.openOwnerSelect(user)
