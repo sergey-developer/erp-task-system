@@ -1,7 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
 import debounce from 'lodash/debounce'
-import defaultTo from 'lodash/defaultTo'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import AttachmentList from 'modules/attachment/components/AttachmentList'
@@ -46,6 +45,7 @@ import { formatDate } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
+import { makeString } from 'shared/utils/string'
 
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
@@ -523,7 +523,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                     <Text type='secondary'>Владелец оборудования:</Text>
                   </Col>
 
-                  <Col span={16}>{defaultTo(equipment.owner?.title, 'Obermeister')}</Col>
+                  <Col span={16}>
+                    {equipment.owner
+                      ? makeString(', ', equipment.owner.title, equipment.macroregion?.title)
+                      : 'Obermeister'}
+                  </Col>
                 </Row>
               )}
 
