@@ -1,11 +1,12 @@
+import pick from 'lodash/pick'
 import times from 'lodash/times'
 
-import {
-  EquipmentCategoryEnum,
-  EquipmentConditionEnum,
-} from 'modules/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { ImportedEquipmentByFile, ImportedEquipmentsByFile } from 'modules/warehouse/types'
 
+import currencyFixtures from '_tests_/fixtures/currency'
+import macroregionFixtures from '_tests_/fixtures/macroregion'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
 export const importedEquipmentByFile = (): ImportedEquipmentByFile => ({
@@ -22,15 +23,14 @@ export const importedEquipmentByFile = (): ImportedEquipmentByFile => ({
   isWarranty: false,
   condition: EquipmentConditionEnum.Working,
   nomenclature: {
-    id: fakeId(),
-    title: fakeWord(),
+    ...pick(warehouseFixtures.nomenclature(), 'id', 'title', 'equipmentHasSerialNumber'),
     measurementUnit: fakeWord(),
-    equipmentHasSerialNumber: false,
   },
-  owner: { id: fakeId(), title: fakeWord() },
-  currency: { id: fakeId(), title: fakeWord() },
-  category: { id: fakeId(), title: fakeWord(), code: EquipmentCategoryEnum.Equipment },
-  purpose: { id: fakeId(), title: fakeWord() },
+  owner: pick(warehouseFixtures.customerListItem(), 'id', 'title'),
+  macroregion: pick(macroregionFixtures.macroregionListItem(), 'id', 'title'),
+  currency: pick(currencyFixtures.currencyListItem(), 'id', 'title'),
+  category: pick(warehouseFixtures.equipmentCategory(), 'id', 'title', 'code'),
+  purpose: pick(warehouseFixtures.workTypeListItem(), 'id', 'title'),
 })
 
 export const importedEquipmentsByFile = (length: number = 1): ImportedEquipmentsByFile =>
