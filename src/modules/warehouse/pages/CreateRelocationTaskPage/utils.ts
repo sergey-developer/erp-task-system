@@ -146,6 +146,7 @@ export const getEquipmentFormInitialValues = (
         price: isNumber(equipment.price) ? equipment.price : undefined,
         usageCounter: isNumber(equipment.usageCounter) ? equipment.usageCounter : undefined,
         owner: equipment.owner?.id,
+        macroregion: equipment.macroregion?.id,
         comment: equipment.comment || undefined,
       }
     : {}

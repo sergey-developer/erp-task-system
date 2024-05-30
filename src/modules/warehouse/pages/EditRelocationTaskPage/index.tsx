@@ -72,6 +72,7 @@ import Space from 'components/Space'
 import { SAVE_TEXT } from 'shared/constants/common'
 import { useLazyGetLocations } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
+import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
@@ -128,6 +129,8 @@ const EditRelocationTaskPage: FC = () => {
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
+  const [selectedOwnerId, setSelectedOwnerId] = useState<IdType>()
+
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
   const [
     userChangedNomenclature,
@@ -169,6 +172,7 @@ const EditRelocationTaskPage: FC = () => {
     setSelectedNomenclatureId(undefined)
     resetUserChangedNomenclature()
     setSelectedCategory(undefined)
+    setSelectedOwnerId(undefined)
     setActiveEquipmentRow(undefined)
   })
 
@@ -192,6 +196,7 @@ const EditRelocationTaskPage: FC = () => {
     setEditableEquipmentByFileIndex(undefined)
     setSelectedCategory(undefined)
     setSelectedNomenclatureId(undefined)
+    setSelectedOwnerId(undefined)
     resetUserChangedNomenclature()
     closeEditEquipmentByFileModal()
   })
@@ -375,6 +380,11 @@ const EditRelocationTaskPage: FC = () => {
     editEquipmentByFileModalOpened,
   ])
 
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
+    { customers: [selectedOwnerId!] },
+    { skip: !selectedOwnerId },
+  )
+
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
@@ -536,6 +546,7 @@ const EditRelocationTaskPage: FC = () => {
           category: eqp.category?.id,
           currency: eqp.currency?.id,
           owner: eqp.owner?.id,
+          macroregion: eqp.macroregion?.id,
           purpose: eqp.purpose?.id,
           images: eqp.images?.length ? extractIdsFromFilesResponse(eqp.images) : undefined,
         })),
@@ -639,6 +650,9 @@ const EditRelocationTaskPage: FC = () => {
         category: equipmentCategoryList.find((c) => c.id === values.category),
         currency: values.currency ? currencyList.find((c) => c.id === values.currency) : undefined,
         owner: values.owner ? customerList.find((c) => c.id === values.owner) : undefined,
+        macroregion: values.macroregion
+          ? macroregions.find((m) => m.id === values.macroregion)
+          : undefined,
         purpose: workTypeList.find((w) => w.id === values.purpose),
         nomenclature: nomenclature
           ? {
@@ -670,6 +684,7 @@ const EditRelocationTaskPage: FC = () => {
       equipmentCategoryList,
       form,
       handleCloseEditEquipmentByFileModal,
+      macroregions,
       nomenclature,
       workTypeList,
     ],
@@ -1043,9 +1058,9 @@ const EditRelocationTaskPage: FC = () => {
             currenciesIsLoading={currencyListIsFetching}
             owners={customerList}
             ownersIsLoading={customerListIsFetching}
-            onChangeOwner={() => {}}
-            macroregions={[]}
-            macroregionsIsLoading={false}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypes={workTypeList}
             workTypesIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
@@ -1082,9 +1097,9 @@ const EditRelocationTaskPage: FC = () => {
             currenciesIsLoading={currencyListIsFetching}
             owners={customerList}
             ownersIsLoading={customerListIsFetching}
-            onChangeOwner={() => {}}
-            macroregions={[]}
-            macroregionsIsLoading={false}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypes={workTypeList}
             workTypesIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}

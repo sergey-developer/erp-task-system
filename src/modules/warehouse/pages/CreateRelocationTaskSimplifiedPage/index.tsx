@@ -174,6 +174,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     setSelectedNomenclatureId(undefined)
     resetUserChangedNomenclature()
     setSelectedCategory(undefined)
+    setSelectedOwnerId(undefined)
     setActiveEquipmentRow(undefined)
   })
 
@@ -197,6 +198,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     setEditableEquipmentByFileIndex(undefined)
     setSelectedCategory(undefined)
     setSelectedNomenclatureId(undefined)
+    setSelectedOwnerId(undefined)
     resetUserChangedNomenclature()
     closeEditEquipmentByFileModal()
   })
@@ -511,6 +513,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           category: eqp.category?.id,
           currency: eqp.currency?.id,
           owner: eqp.owner?.id,
+          macroregion: eqp.macroregion?.id,
           purpose: eqp.purpose?.id,
           images: eqp.images?.length ? extractIdsFromFilesResponse(eqp.images) : undefined,
         })),
@@ -602,6 +605,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         category: equipmentCategories.find((c) => c.id === values.category),
         currency: values.currency ? currencies.find((c) => c.id === values.currency) : undefined,
         owner: values.owner ? customers.find((c) => c.id === values.owner) : undefined,
+        macroregion: values.macroregion
+          ? macroregions.find((m) => m.id === values.macroregion)
+          : undefined,
         purpose: workTypes.find((w) => w.id === values.purpose),
         nomenclature: nomenclature
           ? {
@@ -619,6 +625,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     [
       currencies,
       customers,
+      macroregions,
       editableEquipmentByFile,
       editableEquipmentByFileIndex,
       equipmentCategories,
