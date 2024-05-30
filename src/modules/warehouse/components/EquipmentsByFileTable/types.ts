@@ -21,6 +21,7 @@ export type EquipmentByFileTableRow = Pick<ImportedEquipmentByFile, 'rowId'> & {
   category?: NonNullable<ImportedEquipmentByFile['category']>
   currency?: NonNullable<ImportedEquipmentByFile['currency']>
   owner?: NonNullable<ImportedEquipmentByFile['owner']>
+  macroregion?: NonNullable<ImportedEquipmentByFile['macroregion']>
   purpose?: NonNullable<ImportedEquipmentByFile['purpose']>
   nomenclature?: NonNullable<ImportedEquipmentByFile['nomenclature']>
   images?: UploadFile<FileResponse>[]
