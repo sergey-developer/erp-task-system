@@ -55,6 +55,8 @@ const Tabs: FC<TabsProps> = ({
     UserPermissionsEnum.RelocationTasksRead,
     UserPermissionsEnum.TaskHistoryDescriptionRead,
     UserPermissionsEnum.TaskHistoryDescriptionUpdate,
+    UserPermissionsEnum.AnySubtasksDelete,
+    UserPermissionsEnum.AnySubtasksRework,
   ])
 
   const tabsItems: AntdTabsProps['items'] = [
