@@ -11,6 +11,7 @@ import {
 
 import { LocationModel } from 'shared/models/catalogs/location'
 import { CurrencyModel } from 'shared/models/currency'
+import { MacroregionListItemModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -39,6 +40,7 @@ export type EquipmentModel = {
   currency: MaybeNull<Pick<CurrencyModel, 'id' | 'title'>>
   usageCounter: MaybeNull<number>
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
+  macroregion: MaybeNull<Pick<MacroregionListItemModel, 'id' | 'title'>>
   comment: MaybeNull<string>
   qrCode: MaybeNull<string>
 }
