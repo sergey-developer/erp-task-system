@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getRelocationTasksErrorMsg } from 'modules/warehouse/constants/relocationTask'
+import { getRelocationTasksErrMsg } from 'modules/warehouse/constants/relocationTask'
 import { GetRelocationTasksQueryArgs } from 'modules/warehouse/models'
 import { useGetRelocationTasksQuery } from 'modules/warehouse/services/relocationTaskApi.service'
 import { GetRelocationTasksTransformedSuccessResponse } from 'modules/warehouse/types'
@@ -31,7 +31,7 @@ export const useGetRelocationTasks = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getRelocationTasksErrorMsg)
+        showErrorNotification(getRelocationTasksErrMsg)
       }
     }
   }, [state.error])

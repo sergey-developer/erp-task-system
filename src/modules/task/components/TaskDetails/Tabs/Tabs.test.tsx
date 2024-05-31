@@ -15,7 +15,7 @@ import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetJournalSuccess,
-  mockGetRelocationTaskListSuccess,
+  mockGetRelocationTasksSuccess,
   mockGetSubTaskListSuccess,
   mockGetTaskCommentListSuccess,
 } from '_tests_/mocks/api'
@@ -120,7 +120,7 @@ describe('Вкладки карточки заявки', () => {
     mockGetTaskCommentListSuccess(props.task.id)
     mockGetJournalSuccess(props.task.id)
     mockGetSubTaskListSuccess(props.task.id)
-    mockGetRelocationTaskListSuccess()
+    mockGetRelocationTasksSuccess()
 
     const { user } = render(<Tabs {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -170,7 +170,7 @@ describe('Вкладки карточки заявки', () => {
     })
 
     test('Открывается по клику', async () => {
-      mockGetRelocationTaskListSuccess()
+      mockGetRelocationTasksSuccess()
 
       const { user } = render(<Tabs {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
