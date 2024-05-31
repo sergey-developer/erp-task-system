@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as taskAttachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
-import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/Card_old/Card.test'
+import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TaskListPage from 'modules/task/pages/TaskListPage'
 import { getTaskListPageLink } from 'modules/task/utils/task'
@@ -65,6 +65,7 @@ import {
   mockGetRelocationEquipmentListServerError,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskAttachmentsSuccess,
+  mockGetRelocationTaskCompletionDocumentsSuccess,
   mockGetRelocationTaskForbiddenError,
   mockGetRelocationTaskNotFoundError,
   mockGetRelocationTaskServerError,
@@ -682,9 +683,10 @@ describe('Информация о заявке о перемещении', () =>
         })
 
         const relocationEquipmentAttachments = warehouseFixtures.relocationEquipmentAttachments()
-        mockGetRelocationEquipmentAttachmentsSuccess(relocationEquipmentListItem.id, {
-          body: relocationEquipmentAttachments,
-        })
+        mockGetRelocationEquipmentAttachmentsSuccess(
+          relocationEquipmentListItem.relocationEquipmentId,
+          { body: relocationEquipmentAttachments },
+        )
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -713,9 +715,10 @@ describe('Информация о заявке о перемещении', () =>
           })
 
           const errorMsg = fakeWord()
-          mockGetRelocationEquipmentAttachmentsForbiddenError(relocationEquipmentListItem.id, {
-            body: { detail: errorMsg },
-          })
+          mockGetRelocationEquipmentAttachmentsForbiddenError(
+            relocationEquipmentListItem.relocationEquipmentId,
+            { body: { detail: errorMsg } },
+          )
 
           const { user } = render(
             <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -740,9 +743,10 @@ describe('Информация о заявке о перемещении', () =>
           })
 
           const errorMsg = fakeWord()
-          mockGetRelocationEquipmentAttachmentsNotFoundError(relocationEquipmentListItem.id, {
-            body: { detail: errorMsg },
-          })
+          mockGetRelocationEquipmentAttachmentsNotFoundError(
+            relocationEquipmentListItem.relocationEquipmentId,
+            { body: { detail: errorMsg } },
+          )
 
           const { user } = render(
             <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -766,7 +770,9 @@ describe('Информация о заявке о перемещении', () =>
             body: [relocationEquipmentListItem],
           })
 
-          mockGetRelocationEquipmentAttachmentsServerError(relocationEquipmentListItem.id)
+          mockGetRelocationEquipmentAttachmentsServerError(
+            relocationEquipmentListItem.relocationEquipmentId,
+          )
 
           const { user } = render(
             <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -2718,6 +2724,7 @@ describe('Информация о заявке о перемещении', () =>
     test('При клике переходит на страницу формирования пакета документов', async () => {
       mockGetRelocationTaskSuccess(props.relocationTaskId)
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+      mockGetRelocationTaskCompletionDocumentsSuccess(props.relocationTaskId)
 
       const { user } = renderInRoute_latest(
         [

@@ -16,7 +16,7 @@ import {
 import { GetAmountEquipmentSpentReportQueryArgs } from 'modules/reports/models'
 import {
   useGetEquipmentCategories,
-  useGetEquipmentNomenclatureList,
+  useGetEquipmentNomenclatures,
 } from 'modules/warehouse/hooks/equipment'
 
 import FilterButton from 'components/Buttons/FilterButton'
@@ -109,7 +109,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
     useLazyGetAmountEquipmentSpentReportXlsx()
 
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
-    useGetEquipmentNomenclatureList({ ...filterValues, limit: 999999 })
+    useGetEquipmentNomenclatures({ ...filterValues, limit: 999999 })
 
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
 

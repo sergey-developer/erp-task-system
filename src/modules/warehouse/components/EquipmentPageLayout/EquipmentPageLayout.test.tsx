@@ -10,14 +10,15 @@ import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
 import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCustomerListSuccess,
   mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentListSuccess,
-  mockGetEquipmentNomenclatureListSuccess,
-  mockGetWarehouseListSuccess,
+  mockGetEquipmentNomenclaturesSuccess,
+  mockGetLocationListSuccess,
 } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
@@ -66,7 +67,7 @@ setupApiTests()
 
 describe('Layout номенклатуры оборудования', () => {
   test('Отображает дочерний роут', () => {
-    mockGetEquipmentNomenclatureListSuccess()
+    mockGetEquipmentNomenclaturesSuccess()
 
     renderInRoute_latest(
       [
@@ -100,15 +101,15 @@ describe('Layout номенклатуры оборудования', () => {
       })
 
       test('Открывает фильтр', async () => {
+        mockGetLocationListSuccess({ body: [] })
         mockGetCustomerListSuccess()
-        mockGetWarehouseListSuccess()
         mockGetEquipmentCategoryListSuccess()
 
         const { user } = render(<EquipmentPageLayout />)
 
         await testUtils.clickFilterButton(user)
+        const filter = await equipmentFilterTestUtils.findContainer()
 
-        const filter = equipmentFilterTestUtils.getContainer()
         expect(filter).toBeInTheDocument()
       })
     })
@@ -125,11 +126,11 @@ describe('Layout номенклатуры оборудования', () => {
 
     test('Можно закрыть фильтр', async () => {
       mockGetCustomerListSuccess()
-      mockGetWarehouseListSuccess({ body: warehouseFixtures.warehouseList() })
+      mockGetLocationListSuccess({ body: catalogsFixtures.locationList() })
       mockGetEquipmentCategoryListSuccess({
         body: warehouseFixtures.equipmentCategoryList(),
       })
-      mockGetEquipmentNomenclatureListSuccess()
+      mockGetEquipmentNomenclaturesSuccess()
 
       const { user } = render(<EquipmentPageLayout />)
 
@@ -144,11 +145,12 @@ describe('Layout номенклатуры оборудования', () => {
 
     test('После применения фильтр закрывается и отправляется запрос', async () => {
       mockGetCustomerListSuccess()
-      mockGetWarehouseListSuccess({ body: warehouseFixtures.warehouseList() })
-      mockGetEquipmentCategoryListSuccess({
-        body: warehouseFixtures.equipmentCategoryList(),
-      })
-      mockGetEquipmentNomenclatureListSuccess({ once: false })
+
+      const locationListItem = catalogsFixtures.locationListItem()
+      mockGetLocationListSuccess({ body: [locationListItem] })
+
+      mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategoryList() })
+      mockGetEquipmentNomenclaturesSuccess({ once: false })
 
       const { user } = renderInRoute_latest(
         [
@@ -168,6 +170,9 @@ describe('Layout номенклатуры оборудования', () => {
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
+      await equipmentFilterTestUtils.findContainer()
+      await equipmentFilterTestUtils.openLocationsSelect(user)
+      await equipmentFilterTestUtils.setLocation(user, locationListItem.title)
       await equipmentFilterTestUtils.clickApplyButton(user)
       const filter = equipmentFilterTestUtils.queryContainer()
 
@@ -178,13 +183,11 @@ describe('Layout номенклатуры оборудования', () => {
 
     test('После применения переходит на страницу списка номенклатуры оборудования', async () => {
       mockGetCustomerListSuccess()
-      mockGetWarehouseListSuccess({ body: warehouseFixtures.warehouseList() })
-      mockGetEquipmentCategoryListSuccess({
-        body: warehouseFixtures.equipmentCategoryList(),
-      })
+      mockGetLocationListSuccess({ body: catalogsFixtures.locationList() })
+      mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategoryList() })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
         once: false,
       })
@@ -253,7 +256,7 @@ describe('Layout номенклатуры оборудования', () => {
 
     test('После применения переходит на страницу списка номенклатуры оборудования', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
         once: false,
       })

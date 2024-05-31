@@ -279,9 +279,9 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<InventorizationsPage />}
-                  // permitted={(user) =>
-                  //   userHasPermissions(user, [UserPermissionsEnum.InventorizationRead])
-                  // }
+                  permitted={(user) =>
+                    userHasPermissions(user, [UserPermissionsEnum.InventorizationRead])
+                  }
                 />
               ),
             },

@@ -36,6 +36,7 @@ const props: Readonly<EquipmentFilterProps> = {
 }
 
 const getContainer = () => screen.getByTestId('equipment-filter')
+const findContainer = () => screen.findByTestId('equipment-filter')
 const queryContainer = () => screen.queryByTestId('equipment-filter')
 
 // conditions
@@ -196,6 +197,7 @@ const clickApplyButton = async (user: UserEvent) => {
 
 export const testUtils = {
   getContainer,
+  findContainer,
   queryContainer,
 
   getConditionsBlock,

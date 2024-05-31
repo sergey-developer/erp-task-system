@@ -3,27 +3,39 @@ import { FormInstance, NamePath, ValidatorRule } from 'rc-field-form/es/interfac
 
 import { validationMessages } from 'shared/constants/validation'
 
+type DateValidatorArgs = Partial<{
+  required: boolean
+  canBeInPast: boolean
+}>
+
 export const dateValidator =
-  ({ required }: { required?: boolean }): ValidatorRule['validator'] =>
-  (rule, value: Moment) =>
-    value
-      ? value.isBefore(moment(), 'day')
+  ({ required, canBeInPast = false }: DateValidatorArgs): ValidatorRule['validator'] =>
+  (rule, value: Moment) => {
+    const currentDate = moment()
+
+    return value
+      ? !canBeInPast && value.isBefore(currentDate, 'day')
         ? Promise.reject(validationMessages.date.canNotBeInPast)
         : Promise.resolve()
       : required
       ? Promise.reject(validationMessages.required)
       : Promise.resolve()
+  }
+
+type TimeValidatorArgs = {
+  dateGetter: FormInstance['getFieldValue']
+  dateFieldName: NamePath
+  required: boolean
+  canBeInPast?: boolean
+}
 
 export const timeValidator =
   ({
     dateGetter,
     dateFieldName,
     required,
-  }: {
-    dateGetter: FormInstance['getFieldValue']
-    dateFieldName: NamePath
-    required: boolean
-  }): ValidatorRule['validator'] =>
+    canBeInPast = false,
+  }: TimeValidatorArgs): ValidatorRule['validator'] =>
   (rule, value: Moment) => {
     if (required && !value) return Promise.reject(validationMessages.required)
 
@@ -35,7 +47,7 @@ export const timeValidator =
     }
 
     if (date.isSame(currentDate, 'day')) {
-      return value.isBefore(currentDate, 'minute')
+      return !canBeInPast && value.isBefore(currentDate, 'minute')
         ? Promise.reject(validationMessages.time.canNotBeInPast)
         : Promise.resolve()
     } else {

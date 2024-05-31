@@ -7,10 +7,10 @@ import { IdType } from 'shared/types/common'
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const getTaskRegistrationRequestRecipientsFNMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getTaskRegistrationRequestRecipientsFNUrl(id))
+const getTaskRegistrationRequestRecipientsFNMockFn = (taskId: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Get, getTaskRegistrationRequestRecipientsFNUrl(taskId))
 
 export const mockGetTaskRegistrationRequestRecipientsFNSuccess = (
-  id: IdType,
+  taskId: IdType,
   options?: Partial<ResponseResolverOptions<GetTaskRegistrationRequestRecipientsFNSuccessResponse>>,
-) => getSuccessMockFn(getTaskRegistrationRequestRecipientsFNMockFn(id), options)()
+) => getSuccessMockFn(getTaskRegistrationRequestRecipientsFNMockFn(taskId), options)()

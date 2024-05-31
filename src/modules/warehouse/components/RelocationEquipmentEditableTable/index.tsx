@@ -6,6 +6,8 @@ import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
+import { env } from 'configs/env'
+
 import {
   EquipmentConditionEnum,
   equipmentConditionOptions,
@@ -36,8 +38,6 @@ const formItemProps: EditableProTableProps<RelocationEquipmentRow, any>['formIte
       },
     },
   ],
-  // @ts-ignore
-  'data-testid': 'relocation-equipment-editable-table-form-item',
 }
 
 const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps> = ({
@@ -249,30 +249,32 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   ]
 
   return (
-    <EditableProTable<RelocationEquipmentRow>
-      data-testid='relocation-equipment-editable-table'
-      virtual
-      rowKey='rowId'
-      name='equipments'
-      columns={columns}
-      recordCreatorProps={{
-        record: () => ({
-          rowId: random(1, 9999999),
-          ...(typeIsWriteOff && { condition: EquipmentConditionEnum.WrittenOff }),
-        }),
-        disabled: isLoading || equipmentListIsLoading,
-        creatorButtonText: 'Добавить оборудование',
-      }}
-      formItemProps={formItemProps}
-      loading={equipmentListIsLoading}
-      editable={{
-        type: 'multiple',
-        form,
-        editableKeys,
-        onChange: setEditableKeys,
-        onValuesChange: (record, recordList) => form.setFieldValue('equipments', recordList),
-      }}
-    />
+    <div data-testid='relocation-equipment-editable-table-container'>
+      <EditableProTable<RelocationEquipmentRow>
+        data-testid='relocation-equipment-editable-table'
+        virtual={!env.isTest}
+        rowKey='rowId'
+        name='equipments'
+        columns={columns}
+        recordCreatorProps={{
+          record: () => ({
+            rowId: random(1, 9999999),
+            ...(typeIsWriteOff && { condition: EquipmentConditionEnum.WrittenOff }),
+          }),
+          disabled: isLoading || equipmentListIsLoading,
+          creatorButtonText: 'Добавить оборудование',
+        }}
+        formItemProps={formItemProps}
+        loading={equipmentListIsLoading}
+        editable={{
+          type: 'multiple',
+          form,
+          editableKeys,
+          onChange: setEditableKeys,
+          onValuesChange: (record, recordList) => form.setFieldValue('equipments', recordList),
+        }}
+      />
+    </div>
   )
 }
 

@@ -15,7 +15,7 @@ import {
 } from 'modules/reports/hooks'
 import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'modules/reports/models'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
-import { useGetEquipmentNomenclatureList } from 'modules/warehouse/hooks/equipment'
+import { useGetEquipmentNomenclatures } from 'modules/warehouse/hooks/equipment'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -113,7 +113,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   )
 
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
-    useGetEquipmentNomenclatureList({ limit: 999999 })
+    useGetEquipmentNomenclatures({ limit: 999999 })
 
   const onClickUpdate: HistoryNomenclatureOperationsReportFormProps['onSubmit'] = (values) => {
     setReportParams({

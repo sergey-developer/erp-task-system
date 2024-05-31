@@ -12,7 +12,7 @@ import { InventorizationTableItem } from './types'
 export const columns: ColumnsType<InventorizationTableItem> = [
   {
     dataIndex: 'type',
-    title: 'Тип заявки',
+    title: 'Тип',
     sorter: true,
     render: (value: InventorizationTableItem['type']) => inventorizationTypeDict[value],
   },

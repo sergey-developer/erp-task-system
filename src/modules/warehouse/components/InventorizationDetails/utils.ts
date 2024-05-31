@@ -11,11 +11,9 @@ export const groupNomenclatures = (
   nomenclatures: InventorizationModel['nomenclatures'],
 ): GroupNomenclaturesResult =>
   nomenclatures.reduce<GroupNomenclaturesResult>((acc, nomenclature) => {
-    if (acc[nomenclature.group.title]) {
-      acc[nomenclature.group.title].push(nomenclature)
-    } else {
-      acc[nomenclature.group.title] = [nomenclature]
-    }
+    acc[nomenclature.group.title]
+      ? acc[nomenclature.group.title].push(nomenclature)
+      : (acc[nomenclature.group.title] = [nomenclature])
 
     return acc
   }, {})

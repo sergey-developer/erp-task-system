@@ -10,7 +10,7 @@ export enum EquipmentApiEnum {
   GetEquipmentCatalogList = '/equipments/catalog/',
   GetEquipmentCategories = '/equipments/categories/',
   GetEquipmentListTemplate = '/equipments/template/',
-  GetEquipmentNomenclatureList = '/equipments/nomenclatures/reserves/',
+  GetEquipmentNomenclatures = '/equipments/nomenclatures/reserves/',
 }
 
 export enum EquipmentApiTagEnum {

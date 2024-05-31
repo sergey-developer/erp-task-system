@@ -24,7 +24,7 @@ export const inventorizationListItem = (): InventorizationListItemModel => ({
   executor: pick(userFixtures.user(), 'id', 'fullName'),
   deadlineAt: fakeDateString(),
   completedAt: fakeDateString(),
-  returnReason: fakeWord(),
+  revisionReason: fakeWord(),
 })
 
 export const inventorizations = (length: number = 1) =>

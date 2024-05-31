@@ -139,10 +139,10 @@ describe('Страница списка инвентаризаций', () => {
       const { user } = render(<InventorizationsPage />)
 
       await inventorizationTableTestUtils.expectLoadingFinished()
-      await inventorizationTableTestUtils.clickColTitle(user, 'Тип заявки')
+      await inventorizationTableTestUtils.clickColTitle(user, 'Тип')
       await inventorizationTableTestUtils.expectLoadingStarted()
       await inventorizationTableTestUtils.expectLoadingFinished()
-      const headCell = inventorizationTableTestUtils.getHeadCell('Тип заявки')
+      const headCell = inventorizationTableTestUtils.getHeadCell('Тип')
 
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
       inventorizations.forEach((item) => {

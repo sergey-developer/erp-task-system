@@ -1,7 +1,11 @@
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { Form } from 'antd'
 
-import { buttonTestUtils, render } from '_tests_/utils'
+import { buttonTestUtils, render, tableTestUtils } from '_tests_/utils'
 
+import { IdType } from '../../../../shared/types/common'
+import { MaybeNull, NumberOrString } from '../../../../shared/types/utils'
 import RelocationEquipmentEditableTable from './index'
 import { RelocationEquipmentEditableTableProps } from './types'
 
@@ -27,16 +31,49 @@ const props: RelocationEquipmentEditableTableProps = {
   onClickCreateImage: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('relocation-equipment-editable-table-form-item')
+const getContainer = () => screen.getByTestId('relocation-equipment-editable-table-container')
+
+const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const clickRow = async (user: UserEvent, id: IdType) =>
+  tableTestUtils.clickRowIn(getContainer(), user, id)
+
+const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
+const getColTitle = (text: string) => within(getContainer()).getByText(text)
+const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> => {
+  const row = getRow(id)
+  return row ? within(row).getByText(value) : null
+}
+const clickColValue = async (user: UserEvent, id: IdType, value: NumberOrString) => {
+  const colValue = getColValue(id, value)
+  await user.click(colValue!)
+}
+
+// loading
+const expectLoadingStarted = () => tableTestUtils.expectLoadingStarted(getContainer())
+const expectLoadingFinished = () => tableTestUtils.expectLoadingFinished(getContainer())
 
 export const testUtils = {
   getContainer,
+
+  getRow,
+  clickRow,
+  getHeadCell,
+  getColTitle,
+  getColValue,
+  clickColValue,
+
+  expectLoadingStarted,
+  expectLoadingFinished,
 }
 
 describe('Таблица добавления оборудования для перемещения', () => {
   describe('Кнопка добавить оборудование', () => {
     test('Отображается корректно', () => {
-      render(<RelocationEquipmentEditableTable {...props} />)
+      render(
+        <Form>
+          <RelocationEquipmentEditableTable {...props} />
+        </Form>,
+      )
 
       const button = buttonTestUtils.getButtonIn(getContainer(), /Добавить оборудование/)
 

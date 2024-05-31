@@ -9,6 +9,6 @@ export const useMatchUserPermissions = (permissions: UserPermissionsEnum[]): Mat
   if (userMe) {
     return getPermissionsObj(userMe, permissions)
   } else {
-    throw new Error('Hook should be used after current user loading finished')
+    throw new Error('User permissions must be loaded before using the hook')
   }
 }

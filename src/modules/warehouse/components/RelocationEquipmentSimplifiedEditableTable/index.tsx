@@ -5,6 +5,8 @@ import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
+import { env } from 'configs/env'
+
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
@@ -192,31 +194,29 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
   ]
 
   return (
-    <EditableProTable<RelocationEquipmentRow>
-      data-testid='relocation-equipment-simplified-editable-table'
-      virtual
-      rowKey='rowId'
-      name={name}
-      columns={columns}
-      recordCreatorProps={{
-        record: () => ({ rowId: random(1, 9999999) }),
-        disabled: isLoading || equipmentListIsLoading,
-        creatorButtonText: 'Добавить оборудование',
-      }}
-      formItemProps={{
-        rules: required ? onlyRequiredRules : undefined,
-        // @ts-ignore
-        'data-testid': 'relocation-equipment-simplified-editable-table-form-item',
-      }}
-      loading={equipmentListIsLoading}
-      editable={{
-        type: 'multiple',
-        form,
-        editableKeys,
-        onChange: setEditableKeys,
-        onValuesChange: (record, recordList) => form.setFieldValue(name, recordList),
-      }}
-    />
+    <div data-testid='relocation-equipment-simplified-editable-table-container'>
+      <EditableProTable<RelocationEquipmentRow>
+        data-testid='relocation-equipment-simplified-editable-table'
+        virtual={!env.isTest}
+        rowKey='rowId'
+        name={name}
+        columns={columns}
+        recordCreatorProps={{
+          record: () => ({ rowId: random(1, 9999999) }),
+          disabled: isLoading || equipmentListIsLoading,
+          creatorButtonText: 'Добавить оборудование',
+        }}
+        formItemProps={{ rules: required ? onlyRequiredRules : undefined }}
+        loading={equipmentListIsLoading}
+        editable={{
+          type: 'multiple',
+          form,
+          editableKeys,
+          onChange: setEditableKeys,
+          onValuesChange: (record, recordList) => form.setFieldValue(name, recordList),
+        }}
+      />
+    </div>
   )
 }
 

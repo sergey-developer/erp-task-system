@@ -911,7 +911,7 @@ const EditRelocationTaskPage: FC = () => {
                   <Text strong>Перечень оборудования</Text>
                 </Col>
 
-                {permissions?.equipmentsCreate && (
+                {permissions.equipmentsCreate && (
                   <Col>
                     <Space>
                       <Upload
@@ -949,7 +949,7 @@ const EditRelocationTaskPage: FC = () => {
                 currencyListIsLoading={currencyListIsFetching}
                 equipmentCatalogList={equipmentCatalogList}
                 equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
-                canCreateEquipment={!!permissions?.equipmentsCreate}
+                canCreateEquipment={!!permissions.equipmentsCreate}
                 createEquipmentBtnDisabled={!createEquipmentBtnEnabled}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
                 onClickCreateImage={handleOpenCreateRelocationEquipmentImagesModal}
