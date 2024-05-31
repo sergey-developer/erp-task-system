@@ -10,7 +10,7 @@ import { FilterParams } from 'shared/types/filter'
 import { PaginationParams } from 'shared/types/pagination'
 import { ExtendSortKey } from 'shared/types/sort'
 
-export type GetRelocationTaskListSortKey =
+export type GetRelocationTasksSortKey =
   | 'id'
   | 'type'
   | 'deadline_at'
@@ -22,9 +22,9 @@ export type GetRelocationTaskListSortKey =
   | 'created_by'
   | 'created_at'
 
-export type GetRelocationTaskListSortValue = ExtendSortKey<GetRelocationTaskListSortKey>
+export type GetRelocationTasksSortValue = ExtendSortKey<GetRelocationTasksSortKey>
 
-export type GetRelocationTaskListFilter = Partial<{
+export type GetRelocationTasksFilter = Partial<{
   statuses: RelocationTaskStatusEnum[]
   type: RelocationTaskTypeEnum[]
   deadlineAtFrom: string
@@ -38,12 +38,12 @@ export type GetRelocationTaskListFilter = Partial<{
   createdAtTo: string
 }>
 
-export type GetRelocationTaskListQueryArgs = GetRelocationTaskListFilter &
+export type GetRelocationTasksQueryArgs = GetRelocationTasksFilter &
   PaginationParams &
   FilterParams &
   Partial<{
-    ordering: GetRelocationTaskListSortValue
+    ordering: GetRelocationTasksSortValue
     taskId: IdType
   }>
 
-export type GetRelocationTaskListSuccessResponse = PaginationResponse<RelocationTaskListItemModel>
+export type GetRelocationTasksSuccessResponse = PaginationResponse<RelocationTaskListItemModel>

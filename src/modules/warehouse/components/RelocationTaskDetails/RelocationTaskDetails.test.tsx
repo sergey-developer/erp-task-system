@@ -1,5 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { split } from 'lodash'
 
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
@@ -30,7 +31,10 @@ import {
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CreateDocumentsPackagePage from 'modules/warehouse/pages/CreateDocumentsPackagePage'
 import { testUtils as createDocumentsPackagePageTestUtils } from 'modules/warehouse/pages/CreateDocumentsPackagePage/CreateDocumentsPackagePage.test'
-import { getRelocateFromTo, getWaybillM15Filename } from 'modules/warehouse/utils/relocationTask'
+import {
+  getRelocateFromToTitle,
+  getWaybillM15Filename,
+} from 'modules/warehouse/utils/relocationTask'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -97,6 +101,7 @@ import {
   spinnerTestUtils,
 } from '_tests_/utils'
 
+import userFixtures from '../../../../_tests_/fixtures/user'
 import RelocationTaskDetails from './index'
 import { RelocationTaskDetailsProps } from './types'
 
@@ -113,8 +118,7 @@ const getBlock = (testId: string) => within(getContainer()).getByTestId(testId)
 const getBlockInfo = (testId: string, text: string | RegExp) =>
   within(getBlock(testId)).getByText(text)
 
-const openMenu = (user: UserEvent) =>
-  buttonTestUtils.clickMenuButtonIn(testUtils.getContainer(), user)
+const openMenu = (user: UserEvent) => buttonTestUtils.clickMenuButtonIn(getContainer(), user)
 
 // waybill m15 menu item
 const getWaybillM15MenuItem = () => menuTestUtils.getMenuItem(/Сформировать накладную М-15/)
@@ -152,6 +156,13 @@ const getCreateDocumentsPackageMenuItem = () =>
   menuTestUtils.getMenuItem('Сформировать пакет документов')
 const clickCreateDocumentsPackageMenuItem = (user: UserEvent) =>
   menuTestUtils.clickMenuItem('Сформировать пакет документов', user)
+
+// stretch details button
+const getStretchDetailsButton = () => buttonTestUtils.getButtonIn(getContainer(), 'double-right')
+const clickStretchDetailsButton = async (user: UserEvent) => {
+  const button = getStretchDetailsButton()
+  await user.click(button)
+}
 
 // documents
 const getDocumentsBlock = () => getBlock('documents')
@@ -206,6 +217,9 @@ export const testUtils = {
 
   openMenu,
 
+  getStretchDetailsButton,
+  clickStretchDetailsButton,
+
   getWaybillM15MenuItem,
   clickWaybillM15MenuItem,
 
@@ -257,7 +271,9 @@ describe('Информация о заявке о перемещении', () =>
       render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
 
       await testUtils.expectRelocationTaskLoadingFinished()
-      const title = within(testUtils.getContainer()).getByText(getRelocateFromTo(relocationTask))
+      const title = within(testUtils.getContainer()).getByText(
+        getRelocateFromToTitle(relocationTask),
+      )
 
       expect(title).toBeInTheDocument()
     })
@@ -1020,7 +1036,16 @@ describe('Информация о заявке о перемещении', () =>
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
-          { store: getStoreWithAuth({ userId: relocationTask.createdBy!.id }) },
+          {
+            store: getStoreWithAuth(
+              { userId: relocationTask.createdBy!.id },
+              undefined,
+              undefined,
+              {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              },
+            ),
+          },
         )
 
         await testUtils.openMenu(user)
@@ -1158,6 +1183,11 @@ describe('Информация о заявке о перемещении', () =>
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.openMenu(user)
@@ -1212,7 +1242,11 @@ describe('Информация о заявке о перемещении', () =>
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
-          { store: getStoreWithAuth({ userId: relocationTask.executor!.id }) },
+          {
+            store: getStoreWithAuth({ userId: relocationTask.executor!.id }, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          },
         )
 
         await testUtils.openMenu(user)
@@ -1569,6 +1603,11 @@ describe('Информация о заявке о перемещении', () =>
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.openMenu(user)
@@ -1623,7 +1662,16 @@ describe('Информация о заявке о перемещении', () =>
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
-          { store: getStoreWithAuth({ userId: relocationTask.controller!.id }) },
+          {
+            store: getStoreWithAuth(
+              { userId: relocationTask.controller!.id },
+              undefined,
+              undefined,
+              {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              },
+            ),
+          },
         )
 
         await testUtils.openMenu(user)
@@ -1935,6 +1983,11 @@ describe('Информация о заявке о перемещении', () =>
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.openMenu(user)
@@ -1989,7 +2042,16 @@ describe('Информация о заявке о перемещении', () =>
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
-          { store: getStoreWithAuth({ userId: relocationTask.createdBy!.id }) },
+          {
+            store: getStoreWithAuth(
+              { userId: relocationTask.createdBy!.id },
+              undefined,
+              undefined,
+              {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              },
+            ),
+          },
         )
 
         await testUtils.openMenu(user)
@@ -2356,6 +2418,11 @@ describe('Информация о заявке о перемещении', () =>
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.openMenu(user)
@@ -2410,7 +2477,14 @@ describe('Информация о заявке о перемещении', () =>
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
-          { store: getStoreWithAuth({ userId: relocationTask.controller!.id }) },
+          {
+            store: getStoreWithAuth(
+              { userId: relocationTask.controller!.id },
+              undefined,
+              undefined,
+              { queries: { ...getUserMeQueryMock(userFixtures.user()) } },
+            ),
+          },
         )
 
         await testUtils.openMenu(user)
@@ -2713,6 +2787,11 @@ describe('Информация о заявке о перемещении', () =>
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.openMenu(user)
@@ -2738,6 +2817,11 @@ describe('Информация о заявке о перемещении', () =>
           },
         ],
         { initialEntries: [WarehouseRouteEnum.RelocationTasks], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.openMenu(user)
@@ -2754,7 +2838,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
       const button = testUtils.getCommonPhotosButton()
@@ -2770,6 +2858,11 @@ describe('Информация о заявке о перемещении', () =>
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.expectRelocationTaskLoadingFinished()
@@ -2777,6 +2870,51 @@ describe('Информация о заявке о перемещении', () =>
       const modal = await attachmentListModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
+    })
+  })
+
+  describe('Увеличение размера окна', () => {
+    test('Кнопка увеличения отображается', async () => {
+      mockGetRelocationTaskSuccess(props.relocationTaskId)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await testUtils.expectRelocationTaskLoadingFinished()
+      const button = testUtils.getStretchDetailsButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('При нажатии на кнопку увеличивается высота окна', async () => {
+      mockGetRelocationTaskSuccess(props.relocationTaskId)
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
+      )
+
+      await testUtils.expectRelocationTaskLoadingFinished()
+      const heightBeforeFirstStretch = Number(split(testUtils.getContainer().style.height, 'px')[0])
+
+      await testUtils.clickStretchDetailsButton(user)
+      const heightAfterFirstStretch = Number(split(testUtils.getContainer().style.height, 'px')[0])
+      expect(heightAfterFirstStretch).toBeGreaterThan(heightBeforeFirstStretch)
+
+      await testUtils.clickStretchDetailsButton(user)
+      const currentHeight = Number(split(testUtils.getContainer().style.height, 'px')[0])
+      expect(currentHeight).toBeLessThan(heightAfterFirstStretch)
+      expect(currentHeight).toBe(heightBeforeFirstStretch)
     })
   })
 })

@@ -10,7 +10,7 @@ export * from './createRelocationTaskAttachment.mock'
 
 export * from './getRelocationTaskCompletionDocuments.mock'
 
-export * from './getRelocationTaskList.mock'
+export * from './getRelocationTasks.mock'
 
 export * from './getRelocationEquipmentList.mock'
 export * from './getRelocationEquipmentBalanceList.mock'

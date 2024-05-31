@@ -8,7 +8,6 @@ import { useGetTask, useGetTasks } from 'modules/task/hooks/task'
 import { GetTaskListQueryArgs } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
-import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
 import {
   getSort,
@@ -16,13 +15,14 @@ import {
   sortableFieldToSortValues,
 } from 'modules/warehouse/components/RelocationTaskTable/sort'
 import { RelocationTaskTableProps } from 'modules/warehouse/components/RelocationTaskTable/types'
+import { RelocationTasksFilterFormFields } from 'modules/warehouse/components/RelocationTasksFilter/types'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
-  useGetRelocationTaskList,
+  useGetRelocationTasks,
   useNavigateToCreateRelocationTaskSimplifiedPage,
 } from 'modules/warehouse/hooks/relocationTask'
-import { GetRelocationTaskListQueryArgs } from 'modules/warehouse/models'
+import { GetRelocationTasksQueryArgs } from 'modules/warehouse/models'
 import {
   getRelocationTasksPageLink,
   relocationTaskListFilterToParams,
@@ -48,15 +48,15 @@ const CreateRelocationTaskByIncidentModal = React.lazy(
   () => import('modules/warehouse/components/CreateRelocationTaskByIncidentModal'),
 )
 
-const RelocationTaskListFilter = React.lazy(
-  () => import('modules/warehouse/components/RelocationTaskListFilter'),
+const RelocationTasksFilter = React.lazy(
+  () => import('modules/warehouse/components/RelocationTasksFilter'),
 )
 
 const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
 )
 
-const initialFilterValues: RelocationTaskListFilterFormFields = {
+const initialFilterValues: RelocationTasksFilterFormFields = {
   status: undefined,
   type: undefined,
   deadlineAt: undefined,
@@ -69,7 +69,7 @@ const initialFilterValues: RelocationTaskListFilterFormFields = {
 }
 
 const initialRelocationTasksParams: Pick<
-  GetRelocationTaskListQueryArgs,
+  GetRelocationTasksQueryArgs,
   'statuses' | 'ordering' | 'offset' | 'limit'
 > = {
   ...getInitialPaginationParams(),
@@ -81,7 +81,7 @@ const initialRelocationTasksParams: Pick<
   ],
 }
 
-const RelocationTaskListPage: FC = () => {
+const RelocationTasksPage: FC = () => {
   // todo: создать хук для useSearchParams который парсит значения в нужный тип
   const [searchParams] = useSearchParams()
   const relocationTaskId = Number(searchParams.get('viewRelocationTask')) || undefined
@@ -90,7 +90,7 @@ const RelocationTaskListPage: FC = () => {
 
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
-  const [filterValues, setFilterValues] = useState<RelocationTaskListFilterFormFields>()
+  const [filterValues, setFilterValues] = useState<RelocationTasksFilterFormFields>()
 
   /* Реализуется в другом эпике */
   // const [searchValue, setSearchValue] = useState<string>()
@@ -140,7 +140,7 @@ const RelocationTaskListPage: FC = () => {
   const onCloseRelocationTask = useDebounceFn(closeRelocationTask)
 
   const [relocationTasksParams, setRelocationTasksParams] =
-    useSetState<GetRelocationTaskListQueryArgs>({
+    useSetState<GetRelocationTasksQueryArgs>({
       ...initialRelocationTasksParams,
       ordering:
         (searchParams.get('ordering') as typeof initialRelocationTasksParams.ordering) ??
@@ -148,7 +148,7 @@ const RelocationTaskListPage: FC = () => {
     })
 
   const { currentData: relocationTasks, isFetching: relocationTasksIsFetching } =
-    useGetRelocationTaskList(relocationTasksParams)
+    useGetRelocationTasks(relocationTasksParams)
 
   const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers(undefined, {
     skip: !filterOpened,
@@ -206,7 +206,7 @@ const RelocationTaskListPage: FC = () => {
     [toggleOpenRelocationTask],
   )
 
-  const onApplyFilter = (values: RelocationTaskListFilterFormFields) => {
+  const onApplyFilter = (values: RelocationTasksFilterFormFields) => {
     setFilterValues(values)
     setRelocationTasksParams({
       ...relocationTaskListFilterToParams(values),
@@ -229,7 +229,7 @@ const RelocationTaskListPage: FC = () => {
 
   return (
     <>
-      <Space data-testid='relocation-task-list-page' $block direction='vertical' size='middle'>
+      <Space data-testid='relocation-tasks-page' $block direction='vertical' size='middle'>
         <Space size='middle'>
           <FilterButton onClick={debouncedToggleOpenFilter} />
 
@@ -281,7 +281,7 @@ const RelocationTaskListPage: FC = () => {
 
       {filterOpened && (
         <React.Suspense fallback={<ModalFallback open tip='Загрузка данных для фильтров' />}>
-          <RelocationTaskListFilter
+          <RelocationTasksFilter
             open={filterOpened}
             values={filterValues}
             initialValues={initialFilterValues}
@@ -317,4 +317,4 @@ const RelocationTaskListPage: FC = () => {
   )
 }
 
-export default RelocationTaskListPage
+export default RelocationTasksPage

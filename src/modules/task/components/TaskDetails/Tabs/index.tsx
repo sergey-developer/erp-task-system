@@ -16,7 +16,7 @@ import { TabsStyled } from './styles'
 const JournalTab = React.lazy(() => import('./JournalTab'))
 const CommentListTab = React.lazy(() => import('./CommentListTab'))
 const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
-const RelocationTaskListTab = React.lazy(() => import('./RelocationTaskListTab'))
+const RelocationTasksTab = React.lazy(() => import('./RelocationTasksTab'))
 
 export type TabsProps = {
   task: Pick<
@@ -131,7 +131,7 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
             label: taskDetailsTabNameDict[TaskDetailsTabsEnum.RelocationTasks],
             children: (
               <React.Suspense fallback={<Spinner />}>
-                <RelocationTaskListTab
+                <RelocationTasksTab
                   task={pick(
                     task,
                     'id',

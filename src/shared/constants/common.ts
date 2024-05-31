@@ -16,6 +16,7 @@ export const SEND_TEXT = 'Отправить'
 export const CONFIRM_TEXT = 'Подтвердить'
 
 export const LAYOUT_CONTENT_PADDING_V = 32
+export const HEADER_HEIGHT = 64
 export const FOOTER_HEIGHT = 32
 
 export const HYPHEN = '-'
