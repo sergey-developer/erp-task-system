@@ -10,7 +10,7 @@ import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequ
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { SubTaskModel } from 'modules/task/models'
-import { makeUserByFullName, MatchedPermissions } from 'modules/user/utils'
+import { makeUserByFullName, MatchedUserPermissions } from 'modules/user/utils'
 
 import Expandable from 'components/Expandable'
 import Label from 'components/Label'
@@ -28,7 +28,7 @@ export type SubTaskProps = Omit<SubTaskModel, 'id'> & {
   currentUserIsTaskAssignee: boolean
   onClickCancel: EmptyFn
   onClickRework: EmptyFn
-  permissions: MatchedPermissions
+  permissions: MatchedUserPermissions
   taskSuspendRequestStatus?: SuspendRequestStatusEnum
 }
 

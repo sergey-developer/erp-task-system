@@ -7,7 +7,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useGetTask, useGetTasks } from 'modules/task/hooks/task'
 import { GetTasksQueryArgs } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
 import {
@@ -86,7 +86,7 @@ const RelocationTaskListPage: FC = () => {
   const [searchParams] = useSearchParams()
   const relocationTaskId = Number(searchParams.get('viewRelocationTask')) || undefined
 
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.RelocationTasksCreate])
+  const permissions = useUserPermissions([UserPermissionsEnum.RelocationTasksCreate])
 
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)

@@ -11,7 +11,7 @@ import {
 } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 
 import {
   CheckCircleIcon,
@@ -54,7 +54,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
 
   const suspendRequestStatus = useTaskSuspendRequestStatus(suspendRequest?.status)
 
-  const permissions = useMatchUserPermissions([
+  const permissions = useUserPermissions([
     UserPermissionsEnum.TaskInternalDescriptionUpdate,
     UserPermissionsEnum.TaskInternalDeadlineUpdate,
   ])

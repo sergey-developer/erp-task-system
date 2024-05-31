@@ -8,7 +8,7 @@ import {
 } from 'modules/task/constants/task'
 import { SearchFields } from 'modules/task/models'
 import { UsersModel } from 'modules/user/models'
-import { MatchedPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/utils'
 import { CustomerListModel } from 'modules/warehouse/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
 
@@ -37,7 +37,7 @@ export type TasksFilterFormFields = TasksFilterSupportGroupFormFields &
   }>
 
 export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClose'>> & {
-  permissions: MatchedPermissions
+  permissions: MatchedUserPermissions
 
   formValues: TasksFilterFormFields
   initialFormValues: TasksFilterFormFields

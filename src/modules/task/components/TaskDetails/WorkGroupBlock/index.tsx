@@ -16,7 +16,7 @@ import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 import { UserActionsModel } from 'modules/user/models'
 
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -72,7 +72,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
 
   userActions,
 }) => {
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.PutFirstLineTasksOnSecondLine])
+  const permissions = useUserPermissions([UserPermissionsEnum.PutFirstLineTasksOnSecondLine])
 
   const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] = useBoolean(false)
   const debouncedToggleOpenTaskFirstLineModal = useDebounceFn(toggleOpenTaskFirstLineModal)

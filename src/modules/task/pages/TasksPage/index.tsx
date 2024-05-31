@@ -40,7 +40,7 @@ import { taskDetailsTabExist } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import {
   useGetUsers,
-  useMatchUserPermissions,
+  useUserPermissions,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
 } from 'modules/user/hooks'
@@ -83,7 +83,7 @@ const { Search } = Input
 const initialTasksFilterValues = getInitialTasksFilterValues()
 
 const TasksPage: FC = () => {
-  const permissions = useMatchUserPermissions([
+  const permissions = useUserPermissions([
     UserPermissionsEnum.SelfWorkGroupsRead,
     UserPermissionsEnum.AnyWorkGroupsRead,
     UserPermissionsEnum.FirstLineTasksRead,

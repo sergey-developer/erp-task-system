@@ -1,7 +1,7 @@
 import { SelectProps } from 'antd'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 
-import { MatchedPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/utils'
 
 import {
   externalRelocationStatusDict,
@@ -19,7 +19,7 @@ export const relocationTaskStatusOptions: SelectProps['options'] = Object.keys(
 
 // relocation task type options
 export type RelocationTaskTypeOption = DefaultOptionType & {
-  hasPermissions?: (permissions: MatchedPermissions) => boolean
+  hasPermissions?: (permissions: MatchedUserPermissions) => boolean
 }
 
 export const relocationTaskTypeOptions: RelocationTaskTypeOption[] = [

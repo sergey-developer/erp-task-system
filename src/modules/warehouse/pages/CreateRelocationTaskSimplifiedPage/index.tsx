@@ -26,7 +26,7 @@ import { getTaskCompleteAtDate } from 'modules/task/components/TaskDetails/MainD
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useGetUsers, useGetWarehouseMSI, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useGetWarehouseMSI, useUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
@@ -120,7 +120,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
   const navigate = useNavigate()
 
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.EquipmentsCreate])
+  const permissions = useUserPermissions([UserPermissionsEnum.EquipmentsCreate])
 
   const [form] = Form.useForm<SimplifiedRelocationTaskFormFields>()
 
