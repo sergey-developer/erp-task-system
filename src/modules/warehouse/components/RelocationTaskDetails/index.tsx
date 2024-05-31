@@ -22,7 +22,7 @@ import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 import { ExecuteRelocationTaskModalProps } from 'modules/warehouse/components/ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from 'modules/warehouse/components/RelocationEquipmentTable'
 import {
@@ -119,7 +119,7 @@ const showUploadListConfig: UploadProps['showUploadList'] = { showRemoveIcon: fa
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
   const navigate = useNavigate()
 
-  const permissions = useMatchUserPermissions([
+  const permissions = useUserPermissions([
     UserPermissionsEnum.RelocationTasksRead,
     UserPermissionsEnum.RelocationTasksUpdate,
   ])

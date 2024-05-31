@@ -9,7 +9,7 @@ import { RelocationTaskListProps } from 'modules/task/components/RelocationTaskL
 import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
@@ -33,7 +33,7 @@ const { Title } = Typography
 const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
   const navigate = useNavigate()
 
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.RelocationTasksCreate])
+  const permissions = useUserPermissions([UserPermissionsEnum.RelocationTasksCreate])
   const assigneeIsCurrentUser = useIdBelongAuthUser(task.assignee?.id)
 
   const [createRelocationTaskAttachment] = useCreateRelocationTaskAttachment()

@@ -10,7 +10,7 @@ import { useCancelSubTask, useGetSubTaskList, useReworkSubTask } from 'modules/t
 import { useTaskExtendedStatus, useTaskStatus, useTaskType } from 'modules/task/hooks/task'
 import { SubTaskModel, TaskModel } from 'modules/task/models'
 import { UserActionsModel } from 'modules/user/models'
-import { MatchedPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/utils'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -42,7 +42,7 @@ export type SubTaskListTabProps = {
   >
 } & {
   userActions: UserActionsModel
-  permissions: MatchedPermissions
+  permissions: MatchedUserPermissions
 }
 
 const SubTaskListTab: FC<SubTaskListTabProps> = ({ task, userActions, permissions }) => {

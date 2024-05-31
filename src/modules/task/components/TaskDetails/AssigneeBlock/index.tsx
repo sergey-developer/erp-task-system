@@ -10,7 +10,7 @@ import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { TaskAssigneeModel, TaskModel, TaskWorkGroupModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 import { UserActionsModel } from 'modules/user/models'
 
 import Space from 'components/Space'
@@ -63,7 +63,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
   const authUser = useAuthUser()
 
-  const permissions = useMatchUserPermissions([
+  const permissions = useUserPermissions([
     UserPermissionsEnum.AnyAssigneeTasksUpdate,
     UserPermissionsEnum.SelfAssigneeTasksUpdate,
   ])

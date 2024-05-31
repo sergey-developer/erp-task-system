@@ -1,9 +1,9 @@
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { getPermissionsObj, MatchedPermissions } from 'modules/user/utils'
+import { getPermissionsObj, MatchedUserPermissions } from 'modules/user/utils'
 
 import { useUserMeState } from './useUserMeState'
 
-export const useMatchUserPermissions = (permissions: UserPermissionsEnum[]): MatchedPermissions => {
+export const useUserPermissions = (permissions: UserPermissionsEnum[]): MatchedUserPermissions => {
   const { data: userMe } = useUserMeState()
 
   if (userMe) {

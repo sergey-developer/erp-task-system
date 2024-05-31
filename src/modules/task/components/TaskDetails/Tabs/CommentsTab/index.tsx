@@ -5,7 +5,7 @@ import React, { FC, useCallback } from 'react'
 import { useCreateTaskComment, useGetTaskCommentList } from 'modules/task/hooks/taskComment'
 import { TaskModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 
 import LoadingArea from 'components/LoadingArea'
 
@@ -26,7 +26,7 @@ export type CommentsTabProps = {
 }
 
 const CommentsTab: FC<CommentsTabProps> = ({ title, taskId }) => {
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.TasksCommentCreate])
+  const permissions = useUserPermissions([UserPermissionsEnum.TasksCommentCreate])
 
   const { data: comments = [], isFetching: commentsIsFetching } = useGetTaskCommentList({
     taskId,

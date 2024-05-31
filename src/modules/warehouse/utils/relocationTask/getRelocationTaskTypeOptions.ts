@@ -1,10 +1,10 @@
 import { SelectProps } from 'antd'
 
-import { MatchedPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/utils'
 import { relocationTaskTypeOptions } from 'modules/warehouse/constants/relocationTask'
 
 export const getRelocationTaskTypeOptions = (
-  permissions: MatchedPermissions,
+  permissions: MatchedUserPermissions,
 ): SelectProps['options'] =>
   relocationTaskTypeOptions.map((opt) => ({
     ...opt,

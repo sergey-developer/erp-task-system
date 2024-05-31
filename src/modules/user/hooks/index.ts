@@ -1,4 +1,4 @@
-export * from './useMatchUserPermissions'
+export * from './useUserPermissions'
 export * from './useOnChangeUserStatus'
 
 export * from './useGetUsers'
