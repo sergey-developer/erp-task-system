@@ -1,6 +1,6 @@
-import { Col, Flex, Row, Typography } from 'antd'
+import { Button, Col, Flex, Row, Typography } from 'antd'
 import React, { FC } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import ExecuteInventorizationReviseTab from 'modules/warehouse/components/ExecuteInventorizationReviseTab'
 import {
@@ -8,7 +8,10 @@ import {
   inventorizationTypeDict,
 } from 'modules/warehouse/constants/inventorization'
 import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types'
-import { mapInventorizationWarehousesTitles } from 'modules/warehouse/utils/inventorization'
+import {
+  getInventorizationsPageLink,
+  mapInventorizationWarehousesTitles,
+} from 'modules/warehouse/utils/inventorization'
 
 import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
@@ -26,8 +29,13 @@ enum ExecuteInventorizationPageTabsEnum {
 const ExecuteInventorizationPage: FC = () => {
   const params = useParams<'id'>()
   const location = useLocation()
+  const navigate = useNavigate()
   const inventorization = location.state as ExecuteInventorizationPageLocationState
   const inventorizationId = Number(params.id!)
+
+  const onReturnToInventorizationDetails = () => {
+    navigate(getInventorizationsPageLink({ inventorizationId }))
+  }
 
   return (
     <Flex data-testid='execute-inventorization-page' vertical gap='large'>
@@ -113,6 +121,10 @@ const ExecuteInventorizationPage: FC = () => {
               </Col>
             </Row>
           </Flex>
+        </Col>
+
+        <Col span={4}>
+          <Button onClick={onReturnToInventorizationDetails}>Вернуться в карточку</Button>
         </Col>
       </Row>
 

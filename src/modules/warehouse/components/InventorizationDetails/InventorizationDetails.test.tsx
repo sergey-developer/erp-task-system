@@ -64,7 +64,7 @@ setupApiTests()
 
 describe('Карточка инвентаризации', () => {
   test('Заголовок отображается', () => {
-    mockGetInventorizationSuccess(props.inventorizationId)
+    mockGetInventorizationSuccess({ inventorizationId: props.inventorizationId })
 
     render(<InventorizationDetails {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -78,7 +78,10 @@ describe('Карточка инвентаризации', () => {
 
   test('При успешном запросе отображается информация', async () => {
     const inventorization = warehouseFixtures.inventorization()
-    mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+    mockGetInventorizationSuccess(
+      { inventorizationId: props.inventorizationId },
+      { body: inventorization },
+    )
 
     render(<InventorizationDetails {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -149,7 +152,7 @@ describe('Карточка инвентаризации', () => {
 
   describe('Провести инвентаризацию', () => {
     test('Кнопка отображается', () => {
-      mockGetInventorizationSuccess(props.inventorizationId)
+      mockGetInventorizationSuccess({ inventorizationId: props.inventorizationId })
 
       render(<InventorizationDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -167,7 +170,10 @@ describe('Карточка инвентаризации', () => {
       const inventorization = warehouseFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
-      mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+      mockGetInventorizationSuccess(
+        { inventorizationId: props.inventorizationId },
+        { body: inventorization },
+      )
 
       render(<InventorizationDetails {...props} />, {
         store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
@@ -188,7 +194,10 @@ describe('Карточка инвентаризации', () => {
         const inventorization = warehouseFixtures.inventorization({
           status: InventorizationStatusEnum.Closed,
         })
-        mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+        mockGetInventorizationSuccess(
+          { inventorizationId: props.inventorizationId },
+          { body: inventorization },
+        )
 
         render(<InventorizationDetails {...props} />, {
           store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
@@ -208,7 +217,10 @@ describe('Карточка инвентаризации', () => {
         const inventorization = warehouseFixtures.inventorization({
           status: InventorizationStatusEnum.New,
         })
-        mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+        mockGetInventorizationSuccess(
+          { inventorizationId: props.inventorizationId },
+          { body: inventorization },
+        )
 
         render(<InventorizationDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -228,7 +240,10 @@ describe('Карточка инвентаризации', () => {
         const inventorization = warehouseFixtures.inventorization({
           status: InventorizationStatusEnum.New,
         })
-        mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+        mockGetInventorizationSuccess(
+          { inventorizationId: props.inventorizationId },
+          { body: inventorization },
+        )
 
         render(<InventorizationDetails {...props} />, {
           store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
@@ -247,7 +262,10 @@ describe('Карточка инвентаризации', () => {
       const inventorization = warehouseFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
-      mockGetInventorizationSuccess(props.inventorizationId, { body: inventorization })
+      mockGetInventorizationSuccess(
+        { inventorizationId: props.inventorizationId },
+        { body: inventorization },
+      )
 
       const { user } = renderInRoute_latest(
         [
