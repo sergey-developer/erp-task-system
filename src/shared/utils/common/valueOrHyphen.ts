@@ -8,4 +8,15 @@ type ResultType<V, F> = F extends (value: IsTruthyType<V>) => infer R ? R : IsTr
 export const valueOrHyphen = <V, F extends (value: IsTruthyType<V>) => any>(
   value: V,
   getValue?: F,
-): ResultType<V, F> => (isTruthy(value) ? (getValue ? getValue(value) : value) : HYPHEN)
+): ResultType<V, F> =>
+  isTruthy(value)
+    ? Array.isArray(value)
+      ? !!value.length
+        ? getValue
+          ? getValue(value)
+          : value
+        : HYPHEN
+      : getValue
+      ? getValue(value)
+      : value
+    : HYPHEN
