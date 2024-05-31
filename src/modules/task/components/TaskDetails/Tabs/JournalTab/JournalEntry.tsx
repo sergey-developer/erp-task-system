@@ -30,7 +30,7 @@ const JournalEntry: FC<JournalEntryProps> = ({
   type,
   description,
   author,
-  attachments = [],
+  attachments,
 }) => {
   return (
     <Space data-testid={`journal-entry-${id}`} direction='vertical' size='middle' $block>
@@ -42,7 +42,7 @@ const JournalEntry: FC<JournalEntryProps> = ({
         </Description>
       </Space>
 
-      {!!attachments.length && (
+      {!!attachments?.length && (
         <Space direction='vertical'>
           <AttachmentList data={attachments} />
         </Space>
