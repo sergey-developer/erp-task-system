@@ -29,4 +29,4 @@ export type RelocationTaskListItemModel = {
   documents: MaybeNull<Pick<TaskAttachmentModel, 'id' | 'name' | 'url' | 'size'>[]>
 }
 
-export type RelocationTaskListModel = RelocationTaskListItemModel[]
+export type RelocationTasksModel = RelocationTaskListItemModel[]

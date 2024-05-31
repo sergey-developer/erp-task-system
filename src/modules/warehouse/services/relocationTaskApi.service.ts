@@ -29,9 +29,9 @@ import {
   GetRelocationTaskAttachmentsSuccessResponse,
   GetRelocationTaskCompletionDocumentsQueryArgs,
   GetRelocationTaskCompletionDocumentsSuccessResponse,
-  GetRelocationTaskListQueryArgs,
-  GetRelocationTaskListSuccessResponse,
   GetRelocationTaskQueryArgs,
+  GetRelocationTasksQueryArgs,
+  GetRelocationTasksSuccessResponse,
   GetRelocationTaskSuccessResponse,
   GetRelocationTaskWaybillM15QueryArgs,
   GetRelocationTaskWaybillM15SuccessResponse,
@@ -42,7 +42,7 @@ import {
   UpdateRelocationTaskMutationArgs,
   UpdateRelocationTaskSuccessResponse,
 } from 'modules/warehouse/models'
-import { GetRelocationTaskListTransformedSuccessResponse } from 'modules/warehouse/types'
+import { GetRelocationTasksTransformedSuccessResponse } from 'modules/warehouse/types'
 import {
   cancelRelocationTaskUrl,
   closeRelocationTaskUrl,
@@ -241,16 +241,16 @@ const relocationTaskApiService = baseApiService
         }),
       }),
 
-      getRelocationTaskList: build.query<
-        GetRelocationTaskListTransformedSuccessResponse,
-        GetRelocationTaskListQueryArgs
+      getRelocationTasks: build.query<
+        GetRelocationTasksTransformedSuccessResponse,
+        GetRelocationTasksQueryArgs
       >({
         query: (params) => ({
-          url: RelocationTaskApiEnum.GetRelocationTaskList,
+          url: RelocationTaskApiEnum.GetRelocationTasks,
           method: HttpMethodEnum.Get,
           params,
         }),
-        transformResponse: (response: GetRelocationTaskListSuccessResponse, meta, arg) =>
+        transformResponse: (response: GetRelocationTasksSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
 
@@ -327,7 +327,7 @@ export const {
 
   useLazyGetRelocationTaskWaybillM15Query,
 
-  useGetRelocationTaskListQuery,
+  useGetRelocationTasksQuery,
 
   useGetRelocationEquipmentListQuery,
   useGetRelocationEquipmentBalanceListQuery,

@@ -4,8 +4,8 @@ import React, { FC, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
-import RelocationTaskList from 'modules/task/components/RelocationTaskList'
-import { RelocationTaskListProps } from 'modules/task/components/RelocationTaskList/types'
+import RelocationTasks from 'modules/task/components/RelocationTasks'
+import { RelocationTasksProps } from 'modules/task/components/RelocationTasks/types'
 import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
@@ -14,7 +14,7 @@ import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocation
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
   useCreateRelocationTaskAttachment,
-  useGetRelocationTaskList,
+  useGetRelocationTasks,
   useNavigateToCreateRelocationTaskSimplifiedPage,
 } from 'modules/warehouse/hooks/relocationTask'
 import { getRelocationTasksPageLink } from 'modules/warehouse/utils/relocationTask'
@@ -26,11 +26,11 @@ import { IdType } from 'shared/types/common'
 import { getTextWithCounter } from 'shared/utils/common'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
-import { RelocationTaskListTabProps } from './types'
+import { RelocationTasksTabProps } from './types'
 
 const { Title } = Typography
 
-const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
+const RelocationTasksTab: FC<RelocationTasksTabProps> = ({ task }) => {
   const navigate = useNavigate()
 
   const permissions = useUserPermissions([UserPermissionsEnum.RelocationTasksCreate])
@@ -38,8 +38,8 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
 
   const [createRelocationTaskAttachment] = useCreateRelocationTaskAttachment()
 
-  const { currentData: paginatedRelocationTaskList, isFetching: relocationTaskListIsFetching } =
-    useGetRelocationTaskList({
+  const { currentData: paginatedRelocationTasks, isFetching: relocationTasksIsFetching } =
+    useGetRelocationTasks({
       ordering: '-created_at',
       limit: 999999,
       statuses: [
@@ -52,7 +52,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
       taskId: task.id,
     })
 
-  const relocationTaskList = extractPaginationResults(paginatedRelocationTaskList)
+  const relocationTasks = extractPaginationResults(paginatedRelocationTasks)
 
   const onClickTask = useCallback(
     (id: IdType) => navigate(getRelocationTasksPageLink({ viewRelocationTask: id })),
@@ -78,7 +78,7 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
       },
     })
 
-  const onCreateAttachment = useCallback<RelocationTaskListProps['onCreateAttachment']>(
+  const onCreateAttachment = useCallback<RelocationTasksProps['onCreateAttachment']>(
     (id) => async (options) => {
       await createRelocationTaskAttachment({ relocationTaskId: id }, options)
     },
@@ -86,10 +86,10 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
   )
 
   return (
-    <Space data-testid='relocation-task-list-tab' size='middle' direction='vertical' $block>
+    <Space data-testid='relocation-tasks-tab' size='middle' direction='vertical' $block>
       <Row justify='space-between'>
         <Col>
-          <Title level={5}>{getTextWithCounter('Перемещения', relocationTaskList)}</Title>
+          <Title level={5}>{getTextWithCounter('Перемещения', relocationTasks)}</Title>
         </Col>
 
         <Col>
@@ -109,12 +109,9 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
         </Col>
       </Row>
 
-      <LoadingArea
-        data-testid='relocation-task-list-loading'
-        isLoading={relocationTaskListIsFetching}
-      >
-        <RelocationTaskList
-          data={relocationTaskList}
+      <LoadingArea data-testid='relocation-tasks-loading' isLoading={relocationTasksIsFetching}>
+        <RelocationTasks
+          data={relocationTasks}
           onClick={onClickTask}
           onCreateAttachment={onCreateAttachment}
         />
@@ -123,4 +120,4 @@ const RelocationTaskListTab: FC<RelocationTaskListTabProps> = ({ task }) => {
   )
 }
 
-export default RelocationTaskListTab
+export default RelocationTasksTab

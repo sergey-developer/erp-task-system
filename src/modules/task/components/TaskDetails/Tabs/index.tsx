@@ -17,7 +17,7 @@ import { TabsStyled } from './styles'
 const JournalTab = React.lazy(() => import('./JournalTab'))
 const CommentsTab = React.lazy(() => import('./CommentsTab'))
 const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
-const RelocationTaskListTab = React.lazy(() => import('./RelocationTaskListTab'))
+const RelocationTasksTab = React.lazy(() => import('./RelocationTasksTab'))
 
 export type TabsProps = {
   task: Pick<
@@ -140,7 +140,7 @@ const Tabs: FC<TabsProps> = ({
             label: taskDetailsTabNameDict[TaskDetailsTabsEnum.RelocationTasks],
             children: (
               <React.Suspense fallback={<Spinner tip='Загрузка вкладки заявок на перемещение' />}>
-                <RelocationTaskListTab
+                <RelocationTasksTab
                   task={pick(
                     task,
                     'id',

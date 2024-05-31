@@ -1,5 +1,5 @@
-import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
-import { GetRelocationTaskListFilter } from 'modules/warehouse/models'
+import { RelocationTasksFilterFormFields } from 'modules/warehouse/components/RelocationTasksFilter/types'
+import { GetRelocationTasksFilter } from 'modules/warehouse/models'
 
 import { DATE_FILTER_FORMAT } from 'shared/constants/dateTime'
 import { formatDate } from 'shared/utils/date'
@@ -9,7 +9,7 @@ export const relocationTaskListFilterToParams = ({
   deadlineAt,
   createdAt,
   ...values
-}: RelocationTaskListFilterFormFields): GetRelocationTaskListFilter => ({
+}: RelocationTasksFilterFormFields): GetRelocationTasksFilter => ({
   ...values,
   statuses: status,
   deadlineAtFrom: deadlineAt?.[0] ? formatDate(deadlineAt[0], DATE_FILTER_FORMAT) : undefined,

@@ -38,9 +38,7 @@ const EquipmentPageLayout = React.lazy(
 
 const EquipmentListPage = React.lazy(() => import('modules/warehouse/pages/EquipmentListPage'))
 
-const RelocationTaskListPage = React.lazy(
-  () => import('modules/warehouse/pages/RelocationTaskListPage'),
-)
+const RelocationTasksPage = React.lazy(() => import('modules/warehouse/pages/RelocationTasksPage'))
 
 const CreateRelocationTaskPage = React.lazy(
   () => import('modules/warehouse/pages/CreateRelocationTaskPage'),
@@ -199,7 +197,7 @@ export const route: Readonly<RouteObject> = {
               index: true,
               element: (
                 <ProtectedRoute
-                  component={<RelocationTaskListPage />}
+                  component={<RelocationTasksPage />}
                   permitted={(user) =>
                     userHasPermissions(user, [UserPermissionsEnum.RelocationTasksRead])
                   }

@@ -17,11 +17,11 @@ import {
 } from 'shared/constants/selectField'
 import { filterOptionBy } from 'shared/utils/common'
 
-import { RelocationTaskListFilterFormFields, RelocationTaskListFilterProps } from './types'
+import { RelocationTasksFilterFormFields, RelocationTasksFilterProps } from './types'
 
 const { RangePicker } = DatePicker
 
-const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
+const RelocationTasksFilter: FC<RelocationTasksFilterProps> = ({
   values,
   initialValues,
 
@@ -35,7 +35,7 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
 
   ...props
 }) => {
-  const [form] = Form.useForm<RelocationTaskListFilterFormFields>()
+  const [form] = Form.useForm<RelocationTasksFilterFormFields>()
 
   useEffect(() => {
     if (isEmpty(values)) {
@@ -45,7 +45,7 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
     }
   }, [form, values, initialValues])
 
-  const resetFields = (fields?: Array<keyof RelocationTaskListFilterFormFields>) => () => {
+  const resetFields = (fields?: Array<keyof RelocationTasksFilterFormFields>) => () => {
     if (isEmpty(fields)) {
       form.setFieldsValue(initialValues)
     } else {
@@ -58,11 +58,11 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
   return (
     <DrawerFilter
       {...props}
-      data-testid='relocation-task-list-filter'
+      data-testid='relocation-tasks-filter'
       onReset={resetFields()}
       onApply={form.submit}
     >
-      <Form<RelocationTaskListFilterFormFields>
+      <Form<RelocationTasksFilterFormFields>
         preserve={false}
         layout='vertical'
         form={form}
@@ -204,4 +204,4 @@ const RelocationTaskListFilter: FC<RelocationTaskListFilterProps> = ({
   )
 }
 
-export default RelocationTaskListFilter
+export default RelocationTasksFilter

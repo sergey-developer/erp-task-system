@@ -11,7 +11,7 @@ import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 import { LocationsModel } from 'shared/models/catalogs/location'
 import { IdType } from 'shared/types/common'
 
-export type RelocationTaskListFilterFormFields = Partial<{
+export type RelocationTasksFilterFormFields = Partial<{
   status: RelocationTaskStatusEnum[]
   type: RelocationTaskTypeEnum[]
   deadlineAt: Moment[]
@@ -23,9 +23,9 @@ export type RelocationTaskListFilterFormFields = Partial<{
   createdAt: Moment[]
 }>
 
-export type RelocationTaskListFilterProps = Pick<DrawerFilterProps, 'open' | 'onClose'> & {
-  values?: RelocationTaskListFilterFormFields
-  initialValues: RelocationTaskListFilterFormFields
+export type RelocationTasksFilterProps = Pick<DrawerFilterProps, 'open' | 'onClose'> & {
+  values?: RelocationTasksFilterFormFields
+  initialValues: RelocationTasksFilterFormFields
 
   users: UsersModel
   usersIsLoading: boolean
@@ -33,5 +33,5 @@ export type RelocationTaskListFilterProps = Pick<DrawerFilterProps, 'open' | 'on
   locations: LocationsModel
   locationsIsLoading: boolean
 
-  onApply: (values: RelocationTaskListFilterFormFields) => void
+  onApply: (values: RelocationTasksFilterFormFields) => void
 }

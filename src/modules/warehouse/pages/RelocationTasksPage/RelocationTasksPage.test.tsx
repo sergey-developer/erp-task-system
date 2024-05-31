@@ -3,10 +3,10 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
-import { testUtils as relocationTaskListFilterTestUtils } from 'modules/warehouse/components/RelocationTaskListFilter/RelocationTaskListFilter.test'
 import { testUtils as relocationTaskTableTestUtils } from 'modules/warehouse/components/RelocationTaskTable/RelocationTaskTable.test'
+import { testUtils as relocationTaskListFilterTestUtils } from 'modules/warehouse/components/RelocationTasksFilter/RelocationTasksFilter.test'
 import {
-  getRelocationTaskListErrMsg,
+  getRelocationTasksErrMsg,
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
   relocationTaskTypeDict,
@@ -22,9 +22,9 @@ import {
   mockGetCurrencyListSuccess,
   mockGetLocationListSuccess,
   mockGetRelocationEquipmentListSuccess,
-  mockGetRelocationTaskListForbiddenError,
-  mockGetRelocationTaskListServerError,
-  mockGetRelocationTaskListSuccess,
+  mockGetRelocationTasksForbiddenError,
+  mockGetRelocationTasksServerError,
+  mockGetRelocationTasksSuccess,
   mockGetRelocationTaskSuccess,
   mockGetUserListSuccess,
 } from '_tests_/mocks/api'
@@ -43,9 +43,9 @@ import {
 } from '_tests_/utils'
 
 import CreateRelocationTaskPage from '../CreateRelocationTaskPage'
-import RelocationTaskListPage from './index'
+import RelocationTasksPage from './index'
 
-const getContainer = () => screen.getByTestId('relocation-task-list-page')
+const getContainer = () => screen.getByTestId('relocation-tasks-page')
 
 const getFilterButton = () => buttonTestUtils.getFilterButtonIn(getContainer())
 const clickFilterButton = (user: UserEvent) =>
@@ -73,16 +73,16 @@ notificationTestUtils.setupNotifications()
 describe('Страница списка заявок на перемещение оборудования', () => {
   describe('Список заявок на перемещение оборудования', () => {
     test('При успешном запросе отображается корректно', async () => {
-      const relocationTaskList = warehouseFixtures.relocationTaskList()
-      mockGetRelocationTaskListSuccess({
-        body: commonFixtures.paginatedListResponse(relocationTaskList),
+      const relocationTasks = warehouseFixtures.relocationTasks()
+      mockGetRelocationTasksSuccess({
+        body: commonFixtures.paginatedListResponse(relocationTasks),
       })
 
-      render(<RelocationTaskListPage />)
+      render(<RelocationTasksPage />)
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
 
-      relocationTaskList.forEach((item) => {
+      relocationTasks.forEach((item) => {
         const row = relocationTaskTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
@@ -91,9 +91,9 @@ describe('Страница списка заявок на перемещение
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 403', async () => {
         const errorMessage = fakeWord()
-        mockGetRelocationTaskListForbiddenError({ body: { detail: errorMessage } })
+        mockGetRelocationTasksForbiddenError({ body: { detail: errorMessage } })
 
-        render(<RelocationTaskListPage />)
+        render(<RelocationTasksPage />)
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(errorMessage)
@@ -102,13 +102,13 @@ describe('Страница списка заявок на перемещение
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        mockGetRelocationTaskListServerError()
+        mockGetRelocationTasksServerError()
 
-        render(<RelocationTaskListPage />)
+        render(<RelocationTasksPage />)
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(
-          getRelocationTaskListErrMsg,
+          getRelocationTasksErrMsg,
         )
 
         expect(notification).toBeInTheDocument()
@@ -116,32 +116,32 @@ describe('Страница списка заявок на перемещение
     })
 
     test('Пагинация работает', async () => {
-      const relocationTaskList = warehouseFixtures.relocationTaskList(11)
-      mockGetRelocationTaskListSuccess({
-        body: commonFixtures.paginatedListResponse(relocationTaskList),
+      const relocationTasks = warehouseFixtures.relocationTasks(11)
+      mockGetRelocationTasksSuccess({
+        body: commonFixtures.paginatedListResponse(relocationTasks),
         once: false,
       })
 
-      const { user } = render(<RelocationTaskListPage />)
+      const { user } = render(<RelocationTasksPage />)
 
       const table = await relocationTaskTableTestUtils.expectLoadingFinished()
       await tableTestUtils.clickPaginationNextButtonIn(user, table)
       await relocationTaskTableTestUtils.expectLoadingStarted()
       await relocationTaskTableTestUtils.expectLoadingFinished()
 
-      relocationTaskList.slice(-1).forEach((item) => {
+      relocationTasks.slice(-1).forEach((item) => {
         const row = relocationTaskTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
     })
 
     test('Установлена сортировка по умолчанию', async () => {
-      mockGetRelocationTaskListSuccess({
-        body: commonFixtures.paginatedListResponse(warehouseFixtures.relocationTaskList()),
+      mockGetRelocationTasksSuccess({
+        body: commonFixtures.paginatedListResponse(warehouseFixtures.relocationTasks()),
         once: false,
       })
 
-      render(<RelocationTaskListPage />)
+      render(<RelocationTasksPage />)
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
       const headCell = relocationTaskTableTestUtils.getHeadCell('Срок выполнения')
@@ -150,13 +150,13 @@ describe('Страница списка заявок на перемещение
     })
 
     test('Сортировка работает корректно', async () => {
-      const relocationTaskList = warehouseFixtures.relocationTaskList()
-      mockGetRelocationTaskListSuccess({
-        body: commonFixtures.paginatedListResponse(relocationTaskList),
+      const relocationTasks = warehouseFixtures.relocationTasks()
+      mockGetRelocationTasksSuccess({
+        body: commonFixtures.paginatedListResponse(relocationTasks),
         once: false,
       })
 
-      const { user } = render(<RelocationTaskListPage />)
+      const { user } = render(<RelocationTasksPage />)
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
       await relocationTaskTableTestUtils.clickColTitle(user, 'Объект выбытия')
@@ -165,7 +165,7 @@ describe('Страница списка заявок на перемещение
       const headCell = relocationTaskTableTestUtils.getHeadCell('Объект выбытия')
 
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
-      relocationTaskList.forEach((item) => {
+      relocationTasks.forEach((item) => {
         const row = relocationTaskTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
@@ -175,9 +175,9 @@ describe('Страница списка заявок на перемещение
   describe('Фильтры', () => {
     describe('Кнопка фильтров', () => {
       test('Отображается корректно', async () => {
-        mockGetRelocationTaskListSuccess()
+        mockGetRelocationTasksSuccess()
 
-        render(<RelocationTaskListPage />)
+        render(<RelocationTasksPage />)
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
 
@@ -188,9 +188,9 @@ describe('Страница списка заявок на перемещение
       })
 
       test('Открывает фильтры', async () => {
-        mockGetRelocationTaskListSuccess()
+        mockGetRelocationTasksSuccess()
 
-        const { user } = render(<RelocationTaskListPage />)
+        const { user } = render(<RelocationTasksPage />)
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
 
@@ -202,9 +202,9 @@ describe('Страница списка заявок на перемещение
     })
 
     test('Устанавливаются корректные значения по умолчанию', async () => {
-      mockGetRelocationTaskListSuccess()
+      mockGetRelocationTasksSuccess()
 
-      const { user } = render(<RelocationTaskListPage />)
+      const { user } = render(<RelocationTasksPage />)
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
@@ -232,13 +232,13 @@ describe('Страница списка заявок на перемещение
     })
 
     test('После применения список отображается корректно', async () => {
-      const relocationTaskList = warehouseFixtures.relocationTaskList()
-      mockGetRelocationTaskListSuccess({
-        body: commonFixtures.paginatedListResponse(relocationTaskList),
+      const relocationTasks = warehouseFixtures.relocationTasks()
+      mockGetRelocationTasksSuccess({
+        body: commonFixtures.paginatedListResponse(relocationTasks),
         once: false,
       })
 
-      const { user } = render(<RelocationTaskListPage />)
+      const { user } = render(<RelocationTasksPage />)
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
@@ -262,7 +262,7 @@ describe('Страница списка заявок на перемещение
       await relocationTaskTableTestUtils.expectLoadingStarted()
       await relocationTaskTableTestUtils.expectLoadingFinished()
 
-      relocationTaskList.forEach((item) => {
+      relocationTasks.forEach((item) => {
         const row = relocationTaskTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
@@ -272,13 +272,13 @@ describe('Страница списка заявок на перемещение
   describe('Карточка заявки на перемещение оборудования', () => {
     test('Открывается по клику на строку в таблице', async () => {
       const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
-      mockGetRelocationTaskListSuccess({
+      mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
       })
       mockGetRelocationTaskSuccess(relocationTaskListItem.id)
       mockGetRelocationEquipmentListSuccess(relocationTaskListItem.id)
 
-      const { user } = render(<RelocationTaskListPage />)
+      const { user } = render(<RelocationTasksPage />)
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
       await relocationTaskTableTestUtils.clickRow(user, relocationTaskListItem.id)
@@ -289,13 +289,13 @@ describe('Страница списка заявок на перемещение
 
     test('Закрывается', async () => {
       const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
-      mockGetRelocationTaskListSuccess({
+      mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
       })
       mockGetRelocationTaskSuccess(relocationTaskListItem.id)
       mockGetRelocationEquipmentListSuccess(relocationTaskListItem.id)
 
-      const { user } = render(<RelocationTaskListPage />)
+      const { user } = render(<RelocationTasksPage />)
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
       await relocationTaskTableTestUtils.clickRow(user, relocationTaskListItem.id)
@@ -311,9 +311,9 @@ describe('Страница списка заявок на перемещение
   describe('Создание заявки на перемещение оборудования', () => {
     describe('Кнопка создания', () => {
       test('Отображается корректно если есть права', () => {
-        mockGetRelocationTaskListSuccess()
+        mockGetRelocationTasksSuccess()
 
-        render(<RelocationTaskListPage />, {
+        render(<RelocationTasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksCreate] }),
@@ -328,16 +328,16 @@ describe('Страница списка заявок на перемещение
       })
 
       test('Не отображается если нет прав', () => {
-        mockGetRelocationTaskListSuccess()
+        mockGetRelocationTasksSuccess()
 
-        render(<RelocationTaskListPage />)
+        render(<RelocationTasksPage />)
 
         const link = testUtils.queryCreateTaskLink()
         expect(link).not.toBeInTheDocument()
       })
 
       test('При клике переходит на страницу создания заявки', async () => {
-        mockGetRelocationTaskListSuccess()
+        mockGetRelocationTasksSuccess()
         mockGetUserListSuccess()
         mockGetCurrencyListSuccess()
         mockGetLocationListSuccess({ once: false })
@@ -346,7 +346,7 @@ describe('Страница списка заявок на перемещение
           [
             {
               path: WarehouseRouteEnum.RelocationTasks,
-              element: <RelocationTaskListPage />,
+              element: <RelocationTasksPage />,
             },
             {
               path: WarehouseRouteEnum.CreateRelocationTask,
