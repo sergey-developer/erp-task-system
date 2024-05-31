@@ -50,7 +50,7 @@ const inventorizationApiService = baseApiService
       getInventorization: build.query<
         GetInventorizationSuccessResponse,
         GetInventorizationQueryArgs
-        >({
+      >({
         query: ({ inventorizationId }) => ({
           url: getInventorizationUrl({ inventorizationId }),
           method: HttpMethodEnum.Get,
@@ -69,17 +69,17 @@ const inventorizationApiService = baseApiService
         }),
       }),
 
-      getInventorizationEquipments: build.query<
-        GetInventorizationEquipmentsTransformedSuccessResponse,
-        GetInventorizationEquipmentsQueryArgs
-        >({
-        query: ({ inventorizationId, ...params }) => ({
-          url: getInventorizationEquipmentsUrl({ inventorizationId }),
-          method: HttpMethodEnum.Get,
-          params,
-        }),
-        transformResponse: (response: GetInventorizationEquipmentsSuccessResponse, meta, arg) =>
-          getPaginatedList(response, arg),
+    getInventorizationEquipments: build.query<
+      GetInventorizationEquipmentsTransformedSuccessResponse,
+      GetInventorizationEquipmentsQueryArgs
+    >({
+      query: ({ inventorizationId, ...params }) => ({
+        url: getInventorizationEquipmentsUrl({ inventorizationId }),
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+      transformResponse: (response: GetInventorizationEquipmentsSuccessResponse, meta, arg) =>
+        getPaginatedList(response, arg),
       }),
     }),
   })
