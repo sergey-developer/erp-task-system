@@ -99,9 +99,9 @@ describe('Таблица заявок на перемещение оборудо
   })
 
   test('Пагинация работает', async () => {
-    const relocationTaskList = warehouseFixtures.relocationTaskList(11)
+    const relocationTasks = warehouseFixtures.relocationTasks(11)
 
-    const { user } = render(<RelocationTaskTable {...props} dataSource={relocationTaskList} />)
+    const { user } = render(<RelocationTaskTable {...props} dataSource={relocationTasks} />)
 
     const table = testUtils.getContainer()
     await tableTestUtils.clickPaginationNextButtonIn(user, table)
@@ -113,7 +113,7 @@ describe('Таблица заявок на перемещение оборудо
       expect.anything(),
       expect.anything(),
     )
-    relocationTaskList.slice(-1).forEach((item) => {
+    relocationTasks.slice(-1).forEach((item) => {
       const row = testUtils.getRow(item.id)
       expect(row).toBeInTheDocument()
     })
