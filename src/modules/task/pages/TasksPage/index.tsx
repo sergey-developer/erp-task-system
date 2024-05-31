@@ -40,7 +40,7 @@ import { taskDetailsTabExist } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import {
   useGetUsers,
-  useMatchUserPermissions,
+  useUserPermissions,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
 } from 'modules/user/hooks'
@@ -82,7 +82,7 @@ const initialTasksFilterValues = getInitialTasksFilterValues()
 const TasksPage: FC = () => {
   const { tableRef, drawerHeight } = useDrawerHeightByTable()
 
-  const permissions = useMatchUserPermissions([
+  const permissions = useUserPermissions([
     UserPermissionsEnum.SelfWorkGroupsRead,
     UserPermissionsEnum.AnyWorkGroupsRead,
     UserPermissionsEnum.FirstLineTasksRead,

@@ -1,6 +1,6 @@
 import { FastFilterEnum } from 'modules/task/constants/task'
 import { TaskCountersModel } from 'modules/task/models'
-import { MatchedPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/utils'
 
 import { Nullable } from 'shared/types/utils'
 
@@ -18,6 +18,6 @@ export type FastFiltersProps = {
   isLoading: boolean
   disabled: boolean
   onChange: (value: FastFilterEnum) => void
-  permissions: MatchedPermissions
+  permissions: MatchedUserPermissions
   counters?: TaskCountersModel
 }

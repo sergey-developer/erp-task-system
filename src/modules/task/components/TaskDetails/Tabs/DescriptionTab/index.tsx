@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import AttachmentList from 'modules/task/components/AttachmentList'
 import { TaskModel } from 'modules/task/models'
-import { MatchedPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/utils'
 
 import { EditIcon } from 'components/Icons'
 import Space from 'components/Space'
@@ -20,7 +20,7 @@ export type DescriptionTabProps = Pick<
 > & {
   title: string
   taskTitle: string
-  permissions: MatchedPermissions
+  permissions: MatchedUserPermissions
 }
 
 const DescriptionTab: FC<DescriptionTabProps> = ({

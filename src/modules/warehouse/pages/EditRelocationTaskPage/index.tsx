@@ -15,7 +15,7 @@ import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hoo
 import { attachmentsToFiles } from 'modules/attachment/utils'
 import { useAuthUser } from 'modules/auth/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
@@ -118,7 +118,7 @@ const EditRelocationTaskPage: FC = () => {
   const relocationTaskId = Number(params?.id) || undefined
 
   const authUser = useAuthUser()
-  const permissions = useMatchUserPermissions([
+  const permissions = useUserPermissions([
     UserPermissionsEnum.EquipmentsCreate,
     UserPermissionsEnum.EnteringBalances,
   ])

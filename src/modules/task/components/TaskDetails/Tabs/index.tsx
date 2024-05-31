@@ -5,7 +5,7 @@ import React, { FC } from 'react'
 import { taskDetailsTabNameDict, TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { TaskModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 import { UserActionsModel } from 'modules/user/models'
 
 import Spinner from 'components/Spinner'
@@ -51,7 +51,7 @@ const Tabs: FC<TabsProps> = ({
   activeTab = TaskDetailsTabsEnum.Description,
   userActions,
 }) => {
-  const permissions = useMatchUserPermissions([
+  const permissions = useUserPermissions([
     UserPermissionsEnum.RelocationTasksRead,
     UserPermissionsEnum.TaskHistoryDescriptionRead,
     UserPermissionsEnum.TaskHistoryDescriptionUpdate,

@@ -7,7 +7,7 @@ import { taskStatusDict } from 'modules/task/constants/task'
 import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 
 import { FieldTimeIcon } from 'components/Icons'
 import Label from 'components/Label'
@@ -59,7 +59,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   previousOlaNextBreachTime,
   isOlaNextBreachTimeChanged,
 }) => {
-  const permissions = useMatchUserPermissions([
+  const permissions = useUserPermissions([
     UserPermissionsEnum.TaskHistoryDeadlineRead,
     UserPermissionsEnum.TaskHistoryDeadlineUpdate,
   ])

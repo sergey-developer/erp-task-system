@@ -1,10 +1,10 @@
 import { FastFilterEnum, fastFilterNamesDict } from 'modules/task/constants/task'
-import { MatchedPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/utils'
 
 export type FastFilterConfig = {
   filter: FastFilterEnum
   text: string
-  canShow?: (permissions: MatchedPermissions) => boolean
+  canShow?: (permissions: MatchedUserPermissions) => boolean
 }
 
 /* Последовательность имеет значение */
