@@ -179,7 +179,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       fieldProps: {
         options: currencyOptions,
         loading: currencyListIsLoading,
-        disabled: isLoading || typeIsWriteOff || equipmentIsLoading,
+        disabled: isLoading || typeIsWriteOff || equipmentIsLoading || currencyListIsLoading,
       },
     },
     {
