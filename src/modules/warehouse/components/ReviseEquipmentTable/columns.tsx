@@ -111,7 +111,7 @@ export const getColumns = ({
 
         const locationPlan: InventorizationEquipmentTableItem['locationPlan'] =
           config.entity.locationPlan
-        console.log(locationFact, config.entity)
+
         return {
           loading: locationsIsLoading,
           options: locationOptions,
