@@ -6,15 +6,16 @@ import React, { FC, useCallback, useState } from 'react'
 import { useGetInventorizationEquipments } from 'modules/warehouse/hooks/inventorization'
 import { GetInventorizationEquipmentsQueryArgs } from 'modules/warehouse/models'
 
+import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import {
   calculatePaginationParams,
   extractPaginationParams,
+  extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
-import { EquipmentCategoryEnum } from '../../constants/equipment'
 import ReviseEquipmentTable from '../ReviseEquipmentTable'
 import { ReviseEquipmentTableProps } from '../ReviseEquipmentTable/types'
 
@@ -30,11 +31,10 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 }) => {
   const [searchValue, setSearchValue] = useState<string>()
 
-  // const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
-  //   { responsibilityArea: false },
-  //   { skip: true },
-  // )
-  //
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations({
+    responsibilityArea: false,
+  })
+
   // const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
   //   useGetEquipmentCategories(undefined, { skip: true })
 
@@ -90,25 +90,10 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 
       <ReviseEquipmentTable
         pagination={extractPaginationParams(paginatedInventorizationEquipments)}
-        // dataSource={extractPaginationResults(paginatedInventorizationEquipments)}
-        dataSource={[
-          {
-            id: 1,
-            equipment: {
-              id: 1,
-              title: 'title',
-              serialNumber: 'serialNumber',
-              inventoryNumber: 'inventoryNumber',
-              category: { id: 1, code: EquipmentCategoryEnum.Equipment, title: 'title' },
-            },
-            quantity: { diff: 123, fact: 321, plan: 454 },
-            locationFact: { id: 1, title: 'locationFact' },
-            hasDiff: false,
-            isFilled: true,
-            locationPlan: { id: 123, title: 'locationPlan' },
-          },
-        ]}
+        dataSource={extractPaginationResults(paginatedInventorizationEquipments)}
         loading={inventorizationEquipmentsIsFetching}
+        locations={locations}
+        locationsIsLoading={locationsIsFetching}
         onTableChange={onChangeTable}
       />
     </Flex>

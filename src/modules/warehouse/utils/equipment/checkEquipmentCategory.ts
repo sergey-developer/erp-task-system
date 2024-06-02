@@ -4,4 +4,4 @@ import { Nullable } from 'shared/types/utils'
 
 export const checkEquipmentCategoryIsConsumable = (
   category: Nullable<EquipmentCategoryEnum>,
-): boolean => category === EquipmentCategoryEnum.Consumable
+): category is EquipmentCategoryEnum.Consumable => category === EquipmentCategoryEnum.Consumable
