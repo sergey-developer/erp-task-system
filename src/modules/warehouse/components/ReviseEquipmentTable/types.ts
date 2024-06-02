@@ -7,7 +7,7 @@ import { SetNonNullable } from 'shared/types/utils'
 
 export type ReviseEquipmentTableItem = Pick<
   InventorizationEquipmentListItemModel,
-  'id' | 'equipment' | 'locationPlan' | 'quantity'
+  'id' | 'equipment' | 'locationPlan' | 'locationFact' | 'quantity' | 'isFilled' | 'hasDiff'
 >
 
 export type ActiveReviseEquipmentTableRow = {
