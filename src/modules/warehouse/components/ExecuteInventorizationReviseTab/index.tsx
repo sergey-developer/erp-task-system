@@ -3,11 +3,9 @@ import { Col, Flex, Input, Row, Typography } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import React, { FC, useCallback, useState } from 'react'
 
-import { useGetEquipmentCategories } from 'modules/warehouse/hooks/equipment'
 import { useGetInventorizationEquipments } from 'modules/warehouse/hooks/inventorization'
 import { GetInventorizationEquipmentsQueryArgs } from 'modules/warehouse/models'
 
-import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import {
@@ -32,13 +30,13 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 }) => {
   const [searchValue, setSearchValue] = useState<string>()
 
-  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
-    { responsibilityArea: false },
-    { skip: true },
-  )
-
-  const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
-    useGetEquipmentCategories(undefined, { skip: true })
+  // const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
+  //   { responsibilityArea: false },
+  //   { skip: true },
+  // )
+  //
+  // const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
+  //   useGetEquipmentCategories(undefined, { skip: true })
 
   const [getInventorizationEquipmentsParams, setGetInventorizationEquipmentsParams] =
     useSetState<GetInventorizationEquipmentsQueryArgs>({
@@ -93,6 +91,23 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       <ReviseEquipmentTable
         pagination={extractPaginationParams(paginatedInventorizationEquipments)}
         dataSource={extractPaginationResults(paginatedInventorizationEquipments)}
+        // dataSource={[
+        //   {
+        //     id: 1,
+        //     equipment: {
+        //       id: 1,
+        //       title: 'title',
+        //       serialNumber: 'serialNumber',
+        //       inventoryNumber: 'inventoryNumber',
+        //       category: { id: 1, code: EquipmentCategoryEnum.Equipment, title: 'title' },
+        //     },
+        //     quantity: { diff: 123, fact: 321, plan: 454 },
+        //     locationFact: { id: 1, title: 'locationFact' },
+        //     hasDiff: null,
+        //     isFilled: false,
+        //     locationPlan: { id: 123, title: 'locationPlan' },
+        //   },
+        // ]}
         loading={inventorizationEquipmentsIsFetching}
         onTableChange={onChangeTable}
       />

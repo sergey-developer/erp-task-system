@@ -54,7 +54,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
-import { useGetMacroregionList } from 'shared/hooks/macroregion'
+import { useGetMacroregionList } from 'shared/hooks/macroregion/useGetMacroregionList'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { useDrawerHeightByTable } from 'shared/hooks/useDrawerHeightByTable'
 import { IdType } from 'shared/types/common'
