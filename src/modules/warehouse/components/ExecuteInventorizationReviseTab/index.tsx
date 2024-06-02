@@ -3,7 +3,6 @@ import { Col, Flex, Input, Row, Typography } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import React, { FC, useCallback, useState } from 'react'
 
-import { useGetEquipmentCategories } from 'modules/warehouse/hooks/equipment'
 import { useGetInventorizationEquipments } from 'modules/warehouse/hooks/inventorization'
 import { GetInventorizationEquipmentsQueryArgs } from 'modules/warehouse/models'
 import { InventorizationRequestArgs } from 'modules/warehouse/types'
@@ -33,13 +32,12 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 }) => {
   const [searchValue, setSearchValue] = useState<string>()
 
-  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
-    { responsibilityArea: false },
-    { skip: true },
-  )
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations({
+    responsibilityArea: false,
+  })
 
-  const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
-    useGetEquipmentCategories(undefined, { skip: true })
+  // const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
+  //   useGetEquipmentCategories(undefined, { skip: true })
 
   const [getInventorizationEquipmentsParams, setGetInventorizationEquipmentsParams] =
     useSetState<GetInventorizationEquipmentsQueryArgs>({
@@ -95,6 +93,8 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         pagination={extractPaginationParams(paginatedInventorizationEquipments)}
         dataSource={extractPaginationResults(paginatedInventorizationEquipments)}
         loading={inventorizationEquipmentsIsFetching}
+        locations={locations}
+        locationsIsLoading={locationsIsFetching}
         onTableChange={onChangeTable}
       />
     </Flex>

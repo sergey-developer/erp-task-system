@@ -1,4 +1,4 @@
-import { App, ConfigProvider as BaseConfigProvider, ThemeConfig } from 'antd'
+import { ConfigProvider as BaseConfigProvider, ThemeConfig } from 'antd'
 import { ConfigProviderProps as BaseConfigProviderProps } from 'antd/lib/config-provider'
 import ruRU from 'antd/lib/locale/ru_RU'
 import { FC } from 'react'
@@ -44,7 +44,7 @@ const themeConfig: ThemeConfig = {
 const ConfigProvider: FC<ConfigProviderProps> = ({ children }) => {
   return (
     <BaseConfigProvider theme={themeConfig} locale={ruRU} virtual={false} form={globalFormConfig}>
-      <App>{children}</App>
+      {children}
     </BaseConfigProvider>
   )
 }

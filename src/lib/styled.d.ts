@@ -5,6 +5,7 @@ declare module 'styled-components' {
     colors: {
       white: string
       black: string
+      green: string
       darkLiver: string
       chineseWhite: string
       oldSilver: string
