@@ -10,10 +10,10 @@ import {
 
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
 
-import RelocationTaskListFilter from './index'
-import { RelocationTaskListFilterProps } from './types'
+import RelocationTasksFilter from './index'
+import { RelocationTasksFilterProps } from './types'
 
-const props: Readonly<RelocationTaskListFilterProps> = {
+const props: Readonly<RelocationTasksFilterProps> = {
   open: true,
 
   values: {},
@@ -29,9 +29,9 @@ const props: Readonly<RelocationTaskListFilterProps> = {
   onApply: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('relocation-task-list-filter')
-const queryContainer = () => screen.queryByTestId('relocation-task-list-filter')
-const findContainer = (): Promise<HTMLElement> => screen.findByTestId('relocation-task-list-filter')
+const getContainer = () => screen.getByTestId('relocation-tasks-filter')
+const queryContainer = () => screen.queryByTestId('relocation-tasks-filter')
+const findContainer = (): Promise<HTMLElement> => screen.findByTestId('relocation-tasks-filter')
 
 // status block
 const getStatusBlock = (): HTMLElement => within(getContainer()).getByTestId('status-block')
@@ -123,7 +123,7 @@ export const testUtils = {
 describe('Фильтр списка заявок на перемещение оборудования', () => {
   describe('Статус', () => {
     test('Отображается корректно', () => {
-      render(<RelocationTaskListFilter {...props} />)
+      render(<RelocationTasksFilter {...props} />)
 
       const input = testUtils.getStatusSelectInput()
 
@@ -132,7 +132,7 @@ describe('Фильтр списка заявок на перемещение о�
     })
 
     test('Можно выбрать несколько вариантов', async () => {
-      const { user } = render(<RelocationTaskListFilter {...props} />)
+      const { user } = render(<RelocationTasksFilter {...props} />)
 
       await testUtils.openStatusSelect(user)
       await testUtils.setStatus(user, relocationTaskStatusDict[RelocationTaskStatusEnum.New])
@@ -151,7 +151,7 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Устанавливается значение по умолчанию', () => {
       render(
-        <RelocationTaskListFilter
+        <RelocationTasksFilter
           {...props}
           initialValues={{ status: [RelocationTaskStatusEnum.New] }}
         />,
@@ -166,7 +166,7 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(
-        <RelocationTaskListFilter
+        <RelocationTasksFilter
           {...props}
           initialValues={{ status: [RelocationTaskStatusEnum.New] }}
         />,
@@ -190,7 +190,7 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Переданное значение заменяет значение по умолчанию', () => {
       render(
-        <RelocationTaskListFilter
+        <RelocationTasksFilter
           {...props}
           initialValues={{ status: [RelocationTaskStatusEnum.New] }}
           values={{ status: [RelocationTaskStatusEnum.Completed] }}
@@ -211,7 +211,7 @@ describe('Фильтр списка заявок на перемещение о�
 
   describe('Тип заявки', () => {
     test('Отображается корректно', () => {
-      render(<RelocationTaskListFilter {...props} />)
+      render(<RelocationTasksFilter {...props} />)
 
       const input = testUtils.getTypeSelectInput()
 
@@ -220,7 +220,7 @@ describe('Фильтр списка заявок на перемещение о�
     })
 
     test('Можно выбрать несколько вариантов', async () => {
-      const { user } = render(<RelocationTaskListFilter {...props} />)
+      const { user } = render(<RelocationTasksFilter {...props} />)
 
       await testUtils.openTypeSelect(user)
       await testUtils.setType(user, relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation])
@@ -237,7 +237,7 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Устанавливается значение по умолчанию', () => {
       render(
-        <RelocationTaskListFilter
+        <RelocationTasksFilter
           {...props}
           initialValues={{ type: [RelocationTaskTypeEnum.Relocation] }}
         />,
@@ -252,7 +252,7 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(
-        <RelocationTaskListFilter
+        <RelocationTasksFilter
           {...props}
           initialValues={{ type: [RelocationTaskTypeEnum.Repair] }}
         />,
@@ -276,7 +276,7 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Переданное значение заменяет значение по умолчанию', () => {
       render(
-        <RelocationTaskListFilter
+        <RelocationTasksFilter
           {...props}
           initialValues={{ type: [RelocationTaskTypeEnum.Repair] }}
           values={{ type: [RelocationTaskTypeEnum.Relocation] }}
@@ -297,7 +297,7 @@ describe('Фильтр списка заявок на перемещение о�
 
   describe('Кнопка применить', () => {
     test('Отображается корректно', () => {
-      render(<RelocationTaskListFilter {...props} />)
+      render(<RelocationTasksFilter {...props} />)
 
       const button = testUtils.getApplyButton()
 
@@ -306,7 +306,7 @@ describe('Фильтр списка заявок на перемещение о�
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<RelocationTaskListFilter {...props} />)
+      const { user } = render(<RelocationTasksFilter {...props} />)
 
       await testUtils.clickApplyButton(user)
 
@@ -317,7 +317,7 @@ describe('Фильтр списка заявок на перемещение о�
 
   describe('Кнопка сбросить всё', () => {
     test('Отображается корректно', () => {
-      render(<RelocationTaskListFilter {...props} />)
+      render(<RelocationTasksFilter {...props} />)
 
       const button = testUtils.getResetAllButton()
 
@@ -327,7 +327,7 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Сбрасывает значения полей', async () => {
       const { user } = render(
-        <RelocationTaskListFilter
+        <RelocationTasksFilter
           {...props}
           initialValues={{
             status: [RelocationTaskStatusEnum.New],
@@ -364,7 +364,7 @@ describe('Фильтр списка заявок на перемещение о�
 
   describe('Кнопка закрытия', () => {
     test('Отображается корректно', () => {
-      render(<RelocationTaskListFilter {...props} />)
+      render(<RelocationTasksFilter {...props} />)
 
       const button = testUtils.getCloseButton()
 
@@ -373,7 +373,7 @@ describe('Фильтр списка заявок на перемещение о�
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<RelocationTaskListFilter {...props} />)
+      const { user } = render(<RelocationTasksFilter {...props} />)
       await testUtils.clickCloseButton(user)
       expect(props.onClose).toBeCalledTimes(1)
     })

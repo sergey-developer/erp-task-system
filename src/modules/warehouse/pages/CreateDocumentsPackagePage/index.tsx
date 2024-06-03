@@ -28,7 +28,7 @@ import {
   useGetRelocationTaskCompletionDocuments,
 } from 'modules/warehouse/hooks/relocationTask'
 import { RelocationTaskModel } from 'modules/warehouse/models'
-import { getRelocateFromTo } from 'modules/warehouse/utils/relocationTask'
+import { getRelocateFromToTitle } from 'modules/warehouse/utils/relocationTask'
 
 import GoBackButton from 'components/Buttons/GoBackButton'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -311,7 +311,7 @@ const CreateDocumentsPackagePage: FC = () => {
                         taskCompletionDocuments.relocationTasks.map((task) => (
                           <Flex key={task.id} vertical gap='small'>
                             <Title level={5}>
-                              {getRelocateFromTo(task, 'Перемещение оборудования')}
+                              {getRelocateFromToTitle(task, 'Перемещение оборудования')}
                             </Title>
 
                             <DocumentsPackageRelocationEquipmentTable
@@ -325,7 +325,7 @@ const CreateDocumentsPackagePage: FC = () => {
                       {relocationCompletionDocument && (
                         <Flex vertical gap='small'>
                           <Title level={5}>
-                            {getRelocateFromTo(
+                            {getRelocateFromToTitle(
                               relocationCompletionDocument,
                               'Перемещение оборудования',
                             )}

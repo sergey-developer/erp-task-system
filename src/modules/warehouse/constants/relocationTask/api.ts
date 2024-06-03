@@ -13,7 +13,7 @@ export enum RelocationTaskApiEnum {
   CreateRelocationTask = '/relocation-tasks/',
   UpdateRelocationTask = '/relocation-tasks/:id',
 
-  GetRelocationTaskList = '/relocation-tasks/',
+  GetRelocationTasks = '/relocation-tasks/',
 
   GetRelocationEquipmentList = '/relocation-tasks/:id/equipments',
   GetRelocationEquipmentBalanceList = '/relocation-tasks/:id/equipments/balance',

@@ -2,10 +2,7 @@ import { ColumnType } from 'antd/es/table'
 import { SortOrder } from 'antd/es/table/interface'
 import isEqual from 'lodash/isEqual'
 
-import {
-  GetRelocationTaskListSortKey,
-  GetRelocationTaskListSortValue,
-} from 'modules/warehouse/models'
+import { GetRelocationTasksSortKey, GetRelocationTasksSortValue } from 'modules/warehouse/models'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 
@@ -27,10 +24,7 @@ export type SortableField = keyof Pick<
 
 export const sortableFieldToSortValues: Record<
   SortableField,
-  [
-    GetRelocationTaskListSortKey,
-    Exclude<GetRelocationTaskListSortValue, GetRelocationTaskListSortKey>,
-  ]
+  [GetRelocationTasksSortKey, Exclude<GetRelocationTasksSortValue, GetRelocationTasksSortKey>]
 > = {
   id: ['id', '-id'],
   type: ['type', '-type'],
@@ -54,12 +48,12 @@ export const sortValueToSortableField = Object.keys(sortableFieldToSortValues).r
 
     return acc
   },
-  {} as Record<GetRelocationTaskListSortValue, SortableField>,
+  {} as Record<GetRelocationTasksSortValue, SortableField>,
 )
 
 export const applySort = (
   column: ColumnType<RelocationTaskTableItem>,
-  sort: GetRelocationTaskListSortValue,
+  sort: GetRelocationTasksSortValue,
 ): ColumnType<RelocationTaskTableItem> => {
   const sorterResult = parseSort(sort)
 
@@ -71,19 +65,19 @@ export const applySort = (
   }
 }
 
-export const getSort = (field: SortableField, order: SortOrder): GetRelocationTaskListSortValue => {
+export const getSort = (field: SortableField, order: SortOrder): GetRelocationTasksSortValue => {
   const [ascendValue, descendValue] = sortableFieldToSortValues[field]
   return order === SortOrderEnum.Descend ? descendValue : ascendValue
 }
 
 export const parseSort = (
-  value: GetRelocationTaskListSortValue,
+  value: GetRelocationTasksSortValue,
 ): { order: SortOrder; columnKey: SortableField } => {
   const isDescend = value.startsWith('-')
   const parsedValue = isDescend ? value.slice(1) : value
 
   return {
     order: isDescend ? SortOrderEnum.Descend : SortOrderEnum.Ascend,
-    columnKey: sortValueToSortableField[parsedValue as GetRelocationTaskListSortValue],
+    columnKey: sortValueToSortableField[parsedValue as GetRelocationTasksSortValue],
   }
 }

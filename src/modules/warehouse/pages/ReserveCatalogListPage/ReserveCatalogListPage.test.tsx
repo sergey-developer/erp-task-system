@@ -8,13 +8,13 @@ import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNome
 import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 import InventorizationsPage from 'modules/warehouse/pages/InventorizationsPage'
 import { testUtils as inventorizationsPageTestUtils } from 'modules/warehouse/pages/InventorizationsPage/InventorizationsPage.test'
-import RelocationTaskListPage from 'modules/warehouse/pages/RelocationTaskListPage'
-import { testUtils as relocationTaskListPageTestUtils } from 'modules/warehouse/pages/RelocationTaskListPage/RelocationTaskListPage.test'
+import RelocationTasksPage from 'modules/warehouse/pages/RelocationTasksPage'
+import { testUtils as relocationTaskListPageTestUtils } from 'modules/warehouse/pages/RelocationTasksPage/RelocationTasksPage.test'
 
 import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetInventorizationsSuccess,
-  mockGetRelocationTaskListSuccess,
+  mockGetRelocationTasksSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { getStoreWithAuth, linkTestUtils, renderInRoute_latest } from '_tests_/utils'
@@ -184,7 +184,7 @@ describe('Страница списка справочников запасов'
     })
 
     test('При клике переходит на страницу списка заявок на перемещение', async () => {
-      mockGetRelocationTaskListSuccess()
+      mockGetRelocationTasksSuccess()
 
       const { user } = renderInRoute_latest(
         [
@@ -194,7 +194,7 @@ describe('Страница списка справочников запасов'
           },
           {
             path: WarehouseRouteEnum.RelocationTasks,
-            element: <RelocationTaskListPage />,
+            element: <RelocationTasksPage />,
           },
         ],
         { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },

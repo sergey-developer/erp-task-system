@@ -2,7 +2,7 @@ import { RelocationTaskModel } from 'modules/warehouse/models'
 
 import { valueOrHyphen } from 'shared/utils/common'
 
-export const getRelocateFromTo = (
+export const getRelocateFromToTitle = (
   relocationTask?: Pick<RelocationTaskModel, 'relocateFrom' | 'relocateTo'>,
   text: string = 'Заявка на перемещение оборудования',
 ): string =>
