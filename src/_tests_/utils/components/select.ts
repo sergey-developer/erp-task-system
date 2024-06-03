@@ -35,13 +35,16 @@ const getSelectedOptionText = (option: HTMLElement, text: string) => within(opti
 
 const getAllSelectOption = () => screen.getAllByRole('option')
 
-const getSelectOption = (name: string, container?: HTMLElement) =>
+const getSelectOption = (name: string | RegExp, container?: HTMLElement) =>
   container ? within(container).getByRole('option', { name }) : screen.getByRole('option', { name })
+
+const querySelectOption = (name: string | RegExp, container?: HTMLElement) =>
+  container
+    ? within(container).queryByRole('option', { name })
+    : screen.queryByRole('option', { name })
 
 const getSelectOptionById = (id: NumberOrString | RegExp) =>
   screen.getByTestId(`select-option-${id}`)
-
-const querySelectOption = (name: string) => screen.queryByRole('option', { name })
 
 const clickSelectOption = async (
   user: UserEvent,
