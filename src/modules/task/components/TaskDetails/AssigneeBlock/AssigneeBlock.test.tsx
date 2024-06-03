@@ -82,7 +82,6 @@ export const canSelectAssigneeProps: Readonly<
 }
 
 const getContainer = () => screen.getByTestId('task-assignee-block')
-
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // take task
@@ -139,19 +138,12 @@ const refuseTaskExpectLoadingStarted = () =>
 
 // assignee select
 const getAssigneeSelect = () => selectTestUtils.getSelect(getContainer())
-
 const queryAssigneeSelect = () => selectTestUtils.querySelect(getContainer())
-
 const findAssigneeSelect = () => selectTestUtils.findSelect(getContainer())
-
 const getSelectedAssignee = () => selectTestUtils.getSelectedOption(getContainer())
-
 const openAssigneeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getContainer())
-
 const selectAssignee = selectTestUtils.clickSelectOption
-
 const getAssigneeOption = selectTestUtils.getSelectOptionById
-
 const getAllAssigneeOption = selectTestUtils.getAllSelectOption
 
 const expectAssigneeSelectLoadingStarted = () =>
