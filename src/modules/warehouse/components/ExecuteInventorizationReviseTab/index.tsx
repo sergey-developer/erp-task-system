@@ -19,7 +19,7 @@ import {
 import ReviseEquipmentTable from '../ReviseEquipmentTable'
 import { ReviseEquipmentTableProps } from '../ReviseEquipmentTable/types'
 
-type ExecuteInventorizationReviseTabProps = {
+export type ExecuteInventorizationReviseTabProps = {
   inventorizationId: IdType
 }
 
