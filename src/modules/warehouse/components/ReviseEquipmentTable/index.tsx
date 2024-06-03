@@ -19,9 +19,8 @@ const ReviseEquipmentTable: FC<ReviseEquipmentTableProps> = ({
   )
 
   return (
-    <TableWrapperStyled>
+    <TableWrapperStyled data-testid='revise-equipment-table'>
       <EditableProTable<ReviseEquipmentTableItem>
-        data-testid='revise-equipment-table'
         rowKey='id'
         columns={columns}
         ghost

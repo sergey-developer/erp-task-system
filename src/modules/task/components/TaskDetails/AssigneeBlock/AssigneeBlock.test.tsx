@@ -82,7 +82,6 @@ export const canSelectAssigneeProps: Readonly<
 }
 
 const getContainer = () => screen.getByTestId('task-assignee-block')
-
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // take task

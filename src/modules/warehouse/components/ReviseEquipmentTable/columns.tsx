@@ -79,7 +79,6 @@ export const getColumns = ({
         )
 
         return {
-          disabled: false,
           min: 0,
           ...(isNumber(quantityFact)
             ? quantityFact === quantityPlan
@@ -95,6 +94,10 @@ export const getColumns = ({
       dataIndex: 'locationFact',
       title: 'Фактическое местонахождение',
       valueType: 'select',
+
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'location-fact-form-item' },
+
       fieldProps: (form, config) => {
         const quantityFact: ReviseEquipmentTableItem['quantity']['fact'] = form.getFieldValue(
           (config.rowKey as unknown as string[]).concat('quantityFact'),
