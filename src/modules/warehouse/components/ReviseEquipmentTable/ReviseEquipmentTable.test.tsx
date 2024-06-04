@@ -34,6 +34,8 @@ const props: ReviseEquipmentTableProps = {
   locationsIsLoading: false,
 
   onTableChange: jest.fn(),
+
+  onChangeQuantityFact: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('revise-equipment-table')
