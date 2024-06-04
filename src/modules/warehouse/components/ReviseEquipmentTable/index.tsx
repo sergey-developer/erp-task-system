@@ -7,16 +7,20 @@ import { ReviseEquipmentTableItem, ReviseEquipmentTableProps } from './types'
 
 const ReviseEquipmentTable: FC<ReviseEquipmentTableProps> = ({
   dataSource,
+
   locations,
   locationsIsLoading,
+
   onChangeQuantityFact,
+  onChangeLocationFact,
+
   ...props
 }) => {
   const editableKeys = useMemo(() => dataSource.map((item) => item.id), [dataSource])
 
   const columns = useMemo(
-    () => getColumns({ locations, locationsIsLoading, onChangeQuantityFact }),
-    [locations, locationsIsLoading, onChangeQuantityFact],
+    () => getColumns({ locations, locationsIsLoading, onChangeQuantityFact, onChangeLocationFact }),
+    [locations, locationsIsLoading, onChangeLocationFact, onChangeQuantityFact],
   )
 
   return (
