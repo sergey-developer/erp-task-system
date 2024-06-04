@@ -1,6 +1,7 @@
 export * from './inventorization.model'
 export * from './getInventorization.model'
 export * from './createInventorization.model'
+export * from './completeInventorization.model'
 
 export * from './inventorizations.model'
 export * from './getInventorizations.model'

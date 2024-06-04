@@ -5,6 +5,8 @@ import {
   InventorizationApiTagEnum,
 } from 'modules/warehouse/constants/inventorization'
 import {
+  CompleteInventorizationMutationArgs,
+  CompleteInventorizationSuccessResponse,
   CreateInventorizationMutationArgs,
   CreateInventorizationSuccessResponse,
   GetInventorizationEquipmentsQueryArgs,
@@ -21,6 +23,7 @@ import {
   GetInventorizationsTransformedSuccessResponse,
 } from 'modules/warehouse/types'
 import {
+  makeCompleteInventorizationUrl,
   makeGetInventorizationEquipmentsUrl,
   makeGetInventorizationUrl,
   makeUpdateInventorizationEquipmentUrl,
@@ -71,6 +74,15 @@ const inventorizationApiService = baseApiService
           data,
         }),
       }),
+      completeInventorization: build.mutation<
+        CompleteInventorizationSuccessResponse,
+        CompleteInventorizationMutationArgs
+      >({
+        query: ({ inventorizationId }) => ({
+          url: makeCompleteInventorizationUrl({ inventorizationId }),
+          method: HttpMethodEnum.Post,
+        }),
+      }),
 
       getInventorizationEquipments: build.query<
         GetInventorizationEquipmentsTransformedSuccessResponse,
@@ -101,6 +113,7 @@ export const {
   useGetInventorizationsQuery,
   useGetInventorizationQuery,
   useCreateInventorizationMutation,
+  useCompleteInventorizationMutation,
   useGetInventorizationEquipmentsQuery,
   useUpdateInventorizationEquipmentMutation,
 } = inventorizationApiService
