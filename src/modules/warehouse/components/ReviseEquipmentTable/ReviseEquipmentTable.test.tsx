@@ -256,6 +256,7 @@ describe('Таблица сверки оборудования', () => {
       render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
 
       const formItem = testUtils.getQuantityFactFormItem(inventorizationEquipmentListItem.id)
+      // eslint-disable-next-line testing-library/no-node-access
       const inputWrapper = formItem.querySelector('.ant-input-number-in-form-item')
       expect(inputWrapper).toHaveStyle({ borderColor: theme.colors.green })
     })
@@ -268,6 +269,7 @@ describe('Таблица сверки оборудования', () => {
       render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
 
       const formItem = testUtils.getQuantityFactFormItem(inventorizationEquipmentListItem.id)
+      // eslint-disable-next-line testing-library/no-node-access
       const inputWrapper = formItem.querySelector('.ant-input-number-in-form-item')
       expect(inputWrapper).toHaveClass('ant-input-number-status-error')
     })
@@ -415,6 +417,7 @@ describe('Таблица сверки оборудования', () => {
       )
 
       const formItem = testUtils.getLocationFactFormItem(inventorizationEquipmentListItem.id)
+      // eslint-disable-next-line testing-library/no-node-access
       const select = formItem.querySelector('.ant-select')
 
       expect(select).toHaveStyle({ borderColor: theme.colors.green })
@@ -437,6 +440,7 @@ describe('Таблица сверки оборудования', () => {
       )
 
       const formItem = testUtils.getLocationFactFormItem(inventorizationEquipmentListItem.id)
+      // eslint-disable-next-line testing-library/no-node-access
       const select = formItem.querySelector('.ant-select')
 
       expect(select).toHaveClass('ant-select-status-error')
