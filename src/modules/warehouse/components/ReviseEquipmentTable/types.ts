@@ -3,6 +3,7 @@ import { EditableProTableProps } from '@ant-design/pro-table/es/components/Edita
 import { InventorizationEquipmentListItemModel } from 'modules/warehouse/models'
 
 import { LocationsModel } from 'shared/models/catalogs/location'
+import { IdType } from 'shared/types/common'
 import { SetNonNullable } from 'shared/types/utils'
 
 export type InventorizationEquipmentTableItem = InventorizationEquipmentListItemModel
@@ -20,4 +21,5 @@ export type ReviseEquipmentTableProps = SetNonNullable<
   locationsIsLoading: boolean
 
   onChangeQuantityFact: (value: number) => Promise<void>
+  onChangeLocationFact: (value: IdType) => Promise<void>
 }
