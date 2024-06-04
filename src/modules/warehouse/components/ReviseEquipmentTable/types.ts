@@ -21,4 +21,6 @@ export type ReviseEquipmentTableProps = SetNonNullable<
 > & {
   locations: LocationsModel
   locationsIsLoading: boolean
+
+  onChangeQuantityFact: (value: number) => Promise<void>
 }

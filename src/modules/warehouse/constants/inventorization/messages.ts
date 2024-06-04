@@ -6,3 +6,6 @@ export const createInventorizationErrMsg = 'Ошибка создания пор
 
 export const getInventorizationEquipmentsErrMsg =
   'Ошибка получения списка оборудования для инвентаризации'
+
+export const updateInventorizationEquipmentErrMsg =
+  'Ошибка сохранения оборудования при проведении сверки'

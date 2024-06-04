@@ -16,11 +16,15 @@ import theme from 'styles/theme'
 
 import { ReviseEquipmentTableItem, ReviseEquipmentTableProps } from './types'
 
-type GetColumnsArgs = Pick<ReviseEquipmentTableProps, 'locations' | 'locationsIsLoading'>
+type GetColumnsArgs = Pick<
+  ReviseEquipmentTableProps,
+  'locations' | 'locationsIsLoading' | 'onChangeQuantityFact'
+>
 
 export const getColumns = ({
   locations,
   locationsIsLoading,
+  onChangeQuantityFact,
 }: GetColumnsArgs): ProColumns<ReviseEquipmentTableItem>[] => {
   const locationOptions: DefaultOptionType[] = [
     undefinedSelectOption,
@@ -85,6 +89,7 @@ export const getColumns = ({
               ? { style: { borderColor: theme.colors.green } }
               : { status: 'error' }
             : {}),
+          onBlur: onChangeQuantityFact,
         }
       },
       renderText: (dom, entity) => entity.quantity.fact,

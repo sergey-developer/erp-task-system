@@ -13,14 +13,17 @@ import {
   GetInventorizationsQueryArgs,
   GetInventorizationsSuccessResponse,
   GetInventorizationSuccessResponse,
+  UpdateInventorizationEquipmentMutationArgs,
+  UpdateInventorizationEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
 import {
   GetInventorizationEquipmentsTransformedSuccessResponse,
   GetInventorizationsTransformedSuccessResponse,
 } from 'modules/warehouse/types'
 import {
-  getInventorizationEquipmentsUrl,
-  getInventorizationUrl,
+  makeGetInventorizationEquipmentsUrl,
+  makeGetInventorizationUrl,
+  makeUpdateInventorizationEquipmentUrl,
 } from 'modules/warehouse/utils/inventorization'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -52,7 +55,7 @@ const inventorizationApiService = baseApiService
         GetInventorizationQueryArgs
       >({
         query: ({ inventorizationId }) => ({
-          url: getInventorizationUrl({ inventorizationId }),
+          url: makeGetInventorizationUrl({ inventorizationId }),
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -69,17 +72,27 @@ const inventorizationApiService = baseApiService
         }),
       }),
 
-    getInventorizationEquipments: build.query<
-      GetInventorizationEquipmentsTransformedSuccessResponse,
-      GetInventorizationEquipmentsQueryArgs
-    >({
-      query: ({ inventorizationId, ...params }) => ({
-        url: getInventorizationEquipmentsUrl({ inventorizationId }),
-        method: HttpMethodEnum.Get,
-        params,
+      getInventorizationEquipments: build.query<
+        GetInventorizationEquipmentsTransformedSuccessResponse,
+        GetInventorizationEquipmentsQueryArgs
+      >({
+        query: ({ inventorizationId, ...params }) => ({
+          url: makeGetInventorizationEquipmentsUrl({ inventorizationId }),
+          method: HttpMethodEnum.Get,
+          params,
+        }),
+        transformResponse: (response: GetInventorizationEquipmentsSuccessResponse, meta, arg) =>
+          getPaginatedList(response, arg),
       }),
-      transformResponse: (response: GetInventorizationEquipmentsSuccessResponse, meta, arg) =>
-        getPaginatedList(response, arg),
+      updateInventorizationEquipment: build.mutation<
+        UpdateInventorizationEquipmentSuccessResponse,
+        UpdateInventorizationEquipmentMutationArgs
+      >({
+        query: ({ inventorizationId, ...data }) => ({
+          url: makeUpdateInventorizationEquipmentUrl({ inventorizationId }),
+          method: HttpMethodEnum.Put,
+          data,
+        }),
       }),
     }),
   })
@@ -89,4 +102,5 @@ export const {
   useGetInventorizationQuery,
   useCreateInventorizationMutation,
   useGetInventorizationEquipmentsQuery,
+  useUpdateInventorizationEquipmentMutation,
 } = inventorizationApiService

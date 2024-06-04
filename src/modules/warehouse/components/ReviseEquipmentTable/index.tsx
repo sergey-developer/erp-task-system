@@ -9,13 +9,14 @@ const ReviseEquipmentTable: FC<ReviseEquipmentTableProps> = ({
   dataSource,
   locations,
   locationsIsLoading,
+  onChangeQuantityFact,
   ...props
 }) => {
   const editableKeys = useMemo(() => dataSource.map((item) => item.id), [dataSource])
 
   const columns = useMemo(
-    () => getColumns({ locations, locationsIsLoading }),
-    [locations, locationsIsLoading],
+    () => getColumns({ locations, locationsIsLoading, onChangeQuantityFact }),
+    [locations, locationsIsLoading, onChangeQuantityFact],
   )
 
   return (

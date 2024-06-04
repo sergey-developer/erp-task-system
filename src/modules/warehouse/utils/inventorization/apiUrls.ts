@@ -3,14 +3,21 @@ import { InventorizationRequestArgs } from 'modules/warehouse/types'
 
 import { generateApiPath } from 'shared/utils/api'
 
-export const getInventorizationUrl = ({
+export const makeGetInventorizationUrl = ({
   inventorizationId,
 }: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
   generateApiPath(InventorizationApiEnum.GetInventorization, { id: String(inventorizationId) })
 
-export const getInventorizationEquipmentsUrl = ({
+export const makeGetInventorizationEquipmentsUrl = ({
   inventorizationId,
 }: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
   generateApiPath(InventorizationApiEnum.GetInventorizationEquipments, {
+    id: String(inventorizationId),
+  })
+
+export const makeUpdateInventorizationEquipmentUrl = ({
+  inventorizationId,
+}: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
+  generateApiPath(InventorizationApiEnum.UpdateInventorizationEquipment, {
     id: String(inventorizationId),
   })

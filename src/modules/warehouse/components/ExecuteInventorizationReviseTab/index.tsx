@@ -3,7 +3,10 @@ import { Col, Flex, Input, Row, Typography } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import React, { FC, useCallback, useState } from 'react'
 
-import { useGetInventorizationEquipments } from 'modules/warehouse/hooks/inventorization'
+import {
+  useGetInventorizationEquipments,
+  useUpdateInventorizationEquipment,
+} from 'modules/warehouse/hooks/inventorization'
 import { GetInventorizationEquipmentsQueryArgs } from 'modules/warehouse/models'
 import { InventorizationRequestArgs } from 'modules/warehouse/types'
 
@@ -36,9 +39,6 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     responsibilityArea: false,
   })
 
-  // const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
-  //   useGetEquipmentCategories(undefined, { skip: true })
-
   const [getInventorizationEquipmentsParams, setGetInventorizationEquipmentsParams] =
     useSetState<GetInventorizationEquipmentsQueryArgs>({
       inventorizationId,
@@ -49,6 +49,8 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     currentData: paginatedInventorizationEquipments,
     isFetching: inventorizationEquipmentsIsFetching,
   } = useGetInventorizationEquipments(getInventorizationEquipmentsParams)
+
+  const [updateInventorizationEquipment] = useUpdateInventorizationEquipment()
 
   const onTablePagination = useCallback(
     (pagination: Parameters<ReviseEquipmentTableProps['onTableChange']>[0]) => {
@@ -62,6 +64,15 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       onTablePagination(pagination)
     },
     [onTablePagination],
+  )
+
+  const onChangeQuantityFact: ReviseEquipmentTableProps['onChangeQuantityFact'] = useDebounceFn(
+    async (value) => {
+      if (value < 0) return
+      await updateInventorizationEquipment({ inventorizationId, quantityFact: value })
+    },
+    [inventorizationId, updateInventorizationEquipment],
+    500,
   )
 
   const onSearch = useDebounceFn<NonNullable<SearchProps['onSearch']>>(
@@ -96,6 +107,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         locations={locations}
         locationsIsLoading={locationsIsFetching}
         onTableChange={onChangeTable}
+        onChangeQuantityFact={onChangeQuantityFact}
       />
     </Flex>
   )

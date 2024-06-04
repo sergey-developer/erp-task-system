@@ -3,3 +3,4 @@ export * from './useGetInventorizations'
 export * from './useCreateInventorization'
 
 export * from './useGetInventorizationEquipments'
+export * from './useUpdateInventorizationEquipment'
