@@ -4,8 +4,11 @@ import pick from 'lodash/pick'
 
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 
+import { undefinedSelectOption } from 'shared/constants/selectField'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
+
+import theme from 'styles/theme'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -36,6 +39,7 @@ const props: ReviseEquipmentTableProps = {
   onTableChange: jest.fn(),
 
   onChangeQuantityFact: jest.fn(),
+  onChangeLocationFact: jest.fn(),
 }
 
 const getContainer = () => screen.getByTestId('revise-equipment-table')
@@ -64,10 +68,25 @@ const getLocationFactFormItem = (id: IdType) =>
 const getLocationFactSelect = (id: IdType) => selectTestUtils.getSelect(getLocationFactFormItem(id))
 
 const openLocationFactSelect = (user: UserEvent, id: IdType) =>
-  selectTestUtils.openSelect(user, testUtils.getLocationFactFormItem(id))
+  selectTestUtils.openSelect(user, getLocationFactFormItem(id))
+
+const setLocationFact = selectTestUtils.clickSelectOption
 
 const getSelectedLocationFact = (id: IdType) =>
   selectTestUtils.getSelectedOption(getLocationFactFormItem(id))
+
+// quantity fact
+const getQuantityFactFormItem = (id: IdType) =>
+  within(getRow(id)).getByTestId('quantity-fact-form-item')
+
+const getQuantityFactInput = (id: IdType) =>
+  within(getQuantityFactFormItem(id)).getByRole('spinbutton')
+
+const setQuantityFact = async (user: UserEvent, id: IdType, value: number) => {
+  const input = getQuantityFactInput(id)
+  await user.type(input, String(value))
+  return input
+}
 
 export const testUtils = {
   getContainer,
@@ -84,7 +103,12 @@ export const testUtils = {
   getLocationFactFormItem,
   getLocationFactSelect,
   openLocationFactSelect,
+  setLocationFact,
   getSelectedLocationFact,
+
+  getQuantityFactFormItem,
+  getQuantityFactInput,
+  setQuantityFact,
 }
 
 describe('Таблица сверки оборудования', () => {
@@ -202,37 +226,51 @@ describe('Таблица сверки оборудования', () => {
   })
 
   describe('Наличие', () => {
-    test('Отображается корректно', () => {
+    test('Отображается и активно', () => {
       render(<ReviseEquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Наличие')
-      const input = within(testUtils.getRow(inventorizationEquipmentListItem.id)).getByDisplayValue(
-        inventorizationEquipmentListItem.quantity.fact!,
-      )
+      const input = testUtils.getQuantityFactInput(inventorizationEquipmentListItem.id)
 
       expect(title).toBeInTheDocument()
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
     })
 
-    test.todo('Можно установить значение')
+    test('Можно установить значение', async () => {
+      const { user } = render(<ReviseEquipmentTable {...props} />)
 
-    // todo: доделать
-    test.skip('Подсвечивается зелёным если значение равно количеству', () => {
+      const value = fakeInteger()
+      const input = testUtils.getQuantityFactInput(inventorizationEquipmentListItem.id)
+      await user.clear(input)
+      await testUtils.setQuantityFact(user, inventorizationEquipmentListItem.id, value)
+
+      expect(input).toHaveDisplayValue(String(value))
+    })
+
+    test('Подсвечивается зелёным если значение равно количеству', () => {
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
         quantity: { plan: 1, fact: 1, diff: fakeInteger() },
       })
 
       render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
 
-      const input = within(testUtils.getRow(inventorizationEquipmentListItem.id)).getByRole(
-        'textbox',
-      )
-
-      expect(input).toBeInTheDocument()
+      const formItem = testUtils.getQuantityFactFormItem(inventorizationEquipmentListItem.id)
+      const inputWrapper = formItem.querySelector('.ant-input-number-in-form-item')
+      expect(inputWrapper).toHaveStyle({ borderColor: theme.colors.green })
     })
 
-    test.todo('Подсвечивается красным если значение не равно количеству')
+    test('Подсвечивается красным если значение не равно количеству', () => {
+      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
+        quantity: { plan: 2, fact: 1, diff: fakeInteger() },
+      })
+
+      render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+
+      const formItem = testUtils.getQuantityFactFormItem(inventorizationEquipmentListItem.id)
+      const inputWrapper = formItem.querySelector('.ant-input-number-in-form-item')
+      expect(inputWrapper).toHaveClass('ant-input-number-status-error')
+    })
   })
 
   describe('Фактическое местонахождение', () => {
@@ -326,10 +364,83 @@ describe('Таблица сверки оборудования', () => {
       expect(selectedOption).toHaveTextContent(locationListItem.title)
     })
 
-    test.todo('Устанавливается значение по умолчанию если его нет и поле isFilled=true')
-    test.todo('Можно установить значение')
-    test.todo('Подсвечивается зелёным если значение равно плановому местонахождению')
-    test.todo('Подсвечивается красным если значение не равно плановому местонахождению')
+    test('Устанавливается значение по умолчанию если его нет и поле isFilled=true', async () => {
+      const locationListItem = catalogsFixtures.locationListItem()
+      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
+        locationFact: null,
+        isFilled: true,
+      })
+
+      const { user } = render(
+        <ReviseEquipmentTable
+          {...props}
+          locations={[locationListItem]}
+          dataSource={[inventorizationEquipmentListItem]}
+        />,
+      )
+
+      await testUtils.openLocationFactSelect(user, inventorizationEquipmentListItem.id)
+      const selectedOption = testUtils.getSelectedLocationFact(inventorizationEquipmentListItem.id)
+
+      expect(selectedOption).toBeInTheDocument()
+      expect(selectedOption).toHaveTextContent(undefinedSelectOption.label as string)
+    })
+
+    test('Можно установить значение', async () => {
+      const locationListItem = catalogsFixtures.locationListItem()
+
+      const { user } = render(<ReviseEquipmentTable {...props} locations={[locationListItem]} />)
+
+      await testUtils.openLocationFactSelect(user, inventorizationEquipmentListItem.id)
+      await testUtils.setLocationFact(user, locationListItem.title)
+      const selectedOption = testUtils.getSelectedLocationFact(inventorizationEquipmentListItem.id)
+
+      expect(selectedOption).toBeInTheDocument()
+      expect(selectedOption).toHaveTextContent(locationListItem.title)
+    })
+
+    test('Подсвечивается зелёным если значение равно плановому местонахождению', async () => {
+      const locationListItem = catalogsFixtures.locationListItem()
+      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
+        locationFact: locationListItem,
+        locationPlan: locationListItem,
+      })
+
+      render(
+        <ReviseEquipmentTable
+          {...props}
+          locations={[locationListItem]}
+          dataSource={[inventorizationEquipmentListItem]}
+        />,
+      )
+
+      const formItem = testUtils.getLocationFactFormItem(inventorizationEquipmentListItem.id)
+      const select = formItem.querySelector('.ant-select')
+
+      expect(select).toHaveStyle({ borderColor: theme.colors.green })
+    })
+
+    test('Подсвечивается красным если значение не равно плановому местонахождению', () => {
+      const locationListItem1 = catalogsFixtures.locationListItem()
+      const locationListItem2 = catalogsFixtures.locationListItem()
+      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
+        locationFact: locationListItem1,
+        locationPlan: locationListItem2,
+      })
+
+      render(
+        <ReviseEquipmentTable
+          {...props}
+          locations={[locationListItem1, locationListItem2]}
+          dataSource={[inventorizationEquipmentListItem]}
+        />,
+      )
+
+      const formItem = testUtils.getLocationFactFormItem(inventorizationEquipmentListItem.id)
+      const select = formItem.querySelector('.ant-select')
+
+      expect(select).toHaveClass('ant-select-status-error')
+    })
   })
 
   describe('Индикатор расхождения', () => {

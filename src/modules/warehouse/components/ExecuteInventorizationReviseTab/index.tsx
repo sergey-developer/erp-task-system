@@ -9,6 +9,7 @@ import {
 } from 'modules/warehouse/hooks/inventorization'
 import { GetInventorizationEquipmentsQueryArgs } from 'modules/warehouse/models'
 
+import { undefinedSelectOption } from 'shared/constants/selectField'
 import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
@@ -74,6 +75,17 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     500,
   )
 
+  const onChangeLocationFact: ReviseEquipmentTableProps['onChangeLocationFact'] = useDebounceFn(
+    async (value) => {
+      await updateInventorizationEquipment({
+        inventorizationId,
+        locationFact: value === undefinedSelectOption.value ? null : value,
+      })
+    },
+    [inventorizationId, updateInventorizationEquipment],
+    500,
+  )
+
   const onSearch = useDebounceFn<NonNullable<SearchProps['onSearch']>>(
     (value) => setGetInventorizationEquipmentsParams({ search: value || undefined }),
     [setGetInventorizationEquipmentsParams],
@@ -107,6 +119,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         locationsIsLoading={locationsIsFetching}
         onTableChange={onChangeTable}
         onChangeQuantityFact={onChangeQuantityFact}
+        onChangeLocationFact={onChangeLocationFact}
       />
     </Flex>
   )

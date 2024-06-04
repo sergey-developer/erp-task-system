@@ -18,13 +18,14 @@ import { InventorizationEquipmentTableItem, ReviseEquipmentTableProps } from './
 
 type GetColumnsArgs = Pick<
   ReviseEquipmentTableProps,
-  'locations' | 'locationsIsLoading' | 'onChangeQuantityFact'
+  'locations' | 'locationsIsLoading' | 'onChangeQuantityFact' | 'onChangeLocationFact'
 >
 
 export const getColumns = ({
   locations,
   locationsIsLoading,
   onChangeQuantityFact,
+  onChangeLocationFact,
 }: GetColumnsArgs): ProColumns<InventorizationEquipmentTableItem>[] => {
   const locationOptions: DefaultOptionType[] = [
     undefinedSelectOption,
@@ -73,6 +74,10 @@ export const getColumns = ({
       dataIndex: 'quantity',
       title: 'Наличие',
       valueType: 'digit',
+
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'quantity-fact-form-item' },
+
       fieldProps: (form, config) => {
         const quantityFact: InventorizationEquipmentTableItem['quantity']['fact'] =
           form.getFieldValue((config.rowKey as unknown as string[]).concat('quantityFact'))
@@ -124,9 +129,9 @@ export const getColumns = ({
           loading: locationsIsLoading,
           options: locationOptions,
           virtual: true,
-          allowClear: true,
           showSearch: true,
           filterOption: filterOptionBy('label'),
+          onChange: onChangeLocationFact,
           disabled:
             locationsIsLoading ||
             !(
