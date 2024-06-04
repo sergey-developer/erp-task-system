@@ -3,6 +3,7 @@ export enum InventorizationApiEnum {
   GetInventorization = '/inventorizations/:id',
   CreateInventorization = '/inventorizations/',
   GetInventorizationEquipments = '/inventorizations/:id/equipments',
+  UpdateInventorizationEquipment = '/inventorizations/equipments/:id',
 }
 
 export enum InventorizationApiTagEnum {
