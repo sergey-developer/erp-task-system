@@ -2,13 +2,19 @@ import { Button, Col, Flex, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useMatchUserPermissions } from 'modules/user/hooks'
 import ExecuteInventorizationReviseTab from 'modules/warehouse/components/ExecuteInventorizationReviseTab'
 import {
   inventorizationStatusDict,
   inventorizationTypeDict,
 } from 'modules/warehouse/constants/inventorization'
+import { useCompleteInventorization } from 'modules/warehouse/hooks/inventorization'
 import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types'
 import {
+  checkInventorizationStatusIsInProgress,
+  checkInventorizationStatusIsNew,
   getInventorizationsPageLink,
   mapInventorizationWarehousesTitles,
 } from 'modules/warehouse/utils/inventorization'
@@ -39,8 +45,21 @@ const ExecuteInventorizationPage: FC = () => {
   const inventorization = location.state as ExecuteInventorizationPageLocationState
   const inventorizationId = Number(params.id!)
 
+  const permissions = useMatchUserPermissions([UserPermissionsEnum.InventorizationUpdate])
+  const executorIsCurrentUser = useIdBelongAuthUser(inventorization?.executor.id)
+
+  const [completeInventorizationMutation, { isLoading: completeInventorizationIsLoading }] =
+    useCompleteInventorization()
+
   const onReturnToInventorizationDetails = () => {
     navigate(getInventorizationsPageLink({ inventorizationId }))
+  }
+
+  const onCompleteInventorization = async () => {
+    try {
+      await completeInventorizationMutation({ inventorizationId }).unwrap()
+      onReturnToInventorizationDetails()
+    } catch {}
   }
 
   return (
@@ -130,7 +149,23 @@ const ExecuteInventorizationPage: FC = () => {
         </Col>
 
         <Col span={4}>
-          <Button onClick={onReturnToInventorizationDetails}>Вернуться в карточку</Button>
+          <Flex vertical gap='small'>
+            {inventorization &&
+              permissions.inventorizationUpdate &&
+              executorIsCurrentUser &&
+              (checkInventorizationStatusIsNew(inventorization.status) ||
+                checkInventorizationStatusIsInProgress(inventorization.status)) && (
+                <Button
+                  type='primary'
+                  onClick={onCompleteInventorization}
+                  loading={completeInventorizationIsLoading}
+                >
+                  Завершить инвентаризацию
+                </Button>
+              )}
+
+            <Button onClick={onReturnToInventorizationDetails}>Вернуться в карточку</Button>
+          </Flex>
         </Col>
       </Row>
 
