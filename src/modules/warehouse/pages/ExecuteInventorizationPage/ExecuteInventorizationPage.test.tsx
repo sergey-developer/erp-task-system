@@ -171,16 +171,11 @@ describe('Страница проведения инвентаризации', (
       mockGetLocationListSuccess()
 
       render(<ExecuteInventorizationPage />, {
-        store: getStoreWithAuth(
-          { userId: inventorizationState.executor.id },
-          undefined,
-          undefined,
-          {
-            queries: {
-              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
-            },
+        store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
+          queries: {
+            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
           },
-        ),
+        }),
       })
 
       const button = testUtils.getCompleteInventorizationButton()
@@ -205,12 +200,9 @@ describe('Страница проведения инвентаризации', (
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
 
         render(<ExecuteInventorizationPage />, {
-          store: getStoreWithAuth(
-            { userId: inventorizationState.executor.id },
-            undefined,
-            undefined,
-            { queries: { ...getUserMeQueryMock(userFixtures.user()) } },
-          ),
+          store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
         })
 
         const button = testUtils.queryCompleteInventorizationButton()
@@ -260,16 +252,11 @@ describe('Страница проведения инвентаризации', (
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
 
         render(<ExecuteInventorizationPage />, {
-          store: getStoreWithAuth(
-            { userId: inventorizationState.executor.id },
-            undefined,
-            undefined,
-            {
-              queries: {
-                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
-              },
+          store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
             },
-          ),
+          }),
         })
 
         const button = testUtils.queryCompleteInventorizationButton()
@@ -308,16 +295,11 @@ describe('Страница проведения инвентаризации', (
         ],
         { initialEntries: [WarehouseRouteEnum.ExecuteInventorization], initialIndex: 0 },
         {
-          store: getStoreWithAuth(
-            { userId: inventorizationState.executor.id },
-            undefined,
-            undefined,
-            {
-              queries: {
-                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
-              },
+          store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
             },
-          ),
+          }),
         },
       )
 

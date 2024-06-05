@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 import ExecuteInventorizationReviseTab from 'modules/warehouse/components/ExecuteInventorizationReviseTab'
 import {
   inventorizationStatusDict,
@@ -45,7 +45,7 @@ const ExecuteInventorizationPage: FC = () => {
   const inventorization = location.state as ExecuteInventorizationPageLocationState
   const inventorizationId = Number(params.id!)
 
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.InventorizationUpdate])
+  const permissions = useUserPermissions([UserPermissionsEnum.InventorizationUpdate])
   const executorIsCurrentUser = useIdBelongAuthUser(inventorization?.executor.id)
 
   const [completeInventorizationMutation, { isLoading: completeInventorizationIsLoading }] =
