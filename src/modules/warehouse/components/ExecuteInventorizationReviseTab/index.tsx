@@ -50,7 +50,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     isFetching: inventorizationEquipmentsIsFetching,
   } = useGetInventorizationEquipments(getInventorizationEquipmentsParams)
 
-  const [updateInventorizationEquipment] = useUpdateInventorizationEquipment()
+  const [updateInventorizationEquipmentMutation] = useUpdateInventorizationEquipment()
 
   const onTablePagination = useCallback(
     (pagination: Parameters<ReviseEquipmentTableProps['onTableChange']>[0]) => {
@@ -69,20 +69,20 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   const onChangeQuantityFact: ReviseEquipmentTableProps['onChangeQuantityFact'] = useDebounceFn(
     async (value) => {
       if (value < 0) return
-      await updateInventorizationEquipment({ inventorizationId, quantityFact: value })
+      await updateInventorizationEquipmentMutation({ inventorizationId, quantityFact: value })
     },
-    [inventorizationId, updateInventorizationEquipment],
+    [inventorizationId, updateInventorizationEquipmentMutation],
     500,
   )
 
   const onChangeLocationFact: ReviseEquipmentTableProps['onChangeLocationFact'] = useDebounceFn(
     async (value) => {
-      await updateInventorizationEquipment({
+      await updateInventorizationEquipmentMutation({
         inventorizationId,
         locationFact: value === undefinedSelectOption.value ? null : value,
       })
     },
-    [inventorizationId, updateInventorizationEquipment],
+    [inventorizationId, updateInventorizationEquipmentMutation],
     500,
   )
 
