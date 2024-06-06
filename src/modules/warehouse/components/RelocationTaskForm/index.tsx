@@ -31,6 +31,10 @@ const { Text } = Typography
 const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   permissions,
   isLoading,
+
+  executorOptions,
+
+  controllerOptions,
   controllerIsRequired,
 
   onUploadImage,
@@ -39,8 +43,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   imageIsDeleting,
   imagesIsLoading,
 
-  userList,
-  userListIsLoading,
+  usersIsLoading,
 
   relocateFromLocationList,
   relocateFromLocationListIsLoading,
@@ -159,10 +162,11 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           rules={onlyRequiredRules}
         >
           <Select
+            dropdownRender={(menu) => <div data-testid='executor-select-dropdown'>{menu}</div>}
             fieldNames={idAndFullNameSelectFieldNames}
-            loading={userListIsLoading}
-            disabled={isLoading || userListIsLoading}
-            options={userList}
+            loading={usersIsLoading}
+            disabled={isLoading || usersIsLoading}
+            options={executorOptions}
             placeholder='Выберите исполнителя'
             showSearch
             filterOption={filterOptionBy('fullName')}
@@ -176,10 +180,11 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           rules={controllerIsRequired ? onlyRequiredRules : undefined}
         >
           <Select
+            dropdownRender={(menu) => <div data-testid='controller-select-dropdown'>{menu}</div>}
             fieldNames={idAndFullNameSelectFieldNames}
-            loading={userListIsLoading}
-            disabled={isLoading || userListIsLoading}
-            options={userList}
+            loading={usersIsLoading}
+            disabled={isLoading || usersIsLoading}
+            options={controllerOptions}
             placeholder='Выберите контролера'
             allowClear
             showSearch

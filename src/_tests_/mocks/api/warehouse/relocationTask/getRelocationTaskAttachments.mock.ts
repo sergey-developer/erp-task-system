@@ -14,25 +14,25 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const getRelocationTaskAttachmentsMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getRelocationTaskAttachmentsUrl(id))
+const getRelocationTaskAttachmentsMockFn = (relocationTaskId: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Get, getRelocationTaskAttachmentsUrl(relocationTaskId))
 
 export const mockGetRelocationTaskAttachmentsSuccess = (
-  id: IdType,
+  relocationTaskId: IdType,
   options?: Partial<ResponseResolverOptions<GetRelocationTaskAttachmentsSuccessResponse>>,
-) => getSuccessMockFn(getRelocationTaskAttachmentsMockFn(id), options)()
+) => getSuccessMockFn(getRelocationTaskAttachmentsMockFn(relocationTaskId), options)()
 
 export const mockGetRelocationTaskAttachmentsNotFoundError = (
-  id: IdType,
+  relocationTaskId: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
-) => getNotFoundErrorMockFn(getRelocationTaskAttachmentsMockFn(id), options)()
+) => getNotFoundErrorMockFn(getRelocationTaskAttachmentsMockFn(relocationTaskId), options)()
 
 export const mockGetRelocationTaskAttachmentsForbiddenError = (
-  id: IdType,
+  relocationTaskId: IdType,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
-) => getForbiddenErrorMockFn(getRelocationTaskAttachmentsMockFn(id), options)()
+) => getForbiddenErrorMockFn(getRelocationTaskAttachmentsMockFn(relocationTaskId), options)()
 
 export const mockGetRelocationTaskAttachmentsServerError = (
-  id: IdType,
+  relocationTaskId: IdType,
   options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(getRelocationTaskAttachmentsMockFn(id), options)()
+) => getServerErrorMockFn(getRelocationTaskAttachmentsMockFn(relocationTaskId), options)()

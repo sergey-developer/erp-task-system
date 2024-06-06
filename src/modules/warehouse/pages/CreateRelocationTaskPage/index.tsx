@@ -119,6 +119,8 @@ const CreateRelocationTaskPage: FC = () => {
   ])
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
+  const executorFormValue = Form.useWatch('executor', form)
+  const controllerFormValue = Form.useWatch('controller', form)
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
@@ -684,6 +686,16 @@ const CreateRelocationTaskPage: FC = () => {
     }
   }, [form, authUser, userList.length])
 
+  const controllerOptions = useMemo(
+    () => userList.filter((usr) => usr.id !== authUser?.id && usr.id !== executorFormValue),
+    [authUser?.id, executorFormValue, userList],
+  )
+
+  const executorOptions = useMemo(
+    () => userList.filter((usr) => usr.id !== controllerFormValue),
+    [controllerFormValue, userList],
+  )
+
   const isRelocationFromMainToMsi =
     relocateFromWarehouse?.type === WarehouseTypeEnum.Main &&
     relocateToWarehouse?.type === WarehouseTypeEnum.Msi
@@ -743,12 +755,13 @@ const CreateRelocationTaskPage: FC = () => {
             <RelocationTaskForm
               permissions={permissions}
               isLoading={createTaskIsLoading}
-              userList={userList}
-              userListIsLoading={userListIsFetching}
+              usersIsLoading={userListIsFetching}
               relocateFromLocationList={relocateFromLocationList}
               relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
               relocateToLocationList={relocateToLocationList}
               relocateToLocationListIsLoading={relocateToLocationListIsFetching}
+              executorOptions={executorOptions}
+              controllerOptions={controllerOptions}
               controllerIsRequired={controllerIsRequired}
               type={selectedType}
               onChangeType={handleChangeType}
@@ -871,20 +884,20 @@ const CreateRelocationTaskPage: FC = () => {
             okText='Добавить'
             isLoading={createEquipmentIsLoading}
             values={createEquipmentFormValues}
-            categoryList={equipmentCategoryList}
-            categoryListIsLoading={equipmentCategoryListIsFetching}
+            categories={equipmentCategoryList}
+            categoriesIsLoading={equipmentCategoryListIsFetching}
             category={selectedCategory}
             onChangeCategory={handleChangeCategory}
-            currencyList={currencyList}
-            currencyListIsLoading={currencyListIsFetching}
-            ownerList={customerList}
-            ownerListIsLoading={customerListIsFetching}
-            workTypeList={workTypeList}
-            workTypeListIsLoading={workTypeListIsFetching}
+            currencies={currencyList}
+            currenciesIsLoading={currencyListIsFetching}
+            owners={customerList}
+            ownersIsLoading={customerListIsFetching}
+            workTypes={workTypeList}
+            workTypesIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
             nomenclatureIsLoading={nomenclatureIsFetching}
-            nomenclatureList={extractPaginationResults(nomenclatureList)}
-            nomenclatureListIsLoading={nomenclatureListIsFetching}
+            nomenclatures={extractPaginationResults(nomenclatureList)}
+            nomenclaturesIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseCreateEquipmentModal}
             onSubmit={createEquipment}
@@ -907,20 +920,20 @@ const CreateRelocationTaskPage: FC = () => {
             okText={SAVE_TEXT}
             initialValues={getEquipmentFormInitialValues(editableEquipmentByFile)}
             values={equipmentByFileFormValues}
-            categoryList={equipmentCategoryList}
-            categoryListIsLoading={equipmentCategoryListIsFetching}
+            categories={equipmentCategoryList}
+            categoriesIsLoading={equipmentCategoryListIsFetching}
             category={selectedCategory}
             onChangeCategory={handleChangeCategory}
-            currencyList={currencyList}
-            currencyListIsLoading={currencyListIsFetching}
-            ownerList={customerList}
-            ownerListIsLoading={customerListIsFetching}
-            workTypeList={workTypeList}
-            workTypeListIsLoading={workTypeListIsFetching}
+            currencies={currencyList}
+            currenciesIsLoading={currencyListIsFetching}
+            owners={customerList}
+            ownersIsLoading={customerListIsFetching}
+            workTypes={workTypeList}
+            workTypesIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
             nomenclatureIsLoading={nomenclatureIsFetching}
-            nomenclatureList={extractPaginationResults(nomenclatureList)}
-            nomenclatureListIsLoading={nomenclatureListIsFetching}
+            nomenclatures={extractPaginationResults(nomenclatureList)}
+            nomenclaturesIsLoading={nomenclatureListIsFetching}
             onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseEditEquipmentByFileModal}
             onSubmit={editEquipmentByFile}

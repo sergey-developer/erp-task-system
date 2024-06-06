@@ -2,7 +2,7 @@ import { UploadProps } from 'antd'
 
 import { RelocationTaskListItemModel } from 'modules/warehouse/models'
 
-export type RelocationTaskListProps = {
+export type RelocationTasksProps = {
   data: RelocationTaskListItemModel[]
   onClick: (id: RelocationTaskListItemModel['id']) => void
   onCreateAttachment: (

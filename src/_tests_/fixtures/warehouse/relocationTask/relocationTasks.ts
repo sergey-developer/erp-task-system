@@ -25,5 +25,4 @@ export const relocationTaskListItem = (): RelocationTaskListItemModel => ({
   documents: [taskFixtures.attachment()],
 })
 
-export const relocationTaskList = (length: number = 1) =>
-  times(length, () => relocationTaskListItem())
+export const relocationTasks = (length: number = 1) => times(length, () => relocationTaskListItem())
