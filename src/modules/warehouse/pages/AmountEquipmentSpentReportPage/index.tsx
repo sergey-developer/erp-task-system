@@ -31,6 +31,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { base64ToBytes } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { extractFileNameFromHeaders } from 'shared/utils/extractFileNameFromHeaders'
 import { downloadFile } from 'shared/utils/file'
 import {
   calculatePaginationParams,
@@ -131,9 +132,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
     const { data } = await getReportXlsx(omit(reportParams, 'offset', 'limit'))
 
     if (data?.value && data?.meta?.response) {
-      const fileName = decodeURIComponent(
-        data.meta.response.headers['content-disposition'].split('filename=')[1],
-      )
+      const fileName = extractFileNameFromHeaders(data.meta.response.headers)
       downloadFile(base64ToBytes(data.value), MimetypeEnum.Xlsx, fileName)
     }
   }
