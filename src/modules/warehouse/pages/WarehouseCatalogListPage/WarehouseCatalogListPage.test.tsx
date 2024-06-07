@@ -5,6 +5,7 @@ import React from 'react'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
+import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetNomenclatureGroupListSuccess,
   mockGetNomenclatureListSuccess,
@@ -20,12 +21,10 @@ import { testUtils as warehouseListPageTestUtils } from '../WarehouseListPage/Wa
 import WarehouseCatalogListPage from './index'
 
 const getContainer = () => screen.getByTestId('warehouse-catalog-list-page')
-
 const getCatalogContainer = () => within(getContainer()).getByTestId('warehouse-catalog-list')
 
 // warehouse link
 const getWarehouseLink = () => linkTestUtils.getLinkIn(getCatalogContainer(), 'Склады')
-
 const queryWarehouseLink = () => linkTestUtils.queryLinkIn(getCatalogContainer(), 'Склады')
 
 const clickWarehouseLink = async (user: UserEvent) =>
@@ -33,7 +32,6 @@ const clickWarehouseLink = async (user: UserEvent) =>
 
 // nomenclature link
 const getNomenclatureLink = () => linkTestUtils.getLinkIn(getCatalogContainer(), 'Номенклатура')
-
 const queryNomenclatureLink = () => linkTestUtils.queryLinkIn(getCatalogContainer(), 'Номенклатура')
 
 const clickNomenclatureLink = async (user: UserEvent) =>
@@ -64,6 +62,11 @@ describe('Страница списка справочников складов'
           },
         ],
         { initialEntries: [WarehouseRouteEnum.WarehouseCatalogs], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       const link = testUtils.getWarehouseLink()
@@ -87,6 +90,11 @@ describe('Страница списка справочников складов'
           },
         ],
         { initialEntries: [WarehouseRouteEnum.WarehouseCatalogs], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.clickWarehouseLink(user)
@@ -130,6 +138,11 @@ describe('Страница списка справочников складов'
           },
         ],
         { initialEntries: [WarehouseRouteEnum.WarehouseCatalogs], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       const link = testUtils.queryNomenclatureLink()
