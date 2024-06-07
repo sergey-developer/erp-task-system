@@ -11,6 +11,7 @@ import { testUtils as inventorizationsPageTestUtils } from 'modules/warehouse/pa
 import RelocationTasksPage from 'modules/warehouse/pages/RelocationTasksPage'
 import { testUtils as relocationTaskListPageTestUtils } from 'modules/warehouse/pages/RelocationTasksPage/RelocationTasksPage.test'
 
+import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetInventorizationsSuccess,
@@ -22,12 +23,10 @@ import { getStoreWithAuth, linkTestUtils, renderInRoute_latest } from '_tests_/u
 import ReserveCatalogListPage from './index'
 
 const getContainer = () => screen.getByTestId('reserve-catalog-list-page')
-
 const getCatalogContainer = () => within(getContainer()).getByTestId('reserve-catalog-list')
 
 // equipment link
 const getEquipmentLink = () => linkTestUtils.getLinkIn(getCatalogContainer(), 'Оборудование')
-
 const queryEquipmentLink = () => linkTestUtils.queryLinkIn(getCatalogContainer(), 'Оборудование')
 
 const clickEquipmentLink = async (user: UserEvent) =>
@@ -106,6 +105,11 @@ describe('Страница списка справочников запасов'
           },
         ],
         { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       const link = testUtils.queryEquipmentLink()
@@ -177,6 +181,11 @@ describe('Страница списка справочников запасов'
           },
         ],
         { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       const link = testUtils.queryRelocationTasksLink()
@@ -248,6 +257,11 @@ describe('Страница списка справочников запасов'
           },
         ],
         { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       const link = testUtils.queryInventorizationsLink()
