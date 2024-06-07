@@ -23,6 +23,6 @@ export type ReviseEquipmentTableProps = SetNonNullable<
   locations: LocationsModel
   locationsIsLoading: boolean
 
-  onChangeQuantityFact: (record: InventorizationEquipmentTableItem, value: number) => Promise<void>
-  onChangeLocationFact: (record: InventorizationEquipmentTableItem, value: IdType) => Promise<void>
+  onChangeQuantityFact: (record: ReviseEquipmentTableItem, value: number) => Promise<void>
+  onChangeLocationFact: (record: ReviseEquipmentTableItem, value: IdType) => Promise<void>
 }
