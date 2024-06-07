@@ -244,8 +244,11 @@ describe('Таблица сверки оборудования', () => {
       const input = testUtils.getQuantityFactInput(inventorizationEquipmentListItem.id)
       await user.clear(input)
       await testUtils.setQuantityFact(user, inventorizationEquipmentListItem.id, value)
+      await user.tab()
 
       expect(input).toHaveDisplayValue(String(value))
+      expect(props.onChangeQuantityFact).toBeCalledTimes(1)
+      expect(props.onChangeQuantityFact).toBeCalledWith(inventorizationEquipmentListItem, value)
     })
 
     test('Подсвечивается зелёным если значение равно количеству', () => {
@@ -399,6 +402,11 @@ describe('Таблица сверки оборудования', () => {
 
       expect(selectedOption).toBeInTheDocument()
       expect(selectedOption).toHaveTextContent(locationListItem.title)
+      expect(props.onChangeLocationFact).toBeCalledTimes(1)
+      expect(props.onChangeLocationFact).toBeCalledWith(
+        inventorizationEquipmentListItem,
+        locationListItem.id,
+      )
     })
 
     test('Подсвечивается зелёным если значение равно плановому местонахождению', async () => {

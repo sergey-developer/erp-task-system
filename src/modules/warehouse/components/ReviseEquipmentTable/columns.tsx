@@ -10,6 +10,7 @@ import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equi
 import { CheckCircleIcon, ExclamationCircleIcon } from 'components/Icons'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
+import { IdType } from 'shared/types/common'
 import { filterOptionBy } from 'shared/utils/common'
 
 import theme from 'styles/theme'
@@ -92,7 +93,7 @@ export const getColumns = ({
               ? { style: { borderColor: theme.colors.green } }
               : { status: 'error' }
             : {}),
-          onBlur: onChangeQuantityFact,
+          onBlur: (value: number) => onChangeQuantityFact(config.entity, value),
         }
       },
       renderText: (dom, entity) => entity.quantity.fact,
@@ -131,7 +132,7 @@ export const getColumns = ({
           virtual: true,
           showSearch: true,
           filterOption: filterOptionBy('label'),
-          onChange: onChangeLocationFact,
+          onChange: (value: IdType) => onChangeLocationFact(config.entity, value),
           disabled:
             locationsIsLoading ||
             !(
