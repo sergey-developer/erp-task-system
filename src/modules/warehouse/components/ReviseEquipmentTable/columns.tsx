@@ -89,9 +89,10 @@ export const getColumns = ({
         )
 
         const locationFact:
-          | InventorizationEquipmentTableItem['locationFact']
-          | NonNullable<InventorizationEquipmentTableItem['locationFact']>['id'] =
-          form.getFieldValue((config.rowKey as unknown as string[]).concat('locationFact'))
+          | ReviseEquipmentTableItem['locationFact']
+          | NonNullable<ReviseEquipmentTableItem['locationFact']>['id'] = form.getFieldValue(
+          (config.rowKey as unknown as string[]).concat('locationFact'),
+        )
 
         return {
           min: 0,
