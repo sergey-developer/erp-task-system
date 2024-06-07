@@ -88,6 +88,11 @@ export const getColumns = ({
           (config.rowKey as unknown as string[]).concat('quantityPlan'),
         )
 
+        const locationFact:
+          | InventorizationEquipmentTableItem['locationFact']
+          | NonNullable<InventorizationEquipmentTableItem['locationFact']>['id'] =
+          form.getFieldValue((config.rowKey as unknown as string[]).concat('locationFact'))
+
         return {
           min: 0,
           ...(isNumber(quantityFact)
@@ -95,7 +100,12 @@ export const getColumns = ({
               ? { style: { borderColor: theme.colors.green } }
               : { status: 'error' }
             : {}),
-          onBlur: (value: number) => onChangeQuantityFact(config.entity, value),
+          onBlur: (value: number) =>
+            onChangeQuantityFact(
+              config.entity,
+              value,
+              isObject(locationFact) ? locationFact.id : locationFact,
+            ),
         }
       },
       renderText: (dom, entity) => entity.quantity.fact,
@@ -136,7 +146,7 @@ export const getColumns = ({
           virtual: true,
           showSearch: true,
           filterOption: filterOptionBy('label'),
-          onChange: (value: IdType) => onChangeLocationFact(config.entity, value),
+          onChange: (value: IdType) => onChangeLocationFact(config.entity, value, quantityFact),
           disabled:
             locationsIsLoading ||
             !(

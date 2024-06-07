@@ -68,11 +68,12 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   )
 
   const onChangeQuantityFact: ReviseEquipmentTableProps['onChangeQuantityFact'] = useDebounceFn(
-    async (record, value) => {
+    async (record, value, locationFact) => {
       if (value < 0) return
       await updateInventorizationEquipmentMutation({
         inventorizationEquipmentId: record.id,
         quantityFact: value,
+        locationFact: locationFact === undefinedSelectOption.value ? null : locationFact,
       })
     },
     [inventorizationId, updateInventorizationEquipmentMutation],
@@ -80,10 +81,11 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   )
 
   const onChangeLocationFact: ReviseEquipmentTableProps['onChangeLocationFact'] = useDebounceFn(
-    async (record, value) => {
+    async (record, value, quantityFact) => {
       await updateInventorizationEquipmentMutation({
         inventorizationEquipmentId: record.id,
         locationFact: value === undefinedSelectOption.value ? null : value,
+        quantityFact,
       })
     },
     [inventorizationId, updateInventorizationEquipmentMutation],

@@ -4,7 +4,7 @@ import { InventorizationEquipmentListItemModel } from 'modules/warehouse/models'
 
 import { LocationsModel } from 'shared/models/catalogs/location'
 import { IdType } from 'shared/types/common'
-import { SetNonNullable } from 'shared/types/utils'
+import { MaybeNull, SetNonNullable } from 'shared/types/utils'
 
 export type ReviseEquipmentTableItem = Pick<
   InventorizationEquipmentListItemModel,
@@ -23,6 +23,15 @@ export type ReviseEquipmentTableProps = SetNonNullable<
   locations: LocationsModel
   locationsIsLoading: boolean
 
-  onChangeQuantityFact: (record: ReviseEquipmentTableItem, value: number) => Promise<void>
-  onChangeLocationFact: (record: ReviseEquipmentTableItem, value: IdType) => Promise<void>
+  onChangeQuantityFact: (
+    record: ReviseEquipmentTableItem,
+    value: number,
+    locationFact: MaybeNull<IdType>,
+  ) => Promise<void>
+
+  onChangeLocationFact: (
+    record: ReviseEquipmentTableItem,
+    value: IdType,
+    quantityFact: ReviseEquipmentTableItem['quantity']['fact'],
+  ) => Promise<void>
 }

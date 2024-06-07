@@ -248,7 +248,11 @@ describe('Таблица сверки оборудования', () => {
 
       expect(input).toHaveDisplayValue(String(value))
       expect(props.onChangeQuantityFact).toBeCalledTimes(1)
-      expect(props.onChangeQuantityFact).toBeCalledWith(inventorizationEquipmentListItem, value)
+      expect(props.onChangeQuantityFact).toBeCalledWith(
+        inventorizationEquipmentListItem,
+        value,
+        inventorizationEquipmentListItem.locationFact!.id,
+      )
     })
 
     test('Подсвечивается зелёным если значение равно количеству', () => {
@@ -406,6 +410,7 @@ describe('Таблица сверки оборудования', () => {
       expect(props.onChangeLocationFact).toBeCalledWith(
         inventorizationEquipmentListItem,
         locationListItem.id,
+        inventorizationEquipmentListItem.quantity.fact,
       )
     })
 
