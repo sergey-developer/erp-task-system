@@ -23,7 +23,15 @@ import {
   mockGetLocationListSuccess,
   mockGetUserListSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
+import {
+  buttonTestUtils,
+  fakeWord,
+  getStoreWithAuth,
+  render,
+  selectTestUtils,
+  setupApiTests,
+} from '_tests_/utils'
 
 import RelocationTaskForm from './index'
 import { RelocationTaskFormProps } from './types'
@@ -316,12 +324,16 @@ describe('Форма создания заявки на перемещение �
 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          mockGetUserListSuccess()
+          mockGetUserListSuccess({ body: [] })
           mockGetLocationListSuccess({ body: [], once: false })
           mockGetEquipmentCatalogListSuccess()
           mockGetCurrencyListSuccess({ body: [] })
 
-          const { user } = render(<CreateRelocationTaskPage />)
+          const { user } = render(<CreateRelocationTaskPage />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.clearDeadlineAtDate(user)
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
@@ -378,12 +390,16 @@ describe('Форма создания заявки на перемещение �
 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          mockGetUserListSuccess()
+          mockGetUserListSuccess({ body: [] })
           mockGetLocationListSuccess({ body: [], once: false })
           mockGetEquipmentCatalogListSuccess()
           mockGetCurrencyListSuccess({ body: [] })
 
-          const { user } = render(<CreateRelocationTaskPage />)
+          const { user } = render(<CreateRelocationTaskPage />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.clearDeadlineAtTime(user)
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
@@ -495,12 +511,16 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
-      mockGetUserListSuccess()
+      mockGetUserListSuccess({ body: [] })
       mockGetLocationListSuccess({ body: catalogsFixtures.locationList(), once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
-      const { user } = render(<CreateRelocationTaskPage />)
+      const { user } = render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
       const error = await testUtils.findRelocateFromError(validationMessages.required)
@@ -591,12 +611,16 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
-      mockGetUserListSuccess()
+      mockGetUserListSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
-      const { user } = render(<CreateRelocationTaskPage />)
+      const { user } = render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
       const error = await testUtils.findExecutorError(validationMessages.required)

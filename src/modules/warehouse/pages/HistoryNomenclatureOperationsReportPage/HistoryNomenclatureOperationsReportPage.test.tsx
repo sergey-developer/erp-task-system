@@ -244,7 +244,7 @@ describe('Страница отчета истории операций по н�
       expect(base64ToBytes).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
-      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, expect.anything())
+      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, 'filename')
     })
   })
 })
