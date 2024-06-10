@@ -10,6 +10,7 @@ export type ReadonlyFieldProps = {
   forceDisplayValue?: boolean
 }
 
+// todo: переиспользовать где возможно
 const ReadonlyField: FC<ReadonlyFieldProps> = ({
   value,
   displayValue = value,

@@ -2,7 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { split } from 'lodash'
 
-import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentImagesTestUtils } from 'modules/attachment/components/AttachmentImages/AttachmentImages.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as taskAttachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
@@ -717,7 +717,7 @@ describe('Информация о заявке о перемещении', () =>
         await attachmentListModalTestUtils.expectLoadingFinished()
 
         relocationEquipmentAttachments.forEach((item) => {
-          const image = attachmentListTestUtils.getIn(modal, item.name)
+          const image = attachmentImagesTestUtils.getImageIn(modal, item.name)
           expect(image).toBeInTheDocument()
         })
       })

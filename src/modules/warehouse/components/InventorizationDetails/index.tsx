@@ -1,6 +1,7 @@
 import { Card, Col, Drawer, DrawerProps, Flex, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import AttachmentList from 'modules/task/components/AttachmentList'
 import {
   inventorizationStatusDict,
   inventorizationTypeDict,
@@ -10,6 +11,7 @@ import { useGetInventorization } from 'modules/warehouse/hooks/inventorization'
 import LoadingArea from 'components/LoadingArea'
 
 import { IdType } from 'shared/types/common'
+import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { cardBodyStyles } from './styles'
@@ -54,6 +56,26 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 </Col>
 
                 <Col span={14}>{inventorizationTypeDict[inventorization.type]}</Col>
+              </Row>
+
+              <Row align='middle'>
+                <Col span={10}>
+                  <Text type='secondary'>Описание:</Text>
+                </Col>
+
+                <Col span={14}>{valueOrHyphen(inventorization.description)}</Col>
+              </Row>
+
+              <Row align='middle'>
+                <Col span={10}>
+                  <Text type='secondary'>Вложения:</Text>
+                </Col>
+
+                <Col span={14}>
+                  {valueOrHyphen(inventorization.attachments, (value) => (
+                    <AttachmentList data={value} />
+                  ))}
+                </Col>
               </Row>
 
               <Row align='middle'>
