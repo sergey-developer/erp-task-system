@@ -37,6 +37,8 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
+import { extractFileNameFromHeaders } from '../../../../shared/utils/extractFileNameFromHeaders'
+
 const EquipmentDetails = React.lazy(() => import('modules/warehouse/components/EquipmentDetails'))
 
 const RelocationTaskDetails = React.lazy(
@@ -57,23 +59,29 @@ const initialFilterValues: HistoryNomenclatureOperationsReportFilterFormFields =
 
 const HistoryNomenclatureOperationsReportPage: FC = () => {
   const [equipmentId, setEquipmentId] = useState<IdType>()
+
   const [equipmentOpened, { setTrue: openEquipment, setFalse: closeEquipment }] = useBoolean(false)
+
   const onOpenEquipment = useDebounceFn((id: IdType) => {
     openEquipment()
     setEquipmentId(id)
   })
+
   const onCloseEquipment = useDebounceFn(() => {
     closeEquipment()
     setEquipmentId(undefined)
   })
 
   const [relocationTaskId, setRelocationTaskId] = useState<IdType>()
+
   const [relocationTaskOpened, { setTrue: openRelocationTask, setFalse: closeRelocationTask }] =
     useBoolean(false)
+
   const onOpenRelocationTask = useDebounceFn((id: IdType) => {
     openRelocationTask()
     setRelocationTaskId(id)
   })
+
   const onCloseRelocationTask = useDebounceFn(() => {
     closeRelocationTask()
     setRelocationTaskId(undefined)
@@ -82,8 +90,10 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
   const [filtersFromStorage, setFiltersInStorage] = useLocalStorageState<
     MaybeUndefined<HistoryNomenclatureOperationsReportFilterFormFields>
   >(ReportsStorageKeysEnum.HistoryNomenclatureOperationsReportFilter)
+
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
+
   const [filterValues, setFilterValues] =
     useState<HistoryNomenclatureOperationsReportFilterFormFields>(filtersFromStorage || {})
 
@@ -129,9 +139,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
       const { data } = await getReportXlsx(omit(reportParams, 'offset', 'limit'))
 
       if (data?.value && data?.meta?.response) {
-        const fileName = decodeURIComponent(
-          data.meta.response.headers['content-disposition'].split('filename=')[1],
-        )
+        const fileName = extractFileNameFromHeaders(data.meta.response.headers)
         downloadFile(base64ToBytes(data.value), MimetypeEnum.Xlsx, fileName)
       }
     } catch {}
