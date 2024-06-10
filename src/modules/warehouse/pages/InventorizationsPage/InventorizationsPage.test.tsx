@@ -292,4 +292,6 @@ describe('Страница списка инвентаризаций', () => {
       expect(details).toBeInTheDocument()
     })
   })
+
+  test.todo('Создание поручения на инвентаризацию')
 })
