@@ -3,8 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import * as reactRouterDom from 'react-router-dom'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
-import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
+import { testUtils as relocationEquipmentSimplifiedEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentSimplifiedEditableTable/RelocationEquipmentSimplifiedEditableTable.test'
 import { getEquipmentListTemplateErrorMsg } from 'modules/warehouse/constants/equipment'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
@@ -13,6 +12,7 @@ import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import taskFixtures from '_tests_/fixtures/task'
+import { useLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -35,7 +35,6 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import { useLocationResult } from '../../../../_tests_/fixtures/useLocation'
 import CreateRelocationTaskSimplifiedPage from './index'
 
 const getContainer = () => screen.getByTestId('create-relocation-task-simplified-page')
@@ -56,6 +55,14 @@ const getSelectedController = (title: string) =>
 
 const expectControllersLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getControllerFormItem())
+
+// equipments to shop block
+const getEquipmentsToShopBlock = () =>
+  within(getContainer()).getByTestId('equipments-to-shop-block')
+
+// equipments to warehouse block
+const getEquipmentsToWarehouseBlock = () =>
+  within(getContainer()).getByTestId('equipments-to-warehouse-block')
 
 // download template button
 const getDownloadTemplateButton = () =>
@@ -94,6 +101,9 @@ export const testUtils = {
   getSelectedController,
   expectControllersLoadingFinished,
 
+  getEquipmentsToShopBlock,
+  getEquipmentsToWarehouseBlock,
+
   getDownloadTemplateButton,
   queryDownloadTemplateButton,
   clickDownloadTemplateButton,
@@ -116,18 +126,6 @@ notificationTestUtils.setupNotifications()
 
 describe('Упрощенная страница создания заявки на перемещение', () => {
   describe('Форма', () => {
-    test('Отображается корректно', () => {
-      mockGetUserListSuccess()
-      mockGetLocationListSuccess()
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
-
-      render(<CreateRelocationTaskSimplifiedPage />)
-
-      const form = relocationTaskFormTestUtils.getContainer()
-      expect(form).toBeInTheDocument()
-    })
-
     test('Контроллером нельзя выбрать исполнителя заявки и текущего пользователя', async () => {
       const locationStateTask = taskFixtures.task()
       jest
@@ -164,17 +162,25 @@ describe('Упрощенная страница создания заявки н
     })
   })
 
-  describe('Перечень оборудования', () => {
+  describe('Перечень оборудования для перемещения со склада', () => {
     test('Отображается корректно', () => {
       mockGetUserListSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
-      render(<CreateRelocationTaskSimplifiedPage />)
+      render(<CreateRelocationTaskSimplifiedPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
-      const title = within(getContainer()).getByText('Перечень оборудования')
-      const table = relocationEquipmentEditableTableTestUtils.getContainer()
+      const equipmentsToShopBlock = testUtils.getEquipmentsToShopBlock()
+      const title = within(equipmentsToShopBlock).getByText(
+        'Перечень оборудования для перемещения со склада',
+      )
+      const table =
+        relocationEquipmentSimplifiedEditableTableTestUtils.getContainerIn(equipmentsToShopBlock)
 
       expect(title).toBeInTheDocument()
       expect(table).toBeInTheDocument()
@@ -208,14 +214,18 @@ describe('Упрощенная страница создания заявки н
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
-      render(<CreateRelocationTaskSimplifiedPage />)
+      render(<CreateRelocationTaskSimplifiedPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       const button = testUtils.queryDownloadTemplateButton()
       expect(button).not.toBeInTheDocument()
     })
 
     test('При успешном запросе отрабатывает функционал скачивания', async () => {
-      mockGetUserListSuccess()
+      mockGetUserListSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -251,7 +261,7 @@ describe('Упрощенная страница создания заявки н
     })
 
     test('При не успешном запросе отображается сообщение об ошибке', async () => {
-      mockGetUserListSuccess()
+      mockGetUserListSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
