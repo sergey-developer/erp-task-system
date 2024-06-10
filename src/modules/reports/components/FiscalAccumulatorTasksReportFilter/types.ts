@@ -3,7 +3,7 @@ import { CustomerListModel } from 'modules/warehouse/models'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { MacroregionListModel } from 'shared/models/macroregion'
+import { MacroregionsModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 
 export type FiscalAccumulatorTasksReportFilterFormFields = Partial<{
@@ -22,7 +22,7 @@ export type FiscalAccumulatorTasksReportFilterProps = Required<
   customersIsLoading: boolean
   onChangeCustomers: (value: IdType[]) => void
 
-  macroregions: MacroregionListModel
+  macroregions: MacroregionsModel
   macroregionsIsLoading: boolean
   onChangeMacroregions: (value: IdType[]) => void
 

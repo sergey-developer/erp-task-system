@@ -7,6 +7,7 @@ import {
 } from 'modules/warehouse/models'
 
 import { CurrencyListItemModel } from 'shared/models/currency'
+import { MacroregionListItemModel } from 'shared/models/macroregion'
 import { FieldsErrors } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -26,6 +27,7 @@ export type CreatedEquipmentListItemModel = {
 
   qrCode: MaybeNull<string>
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
+  macroregion: MaybeNull<Pick<MacroregionListItemModel, 'id' | 'title'>>
   comment: MaybeNull<string>
   usageCounter: MaybeNull<number>
   currency: MaybeNull<Pick<CurrencyListItemModel, 'id' | 'title'>>
@@ -54,6 +56,7 @@ export type CreateEquipmentModel = {
   isRepaired?: boolean
   usageCounter?: number
   owner?: IdType
+  macroregion?: IdType
   comment?: string
   images?: IdType[]
 }
@@ -79,6 +82,7 @@ export type CreateEquipmentsBadRequestErrorResponse = Partial<
       | 'isRepaired'
       | 'usageCounter'
       | 'owner'
+      | 'macroregion'
       | 'purpose'
       | 'comment'
     >

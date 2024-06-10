@@ -13,6 +13,7 @@ import { validationMessages } from 'shared/constants/validation'
 import { MaybeNull } from 'shared/types/utils'
 
 import currencyFixtures from '_tests_/fixtures/currency'
+import macroregionFixtures from '_tests_/fixtures/macroregion'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   buttonTestUtils,
@@ -59,6 +60,10 @@ const props: Readonly<EquipmentFormModalProps> = {
 
   owners: [],
   ownersIsLoading: false,
+  onChangeOwner: jest.fn(),
+
+  macroregions: [],
+  macroregionsIsLoading: false,
 
   workTypes: [],
   workTypesIsLoading: false,
@@ -380,6 +385,28 @@ const openOwnerSelect = async (user: UserEvent) => {
 const expectOwnerLoadingStarted = () => selectTestUtils.expectLoadingStarted(getOwnerFormItem())
 const expectOwnerLoadingFinished = () => selectTestUtils.expectLoadingFinished(getOwnerFormItem())
 
+// macroregion field
+const getMacroregionFormItem = () => within(getContainer()).getByTestId('macroregion-form-item')
+const queryMacroregionFormItem = () => within(getContainer()).queryByTestId('macroregion-form-item')
+const getMacroregionLabel = () => within(getMacroregionFormItem()).getByLabelText('Макрорегион')
+const getMacroregionSelectInput = () => selectTestUtils.getSelect(getMacroregionFormItem())
+const setMacroregion = selectTestUtils.clickSelectOption
+const getMacroregionOption = selectTestUtils.getSelectOption
+const findMacroregionError = (error: string): Promise<HTMLElement> =>
+  within(getMacroregionFormItem()).findByText(error)
+
+const getSelectedMacroregion = (value: string): HTMLElement =>
+  within(getMacroregionFormItem()).getByTitle(value)
+
+const openMacroregionSelect = async (user: UserEvent) => {
+  await selectTestUtils.openSelect(user, getMacroregionFormItem())
+}
+
+const expectMacroregionLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getMacroregionFormItem())
+const expectMacroregionLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getMacroregionFormItem())
+
 // purpose field
 const getPurposeFormItem = () => within(getContainer()).getByTestId('purpose-form-item')
 const getPurposeLabel = () => within(getPurposeFormItem()).getByLabelText('Назначение оборудования')
@@ -568,6 +595,17 @@ export const testUtils = {
   openOwnerSelect,
   expectOwnerLoadingStarted,
   expectOwnerLoadingFinished,
+
+  queryMacroregionFormItem,
+  getMacroregionLabel,
+  getMacroregionSelectInput,
+  setMacroregion,
+  getMacroregionOption,
+  findMacroregionError,
+  getSelectedMacroregion,
+  openMacroregionSelect,
+  expectMacroregionLoadingStarted,
+  expectMacroregionLoadingFinished,
 
   getPurposeLabel,
   getPurposeSelectInput,
@@ -1158,6 +1196,62 @@ describe('Модалка оборудования', () => {
       const notification = await testUtils.findOwnerError(validationMessages.required)
 
       expect(notification).toBeInTheDocument()
+    })
+  })
+
+  describe('Макрорегион', () => {
+    test('Отображается если выбран владелец оборудования', async () => {
+      const owner = warehouseFixtures.customerListItem()
+      const { user } = render(<EquipmentFormModal {...props} ownerList={[owner]} />)
+
+      await testUtils.openOwnerSelect(user)
+      await testUtils.setOwner(user, owner.title)
+      const label = testUtils.getMacroregionLabel()
+      const input = testUtils.getMacroregionSelectInput()
+
+      expect(label).toBeInTheDocument()
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+    })
+
+    test('Не отображается если не выбран владелец оборудования', () => {
+      render(<EquipmentFormModal {...props} />)
+      const formItem = testUtils.queryMacroregionFormItem()
+      expect(formItem).not.toBeInTheDocument()
+    })
+
+    test('Можно установить значение', async () => {
+      const owner = warehouseFixtures.customerListItem()
+      const macroregionListItem = macroregionFixtures.macroregionListItem()
+
+      const { user } = render(
+        <EquipmentFormModal {...props} macroregions={[macroregionListItem]} ownerList={[owner]} />,
+      )
+
+      await testUtils.openOwnerSelect(user)
+      await testUtils.setOwner(user, owner.title)
+
+      await testUtils.openMacroregionSelect(user)
+      await testUtils.setMacroregion(user, macroregionListItem.title)
+      const selectedOption = testUtils.getSelectedMacroregion(macroregionListItem.title)
+
+      expect(selectedOption).toBeInTheDocument()
+    })
+
+    test('Обязательно для заполнения если в поле "владелец оборудования Obermeister" выбрано "Нет"', async () => {
+      const owner = warehouseFixtures.customerListItem()
+
+      const { user } = render(
+        <EquipmentFormModal {...props} ownerList={[owner]} {...addModeProps} />,
+      )
+
+      await testUtils.clickOwnerIsObermeisterField(user, 'Нет')
+      await testUtils.openOwnerSelect(user)
+      await testUtils.setOwner(user, owner.title)
+      await testUtils.clickAddButton(user)
+      const error = await testUtils.findMacroregionError(validationMessages.required)
+
+      expect(error).toBeInTheDocument()
     })
   })
 

@@ -1,1 +1,1 @@
-export * from './getMacroregionList.mock'
+export * from './getMacroregions.mock'

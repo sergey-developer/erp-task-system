@@ -18,9 +18,11 @@ import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { NumberOrString } from 'shared/types/utils'
 import { getYesNoWord } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { makeString } from 'shared/utils/string'
 
 import attachmentFixtures from '_tests_/fixtures/attachments'
 import commonFixtures from '_tests_/fixtures/common'
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetEquipmentAttachmentListForbiddenError,
@@ -524,17 +526,24 @@ describe('Информация об оборудовании', () => {
     })
 
     describe('Владелец оборудования', () => {
-      test('Отображается если нет в списке скрытых', async () => {
+      test('Отображается вместе с макрорегионом если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.getBlock('owner')
         const label = testUtils.getInfoInBlock(block, /Владелец оборудования/)
-        const value = testUtils.getInfoInBlock(block, equipment.owner!.title)
+        const value = testUtils.getInfoInBlock(
+          block,
+          makeString(', ', equipment.owner!.title, equipment.macroregion!.title),
+        )
 
         expect(label).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -545,7 +554,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} equipmentId={props.equipmentId} />)
+        render(<EquipmentDetails {...props} equipmentId={props.equipmentId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.getBlock('owner')
@@ -563,7 +576,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.queryBlock('owner')

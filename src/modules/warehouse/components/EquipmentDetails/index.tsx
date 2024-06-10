@@ -1,7 +1,6 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
 import debounce from 'lodash/debounce'
-import defaultTo from 'lodash/defaultTo'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import AttachmentList from 'modules/attachment/components/AttachmentList'
@@ -37,6 +36,7 @@ import Space from 'components/Space'
 import { DEFAULT_DEBOUNCE_VALUE, SAVE_TEXT } from 'shared/constants/common'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { useGetCurrencyList } from 'shared/hooks/currency'
+import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
@@ -45,6 +45,7 @@ import { formatDate } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
+import { makeString } from 'shared/utils/string'
 
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
@@ -72,6 +73,8 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     UserPermissionsEnum.EquipmentsRead,
     UserPermissionsEnum.RelocationTasksRead,
   ])
+
+  const [selectedOwnerId, setSelectedOwnerId] = useState<IdType>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
   const [
@@ -114,6 +117,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const onCloseEditEquipmentModal = useDebounceFn(() => {
     closeEditEquipmentModal()
     setSelectedNomenclatureId(undefined)
+    setSelectedOwnerId(undefined)
     resetUserChangedNomenclature()
     setSelectedCategory(undefined)
   }, [closeEditEquipmentModal])
@@ -172,6 +176,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         !equipmentAttachmentList?.pagination?.total ||
         (!imageListModalOpened && !editEquipmentModalOpened),
     },
+  )
+
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
+    { customers: [selectedOwnerId!] },
+    { skip: !selectedOwnerId },
   )
 
   const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] = useUpdateEquipment()
@@ -514,7 +523,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                     <Text type='secondary'>Владелец оборудования:</Text>
                   </Col>
 
-                  <Col span={16}>{defaultTo(equipment.owner?.title, 'Obermeister')}</Col>
+                  <Col span={16}>
+                    {equipment.owner
+                      ? makeString(', ', equipment.owner.title, equipment.macroregion?.title)
+                      : 'Obermeister'}
+                  </Col>
                 </Row>
               )}
 
@@ -618,6 +631,9 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             currenciesIsLoading={currencyListIsFetching}
             owners={customerList}
             ownersIsLoading={customerListIsFetching}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypes={workTypeList}
             workTypesIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}

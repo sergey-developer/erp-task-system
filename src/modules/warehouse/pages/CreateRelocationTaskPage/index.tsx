@@ -63,6 +63,7 @@ import Space from 'components/Space'
 import { SAVE_TEXT } from 'shared/constants/common'
 import { useLazyGetLocations } from 'shared/hooks/catalogs/location'
 import { useGetCurrencyList } from 'shared/hooks/currency'
+import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
@@ -124,6 +125,8 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
+  const [selectedOwnerId, setSelectedOwnerId] = useState<IdType>()
+
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
   const [
     userChangedNomenclature,
@@ -165,6 +168,7 @@ const CreateRelocationTaskPage: FC = () => {
     setSelectedNomenclatureId(undefined)
     resetUserChangedNomenclature()
     setSelectedCategory(undefined)
+    setSelectedOwnerId(undefined)
     setActiveEquipmentRow(undefined)
   })
 
@@ -188,6 +192,7 @@ const CreateRelocationTaskPage: FC = () => {
     setEditableEquipmentByFileIndex(undefined)
     setSelectedCategory(undefined)
     setSelectedNomenclatureId(undefined)
+    setSelectedOwnerId(undefined)
     resetUserChangedNomenclature()
     closeEditEquipmentByFileModal()
   })
@@ -334,6 +339,11 @@ const CreateRelocationTaskPage: FC = () => {
     selectedCategory,
     selectedNomenclatureId,
   ])
+
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
+    { customers: [selectedOwnerId!] },
+    { skip: !selectedOwnerId },
+  )
 
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
@@ -484,6 +494,7 @@ const CreateRelocationTaskPage: FC = () => {
           category: eqp.category?.id,
           currency: eqp.currency?.id,
           owner: eqp.owner?.id,
+          macroregion: eqp.macroregion?.id,
           purpose: eqp.purpose?.id,
           images: eqp.images?.length ? extractIdsFromFilesResponse(eqp.images) : undefined,
         })),
@@ -588,6 +599,9 @@ const CreateRelocationTaskPage: FC = () => {
         category: equipmentCategoryList.find((c) => c.id === values.category),
         currency: values.currency ? currencyList.find((c) => c.id === values.currency) : undefined,
         owner: values.owner ? customerList.find((c) => c.id === values.owner) : undefined,
+        macroregion: values.macroregion
+          ? macroregions.find((m) => m.id === values.macroregion)
+          : undefined,
         purpose: workTypeList.find((w) => w.id === values.purpose),
         nomenclature: nomenclature
           ? {
@@ -619,6 +633,7 @@ const CreateRelocationTaskPage: FC = () => {
       equipmentCategoryList,
       form,
       handleCloseEditEquipmentByFileModal,
+      macroregions,
       nomenclature,
       workTypeList,
     ],
@@ -893,6 +908,9 @@ const CreateRelocationTaskPage: FC = () => {
             currenciesIsLoading={currencyListIsFetching}
             owners={customerList}
             ownersIsLoading={customerListIsFetching}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypes={workTypeList}
             workTypesIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}
@@ -929,6 +947,9 @@ const CreateRelocationTaskPage: FC = () => {
             currenciesIsLoading={currencyListIsFetching}
             owners={customerList}
             ownersIsLoading={customerListIsFetching}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypes={workTypeList}
             workTypesIsLoading={workTypeListIsFetching}
             nomenclature={nomenclature}

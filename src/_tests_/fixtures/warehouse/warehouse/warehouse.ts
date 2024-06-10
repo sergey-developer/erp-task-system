@@ -1,6 +1,9 @@
+import pick from 'lodash/pick'
+
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 import { WarehouseModel } from 'modules/warehouse/models'
 
+import macroregionFixtures from '_tests_/fixtures/macroregion'
 import { fakeId, fakeWord } from '_tests_/utils'
 
 export const warehouse = (
@@ -21,4 +24,5 @@ export const warehouse = (
     id: fakeId(),
     title: fakeWord(),
   },
+  macroregions: [pick(macroregionFixtures.macroregionListItem(), 'id', 'title')],
 })
