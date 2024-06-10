@@ -21,6 +21,7 @@ import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
+  mockCreateAttachmentSuccess,
   mockGetCurrencyListSuccess,
   mockGetEquipmentCatalogListSuccess,
   mockGetEquipmentListTemplateServerError,
@@ -31,6 +32,7 @@ import {
   mockGetRelocationTaskAttachmentsSuccess,
   mockGetRelocationTaskSuccess,
   mockGetUserListSuccess,
+  mockGetWarehouseSuccess,
   mockImportEquipmentsByFileBadRequestError,
   mockImportEquipmentsByFileServerError,
   mockImportEquipmentsByFileSuccess,
@@ -61,8 +63,7 @@ const setExcelFile = async (
   file: File = new File([], fakeWord(), { type: 'image/png' }),
 ) => {
   const container = getContainer()
-  // eslint-disable-next-line testing-library/no-node-access
-  const input = container.querySelector('input[type="file"]') as HTMLInputElement
+  const input = within(container).getByTestId('add-from-excel-upload')
   await user.upload(input, file)
   return { input, file }
 }
@@ -554,9 +555,11 @@ describe('Страница редактирования заявки на пер
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
       mockGetEquipmentCatalogListSuccess({ body: [] })
       mockGetCurrencyListSuccess({ body: [] })
+      mockGetRelocationTaskAttachmentsSuccess(relocationTaskId)
+      mockCreateAttachmentSuccess()
 
       const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-      const locationFrom = catalogsFixtures.locationListItem()
+      const locationFrom = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
       mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
 
       mockImportEquipmentsByFileSuccess({ body: [warehouseFixtures.importedEquipmentByFile()] })
@@ -572,10 +575,12 @@ describe('Страница редактирования заявки на пер
       await relocationTaskFormTestUtils.expectRelocateFromLoadingStarted()
       await relocationTaskFormTestUtils.expectRelocateFromLoadingFinished()
       await relocationTaskFormTestUtils.openRelocateFromSelect(user)
+      mockGetWarehouseSuccess(locationFrom.id)
       await relocationTaskFormTestUtils.setRelocateFrom(user, locationFrom.title)
 
       await relocationTaskFormTestUtils.expectRelocateToLoadingFinished()
       await relocationTaskFormTestUtils.openRelocateToSelect(user)
+      mockGetWarehouseSuccess(locationTo.id)
       await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
 
       await testUtils.setExcelFile(user)
