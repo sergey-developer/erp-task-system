@@ -785,6 +785,7 @@ const CreateRelocationTaskPage: FC = () => {
                   <Col>
                     <Space>
                       <Upload
+                        data-testid='add-from-excel-upload'
                         showUploadList={false}
                         beforeUpload={stubFalse}
                         fileList={[]}
