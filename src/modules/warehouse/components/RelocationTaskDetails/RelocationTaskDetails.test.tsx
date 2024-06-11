@@ -4,7 +4,7 @@ import { split } from 'lodash'
 
 import { testUtils as attachmentImagesTestUtils } from 'modules/attachment/components/AttachmentImages/AttachmentImages.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
-import { testUtils as taskAttachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { testUtils as taskAttachmentListTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TaskListPage from 'modules/task/pages/TaskListPage'

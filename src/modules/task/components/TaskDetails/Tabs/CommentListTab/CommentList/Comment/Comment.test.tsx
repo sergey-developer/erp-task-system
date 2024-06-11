@@ -1,9 +1,8 @@
 import { screen, within } from '@testing-library/react'
 
-import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 
 import taskFixtures from '_tests_/fixtures/task'
-
 import { fakeWord, render } from '_tests_/utils'
 
 import Comment, { CommentProps } from './index'
@@ -43,6 +42,6 @@ describe('Комментарий заявки', () => {
 
   test('Отображает вложения', () => {
     render(<Comment {...props} />)
-    expect(attachmentListTestUtils.getContainer()).toBeInTheDocument()
+    expect(attachmentsTestUtils.getContainer()).toBeInTheDocument()
   })
 })

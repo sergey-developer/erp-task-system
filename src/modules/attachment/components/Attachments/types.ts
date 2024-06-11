@@ -12,6 +12,6 @@ export type AttachmentListItem = Pick<AttachmentModel, 'name' | 'size' | 'url'> 
   remove?: () => void
 }
 
-export type AttachmentListProps = {
+export type AttachmentsProps = {
   data: AttachmentListItem[]
 }

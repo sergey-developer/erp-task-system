@@ -1,4 +1,4 @@
-import { AttachmentListItem } from 'modules/task/components/AttachmentList/types'
+import { AttachmentListItem } from 'modules/attachment/components/Attachments/types'
 import { getShortUserName } from 'modules/user/utils'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'

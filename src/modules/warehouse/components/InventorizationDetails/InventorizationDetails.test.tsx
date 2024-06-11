@@ -1,5 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
+import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 import {
   inventorizationStatusDict,
   inventorizationTypeDict,
@@ -58,6 +59,12 @@ describe('Карточка инвентаризации', () => {
     const typeLabel = within(container).getByText('Тип:')
     const typeValue = within(container).getByText(inventorizationTypeDict[inventorization.type])
 
+    const descriptionLabel = within(container).getByText('Описание:')
+    const descriptionValue = within(container).getByText(inventorization.description!)
+
+    const attachmentsLabel = within(container).getByText('Вложения:')
+    const attachmentsValue = attachmentsTestUtils.getContainerIn(container)
+
     const warehousesLabel = within(container).getByText('Склады:')
     const warehousesValue = within(container).getByText(
       inventorization.warehouses.map((w) => w.title).join(', '),
@@ -84,6 +91,12 @@ describe('Карточка инвентаризации', () => {
 
     expect(typeLabel).toBeInTheDocument()
     expect(typeValue).toBeInTheDocument()
+
+    expect(descriptionLabel).toBeInTheDocument()
+    expect(descriptionValue).toBeInTheDocument()
+
+    expect(attachmentsLabel).toBeInTheDocument()
+    expect(attachmentsValue).toBeInTheDocument()
 
     expect(warehousesLabel).toBeInTheDocument()
     expect(warehousesValue).toBeInTheDocument()

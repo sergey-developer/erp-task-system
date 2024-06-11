@@ -1,7 +1,7 @@
 import { Card, Col, Drawer, DrawerProps, Flex, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import AttachmentList from 'modules/task/components/AttachmentList'
+import Attachments from 'modules/attachment/components/Attachments'
 import {
   inventorizationStatusDict,
   inventorizationTypeDict,
@@ -50,7 +50,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
         {inventorization && (
           <Flex vertical gap='middle'>
             <Flex vertical gap='middle'>
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Тип:</Text>
                 </Col>
@@ -58,7 +58,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{inventorizationTypeDict[inventorization.type]}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Описание:</Text>
                 </Col>
@@ -66,19 +66,19 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{valueOrHyphen(inventorization.description)}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Вложения:</Text>
                 </Col>
 
                 <Col span={14}>
                   {valueOrHyphen(inventorization.attachments, (value) => (
-                    <AttachmentList data={value} />
+                    <Attachments data={value} />
                   ))}
                 </Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Склады:</Text>
                 </Col>
@@ -86,7 +86,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{inventorization.warehouses.map((w) => w.title).join(', ')}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Срок выполнения:</Text>
                 </Col>
@@ -94,7 +94,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{formatDate(inventorization.deadlineAt)}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Исполнитель:</Text>
                 </Col>
@@ -102,7 +102,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{inventorization.executor.fullName}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Статус:</Text>
                 </Col>
@@ -110,7 +110,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{inventorizationStatusDict[inventorization.status]}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Автор:</Text>
                 </Col>
@@ -118,7 +118,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{inventorization.createdBy.fullName}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Создано:</Text>
                 </Col>
