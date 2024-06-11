@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentImagesTestUtils } from 'modules/attachment/components/AttachmentImages/AttachmentImages.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
@@ -82,7 +82,7 @@ const queryInfoInBlock = (block: HTMLElement, value: NumberOrString | RegExp) =>
   within(block).queryByText(value)
 
 // equipment images
-const getEquipmentImageList = () => within(getBlock('images')).getByTestId('equipment-image-list')
+const getEquipmentImageList = () => within(getBlock('images')).getByTestId('equipment-images')
 
 const getViewAllImagesButton = () =>
   buttonTestUtils.getButtonIn(getBlock('images'), /Просмотреть все фото/)
@@ -92,7 +92,7 @@ const clickViewAllImagesButton = async (user: UserEvent) => {
 }
 
 const expectEquipmentImageListLoadingFinished = spinnerTestUtils.expectLoadingFinished(
-  'equipment-image-list-loading',
+  'equipment-images-loading',
 )
 
 const expectTotalEquipmentImageListLoadingFinished = () =>
@@ -640,7 +640,7 @@ describe('Информация об оборудовании', () => {
 
         expect(label).toBeInTheDocument()
         attachmentList.forEach((item) => {
-          const image = attachmentListTestUtils.getIn(imagesContainer, item.name)
+          const image = attachmentImagesTestUtils.getImageIn(imagesContainer, item.name)
           expect(image).toBeInTheDocument()
         })
       })
@@ -739,7 +739,7 @@ describe('Информация об оборудовании', () => {
 
           await testUtils.expectTotalEquipmentImageListLoadingFinished()
           attachmentList.forEach((item) => {
-            const image = attachmentListTestUtils.getIn(modal, item.name)
+            const image = attachmentImagesTestUtils.getImageIn(modal, item.name)
             expect(image).toBeInTheDocument()
           })
         })

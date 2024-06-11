@@ -1,10 +1,9 @@
-import { IdType } from 'shared/types/common'
+import { AttachmentModel } from 'modules/attachment/models'
 
-export type RelocationTaskAttachmentModel = {
-  id: IdType
-  name: string
-  size: number
-  url: string
+export type RelocationTaskAttachmentModel = Pick<
+  AttachmentModel,
+  'id' | 'name' | 'size' | 'url'
+> & {
   createdAt: string
   firstName: string
   lastName: string

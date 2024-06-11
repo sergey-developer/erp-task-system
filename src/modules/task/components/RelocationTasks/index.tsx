@@ -1,8 +1,8 @@
 import { Col, Divider, Row, Typography, Upload, UploadProps } from 'antd'
 import React, { FC } from 'react'
 
+import Attachments from 'modules/attachment/components/Attachments'
 import { renderUploadedReadonlyFile } from 'modules/attachment/utils'
-import AttachmentList from 'modules/task/components/AttachmentList'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { makeUserByFullName } from 'modules/user/utils'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
@@ -55,7 +55,7 @@ const RelocationTasks: FC<RelocationTasksProps> = ({ data, onClick, onCreateAtta
                         <UploadButton label='Добавить вложение' />
                       </Upload>
 
-                      {!!item.documents?.length && <AttachmentList data={item.documents} />}
+                      {!!item.documents?.length && <Attachments data={item.documents} />}
                     </Label>
                   </Space>
                 </Col>

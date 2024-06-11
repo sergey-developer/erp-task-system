@@ -4,4 +4,5 @@ export enum AttachmentTypeEnum {
   RelocationTaskCommon = 'RELOCATION_TASK_COMMON',
   RelocationTaskResolution = 'RELOCATION_TASK_RESOLUTION',
   RelocationTaskImage = 'RELOCATION_TASK_IMAGE',
+  InventorizationFile = 'INVENTORIZATION_FILE',
 }

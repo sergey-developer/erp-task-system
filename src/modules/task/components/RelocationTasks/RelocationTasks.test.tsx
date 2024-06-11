@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 import { getRelocateFromToTitle } from 'modules/warehouse/utils/relocationTask'
@@ -107,7 +107,7 @@ describe('Список заявок на перемещение', () => {
       render(<RelocationTasks {...props} />)
 
       const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Документы/)
-      const value = attachmentListTestUtils.getContainerIn(
+      const value = attachmentsTestUtils.getContainerIn(
         testUtils.getListItem(relocationTaskListItem.id),
       )
 

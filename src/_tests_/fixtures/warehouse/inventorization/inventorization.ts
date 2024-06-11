@@ -8,7 +8,7 @@ import { InventorizationModel } from 'modules/warehouse/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeDateString, fakeId } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/utils'
 
 export const inventorization = (
   props?: Pick<InventorizationModel, 'status'>,
@@ -27,4 +27,15 @@ export const inventorization = (
   deadlineAt: fakeDateString(),
   completedAt: fakeDateString(),
   nomenclatures: [pick(warehouseFixtures.nomenclature(), 'id', 'title', 'group')],
+  description: fakeWord(),
+
+  // todo: использовать фикстуру когда она будет готова
+  attachments: [
+    {
+      id: fakeId(),
+      name: fakeWord(),
+      url: fakeUrl(),
+      size: fakeInteger(),
+    },
+  ],
 })

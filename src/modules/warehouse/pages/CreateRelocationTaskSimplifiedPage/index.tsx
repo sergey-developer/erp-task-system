@@ -748,7 +748,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           </Col>
 
           <Col span={24}>
-            <Space $block direction='vertical'>
+            <Space data-testid='equipments-to-shop-block' $block direction='vertical'>
               <Space>
                 <Text strong>Перечень оборудования для перемещения со склада</Text>
 
@@ -803,7 +803,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           </Col>
 
           <Col span={24}>
-            <Space $block direction='vertical'>
+            <Space data-testid='equipments-to-warehouse-block' $block direction='vertical'>
               <Row justify='space-between' align='middle'>
                 <Col>
                   <Space>

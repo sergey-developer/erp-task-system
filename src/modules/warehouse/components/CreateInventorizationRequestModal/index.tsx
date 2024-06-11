@@ -1,18 +1,21 @@
-import { Col, Form, Row, Select } from 'antd'
+import { Col, Form, Input, Row, Select, Upload } from 'antd'
 import sortBy from 'lodash/sortBy'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useMemo } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
+import { renderUploadedFile } from 'modules/attachment/utils'
 import { inventorizationTypeOptions } from 'modules/warehouse/constants/inventorization'
 import { WarehouseListItemModel } from 'modules/warehouse/models'
 
+import UploadButton from 'components/Buttons/UploadButton'
 import DatePicker from 'components/DatePicker'
-import BaseModal from 'components/Modals/BaseModal'
+import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
 import { CREATE_TEXT } from 'shared/constants/common'
+import { filesFormItemProps } from 'shared/constants/form'
 import {
   idAndFullNameSelectFieldNames,
   idAndTitleSelectFieldNames,
@@ -27,6 +30,8 @@ import {
 } from './types'
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 
+const { TextArea } = Input
+
 const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalProps> = ({
   onSubmit,
 
@@ -39,6 +44,11 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
 
   executors,
   executorsIsLoading,
+
+  onCreateAttachment,
+  attachmentIsCreating,
+  onDeleteAttachment,
+  attachmentIsDeleting,
 
   ...props
 }) => {
@@ -66,14 +76,19 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
     [nomenclatures],
   )
 
-  const onFinish = async (values: CreateInventorizationRequestFormFields) => {
-    await onSubmit(values, form.setFields)
+  const onFinish = async ({ description, ...values }: CreateInventorizationRequestFormFields) => {
+    await onSubmit({ ...values, description: description?.trim() }, form.setFields)
   }
 
   const handleChangeWarehouses = (value: IdType[]) => {
     form.setFieldsValue({ nomenclatures: undefined, executor: undefined })
     onChangeWarehouses(value)
   }
+
+  const okButtonProps: BaseModalProps['okButtonProps'] = useMemo(
+    () => ({ disabled: attachmentIsCreating || attachmentIsDeleting }),
+    [attachmentIsCreating, attachmentIsDeleting],
+  )
 
   return (
     <BaseModal
@@ -82,6 +97,7 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
       title='Создать поручение на инвентаризацию'
       okText={CREATE_TEXT}
       onOk={form.submit}
+      okButtonProps={okButtonProps}
     >
       <Form<CreateInventorizationRequestFormFields>
         layout='vertical'
@@ -94,6 +110,27 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
             options={inventorizationTypeOptions}
             disabled={isLoading}
           />
+        </Form.Item>
+
+        <Form.Item data-testid='description-form-item' name='description' label='Описание'>
+          <TextArea placeholder='Укажите описание' disabled={isLoading} />
+        </Form.Item>
+
+        <Form.Item
+          data-testid='attachments-form-item'
+          name='attachments'
+          label='Вложения'
+          {...filesFormItemProps}
+        >
+          <Upload
+            multiple
+            disabled={isLoading || attachmentIsDeleting}
+            customRequest={onCreateAttachment}
+            onRemove={onDeleteAttachment}
+            itemRender={renderUploadedFile}
+          >
+            <UploadButton label='Добавить вложение' disabled={isLoading} />
+          </Upload>
         </Form.Item>
 
         <Form.Item

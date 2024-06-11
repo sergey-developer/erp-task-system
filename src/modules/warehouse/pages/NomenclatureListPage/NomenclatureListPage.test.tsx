@@ -7,6 +7,7 @@ import { testUtils as nomenclatureGroupModalTestUtils } from 'modules/warehouse/
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants/nomenclatureGroup'
 
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCreateNomenclatureGroupBadRequestError,
@@ -114,7 +115,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureListSuccess()
       mockGetNomenclatureGroupListSuccess({ body: [] })
 
-      render(<NomenclatureListPage />)
+      render(<NomenclatureListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
@@ -129,7 +134,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureListSuccess()
       mockGetNomenclatureGroupListSuccess({ body: [] })
 
-      const { user } = render(<NomenclatureListPage />)
+      const { user } = render(<NomenclatureListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
@@ -143,7 +152,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureListSuccess()
       mockGetNomenclatureGroupListSuccess({ body: [] })
 
-      render(<NomenclatureListPage />)
+      render(<NomenclatureListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectGroupListLoadingStarted()
       const field = await testUtils.getSearchField()
@@ -158,7 +171,11 @@ describe('Страница списка номенклатур', () => {
 
       mockGetNomenclatureListSuccess({ once: false })
 
-      const { user } = render(<NomenclatureListPage />)
+      const { user } = render(<NomenclatureListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
@@ -167,8 +184,9 @@ describe('Страница списка номенклатур', () => {
       await testUtils.expectGroupListLoadingStarted()
       await testUtils.expectGroupListLoadingFinished()
 
-      const allGroupListItems = testUtils.getAllGroupListItems()
-      expect(allGroupListItems).toHaveLength(groupList.length)
+      groupList.forEach((group) => {
+        expect(testUtils.getGroupListItem(group.title)).toBeInTheDocument()
+      })
     })
   })
 
@@ -195,7 +213,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureListSuccess()
       mockGetNomenclatureGroupListSuccess({ body: [] })
 
-      render(<NomenclatureListPage />)
+      render(<NomenclatureListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       const button = testUtils.queryAddNomenclatureGroupButton()
       expect(button).not.toBeInTheDocument()
@@ -227,7 +249,6 @@ describe('Страница списка номенклатур', () => {
 
       const createdGroup = warehouseFixtures.nomenclatureGroupListItem()
       mockCreateNomenclatureGroupSuccess({ body: createdGroup })
-
       mockGetNomenclatureListSuccess()
 
       const { user } = render(<NomenclatureListPage />, {
@@ -244,14 +265,10 @@ describe('Страница списка номенклатур', () => {
       await nomenclatureGroupModalTestUtils.setName(user, fakeWord())
       await nomenclatureGroupModalTestUtils.clickAddButton(user)
       await nomenclatureGroupModalTestUtils.expectLoadingFinished()
+      await waitFor(() => expect(modal).not.toBeInTheDocument())
+      const newGroupItem = testUtils.getGroupListItem(createdGroup.title)
 
-      await waitFor(() => {
-        expect(modal).not.toBeInTheDocument()
-      })
-
-      const allGroupListItems = testUtils.getAllGroupListItems()
-      const lastGroupListItem = allGroupListItems[allGroupListItems.length - 1]
-      expect(lastGroupListItem).toHaveTextContent(createdGroup.title)
+      expect(newGroupItem).toBeInTheDocument()
     })
 
     describe('При не успешном запросе', () => {
@@ -371,7 +388,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureListSuccess()
       mockGetNomenclatureGroupListSuccess({ body: [] })
 
-      render(<NomenclatureListPage />)
+      render(<NomenclatureListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       const button = testUtils.queryAddNomenclatureButton()
       expect(button).not.toBeInTheDocument()
@@ -401,7 +422,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureListSuccess()
       mockGetNomenclatureGroupListSuccess({ body: [] })
 
-      render(<NomenclatureListPage />)
+      render(<NomenclatureListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
@@ -416,7 +441,11 @@ describe('Страница списка номенклатур', () => {
       const nomenclatureGroupListItem = warehouseFixtures.nomenclatureGroupListItem()
       mockGetNomenclatureGroupListSuccess({ body: [nomenclatureGroupListItem] })
 
-      const { user } = render(<NomenclatureListPage />)
+      const { user } = render(<NomenclatureListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
@@ -435,7 +464,11 @@ describe('Страница списка номенклатур', () => {
       mockGetNomenclatureGroupListSuccess({ body: groupList })
       mockGetNomenclatureListSuccess()
 
-      render(<NomenclatureListPage />)
+      render(<NomenclatureListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectGroupListLoadingFinished()
 
@@ -450,7 +483,11 @@ describe('Страница списка номенклатур', () => {
     mockGetNomenclatureListSuccess()
     mockGetNomenclatureGroupListSuccess({ body: [] })
 
-    render(<NomenclatureListPage />)
+    render(<NomenclatureListPage />, {
+      store: getStoreWithAuth(undefined, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+      }),
+    })
 
     const table = nomenclatureTableTestUtils.getContainer()
     expect(table).toBeInTheDocument()

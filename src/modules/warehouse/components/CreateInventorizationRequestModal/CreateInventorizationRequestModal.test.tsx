@@ -1,7 +1,32 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { selectTestUtils } from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render, selectTestUtils } from '_tests_/utils'
+
+import CreateInventorizationRequestModal from './index'
+import { CreateInventorizationRequestModalProps } from './types'
+
+const props: CreateInventorizationRequestModalProps = {
+  open: true,
+  confirmLoading: false,
+  onCancel: jest.fn(),
+  onSubmit: jest.fn(),
+
+  warehouses: [],
+  warehousesIsLoading: false,
+  onChangeWarehouses: jest.fn(),
+
+  executors: [],
+  executorsIsLoading: false,
+
+  nomenclatures: [],
+  nomenclaturesIsLoading: false,
+
+  onCreateAttachment: jest.fn(),
+  attachmentIsCreating: false,
+  onDeleteAttachment: jest.fn(),
+  attachmentIsDeleting: false,
+}
 
 const getContainer = () => screen.getByTestId('create-inventorization-request-modal')
 
@@ -47,6 +72,45 @@ const openTypeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, get
 const setType = selectTestUtils.clickSelectOption
 const getSelectedType = () => selectTestUtils.getSelectedOption(getTypeFormItem())
 const findTypeError = async (text: string) => within(getTypeFormItem()).findByText(text)
+
+// description field
+const getDescriptionFormItem = () => within(getContainer()).getByTestId('description-form-item')
+
+const getDescriptionField = () =>
+  within(getDescriptionFormItem()).getByPlaceholderText('Укажите описание')
+
+const setDescription = async (user: UserEvent, value: string) => {
+  const field = getDescriptionField()
+  await user.type(field, value)
+  return field
+}
+
+// attachments
+const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
+
+const getAddAttachmentsButton = () =>
+  buttonTestUtils.getButtonIn(getAttachmentsFormItem(), /Добавить вложение/)
+
+const setAttachment = async (
+  user: UserEvent,
+  file: File = new File([], fakeWord(), { type: 'image/png' }),
+) => {
+  const formItem = getAttachmentsFormItem()
+  const input = within(formItem).getByLabelText('Вложения') as HTMLInputElement
+  await user.upload(input, file)
+  return { input, file }
+}
+
+const getUploadedAttachment = (filename: string) =>
+  within(getAttachmentsFormItem()).getByTitle(filename)
+
+const queryUploadedAttachment = (filename: string) =>
+  within(getAttachmentsFormItem()).queryByTitle(filename)
+
+const clickDeleteAttachmentButton = async (user: UserEvent) => {
+  const button = buttonTestUtils.getButtonIn(getAttachmentsFormItem(), 'delete')
+  await user.click(button)
+}
 
 // executor field
 const getExecutorFormItem = () => within(getContainer()).getByTestId('executor-form-item')
@@ -117,6 +181,15 @@ export const testUtils = {
   findTypeError,
   getSelectedType,
 
+  getDescriptionField,
+  setDescription,
+
+  getAddAttachmentsButton,
+  setAttachment,
+  getUploadedAttachment,
+  queryUploadedAttachment,
+  clickDeleteAttachmentButton,
+
   getNomenclatureSelectInput,
   setNomenclature,
   getSelectedNomenclature,
@@ -149,4 +222,56 @@ export const testUtils = {
   expectExecutorLoadingFinished,
 }
 
-test.todo('create-inventorization-request-modal')
+describe('Модалка создания запроса на инвентаризацию', () => {
+  describe('Поле описания', () => {
+    test('Отображается', () => {
+      render(<CreateInventorizationRequestModal {...props} />)
+      const field = testUtils.getDescriptionField()
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+      const value = fakeWord()
+      const field = await testUtils.setDescription(user, value)
+      expect(field).toHaveDisplayValue(value)
+    })
+  })
+
+  describe('Вложения', () => {
+    test('Кнопка отображается и активна', () => {
+      render(<CreateInventorizationRequestModal {...props} />)
+
+      const button = testUtils.getAddAttachmentsButton()
+
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test('Загрузка работает', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      const { input, file } = await testUtils.setAttachment(user)
+      const uploadedFile = testUtils.getUploadedAttachment(file.name)
+
+      expect(input.files!.item(0)).toBe(file)
+      expect(input.files).toHaveLength(1)
+      expect(uploadedFile).toBeInTheDocument()
+      expect(props.onCreateAttachment).toBeCalledTimes(1)
+      expect(props.onCreateAttachment).toBeCalledWith(expect.anything())
+    })
+
+    test('Удаление работает', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      const { file } = await testUtils.setAttachment(user)
+      await testUtils.clickDeleteAttachmentButton(user)
+      const uploadedFile = testUtils.queryUploadedAttachment(file.name)
+
+      expect(uploadedFile).not.toBeInTheDocument()
+      expect(props.onDeleteAttachment).toBeCalledTimes(1)
+      expect(props.onDeleteAttachment).toBeCalledWith(expect.anything())
+    })
+  })
+})
