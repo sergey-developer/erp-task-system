@@ -3,11 +3,11 @@ import React, { FC } from 'react'
 
 import UploadedAttachment from 'modules/attachment/components/UploadedAttachment'
 
-import { AttachmentListProps } from './types'
+import { AttachmentsProps } from './types'
 
-const AttachmentList: FC<AttachmentListProps> = ({ data }) => {
+const Attachments: FC<AttachmentsProps> = ({ data }) => {
   return (
-    <Space data-testid='attachment-list' direction='vertical'>
+    <Space data-testid='attachments' direction='vertical'>
       {data.map((att, index) => (
         <UploadedAttachment key={att.id || index} {...att} />
       ))}
@@ -15,4 +15,4 @@ const AttachmentList: FC<AttachmentListProps> = ({ data }) => {
   )
 }
 
-export default AttachmentList
+export default Attachments

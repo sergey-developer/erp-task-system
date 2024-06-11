@@ -1,8 +1,8 @@
 import { PaperClipOutlined } from '@ant-design/icons'
-import { Col, Space, Typography } from 'antd'
+import { Col, Flex, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { AttachmentListItem } from 'modules/task/components/AttachmentList/types'
+import { AttachmentListItem } from 'modules/attachment/components/Attachments/types'
 
 import { DeleteIcon } from 'components/Icons'
 
@@ -27,10 +27,10 @@ const UploadedAttachment: FC<UploadedAttachmentProps> = ({
     <Space size='middle'>
       <Space data-testid={`attachment-${name}`} size={4} wrap>
         <Link download={name} href={url} target='_blank'>
-          <Space>
+          <Flex gap='small'>
             <PaperClipOutlined />
             {name}
-          </Space>
+          </Flex>
         </Link>
 
         <Text>

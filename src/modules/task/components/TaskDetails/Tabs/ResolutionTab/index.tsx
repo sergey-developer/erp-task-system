@@ -1,7 +1,7 @@
 import { Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import AttachmentList from 'modules/task/components/AttachmentList'
+import Attachments from 'modules/attachment/components/Attachments'
 import { useTaskType } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
 
@@ -31,7 +31,7 @@ const ResolutionTab: FC<ResolutionTabProps> = ({
       <Space direction='vertical'>
         <Title level={5}>{title}</Title>
 
-        {!!attachments.length && <AttachmentList data={attachments} />}
+        {!!attachments.length && <Attachments data={attachments} />}
       </Space>
 
       {!!techResolution && (
