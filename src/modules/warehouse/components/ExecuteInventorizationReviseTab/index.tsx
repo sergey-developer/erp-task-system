@@ -1,6 +1,7 @@
 import { useSetState } from 'ahooks'
 import { Col, Flex, Input, Row, Typography } from 'antd'
 import { SearchProps } from 'antd/es/input'
+import isNumber from 'lodash/isNumber'
 import React, { FC, useCallback, useState } from 'react'
 
 import {
@@ -68,10 +69,11 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 
   const onChangeQuantityFact: ReviseEquipmentTableProps['onChangeQuantityFact'] = useDebounceFn(
     async (record, value, locationFact) => {
-      if (value < 0) return
+      if (isNumber(value) && value < 0) return
+
       await updateInventorizationEquipmentMutation({
         inventorizationEquipmentId: record.id,
-        quantityFact: value,
+        quantityFact: value || null,
         locationFact: locationFact === undefinedSelectOption.value ? null : locationFact,
         getInventorizationEquipmentsArgs,
       })

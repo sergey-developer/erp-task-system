@@ -38,28 +38,28 @@ export const getColumns = ({
       key: 'title',
       dataIndex: 'equipment',
       title: 'Наименование',
-      fieldProps: { disabled: true },
+      fieldProps: { disabled: true, placeholder: '-' },
       renderText: (dom, entity) => entity.equipment.title,
     },
     {
       key: 'serialNumber',
       dataIndex: 'equipment',
       title: 'Серийный номер',
-      fieldProps: { disabled: true },
+      fieldProps: { disabled: true, placeholder: '-' },
       renderText: (dom, entity) => entity.equipment.serialNumber,
     },
     {
       key: 'inventoryNumber',
       dataIndex: 'equipment',
       title: 'Инвентарный номер',
-      fieldProps: { disabled: true },
+      fieldProps: { disabled: true, placeholder: '-' },
       renderText: (dom, entity) => entity.equipment.inventoryNumber,
     },
     {
       key: 'locationPlan',
       dataIndex: 'locationPlan',
       title: 'Плановое местонахождение',
-      fieldProps: { disabled: true },
+      fieldProps: { disabled: true, placeholder: '-' },
       renderText: (dom, entity) => entity.locationPlan?.title,
     },
     {
@@ -67,7 +67,7 @@ export const getColumns = ({
       dataIndex: 'quantity',
       title: 'Количество',
       valueType: 'digit',
-      fieldProps: { disabled: true },
+      fieldProps: { disabled: true, placeholder: '-' },
       renderText: (dom, entity) => entity.quantity.plan,
     },
     {
@@ -98,12 +98,14 @@ export const getColumns = ({
               ? { style: { borderColor: theme.colors.green } }
               : { status: 'error' }
             : {}),
-          onBlur: (value: number) =>
-            onChangeQuantityFact(
+          onBlur: async () => {
+            await onChangeQuantityFact(
               config.entity,
-              value,
+              quantityFact,
               isObject(locationFact) ? locationFact.id : locationFact,
-            ),
+            )
+          },
+          defaultValue: null,
         }
       },
       renderText: (dom, entity) => entity.quantity.fact,
@@ -140,6 +142,7 @@ export const getColumns = ({
           loading: locationsIsLoading,
           options: locationOptions,
           virtual: true,
+          allowClear: false,
           showSearch: true,
           filterOption: filterOptionBy('label'),
           onChange: (value: IdType) => onChangeLocationFact(config.entity, value, quantityFact),
