@@ -26,6 +26,7 @@ import { EquipmentFormFields, EquipmentFormModalProps } from './types'
 
 const { TextArea } = Input
 
+// todo: разделить форму как в моб.версии
 const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   mode,
 
@@ -260,7 +261,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 />
               </Form.Item>
 
-              {mode === 'create' && categoryIsConsumable && (
+              {categoryIsConsumable && (
                 <Form.Item>
                   <Row gutter={8}>
                     <Col span={12}>
@@ -268,11 +269,12 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         data-testid='quantity-form-item'
                         label='Количество'
                         name='quantity'
+                        rules={mode === 'create' ? onlyRequiredRules : undefined}
                       >
                         <InputNumber
                           min={1}
                           placeholder='Введите количество'
-                          disabled={isLoading}
+                          disabled={mode === 'edit' || isLoading}
                         />
                       </Form.Item>
                     </Col>
@@ -282,30 +284,6 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         {nomenclature?.measurementUnit.title}
                       </Form.Item>
                     </Col>
-                  </Row>
-                </Form.Item>
-              )}
-
-              {mode === 'edit' && (
-                <Form.Item>
-                  <Row gutter={8}>
-                    <Col span={12}>
-                      <Form.Item
-                        data-testid='quantity-form-item'
-                        label='Количество'
-                        name='quantity'
-                      >
-                        <InputNumber disabled />
-                      </Form.Item>
-                    </Col>
-
-                    {categoryIsConsumable && (
-                      <Col span={6}>
-                        <Form.Item data-testid='measurement-unit-form-item' label='Ед.измерения'>
-                          {nomenclature?.measurementUnit.title}
-                        </Form.Item>
-                      </Col>
-                    )}
                   </Row>
                 </Form.Item>
               )}
@@ -381,13 +359,15 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 </Form.Item>
               )}
 
-              <Form.Item
-                data-testid='owner-is-obermeister-form-item'
-                label='Владелец оборудования - Obermeister'
-                name='ownerIsObermeister'
-              >
-                <Radio.Group options={yesNoOptions} />
-              </Form.Item>
+              {!categoryIsConsumable && (
+                <Form.Item
+                  data-testid='owner-is-obermeister-form-item'
+                  label='Владелец оборудования - Obermeister'
+                  name='ownerIsObermeister'
+                >
+                  <Radio.Group options={yesNoOptions} />
+                </Form.Item>
+              )}
 
               {categoryIsConsumable || isTrue(ownerIsObermeisterFormValue) ? null : (
                 <Form.Item
