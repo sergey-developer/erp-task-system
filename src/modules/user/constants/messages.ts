@@ -4,6 +4,8 @@ export const getUserMeErrorMsg = 'Не удалось получить проф�
 
 export const getUsersErrMsg = 'Ошибка получения списка пользователей'
 
+export const getUsersGroupsErrMsg = 'Ошибка получения списка групп пользователей'
+
 export const updateUserMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка обновления пользователя',
 }

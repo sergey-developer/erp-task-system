@@ -5,4 +5,5 @@ export enum UserApiEnum {
   GetUserMeCode = '/users/me/code/',
   UpdateUserStatus = '/users/:id/status',
   GetWarehouseMSI = '/users/:id/mobile-warehouse',
+  GetUsersGroups = '/users/groups/',
 }
