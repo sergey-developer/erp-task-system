@@ -40,7 +40,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     responsibilityArea: false,
   })
 
-  const [getInventorizationEquipmentsParams, setGetInventorizationEquipmentsParams] =
+  const [getInventorizationEquipmentsArgs, setGetInventorizationEquipmentsArgs] =
     useSetState<GetInventorizationEquipmentsQueryArgs>({
       inventorizationId,
       ...getInitialPaginationParams(),
@@ -49,15 +49,15 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   const {
     currentData: paginatedInventorizationEquipments,
     isFetching: inventorizationEquipmentsIsFetching,
-  } = useGetInventorizationEquipments(getInventorizationEquipmentsParams)
+  } = useGetInventorizationEquipments(getInventorizationEquipmentsArgs)
 
   const [updateInventorizationEquipmentMutation] = useUpdateInventorizationEquipment()
 
   const onTablePagination = useCallback(
     (pagination: Parameters<ReviseEquipmentTableProps['onTableChange']>[0]) => {
-      setGetInventorizationEquipmentsParams(calculatePaginationParams(pagination))
+      setGetInventorizationEquipmentsArgs(calculatePaginationParams(pagination))
     },
-    [setGetInventorizationEquipmentsParams],
+    [setGetInventorizationEquipmentsArgs],
   )
 
   const onChangeTable = useCallback<ReviseEquipmentTableProps['onTableChange']>(
@@ -74,9 +74,10 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         inventorizationEquipmentId: record.id,
         quantityFact: value,
         locationFact: locationFact === undefinedSelectOption.value ? null : locationFact,
+        getInventorizationEquipmentsArgs,
       })
     },
-    [inventorizationId, updateInventorizationEquipmentMutation],
+    [getInventorizationEquipmentsArgs, updateInventorizationEquipmentMutation],
     500,
   )
 
@@ -86,15 +87,16 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         inventorizationEquipmentId: record.id,
         locationFact: value === undefinedSelectOption.value ? null : value,
         quantityFact,
+        getInventorizationEquipmentsArgs,
       })
     },
-    [inventorizationId, updateInventorizationEquipmentMutation],
+    [getInventorizationEquipmentsArgs, updateInventorizationEquipmentMutation],
     500,
   )
 
   const onSearch = useDebounceFn<NonNullable<SearchProps['onSearch']>>(
-    (value) => setGetInventorizationEquipmentsParams({ search: value || undefined }),
-    [setGetInventorizationEquipmentsParams],
+    (value) => setGetInventorizationEquipmentsArgs({ search: value || undefined }),
+    [setGetInventorizationEquipmentsArgs],
   )
 
   const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) =>
