@@ -100,7 +100,7 @@ const inventorizationApiService = baseApiService
         UpdateInventorizationEquipmentSuccessResponse,
         UpdateInventorizationEquipmentMutationArgs
       >({
-        query: ({ inventorizationEquipmentId, ...data }) => ({
+        query: ({ inventorizationEquipmentId, getInventorizationEquipmentsArgs, ...data }) => ({
           url: makeUpdateInventorizationEquipmentUrl({ inventorizationEquipmentId }),
           method: HttpMethodEnum.Put,
           data,
