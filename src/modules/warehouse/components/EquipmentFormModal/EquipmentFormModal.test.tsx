@@ -246,6 +246,9 @@ const setQuantity = async (user: UserEvent, value: number) => {
   return field
 }
 
+const findQuantityError = (error: string): Promise<HTMLElement> =>
+  within(getQuantityFormItem()).findByText(error)
+
 // measurement unit field
 const getMeasurementUnitFormItem = () =>
   within(getContainer()).getByTestId('measurement-unit-form-item')
@@ -355,6 +358,9 @@ const setUsageCounter = async (user: UserEvent, value: number) => {
 // owner is obermeister field
 const getOwnerIsObermeisterFormItem = () =>
   within(getContainer()).getByTestId('owner-is-obermeister-form-item')
+
+const queryOwnerIsObermeisterFormItem = () =>
+  within(getContainer()).queryByTestId('owner-is-obermeister-form-item')
 
 const getOwnerIsObermeisterField = (text: string) =>
   radioButtonTestUtils.getRadioButtonIn(getOwnerIsObermeisterFormItem(), text)
@@ -545,6 +551,7 @@ export const testUtils = {
   getQuantityLabel,
   getQuantityField,
   setQuantity,
+  findQuantityError,
 
   queryMeasurementUnitFormItem,
   getMeasurementUnitLabel,
@@ -583,6 +590,7 @@ export const testUtils = {
   setUsageCounter,
 
   getOwnerIsObermeisterField,
+  queryOwnerIsObermeisterFormItem,
   clickOwnerIsObermeisterField,
 
   queryOwnerFormItem,
@@ -896,11 +904,30 @@ describe('Модалка оборудования', () => {
 
         expect(field).toHaveDisplayValue(String(value))
       })
+
+      test('Показывается ошибка если поле не заполнено', async () => {
+        const category = warehouseFixtures.equipmentCategoryListItem({
+          code: EquipmentCategoryEnum.Consumable,
+        })
+
+        const { user } = render(
+          <EquipmentFormModal {...props} category={category} {...addModeProps} />,
+        )
+
+        await testUtils.clickAddButton(user)
+        const error = await testUtils.findQuantityError(validationMessages.required)
+
+        expect(error).toBeInTheDocument()
+      })
     })
 
     describe('Режим редактирования', () => {
-      test('Отображается корректно', () => {
-        render(<EquipmentFormModal {...props} mode='edit' />)
+      test('Отображается если категория расходный материал', () => {
+        const category = warehouseFixtures.equipmentCategoryListItem({
+          code: EquipmentCategoryEnum.Consumable,
+        })
+
+        render(<EquipmentFormModal {...props} category={category} mode='edit' />)
 
         const label = testUtils.getQuantityLabel()
         const field = testUtils.getQuantityField()
@@ -909,6 +936,12 @@ describe('Модалка оборудования', () => {
         expect(field).toBeInTheDocument()
         expect(field).toBeDisabled()
         expect(field).not.toHaveValue()
+      })
+
+      test('Не отображается если категория не расходный материал', () => {
+        render(<EquipmentFormModal {...props} mode='edit' />)
+        const formItem = testUtils.queryQuantityFormItem()
+        expect(formItem).not.toBeInTheDocument()
       })
     })
   })
@@ -1131,6 +1164,39 @@ describe('Модалка оборудования', () => {
       const field = await testUtils.setUsageCounter(user, value)
 
       expect(field).toHaveDisplayValue(String(value))
+    })
+  })
+
+  describe('Владелец оборудования - Obermeister', () => {
+    test('Отображается если категория не расходный материал', () => {
+      render(<EquipmentFormModal {...props} />)
+
+      yesNoOptions.forEach((opt) => {
+        const field = testUtils.getOwnerIsObermeisterField(opt.label as string)
+        expect(field).toBeInTheDocument()
+        expect(field).toBeEnabled()
+        expect(field).not.toBeChecked()
+      })
+    })
+
+    test('Не отображается если категория расходный материал', () => {
+      const category = warehouseFixtures.equipmentCategoryListItem({
+        code: EquipmentCategoryEnum.Consumable,
+      })
+
+      render(<EquipmentFormModal {...props} category={category} />)
+
+      const formItem = testUtils.queryOwnerIsObermeisterFormItem()
+      expect(formItem).not.toBeInTheDocument()
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<EquipmentFormModal {...props} />)
+      const field = await testUtils.clickOwnerIsObermeisterField(
+        user,
+        yesNoOptions[0].label as string,
+      )
+      expect(field).toBeChecked()
     })
   })
 
