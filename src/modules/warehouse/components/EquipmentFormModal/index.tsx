@@ -269,7 +269,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         data-testid='quantity-form-item'
                         label='Количество'
                         name='quantity'
-                        rules={onlyRequiredRules}
+                        rules={mode === 'create' ? onlyRequiredRules : undefined}
                       >
                         <InputNumber
                           min={1}
