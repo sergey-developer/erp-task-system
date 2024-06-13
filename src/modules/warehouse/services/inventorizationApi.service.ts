@@ -105,6 +105,31 @@ const inventorizationApiService = baseApiService
           method: HttpMethodEnum.Put,
           data,
         }),
+        onQueryStarted: async (
+          { inventorizationEquipmentId, getInventorizationEquipmentsArgs },
+          { dispatch, queryFulfilled },
+        ) => {
+          try {
+            const { data: updateResult } = await queryFulfilled
+
+            dispatch(
+              baseApiService.util.updateQueryData(
+                'getInventorizationEquipments' as never,
+                getInventorizationEquipmentsArgs as never,
+                (data: GetInventorizationEquipmentsTransformedSuccessResponse) => {
+                  const inventorizationEquipment = data.results.find(
+                    (item) => item.id === inventorizationEquipmentId,
+                  )
+
+                  if (inventorizationEquipment) {
+                    inventorizationEquipment.isFilled = !!updateResult.isFilled
+                    inventorizationEquipment.hasDiff = !!updateResult.hasDiff
+                  }
+                },
+              ),
+            )
+          } catch {}
+        },
       }),
     }),
   })
