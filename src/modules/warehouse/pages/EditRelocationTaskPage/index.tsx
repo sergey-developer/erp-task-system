@@ -752,24 +752,26 @@ const EditRelocationTaskPage: FC = () => {
       const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
       const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(relocationTask.type)
 
+      const controllerFromExecutors = relocationTask.controller
+        ? relocationTask.executors?.find((e) => e.id === relocationTask.controller?.id)
+        : undefined
+
       form.setFieldsValue({
         type: relocationTask.type,
         deadlineAtDate: moment(relocationTask.deadlineAt),
         deadlineAtTime: moment(relocationTask.deadlineAt),
         relocateFrom: typeIsEnteringBalances ? undefined : relocationTask.relocateFrom?.id,
         relocateTo: typeIsWriteOff ? undefined : relocationTask.relocateTo?.id,
-        executors:
-          relocationTask.executor?.id === relocationTask.controller?.id
-            ? undefined
-            : relocationTask.executor
-            ? [relocationTask.executor.id]
-            : undefined,
-        controller:
-          relocationTask.controller?.id === relocationTask.executor?.id
-            ? undefined
-            : relocationTask.controller?.id === authUser.id
-            ? undefined
-            : relocationTask.controller?.id,
+        executors: controllerFromExecutors
+          ? undefined
+          : relocationTask.executors?.length
+          ? relocationTask.executors.map((e) => e.id)
+          : undefined,
+        controller: controllerFromExecutors
+          ? undefined
+          : relocationTask.controller?.id === authUser.id
+          ? undefined
+          : relocationTask.controller?.id,
         comment: relocationTask?.comment || undefined,
       })
     }

@@ -32,7 +32,7 @@ export type RelocationTaskModel = {
     id: IdType
     title: string
   }>
-  executor: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
+  executors: MaybeNull<Pick<UserModel, 'id' | 'fullName'>[]>
   controller: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   createdBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   comment: MaybeNull<string>
