@@ -343,20 +343,37 @@ describe('Таблица заявок на перемещение оборудо
   })
 
   describe('Исполнитель', () => {
-    test('Отображается корректно', () => {
+    test('Отображается тот кто завершил заявку если он есть', () => {
       render(<RelocationTaskTable {...props} />)
 
       const headCell = testUtils.getHeadCell('Исполнитель')
       const title = testUtils.getColTitle('Исполнитель')
       const value = testUtils.getColValue(
         relocationTaskListItem.id,
-        relocationTaskListItem.executor!.fullName,
+        relocationTaskListItem.completedBy!.fullName,
       )
 
       expect(headCell).toHaveClass(columnWithSortingClass)
       expect(headCell).not.toHaveAttribute(ariaSortAttrName)
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
+    })
+
+    test('Отображаются исполнители если нет того кто завершил заявку', () => {
+      const relocationTaskListItem = warehouseFixtures.relocationTaskListItem({ completedBy: null })
+
+      render(<RelocationTaskTable {...props} dataSource={[relocationTaskListItem]} />)
+
+      const headCell = testUtils.getHeadCell('Исполнитель')
+      const title = testUtils.getColTitle('Исполнитель')
+
+      expect(headCell).toHaveClass(columnWithSortingClass)
+      expect(headCell).not.toHaveAttribute(ariaSortAttrName)
+      expect(title).toBeInTheDocument()
+      relocationTaskListItem.executors.forEach((e) => {
+        const value = testUtils.getColValue(relocationTaskListItem.id, e.fullName)
+        expect(value).toBeInTheDocument()
+      })
     })
 
     test('При клике на заголовок обработчик вызывается корректно', async () => {
