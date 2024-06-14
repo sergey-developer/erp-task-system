@@ -21,7 +21,7 @@ import {
   mockGetEquipmentListTemplateServerError,
   mockGetEquipmentListTemplateSuccess,
   mockGetLocationListSuccess,
-  mockGetUserListSuccess,
+  mockGetUsersSuccess,
   mockGetWarehouseMSISuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
@@ -134,7 +134,7 @@ describe('Упрощенная страница создания заявки н
 
       const taskAssigneeUser = userFixtures.userListItem({ id: locationStateTask.assignee!.id })
       const currentUser = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [taskAssigneeUser, currentUser] })
+      mockGetUsersSuccess({ body: [taskAssigneeUser, currentUser] })
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -164,7 +164,7 @@ describe('Упрощенная страница создания заявки н
 
   describe('Перечень оборудования для перемещения со склада', () => {
     test('Отображается корректно', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -189,7 +189,7 @@ describe('Упрощенная страница создания заявки н
 
   describe('Кнопка скачивания шаблона', () => {
     test('Отображается если есть права', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -209,7 +209,7 @@ describe('Упрощенная страница создания заявки н
     })
 
     test('Не отображается если нет прав', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -225,7 +225,7 @@ describe('Упрощенная страница создания заявки н
     })
 
     test('При успешном запросе отрабатывает функционал скачивания', async () => {
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -261,7 +261,7 @@ describe('Упрощенная страница создания заявки н
     })
 
     test('При не успешном запросе отображается сообщение об ошибке', async () => {
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })

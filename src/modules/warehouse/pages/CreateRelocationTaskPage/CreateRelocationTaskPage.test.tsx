@@ -25,7 +25,7 @@ import {
   mockGetEquipmentListTemplateServerError,
   mockGetEquipmentListTemplateSuccess,
   mockGetLocationListSuccess,
-  mockGetUserListSuccess,
+  mockGetUsersSuccess,
   mockGetWarehouseSuccess,
   mockImportEquipmentsByFileBadRequestError,
   mockImportEquipmentsByFileServerError,
@@ -115,7 +115,7 @@ notificationTestUtils.setupNotifications()
 describe('Страница создания заявки на перемещение', () => {
   describe('Форма', () => {
     test('Отображается', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -134,7 +134,7 @@ describe('Страница создания заявки на перемещен
       const executorUser = userFixtures.userListItem()
       const currentUser = userFixtures.userListItem()
       const otherUser = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [executorUser, currentUser, otherUser] })
+      mockGetUsersSuccess({ body: [executorUser, currentUser, otherUser] })
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
@@ -169,7 +169,7 @@ describe('Страница создания заявки на перемещен
     test('Исполнителем нельзя выбрать контроллера', async () => {
       const controllerUser = userFixtures.userListItem()
       const currentUser = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [controllerUser, currentUser] })
+      mockGetUsersSuccess({ body: [controllerUser, currentUser] })
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
@@ -200,7 +200,7 @@ describe('Страница создания заявки на перемещен
 
   describe('Перечень оборудования', () => {
     test('Отображается', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -221,7 +221,7 @@ describe('Страница создания заявки на перемещен
 
   describe('Кнопка скачивания шаблона', () => {
     test('Отображается если есть права', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -241,7 +241,7 @@ describe('Страница создания заявки на перемещен
     })
 
     test('Не отображается если нет прав', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -257,7 +257,7 @@ describe('Страница создания заявки на перемещен
     })
 
     test('При успешном запросе отрабатывает функционал скачивания', async () => {
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -293,7 +293,7 @@ describe('Страница создания заявки на перемещен
     })
 
     test('При не успешном запросе отображается сообщение об ошибке', async () => {
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -318,7 +318,7 @@ describe('Страница создания заявки на перемещен
 
   describe('Кнопка добавления из Excel', () => {
     test('Отображается если есть права', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -336,7 +336,7 @@ describe('Страница создания заявки на перемещен
     })
 
     test('Не отображается если нет прав', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -352,7 +352,7 @@ describe('Страница создания заявки на перемещен
     })
 
     test('Активна если условия соблюдены', async () => {
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
 
       const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
       const locationFrom = catalogsFixtures.locationListItem()
@@ -383,7 +383,7 @@ describe('Страница создания заявки на перемещен
 
     describe('Не активна если условия соблюдены', () => {
       test('Но не выбран объект выбытия и прибытия', async () => {
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
 
         const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
         const locationFrom = catalogsFixtures.locationListItem()
@@ -405,7 +405,7 @@ describe('Страница создания заявки на перемещен
       })
 
       test('Но не выбран объект прибытия, а объект выбытия выбран', async () => {
-        mockGetUserListSuccess({ body: [] })
+        mockGetUsersSuccess({ body: [] })
 
         const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
         const locationFrom = catalogsFixtures.locationListItem()
@@ -431,7 +431,7 @@ describe('Страница создания заявки на перемещен
       })
 
       test('Но объект прибытия не склад', async () => {
-        mockGetUserListSuccess({ body: [] })
+        mockGetUsersSuccess({ body: [] })
 
         const locationTo = catalogsFixtures.locationListItem()
         const locationFrom = catalogsFixtures.locationListItem()
@@ -462,7 +462,7 @@ describe('Страница создания заявки на перемещен
     })
 
     test('При успешном запросе открывается модалка', async () => {
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
 
       const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
       const locationFrom = catalogsFixtures.locationListItem()
@@ -499,7 +499,7 @@ describe('Страница создания заявки на перемещен
 
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 400', async () => {
-        mockGetUserListSuccess({ body: [] })
+        mockGetUsersSuccess({ body: [] })
 
         const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
         const locationFrom = catalogsFixtures.locationListItem()
@@ -537,7 +537,7 @@ describe('Страница создания заявки на перемещен
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        mockGetUserListSuccess({ body: [] })
+        mockGetUsersSuccess({ body: [] })
 
         const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
         const locationFrom = catalogsFixtures.locationListItem()

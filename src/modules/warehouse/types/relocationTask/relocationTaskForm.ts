@@ -33,7 +33,7 @@ export type RelocationTaskFormFields = {
   deadlineAtTime: Moment
   relocateFrom?: IdType
   relocateTo?: IdType
-  executor: IdType
+  executors: IdType[]
   controller: IdType
   comment?: string
   images?: UploadFile<FileResponse>[]

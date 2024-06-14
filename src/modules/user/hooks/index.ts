@@ -5,6 +5,8 @@ export * from './useOnChangeUserStatus'
 
 export * from './useGetUsers'
 
+export * from './useGetUsersGroups'
+
 export * from './useGetUserMe'
 export * from './useUserMeState'
 

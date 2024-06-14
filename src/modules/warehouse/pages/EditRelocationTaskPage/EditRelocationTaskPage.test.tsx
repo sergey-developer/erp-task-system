@@ -31,7 +31,7 @@ import {
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskAttachmentsSuccess,
   mockGetRelocationTaskSuccess,
-  mockGetUserListSuccess,
+  mockGetUsersSuccess,
   mockGetWarehouseSuccess,
   mockImportEquipmentsByFileBadRequestError,
   mockImportEquipmentsByFileServerError,
@@ -131,7 +131,7 @@ describe('Страница редактирования заявки на пер
     test('Отображается', () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -155,7 +155,7 @@ describe('Страница редактирования заявки на пер
       const executorUser = userFixtures.userListItem()
       const currentUser = userFixtures.userListItem()
       const otherUser = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [executorUser, currentUser, otherUser] })
+      mockGetUsersSuccess({ body: [executorUser, currentUser, otherUser] })
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
@@ -196,7 +196,7 @@ describe('Страница редактирования заявки на пер
 
       const controllerUser = userFixtures.userListItem()
       const currentUser = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [controllerUser, currentUser] })
+      mockGetUsersSuccess({ body: [controllerUser, currentUser] })
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
@@ -233,7 +233,7 @@ describe('Страница редактирования заявки на пер
     test('Отображается', () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -259,7 +259,7 @@ describe('Страница редактирования заявки на пер
     test('Отображается если есть права', () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -284,7 +284,7 @@ describe('Страница редактирования заявки на пер
     test('Не отображается если нет прав', () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -305,7 +305,7 @@ describe('Страница редактирования заявки на пер
     test('При успешном запросе отрабатывает функционал скачивания', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -346,7 +346,7 @@ describe('Страница редактирования заявки на пер
     test('При не успешном запросе отображается сообщение об ошибке', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -376,7 +376,7 @@ describe('Страница редактирования заявки на пер
     test('Отображается если есть права', () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -399,7 +399,7 @@ describe('Страница редактирования заявки на пер
     test('Не отображается если нет прав', () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -420,7 +420,7 @@ describe('Страница редактирования заявки на пер
     test('Активна если условия соблюдены', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
       mockGetRelocationEquipmentListSuccess(relocationTaskId)
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
@@ -456,7 +456,7 @@ describe('Страница редактирования заявки на пер
       test('Но не выбран объект выбытия и прибытия', async () => {
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
         mockGetRelocationEquipmentListSuccess(relocationTaskId)
         mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
@@ -482,7 +482,7 @@ describe('Страница редактирования заявки на пер
       test('Но не выбран объект прибытия, а объект выбытия выбран', async () => {
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-        mockGetUserListSuccess({ body: [] })
+        mockGetUsersSuccess({ body: [] })
         mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
         mockGetRelocationEquipmentListSuccess(relocationTaskId)
         mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
@@ -513,7 +513,7 @@ describe('Страница редактирования заявки на пер
       test('Но объект прибытия не склад', async () => {
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-        mockGetUserListSuccess({ body: [] })
+        mockGetUsersSuccess({ body: [] })
         mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
         mockGetRelocationEquipmentListSuccess(relocationTaskId)
         mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
@@ -549,7 +549,7 @@ describe('Страница редактирования заявки на пер
     test('При успешном запросе открывается модалка', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
       mockGetRelocationEquipmentListSuccess(relocationTaskId)
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
@@ -594,7 +594,7 @@ describe('Страница редактирования заявки на пер
       test('Обрабатывается ошибка 400', async () => {
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-        mockGetUserListSuccess({ body: [] })
+        mockGetUsersSuccess({ body: [] })
         mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
         mockGetRelocationEquipmentListSuccess(relocationTaskId)
         mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
@@ -635,7 +635,7 @@ describe('Страница редактирования заявки на пер
       test('Обрабатывается ошибка 500', async () => {
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
-        mockGetUserListSuccess({ body: [] })
+        mockGetUsersSuccess({ body: [] })
         mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
         mockGetRelocationEquipmentListSuccess(relocationTaskId)
         mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)

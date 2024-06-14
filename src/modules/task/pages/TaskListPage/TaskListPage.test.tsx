@@ -62,7 +62,7 @@ import {
   mockGetTaskCountersSuccess,
   mockGetTaskListSuccess,
   mockGetTaskSuccess,
-  mockGetUserListSuccess,
+  mockGetUsersSuccess,
   mockGetWorkGroupListSuccess,
   mockResolveTaskSuccess,
   mockTakeTaskSuccess,
@@ -292,7 +292,7 @@ describe('Страница реестра заявок', () => {
       mockGetMacroregionsSuccess({ once: false })
 
       const userListItem = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [userListItem], once: false })
+      mockGetUsersSuccess({ body: [userListItem], once: false })
 
       const { user } = render(<TaskListPage />, {
         store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
@@ -664,7 +664,7 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Открывает расширенный фильтр', async () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetTaskListSuccess()
       mockGetTaskCountersSuccess()
       mockGetWorkGroupListSuccess()
@@ -697,7 +697,7 @@ describe('Страница реестра заявок', () => {
         mockGetTaskListSuccess({ once: false })
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess()
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionsSuccess()
         mockGetSupportGroupListSuccess()
@@ -712,7 +712,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Фильтр закрывается', async () => {
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetTaskListSuccess({ once: false })
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess()
@@ -735,7 +735,7 @@ describe('Страница реестра заявок', () => {
       test('Карточка заявки закрывается', async () => {
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionsSuccess()
         mockGetSupportGroupListSuccess()
@@ -764,7 +764,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Быстрый фильтр сбрасывается', async () => {
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetTaskListSuccess({ once: false })
         mockGetTaskCountersSuccess()
         mockGetWorkGroupListSuccess()
@@ -788,7 +788,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Закрывается нажав кнопку закрытия', async () => {
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
@@ -818,7 +818,7 @@ describe('Страница реестра заявок', () => {
         mockGetSupportGroupListSuccess({ once: false })
 
         const userListItem = userFixtures.userListItem()
-        mockGetUserListSuccess({ body: [userListItem], once: false })
+        mockGetUsersSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
@@ -910,7 +910,7 @@ describe('Страница реестра заявок', () => {
 
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetTaskListSuccess({
           body: commonFixtures.paginatedListResponse(taskFixtures.taskList()),
           once: false,
@@ -960,7 +960,7 @@ describe('Страница реестра заявок', () => {
       mockGetSupportGroupListSuccess({ once: false })
 
       const userListItem = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [userListItem], once: false })
+      mockGetUsersSuccess({ body: [userListItem], once: false })
 
       const { user } = render(<TaskListPage />, {
         store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
@@ -1038,7 +1038,7 @@ describe('Страница реестра заявок', () => {
 
     describe('Имеет корректные значения по умолчанию', () => {
       test('Фильтры которые отображаются для любой роли', async () => {
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetWorkGroupListSuccess()
         mockGetTaskCountersSuccess()
         mockGetTaskListSuccess()
@@ -1061,7 +1061,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Фильтр по рабочей группе', async () => {
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetTaskListSuccess()
         mockGetTaskCountersSuccess()
         mockGetCustomerListSuccess()
@@ -1326,7 +1326,7 @@ describe('Страница реестра заявок', () => {
         mockGetMacroregionsSuccess({ once: false })
 
         const userListItem = userFixtures.userListItem()
-        mockGetUserListSuccess({ body: [userListItem], once: false })
+        mockGetUsersSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),
@@ -1461,7 +1461,7 @@ describe('Страница реестра заявок', () => {
         mockGetSupportGroupListSuccess({ once: false })
 
         const userListItem = userFixtures.userListItem()
-        mockGetUserListSuccess({ body: [userListItem], once: false })
+        mockGetUsersSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TaskListPage />, {
           store: getStoreWithAuth({ userRole: UserRoleEnum.SeniorEngineer }),

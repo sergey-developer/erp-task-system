@@ -12,4 +12,4 @@ export const userListItem = (
   fullName: fakeWord(),
 })
 
-export const userList = (length: number = 1): UsersModel => times(length, () => userListItem())
+export const users = (length: number = 1): UsersModel => times(length, () => userListItem())
