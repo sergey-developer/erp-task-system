@@ -3,6 +3,8 @@ import { TableProps } from 'antd'
 import { GetTaskListSortValue, TaskListItemModel } from 'modules/task/models'
 import { UserRoleEnum } from 'modules/user/constants'
 
+import { TableSortProps } from 'shared/types/sort'
+
 export type TaskTableListItem = Pick<
   TaskListItemModel,
   | 'id'
@@ -48,7 +50,7 @@ export type TaskTableProps = Required<
     TableProps<TaskTableListItem>,
     'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'
   >
-> & {
-  sort?: GetTaskListSortValue
-  userRole: UserRoleEnum
-}
+> &
+  TableSortProps<GetTaskListSortValue> & {
+    userRole: UserRoleEnum
+  }

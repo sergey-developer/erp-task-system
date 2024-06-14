@@ -14,6 +14,7 @@ export type RelocationTaskListItemModel = {
   deadlineAt: string
   status: RelocationTaskStatusEnum
   createdAt: string
+  executors: Pick<UserModel, 'id' | 'fullName' | 'phone'>[]
 
   relocateFrom: MaybeNull<{
     id: IdType
@@ -23,9 +24,9 @@ export type RelocationTaskListItemModel = {
     id: IdType
     title: string
   }>
-  executor: MaybeNull<Pick<UserModel, 'id' | 'fullName' | 'phone'>>
   controller: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   createdBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
+  completedBy: MaybeNull<Pick<UserModel, 'id' | 'fullName' | 'phone'>>
   documents: MaybeNull<Pick<TaskAttachmentModel, 'id' | 'name' | 'url' | 'size'>[]>
 }
 

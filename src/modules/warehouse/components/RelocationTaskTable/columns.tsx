@@ -1,14 +1,18 @@
+import { Flex, Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
+import take from 'lodash/take'
 
 import {
   relocationTaskStatusDict,
   relocationTaskTypeDict,
 } from 'modules/warehouse/constants/relocationTask'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { checkLastItem, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { RelocationTaskTableItem } from './types'
+
+const { Text } = Typography
 
 export const columns: ColumnsType<RelocationTaskTableItem> = [
   // {
@@ -43,10 +47,22 @@ export const columns: ColumnsType<RelocationTaskTableItem> = [
     render: (value: RelocationTaskTableItem['relocateTo']) => valueOrHyphen(value?.title),
   },
   {
-    dataIndex: 'executor',
+    dataIndex: 'completedBy',
     title: 'Исполнитель',
     sorter: true,
-    render: (value: RelocationTaskTableItem['executor']) => valueOrHyphen(value?.fullName),
+    render: (value: RelocationTaskTableItem['completedBy'], record) =>
+      value?.fullName || (
+        <Flex vertical gap={4}>
+          {record.executors.length > 2
+            ? take(record.executors, 2).map((e, index, array) => (
+                <Text key={e.id}>
+                  {e.fullName}
+                  {checkLastItem(index, array) ? '...' : ''}
+                </Text>
+              ))
+            : record.executors.map((e) => <Text key={e.id}>{e.fullName}</Text>)}
+        </Flex>
+      ),
   },
   {
     dataIndex: 'controller',
