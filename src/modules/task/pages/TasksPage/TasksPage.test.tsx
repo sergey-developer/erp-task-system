@@ -63,8 +63,8 @@ import {
   mockGetTasksSuccess,
   mockGetTaskSuccess,
   mockGetUserActionsSuccess,
-  mockGetUserListSuccess,
   mockGetWorkGroupsSuccess,
+  mockGetUsersSuccess,
   mockResolveTaskSuccess,
   mockTakeTaskSuccess,
   mockUpdateTaskAssigneeSuccess,
@@ -268,7 +268,7 @@ describe('Страница реестра заявок', () => {
       mockGetMacroregionsSuccess({ once: false })
 
       const userListItem = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [userListItem], once: false })
+      mockGetUsersSuccess({ body: [userListItem], once: false })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -675,7 +675,7 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Открывает расширенный фильтр', async () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
       mockGetWorkGroupsSuccess()
@@ -719,7 +719,7 @@ describe('Страница реестра заявок', () => {
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess()
         mockGetWorkGroupsSuccess()
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionsSuccess()
         mockGetSupportGroupListSuccess()
@@ -738,10 +738,10 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Фильтр закрывается', async () => {
-        mockGetUserListSuccess()
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetWorkGroupsSuccess()
+        mockGetUsersSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionsSuccess()
         mockGetSupportGroupListSuccess()
@@ -763,7 +763,7 @@ describe('Страница реестра заявок', () => {
       test('Карточка заявки закрывается', async () => {
         mockGetWorkGroupsSuccess()
         mockGetTaskCountersSuccess({ once: false })
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionsSuccess()
         mockGetSupportGroupListSuccess()
@@ -797,10 +797,10 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Быстрый фильтр сбрасывается', async () => {
-        mockGetUserListSuccess()
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetWorkGroupsSuccess()
+        mockGetUsersSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionsSuccess()
         mockGetSupportGroupListSuccess()
@@ -827,8 +827,8 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Закрывается нажав кнопку закрытия', async () => {
-        mockGetUserListSuccess()
         mockGetWorkGroupsSuccess()
+        mockGetUsersSuccess()
         mockGetTaskCountersSuccess()
         mockGetTasksSuccess()
         mockGetCustomerListSuccess()
@@ -859,7 +859,7 @@ describe('Страница реестра заявок', () => {
         mockGetSupportGroupListSuccess({ once: false })
 
         const userListItem = userFixtures.userListItem()
-        mockGetUserListSuccess({ body: [userListItem], once: false })
+        mockGetUsersSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -948,7 +948,7 @@ describe('Страница реестра заявок', () => {
 
         mockGetWorkGroupsSuccess()
         mockGetTaskCountersSuccess({ once: false })
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetTasksSuccess({
           body: commonFixtures.paginatedListResponse(taskFixtures.tasks()),
           once: false,
@@ -1000,7 +1000,7 @@ describe('Страница реестра заявок', () => {
       mockGetSupportGroupListSuccess({ once: false })
 
       const userListItem = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [userListItem], once: false })
+      mockGetUsersSuccess({ body: [userListItem], once: false })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -1073,7 +1073,7 @@ describe('Страница реестра заявок', () => {
 
     describe('Имеет корректные значения по умолчанию', () => {
       test('Для отображения не нужны права', async () => {
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetWorkGroupsSuccess()
         mockGetTaskCountersSuccess()
         mockGetTasksSuccess()
@@ -1100,7 +1100,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Фильтр по рабочей группе', async () => {
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetTasksSuccess()
         mockGetTaskCountersSuccess()
         mockGetCustomerListSuccess()
@@ -1397,7 +1397,7 @@ describe('Страница реестра заявок', () => {
         mockGetMacroregionsSuccess({ once: false })
 
         const userListItem = userFixtures.userListItem()
-        mockGetUserListSuccess({ body: [userListItem], once: false })
+        mockGetUsersSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -1539,7 +1539,7 @@ describe('Страница реестра заявок', () => {
         mockGetSupportGroupListSuccess({ once: false })
 
         const userListItem = userFixtures.userListItem()
-        mockGetUserListSuccess({ body: [userListItem], once: false })
+        mockGetUsersSuccess({ body: [userListItem], once: false })
 
         const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
