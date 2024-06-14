@@ -27,7 +27,7 @@ import {
   mockGetRelocationTasksServerError,
   mockGetRelocationTasksSuccess,
   mockGetRelocationTaskSuccess,
-  mockGetUserListSuccess,
+  mockGetUsersSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -218,7 +218,7 @@ describe('Страница списка заявок на перемещение
 
       test('Открывает фильтры', async () => {
         mockGetRelocationTasksSuccess()
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetLocationListSuccess()
 
         const { user } = render(<RelocationTasksPage />, {
@@ -239,7 +239,7 @@ describe('Страница списка заявок на перемещение
     // будет сделано в другом эпике
     test.skip('Устанавливаются корректные значения по умолчанию', async () => {
       mockGetRelocationTasksSuccess()
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
 
       const { user } = render(<RelocationTasksPage />, {
@@ -279,7 +279,7 @@ describe('Страница списка заявок на перемещение
         body: commonFixtures.paginatedListResponse(relocationTasks),
         once: false,
       })
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
 
       const { user } = render(<RelocationTasksPage />, {
@@ -398,7 +398,7 @@ describe('Страница списка заявок на перемещение
 
       test('При клике переходит на страницу создания заявки', async () => {
         mockGetRelocationTasksSuccess()
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetCurrencyListSuccess()
         mockGetLocationListSuccess({ once: false })
 
