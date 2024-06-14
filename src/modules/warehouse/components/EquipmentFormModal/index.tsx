@@ -26,6 +26,7 @@ import { EquipmentFormFields, EquipmentFormModalProps } from './types'
 
 const { TextArea } = Input
 
+// todo: разделить форму как в моб.версии
 const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   mode,
 
@@ -52,6 +53,10 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   owners,
   ownersIsLoading,
+  onChangeOwner,
+
+  macroregions,
+  macroregionsIsLoading,
 
   workTypes,
   workTypesIsLoading,
@@ -68,6 +73,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   ...props
 }) => {
   const [form] = Form.useForm<EquipmentFormFields>()
+  const ownerFormValue = Form.useWatch('owner', form)
   const ownerIsObermeisterFormValue = Form.useWatch('ownerIsObermeister', form)
 
   const nomenclatureSelected = Boolean(nomenclature)
@@ -112,6 +118,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         usageCounter: undefined,
         owner: undefined,
         ownerIsObermeister: undefined,
+        macroregion: undefined,
         purpose: undefined,
         comment: undefined,
       })
@@ -254,7 +261,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 />
               </Form.Item>
 
-              {mode === 'create' && categoryIsConsumable && (
+              {categoryIsConsumable && (
                 <Form.Item>
                   <Row gutter={8}>
                     <Col span={12}>
@@ -262,11 +269,12 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         data-testid='quantity-form-item'
                         label='Количество'
                         name='quantity'
+                        rules={mode === 'create' ? onlyRequiredRules : undefined}
                       >
                         <InputNumber
                           min={1}
                           placeholder='Введите количество'
-                          disabled={isLoading}
+                          disabled={mode === 'edit' || isLoading}
                         />
                       </Form.Item>
                     </Col>
@@ -276,30 +284,6 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         {nomenclature?.measurementUnit.title}
                       </Form.Item>
                     </Col>
-                  </Row>
-                </Form.Item>
-              )}
-
-              {mode === 'edit' && (
-                <Form.Item>
-                  <Row gutter={8}>
-                    <Col span={12}>
-                      <Form.Item
-                        data-testid='quantity-form-item'
-                        label='Количество'
-                        name='quantity'
-                      >
-                        <InputNumber disabled />
-                      </Form.Item>
-                    </Col>
-
-                    {categoryIsConsumable && (
-                      <Col span={6}>
-                        <Form.Item data-testid='measurement-unit-form-item' label='Ед.измерения'>
-                          {nomenclature?.measurementUnit.title}
-                        </Form.Item>
-                      </Col>
-                    )}
                   </Row>
                 </Form.Item>
               )}
@@ -375,13 +359,15 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 </Form.Item>
               )}
 
-              <Form.Item
-                data-testid='owner-is-obermeister-form-item'
-                label='Владелец оборудования - Obermeister'
-                name='ownerIsObermeister'
-              >
-                <Radio.Group options={yesNoOptions} />
-              </Form.Item>
+              {!categoryIsConsumable && (
+                <Form.Item
+                  data-testid='owner-is-obermeister-form-item'
+                  label='Владелец оборудования - Obermeister'
+                  name='ownerIsObermeister'
+                >
+                  <Radio.Group options={yesNoOptions} />
+                </Form.Item>
+              )}
 
               {categoryIsConsumable || isTrue(ownerIsObermeisterFormValue) ? null : (
                 <Form.Item
@@ -396,6 +382,26 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                     options={owners}
                     loading={ownersIsLoading}
                     disabled={isLoading || ownersIsLoading}
+                    showSearch
+                    filterOption={filterOptionBy('title')}
+                    onChange={onChangeOwner}
+                  />
+                </Form.Item>
+              )}
+
+              {ownerFormValue && (
+                <Form.Item
+                  data-testid='macroregion-form-item'
+                  label='Макрорегион'
+                  name='macroregion'
+                  rules={isFalse(ownerIsObermeisterFormValue) ? onlyRequiredRules : undefined}
+                >
+                  <Select
+                    placeholder='Выберите макрорегион'
+                    fieldNames={idAndTitleSelectFieldNames}
+                    options={macroregions}
+                    loading={macroregionsIsLoading}
+                    disabled={isLoading || macroregionsIsLoading}
                     showSearch
                     filterOption={filterOptionBy('title')}
                   />

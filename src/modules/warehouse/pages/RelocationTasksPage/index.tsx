@@ -101,11 +101,11 @@ const RelocationTasksPage: FC = () => {
   const [incidentSearchValue, setIncidentSearchValue] = useState('')
   const [selectedIncidentId, setSelectedIncidentId] = useState<IdType>()
 
-  const [tasksParams, setTasksParams] = useSetState<
+  const [getTasksParams, setGetTasksParams] = useSetState<
     Pick<GetTaskListQueryArgs, 'limit' | 'search' | 'sort'>
   >({ limit: 10, sort: 'created_at' })
 
-  const debouncedSetTasksParams = useDebounceFn(setTasksParams, [], 500)
+  const debouncedSetTasksParams = useDebounceFn(setGetTasksParams, [], 500)
 
   const onChangeIncidentSearchValue = (value: string) => {
     setIncidentSearchValue(value)
@@ -129,7 +129,7 @@ const RelocationTasksPage: FC = () => {
   const onCloseCreateRelocationTaskByIncidentModal = useDebounceFn(() => {
     closeCreateRelocationTaskByIncidentModal()
     setSelectedIncidentId(undefined)
-    setTasksParams({ search: undefined })
+    setGetTasksParams({ search: undefined })
   })
 
   const [
@@ -139,7 +139,7 @@ const RelocationTasksPage: FC = () => {
 
   const onCloseRelocationTask = useDebounceFn(closeRelocationTask)
 
-  const [relocationTasksParams, setRelocationTasksParams] =
+  const [getRelocationTasksParams, setGetRelocationTasksParams] =
     useSetState<GetRelocationTasksQueryArgs>({
       ...initialRelocationTasksParams,
       ordering:
@@ -148,14 +148,14 @@ const RelocationTasksPage: FC = () => {
     })
 
   const { currentData: relocationTasks, isFetching: relocationTasksIsFetching } =
-    useGetRelocationTasks(relocationTasksParams)
+    useGetRelocationTasks(getRelocationTasksParams)
 
   const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers(undefined, {
     skip: !filterOpened,
   })
 
-  const { currentData: tasks, isFetching: tasksIsFetching } = useGetTasks(tasksParams, {
-    skip: !tasksParams.search,
+  const { currentData: tasks, isFetching: tasksIsFetching } = useGetTasks(getTasksParams, {
+    skip: !getTasksParams.search,
   })
 
   const { currentData: task, isFetching: taskIsFetching } = useGetTask(selectedIncidentId!, {
@@ -169,9 +169,9 @@ const RelocationTasksPage: FC = () => {
 
   const onTablePagination = useCallback(
     (pagination: Parameters<RelocationTaskTableProps['onChange']>[0]) => {
-      setRelocationTasksParams(calculatePaginationParams(pagination))
+      setGetRelocationTasksParams(calculatePaginationParams(pagination))
     },
-    [setRelocationTasksParams],
+    [setGetRelocationTasksParams],
   )
 
   const onTableSort = useCallback(
@@ -179,13 +179,13 @@ const RelocationTasksPage: FC = () => {
       if (sorter) {
         const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
         if (field && (field as string) in sortableFieldToSortValues) {
-          setRelocationTasksParams({
+          setGetRelocationTasksParams({
             ordering: order ? getSort(field as SortableField, order) : undefined,
           })
         }
       }
     },
-    [setRelocationTasksParams],
+    [setGetRelocationTasksParams],
   )
 
   const onChangeTable = useCallback<RelocationTaskTableProps['onChange']>(
@@ -208,7 +208,7 @@ const RelocationTasksPage: FC = () => {
 
   const onApplyFilter = (values: RelocationTasksFilterFormFields) => {
     setFilterValues(values)
-    setRelocationTasksParams({
+    setGetRelocationTasksParams({
       ...relocationTaskListFilterToParams(values),
       offset: initialRelocationTasksParams.offset,
     })
@@ -222,7 +222,7 @@ const RelocationTasksPage: FC = () => {
 
   /* Реализуется в другом эпике */
   // const onSearch = (value: string) =>
-  //   setRelocationTasksParams({
+  //   setGetRelocationTasksParams({
   //     search: value || undefined,
   //     offset: initialRelocationTasksParams.offset,
   //   })
@@ -261,7 +261,7 @@ const RelocationTasksPage: FC = () => {
           dataSource={extractPaginationResults(relocationTasks)}
           pagination={extractPaginationParams(relocationTasks)}
           loading={relocationTasksIsFetching}
-          sort={relocationTasksParams.ordering}
+          sort={getRelocationTasksParams.ordering}
           onChange={onChangeTable}
           onRow={onTableRowClick}
         />

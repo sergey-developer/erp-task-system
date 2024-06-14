@@ -65,6 +65,7 @@ import { filesFormItemProps } from 'shared/constants/form'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { useGetCurrencyList } from 'shared/hooks/currency'
+import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
@@ -134,6 +135,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
+  const [selectedOwnerId, setSelectedOwnerId] = useState<IdType>()
+
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
   const [
     userChangedNomenclature,
@@ -171,6 +174,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     setSelectedNomenclatureId(undefined)
     resetUserChangedNomenclature()
     setSelectedCategory(undefined)
+    setSelectedOwnerId(undefined)
     setActiveEquipmentRow(undefined)
   })
 
@@ -194,6 +198,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     setEditableEquipmentByFileIndex(undefined)
     setSelectedCategory(undefined)
     setSelectedNomenclatureId(undefined)
+    setSelectedOwnerId(undefined)
     resetUserChangedNomenclature()
     closeEditEquipmentByFileModal()
   })
@@ -301,6 +306,11 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     selectedNomenclatureId,
     editEquipmentByFileModalOpened,
   ])
+
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
+    { customers: [selectedOwnerId!] },
+    { skip: !selectedOwnerId },
+  )
 
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
@@ -503,6 +513,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           category: eqp.category?.id,
           currency: eqp.currency?.id,
           owner: eqp.owner?.id,
+          macroregion: eqp.macroregion?.id,
           purpose: eqp.purpose?.id,
           images: eqp.images?.length ? extractIdsFromFilesResponse(eqp.images) : undefined,
         })),
@@ -594,6 +605,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         category: equipmentCategories.find((c) => c.id === values.category),
         currency: values.currency ? currencies.find((c) => c.id === values.currency) : undefined,
         owner: values.owner ? customers.find((c) => c.id === values.owner) : undefined,
+        macroregion: values.macroregion
+          ? macroregions.find((m) => m.id === values.macroregion)
+          : undefined,
         purpose: workTypes.find((w) => w.id === values.purpose),
         nomenclature: nomenclature
           ? {
@@ -614,9 +628,10 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       editableEquipmentByFile,
       editableEquipmentByFileIndex,
       equipmentCategories,
+      macroregions,
+      nomenclature,
       form,
       onCloseEditEquipmentByFileModal,
-      nomenclature,
       workTypes,
     ],
   )
@@ -733,7 +748,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           </Col>
 
           <Col span={24}>
-            <Space $block direction='vertical'>
+            <Space data-testid='equipments-to-shop-block' $block direction='vertical'>
               <Space>
                 <Text strong>Перечень оборудования для перемещения со склада</Text>
 
@@ -788,7 +803,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           </Col>
 
           <Col span={24}>
-            <Space $block direction='vertical'>
+            <Space data-testid='equipments-to-warehouse-block' $block direction='vertical'>
               <Row justify='space-between' align='middle'>
                 <Col>
                   <Space>
@@ -900,6 +915,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             currenciesIsLoading={currenciesIsFetching}
             owners={customers}
             ownersIsLoading={customersIsFetching}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypes={workTypes}
             workTypesIsLoading={workTypesIsFetching}
             nomenclature={nomenclature}
@@ -936,6 +954,9 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             currenciesIsLoading={currenciesIsFetching}
             owners={customers}
             ownersIsLoading={customersIsFetching}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
             workTypes={workTypes}
             workTypesIsLoading={workTypesIsFetching}
             nomenclature={nomenclature}
