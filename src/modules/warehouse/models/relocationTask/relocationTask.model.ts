@@ -23,6 +23,7 @@ export type RelocationTaskModel = {
   deadlineAt: string
   status: RelocationTaskStatusEnum
   createdAt: string
+  executors: Pick<UserModel, 'id' | 'fullName'>[]
 
   relocateFrom: MaybeNull<{
     id: IdType
@@ -32,9 +33,9 @@ export type RelocationTaskModel = {
     id: IdType
     title: string
   }>
-  executors: MaybeNull<Pick<UserModel, 'id' | 'fullName'>[]>
   controller: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   createdBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
+  completedBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   comment: MaybeNull<string>
   documents: MaybeNull<RelocationTaskAttachmentModel[]>
   revision: MaybeNull<{

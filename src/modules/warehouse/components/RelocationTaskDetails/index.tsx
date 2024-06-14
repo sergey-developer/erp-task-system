@@ -5,6 +5,7 @@ import {
   Drawer,
   Dropdown,
   DropdownProps,
+  Flex,
   Input,
   MenuProps,
   Row,
@@ -477,10 +478,17 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
                   <ReadonlyField
                     data-testid='executor'
+                    align='top'
                     label='Исполнитель:'
-                    value={valueOrHyphen(relocationTask.executors, (executors) =>
-                      executors.map((e) => e.fullName),
-                    )}
+                    value={
+                      relocationTask?.completedBy?.fullName || (
+                        <Flex vertical gap={4}>
+                          {relocationTask?.executors.map((e) => (
+                            <Text key={e.id}>{e.fullName}</Text>
+                          ))}
+                        </Flex>
+                      )
+                    }
                   />
 
                   <ReadonlyField
