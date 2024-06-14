@@ -42,6 +42,7 @@ import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCancelRelocationTaskBadRequestError,
@@ -101,7 +102,6 @@ import {
   spinnerTestUtils,
 } from '_tests_/utils'
 
-import userFixtures from '../../../../_tests_/fixtures/user'
 import RelocationTaskDetails from './index'
 import { RelocationTaskDetailsProps } from './types'
 
@@ -342,20 +342,48 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Исполнитель отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
-      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+    describe('Исполнитель', () => {
+      test('Отображается кто завершил заявку если он есть, вместо исполнителей', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+        await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('executor', /Исполнитель/)
-      const value = testUtils.getBlockInfo('executor', relocationTask.executors![0].fullName)
+        const label = testUtils.getBlockInfo('executor', /Исполнитель/)
+        const value = testUtils.getBlockInfo('executor', relocationTask.completedBy!.fullName)
 
-      expect(label).toBeInTheDocument()
-      expect(value).toBeInTheDocument()
+        expect(label).toBeInTheDocument()
+        expect(value).toBeInTheDocument()
+      })
+
+      test('Отображаются исполнители если нет того кто завершил заявку', async () => {
+        const relocationTask = warehouseFixtures.relocationTask({ completedBy: null })
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
+
+        await testUtils.expectRelocationTaskLoadingFinished()
+
+        const label = testUtils.getBlockInfo('executor', /Исполнитель/)
+
+        expect(label).toBeInTheDocument()
+        relocationTask.executors.forEach((e) => {
+          const value = testUtils.getBlockInfo('executor', e.fullName)
+          expect(value).toBeInTheDocument()
+        })
+      })
     })
 
     test('Контролер отображается', async () => {
