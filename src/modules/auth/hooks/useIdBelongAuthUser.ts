@@ -7,24 +7,22 @@ import { isObjectArrayWithId } from 'shared/utils/array/isObjectArrayWithId'
 
 import { useAuthUser } from './useAuthUser'
 
-/**
- * Хук проверяет - принадлежит ли id авторизованному пользователю
- */
+/** Хук проверяет - принадлежит ли id авторизованному пользователю */
 
 export const useIdBelongAuthUser = <T extends IdType | IdType[] | { id: IdType }[]>(
-  id: Nullable<T>,
+  value: Nullable<T>,
 ): boolean => {
   const authUser = useAuthUser()
 
-  return authUser && !!id
-    ? Array.isArray(id)
-      ? isNumberArray(id)
-        ? id.includes(authUser.id)
-        : isObjectArrayWithId(id)
-        ? id.some((obj) => obj.id === authUser.id)
+  return authUser && !!value
+    ? Array.isArray(value)
+      ? isNumberArray(value)
+        ? value.includes(authUser.id)
+        : isObjectArrayWithId(value)
+        ? value.some((obj) => obj.id === authUser.id)
         : false
-      : isNumber(id)
-      ? authUser.id === id
+      : isNumber(value)
+      ? authUser.id === value
       : false
     : false
 }

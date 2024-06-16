@@ -210,7 +210,8 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   ] = useUpdateExternalRelocation()
 
   const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
-  const executorIsCurrentUser = useIdBelongAuthUser(relocationTask?.executors)
+  const currentUserInExecutors = useIdBelongAuthUser(relocationTask?.executors)
+  const completedByIsCurrentUser = useIdBelongAuthUser(relocationTask?.completedBy?.id)
   const controllerIsCurrentUser = useIdBelongAuthUser(relocationTask?.controller?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
@@ -366,7 +367,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         label: 'Выполнить заявку',
         disabled:
           !permissions.relocationTasksUpdate ||
-          !executorIsCurrentUser ||
+          (!currentUserInExecutors && !completedByIsCurrentUser) ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
           relocationTaskStatus.isCompleted,
