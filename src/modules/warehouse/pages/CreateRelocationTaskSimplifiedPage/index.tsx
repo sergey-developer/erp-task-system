@@ -629,7 +629,6 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       editableEquipmentByFile,
       editableEquipmentByFileIndex,
       equipmentCategories,
-      macroregions,
       nomenclature,
       form,
       onCloseEditEquipmentByFileModal,
