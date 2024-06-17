@@ -6,6 +6,11 @@ export type MaybeUndefined<T> = T | undefined
 
 export type NumericalString = `${number}` | number
 
+// todo: переиспользовать
+export type SetNonNullable<BaseType, Keys extends keyof BaseType = keyof BaseType> = Required<{
+  [Key in Keys]: Key extends Keys ? NonNullable<BaseType[Key]> : BaseType[Key]
+}>
+
 export type NonNullableObject<T extends object> = Required<{
   [K in keyof T]: NonNullable<T[K]>
 }>

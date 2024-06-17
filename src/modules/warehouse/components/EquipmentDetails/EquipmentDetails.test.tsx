@@ -3,7 +3,9 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
+import { testUtils as technicalExaminationsHistoryModalTestUtils } from 'modules/technicalExaminations/components/TechnicalExaminationsHistoryModal/TechnicalExaminationsHistoryModal.test'
 import { UserPermissionsEnum } from 'modules/user/constants'
+import { testUtils as equipmentFormModalTestUtils } from 'modules/warehouse/components/EquipmentFormModal/EquipmentFormModal.test'
 import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import {
@@ -25,10 +27,13 @@ import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
+  mockGetCurrencyListSuccess,
+  mockGetCustomerListSuccess,
   mockGetEquipmentAttachmentListForbiddenError,
   mockGetEquipmentAttachmentListNotFoundError,
   mockGetEquipmentAttachmentListServerError,
   mockGetEquipmentAttachmentListSuccess,
+  mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentForbiddenError,
   mockGetEquipmentNotFoundError,
   mockGetEquipmentRelocationHistoryForbiddenError,
@@ -37,8 +42,13 @@ import {
   mockGetEquipmentRelocationHistorySuccess,
   mockGetEquipmentServerError,
   mockGetEquipmentSuccess,
+  mockGetNomenclatureListSuccess,
+  mockGetNomenclatureSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
+  mockGetTechnicalExaminationsSuccess,
+  mockGetWarehouseListSuccess,
+  mockGetWorkTypeListSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -46,6 +56,7 @@ import {
   fakeInteger,
   fakeWord,
   getStoreWithAuth,
+  menuTestUtils,
   notificationTestUtils,
   render,
   setupApiTests,
@@ -115,6 +126,24 @@ const clickRelocationHistoryButton = async (user: UserEvent) => {
   await user.click(button)
 }
 
+// menu
+const getMenuButton = () => buttonTestUtils.getMenuButtonIn(getContainer())
+const openMenu = async (user: UserEvent) => menuTestUtils.openMenu(user, getMenuButton())
+
+// edit menu item
+const getEditMenuItem = () => menuTestUtils.getMenuItem('Редактировать')
+const clickEditMenuItem = async (user: UserEvent) => {
+  const button = getEditMenuItem()
+  await user.click(button)
+}
+
+// technical examinations menu item
+const getTechnicalExaminationsMenuItem = () => menuTestUtils.getMenuItem('История АТЭ')
+const clickTechnicalExaminationsMenuItem = async (user: UserEvent) => {
+  const button = getTechnicalExaminationsMenuItem()
+  await user.click(button)
+}
+
 // loading
 const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('equipment-details-loading')
 const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('equipment-details-loading')
@@ -134,6 +163,12 @@ export const testUtils = {
 
   getRelocationHistoryButton,
   clickRelocationHistoryButton,
+
+  openMenu,
+  getEditMenuItem,
+  clickEditMenuItem,
+  getTechnicalExaminationsMenuItem,
+  clickTechnicalExaminationsMenuItem,
 
   getEquipmentImageList,
   getViewAllImagesButton,
@@ -1100,6 +1135,94 @@ describe('Информация об оборудовании', () => {
       const relocationTaskDetails = await relocationTaskDetailsTestUtils.findContainer()
 
       expect(relocationTaskDetails).toBeInTheDocument()
+    })
+  })
+
+  describe('Редактирование', () => {
+    test('Элемент в меню отображается и активен', async () => {
+      const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
+      mockGetEquipmentSuccess(equipment.id, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+      const { user } = render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      await testUtils.openMenu(user)
+      const menuItem = testUtils.getEditMenuItem()
+
+      expect(menuItem).toBeInTheDocument()
+      expect(menuItem).toBeEnabled()
+    })
+
+    test('Модалка открывается', async () => {
+      const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
+      mockGetEquipmentSuccess(equipment.id, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetWarehouseListSuccess()
+      mockGetWorkTypeListSuccess()
+      mockGetCurrencyListSuccess()
+      mockGetEquipmentCategoryListSuccess()
+      mockGetNomenclatureListSuccess()
+      mockGetNomenclatureSuccess(equipment.nomenclature.id)
+      mockGetCustomerListSuccess()
+
+      const { user } = render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      await testUtils.openMenu(user)
+      await testUtils.clickEditMenuItem(user)
+      const modal = await equipmentFormModalTestUtils.findContainer()
+
+      expect(modal).toBeInTheDocument()
+    })
+  })
+
+  describe('История АТЭ', () => {
+    test('Элемент в меню отображается и активен', async () => {
+      const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
+      mockGetEquipmentSuccess(equipment.id, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+
+      const { user } = render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      await testUtils.openMenu(user)
+      const menuItem = testUtils.getTechnicalExaminationsMenuItem()
+
+      expect(menuItem).toBeInTheDocument()
+      expect(menuItem).toBeEnabled()
+    })
+
+    test('Модалка открывается', async () => {
+      const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
+      mockGetEquipmentSuccess(equipment.id, { body: equipment })
+      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetTechnicalExaminationsSuccess()
+
+      const { user } = render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      await testUtils.openMenu(user)
+      await testUtils.clickTechnicalExaminationsMenuItem(user)
+      const modal = await technicalExaminationsHistoryModalTestUtils.findContainer()
+
+      expect(modal).toBeInTheDocument()
     })
   })
 })
