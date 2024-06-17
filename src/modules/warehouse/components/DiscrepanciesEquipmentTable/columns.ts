@@ -16,7 +16,7 @@ export const columns: ColumnsType<DiscrepanciesEquipmentTableItem> = [
     dataIndex: 'locationPlan',
     title: 'Плановое местонахождение',
     sorter: true,
-    render: (value: DiscrepanciesEquipmentTableItem['locationPlan']) => value.title,
+    render: (value: DiscrepanciesEquipmentTableItem['locationPlan']) => value?.title,
   },
   {
     dataIndex: 'locationFact',

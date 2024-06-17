@@ -124,6 +124,7 @@ const ExecuteInventorizationPage: FC = () => {
 
       <TabsStyled
         type='card'
+        destroyInactiveTabPane
         defaultActiveKey={ExecuteInventorizationPageTabsEnum.Revise}
         items={[
           {

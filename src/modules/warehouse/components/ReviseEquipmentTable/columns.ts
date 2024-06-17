@@ -29,7 +29,7 @@ export const columns: ProColumns<ReviseEquipmentTableItem>[] = [
     dataIndex: 'locationPlan',
     title: 'Плановое местонахождение',
     fieldProps: { disabled: true },
-    renderText: (dom, entity) => entity.locationPlan.title,
+    renderText: (dom, entity) => entity.locationPlan?.title,
   },
   {
     key: 'quantity',
