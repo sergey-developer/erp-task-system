@@ -170,7 +170,7 @@ describe('Таблица инвентаризаций', () => {
       const title = testUtils.getColTitle('Плановое местонахождение')
       const value = testUtils.getColValue(
         inventorizationEquipmentListItem.id,
-        inventorizationEquipmentListItem.locationPlan.title,
+        inventorizationEquipmentListItem.locationPlan!.title,
       )
 
       expect(title).toBeInTheDocument()
