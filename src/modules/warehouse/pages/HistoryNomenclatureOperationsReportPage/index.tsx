@@ -29,6 +29,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { base64ToBytes } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { extractFileNameFromHeaders } from 'shared/utils/extractFileNameFromHeaders'
 import { downloadFile } from 'shared/utils/file'
 import {
   calculatePaginationParams,
@@ -36,8 +37,6 @@ import {
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
-
-import { extractFileNameFromHeaders } from '../../../../shared/utils/extractFileNameFromHeaders'
 
 const EquipmentDetails = React.lazy(() => import('modules/warehouse/components/EquipmentDetails'))
 

@@ -1,5 +1,5 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
+import { Button, Col, Drawer, Dropdown, Image, MenuProps, Row, Typography, UploadProps } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -7,6 +7,7 @@ import AttachmentList from 'modules/attachment/components/AttachmentList'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { attachmentsToFiles } from 'modules/attachment/utils'
+import { useGetTechnicalExaminations } from 'modules/technicalExaminations/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useMatchUserPermissions } from 'modules/user/hooks'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
@@ -28,7 +29,7 @@ import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
-import { EditIcon } from 'components/Icons'
+import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
@@ -64,6 +65,10 @@ const EquipmentRelocationHistoryModal = React.lazy(
 
 const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
+)
+
+const TechnicalExaminationsHistoryModal = React.lazy(
+  () => import('modules/technicalExaminations/components/TechnicalExaminationsHistoryModal'),
 )
 
 const { Text } = Typography
@@ -124,6 +129,20 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const [imageListModalOpened, { toggle: toggleOpenImageListModal }] = useBoolean(false)
   const onToggleOpenImageListModal = useDebounceFn(toggleOpenImageListModal)
+
+  const [
+    technicalExaminationsHistoryModalOpened,
+    { toggle: toggleOpenTechnicalExaminationsHistoryModal },
+  ] = useBoolean(false)
+  const onToggleTechnicalExaminationsHistoryModal = useDebounceFn(
+    toggleOpenTechnicalExaminationsHistoryModal,
+  )
+
+  const { currentData: technicalExaminations = [], isFetching: technicalExaminationsIsFetching } =
+    useGetTechnicalExaminations(
+      { ordering: '-created_at', equipments: [equipmentId] },
+      { skip: !technicalExaminationsHistoryModalOpened },
+    )
 
   const { currentData: equipment, isFetching: equipmentIsFetching } = useGetEquipment({
     equipmentId,
@@ -313,23 +332,36 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     ],
   )
 
+  const dropdownMenuItems = useMemo<Pick<MenuProps, 'items'>>(
+    () => ({
+      items: [
+        {
+          key: 'edit',
+          label: 'Редактировать',
+          onClick: onOpenEditEquipmentModal,
+        },
+        {
+          key: 'technicalExaminationsHistory',
+          label: 'История АТЭ',
+          onClick: onToggleTechnicalExaminationsHistoryModal,
+        },
+      ],
+    }),
+    [onOpenEditEquipmentModal, onToggleTechnicalExaminationsHistoryModal],
+  )
+
   return (
     <>
       <Drawer
         {...props}
         data-testid='equipment-details'
         width={500}
-        title={
-          equipment && (
-            <Row justify='space-between'>
-              <Col>{equipment.title}</Col>
-
-              <Col>
-                <EditIcon $size='large' onClick={onOpenEditEquipmentModal} />
-              </Col>
-            </Row>
-          )
+        extra={
+          <Dropdown menu={dropdownMenuItems}>
+            <Button type='text' icon={<MenuIcon />} />
+          </Dropdown>
         }
+        title={equipment?.title}
       >
         <LoadingArea data-testid='equipment-details-loading' isLoading={equipmentIsFetching}>
           {equipment && (
@@ -698,6 +730,25 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             title='Изображения оборудования'
             data={extractPaginationResults(totalEquipmentAttachmentList)}
             onCancel={onToggleOpenImageListModal}
+          />
+        </React.Suspense>
+      )}
+
+      {technicalExaminationsHistoryModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={technicalExaminationsHistoryModalOpened}
+              onCancel={onToggleTechnicalExaminationsHistoryModal}
+              tip='Загрузка модалки истории актов технической экспертизы'
+            />
+          }
+        >
+          <TechnicalExaminationsHistoryModal
+            open={technicalExaminationsHistoryModalOpened}
+            onCancel={onToggleTechnicalExaminationsHistoryModal}
+            loading={technicalExaminationsIsFetching}
+            dataSource={technicalExaminations}
           />
         </React.Suspense>
       )}

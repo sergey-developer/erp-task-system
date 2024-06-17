@@ -5,6 +5,7 @@ import LoadingArea from 'components/LoadingArea'
 import { SpinnerProps } from 'components/Spinner'
 
 import { CANCEL_TEXT, DEFAULT_MODAL_WIDTH } from 'shared/constants/common'
+import { WithTestIdType } from 'shared/types/common'
 
 const commonButtonProps: ButtonProps = {
   size: 'large',
@@ -15,12 +16,12 @@ const baseOkButtonProps: ButtonProps = {
   htmlType: 'submit',
 }
 
-export type BaseModalProps = ModalProps & {
-  /* Determines whether spinner should be shown on whole modal */
-  isLoading?: boolean
-  loadingTip?: SpinnerProps['tip']
-  'data-testid'?: string
-}
+export type BaseModalProps = ModalProps &
+  WithTestIdType & {
+    /* Determines whether spinner should be shown on whole modal */
+    isLoading?: boolean
+    loadingTip?: SpinnerProps['tip']
+  }
 
 const BaseModal: FC<BaseModalProps> = ({
   width = DEFAULT_MODAL_WIDTH,
