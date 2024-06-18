@@ -3,6 +3,9 @@ import { TableRowSelection } from 'antd/es/table/interface'
 
 import { BaseMtsrReportItemModel, GetMtsrReportBaseSortValue } from 'modules/reports/types'
 
+import { TableSortProps } from 'shared/types/sort'
+import { SetNonNullable } from 'shared/types/utils'
+
 export type MtsrReportTableItem = Pick<
   BaseMtsrReportItemModel,
   | 'id'
@@ -14,10 +17,10 @@ export type MtsrReportTableItem = Pick<
   | 'overdueTasks'
 >
 
-export type MtsrReportTableProps = Required<
+export type MtsrReportTableProps = SetNonNullable<
   Pick<TableProps<MtsrReportTableItem>, 'dataSource' | 'loading' | 'onChange'>
-> & {
-  onSelect: NonNullable<TableRowSelection<MtsrReportTableItem>['onChange']>
-  selectedRowKeys: NonNullable<TableRowSelection<MtsrReportTableItem>['selectedRowKeys']>
-  sort?: GetMtsrReportBaseSortValue
-}
+> &
+  TableSortProps<GetMtsrReportBaseSortValue> &
+  SetNonNullable<TableRowSelection<MtsrReportTableItem>, 'selectedRowKeys'> & {
+    onSelect: NonNullable<TableRowSelection<MtsrReportTableItem>['onChange']>
+  }
