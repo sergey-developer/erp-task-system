@@ -5,6 +5,7 @@ import { testUtils as attachmentListTestUtils } from 'modules/attachment/compone
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as technicalExaminationsHistoryModalTestUtils } from 'modules/technicalExaminations/components/TechnicalExaminationsHistoryModal/TechnicalExaminationsHistoryModal.test'
 import { UserPermissionsEnum } from 'modules/user/constants'
+import { testUtils as createEquipmentTechnicalExaminationModalTestUtils } from 'modules/warehouse/components/CreateEquipmentTechnicalExaminationModal/CreateEquipmentTechnicalExaminationModal.test'
 import { testUtils as equipmentFormModalTestUtils } from 'modules/warehouse/components/EquipmentFormModal/EquipmentFormModal.test'
 import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
@@ -1373,22 +1374,29 @@ describe('Информация об оборудовании', () => {
       menuTestUtils.expectMenuItemDisabled(menuItem)
     })
 
-    test.skip('Модалка открывается', async () => {
-      const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
+    test('Модалка открывается', async () => {
+      const equipment = warehouseFixtures.equipment({
+        id: props.equipmentId,
+        condition: EquipmentConditionEnum.NonRepairable,
+      })
+
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
-      mockGetTechnicalExaminationsSuccess()
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: {
+            ...getUserMeQueryMock(
+              userFixtures.user({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
+            ),
+          },
         }),
       })
 
       await testUtils.expectLoadingFinished()
       await testUtils.openMenu(user)
-      await testUtils.clickTechnicalExaminationsMenuItem(user)
-      const modal = await technicalExaminationsHistoryModalTestUtils.findContainer()
+      await testUtils.clickCreateEquipmentTechnicalExaminationMenuItem(user)
+      const modal = await createEquipmentTechnicalExaminationModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
     })

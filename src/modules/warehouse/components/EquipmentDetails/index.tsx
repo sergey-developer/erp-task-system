@@ -74,6 +74,10 @@ const TechnicalExaminationsHistoryModal = React.lazy(
   () => import('modules/technicalExaminations/components/TechnicalExaminationsHistoryModal'),
 )
 
+const CreateEquipmentTechnicalExaminationModal = React.lazy(
+  () => import('modules/warehouse/components/CreateEquipmentTechnicalExaminationModal'),
+)
+
 const { Text } = Typography
 
 const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) => {
@@ -781,6 +785,25 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onCancel={onToggleTechnicalExaminationsHistoryModal}
             loading={technicalExaminationsIsFetching}
             dataSource={technicalExaminations}
+          />
+        </React.Suspense>
+      )}
+
+      {createEquipmentTechnicalExaminationModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={createEquipmentTechnicalExaminationModalOpened}
+              onCancel={onToggleCreateEquipmentTechnicalExaminationModal}
+              tip='Загрузка модалки формирования актов технической экспертизы'
+            />
+          }
+        >
+          <CreateEquipmentTechnicalExaminationModal
+            open={createEquipmentTechnicalExaminationModalOpened}
+            onCancel={onToggleCreateEquipmentTechnicalExaminationModal}
+            isLoading={false}
+            onSubmit={async () => {}}
           />
         </React.Suspense>
       )}

@@ -5,7 +5,7 @@ import { RelocationEquipmentTechnicalExaminationModel } from 'modules/warehouse/
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-export type CreateTechnicalExaminationFormFields = {
+export type CreateRelocationEquipmentTechnicalExaminationFormFields = {
   malfunction: string
   hasMechanicalDamage: boolean
   restorationAction: string
@@ -13,12 +13,12 @@ export type CreateTechnicalExaminationFormFields = {
   conclusion?: string
 }
 
-export type CreateTechnicalExaminationModalProps = Required<
+export type CreateRelocationEquipmentTechnicalExaminationModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel' | 'isLoading'>
 > & {
   onSubmit: (
-    values: CreateTechnicalExaminationFormFields,
-    setFields: FormInstance<CreateTechnicalExaminationFormFields>['setFields'],
+    values: CreateRelocationEquipmentTechnicalExaminationFormFields,
+    setFields: FormInstance<CreateRelocationEquipmentTechnicalExaminationFormFields>['setFields'],
   ) => Promise<void>
 
   technicalExamination?: RelocationEquipmentTechnicalExaminationModel

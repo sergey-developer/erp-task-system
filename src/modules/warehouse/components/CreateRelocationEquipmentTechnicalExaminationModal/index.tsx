@@ -12,10 +12,15 @@ import {
   requiredStringRules,
 } from 'shared/constants/validation'
 
-import { CreateTechnicalExaminationFormFields, CreateTechnicalExaminationModalProps } from './types'
+import {
+  CreateRelocationEquipmentTechnicalExaminationFormFields,
+  CreateRelocationEquipmentTechnicalExaminationModalProps,
+} from './types'
 import { restorationActionRules, restorationCostRules } from './validation'
 
-const CreateTechnicalExaminationModal: FC<CreateTechnicalExaminationModalProps> = ({
+const CreateRelocationEquipmentTechnicalExaminationModal: FC<
+  CreateRelocationEquipmentTechnicalExaminationModalProps
+> = ({
   isLoading,
   onSubmit,
 
@@ -26,7 +31,7 @@ const CreateTechnicalExaminationModal: FC<CreateTechnicalExaminationModalProps> 
 
   ...props
 }) => {
-  const [form] = Form.useForm<CreateTechnicalExaminationFormFields>()
+  const [form] = Form.useForm<CreateRelocationEquipmentTechnicalExaminationFormFields>()
 
   useEffect(() => {
     if (technicalExamination) {
@@ -40,7 +45,7 @@ const CreateTechnicalExaminationModal: FC<CreateTechnicalExaminationModalProps> 
     }
   }, [form, technicalExamination])
 
-  const onFinish = async (values: CreateTechnicalExaminationFormFields) => {
+  const onFinish = async (values: CreateRelocationEquipmentTechnicalExaminationFormFields) => {
     await onSubmit(
       {
         ...values,
@@ -78,7 +83,7 @@ const CreateTechnicalExaminationModal: FC<CreateTechnicalExaminationModalProps> 
             relocationEquipment?.equipment.inventoryNumber}
         </Label>
 
-        <Form<CreateTechnicalExaminationFormFields>
+        <Form<CreateRelocationEquipmentTechnicalExaminationFormFields>
           layout='vertical'
           form={form}
           onFinish={onFinish}
@@ -120,4 +125,4 @@ const CreateTechnicalExaminationModal: FC<CreateTechnicalExaminationModalProps> 
   )
 }
 
-export default CreateTechnicalExaminationModal
+export default CreateRelocationEquipmentTechnicalExaminationModal
