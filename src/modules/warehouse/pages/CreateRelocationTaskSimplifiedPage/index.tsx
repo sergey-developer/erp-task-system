@@ -122,8 +122,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
   const navigate = useNavigate()
 
-  const permissions = useUserPermissions([UserPermissionsEnum.EquipmentsCreate])
   const authUser = useAuthUser()
+  const permissions = useUserPermissions([UserPermissionsEnum.EquipmentsCreate])
 
   const [form] = Form.useForm<SimplifiedRelocationTaskFormFields>()
 
