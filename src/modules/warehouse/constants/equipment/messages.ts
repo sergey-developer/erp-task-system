@@ -27,3 +27,6 @@ export const updateEquipmentErrorMsg = 'Ошибка редактировани�
 
 export const getEquipmentListTemplateErrorMsg =
   'Ошибка формирования шаблона для загрузки оборудования из файла'
+
+export const createEquipmentTechnicalExaminationErrMsg =
+  'Ошибка создания технической экспертизы для оборудования'
