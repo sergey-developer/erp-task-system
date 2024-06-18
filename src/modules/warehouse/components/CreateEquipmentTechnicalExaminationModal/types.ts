@@ -2,6 +2,8 @@ import { FormInstance } from 'antd'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { SetNonNullable } from 'shared/types/utils'
+
 export type CreateEquipmentTechnicalExaminationFormFields = {
   malfunction: string
   hasMechanicalDamage: boolean
@@ -10,8 +12,9 @@ export type CreateEquipmentTechnicalExaminationFormFields = {
   conclusion?: string
 }
 
-export type CreateEquipmentTechnicalExaminationModalProps = Required<
-  Pick<BaseModalProps, 'open' | 'onCancel' | 'isLoading'>
+export type CreateEquipmentTechnicalExaminationModalProps = SetNonNullable<
+  BaseModalProps,
+  'open' | 'onCancel' | 'isLoading'
 > & {
   onSubmit: (
     values: CreateEquipmentTechnicalExaminationFormFields,

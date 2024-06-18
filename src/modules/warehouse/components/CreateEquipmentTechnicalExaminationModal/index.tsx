@@ -52,11 +52,17 @@ const CreateEquipmentTechnicalExaminationModal: FC<
         form={form}
         onFinish={onFinish}
       >
-        <Form.Item name='malfunction' label='Причина неисправности' rules={requiredStringRules}>
+        <Form.Item
+          data-testid='malfunction-form-item'
+          name='malfunction'
+          label='Причина неисправности'
+          rules={requiredStringRules}
+        >
           <Input placeholder='Введите текст' disabled={isLoading} />
         </Form.Item>
 
         <Form.Item
+          data-testid='has-mechanical-damage-form-item'
           name='hasMechanicalDamage'
           label='Имеются следы механического повреждения'
           rules={onlyRequiredRules}
@@ -65,6 +71,7 @@ const CreateEquipmentTechnicalExaminationModal: FC<
         </Form.Item>
 
         <Form.Item
+          data-testid='restoration-action-form-item'
           name='restorationAction'
           label='Для устранения неисправности необходимо'
           rules={restorationActionRules}
@@ -73,6 +80,7 @@ const CreateEquipmentTechnicalExaminationModal: FC<
         </Form.Item>
 
         <Form.Item
+          data-testid='restoration-cost-form-item'
           name='restorationCost'
           label='Стоимость восстановления'
           rules={restorationCostRules}
@@ -80,7 +88,12 @@ const CreateEquipmentTechnicalExaminationModal: FC<
           <InputNumber disabled={isLoading} />
         </Form.Item>
 
-        <Form.Item name='conclusion' label='Заключение комиссии' rules={onlyNotEmptyStringRules}>
+        <Form.Item
+          data-testid='conclusion-form-item'
+          name='conclusion'
+          label='Заключение комиссии'
+          rules={onlyNotEmptyStringRules}
+        >
           <Input placeholder='Введите текст' disabled={isLoading} />
         </Form.Item>
       </Form>
