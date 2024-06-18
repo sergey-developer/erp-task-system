@@ -12,7 +12,10 @@ import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentRelocationHistoryModalProps } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/types'
-import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
+import {
+  equipmentConditionDict,
+  EquipmentConditionEnum,
+} from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -69,6 +72,10 @@ const RelocationTaskDetails = React.lazy(
 
 const TechnicalExaminationsHistoryModal = React.lazy(
   () => import('modules/technicalExaminations/components/TechnicalExaminationsHistoryModal'),
+)
+
+const CreateEquipmentTechnicalExaminationModal = React.lazy(
+  () => import('modules/warehouse/components/CreateEquipmentTechnicalExaminationModal'),
 )
 
 const { Text } = Typography
@@ -131,11 +138,21 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const onToggleOpenImageListModal = useDebounceFn(toggleOpenImageListModal)
 
   const [
-    technicalExaminationsHistoryModalOpened,
-    { toggle: toggleOpenTechnicalExaminationsHistoryModal },
+    createEquipmentTechnicalExaminationModalOpened,
+    { toggle: toggleCreateEquipmentTechnicalExaminationModal },
   ] = useBoolean(false)
+
+  const onToggleCreateEquipmentTechnicalExaminationModal = useDebounceFn(
+    toggleCreateEquipmentTechnicalExaminationModal,
+  )
+
+  const [
+    technicalExaminationsHistoryModalOpened,
+    { toggle: toggleTechnicalExaminationsHistoryModal },
+  ] = useBoolean(false)
+
   const onToggleTechnicalExaminationsHistoryModal = useDebounceFn(
-    toggleOpenTechnicalExaminationsHistoryModal,
+    toggleTechnicalExaminationsHistoryModal,
   )
 
   const { currentData: technicalExaminations = [], isFetching: technicalExaminationsIsFetching } =
@@ -345,9 +362,28 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
           label: 'История АТЭ',
           onClick: onToggleTechnicalExaminationsHistoryModal,
         },
+        {
+          key: 'createEquipmentTechnicalExamination',
+          label: 'Сформировать АТЭ',
+          onClick: onToggleCreateEquipmentTechnicalExaminationModal,
+          disabled:
+            !permissions.equipmentsRead ||
+            (equipment
+              ? !(
+                  equipment.condition === EquipmentConditionEnum.Broken ||
+                  equipment.condition === EquipmentConditionEnum.NonRepairable
+                )
+              : true),
+        },
       ],
     }),
-    [onOpenEditEquipmentModal, onToggleTechnicalExaminationsHistoryModal],
+    [
+      equipment,
+      onOpenEditEquipmentModal,
+      onToggleCreateEquipmentTechnicalExaminationModal,
+      onToggleTechnicalExaminationsHistoryModal,
+      permissions.equipmentsRead,
+    ],
   )
 
   return (
@@ -749,6 +785,25 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onCancel={onToggleTechnicalExaminationsHistoryModal}
             loading={technicalExaminationsIsFetching}
             dataSource={technicalExaminations}
+          />
+        </React.Suspense>
+      )}
+
+      {createEquipmentTechnicalExaminationModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={createEquipmentTechnicalExaminationModalOpened}
+              onCancel={onToggleCreateEquipmentTechnicalExaminationModal}
+              tip='Загрузка модалки формирования актов технической экспертизы'
+            />
+          }
+        >
+          <CreateEquipmentTechnicalExaminationModal
+            open={createEquipmentTechnicalExaminationModalOpened}
+            onCancel={onToggleCreateEquipmentTechnicalExaminationModal}
+            isLoading={false}
+            onSubmit={async () => {}}
           />
         </React.Suspense>
       )}
