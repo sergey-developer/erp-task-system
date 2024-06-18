@@ -606,7 +606,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Макрорегионы', () => {
       test('Отображается корректно', async () => {
-        const macroregionList = macroregionFixtures.macroregionList()
+        const macroregionList = macroregionFixtures.macroregions()
         const { user } = render(<TasksFilter {...props} macroregions={macroregionList} />)
 
         const field = testUtils.getMacroregionsSelect()

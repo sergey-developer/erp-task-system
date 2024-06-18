@@ -19,11 +19,12 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCustomerListSuccess,
   mockGetEquipmentAttachmentListSuccess,
-  mockGetEquipmentNomenclatureListSuccess,
+  mockGetEquipmentNomenclaturesSuccess,
   mockGetEquipmentSuccess,
   mockGetHistoryNomenclatureOperationsReportSuccess,
   mockGetHistoryNomenclatureOperationsReportXlsxSuccess,
@@ -31,7 +32,8 @@ import {
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, fakeWord, render, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
+import { buttonTestUtils, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
 
 import HistoryNomenclatureOperationsReportPage from './index'
 
@@ -73,7 +75,7 @@ describe('Страница отчета истории операций по н�
   describe('Таблица отчета', () => {
     test('При клике на оборудование открывается карточка оборудования', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -88,7 +90,11 @@ describe('Страница отчета истории операций по н�
       mockGetEquipmentSuccess(reportListItem.id)
       mockGetEquipmentAttachmentListSuccess(reportListItem.id)
 
-      const { user } = render(<HistoryNomenclatureOperationsReportPage />)
+      const { user } = render(<HistoryNomenclatureOperationsReportPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
       await historyNomenclatureOperationsReportFormTestUtils.openNomenclatureSelect(user)
@@ -110,7 +116,7 @@ describe('Страница отчета истории операций по н�
 
     test('При клике на перемещение открывается карточка заявки на перемещение', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -125,7 +131,11 @@ describe('Страница отчета истории операций по н�
       mockGetRelocationTaskSuccess(reportListItem.lastRelocationTask.id)
       mockGetRelocationEquipmentListSuccess(reportListItem.lastRelocationTask.id)
 
-      const { user } = render(<HistoryNomenclatureOperationsReportPage />)
+      const { user } = render(<HistoryNomenclatureOperationsReportPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
       await historyNomenclatureOperationsReportFormTestUtils.openNomenclatureSelect(user)
@@ -149,7 +159,7 @@ describe('Страница отчета истории операций по н�
   describe('Фильтры', () => {
     test('После применения отображается отчет', async () => {
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -162,7 +172,11 @@ describe('Страница отчета истории операций по н�
       mockGetLocationListSuccess()
       mockGetCustomerListSuccess()
 
-      const { user } = render(<HistoryNomenclatureOperationsReportPage />)
+      const { user } = render(<HistoryNomenclatureOperationsReportPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
       await historyNomenclatureOperationsReportFormTestUtils.openNomenclatureSelect(user)
@@ -189,12 +203,12 @@ describe('Страница отчета истории операций по н�
     test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
-      const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToBytes')
+      const base64ToBytes = jest.spyOn(base64Utils, 'base64ToBytes')
       const fakeArrayBuffer = new Uint8Array()
-      base64ToArrayBufferSpy.mockReturnValueOnce(fakeArrayBuffer)
+      base64ToBytes.mockReturnValueOnce(fakeArrayBuffer)
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -203,7 +217,11 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const { user } = render(<HistoryNomenclatureOperationsReportPage />)
+      const { user } = render(<HistoryNomenclatureOperationsReportPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await historyNomenclatureOperationsReportFormTestUtils.expectNomenclaturesLoadingFinished()
       await historyNomenclatureOperationsReportFormTestUtils.openNomenclatureSelect(user)
@@ -222,15 +240,11 @@ describe('Страница отчета истории операций по н�
       await testUtils.clickExportToExcelButton(user)
       await testUtils.expectExportToExcelLoadingFinished()
 
-      expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
-      expect(base64ToArrayBufferSpy).toBeCalledWith(file)
+      expect(base64ToBytes).toBeCalledTimes(1)
+      expect(base64ToBytes).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
-      expect(downloadFileSpy).toBeCalledWith(
-        fakeArrayBuffer,
-        MimetypeEnum.Xlsx,
-        'Отчет по истории операций по номенклатуре',
-      )
+      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, 'filename')
     })
   })
 })

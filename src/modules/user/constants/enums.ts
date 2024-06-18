@@ -83,6 +83,9 @@ export enum UserPermissionsEnum {
   FiscalAccumulatorTasksRead = 'FISCAL_ACCUMULATOR_TASKS_READ',
 
   ReportMainIndicatorsRead = 'REPORT_MAIN_INDICATORS_READ',
+
+  InventorizationRead = 'INVENTORIZATION_READ',
+  InventorizationCreate = 'INVENTORIZATION_CREATE',
 }
 
 export type UserActionsPermissions = TaskActionsPermissionsEnum

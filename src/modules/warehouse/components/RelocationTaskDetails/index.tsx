@@ -60,18 +60,19 @@ import {
 } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
   getEditRelocationTaskPageLink,
-  getRelocateFromTo,
+  getRelocateFromToTitle,
   getRelocationTasksPageLink,
   getWaybillM15Filename,
 } from 'modules/warehouse/utils/relocationTask'
 
 import UploadButton from 'components/Buttons/UploadButton'
-import { MenuIcon } from 'components/Icons'
+import { DoubleRightArrowIcon, MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
+import { HEADER_HEIGHT } from 'shared/constants/common'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -123,6 +124,8 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     UserPermissionsEnum.RelocationTasksRead,
     UserPermissionsEnum.RelocationTasksUpdate,
   ])
+
+  const [detailsStretched, { toggle: toggleStretchDetails }] = useBoolean(false)
 
   const [cancelTaskModalOpened, { toggle: toggleOpenCancelTaskModal }] = useBoolean()
   const debouncedToggleOpenCancelTaskModal = useDebounceFn(toggleOpenCancelTaskModal)
@@ -343,14 +346,14 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             <Text>Сформировать накладную М-15</Text>
           </Space>
         ),
-        disabled: !permissions?.relocationTasksRead,
+        disabled: !permissions.relocationTasksRead,
         onClick: handleGetWaybillM15,
       },
       {
         key: 2,
         label: 'Изменить заявку',
         disabled:
-          !permissions?.relocationTasksUpdate ||
+          !permissions.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -361,7 +364,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 3,
         label: 'Выполнить заявку',
         disabled:
-          !permissions?.relocationTasksUpdate ||
+          !permissions.relocationTasksUpdate ||
           !executorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -372,7 +375,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 4,
         label: 'Вернуть на доработку',
         disabled:
-          !permissions?.relocationTasksUpdate ||
+          !permissions.relocationTasksUpdate ||
           !controllerIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenReturnToReworkModal,
@@ -381,7 +384,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 5,
         label: 'Отменить заявку',
         disabled:
-          !permissions?.relocationTasksUpdate ||
+          !permissions.relocationTasksUpdate ||
           !creatorIsCurrentUser ||
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
@@ -392,7 +395,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         key: 6,
         label: 'Подтвердить выполнение',
         disabled:
-          !permissions?.relocationTasksUpdate ||
+          !permissions.relocationTasksUpdate ||
           !controllerIsCurrentUser ||
           !relocationTaskStatus.isCompleted,
         onClick: debouncedToggleOpenConfirmExecutionModal,
@@ -417,16 +420,25 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         {...props}
         data-testid='relocation-task-details'
         placement='bottom'
+        height={detailsStretched ? window.innerHeight - HEADER_HEIGHT : undefined}
         title={
           <Space>
-            <Text>{getRelocateFromTo(relocationTask)}</Text>
+            <Text>{getRelocateFromToTitle(relocationTask)}</Text>
             {relocationTaskIsFetching && <Spinner centered={false} />}
           </Space>
         }
         extra={
-          <Dropdown menu={menuProps} trigger={dropdownTrigger}>
-            <Button type='text' icon={<MenuIcon />} />
-          </Dropdown>
+          <Space>
+            <Dropdown menu={menuProps} trigger={dropdownTrigger}>
+              <Button type='text' icon={<MenuIcon />} />
+            </Dropdown>
+
+            <Button
+              type='text'
+              icon={<DoubleRightArrowIcon rotate={detailsStretched ? -270 : 270} />}
+              onClick={toggleStretchDetails}
+            />
+          </Space>
         }
       >
         <Row gutter={40}>

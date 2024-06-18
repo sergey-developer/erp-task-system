@@ -16,6 +16,7 @@ import {
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { CurrencyListModel } from 'shared/models/currency'
+import { MacroregionsModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { ArrayFirst } from 'shared/types/utils'
@@ -39,6 +40,7 @@ export type EquipmentFormFields = {
   usageCounter?: number
   owner?: IdType
   ownerIsObermeister?: boolean
+  macroregion?: IdType
   comment?: string
   images?: UploadFile<FileResponse>[]
 }
@@ -59,28 +61,32 @@ export type EquipmentFormModalProps = Required<
     onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
     imageIsDeleting: boolean
 
-    categoryList: EquipmentCategoryListModel
-    categoryListIsLoading: boolean
+    categories: EquipmentCategoryListModel
+    categoriesIsLoading: boolean
     category?: EquipmentCategoryListItemModel
     onChangeCategory: (category: EquipmentCategoryListItemModel) => void
 
-    warehouseList?: WarehouseListModel
-    warehouseListIsLoading?: boolean
+    warehouses?: WarehouseListModel
+    warehousesIsLoading?: boolean
 
-    currencyList: CurrencyListModel
-    currencyListIsLoading: boolean
+    currencies: CurrencyListModel
+    currenciesIsLoading: boolean
 
-    ownerList: CustomerListModel
-    ownerListIsLoading: boolean
+    owners: CustomerListModel
+    ownersIsLoading: boolean
+    onChangeOwner: (id: IdType) => void
 
-    workTypeList: WorkTypeListModel
-    workTypeListIsLoading: boolean
+    macroregions: MacroregionsModel
+    macroregionsIsLoading: boolean
+
+    workTypes: WorkTypeListModel
+    workTypesIsLoading: boolean
 
     nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>
     nomenclatureIsLoading: boolean
 
-    nomenclatureList: NomenclatureListModel
-    nomenclatureListIsLoading: boolean
+    nomenclatures: NomenclatureListModel
+    nomenclaturesIsLoading: boolean
     onChangeNomenclature: (id: IdType) => void
 
     values?: Partial<Pick<EquipmentFormFields, 'title' | 'images'>>

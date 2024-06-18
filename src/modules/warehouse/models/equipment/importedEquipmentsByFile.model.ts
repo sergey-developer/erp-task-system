@@ -7,6 +7,7 @@ import {
 } from 'modules/warehouse/models'
 
 import { CurrencyModel } from 'shared/models/currency'
+import { MacroregionListItemModel } from 'shared/models/macroregion'
 import { MaybeNull } from 'shared/types/utils'
 
 export type ImportedEquipmentByFileModel = {
@@ -24,6 +25,7 @@ export type ImportedEquipmentByFileModel = {
   category: MaybeNull<Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>>
   currency: MaybeNull<Pick<CurrencyModel, 'id' | 'title'>>
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
+  macroregion: MaybeNull<Pick<MacroregionListItemModel, 'id' | 'title'>>
   purpose: MaybeNull<Pick<WorkTypeModel, 'id' | 'title'>>
   nomenclature: MaybeNull<
     Pick<NomenclatureModel, 'id' | 'title' | 'equipmentHasSerialNumber'> & {

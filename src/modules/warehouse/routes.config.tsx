@@ -37,9 +37,7 @@ const EquipmentPageLayout = React.lazy(
 
 const EquipmentListPage = React.lazy(() => import('modules/warehouse/pages/EquipmentListPage'))
 
-const RelocationTaskListPage = React.lazy(
-  () => import('modules/warehouse/pages/RelocationTaskListPage'),
-)
+const RelocationTasksPage = React.lazy(() => import('modules/warehouse/pages/RelocationTasksPage'))
 
 const CreateRelocationTaskPage = React.lazy(
   () => import('modules/warehouse/pages/CreateRelocationTaskPage'),
@@ -67,6 +65,10 @@ const HistoryNomenclatureOperationsReportPage = React.lazy(
 
 const CreateDocumentsPackagePage = React.lazy(
   () => import('modules/warehouse/pages/CreateDocumentsPackagePage'),
+)
+
+const InventorizationsPage = React.lazy(
+  () => import('modules/warehouse/pages/InventorizationsPage'),
 )
 
 export const route: Readonly<RouteObject> = {
@@ -190,7 +192,7 @@ export const route: Readonly<RouteObject> = {
               index: true,
               element: (
                 <ProtectedRoute
-                  component={<RelocationTaskListPage />}
+                  component={<RelocationTasksPage />}
                   permitted={(user) =>
                     userHasPermissions(user, [UserPermissionsEnum.RelocationTasksRead])
                   }
@@ -254,6 +256,27 @@ export const route: Readonly<RouteObject> = {
                   />
                 ),
               },
+            },
+          ],
+        },
+        {
+          path: WarehouseRouteEnum.Inventorizations,
+          handle: {
+            crumb: () => (
+              <Breadcrumb link={WarehouseRouteEnum.Inventorizations} text='Инвентаризация' />
+            ),
+          },
+          children: [
+            {
+              index: true,
+              element: (
+                <ProtectedRoute
+                  component={<InventorizationsPage />}
+                  permitted={(user) =>
+                    userHasPermissions(user, [UserPermissionsEnum.InventorizationRead])
+                  }
+                />
+              ),
             },
           ],
         },

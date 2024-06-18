@@ -23,7 +23,15 @@ import {
   mockGetLocationListSuccess,
   mockGetUserListSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
+import {
+  buttonTestUtils,
+  fakeWord,
+  getStoreWithAuth,
+  render,
+  selectTestUtils,
+  setupApiTests,
+} from '_tests_/utils'
 
 import RelocationTaskForm from './index'
 import { RelocationTaskFormProps } from './types'
@@ -38,13 +46,16 @@ const props: RelocationTaskFormProps = {
   imageIsDeleting: false,
   imagesIsLoading: false,
 
-  userList: [],
-  userListIsLoading: false,
+  usersIsLoading: false,
 
   relocateFromLocationList: [],
   relocateFromLocationListIsLoading: false,
   relocateToLocationList: [],
   relocateToLocationListIsLoading: false,
+
+  executorOptions: [],
+
+  controllerOptions: [],
   controllerIsRequired: true,
 
   type: RelocationTaskTypeEnum.Relocation,
@@ -117,6 +128,15 @@ const getSelectedExecutor = (title: string) =>
 const querySelectedExecutor = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getExecutorFormItem(), title)
 
+const getExecutorOption = (name: string | RegExp) =>
+  selectTestUtils.getSelectOption(name, screen.getByTestId('executor-select-dropdown'))
+
+const queryExecutorOption = (name: string | RegExp) =>
+  selectTestUtils.querySelectOption(name, screen.getByTestId('executor-select-dropdown'))
+
+const expectExecutorsLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getControllerFormItem())
+
 // controller field
 const getControllerFormItem = () => within(getContainer()).getByTestId('controller-form-item')
 const getControllerSelectInput = () => selectTestUtils.getSelect(getControllerFormItem())
@@ -131,6 +151,15 @@ const getSelectedController = (title: string) =>
 
 const querySelectedController = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getControllerFormItem(), title)
+
+const getControllerOption = (name: string | RegExp) =>
+  selectTestUtils.getSelectOption(name, screen.getByTestId('controller-select-dropdown'))
+
+const queryControllerOption = (name: string | RegExp) =>
+  selectTestUtils.querySelectOption(name, screen.getByTestId('controller-select-dropdown'))
+
+const expectControllersLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getControllerFormItem())
 
 // type field
 const getTypeFormItem = () => within(getContainer()).getByTestId('type-form-item')
@@ -239,6 +268,9 @@ export const testUtils = {
   getSelectedExecutor,
   querySelectedExecutor,
   findExecutorError,
+  getExecutorOption,
+  queryExecutorOption,
+  expectExecutorsLoadingFinished,
 
   getControllerSelectInput,
   setController,
@@ -246,6 +278,9 @@ export const testUtils = {
   openControllerSelect,
   getSelectedController,
   querySelectedController,
+  getControllerOption,
+  queryControllerOption,
+  expectControllersLoadingFinished,
 
   getCommentTitle,
   getCommentField,
@@ -289,12 +324,16 @@ describe('Форма создания заявки на перемещение �
 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          mockGetUserListSuccess()
+          mockGetUserListSuccess({ body: [] })
           mockGetLocationListSuccess({ body: [], once: false })
           mockGetEquipmentCatalogListSuccess()
           mockGetCurrencyListSuccess({ body: [] })
 
-          const { user } = render(<CreateRelocationTaskPage />)
+          const { user } = render(<CreateRelocationTaskPage />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.clearDeadlineAtDate(user)
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
@@ -351,12 +390,16 @@ describe('Форма создания заявки на перемещение �
 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          mockGetUserListSuccess()
+          mockGetUserListSuccess({ body: [] })
           mockGetLocationListSuccess({ body: [], once: false })
           mockGetEquipmentCatalogListSuccess()
           mockGetCurrencyListSuccess({ body: [] })
 
-          const { user } = render(<CreateRelocationTaskPage />)
+          const { user } = render(<CreateRelocationTaskPage />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.clearDeadlineAtTime(user)
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
@@ -468,12 +511,16 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
-      mockGetUserListSuccess()
+      mockGetUserListSuccess({ body: [] })
       mockGetLocationListSuccess({ body: catalogsFixtures.locationList(), once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
-      const { user } = render(<CreateRelocationTaskPage />)
+      const { user } = render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
       const error = await testUtils.findRelocateFromError(validationMessages.required)
@@ -530,7 +577,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} userList={userList} />
+          <RelocationTaskForm {...props} executorOptions={userList} />
         </Form>,
       )
 
@@ -552,7 +599,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} userList={[userListItem]} />
+          <RelocationTaskForm {...props} executorOptions={[userListItem]} />
         </Form>,
       )
 
@@ -564,12 +611,16 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
-      mockGetUserListSuccess()
+      mockGetUserListSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
-      const { user } = render(<CreateRelocationTaskPage />)
+      const { user } = render(<CreateRelocationTaskPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
       const error = await testUtils.findExecutorError(validationMessages.required)
@@ -585,7 +636,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} userList={userList} />
+          <RelocationTaskForm {...props} controllerOptions={userList} />
         </Form>,
       )
 
@@ -607,7 +658,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} userList={[userListItem]} />
+          <RelocationTaskForm {...props} controllerOptions={[userListItem]} />
         </Form>,
       )
 

@@ -8,6 +8,6 @@ export * from './equipmentRelocationHistory'
 export * from './equipmentCategory'
 export * from './equipmentCategoryList'
 
-export * from './equipmentNomenclatureList'
+export * from './equipmentNomenclatures'
 
 export * from './equipmentCatalogList'

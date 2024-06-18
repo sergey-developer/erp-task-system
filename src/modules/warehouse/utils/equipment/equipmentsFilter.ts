@@ -1,5 +1,5 @@
 import { EquipmentsFilterFormFields } from 'modules/warehouse/components/EquipmentFilter/types'
-import { GetEquipmentNomenclatureListQueryArgs } from 'modules/warehouse/models'
+import { GetEquipmentNomenclaturesQueryArgs } from 'modules/warehouse/models'
 import { EquipmentsFilterParams } from 'modules/warehouse/types'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
@@ -12,7 +12,7 @@ export const equipmentsFilterToParams = ({
   zeroQuantity,
   ...values
 }: EquipmentsFilterFormFields): EquipmentsFilterParams &
-  Pick<GetEquipmentNomenclatureListQueryArgs, 'locationTypes'> => ({
+  Pick<GetEquipmentNomenclaturesQueryArgs, 'locationTypes'> => ({
   ...values,
   createdAtFrom: createdAt?.[0] ? formatDate(createdAt[0], DATE_FILTER_FORMAT) : undefined,
   createdAtTo: createdAt?.[1] ? formatDate(createdAt[1], DATE_FILTER_FORMAT) : undefined,

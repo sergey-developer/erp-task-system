@@ -5,6 +5,7 @@ import React, { FC, useEffect } from 'react'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
+import { filterOptionBy } from 'shared/utils/common'
 
 import { NomenclatureFormFields, NomenclatureFormModalProps } from './types'
 import {
@@ -121,6 +122,8 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
             options={groups}
             fieldNames={idAndTitleSelectFieldNames}
             loading={groupsIsLoading}
+            showSearch
+            filterOption={filterOptionBy('title')}
           />
         </Form.Item>
 

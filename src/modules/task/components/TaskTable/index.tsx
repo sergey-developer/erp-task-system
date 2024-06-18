@@ -12,6 +12,7 @@ import { TableStyled } from './styles'
 import { TaskTableListItem, TaskTableProps } from './types'
 import { applySortToColumn, applyWidthToColumn, getColumns } from './utils'
 
+// todo: создать функционал для переиспользования
 const tableWrapperStyles: Pick<CSSProperties, 'height'> = { height: 'calc(100vh - 320px)' }
 
 const TaskTable = forwardRef<HTMLDivElement, TaskTableProps>(

@@ -16,6 +16,11 @@ const items: CatalogsProps['items'] = [
     text: 'Заявки на перемещение оборудования',
     permissions: [UserPermissionsEnum.RelocationTasksRead],
   },
+  {
+    link: WarehouseRouteEnum.Inventorizations,
+    text: 'Инвентаризация',
+    permissions: [UserPermissionsEnum.InventorizationRead],
+  },
 ]
 
 const ReserveCatalogListPage: FC = () => {

@@ -15,19 +15,21 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetAmountEquipmentSpentReportSuccess,
   mockGetAmountEquipmentSpentReportXlsxSuccess,
   mockGetEquipmentAttachmentListSuccess,
   mockGetEquipmentCategoryListSuccess,
-  mockGetEquipmentNomenclatureListSuccess,
+  mockGetEquipmentNomenclaturesSuccess,
   mockGetEquipmentSuccess,
   mockGetLocationListSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, fakeWord, render, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
+import { buttonTestUtils, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
 
 import AmountEquipmentSpentReportPage from './index'
 
@@ -74,7 +76,7 @@ describe('Страница отчета количества потраченн�
       })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -84,7 +86,11 @@ describe('Страница отчета количества потраченн�
       mockGetEquipmentSuccess(reportListItem.equipment.id)
       mockGetEquipmentAttachmentListSuccess(reportListItem.equipment.id)
 
-      const { user } = render(<AmountEquipmentSpentReportPage />)
+      const { user } = render(<AmountEquipmentSpentReportPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await amountEquipmentSpentReportFormTestUtils.expectNomenclaturesLoadingFinished()
       await amountEquipmentSpentReportFormTestUtils.expectRelocateFromLoadingFinished()
@@ -115,7 +121,7 @@ describe('Страница отчета количества потраченн�
       })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -125,7 +131,11 @@ describe('Страница отчета количества потраченн�
       mockGetRelocationTaskSuccess(reportListItem.relocationTask.id)
       mockGetRelocationEquipmentListSuccess(reportListItem.relocationTask.id)
 
-      const { user } = render(<AmountEquipmentSpentReportPage />)
+      const { user } = render(<AmountEquipmentSpentReportPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await amountEquipmentSpentReportFormTestUtils.expectNomenclaturesLoadingFinished()
       await amountEquipmentSpentReportFormTestUtils.expectRelocateFromLoadingFinished()
@@ -159,7 +169,7 @@ describe('Страница отчета количества потраченн�
       })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
         once: false,
       })
@@ -212,7 +222,7 @@ describe('Страница отчета количества потраченн�
       })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-      mockGetEquipmentNomenclatureListSuccess({
+      mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
@@ -244,11 +254,7 @@ describe('Страница отчета количества потраченн�
       expect(base64ToArrayBufferSpy).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
-      expect(downloadFileSpy).toBeCalledWith(
-        fakeArrayBuffer,
-        MimetypeEnum.Xlsx,
-        'Отчет по количеству потраченного оборудования',
-      )
+      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, 'filename')
     })
   })
 })

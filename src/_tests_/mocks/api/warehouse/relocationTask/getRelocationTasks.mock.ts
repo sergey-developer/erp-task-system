@@ -1,0 +1,27 @@
+import { RelocationTaskApiEnum } from 'modules/warehouse/constants/relocationTask'
+import { GetRelocationTasksSuccessResponse } from 'modules/warehouse/models'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { ErrorData } from 'shared/services/baseApi'
+
+import {
+  getForbiddenErrorMockFn,
+  getRequestMockFn,
+  getServerErrorMockFn,
+  getSuccessMockFn,
+} from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
+
+const getRelocationTasksMockFn = () =>
+  getRequestMockFn(HttpMethodEnum.Get, RelocationTaskApiEnum.GetRelocationTasks)
+
+export const mockGetRelocationTasksSuccess = (
+  options?: Partial<ResponseResolverOptions<GetRelocationTasksSuccessResponse>>,
+) => getSuccessMockFn(getRelocationTasksMockFn(), options)()
+
+export const mockGetRelocationTasksForbiddenError = (
+  options?: Partial<ResponseResolverOptions<ErrorData>>,
+) => getForbiddenErrorMockFn(getRelocationTasksMockFn(), options)()
+
+export const mockGetRelocationTasksServerError = (options?: Partial<ResponseResolverOptions>) =>
+  getServerErrorMockFn(getRelocationTasksMockFn(), options)()

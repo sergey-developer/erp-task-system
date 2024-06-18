@@ -55,6 +55,7 @@ export const renderInRoute = (component: ReactElement, route: string, options?: 
   }
 }
 
+// todo: использовать вместо renderInRoute и переименовать
 export const renderInRoute_latest = (
   routes: Parameters<typeof createMemoryRouter>[0],
   routerOptions?: Parameters<typeof createMemoryRouter>[1],

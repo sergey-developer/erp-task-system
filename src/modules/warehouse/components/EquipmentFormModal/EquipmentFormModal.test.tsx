@@ -13,6 +13,7 @@ import { validationMessages } from 'shared/constants/validation'
 import { MaybeNull } from 'shared/types/utils'
 
 import currencyFixtures from '_tests_/fixtures/currency'
+import macroregionFixtures from '_tests_/fixtures/macroregion'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   buttonTestUtils,
@@ -45,26 +46,30 @@ const props: Readonly<EquipmentFormModalProps> = {
   nomenclature: warehouseFixtures.nomenclature(),
   nomenclatureIsLoading: false,
 
-  nomenclatureList: [],
-  nomenclatureListIsLoading: false,
+  nomenclatures: [],
+  nomenclaturesIsLoading: false,
   onChangeNomenclature: jest.fn(),
 
-  categoryList: [],
-  categoryListIsLoading: false,
+  categories: [],
+  categoriesIsLoading: false,
   category: warehouseFixtures.equipmentCategoryListItem(),
   onChangeCategory: jest.fn(),
 
-  currencyList: [],
-  currencyListIsLoading: false,
+  currencies: [],
+  currenciesIsLoading: false,
 
-  ownerList: [],
-  ownerListIsLoading: false,
+  owners: [],
+  ownersIsLoading: false,
+  onChangeOwner: jest.fn(),
 
-  workTypeList: [],
-  workTypeListIsLoading: false,
+  macroregions: [],
+  macroregionsIsLoading: false,
 
-  warehouseList: [],
-  warehouseListIsLoading: false,
+  workTypes: [],
+  workTypesIsLoading: false,
+
+  warehouses: [],
+  warehousesIsLoading: false,
 }
 
 const addModeProps: Readonly<Pick<EquipmentFormModalProps, 'okText'>> = {
@@ -241,6 +246,9 @@ const setQuantity = async (user: UserEvent, value: number) => {
   return field
 }
 
+const findQuantityError = (error: string): Promise<HTMLElement> =>
+  within(getQuantityFormItem()).findByText(error)
+
 // measurement unit field
 const getMeasurementUnitFormItem = () =>
   within(getContainer()).getByTestId('measurement-unit-form-item')
@@ -351,6 +359,9 @@ const setUsageCounter = async (user: UserEvent, value: number) => {
 const getOwnerIsObermeisterFormItem = () =>
   within(getContainer()).getByTestId('owner-is-obermeister-form-item')
 
+const queryOwnerIsObermeisterFormItem = () =>
+  within(getContainer()).queryByTestId('owner-is-obermeister-form-item')
+
 const getOwnerIsObermeisterField = (text: string) =>
   radioButtonTestUtils.getRadioButtonIn(getOwnerIsObermeisterFormItem(), text)
 
@@ -379,6 +390,28 @@ const openOwnerSelect = async (user: UserEvent) => {
 
 const expectOwnerLoadingStarted = () => selectTestUtils.expectLoadingStarted(getOwnerFormItem())
 const expectOwnerLoadingFinished = () => selectTestUtils.expectLoadingFinished(getOwnerFormItem())
+
+// macroregion field
+const getMacroregionFormItem = () => within(getContainer()).getByTestId('macroregion-form-item')
+const queryMacroregionFormItem = () => within(getContainer()).queryByTestId('macroregion-form-item')
+const getMacroregionLabel = () => within(getMacroregionFormItem()).getByLabelText('Макрорегион')
+const getMacroregionSelectInput = () => selectTestUtils.getSelect(getMacroregionFormItem())
+const setMacroregion = selectTestUtils.clickSelectOption
+const getMacroregionOption = selectTestUtils.getSelectOption
+const findMacroregionError = (error: string): Promise<HTMLElement> =>
+  within(getMacroregionFormItem()).findByText(error)
+
+const getSelectedMacroregion = (value: string): HTMLElement =>
+  within(getMacroregionFormItem()).getByTitle(value)
+
+const openMacroregionSelect = async (user: UserEvent) => {
+  await selectTestUtils.openSelect(user, getMacroregionFormItem())
+}
+
+const expectMacroregionLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getMacroregionFormItem())
+const expectMacroregionLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getMacroregionFormItem())
 
 // purpose field
 const getPurposeFormItem = () => within(getContainer()).getByTestId('purpose-form-item')
@@ -518,6 +551,7 @@ export const testUtils = {
   getQuantityLabel,
   getQuantityField,
   setQuantity,
+  findQuantityError,
 
   queryMeasurementUnitFormItem,
   getMeasurementUnitLabel,
@@ -556,6 +590,7 @@ export const testUtils = {
   setUsageCounter,
 
   getOwnerIsObermeisterField,
+  queryOwnerIsObermeisterFormItem,
   clickOwnerIsObermeisterField,
 
   queryOwnerFormItem,
@@ -568,6 +603,17 @@ export const testUtils = {
   openOwnerSelect,
   expectOwnerLoadingStarted,
   expectOwnerLoadingFinished,
+
+  queryMacroregionFormItem,
+  getMacroregionLabel,
+  getMacroregionSelectInput,
+  setMacroregion,
+  getMacroregionOption,
+  findMacroregionError,
+  getSelectedMacroregion,
+  openMacroregionSelect,
+  expectMacroregionLoadingStarted,
+  expectMacroregionLoadingFinished,
 
   getPurposeLabel,
   getPurposeSelectInput,
@@ -610,7 +656,7 @@ describe('Модалка оборудования', () => {
 
     test('Можно установить значение', async () => {
       const category = warehouseFixtures.equipmentCategoryListItem()
-      const { user } = render(<EquipmentFormModal {...props} categoryList={[category]} />)
+      const { user } = render(<EquipmentFormModal {...props} categories={[category]} />)
 
       await testUtils.openCategorySelect(user)
       await testUtils.setCategory(user, category.title)
@@ -643,7 +689,7 @@ describe('Модалка оборудования', () => {
 
     test('Можно установить значение', async () => {
       const nomenclature = warehouseFixtures.nomenclatureListItem()
-      const { user } = render(<EquipmentFormModal {...props} nomenclatureList={[nomenclature]} />)
+      const { user } = render(<EquipmentFormModal {...props} nomenclatures={[nomenclature]} />)
 
       await testUtils.openNomenclatureSelect(user)
       await testUtils.setNomenclature(user, nomenclature.title)
@@ -858,11 +904,30 @@ describe('Модалка оборудования', () => {
 
         expect(field).toHaveDisplayValue(String(value))
       })
+
+      test('Показывается ошибка если поле не заполнено', async () => {
+        const category = warehouseFixtures.equipmentCategoryListItem({
+          code: EquipmentCategoryEnum.Consumable,
+        })
+
+        const { user } = render(
+          <EquipmentFormModal {...props} category={category} {...addModeProps} />,
+        )
+
+        await testUtils.clickAddButton(user)
+        const error = await testUtils.findQuantityError(validationMessages.required)
+
+        expect(error).toBeInTheDocument()
+      })
     })
 
     describe('Режим редактирования', () => {
-      test('Отображается корректно', () => {
-        render(<EquipmentFormModal {...props} mode='edit' />)
+      test('Отображается если категория расходный материал', () => {
+        const category = warehouseFixtures.equipmentCategoryListItem({
+          code: EquipmentCategoryEnum.Consumable,
+        })
+
+        render(<EquipmentFormModal {...props} category={category} mode='edit' />)
 
         const label = testUtils.getQuantityLabel()
         const field = testUtils.getQuantityField()
@@ -871,6 +936,12 @@ describe('Модалка оборудования', () => {
         expect(field).toBeInTheDocument()
         expect(field).toBeDisabled()
         expect(field).not.toHaveValue()
+      })
+
+      test('Не отображается если категория не расходный материал', () => {
+        render(<EquipmentFormModal {...props} mode='edit' />)
+        const formItem = testUtils.queryQuantityFormItem()
+        expect(formItem).not.toBeInTheDocument()
       })
     })
   })
@@ -933,7 +1004,7 @@ describe('Модалка оборудования', () => {
     test('Можно установить значение', async () => {
       const currency = currencyFixtures.currencyListItem()
 
-      const { user } = render(<EquipmentFormModal {...props} currencyList={[currency]} />)
+      const { user } = render(<EquipmentFormModal {...props} currencies={[currency]} />)
 
       await testUtils.openCurrencySelect(user)
       await testUtils.setCurrency(user, currency.title)
@@ -1096,6 +1167,39 @@ describe('Модалка оборудования', () => {
     })
   })
 
+  describe('Владелец оборудования - Obermeister', () => {
+    test('Отображается если категория не расходный материал', () => {
+      render(<EquipmentFormModal {...props} />)
+
+      yesNoOptions.forEach((opt) => {
+        const field = testUtils.getOwnerIsObermeisterField(opt.label as string)
+        expect(field).toBeInTheDocument()
+        expect(field).toBeEnabled()
+        expect(field).not.toBeChecked()
+      })
+    })
+
+    test('Не отображается если категория расходный материал', () => {
+      const category = warehouseFixtures.equipmentCategoryListItem({
+        code: EquipmentCategoryEnum.Consumable,
+      })
+
+      render(<EquipmentFormModal {...props} category={category} />)
+
+      const formItem = testUtils.queryOwnerIsObermeisterFormItem()
+      expect(formItem).not.toBeInTheDocument()
+    })
+
+    test('Можно установить значение', async () => {
+      const { user } = render(<EquipmentFormModal {...props} />)
+      const field = await testUtils.clickOwnerIsObermeisterField(
+        user,
+        yesNoOptions[0].label as string,
+      )
+      expect(field).toBeChecked()
+    })
+  })
+
   describe('Владелец оборудования', () => {
     test('Отображается если категория не расходный материал и поле "владелец оборудования Obermeister" не заполнено', () => {
       render(<EquipmentFormModal {...props} />)
@@ -1141,7 +1245,7 @@ describe('Модалка оборудования', () => {
 
     test('Можно установить значение', async () => {
       const owner = warehouseFixtures.customerListItem()
-      const { user } = render(<EquipmentFormModal {...props} ownerList={[owner]} />)
+      const { user } = render(<EquipmentFormModal {...props} owners={[owner]} />)
 
       await testUtils.openOwnerSelect(user)
       await testUtils.setOwner(user, owner.title)
@@ -1161,6 +1265,60 @@ describe('Модалка оборудования', () => {
     })
   })
 
+  describe('Макрорегион', () => {
+    test('Отображается если выбран владелец оборудования', async () => {
+      const owner = warehouseFixtures.customerListItem()
+      const { user } = render(<EquipmentFormModal {...props} owners={[owner]} />)
+
+      await testUtils.openOwnerSelect(user)
+      await testUtils.setOwner(user, owner.title)
+      const label = testUtils.getMacroregionLabel()
+      const input = testUtils.getMacroregionSelectInput()
+
+      expect(label).toBeInTheDocument()
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+    })
+
+    test('Не отображается если не выбран владелец оборудования', () => {
+      render(<EquipmentFormModal {...props} />)
+      const formItem = testUtils.queryMacroregionFormItem()
+      expect(formItem).not.toBeInTheDocument()
+    })
+
+    test('Можно установить значение', async () => {
+      const owner = warehouseFixtures.customerListItem()
+      const macroregionListItem = macroregionFixtures.macroregionListItem()
+
+      const { user } = render(
+        <EquipmentFormModal {...props} macroregions={[macroregionListItem]} owners={[owner]} />,
+      )
+
+      await testUtils.openOwnerSelect(user)
+      await testUtils.setOwner(user, owner.title)
+
+      await testUtils.openMacroregionSelect(user)
+      await testUtils.setMacroregion(user, macroregionListItem.title)
+      const selectedOption = testUtils.getSelectedMacroregion(macroregionListItem.title)
+
+      expect(selectedOption).toBeInTheDocument()
+    })
+
+    test('Обязательно для заполнения если в поле "владелец оборудования Obermeister" выбрано "Нет"', async () => {
+      const owner = warehouseFixtures.customerListItem()
+
+      const { user } = render(<EquipmentFormModal {...props} owners={[owner]} {...addModeProps} />)
+
+      await testUtils.clickOwnerIsObermeisterField(user, 'Нет')
+      await testUtils.openOwnerSelect(user)
+      await testUtils.setOwner(user, owner.title)
+      await testUtils.clickAddButton(user)
+      const error = await testUtils.findMacroregionError(validationMessages.required)
+
+      expect(error).toBeInTheDocument()
+    })
+  })
+
   describe('Назначение оборудования', () => {
     test('Отображается корректно', () => {
       render(<EquipmentFormModal {...props} />)
@@ -1175,7 +1333,7 @@ describe('Модалка оборудования', () => {
 
     test('Можно установить значение', async () => {
       const workType = warehouseFixtures.workTypeListItem()
-      const { user } = render(<EquipmentFormModal {...props} workTypeList={[workType]} />)
+      const { user } = render(<EquipmentFormModal {...props} workTypes={[workType]} />)
 
       await testUtils.openPurposeSelect(user)
       await testUtils.setPurpose(user, workType.title)

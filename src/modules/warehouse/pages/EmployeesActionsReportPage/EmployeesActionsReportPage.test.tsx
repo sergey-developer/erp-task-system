@@ -23,6 +23,7 @@ import {
   mockGetRelocationTaskSuccess,
   mockGetUserListSuccess,
 } from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { buttonTestUtils, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
 
 import EmployeesActionsReportPage from './index'
@@ -65,7 +66,11 @@ describe('Страница отчета действия сотрудников'
       mockGetEquipmentSuccess(reportListItem.equipment.id)
       mockGetEquipmentAttachmentListSuccess(reportListItem.equipment.id)
 
-      const { user } = render(<EmployeesActionsReportPage />, { store: getStoreWithAuth() })
+      const { user } = render(<EmployeesActionsReportPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await employeesActionsReportFormTestUtils.expectEmployeesLoadingFinished()
       await employeesActionsReportFormTestUtils.openEmployeeSelect(user)
@@ -94,7 +99,11 @@ describe('Страница отчета действия сотрудников'
       mockGetRelocationTaskSuccess(reportListItem.relocationTask.id)
       mockGetRelocationEquipmentListSuccess(reportListItem.relocationTask.id)
 
-      const { user } = render(<EmployeesActionsReportPage />, { store: getStoreWithAuth() })
+      const { user } = render(<EmployeesActionsReportPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await employeesActionsReportFormTestUtils.expectEmployeesLoadingFinished()
       await employeesActionsReportFormTestUtils.openEmployeeSelect(user)
@@ -125,7 +134,11 @@ describe('Страница отчета действия сотрудников'
 
       mockGetEmployeesActionsReportSuccess(userListItem.id)
 
-      const { user } = render(<EmployeesActionsReportPage />, { store: getStoreWithAuth() })
+      const { user } = render(<EmployeesActionsReportPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await employeesActionsReportFormTestUtils.expectEmployeesLoadingFinished()
       await employeesActionsReportFormTestUtils.openEmployeeSelect(user)
@@ -143,11 +156,7 @@ describe('Страница отчета действия сотрудников'
       expect(base64ToArrayBufferSpy).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
-      expect(downloadFileSpy).toBeCalledWith(
-        fakeArrayBuffer,
-        MimetypeEnum.Xlsx,
-        'Отчет по действиям сотрудника',
-      )
+      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, 'filename')
     })
   })
 })

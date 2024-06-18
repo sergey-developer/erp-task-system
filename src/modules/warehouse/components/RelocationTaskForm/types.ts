@@ -24,6 +24,10 @@ export type RelocationTaskFormProps = {
   permissions: MaybeNull<MatchedUserPermissions>
 
   isLoading: boolean
+
+  executorOptions: UsersModel
+
+  controllerOptions: UsersModel
   controllerIsRequired: boolean
 
   onUploadImage: NonNullable<UploadProps['customRequest']>
@@ -32,8 +36,7 @@ export type RelocationTaskFormProps = {
   imageIsDeleting: boolean
   imagesIsLoading?: boolean
 
-  userList: UsersModel
-  userListIsLoading: boolean
+  usersIsLoading: boolean
 
   relocateFromLocationList: LocationsModel
   relocateFromLocationListIsLoading: boolean

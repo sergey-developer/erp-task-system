@@ -14,7 +14,7 @@ import { WorkGroupListModel } from 'modules/workGroup/models'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { MacroregionListModel } from 'shared/models/macroregion'
+import { MacroregionsModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 
 export type TasksFilterSupportGroupFormFields = Partial<{
@@ -46,7 +46,7 @@ export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClos
   customersIsLoading: boolean
   onChangeCustomers: (value: IdType[]) => void
 
-  macroregions: MacroregionListModel
+  macroregions: MacroregionsModel
   macroregionsIsLoading: boolean
   onChangeMacroregions: (value: IdType[]) => void
 
