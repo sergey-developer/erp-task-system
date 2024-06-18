@@ -1,6 +1,8 @@
 import { TaskApiTagEnum } from 'modules/task/constants/task'
-import { UserApiEnum } from 'modules/user/constants'
+import { UserApiEnum, UsersApiTagEnum } from 'modules/user/constants'
 import {
+  GetUserActionsQueryArgs,
+  GetUserActionsSuccessResponse,
   GetUserMeCodeQueryArgs,
   GetUserMeCodeSuccessResponse,
   GetUserMeQueryArgs,
@@ -15,7 +17,12 @@ import {
   UpdateUserTimeZoneSuccessResponse,
   UserModel,
 } from 'modules/user/models'
-import { getWarehouseMSIUrl, updateUserStatusUrl, updateUserUrl } from 'modules/user/utils'
+import {
+  getUserActionsUrl,
+  getWarehouseMSIUrl,
+  updateUserStatusUrl,
+  updateUserUrl,
+} from 'modules/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
@@ -35,7 +42,7 @@ const userApiService = baseApiService.injectEndpoints({
       UpdateUserTimeZoneMutationArgs
     >({
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.Task],
+        error ? [] : [TaskApiTagEnum.Tasks, TaskApiTagEnum.Task],
       query: ({ userId, ...payload }) => ({
         url: updateUserUrl(userId),
         method: HttpMethodEnum.Patch,
@@ -99,6 +106,13 @@ const userApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    getUserActions: build.query<GetUserActionsSuccessResponse, GetUserActionsQueryArgs>({
+      providesTags: (result, error) => (error ? [] : [UsersApiTagEnum.UserActions]),
+      query: ({ userId }) => ({
+        url: getUserActionsUrl(userId),
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
@@ -110,5 +124,6 @@ export const {
   useUpdateUserTimeZoneMutation,
   useUpdateUserStatusMutation,
   useGetWarehouseMSIQuery,
+  useGetUserActionsQuery,
   endpoints,
 } = userApiService

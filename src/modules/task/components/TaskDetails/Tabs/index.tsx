@@ -5,7 +5,8 @@ import React, { FC } from 'react'
 import { taskDetailsTabNameDict, TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { TaskModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
+import { UserActionsModel } from 'modules/user/models'
 
 import Spinner from 'components/Spinner'
 
@@ -14,7 +15,7 @@ import ResolutionTab from './ResolutionTab'
 import { TabsStyled } from './styles'
 
 const JournalTab = React.lazy(() => import('./JournalTab'))
-const CommentListTab = React.lazy(() => import('./CommentListTab'))
+const CommentsTab = React.lazy(() => import('./CommentsTab'))
 const SubTaskListTab = React.lazy(() => import('./SubTaskListTab'))
 const RelocationTasksTab = React.lazy(() => import('./RelocationTasksTab'))
 
@@ -41,15 +42,21 @@ export type TabsProps = {
     | 'isDescriptionChanged'
     | 'previousDescription'
   >
-
+  userActions: UserActionsModel
   activeTab?: TaskDetailsTabsEnum
 }
 
-const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description }) => {
-  const permissions = useMatchUserPermissions([
+const Tabs: FC<TabsProps> = ({
+  task,
+  activeTab = TaskDetailsTabsEnum.Description,
+  userActions,
+}) => {
+  const permissions = useUserPermissions([
     UserPermissionsEnum.RelocationTasksRead,
     UserPermissionsEnum.TaskHistoryDescriptionRead,
     UserPermissionsEnum.TaskHistoryDescriptionUpdate,
+    UserPermissionsEnum.AnySubtasksDelete,
+    UserPermissionsEnum.AnySubtasksRework,
   ])
 
   const tabsItems: AntdTabsProps['items'] = [
@@ -69,12 +76,12 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
       ),
     },
     {
-      key: TaskDetailsTabsEnum.CommentList,
-      label: taskDetailsTabNameDict[TaskDetailsTabsEnum.CommentList],
+      key: TaskDetailsTabsEnum.Comments,
+      label: taskDetailsTabNameDict[TaskDetailsTabsEnum.Comments],
       children: (
-        <React.Suspense fallback={<Spinner />}>
-          <CommentListTab
-            title={taskDetailsTabNameDict[TaskDetailsTabsEnum.CommentList]}
+        <React.Suspense fallback={<Spinner tip='Загрузка вкладки комментариев' />}>
+          <CommentsTab
+            title={taskDetailsTabNameDict[TaskDetailsTabsEnum.Comments]}
             taskId={task.id}
           />
         </React.Suspense>
@@ -97,7 +104,7 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
       key: TaskDetailsTabsEnum.Journal,
       label: taskDetailsTabNameDict[TaskDetailsTabsEnum.Journal],
       children: (
-        <React.Suspense fallback={<Spinner />}>
+        <React.Suspense fallback={<Spinner tip='Загрузка вкладки журнала' />}>
           <JournalTab taskId={task.id} />
         </React.Suspense>
       ),
@@ -106,7 +113,7 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
       key: TaskDetailsTabsEnum.SubTaskList,
       label: taskDetailsTabNameDict[TaskDetailsTabsEnum.SubTaskList],
       children: (
-        <React.Suspense fallback={<Spinner />}>
+        <React.Suspense fallback={<Spinner tip='Загрузка вкладки задач заявок' />}>
           <SubTaskListTab
             task={pick(
               task,
@@ -120,6 +127,8 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
               'description',
               'suspendRequest',
             )}
+            userActions={userActions}
+            permissions={permissions}
           />
         </React.Suspense>
       ),
@@ -130,7 +139,7 @@ const Tabs: FC<TabsProps> = ({ task, activeTab = TaskDetailsTabsEnum.Description
             key: TaskDetailsTabsEnum.RelocationTasks,
             label: taskDetailsTabNameDict[TaskDetailsTabsEnum.RelocationTasks],
             children: (
-              <React.Suspense fallback={<Spinner />}>
+              <React.Suspense fallback={<Spinner tip='Загрузка вкладки заявок на перемещение' />}>
                 <RelocationTasksTab
                   task={pick(
                     task,

@@ -4,6 +4,6 @@ import { MaybeUndefined } from 'shared/types/utils'
 
 import { WorkGroupListModel } from './workGroupList.model'
 
-export type GetWorkGroupListQueryArgs = MaybeUndefined<Partial<TaskRequestArgs>>
+export type GetWorkGroupsQueryArgs = MaybeUndefined<Partial<TaskRequestArgs>>
 
-export type GetWorkGroupListSuccessResponse = WorkGroupListModel
+export type GetWorkGroupsSuccessResponse = WorkGroupListModel

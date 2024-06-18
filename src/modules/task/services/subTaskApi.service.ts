@@ -1,5 +1,5 @@
 import { SubTaskApiTriggerEnum } from 'modules/task/constants/subTask'
-import { TaskStatusEnum, TaskApiTriggerEnum } from 'modules/task/constants/task'
+import { TaskApiTriggerEnum, TaskStatusEnum } from 'modules/task/constants/task'
 import {
   CancelSubTaskMutationArgs,
   CancelSubTaskSuccessResponse,
@@ -30,7 +30,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
           dispatch(
             baseApiService.util.updateQueryData(
               TaskApiTriggerEnum.GetSubTaskList as never,
-              taskId as never,
+              { taskId } as never,
               (subTaskList: SubTaskModel[]) => {
                 const subTask = subTaskList.find(({ id }) => id === subTaskId)
 
@@ -59,7 +59,7 @@ const subTaskApiService = baseApiService.injectEndpoints({
           dispatch(
             baseApiService.util.updateQueryData(
               TaskApiTriggerEnum.GetSubTaskList as never,
-              taskId as never,
+              { taskId } as never,
               (subTaskList: SubTaskModel[]) => {
                 const subTask = subTaskList.find(({ id }) => id === subTaskId)
 

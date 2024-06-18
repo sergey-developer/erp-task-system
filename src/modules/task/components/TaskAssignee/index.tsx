@@ -1,4 +1,4 @@
-import { Popover, Typography } from 'antd'
+import { Flex, Popover, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import UserShortInfo from 'modules/task/components/UserShortInfo'
@@ -6,7 +6,6 @@ import { TaskAssigneeModel } from 'modules/task/models'
 import { getFullUserName, getUserAbbr } from 'modules/user/utils'
 
 import UserAvatar from 'components/Avatars/UserAvatar'
-import Space from 'components/Space'
 
 const { Text } = Typography
 
@@ -32,7 +31,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
     <Space data-testid='task-assignee' align='center'>
       <UserAvatar src={avatar} abbr={getUserAbbr({ firstName, lastName })} />
 
-      <Space direction='vertical'>
+      <Flex vertical gap='small'>
         {hasPopover ? (
           <Popover
             content={
@@ -46,7 +45,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
         )}
 
         {phone && <Text>{phone}</Text>}
-      </Space>
+      </Flex>
     </Space>
   )
 }

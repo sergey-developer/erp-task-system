@@ -9,7 +9,7 @@ export enum TaskApiEnum {
   CreateTaskCompletionDocuments = '/tasks/:id/completion-documents',
   GetTaskCompletionDocuments = '/tasks/:id/completion-documents',
 
-  GetTaskList = '/tasks/',
+  GetTasks = '/tasks/',
   GetTaskListMap = '/tasks/map/',
 
   GetTaskCounters = '/tasks/counters/',
@@ -27,7 +27,7 @@ export enum TaskApiEnum {
   CreateReclassificationRequest = '/tasks/:id/reclassification-requests',
   GetReclassificationRequest = '/tasks/:id/reclassification-request',
 
-  CreateTaskSuspendRequest = '/tasks/:id/suspend_request',
+  CreateTaskSuspendRequest = '/tasks/:id/suspend-request',
   DeleteTaskSuspendRequest = '/tasks/:id/suspend-request',
 
   GetTaskJournal = '/tasks/:id/journal',
@@ -48,12 +48,12 @@ export enum TaskApiEnum {
 
 export enum TaskApiTagEnum {
   Task = 'Task',
-  TaskList = 'TaskList',
+  Tasks = 'Tasks',
   TaskCounters = 'TaskCounters',
 }
 
 export enum TaskApiTriggerEnum {
-  GetTaskList = 'getTaskList',
+  GetTasks = 'getTasks',
   GetTaskListMap = 'getTaskListMap',
   GetTaskCounters = 'getTaskCounters',
   GetTask = 'getTask',

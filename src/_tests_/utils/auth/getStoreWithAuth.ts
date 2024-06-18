@@ -1,5 +1,4 @@
-import { AuthenticatedUser } from 'modules/auth/types'
-import { UserRoleEnum } from 'modules/user/constants'
+import { UserModel } from 'modules/user/models'
 
 import { setupStore } from 'state/store'
 
@@ -9,7 +8,7 @@ import { getAuthState } from './getAuthState'
 
 // todo: fix type api: any
 export const getStoreWithAuth = (
-  user?: Partial<AuthenticatedUser>,
+  user?: Partial<Pick<UserModel, 'id'>>,
   accessToken?: string,
   refreshToken?: string,
   api?: Partial<{ queries: Record<string, any> }>,
@@ -17,10 +16,7 @@ export const getStoreWithAuth = (
   setupStore({
     preloadedState: {
       auth: getAuthState({
-        user: {
-          userId: user?.userId || fakeId(),
-          userRole: user?.userRole || UserRoleEnum.FirstLineSupport,
-        },
+        user: { userId: user?.id || fakeId() },
         accessToken,
         refreshToken,
       }),

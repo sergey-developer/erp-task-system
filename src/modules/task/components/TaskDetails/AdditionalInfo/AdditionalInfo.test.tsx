@@ -7,8 +7,8 @@ import {
   fakeEmail,
   fakeWord,
   iconTestUtils,
-  render
-} from "_tests_/utils";
+  render,
+} from '_tests_/utils'
 
 import AdditionalInfo, { AdditionalInfoProps } from './index'
 
@@ -52,14 +52,13 @@ const props: Readonly<
   contactType: null,
 }
 
-const getContainer = () => screen.getByTestId('task-card-additional-info')
+const getContainer = () => screen.getByTestId('task-details-additional-info')
 
-const queryContainer = () => screen.queryByTestId('task-card-additional-info')
+const queryContainer = () => screen.queryByTestId('task-details-additional-info')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
-const getAdditionalInfoContent = () =>
-  within(getContainer()).getByTestId('additional-info-content')
+const getAdditionalInfoContent = () => within(getContainer()).getByTestId('additional-info-content')
 
 const queryAdditionalInfoContent = () =>
   within(getContainer()).queryByTestId('additional-info-content')
@@ -73,8 +72,7 @@ const clickExpandButton = async (user: UserEvent) => {
   return button
 }
 
-const getAddress = () =>
-  within(getAdditionalInfoContent()).getByTestId('additional-info-address')
+const getAddress = () => within(getAdditionalInfoContent()).getByTestId('additional-info-address')
 
 const getAddressIcon = () => iconTestUtils.getIconByNameIn(getAddress(), 'environment')
 
@@ -128,24 +126,16 @@ describe('Блок дополнительной информации', () => {
     expect(testUtils.getChildByText(props.priority)).toBeInTheDocument()
     expect(testUtils.getChildByText(props.severity)).toBeInTheDocument()
     expect(testUtils.getChildByText(props.impact)).toBeInTheDocument()
-    expect(
-      testUtils.getChildByText(props.productClassifier1),
-    ).toBeInTheDocument()
-    expect(
-      testUtils.getChildByText(props.productClassifier2),
-    ).toBeInTheDocument()
-    expect(
-      testUtils.getChildByText(props.productClassifier3),
-    ).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.productClassifier1)).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.productClassifier2)).toBeInTheDocument()
+    expect(testUtils.getChildByText(props.productClassifier3)).toBeInTheDocument()
   })
 
   test('Группа поддержки отображается если присутствует', () => {
     const supportGroup = fakeWord()
     render(<AdditionalInfo {...props} supportGroup={supportGroup} />)
 
-    expect(
-      testUtils.getChildByText('Наименование группы поддержки Х5'),
-    ).toBeInTheDocument()
+    expect(testUtils.getChildByText('Наименование группы поддержки Х5')).toBeInTheDocument()
 
     expect(testUtils.getChildByText(supportGroup)).toBeInTheDocument()
   })

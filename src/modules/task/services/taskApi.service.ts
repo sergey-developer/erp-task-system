@@ -49,13 +49,13 @@ import {
   GetTaskJournalSuccessResponse,
   GetTaskListMapQueryArgs,
   GetTaskListMapSuccessResponse,
-  GetTaskListQueryArgs,
-  GetTaskListSuccessResponse,
   GetTaskQueryArgs,
   GetTaskReclassificationRequestQueryArgs,
   GetTaskReclassificationRequestSuccessResponse,
   GetTaskRegistrationRequestRecipientsFNQueryArgs,
   GetTaskRegistrationRequestRecipientsFNSuccessResponse,
+  GetTasksQueryArgs,
+  GetTasksSuccessResponse,
   GetTaskSuccessResponse,
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
@@ -73,7 +73,7 @@ import {
   UpdateTaskWorkGroupMutationArgs,
   UpdateTaskWorkGroupSuccessResponse,
 } from 'modules/task/models'
-import { GetTaskListTransformedSuccessResponse } from 'modules/task/types'
+import { GetTasksTransformedSuccessResponse } from 'modules/task/types'
 import {
   createCompletedWorkUrl,
   createInitiationReasonUrl,
@@ -105,6 +105,7 @@ import {
   deleteTaskSuspendRequestUrl,
 } from 'modules/task/utils/taskSuspendRequest'
 import { deleteTaskWorkGroupUrl, updateTaskWorkGroupUrl } from 'modules/task/utils/taskWorkGroup'
+import { UsersApiTagEnum } from 'modules/user/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService, ErrorResponse, isNotFoundError } from 'shared/services/baseApi'
@@ -114,17 +115,17 @@ const taskApiService = baseApiService
   .enhanceEndpoints({ addTagTypes: [TaskApiTagEnum.TaskCounters] })
   .injectEndpoints({
     endpoints: (build) => ({
-      [TaskApiTriggerEnum.GetTaskList]: build.query<
-        GetTaskListTransformedSuccessResponse,
-        GetTaskListQueryArgs
+      [TaskApiTriggerEnum.GetTasks]: build.query<
+        GetTasksTransformedSuccessResponse,
+        GetTasksQueryArgs
       >({
-        providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskList]),
+        providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Tasks]),
         query: (params) => ({
-          url: TaskApiEnum.GetTaskList,
+          url: TaskApiEnum.GetTasks,
           method: HttpMethodEnum.Get,
           params,
         }),
-        transformResponse: (response: GetTaskListSuccessResponse, meta, arg) =>
+        transformResponse: (response: GetTasksSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
       [TaskApiTriggerEnum.GetTaskListMap]: build.query<
@@ -173,7 +174,7 @@ const taskApiService = baseApiService
         ResolveTaskMutationArgs
       >({
         invalidatesTags: (result, error) =>
-          error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.TaskCounters],
+          error ? [] : [TaskApiTagEnum.Tasks, TaskApiTagEnum.TaskCounters],
         query: ({
           taskId,
           techResolution,
@@ -285,11 +286,13 @@ const taskApiService = baseApiService
         UpdateTaskAssigneeMutationArgs
       >({
         invalidatesTags: (result, error) =>
-          error ? [] : [TaskApiTagEnum.Task, TaskApiTagEnum.TaskCounters],
-        query: ({ taskId, ...payload }) => ({
+          error
+            ? []
+            : [TaskApiTagEnum.Task, TaskApiTagEnum.TaskCounters, UsersApiTagEnum.UserActions],
+        query: ({ taskId, ...data }) => ({
           url: updateTaskAssigneeUrl(taskId),
           method: HttpMethodEnum.Post,
-          data: payload,
+          data,
         }),
       }),
 
@@ -513,7 +516,7 @@ const taskApiService = baseApiService
         UpdateTaskWorkGroupMutationArgs
       >({
         invalidatesTags: (result, error) =>
-          error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.TaskCounters],
+          error ? [] : [TaskApiTagEnum.Tasks, TaskApiTagEnum.TaskCounters],
         query: ({ taskId, ...payload }) => ({
           url: updateTaskWorkGroupUrl(taskId),
           method: HttpMethodEnum.Post,
@@ -525,7 +528,7 @@ const taskApiService = baseApiService
         DeleteTaskWorkGroupMutationArgs
       >({
         invalidatesTags: (result, error) =>
-          error ? [] : [TaskApiTagEnum.TaskList, TaskApiTagEnum.TaskCounters],
+          error ? [] : [TaskApiTagEnum.Tasks, TaskApiTagEnum.TaskCounters],
         query: ({ taskId, ...payload }) => ({
           url: deleteTaskWorkGroupUrl(taskId),
           method: HttpMethodEnum.Delete,
@@ -575,7 +578,7 @@ const taskApiService = baseApiService
         GetSubTaskListSuccessResponse,
         GetSubTaskListQueryArgs
       >({
-        query: (taskId) => ({
+        query: ({ taskId }) => ({
           url: getSubTaskListUrl(taskId),
           method: HttpMethodEnum.Get,
         }),
@@ -596,7 +599,7 @@ const taskApiService = baseApiService
             dispatch(
               baseApiService.util.updateQueryData(
                 TaskApiTriggerEnum.GetSubTaskList as never,
-                taskId as never,
+                { taskId } as never,
                 (subTaskList: SubTaskModel[]) => {
                   subTaskList.unshift(newSubTask)
                 },
@@ -614,7 +617,7 @@ export const {
 
   useGetTaskCountersQuery,
 
-  useGetTaskListQuery,
+  useGetTasksQuery,
   useGetTaskListMapQuery,
 
   useGetTaskWorkPerformedActMutation,

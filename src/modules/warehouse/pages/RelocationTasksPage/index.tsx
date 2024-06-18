@@ -5,9 +5,9 @@ import React, { FC, useCallback, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
 import { useGetTask, useGetTasks } from 'modules/task/hooks/task'
-import { GetTaskListQueryArgs } from 'modules/task/models'
+import { GetTasksQueryArgs } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useUserPermissions } from 'modules/user/hooks'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
 import {
   getSort,
@@ -86,7 +86,7 @@ const RelocationTasksPage: FC = () => {
   const [searchParams] = useSearchParams()
   const relocationTaskId = Number(searchParams.get('viewRelocationTask')) || undefined
 
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.RelocationTasksCreate])
+  const permissions = useUserPermissions([UserPermissionsEnum.RelocationTasksCreate])
 
   const [filterOpened, { toggle: toggleOpenFilter }] = useBoolean(false)
   const debouncedToggleOpenFilter = useDebounceFn(toggleOpenFilter)
@@ -102,7 +102,7 @@ const RelocationTasksPage: FC = () => {
   const [selectedIncidentId, setSelectedIncidentId] = useState<IdType>()
 
   const [getTasksParams, setGetTasksParams] = useSetState<
-    Pick<GetTaskListQueryArgs, 'limit' | 'search' | 'sort'>
+    Pick<GetTasksQueryArgs, 'limit' | 'search' | 'sort'>
   >({ limit: 10, sort: 'created_at' })
 
   const debouncedSetTasksParams = useDebounceFn(setGetTasksParams, [], 500)

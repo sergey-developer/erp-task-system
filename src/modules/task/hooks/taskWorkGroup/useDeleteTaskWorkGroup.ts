@@ -1,46 +1,44 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { DeleteTaskWorkGroupMutationArgs } from 'modules/task/models'
-import { taskWorkGroupApiPermissions } from 'modules/task/permissions'
-import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { commonApiMessages } from 'shared/constants/common'
+import { returnTaskToFirstLineSupportErrMsg } from 'modules/task/constants/task'
 import {
+  DeleteTaskWorkGroupMutationArgs,
+  DeleteTaskWorkGroupSuccessResponse,
+} from 'modules/task/models'
+import { useDeleteTaskWorkGroupMutation } from 'modules/task/services/taskApi.service'
+
+import {
+  getErrorDetail,
   isBadRequestError,
   isErrorResponse,
+  isForbiddenError,
   isNotFoundError,
-  isServerRangeError,
 } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useDeleteTaskWorkGroup = () => {
-  const permissions = useUserPermissions(taskWorkGroupApiPermissions)
+type UseDeleteTaskWorkGroupResult = CustomUseMutationResult<
+  DeleteTaskWorkGroupMutationArgs,
+  DeleteTaskWorkGroupSuccessResponse
+>
+
+export const useDeleteTaskWorkGroup = (): UseDeleteTaskWorkGroupResult => {
   const [mutation, state] = useDeleteTaskWorkGroupMutation()
 
-  const fn = useCallback(
-    async (data: DeleteTaskWorkGroupMutationArgs) => {
-      if (!permissions.canDelete) return
-
-      await mutation(data).unwrap()
-    },
-    [mutation, permissions.canDelete],
-  )
-
   useEffect(() => {
-    if (!state.error) return
-
     if (isErrorResponse(state.error)) {
       if (
-        (isNotFoundError(state.error) || isServerRangeError(state.error)) &&
-        state.error.data.detail
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
       ) {
-        showErrorNotification(state.error.data.detail)
-      } else if (!isBadRequestError(state.error)) {
-        showErrorNotification(commonApiMessages.unknownError)
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(returnTaskToFirstLineSupportErrMsg)
       }
     }
   }, [state.error])
 
-  return { fn, state }
+  return [mutation, state]
 }

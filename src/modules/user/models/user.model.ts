@@ -1,4 +1,4 @@
-import { UserPermissionsEnum, UserRoleEnum } from 'modules/user/constants'
+import { UserPermissionsEnum } from 'modules/user/constants'
 
 import { UserStatusModel } from 'shared/models/catalogs/userStatus'
 import { IdType } from 'shared/types/common'
@@ -19,7 +19,6 @@ export type UserPositionModel = {
 
 export type UserModel = BaseUserModel & {
   fullName: string
-  role: UserRoleEnum
   email: string
   timezone: string
   isStaff: boolean
