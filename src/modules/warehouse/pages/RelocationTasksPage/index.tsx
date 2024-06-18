@@ -8,7 +8,6 @@ import { useGetTask, useGetTasks } from 'modules/task/hooks/task'
 import { GetTasksQueryArgs } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUsers, useUserPermissions } from 'modules/user/hooks'
-import { RelocationTaskListFilterFormFields } from 'modules/warehouse/components/RelocationTaskListFilter/types'
 import RelocationTaskTable from 'modules/warehouse/components/RelocationTaskTable'
 import {
   getSort,

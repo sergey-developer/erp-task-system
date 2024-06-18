@@ -117,6 +117,7 @@ const EditRelocationTaskPage: FC = () => {
   const params = useParams<'id'>()
   const relocationTaskId = Number(params?.id) || undefined
 
+  const authUser = useAuthUser()
   const permissions = useUserPermissions([
     UserPermissionsEnum.EquipmentsCreate,
     UserPermissionsEnum.EnteringBalances,
