@@ -152,18 +152,18 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const [
     createEquipmentTechnicalExaminationModalOpened,
     {
-      toggle: toggleCreateEquipmentTechnicalExaminationModal,
+      setTrue: openCreateEquipmentTechnicalExaminationModal,
       setFalse: closeCreateEquipmentTechnicalExaminationModal,
     },
   ] = useBoolean(false)
 
-  const onToggleCreateEquipmentTechnicalExaminationModal = useDebounceFn(
-    toggleCreateEquipmentTechnicalExaminationModal,
+  const onOpenCreateEquipmentTechnicalExaminationModal = useDebounceFn(
+    openCreateEquipmentTechnicalExaminationModal,
   )
 
   const onCloseCreateEquipmentTechnicalExaminationModal = () => {
     closeCreateEquipmentTechnicalExaminationModal()
-    resetCreateTechnicalExamination()
+    resetCreatedTechnicalExamination()
   }
 
   const [
@@ -252,7 +252,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     {
       isLoading: createTechnicalExaminationIsLoading,
       data: createdTechnicalExamination,
-      reset: resetCreateTechnicalExamination,
+      reset: resetCreatedTechnicalExamination,
     },
   ] = useCreateEquipmentTechnicalExamination()
 
@@ -398,7 +398,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     [],
   )
 
-  const onGetTechnicalExaminationPdf = useCallback(async () => {
+  const onGetTechnicalExaminationPdf = async () => {
     if (!createdTechnicalExamination) return
 
     try {
@@ -407,20 +407,13 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       }).unwrap()
 
       downloadTechnicalExamination(response)
-      toggleCreateEquipmentTechnicalExaminationModal()
+      onCloseCreateEquipmentTechnicalExaminationModal()
     } catch (error) {
       console.error(error)
     }
-  }, [
-    createdTechnicalExamination,
-    downloadTechnicalExamination,
-    getTechnicalExaminationPdf,
-    toggleCreateEquipmentTechnicalExaminationModal,
-  ])
+  }
 
-  const onCreateTechnicalExamination = useCallback<
-    CreateEquipmentTechnicalExaminationModalProps['onSubmit']
-  >(
+  const onCreateTechnicalExamination: CreateEquipmentTechnicalExaminationModalProps['onSubmit'] =
     async (values, setFields) => {
       let createdTechnicalExamination: MaybeUndefined<CreateEquipmentTechnicalExaminationSuccessResponse>
 
@@ -443,19 +436,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         }).unwrap()
 
         downloadTechnicalExamination(response)
-        toggleCreateEquipmentTechnicalExaminationModal()
+        onCloseCreateEquipmentTechnicalExaminationModal()
       } catch (error) {
         console.error(error)
       }
-    },
-    [
-      createTechnicalExaminationMutation,
-      downloadTechnicalExamination,
-      equipmentId,
-      getTechnicalExaminationPdf,
-      toggleCreateEquipmentTechnicalExaminationModal,
-    ],
-  )
+    }
 
   const dropdownMenuItems = useMemo<Pick<MenuProps, 'items'>>(
     () => ({
@@ -473,7 +458,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         {
           key: 'createEquipmentTechnicalExamination',
           label: 'Сформировать АТЭ',
-          onClick: onToggleCreateEquipmentTechnicalExaminationModal,
+          onClick: onOpenCreateEquipmentTechnicalExaminationModal,
           disabled:
             !permissions.equipmentsRead ||
             (equipment
@@ -488,12 +473,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     [
       equipment,
       onOpenEditEquipmentModal,
-      onToggleCreateEquipmentTechnicalExaminationModal,
+      onOpenCreateEquipmentTechnicalExaminationModal,
       onToggleTechnicalExaminationsHistoryModal,
       permissions.equipmentsRead,
     ],
   )
-  console.log({ isGetTechnicalExaminationPdfError, createdTechnicalExamination })
+
   return (
     <>
       <Drawer

@@ -7,6 +7,7 @@ import httpClient from 'lib/httpClient'
 
 import { commonApiMessages } from 'shared/constants/common'
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 
 import { CustomBaseQueryConfig, CustomBaseQueryFn } from './types'
 import { makeRelativeApiUrl } from './utils'
@@ -14,6 +15,7 @@ import { makeRelativeApiUrl } from './utils'
 const baseQuery =
   ({ basePath, apiVersion, prepareHeaders }: CustomBaseQueryConfig): CustomBaseQueryFn =>
   async ({ url, method = HttpMethodEnum.Get, data, params, headers }, api) => {
+    // todo: убрать это и отправлять 'Content-Type' в своей запросе т.к. из-за кода ниже может возникнуть баг
     const finalHeaders = prepareHeaders
       ? merge(
           prepareHeaders(
@@ -28,14 +30,19 @@ const baseQuery =
           headers,
         )
       : undefined
-    console.log({ finalHeaders, headers, common: httpClient.defaults.headers.common })
+
     try {
       const response = await httpClient({
         url: makeRelativeApiUrl(url, basePath, apiVersion),
         method,
         data,
         params,
-        headers: finalHeaders,
+        headers: {
+          ...finalHeaders,
+          ...(headers
+            ? !headers['Accept'] && { Accept: MimetypeEnum.Json }
+            : { Accept: MimetypeEnum.Json }),
+        },
       })
 
       return { data: response.data, meta: { response } }
