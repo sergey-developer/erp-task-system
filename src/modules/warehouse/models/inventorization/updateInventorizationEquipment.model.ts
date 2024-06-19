@@ -8,6 +8,7 @@ export type UpdateInventorizationEquipmentMutationArgs = InventorizationEquipmen
   quantityFact: MaybeNull<number>
   locationFact: MaybeNull<number>
   getInventorizationEquipmentsArgs: GetInventorizationEquipmentsQueryArgs
+  isLocationFactUndefined?: boolean
 }
 
 export type UpdateInventorizationEquipmentSuccessResponse = Partial<{
