@@ -85,6 +85,7 @@ import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
 import TasksPage from './index'
 
 const getContainer = () => screen.getByTestId('task-list-page')
+const findContainer = () => screen.findByTestId('task-list-page')
 
 // search input
 const getSearchInput = () => within(getContainer()).getByPlaceholderText('Искать заявку по номеру')
@@ -121,6 +122,7 @@ const clickExtendedFilterButton = async (user: UserEvent) => {
 
 export const testUtils = {
   getContainer,
+  findContainer,
 
   getSearchInput,
   setSearchValue,
