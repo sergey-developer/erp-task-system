@@ -28,7 +28,7 @@ const baseQuery =
           headers,
         )
       : undefined
-
+    console.log({ finalHeaders, headers, common: httpClient.defaults.headers.common })
     try {
       const response = await httpClient({
         url: makeRelativeApiUrl(url, basePath, apiVersion),
