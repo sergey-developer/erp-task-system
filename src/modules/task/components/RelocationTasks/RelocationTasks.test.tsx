@@ -10,7 +10,7 @@ import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { buttonTestUtils, render } from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render, setupApiTests } from '_tests_/utils'
 
 import RelocationTasks from './index'
 import { RelocationTasksProps } from './types'
@@ -44,7 +44,7 @@ const getCreateDocumentsButton = (id: IdType) =>
 const setDocument = async (
   id: IdType,
   user: UserEvent,
-  file: File = new File([], '', { type: 'image/png' }),
+  file: File = new File([], fakeWord(), { type: 'image/png' }),
 ) => {
   const listItem = getListItem(id)
   // eslint-disable-next-line testing-library/no-node-access
@@ -67,6 +67,8 @@ export const testUtils = {
   setDocument,
   getUploadedDocument,
 }
+
+setupApiTests()
 
 describe('Список заявок на перемещение', () => {
   test('Если список пуст отображается соответствующий текст', () => {

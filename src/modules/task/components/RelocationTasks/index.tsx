@@ -61,7 +61,7 @@ const RelocationTasks: FC<RelocationTasksProps> = ({ data, onClick, onCreateAtta
                 </Col>
 
                 <Col span={12}>
-                  <Space $block direction='vertical' align='center'>
+                  <Space $block direction='vertical'>
                     <Label label='Дата создания:' direction='horizontal'>
                       {formatDate(item.createdAt)}
                     </Label>
