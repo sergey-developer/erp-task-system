@@ -14,7 +14,7 @@ import {
 import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import {
   canExecuteTaskProps,
-  testUtils as cardTitleTestUtils,
+  testUtils as taskDetailsTitleTestUtils,
 } from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
 import {
   activeFirstLineButtonProps,
@@ -36,6 +36,7 @@ import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/componen
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 import {
   FastFilterEnum,
+  TaskActionsPermissionsEnum,
   taskExtendedStatusDict,
   TaskOlaStatusEnum,
 } from 'modules/task/constants/task'
@@ -405,6 +406,9 @@ describe('Страница реестра заявок', () => {
 
     test('Перезапрашивается при выполнении заявки', async () => {
       mockGetTaskCountersSuccess({ once: false })
+      mockGetUserActionsSuccess(canExecuteTaskProps.assignee!.id, {
+        body: userFixtures.userActions(),
+      })
 
       const taskListItem = taskFixtures.taskListItem()
       mockGetTasksSuccess({
@@ -431,8 +435,8 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.clickRow(user, task.id)
       await taskDetailsTestUtils.findContainer()
       await taskDetailsTestUtils.expectTaskLoadingFinished()
-      await cardTitleTestUtils.openMenu(user)
-      await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
+      await taskDetailsTitleTestUtils.openMenu(user)
+      await taskDetailsTitleTestUtils.clickExecuteTaskMenuItem(user)
       await executeTaskModalTestUtils.findContainer()
       await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
       await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -504,7 +508,9 @@ describe('Страница реестра заявок', () => {
 
       mockUpdateTaskWorkGroupSuccess(task.id)
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.user({
+        permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
+      })
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
       const { user } = render(<TasksPage />, {
@@ -545,7 +551,14 @@ describe('Страница реестра заявок', () => {
       mockTakeTaskSuccess(task.id)
 
       const currentUser = userFixtures.user()
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanExecute]: [task.id],
+          },
+        }),
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
@@ -574,27 +587,27 @@ describe('Страница реестра заявок', () => {
         once: false,
       })
 
+      const currentUser = userFixtures.user({
+        id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+        permissions: [UserPermissionsEnum.SelfAssigneeTasksUpdate],
+      })
+
       const task = taskFixtures.task({
         id: taskListItem.id,
         status: canSelectAssigneeProps.status,
         extendedStatus: activeAssignButtonProps.extendedStatus,
         assignee: activeAssignButtonProps.assignee,
-        workGroup: taskFixtures.workGroup({
-          id: canSelectAssigneeProps.workGroup.id,
-        }),
+        workGroup: taskFixtures.workGroup({ id: canSelectAssigneeProps.workGroup.id }),
       })
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockUpdateTaskAssigneeSuccess(task.id)
 
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions(), once: false })
+
       const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth(
-          { id: canSelectAssigneeProps.workGroup.seniorEngineer.id },
-          undefined,
-          undefined,
-          {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
-          },
-        ),
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -1138,7 +1151,11 @@ describe('Страница реестра заявок', () => {
       mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
 
-      render(<TasksPage />)
+      render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       const filters = tasksFiltersStorageTestUtils.queryContainer()
       expect(filters).not.toBeInTheDocument()
@@ -1155,7 +1172,11 @@ describe('Страница реестра заявок', () => {
       }
       taskLocalStorageService.setTasksFilters(savedTasksFilters)
 
-      render(<TasksPage />)
+      render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       Object.keys(savedTasksFilters).forEach((filterName) => {
         const customersFilter = tasksFiltersStorageTestUtils.getFilter(
@@ -1171,7 +1192,11 @@ describe('Страница реестра заявок', () => {
 
       taskLocalStorageService.setTasksFilters({ customers: [fakeId()] })
 
-      const { user } = render(<TasksPage />, { store: getStoreWithAuth() })
+      const { user } = render(<TasksPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await fastFilterListTestUtils.expectLoadingFinished()
       await taskTableTestUtils.expectLoadingFinished()

@@ -92,7 +92,6 @@ const getTakeTaskButton = () => buttonTestUtils.getButtonIn(getContainer(), /Ð² 
 const clickTakeTaskButton = async (user: UserEvent) => {
   const button = getTakeTaskButton()
   await user.click(button)
-  return button
 }
 
 const takeTaskExpectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getTakeTaskButton())
@@ -103,7 +102,6 @@ const getAssignOnMeButton = () => buttonTestUtils.getButtonIn(getContainer(), /Ð
 const clickAssignOnMeButton = async (user: UserEvent) => {
   const button = getAssignOnMeButton()
   await user.click(button)
-  return button
 }
 
 const assignOnMeExpectLoadingStarted = () =>
