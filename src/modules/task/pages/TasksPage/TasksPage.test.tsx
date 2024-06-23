@@ -641,15 +641,17 @@ describe('Страница реестра заявок', () => {
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockUpdateTaskAssigneeSuccess(task.id)
 
+      const currentUser = userFixtures.user({
+        id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
+        permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
+      })
+
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions(), once: false })
+
       const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth(
-          { id: canSelectAssigneeProps.workGroup.seniorEngineer.id },
-          undefined,
-          undefined,
-          {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
-          },
-        ),
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
@@ -1428,7 +1430,11 @@ describe('Страница реестра заявок', () => {
 
         const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: [UserPermissionsEnum.SelfWorkGroupsRead] }),
+              ),
+            },
           }),
         })
 
@@ -1570,7 +1576,11 @@ describe('Страница реестра заявок', () => {
 
         const { user } = render(<TasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: [UserPermissionsEnum.SelfWorkGroupsRead] }),
+              ),
+            },
           }),
         })
 
