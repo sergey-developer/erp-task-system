@@ -408,8 +408,8 @@ describe('Карточка заявки', () => {
 
           mockCreateTaskSuspendRequestSuccess(props.taskId, { body: taskFixtures.suspendRequest() })
 
-          const userId = task.assignee!.id
-          mockGetUserActionsSuccess(userId, {
+          const currentUser = userFixtures.user({ id: task.assignee!.id })
+          mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
                 ...userFixtures.taskActionsPermissions,
@@ -419,8 +419,8 @@ describe('Карточка заявки', () => {
           })
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({ id: userId }, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
             }),
           })
 
@@ -451,10 +451,15 @@ describe('Карточка заявки', () => {
             }),
           })
 
+          const currentUser = userFixtures.user()
+          mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
           mockCreateTaskSuspendRequestNotFoundError(props.taskId)
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({}),
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
+            }),
           })
 
           await testUtils.expectTaskLoadingFinished()
@@ -493,12 +498,17 @@ describe('Карточка заявки', () => {
             externalResponsibleCompany: [fakeWord()],
           }
 
+          const currentUser = userFixtures.user()
+          mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
           mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
             body: badRequestResponse,
           })
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({}),
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
+            }),
           })
 
           await testUtils.expectTaskLoadingFinished()
@@ -563,10 +573,15 @@ describe('Карточка заявки', () => {
             }),
           })
 
+          const currentUser = userFixtures.user()
+          mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
           mockCreateTaskSuspendRequestServerError(props.taskId)
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({}),
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
+            }),
           })
 
           await testUtils.expectTaskLoadingFinished()
