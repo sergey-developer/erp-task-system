@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { split } from 'lodash'
+import pick from 'lodash/pick'
 
 import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
@@ -29,6 +30,7 @@ import {
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import { RelocationTaskModel } from 'modules/warehouse/models'
 import CreateDocumentsPackagePage from 'modules/warehouse/pages/CreateDocumentsPackagePage'
 import { testUtils as createDocumentsPackagePageTestUtils } from 'modules/warehouse/pages/CreateDocumentsPackagePage/CreateDocumentsPackagePage.test'
 import {
@@ -42,6 +44,7 @@ import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCancelRelocationTaskBadRequestError,
@@ -101,7 +104,6 @@ import {
   spinnerTestUtils,
 } from '_tests_/utils'
 
-import userFixtures from '_tests_/fixtures/user'
 import RelocationTaskDetails from './index'
 import { RelocationTaskDetailsProps } from './types'
 
@@ -109,6 +111,14 @@ const props: RelocationTaskDetailsProps = {
   open: true,
   relocationTaskId: fakeId(),
   onClose: jest.fn(),
+}
+
+export const canExecuteRelocationTaskProps: {
+  permissions: [UserPermissionsEnum.RelocationTasksUpdate]
+  relocationTask: Pick<RelocationTaskModel, 'status' | 'executors' | 'completedBy'>
+} = {
+  relocationTask: pick(warehouseFixtures.relocationTask(), 'status', 'executors', 'completedBy'),
+  permissions: [UserPermissionsEnum.RelocationTasksUpdate],
 }
 
 const getContainer = () => screen.getByTestId('relocation-task-details')
@@ -342,20 +352,48 @@ describe('Информация о заявке о перемещении', () =>
       expect(value).toBeInTheDocument()
     })
 
-    test('Исполнитель отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
-      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+    describe('Исполнитель', () => {
+      test('Отображается кто завершил заявку если он есть, вместо исполнителей', async () => {
+        const relocationTask = warehouseFixtures.relocationTask()
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+        await testUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('executor', /Исполнитель/)
-      const value = testUtils.getBlockInfo('executor', relocationTask.executor!.fullName)
+        const label = testUtils.getBlockInfo('executor', /Исполнитель/)
+        const value = testUtils.getBlockInfo('executor', relocationTask.completedBy!.fullName)
 
-      expect(label).toBeInTheDocument()
-      expect(value).toBeInTheDocument()
+        expect(label).toBeInTheDocument()
+        expect(value).toBeInTheDocument()
+      })
+
+      test('Отображаются исполнители если нет того кто завершил заявку', async () => {
+        const relocationTask = warehouseFixtures.relocationTask({ completedBy: null })
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
+
+        await testUtils.expectRelocationTaskLoadingFinished()
+
+        const label = testUtils.getBlockInfo('executor', /Исполнитель/)
+
+        expect(label).toBeInTheDocument()
+        relocationTask.executors.forEach((e) => {
+          const value = testUtils.getBlockInfo('executor', e.fullName)
+          expect(value).toBeInTheDocument()
+        })
+      })
     })
 
     test('Контролер отображается', async () => {
@@ -1179,10 +1217,10 @@ describe('Информация о заявке о перемещении', () =>
       expect(item).toBeInTheDocument()
     })
 
-    test('Пункт меню активен если условия соблюдены', async () => {
+    test('Пункт меню активен если: есть права на обновление заявки, заявка не завершена, не закрыта и не отменена, пользователь является исполнителем заявки', async () => {
       const relocationTask = warehouseFixtures.relocationTask({
         id: props.relocationTaskId,
-        status: RelocationTaskStatusEnum.New,
+        ...canExecuteRelocationTaskProps.relocationTask,
       })
 
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
@@ -1193,13 +1231,14 @@ describe('Информация о заявке о перемещении', () =>
         {
           store: getStoreWithAuth(
             {
-              id: relocationTask.executor!.id,
+              userId: relocationTask.executors![0].id,
+              userRole: UserRoleEnum.FirstLineSupport,
             },
             undefined,
             undefined,
             {
               queries: {
-                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
+                ...getUserMeQueryMock({ permissions: canExecuteRelocationTaskProps.permissions }),
               },
             },
           ),
@@ -1208,16 +1247,46 @@ describe('Информация о заявке о перемещении', () =>
 
       await testUtils.openMenu(user)
       const item = testUtils.getExecuteTaskMenuItem()
-      await waitFor(() => {
-        menuTestUtils.expectMenuItemNotDisabled(item)
+      await waitFor(() => menuTestUtils.expectMenuItemNotDisabled(item))
+    })
+
+    test('Пункт меню активен если: есть права на обновление заявки, заявка не завершена, не закрыта и не отменена, пользователем является завершивший заявку', async () => {
+      const relocationTask = warehouseFixtures.relocationTask({
+        id: props.relocationTaskId,
+        ...canExecuteRelocationTaskProps.relocationTask,
       })
+
+      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(
+            {
+              id: relocationTask.completedBy!.id,
+            },
+            undefined,
+            undefined,
+            {
+              queries: {
+                ...getUserMeQueryMock({ permissions: canExecuteRelocationTaskProps.permissions }),
+              },
+            },
+          ),
+        },
+      )
+
+      await testUtils.openMenu(user)
+      const item = testUtils.getExecuteTaskMenuItem()
+      await waitFor(() => menuTestUtils.expectMenuItemNotDisabled(item))
     })
 
     describe('Пункт меню не активен', () => {
       test('Если условия соблюдены, но нет прав', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
           id: props.relocationTaskId,
-          status: RelocationTaskStatusEnum.New,
+          ...canExecuteRelocationTaskProps.relocationTask,
         })
 
         mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
@@ -1226,9 +1295,14 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth({ id: relocationTask.executor!.id }, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
-            }),
+            store: getStoreWithAuth(
+              { id: relocationTask.executors![0].id },
+              undefined,
+              undefined,
+              {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              },
+            ),
           },
         )
 
@@ -1237,10 +1311,10 @@ describe('Информация о заявке о перемещении', () =>
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
-      test('Если условия соблюдены, но исполнитель заявки не авторизованный пользователь', async () => {
+      test('Если условия соблюдены, но исполнитель заявки или её завершивший не авторизованный пользователь', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
           id: props.relocationTaskId,
-          status: RelocationTaskStatusEnum.New,
+          ...canExecuteRelocationTaskProps.relocationTask,
         })
 
         mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
@@ -1251,7 +1325,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
+                ...getUserMeQueryMock({ permissions: canExecuteRelocationTaskProps.permissions }),
               },
             }),
           },
@@ -1259,14 +1333,13 @@ describe('Информация о заявке о перемещении', () =>
 
         await testUtils.openMenu(user)
         const item = testUtils.getExecuteTaskMenuItem()
-        await waitFor(() => {
-          menuTestUtils.expectMenuItemDisabled(item)
-        })
+        await waitFor(() => menuTestUtils.expectMenuItemDisabled(item))
       })
 
       test('Если условия соблюдены, но заявка отменена', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
           id: props.relocationTaskId,
+          ...canExecuteRelocationTaskProps.relocationTask,
           status: RelocationTaskStatusEnum.Canceled,
         })
 
@@ -1276,11 +1349,18 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth({ id: relocationTask.executor!.id }, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
+            store: getStoreWithAuth(
+              { id: relocationTask.executors![0].id },
+              undefined,
+              undefined,
+              {
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: canExecuteRelocationTaskProps.permissions,
+                  }),
+                },
               },
-            }),
+            ),
           },
         )
 
@@ -1292,6 +1372,7 @@ describe('Информация о заявке о перемещении', () =>
       test('Если условия соблюдены, но заявка закрыта', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
           id: props.relocationTaskId,
+          ...canExecuteRelocationTaskProps.relocationTask,
           status: RelocationTaskStatusEnum.Closed,
         })
 
@@ -1301,11 +1382,18 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth({ id: relocationTask.executor!.id }, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
+            store: getStoreWithAuth(
+              { id: relocationTask.executors![0].id },
+              undefined,
+              undefined,
+              {
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: canExecuteRelocationTaskProps.permissions,
+                  }),
+                },
               },
-            }),
+            ),
           },
         )
 
@@ -1317,6 +1405,7 @@ describe('Информация о заявке о перемещении', () =>
       test('Если условия соблюдены, но заявка завершена', async () => {
         const relocationTask = warehouseFixtures.relocationTask({
           id: props.relocationTaskId,
+          ...canExecuteRelocationTaskProps.relocationTask,
           status: RelocationTaskStatusEnum.Completed,
         })
 
@@ -1326,11 +1415,18 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth({ id: relocationTask.executor!.id }, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
+            store: getStoreWithAuth(
+              { id: relocationTask.executors![0].id },
+              undefined,
+              undefined,
+              {
+                queries: {
+                  ...getUserMeQueryMock({
+                    permissions: canExecuteRelocationTaskProps.permissions,
+                  }),
+                },
               },
-            }),
+            ),
           },
         )
 
@@ -1356,7 +1452,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               {
-                id: relocationTask.executor!.id,
+                id: relocationTask.executors![0].id,
               },
               undefined,
               undefined,
@@ -1408,7 +1504,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               {
-                id: relocationTask.executor!.id,
+                id: relocationTask.executors![0].id,
               },
               undefined,
               undefined,
@@ -1458,7 +1554,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               {
-                id: relocationTask.executor!.id,
+                id: relocationTask.executors![0].id,
               },
               undefined,
               undefined,
@@ -1503,7 +1599,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               {
-                id: relocationTask.executor!.id,
+                id: relocationTask.executors![0].id,
               },
               undefined,
               undefined,
@@ -1544,7 +1640,7 @@ describe('Информация о заявке о перемещении', () =>
           {
             store: getStoreWithAuth(
               {
-                id: relocationTask.executor!.id,
+                id: relocationTask.executors![0].id,
               },
               undefined,
               undefined,

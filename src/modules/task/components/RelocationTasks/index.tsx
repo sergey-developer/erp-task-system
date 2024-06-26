@@ -67,11 +67,21 @@ const RelocationTasks: FC<RelocationTasksProps> = ({ data, onClick, onCreateAtta
                     </Label>
 
                     <Label label='Исполнитель:'>
-                      {item.executor && (
+                      {item.completedBy ? (
                         <TaskAssignee
-                          {...makeUserByFullName(item.executor.fullName)}
-                          phone={item.executor.phone}
+                          {...makeUserByFullName(item.completedBy.fullName)}
+                          phone={item.completedBy.phone}
                         />
+                      ) : (
+                        <Space direction='vertical'>
+                          {item.executors.map((e) => (
+                            <TaskAssignee
+                              key={e.id}
+                              {...makeUserByFullName(e.fullName)}
+                              phone={e.phone}
+                            />
+                          ))}
+                        </Space>
                       )}
                     </Label>
                   </Space>

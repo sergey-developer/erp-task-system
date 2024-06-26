@@ -17,7 +17,11 @@ const props: TaskAssigneeProps = {
 }
 
 const getContainer = () => screen.getByTestId('task-assignee')
+
 const getContainerIn = (container: HTMLElement) => within(container).getByTestId('task-assignee')
+
+const getAllContainerIn = (container: HTMLElement) =>
+  within(container).getAllByTestId('task-assignee')
 
 const queryContainerIn = (container: HTMLElement) =>
   within(container).queryByTestId('task-assignee')
@@ -25,6 +29,7 @@ const queryContainerIn = (container: HTMLElement) =>
 export const testUtils = {
   getContainer,
   getContainerIn,
+  getAllContainerIn,
   queryContainerIn,
 }
 

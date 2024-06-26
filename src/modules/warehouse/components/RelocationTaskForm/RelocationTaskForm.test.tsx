@@ -1,6 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { Form } from 'antd'
+import pick from 'lodash/pick'
 import moment from 'moment-timezone'
 
 import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
@@ -21,7 +22,7 @@ import {
   mockGetCurrencyListSuccess,
   mockGetEquipmentCatalogListSuccess,
   mockGetLocationListSuccess,
-  mockGetUserListSuccess,
+  mockGetUsersSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -38,6 +39,7 @@ import { RelocationTaskFormProps } from './types'
 
 const props: RelocationTaskFormProps = {
   isLoading: false,
+  authUser: pick(userFixtures.user(), 'id', 'role'),
   permissions: {},
 
   onUploadImage: jest.fn(),
@@ -46,16 +48,17 @@ const props: RelocationTaskFormProps = {
   imageIsDeleting: false,
   imagesIsLoading: false,
 
+  users: [],
   usersIsLoading: false,
+
+  usersGroups: [],
+  usersGroupsIsLoading: false,
 
   relocateFromLocationList: [],
   relocateFromLocationListIsLoading: false,
   relocateToLocationList: [],
   relocateToLocationListIsLoading: false,
 
-  executorOptions: [],
-
-  controllerOptions: [],
   controllerIsRequired: true,
 
   type: RelocationTaskTypeEnum.Relocation,
@@ -114,7 +117,7 @@ const clearDeadlineAtTime = async (user: UserEvent) => {
 }
 
 // executor field
-const getExecutorFormItem = () => within(getContainer()).getByTestId('executor-form-item')
+const getExecutorFormItem = () => within(getContainer()).getByTestId('executors-form-item')
 const getExecutorSelectInput = () => selectTestUtils.getSelect(getExecutorFormItem())
 const setExecutor = selectTestUtils.clickSelectOption
 const findExecutorError = (text: string) => within(getExecutorFormItem()).findByText(text)
@@ -129,10 +132,10 @@ const querySelectedExecutor = (title: string) =>
   selectTestUtils.querySelectedOptionByTitle(getExecutorFormItem(), title)
 
 const getExecutorOption = (name: string | RegExp) =>
-  selectTestUtils.getSelectOption(name, screen.getByTestId('executor-select-dropdown'))
+  selectTestUtils.getSelectOption(name, screen.getByTestId('executors-select-dropdown'))
 
 const queryExecutorOption = (name: string | RegExp) =>
-  selectTestUtils.querySelectOption(name, screen.getByTestId('executor-select-dropdown'))
+  selectTestUtils.querySelectOption(name, screen.getByTestId('executors-select-dropdown'))
 
 const expectExecutorsLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getControllerFormItem())
@@ -324,7 +327,7 @@ describe('Форма создания заявки на перемещение �
 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          mockGetUserListSuccess({ body: [] })
+          mockGetUsersSuccess({ body: [] })
           mockGetLocationListSuccess({ body: [], once: false })
           mockGetEquipmentCatalogListSuccess()
           mockGetCurrencyListSuccess({ body: [] })
@@ -390,7 +393,7 @@ describe('Форма создания заявки на перемещение �
 
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
-          mockGetUserListSuccess({ body: [] })
+          mockGetUsersSuccess({ body: [] })
           mockGetLocationListSuccess({ body: [], once: false })
           mockGetEquipmentCatalogListSuccess()
           mockGetCurrencyListSuccess({ body: [] })
@@ -511,7 +514,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetLocationListSuccess({ body: catalogsFixtures.locationList(), once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -577,7 +580,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} executorOptions={userList} />
+          <RelocationTaskForm {...props} users={userList} />
         </Form>,
       )
 
@@ -599,7 +602,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} executorOptions={[userListItem]} />
+          <RelocationTaskForm {...props} users={[userListItem]} />
         </Form>,
       )
 
@@ -611,7 +614,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -636,7 +639,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} controllerOptions={userList} />
+          <RelocationTaskForm {...props} users={userList} />
         </Form>,
       )
 
@@ -658,7 +661,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} controllerOptions={[userListItem]} />
+          <RelocationTaskForm {...props} users={[userListItem]} />
         </Form>,
       )
 
@@ -670,7 +673,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test.skip('Обязателен если перемещение не с основного склада на склад МСИ', async () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -684,7 +687,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test.skip('Не обязателен если перемещение с основного склада на склад МСИ', async () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
