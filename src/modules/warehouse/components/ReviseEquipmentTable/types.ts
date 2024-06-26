@@ -8,7 +8,7 @@ import { MaybeNull, Nullable, SetNonNullable } from 'shared/types/utils'
 
 export type ReviseEquipmentTableItem = Pick<
   InventorizationEquipmentListItemModel,
-  'id' | 'equipment' | 'locationPlan' | 'quantity'
+  'id' | 'equipment' | 'locationPlan' | 'locationFact' | 'quantity' | 'hasDiff' | 'isFilled'
 >
 
 export type ActiveReviseEquipmentTableRow = {
@@ -24,14 +24,14 @@ export type ReviseEquipmentTableProps = SetNonNullable<
   locationsIsLoading: boolean
 
   onChangeQuantityFact: (
-    record: InventorizationEquipmentTableItem,
+    record: ReviseEquipmentTableItem,
     value: Nullable<number>,
     locationFact: MaybeNull<IdType>,
   ) => Promise<void>
 
   onChangeLocationFact: (
-    record: InventorizationEquipmentTableItem,
+    record: ReviseEquipmentTableItem,
     value: IdType,
-    quantityFact: InventorizationEquipmentTableItem['quantity']['fact'],
+    quantityFact: ReviseEquipmentTableItem['quantity']['fact'],
   ) => Promise<void>
 }
