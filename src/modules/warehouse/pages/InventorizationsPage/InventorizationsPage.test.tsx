@@ -60,7 +60,11 @@ describe('Страница списка инвентаризаций', () => {
         body: commonFixtures.paginatedListResponse(inventorizations),
       })
 
-      render(<InventorizationsPage />)
+      render(<InventorizationsPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await inventorizationTableTestUtils.expectLoadingFinished()
 
@@ -75,7 +79,11 @@ describe('Страница списка инвентаризаций', () => {
         const errorMessage = fakeWord()
         mockGetInventorizationsForbiddenError({ body: { detail: errorMessage } })
 
-        render(<InventorizationsPage />)
+        render(<InventorizationsPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await inventorizationTableTestUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(errorMessage)
@@ -86,7 +94,11 @@ describe('Страница списка инвентаризаций', () => {
       test('Обрабатывается ошибка 500', async () => {
         mockGetInventorizationsServerError()
 
-        render(<InventorizationsPage />)
+        render(<InventorizationsPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await inventorizationTableTestUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(getInventorizationsErrMsg)
@@ -102,7 +114,11 @@ describe('Страница списка инвентаризаций', () => {
         once: false,
       })
 
-      const { user } = render(<InventorizationsPage />)
+      const { user } = render(<InventorizationsPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       const table = await inventorizationTableTestUtils.expectLoadingFinished()
       await tableTestUtils.clickPaginationNextButtonIn(user, table)
@@ -121,7 +137,11 @@ describe('Страница списка инвентаризаций', () => {
         once: false,
       })
 
-      render(<InventorizationsPage />)
+      render(<InventorizationsPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await inventorizationTableTestUtils.expectLoadingFinished()
       const headCell = inventorizationTableTestUtils.getHeadCell('Срок выполнения')
@@ -136,7 +156,11 @@ describe('Страница списка инвентаризаций', () => {
         once: false,
       })
 
-      const { user } = render(<InventorizationsPage />)
+      const { user } = render(<InventorizationsPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await inventorizationTableTestUtils.expectLoadingFinished()
       await inventorizationTableTestUtils.clickColTitle(user, 'Тип')
@@ -156,7 +180,11 @@ describe('Страница списка инвентаризаций', () => {
     test('Открываются', async () => {
       mockGetInventorizationsSuccess()
 
-      const { user } = render(<InventorizationsPage />)
+      const { user } = render(<InventorizationsPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await inventorizationTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
@@ -168,7 +196,11 @@ describe('Страница списка инвентаризаций', () => {
     test('Устанавливаются корректные значения по умолчанию', async () => {
       mockGetInventorizationsSuccess()
 
-      const { user } = render(<InventorizationsPage />)
+      const { user } = render(<InventorizationsPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await inventorizationTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
@@ -210,7 +242,11 @@ describe('Страница списка инвентаризаций', () => {
         once: false,
       })
 
-      const { user } = render(<InventorizationsPage />)
+      const { user } = render(<InventorizationsPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await inventorizationTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
@@ -245,7 +281,7 @@ describe('Страница списка инвентаризаций', () => {
 
       const { user } = render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 

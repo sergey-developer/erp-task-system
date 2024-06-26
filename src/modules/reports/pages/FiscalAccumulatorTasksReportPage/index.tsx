@@ -33,7 +33,7 @@ import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
-import { useGetMacroregionList } from 'shared/hooks/macroregion/useGetMacroregionList'
+import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -89,8 +89,10 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
     { skip: !filterOpened },
   )
 
-  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } =
-    useGetMacroregionList({ customers: selectedCustomers }, { skip: !filterOpened })
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
+    { customers: selectedCustomers },
+    { skip: !filterOpened },
+  )
 
   const { currentData: supportGroups = [], isFetching: supportGroupsIsFetching } =
     useGetSupportGroupList(

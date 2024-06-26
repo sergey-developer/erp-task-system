@@ -12,6 +12,13 @@ import {
 import { UserPermissionsEnum } from 'modules/user/constants'
 
 import taskFixtures from '_tests_/fixtures/task'
+import userFixtures from '_tests_/fixtures/user'
+import {
+  mockGetJournalSuccess,
+  mockGetRelocationTasksSuccess,
+  mockGetSubTaskListSuccess,
+  mockGetTaskCommentListSuccess,
+} from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeDateString,
@@ -20,6 +27,7 @@ import {
   fakeWord,
   getStoreWithAuth,
   render,
+  setupApiTests,
 } from '_tests_/utils'
 
 import Tabs, { TabsProps } from './index'
@@ -48,6 +56,7 @@ const props: Readonly<TabsProps> = {
     isDescriptionChanged: false,
     previousDescription: fakeWord(),
   },
+  userActions: userFixtures.userActions(),
 }
 
 const getContainer = () => screen.getByTestId('task-details-tabs')
@@ -79,31 +88,51 @@ export const testUtils = {
   clickTab,
 }
 
+setupApiTests()
+
 describe('Вкладки карточки заявки', () => {
   test('Доступные вкладки отображаются', () => {
-    render(<Tabs {...props} />)
+    render(<Tabs {...props} />, {
+      store: getStoreWithAuth(undefined, undefined, undefined, {
+        queries: { ...getUserMeQueryMock({ permissions: [] }) },
+      }),
+    })
 
     expect(testUtils.getNavItem(TaskDetailsTabsEnum.Description)).toBeInTheDocument()
-    expect(testUtils.getNavItem(TaskDetailsTabsEnum.CommentList)).toBeInTheDocument()
+    expect(testUtils.getNavItem(TaskDetailsTabsEnum.Comments)).toBeInTheDocument()
     expect(testUtils.getNavItem(TaskDetailsTabsEnum.Resolution)).toBeInTheDocument()
     expect(testUtils.getNavItem(TaskDetailsTabsEnum.Journal)).toBeInTheDocument()
     expect(testUtils.getNavItem(TaskDetailsTabsEnum.SubTaskList)).toBeInTheDocument()
   })
 
   test('Установлена корректная вкладка по умолчанию', () => {
-    render(<Tabs {...props} />)
+    render(<Tabs {...props} />, {
+      store: getStoreWithAuth(undefined, undefined, undefined, {
+        queries: { ...getUserMeQueryMock({ permissions: [] }) },
+      }),
+    })
+
     const defaultTab = testUtils.getOpenedTab(TaskDetailsTabsEnum.Description)
     expect(defaultTab).toBeInTheDocument()
   })
 
   test('Можно открыть любую доступную вкладку', async () => {
-    const { user } = render(<Tabs {...props} />)
+    mockGetTaskCommentListSuccess(props.task.id)
+    mockGetJournalSuccess(props.task.id)
+    mockGetSubTaskListSuccess(props.task.id)
+    mockGetRelocationTasksSuccess()
+
+    const { user } = render(<Tabs {...props} />, {
+      store: getStoreWithAuth(undefined, undefined, undefined, {
+        queries: { ...getUserMeQueryMock({ permissions: [] }) },
+      }),
+    })
 
     await testUtils.clickTab(user, TaskDetailsTabsEnum.Description)
     expect(testUtils.getOpenedTab(TaskDetailsTabsEnum.Description)).toBeInTheDocument()
 
-    await testUtils.clickTab(user, TaskDetailsTabsEnum.CommentList)
-    expect(testUtils.getOpenedTab(TaskDetailsTabsEnum.CommentList)).toBeInTheDocument()
+    await testUtils.clickTab(user, TaskDetailsTabsEnum.Comments)
+    expect(testUtils.getOpenedTab(TaskDetailsTabsEnum.Comments)).toBeInTheDocument()
 
     await testUtils.clickTab(user, TaskDetailsTabsEnum.Resolution)
     expect(testUtils.getOpenedTab(TaskDetailsTabsEnum.Resolution)).toBeInTheDocument()
@@ -117,7 +146,12 @@ describe('Вкладки карточки заявки', () => {
 
   describe('Вкладка "Перемещения"', () => {
     test('Не отображается если условия не соблюдены', () => {
-      render(<Tabs {...props} />)
+      render(<Tabs {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        }),
+      })
+
       const tab = testUtils.queryNavItem(TaskDetailsTabsEnum.RelocationTasks)
       expect(tab).not.toBeInTheDocument()
     })
@@ -136,6 +170,8 @@ describe('Вкладки карточки заявки', () => {
     })
 
     test('Открывается по клику', async () => {
+      mockGetRelocationTasksSuccess()
+
       const { user } = render(<Tabs {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {

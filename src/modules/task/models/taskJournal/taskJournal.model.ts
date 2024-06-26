@@ -11,8 +11,8 @@ export type TaskJournalEntryModel = {
   type: TaskJournalTypeEnum
   description: string
   sourceSystem: TaskJournalSourceEnum
-  attachments: TaskAttachmentListModel
 
+  attachments: MaybeNull<TaskAttachmentListModel>
   author: MaybeNull<Pick<BaseUserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>>
 }
 

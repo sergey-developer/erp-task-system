@@ -1,16 +1,12 @@
 import { useEffect } from 'react'
 
-import { CustomUseQueryHookResult } from 'lib/rtk-query/types'
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
+import { getTaskCommentsErrMsg } from 'modules/task/constants/taskComment'
 import { GetTaskCommentListQueryArgs, GetTaskCommentListSuccessResponse } from 'modules/task/models'
-import { taskCommentApiPermissions } from 'modules/task/permissions'
 import { useGetTaskCommentListQuery } from 'modules/task/services/taskApi.service'
-import { getTaskNotFoundErrMsg } from 'modules/task/utils/task'
-import { getTaskCommentListServerErrMsg } from 'modules/task/utils/taskComment'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/common'
-import { isErrorResponse, isNotFoundError, isServerRangeError } from 'shared/services/baseApi'
+import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskCommentListResult = CustomUseQueryHookResult<
@@ -18,25 +14,23 @@ type UseGetTaskCommentListResult = CustomUseQueryHookResult<
   GetTaskCommentListSuccessResponse
 >
 
+type UseGetTaskCommentListOptions = CustomUseQueryOptions<
+  GetTaskCommentListQueryArgs,
+  GetTaskCommentListSuccessResponse
+>
+
 export const useGetTaskCommentList = (
   args: GetTaskCommentListQueryArgs,
+  options?: UseGetTaskCommentListOptions,
 ): UseGetTaskCommentListResult => {
-  const permissions = useUserPermissions(taskCommentApiPermissions)
-
-  const state = useGetTaskCommentListQuery(args, {
-    skip: !permissions.canGetList,
-  })
+  const state = useGetTaskCommentListQuery(args, options)
 
   useEffect(() => {
-    if (!state.error) return
-
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
-        showErrorNotification(getTaskNotFoundErrMsg(args.taskId))
-      } else if (isServerRangeError(state.error)) {
-        showErrorNotification(getTaskCommentListServerErrMsg(args.taskId))
+        showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(commonApiMessages.unknownError)
+        showErrorNotification(getTaskCommentsErrMsg)
       }
     }
   }, [args.taskId, state.error])

@@ -1,6 +1,6 @@
 import { SelectProps } from 'antd'
 
-import { TaskListItemModel, TaskListModel, TaskModel } from 'modules/task/models'
+import { TaskListItemModel, TaskModel, TasksModel } from 'modules/task/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -28,7 +28,7 @@ export type CreateRelocationTaskByIncidentModalProps = BaseModalProps & {
   onSearchIncident: SelectProps<TaskListItemModel['id'], TaskListItemModel>['onSearch']
   onChangeIncident: SelectProps<TaskListItemModel['id'], TaskListItemModel>['onChange']
 
-  incidents: TaskListModel
+  incidents: TasksModel
   incidentsIsLoading: boolean
 }
 

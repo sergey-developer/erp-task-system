@@ -5,6 +5,7 @@ import { isTruthy } from './boolean'
 
 type ResultType<V, F> = F extends (value: IsTruthyType<V>) => infer R ? R : IsTruthyType<V>
 
+// todo: оптимизировать если возможно
 export const valueOrHyphen = <V, F extends (value: IsTruthyType<V>) => any>(
   value: V,
   getValue?: F,

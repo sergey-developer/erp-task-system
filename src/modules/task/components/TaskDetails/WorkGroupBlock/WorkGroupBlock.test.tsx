@@ -3,14 +3,20 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/components/TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
-import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
+import {
+  TaskActionsPermissionsEnum,
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
-import { UserRoleEnum } from 'modules/user/constants'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
 import taskFixtures from '_tests_/fixtures/task'
+import userFixtures from '_tests_/fixtures/user'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
+import { mockGetWorkGroupsSuccess } from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeId,
@@ -18,6 +24,7 @@ import {
   fakeWord,
   getStoreWithAuth,
   render,
+  setupApiTests,
 } from '_tests_/utils'
 
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
@@ -36,6 +43,7 @@ const props: Readonly<
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
   taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
+  userActions: userFixtures.userActions(),
 }
 
 // first line button
@@ -44,9 +52,26 @@ export const showFirstLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup' | '
   status: TaskStatusEnum.New,
 }
 
+export const forceActiveFirstLineButtonProps: Pick<
+  WorkGroupBlockProps,
+  'userActions' | 'taskSuspendRequestStatus'
+> = {
+  userActions: userFixtures.userActions({
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [props.id],
+    },
+  }),
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Approved,
+}
+
 export const activeFirstLineButtonProps: Pick<WorkGroupBlockProps, 'status' | 'extendedStatus'> = {
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,
+}
+
+export const disableFirstLineButtonProps: Pick<WorkGroupBlockProps, 'status'> = {
+  status: TaskStatusEnum.Awaiting,
 }
 
 // second line button
@@ -114,9 +139,16 @@ export const testUtils = {
   expectSecondLineLoadingStarted,
 }
 
+setupApiTests()
+
 describe('Блок рабочей группы', () => {
   test('Заголовок отображается', () => {
-    render(<WorkGroupBlock {...props} />)
+    render(<WorkGroupBlock {...props} />, {
+      store: getStoreWithAuth(undefined, undefined, undefined, {
+        queries: { ...getUserMeQueryMock({ permissions: [] }) },
+      }),
+    })
+
     expect(testUtils.getChildByText(/рабочая группа/i)).toBeInTheDocument()
   })
 
@@ -124,14 +156,24 @@ describe('Блок рабочей группы', () => {
     describe('Если установлена', () => {
       test('Отображается корректно', () => {
         const workGroup = taskFixtures.workGroup()
-        render(<WorkGroupBlock {...props} workGroup={workGroup} />)
+
+        render(<WorkGroupBlock {...props} workGroup={workGroup} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          }),
+        })
+
         expect(testUtils.getChildByText(workGroup.name)).toBeInTheDocument()
       })
 
       test('Информация о рабочей группе отображается при наведении', async () => {
         const workGroup = taskFixtures.workGroup()
 
-        const { user } = render(<WorkGroupBlock {...props} workGroup={workGroup} />)
+        const { user } = render(<WorkGroupBlock {...props} workGroup={workGroup} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          }),
+        })
 
         const name = testUtils.getChildByText(workGroup.name)
         await user.hover(name)
@@ -182,43 +224,174 @@ describe('Блок рабочей группы', () => {
     })
 
     test('Отображается значение по умолчанию если нет группы', () => {
-      render(<WorkGroupBlock {...props} />)
+      render(<WorkGroupBlock {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        }),
+      })
+
       expect(testUtils.getChildByText('I линия поддержки')).toBeInTheDocument()
     })
   })
 
   describe('Кнопка перевода на 2-ю линию', () => {
-    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
-      test('Отображается если условия соблюдены', () => {
-        render(<WorkGroupBlock {...props} {...showSecondLineButtonProps} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
-          }),
-        })
-
-        expect(testUtils.getSecondLineButton()).toBeInTheDocument()
+    test('Отображается если условия соблюдены', () => {
+      render(<WorkGroupBlock {...props} {...showSecondLineButtonProps} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        }),
       })
 
-      describe('Не отображается если условия соблюдены', () => {
-        test('Но есть рабочая группа', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showSecondLineButtonProps}
-              workGroup={taskFixtures.workGroup()}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+      expect(testUtils.getSecondLineButton()).toBeInTheDocument()
+    })
+
+    describe('Не отображается если условия соблюдены', () => {
+      test('Но есть рабочая группа', () => {
+        render(
+          <WorkGroupBlock
+            {...props}
+            {...showSecondLineButtonProps}
+            workGroup={taskFixtures.workGroup()}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            }),
+          },
+        )
+
+        expect(testUtils.querySecondLineButton()).not.toBeInTheDocument()
+      })
+    })
+
+    test('Активна если условия соблюдены', () => {
+      render(
+        <WorkGroupBlock
+          {...props}
+          {...showSecondLineButtonProps}
+          {...activeSecondLineButtonProps}
+        />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({
+                permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
               }),
             },
-          )
+          }),
+        },
+      )
 
-          expect(testUtils.querySecondLineButton()).not.toBeInTheDocument()
-        })
+      expect(testUtils.getSecondLineButton()).toBeEnabled()
+    })
+
+    test('Всегда активна если статус запроса на ожидание "Одобрено"', () => {
+      render(
+        <WorkGroupBlock
+          {...props}
+          {...showSecondLineButtonProps}
+          taskSuspendRequestStatus={SuspendRequestStatusEnum.Approved}
+        />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          }),
+        },
+      )
+
+      expect(testUtils.getSecondLineButton()).toBeEnabled()
+    })
+
+    describe('Не активна если условия соблюдены', () => {
+      test('Но есть запрос на переклассификацию', () => {
+        render(
+          <WorkGroupBlock
+            {...props}
+            {...showSecondLineButtonProps}
+            {...activeSecondLineButtonProps}
+            extendedStatus={TaskExtendedStatusEnum.InReclassification}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({
+                  permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
+                }),
+              },
+            }),
+          },
+        )
+
+        expect(testUtils.getSecondLineButton()).toBeDisabled()
       })
 
-      test('Активна если условия соблюдены', () => {
+      test('Но статус заявки не "Новая" и не "В процессе"', () => {
+        render(
+          <WorkGroupBlock
+            {...props}
+            {...showSecondLineButtonProps}
+            {...activeSecondLineButtonProps}
+            status={TaskStatusEnum.Awaiting}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({
+                  permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
+                }),
+              },
+            }),
+          },
+        )
+
+        expect(testUtils.getSecondLineButton()).toBeDisabled()
+      })
+
+      test('Но статус запроса на ожидание "Новый"', () => {
+        render(
+          <WorkGroupBlock
+            {...props}
+            {...showSecondLineButtonProps}
+            {...activeSecondLineButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({
+                  permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
+                }),
+              },
+            }),
+          },
+        )
+
+        expect(testUtils.getSecondLineButton()).toBeDisabled()
+      })
+
+      test('Но статус запроса на ожидание "В процессе"', () => {
+        render(
+          <WorkGroupBlock
+            {...props}
+            {...showSecondLineButtonProps}
+            {...activeSecondLineButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.InProgress}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({
+                  permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
+                }),
+              },
+            }),
+          },
+        )
+
+        expect(testUtils.getSecondLineButton()).toBeDisabled()
+      })
+
+      test('Но нет прав', () => {
         render(
           <WorkGroupBlock
             {...props}
@@ -226,761 +399,368 @@ describe('Блок рабочей группы', () => {
             {...activeSecondLineButtonProps}
           />,
           {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
             }),
           },
         )
 
-        expect(testUtils.getSecondLineButton()).toBeEnabled()
+        expect(testUtils.getSecondLineButton()).toBeDisabled()
       })
+    })
 
-      describe('Не активна если условия соблюдены', () => {
-        test('Но есть запрос на переклассификацию', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showSecondLineButtonProps}
-              {...activeSecondLineButtonProps}
-              extendedStatus={TaskExtendedStatusEnum.InReclassification}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
+    test('Отображает состоянии загрузки во время перевода на 2-ю линию', async () => {
+      render(
+        <WorkGroupBlock
+          {...props}
+          {...showSecondLineButtonProps}
+          {...activeSecondLineButtonProps}
+          transferTaskToSecondLineIsLoading
+        />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          }),
+        },
+      )
+
+      await testUtils.expectSecondLineLoadingStarted()
+    })
+
+    test('При клике открывается модальное окно', async () => {
+      mockGetWorkGroupsSuccess()
+
+      const { user } = render(
+        <WorkGroupBlock
+          {...props}
+          {...showSecondLineButtonProps}
+          {...activeSecondLineButtonProps}
+        />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({
+                permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
               }),
             },
-          )
-
-          expect(testUtils.getSecondLineButton()).toBeDisabled()
-        })
-
-        test('Но статус заявки не "Новая" и не "В процессе"', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showSecondLineButtonProps}
-              {...activeSecondLineButtonProps}
-              status={TaskStatusEnum.Awaiting}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
-              }),
-            },
-          )
-
-          expect(testUtils.getSecondLineButton()).toBeDisabled()
-        })
-      })
-
-      test('Отображает состоянии загрузки во время перевода на 2-ю линию', async () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showSecondLineButtonProps}
-            {...activeSecondLineButtonProps}
-            transferTaskToSecondLineIsLoading
-          />,
-          {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
-            }),
-          },
-        )
-
-        await testUtils.expectSecondLineLoadingStarted()
-      })
-
-      test('При клике открывается модальное окно', async () => {
-        const { user } = render(
-          <WorkGroupBlock
-            {...props}
-            {...showSecondLineButtonProps}
-            {...activeSecondLineButtonProps}
-          />,
-          {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
-            }),
-          },
-        )
-
-        await testUtils.clickSecondLineButton(user)
-
-        expect(await taskSecondLineModalTestUtils.findContainer()).toBeInTheDocument()
-      })
-    })
-
-    describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
-      test('Не отображается', () => {
-        render(<WorkGroupBlock {...props} {...showSecondLineButtonProps} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.Engineer,
           }),
-        })
-      })
-    })
+        },
+      )
 
-    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
-      test('Не отображается', () => {
-        render(<WorkGroupBlock {...props} {...showSecondLineButtonProps} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          }),
-        })
-      })
-    })
+      await testUtils.clickSecondLineButton(user)
+      const modal = await taskSecondLineModalTestUtils.findContainer()
 
-    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
-      test('Не отображается', () => {
-        render(<WorkGroupBlock {...props} {...showSecondLineButtonProps} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.HeadOfDepartment,
-          }),
-        })
-      })
+      expect(modal).toBeInTheDocument()
     })
   })
 
   describe('Модалка перевода на 2-ю линию', () => {
-    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
-      test('При отправке обработчик вызывается корректно', async () => {
-        const workGroupList = workGroupFixtures.workGroupList()
-        mockGetWorkGroupListSuccess({ body: workGroupList })
+    test('При отправке обработчик вызывается', async () => {
+      const workGroupList = workGroupFixtures.workGroupList()
+      mockGetWorkGroupsSuccess({ body: workGroupList })
 
-        const { user } = render(
-          <WorkGroupBlock
-            {...props}
-            {...showSecondLineButtonProps}
-            {...activeSecondLineButtonProps}
-          />,
-          {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
-            }),
-          },
-        )
+      const { user } = render(
+        <WorkGroupBlock
+          {...props}
+          {...showSecondLineButtonProps}
+          {...activeSecondLineButtonProps}
+        />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock({
+                permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
+              }),
+            },
+          }),
+        },
+      )
 
-        await testUtils.clickSecondLineButton(user)
-        await taskSecondLineModalTestUtils.findContainer()
-        await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
-        await taskSecondLineModalTestUtils.openWorkGroupField(user)
-        await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroupList[0].name)
-        await taskSecondLineModalTestUtils.clickSubmitButton(user)
+      await testUtils.clickSecondLineButton(user)
+      await taskSecondLineModalTestUtils.findContainer()
+      await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
+      await taskSecondLineModalTestUtils.openWorkGroupField(user)
+      await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroupList[0].name)
+      await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
-        expect(props.transferTaskToSecondLine).toBeCalledTimes(1)
-        expect(props.transferTaskToSecondLine).toBeCalledWith(
-          expect.anything(),
-          expect.anything(),
-          expect.anything(),
-        )
-      })
+      expect(props.transferTaskToSecondLine).toBeCalledTimes(1)
+      expect(props.transferTaskToSecondLine).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
     })
   })
 
   describe('Кнопка перевода на 1-ю линию', () => {
-    describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
-      test('Отображается если условия соблюдены', () => {
-        render(<WorkGroupBlock {...props} {...showFirstLineButtonProps} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.FirstLineSupport,
+    test('Отображается и активна если условия соблюдены', () => {
+      render(
+        <WorkGroupBlock {...props} {...showFirstLineButtonProps} {...activeFirstLineButtonProps} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
           }),
-        })
+        },
+      )
 
-        expect(testUtils.getFirstLineButton()).toBeInTheDocument()
-      })
+      const button = testUtils.getFirstLineButton()
 
-      describe('Не активна если условия соблюдены', () => {
-        test('Но есть запрос на переклассификацию', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              {...activeFirstLineButtonProps}
-              extendedStatus={TaskExtendedStatusEnum.InReclassification}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
-              }),
-            },
-          )
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
 
-          expect(testUtils.getFirstLineButton()).toBeDisabled()
-        })
-
-        test('Но статус заявки "В ожидании"', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              {...activeFirstLineButtonProps}
-              status={TaskStatusEnum.Awaiting}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
-              }),
-            },
-          )
-
-          expect(testUtils.getFirstLineButton()).toBeDisabled()
-        })
-      })
-
-      test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
+    describe('Всегда активна если', () => {
+      test(`Статус запроса на ожидание "Одобрено" и id заявки есть в ${TaskActionsPermissionsEnum.CanPutOnFirstLine}`, () => {
         render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-            transferTaskToFirstLineIsLoading
+            {...forceActiveFirstLineButtonProps}
           />,
           {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
             }),
           },
         )
 
-        await testUtils.expectFirstLineLoadingStarted()
+        expect(testUtils.getFirstLineButton()).toBeEnabled()
       })
 
-      test('При клике открывается модальное окно', async () => {
-        const { user } = render(
+      test(`Статуса запроса на ожидание нет и id заявки есть в ${TaskActionsPermissionsEnum.CanPutOnFirstLine}`, () => {
+        render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
+            {...forceActiveFirstLineButtonProps}
+            taskSuspendRequestStatus={undefined}
           />,
           {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
             }),
           },
         )
 
-        await testUtils.clickFirstLineButton(user)
-
-        expect(await taskFirstLineModalTestUtils.findContainer()).toBeInTheDocument()
-      })
-
-      describe('Не отображается если условия соблюдены', () => {
-        test('Но нет рабочей группы', () => {
-          render(
-            <WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
-              }),
-            },
-          )
-
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
-
-        test('Но заявка закрыта', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              status={TaskStatusEnum.Closed}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
-              }),
-            },
-          )
-
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
-
-        test('Но заявка завершена', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              status={TaskStatusEnum.Completed}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.FirstLineSupport,
-              }),
-            },
-          )
-
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
+        expect(testUtils.getFirstLineButton()).toBeEnabled()
       })
     })
 
-    describe(`Роль - ${UserRoleEnum.Engineer}`, () => {
-      test('Отображается если условия соблюдены', () => {
-        render(<WorkGroupBlock {...props} {...showFirstLineButtonProps} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.Engineer,
-          }),
-        })
-
-        expect(testUtils.getFirstLineButton()).toBeInTheDocument()
-      })
-
-      describe('Не активна если условия соблюдены', () => {
-        test('Но есть запрос на переклассификацию', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              {...activeFirstLineButtonProps}
-              extendedStatus={TaskExtendedStatusEnum.InReclassification}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
-              }),
-            },
-          )
-
-          expect(testUtils.getFirstLineButton()).toBeDisabled()
-        })
-
-        test('Но статус заявки "В ожидании"', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              {...activeFirstLineButtonProps}
-              status={TaskStatusEnum.Awaiting}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
-              }),
-            },
-          )
-
-          expect(testUtils.getFirstLineButton()).toBeDisabled()
-        })
-      })
-
-      test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
+    describe('Не может быть всегда активна если', () => {
+      test('Статус запроса на ожидание "Одобрено" но id заявки нет в "CAN_PUT_ON_FIRST_LINE"', () => {
         render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-            transferTaskToFirstLineIsLoading
+            {...disableFirstLineButtonProps}
+            {...forceActiveFirstLineButtonProps}
+            userActions={userFixtures.userActions()}
           />,
           {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
             }),
           },
         )
 
-        await testUtils.expectFirstLineLoadingStarted()
+        expect(testUtils.getFirstLineButton()).toBeDisabled()
       })
 
-      test('При клике открывается модальное окно', async () => {
-        const { user } = render(
+      test('id заявки есть в "CAN_PUT_ON_FIRST_LINE" но статус запроса на ожидание не "Одобрено"', () => {
+        render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
+            {...disableFirstLineButtonProps}
+            {...forceActiveFirstLineButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
           />,
           {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.Engineer,
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
             }),
           },
         )
 
-        await testUtils.clickFirstLineButton(user)
-
-        expect(await taskFirstLineModalTestUtils.findContainer()).toBeInTheDocument()
-      })
-
-      describe('Не отображается если условия соблюдены', () => {
-        test('Но нет рабочей группы', () => {
-          render(
-            <WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
-              }),
-            },
-          )
-
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
-
-        test('Но заявка закрыта', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              status={TaskStatusEnum.Closed}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
-              }),
-            },
-          )
-
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
-
-        test('Но заявка завершена', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              status={TaskStatusEnum.Completed}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.Engineer,
-              }),
-            },
-          )
-
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
+        expect(testUtils.getFirstLineButton()).toBeDisabled()
       })
     })
 
-    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
-      test('Отображается если условия соблюдены', () => {
-        render(<WorkGroupBlock {...props} {...showFirstLineButtonProps} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.SeniorEngineer,
-          }),
-        })
-
-        expect(testUtils.getFirstLineButton()).toBeInTheDocument()
-      })
-
-      describe('Не активна если условия соблюдены', () => {
-        test('Но есть запрос на переклассификацию', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              {...activeFirstLineButtonProps}
-              extendedStatus={TaskExtendedStatusEnum.InReclassification}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
-              }),
-            },
-          )
-
-          expect(testUtils.getFirstLineButton()).toBeDisabled()
-        })
-
-        test('Но статус заявки "В ожидании"', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              {...activeFirstLineButtonProps}
-              status={TaskStatusEnum.Awaiting}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
-              }),
-            },
-          )
-
-          expect(testUtils.getFirstLineButton()).toBeDisabled()
-        })
-      })
-
-      test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
+    describe('Не активна если условия соблюдены', () => {
+      test('Но есть запрос на переклассификацию', () => {
         render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
             {...activeFirstLineButtonProps}
-            transferTaskToFirstLineIsLoading
+            extendedStatus={TaskExtendedStatusEnum.InReclassification}
           />,
           {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
             }),
           },
         )
 
-        await testUtils.expectFirstLineLoadingStarted()
+        expect(testUtils.getFirstLineButton()).toBeDisabled()
       })
 
-      test('При клике открывается модальное окно', async () => {
-        const { user } = render(
+      test('Но статус заявки "В ожидании"', () => {
+        render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
             {...activeFirstLineButtonProps}
+            status={TaskStatusEnum.Awaiting}
           />,
           {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
             }),
           },
         )
 
-        await testUtils.clickFirstLineButton(user)
-
-        expect(await taskFirstLineModalTestUtils.findContainer()).toBeInTheDocument()
+        expect(testUtils.getFirstLineButton()).toBeDisabled()
       })
 
-      describe('Не отображается если условия соблюдены', () => {
-        test('Но нет рабочей группы', () => {
-          render(
-            <WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
-              }),
-            },
-          )
+      test('Но статус запроса на ожидание "Новый"', () => {
+        render(
+          <WorkGroupBlock
+            {...props}
+            {...showFirstLineButtonProps}
+            {...activeFirstLineButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            }),
+          },
+        )
 
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
+        expect(testUtils.getFirstLineButton()).toBeDisabled()
+      })
 
-        test('Но заявка закрыта', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              status={TaskStatusEnum.Closed}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
-              }),
-            },
-          )
+      test('Но статус запроса на ожидание "В процессе"', () => {
+        render(
+          <WorkGroupBlock
+            {...props}
+            {...showFirstLineButtonProps}
+            {...activeFirstLineButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.InProgress}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            }),
+          },
+        )
 
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
-
-        test('Но заявка завершена', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              status={TaskStatusEnum.Completed}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.SeniorEngineer,
-              }),
-            },
-          )
-
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
+        expect(testUtils.getFirstLineButton()).toBeDisabled()
       })
     })
 
-    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
-      test('Отображается', () => {
-        render(<WorkGroupBlock {...props} {...showFirstLineButtonProps} />, {
-          store: getStoreWithAuth({
-            userRole: UserRoleEnum.HeadOfDepartment,
+    test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
+      render(
+        <WorkGroupBlock
+          {...props}
+          {...showFirstLineButtonProps}
+          {...activeFirstLineButtonProps}
+          transferTaskToFirstLineIsLoading
+        />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          }),
+        },
+      )
+
+      await testUtils.expectFirstLineLoadingStarted()
+    })
+
+    test('При клике открывается модальное окно', async () => {
+      const { user } = render(
+        <WorkGroupBlock {...props} {...showFirstLineButtonProps} {...activeFirstLineButtonProps} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          }),
+        },
+      )
+
+      await testUtils.clickFirstLineButton(user)
+      expect(await taskFirstLineModalTestUtils.findContainer()).toBeInTheDocument()
+    })
+
+    describe('Не отображается если условия соблюдены', () => {
+      test('Но нет рабочей группы', () => {
+        render(<WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
           }),
         })
 
-        expect(testUtils.getFirstLineButton()).toBeInTheDocument()
+        expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
       })
 
-      describe('Не активна если условия соблюдены', () => {
-        test('Но есть запрос на переклассификацию', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              {...activeFirstLineButtonProps}
-              extendedStatus={TaskExtendedStatusEnum.InReclassification}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
-              }),
-            },
-          )
-
-          expect(testUtils.getFirstLineButton()).toBeDisabled()
-        })
-
-        test('Но статус заявки "В ожидании"', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              {...activeFirstLineButtonProps}
-              status={TaskStatusEnum.Awaiting}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
-              }),
-            },
-          )
-
-          expect(testUtils.getFirstLineButton()).toBeDisabled()
-        })
-      })
-
-      test('Отображает состояние загрузки во время перевода на 1-ю линию', async () => {
+      test('Но заявка закрыта', () => {
         render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-            transferTaskToFirstLineIsLoading
+            status={TaskStatusEnum.Closed}
           />,
           {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
             }),
           },
         )
 
-        await testUtils.expectFirstLineLoadingStarted()
+        expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
       })
 
-      test('При клике открывается модальное окно', async () => {
-        const { user } = render(
+      test('Но заявка завершена', () => {
+        render(
           <WorkGroupBlock
             {...props}
             {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
+            status={TaskStatusEnum.Completed}
           />,
           {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock({ permissions: [] }) },
             }),
           },
         )
 
-        await testUtils.clickFirstLineButton(user)
-
-        expect(await taskFirstLineModalTestUtils.findContainer()).toBeInTheDocument()
-      })
-
-      describe('Не отображается', () => {
-        test('Если нет рабочей группы', () => {
-          render(
-            <WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
-              }),
-            },
-          )
-
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
-
-        test('Если заявка закрыта', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              status={TaskStatusEnum.Closed}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
-              }),
-            },
-          )
-
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
-
-        test('Если заявка завершена', () => {
-          render(
-            <WorkGroupBlock
-              {...props}
-              {...showFirstLineButtonProps}
-              status={TaskStatusEnum.Completed}
-            />,
-            {
-              store: getStoreWithAuth({
-                userRole: UserRoleEnum.HeadOfDepartment,
-              }),
-            },
-          )
-
-          expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
-        })
+        expect(testUtils.queryFirstLineButton()).not.toBeInTheDocument()
       })
     })
   })
 
   describe('Модалка перевода на 1-ю линию', () => {
-    describe(`Роль - ${UserRoleEnum.SeniorEngineer}`, () => {
-      test('При отправке обработчик вызывается корректно', async () => {
-        const { user } = render(
-          <WorkGroupBlock
-            {...props}
-            {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-          />,
-          {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.SeniorEngineer,
-            }),
-          },
-        )
+    test('При отправке обработчик вызывается', async () => {
+      const { user } = render(
+        <WorkGroupBlock {...props} {...showFirstLineButtonProps} {...activeFirstLineButtonProps} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          }),
+        },
+      )
 
-        await testUtils.clickFirstLineButton(user)
-        await taskFirstLineModalTestUtils.findContainer()
-        await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
-        await taskFirstLineModalTestUtils.clickSubmitButton(user)
+      await testUtils.clickFirstLineButton(user)
+      await taskFirstLineModalTestUtils.findContainer()
+      await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
+      await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
-        expect(props.transferTaskToFirstLine).toBeCalledTimes(1)
-        expect(props.transferTaskToFirstLine).toBeCalledWith(
-          expect.anything(),
-          expect.anything(),
-          expect.anything(),
-        )
-      })
-    })
-
-    describe(`Роль - ${UserRoleEnum.HeadOfDepartment}`, () => {
-      test('При отправке обработчик вызывается корректно', async () => {
-        const { user } = render(
-          <WorkGroupBlock
-            {...props}
-            {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-          />,
-          {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.HeadOfDepartment,
-            }),
-          },
-        )
-
-        await testUtils.clickFirstLineButton(user)
-        await taskFirstLineModalTestUtils.findContainer()
-        await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
-        await taskFirstLineModalTestUtils.clickSubmitButton(user)
-
-        expect(props.transferTaskToFirstLine).toBeCalledTimes(1)
-        expect(props.transferTaskToFirstLine).toBeCalledWith(
-          expect.anything(),
-          expect.anything(),
-          expect.anything(),
-        )
-      })
+      expect(props.transferTaskToFirstLine).toBeCalledTimes(1)
+      expect(props.transferTaskToFirstLine).toBeCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.anything(),
+      )
     })
   })
 })

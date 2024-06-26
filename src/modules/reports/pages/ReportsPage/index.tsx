@@ -2,7 +2,7 @@ import { Flex } from 'antd'
 import { FC } from 'react'
 
 import { ReportsRoutesEnum } from 'modules/reports/constants'
-import { UserPermissionsEnum, UserRoleEnum } from 'modules/user/constants'
+import { UserPermissionsEnum } from 'modules/user/constants'
 
 import Catalogs, { CatalogsProps } from 'components/Catalogs'
 
@@ -10,7 +10,7 @@ const items: CatalogsProps['items'] = [
   {
     link: ReportsRoutesEnum.FiscalAccumulatorTasksReport,
     text: 'Отчёт по фискальным накопителям',
-    roles: [UserRoleEnum.Engineer, UserRoleEnum.SeniorEngineer, UserRoleEnum.HeadOfDepartment],
+    permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead],
   },
   {
     link: ReportsRoutesEnum.MtsrReport,

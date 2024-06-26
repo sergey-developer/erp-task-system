@@ -69,7 +69,7 @@ export enum TaskAttachmentTypeEnum {
 
 export enum TaskDetailsTabsEnum {
   SubTaskList = 'SubTaskList',
-  CommentList = 'CommentList',
+  Comments = 'Comments',
   Resolution = 'Resolution',
   Description = 'Description',
   Journal = 'Journal',
@@ -78,4 +78,13 @@ export enum TaskDetailsTabsEnum {
 
 export enum TaskStorageKeysEnum {
   TasksFilters = 'tasks/filters',
+}
+
+export enum TaskActionsPermissionsEnum {
+  CanRead = 'CAN_READ',
+  CanPutOnFirstLine = 'CAN_PUT_ON_FIRST_LINE',
+  CanReclassificationRequestsCreate = 'CAN_RECLASSIFICATION_REQUESTS_CREATE',
+  CanSuspendRequestsCreate = 'CAN_SUSPEND_REQUESTS_CREATE',
+  CanExecute = 'CAN_EXECUTE',
+  CanSubtasksCreate = 'CAN_SUBTASKS_CREATE',
 }

@@ -30,15 +30,15 @@ export const mockCreateTaskCommentBadRequestError = <T extends object>(
 
 export const mockCreateTaskCommentNotFoundError = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getNotFoundErrorMockFn(createTaskCommentMockFn(id), options)()
 
 export const mockCreateTaskCommentForbiddenError = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getForbiddenErrorMockFn(createTaskCommentMockFn(id), options)()
 
 export const mockCreateTaskCommentServerError = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getServerErrorMockFn(createTaskCommentMockFn(id), options)()

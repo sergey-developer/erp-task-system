@@ -1,32 +1,44 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { updateTaskAssigneeMessages } from 'modules/task/constants/taskAssignee'
-import { UpdateTaskAssigneeMutationArgs } from 'modules/task/models'
-import { taskAssigneeApiPermissions } from 'modules/task/permissions'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
+
+import { updateTaskAssigneeErrMsg } from 'modules/task/constants/taskAssignee'
+import {
+  UpdateTaskAssigneeMutationArgs,
+  UpdateTaskAssigneeSuccessResponse,
+} from 'modules/task/models'
 import { useUpdateTaskAssigneeMutation } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { isErrorResponse } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useUpdateTaskAssignee = () => {
-  const permissions = useUserPermissions(taskAssigneeApiPermissions)
+type UseUpdateTaskAssigneeResult = CustomUseMutationResult<
+  UpdateTaskAssigneeMutationArgs,
+  UpdateTaskAssigneeSuccessResponse
+>
+
+export const useUpdateTaskAssignee = (): UseUpdateTaskAssigneeResult => {
   const [mutation, state] = useUpdateTaskAssigneeMutation()
-
-  const fn = useCallback(
-    async (data: UpdateTaskAssigneeMutationArgs) => {
-      if (!permissions.canUpdate) return
-
-      await mutation(data).unwrap()
-    },
-    [mutation, permissions.canUpdate],
-  )
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(updateTaskAssigneeMessages.commonError)
+      if (
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
+      ) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(updateTaskAssigneeErrMsg)
+      }
     }
   }, [state.error])
 
-  return { fn, state }
+  return [mutation, state]
 }

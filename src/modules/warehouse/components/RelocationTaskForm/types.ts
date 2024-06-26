@@ -2,7 +2,7 @@ import { UploadProps } from 'antd'
 import { ReactNode } from 'react'
 
 import { UsersModel } from 'modules/user/models'
-import { MatchedPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/utils'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 
 import { LocationListItemModel, LocationsModel } from 'shared/models/catalogs/location'
@@ -21,9 +21,13 @@ export type LocationOption = {
 }
 
 export type RelocationTaskFormProps = {
-  permissions: MaybeNull<MatchedPermissions>
+  permissions: MaybeNull<MatchedUserPermissions>
 
   isLoading: boolean
+
+  executorOptions: UsersModel
+
+  controllerOptions: UsersModel
   controllerIsRequired: boolean
 
   onUploadImage: NonNullable<UploadProps['customRequest']>
@@ -32,8 +36,7 @@ export type RelocationTaskFormProps = {
   imageIsDeleting: boolean
   imagesIsLoading?: boolean
 
-  userList: UsersModel
-  userListIsLoading: boolean
+  usersIsLoading: boolean
 
   relocateFromLocationList: LocationsModel
   relocateFromLocationListIsLoading: boolean

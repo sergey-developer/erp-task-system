@@ -3,13 +3,13 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
-import { useGetWorkGroupList } from 'modules/workGroup/hooks'
+import { useGetWorkGroups } from 'modules/workGroup/hooks'
 import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
-import { filterOptionBy } from 'shared/utils/common'
 import { onlyRequiredRules } from 'shared/constants/validation'
+import { filterOptionBy } from 'shared/utils/common'
 
 import { WorkGroupFormItem } from './styles'
 import { TaskSecondLineFormFields, TaskSecondLineModalProps } from './types'
@@ -29,7 +29,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   const [form] = Form.useForm<TaskSecondLineFormFields>()
   const markDefaultGroupValue = Form.useWatch('markAsDefault', form)
 
-  const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroupList({
+  const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroups({
     taskId: id,
   })
 

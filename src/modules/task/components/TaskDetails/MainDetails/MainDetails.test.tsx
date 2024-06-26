@@ -2,9 +2,10 @@ import { screen, within } from '@testing-library/react'
 
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
 import { TaskOlaStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
-import { UserRoleEnum } from 'modules/user/constants'
 
 import taskFixtures from '_tests_/fixtures/task'
+import userFixtures from '_tests_/fixtures/user'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeAddress,
   fakeDateString,
@@ -38,12 +39,9 @@ const props: Readonly<MainDetailsProps> = {
   assignee: null,
 }
 
-const getContainer = () => screen.getByTestId('task-card-main-details')
-
-const queryContainer = () => screen.queryByTestId('task-card-main-details')
-
+const getContainer = () => screen.getByTestId('task-details-main-details')
+const queryContainer = () => screen.queryByTestId('task-details-main-details')
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
-
 const queryChildByText = (text: string | RegExp) => within(getContainer()).queryByText(text)
 
 export const testUtils = {
@@ -85,7 +83,9 @@ describe('Блок детальной информации заявки', () => 
       render(
         <MainDetails {...props} responseTime={fakeResponseTime} workGroup={null} assignee={null} />,
         {
-          store: getStoreWithAuth({ userRole: UserRoleEnum.FirstLineSupport }),
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
         },
       )
 
@@ -97,7 +97,11 @@ describe('Блок детальной информации заявки', () => 
 
     describe('Не отображается если условия соблюдены', () => {
       test('Но срок реакции отсутствует', () => {
-        render(<MainDetails {...props} workGroup={null} responseTime={null} />)
+        render(<MainDetails {...props} workGroup={null} responseTime={null} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         expect(testUtils.queryChildByText(/Срок реакции:/)).not.toBeInTheDocument()
       })
@@ -109,12 +113,17 @@ describe('Блок детальной информации заявки', () => 
             responseTime={taskFixtures.taskResponseTime()}
             workGroup={taskFixtures.workGroup()}
           />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          },
         )
 
         expect(testUtils.queryChildByText(/Срок реакции:/)).not.toBeInTheDocument()
       })
 
-      test(`Но пользователь с ролью ${UserRoleEnum.FirstLineSupport} и у заявки есть исполнитель`, () => {
+      test(`Но у заявки есть исполнитель`, () => {
         render(
           <MainDetails
             {...props}
@@ -123,8 +132,8 @@ describe('Блок детальной информации заявки', () => 
             assignee={taskFixtures.assignee()}
           />,
           {
-            store: getStoreWithAuth({
-              userRole: UserRoleEnum.FirstLineSupport,
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
             }),
           },
         )

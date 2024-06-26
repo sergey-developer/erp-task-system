@@ -13,6 +13,7 @@ import {
   getErrorDetail,
   isBadRequestError,
   isErrorResponse,
+  isForbiddenError,
   isNotFoundError,
 } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -27,7 +28,11 @@ export const useDeleteTaskSuspendRequest = (): UseDeleteTaskSuspendRequest => {
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isNotFoundError(state.error) || isBadRequestError(state.error)) {
+      if (
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
+      ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
         showErrorNotification(deleteSuspendRequestErrMsg)

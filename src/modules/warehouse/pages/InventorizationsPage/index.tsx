@@ -5,7 +5,7 @@ import React, { FC, useCallback, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useUserPermissions } from 'modules/user/hooks'
 import { CreateInventorizationRequestModalProps } from 'modules/warehouse/components/CreateInventorizationRequestModal/types'
 import InventorizationTable from 'modules/warehouse/components/InventorizationTable'
 import {
@@ -79,10 +79,9 @@ const initialGetInventorizationsQueryArgs: Partial<
 }
 
 const InventorizationsPage: FC = () => {
+  const permissions = useUserPermissions([UserPermissionsEnum.InventorizationCreate])
   const [searchParams] = useSearchParams()
   const inventorizationId = Number(searchParams.get('inventorizationId')) || undefined
-
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.InventorizationCreate])
 
   const { tableRef, drawerHeight } = useDrawerHeightByTable()
 

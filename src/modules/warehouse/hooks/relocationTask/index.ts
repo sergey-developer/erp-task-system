@@ -10,7 +10,7 @@ export * from './useNavigateToCreateRelocationTaskSimplifiedPage'
 
 export * from './useUpdateExternalRelocation'
 
-export * from './useGetRelocationTaskList'
+export * from './useGetRelocationTasks'
 
 export * from './useGetRelocationTaskCompletionDocuments'
 export * from './useCreateRelocationTaskCompletionDocuments'

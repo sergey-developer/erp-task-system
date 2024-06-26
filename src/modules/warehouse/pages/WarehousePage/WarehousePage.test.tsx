@@ -22,11 +22,9 @@ import {
 import WarehousePage from './index'
 
 const getContainer = () => screen.getByTestId('warehouse-page')
-
 const getChildByText = (value: string) => within(getContainer()).getByText(value)
 
 const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('warehouse-loading')
-
 const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('warehouse-loading')
 
 export const testUtils = {
@@ -135,6 +133,32 @@ describe('Страница склада', () => {
 
         expect(label).toBeInTheDocument()
         expect(value).toBeInTheDocument()
+      })
+    })
+
+    describe('Макрорегионы', () => {
+      test('Отображается корректно', async () => {
+        const warehouse = warehouseFixtures.warehouse({ id: 1 })
+        mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
+
+        renderInRoute_latest(
+          [
+            {
+              path: WarehouseRouteEnum.Warehouse,
+              element: <WarehousePage />,
+            },
+          ],
+          { initialEntries: [getWarehousePageLink(warehouse.id)] },
+        )
+
+        await testUtils.expectLoadingFinished()
+        const label = testUtils.getChildByText('Макрорегионы')
+
+        expect(label).toBeInTheDocument()
+        warehouse.macroregions!.forEach((m) => {
+          const value = testUtils.getChildByText(m.title)
+          expect(value).toBeInTheDocument()
+        })
       })
     })
 

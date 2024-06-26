@@ -1,39 +1,45 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { createReclassificationRequestMessages } from 'modules/task/constants/taskReclassificationRequest'
-import { CreateTaskReclassificationRequestMutationArgs } from 'modules/task/models'
-import { taskReclassificationRequestApiPermissions } from 'modules/task/permissions'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
+
+import { createReclassificationRequestErrMsg } from 'modules/task/constants/taskReclassificationRequest'
+import {
+  CreateTaskReclassificationRequestMutationArgs,
+  CreateTaskReclassificationRequestSuccessResponse,
+} from 'modules/task/models'
 import { useCreateReclassificationRequestMutation } from 'modules/task/services/taskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { commonApiMessages } from 'shared/constants/common'
-import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useCreateTaskReclassificationRequest = () => {
-  const permissions = useUserPermissions(taskReclassificationRequestApiPermissions)
-  const [mutation, state] = useCreateReclassificationRequestMutation()
+type UseCreateTaskReclassificationRequestResult = CustomUseMutationResult<
+  CreateTaskReclassificationRequestMutationArgs,
+  CreateTaskReclassificationRequestSuccessResponse
+>
 
-  const fn = useCallback(
-    async (data: CreateTaskReclassificationRequestMutationArgs) => {
-      if (!permissions.canCreate) return
+export const useCreateTaskReclassificationRequest =
+  (): UseCreateTaskReclassificationRequestResult => {
+    const [mutation, state] = useCreateReclassificationRequestMutation()
 
-      await mutation(data).unwrap()
-    },
-    [mutation, permissions.canCreate],
-  )
-
-  useEffect(() => {
-    if (!state.error) return
-
-    if (isErrorResponse(state.error)) {
-      if (isNotFoundError(state.error)) {
-        showErrorNotification(createReclassificationRequestMessages.notFoundError)
-      } else if (!isBadRequestError(state.error)) {
-        showErrorNotification(commonApiMessages.unknownError)
+    useEffect(() => {
+      if (isErrorResponse(state.error)) {
+        if (
+          isBadRequestError(state.error) ||
+          isForbiddenError(state.error) ||
+          isNotFoundError(state.error)
+        ) {
+          showErrorNotification(getErrorDetail(state.error))
+        } else {
+          showErrorNotification(createReclassificationRequestErrMsg)
+        }
       }
-    }
-  }, [state.error])
+    }, [state.error])
 
-  return { fn, state }
-}
+    return [mutation, state]
+  }

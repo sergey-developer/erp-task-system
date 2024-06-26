@@ -14,7 +14,6 @@ import {
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
 import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
-import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
 import Tabs from 'modules/task/components/TaskDetails/Tabs'
 import Title from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
@@ -29,21 +28,15 @@ import {
 import { useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import {
-  CreateTaskReclassificationRequestMutationArgs,
   CreateTaskSuspendRequestBadRequestErrorResponse,
   CreateTaskSuspendRequestMutationArgs,
   DeleteTaskSuspendRequestMutationArgs,
-  DeleteTaskWorkGroupMutationArgs,
   GetTaskWorkPerformedActMutationArgs,
   GetTaskWorkPerformedActSuccessResponse,
-  TakeTaskMutationArgs,
   TaskAssigneeModel,
   TaskModel,
   TaskReclassificationRequestModel,
-  UpdateTaskAssigneeMutationArgs,
-  UpdateTaskWorkGroupMutationArgs,
 } from 'modules/task/models'
-import { useUserRole } from 'modules/user/hooks'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -53,7 +46,7 @@ import Spinner from 'components/Spinner'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
-import { EmptyFn, MaybeNull } from 'shared/types/utils'
+import { AnyFn, EmptyFn, MaybeNull } from 'shared/types/utils'
 import { base64ToBytes } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { downloadFile, extractOriginFiles } from 'shared/utils/file'
@@ -138,9 +131,7 @@ export type TaskCardProps = {
   refetchTask: EmptyFn
   reclassificationRequest: MaybeNull<TaskReclassificationRequestModel>
   reclassificationRequestIsLoading: boolean
-  createReclassificationRequest: (
-    data: CreateTaskReclassificationRequestMutationArgs,
-  ) => Promise<void>
+  createReclassificationRequest: AnyFn
   createReclassificationRequestIsLoading: boolean
 
   createSuspendRequest: CustomMutationTrigger<CreateTaskSuspendRequestMutationArgs, any>
@@ -148,7 +139,7 @@ export type TaskCardProps = {
   cancelSuspendRequest: CustomMutationTrigger<DeleteTaskSuspendRequestMutationArgs, any>
   cancelSuspendRequestIsLoading: boolean
 
-  takeTask: (data: TakeTaskMutationArgs) => Promise<void>
+  takeTask: AnyFn
   takeTaskIsLoading: boolean
 
   resolveTask: any
@@ -160,12 +151,12 @@ export type TaskCardProps = {
   >
   taskWorkPerformedActIsLoading: boolean
 
-  updateAssignee: (data: UpdateTaskAssigneeMutationArgs) => Promise<void>
+  updateAssignee: AnyFn
   updateAssigneeIsLoading: boolean
 
-  updateWorkGroup: (data: UpdateTaskWorkGroupMutationArgs) => Promise<void>
+  updateWorkGroup: AnyFn
   updateWorkGroupIsLoading: boolean
-  deleteWorkGroup: (data: DeleteTaskWorkGroupMutationArgs) => Promise<void>
+  deleteWorkGroup: AnyFn
   deleteWorkGroupIsLoading: boolean
 
   additionalInfoExpanded: boolean
@@ -220,8 +211,6 @@ const TaskCard: FC<TaskCardProps> = ({
   const { modal } = App.useApp()
   const taskStatus = useTaskStatus(task?.status)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
-
-  const userRole = useUserRole()
 
   const debouncedRefetchTask = useDebounceFn(refetchTask)
 
@@ -457,6 +446,7 @@ const TaskCard: FC<TaskCardProps> = ({
   }, [cancelSuspendRequest, task])
 
   const cardTitle = !taskIsLoading && task && (
+    // @ts-ignore
     <Title
       id={task.id}
       type={task.type}
@@ -520,7 +510,6 @@ const TaskCard: FC<TaskCardProps> = ({
                         text: 'Отменить запрос',
                         onClick: handleCancelTaskSuspendRequest,
                         loading: cancelSuspendRequestIsLoading,
-                        disabled: userRole.isEngineerRole,
                       }
                     : taskSuspendRequestStatus.isApproved
                     ? {
@@ -578,24 +567,7 @@ const TaskCard: FC<TaskCardProps> = ({
 
               {!additionalInfoExpanded && <DividerStyled />}
 
-              <SecondaryDetails
-                id={task.id}
-                recordId={task.recordId}
-                status={task.status}
-                extendedStatus={task.extendedStatus}
-                assignee={task.assignee}
-                workGroup={task.workGroup}
-                transferTaskToFirstLine={handleTransferTaskToFirstLine}
-                transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
-                transferTaskToSecondLine={handleTransferTaskToSecondLine}
-                transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
-                updateAssignee={handleUpdateAssignee}
-                updateAssigneeIsLoading={updateAssigneeIsLoading}
-                takeTask={handleTakeTask}
-                takeTaskIsLoading={takeTaskIsLoading}
-                taskSuspendRequestStatus={task.suspendRequest?.status}
-              />
-
+              {/*@ts-ignore*/}
               <Tabs task={task} activeTab={activeTab} />
 
               {executeTaskModalOpened && (

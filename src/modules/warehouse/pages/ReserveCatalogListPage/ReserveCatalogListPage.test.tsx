@@ -8,13 +8,14 @@ import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNome
 import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 import InventorizationsPage from 'modules/warehouse/pages/InventorizationsPage'
 import { testUtils as inventorizationsPageTestUtils } from 'modules/warehouse/pages/InventorizationsPage/InventorizationsPage.test'
-import RelocationTaskListPage from 'modules/warehouse/pages/RelocationTaskListPage'
-import { testUtils as relocationTaskListPageTestUtils } from 'modules/warehouse/pages/RelocationTaskListPage/RelocationTaskListPage.test'
+import RelocationTasksPage from 'modules/warehouse/pages/RelocationTasksPage'
+import { testUtils as relocationTaskListPageTestUtils } from 'modules/warehouse/pages/RelocationTasksPage/RelocationTasksPage.test'
 
+import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetInventorizationsSuccess,
-  mockGetRelocationTaskListSuccess,
+  mockGetRelocationTasksSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { getStoreWithAuth, linkTestUtils, renderInRoute_latest } from '_tests_/utils'
@@ -22,12 +23,10 @@ import { getStoreWithAuth, linkTestUtils, renderInRoute_latest } from '_tests_/u
 import ReserveCatalogListPage from './index'
 
 const getContainer = () => screen.getByTestId('reserve-catalog-list-page')
-
 const getCatalogContainer = () => within(getContainer()).getByTestId('reserve-catalog-list')
 
 // equipment link
 const getEquipmentLink = () => linkTestUtils.getLinkIn(getCatalogContainer(), 'Оборудование')
-
 const queryEquipmentLink = () => linkTestUtils.queryLinkIn(getCatalogContainer(), 'Оборудование')
 
 const clickEquipmentLink = async (user: UserEvent) =>
@@ -106,6 +105,11 @@ describe('Страница списка справочников запасов'
           },
         ],
         { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       const link = testUtils.queryEquipmentLink()
@@ -177,6 +181,11 @@ describe('Страница списка справочников запасов'
           },
         ],
         { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       const link = testUtils.queryRelocationTasksLink()
@@ -184,7 +193,7 @@ describe('Страница списка справочников запасов'
     })
 
     test('При клике переходит на страницу списка заявок на перемещение', async () => {
-      mockGetRelocationTaskListSuccess()
+      mockGetRelocationTasksSuccess()
 
       const { user } = renderInRoute_latest(
         [
@@ -194,7 +203,7 @@ describe('Страница списка справочников запасов'
           },
           {
             path: WarehouseRouteEnum.RelocationTasks,
-            element: <RelocationTaskListPage />,
+            element: <RelocationTasksPage />,
           },
         ],
         { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
@@ -248,6 +257,11 @@ describe('Страница списка справочников запасов'
           },
         ],
         { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       const link = testUtils.queryInventorizationsLink()

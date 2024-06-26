@@ -6,6 +6,7 @@ import { getEquipmentsErrMsg } from 'modules/warehouse/constants/equipment'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import commonFixtures from '_tests_/fixtures/common'
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetEquipmentListForbiddenError,
@@ -13,8 +14,10 @@ import {
   mockGetEquipmentListSuccess,
   mockGetEquipmentSuccess,
 } from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeWord,
+  getStoreWithAuth,
   notificationTestUtils,
   render,
   setupApiTests,
@@ -142,7 +145,11 @@ describe('Страница списка оборудования', () => {
         body: warehouseFixtures.equipment({ id: equipmentListItem.id }),
       })
 
-      const { user } = render(<EquipmentListPage />)
+      const { user } = render(<EquipmentListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await equipmentTableTestUtils.expectLoadingFinished()
       await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)
@@ -158,7 +165,11 @@ describe('Страница списка оборудования', () => {
       mockGetEquipmentListSuccess()
       mockGetEquipmentSuccess(fakeEquipmentId)
 
-      render(<EquipmentListPage />)
+      render(<EquipmentListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       const equipment = await equipmentDetailsTestUtils.findContainer()
       expect(equipment).toBeInTheDocument()
@@ -174,7 +185,11 @@ describe('Страница списка оборудования', () => {
         body: warehouseFixtures.equipment({ id: equipmentListItem.id }),
       })
 
-      const { user } = render(<EquipmentListPage />)
+      const { user } = render(<EquipmentListPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await equipmentTableTestUtils.expectLoadingFinished()
       await equipmentTableTestUtils.clickRow(user, equipmentListItem.id)

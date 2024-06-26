@@ -70,6 +70,8 @@ const setReason = async (user: UserEvent, reason: SuspendReasonEnum) => {
   return field
 }
 
+const expectReasonLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
+
 // task link field
 const getTaskLinkFormItem = () => within(getContainer()).getByTestId('task-link-form-item')
 const queryTaskLinkFormItem = () => within(getContainer()).queryByTestId('task-link-form-item')

@@ -1,15 +1,14 @@
-import { useMemo } from 'react'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { getPermissionsObj, MatchedUserPermissions } from 'modules/user/utils'
 
-import { useAuthUser } from 'modules/auth/hooks'
+import { useUserMeState } from './useUserMeState'
 
-import { PermissionsMap, UserPermissionConfig } from 'shared/types/permissions'
-import { getPermissionsMap } from 'shared/utils/permissions'
+export const useUserPermissions = (permissions: UserPermissionsEnum[]): MatchedUserPermissions => {
+  const { data: userMe } = useUserMeState()
 
-export const useUserPermissions = (config: UserPermissionConfig): PermissionsMap => {
-  const authUser = useAuthUser()
-
-  return useMemo(() => {
-    const permissions = authUser ? config[authUser.role] : []
-    return getPermissionsMap(permissions)
-  }, [config, authUser])
+  if (userMe) {
+    return getPermissionsObj(userMe, permissions)
+  } else {
+    throw new Error('Hook require user be loaded')
+  }
 }

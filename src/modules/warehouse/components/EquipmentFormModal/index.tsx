@@ -26,6 +26,7 @@ import { EquipmentFormFields, EquipmentFormModalProps } from './types'
 
 const { TextArea } = Input
 
+// todo: разделить форму как в моб.версии
 const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   mode,
 
@@ -39,28 +40,32 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   onDeleteImage,
   imageIsDeleting,
 
-  categoryList,
-  categoryListIsLoading,
+  categories,
+  categoriesIsLoading,
   category,
   onChangeCategory,
 
-  warehouseList,
-  warehouseListIsLoading,
+  warehouses,
+  warehousesIsLoading,
 
-  currencyList,
-  currencyListIsLoading,
+  currencies,
+  currenciesIsLoading,
 
-  ownerList,
-  ownerListIsLoading,
+  owners,
+  ownersIsLoading,
+  onChangeOwner,
 
-  workTypeList,
-  workTypeListIsLoading,
+  macroregions,
+  macroregionsIsLoading,
+
+  workTypes,
+  workTypesIsLoading,
 
   nomenclature,
   nomenclatureIsLoading,
 
-  nomenclatureList,
-  nomenclatureListIsLoading,
+  nomenclatures,
+  nomenclaturesIsLoading,
   onChangeNomenclature,
 
   onSubmit,
@@ -68,6 +73,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   ...props
 }) => {
   const [form] = Form.useForm<EquipmentFormFields>()
+  const ownerFormValue = Form.useWatch('owner', form)
   const ownerIsObermeisterFormValue = Form.useWatch('ownerIsObermeister', form)
 
   const nomenclatureSelected = Boolean(nomenclature)
@@ -112,6 +118,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         usageCounter: undefined,
         owner: undefined,
         ownerIsObermeister: undefined,
+        macroregion: undefined,
         purpose: undefined,
         comment: undefined,
       })
@@ -158,9 +165,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
           <Select<IdType, EquipmentCategoryListItemModel>
             placeholder='Выберите категорию'
             fieldNames={idAndTitleSelectFieldNames}
-            options={categoryList}
-            loading={categoryListIsLoading}
-            disabled={isLoading || categoryListIsLoading}
+            options={categories}
+            loading={categoriesIsLoading}
+            disabled={isLoading || categoriesIsLoading}
             onChange={handleChangeCategory}
           />
         </Form.Item>
@@ -175,9 +182,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
             virtual
             placeholder='Выберите номенклатуру'
             fieldNames={idAndTitleSelectFieldNames}
-            options={nomenclatureList}
-            loading={nomenclatureListIsLoading}
-            disabled={isLoading || nomenclatureListIsLoading}
+            options={nomenclatures}
+            loading={nomenclaturesIsLoading}
+            disabled={isLoading || nomenclaturesIsLoading}
             onChange={onChangeNomenclature}
             showSearch
             filterOption={filterOptionBy('title')}
@@ -234,9 +241,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   <Select<IdType, WarehouseListItemModel>
                     placeholder='Выберите склад'
                     fieldNames={idAndTitleSelectFieldNames}
-                    options={warehouseList}
-                    loading={warehouseListIsLoading}
-                    disabled={isLoading || warehouseListIsLoading}
+                    options={warehouses}
+                    loading={warehousesIsLoading}
+                    disabled={isLoading || warehousesIsLoading}
                   />
                 </Form.Item>
               )}
@@ -254,7 +261,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 />
               </Form.Item>
 
-              {mode === 'create' && categoryIsConsumable && (
+              {categoryIsConsumable && (
                 <Form.Item>
                   <Row gutter={8}>
                     <Col span={12}>
@@ -262,11 +269,12 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         data-testid='quantity-form-item'
                         label='Количество'
                         name='quantity'
+                        rules={mode === 'create' ? onlyRequiredRules : undefined}
                       >
                         <InputNumber
                           min={1}
                           placeholder='Введите количество'
-                          disabled={isLoading}
+                          disabled={mode === 'edit' || isLoading}
                         />
                       </Form.Item>
                     </Col>
@@ -276,30 +284,6 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         {nomenclature?.measurementUnit.title}
                       </Form.Item>
                     </Col>
-                  </Row>
-                </Form.Item>
-              )}
-
-              {mode === 'edit' && (
-                <Form.Item>
-                  <Row gutter={8}>
-                    <Col span={12}>
-                      <Form.Item
-                        data-testid='quantity-form-item'
-                        label='Количество'
-                        name='quantity'
-                      >
-                        <InputNumber disabled />
-                      </Form.Item>
-                    </Col>
-
-                    {categoryIsConsumable && (
-                      <Col span={6}>
-                        <Form.Item data-testid='measurement-unit-form-item' label='Ед.измерения'>
-                          {nomenclature?.measurementUnit.title}
-                        </Form.Item>
-                      </Col>
-                    )}
                   </Row>
                 </Form.Item>
               )}
@@ -317,9 +301,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                       <Select
                         placeholder='Выберите валюту'
                         fieldNames={idAndTitleSelectFieldNames}
-                        options={currencyList}
-                        loading={currencyListIsLoading}
-                        disabled={isLoading || currencyListIsLoading}
+                        options={currencies}
+                        loading={currenciesIsLoading}
+                        disabled={isLoading || currenciesIsLoading}
                       />
                     </Form.Item>
                   </Col>
@@ -375,13 +359,15 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 </Form.Item>
               )}
 
-              <Form.Item
-                data-testid='owner-is-obermeister-form-item'
-                label='Владелец оборудования - Obermeister'
-                name='ownerIsObermeister'
-              >
-                <Radio.Group options={yesNoOptions} />
-              </Form.Item>
+              {!categoryIsConsumable && (
+                <Form.Item
+                  data-testid='owner-is-obermeister-form-item'
+                  label='Владелец оборудования - Obermeister'
+                  name='ownerIsObermeister'
+                >
+                  <Radio.Group options={yesNoOptions} />
+                </Form.Item>
+              )}
 
               {categoryIsConsumable || isTrue(ownerIsObermeisterFormValue) ? null : (
                 <Form.Item
@@ -393,9 +379,29 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   <Select
                     placeholder='Выберите владельца оборудования'
                     fieldNames={idAndTitleSelectFieldNames}
-                    options={ownerList}
-                    loading={ownerListIsLoading}
-                    disabled={isLoading || ownerListIsLoading}
+                    options={owners}
+                    loading={ownersIsLoading}
+                    disabled={isLoading || ownersIsLoading}
+                    showSearch
+                    filterOption={filterOptionBy('title')}
+                    onChange={onChangeOwner}
+                  />
+                </Form.Item>
+              )}
+
+              {ownerFormValue && (
+                <Form.Item
+                  data-testid='macroregion-form-item'
+                  label='Макрорегион'
+                  name='macroregion'
+                  rules={isFalse(ownerIsObermeisterFormValue) ? onlyRequiredRules : undefined}
+                >
+                  <Select
+                    placeholder='Выберите макрорегион'
+                    fieldNames={idAndTitleSelectFieldNames}
+                    options={macroregions}
+                    loading={macroregionsIsLoading}
+                    disabled={isLoading || macroregionsIsLoading}
                     showSearch
                     filterOption={filterOptionBy('title')}
                   />
@@ -411,9 +417,9 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 <Select
                   placeholder='Выберите назначение оборудования'
                   fieldNames={idAndTitleSelectFieldNames}
-                  options={workTypeList}
-                  loading={workTypeListIsLoading}
-                  disabled={isLoading || workTypeListIsLoading}
+                  options={workTypes}
+                  loading={workTypesIsLoading}
+                  disabled={isLoading || workTypesIsLoading}
                 />
               </Form.Item>
 
@@ -431,6 +437,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   listType='picture'
                   multiple
                   disabled={isLoading || imageIsDeleting}
+                  // todo: применить здесь функцию renderUploadedFile
                   itemRender={(originNode, file) => (file.error ? null : originNode)}
                   customRequest={onUploadImage}
                   onRemove={onDeleteImage}

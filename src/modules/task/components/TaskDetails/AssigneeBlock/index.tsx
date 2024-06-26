@@ -1,19 +1,21 @@
 import { Button, Col, Row, Typography } from 'antd'
 import isEqual from 'lodash/isEqual'
-import React, { FC, useState } from 'react'
+import pick from 'lodash/pick'
+import React, { FC, useMemo, useState } from 'react'
 
 import { useAuthUser, useIdBelongAuthUser } from 'modules/auth/hooks'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
-import { TaskAssigneeModel, TaskModel } from 'modules/task/models'
-import { taskAssigneePermissions } from 'modules/task/permissions'
+import { TaskAssigneeModel, TaskModel, TaskWorkGroupModel } from 'modules/task/models'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useUserPermissions } from 'modules/user/hooks'
+import { UserActionsModel } from 'modules/user/models'
 
-import Permissions from 'components/Permissions'
 import Space from 'components/Space'
 
-import { SelectStyled } from './styles'
+import { DropdownSelectWrapperStyled, SelectStyled } from './styles'
 
 const { Text } = Typography
 
@@ -21,7 +23,7 @@ const NOT_ASSIGNED_TEXT = 'Не назначен'
 
 export type AssigneeBlockProps = Pick<
   TaskModel,
-  'status' | 'extendedStatus' | 'assignee' | 'workGroup'
+  'id' | 'status' | 'extendedStatus' | 'assignee' | 'workGroup'
 > & {
   updateAssignee: (assignee: TaskAssigneeModel['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
@@ -30,9 +32,13 @@ export type AssigneeBlockProps = Pick<
   takeTaskIsLoading: boolean
 
   taskSuspendRequestStatus?: SuspendRequestStatusEnum
+
+  userActions: UserActionsModel
 }
 
 const AssigneeBlock: FC<AssigneeBlockProps> = ({
+  id,
+
   assignee,
 
   status,
@@ -47,63 +53,54 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   takeTaskIsLoading,
 
   taskSuspendRequestStatus: rawTaskSuspendRequestStatus,
-}) => {
-  const currentAssignee = assignee?.id
 
-  const [selectedAssignee, setSelectedAssignee] = useState(currentAssignee)
+  userActions,
+}) => {
+  const [selectedAssigneeId, setSelectedAssigneeId] = useState(assignee?.id)
 
   const taskStatus = useTaskStatus(status)
   const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
   const authUser = useAuthUser()
 
-  const selectedAssigneeIsCurrentAssignee = isEqual(selectedAssignee, currentAssignee)
-  const currentAssigneeIsCurrentUser = useIdBelongAuthUser(currentAssignee)
-  const selectedAssigneeIsCurrentUser = useIdBelongAuthUser(selectedAssignee)
-  const seniorEngineerFromWorkGroupIsCurrentUser = useIdBelongAuthUser(workGroup?.seniorEngineer.id)
-  const headOfDepartmentFromWorkGroupIsCurrentUser = useIdBelongAuthUser(workGroup?.groupLead.id)
+  const permissions = useUserPermissions([
+    UserPermissionsEnum.AnyAssigneeTasksUpdate,
+    UserPermissionsEnum.SelfAssigneeTasksUpdate,
+  ])
 
-  const workGroupMembers = workGroup?.members || []
+  const selectedAssigneeIsCurrentAssignee = isEqual(selectedAssigneeId, assignee?.id)
+  const currentAssigneeIsCurrentUser = useIdBelongAuthUser(assignee?.id)
+  const selectedAssigneeIsCurrentUser = useIdBelongAuthUser(selectedAssigneeId)
 
   const canSelectAssignee =
+    !!workGroup &&
     !taskStatus.isClosed &&
     !taskStatus.isCompleted &&
-    (seniorEngineerFromWorkGroupIsCurrentUser || headOfDepartmentFromWorkGroupIsCurrentUser)
+    permissions.anyAssigneeTasksUpdate
 
-  const handleAssignOnMe = async () => {
+  const workGroupMembers: TaskWorkGroupModel['members'] = useMemo(
+    () =>
+      canSelectAssignee
+        ? assignee && !workGroup?.members.find((m) => m.id === assignee.id)
+          ? [
+              ...workGroup.members,
+              pick(assignee, 'id', 'firstName', 'lastName', 'middleName', 'phone'),
+            ]
+          : workGroup.members
+        : [],
+    [assignee, canSelectAssignee, workGroup?.members],
+  )
+
+  const onAssignOnMe = async () => {
     if (authUser) {
       await updateAssignee(authUser.id)
-      setSelectedAssignee(authUser.id)
+      setSelectedAssigneeId(authUser.id)
     }
   }
 
-  const handleClickAssigneeButton = async () => {
-    if (selectedAssignee) {
-      await updateAssignee(selectedAssignee)
-    }
+  const onClickAssigneeButton = async () => {
+    if (selectedAssigneeId) await updateAssignee(selectedAssigneeId)
   }
-
-  const takeTaskButton = (
-    <Button
-      type='primary'
-      ghost
-      loading={takeTaskIsLoading}
-      disabled={
-        taskSuspendRequestStatus.isApproved
-          ? false
-          : !(
-              taskStatus.isNew &&
-              (currentAssigneeIsCurrentUser || !currentAssignee) &&
-              !taskExtendedStatus.isInReclassification
-            ) ||
-            taskSuspendRequestStatus.isNew ||
-            taskSuspendRequestStatus.isInProgress
-      }
-      onClick={takeTask}
-    >
-      В работу
-    </Button>
-  )
 
   return (
     <Space data-testid='task-assignee-block' direction='vertical' $block>
@@ -113,101 +110,124 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
         </Col>
 
         <Col>
-          <Button
-            type='link'
-            loading={updateAssigneeIsLoading}
-            disabled={
-              taskSuspendRequestStatus.isApproved
-                ? false
-                : taskStatus.isClosed ||
-                  taskStatus.isCompleted ||
-                  taskStatus.isAwaiting ||
-                  taskExtendedStatus.isInReclassification ||
-                  taskSuspendRequestStatus.isNew ||
-                  taskSuspendRequestStatus.isInProgress
-            }
-            onClick={currentAssigneeIsCurrentUser ? undefined : handleAssignOnMe}
-          >
-            {currentAssigneeIsCurrentUser ? 'Отказаться от заявки' : 'Назначить на себя'}
-          </Button>
+          {currentAssigneeIsCurrentUser ? (
+            <Button
+              type='link'
+              disabled={
+                taskSuspendRequestStatus.isApproved
+                  ? false
+                  : taskStatus.isClosed ||
+                    taskStatus.isCompleted ||
+                    taskStatus.isAwaiting ||
+                    taskExtendedStatus.isInReclassification ||
+                    taskSuspendRequestStatus.isNew ||
+                    taskSuspendRequestStatus.isInProgress
+              }
+            >
+              Отказаться от заявки
+            </Button>
+          ) : (
+            <Button
+              type='link'
+              loading={updateAssigneeIsLoading}
+              disabled={
+                taskSuspendRequestStatus.isApproved
+                  ? false
+                  : (!permissions.selfAssigneeTasksUpdate && !permissions.anyAssigneeTasksUpdate) ||
+                    taskStatus.isClosed ||
+                    taskStatus.isCompleted ||
+                    taskStatus.isAwaiting ||
+                    taskExtendedStatus.isInReclassification ||
+                    taskSuspendRequestStatus.isNew ||
+                    taskSuspendRequestStatus.isInProgress
+              }
+              onClick={onAssignOnMe}
+            >
+              Назначить на себя
+            </Button>
+          )}
         </Col>
       </Row>
 
-      <Permissions config={taskAssigneePermissions.select} hideWhenViewForbidden={false}>
-        {({ canView, canEdit }) =>
-          canView && !canEdit ? (
-            <Space direction='vertical' size='middle' $block>
-              {assignee ? (
-                <TaskAssignee {...assignee} hasPopover />
-              ) : (
-                <Text>{NOT_ASSIGNED_TEXT}</Text>
-              )}
+      <Space direction='vertical' size='middle' $block>
+        {canSelectAssignee ? (
+          <SelectStyled
+            defaultValue={selectedAssigneeId}
+            variant='borderless'
+            dropdownRender={(menu) => (
+              <DropdownSelectWrapperStyled>{menu}</DropdownSelectWrapperStyled>
+            )}
+            placeholder={assignee ? null : NOT_ASSIGNED_TEXT}
+            onSelect={setSelectedAssigneeId}
+          >
+            {workGroupMembers.map((member) => {
+              const currentAssigneeIsMember = isEqual(member.id, assignee?.id)
+              const authUserIsMember = isEqual(member.id, authUser!.id)
+              const disabled = currentAssigneeIsMember || authUserIsMember
 
-              <Row justify='end'>{takeTaskButton}</Row>
-            </Space>
-          ) : canView && canEdit ? (
-            <Space direction='vertical' size='middle' $block>
-              {canSelectAssignee ? (
-                <SelectStyled
-                  defaultValue={selectedAssignee}
-                  variant='borderless'
-                  placeholder={assignee ? null : NOT_ASSIGNED_TEXT}
-                  onSelect={setSelectedAssignee}
+              return (
+                <SelectStyled.Option
+                  data-testid={`select-option-${member.id}`}
+                  key={member.id}
+                  value={member.id}
+                  disabled={disabled}
                 >
-                  {workGroupMembers.map((member) => {
-                    const currentAssigneeInWorkGroup = isEqual(member.id, currentAssignee)
-                    const authUserInWorkGroup = isEqual(member.id, authUser!.id)
-                    const disabled = currentAssigneeInWorkGroup || authUserInWorkGroup
+                  <TaskAssignee {...member} />
+                </SelectStyled.Option>
+              )
+            })}
+          </SelectStyled>
+        ) : assignee ? (
+          <TaskAssignee {...assignee} hasPopover />
+        ) : (
+          <Text>{NOT_ASSIGNED_TEXT}</Text>
+        )}
 
-                    return (
-                      <SelectStyled.Option
-                        data-testid={`select-option-${member.id}`}
-                        key={member.id}
-                        value={member.id}
-                        disabled={disabled}
-                      >
-                        <TaskAssignee {...member} />
-                      </SelectStyled.Option>
-                    )
-                  })}
-                </SelectStyled>
-              ) : assignee ? (
-                <TaskAssignee {...assignee} hasPopover />
-              ) : (
-                <Text>{NOT_ASSIGNED_TEXT}</Text>
-              )}
+        <Row justify={canSelectAssignee ? 'space-between' : 'end'}>
+          <Button
+            type='primary'
+            ghost
+            loading={takeTaskIsLoading}
+            disabled={
+              taskSuspendRequestStatus.isApproved
+                ? false
+                : !(
+                    taskStatus.isNew &&
+                    (currentAssigneeIsCurrentUser || !assignee) &&
+                    !taskExtendedStatus.isInReclassification &&
+                    userActions.tasks.CAN_EXECUTE.includes(id)
+                  ) ||
+                  taskSuspendRequestStatus.isNew ||
+                  taskSuspendRequestStatus.isInProgress
+            }
+            onClick={takeTask}
+          >
+            В работу
+          </Button>
 
-              <Row justify={canSelectAssignee ? 'space-between' : 'end'}>
-                {takeTaskButton}
-
-                {canSelectAssignee && (
-                  <Button
-                    type='primary'
-                    ghost
-                    onClick={handleClickAssigneeButton}
-                    loading={updateAssigneeIsLoading}
-                    disabled={
-                      taskSuspendRequestStatus.isApproved
-                        ? false
-                        : taskStatus.isAwaiting ||
-                          !selectedAssignee ||
-                          selectedAssigneeIsCurrentUser ||
-                          selectedAssigneeIsCurrentAssignee ||
-                          taskExtendedStatus.isInReclassification ||
-                          taskSuspendRequestStatus.isNew ||
-                          taskSuspendRequestStatus.isInProgress
-                    }
-                  >
-                    Назначить
-                  </Button>
-                )}
-              </Row>
-            </Space>
-          ) : (
-            <Text>{NOT_ASSIGNED_TEXT}</Text>
-          )
-        }
-      </Permissions>
+          {canSelectAssignee && (
+            <Button
+              type='primary'
+              ghost
+              onClick={onClickAssigneeButton}
+              loading={updateAssigneeIsLoading}
+              disabled={
+                taskSuspendRequestStatus.isApproved
+                  ? false
+                  : taskStatus.isAwaiting ||
+                    !selectedAssigneeId ||
+                    selectedAssigneeIsCurrentUser ||
+                    selectedAssigneeIsCurrentAssignee ||
+                    taskExtendedStatus.isInReclassification ||
+                    taskSuspendRequestStatus.isNew ||
+                    taskSuspendRequestStatus.isInProgress
+              }
+            >
+              Назначить
+            </Button>
+          )}
+        </Row>
+      </Space>
     </Space>
   )
 }

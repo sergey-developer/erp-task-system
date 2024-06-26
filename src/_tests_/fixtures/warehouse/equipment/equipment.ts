@@ -6,6 +6,7 @@ import { EquipmentModel } from 'modules/warehouse/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import currencyFixtures from '_tests_/fixtures/currency'
+import macroregionFixtures from '_tests_/fixtures/macroregion'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/utils'
@@ -24,6 +25,7 @@ export const equipment = (
       | 'isCredited'
       | 'usageCounter'
       | 'owner'
+      | 'macroregion'
     >
   >,
 ): EquipmentModel => ({
@@ -41,6 +43,9 @@ export const equipment = (
   owner: isUndefined(props?.owner)
     ? pick(warehouseFixtures.customer(), 'id', 'title')
     : props?.owner!,
+  macroregion: isUndefined(props?.macroregion)
+    ? pick(macroregionFixtures.macroregionListItem(), 'id', 'title')
+    : props?.macroregion!,
 
   title: fakeWord(),
   location: pick(catalogsFixtures.location(), 'id', 'title'),

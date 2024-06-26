@@ -5,7 +5,7 @@ import sortBy from 'lodash/sortBy'
 import React, { FC, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { UserPermissionsEnum } from 'modules/user/constants/enums'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 import { NomenclatureFormModalProps } from 'modules/warehouse/components/NomenclatureFormModal/types'
 import { NomenclatureGroupFormModalProps } from 'modules/warehouse/components/NomenclatureGroupFormModal/types'
 import NomenclatureTable from 'modules/warehouse/components/NomenclatureTable'
@@ -72,7 +72,7 @@ const { Search } = Input
 const nomenclaturesInitialPaginationParams = getInitialPaginationParams()
 
 const NomenclatureListPage: FC = () => {
-  const permissions = useMatchUserPermissions([
+  const permissions = useUserPermissions([
     UserPermissionsEnum.NomenclaturesCreate,
     UserPermissionsEnum.NomenclaturesUpdate,
     UserPermissionsEnum.NomenclatureGroupsCreate,
@@ -83,8 +83,9 @@ const NomenclatureListPage: FC = () => {
     NonNullable<GetNomenclatureGroupListQueryArgs>
   >({})
 
-  const [nomenclatureListParams, setNomenclatureListParams] =
-    useSetState<NonNullable<GetNomenclatureListQueryArgs>>(nomenclaturesInitialPaginationParams)
+  const [nomenclatureListParams, setNomenclatureListParams] = useSetState<
+    NonNullable<GetNomenclatureListQueryArgs>
+  >(nomenclaturesInitialPaginationParams)
 
   const [hoveredGroupId, setHoveredGroupId] = useState<number>()
   const [editableGroup, setEditableGroup] = useState<NomenclatureGroupListItemModel>()

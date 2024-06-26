@@ -31,6 +31,9 @@ const props: RelocationEquipmentSimplifiedEditableTableProps = {
 const getContainer = () =>
   screen.getByTestId('relocation-equipment-simplified-editable-table-container')
 
+const getContainerIn = (container: HTMLElement) =>
+  within(container).getByTestId('relocation-equipment-simplified-editable-table-container')
+
 const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
 const clickRow = async (user: UserEvent, id: IdType) =>
   tableTestUtils.clickRowIn(getContainer(), user, id)
@@ -52,6 +55,7 @@ const expectLoadingFinished = () => tableTestUtils.expectLoadingFinished(getCont
 
 export const testUtils = {
   getContainer,
+  getContainerIn,
 
   getRow,
   clickRow,
