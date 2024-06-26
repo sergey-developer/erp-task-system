@@ -2,6 +2,7 @@ import { useBoolean, useSetState } from 'ahooks'
 import { Button, Flex, Space } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUsers, useUserPermissions } from 'modules/user/hooks'
@@ -37,6 +38,7 @@ import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { useDrawerHeightByTable } from 'shared/hooks/useDrawerHeightByTable'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
 import { mergeDateTime } from 'shared/utils/date'
 import { getFieldsErrors } from 'shared/utils/form'
 import {
@@ -78,6 +80,8 @@ const initialGetInventorizationsQueryArgs: Partial<
 
 const InventorizationsPage: FC = () => {
   const permissions = useUserPermissions([UserPermissionsEnum.InventorizationCreate])
+  const [searchParams] = useSearchParams()
+  const inventorizationId = Number(searchParams.get('inventorizationId')) || undefined
 
   const { tableRef, drawerHeight } = useDrawerHeightByTable()
 
@@ -87,11 +91,16 @@ const InventorizationsPage: FC = () => {
 
   const [
     inventorizationDetailsOpened,
-    { setTrue: openInventorizationDetails, toggle: toggleOpenInventorizationDetails },
-  ] = useBoolean(false)
-  const debouncedToggleOpenInventorizationDetails = useDebounceFn(toggleOpenInventorizationDetails)
+    { setTrue: openInventorizationDetails, setFalse: closeInventorizationDetails },
+  ] = useBoolean(!!inventorizationId)
 
-  const [inventorizationId, setInventorizationId] = useState<IdType>()
+  const onCloseInventorizationDetails = useDebounceFn(() => {
+    closeInventorizationDetails()
+    setSelectedInventorizationId(undefined)
+  })
+
+  const [selectedInventorizationId, setSelectedInventorizationId] =
+    useState<MaybeUndefined<IdType>>(inventorizationId)
 
   const [
     createInventorizationRequestModalOpened,
@@ -145,7 +154,7 @@ const InventorizationsPage: FC = () => {
         }).unwrap()
 
         toggleOpenCreateInventorizationRequestModal()
-        setInventorizationId(newInventorization.id)
+        setSelectedInventorizationId(newInventorization.id)
         openInventorizationDetails()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
@@ -192,7 +201,7 @@ const InventorizationsPage: FC = () => {
   const onClickTableRow = useCallback<InventorizationTableProps['onRow']>(
     (record) => ({
       onClick: debounce(() => {
-        setInventorizationId(record.id)
+        setSelectedInventorizationId(record.id)
         openInventorizationDetails()
       }, DEFAULT_DEBOUNCE_VALUE),
     }),
@@ -248,13 +257,13 @@ const InventorizationsPage: FC = () => {
         </React.Suspense>
       )}
 
-      {inventorizationDetailsOpened && inventorizationId && (
+      {inventorizationDetailsOpened && selectedInventorizationId && (
         <React.Suspense fallback={<ModalFallback open tip='Загрузка карточки инвентаризации' />}>
           <InventorizationDetails
             open={inventorizationDetailsOpened}
-            onClose={debouncedToggleOpenInventorizationDetails}
+            onClose={onCloseInventorizationDetails}
             height={drawerHeight}
-            inventorizationId={inventorizationId}
+            inventorizationId={selectedInventorizationId}
           />
         </React.Suspense>
       )}

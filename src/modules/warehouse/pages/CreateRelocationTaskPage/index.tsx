@@ -36,7 +36,7 @@ import {
   useCreateEquipment,
   useCreateEquipments,
   useGetEquipmentCatalogList,
-  useGetEquipmentCategoryList,
+  useGetEquipmentCategories,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
   useLazyGetEquipmentListTemplate,
@@ -287,7 +287,7 @@ const CreateRelocationTaskPage: FC = () => {
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
-    useGetEquipmentCategoryList(undefined, {
+    useGetEquipmentCategories(undefined, {
       skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened,
     })
 

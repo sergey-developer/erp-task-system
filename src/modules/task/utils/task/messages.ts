@@ -1,7 +1,7 @@
-import { NumberOrString } from "shared/types/utils";
+import { NumberOrString } from 'shared/types/utils'
 
-export const getTaskNotFoundErrorMsg = (id: NumberOrString): string =>
+export const getTaskNotFoundErrMsg = (id: NumberOrString): string =>
   `Заявка с идентификатором ${id} не найдена`
 
-export const getTaskServerErrorMsg = (id: NumberOrString): string =>
+export const getTaskServerErrMsg = (id: NumberOrString): string =>
   `Ошибка открытия заявки с идентификатором ${id}`

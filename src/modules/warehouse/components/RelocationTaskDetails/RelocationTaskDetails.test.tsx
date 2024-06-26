@@ -22,7 +22,7 @@ import {
   executeRelocationTaskMessages,
   getRelocationEquipmentListMessages,
   getRelocationTaskMessages,
-  getRelocationTaskWaybillM15ErrorMsg,
+  getRelocationTaskWaybillM15ErrMsg,
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
   relocationTaskTypeDict,
@@ -970,7 +970,7 @@ describe('Информация о заявке о перемещении', () =>
         await testUtils.clickWaybillM15MenuItem(user)
 
         const notification = await notificationTestUtils.findNotification(
-          getRelocationTaskWaybillM15ErrorMsg,
+          getRelocationTaskWaybillM15ErrMsg,
         )
         expect(notification).toBeInTheDocument()
       })
@@ -1394,12 +1394,12 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask, once: false })
         mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-        const detailErrorMsg = fakeWord()
-        const documentsErrorMsg = fakeWord()
+        const detailErrMsg = fakeWord()
+        const documentsErrMsg = fakeWord()
         mockExecuteRelocationTaskBadRequestError(props.relocationTaskId, {
           body: {
-            detail: detailErrorMsg,
-            documents: [documentsErrorMsg],
+            detail: detailErrMsg,
+            documents: [documentsErrMsg],
           },
         })
 
@@ -1431,9 +1431,9 @@ describe('Информация о заявке о перемещении', () =>
         await executeRelocationTaskModalTestUtils.expectLoadingFinished()
 
         const documentsError = await executeRelocationTaskModalTestUtils.findDocumentsError(
-          documentsErrorMsg,
+          documentsErrMsg,
         )
-        const notification = await notificationTestUtils.findNotification(detailErrorMsg)
+        const notification = await notificationTestUtils.findNotification(detailErrMsg)
 
         expect(documentsError).toBeInTheDocument()
         expect(notification).toBeInTheDocument()
@@ -1448,9 +1448,9 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask, once: false })
         mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-        const detailErrorMsg = fakeWord()
+        const detailErrMsg = fakeWord()
         mockExecuteRelocationTaskForbiddenError(props.relocationTaskId, {
-          body: { detail: detailErrorMsg },
+          body: { detail: detailErrMsg },
         })
 
         const { user } = render(
@@ -1480,7 +1480,7 @@ describe('Информация о заявке о перемещении', () =>
         await executeRelocationTaskModalTestUtils.clickSubmitButton(user)
         await executeRelocationTaskModalTestUtils.expectLoadingFinished()
 
-        const notification = await notificationTestUtils.findNotification(detailErrorMsg)
+        const notification = await notificationTestUtils.findNotification(detailErrMsg)
         expect(notification).toBeInTheDocument()
       })
 
@@ -1493,9 +1493,9 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask, once: false })
         mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-        const detailErrorMsg = fakeWord()
+        const detailErrMsg = fakeWord()
         mockExecuteRelocationTaskNotFoundError(props.relocationTaskId, {
-          body: { detail: detailErrorMsg },
+          body: { detail: detailErrMsg },
         })
 
         const { user } = render(
@@ -1525,7 +1525,7 @@ describe('Информация о заявке о перемещении', () =>
         await executeRelocationTaskModalTestUtils.clickSubmitButton(user)
         await executeRelocationTaskModalTestUtils.expectLoadingFinished()
 
-        const notification = await notificationTestUtils.findNotification(detailErrorMsg)
+        const notification = await notificationTestUtils.findNotification(detailErrMsg)
         expect(notification).toBeInTheDocument()
       })
 
@@ -1751,10 +1751,10 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask, once: false })
         mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-        const detailErrorMsg = fakeWord()
-        const reasonErrorMsg = fakeWord()
+        const detailErrMsg = fakeWord()
+        const reasonErrMsg = fakeWord()
         mockReturnRelocationTaskToReworkBadRequestError(props.relocationTaskId, {
-          body: { detail: detailErrorMsg, reason: [reasonErrorMsg] },
+          body: { detail: detailErrMsg, reason: [reasonErrMsg] },
         })
 
         const { user } = render(
@@ -1778,9 +1778,9 @@ describe('Информация о заявке о перемещении', () =>
         await returnRelocationTaskToReworkModalTestUtils.expectLoadingFinished()
 
         const reasonError = await returnRelocationTaskToReworkModalTestUtils.findReasonError(
-          reasonErrorMsg,
+          reasonErrMsg,
         )
-        const notification = await notificationTestUtils.findNotification(detailErrorMsg)
+        const notification = await notificationTestUtils.findNotification(detailErrMsg)
 
         expect(reasonError).toBeInTheDocument()
         expect(notification).toBeInTheDocument()

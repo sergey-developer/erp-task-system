@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
-import { getEquipmentsXlsxErrorMsg } from 'modules/warehouse/constants/equipment'
+import { getEquipmentsXlsxErrMsg } from 'modules/warehouse/constants/equipment'
 import {
   GetEquipmentsXlsxQueryArgs,
   GetEquipmentsXlsxSuccessResponse,
@@ -25,7 +25,7 @@ export const useLazyGetEquipmentsXlsx = (): UseGetEquipmentsXlsxResult => {
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentsXlsxErrorMsg)
+        showErrorNotification(getEquipmentsXlsxErrMsg)
       }
     }
   }, [state.error])

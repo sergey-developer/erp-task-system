@@ -2,6 +2,7 @@ import { UIMatch, useMatches, useSearchParams } from 'react-router-dom'
 
 export type BreadCrumbData = {
   qs: ReturnType<typeof useSearchParams>[0]
+  match: BreadcrumbMatch
 }
 
 export type BreadcrumbMatch = UIMatch<unknown, { crumb: (data?: BreadCrumbData) => JSX.Element }>

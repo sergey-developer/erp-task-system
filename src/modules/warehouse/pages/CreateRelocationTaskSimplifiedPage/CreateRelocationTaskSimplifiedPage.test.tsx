@@ -4,7 +4,8 @@ import * as reactRouterDom from 'react-router-dom'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationEquipmentSimplifiedEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentSimplifiedEditableTable/RelocationEquipmentSimplifiedEditableTable.test'
-import { getEquipmentListTemplateErrorMsg } from 'modules/warehouse/constants/equipment'
+import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
+import { getEquipmentListTemplateErrMsg } from 'modules/warehouse/constants/equipment'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -277,7 +278,7 @@ describe('Упрощенная страница создания заявки н
 
       await testUtils.clickDownloadTemplateButton(user)
       const notification = await notificationTestUtils.findNotification(
-        getEquipmentListTemplateErrorMsg,
+        getEquipmentListTemplateErrMsg,
       )
 
       expect(notification).toBeInTheDocument()

@@ -9,7 +9,7 @@ import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/c
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
-  getEquipmentAttachmentListErrorMsg,
+  getEquipmentAttachmentListErrMsg,
   getEquipmentMessages,
   getEquipmentRelocationHistoryMessages,
 } from 'modules/warehouse/constants/equipment'
@@ -690,7 +690,7 @@ describe('Информация об оборудовании', () => {
           await testUtils.expectLoadingFinished()
 
           const notification = await notificationTestUtils.findNotification(
-            getEquipmentAttachmentListErrorMsg,
+            getEquipmentAttachmentListErrMsg,
           )
           expect(notification).toBeInTheDocument()
         })

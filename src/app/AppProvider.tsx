@@ -17,10 +17,7 @@ type AppProviderProps = {
   store?: AppStore
 }
 
-const AppProvider: FCWithChildren<AppProviderProps> = ({
-  children,
-  store = appStore,
-}) => {
+const AppProvider: FCWithChildren<AppProviderProps> = ({ children, store = appStore }) => {
   return (
     <StoreProvider store={store}>
       <AntdConfigProvider>

@@ -6,7 +6,7 @@ import {
   CreateEquipmentsBadRequestErrorResponse,
   CustomerListModel,
   EquipmentCategoryListItemModel,
-  EquipmentCategoryListModel,
+  EquipmentCategoriesModel,
   NomenclatureListModel,
   NomenclatureModel,
   WarehouseListModel,
@@ -61,7 +61,7 @@ export type EquipmentFormModalProps = Required<
     onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
     imageIsDeleting: boolean
 
-    categories: EquipmentCategoryListModel
+    categories: EquipmentCategoriesModel
     categoriesIsLoading: boolean
     category?: EquipmentCategoryListItemModel
     onChangeCategory: (category: EquipmentCategoryListItemModel) => void

@@ -12,6 +12,7 @@ export type GetLocationsQueryArgs = Partial<{
   locationTypes: LocationTypeEnum[]
   warehouseTypes: WarehouseTypeEnum[]
   ordering: GetLocationsSortValue
+  responsibilityArea: boolean
 }>
 
 export type GetLocationsSuccessResponse = LocationsModel

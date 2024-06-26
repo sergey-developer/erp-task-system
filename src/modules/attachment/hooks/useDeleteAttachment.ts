@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 
 import { CustomUseMutationState } from 'lib/rtk-query/types'
 
-import { deleteAttachmentErrorMsg } from 'modules/attachment/constants'
+import { deleteAttachmentErrMsg } from 'modules/attachment/constants'
 import {
   DeleteAttachmentMutationArgs,
   DeleteAttachmentSuccessResponse,
@@ -37,7 +37,7 @@ export const useDeleteAttachment = (): UseDeleteAttachmentResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(deleteAttachmentErrorMsg)
+        showErrorNotification(deleteAttachmentErrMsg)
       }
     }
   }, [state.error])

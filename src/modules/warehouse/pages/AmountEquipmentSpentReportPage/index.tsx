@@ -15,7 +15,7 @@ import {
 } from 'modules/reports/hooks'
 import { GetAmountEquipmentSpentReportQueryArgs } from 'modules/reports/models'
 import {
-  useGetEquipmentCategoryList,
+  useGetEquipmentCategories,
   useGetEquipmentNomenclatures,
 } from 'modules/warehouse/hooks/equipment'
 
@@ -115,7 +115,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
 
   const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
-    useGetEquipmentCategoryList(undefined, { skip: !filterOpened })
+    useGetEquipmentCategories(undefined, { skip: !filterOpened })
 
   const onClickUpdate: AmountEquipmentSpentReportFormProps['onSubmit'] = (values) => {
     setReportParams({

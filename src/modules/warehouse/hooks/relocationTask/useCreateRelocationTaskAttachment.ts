@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 
 import { CustomUseMutationState } from 'lib/rtk-query/types'
 
-import { createRelocationTaskAttachmentErrorMsg } from 'modules/warehouse/constants/relocationTask'
+import { createRelocationTaskAttachmentErrMsg } from 'modules/warehouse/constants/relocationTask'
 import {
   CreateRelocationTaskAttachmentMutationArgs,
   CreateRelocationTaskAttachmentSuccessResponse,
@@ -45,7 +45,7 @@ export const useCreateRelocationTaskAttachment = (): UseCreateRelocationTaskAtta
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createRelocationTaskAttachmentErrorMsg)
+        showErrorNotification(createRelocationTaskAttachmentErrMsg)
       }
     }
   }, [state.error])

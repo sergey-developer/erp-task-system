@@ -16,16 +16,10 @@ export const calculatePaginationParams = ({
 }: Pick<TablePaginationConfig, 'current' | 'pageSize'>): Pick<
   Required<PaginationParams>,
   'limit' | 'offset'
-> => {
-  if (isNumber(pageSize) && isNumber(current)) {
-    return {
-      limit: pageSize,
-      offset: (current - 1) * pageSize,
-    }
-  }
-
-  return getInitialPaginationParams()
-}
+> =>
+  isNumber(pageSize) && isNumber(current)
+    ? { limit: pageSize, offset: (current - 1) * pageSize }
+    : getInitialPaginationParams()
 
 export const extractPaginationResults = <T extends { results: T['results'] }>(
   value?: T,
