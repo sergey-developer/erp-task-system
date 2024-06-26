@@ -176,7 +176,7 @@ describe('Карточка инвентаризации', () => {
       )
 
       render(<InventorizationDetails {...props} />, {
-        store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+        store: getStoreWithAuth(inventorization.executor, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
           },
@@ -200,7 +200,7 @@ describe('Карточка инвентаризации', () => {
         )
 
         render(<InventorizationDetails {...props} />, {
-          store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+          store: getStoreWithAuth(inventorization.executor, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
             },
@@ -246,7 +246,7 @@ describe('Карточка инвентаризации', () => {
         )
 
         render(<InventorizationDetails {...props} />, {
-          store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+          store: getStoreWithAuth(inventorization.executor, undefined, undefined, {
             queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
           }),
         })
@@ -280,7 +280,7 @@ describe('Карточка инвентаризации', () => {
         ],
         { initialEntries: [WarehouseRouteEnum.Inventorizations], initialIndex: 0 },
         {
-          store: getStoreWithAuth({ userId: inventorization.executor.id }, undefined, undefined, {
+          store: getStoreWithAuth(inventorization.executor, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
             },

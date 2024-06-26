@@ -6,7 +6,7 @@ import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/c
 import { testUtils as relocationTaskTableTestUtils } from 'modules/warehouse/components/RelocationTaskTable/RelocationTaskTable.test'
 import { testUtils as relocationTaskListFilterTestUtils } from 'modules/warehouse/components/RelocationTasksFilter/RelocationTasksFilter.test'
 import {
-  getRelocationTasksErrorMsg,
+  getRelocationTasksErrMsg,
   relocationTaskStatusDict,
   RelocationTaskStatusEnum,
   relocationTaskTypeDict,
@@ -120,9 +120,7 @@ describe('Страница списка заявок на перемещение
         })
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
-        const notification = await notificationTestUtils.findNotification(
-          getRelocationTasksErrorMsg,
-        )
+        const notification = await notificationTestUtils.findNotification(getRelocationTasksErrMsg)
 
         expect(notification).toBeInTheDocument()
       })

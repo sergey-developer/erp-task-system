@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useMatchUserPermissions } from 'modules/user/hooks'
+import { useUserPermissions } from 'modules/user/hooks'
 import {
   inventorizationStatusDict,
   inventorizationTypeDict,
@@ -39,7 +39,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
   ...props
 }) => {
   const navigate = useNavigate()
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.InventorizationUpdate])
+  const permissions = useUserPermissions([UserPermissionsEnum.InventorizationUpdate])
 
   const { currentData: inventorization, isFetching: inventorizationIsFetching } =
     useGetInventorization({ inventorizationId })
