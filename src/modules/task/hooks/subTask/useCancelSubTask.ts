@@ -1,33 +1,41 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { CancelSubTaskMutationArgs } from 'modules/task/models'
-import { subTaskApiPermissions } from 'modules/task/permissions'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
+
+import { cancelSubTaskErrMsg } from 'modules/task/constants/task'
+import { CancelSubTaskMutationArgs, CancelSubTaskSuccessResponse } from 'modules/task/models'
 import { useCancelSubTaskMutation } from 'modules/task/services/subTaskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useCancelSubTask = () => {
-  const permissions = useUserPermissions(subTaskApiPermissions)
+type UseCancelSubTaskResult = CustomUseMutationResult<
+  CancelSubTaskMutationArgs,
+  CancelSubTaskSuccessResponse
+>
+
+export const useCancelSubTask = (): UseCancelSubTaskResult => {
   const [mutation, state] = useCancelSubTaskMutation()
 
-  const fn = useCallback(
-    async (data: CancelSubTaskMutationArgs) => {
-      if (permissions.canDelete) {
-        await mutation(data).unwrap()
-      }
-    },
-    [mutation, permissions.canDelete],
-  )
-
   useEffect(() => {
-    if (!state.error) return
-
-    if (isErrorResponse(state.error) && !isBadRequestError(state.error)) {
-      showErrorNotification('Не удалось отменить задание')
+    if (isErrorResponse(state.error)) {
+      if (
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
+      ) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(cancelSubTaskErrMsg)
+      }
     }
   }, [state.error])
 
-  return { fn, state }
+  return [mutation, state]
 }

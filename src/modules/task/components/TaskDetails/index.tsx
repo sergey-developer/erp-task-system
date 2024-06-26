@@ -1,8 +1,9 @@
 import { useBoolean } from 'ahooks'
-import { App, Drawer, FormInstance } from 'antd'
+import { App, Col, Drawer, FormInstance, Row } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
 
+import { useAuthUser } from 'modules/auth/hooks'
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
 import { CreateRegistrationFNRequestModalProps } from 'modules/task/components/CreateRegistrationFNRequestModal/types'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
@@ -14,7 +15,6 @@ import {
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
 import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
-import SecondaryDetails from 'modules/task/components/TaskDetails/SecondaryDetails'
 import Tabs from 'modules/task/components/TaskDetails/Tabs'
 import TaskDetailsTitle from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
@@ -37,7 +37,6 @@ import {
   useResolveTask,
   useTakeTask,
   useTaskExtendedStatus,
-  useTaskStatus,
   useUpdateTaskDeadline,
   useUpdateTaskDescription,
 } from 'modules/task/hooks/task'
@@ -57,7 +56,7 @@ import {
   TaskAssigneeModel,
 } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
-import { useUserRole } from 'modules/user/hooks'
+import { useGetUserActions } from 'modules/user/hooks'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -69,7 +68,12 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetFaChangeTypes } from 'shared/hooks/catalogs/faChangeTypes'
 import { useSystemSettingsState } from 'shared/hooks/system'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isBadRequestError,
+  isErrorResponse,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 import { base64ToBytes, isFalse, isTrue } from 'shared/utils/common'
@@ -77,6 +81,9 @@ import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { downloadFile, extractIdsFromFilesResponse, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import AssigneeBlock from './AssigneeBlock'
+import WorkGroupBlock from './WorkGroupBlock'
 
 const CreateRegistrationFNRequestModal = React.lazy(
   () => import('modules/task/components/CreateRegistrationFNRequestModal'),
@@ -143,8 +150,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 }) => {
   const { modal } = App.useApp()
 
-  const userRole = useUserRole()
+  const authUser = useAuthUser()
   const onClose = useDebounceFn(originOnClose)
+
+  const { currentData: userActions, isFetching: userActionsIsFetching } = useGetUserActions(
+    { userId: authUser?.id! },
+    { skip: !authUser },
+  )
 
   const {
     refetch: originRefetchTask,
@@ -160,7 +172,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const debouncedRefetchTask = useDebounceFn(originRefetchTask)
 
-  const taskStatus = useTaskStatus(task?.status)
   const taskExtendedStatus = useTaskExtendedStatus(task?.extendedStatus)
   const taskSuspendRequestStatus = useTaskSuspendRequestStatus(task?.suspendRequest?.status)
 
@@ -176,27 +187,25 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const [createSuspendRequest, { isLoading: createSuspendRequestIsLoading }] =
     useCreateTaskSuspendRequest()
 
-  const {
-    fn: createReclassificationRequest,
-    state: {
+  const [
+    createReclassificationRequest,
+    {
       isLoading: createReclassificationRequestIsLoading,
       data: createReclassificationRequestResult,
       reset: resetCreateReclassificationRequestData,
       fulfilledTimeStamp: createReclassificationRequestFulfilledTimeStamp = 0,
     },
-  } = useCreateTaskReclassificationRequest()
+  ] = useCreateTaskReclassificationRequest()
+
+  const canGetTaskReclassificationRequest =
+    !!task?.id && taskExtendedStatus.isInReclassification && !createReclassificationRequestResult
 
   const {
     currentData: getReclassificationRequestResult,
     isFetching: reclassificationRequestIsFetching,
   } = useGetTaskReclassificationRequest(
     { taskId: task?.id! },
-    {
-      skip:
-        !task?.id ||
-        !taskExtendedStatus.isInReclassification ||
-        !!createReclassificationRequestResult,
-    },
+    { skip: !canGetTaskReclassificationRequest },
   )
 
   const [cancelReclassificationRequest, { isLoading: cancelReclassificationRequestIsLoading }] =
@@ -208,27 +217,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const getTaskCalledAfterSuccessfullyRequestCreation =
     getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
 
-  const {
-    fn: takeTask,
-    state: { isLoading: takeTaskIsLoading },
-  } = useTakeTask()
-
+  const [takeTask, { isLoading: takeTaskIsLoading }] = useTakeTask()
   const [resolveTask, { isLoading: taskIsResolving }] = useResolveTask()
-
-  const {
-    fn: updateWorkGroup,
-    state: { isLoading: updateWorkGroupIsLoading },
-  } = useUpdateTaskWorkGroup()
-
-  const {
-    fn: deleteWorkGroup,
-    state: { isLoading: deleteWorkGroupIsLoading },
-  } = useDeleteTaskWorkGroup()
-
-  const {
-    fn: updateAssignee,
-    state: { isLoading: updateAssigneeIsLoading },
-  } = useUpdateTaskAssignee()
+  const [updateWorkGroup, { isLoading: updateWorkGroupIsLoading }] = useUpdateTaskWorkGroup()
+  const [deleteWorkGroup, { isLoading: deleteWorkGroupIsLoading }] = useDeleteTaskWorkGroup()
+  const [updateAssignee, { isLoading: updateAssigneeIsLoading }] = useUpdateTaskAssignee()
 
   // create registration FN request modal
   const [
@@ -521,12 +514,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           }
         }
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isNotFoundError(error) && error.data.detail) {
-            showErrorNotification(error.data.detail)
-          } else {
-            showErrorNotification(getTaskWorkPerformedActMessages.commonError)
-          }
+        if (isErrorResponse(error) && isNotFoundError(error)) {
+          showErrorNotification(getErrorDetail(error))
+        } else {
+          showErrorNotification(getTaskWorkPerformedActMessages.commonError)
         }
       }
     },
@@ -543,13 +534,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         await createReclassificationRequest({
           taskId: task.id,
           ...values,
-        })
+        }).unwrap()
         closeTaskReclassificationModal()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -565,14 +554,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       if (!task) return
 
       try {
-        await updateWorkGroup({ taskId: task.id, ...values })
+        await updateWorkGroup({ taskId: task.id, ...values }).unwrap()
         closeTaskSecondLineModal()
         originOnClose()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -588,14 +575,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       if (!task) return
 
       try {
-        await deleteWorkGroup({ taskId: task.id, ...values })
+        await deleteWorkGroup({ taskId: task.id, ...values }).unwrap()
         closeTaskFirstLineModal()
         originOnClose()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(getFieldsErrors(error.data))
-          }
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -605,20 +590,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const onUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
       if (!task) return
-
-      try {
-        await updateAssignee({ taskId: task.id, assignee })
-      } catch {}
+      await updateAssignee({ taskId: task.id, assignee })
     },
     [task, updateAssignee],
   )
 
   const onTakeTask = useCallback(async () => {
     if (!task) return
-
-    try {
-      await takeTask({ taskId: task.id })
-    } catch {}
+    await takeTask({ taskId: task.id })
   }, [takeTask, task])
 
   const onCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
@@ -637,16 +616,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
         closeRequestTaskSuspendModal()
       } catch (error) {
-        if (isErrorResponse(error)) {
-          if (isBadRequestError(error)) {
-            setFields(
-              getFieldsErrors(
-                getFormErrorsFromBadRequestError(
-                  error.data as CreateTaskSuspendRequestBadRequestErrorResponse,
-                ),
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(
+            getFieldsErrors(
+              getFormErrorsFromBadRequestError(
+                error.data as CreateTaskSuspendRequestBadRequestErrorResponse,
               ),
-            )
-          }
+            ),
+          )
         }
       }
     },
@@ -672,7 +649,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [createTaskAttachment, task],
   )
 
-  const title = task && (
+  const title = task && userActions && (
     <TaskDetailsTitle
       id={task.id}
       type={task.type}
@@ -682,6 +659,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       extendedStatus={task.extendedStatus}
       olaStatus={task.olaStatus}
       suspendRequest={task.suspendRequest}
+      userActions={userActions}
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={onOpenExecuteTaskModal}
       onRegisterFN={debouncedToggleCreateRegistrationFNRequestModal}
@@ -715,18 +693,24 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         <Space direction='vertical' $block size='middle'>
           <LoadingArea
             data-testid='task-reclassification-request-loading'
-            isLoading={reclassificationRequestIsFetching || createReclassificationRequestIsLoading}
+            isLoading={
+              reclassificationRequestIsFetching ||
+              createReclassificationRequestIsLoading ||
+              (canGetTaskReclassificationRequest && userActionsIsFetching)
+            }
             tip='Загрузка запроса на переклассификацию...'
             area='block'
           >
-            {reclassificationRequest && (
+            {reclassificationRequest && userActions && (
               <React.Suspense fallback={<Spinner area='block' />}>
                 <TaskReclassificationRequest
                   comment={reclassificationRequest.comment}
                   date={reclassificationRequest.createdAt}
                   user={reclassificationRequest.user}
                   onCancel={debouncedToggleConfirmCancelReclassificationRequestModal}
-                  cancelBtnDisabled={taskStatus.isAwaiting}
+                  cancelBtnDisabled={
+                    !userActions.tasks.CAN_RECLASSIFICATION_REQUESTS_CREATE.includes(taskId)
+                  }
                 />
               </React.Suspense>
             )}
@@ -734,11 +718,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
           <LoadingArea
             data-testid='task-loading'
-            isLoading={taskIsFetching}
+            isLoading={taskIsFetching || userActionsIsFetching}
             tip='Загрузка заявки...'
           >
             <Space direction='vertical' $block size='middle'>
-              {task?.suspendRequest && (
+              {task?.suspendRequest && userActions && (
                 <React.Suspense fallback={<Spinner area='block' />}>
                   <TaskSuspendRequest
                     title={
@@ -757,13 +741,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                             text: 'Отменить запрос',
                             onClick: onDeleteTaskSuspendRequest,
                             loading: deleteSuspendRequestIsLoading,
-                            disabled: userRole.isEngineerRole,
+                            disabled:
+                              !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE.includes(taskId),
                           }
                         : taskSuspendRequestStatus.isApproved
                         ? {
                             text: 'Вернуть в работу',
                             onClick: onTakeTask,
                             loading: takeTaskIsLoading,
+                            disabled:
+                              !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE.includes(taskId),
                           }
                         : undefined
                     }
@@ -771,7 +758,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                 </React.Suspense>
               )}
 
-              {task && (
+              {task && userActions && (
                 <Space data-testid='task' direction='vertical' $block size='middle'>
                   <MainDetails
                     recordId={task.recordId}
@@ -813,25 +800,41 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     onExpand={onExpandAdditionalInfo}
                   />
 
-                  <SecondaryDetails
-                    id={task.id}
-                    recordId={task.recordId}
-                    status={task.status}
-                    extendedStatus={task.extendedStatus}
-                    assignee={task.assignee}
-                    workGroup={task.workGroup}
-                    transferTaskToFirstLine={onTransferTaskToFirstLine}
-                    transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
-                    transferTaskToSecondLine={onTransferTaskToSecondLine}
-                    transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
-                    updateAssignee={onUpdateAssignee}
-                    updateAssigneeIsLoading={updateAssigneeIsLoading}
-                    takeTask={onTakeTask}
-                    takeTaskIsLoading={takeTaskIsLoading}
-                    taskSuspendRequestStatus={task.suspendRequest?.status}
-                  />
+                  <Row justify='space-between'>
+                    <Col span={11}>
+                      <WorkGroupBlock
+                        id={task.id}
+                        recordId={task.recordId}
+                        status={task.status}
+                        extendedStatus={task.extendedStatus}
+                        workGroup={task.workGroup}
+                        transferTaskToFirstLine={onTransferTaskToFirstLine}
+                        transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
+                        transferTaskToSecondLine={onTransferTaskToSecondLine}
+                        transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
+                        taskSuspendRequestStatus={task.suspendRequest?.status}
+                        userActions={userActions}
+                      />
+                    </Col>
 
-                  <Tabs task={task} activeTab={activeTab} />
+                    <Col span={11}>
+                      <AssigneeBlock
+                        id={task.id}
+                        status={task.status}
+                        extendedStatus={task.extendedStatus}
+                        assignee={task.assignee}
+                        workGroup={task.workGroup}
+                        updateAssignee={onUpdateAssignee}
+                        updateAssigneeIsLoading={updateAssigneeIsLoading}
+                        takeTask={onTakeTask}
+                        takeTaskIsLoading={takeTaskIsLoading}
+                        taskSuspendRequestStatus={task.suspendRequest?.status}
+                        userActions={userActions}
+                      />
+                    </Col>
+                  </Row>
+
+                  <Tabs task={task} activeTab={activeTab} userActions={userActions} />
                 </Space>
               )}
             </Space>

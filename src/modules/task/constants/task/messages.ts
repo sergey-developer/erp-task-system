@@ -1,11 +1,8 @@
 import { ApiRequestMessages } from 'shared/types/messages'
 
-export const getTaskMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Ошибка получения заявки',
-}
-
-export const getTaskListErrorMsg = 'Ошибка получения списка заявок'
-export const getTaskListMapErrorMsg = 'Ошибка получения списка заявок для карты'
+export const getTaskErrMsg = 'Ошибка получения заявки'
+export const getTasksErrMsg = 'Ошибка получения списка заявок'
+export const getTaskListMapErrMsg = 'Ошибка получения списка заявок для карты'
 export const updateTaskDescriptionErrMsg = 'Ошибка изменения описания заявки'
 export const updateTaskDeadlineErrMsg = 'Ошибка изменения срока выполнения заявки'
 
@@ -26,7 +23,9 @@ export const getTaskWorkPerformedActMessages: ApiRequestMessages<'commonError'> 
   commonError: 'Ошибка формирования акта выполненных работ',
 }
 
-export const resolveTaskErrMsg = 'Невозможно выполнить заявку'
+export const takeTaskErrMsg = 'Ошибка взятия заявки в работу'
+export const resolveTaskErrMsg = 'Ошибка выполнения заявки'
+export const returnTaskToFirstLineSupportErrMsg = 'Ошибка возврата заявки на первую линию поддержки'
 
 export const createTaskRegistrationFNRequestErrMsg =
   'Ошибка создания запроса на регистрацию фискального накопителя'
@@ -34,6 +33,7 @@ export const createTaskRegistrationFNRequestErrMsg =
 export const getTaskRegistrationRequestRecipientsFNErrMsg =
   'Ошибка получения списков получателей запроса на регистрацию ФН'
 
-export const createSubTaskMessages: ApiRequestMessages<'commonError'> = {
-  commonError: 'Не удалось создать задание',
-}
+export const getSubTasksErrMsg = 'Не удалось получить список заданий'
+export const createSubTaskErrMsg = 'Не удалось создать задание'
+export const cancelSubTaskErrMsg = 'Не удалось отменить задание'
+export const reworkSubTaskErrMsg = 'Не удалось вернуть задание на доработку'

@@ -2,7 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
-import { createSubTaskMessages } from 'modules/task/constants/task'
+import { createSubTaskErrMsg } from 'modules/task/constants/task'
 
 import { getSubTaskTemplateListMessages } from 'shared/constants/catalogs'
 import { validationMessages } from 'shared/constants/validation'
@@ -20,13 +20,13 @@ import {
   mockGetSupportGroupListSuccess,
 } from '_tests_/mocks/api'
 import {
-  selectTestUtils,
-  fakeWord,
-  render,
-  getStoreWithAuth,
-  setupApiTests,
-  notificationTestUtils,
   buttonTestUtils,
+  fakeWord,
+  getStoreWithAuth,
+  notificationTestUtils,
+  render,
+  selectTestUtils,
+  setupApiTests,
 } from '_tests_/utils'
 
 import CreateSubTaskModal from './index'
@@ -813,9 +813,7 @@ describe('Модалка создания задачи заявки', () => {
           await testUtils.description.findError(badRequestResponse.description[0]),
         ).toBeInTheDocument()
 
-        const notification = await notificationTestUtils.findNotification(
-          createSubTaskMessages.commonError,
-        )
+        const notification = await notificationTestUtils.findNotification(createSubTaskErrMsg)
         expect(notification).toBeInTheDocument()
       })
 
@@ -841,9 +839,7 @@ describe('Модалка создания задачи заявки', () => {
         })
         await testUtils.clickSubmitButton(user)
 
-        const notification = await notificationTestUtils.findNotification(
-          createSubTaskMessages.commonError,
-        )
+        const notification = await notificationTestUtils.findNotification(createSubTaskErrMsg)
         expect(notification).toBeInTheDocument()
       })
     })

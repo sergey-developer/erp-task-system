@@ -1,0 +1,16 @@
+import { GetUserActionsSuccessResponse } from 'modules/user/models'
+import { getUserActionsUrl } from 'modules/user/utils'
+
+import { HttpMethodEnum } from 'shared/constants/http'
+import { IdType } from 'shared/types/common'
+
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { ResponseResolverOptions } from '_tests_/mocks/response'
+
+const getUserActionsMockFn = (userId: IdType) =>
+  getRequestMockFn(HttpMethodEnum.Get, getUserActionsUrl(userId))
+
+export const mockGetUserActionsSuccess = (
+  userId: IdType,
+  options?: Partial<ResponseResolverOptions<GetUserActionsSuccessResponse>>,
+) => getSuccessMockFn(getUserActionsMockFn(userId), options)()

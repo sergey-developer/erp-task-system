@@ -1,33 +1,41 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { ReworkSubTaskMutationArgs } from 'modules/task/models'
-import { subTaskApiPermissions } from 'modules/task/permissions'
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
+
+import { reworkSubTaskErrMsg } from 'modules/task/constants/task'
+import { ReworkSubTaskMutationArgs, ReworkSubTaskSuccessResponse } from 'modules/task/models'
 import { useReworkSubTaskMutation } from 'modules/task/services/subTaskApi.service'
-import { useUserPermissions } from 'modules/user/hooks'
 
-import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import {
+  getErrorDetail,
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-export const useReworkSubTask = () => {
-  const permissions = useUserPermissions(subTaskApiPermissions)
+type UseReworkSubTaskResult = CustomUseMutationResult<
+  ReworkSubTaskMutationArgs,
+  ReworkSubTaskSuccessResponse
+>
+
+export const useReworkSubTask = (): UseReworkSubTaskResult => {
   const [mutation, state] = useReworkSubTaskMutation()
 
-  const fn = useCallback(
-    async (data: ReworkSubTaskMutationArgs) => {
-      if (permissions.canRework) {
-        await mutation(data).unwrap()
-      }
-    },
-    [mutation, permissions.canRework],
-  )
-
   useEffect(() => {
-    if (!state.error) return
-
-    if (isErrorResponse(state.error) && !isBadRequestError(state.error)) {
-      showErrorNotification('Не удалось вернуть задание на доработку')
+    if (isErrorResponse(state.error)) {
+      if (
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
+      ) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(reworkSubTaskErrMsg)
+      }
     }
   }, [state.error])
 
-  return { fn, state }
+  return [mutation, state]
 }

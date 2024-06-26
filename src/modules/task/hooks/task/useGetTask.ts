@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getTaskMessages } from 'modules/task/constants/task'
+import { getTaskErrMsg } from 'modules/task/constants/task'
 import { GetTaskQueryArgs, GetTaskSuccessResponse } from 'modules/task/models'
 import { useGetTaskQuery } from 'modules/task/services/taskApi.service'
 import { getTaskNotFoundErrorMsg, getTaskServerErrorMsg } from 'modules/task/utils/task'
@@ -22,15 +22,13 @@ export const useGetTask = (id: GetTaskQueryArgs, options?: UseGetTaskOptions): U
   const state = useGetTaskQuery(id, options)
 
   useEffect(() => {
-    if (!state.error) return
-
     if (isErrorResponse(state.error)) {
       if (isNotFoundError(state.error)) {
         showErrorNotification(getTaskNotFoundErrorMsg(id))
       } else if (isBadRequestError(state.error) || isServerRangeError(state.error)) {
         showErrorNotification(getTaskServerErrorMsg(id))
       } else {
-        showErrorNotification(getTaskMessages.commonError)
+        showErrorNotification(getTaskErrMsg)
       }
     }
   }, [id, state.error])

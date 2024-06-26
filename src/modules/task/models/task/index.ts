@@ -8,8 +8,8 @@ export * from './takeTask.model'
 export * from './updateTaskDescription.model'
 export * from './updateTaskDeadline.model'
 
-export * from './taskList.model'
-export * from './getTaskList.model'
+export * from './tasks.model'
+export * from './getTasks.model'
 
 export * from './taskListMap.model'
 export * from './getTaskListMap.model'

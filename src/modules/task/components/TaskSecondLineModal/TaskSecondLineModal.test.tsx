@@ -6,7 +6,7 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 import { validationMessages } from 'shared/constants/validation'
 
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-import { mockGetWorkGroupListSuccess } from '_tests_/mocks/api'
+import { mockGetWorkGroupsSuccess } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
   checkboxTestUtils,
@@ -157,7 +157,7 @@ setupApiTests()
 
 describe('Модалка перевода заявки на 2-ю линию', () => {
   test('Заголовок и текст отображается корректно', () => {
-    mockGetWorkGroupListSuccess()
+    mockGetWorkGroupsSuccess()
 
     render(<TaskSecondLineModal {...props} />)
 
@@ -180,7 +180,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
   describe('Поле выбора рабочей группы', () => {
     test('Поле отображается корректно', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
 
       render(<TaskSecondLineModal {...props} />)
 
@@ -211,7 +211,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
           }),
         ]
 
-        mockGetWorkGroupListSuccess({ body: workGroupList })
+        mockGetWorkGroupsSuccess({ body: workGroupList })
 
         render(<TaskSecondLineModal {...props} />)
 
@@ -243,7 +243,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
           }),
         ]
 
-        mockGetWorkGroupListSuccess({ body: workGroupList })
+        mockGetWorkGroupsSuccess({ body: workGroupList })
 
         render(<TaskSecondLineModal {...props} />)
 
@@ -265,7 +265,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     describe('Не имеет значения по умолчанию', () => {
       test(`Если нет группы с типом ${WorkGroupTypeEnum.AssociatedWithSapId} или ${WorkGroupTypeEnum.DefaultForSupportGroup}`, async () => {
         const workGroupList = workGroupFixtures.workGroupList(2)
-        mockGetWorkGroupListSuccess({ body: workGroupList })
+        mockGetWorkGroupsSuccess({ body: workGroupList })
 
         render(<TaskSecondLineModal {...props} />)
 
@@ -276,7 +276,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     test('Отображает верное количество вариантов', async () => {
       const workGroupList = workGroupFixtures.workGroupList()
-      mockGetWorkGroupListSuccess({ body: workGroupList })
+      mockGetWorkGroupsSuccess({ body: workGroupList })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -290,7 +290,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     test('Корректно отображает варианты', async () => {
       const workGroupList = workGroupFixtures.workGroupList()
-      mockGetWorkGroupListSuccess({ body: workGroupList })
+      mockGetWorkGroupsSuccess({ body: workGroupList })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -312,7 +312,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
           priority: workGroupFixtures.workGroupPriority({ value: 4 }),
         }),
       ]
-      mockGetWorkGroupListSuccess({ body: workGroupList })
+      mockGetWorkGroupsSuccess({ body: workGroupList })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -333,7 +333,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
           priority: workGroupFixtures.workGroupPriority({ value: 3 }),
         }),
       ]
-      mockGetWorkGroupListSuccess({ body: workGroupList })
+      mockGetWorkGroupsSuccess({ body: workGroupList })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -349,7 +349,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     test('Можно выбрать рабочую группу', async () => {
       const workGroupList = workGroupFixtures.workGroupList()
-      mockGetWorkGroupListSuccess({ body: workGroupList })
+      mockGetWorkGroupsSuccess({ body: workGroupList })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -362,7 +362,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     test('Отображает ошибку если не выбрать группу и нажать кнопку отправки', async () => {
       const workGroupList = workGroupFixtures.workGroupList()
-      mockGetWorkGroupListSuccess({ body: workGroupList })
+      mockGetWorkGroupsSuccess({ body: workGroupList })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -375,7 +375,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
   describe('Поле комментария', () => {
     test('Отображается корректно', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
 
       render(<TaskSecondLineModal {...props} />)
 
@@ -390,7 +390,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Можно установить значение', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -405,7 +405,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
   describe('Поле для пометки рабочей группы по умолчанию', () => {
     test('Отображается корректно', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
 
       render(<TaskSecondLineModal {...props} />)
 
@@ -418,7 +418,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Можно установить значение', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -431,7 +431,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
   describe('Кнопка отправки', () => {
     test('Отображается корректно', () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
 
       render(<TaskSecondLineModal {...props} />)
 
@@ -442,7 +442,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Отображает состоянии загрузки', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
       render(<TaskSecondLineModal {...props} isLoading />)
       await testUtils.expectLoadingStarted()
     })
@@ -450,7 +450,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     describe('Обработчик вызывается корректно', () => {
       test('Если заполнить обязательные поля', async () => {
         const workGroupList = workGroupFixtures.workGroupList()
-        mockGetWorkGroupListSuccess({ body: workGroupList })
+        mockGetWorkGroupsSuccess({ body: workGroupList })
 
         const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -465,7 +465,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
       test('Если не заполнить обязательные поля', async () => {
         const workGroupList = workGroupFixtures.workGroupList()
-        mockGetWorkGroupListSuccess({ body: workGroupList })
+        mockGetWorkGroupsSuccess({ body: workGroupList })
 
         const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -479,7 +479,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
   describe('Кнопка отмены', () => {
     test('Отображается корректно', () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
 
       render(<TaskSecondLineModal {...props} />)
 
@@ -490,7 +490,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Обработчик вызывается корректно', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
 
@@ -501,7 +501,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
   describe('Кнопка закрытия', () => {
     test('Отображается корректно', () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
 
       render(<TaskSecondLineModal {...props} />)
 
@@ -512,7 +512,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Обработчик вызывается корректно', async () => {
-      mockGetWorkGroupListSuccess({ body: [] })
+      mockGetWorkGroupsSuccess({ body: [] })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
 

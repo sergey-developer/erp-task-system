@@ -1,4 +1,5 @@
 import { TaskModel } from 'modules/task/models'
+import { UserActionsModel } from 'modules/user/models'
 
 import { EmptyFn } from 'shared/types/utils'
 
@@ -13,6 +14,7 @@ export type TaskDetailsTitleProps = Pick<
   | 'assignee'
   | 'suspendRequest'
 > & {
+  userActions: UserActionsModel
   onReloadTask: EmptyFn
   onExecuteTask: EmptyFn
   onRegisterFN: EmptyFn

@@ -24,7 +24,7 @@ export const mockDeleteTaskSuspendRequestSuccess = (
 
 export const mockDeleteTaskSuspendRequestNotFoundError = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getNotFoundErrorMockFn(deleteTaskSuspendRequestMockFn(id), options)()
 
 export const mockDeleteTaskSuspendRequestBadRequestError = (

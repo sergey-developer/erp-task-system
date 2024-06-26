@@ -61,15 +61,15 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
   const [createSuspendRequest, { isLoading: createSuspendRequestIsLoading }] =
     useCreateTaskSuspendRequest()
 
-  const {
-    fn: createReclassificationRequest,
-    state: {
+  const [
+    createReclassificationRequest,
+    {
       isLoading: createReclassificationRequestIsLoading,
-      data: createReclassificationRequestResult = null,
+      data: createReclassificationRequestResult,
       reset: resetCreateReclassificationRequestData,
       fulfilledTimeStamp: createReclassificationRequestFulfilledTimeStamp = 0,
     },
-  } = useCreateTaskReclassificationRequest()
+  ] = useCreateTaskReclassificationRequest()
 
   const {
     currentData: getReclassificationRequestResult = null,
@@ -84,27 +84,11 @@ const TaskCardContainer: FC<TaskCardContainerProps> = ({
   const getTaskCalledAfterSuccessfullyRequestCreation =
     getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
 
-  const {
-    fn: takeTask,
-    state: { isLoading: takeTaskIsLoading },
-  } = useTakeTask()
-
+  const [takeTask, { isLoading: takeTaskIsLoading }] = useTakeTask()
   const [resolveTask, { isLoading: taskIsResolving }] = useResolveTask()
-
-  const {
-    fn: updateWorkGroup,
-    state: { isLoading: updateWorkGroupIsLoading },
-  } = useUpdateTaskWorkGroup()
-
-  const {
-    fn: deleteWorkGroup,
-    state: { isLoading: deleteWorkGroupIsLoading },
-  } = useDeleteTaskWorkGroup()
-
-  const {
-    fn: updateAssignee,
-    state: { isLoading: updateAssigneeIsLoading },
-  } = useUpdateTaskAssignee()
+  const [updateWorkGroup, { isLoading: updateWorkGroupIsLoading }] = useUpdateTaskWorkGroup()
+  const [deleteWorkGroup, { isLoading: deleteWorkGroupIsLoading }] = useDeleteTaskWorkGroup()
+  const [updateAssignee, { isLoading: updateAssigneeIsLoading }] = useUpdateTaskAssignee()
 
   const [getTaskWorkPerformedAct, { isLoading: taskWorkPerformedActIsLoading }] =
     useGetTaskWorkPerformedActMutation()

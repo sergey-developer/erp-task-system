@@ -4,7 +4,7 @@ import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useGetUsers, useMatchUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useUserPermissions } from 'modules/user/hooks'
 import { CreateInventorizationRequestModalProps } from 'modules/warehouse/components/CreateInventorizationRequestModal/types'
 import InventorizationTable from 'modules/warehouse/components/InventorizationTable'
 import {
@@ -77,7 +77,7 @@ const initialGetInventorizationsQueryArgs: Partial<
 }
 
 const InventorizationsPage: FC = () => {
-  const permissions = useMatchUserPermissions([UserPermissionsEnum.InventorizationCreate])
+  const permissions = useUserPermissions([UserPermissionsEnum.InventorizationCreate])
 
   const { tableRef, drawerHeight } = useDrawerHeightByTable()
 

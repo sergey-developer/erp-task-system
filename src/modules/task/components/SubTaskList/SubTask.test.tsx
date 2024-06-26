@@ -33,9 +33,10 @@ const props: Readonly<SubTaskProps> = {
   olaNextBreachTime: subTask.olaNextBreachTime,
   externalAssigneeName: subTask.externalAssigneeName,
   externalAssigneePhone: subTask.externalAssigneePhone,
+  permissions: {},
 }
 
-export const activeReworkButtonProps: Pick<
+export const showReworkButtonProps: Pick<
   SubTaskProps,
   'currentUserIsTaskAssignee' | 'status' | 'taskStatus' | 'taskExtendedStatus'
 > = {
@@ -45,7 +46,15 @@ export const activeReworkButtonProps: Pick<
   taskExtendedStatus: TaskExtendedStatusEnum.New,
 }
 
-export const activeCancelButtonProps: Pick<
+export const activeReworkButtonProps: Pick<
+  SubTaskProps,
+  'taskSuspendRequestStatus' | 'taskExtendedStatus'
+> = {
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
+  taskExtendedStatus: TaskExtendedStatusEnum.New,
+}
+
+export const showCancelButtonProps: Pick<
   SubTaskProps,
   'currentUserIsTaskAssignee' | 'status' | 'taskStatus' | 'taskExtendedStatus'
 > = {
@@ -55,18 +64,24 @@ export const activeCancelButtonProps: Pick<
   taskExtendedStatus: TaskExtendedStatusEnum.New,
 }
 
+export const activeCancelButtonProps: Pick<
+  SubTaskProps,
+  'taskSuspendRequestStatus' | 'taskExtendedStatus'
+> = {
+  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
+  taskExtendedStatus: TaskExtendedStatusEnum.New,
+}
+
 const getContainer = () => screen.getByTestId('sub-task-list-item')
 
 const getAllContainerIn = (container: HTMLElement) =>
   within(container).getAllByTestId('sub-task-list-item')
 
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
-
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
 // tech resolution button
 const getTechResolutionButton = () => buttonTestUtils.getButtonIn(getContainer(), /решение/i)
-
 const queryTechResolutionButton = () => buttonTestUtils.queryButtonIn(getContainer(), /решение/i)
 
 const clickTechResolutionButton = async (user: UserEvent) => {
@@ -123,7 +138,6 @@ const clickReworkButton = async (user: UserEvent) => {
 
 // cancel button
 const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
-
 const queryCancelButton = () => buttonTestUtils.queryButtonIn(getContainer(), /отменить/i)
 
 const clickCancelButton = async (user: UserEvent) => {
@@ -170,7 +184,6 @@ describe('Задание', () => {
 
   test('Отображает дату "olaNextBreachTime"', () => {
     render(<SubTask {...props} />)
-
     expect(testUtils.getChildByText(`до ${props.olaNextBreachTime!}`)).toBeInTheDocument()
   })
 
@@ -189,9 +202,7 @@ describe('Задание', () => {
 
   test('Отображает дату создания', () => {
     render(<SubTask {...props} />)
-
     expect(testUtils.getChildByText(/дата создания/i)).toBeInTheDocument()
-
     expect(testUtils.getChildByText(props.createdAt)).toBeInTheDocument()
   })
 
@@ -338,23 +349,18 @@ describe('Задание', () => {
 
   test('Отображает группу поддержки если она есть', () => {
     render(<SubTask {...props} supportGroup={subTask.supportGroup} />)
-
     expect(testUtils.getChildByText(/группа поддержки/i)).toBeInTheDocument()
-
     expect(testUtils.getChildByText(subTask.supportGroup.name)).toBeInTheDocument()
   })
 
   test('Не отображает группу поддержки если её нет', () => {
     render(<SubTask {...props} supportGroup={null} />)
-
     expect(testUtils.getChildByText(/группа поддержки/i)).toBeInTheDocument()
-
     expect(testUtils.queryChildByText(subTask.supportGroup.name)).not.toBeInTheDocument()
   })
 
   test('Отображает блок исполнителя', () => {
     render(<SubTask {...props} />)
-
     expect(testUtils.getChildByText(/исполнитель/i)).toBeInTheDocument()
     expect(taskAssigneeTestUtils.getContainerIn(testUtils.getContainer())).toBeInTheDocument()
   })
@@ -398,128 +404,261 @@ describe('Задание', () => {
   })
 
   describe('Кнопка отправки на доработку', () => {
-    test('Отображается корректно если условия соблюдены', () => {
-      render(<SubTask {...props} {...activeReworkButtonProps} />)
-
+    test('Отображается и активна если условия соблюдены', () => {
+      render(<SubTask {...props} {...showReworkButtonProps} {...activeReworkButtonProps} />)
       const button = testUtils.getReworkButton()
-
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
     })
 
+    test('Отображается если условия соблюдены, есть права, но текущий пользователь не исполнитель заявки', () => {
+      render(
+        <SubTask
+          {...props}
+          {...showReworkButtonProps}
+          currentUserIsTaskAssignee={false}
+          permissions={{ anySubtasksRework: true }}
+        />,
+      )
+
+      expect(testUtils.getReworkButton()).toBeInTheDocument()
+    })
+
+    test('Отображается если условия соблюдены, текущий пользователь исполнитель заявки, но нет прав', () => {
+      render(
+        <SubTask
+          {...props}
+          {...showReworkButtonProps}
+          currentUserIsTaskAssignee
+          permissions={{ anySubtasksRework: false }}
+        />,
+      )
+
+      expect(testUtils.getReworkButton()).toBeInTheDocument()
+    })
+
     describe('Не отображается если условия соблюдены', () => {
-      test('Но текущий пользователь не исполнитель заявки', () => {
+      test('Но текущий пользователь не исполнитель заявки и нет прав', () => {
         render(
-          <SubTask {...props} {...activeReworkButtonProps} currentUserIsTaskAssignee={false} />,
+          <SubTask
+            {...props}
+            {...showReworkButtonProps}
+            currentUserIsTaskAssignee={false}
+            permissions={{ anySubtasksRework: false }}
+          />,
         )
 
         expect(testUtils.queryReworkButton()).not.toBeInTheDocument()
       })
 
-      test('Но задание не в статусе "Завершена"', () => {
-        render(<SubTask {...props} {...activeReworkButtonProps} status={TaskStatusEnum.New} />)
-
+      test('Но задание не в статусе "Завершено"', () => {
+        render(<SubTask {...props} {...showReworkButtonProps} status={TaskStatusEnum.New} />)
         expect(testUtils.queryReworkButton()).not.toBeInTheDocument()
       })
 
-      test('Но статус заявки "Завершена"', () => {
+      test('Но статус заявки "Завершено"', () => {
         render(
-          <SubTask {...props} {...activeReworkButtonProps} taskStatus={TaskStatusEnum.Completed} />,
+          <SubTask {...props} {...showReworkButtonProps} taskStatus={TaskStatusEnum.Completed} />,
         )
 
         expect(testUtils.queryReworkButton()).not.toBeInTheDocument()
       })
 
       test('Но статус заявки "Закрыта"', () => {
-        render(
-          <SubTask {...props} {...activeReworkButtonProps} taskStatus={TaskStatusEnum.Closed} />,
-        )
-
+        render(<SubTask {...props} {...showReworkButtonProps} taskStatus={TaskStatusEnum.Closed} />)
         expect(testUtils.queryReworkButton()).not.toBeInTheDocument()
       })
     })
 
     test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<SubTask {...props} {...activeReworkButtonProps} />)
-
+      const { user } = render(
+        <SubTask {...props} {...showReworkButtonProps} {...activeReworkButtonProps} />,
+      )
       await testUtils.clickReworkButton(user)
       expect(props.onClickRework).toBeCalledTimes(1)
     })
 
-    test('Не активна - если заявка на переклассификации', () => {
+    test(`Всегда активна если запрос на ожидание в статусе ${SuspendRequestStatusEnum.Approved}`, () => {
       render(
         <SubTask
           {...props}
-          {...activeReworkButtonProps}
-          taskExtendedStatus={TaskExtendedStatusEnum.InReclassification}
+          {...showReworkButtonProps}
+          taskSuspendRequestStatus={SuspendRequestStatusEnum.Approved}
         />,
       )
 
-      expect(testUtils.getReworkButton()).toBeDisabled()
+      expect(testUtils.getReworkButton()).toBeEnabled()
+    })
+
+    describe('Не активна если условия соблюдены', () => {
+      test('Но заявка на переклассификации', () => {
+        render(
+          <SubTask
+            {...props}
+            {...showReworkButtonProps}
+            {...activeReworkButtonProps}
+            taskExtendedStatus={TaskExtendedStatusEnum.InReclassification}
+          />,
+        )
+
+        expect(testUtils.getReworkButton()).toBeDisabled()
+      })
+
+      test(`Но запрос на ожидание в статусе ${SuspendRequestStatusEnum.New}`, () => {
+        render(
+          <SubTask
+            {...props}
+            {...showReworkButtonProps}
+            {...activeReworkButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
+          />,
+        )
+
+        expect(testUtils.getReworkButton()).toBeDisabled()
+      })
+
+      test(`Но запрос на ожидание в статусе ${SuspendRequestStatusEnum.InProgress}`, () => {
+        render(
+          <SubTask
+            {...props}
+            {...showReworkButtonProps}
+            {...activeReworkButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.InProgress}
+          />,
+        )
+
+        expect(testUtils.getReworkButton()).toBeDisabled()
+      })
     })
   })
 
   describe('Кнопка отмены', () => {
-    test('Отображается корректно если условия соблюдены', () => {
-      render(<SubTask {...props} {...activeCancelButtonProps} />)
-
+    test('Отображается и активна если условия соблюдены', () => {
+      render(<SubTask {...props} {...showCancelButtonProps} {...activeCancelButtonProps} />)
       const button = testUtils.getCancelButton()
-
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
     })
 
+    test('Отображается если условия соблюдены, есть права, но текущий пользователь не исполнитель заявки', () => {
+      render(
+        <SubTask
+          {...props}
+          {...showCancelButtonProps}
+          currentUserIsTaskAssignee={false}
+          permissions={{ anySubtasksDelete: true }}
+        />,
+      )
+
+      expect(testUtils.getCancelButton()).toBeInTheDocument()
+    })
+
+    test('Отображается если условия соблюдены, текущий пользователь исполнитель заявки, но нет прав', () => {
+      render(
+        <SubTask
+          {...props}
+          {...showCancelButtonProps}
+          currentUserIsTaskAssignee
+          permissions={{ anySubtasksDelete: false }}
+        />,
+      )
+
+      expect(testUtils.getCancelButton()).toBeInTheDocument()
+    })
+
     describe('Не отображается если условия соблюдены', () => {
-      test('Но текущий пользователь не исполнитель заявки', () => {
+      test('Но текущий пользователь не исполнитель заявки и нет прав', () => {
         render(
-          <SubTask {...props} {...activeCancelButtonProps} currentUserIsTaskAssignee={false} />,
+          <SubTask
+            {...props}
+            {...showCancelButtonProps}
+            currentUserIsTaskAssignee={false}
+            permissions={{ anySubtasksDelete: false }}
+          />,
         )
 
         expect(testUtils.queryCancelButton()).not.toBeInTheDocument()
       })
 
       test('Но задание не в статусе "Новая"', () => {
-        render(
-          <SubTask {...props} {...activeCancelButtonProps} status={TaskStatusEnum.InProgress} />,
-        )
+        render(<SubTask {...props} {...showCancelButtonProps} status={TaskStatusEnum.InProgress} />)
 
         expect(testUtils.queryCancelButton()).not.toBeInTheDocument()
       })
 
       test('Но статус заявки "Завершена"', () => {
         render(
-          <SubTask {...props} {...activeCancelButtonProps} taskStatus={TaskStatusEnum.Completed} />,
+          <SubTask {...props} {...showCancelButtonProps} taskStatus={TaskStatusEnum.Completed} />,
         )
 
         expect(testUtils.queryCancelButton()).not.toBeInTheDocument()
       })
 
       test('Но статус заявки "Закрыта"', () => {
-        render(
-          <SubTask {...props} {...activeCancelButtonProps} taskStatus={TaskStatusEnum.Closed} />,
-        )
+        render(<SubTask {...props} {...showCancelButtonProps} taskStatus={TaskStatusEnum.Closed} />)
 
         expect(testUtils.queryCancelButton()).not.toBeInTheDocument()
       })
     })
 
-    test('Обработчик вызывается корректно', async () => {
-      const { user } = render(<SubTask {...props} {...activeCancelButtonProps} />)
-
+    test('Обработчик вызывается', async () => {
+      const { user } = render(
+        <SubTask {...props} {...showCancelButtonProps} {...activeCancelButtonProps} />,
+      )
       await testUtils.clickCancelButton(user)
       expect(props.onClickCancel).toBeCalledTimes(1)
     })
 
-    test('Не активна - если заявка на переклассификации', () => {
+    test(`Всегда активна если запрос на ожидание в статусе ${SuspendRequestStatusEnum.Approved}`, () => {
       render(
         <SubTask
           {...props}
-          {...activeCancelButtonProps}
-          taskExtendedStatus={TaskExtendedStatusEnum.InReclassification}
+          {...showCancelButtonProps}
+          taskSuspendRequestStatus={SuspendRequestStatusEnum.Approved}
         />,
       )
+      expect(testUtils.getCancelButton()).toBeEnabled()
+    })
 
-      expect(testUtils.getCancelButton()).toBeDisabled()
+    describe('Не активна если условия соблюдены', () => {
+      test('Но заявка на переклассификации', () => {
+        render(
+          <SubTask
+            {...props}
+            {...showCancelButtonProps}
+            {...activeCancelButtonProps}
+            taskExtendedStatus={TaskExtendedStatusEnum.InReclassification}
+          />,
+        )
+
+        expect(testUtils.getCancelButton()).toBeDisabled()
+      })
+
+      test(`Но запрос на ожидание в статусе ${SuspendRequestStatusEnum.New}`, () => {
+        render(
+          <SubTask
+            {...props}
+            {...showCancelButtonProps}
+            {...activeCancelButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
+          />,
+        )
+
+        expect(testUtils.getCancelButton()).toBeDisabled()
+      })
+
+      test(`Но запрос на ожидание в статусе ${SuspendRequestStatusEnum.InProgress}`, () => {
+        render(
+          <SubTask
+            {...props}
+            {...showCancelButtonProps}
+            {...activeCancelButtonProps}
+            taskSuspendRequestStatus={SuspendRequestStatusEnum.InProgress}
+          />,
+        )
+
+        expect(testUtils.getCancelButton()).toBeDisabled()
+      })
     })
   })
 })

@@ -11,3 +11,6 @@ export const updateUserStatusUrl = (userId: IdType): string =>
 
 export const getWarehouseMSIUrl = (userId: IdType): string =>
   generateApiPath(UserApiEnum.GetWarehouseMSI, { id: String(userId) })
+
+export const getUserActionsUrl = (userId: IdType): string =>
+  generateApiPath(UserApiEnum.GetUserActions, { id: String(userId) })

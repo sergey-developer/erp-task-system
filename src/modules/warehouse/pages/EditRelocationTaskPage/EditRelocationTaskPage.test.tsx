@@ -168,7 +168,7 @@ describe('Страница редактирования заявки на пер
       mockGetRelocationTaskAttachmentsSuccess(relocationTaskId)
 
       const { user } = render(<EditRelocationTaskPage />, {
-        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+        store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
@@ -209,7 +209,7 @@ describe('Страница редактирования заявки на пер
       mockGetRelocationTaskAttachmentsSuccess(relocationTaskId)
 
       const { user } = render(<EditRelocationTaskPage />, {
-        store: getStoreWithAuth({ userId: currentUser.id }, undefined, undefined, {
+        store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })

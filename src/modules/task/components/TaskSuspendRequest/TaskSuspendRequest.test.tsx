@@ -6,7 +6,7 @@ import { getShortUserName } from 'modules/user/utils'
 import { formatDate } from 'shared/utils/date'
 
 import userFixtures from '_tests_/fixtures/user'
-import { fakeDateString, fakeWord, iconTestUtils, render, buttonTestUtils } from '_tests_/utils'
+import { buttonTestUtils, fakeDateString, fakeWord, iconTestUtils, render } from '_tests_/utils'
 
 import TaskSuspendRequest, { TaskSuspendRequestProps } from './index'
 
@@ -27,14 +27,10 @@ export const returnInWorkAction: TaskSuspendRequestProps['action'] = {
   onClick: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('task-card-suspend-request')
-
-const findContainer = () => screen.findByTestId('task-card-suspend-request')
-
-const queryContainer = () => screen.queryByTestId('task-card-suspend-request')
-
+const getContainer = () => screen.getByTestId('task-details-suspend-request')
+const findContainer = () => screen.findByTestId('task-details-suspend-request')
+const queryContainer = () => screen.queryByTestId('task-details-suspend-request')
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
-
 const getIcon = () => iconTestUtils.getIconByNameIn(getContainer(), 'pause-circle')
 
 // cancel button

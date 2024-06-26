@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
 import { TaskApiTagEnum } from 'modules/task/constants/task'
+import { UsersApiTagEnum } from 'modules/user/constants'
 import { RelocationEquipmentApiTagEnum } from 'modules/warehouse/constants/relocationEquipment'
 
 import baseQueryWithReauth from './baseQueryWithReauth'
@@ -11,8 +12,9 @@ export const baseApiService = createApi({
   keepUnusedDataFor: CACHE_TIME_LIFE,
   tagTypes: [
     TaskApiTagEnum.Task,
-    TaskApiTagEnum.TaskList,
+    TaskApiTagEnum.Tasks,
     RelocationEquipmentApiTagEnum.RelocationEquipmentAttachmentList,
+    UsersApiTagEnum.UserActions,
   ],
   endpoints: () => ({}),
 })
