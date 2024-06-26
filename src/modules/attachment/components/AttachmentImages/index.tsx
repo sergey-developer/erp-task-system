@@ -1,11 +1,11 @@
 import { Image, Space, Typography } from 'antd'
 import { FC } from 'react'
 
-import { AttachmentListProps } from './types'
+import { AttachmentImagesProps } from './types'
 
 const { Text } = Typography
 
-const AttachmentList: FC<AttachmentListProps> = ({
+const AttachmentImages: FC<AttachmentImagesProps> = ({
   data,
   imgWidth = 100,
   imgHeight = 100,
@@ -31,4 +31,4 @@ const AttachmentList: FC<AttachmentListProps> = ({
   )
 }
 
-export default AttachmentList
+export default AttachmentImages

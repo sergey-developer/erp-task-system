@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import React from 'react'
 
-import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constants/taskJournal'
 
 import { IdType } from 'shared/types/common'
@@ -52,13 +52,13 @@ describe('Элемент журнала', () => {
   describe('Вложения', () => {
     test('Отображается если есть', () => {
       render(<JournalEntry {...props} />)
-      const attachmentList = attachmentListTestUtils.getContainer()
+      const attachmentList = attachmentsTestUtils.getContainer()
       expect(attachmentList).toBeInTheDocument()
     })
 
     test('Не отображаются если их нет', () => {
       render(<JournalEntry {...props} attachments={[]} />)
-      const attachmentList = attachmentListTestUtils.queryContainer()
+      const attachmentList = attachmentsTestUtils.queryContainer()
       expect(attachmentList).not.toBeInTheDocument()
     })
   })

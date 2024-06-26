@@ -1,3 +1,4 @@
+import { AttachmentModel } from 'modules/attachment/models'
 import { UserModel } from 'modules/user/models'
 import {
   InventorizationStatusEnum,
@@ -17,6 +18,8 @@ export type InventorizationModel = {
   warehouses: Pick<WarehouseModel, 'id' | 'title'>[]
   executor: Pick<UserModel, 'id' | 'fullName'>
   createdBy: Pick<UserModel, 'id' | 'fullName'>
-  completedAt: MaybeNull<string>
   nomenclatures: Array<Pick<NomenclatureModel, 'id' | 'title' | 'group'>>
+  completedAt: MaybeNull<string>
+  description: MaybeNull<string>
+  attachments: MaybeNull<Pick<AttachmentModel, 'id' | 'name' | 'size' | 'url'>[]>
 }

@@ -1,7 +1,7 @@
 import { Typography } from 'antd'
 import React, { FC } from 'react'
 
-import AttachmentList from 'modules/task/components/AttachmentList'
+import Attachments from 'modules/attachment/components/Attachments'
 import { TaskCommentModel } from 'modules/task/models'
 
 import SeparatedText from 'components/SeparatedText'
@@ -25,7 +25,7 @@ const Comment: FC<CommentProps> = ({ text, createdAt, author, attachments }) => 
 
       <Paragraph>{renderStringWithLineBreak(text)}</Paragraph>
 
-      <AttachmentList data={attachments} />
+      <Attachments data={attachments} />
     </Space>
   )
 }

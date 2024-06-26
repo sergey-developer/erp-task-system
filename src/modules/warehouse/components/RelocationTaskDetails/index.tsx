@@ -19,8 +19,8 @@ import isUndefined from 'lodash/isUndefined'
 import React, { FC, useCallback, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
+import Attachments from 'modules/attachment/components/Attachments'
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
-import AttachmentList from 'modules/task/components/AttachmentList'
 import { getTaskListPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -621,7 +621,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                         </Upload>
 
                         {!!relocationTask.documents?.length && (
-                          <AttachmentList data={relocationTask.documents} />
+                          <Attachments data={relocationTask.documents} />
                         )}
                       </Space>
                     }

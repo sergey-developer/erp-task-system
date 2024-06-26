@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
-import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentImagesTestUtils } from 'modules/attachment/components/AttachmentImages/AttachmentImages.test'
 
 import attachmentFixtures from '_tests_/fixtures/attachments'
 import { fakeWord, render, spinnerTestUtils } from '_tests_/utils'
@@ -33,7 +33,7 @@ describe('Модалка списка вложений', () => {
 
     expect(title).toBeInTheDocument()
     props.data.forEach((item) => {
-      const image = attachmentListTestUtils.getIn(container, item.name)
+      const image = attachmentImagesTestUtils.getImageIn(container, item.name)
       expect(image).toBeInTheDocument()
     })
   })
