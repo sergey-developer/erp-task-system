@@ -62,8 +62,8 @@ import {
   mockGetTaskCountersSuccess,
   mockGetTasksSuccess,
   mockGetTaskSuccess,
-  mockGetUsersSuccess,
   mockGetUserActionsSuccess,
+  mockGetUsersSuccess,
   mockGetWorkGroupsSuccess,
   mockResolveTaskSuccess,
   mockTakeTaskSuccess,
@@ -719,7 +719,7 @@ describe('Страница реестра заявок', () => {
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess()
         mockGetWorkGroupsSuccess()
-        mockGetUserListSuccess()
+        mockGetUsersSuccess()
         mockGetCustomerListSuccess()
         mockGetMacroregionsSuccess()
         mockGetSupportGroupListSuccess()
