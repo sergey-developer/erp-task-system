@@ -11,6 +11,7 @@ import {
   inventorizationTypeDict,
 } from 'modules/warehouse/constants/inventorization'
 import { useGetInventorization } from 'modules/warehouse/hooks/inventorization'
+import { InventorizationRequestArgs } from 'modules/warehouse/types'
 import {
   checkInventorizationStatusIsInProgress,
   checkInventorizationStatusIsNew,
@@ -30,10 +31,10 @@ import { groupNomenclatures } from './utils'
 
 const { Text } = Typography
 
-export type InventorizationDetailsProps = Required<Pick<DrawerProps, 'onClose' | 'open'>> & {
-  inventorizationId: IdType
-  height?: number
-}
+export type InventorizationDetailsProps = Required<Pick<DrawerProps, 'onClose' | 'open'>> &
+  Pick<InventorizationRequestArgs, 'inventorizationId'> & {
+    height?: number
+  }
 
 const InventorizationDetails: FC<InventorizationDetailsProps> = ({
   height,
@@ -51,7 +52,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
   const executorIsCurrentUser = useIdBelongAuthUser(inventorization?.executor.id)
 
   const onClickExecuteInventorization = () =>
-    navigate(getExecuteInventorizationPageLink(inventorizationId), {
+    navigate(getExecuteInventorizationPageLink({ inventorizationId }), {
       state: getExecuteInventorizationPageLocationState(inventorization!),
     })
 

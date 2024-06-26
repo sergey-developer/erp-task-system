@@ -3,7 +3,7 @@ import { FC, useMemo } from 'react'
 
 import { getColumns } from './columns'
 import { TableWrapperStyled } from './styles'
-import { InventorizationEquipmentTableItem, ReviseEquipmentTableProps } from './types'
+import { ReviseEquipmentTableItem, ReviseEquipmentTableProps } from './types'
 
 const ReviseEquipmentTable: FC<ReviseEquipmentTableProps> = ({
   dataSource,
@@ -25,7 +25,7 @@ const ReviseEquipmentTable: FC<ReviseEquipmentTableProps> = ({
 
   return (
     <TableWrapperStyled data-testid='revise-equipment-table'>
-      <EditableProTable<InventorizationEquipmentTableItem>
+      <EditableProTable<ReviseEquipmentTableItem>
         rowKey='id'
         columns={columns}
         ghost

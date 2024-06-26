@@ -332,6 +332,7 @@ describe('Таблица заявок', () => {
     })
 
     describe('Заявка', () => {
+      // todo: объединить тесты заголовка и значения
       test('Отображает заголовок', () => {
         render(<TaskTable {...props} />)
         expect(testUtils.getColTitle('Заявка')).toBeInTheDocument()
