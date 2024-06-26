@@ -7,8 +7,8 @@ import { GetInventorizationEquipmentsQueryArgs } from './getInventorizationEquip
 export type UpdateInventorizationEquipmentMutationArgs = InventorizationEquipmentRequestArgs & {
   quantityFact: MaybeNull<number>
   locationFact: MaybeNull<number>
+  isLocationFactUndefined: boolean
   getInventorizationEquipmentsArgs: GetInventorizationEquipmentsQueryArgs
-  isLocationFactUndefined?: boolean
 }
 
 export type UpdateInventorizationEquipmentSuccessResponse = Partial<{
