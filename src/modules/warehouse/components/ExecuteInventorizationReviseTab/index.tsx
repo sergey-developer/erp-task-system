@@ -77,7 +77,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         inventorizationEquipmentId: record.id,
         quantityFact: valueIsNumber ? value : null,
         locationFact: locationFact === undefinedSelectOption.value ? null : locationFact,
-        isLocationFactUndefined: locationFact === undefinedSelectOption.value ? true : undefined,
+        isLocationFactUndefined: locationFact === undefinedSelectOption.value,
         getInventorizationEquipmentsArgs,
       })
     },
@@ -90,7 +90,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       await updateInventorizationEquipmentMutation({
         inventorizationEquipmentId: record.id,
         locationFact: value === undefinedSelectOption.value ? null : value,
-        isLocationFactUndefined: value === undefinedSelectOption.value ? true : undefined,
+        isLocationFactUndefined: value === undefinedSelectOption.value,
         quantityFact,
         getInventorizationEquipmentsArgs,
       })
