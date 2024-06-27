@@ -23,6 +23,7 @@ const okBtnText = 'Перевести заявку'
 
 const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   id,
+  type,
   recordId,
   isLoading,
   permissions,
@@ -38,7 +39,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   })
 
   const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
-    undefined,
+    { taskType: type },
     { skip: !permissions.classificationOfWorkTypes },
   )
 
@@ -126,17 +127,15 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
             </Checkbox>
           </Form.Item>
 
-          {permissions.classificationOfWorkTypes && (
-            <Form.Item data-testid='work-type-form-item' name='workType' label='Тип работ'>
-              <Select
-                placeholder='Выберите тип работ'
-                loading={workTypesIsFetching}
-                options={workTypes}
-                disabled={isLoading || workTypesIsFetching}
-                fieldNames={idAndTitleSelectFieldNames}
-              />
-            </Form.Item>
-          )}
+          <Form.Item data-testid='work-type-form-item' name='workType' label='Тип работ'>
+            <Select
+              placeholder='Выберите тип работ'
+              loading={workTypesIsFetching}
+              options={workTypes}
+              disabled={!permissions.classificationOfWorkTypes || isLoading || workTypesIsFetching}
+              fieldNames={idAndTitleSelectFieldNames}
+            />
+          </Form.Item>
 
           <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
             <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />

@@ -7,15 +7,16 @@ import { GetWorkTypesQueryArgs, GetWorkTypesSuccessResponse } from 'modules/ware
 import { useGetWorkTypesQuery } from 'modules/warehouse/services/workTypeApi.service'
 
 import { isErrorResponse } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetWorkTypeListResult = CustomUseQueryHookResult<
-  GetWorkTypesQueryArgs,
+  MaybeUndefined<GetWorkTypesQueryArgs>,
   GetWorkTypesSuccessResponse
 >
 
 type UseGetWorkTypesOptions = CustomUseQueryOptions<
-  GetWorkTypesQueryArgs,
+  MaybeUndefined<GetWorkTypesQueryArgs>,
   GetWorkTypesSuccessResponse
 >
 

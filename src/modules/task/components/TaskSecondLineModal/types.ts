@@ -12,7 +12,7 @@ export type TaskSecondLineFormFields = {
   comment?: string
 }
 
-export type TaskSecondLineModalProps = Pick<TaskModel, 'id' | 'recordId'> & {
+export type TaskSecondLineModalProps = Pick<TaskModel, 'id' | 'recordId' | 'type'> & {
   permissions: MatchedUserPermissions
   isLoading: boolean
 
