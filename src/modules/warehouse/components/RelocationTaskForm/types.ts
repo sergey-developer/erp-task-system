@@ -27,7 +27,7 @@ export type ExecutorOptionGroup = Pick<ExecutorOption, 'label' | 'value'> & {
 
 export type ExecutorOption = {
   label: string
-  value: IdType
+  value: IdType | string
   users?: IdType[]
 }
 
