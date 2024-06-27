@@ -19,20 +19,17 @@ import { InventorizationEquipmentTableItem, ReviseEquipmentTableProps } from './
 
 type GetColumnsArgs = Pick<
   ReviseEquipmentTableProps,
-  'locations' | 'locationsIsLoading' | 'onChangeQuantityFact' | 'onChangeLocationFact'
->
+  'locationsIsLoading' | 'onChangeQuantityFact' | 'onChangeLocationFact'
+> & {
+  locationOptions: DefaultOptionType[]
+}
 
 export const getColumns = ({
-  locations,
+  locationOptions,
   locationsIsLoading,
   onChangeQuantityFact,
   onChangeLocationFact,
 }: GetColumnsArgs): ProColumns<InventorizationEquipmentTableItem>[] => {
-  const locationOptions: DefaultOptionType[] = [
-    undefinedSelectOption,
-    ...locations.map((loc) => ({ label: loc.title, value: loc.id })),
-  ]
-
   return [
     {
       key: 'title',
@@ -153,7 +150,9 @@ export const getColumns = ({
               (!equipmentCategoryIsConsumable ||
                 (equipmentCategoryIsConsumable && quantityPlan === 0))
             ),
-          value: !isNil(locationFact)
+          value: config.entity.isLocationFactUndefined
+            ? undefinedSelectOption.value
+            : !isNil(locationFact)
             ? isObject(locationFact)
               ? locationFact.id
               : locationFact

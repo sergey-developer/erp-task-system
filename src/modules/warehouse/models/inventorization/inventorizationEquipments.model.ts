@@ -10,6 +10,7 @@ export type InventorizationEquipmentListItemModel = {
     EquipmentModel,
     'id' | 'title' | 'category' | 'serialNumber' | 'inventoryNumber'
   >
+  isLocationFactUndefined: boolean
   locationPlan: MaybeNull<LocationModel>
   locationFact: MaybeNull<LocationModel>
   quantity: {
