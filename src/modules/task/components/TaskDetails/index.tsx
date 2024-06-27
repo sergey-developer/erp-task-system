@@ -804,6 +804,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     <Col span={11}>
                       <WorkGroupBlock
                         id={task.id}
+                        type={task.type}
                         recordId={task.recordId}
                         status={task.status}
                         extendedStatus={task.extendedStatus}

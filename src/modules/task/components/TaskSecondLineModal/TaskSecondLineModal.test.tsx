@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { TaskTypeEnum } from 'modules/task/constants/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
@@ -26,6 +27,7 @@ import { TaskSecondLineModalProps } from './types'
 const props: Readonly<TaskSecondLineModalProps> = {
   permissions: {},
   id: fakeId(),
+  type: TaskTypeEnum.Request,
   recordId: fakeIdStr(),
   isLoading: false,
   onCancel: jest.fn(),
@@ -73,8 +75,6 @@ const setMarkDefaultGroup = async (user: UserEvent) => {
 
 // work type field
 const getWorkTypeFormItem = () => within(getContainer()).getByTestId('work-type-form-item')
-const queryWorkTypeFormItem = () => within(getContainer()).queryByTestId('work-type-form-item')
-// const getEmployeeSelect = () => within(getEmployeeFormItem()).getByTestId('employee-select')
 const getWorkTypeSelectInput = () => selectTestUtils.getSelect(getWorkTypeFormItem())
 
 const openWorkTypeSelect = (user: UserEvent) =>
@@ -159,7 +159,6 @@ export const testUtils = {
   getMarkDefaultGroupField,
   setMarkDefaultGroup,
 
-  queryWorkTypeFormItem,
   getWorkTypeSelectInput,
   openWorkTypeSelect,
   setWorkType,
@@ -463,7 +462,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
   })
 
   describe('Тип работ', () => {
-    test(`Отображается если есть права ${UserPermissionsEnum.ClassificationOfWorkTypes}`, async () => {
+    test('Отображается', async () => {
       mockGetWorkGroupsSuccess({ body: [] })
 
       const workTypeListItem = warehouseFixtures.workTypeListItem()
@@ -480,7 +479,6 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       const selectedWorkType = testUtils.querySelectedWorkType(workTypeListItem.title)
 
       expect(input).toBeInTheDocument()
-      expect(input).toBeEnabled()
       expect(selectedWorkType).not.toBeInTheDocument()
       workTypes.forEach((wt) => {
         const option = selectTestUtils.getSelectOption(wt.title)
@@ -488,14 +486,25 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       })
     })
 
-    test(`Не отображается если нет прав ${UserPermissionsEnum.ClassificationOfWorkTypes}`, async () => {
-      mockGetWorkGroupsSuccess()
+    test(`Активно если есть права ${UserPermissionsEnum.ClassificationOfWorkTypes}`, async () => {
+      mockGetWorkGroupsSuccess({ body: [] })
       mockGetWorkTypesSuccess()
+
+      render(<TaskSecondLineModal {...props} permissions={{ classificationOfWorkTypes: true }} />)
+
+      await testUtils.expectWorkTypeLoadingFinished()
+      const input = testUtils.getWorkTypeSelectInput()
+      expect(input).toBeEnabled()
+    })
+
+    test(`Не активно если нет права ${UserPermissionsEnum.ClassificationOfWorkTypes}`, async () => {
+      mockGetWorkGroupsSuccess({ body: [] })
 
       render(<TaskSecondLineModal {...props} permissions={{ classificationOfWorkTypes: false }} />)
 
-      const formItem = testUtils.queryWorkTypeFormItem()
-      expect(formItem).not.toBeInTheDocument()
+      await testUtils.expectWorkTypeLoadingFinished()
+      const input = testUtils.getWorkTypeSelectInput()
+      expect(input).toBeDisabled()
     })
 
     test('Можно выбрать значение', async () => {
