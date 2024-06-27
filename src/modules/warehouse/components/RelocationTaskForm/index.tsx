@@ -111,7 +111,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     const usersGroupsOptions: ExecutorOption[] = usersGroups.map((group) => ({
       label: group.title,
       users: group.users,
-      value: group.id,
+      value: `${group.id}-${group.title}`,
     }))
 
     const options = []
