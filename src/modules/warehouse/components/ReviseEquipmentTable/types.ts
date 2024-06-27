@@ -8,7 +8,14 @@ import { MaybeNull, Nullable, SetNonNullable } from 'shared/types/utils'
 
 export type ReviseEquipmentTableItem = Pick<
   InventorizationEquipmentListItemModel,
-  'id' | 'equipment' | 'locationPlan' | 'locationFact' | 'quantity' | 'isFilled' | 'hasDiff'
+  | 'id'
+  | 'equipment'
+  | 'locationPlan'
+  | 'locationFact'
+  | 'quantity'
+  | 'isFilled'
+  | 'hasDiff'
+  | 'isLocationFactUndefined'
 >
 
 export type ActiveReviseEquipmentTableRow = {
