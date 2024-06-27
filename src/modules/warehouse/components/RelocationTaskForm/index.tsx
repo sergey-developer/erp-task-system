@@ -78,7 +78,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     form,
   )
 
-  const [executors, setExecutors] = useState<IdType[]>([])
+  const [executors, setExecutors] = useState<ExecutorOption['value'][]>([])
 
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(type)
   const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
