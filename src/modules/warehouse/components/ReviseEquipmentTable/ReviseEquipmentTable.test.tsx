@@ -373,29 +373,6 @@ describe('Таблица сверки оборудования', () => {
       expect(selectedOption).toHaveTextContent(locationListItem.title)
     })
 
-    test(`Устанавливается значение по умолчанию "${undefinedSelectOption.label}" если isLocationFactUndefined=false, значения нет и поле isFilled=true`, async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
-      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
-        isFilled: true,
-        locationFact: null,
-        isLocationFactUndefined: false,
-      })
-
-      const { user } = render(
-        <ReviseEquipmentTable
-          {...props}
-          locations={[locationListItem]}
-          dataSource={[inventorizationEquipmentListItem]}
-        />,
-      )
-
-      await testUtils.openLocationFactSelect(user, inventorizationEquipmentListItem.id)
-      const selectedOption = testUtils.getSelectedLocationFact(inventorizationEquipmentListItem.id)
-
-      expect(selectedOption).toBeInTheDocument()
-      expect(selectedOption).toHaveTextContent(undefinedSelectOption.label as string)
-    })
-
     test(`Устанавливается значение по умолчанию "${undefinedSelectOption.label}" если isLocationFactUndefined=true`, async () => {
       const locationListItem = catalogsFixtures.locationListItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({

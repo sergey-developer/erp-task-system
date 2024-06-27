@@ -161,8 +161,6 @@ export const getColumns = ({
             ? isObject(locationFact)
               ? locationFact.id
               : locationFact
-            : config.entity.isFilled
-            ? undefinedSelectOption.value
             : undefined,
           ...(!isNil(locationFact) && !isNil(locationPlan)
             ? isObject(locationFact)
