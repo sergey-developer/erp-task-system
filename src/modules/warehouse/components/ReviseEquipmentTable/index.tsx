@@ -1,5 +1,8 @@
 import { EditableProTable } from '@ant-design/pro-components'
+import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, useMemo } from 'react'
+
+import { undefinedSelectOption } from 'shared/constants/selectField'
 
 import { getColumns } from './columns'
 import { TableWrapperStyled } from './styles'
@@ -18,9 +21,20 @@ const ReviseEquipmentTable: FC<ReviseEquipmentTableProps> = ({
 }) => {
   const editableKeys = useMemo(() => dataSource.map((item) => item.id), [dataSource])
 
+  const locationOptions = useMemo<DefaultOptionType[]>(
+    () => [undefinedSelectOption, ...locations.map((loc) => ({ label: loc.title, value: loc.id }))],
+    [locations],
+  )
+
   const columns = useMemo(
-    () => getColumns({ locations, locationsIsLoading, onChangeQuantityFact, onChangeLocationFact }),
-    [locations, locationsIsLoading, onChangeLocationFact, onChangeQuantityFact],
+    () =>
+      getColumns({
+        locationOptions,
+        locationsIsLoading,
+        onChangeQuantityFact,
+        onChangeLocationFact,
+      }),
+    [locationOptions, locationsIsLoading, onChangeLocationFact, onChangeQuantityFact],
   )
 
   return (
