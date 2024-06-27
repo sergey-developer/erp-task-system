@@ -249,9 +249,7 @@ describe('Вкладка списка заявок на перемещение',
         render(<RelocationTasksTab {...props} />)
 
         await testUtils.expectLoadingFinished()
-        const notification = await notificationTestUtils.findNotification(
-          getRelocationTasksErrMsg,
-        )
+        const notification = await notificationTestUtils.findNotification(getRelocationTasksErrMsg)
 
         expect(notification).toBeInTheDocument()
       })

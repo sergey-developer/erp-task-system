@@ -120,9 +120,7 @@ describe('Страница списка заявок на перемещение
         })
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
-        const notification = await notificationTestUtils.findNotification(
-          getRelocationTasksErrMsg,
-        )
+        const notification = await notificationTestUtils.findNotification(getRelocationTasksErrMsg)
 
         expect(notification).toBeInTheDocument()
       })

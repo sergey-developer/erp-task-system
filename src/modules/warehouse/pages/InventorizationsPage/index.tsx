@@ -82,10 +82,9 @@ const initialGetInventorizationsQueryArgs: Partial<
 }
 
 const InventorizationsPage: FC = () => {
+  const permissions = useUserPermissions([UserPermissionsEnum.InventorizationCreate])
   const [searchParams] = useSearchParams()
   const inventorizationId = Number(searchParams.get('inventorizationId')) || undefined
-
-  const permissions = useUserPermissions([UserPermissionsEnum.InventorizationCreate])
 
   const { tableRef, drawerHeight } = useDrawerHeightByTable()
 
