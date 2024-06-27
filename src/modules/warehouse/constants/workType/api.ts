@@ -1,3 +1,3 @@
 export enum WorkTypeApiEnum {
-  GetWorkTypeList = '/work-types/'
+  GetWorkTypes = '/work-types/',
 }

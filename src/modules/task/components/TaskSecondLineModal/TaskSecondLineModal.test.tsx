@@ -1,12 +1,14 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import { validationMessages } from 'shared/constants/validation'
 
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-import { mockGetWorkGroupsSuccess } from '_tests_/mocks/api'
+import { mockGetWorkGroupsSuccess, mockGetWorkTypesSuccess } from '_tests_/mocks/api'
 import {
   buttonTestUtils,
   checkboxTestUtils,
@@ -22,6 +24,7 @@ import TaskSecondLineModal from './index'
 import { TaskSecondLineModalProps } from './types'
 
 const props: Readonly<TaskSecondLineModalProps> = {
+  permissions: {},
   id: fakeId(),
   recordId: fakeIdStr(),
   isLoading: false,
@@ -68,11 +71,32 @@ const setMarkDefaultGroup = async (user: UserEvent) => {
   return field
 }
 
+// work type field
+const getWorkTypeFormItem = () => within(getContainer()).getByTestId('work-type-form-item')
+const queryWorkTypeFormItem = () => within(getContainer()).queryByTestId('work-type-form-item')
+// const getEmployeeSelect = () => within(getEmployeeFormItem()).getByTestId('employee-select')
+const getWorkTypeSelectInput = () => selectTestUtils.getSelect(getWorkTypeFormItem())
+
+const openWorkTypeSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getWorkTypeFormItem())
+
+const setWorkType = selectTestUtils.clickSelectOption
+
+const getSelectedWorkType = (title: string) =>
+  selectTestUtils.getSelectedOptionByTitle(getWorkTypeFormItem(), title)
+
+const querySelectedWorkType = (title: string) =>
+  selectTestUtils.querySelectedOptionByTitle(getWorkTypeFormItem(), title)
+
+const expectWorkTypeLoadingStarted = () =>
+  selectTestUtils.expectLoadingStarted(getWorkTypeFormItem())
+
+const expectWorkTypeLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getWorkTypeFormItem())
+
 // comment field
 const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
-
 const getCommentFieldLabel = () => within(getCommentFormItem()).getByText('Комментарий')
-
 const findCommentError = (error: string) => within(getCommentFormItem()).findByText(error)
 
 const getCommentField = () =>
@@ -134,6 +158,15 @@ export const testUtils = {
   getMarkDefaultGroupFormItem,
   getMarkDefaultGroupField,
   setMarkDefaultGroup,
+
+  queryWorkTypeFormItem,
+  getWorkTypeSelectInput,
+  openWorkTypeSelect,
+  setWorkType,
+  getSelectedWorkType,
+  querySelectedWorkType,
+  expectWorkTypeLoadingStarted,
+  expectWorkTypeLoadingFinished,
 
   getCommentFormItem,
   findCommentError,
@@ -426,6 +459,61 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       const field = await testUtils.setMarkDefaultGroup(user)
 
       expect(field).toBeChecked()
+    })
+  })
+
+  describe('Тип работ', () => {
+    test(`Отображается если есть права ${UserPermissionsEnum.ClassificationOfWorkTypes}`, async () => {
+      mockGetWorkGroupsSuccess({ body: [] })
+
+      const workTypeListItem = warehouseFixtures.workTypeListItem()
+      const workTypes = [workTypeListItem]
+      mockGetWorkTypesSuccess({ body: workTypes })
+
+      const { user } = render(
+        <TaskSecondLineModal {...props} permissions={{ classificationOfWorkTypes: true }} />,
+      )
+
+      await testUtils.expectWorkTypeLoadingFinished()
+      const input = testUtils.getWorkTypeSelectInput()
+      await testUtils.openWorkTypeSelect(user)
+      const selectedWorkType = testUtils.querySelectedWorkType(workTypeListItem.title)
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(selectedWorkType).not.toBeInTheDocument()
+      workTypes.forEach((wt) => {
+        const option = selectTestUtils.getSelectOption(wt.title)
+        expect(option).toBeInTheDocument()
+      })
+    })
+
+    test(`Не отображается если нет прав ${UserPermissionsEnum.ClassificationOfWorkTypes}`, async () => {
+      mockGetWorkGroupsSuccess()
+      mockGetWorkTypesSuccess()
+
+      render(<TaskSecondLineModal {...props} permissions={{ classificationOfWorkTypes: false }} />)
+
+      const formItem = testUtils.queryWorkTypeFormItem()
+      expect(formItem).not.toBeInTheDocument()
+    })
+
+    test('Можно выбрать значение', async () => {
+      mockGetWorkGroupsSuccess({ body: [] })
+
+      const workTypeListItem = warehouseFixtures.workTypeListItem()
+      mockGetWorkTypesSuccess({ body: [workTypeListItem] })
+
+      const { user } = render(
+        <TaskSecondLineModal {...props} permissions={{ classificationOfWorkTypes: true }} />,
+      )
+
+      await testUtils.expectWorkTypeLoadingFinished()
+      await testUtils.openWorkTypeSelect(user)
+      await testUtils.setWorkType(user, workTypeListItem.title)
+      const selectedWorkType = testUtils.getSelectedWorkType(workTypeListItem.title)
+
+      expect(selectedWorkType).toBeInTheDocument()
     })
   })
 

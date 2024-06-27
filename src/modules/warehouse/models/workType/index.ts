@@ -1,4 +1,4 @@
 export * from './workType.model'
 
-export * from './workTypeList.model'
-export * from './getWorkTypeList.model'
+export * from './workTypes.model'
+export * from './getWorkTypes.model'
