@@ -1,5 +1,4 @@
 import { WorkTypeModel } from 'modules/warehouse/models'
 
 export type WorkTypeListItemModel = Pick<WorkTypeModel, 'id' | 'title'>
-
-export type WorkTypeListModel = WorkTypeListItemModel[]
+export type WorkTypesModel = WorkTypeListItemModel[]
