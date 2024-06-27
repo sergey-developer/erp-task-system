@@ -6,7 +6,7 @@ import { AuthenticatedUser } from 'modules/auth/types'
 import { useSelector } from 'shared/hooks/useSelector'
 import { MaybeNull } from 'shared/types/utils'
 
-type UseAuthUserResult = MaybeNull<{
+export type UseAuthUserResult = MaybeNull<{
   id: AuthenticatedUser['userId']
 }>
 

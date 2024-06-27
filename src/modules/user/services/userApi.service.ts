@@ -7,6 +7,8 @@ import {
   GetUserMeCodeSuccessResponse,
   GetUserMeQueryArgs,
   GetUserMeSuccessResponse,
+  GetUsersGroupsQueryArgs,
+  GetUsersGroupsSuccessResponse,
   GetUsersQueryArgs,
   GetUsersSuccessResponse,
   GetWarehouseMSIQueryArgs,
@@ -64,18 +66,6 @@ const userApiService = baseApiService.injectEndpoints({
         } catch {}
       },
     }),
-    getUserMe: build.query<GetUserMeSuccessResponse, GetUserMeQueryArgs>({
-      query: () => ({
-        url: UserApiEnum.GetUserMe,
-        method: HttpMethodEnum.Get,
-      }),
-    }),
-    getUserMeCode: build.query<GetUserMeCodeSuccessResponse, GetUserMeCodeQueryArgs>({
-      query: () => ({
-        url: UserApiEnum.GetUserMeCode,
-        method: HttpMethodEnum.Get,
-      }),
-    }),
     updateUserStatus: build.mutation<UpdateUserStatusSuccessResponse, UpdateUserStatusMutationArgs>(
       {
         query: ({ userId, ...payload }) => ({
@@ -100,6 +90,27 @@ const userApiService = baseApiService.injectEndpoints({
         },
       },
     ),
+
+    getUserMe: build.query<GetUserMeSuccessResponse, GetUserMeQueryArgs>({
+      query: () => ({
+        url: UserApiEnum.GetUserMe,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
+    getUserMeCode: build.query<GetUserMeCodeSuccessResponse, GetUserMeCodeQueryArgs>({
+      query: () => ({
+        url: UserApiEnum.GetUserMeCode,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
+
+    getUsersGroups: build.query<GetUsersGroupsSuccessResponse, GetUsersGroupsQueryArgs>({
+      query: () => ({
+        url: UserApiEnum.GetUsersGroups,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
+
     getWarehouseMSI: build.query<GetWarehouseMSISuccessResponse, GetWarehouseMSIQueryArgs>({
       query: ({ userId }) => ({
         url: getWarehouseMSIUrl(userId),
@@ -120,9 +131,13 @@ const userApiService = baseApiService.injectEndpoints({
 export const {
   useGetUserMeQuery,
   useGetUserMeCodeQuery,
+
   useGetUsersQuery,
   useUpdateUserTimeZoneMutation,
   useUpdateUserStatusMutation,
+
+  useGetUsersGroupsQuery,
+
   useGetWarehouseMSIQuery,
   useGetUserActionsQuery,
   endpoints,

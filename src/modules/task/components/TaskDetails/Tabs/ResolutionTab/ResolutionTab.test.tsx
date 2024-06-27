@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
-import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import taskFixtures from '_tests_/fixtures/task'
@@ -44,13 +44,13 @@ describe('Вкладка решение заявки', () => {
   describe('Вложения', () => {
     test('Отображаются если есть', () => {
       render(<ResolutionTab {...props} />)
-      const attachments = attachmentListTestUtils.getContainer()
+      const attachments = attachmentsTestUtils.getContainer()
       expect(attachments).toBeInTheDocument()
     })
 
     test('Не отображаются если их нет', () => {
       render(<ResolutionTab {...props} attachments={[]} />)
-      const attachments = attachmentListTestUtils.queryContainer()
+      const attachments = attachmentsTestUtils.queryContainer()
       expect(attachments).not.toBeInTheDocument()
     })
   })

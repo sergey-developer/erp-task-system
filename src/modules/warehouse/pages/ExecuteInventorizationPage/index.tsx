@@ -19,10 +19,16 @@ import {
   mapInventorizationWarehousesTitles,
 } from 'modules/warehouse/utils/inventorization'
 
+import Spinner from 'components/Spinner'
+
 import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { TabsStyled } from './styles'
+
+const ExecuteInventorizationDiscrepanciesTab = React.lazy(
+  () => import('modules/warehouse/components/ExecuteInventorizationDiscrepanciesTab'),
+)
 
 const { Text } = Typography
 
@@ -165,12 +171,22 @@ const ExecuteInventorizationPage: FC = () => {
 
       <TabsStyled
         type='card'
+        destroyInactiveTabPane
         defaultActiveKey={ExecuteInventorizationPageTabsEnum.Revise}
         items={[
           {
             key: ExecuteInventorizationPageTabsEnum.Revise,
             label: 'Сверка',
             children: <ExecuteInventorizationReviseTab inventorizationId={inventorizationId} />,
+          },
+          {
+            key: ExecuteInventorizationPageTabsEnum.Discrepancies,
+            label: 'Расхождения',
+            children: (
+              <React.Suspense fallback={<Spinner tip='Загрузка вкладки расхождений' />}>
+                <ExecuteInventorizationDiscrepanciesTab inventorizationId={inventorizationId} />
+              </React.Suspense>
+            ),
           },
         ]}
       />

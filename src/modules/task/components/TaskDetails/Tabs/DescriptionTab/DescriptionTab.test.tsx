@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
-import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 
 import taskFixtures from '_tests_/fixtures/task'
 import { buttonTestUtils, fakeWord, render } from '_tests_/utils'
@@ -67,13 +67,13 @@ describe('Вкладка описания заявки', () => {
   describe('Вложения', () => {
     test('Отображаются если есть', () => {
       render(<DescriptionTab {...props} />)
-      const attachmentList = attachmentListTestUtils.getContainer()
+      const attachmentList = attachmentsTestUtils.getContainer()
       expect(attachmentList).toBeInTheDocument()
     })
 
     test('Не отображаются если их нет', () => {
       render(<DescriptionTab {...props} attachments={[]} />)
-      const attachmentList = attachmentListTestUtils.queryContainer()
+      const attachmentList = attachmentsTestUtils.queryContainer()
       expect(attachmentList).not.toBeInTheDocument()
     })
   })

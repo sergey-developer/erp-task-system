@@ -3,7 +3,7 @@ import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
-import AttachmentList from 'modules/attachment/components/AttachmentList'
+import AttachmentImages from 'modules/attachment/components/AttachmentImages'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { attachmentsToFiles } from 'modules/attachment/utils'
@@ -554,13 +554,13 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
                 <Col span={24}>
                   <LoadingArea
-                    data-testid='equipment-image-list-loading'
+                    data-testid='equipment-images-loading'
                     isLoading={equipmentAttachmentListIsFetching}
                     tip='Загрузка изображений...'
                   >
                     <Space $block direction='vertical'>
-                      <AttachmentList
-                        data-testid='equipment-image-list'
+                      <AttachmentImages
+                        data-testid='equipment-images'
                         data={extractPaginationResults(equipmentAttachmentList)}
                       />
 

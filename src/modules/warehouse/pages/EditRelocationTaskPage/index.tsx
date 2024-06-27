@@ -15,7 +15,7 @@ import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hoo
 import { attachmentsToFiles } from 'modules/attachment/utils'
 import { useAuthUser } from 'modules/auth/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useGetUsers, useUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
@@ -124,8 +124,6 @@ const EditRelocationTaskPage: FC = () => {
   ])
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
-  const executorFormValue = Form.useWatch('executor', form)
-  const controllerFormValue = Form.useWatch('controller', form)
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
@@ -281,9 +279,11 @@ const EditRelocationTaskPage: FC = () => {
     },
   )
 
-  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUsers({
+  const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers({
     isManager: false,
   })
+
+  const { currentData: usersGroups = [], isFetching: usersGroupsIsFetching } = useGetUsersGroups()
 
   const [
     getRelocateFromLocationList,
@@ -448,7 +448,7 @@ const EditRelocationTaskPage: FC = () => {
         })),
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
-        executor: values.executor,
+        executors: values.executors,
         controller: values.controller,
         comment: values.comment,
         images: values.images?.length ? extractIdsFromFilesResponse(values.images) : undefined,
@@ -752,22 +752,26 @@ const EditRelocationTaskPage: FC = () => {
       const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
       const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(relocationTask.type)
 
+      const controllerFromExecutors = relocationTask.controller
+        ? relocationTask.executors?.find((e) => e.id === relocationTask.controller?.id)
+        : undefined
+
       form.setFieldsValue({
         type: relocationTask.type,
         deadlineAtDate: moment(relocationTask.deadlineAt),
         deadlineAtTime: moment(relocationTask.deadlineAt),
         relocateFrom: typeIsEnteringBalances ? undefined : relocationTask.relocateFrom?.id,
         relocateTo: typeIsWriteOff ? undefined : relocationTask.relocateTo?.id,
-        executor:
-          relocationTask.executor?.id === relocationTask.controller?.id
-            ? undefined
-            : relocationTask.executor?.id,
-        controller:
-          relocationTask.controller?.id === relocationTask.executor?.id
-            ? undefined
-            : relocationTask.controller?.id === authUser.id
-            ? undefined
-            : relocationTask.controller?.id,
+        executors: controllerFromExecutors
+          ? undefined
+          : relocationTask.executors?.length
+          ? relocationTask.executors.map((e) => e.id)
+          : undefined,
+        controller: controllerFromExecutors
+          ? undefined
+          : relocationTask.controller?.id === authUser.id
+          ? undefined
+          : relocationTask.controller?.id,
         comment: relocationTask?.comment || undefined,
       })
     }
@@ -853,16 +857,6 @@ const EditRelocationTaskPage: FC = () => {
     }
   }, [form, relocationEquipmentBalanceList, relocationEquipmentList, relocationTask])
 
-  const controllerOptions = useMemo(
-    () => userList.filter((usr) => usr.id !== authUser?.id && usr.id !== executorFormValue),
-    [authUser?.id, executorFormValue, userList],
-  )
-
-  const executorOptions = useMemo(
-    () => userList.filter((usr) => usr.id !== controllerFormValue),
-    [controllerFormValue, userList],
-  )
-
   const isRelocationFromMainToMsi =
     relocateFromWarehouse?.type === WarehouseTypeEnum.Main &&
     relocateToWarehouse?.type === WarehouseTypeEnum.Msi
@@ -920,15 +914,17 @@ const EditRelocationTaskPage: FC = () => {
         <Row gutter={[40, 40]}>
           <Col span={24}>
             <RelocationTaskForm
+              authUser={authUser}
               permissions={permissions}
               isLoading={updateTaskIsLoading || relocationTaskIsFetching}
-              usersIsLoading={userListIsFetching}
               relocateFromLocationList={relocateFromLocationList}
               relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
               relocateToLocationList={relocateToLocationList}
               relocateToLocationListIsLoading={relocateToLocationListIsFetching}
-              executorOptions={executorOptions}
-              controllerOptions={controllerOptions}
+              users={users}
+              usersIsLoading={usersIsFetching}
+              usersGroups={usersGroups}
+              usersGroupsIsLoading={usersGroupsIsFetching}
               controllerIsRequired={controllerIsRequired}
               type={selectedType}
               onChangeType={handleChangeType}

@@ -19,6 +19,7 @@ export type EditableFieldProps = ReadonlyFieldProps & {
   isLoading: boolean
 }
 
+// todo: переиспользовать где возможно
 const EditableField: FC<EditableFieldProps> = ({
   value,
   displayValue = value,

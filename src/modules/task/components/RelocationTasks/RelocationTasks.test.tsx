@@ -1,7 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import pick from 'lodash/pick'
 
-import { testUtils as attachmentListTestUtils } from 'modules/task/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 import { getRelocateFromToTitle } from 'modules/warehouse/utils/relocationTask'
@@ -9,6 +10,7 @@ import { getRelocateFromToTitle } from 'modules/warehouse/utils/relocationTask'
 import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
 
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { buttonTestUtils, render } from '_tests_/utils'
 
@@ -107,7 +109,7 @@ describe('Список заявок на перемещение', () => {
       render(<RelocationTasks {...props} />)
 
       const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Документы/)
-      const value = attachmentListTestUtils.getContainerIn(
+      const value = attachmentsTestUtils.getContainerIn(
         testUtils.getListItem(relocationTaskListItem.id),
       )
 
@@ -153,16 +155,39 @@ describe('Список заявок на перемещение', () => {
     expect(value).toBeInTheDocument()
   })
 
-  test('Исполнитель отображается', () => {
-    render(<RelocationTasks {...props} />)
+  describe('Исполнитель', () => {
+    test('Отображается тот кто завершил заявку если он есть', () => {
+      render(<RelocationTasks {...props} />)
 
-    const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Исполнитель/)
-    const value = taskAssigneeTestUtils.getContainerIn(
-      testUtils.getListItem(relocationTaskListItem.id),
-    )
+      const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Исполнитель/)
+      const value = taskAssigneeTestUtils.getContainerIn(
+        testUtils.getListItem(relocationTaskListItem.id),
+      )
 
-    expect(label).toBeInTheDocument()
-    expect(value).toBeInTheDocument()
+      expect(label).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+      expect(value).toHaveTextContent(relocationTaskListItem.completedBy!.fullName)
+    })
+
+    test('Отображаются исполнители если нет того кто завершил заявку', () => {
+      const executor1 = pick(userFixtures.user(), 'id', 'fullName', 'phone')
+      const executor2 = pick(userFixtures.user(), 'id', 'fullName', 'phone')
+      const relocationTaskListItem = warehouseFixtures.relocationTaskListItem({
+        completedBy: null,
+        executors: [executor1, executor2],
+      })
+
+      render(<RelocationTasks {...props} data={[relocationTaskListItem]} />)
+
+      const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Исполнитель/)
+      const executors = taskAssigneeTestUtils.getAllContainerIn(
+        testUtils.getListItem(relocationTaskListItem.id),
+      )
+
+      expect(label).toBeInTheDocument()
+      expect(executors[0]).toHaveTextContent(executor1.fullName)
+      expect(executors[1]).toHaveTextContent(executor2.fullName)
+    })
   })
 
   test('При клике по элементу вызывается обработчик', async () => {

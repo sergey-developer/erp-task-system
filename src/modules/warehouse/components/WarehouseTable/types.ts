@@ -1,14 +1,13 @@
 import { TableProps } from 'antd'
 
-import {
-  GetWarehouseListSortValue,
-  WarehouseListItemModel,
-} from 'modules/warehouse/models'
+import { GetWarehouseListSortValue, WarehouseListItemModel } from 'modules/warehouse/models'
+
+import { TableSortProps } from 'shared/types/sort'
+import { SetNonNullable } from 'shared/types/utils'
 
 export type WarehouseTableItem = WarehouseListItemModel
 
-export type WarehouseTableProps = Required<
+export type WarehouseTableProps = SetNonNullable<
   Pick<TableProps<WarehouseTableItem>, 'dataSource' | 'loading' | 'onChange'>
-> & {
-  sort?: GetWarehouseListSortValue
-}
+> &
+  TableSortProps<GetWarehouseListSortValue>

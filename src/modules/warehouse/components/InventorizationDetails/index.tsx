@@ -2,6 +2,7 @@ import { Button, Card, Col, Drawer, DrawerProps, Flex, Row, Typography } from 'a
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import Attachments from 'modules/attachment/components/Attachments'
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -10,6 +11,7 @@ import {
   inventorizationTypeDict,
 } from 'modules/warehouse/constants/inventorization'
 import { useGetInventorization } from 'modules/warehouse/hooks/inventorization'
+import { InventorizationRequestArgs } from 'modules/warehouse/types'
 import {
   checkInventorizationStatusIsInProgress,
   checkInventorizationStatusIsNew,
@@ -21,6 +23,7 @@ import {
 import LoadingArea from 'components/LoadingArea'
 
 import { IdType } from 'shared/types/common'
+import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { cardBodyStyles } from './styles'
@@ -28,10 +31,10 @@ import { groupNomenclatures } from './utils'
 
 const { Text } = Typography
 
-export type InventorizationDetailsProps = Required<Pick<DrawerProps, 'onClose' | 'open'>> & {
-  inventorizationId: IdType
-  height?: number
-}
+export type InventorizationDetailsProps = Required<Pick<DrawerProps, 'onClose' | 'open'>> &
+  Pick<InventorizationRequestArgs, 'inventorizationId'> & {
+    height?: number
+  }
 
 const InventorizationDetails: FC<InventorizationDetailsProps> = ({
   height,
@@ -49,7 +52,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
   const executorIsCurrentUser = useIdBelongAuthUser(inventorization?.executor.id)
 
   const onClickExecuteInventorization = () =>
-    navigate(getExecuteInventorizationPageLink(inventorizationId), {
+    navigate(getExecuteInventorizationPageLink({ inventorizationId }), {
       state: getExecuteInventorizationPageLocationState(inventorization!),
     })
 
@@ -92,7 +95,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
         {inventorization && (
           <Flex vertical gap='middle'>
             <Flex vertical gap='middle'>
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Тип:</Text>
                 </Col>
@@ -100,7 +103,27 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{inventorizationTypeDict[inventorization.type]}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
+                <Col span={10}>
+                  <Text type='secondary'>Описание:</Text>
+                </Col>
+
+                <Col span={14}>{valueOrHyphen(inventorization.description)}</Col>
+              </Row>
+
+              <Row>
+                <Col span={10}>
+                  <Text type='secondary'>Вложения:</Text>
+                </Col>
+
+                <Col span={14}>
+                  {valueOrHyphen(inventorization.attachments, (value) => (
+                    <Attachments data={value} />
+                  ))}
+                </Col>
+              </Row>
+
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Склады:</Text>
                 </Col>
@@ -110,7 +133,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 </Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Срок выполнения:</Text>
                 </Col>
@@ -118,7 +141,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{formatDate(inventorization.deadlineAt)}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Исполнитель:</Text>
                 </Col>
@@ -126,7 +149,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{inventorization.executor.fullName}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Статус:</Text>
                 </Col>
@@ -134,7 +157,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{inventorizationStatusDict[inventorization.status]}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Автор:</Text>
                 </Col>
@@ -142,7 +165,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 <Col span={14}>{inventorization.createdBy.fullName}</Col>
               </Row>
 
-              <Row align='middle'>
+              <Row>
                 <Col span={10}>
                   <Text type='secondary'>Создано:</Text>
                 </Col>

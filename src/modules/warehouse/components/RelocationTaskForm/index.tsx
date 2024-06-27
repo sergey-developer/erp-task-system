@@ -1,5 +1,5 @@
-import { Col, Form, Input, Row, Select, Typography, Upload } from 'antd'
-import React, { FC, useMemo } from 'react'
+import { Col, Form, Input, Row, Select, SelectProps, Typography, Upload } from 'antd'
+import React, { FC, useMemo, useState } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
@@ -19,22 +19,34 @@ import { filesFormItemProps } from 'shared/constants/form'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
+import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 
-import { LocationOption, LocationOptionGroup, RelocationTaskFormProps } from './types'
-import { makeLocationOptions } from './utils'
+import { RelocationTaskFormFields } from '../../types'
+import {
+  ExecutorOption,
+  ExecutorOptionGroup,
+  LocationOption,
+  LocationOptionGroup,
+  RelocationTaskFormProps,
+} from './types'
+import { collectUsersIds, makeLocationOptions } from './utils'
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 
 const { TextArea } = Input
 const { Text } = Typography
 
 const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
+  authUser,
   permissions,
   isLoading,
 
-  executorOptions,
+  users,
+  usersIsLoading,
 
-  controllerOptions,
+  usersGroups,
+  usersGroupsIsLoading,
+
   controllerIsRequired,
 
   onUploadImage,
@@ -42,8 +54,6 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   onDeleteImage,
   imageIsDeleting,
   imagesIsLoading,
-
-  usersIsLoading,
 
   relocateFromLocationList,
   relocateFromLocationListIsLoading,
@@ -56,6 +66,20 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   onChangeRelocateFrom,
   onChangeRelocateTo,
 }) => {
+  const form = Form.useFormInstance()
+
+  const controllerFormValue: RelocationTaskFormFields['controller'] = Form.useWatch(
+    'controller',
+    form,
+  )
+
+  const executorsFormValue: MaybeUndefined<RelocationTaskFormFields['executors']> = Form.useWatch(
+    'executors',
+    form,
+  )
+
+  const [executors, setExecutors] = useState<ExecutorOption['value'][]>([])
+
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(type)
   const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
 
@@ -73,6 +97,43 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     () => (permissions ? getRelocationTaskTypeOptions(permissions) : []),
     [permissions],
   )
+
+  const controllerOptions = useMemo(
+    () => users.filter((usr) => usr.id !== authUser?.id && !executorsFormValue?.includes(usr.id)),
+    [authUser?.id, executorsFormValue, users],
+  )
+
+  const executorsOptions: ExecutorOptionGroup[] = useMemo(() => {
+    const usersOptions: ExecutorOption[] = users
+      .filter((usr) => usr.id !== controllerFormValue)
+      .map((usr) => ({ label: usr.fullName, value: usr.id }))
+
+    const usersGroupsOptions: ExecutorOption[] = usersGroups.map((group) => ({
+      label: group.title,
+      users: group.users,
+      value: `${group.id}-${group.title}`,
+    }))
+
+    const options = []
+    if (usersOptions.length)
+      options.push({ label: 'Пользователи', options: usersOptions, value: -1 })
+
+    if (usersGroupsOptions.length)
+      options.push({ label: 'Группы', options: usersGroupsOptions, value: -2 })
+
+    return options
+  }, [controllerFormValue, users, usersGroups])
+
+  const onChangeExecutors: SelectProps<IdType, ExecutorOption>['onChange'] = async (
+    value,
+    option,
+  ) => {
+    if (Array.isArray(option)) {
+      const usersIds = await collectUsersIds(option)
+      form.setFieldValue('executors', usersIds)
+      setExecutors(usersIds)
+    }
+  }
 
   return (
     <Row data-testid='relocation-task-form' gutter={90}>
@@ -156,20 +217,23 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         </Form.Item>
 
         <Form.Item
-          data-testid='executor-form-item'
+          data-testid='executors-form-item'
           label='Исполнитель'
-          name='executor'
+          name='executors'
           rules={onlyRequiredRules}
         >
-          <Select
-            dropdownRender={(menu) => <div data-testid='executor-select-dropdown'>{menu}</div>}
-            fieldNames={idAndFullNameSelectFieldNames}
-            loading={usersIsLoading}
-            disabled={isLoading || usersIsLoading}
-            options={executorOptions}
+          <Select<IdType, ExecutorOption>
+            mode='multiple'
+            dropdownRender={(menu) => <div data-testid='executors-select-dropdown'>{menu}</div>}
+            loading={usersIsLoading || usersGroupsIsLoading}
+            disabled={isLoading || usersIsLoading || usersGroupsIsLoading}
+            options={executorsOptions}
             placeholder='Выберите исполнителя'
             showSearch
-            filterOption={filterOptionBy('fullName')}
+            filterOption={filterOptionBy('label')}
+            onChange={onChangeExecutors}
+            // @ts-ignore
+            value={executors}
           />
         </Form.Item>
 

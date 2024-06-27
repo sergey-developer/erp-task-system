@@ -1,9 +1,11 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Button, Flex, Space } from 'antd'
+import { Button, Flex, Space, UploadProps } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
+import { AttachmentTypeEnum } from 'modules/attachment/constants'
+import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUsers, useUserPermissions } from 'modules/user/hooks'
 import { CreateInventorizationRequestModalProps } from 'modules/warehouse/components/CreateInventorizationRequestModal/types'
@@ -40,6 +42,7 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { mergeDateTime } from 'shared/utils/date'
+import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import {
   calculatePaginationParams,
@@ -136,6 +139,16 @@ const InventorizationsPage: FC = () => {
     },
   )
 
+  const [createAttachmentMutation, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
+  const [deleteAttachmentMutation, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
+
+  const createAttachment = useCallback<NonNullable<UploadProps['customRequest']>>(
+    async (options) => {
+      await createAttachmentMutation({ type: AttachmentTypeEnum.InventorizationFile }, options)
+    },
+    [createAttachmentMutation],
+  )
+
   const [createInventorizationMutation, { isLoading: createInventorizationIsLoading }] =
     useCreateInventorization()
 
@@ -146,11 +159,12 @@ const InventorizationsPage: FC = () => {
     useGetInventorizations(getInventorizationsQueryArgs)
 
   const onCreateInventorization = useCallback<CreateInventorizationRequestModalProps['onSubmit']>(
-    async ({ deadlineAtDate, deadlineAtTime, ...values }, setFields) => {
+    async ({ deadlineAtDate, deadlineAtTime, attachments, ...values }, setFields) => {
       try {
         const newInventorization = await createInventorizationMutation({
           ...values,
           deadlineAt: mergeDateTime(deadlineAtDate, deadlineAtTime).toISOString(),
+          attachments: attachments?.length ? extractIdsFromFilesResponse(attachments) : undefined,
         }).unwrap()
 
         toggleOpenCreateInventorizationRequestModal()
@@ -286,6 +300,10 @@ const InventorizationsPage: FC = () => {
             warehousesIsLoading={warehousesIsFetching}
             executors={users}
             executorsIsLoading={usersIsFetching}
+            onCreateAttachment={createAttachment}
+            attachmentIsCreating={createAttachmentIsLoading}
+            onDeleteAttachment={deleteAttachmentMutation}
+            attachmentIsDeleting={deleteAttachmentIsLoading}
           />
         </React.Suspense>
       )}

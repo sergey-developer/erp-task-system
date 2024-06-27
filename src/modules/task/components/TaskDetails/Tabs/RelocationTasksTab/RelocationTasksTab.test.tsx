@@ -24,7 +24,7 @@ import {
   mockGetRelocationTasksServerError,
   mockGetRelocationTasksSuccess,
   mockGetRelocationTaskSuccess,
-  mockGetUserListSuccess,
+  mockGetUsersSuccess,
   mockGetWarehouseMSISuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
@@ -136,7 +136,7 @@ describe('Вкладка списка заявок на перемещение',
 
     test('При клике переходит на страницу создания заявки на перемещение', async () => {
       mockGetRelocationTasksSuccess()
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetCurrencyListSuccess()
       mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
@@ -185,7 +185,7 @@ describe('Вкладка списка заявок на перемещение',
 
     test('При клике переходит на страницу формирования пакета документов', async () => {
       mockGetRelocationTasksSuccess()
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetCurrencyListSuccess()
       mockGetLocationListSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()

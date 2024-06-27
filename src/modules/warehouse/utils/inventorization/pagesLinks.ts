@@ -14,5 +14,7 @@ type GetInventorizationsPageLinkParams = Partial<
 export const getInventorizationsPageLink = (params: GetInventorizationsPageLinkParams): string =>
   getPathWithQs<GetInventorizationsPageLinkParams>(WarehouseRouteEnum.Inventorizations, params)
 
-export const getExecuteInventorizationPageLink = (inventorizationId: IdType): string =>
+export const getExecuteInventorizationPageLink = ({
+  inventorizationId,
+}: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
   generatePath(WarehouseRouteEnum.ExecuteInventorization, { id: String(inventorizationId) })

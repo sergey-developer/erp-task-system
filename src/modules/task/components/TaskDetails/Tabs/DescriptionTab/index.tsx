@@ -1,7 +1,7 @@
 import { Popover, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import AttachmentList from 'modules/task/components/AttachmentList'
+import Attachments from 'modules/attachment/components/Attachments'
 import { TaskModel } from 'modules/task/models'
 import { MatchedUserPermissions } from 'modules/user/utils'
 
@@ -55,7 +55,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
 
       {description && <Paragraph>{renderStringWithLineBreak(description)}</Paragraph>}
 
-      {!!attachments?.length && <AttachmentList data={attachments} />}
+      {!!attachments?.length && <Attachments data={attachments} />}
     </Space>
   )
 }

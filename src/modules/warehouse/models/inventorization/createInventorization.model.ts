@@ -9,7 +9,22 @@ export type CreateInventorizationMutationArgs = {
   warehouses: IdType[]
   deadlineAt: string
   executor: IdType
+  description?: string
+  attachments?: IdType[]
   nomenclatures?: IdType[]
 }
 
-export type CreateInventorizationSuccessResponse = InventorizationModel
+export type CreateInventorizationSuccessResponse = Pick<
+  InventorizationModel,
+  | 'id'
+  | 'type'
+  | 'deadlineAt'
+  | 'warehouses'
+  | 'executor'
+  | 'status'
+  | 'createdBy'
+  | 'createdAt'
+  | 'completedAt'
+  | 'nomenclatures'
+  | 'description'
+>
