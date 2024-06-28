@@ -67,7 +67,7 @@ import {
   activeRequestSuspendItemProps,
   canExecuteTaskProps,
   canRegisterFNItemProps,
-  testUtils as cardTitleTestUtils,
+  testUtils as taskDetailsTitleTestUtils,
 } from './TaskDetailsTitle/TaskDetailsTitle.test'
 import TaskDetails, { TaskDetailsProps } from './index'
 
@@ -161,8 +161,8 @@ describe('Карточка заявки', () => {
       })
 
       await testUtils.expectTaskLoadingFinished()
-      await cardTitleTestUtils.openMenu(user)
-      const menuItem = cardTitleTestUtils.getExecuteTaskMenuItem()
+      await taskDetailsTitleTestUtils.openMenu(user)
+      const menuItem = taskDetailsTitleTestUtils.getExecuteTaskMenuItem()
 
       expect(menuItem).toBeInTheDocument()
       menuTestUtils.expectMenuItemNotDisabled(menuItem)
@@ -183,8 +183,8 @@ describe('Карточка заявки', () => {
         })
 
         await testUtils.expectTaskLoadingFinished()
-        await cardTitleTestUtils.openMenu(user)
-        const menuItem = cardTitleTestUtils.getExecuteTaskMenuItem()
+        await taskDetailsTitleTestUtils.openMenu(user)
+        const menuItem = taskDetailsTitleTestUtils.getExecuteTaskMenuItem()
 
         menuTestUtils.expectMenuItemDisabled(menuItem)
       })
@@ -207,8 +207,8 @@ describe('Карточка заявки', () => {
         })
 
         await testUtils.expectTaskLoadingFinished()
-        await cardTitleTestUtils.openMenu(user)
-        const menuItem = cardTitleTestUtils.getExecuteTaskMenuItem()
+        await taskDetailsTitleTestUtils.openMenu(user)
+        const menuItem = taskDetailsTitleTestUtils.getExecuteTaskMenuItem()
 
         menuTestUtils.expectMenuItemDisabled(menuItem)
       })
@@ -232,8 +232,8 @@ describe('Карточка заявки', () => {
         })
 
         await testUtils.expectTaskLoadingFinished()
-        await cardTitleTestUtils.openMenu(user)
-        const menuItem = cardTitleTestUtils.getExecuteTaskMenuItem()
+        await taskDetailsTitleTestUtils.openMenu(user)
+        const menuItem = taskDetailsTitleTestUtils.getExecuteTaskMenuItem()
 
         menuTestUtils.expectMenuItemDisabled(menuItem)
       })
@@ -261,8 +261,8 @@ describe('Карточка заявки', () => {
       })
 
       await testUtils.expectTaskLoadingFinished()
-      await cardTitleTestUtils.openMenu(user)
-      await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
+      await taskDetailsTitleTestUtils.openMenu(user)
+      await taskDetailsTitleTestUtils.clickExecuteTaskMenuItem(user)
 
       const confirmExecuteTaskRegistrationFNModal =
         await confirmExecuteTaskRegistrationFNModalTestUtils.findContainer()
@@ -297,8 +297,8 @@ describe('Карточка заявки', () => {
       })
 
       await testUtils.expectTaskLoadingFinished()
-      await cardTitleTestUtils.openMenu(user)
-      await cardTitleTestUtils.clickExecuteTaskMenuItem(user)
+      await taskDetailsTitleTestUtils.openMenu(user)
+      await taskDetailsTitleTestUtils.clickExecuteTaskMenuItem(user)
 
       await executeTaskModalTestUtils.findContainer()
       await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
@@ -333,8 +333,8 @@ describe('Карточка заявки', () => {
       })
 
       await testUtils.expectTaskLoadingFinished()
-      await cardTitleTestUtils.openMenu(user)
-      await cardTitleTestUtils.clickRegisterFNMenuItem(user)
+      await taskDetailsTitleTestUtils.openMenu(user)
+      await taskDetailsTitleTestUtils.clickRegisterFNMenuItem(user)
 
       const modal = await createRegistrationFNRequestModalTestUtils.findContainer()
       await createRegistrationFNRequestModalTestUtils.openChangeTypeSelect(user)
@@ -408,8 +408,8 @@ describe('Карточка заявки', () => {
 
           mockCreateTaskSuspendRequestSuccess(props.taskId, { body: taskFixtures.suspendRequest() })
 
-          const userId = task.assignee!.id
-          mockGetUserActionsSuccess(userId, {
+          const currentUser = userFixtures.user({ id: task.assignee!.id })
+          mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
                 ...userFixtures.taskActionsPermissions,
@@ -419,14 +419,14 @@ describe('Карточка заявки', () => {
           })
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({ id: userId }, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
             }),
           })
 
           await testUtils.expectTaskLoadingFinished()
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
+          await taskDetailsTitleTestUtils.openMenu(user)
+          await taskDetailsTitleTestUtils.clickRequestSuspendItem(user)
           await requestTaskSuspendModalTestUtils.findContainer()
 
           await requestTaskSuspendModalTestUtils.setReason(
@@ -451,16 +451,21 @@ describe('Карточка заявки', () => {
             }),
           })
 
+          const currentUser = userFixtures.user()
+          mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
           mockCreateTaskSuspendRequestNotFoundError(props.taskId)
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({}),
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
+            }),
           })
 
           await testUtils.expectTaskLoadingFinished()
 
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
+          await taskDetailsTitleTestUtils.openMenu(user)
+          await taskDetailsTitleTestUtils.clickRequestSuspendItem(user)
           await requestTaskSuspendModalTestUtils.findContainer()
 
           await requestTaskSuspendModalTestUtils.setReason(
@@ -493,18 +498,23 @@ describe('Карточка заявки', () => {
             externalResponsibleCompany: [fakeWord()],
           }
 
+          const currentUser = userFixtures.user()
+          mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
           mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
             body: badRequestResponse,
           })
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({}),
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
+            }),
           })
 
           await testUtils.expectTaskLoadingFinished()
 
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
+          await taskDetailsTitleTestUtils.openMenu(user)
+          await taskDetailsTitleTestUtils.clickRequestSuspendItem(user)
           await requestTaskSuspendModalTestUtils.findContainer()
 
           await requestTaskSuspendModalTestUtils.setReason(
@@ -563,16 +573,21 @@ describe('Карточка заявки', () => {
             }),
           })
 
+          const currentUser = userFixtures.user()
+          mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
           mockCreateTaskSuspendRequestServerError(props.taskId)
 
           const { user } = render(<TaskDetails {...props} />, {
-            store: getStoreWithAuth({}),
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
+            }),
           })
 
           await testUtils.expectTaskLoadingFinished()
 
-          await cardTitleTestUtils.openMenu(user)
-          await cardTitleTestUtils.clickRequestSuspendItem(user)
+          await taskDetailsTitleTestUtils.openMenu(user)
+          await taskDetailsTitleTestUtils.clickRequestSuspendItem(user)
           await requestTaskSuspendModalTestUtils.findContainer()
 
           await requestTaskSuspendModalTestUtils.setReason(
