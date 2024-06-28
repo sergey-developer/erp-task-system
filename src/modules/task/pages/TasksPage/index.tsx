@@ -40,9 +40,9 @@ import { taskDetailsTabExist } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import {
   useGetUsers,
-  useUserPermissions,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
+  useUserPermissions,
 } from 'modules/user/hooks'
 import { checkUserStatusOffline } from 'modules/user/utils'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'

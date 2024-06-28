@@ -2,10 +2,15 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
+import { CommonRouteEnum } from 'configs/routes'
+
+import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { LOGIN_BAD_REQUEST_ERROR_MSG, LOGIN_WRONG_DATA_ERROR_MSG } from 'modules/auth/constants'
 import { AuthRouteEnum } from 'modules/auth/constants/routes'
 import LoginPage from 'modules/auth/pages/LoginPage'
 import { authLocalStorageService } from 'modules/auth/services/authLocalStorage.service'
+import TasksPage from 'modules/task/pages/TasksPage'
+import { testUtils as tasksPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
 
 import { setupStore } from 'state/store'
 
@@ -13,23 +18,30 @@ import { commonApiMessages } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
 import authFixtures from '_tests_/fixtures/auth'
+import userFixtures from '_tests_/fixtures/user'
 import {
+  mockGetTaskCountersSuccess,
+  mockGetTasksSuccess,
   mockLoginBadRequestError,
   mockLoginServerError,
   mockLoginSuccess,
   mockLoginUnauthorizedError,
   mockRefreshTokenSuccess,
 } from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeEmail,
   fakeWord,
+  getStoreWithAuth,
   render,
   renderInRoute,
+  renderInRoute_latest,
   setupApiTests,
 } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId('login-card')
+const queryContainer = () => screen.queryByTestId('login-card')
 const findContainer = () => screen.findByTestId('login-card')
 
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
@@ -64,12 +76,11 @@ const setPassword = async (user: UserEvent, value: string) => {
 }
 
 // submit button
-const getSubmitBtn = () => screen.getByTestId('btn-submit')
+const getSubmitBtn = () => within(getContainer()).getByTestId('btn-submit')
 
-const clickSubmitButton = async (user: UserEvent): Promise<HTMLElement> => {
+const clickSubmitButton = async (user: UserEvent) => {
   const submitBtn = getSubmitBtn()
   await user.click(submitBtn)
-  return submitBtn
 }
 
 // other
@@ -78,6 +89,7 @@ const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSub
 
 export const testUtils = {
   getContainer,
+  queryContainer,
   findContainer,
   getChildByText,
 
@@ -212,16 +224,34 @@ describe('Страница авторизации', () => {
   describe('При успешном запросе', () => {
     test('Пользователь покидает страницу авторизации', async () => {
       mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
+      mockGetTasksSuccess()
+      mockGetTaskCountersSuccess()
 
-      const { user, checkRouteChanged } = renderInRoute(<LoginPage />, AuthRouteEnum.Login)
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: AuthRouteEnum.Login,
+            element: <ProtectedRoute component={<LoginPage />} onlyGuest />,
+          },
+          {
+            path: CommonRouteEnum.Home,
+            element: <ProtectedRoute component={<TasksPage />} />,
+          },
+        ],
+        { initialEntries: [AuthRouteEnum.Login], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, null, null, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
+      )
 
       await testUtils.setEmail(user, fakeEmail())
       await testUtils.setPassword(user, fakeWord())
       await testUtils.clickSubmitButton(user)
-      await testUtils.expectLoadingStarted()
-      await testUtils.expectLoadingFinished()
+      const tasksPage = await tasksPageTestUtils.findContainer()
 
-      expect(checkRouteChanged()).toBe(true)
+      expect(tasksPage).toBeInTheDocument()
     })
 
     test('В localStorage сохраняются access/refresh token', async () => {

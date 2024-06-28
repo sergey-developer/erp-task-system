@@ -14,6 +14,7 @@ import RelocationTasksPage from 'modules/warehouse/pages/RelocationTasksPage'
 
 import commonFixtures from '_tests_/fixtures/common'
 import taskFixtures from '_tests_/fixtures/task'
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
@@ -75,7 +76,11 @@ describe('Вкладка списка заявок на перемещение',
       body: commonFixtures.paginatedListResponse(relocationTasks),
     })
 
-    render(<RelocationTasksTab {...props} />)
+    render(<RelocationTasksTab {...props} />, {
+      store: getStoreWithAuth(undefined, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+      }),
+    })
 
     await testUtils.expectLoadingFinished()
     const title = within(getContainer()).getByText(`Перемещения (${relocationTasks.length})`)
@@ -87,7 +92,11 @@ describe('Вкладка списка заявок на перемещение',
     test('Отображается', () => {
       mockGetRelocationTasksSuccess()
 
-      render(<RelocationTasksTab {...props} />)
+      render(<RelocationTasksTab {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       const button = testUtils.getCreateTaskButton()
       expect(button).toBeInTheDocument()
@@ -112,7 +121,9 @@ describe('Вкладка списка заявок на перемещение',
       mockGetRelocationTasksSuccess()
 
       render(<RelocationTasksTab {...props} />, {
-        store: getStoreWithAuth(props.task.assignee!),
+        store: getStoreWithAuth(props.task.assignee!, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
       })
 
       const button = testUtils.getCreateTaskButton()
@@ -175,7 +186,11 @@ describe('Вкладка списка заявок на перемещение',
     test('Отображается', () => {
       mockGetRelocationTasksSuccess()
 
-      render(<RelocationTasksTab {...props} />)
+      render(<RelocationTasksTab {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       const button = testUtils.getCreateDocumentsPackageButton()
 
@@ -203,6 +218,11 @@ describe('Вкладка списка заявок на перемещение',
           },
         ],
         { initialEntries: [TasksRoutesEnum.DesktopTaskList], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       const button = testUtils.getCreateDocumentsPackageButton()
@@ -220,7 +240,11 @@ describe('Вкладка списка заявок на перемещение',
         body: commonFixtures.paginatedListResponse(relocationTasks),
       })
 
-      render(<RelocationTasksTab {...props} />)
+      render(<RelocationTasksTab {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
 
@@ -235,7 +259,11 @@ describe('Вкладка списка заявок на перемещение',
         const errorMsg = fakeWord()
         mockGetRelocationTasksForbiddenError({ body: { detail: errorMsg } })
 
-        render(<RelocationTasksTab {...props} />)
+        render(<RelocationTasksTab {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(errorMsg)
@@ -246,7 +274,11 @@ describe('Вкладка списка заявок на перемещение',
       test('Обрабатывается ошибка 500', async () => {
         mockGetRelocationTasksServerError()
 
-        render(<RelocationTasksTab {...props} />)
+        render(<RelocationTasksTab {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(getRelocationTasksErrMsg)
@@ -276,6 +308,11 @@ describe('Вкладка списка заявок на перемещение',
           },
         ],
         { initialEntries: [TasksRoutesEnum.DesktopTaskList], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.expectLoadingFinished()

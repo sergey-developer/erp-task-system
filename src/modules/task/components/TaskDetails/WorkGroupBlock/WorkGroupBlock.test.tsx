@@ -118,7 +118,6 @@ const querySecondLineButton = () =>
 const clickSecondLineButton = async (user: UserEvent) => {
   const button = getSecondLineButton()
   await user.click(button)
-  return button
 }
 
 const expectSecondLineLoadingStarted = async () => {
