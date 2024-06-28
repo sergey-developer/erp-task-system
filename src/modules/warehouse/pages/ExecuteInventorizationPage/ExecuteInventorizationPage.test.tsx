@@ -151,9 +151,6 @@ describe('Страница проведения инвентаризации', (
     expect(warehousesValue).toBeInTheDocument()
   })
 
-  test.todo('Отображается верная вкладка по умолчанию')
-  test.todo('Вкладка расхождения открывается')
-
   describe('Кнопка завершения инвентаризации', () => {
     test('Отображается и активна если условия соблюдены', () => {
       const inventorization = warehouseFixtures.inventorization({
@@ -375,4 +372,7 @@ describe('Страница проведения инвентаризации', (
       expect(details).toBeInTheDocument()
     })
   })
+
+  test.todo('Отображается верная вкладка по умолчанию')
+  test.todo('Вкладка расхождения открывается')
 })

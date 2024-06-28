@@ -5,12 +5,12 @@ import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
   CreateEquipmentsBadRequestErrorResponse,
   CustomerListModel,
-  EquipmentCategoryListItemModel,
   EquipmentCategoriesModel,
+  EquipmentCategoryListItemModel,
   NomenclatureListModel,
   NomenclatureModel,
   WarehouseListModel,
-  WorkTypeListModel,
+  WorkTypesModel,
 } from 'modules/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
@@ -79,7 +79,7 @@ export type EquipmentFormModalProps = Required<
     macroregions: MacroregionsModel
     macroregionsIsLoading: boolean
 
-    workTypes: WorkTypeListModel
+    workTypes: WorkTypesModel
     workTypesIsLoading: boolean
 
     nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>

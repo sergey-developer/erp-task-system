@@ -13,8 +13,8 @@ export type ReviseEquipmentTableItem = Pick<
   | 'locationPlan'
   | 'locationFact'
   | 'quantity'
-  | 'isFilled'
   | 'hasDiff'
+  | 'isFilled'
   | 'isLocationFactUndefined'
 >
 

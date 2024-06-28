@@ -25,3 +25,5 @@ export * from './useGetTaskRegistrationRequestRecipientsFN'
 export * from './useCreateTaskRegistrationFNRequest'
 
 export * from './useCreateTaskAttachment'
+
+export * from './useClassifyTaskWorkType'

@@ -24,6 +24,7 @@ type UserShortInfoProps = Partial<
   }
 >
 
+// todo: переименовать в UserPopoverInfo
 const UserShortInfo: FC<UserShortInfoProps> = ({
   firstName,
   lastName,
