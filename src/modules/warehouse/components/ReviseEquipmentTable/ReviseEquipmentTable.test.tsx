@@ -373,11 +373,10 @@ describe('Таблица сверки оборудования', () => {
       expect(selectedOption).toHaveTextContent(locationListItem.title)
     })
 
-    test('Устанавливается значение по умолчанию если его нет и поле isFilled=true', async () => {
+    test(`Устанавливается значение по умолчанию "${undefinedSelectOption.label}" если isLocationFactUndefined=true`, async () => {
       const locationListItem = catalogsFixtures.locationListItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
-        locationFact: null,
-        isFilled: true,
+        isLocationFactUndefined: true,
       })
 
       const { user } = render(

@@ -1,4 +1,8 @@
-import { WorkTypeModel } from 'modules/warehouse/models'
+import { IdType } from 'shared/types/common'
 
-export type WorkTypeListItemModel = Pick<WorkTypeModel, 'id' | 'title'>
+export type WorkTypeListItemModel = {
+  id: IdType
+  title: string
+}
+
 export type WorkTypesModel = WorkTypeListItemModel[]
