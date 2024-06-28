@@ -269,7 +269,9 @@ describe('Заголовок карточки заявки', () => {
 
       test('При клике вызывается обработчик', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canRegisterFNItemProps} />, {
-          store: getStoreWithAuth(canRegisterFNItemProps.assignee!),
+          store: getStoreWithAuth(canRegisterFNItemProps.assignee!, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
         })
 
         await testUtils.openMenu(user)
@@ -279,7 +281,9 @@ describe('Заголовок карточки заявки', () => {
 
       test('Активен если условия соблюдены', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canRegisterFNItemProps} />, {
-          store: getStoreWithAuth(canRegisterFNItemProps.assignee!),
+          store: getStoreWithAuth(canRegisterFNItemProps.assignee!, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
         })
 
         await testUtils.openMenu(user)
@@ -294,7 +298,11 @@ describe('Заголовок карточки заявки', () => {
               {...canRegisterFNItemProps}
               type={TaskTypeEnum.RequestTask}
             />,
-            { store: getStoreWithAuth(canRegisterFNItemProps.assignee!) },
+            {
+              store: getStoreWithAuth(canRegisterFNItemProps.assignee!, undefined, undefined, {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              }),
+            },
           )
 
           await testUtils.openMenu(user)
@@ -304,7 +312,11 @@ describe('Заголовок карточки заявки', () => {
         test(`Но заявка не в статусе ${TaskStatusEnum.InProgress}`, async () => {
           const { user } = render(
             <TaskDetailsTitle {...props} {...canRegisterFNItemProps} status={TaskStatusEnum.New} />,
-            { store: getStoreWithAuth(canRegisterFNItemProps.assignee!) },
+            {
+              store: getStoreWithAuth(canRegisterFNItemProps.assignee!, undefined, undefined, {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              }),
+            },
           )
 
           await testUtils.openMenu(user)
@@ -325,7 +337,11 @@ describe('Заголовок карточки заявки', () => {
         test('Но нету рабочей группы', async () => {
           const { user } = render(
             <TaskDetailsTitle {...props} {...canRegisterFNItemProps} workGroup={null} />,
-            { store: getStoreWithAuth(canRegisterFNItemProps.assignee!) },
+            {
+              store: getStoreWithAuth(canRegisterFNItemProps.assignee!, undefined, undefined, {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              }),
+            },
           )
 
           await testUtils.openMenu(user)
