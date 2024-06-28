@@ -278,7 +278,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
       const title = within(testUtils.getContainer()).getByText(
@@ -293,7 +297,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -309,7 +317,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -325,7 +337,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -341,7 +357,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -401,7 +421,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -417,7 +441,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -438,6 +466,11 @@ describe('Информация о заявке о перемещении', () =>
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.expectRelocationTaskLoadingFinished()
@@ -464,7 +497,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -480,7 +517,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -497,7 +538,11 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
         mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -534,6 +579,11 @@ describe('Информация о заявке о перемещении', () =>
             },
           ],
           { initialEntries: [WarehouseRouteEnum.RelocationTasks], initialIndex: 0 },
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          },
         )
 
         await testUtils.expectRelocationTaskLoadingFinished()
@@ -551,7 +601,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -568,7 +622,11 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
         mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -586,7 +644,11 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
         mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectRelocationTaskLoadingFinished()
         const button = testUtils.getCreateDocumentsButton()
@@ -603,6 +665,11 @@ describe('Информация о заявке о перемещении', () =>
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          },
         )
 
         await testUtils.expectRelocationTaskLoadingFinished()
@@ -625,7 +692,11 @@ describe('Информация о заявке о перемещении', () =>
       })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -640,7 +711,11 @@ describe('Информация о заявке о перемещении', () =>
       })
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -652,7 +727,11 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationTaskServerError(props.relocationTaskId)
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationTaskLoadingFinished()
 
@@ -671,7 +750,11 @@ describe('Информация о заявке о перемещении', () =>
         body: relocationEquipmentList,
       })
 
-      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+      render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectRelocationEquipmentListLoadingFinished()
 
@@ -689,7 +772,11 @@ describe('Информация о заявке о перемещении', () =>
           body: { detail: errorMessage },
         })
 
-        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectRelocationEquipmentListLoadingFinished()
 
@@ -704,7 +791,11 @@ describe('Информация о заявке о перемещении', () =>
           body: { detail: errorMessage },
         })
 
-        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectRelocationEquipmentListLoadingFinished()
 
@@ -716,7 +807,11 @@ describe('Информация о заявке о перемещении', () =>
         mockGetRelocationTaskSuccess(props.relocationTaskId)
         mockGetRelocationEquipmentListServerError(props.relocationTaskId)
 
-        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />)
+        render(<RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectRelocationEquipmentListLoadingFinished()
 
@@ -744,6 +839,11 @@ describe('Информация о заявке о перемещении', () =>
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          },
         )
 
         await testUtils.expectRelocationEquipmentListLoadingFinished()
@@ -776,6 +876,11 @@ describe('Информация о заявке о перемещении', () =>
 
           const { user } = render(
             <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+            {
+              store: getStoreWithAuth(undefined, undefined, undefined, {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              }),
+            },
           )
 
           await testUtils.expectRelocationEquipmentListLoadingFinished()
@@ -804,6 +909,11 @@ describe('Информация о заявке о перемещении', () =>
 
           const { user } = render(
             <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+            {
+              store: getStoreWithAuth(undefined, undefined, undefined, {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              }),
+            },
           )
 
           await testUtils.expectRelocationEquipmentListLoadingFinished()
@@ -830,6 +940,11 @@ describe('Информация о заявке о перемещении', () =>
 
           const { user } = render(
             <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+            {
+              store: getStoreWithAuth(undefined, undefined, undefined, {
+                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              }),
+            },
           )
 
           await testUtils.expectRelocationEquipmentListLoadingFinished()
@@ -855,6 +970,11 @@ describe('Информация о заявке о перемещении', () =>
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.openMenu(user)
@@ -888,6 +1008,11 @@ describe('Информация о заявке о перемещении', () =>
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.openMenu(user)
@@ -1022,6 +1147,11 @@ describe('Информация о заявке о перемещении', () =>
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.openMenu(user)
