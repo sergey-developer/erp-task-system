@@ -44,6 +44,8 @@ export enum TaskApiEnum {
 
   CreateTaskRegistrationFNRequest = '/tasks/:id/fa-registrations',
   GetTaskRegistrationRequestRecipientsFN = '/tasks/:id/fa-notice-recipients',
+
+  ClassifyTaskWorkType = '/tasks/:id/work-type',
 }
 
 export enum TaskApiTagEnum {

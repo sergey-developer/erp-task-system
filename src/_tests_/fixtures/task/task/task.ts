@@ -10,6 +10,7 @@ import { TaskModel, TaskResponseTimeModel } from 'modules/task/models'
 
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import taskFixtures from '_tests_/fixtures/task'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeDateString,
   fakeEmail,
@@ -83,6 +84,7 @@ export const task = (
     ? false
     : props!.isOlaNextBreachTimeChanged,
 
+  workType: warehouseFixtures.workType(),
   shop: { id: fakeId(), title: fakeWord() },
   attachments: [taskFixtures.attachment()],
   resolution: {

@@ -1,4 +1,4 @@
-import { Col, Row, RowProps, Typography } from 'antd'
+import { Col, ColProps, Row, RowProps, Typography } from 'antd'
 import React, { FC, ReactNode } from 'react'
 
 const { Text } = Typography
@@ -8,6 +8,7 @@ export type ReadonlyFieldProps = Pick<RowProps, 'align'> & {
   value: any
   displayValue?: ReactNode
   forceDisplayValue?: boolean
+  leftColProps?: ColProps
 }
 
 // todo: переиспользовать где возможно
@@ -17,11 +18,12 @@ const ReadonlyField: FC<ReadonlyFieldProps> = ({
   forceDisplayValue = false,
   label,
   align = 'middle',
+  leftColProps,
   ...props
 }) => {
   return (
     <Row {...props}>
-      <Col span={8}>
+      <Col span={8} {...leftColProps}>
         <Text type='secondary'>{label}</Text>
       </Col>
 

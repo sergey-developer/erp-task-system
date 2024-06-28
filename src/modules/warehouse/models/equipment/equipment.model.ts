@@ -6,7 +6,7 @@ import {
   MeasurementUnitModel,
   NomenclatureModel,
   WarehouseModel,
-  WorkTypeModel,
+  WorkTypeListItemModel,
 } from 'modules/warehouse/models'
 
 import { LocationModel } from 'shared/models/catalogs/location'
@@ -28,7 +28,7 @@ export type EquipmentModel = {
   isWarranty: boolean
   isRepaired: boolean
   isCredited: boolean
-  purpose: Pick<WorkTypeModel, 'id' | 'title'>
+  purpose: Pick<WorkTypeListItemModel, 'id' | 'title'>
   amount: number
 
   location: MaybeNull<Pick<LocationModel, 'id' | 'title'>>

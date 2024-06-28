@@ -1,10 +1,12 @@
 import { BaseTaskModel, SuspendRequestModel, TaskAttachmentListModel } from 'modules/task/models'
+import { WorkTypeModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type TaskModel = BaseTaskModel & {
   olaEstimatedTime: number
+  workType: MaybeNull<Pick<WorkTypeModel, 'id' | 'title' | 'actions'>>
   isOlaNextBreachTimeChanged: MaybeNull<boolean>
   previousOlaNextBreachTime: MaybeNull<string>
   resolution: { attachments: TaskAttachmentListModel }
