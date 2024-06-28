@@ -12,8 +12,8 @@ import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/c
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
-  getEquipmentAttachmentListErrMsg,
   EquipmentConditionEnum,
+  getEquipmentAttachmentListErrMsg,
   getEquipmentMessages,
   getEquipmentRelocationHistoryMessages,
 } from 'modules/warehouse/constants/equipment'
@@ -50,7 +50,7 @@ import {
   mockGetRelocationTaskSuccess,
   mockGetTechnicalExaminationsSuccess,
   mockGetWarehouseListSuccess,
-  mockGetWorkTypeListSuccess,
+  mockGetWorkTypesSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -1176,7 +1176,7 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
       mockGetWarehouseListSuccess()
-      mockGetWorkTypeListSuccess()
+      mockGetWorkTypesSuccess()
       mockGetCurrencyListSuccess()
       mockGetEquipmentCategoryListSuccess()
       mockGetNomenclatureListSuccess()
