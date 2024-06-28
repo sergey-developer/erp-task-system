@@ -78,7 +78,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     form,
   )
 
-  const [executors, setExecutors] = useState<IdType[]>([])
+  const [executors, setExecutors] = useState<ExecutorOption['value'][]>([])
 
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(type)
   const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
@@ -111,7 +111,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     const usersGroupsOptions: ExecutorOption[] = usersGroups.map((group) => ({
       label: group.title,
       users: group.users,
-      value: group.id,
+      value: `${group.id}-${group.title}`,
     }))
 
     const options = []

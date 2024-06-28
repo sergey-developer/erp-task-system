@@ -15,7 +15,13 @@ export const inventorizationEquipmentListItem = (
   props?: Partial<
     Pick<
       InventorizationEquipmentListItemModel,
-      'quantity' | 'isFilled' | 'hasDiff' | 'equipment' | 'locationFact' | 'locationPlan'
+      | 'quantity'
+      | 'isFilled'
+      | 'hasDiff'
+      | 'equipment'
+      | 'locationFact'
+      | 'locationPlan'
+      | 'isLocationFactUndefined'
     >
   >,
 ): InventorizationEquipmentListItemModel => ({
@@ -39,6 +45,9 @@ export const inventorizationEquipmentListItem = (
   locationPlan: isUndefined(props?.locationPlan)
     ? catalogsFixtures.location()
     : props!.locationPlan,
+  isLocationFactUndefined: isUndefined(props?.isLocationFactUndefined)
+    ? false
+    : props!.isLocationFactUndefined,
 
   id: fakeId(),
 })
