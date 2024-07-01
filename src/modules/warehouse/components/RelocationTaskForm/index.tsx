@@ -124,12 +124,12 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     return options
   }, [controllerFormValue, users, usersGroups])
 
-  const onChangeExecutors: SelectProps<IdType, ExecutorOption>['onChange'] = async (
+  const onChangeExecutors: SelectProps<IdType | string, ExecutorOption>['onChange'] = async (
     value,
     option,
   ) => {
     if (Array.isArray(option)) {
-      const usersIds = await collectUsersIds(option)
+      const usersIds = await collectUsersIds(option, [controllerFormValue])
       form.setFieldValue('executors', usersIds)
       setExecutors(usersIds)
     }
@@ -222,7 +222,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           name='executors'
           rules={onlyRequiredRules}
         >
-          <Select<IdType, ExecutorOption>
+          <Select<IdType | string, ExecutorOption>
             mode='multiple'
             dropdownRender={(menu) => <div data-testid='executors-select-dropdown'>{menu}</div>}
             loading={usersIsLoading || usersGroupsIsLoading}
@@ -232,8 +232,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
             showSearch
             filterOption={filterOptionBy('label')}
             onChange={onChangeExecutors}
-            // @ts-ignore
-            value={executors}
+            value={executors as any}
           />
         </Form.Item>
 
