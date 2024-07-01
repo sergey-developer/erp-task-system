@@ -25,6 +25,7 @@ import { CreateTaskSuspendRequestBadRequestErrorResponse } from 'modules/task/mo
 import { commonApiMessages } from 'shared/constants/common'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
+import systemFixtures from '_tests_/fixtures/system'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import {
@@ -40,6 +41,7 @@ import {
   mockDeleteTaskSuspendRequestServerError,
   mockDeleteTaskSuspendRequestSuccess,
   mockGetFaChangeTypesSuccess,
+  mockGetSystemSettingsSuccess,
   mockGetTaskReclassificationRequestSuccess,
   mockGetTaskRegistrationRequestRecipientsFNSuccess,
   mockGetTaskSuccess,
@@ -381,7 +383,6 @@ describe('Карточка заявки', () => {
           }),
         })
 
-        await testUtils.expectReclassificationRequestLoadingFinished()
         await taskReclassificationRequestTestUtils.findContainer()
         await taskReclassificationRequestTestUtils.clickCancelButton(user)
         const modal = await confirmCancelReclassificationRequestModalTestUtils.findContainer()
@@ -417,6 +418,8 @@ describe('Карточка заявки', () => {
               },
             }),
           })
+
+          mockGetSystemSettingsSuccess({ body: systemFixtures.settings() })
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth(currentUser, undefined, undefined, {
