@@ -4,7 +4,8 @@ import * as reactRouterDom from 'react-router-dom'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationEquipmentSimplifiedEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentSimplifiedEditableTable/RelocationEquipmentSimplifiedEditableTable.test'
-import { getEquipmentListTemplateErrorMsg } from 'modules/warehouse/constants/equipment'
+import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
+import { getEquipmentListTemplateErrMsg } from 'modules/warehouse/constants/equipment'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -21,7 +22,7 @@ import {
   mockGetEquipmentListTemplateServerError,
   mockGetEquipmentListTemplateSuccess,
   mockGetLocationListSuccess,
-  mockGetUserListSuccess,
+  mockGetUsersSuccess,
   mockGetWarehouseMSISuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
@@ -134,7 +135,7 @@ describe('Упрощенная страница создания заявки н
 
       const taskAssigneeUser = userFixtures.userListItem({ id: locationStateTask.assignee!.id })
       const currentUser = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [taskAssigneeUser, currentUser] })
+      mockGetUsersSuccess({ body: [taskAssigneeUser, currentUser] })
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -164,7 +165,7 @@ describe('Упрощенная страница создания заявки н
 
   describe('Перечень оборудования для перемещения со склада', () => {
     test('Отображается корректно', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -189,7 +190,7 @@ describe('Упрощенная страница создания заявки н
 
   describe('Кнопка скачивания шаблона', () => {
     test('Отображается если есть права', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -209,7 +210,7 @@ describe('Упрощенная страница создания заявки н
     })
 
     test('Не отображается если нет прав', () => {
-      mockGetUserListSuccess()
+      mockGetUsersSuccess()
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
@@ -225,7 +226,7 @@ describe('Упрощенная страница создания заявки н
     })
 
     test('При успешном запросе отрабатывает функционал скачивания', async () => {
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -261,7 +262,7 @@ describe('Упрощенная страница создания заявки н
     })
 
     test('При не успешном запросе отображается сообщение об ошибке', async () => {
-      mockGetUserListSuccess({ body: [] })
+      mockGetUsersSuccess({ body: [] })
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
@@ -277,7 +278,7 @@ describe('Упрощенная страница создания заявки н
 
       await testUtils.clickDownloadTemplateButton(user)
       const notification = await notificationTestUtils.findNotification(
-        getEquipmentListTemplateErrorMsg,
+        getEquipmentListTemplateErrMsg,
       )
 
       expect(notification).toBeInTheDocument()

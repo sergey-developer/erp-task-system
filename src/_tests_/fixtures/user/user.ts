@@ -1,17 +1,17 @@
 import { UserModel } from 'modules/user/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import { fakeEmail, fakeId, fakePhone, fakeUrl, fakeWord } from '_tests_/utils'
+import { fakeEmail, fakeId, fakeInteger, fakePhone, fakeUrl, fakeWord } from '_tests_/utils'
 
 export const user = (
-  props?: Partial<Pick<UserModel, 'isStaff' | 'timezone' | 'status' | 'permissions'>>,
+  props?: Partial<Pick<UserModel, 'id' | 'isStaff' | 'timezone' | 'status' | 'permissions'>>,
 ): UserModel => ({
+  id: props?.id || fakeInteger(),
   timezone: props?.timezone || fakeWord(),
   isStaff: props?.isStaff || false,
   status: props?.status || catalogsFixtures.userStatus(),
   permissions: props?.permissions || [],
 
-  id: fakeId(),
   avatar: fakeUrl(),
   firstName: fakeWord(),
   lastName: fakeWord(),

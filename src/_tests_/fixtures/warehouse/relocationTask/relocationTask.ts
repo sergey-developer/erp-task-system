@@ -1,3 +1,4 @@
+import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
 import {
@@ -14,16 +15,21 @@ import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/utils'
 import { relocationTaskAttachment } from './relocationTaskAttachment'
 
 export const relocationTask = (
-  props?: Partial<Pick<RelocationTaskModel, 'id' | 'status'>>,
+  props?: Partial<Pick<RelocationTaskModel, 'id' | 'status' | 'completedBy' | 'executors'>>,
 ): RelocationTaskModel => ({
   id: props?.id || fakeId(),
   status: props?.status || RelocationTaskStatusEnum.New,
+  completedBy: isUndefined(props?.completedBy)
+    ? pick(userFixtures.user(), 'id', 'fullName')
+    : props!.completedBy,
+  executors: isUndefined(props?.executors)
+    ? [pick(userFixtures.user(), 'id', 'fullName')]
+    : props!.executors,
 
   type: RelocationTaskTypeEnum.Relocation,
   deadlineAt: fakeDateString(),
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.user(), 'id', 'fullName'),
-  executor: pick(userFixtures.user(), 'id', 'fullName'),
   controller: pick(userFixtures.user(), 'id', 'fullName'),
   relocateFrom: { id: fakeId(), title: fakeWord() },
   relocateTo: { id: fakeId(), title: fakeWord() },

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { createEquipmentErrorMsg } from 'modules/warehouse/constants/equipment'
+import { createEquipmentErrMsg } from 'modules/warehouse/constants/equipment'
 import {
   CreateEquipmentMutationArgs,
   CreateEquipmentSuccessResponse,
@@ -30,7 +30,7 @@ export const useCreateEquipment = (): UseCreateEquipmentResult => {
       if (isBadRequestError(state.error) || isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createEquipmentErrorMsg)
+        showErrorNotification(createEquipmentErrMsg)
       }
     }
   }, [state.error])

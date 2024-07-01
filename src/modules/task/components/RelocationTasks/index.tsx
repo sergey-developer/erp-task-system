@@ -1,8 +1,8 @@
 import { Col, Divider, Row, Typography, Upload, UploadProps } from 'antd'
 import React, { FC } from 'react'
 
+import Attachments from 'modules/attachment/components/Attachments'
 import { renderUploadedReadonlyFile } from 'modules/attachment/utils'
-import AttachmentList from 'modules/task/components/AttachmentList'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { makeUserByFullName } from 'modules/user/utils'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
@@ -55,23 +55,33 @@ const RelocationTasks: FC<RelocationTasksProps> = ({ data, onClick, onCreateAtta
                         <UploadButton label='Добавить вложение' />
                       </Upload>
 
-                      {!!item.documents?.length && <AttachmentList data={item.documents} />}
+                      {!!item.documents?.length && <Attachments data={item.documents} />}
                     </Label>
                   </Space>
                 </Col>
 
                 <Col span={12}>
-                  <Space $block direction='vertical' align='center'>
+                  <Space $block direction='vertical'>
                     <Label label='Дата создания:' direction='horizontal'>
                       {formatDate(item.createdAt)}
                     </Label>
 
                     <Label label='Исполнитель:'>
-                      {item.executor && (
+                      {item.completedBy ? (
                         <TaskAssignee
-                          {...makeUserByFullName(item.executor.fullName)}
-                          phone={item.executor.phone}
+                          {...makeUserByFullName(item.completedBy.fullName)}
+                          phone={item.completedBy.phone}
                         />
+                      ) : (
+                        <Space direction='vertical'>
+                          {item.executors.map((e) => (
+                            <TaskAssignee
+                              key={e.id}
+                              {...makeUserByFullName(e.fullName)}
+                              phone={e.phone}
+                            />
+                          ))}
+                        </Space>
                       )}
                     </Label>
                   </Space>

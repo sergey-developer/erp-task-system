@@ -12,7 +12,7 @@ type BreadcrumbsProps = {
 const Breadcrumbs: FC<BreadcrumbsProps> = ({ matches }) => {
   const [searchParams] = useSearchParams()
 
-  const crumbs = matches.map((match) => match.handle.crumb({ qs: searchParams }))
+  const crumbs = matches.map((match) => match.handle.crumb({ qs: searchParams, match }))
 
   return !!crumbs.length ? (
     <Space>

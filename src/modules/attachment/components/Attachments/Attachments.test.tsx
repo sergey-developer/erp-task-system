@@ -14,9 +14,9 @@ import {
 } from '_tests_/utils'
 
 import AttachmentList from './index'
-import { AttachmentListProps } from './types'
+import { AttachmentsProps } from './types'
 
-const attachmentListItem: AttachmentListProps['data'][number] = {
+const attachmentListItem: AttachmentsProps['data'][number] = {
   id: fakeId(),
   url: fakeUrl(),
   name: fakeWord(),
@@ -27,13 +27,13 @@ const attachmentListItem: AttachmentListProps['data'][number] = {
   middleName: fakeName(),
 }
 
-const props: Readonly<AttachmentListProps> = {
+const props: Readonly<AttachmentsProps> = {
   data: [attachmentListItem],
 }
 
-const getContainer = () => screen.getByTestId('attachment-list')
-const getContainerIn = (container: HTMLElement) => within(container).getByTestId('attachment-list')
-const queryContainer = () => screen.queryByTestId('attachment-list')
+const getContainer = () => screen.getByTestId('attachments')
+const getContainerIn = (container: HTMLElement) => within(container).getByTestId('attachments')
+const queryContainer = () => screen.queryByTestId('attachments')
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string | RegExp) => within(getContainer()).queryByText(text)
 

@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 
 import { CommonRouteEnum } from 'configs/routes'
@@ -11,20 +11,21 @@ import { UserModel } from 'modules/user/models'
 import { CommonLocationState } from 'shared/types/common'
 import { getPathByLocation } from 'shared/utils/url'
 
-type ProtectedRouteProps = {
+type ProtectedRouteProps<LocationState> = {
   component: ReactElement
-  permitted?: (user: UserModel, locationState?: any) => boolean
+  permitted?: (user: UserModel, locationState: LocationState) => boolean
   onlyGuest?: boolean
   redirectPath?: string
 }
 
-const ProtectedRoute: FC<ProtectedRouteProps> = ({
+function ProtectedRoute<LocationState>({
   component,
   permitted,
   onlyGuest = false,
   redirectPath,
-}) => {
+}: ProtectedRouteProps<LocationState>) {
   const location = useLocation()
+  const locationState = location.state as LocationState
   const navigationState: CommonLocationState = { from: getPathByLocation(location) }
 
   const isLoggedIn = useIsLoggedIn()
@@ -39,7 +40,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
     }
   } else {
     if (isLoggedIn) {
-      if (!permitted || (user && permitted(user, location.state))) {
+      if (!permitted || (user && permitted(user, locationState))) {
         return component
       } else {
         const to = redirectPath || CommonRouteEnum.Home

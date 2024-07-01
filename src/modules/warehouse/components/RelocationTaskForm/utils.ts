@@ -2,8 +2,9 @@ import sortBy from 'lodash/sortBy'
 
 import { locationTypeDict } from 'shared/constants/catalogs'
 import { LocationsModel } from 'shared/models/catalogs/location'
+import { IdType } from 'shared/types/common'
 
-import { LocationOption, LocationOptionGroup } from './types'
+import { ExecutorOption, LocationOption, LocationOptionGroup } from './types'
 
 export const makeLocationOptions = (data: LocationsModel): LocationOptionGroup[] =>
   data
@@ -22,3 +23,30 @@ export const makeLocationOptions = (data: LocationsModel): LocationOptionGroup[]
       return acc
     }, [])
     .map((group) => ({ ...group, options: sortBy(group.options, 'label') }))
+
+export const collectUsersIds = async (
+  options: ExecutorOption[],
+  excludeIds: (IdType | string)[],
+): Promise<ExecutorOption['value'][]> => {
+  const usersIds: ExecutorOption['value'][] = []
+
+  options.forEach((opt) => {
+    if (opt.users) {
+      if (opt.users.length) {
+        opt.users.forEach((usr) => {
+          if (!excludeIds.includes(usr)) {
+            const usrId = usersIds.find((id) => id === usr)
+            if (!usrId) usersIds.push(usr)
+          }
+        })
+      }
+    } else {
+      if (!excludeIds.includes(opt.value)) {
+        const usrId = usersIds.find((id) => id === opt.value)
+        if (!usrId) usersIds.push(opt.value)
+      }
+    }
+  })
+
+  return usersIds
+}

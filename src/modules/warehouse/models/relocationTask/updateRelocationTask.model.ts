@@ -22,7 +22,7 @@ export type UpdateRelocationTaskMutationArgs = RelocationTaskRequestArgs & {
 
   relocateFromId?: IdType
   relocateToId?: IdType
-  executor?: IdType
+  executors?: IdType[]
   comment?: string
   images?: IdType[]
 }

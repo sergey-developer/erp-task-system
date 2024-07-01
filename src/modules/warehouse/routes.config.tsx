@@ -6,11 +6,17 @@ import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { userHasPermissions } from 'modules/user/utils'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types'
 
 import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
 import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
 
 import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
+
+import {
+  checkInventorizationStatusIsInProgress,
+  checkInventorizationStatusIsNew,
+} from './utils/inventorization'
 
 const WarehouseCatalogListPage = React.lazy(
   () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
@@ -69,6 +75,10 @@ const CreateDocumentsPackagePage = React.lazy(
 
 const InventorizationsPage = React.lazy(
   () => import('modules/warehouse/pages/InventorizationsPage'),
+)
+
+const ExecuteInventorizationPage = React.lazy(
+  () => import('modules/warehouse/pages/ExecuteInventorizationPage'),
 )
 
 export const route: Readonly<RouteObject> = {
@@ -277,6 +287,27 @@ export const route: Readonly<RouteObject> = {
                   }
                 />
               ),
+            },
+            {
+              path: WarehouseRouteEnum.ExecuteInventorization,
+              element: (
+                // todo: сделать в других местах также где используется locationState
+                <ProtectedRoute<ExecuteInventorizationPageLocationState>
+                  component={<ExecuteInventorizationPage />}
+                  permitted={(user, locationState) =>
+                    userHasPermissions(user, [UserPermissionsEnum.InventorizationUpdate]) &&
+                    !!locationState &&
+                    locationState.executor.id === user.id &&
+                    (checkInventorizationStatusIsNew(locationState.status) ||
+                      checkInventorizationStatusIsInProgress(locationState.status))
+                  }
+                />
+              ),
+              handle: {
+                crumb: ({ match }: BreadCrumbData) => (
+                  <Breadcrumb link={match.pathname} text='Проведение инвентаризации' />
+                ),
+              },
             },
           ],
         },

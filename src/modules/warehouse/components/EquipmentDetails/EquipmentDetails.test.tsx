@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as attachmentListTestUtils } from 'modules/attachment/components/AttachmentList/AttachmentList.test'
+import { testUtils as attachmentImagesTestUtils } from 'modules/attachment/components/AttachmentImages/AttachmentImages.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
@@ -9,7 +9,7 @@ import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/c
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
-  getEquipmentAttachmentListErrorMsg,
+  getEquipmentAttachmentListErrMsg,
   getEquipmentMessages,
   getEquipmentRelocationHistoryMessages,
 } from 'modules/warehouse/constants/equipment'
@@ -82,7 +82,7 @@ const queryInfoInBlock = (block: HTMLElement, value: NumberOrString | RegExp) =>
   within(block).queryByText(value)
 
 // equipment images
-const getEquipmentImageList = () => within(getBlock('images')).getByTestId('equipment-image-list')
+const getEquipmentImageList = () => within(getBlock('images')).getByTestId('equipment-images')
 
 const getViewAllImagesButton = () =>
   buttonTestUtils.getButtonIn(getBlock('images'), /Просмотреть все фото/)
@@ -92,7 +92,7 @@ const clickViewAllImagesButton = async (user: UserEvent) => {
 }
 
 const expectEquipmentImageListLoadingFinished = spinnerTestUtils.expectLoadingFinished(
-  'equipment-image-list-loading',
+  'equipment-images-loading',
 )
 
 const expectTotalEquipmentImageListLoadingFinished = () =>
@@ -153,7 +153,11 @@ describe('Информация об оборудовании', () => {
     mockGetEquipmentSuccess(props.equipmentId)
     mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-    const { user } = render(<EquipmentDetails {...props} />)
+    const { user } = render(<EquipmentDetails {...props} />, {
+      store: getStoreWithAuth(undefined, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+      }),
+    })
 
     await testUtils.clickCloseButton(user)
     expect(props.onClose).toBeCalledTimes(1)
@@ -165,7 +169,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('title')
@@ -181,7 +189,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('category')
@@ -197,7 +209,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('nomenclature')
@@ -214,7 +230,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.getBlock('inventory-number')
@@ -232,7 +252,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.queryBlock('inventory-number')
@@ -249,7 +273,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.getBlock('serial-number')
@@ -268,7 +296,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
 
@@ -282,7 +314,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('location')
@@ -298,7 +334,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('is-credited')
@@ -314,7 +354,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('condition')
@@ -330,7 +374,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('created-at')
@@ -346,7 +394,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('created-by')
@@ -362,7 +414,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('quantity')
@@ -382,7 +438,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('price')
@@ -403,7 +463,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.getBlock('is-new')
@@ -421,7 +485,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.queryBlock('is-new')
@@ -435,7 +503,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.getBlock('is-warranty')
@@ -453,7 +525,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.queryBlock('is-warranty')
@@ -467,7 +543,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.getBlock('is-repaired')
@@ -485,7 +565,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.queryBlock('is-repaired')
@@ -499,7 +583,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.getBlock('usage-counter')
@@ -517,7 +605,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.queryBlock('usage-counter')
@@ -593,7 +685,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('purpose')
@@ -609,7 +705,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const block = testUtils.getBlock('comment')
@@ -629,7 +729,11 @@ describe('Информация об оборудовании', () => {
           body: commonFixtures.paginatedListResponse(attachmentList),
         })
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingStarted()
         await testUtils.expectLoadingFinished()
@@ -640,7 +744,7 @@ describe('Информация об оборудовании', () => {
 
         expect(label).toBeInTheDocument()
         attachmentList.forEach((item) => {
-          const image = attachmentListTestUtils.getIn(imagesContainer, item.name)
+          const image = attachmentImagesTestUtils.getImageIn(imagesContainer, item.name)
           expect(image).toBeInTheDocument()
         })
       })
@@ -654,7 +758,11 @@ describe('Информация об оборудовании', () => {
             body: { detail: errorMsg },
           })
 
-          render(<EquipmentDetails {...props} />)
+          render(<EquipmentDetails {...props} />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
@@ -671,7 +779,11 @@ describe('Информация об оборудовании', () => {
             body: { detail: errorMsg },
           })
 
-          render(<EquipmentDetails {...props} />)
+          render(<EquipmentDetails {...props} />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
@@ -684,13 +796,17 @@ describe('Информация об оборудовании', () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
           mockGetEquipmentAttachmentListServerError(props.equipmentId)
 
-          render(<EquipmentDetails {...props} />)
+          render(<EquipmentDetails {...props} />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
 
           const notification = await notificationTestUtils.findNotification(
-            getEquipmentAttachmentListErrorMsg,
+            getEquipmentAttachmentListErrMsg,
           )
           expect(notification).toBeInTheDocument()
         })
@@ -707,7 +823,11 @@ describe('Информация об оборудовании', () => {
             body: attachmentListResponse,
           })
 
-          render(<EquipmentDetails {...props} />)
+          render(<EquipmentDetails {...props} />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
@@ -728,7 +848,11 @@ describe('Информация об оборудовании', () => {
             once: false,
           })
 
-          const { user } = render(<EquipmentDetails {...props} />)
+          const { user } = render(<EquipmentDetails {...props} />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.expectLoadingStarted()
           await testUtils.expectLoadingFinished()
@@ -739,7 +863,7 @@ describe('Информация об оборудовании', () => {
 
           await testUtils.expectTotalEquipmentImageListLoadingFinished()
           attachmentList.forEach((item) => {
-            const image = attachmentListTestUtils.getIn(modal, item.name)
+            const image = attachmentImagesTestUtils.getImageIn(modal, item.name)
             expect(image).toBeInTheDocument()
           })
         })
@@ -752,7 +876,11 @@ describe('Информация об оборудовании', () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-        render(<EquipmentDetails {...props} />)
+        render(<EquipmentDetails {...props} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
         await testUtils.expectLoadingFinished()
         const block = testUtils.getBlock('qr-code')
@@ -771,7 +899,11 @@ describe('Информация об оборудовании', () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
           mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-          render(<EquipmentDetails {...props} />)
+          render(<EquipmentDetails {...props} />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.expectLoadingFinished()
           const block = testUtils.getBlock('qr-code')
@@ -788,7 +920,11 @@ describe('Информация об оборудовании', () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
           mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-          const { user } = render(<EquipmentDetails {...props} />)
+          const { user } = render(<EquipmentDetails {...props} />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           await testUtils.expectLoadingFinished()
           const block = testUtils.getBlock('qr-code')
@@ -808,7 +944,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentForbiddenError(props.equipmentId, { body: { detail: errorMessage } })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const notification = await notificationTestUtils.findNotification(errorMessage)
@@ -821,7 +961,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentNotFoundError(props.equipmentId, { body: { detail: errorMessage } })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const notification = await notificationTestUtils.findNotification(errorMessage)
@@ -833,7 +977,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentServerError(props.equipmentId)
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const notification = await notificationTestUtils.findNotification(
@@ -849,7 +997,11 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />)
+      render(<EquipmentDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const button = testUtils.getRelocationHistoryButton()

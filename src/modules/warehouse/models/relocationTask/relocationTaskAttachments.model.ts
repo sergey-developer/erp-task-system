@@ -1,11 +1,11 @@
-import { IdType } from 'shared/types/common'
+import { AttachmentModel } from 'modules/attachment/models'
+
 import { MaybeNull } from 'shared/types/utils'
 
-export type RelocationTaskAttachmentListItemModel = {
-  id: IdType
-  name: string
-  size: number
-  url: string
+export type RelocationTaskAttachmentListItemModel = Pick<
+  AttachmentModel,
+  'id' | 'name' | 'size' | 'url'
+> & {
   thumbnails: MaybeNull<{
     mediumThumbnail: string
   }>

@@ -1,7 +1,7 @@
 import { Col, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import AttachmentList from 'modules/task/components/AttachmentList'
+import Attachments from 'modules/attachment/components/Attachments'
 import { TaskJournalEntryModel } from 'modules/task/models'
 
 import Label from 'components/Label'
@@ -44,7 +44,7 @@ const JournalEntry: FC<JournalEntryProps> = ({
 
       {!!attachments?.length && (
         <Space direction='vertical'>
-          <AttachmentList data={attachments} />
+          <Attachments data={attachments} />
         </Space>
       )}
 

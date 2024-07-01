@@ -12,7 +12,7 @@ import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { useAuthUser } from 'modules/auth/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useGetUsers, useUserPermissions } from 'modules/user/hooks'
+import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'modules/warehouse/components/EquipmentsByFileTable/types'
@@ -36,7 +36,7 @@ import {
   useCreateEquipment,
   useCreateEquipments,
   useGetEquipmentCatalogList,
-  useGetEquipmentCategoryList,
+  useGetEquipmentCategories,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
   useLazyGetEquipmentListTemplate,
@@ -120,8 +120,6 @@ const CreateRelocationTaskPage: FC = () => {
   ])
 
   const [form] = Form.useForm<RelocationTaskFormFields>()
-  const executorFormValue = Form.useWatch('executor', form)
-  const controllerFormValue = Form.useWatch('controller', form)
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<ActiveEquipmentRow>()
 
@@ -247,9 +245,11 @@ const CreateRelocationTaskPage: FC = () => {
         !checkLocationTypeIsWarehouse(selectedRelocateFrom.type),
     })
 
-  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUsers({
+  const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers({
     isManager: false,
   })
+
+  const { currentData: usersGroups = [], isFetching: usersGroupsIsFetching } = useGetUsersGroups()
 
   const [
     getRelocateFromLocationList,
@@ -287,7 +287,7 @@ const CreateRelocationTaskPage: FC = () => {
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
-    useGetEquipmentCategoryList(undefined, {
+    useGetEquipmentCategories(undefined, {
       skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened,
     })
 
@@ -397,7 +397,7 @@ const CreateRelocationTaskPage: FC = () => {
         })),
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
-        executor: values.executor,
+        executors: values.executors,
         controller: values.controller,
         comment: values.comment,
         images: values.images?.length ? extractIdsFromFilesResponse(values.images) : undefined,
@@ -696,20 +696,10 @@ const CreateRelocationTaskPage: FC = () => {
 
   /* Установка значений формы */
   useEffect(() => {
-    if (authUser && userList.length) {
-      form.setFieldsValue({ executor: authUser.id })
+    if (authUser && users.length) {
+      form.setFieldsValue({ executors: [authUser.id] })
     }
-  }, [form, authUser, userList.length])
-
-  const controllerOptions = useMemo(
-    () => userList.filter((usr) => usr.id !== authUser?.id && usr.id !== executorFormValue),
-    [authUser?.id, executorFormValue, userList],
-  )
-
-  const executorOptions = useMemo(
-    () => userList.filter((usr) => usr.id !== controllerFormValue),
-    [controllerFormValue, userList],
-  )
+  }, [form, authUser, users.length])
 
   const isRelocationFromMainToMsi =
     relocateFromWarehouse?.type === WarehouseTypeEnum.Main &&
@@ -768,15 +758,17 @@ const CreateRelocationTaskPage: FC = () => {
         <Row gutter={[40, 40]}>
           <Col span={24}>
             <RelocationTaskForm
+              authUser={authUser}
               permissions={permissions}
               isLoading={createTaskIsLoading}
-              usersIsLoading={userListIsFetching}
               relocateFromLocationList={relocateFromLocationList}
               relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
               relocateToLocationList={relocateToLocationList}
               relocateToLocationListIsLoading={relocateToLocationListIsFetching}
-              executorOptions={executorOptions}
-              controllerOptions={controllerOptions}
+              users={users}
+              usersIsLoading={usersIsFetching}
+              usersGroups={usersGroups}
+              usersGroupsIsLoading={usersGroupsIsFetching}
               controllerIsRequired={controllerIsRequired}
               type={selectedType}
               onChangeType={handleChangeType}

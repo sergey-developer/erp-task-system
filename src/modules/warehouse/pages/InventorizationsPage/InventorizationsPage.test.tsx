@@ -277,7 +277,7 @@ describe('Страница списка инвентаризаций', () => {
         body: commonFixtures.paginatedListResponse([inventorizationListItem]),
       })
 
-      mockGetInventorizationSuccess(inventorizationListItem.id)
+      mockGetInventorizationSuccess({ inventorizationId: inventorizationListItem.id })
 
       const { user } = render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -292,4 +292,6 @@ describe('Страница списка инвентаризаций', () => {
       expect(details).toBeInTheDocument()
     })
   })
+
+  test.todo('Создание поручения на инвентаризацию')
 })

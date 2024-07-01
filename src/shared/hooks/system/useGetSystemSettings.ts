@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getSystemSettingsErrorMsg } from 'shared/constants/system/messages'
+import { getSystemSettingsErrMsg } from 'shared/constants/system/messages'
 import { GetSystemSettingsQueryArgs, GetSystemSettingsSuccessResponse } from 'shared/models/system'
 import { isErrorResponse } from 'shared/services/baseApi'
 import { useGetSystemSettingsQuery } from 'shared/services/systemApi.service'
@@ -26,7 +26,7 @@ export const useGetSystemSettings = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getSystemSettingsErrorMsg)
+      showErrorNotification(getSystemSettingsErrMsg)
     }
   }, [state.error])
 

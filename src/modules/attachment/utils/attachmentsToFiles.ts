@@ -2,9 +2,9 @@ import { UploadFile } from 'antd/es/upload'
 
 import { FileResponse } from 'shared/types/file'
 
-import { AttachmentListItem } from '../components/AttachmentList/types'
+import { AttachmentImage } from '../components/AttachmentImages/types'
 
-export const attachmentsToFiles = (data: AttachmentListItem[]): UploadFile<FileResponse>[] =>
+export const attachmentsToFiles = (data: AttachmentImage[]): UploadFile<FileResponse>[] =>
   data.map((att) => ({
     uid: String(att.id),
     name: att.name,

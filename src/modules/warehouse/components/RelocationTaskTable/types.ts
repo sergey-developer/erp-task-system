@@ -2,6 +2,8 @@ import { TableProps } from 'antd'
 
 import { GetRelocationTasksSortValue, RelocationTaskListItemModel } from 'modules/warehouse/models'
 
+import { TableSortProps } from 'shared/types/sort'
+
 export type RelocationTaskTableItem = Pick<
   RelocationTaskListItemModel,
   | 'id'
@@ -9,9 +11,10 @@ export type RelocationTaskTableItem = Pick<
   | 'deadlineAt'
   | 'relocateFrom'
   | 'relocateTo'
-  | 'executor'
+  | 'executors'
   | 'controller'
   | 'status'
+  | 'completedBy'
   | 'createdBy'
   | 'createdAt'
 >
@@ -21,6 +24,5 @@ export type RelocationTaskTableProps = Required<
     TableProps<RelocationTaskTableItem>,
     'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'
   >
-> & {
-  sort?: GetRelocationTasksSortValue
-}
+> &
+  TableSortProps<GetRelocationTasksSortValue>

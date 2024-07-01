@@ -1,10 +1,9 @@
+import { AttachmentModel } from 'modules/attachment/models'
+
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-export type AttachmentListItem = {
+export type AttachmentListItem = Pick<AttachmentModel, 'name' | 'size' | 'url'> & {
   id: NumberOrString
-  name: string
-  size: number
-  url: string
   createdAt?: string
   firstName?: string
   lastName?: string
@@ -13,6 +12,6 @@ export type AttachmentListItem = {
   remove?: () => void
 }
 
-export type AttachmentListProps = {
+export type AttachmentsProps = {
   data: AttachmentListItem[]
 }

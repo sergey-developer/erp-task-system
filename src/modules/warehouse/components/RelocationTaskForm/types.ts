@@ -1,7 +1,8 @@
 import { UploadProps } from 'antd'
 import { ReactNode } from 'react'
 
-import { UsersModel } from 'modules/user/models'
+import { UseAuthUserResult } from 'modules/auth/hooks'
+import { UsersGroupsModel, UsersModel } from 'modules/user/models'
 import { MatchedUserPermissions } from 'modules/user/utils'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 
@@ -20,14 +21,28 @@ export type LocationOption = {
   value: IdType
 }
 
+export type ExecutorOptionGroup = Pick<ExecutorOption, 'label' | 'value'> & {
+  options: ExecutorOption[]
+}
+
+export type ExecutorOption = {
+  label: string
+  value: IdType | string
+  users?: IdType[]
+}
+
 export type RelocationTaskFormProps = {
+  authUser: UseAuthUserResult
   permissions: MaybeNull<MatchedUserPermissions>
 
   isLoading: boolean
 
-  executorOptions: UsersModel
+  users: UsersModel
+  usersIsLoading: boolean
 
-  controllerOptions: UsersModel
+  usersGroups: UsersGroupsModel
+  usersGroupsIsLoading: boolean
+
   controllerIsRequired: boolean
 
   onUploadImage: NonNullable<UploadProps['customRequest']>
@@ -35,8 +50,6 @@ export type RelocationTaskFormProps = {
   onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
   imageIsDeleting: boolean
   imagesIsLoading?: boolean
-
-  usersIsLoading: boolean
 
   relocateFromLocationList: LocationsModel
   relocateFromLocationListIsLoading: boolean

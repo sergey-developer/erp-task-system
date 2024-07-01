@@ -21,7 +21,7 @@ import {
   mockGetEquipmentSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
-  mockGetUserListSuccess,
+  mockGetUsersSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { buttonTestUtils, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
@@ -56,7 +56,7 @@ describe('Страница отчета действия сотрудников'
   describe('Таблица отчета', () => {
     test('При клике на оборудование открывается карточка оборудования', async () => {
       const userListItem = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [userListItem] })
+      mockGetUsersSuccess({ body: [userListItem] })
 
       const reportListItem = reportsFixtures.employeesActionsReportListItem()
       mockGetEmployeesActionsReportSuccess(userListItem.id, {
@@ -89,7 +89,7 @@ describe('Страница отчета действия сотрудников'
 
     test('При клике на перемещение открывается карточка заявки на перемещение', async () => {
       const userListItem = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [userListItem] })
+      mockGetUsersSuccess({ body: [userListItem] })
 
       const reportListItem = reportsFixtures.employeesActionsReportListItem()
       mockGetEmployeesActionsReportSuccess(userListItem.id, {
@@ -130,7 +130,7 @@ describe('Страница отчета действия сотрудников'
       base64ToArrayBufferSpy.mockReturnValueOnce(fakeArrayBuffer)
 
       const userListItem = userFixtures.userListItem()
-      mockGetUserListSuccess({ body: [userListItem] })
+      mockGetUsersSuccess({ body: [userListItem] })
 
       mockGetEmployeesActionsReportSuccess(userListItem.id)
 

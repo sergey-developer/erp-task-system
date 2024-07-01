@@ -1,3 +1,4 @@
+import { TaskRequestArgs } from 'modules/task/types'
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
@@ -8,7 +9,7 @@ import { PaginationResponse } from 'shared/models/pagination.model'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { PaginationParams } from 'shared/types/pagination'
-import { ExtendSortKey } from 'shared/types/sort'
+import { ExtendSortKey, SortParams } from 'shared/types/sort'
 
 export type GetRelocationTasksSortKey =
   | 'id'
@@ -16,7 +17,7 @@ export type GetRelocationTasksSortKey =
   | 'deadline_at'
   | 'relocate_from'
   | 'relocate_to'
-  | 'executor'
+  | 'completed_by'
   | 'controller'
   | 'status'
   | 'created_by'
@@ -41,9 +42,7 @@ export type GetRelocationTasksFilter = Partial<{
 export type GetRelocationTasksQueryArgs = GetRelocationTasksFilter &
   PaginationParams &
   FilterParams &
-  Partial<{
-    ordering: GetRelocationTasksSortValue
-    taskId: IdType
-  }>
+  Partial<TaskRequestArgs> &
+  SortParams<GetRelocationTasksSortValue>
 
 export type GetRelocationTasksSuccessResponse = PaginationResponse<RelocationTaskListItemModel>

@@ -1,9 +1,6 @@
-import { IdType } from 'shared/types/common'
+import { AttachmentModel } from './attachment.model'
 
-export type AttachmentListItemModel = {
-  id: IdType
-  name: string
-  url: string
+export type AttachmentListItemModel = Pick<AttachmentModel, 'id' | 'name' | 'url'> & {
   thumbnails: {
     smallThumbnail: string
     mediumThumbnail: string
