@@ -1,11 +1,11 @@
 import { useBoolean } from 'ahooks'
 import { App, Button, Col, Divider, Drawer, FormInstance, Row } from 'antd'
 import debounce from 'lodash/debounce'
-import pick from 'lodash/pick'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { useAuthUser } from 'modules/auth/hooks'
+import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { makeChangeInfrastructurePageLink } from 'modules/infrastructures/utils/pagesLinks'
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
 import { CreateRegistrationFNRequestModalProps } from 'modules/task/components/CreateRegistrationFNRequestModal/types'
@@ -87,7 +87,6 @@ import { downloadFile, extractIdsFromFilesResponse, extractOriginFiles } from 's
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getChangeInfrastructurePageLocationState } from '../../../infrastructures/pages/ChangeInfrastructurePage/utils'
 import AssigneeBlock from './AssigneeBlock'
 import WorkGroupBlock from './WorkGroupBlock'
 
@@ -155,6 +154,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   onClose: originOnClose,
 }) => {
   const { modal } = App.useApp()
+  const navigate = useNavigate()
 
   const authUser = useAuthUser()
   const permissions = useUserPermissions([
@@ -659,6 +659,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [createTaskAttachment, task],
   )
 
+  const onClickChangeInfrastructure = () => {
+    if (task && task.infrastructureProject) {
+      navigate(
+        makeChangeInfrastructurePageLink({
+          infrastructureId: task.infrastructureProject.id,
+        }),
+        { state: { task: getChangeInfrastructurePageLocationState(task) } },
+      )
+    }
+  }
+
   const title = task && userActions && (
     <TaskDetailsTitle
       id={task.id}
@@ -859,13 +870,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                               !permissions.infrastructureProjectRead &&
                               !permissions.anyStatusInfrastructureProjectRead
                             }
+                            onClick={onClickChangeInfrastructure}
                           >
-                            <Link
-                              to={makeChangeInfrastructurePageLink(task.infrastructureProject.id)}
-                              state={{ task: pick(task, 'infrastructureProject', 'workType') }}
-                            >
-                              Изменение инфраструктуры
-                            </Link>
+                            Изменение инфраструктуры
                           </Button>
                         </Col>
                       </Row>
@@ -875,7 +882,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     <Col>
                       <Button>
                         <Link
-                          to={makeChangeInfrastructurePageLink(1)}
+                          to={makeChangeInfrastructurePageLink({ infrastructureId: 1 })}
                           state={getChangeInfrastructurePageLocationState(task)}
                         >
                           Изменение инфраструктуры

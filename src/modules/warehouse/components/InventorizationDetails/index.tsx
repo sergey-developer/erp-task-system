@@ -22,7 +22,6 @@ import {
 
 import LoadingArea from 'components/LoadingArea'
 
-import { IdType } from 'shared/types/common'
 import { valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 

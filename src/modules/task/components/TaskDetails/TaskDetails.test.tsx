@@ -100,7 +100,7 @@ const showChangeInfrastructureButton: {
     workType: warehouseFixtures.workType({
       actions: [WorkTypeActionsEnum.CreateInfrastructureProject],
     }),
-    infrastructureProject: infrastructuresFixtures.infrastructureProject(),
+    infrastructureProject: infrastructuresFixtures.infrastructure(),
   },
 }
 
