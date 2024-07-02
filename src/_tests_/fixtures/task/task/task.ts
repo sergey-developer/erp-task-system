@@ -48,6 +48,8 @@ export const task = (
       | 'previousOlaNextBreachTime'
       | 'isOlaNextBreachTimeChanged'
       | 'fiscalAccumulator'
+      | 'infrastructureProject'
+      | 'workType'
     >
   >,
 ): Omit<TaskModel, 'responseTime'> & {
@@ -65,10 +67,7 @@ export const task = (
     : props!.suspendRequest,
   hasRelocationTasks: isUndefined(props?.hasRelocationTasks) ? true : props!.hasRelocationTasks,
   fiscalAccumulator: isUndefined(props?.fiscalAccumulator)
-    ? {
-        isRequestApproved: false,
-        isRequestSent: false,
-      }
+    ? { isRequestApproved: false, isRequestSent: false }
     : props!.fiscalAccumulator,
   previousDescription: isUndefined(props?.previousDescription)
     ? fakeWord()
@@ -82,6 +81,10 @@ export const task = (
   isOlaNextBreachTimeChanged: isUndefined(props?.isOlaNextBreachTimeChanged)
     ? false
     : props!.isOlaNextBreachTimeChanged,
+  infrastructureProject: isUndefined(props?.infrastructureProject)
+    ? null
+    : props!.infrastructureProject,
+  workType: isUndefined(props?.workType) ? null : props!.workType,
 
   shop: { id: fakeId(), title: fakeWord() },
   attachments: [taskFixtures.attachment()],

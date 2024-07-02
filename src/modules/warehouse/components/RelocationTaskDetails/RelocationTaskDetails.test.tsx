@@ -574,7 +574,7 @@ describe('Информация о заявке о перемещении', () =>
               ),
             },
             {
-              path: TasksRoutesEnum.DesktopTaskList,
+              path: TasksRoutesEnum.DesktopTasks,
               element: <TasksPage />,
             },
           ],

@@ -37,7 +37,7 @@ const ChangePasswordPage: FC = () => {
         password: values.password.trim(),
       }).unwrap()
 
-      navigate(TasksRoutesEnum.DesktopTaskList)
+      navigate(TasksRoutesEnum.DesktopTasks)
       showSuccessNotification(UPDATE_PASSWORD_SUCCESS_MSG)
     } catch (error) {
       if (isErrorResponse(error)) {

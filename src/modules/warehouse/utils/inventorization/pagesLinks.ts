@@ -4,7 +4,6 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { GetInventorizationsQueryArgs } from 'modules/warehouse/models'
 import { InventorizationRequestArgs } from 'modules/warehouse/types'
 
-import { IdType } from 'shared/types/common'
 import { getPathWithQs } from 'shared/utils/url'
 
 type GetInventorizationsPageLinkParams = Partial<

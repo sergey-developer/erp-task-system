@@ -10,4 +10,4 @@ type GetTaskListPageLinkParams = {
 }
 
 export const getTaskListPageLink = (params: GetTaskListPageLinkParams): string =>
-  getPathWithQs<GetTaskListPageLinkParams>(TasksRoutesEnum.DesktopTaskList, params)
+  getPathWithQs<GetTaskListPageLinkParams>(TasksRoutesEnum.DesktopTasks, params)
