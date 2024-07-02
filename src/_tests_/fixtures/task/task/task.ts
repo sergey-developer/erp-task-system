@@ -10,7 +10,6 @@ import { TaskModel, TaskResponseTimeModel } from 'modules/task/models'
 
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import taskFixtures from '_tests_/fixtures/task'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeDateString,
   fakeEmail,
@@ -87,7 +86,6 @@ export const task = (
     : props!.infrastructureProject,
   workType: isUndefined(props?.workType) ? null : props!.workType,
 
-  workType: warehouseFixtures.workType(),
   shop: { id: fakeId(), title: fakeWord() },
   attachments: [taskFixtures.attachment()],
   resolution: {
