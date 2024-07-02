@@ -3,7 +3,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
-import { useGetWorkGroups } from 'modules/workGroup/hooks'
+import { useGetWorkGroups } from 'modules/workGroup/hooks/useGetWorkGroups'
 import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'

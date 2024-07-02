@@ -25,8 +25,8 @@ const TaskListLayout: FC = () => {
             onChange={(event) => navigate(event.target.value)}
             defaultValue={location.pathname}
           >
-            <Radio.Button value={TasksRoutesEnum.DesktopTaskList}>Реестр</Radio.Button>
-            <Radio.Button value={TasksRoutesEnum.DesktopTaskListMap}>Карта</Radio.Button>
+            <Radio.Button value={TasksRoutesEnum.DesktopTasks}>Реестр</Radio.Button>
+            <Radio.Button value={TasksRoutesEnum.DesktopTasksMap}>Карта</Radio.Button>
           </Radio.Group>
         </Col>
       </Row>
