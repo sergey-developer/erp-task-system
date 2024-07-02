@@ -1,6 +1,7 @@
 import { useBoolean } from 'ahooks'
 import { App, Button, Col, Divider, Drawer, FormInstance, Row } from 'antd'
 import debounce from 'lodash/debounce'
+import pick from 'lodash/pick'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -86,6 +87,7 @@ import { downloadFile, extractIdsFromFilesResponse, extractOriginFiles } from 's
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { getChangeInfrastructurePageLocationState } from '../../../infrastructures/pages/ChangeInfrastructurePage/utils'
 import AssigneeBlock from './AssigneeBlock'
 import WorkGroupBlock from './WorkGroupBlock'
 
@@ -860,6 +862,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                           >
                             <Link
                               to={makeChangeInfrastructurePageLink(task.infrastructureProject.id)}
+                              state={{ task: pick(task, 'infrastructureProject', 'workType') }}
                             >
                               Изменение инфраструктуры
                             </Link>
@@ -867,6 +870,19 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                         </Col>
                       </Row>
                     )}
+
+                  <Row justify='space-between'>
+                    <Col>
+                      <Button>
+                        <Link
+                          to={makeChangeInfrastructurePageLink(1)}
+                          state={getChangeInfrastructurePageLocationState(task)}
+                        >
+                          Изменение инфраструктуры
+                        </Link>
+                      </Button>
+                    </Col>
+                  </Row>
 
                   <Tabs task={task} activeTab={activeTab} userActions={userActions} />
                 </Space>
