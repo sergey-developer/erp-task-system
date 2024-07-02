@@ -1,5 +1,5 @@
 export enum TasksRoutesEnum {
+  Desktop = '/home/desktop',
   DesktopTasks = '/home/desktop/tasks',
-  DesktopTaskList = '/home/desktop/tasks/list',
-  DesktopTaskListMap = '/home/desktop/tasks/map',
+  DesktopTasksMap = '/home/desktop/tasks/map',
 }

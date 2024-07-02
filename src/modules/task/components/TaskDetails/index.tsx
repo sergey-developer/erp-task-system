@@ -1,9 +1,11 @@
 import { useBoolean } from 'ahooks'
-import { App, Col, Drawer, FormInstance, Row } from 'antd'
+import { App, Button, Col, Divider, Drawer, FormInstance, Row } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 
 import { useAuthUser } from 'modules/auth/hooks'
+import { makeChangeInfrastructurePageLink } from 'modules/infrastructures/utils/pagesLinks'
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
 import { CreateRegistrationFNRequestModalProps } from 'modules/task/components/CreateRegistrationFNRequestModal/types'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
@@ -59,6 +61,7 @@ import {
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUserActions, useUserPermissions } from 'modules/user/hooks'
+import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 
 import LoadingArea from 'components/LoadingArea'
@@ -154,7 +157,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const { modal } = App.useApp()
 
   const authUser = useAuthUser()
-  const permissions = useUserPermissions([UserPermissionsEnum.ClassificationOfWorkTypes])
+
+  const permissions = useUserPermissions([
+    UserPermissionsEnum.ClassificationOfWorkTypes,
+    UserPermissionsEnum.InfrastructureProjectRead,
+    UserPermissionsEnum.AnyStatusInfrastructureProjectRead,
+  ])
+
   const onClose = useDebounceFn(originOnClose)
 
   const { currentData: userActions, isFetching: userActionsIsFetching } = useGetUserActions(
@@ -800,6 +809,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     onExpand={onExpandAdditionalInfo}
                   />
 
+                  <Divider />
+
                   <Row justify='space-between'>
                     <Col span={11}>
                       <WorkGroupBlock
@@ -834,6 +845,30 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                       />
                     </Col>
                   </Row>
+
+                  <Divider />
+
+                  {task.infrastructureProject &&
+                    task.workType?.actions?.includes(
+                      WorkTypeActionsEnum.CreateInfrastructureProject,
+                    ) && (
+                      <Row justify='space-between'>
+                        <Col>
+                          <Button
+                            disabled={
+                              !permissions.infrastructureProjectRead &&
+                              !permissions.anyStatusInfrastructureProjectRead
+                            }
+                          >
+                            <Link
+                              to={makeChangeInfrastructurePageLink(task.infrastructureProject.id)}
+                            >
+                              Изменение инфраструктуры
+                            </Link>
+                          </Button>
+                        </Col>
+                      </Row>
+                    )}
 
                   <Tabs task={task} activeTab={activeTab} userActions={userActions} />
                 </Space>

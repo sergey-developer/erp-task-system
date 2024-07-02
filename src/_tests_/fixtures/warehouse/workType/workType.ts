@@ -1,9 +1,12 @@
+import isUndefined from 'lodash/isUndefined'
+
 import { WorkTypeModel } from 'modules/warehouse/models'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 
-export const workType = (): WorkTypeModel => ({
+export const workType = (props?: Partial<Pick<WorkTypeModel, 'actions'>>): WorkTypeModel => ({
   id: fakeInteger(),
   title: fakeWord(),
-  actions: null,
+
+  actions: isUndefined(props?.actions) ? null : props!.actions,
 })

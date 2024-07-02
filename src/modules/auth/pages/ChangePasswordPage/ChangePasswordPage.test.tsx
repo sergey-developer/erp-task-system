@@ -226,7 +226,7 @@ describe('Страница смены пароля', () => {
 
       expect(notification).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(true)
-      expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
+      expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTasks)
     })
   })
 

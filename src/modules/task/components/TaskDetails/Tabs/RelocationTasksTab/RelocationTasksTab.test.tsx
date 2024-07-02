@@ -156,7 +156,7 @@ describe('Вкладка списка заявок на перемещение',
       const { user } = renderInRoute_latest(
         [
           {
-            path: TasksRoutesEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTasks,
             element: <RelocationTasksTab {...props} />,
           },
           {
@@ -164,7 +164,7 @@ describe('Вкладка списка заявок на перемещение',
             element: <CreateRelocationTaskSimplifiedPage />,
           },
         ],
-        { initialEntries: [TasksRoutesEnum.DesktopTaskList], initialIndex: 0 },
+        { initialEntries: [TasksRoutesEnum.DesktopTasks], initialIndex: 0 },
         {
           store: getStoreWithAuth(props.task.assignee!, undefined, undefined, {
             queries: {
@@ -209,7 +209,7 @@ describe('Вкладка списка заявок на перемещение',
       const { user } = renderInRoute_latest(
         [
           {
-            path: TasksRoutesEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTasks,
             element: <RelocationTasksTab {...props} />,
           },
           {
@@ -217,7 +217,7 @@ describe('Вкладка списка заявок на перемещение',
             element: <CreateDocumentsPackagePage />,
           },
         ],
-        { initialEntries: [TasksRoutesEnum.DesktopTaskList], initialIndex: 0 },
+        { initialEntries: [TasksRoutesEnum.DesktopTasks], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -299,7 +299,7 @@ describe('Вкладка списка заявок на перемещение',
       const { user } = renderInRoute_latest(
         [
           {
-            path: TasksRoutesEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTasks,
             element: <RelocationTasksTab {...props} />,
           },
           {
@@ -307,7 +307,7 @@ describe('Вкладка списка заявок на перемещение',
             element: <RelocationTasksPage />,
           },
         ],
-        { initialEntries: [TasksRoutesEnum.DesktopTaskList], initialIndex: 0 },
+        { initialEntries: [TasksRoutesEnum.DesktopTasks], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },

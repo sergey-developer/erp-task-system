@@ -1,3 +1,4 @@
+import { InfrastructureProjectModel } from 'modules/infrastructures/models'
 import { BaseTaskModel, SuspendRequestModel, TaskAttachmentListModel } from 'modules/task/models'
 import { WorkTypeModel } from 'modules/warehouse/models'
 
@@ -28,4 +29,5 @@ export type TaskModel = BaseTaskModel & {
     isRequestSent: MaybeNull<boolean>
     isRequestApproved: MaybeNull<boolean>
   }>
+  infrastructureProject: MaybeNull<InfrastructureProjectModel>
 }
