@@ -27,3 +27,5 @@ export * from './equipmentCategoryList.model'
 export * from './getEquipmentCategoryList.model'
 
 export * from './getEquipmentListTemplate.model'
+
+export * from './createEquipmentTechnicalExamination.model'

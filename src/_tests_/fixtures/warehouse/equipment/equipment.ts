@@ -26,6 +26,7 @@ export const equipment = (
       | 'usageCounter'
       | 'owner'
       | 'macroregion'
+      | 'condition'
     >
   >,
 ): EquipmentModel => ({
@@ -46,11 +47,11 @@ export const equipment = (
   macroregion: isUndefined(props?.macroregion)
     ? pick(macroregionFixtures.macroregionListItem(), 'id', 'title')
     : props?.macroregion!,
+  condition: isUndefined(props?.condition) ? EquipmentConditionEnum.Working : props!.condition,
 
   title: fakeWord(),
   location: pick(catalogsFixtures.location(), 'id', 'title'),
   warehouse: pick(warehouseFixtures.warehouse(), 'id', 'title'),
-  condition: EquipmentConditionEnum.Working,
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.user(), 'id', 'fullName'),
   measurementUnit: pick(warehouseFixtures.measurementUnit(), 'id', 'title'),

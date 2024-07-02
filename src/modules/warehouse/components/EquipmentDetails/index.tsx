@@ -1,5 +1,5 @@
 import { useBoolean } from 'ahooks'
-import { Button, Col, Drawer, Image, Row, Typography, UploadProps } from 'antd'
+import { Button, Col, Drawer, Dropdown, Image, MenuProps, Row, Typography, UploadProps } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -7,15 +7,24 @@ import AttachmentImages from 'modules/attachment/components/AttachmentImages'
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { attachmentsToFiles } from 'modules/attachment/utils'
+import {
+  useGetTechnicalExaminations,
+  useLazyGetTechnicalExaminationPdf,
+} from 'modules/technicalExaminations/hooks'
+import { GetTechnicalExaminationPdfTransformedSuccessResponse } from 'modules/technicalExaminations/types'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import { EquipmentRelocationHistoryModalProps } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/types'
-import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
+import {
+  equipmentConditionDict,
+  EquipmentConditionEnum,
+} from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
+  useCreateEquipmentTechnicalExamination,
   useGetEquipment,
   useGetEquipmentAttachmentList,
   useGetEquipmentCategories,
@@ -25,28 +34,35 @@ import {
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
-import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
+import {
+  CreateEquipmentTechnicalExaminationSuccessResponse,
+  EquipmentCategoryListItemModel,
+} from 'modules/warehouse/models'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
-import { EditIcon } from 'components/Icons'
+import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { DEFAULT_DEBOUNCE_VALUE, SAVE_TEXT } from 'shared/constants/common'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
-import { getYesNoWord, printImage, valueOrHyphen } from 'shared/utils/common'
+import { MaybeUndefined } from 'shared/types/utils'
+import { base64ToBytes, getYesNoWord, printImage, valueOrHyphen } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-import { extractIdsFromFilesResponse } from 'shared/utils/file'
+import { extractFileNameFromHeaders } from 'shared/utils/extractFileNameFromHeaders'
+import { downloadFile, extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 import { makeString } from 'shared/utils/string'
 
+import { CreateEquipmentTechnicalExaminationModalProps } from '../CreateEquipmentTechnicalExaminationModal/types'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
 
@@ -64,6 +80,14 @@ const EquipmentRelocationHistoryModal = React.lazy(
 
 const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
+)
+
+const TechnicalExaminationsHistoryModal = React.lazy(
+  () => import('modules/technicalExaminations/components/TechnicalExaminationsHistoryModal'),
+)
+
+const CreateEquipmentTechnicalExaminationModal = React.lazy(
+  () => import('modules/warehouse/components/CreateEquipmentTechnicalExaminationModal'),
 )
 
 const { Text } = Typography
@@ -125,6 +149,38 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const [imageListModalOpened, { toggle: toggleOpenImageListModal }] = useBoolean(false)
   const onToggleOpenImageListModal = useDebounceFn(toggleOpenImageListModal)
 
+  const [
+    createEquipmentTechnicalExaminationModalOpened,
+    {
+      setTrue: openCreateEquipmentTechnicalExaminationModal,
+      setFalse: closeCreateEquipmentTechnicalExaminationModal,
+    },
+  ] = useBoolean(false)
+
+  const onOpenCreateEquipmentTechnicalExaminationModal = useDebounceFn(
+    openCreateEquipmentTechnicalExaminationModal,
+  )
+
+  const onCloseCreateEquipmentTechnicalExaminationModal = () => {
+    closeCreateEquipmentTechnicalExaminationModal()
+    resetCreatedTechnicalExamination()
+  }
+
+  const [
+    technicalExaminationsHistoryModalOpened,
+    { toggle: toggleTechnicalExaminationsHistoryModal },
+  ] = useBoolean(false)
+
+  const onToggleTechnicalExaminationsHistoryModal = useDebounceFn(
+    toggleTechnicalExaminationsHistoryModal,
+  )
+
+  const { currentData: technicalExaminations = [], isFetching: technicalExaminationsIsFetching } =
+    useGetTechnicalExaminations(
+      { ordering: '-created_at', equipments: [equipmentId] },
+      { skip: !technicalExaminationsHistoryModalOpened },
+    )
+
   const { currentData: equipment, isFetching: equipmentIsFetching } = useGetEquipment({
     equipmentId,
   })
@@ -182,6 +238,23 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     { customers: [selectedOwnerId!] },
     { skip: !selectedOwnerId },
   )
+
+  const [
+    getTechnicalExaminationPdf,
+    {
+      isFetching: getTechnicalExaminationPdfIsFetching,
+      isError: isGetTechnicalExaminationPdfError,
+    },
+  ] = useLazyGetTechnicalExaminationPdf()
+
+  const [
+    createTechnicalExaminationMutation,
+    {
+      isLoading: createTechnicalExaminationIsLoading,
+      data: createdTechnicalExamination,
+      reset: resetCreatedTechnicalExamination,
+    },
+  ] = useCreateEquipmentTechnicalExamination()
 
   const [updateEquipmentMutation, { isLoading: updateEquipmentIsLoading }] = useUpdateEquipment()
 
@@ -313,23 +386,111 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     ],
   )
 
+  const downloadTechnicalExamination = useCallback(
+    (response: GetTechnicalExaminationPdfTransformedSuccessResponse) => {
+      if (response?.value && response?.meta?.response) {
+        const fileName = extractFileNameFromHeaders(response.meta.response.headers)
+        downloadFile(base64ToBytes(response.value), MimetypeEnum.Pdf, fileName)
+      } else {
+        throw new Error(`Response is not correct for downloading: ${JSON.stringify(response)}`)
+      }
+    },
+    [],
+  )
+
+  const onGetTechnicalExaminationPdf = async () => {
+    if (!createdTechnicalExamination) return
+
+    try {
+      const response = await getTechnicalExaminationPdf({
+        technicalExaminationId: createdTechnicalExamination.id,
+      }).unwrap()
+
+      downloadTechnicalExamination(response)
+      onCloseCreateEquipmentTechnicalExaminationModal()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const onCreateTechnicalExamination: CreateEquipmentTechnicalExaminationModalProps['onSubmit'] =
+    async (values, setFields) => {
+      let createdTechnicalExamination: MaybeUndefined<CreateEquipmentTechnicalExaminationSuccessResponse>
+
+      try {
+        createdTechnicalExamination = await createTechnicalExaminationMutation({
+          ...values,
+          equipment: equipmentId,
+        }).unwrap()
+      } catch (error) {
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
+        }
+
+        return
+      }
+
+      try {
+        const response = await getTechnicalExaminationPdf({
+          technicalExaminationId: createdTechnicalExamination.id,
+        }).unwrap()
+
+        downloadTechnicalExamination(response)
+        onCloseCreateEquipmentTechnicalExaminationModal()
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+  const dropdownMenuItems = useMemo<Pick<MenuProps, 'items'>>(
+    () => ({
+      items: [
+        {
+          key: 'edit',
+          label: 'Редактировать',
+          onClick: onOpenEditEquipmentModal,
+        },
+        {
+          key: 'technicalExaminationsHistory',
+          label: 'История АТЭ',
+          onClick: onToggleTechnicalExaminationsHistoryModal,
+        },
+        {
+          key: 'createEquipmentTechnicalExamination',
+          label: 'Сформировать АТЭ',
+          onClick: onOpenCreateEquipmentTechnicalExaminationModal,
+          disabled:
+            !permissions.equipmentsRead ||
+            (equipment
+              ? !(
+                  equipment.condition === EquipmentConditionEnum.Broken ||
+                  equipment.condition === EquipmentConditionEnum.NonRepairable
+                )
+              : true),
+        },
+      ],
+    }),
+    [
+      equipment,
+      onOpenEditEquipmentModal,
+      onOpenCreateEquipmentTechnicalExaminationModal,
+      onToggleTechnicalExaminationsHistoryModal,
+      permissions.equipmentsRead,
+    ],
+  )
+
   return (
     <>
       <Drawer
         {...props}
         data-testid='equipment-details'
         width={500}
-        title={
-          equipment && (
-            <Row justify='space-between'>
-              <Col>{equipment.title}</Col>
-
-              <Col>
-                <EditIcon $size='large' onClick={onOpenEditEquipmentModal} />
-              </Col>
-            </Row>
-          )
+        extra={
+          <Dropdown menu={dropdownMenuItems}>
+            <Button type='text' icon={<MenuIcon />} />
+          </Dropdown>
         }
+        title={equipment?.title}
       >
         <LoadingArea data-testid='equipment-details-loading' isLoading={equipmentIsFetching}>
           {equipment && (
@@ -698,6 +859,48 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             title='Изображения оборудования'
             data={extractPaginationResults(totalEquipmentAttachmentList)}
             onCancel={onToggleOpenImageListModal}
+          />
+        </React.Suspense>
+      )}
+
+      {technicalExaminationsHistoryModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={technicalExaminationsHistoryModalOpened}
+              onCancel={onToggleTechnicalExaminationsHistoryModal}
+              tip='Загрузка модалки истории актов технической экспертизы'
+            />
+          }
+        >
+          <TechnicalExaminationsHistoryModal
+            open={technicalExaminationsHistoryModalOpened}
+            onCancel={onToggleTechnicalExaminationsHistoryModal}
+            loading={technicalExaminationsIsFetching}
+            dataSource={technicalExaminations}
+          />
+        </React.Suspense>
+      )}
+
+      {createEquipmentTechnicalExaminationModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open={createEquipmentTechnicalExaminationModalOpened}
+              onCancel={onCloseCreateEquipmentTechnicalExaminationModal}
+              tip='Загрузка модалки формирования актов технической экспертизы'
+            />
+          }
+        >
+          <CreateEquipmentTechnicalExaminationModal
+            open={createEquipmentTechnicalExaminationModalOpened}
+            onCancel={onCloseCreateEquipmentTechnicalExaminationModal}
+            isLoading={createTechnicalExaminationIsLoading || getTechnicalExaminationPdfIsFetching}
+            onSubmit={
+              isGetTechnicalExaminationPdfError && createdTechnicalExamination
+                ? onGetTechnicalExaminationPdf
+                : onCreateTechnicalExamination
+            }
           />
         </React.Suspense>
       )}

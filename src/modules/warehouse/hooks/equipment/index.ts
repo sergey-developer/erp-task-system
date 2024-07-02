@@ -17,3 +17,5 @@ export * from './useLazyGetEquipmentListTemplate'
 export * from './useGetEquipmentAttachmentList'
 
 export * from './useGetEquipmentCategories'
+
+export * from './useCreateEquipmentTechnicalExamination'
