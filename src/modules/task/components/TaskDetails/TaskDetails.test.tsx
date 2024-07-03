@@ -64,7 +64,6 @@ import {
   fakeId,
   fakeWord,
   getStoreWithAuth,
-  linkTestUtils,
   menuTestUtils,
   notificationTestUtils,
   render,
@@ -93,7 +92,7 @@ const props: TaskDetailsProps = {
   onClose: jest.fn(),
 }
 
-const showChangeInfrastructureButton: {
+export const showChangeInfrastructureButton: {
   task: Pick<TaskModel, 'infrastructureProject' | 'workType'>
 } = {
   task: {
@@ -104,7 +103,7 @@ const showChangeInfrastructureButton: {
   },
 }
 
-const activeChangeInfrastructureButton: { permissions: UserPermissionsEnum[] } = {
+export const activeChangeInfrastructureButton: { permissions: UserPermissionsEnum[] } = {
   permissions: [
     UserPermissionsEnum.InfrastructureProjectRead,
     UserPermissionsEnum.AnyStatusInfrastructureProjectRead,
@@ -122,7 +121,7 @@ const queryChangeInfrastructureButton = () =>
   buttonTestUtils.queryButtonIn(getContainer(), 'Изменение инфраструктуры')
 
 const clickChangeInfrastructureButton = async (user: UserEvent) =>
-  linkTestUtils.clickLinkIn(getChangeInfrastructureButton(), user, 'Изменение инфраструктуры')
+  user.click(getChangeInfrastructureButton())
 
 // task loading
 const expectTaskLoadingStarted = spinnerTestUtils.expectLoadingStarted('task-loading')

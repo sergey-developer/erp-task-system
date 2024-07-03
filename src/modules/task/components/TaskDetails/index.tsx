@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { App, Button, Col, Divider, Drawer, FormInstance, Row } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useAuthUser } from 'modules/auth/hooks'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
@@ -877,19 +877,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                         </Col>
                       </Row>
                     )}
-
-                  <Row justify='space-between'>
-                    <Col>
-                      <Button>
-                        <Link
-                          to={makeChangeInfrastructurePageLink({ infrastructureId: 1 })}
-                          state={getChangeInfrastructurePageLocationState(task)}
-                        >
-                          Изменение инфраструктуры
-                        </Link>
-                      </Button>
-                    </Col>
-                  </Row>
 
                   <Tabs task={task} activeTab={activeTab} userActions={userActions} />
                 </Space>

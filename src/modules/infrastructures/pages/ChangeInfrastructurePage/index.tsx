@@ -32,7 +32,7 @@ const ChangeInfrastructurePage: FC = () => {
 
   return (
     <div data-testid='change-infrastructure-page'>
-      <LoadingArea isLoading={infrastructureIsFetching}>
+      <LoadingArea data-testid='infrastructure-loading' isLoading={infrastructureIsFetching}>
         {infrastructure && (
           <Space $block direction='vertical' size='large'>
             <Flex gap='small' align='end'>
@@ -49,6 +49,7 @@ const ChangeInfrastructurePage: FC = () => {
               <Col span={10}>
                 <Space $block direction='vertical' size='middle'>
                   <ReadonlyField
+                    data-testid='executor'
                     label='Исполнитель'
                     value={valueOrHyphen(task?.assignee, (value) => (
                       <TaskAssignee {...value} showAvatar={false} showPhone={false} hasPopover />
@@ -56,6 +57,7 @@ const ChangeInfrastructurePage: FC = () => {
                   />
 
                   <ReadonlyField
+                    data-testid='status'
                     label='Статус'
                     value={valueOrHyphen(infrastructure.status, (value) => (
                       <Flex vertical gap='small'>
