@@ -1,11 +1,13 @@
 import pick from 'lodash/pick'
 
-import { InfrastructureProjectModel } from 'modules/infrastructures/models'
+import { InfrastructureModel } from 'modules/infrastructures/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import { fakeId } from '_tests_/utils'
 
-export const infrastructureProject = (): InfrastructureProjectModel => ({
+import { infrastructureStatusHistory } from './infrastructureStatusHistory.model'
+
+export const infrastructure = (): InfrastructureModel => ({
   id: fakeId(),
   manager: pick(
     userFixtures.user(),
@@ -18,4 +20,5 @@ export const infrastructureProject = (): InfrastructureProjectModel => ({
     'phone',
     'position',
   ),
+  status: infrastructureStatusHistory(),
 })

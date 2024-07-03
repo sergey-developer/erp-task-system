@@ -8,6 +8,7 @@ import { fakeId } from '_tests_/utils'
 
 import { getAuthState } from './getAuthState'
 
+// todo: make passing args as object
 // todo: fix type api: any
 export const getStoreWithAuth = (
   user?: Partial<Pick<UserModel, 'id'>>,

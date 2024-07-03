@@ -20,7 +20,7 @@ const ReadonlyField: FC<ReadonlyFieldProps> = ({
   ...props
 }) => {
   return (
-    <Row {...props}>
+    <Row {...props} align={align}>
       <Col span={8}>
         <Text type='secondary'>{label}</Text>
       </Col>

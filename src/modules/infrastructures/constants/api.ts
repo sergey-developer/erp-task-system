@@ -1,3 +1,3 @@
 export enum InfrastructuresApiEnum {
-  GetUsers = '/infrastructures/:id',
+  GetInfrastructure = '/infrastructures/:id',
 }
