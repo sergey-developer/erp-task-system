@@ -207,7 +207,9 @@ const taskApiService = baseApiService
 
       [TaskApiTriggerEnum.TakeTask]: build.mutation<TakeTaskSuccessResponse, TakeTaskMutationArgs>({
         invalidatesTags: (result, error) =>
-          error ? [] : [TaskApiTagEnum.Task, TaskApiTagEnum.TaskCounters],
+          error
+            ? []
+            : [TaskApiTagEnum.Task, TaskApiTagEnum.TaskCounters, UsersApiTagEnum.UserActions],
         query: ({ taskId }) => ({
           url: takeTaskUrl(taskId),
           method: HttpMethodEnum.Post,
