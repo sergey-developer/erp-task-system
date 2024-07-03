@@ -11,6 +11,8 @@ const { Text } = Typography
 
 export type TaskAssigneeProps = Pick<TaskAssigneeModel, 'firstName' | 'lastName' | 'middleName'> &
   Partial<Pick<TaskAssigneeModel, 'id' | 'position' | 'phone' | 'email' | 'avatar'>> & {
+    showPhone?: boolean
+    showAvatar?: boolean
     hasPopover?: boolean
   }
 
@@ -22,14 +24,15 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
   email,
   phone,
   avatar,
-
-  hasPopover,
+  showAvatar = true,
+  showPhone = true,
+  hasPopover = false,
 }) => {
   const fullName = getFullUserName({ firstName, lastName, middleName })
 
   return (
     <Space data-testid='task-assignee' align='center'>
-      <UserAvatar src={avatar} abbr={getUserAbbr({ firstName, lastName })} />
+      {showAvatar && <UserAvatar src={avatar} abbr={getUserAbbr({ firstName, lastName })} />}
 
       <Flex vertical gap='small'>
         {hasPopover ? (
@@ -44,7 +47,7 @@ const TaskAssignee: FC<TaskAssigneeProps> = ({
           <Text>{fullName}</Text>
         )}
 
-        {phone && <Text>{phone}</Text>}
+        {showPhone && phone && <Text>{phone}</Text>}
       </Flex>
     </Space>
   )

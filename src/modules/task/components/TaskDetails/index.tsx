@@ -2,9 +2,10 @@ import { useBoolean } from 'ahooks'
 import { App, Button, Col, Divider, Drawer, FormInstance, Row } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useAuthUser } from 'modules/auth/hooks'
+import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { makeChangeInfrastructurePageLink } from 'modules/infrastructures/utils/pagesLinks'
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
 import { CreateRegistrationFNRequestModalProps } from 'modules/task/components/CreateRegistrationFNRequestModal/types'
@@ -155,6 +156,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   onClose: originOnClose,
 }) => {
   const { modal } = App.useApp()
+  const navigate = useNavigate()
 
   const authUser = useAuthUser()
 
@@ -649,6 +651,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [createTaskAttachment, taskId],
   )
 
+  const onClickChangeInfrastructure = () => {
+    if (task && task.infrastructureProject) {
+      navigate(
+        makeChangeInfrastructurePageLink({
+          infrastructureId: task.infrastructureProject.id,
+        }),
+        { state: { task: getChangeInfrastructurePageLocationState(task) } },
+      )
+    }
+  }
+
   const title = task && userActions && (
     <TaskDetailsTitle
       id={task.id}
@@ -859,12 +872,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                               !permissions.infrastructureProjectRead &&
                               !permissions.anyStatusInfrastructureProjectRead
                             }
+                            onClick={onClickChangeInfrastructure}
                           >
-                            <Link
-                              to={makeChangeInfrastructurePageLink(task.infrastructureProject.id)}
-                            >
-                              Изменение инфраструктуры
-                            </Link>
+                            Изменение инфраструктуры
                           </Button>
                         </Col>
                       </Row>

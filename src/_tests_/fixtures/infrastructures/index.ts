@@ -1,7 +1,9 @@
-import * as infrastructureProject from './infrastructureProject.model'
+import * as infrastructure from './infrastructure.model'
+import * as infrastructureStatusHistory from './infrastructureStatusHistory.model'
 
 const infrastructuresFixtures = {
-  ...infrastructureProject,
+  ...infrastructure,
+  ...infrastructureStatusHistory,
 } as const
 
 export default infrastructuresFixtures

@@ -71,7 +71,7 @@ describe('TaskListLayout', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: TasksRoutesEnum.Desktop,
+            path: CommonRouteEnum.Desktop,
             element: <TaskListLayout />,
           },
           {
@@ -83,7 +83,7 @@ describe('TaskListLayout', () => {
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [TasksRoutesEnum.Desktop], initialIndex: 0 },
+        { initialEntries: [CommonRouteEnum.Desktop], initialIndex: 0 },
       )
 
       await testUtils.clickTaskListButton(user)
@@ -116,7 +116,7 @@ describe('TaskListLayout', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: TasksRoutesEnum.Desktop,
+            path: CommonRouteEnum.Desktop,
             element: <TaskListLayout />,
           },
           {
@@ -128,7 +128,7 @@ describe('TaskListLayout', () => {
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [TasksRoutesEnum.Desktop], initialIndex: 0 },
+        { initialEntries: [CommonRouteEnum.Desktop], initialIndex: 0 },
       )
 
       await testUtils.clickTaskListMapButton(user)
