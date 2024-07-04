@@ -5,7 +5,7 @@ import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
-import { getYesNoWord, valueOrHyphen } from 'shared/utils/common'
+import { getYesNoWord, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import {
@@ -32,14 +32,13 @@ export const getColumns = ({
   {
     dataIndex: 'serialNumber',
     title: 'Серийный №',
-    render: (value: HistoryNomenclatureOperationsReportTableItem['serialNumber']) =>
-      valueOrHyphen(value),
+    render: (value: HistoryNomenclatureOperationsReportTableItem['serialNumber']) => valueOr(value),
   },
   {
     dataIndex: 'inventoryNumber',
     title: 'Инвентарный №',
     render: (value: HistoryNomenclatureOperationsReportTableItem['inventoryNumber']) =>
-      valueOrHyphen(value),
+      valueOr(value),
   },
   {
     dataIndex: 'condition',
