@@ -53,6 +53,9 @@ const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('infrastruc
 // executor
 const getExecutorBlock = () => within(getContainer()).getByTestId('executor')
 
+// manager
+const getManagerBlock = () => within(getContainer()).getByTestId('manager')
+
 // status
 const getStatusBlock = () => within(getContainer()).getByTestId('status')
 
@@ -64,6 +67,7 @@ export const testUtils = {
   getContainer,
 
   getExecutorBlock,
+  getManagerBlock,
   getStatusBlock,
 
   getGoBackButton,
@@ -124,6 +128,29 @@ describe('Страница изменения инфраструктуры за�
     const executorBlock = testUtils.getExecutorBlock()
     const label = within(executorBlock).getByText('Исполнитель')
     const taskAssignee = taskAssigneeTestUtils.getContainerIn(executorBlock)
+
+    expect(label).toBeInTheDocument()
+    expect(taskAssignee).toBeInTheDocument()
+  })
+
+  test('Менеджер по сопровождению отображается', async () => {
+    jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
+
+    const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+    jest
+      .spyOn(reactRouterDom, 'useLocation')
+      .mockReturnValue(useLocationResult({ state: locationState }))
+
+    const infrastructure = infrastructuresFixtures.infrastructure()
+    mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+
+    render(<ChangeInfrastructurePage />)
+
+    await testUtils.expectLoadingFinished()
+
+    const managerBlock = testUtils.getManagerBlock()
+    const label = within(managerBlock).getByText('Менеджер по сопровождению')
+    const taskAssignee = taskAssigneeTestUtils.getContainerIn(managerBlock)
 
     expect(label).toBeInTheDocument()
     expect(taskAssignee).toBeInTheDocument()

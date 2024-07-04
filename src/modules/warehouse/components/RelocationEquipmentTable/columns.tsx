@@ -3,7 +3,7 @@ import { ColumnsType } from 'antd/es/table'
 
 import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 
 import { RelocationEquipmentTableItem, RelocationEquipmentTableProps } from './types'
 
@@ -23,7 +23,7 @@ export const getColumns = ({
     key: 'serialNumber',
     dataIndex: 'serialNumber',
     title: 'Серийный номер',
-    render: (value: RelocationEquipmentTableItem['serialNumber']) => valueOrHyphen(value),
+    render: (value: RelocationEquipmentTableItem['serialNumber']) => valueOr(value),
   },
   {
     key: 'purpose',
@@ -45,13 +45,13 @@ export const getColumns = ({
     key: 'price',
     dataIndex: 'price',
     title: 'Стоимость',
-    render: (value: RelocationEquipmentTableItem['price']) => valueOrHyphen(value),
+    render: (value: RelocationEquipmentTableItem['price']) => valueOr(value),
   },
   {
     key: 'currency',
     dataIndex: 'currency',
     title: 'Валюта',
-    render: (value: RelocationEquipmentTableItem['currency']) => valueOrHyphen(value?.title),
+    render: (value: RelocationEquipmentTableItem['currency']) => valueOr(value?.title),
   },
   {
     key: 'images',

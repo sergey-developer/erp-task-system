@@ -1,4 +1,4 @@
-export * from './valueOrHyphen'
+export * from './valueOr'
 export * from './hasProperty'
 export * from './boolean'
 export * from './base64'

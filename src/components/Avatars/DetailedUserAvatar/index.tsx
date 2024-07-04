@@ -7,7 +7,7 @@ import { AuthRouteEnum } from 'modules/auth/constants/routes'
 import { UserModel } from 'modules/user/models'
 import { getFullUserName, getUserAbbr } from 'modules/user/utils'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 
 import { overlayInnerStyle, UserAvatarStyled } from './styles'
 
@@ -38,7 +38,7 @@ const DetailedUserAvatar: FC<DetailedUserAvatarProps> = ({
 
           <Space>
             <Text type='secondary'>Должность:</Text>
-            <Text>{valueOrHyphen(profile.position?.title)}</Text>
+            <Text>{valueOr(profile.position?.title)}</Text>
           </Space>
 
           <Divider />
