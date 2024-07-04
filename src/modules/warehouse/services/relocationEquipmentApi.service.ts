@@ -29,6 +29,7 @@ const relocationEquipmentApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+
     getRelocationEquipmentTechnicalExamination: build.query<
       GetRelocationEquipmentTechnicalExaminationSuccessResponse,
       GetRelocationEquipmentTechnicalExaminationQueryArgs
