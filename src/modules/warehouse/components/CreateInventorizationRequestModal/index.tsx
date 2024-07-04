@@ -127,7 +127,7 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
             disabled={isLoading || attachmentIsDeleting}
             customRequest={onCreateAttachment}
             onRemove={onDeleteAttachment}
-            itemRender={renderUploadedFile}
+            itemRender={renderUploadedFile()}
           >
             <UploadButton label='Добавить вложение' disabled={isLoading} />
           </Upload>

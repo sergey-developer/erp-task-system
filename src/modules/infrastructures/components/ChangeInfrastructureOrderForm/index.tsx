@@ -32,7 +32,18 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
   isDeleting,
   onDeleteFile,
 }) => {
-  const { urgencyRateType, attachments } = data
+  const { urgencyRateType } = data
+
+  const attachments: typeof data['attachments'] = [
+    {
+      id: 1,
+      name: 'name1',
+      size: 4975483,
+      url: 'url1123',
+      createdAt: new Date().toISOString(),
+      createdBy: { id: 1, firstName: 'firstName', lastName: 'lastName', middleName: 'middleName' },
+    },
+  ]
 
   const defaultFiles: UploadFile<FileResponse>[] = attachmentsToFiles(attachments ?? [])
 
