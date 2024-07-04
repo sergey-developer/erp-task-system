@@ -11,7 +11,7 @@ import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
 import { MaybeUndefined } from 'shared/types/utils'
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import GoBackButton from '../../../../components/Buttons/GoBackButton'
@@ -51,15 +51,37 @@ const ChangeInfrastructurePage: FC = () => {
                   <ReadonlyField
                     data-testid='executor'
                     label='Исполнитель'
-                    value={valueOrHyphen(task?.assignee, (value) => (
-                      <TaskAssignee {...value} showAvatar={false} showPhone={false} hasPopover />
-                    ))}
+                    value={valueOr(
+                      task?.assignee,
+                      (value) => (
+                        <TaskAssignee {...value} showAvatar={false} showPhone={false} hasPopover />
+                      ),
+                      'Не назначен',
+                    )}
+                  />
+
+                  <ReadonlyField
+                    data-testid='manager'
+                    label='Менеджер по сопровождению'
+                    value={valueOr(
+                      infrastructure?.manager,
+                      (value) => (
+                        <TaskAssignee
+                          {...value}
+                          position={value.position?.title}
+                          showAvatar={false}
+                          showPhone={false}
+                          hasPopover
+                        />
+                      ),
+                      'Не назначен',
+                    )}
                   />
 
                   <ReadonlyField
                     data-testid='status'
                     label='Статус'
-                    value={valueOrHyphen(infrastructure.status, (value) => (
+                    value={valueOr(infrastructure.status, (value) => (
                       <Flex vertical gap='small'>
                         <Text>{infrastructureStatusDict[value.status]}</Text>
 
