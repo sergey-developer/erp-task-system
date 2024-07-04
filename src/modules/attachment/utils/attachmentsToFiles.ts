@@ -1,27 +1,15 @@
 import { UploadFile } from 'antd/es/upload'
 
-import { AttachmentModel } from 'modules/attachment/models'
-import { UserModel } from 'modules/user/models'
-
 import { FileResponse } from 'shared/types/file'
-import { MaybeNull } from 'shared/types/utils'
 
-type Attachment = Pick<AttachmentModel, 'id' | 'name' | 'url'> & {
-  size?: number
-  thumbnails?: MaybeNull<{
-    smallThumbnail?: string
-    mediumThumbnail: string
-  }>
-  createdBy?: Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>
-  createdAt?: string
-}
+import { AttachmentImage } from '../components/AttachmentImages/types'
 
-export const attachmentsToFiles = (attachments: Attachment[]): UploadFile<FileResponse>[] =>
-  attachments.map((att) => ({
+export const attachmentsToFiles = (data: AttachmentImage[]): UploadFile<FileResponse>[] =>
+  data.map((att) => ({
     uid: String(att.id),
     name: att.name,
     url: att.url,
     size: att.size,
     thumbUrl: att.thumbnails?.smallThumbnail || att.thumbnails?.mediumThumbnail,
-    response: { id: att.id, createdBy: att.createdBy, createdAt: att.createdAt },
+    response: { id: att.id },
   }))
