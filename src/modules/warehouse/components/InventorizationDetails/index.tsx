@@ -22,8 +22,7 @@ import {
 
 import LoadingArea from 'components/LoadingArea'
 
-import { IdType } from 'shared/types/common'
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { cardBodyStyles } from './styles'
@@ -108,7 +107,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                   <Text type='secondary'>Описание:</Text>
                 </Col>
 
-                <Col span={14}>{valueOrHyphen(inventorization.description)}</Col>
+                <Col span={14}>{valueOr(inventorization.description)}</Col>
               </Row>
 
               <Row>
@@ -117,7 +116,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
                 </Col>
 
                 <Col span={14}>
-                  {valueOrHyphen(inventorization.attachments, (value) => (
+                  {valueOr(inventorization.attachments, (value) => (
                     <Attachments data={value} />
                   ))}
                 </Col>

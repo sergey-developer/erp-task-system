@@ -7,7 +7,7 @@ import {
   relocationTaskTypeDict,
 } from 'modules/warehouse/constants/relocationTask'
 
-import { checkLastItem, valueOrHyphen } from 'shared/utils/common'
+import { checkLastItem, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { RelocationTaskTableItem } from './types'
@@ -38,13 +38,13 @@ export const columns: ColumnsType<RelocationTaskTableItem> = [
     dataIndex: 'relocateFrom',
     title: 'Объект выбытия',
     sorter: true,
-    render: (value: RelocationTaskTableItem['relocateFrom']) => valueOrHyphen(value?.title),
+    render: (value: RelocationTaskTableItem['relocateFrom']) => valueOr(value?.title),
   },
   {
     dataIndex: 'relocateTo',
     title: 'Объект прибытия',
     sorter: true,
-    render: (value: RelocationTaskTableItem['relocateTo']) => valueOrHyphen(value?.title),
+    render: (value: RelocationTaskTableItem['relocateTo']) => valueOr(value?.title),
   },
   {
     dataIndex: 'completedBy',
@@ -68,7 +68,7 @@ export const columns: ColumnsType<RelocationTaskTableItem> = [
     dataIndex: 'controller',
     title: 'Контролер',
     sorter: true,
-    render: (value: RelocationTaskTableItem['controller']) => valueOrHyphen(value?.fullName),
+    render: (value: RelocationTaskTableItem['controller']) => valueOr(value?.fullName),
   },
   {
     dataIndex: 'status',
@@ -80,7 +80,7 @@ export const columns: ColumnsType<RelocationTaskTableItem> = [
     dataIndex: 'createdBy',
     title: 'Инициатор',
     sorter: true,
-    render: (value: RelocationTaskTableItem['createdBy']) => valueOrHyphen(value?.fullName),
+    render: (value: RelocationTaskTableItem['createdBy']) => valueOr(value?.fullName),
   },
   {
     dataIndex: 'createdAt',

@@ -1,9 +1,12 @@
 import { useBoolean } from 'ahooks'
-import { App, Col, Drawer, FormInstance, Row } from 'antd'
+import { App, Button, Col, Divider, Drawer, FormInstance, Row } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { useAuthUser } from 'modules/auth/hooks'
+import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
+import { makeChangeInfrastructurePageLink } from 'modules/infrastructures/utils/pagesLinks'
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
 import { CreateRegistrationFNRequestModalProps } from 'modules/task/components/CreateRegistrationFNRequestModal/types'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
@@ -56,7 +59,9 @@ import {
   TaskAssigneeModel,
 } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
-import { useGetUserActions } from 'modules/user/hooks'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useGetUserActions, useUserPermissions } from 'modules/user/hooks'
+import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -149,8 +154,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   onClose: originOnClose,
 }) => {
   const { modal } = App.useApp()
+  const navigate = useNavigate()
 
   const authUser = useAuthUser()
+  const permissions = useUserPermissions([
+    UserPermissionsEnum.InfrastructureProjectRead,
+    UserPermissionsEnum.AnyStatusInfrastructureProjectRead,
+  ])
   const onClose = useDebounceFn(originOnClose)
 
   const { currentData: userActions, isFetching: userActionsIsFetching } = useGetUserActions(
@@ -649,6 +659,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [createTaskAttachment, task],
   )
 
+  const onClickChangeInfrastructure = () => {
+    if (task && task.infrastructureProject) {
+      navigate(
+        makeChangeInfrastructurePageLink({
+          infrastructureId: task.infrastructureProject.id,
+        }),
+        { state: { task: getChangeInfrastructurePageLocationState(task) } },
+      )
+    }
+  }
+
   const title = task && userActions && (
     <TaskDetailsTitle
       id={task.id}
@@ -800,6 +821,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     onExpand={onExpandAdditionalInfo}
                   />
 
+                  <Divider />
+
                   <Row justify='space-between'>
                     <Col span={11}>
                       <WorkGroupBlock
@@ -833,6 +856,27 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                       />
                     </Col>
                   </Row>
+
+                  <Divider />
+
+                  {task.infrastructureProject &&
+                    task.workType?.actions?.includes(
+                      WorkTypeActionsEnum.CreateInfrastructureProject,
+                    ) && (
+                      <Row justify='space-between'>
+                        <Col>
+                          <Button
+                            disabled={
+                              !permissions.infrastructureProjectRead &&
+                              !permissions.anyStatusInfrastructureProjectRead
+                            }
+                            onClick={onClickChangeInfrastructure}
+                          >
+                            Изменение инфраструктуры
+                          </Button>
+                        </Col>
+                      </Row>
+                    )}
 
                   <Tabs task={task} activeTab={activeTab} userActions={userActions} />
                 </Space>

@@ -17,7 +17,6 @@ const props: TaskAssigneeProps = {
 }
 
 const getContainer = () => screen.getByTestId('task-assignee')
-
 const getContainerIn = (container: HTMLElement) => within(container).getByTestId('task-assignee')
 
 const getAllContainerIn = (container: HTMLElement) =>

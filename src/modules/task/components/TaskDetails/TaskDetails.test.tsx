@@ -1,5 +1,9 @@
 import { screen, waitFor } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/routes'
+import ChangeInfrastructurePage from 'modules/infrastructures/pages/ChangeInfrastructurePage'
+import { testUtils as changeInfrastructurePageTestUtils } from 'modules/infrastructures/pages/ChangeInfrastructurePage/ChangeInfrastructurePage.test'
 import { testUtils as confirmCancelReclassificationRequestModalTestUtils } from 'modules/task/components/ConfirmCancelReclassificationRequestModal/ConfirmCancelReclassificationRequestModal.test'
 import { testUtils as confirmExecuteTaskReclassificationTasksModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskReclassificationTasksModal/ConfirmExecuteTaskReclassificationTasksModal.test'
 import { testUtils as confirmExecuteTaskRegistrationFNModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskRegistrationFNModal/ConfirmExecuteTaskRegistrationFNModal.test'
@@ -8,6 +12,7 @@ import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/
 import { testUtils as assigneeBlockTestUtils } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { testUtils as workGroupBlockTestUtils } from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
 import { testUtils as taskReclassificationRequestTestUtils } from 'modules/task/components/TaskReclassificationRequest/TaskReclassificationRequest.test'
+import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import {
   takeTaskErrMsg,
   TaskActionsPermissionsEnum,
@@ -20,13 +25,17 @@ import {
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
 } from 'modules/task/constants/taskSuspendRequest'
-import { CreateTaskSuspendRequestBadRequestErrorResponse } from 'modules/task/models'
+import { CreateTaskSuspendRequestBadRequestErrorResponse, TaskModel } from 'modules/task/models'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 
 import { commonApiMessages } from 'shared/constants/common'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
+import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCancelReclassificationRequestSuccess,
   mockCreateTaskAttachmentSuccess,
@@ -51,12 +60,14 @@ import {
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
+  buttonTestUtils,
   fakeId,
   fakeWord,
   getStoreWithAuth,
   menuTestUtils,
   notificationTestUtils,
   render,
+  renderInRoute_latest,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -81,13 +92,42 @@ const props: TaskDetailsProps = {
   onClose: jest.fn(),
 }
 
+export const showChangeInfrastructureButton: {
+  task: Pick<TaskModel, 'infrastructureProject' | 'workType'>
+} = {
+  task: {
+    workType: warehouseFixtures.workType({
+      actions: [WorkTypeActionsEnum.CreateInfrastructureProject],
+    }),
+    infrastructureProject: infrastructuresFixtures.infrastructure(),
+  },
+}
+
+export const activeChangeInfrastructureButton: { permissions: UserPermissionsEnum[] } = {
+  permissions: [
+    UserPermissionsEnum.InfrastructureProjectRead,
+    UserPermissionsEnum.AnyStatusInfrastructureProjectRead,
+  ],
+}
+
 const findContainer = () => screen.findByTestId('task-details')
 const getContainer = () => screen.getByTestId('task-details')
 
-// loading
+// change infrastructure
+const getChangeInfrastructureButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), 'Изменение инфраструктуры')
+
+const queryChangeInfrastructureButton = () =>
+  buttonTestUtils.queryButtonIn(getContainer(), 'Изменение инфраструктуры')
+
+const clickChangeInfrastructureButton = async (user: UserEvent) =>
+  user.click(getChangeInfrastructureButton())
+
+// task loading
 const expectTaskLoadingStarted = spinnerTestUtils.expectLoadingStarted('task-loading')
 const expectTaskLoadingFinished = spinnerTestUtils.expectLoadingFinished('task-loading')
 
+// task reclassification request loading
 const expectReclassificationRequestLoadingStarted = spinnerTestUtils.expectLoadingStarted(
   'task-reclassification-request-loading',
 )
@@ -98,6 +138,10 @@ const expectReclassificationRequestLoadingFinished = spinnerTestUtils.expectLoad
 export const testUtils = {
   getContainer,
   findContainer,
+
+  getChangeInfrastructureButton,
+  queryChangeInfrastructureButton,
+  clickChangeInfrastructureButton,
 
   expectTaskLoadingStarted,
   expectTaskLoadingFinished,
@@ -856,6 +900,191 @@ describe('Карточка заявки', () => {
           expect(await notificationTestUtils.findNotification(takeTaskErrMsg)).toBeInTheDocument()
         })
       })
+    })
+  })
+
+  describe('Изменение инфраструктуры', () => {
+    test(`Кнопка отображается если есть infrastructureProject и workType.actions содержит права ${WorkTypeActionsEnum.CreateInfrastructureProject}`, async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        ...showChangeInfrastructureButton.task,
+      })
+
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      const button = testUtils.getChangeInfrastructureButton()
+
+      expect(button).toBeInTheDocument()
+    })
+
+    test(`Кнопка не отображается если есть infrastructureProject но workType.actions не содержит права ${WorkTypeActionsEnum.CreateInfrastructureProject}`, async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        ...showChangeInfrastructureButton.task,
+        workType: warehouseFixtures.workType({ actions: [] }),
+      })
+
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      const button = testUtils.queryChangeInfrastructureButton()
+
+      expect(button).not.toBeInTheDocument()
+    })
+
+    test(`Кнопка не отображается если workType.actions содержит права ${WorkTypeActionsEnum.CreateInfrastructureProject} но нет infrastructureProject`, async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        ...showChangeInfrastructureButton.task,
+        infrastructureProject: null,
+      })
+
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      const button = testUtils.queryChangeInfrastructureButton()
+
+      expect(button).not.toBeInTheDocument()
+    })
+
+    test(`Кнопка активна если есть права ${UserPermissionsEnum.InfrastructureProjectRead}`, async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        ...showChangeInfrastructureButton.task,
+      })
+
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const currentUser = userFixtures.user({
+        permissions: [UserPermissionsEnum.InfrastructureProjectRead],
+      })
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      const button = testUtils.getChangeInfrastructureButton()
+
+      expect(button).toBeEnabled()
+    })
+
+    test(`Кнопка активна если есть права ${UserPermissionsEnum.AnyStatusInfrastructureProjectRead}`, async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        ...showChangeInfrastructureButton.task,
+      })
+
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const currentUser = userFixtures.user({
+        permissions: [UserPermissionsEnum.AnyStatusInfrastructureProjectRead],
+      })
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      const button = testUtils.getChangeInfrastructureButton()
+
+      expect(button).toBeEnabled()
+    })
+
+    test(`Кнопка не активна если нет прав ${UserPermissionsEnum.InfrastructureProjectRead} и ${UserPermissionsEnum.AnyStatusInfrastructureProjectRead}`, async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        ...showChangeInfrastructureButton.task,
+      })
+
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const currentUser = userFixtures.user({ permissions: [] })
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      const button = testUtils.getChangeInfrastructureButton()
+
+      expect(button).toBeDisabled()
+    })
+
+    test('При нажатии переходит на страницу изменения инфраструктуры', async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        ...showChangeInfrastructureButton.task,
+      })
+
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const currentUser = userFixtures.user({
+        permissions: activeChangeInfrastructureButton.permissions,
+      })
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      const { user } = renderInRoute_latest(
+        [
+          {
+            path: TasksRoutesEnum.DesktopTasks,
+            element: <TaskDetails {...props} />,
+          },
+          {
+            path: InfrastructuresRoutesEnum.DesktopChangeInfrastructure,
+            element: <ChangeInfrastructurePage />,
+          },
+        ],
+        { initialIndex: 0, initialEntries: [TasksRoutesEnum.DesktopTasks] },
+        {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        },
+      )
+
+      await testUtils.expectTaskLoadingFinished()
+      await testUtils.clickChangeInfrastructureButton(user)
+      const page = changeInfrastructurePageTestUtils.getContainer()
+
+      expect(page).toBeInTheDocument()
     })
   })
 })

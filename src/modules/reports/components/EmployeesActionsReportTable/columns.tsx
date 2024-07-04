@@ -3,7 +3,7 @@ import { ColumnsType } from 'antd/es/table'
 
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { EmployeesActionsReportTableItem, EmployeesActionsReportTableProps } from './types'
@@ -27,14 +27,12 @@ export const getColumns = ({
   {
     dataIndex: 'equipment',
     title: 'Серийный №',
-    render: (value: EmployeesActionsReportTableItem['equipment']) =>
-      valueOrHyphen(value.serialNumber),
+    render: (value: EmployeesActionsReportTableItem['equipment']) => valueOr(value.serialNumber),
   },
   {
     dataIndex: 'equipment',
     title: 'Инвентарный №',
-    render: (value: EmployeesActionsReportTableItem['equipment']) =>
-      valueOrHyphen(value.inventoryNumber),
+    render: (value: EmployeesActionsReportTableItem['equipment']) => valueOr(value.inventoryNumber),
   },
   {
     dataIndex: 'relocationTask',
