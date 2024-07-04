@@ -479,7 +479,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
                   <ReadonlyField
                     data-testid='executor'
-                    align='top'
+                    rowProps={{ align: 'top' }}
                     label='Исполнитель:'
                     value={
                       relocationTask?.completedBy?.fullName || (
