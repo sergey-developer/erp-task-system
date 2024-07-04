@@ -8,5 +8,4 @@ export const infrastructureOrderFormListItemModel = (): InfrastructureOrderFormL
   id: fakeId(),
   number: fakeWord(),
   urgencyRateType: urgencyRateType(),
-  attachments: null,
 })

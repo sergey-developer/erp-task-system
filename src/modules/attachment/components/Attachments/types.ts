@@ -2,14 +2,12 @@ import { AttachmentModel } from 'modules/attachment/models'
 
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-export type AttachmentListItem = Pick<AttachmentModel, 'name'> & {
+export type AttachmentListItem = Pick<AttachmentModel, 'name' | 'size' | 'url'> & {
   id: NumberOrString
-  url?: AttachmentModel['url']
-  size?: AttachmentModel['size']
   createdAt?: string
   firstName?: string
   lastName?: string
-  middleName?: MaybeNull<string>
+  middleName?: string
   externalId?: MaybeNull<string>
   remove?: () => void
 }

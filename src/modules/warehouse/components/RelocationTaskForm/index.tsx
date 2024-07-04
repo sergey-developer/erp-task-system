@@ -277,7 +277,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
               listType='picture'
               customRequest={onUploadImage}
               onRemove={onDeleteImage}
-              itemRender={renderUploadedFile()}
+              itemRender={renderUploadedFile}
               disabled={isLoading || imageIsUploading || imageIsDeleting || imagesIsLoading}
               maxCount={10}
             >
