@@ -64,7 +64,7 @@ describe('Список вложений', () => {
     const allAttachmentLinks = props.data.map((att) => testUtils.getAttachmentLink(att.name))
     const attachmentLink = allAttachmentLinks[0]
 
-    const attachmentSize = testUtils.getChildByText(new RegExp(prettyBytes(fakeAttachment.size)))
+    const attachmentSize = testUtils.getChildByText(new RegExp(prettyBytes(fakeAttachment.size!)))
     const externalIdText = testUtils.queryChildByText('Не передано в Х5')
 
     expect(externalIdText).not.toBeInTheDocument()
