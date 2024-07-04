@@ -3,35 +3,46 @@ import { UploadFile } from 'antd/es/upload'
 import React from 'react'
 
 import UploadedAttachment from 'modules/attachment/components/UploadedAttachment'
+import { UserModel } from 'modules/user/models'
+
+import { FileResponse } from 'shared/types/file'
 
 type GetFileAttrsResult = {
-  url: string
   name: string
-  size: number
+  url?: string
+  size?: number
+  createdAt?: string
+  createdBy?: Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>
 }
 
-const getFileAttrs = (file: UploadFile): GetFileAttrsResult => ({
+const getFileAttrs = (file: UploadFile<FileResponse>): GetFileAttrsResult => ({
   url: file.response?.url || file.url || file.thumbUrl,
   name: file.response?.title || file.name,
   size: file.response?.size || file.size,
+  createdAt: file.response?.createdAt,
+  createdBy: file.response?.createdBy,
 })
 
-export const renderUploadedFile: UploadProps['itemRender'] = (
-  originNode,
-  file,
-  fileList,
-  actions,
-) => {
-  const attrs = getFileAttrs(file)
+export const renderUploadedFile =
+  (params?: { canDelete?: boolean; showDelete?: boolean }): UploadProps['itemRender'] =>
+  (originNode, file, fileList, actions) => {
+    const attrs = getFileAttrs(file)
 
-  return file.error ? null : file.status === 'uploading' ? (
-    originNode
-  ) : attrs.url && attrs.name ? (
-    <UploadedAttachment key={file.uid} id={file.uid} {...attrs} {...actions} />
-  ) : (
-    originNode
-  )
-}
+    return file.error ? null : file.status === 'uploading' ? (
+      originNode
+    ) : attrs.url && attrs.name ? (
+      <UploadedAttachment
+        key={file.uid}
+        id={file.uid}
+        {...attrs}
+        {...attrs.createdBy}
+        {...actions}
+        {...params}
+      />
+    ) : (
+      originNode
+    )
+  }
 // todo: объединить логику 2х фун-ций в одну
 export const renderUploadedReadonlyFile: UploadProps['itemRender'] = (originNode, file) => {
   const attrs = getFileAttrs(file)

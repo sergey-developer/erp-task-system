@@ -116,7 +116,10 @@ const ChangeInfrastructurePage: FC = () => {
                   label:
                     changeInfrastructurePageTabNames[ChangeInfrastructurePageTabsEnum.OrderForm],
                   children: (
-                    <ChangeInfrastructureOrdersFormsTab infrastructureId={infrastructure.id} />
+                    <ChangeInfrastructureOrdersFormsTab
+                      infrastructureId={infrastructure.id}
+                      manager={infrastructure.manager}
+                    />
                   ),
                 },
               ]}

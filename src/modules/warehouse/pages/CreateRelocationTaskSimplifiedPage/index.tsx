@@ -780,7 +780,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                     listType='picture'
                     customRequest={onCreateCommonRelocationEquipmentImage}
                     onRemove={deleteAttachment}
-                    itemRender={renderUploadedFile}
+                    itemRender={renderUploadedFile()}
                     disabled={
                       createTaskIsLoading || createAttachmentIsLoading || deleteAttachmentIsLoading
                     }
@@ -861,7 +861,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                   listType='picture'
                   customRequest={onCreateCommonRelocationEquipmentImage}
                   onRemove={deleteAttachment}
-                  itemRender={renderUploadedFile}
+                  itemRender={renderUploadedFile()}
                   disabled={
                     createTaskIsLoading || createAttachmentIsLoading || deleteAttachmentIsLoading
                   }
