@@ -1,4 +1,7 @@
+import { InfrastructuresApiEnum } from 'modules/infrastructures/constants'
 import {
+  GetInfrastructureOrdersFormsQueryArgs,
+  GetInfrastructureOrdersFormsSuccessResponse,
   GetInfrastructureQueryArgs,
   GetInfrastructureSuccessResponse,
 } from 'modules/infrastructures/models'
@@ -15,8 +18,20 @@ const infrastructuresApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+
+    getInfrastructureOrdersForms: build.query<
+      GetInfrastructureOrdersFormsSuccessResponse,
+      GetInfrastructureOrdersFormsQueryArgs
+    >({
+      query: (params) => ({
+        url: InfrastructuresApiEnum.GetInfrastructureOrdersForms,
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetInfrastructureQuery } = infrastructuresApiService
+export const { useGetInfrastructureQuery, useGetInfrastructureOrdersFormsQuery } =
+  infrastructuresApiService

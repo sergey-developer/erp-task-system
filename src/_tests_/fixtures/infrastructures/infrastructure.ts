@@ -5,7 +5,7 @@ import { InfrastructureModel } from 'modules/infrastructures/models'
 import userFixtures from '_tests_/fixtures/user'
 import { fakeId } from '_tests_/utils'
 
-import { infrastructureStatusHistory } from './infrastructureStatusHistory.model'
+import { infrastructureStatusHistory } from './infrastructureStatusHistory'
 
 export const infrastructure = (): InfrastructureModel => ({
   id: fakeId(),
