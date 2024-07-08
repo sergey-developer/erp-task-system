@@ -1,4 +1,4 @@
-import { Collapse, Typography, UploadProps } from 'antd'
+import { Collapse, Form, Typography, UploadProps } from 'antd'
 import { CollapseProps } from 'rc-collapse/es/interface'
 import { FC, useCallback, useMemo } from 'react'
 
@@ -14,6 +14,7 @@ import Space from 'components/Space'
 import { IdType } from 'shared/types/common'
 
 import ChangeInfrastructureOrderForm from '../ChangeInfrastructureOrderForm'
+import { ChangeInfrastructureOrdersFormsTabFormFields } from './types'
 
 const { Text } = Typography
 
@@ -25,6 +26,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
   infrastructureId,
   manager,
 }) => {
+  const [form] = Form.useForm<ChangeInfrastructureOrdersFormsTabFormFields>()
   const managerIsCurrentUser = useIdBelongAuthUser(manager?.id)
 
   const {
@@ -50,6 +52,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
         children: (
           <ChangeInfrastructureOrderForm
             data={orderForm}
+            managerIsCurrentUser={managerIsCurrentUser}
             canUploadFile={managerIsCurrentUser}
             onUploadFile={onUploadFile}
             canDeleteFile={managerIsCurrentUser}
@@ -73,14 +76,25 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
   )
 
   return (
-    <Space direction='vertical' size='large' data-testid='change-infrastructure-order-form-tab'>
-      <LoadingArea isLoading={infrastructureOrdersFormsIsFetching}>
-        {!!infrastructureOrdersForms.length ? (
-          <Collapse ghost defaultActiveKey={ordersFormsItemsActiveKeys} items={ordersFormsItems} />
-        ) : (
-          <Text>Нет бланк заказов</Text>
-        )}
-      </LoadingArea>
+    <Space
+      $block
+      direction='vertical'
+      size='large'
+      data-testid='change-infrastructure-order-form-tab'
+    >
+      <Form form={form}>
+        <LoadingArea isLoading={infrastructureOrdersFormsIsFetching}>
+          {!!infrastructureOrdersForms.length ? (
+            <Collapse
+              ghost
+              defaultActiveKey={ordersFormsItemsActiveKeys}
+              items={ordersFormsItems}
+            />
+          ) : (
+            <Text>Нет бланк заказов</Text>
+          )}
+        </LoadingArea>
+      </Form>
     </Space>
   )
 }
