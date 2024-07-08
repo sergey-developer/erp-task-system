@@ -1,4 +1,4 @@
-import { InfrastructureStatusEnum } from './enums'
+import { BudgetTypeEnum, InfrastructureStatusEnum } from './enums'
 
 export const infrastructureStatusDict: Record<InfrastructureStatusEnum, string> = {
   [InfrastructureStatusEnum.New]: 'Новая',
@@ -9,4 +9,9 @@ export const infrastructureStatusDict: Record<InfrastructureStatusEnum, string> 
   [InfrastructureStatusEnum.Canceled]: 'Отменено',
   [InfrastructureStatusEnum.Suspended]: 'Приостановлено',
   [InfrastructureStatusEnum.ApproveAwaiting]: 'Ожидание согласования',
+}
+
+export const budgetTypeDict: Record<BudgetTypeEnum, string> = {
+  [BudgetTypeEnum.OPEX]: 'OPEX',
+  [BudgetTypeEnum.CAPEX]: 'CAPEX',
 }

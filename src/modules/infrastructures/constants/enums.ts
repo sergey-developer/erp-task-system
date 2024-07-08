@@ -8,3 +8,8 @@ export enum InfrastructureStatusEnum {
   Suspended = 'SUSPENDED',
   ApproveAwaiting = 'APPROVE_AWAITING',
 }
+
+export enum BudgetTypeEnum {
+  OPEX = 'OPEX',
+  CAPEX = 'CAPEX',
+}
