@@ -8,7 +8,7 @@ import Label from 'components/Label'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 
 import { WrapperStyled } from './styles'
 
@@ -31,14 +31,14 @@ const WarehousePage: FC = () => {
           <Space $block direction='vertical'>
             <Label label='Наименование объекта'>{warehouse.title}</Label>
 
-            <Label label='Родительский склад'>{valueOrHyphen(warehouse.parent?.title)}</Label>
+            <Label label='Родительский склад'>{valueOr(warehouse.parent?.title)}</Label>
 
             <Label label='Юридическое лицо'>{warehouse.legalEntity.title}</Label>
 
             <Label label='Адрес'>{warehouse.address}</Label>
 
             <Label label='Макрорегионы'>
-              {valueOrHyphen(warehouse.macroregions, (macroregions) => (
+              {valueOr(warehouse.macroregions, (macroregions) => (
                 <Flex vertical gap='small'>
                   {macroregions.map((m) => (
                     <Text key={m.id}>{m.title}</Text>
@@ -47,9 +47,9 @@ const WarehousePage: FC = () => {
               ))}
             </Label>
 
-            <Label label='Договор'>{valueOrHyphen(warehouse.contract)}</Label>
+            <Label label='Договор'>{valueOr(warehouse.contract)}</Label>
 
-            <Label label='Прочие данные'>{valueOrHyphen(warehouse.notes)}</Label>
+            <Label label='Прочие данные'>{valueOr(warehouse.notes)}</Label>
           </Space>
         )}
       </LoadingArea>

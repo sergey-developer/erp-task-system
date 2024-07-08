@@ -21,7 +21,7 @@ import {
 
 import Spinner from 'components/Spinner'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { TabsStyled } from './styles'
@@ -73,7 +73,7 @@ const ExecuteInventorizationPage: FC = () => {
               </Col>
 
               <Col span={15}>
-                {valueOrHyphen(inventorization?.type, (value) => inventorizationTypeDict[value])}
+                {valueOr(inventorization?.type, (value) => inventorizationTypeDict[value])}
               </Col>
             </Row>
 
@@ -83,10 +83,7 @@ const ExecuteInventorizationPage: FC = () => {
               </Col>
 
               <Col span={15}>
-                {valueOrHyphen(
-                  inventorization?.status,
-                  (value) => inventorizationStatusDict[value],
-                )}
+                {valueOr(inventorization?.status, (value) => inventorizationStatusDict[value])}
               </Col>
             </Row>
 
@@ -96,7 +93,7 @@ const ExecuteInventorizationPage: FC = () => {
               </Col>
 
               <Col span={15}>
-                {valueOrHyphen(inventorization?.deadlineAt, (value) => formatDate(value))}
+                {valueOr(inventorization?.deadlineAt, (value) => formatDate(value))}
               </Col>
             </Row>
           </Flex>
@@ -110,7 +107,7 @@ const ExecuteInventorizationPage: FC = () => {
               </Col>
 
               <Col span={18}>
-                {valueOrHyphen(inventorization?.createdAt, (value) => formatDate(value))}
+                {valueOr(inventorization?.createdAt, (value) => formatDate(value))}
               </Col>
             </Row>
 
@@ -119,7 +116,7 @@ const ExecuteInventorizationPage: FC = () => {
                 <Text type='secondary'>Исполнитель:</Text>
               </Col>
 
-              <Col span={18}>{valueOrHyphen(inventorization?.executor.fullName)}</Col>
+              <Col span={18}>{valueOr(inventorization?.executor.fullName)}</Col>
             </Row>
 
             <Row>
@@ -127,7 +124,7 @@ const ExecuteInventorizationPage: FC = () => {
                 <Text type='secondary'>Автор:</Text>
               </Col>
 
-              <Col span={18}>{valueOrHyphen(inventorization?.createdBy.fullName)}</Col>
+              <Col span={18}>{valueOr(inventorization?.createdBy.fullName)}</Col>
             </Row>
           </Flex>
         </Col>
@@ -140,7 +137,7 @@ const ExecuteInventorizationPage: FC = () => {
               </Col>
 
               <Col span={18}>
-                {valueOrHyphen(inventorization?.warehouses, (value) =>
+                {valueOr(inventorization?.warehouses, (value) =>
                   mapInventorizationWarehousesTitles(value),
                 )}
               </Col>

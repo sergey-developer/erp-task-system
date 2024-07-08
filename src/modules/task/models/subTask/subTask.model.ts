@@ -8,8 +8,9 @@ export type SubTaskModel = {
   id: IdType
   title: string
   status: TaskStatusEnum
-  supportGroup: MaybeNull<SupportGroupModel>
+  externalAssigneePhone: string
   createdAt: string
+  supportGroup: MaybeNull<SupportGroupModel>
   cancelReason: MaybeNull<string>
   returnReason: MaybeNull<string>
   recordId: MaybeNull<string>
@@ -17,5 +18,4 @@ export type SubTaskModel = {
   description: MaybeNull<string>
   olaNextBreachTime: MaybeNull<string>
   externalAssigneeName: MaybeNull<string>
-  externalAssigneePhone: MaybeNull<string>
 }

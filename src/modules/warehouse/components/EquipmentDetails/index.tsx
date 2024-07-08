@@ -54,7 +54,7 @@ import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
-import { base64ToBytes, getYesNoWord, printImage, valueOrHyphen } from 'shared/utils/common'
+import { base64ToBytes, getYesNoWord, printImage, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { extractFileNameFromHeaders } from 'shared/utils/extractFileNameFromHeaders'
 import { downloadFile, extractIdsFromFilesResponse } from 'shared/utils/file'
@@ -525,7 +525,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                     <Text type='secondary'>Инвентарный номер:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(equipment.inventoryNumber)}</Col>
+                  <Col span={16}>{valueOr(equipment.inventoryNumber)}</Col>
                 </Row>
               )}
 
@@ -535,7 +535,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                     <Text type='secondary'>Серийный номер:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(equipment.serialNumber)}</Col>
+                  <Col span={16}>{valueOr(equipment.serialNumber)}</Col>
                 </Row>
               )}
 
@@ -544,7 +544,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                   <Text type='secondary'>Местонахождение:</Text>
                 </Col>
 
-                <Col span={16}>{valueOrHyphen(equipment.location?.title)}</Col>
+                <Col span={16}>{valueOr(equipment.location?.title)}</Col>
               </Row>
 
               <Row data-testid='relocation-history'>
@@ -597,7 +597,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
                 <Col span={16}>
                   <Row gutter={16}>
-                    <Col span={6}>{valueOrHyphen(equipment.quantity)}</Col>
+                    <Col span={6}>{valueOr(equipment.quantity)}</Col>
 
                     <Col span={18}>
                       <Row>
@@ -621,7 +621,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
                 <Col span={16}>
                   <Row gutter={16}>
-                    <Col span={6}>{valueOrHyphen(equipment.price)}</Col>
+                    <Col span={6}>{valueOr(equipment.price)}</Col>
 
                     <Col span={18}>
                       <Row>
@@ -630,7 +630,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                         </Col>
 
                         <Col span={18}>
-                          <Text>{valueOrHyphen(equipment.currency?.title)}</Text>
+                          <Text>{valueOr(equipment.currency?.title)}</Text>
                         </Col>
                       </Row>
                     </Col>
@@ -674,7 +674,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                     <Text type='secondary'>Счётчик пробега текущий:</Text>
                   </Col>
 
-                  <Col span={16}>{valueOrHyphen(equipment.usageCounter)}</Col>
+                  <Col span={16}>{valueOr(equipment.usageCounter)}</Col>
                 </Row>
               )}
 
@@ -705,7 +705,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                   <Text type='secondary'>Комментарий:</Text>
                 </Col>
 
-                <Col span={16}>{valueOrHyphen(equipment.comment)}</Col>
+                <Col span={16}>{valueOr(equipment.comment)}</Col>
               </Row>
 
               <Row data-testid='images' gutter={[8, 8]}>

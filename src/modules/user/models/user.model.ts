@@ -24,7 +24,7 @@ export type UserModel = BaseUserModel & {
   isStaff: boolean
   status: UserStatusModel
   permissions: UserPermissionsEnum[]
+  phone: string
 
-  phone: MaybeNull<string>
   position: MaybeNull<UserPositionModel>
 }

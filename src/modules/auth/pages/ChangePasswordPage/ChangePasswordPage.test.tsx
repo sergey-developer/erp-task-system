@@ -74,7 +74,6 @@ const clickSaveButton = async (user: UserEvent) => {
 
 // other utils
 const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSaveButton())
-
 const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSaveButton())
 
 export const testUtils = {
@@ -226,7 +225,7 @@ describe('Страница смены пароля', () => {
 
       expect(notification).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(true)
-      expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTaskList)
+      expect(getCurrentRoute()).toBe(TasksRoutesEnum.DesktopTasks)
     })
   })
 

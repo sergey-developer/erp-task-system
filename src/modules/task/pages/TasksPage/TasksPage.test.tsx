@@ -1149,6 +1149,10 @@ describe('Страница реестра заявок', () => {
   })
 
   describe('Сохраненные фильтры', () => {
+    afterEach(() => {
+      taskLocalStorageService.clearTasksFilters()
+    })
+
     test('Не отображаются если их нет', () => {
       mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
