@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/routes'
@@ -9,6 +9,7 @@ import { testUtils as confirmExecuteTaskReclassificationTasksModalTestUtils } fr
 import { testUtils as confirmExecuteTaskRegistrationFNModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskRegistrationFNModal/ConfirmExecuteTaskRegistrationFNModal.test'
 import { testUtils as createRegistrationFNRequestModalTestUtils } from 'modules/task/components/CreateRegistrationFNRequestModal/CreateRegistrationFNRequestModal.test'
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
+import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import { testUtils as assigneeBlockTestUtils } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { testUtils as workGroupBlockTestUtils } from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
 import { testUtils as taskReclassificationRequestTestUtils } from 'modules/task/components/TaskReclassificationRequest/TaskReclassificationRequest.test'
@@ -27,9 +28,10 @@ import {
 } from 'modules/task/constants/taskSuspendRequest'
 import { CreateTaskSuspendRequestBadRequestErrorResponse, TaskModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
+import { getFullUserName } from 'modules/user/utils'
 import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 
-import { commonApiMessages } from 'shared/constants/common'
+import { commonApiMessages, NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
@@ -57,6 +59,7 @@ import {
   mockResolveTaskSuccess,
   mockTakeTaskServerError,
   mockTakeTaskSuccess,
+  mockUpdateInfrastructureSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -123,6 +126,20 @@ const queryChangeInfrastructureButton = () =>
 const clickChangeInfrastructureButton = async (user: UserEvent) =>
   user.click(getChangeInfrastructureButton())
 
+// support manager block
+const getSupportManagerBlock = () => within(getContainer()).getByTestId('support-manager-block')
+
+const getAssigneeOnMeButton = () =>
+  buttonTestUtils.getButtonIn(getSupportManagerBlock(), /Назначить на себя/)
+
+const queryAssigneeOnMeButton = () =>
+  buttonTestUtils.queryButtonIn(getSupportManagerBlock(), /Назначить на себя/)
+
+const clickAssigneeOnMeButton = async (user: UserEvent) => user.click(getAssigneeOnMeButton())
+
+const assigneeOnMeLoadingFinished = () =>
+  buttonTestUtils.expectLoadingFinished(getAssigneeOnMeButton())
+
 // task loading
 const expectTaskLoadingStarted = spinnerTestUtils.expectLoadingStarted('task-loading')
 const expectTaskLoadingFinished = spinnerTestUtils.expectLoadingFinished('task-loading')
@@ -142,6 +159,12 @@ export const testUtils = {
   getChangeInfrastructureButton,
   queryChangeInfrastructureButton,
   clickChangeInfrastructureButton,
+
+  getSupportManagerBlock,
+  getAssigneeOnMeButton,
+  queryAssigneeOnMeButton,
+  clickAssigneeOnMeButton,
+  assigneeOnMeLoadingFinished,
 
   expectTaskLoadingStarted,
   expectTaskLoadingFinished,
@@ -1085,6 +1108,139 @@ describe('Карточка заявки', () => {
       const page = changeInfrastructurePageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
+    })
+  })
+
+  describe('Менеджер по сопровождению', () => {
+    test('Отображается если есть менеджер в infrastructureProject', async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        infrastructureProject: infrastructuresFixtures.infrastructure(),
+      })
+
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      const title = within(testUtils.getSupportManagerBlock()).getByText(
+        'Менеджер по сопровождению',
+      )
+      const taskAssignee = taskAssigneeTestUtils.getContainerIn(testUtils.getSupportManagerBlock())
+
+      expect(title).toBeInTheDocument()
+      expect(taskAssignee).toBeInTheDocument()
+    })
+
+    test('Соответствующий текст отображается если нет менеджера в infrastructureProject', async () => {
+      const task = taskFixtures.task({
+        id: props.taskId,
+        infrastructureProject: infrastructuresFixtures.infrastructure({ manager: null }),
+      })
+
+      mockGetTaskSuccess(props.taskId, { body: task })
+
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+      render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      await testUtils.expectTaskLoadingFinished()
+      const noAssigneeText = within(testUtils.getSupportManagerBlock()).getByText(NO_ASSIGNEE_TEXT)
+
+      expect(noAssigneeText).toBeInTheDocument()
+    })
+
+    describe('Кнопка назначить на себя', () => {
+      test(`Отображается если есть права ${UserPermissionsEnum.InfrastructureProjectLeading}`, async () => {
+        const task = taskFixtures.task({
+          id: props.taskId,
+          infrastructureProject: infrastructuresFixtures.infrastructure(),
+        })
+
+        mockGetTaskSuccess(props.taskId, { body: task })
+
+        const currentUser = userFixtures.user({
+          permissions: [UserPermissionsEnum.InfrastructureProjectLeading],
+        })
+        mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+        render(<TaskDetails {...props} />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        await testUtils.expectTaskLoadingFinished()
+        const button = testUtils.getAssigneeOnMeButton()
+
+        expect(button).toBeInTheDocument()
+      })
+
+      test(`Не отображается если нет прав ${UserPermissionsEnum.InfrastructureProjectLeading}`, async () => {
+        const task = taskFixtures.task({
+          id: props.taskId,
+          infrastructureProject: infrastructuresFixtures.infrastructure(),
+        })
+
+        mockGetTaskSuccess(props.taskId, { body: task })
+
+        const currentUser = userFixtures.user()
+        mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+        render(<TaskDetails {...props} />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        await testUtils.expectTaskLoadingFinished()
+        const button = testUtils.queryAssigneeOnMeButton()
+
+        expect(button).not.toBeInTheDocument()
+      })
+
+      test('После назначения отображает нового менеджера', async () => {
+        const infrastructure = infrastructuresFixtures.infrastructure()
+        const task = taskFixtures.task({ id: props.taskId, infrastructureProject: infrastructure })
+
+        mockGetTaskSuccess(props.taskId, { body: task })
+
+        const currentUser = userFixtures.user({
+          permissions: [UserPermissionsEnum.InfrastructureProjectLeading],
+        })
+        mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+
+        const newInfrastructureManager = infrastructuresFixtures.infrastructure().manager!
+        mockUpdateInfrastructureSuccess(
+          { infrastructureId: infrastructure.id },
+          { body: { ...infrastructure, manager: newInfrastructureManager } },
+        )
+
+        const { user } = render(<TaskDetails {...props} />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        await testUtils.expectTaskLoadingFinished()
+        await testUtils.clickAssigneeOnMeButton(user)
+        await testUtils.assigneeOnMeLoadingFinished()
+        const assignee = taskAssigneeTestUtils.getContainerIn(testUtils.getSupportManagerBlock())
+
+        expect(assignee).toHaveTextContent(getFullUserName(newInfrastructureManager))
+      })
     })
   })
 })

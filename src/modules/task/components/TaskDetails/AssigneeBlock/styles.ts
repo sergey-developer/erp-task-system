@@ -7,6 +7,7 @@ import styled from 'styled-components'
 
 export const SelectStyled: typeof Select = styled(Select)`
   width: 100%;
+  height: auto;
 
   &&.ant-select .ant-select-selector {
     height: auto;

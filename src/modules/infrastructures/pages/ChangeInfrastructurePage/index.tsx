@@ -12,6 +12,7 @@ import GoBackButton from 'components/Buttons/GoBackButton'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
+import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
@@ -64,7 +65,7 @@ const ChangeInfrastructurePage: FC = () => {
                             hasPopover
                           />
                         ),
-                        'Не назначен',
+                        NO_ASSIGNEE_TEXT,
                       )}
                     />
 
@@ -82,7 +83,7 @@ const ChangeInfrastructurePage: FC = () => {
                             hasPopover
                           />
                         ),
-                        'Не назначен',
+                        NO_ASSIGNEE_TEXT,
                       )}
                     />
 

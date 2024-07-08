@@ -1,3 +1,4 @@
+import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
 import { InfrastructureModel } from 'modules/infrastructures/models'
@@ -7,18 +8,23 @@ import { fakeId } from '_tests_/utils'
 
 import { infrastructureStatusHistory } from './infrastructureStatusHistory'
 
-export const infrastructure = (): InfrastructureModel => ({
+export const infrastructure = (
+  props?: Partial<Pick<InfrastructureModel, 'manager'>>,
+): InfrastructureModel => ({
+  manager: isUndefined(props?.manager)
+    ? pick(
+        userFixtures.user(),
+        'id',
+        'firstName',
+        'lastName',
+        'middleName',
+        'avatar',
+        'email',
+        'phone',
+        'position',
+      )
+    : props!.manager,
+
   id: fakeId(),
-  manager: pick(
-    userFixtures.user(),
-    'id',
-    'firstName',
-    'lastName',
-    'middleName',
-    'avatar',
-    'email',
-    'phone',
-    'position',
-  ),
   status: infrastructureStatusHistory(),
 })

@@ -68,9 +68,11 @@ export enum UserPermissionsEnum {
   AnyWorkGroupsRead = 'ANY_WORK_GROUPS_READ',
   UsersShopsUpdate = 'USERS_SHOPS_UPDATE',
   SelfWorkGroupUpdate = 'SELF_WORK_GROUP_UPDATE',
+
   InfrastructureProjectLeading = 'INFRASTRUCTURE_PROJECT_LEADING',
   InfrastructureProjectRead = 'INFRASTRUCTURE_PROJECT_READ',
   AnyStatusInfrastructureProjectRead = 'ANY_STATUS_INFRASTRUCTURE_PROJECT_READ',
+
   ReadRecycledEquipment = 'READ_RECYCLED_EQUIPMENT',
   CreateEquipmentRecycle = 'CREATE_EQUIPMENT_RECYCLE',
   ApproveEquipmentRecycle = 'APPROVE_EQUIPMENT_RECYCLE',

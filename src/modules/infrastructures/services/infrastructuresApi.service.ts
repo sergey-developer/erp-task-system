@@ -4,8 +4,13 @@ import {
   GetInfrastructureOrdersFormsSuccessResponse,
   GetInfrastructureQueryArgs,
   GetInfrastructureSuccessResponse,
+  UpdateInfrastructureMutationArgs,
+  UpdateInfrastructureSuccessResponse,
 } from 'modules/infrastructures/models'
-import { makeGetInfrastructureUrl } from 'modules/infrastructures/utils/apiUrls'
+import {
+  makeGetInfrastructureUrl,
+  makeUpdateInfrastructureUrl,
+} from 'modules/infrastructures/utils/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
@@ -16,6 +21,16 @@ const infrastructuresApiService = baseApiService.injectEndpoints({
       query: ({ infrastructureId }) => ({
         url: makeGetInfrastructureUrl({ infrastructureId }),
         method: HttpMethodEnum.Get,
+      }),
+    }),
+    updateInfrastructure: build.mutation<
+      UpdateInfrastructureSuccessResponse,
+      UpdateInfrastructureMutationArgs
+    >({
+      query: ({ infrastructureId, ...data }) => ({
+        url: makeUpdateInfrastructureUrl({ infrastructureId }),
+        method: HttpMethodEnum.Patch,
+        data,
       }),
     }),
 
@@ -33,5 +48,8 @@ const infrastructuresApiService = baseApiService.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useGetInfrastructureQuery, useGetInfrastructureOrdersFormsQuery } =
-  infrastructuresApiService
+export const {
+  useGetInfrastructureQuery,
+  useUpdateInfrastructureMutation,
+  useGetInfrastructureOrdersFormsQuery,
+} = infrastructuresApiService
