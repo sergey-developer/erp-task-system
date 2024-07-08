@@ -1,6 +1,6 @@
-import { Flex, Upload, UploadProps } from 'antd'
+import { Flex, Form, Upload, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-import React, { FC } from 'react'
+import React, { FC, Key, useEffect, useState } from 'react'
 
 import { attachmentsToFiles, renderUploadedFile } from 'modules/attachment/utils'
 import { InfrastructureOrderFormListItemModel } from 'modules/infrastructures/models'
@@ -11,8 +11,13 @@ import Space from 'components/Space'
 
 import { FileResponse } from 'shared/types/file'
 
+import ChangeInfrastructureOrderFormTable from '../ChangeInfrastructureOrderFormTable'
+import { ChangeInfrastructureOrderFormTableRow } from '../ChangeInfrastructureOrderFormTable/types'
+import { ChangeInfrastructureOrdersFormsTabFormFields } from '../ChangeInfrastructureOrdersFormsTab/types'
+
 export type ChangeInfrastructureOrderFormProps = {
   data: InfrastructureOrderFormListItemModel
+  managerIsCurrentUser: boolean
 
   canUploadFile: boolean
   onUploadFile?: NonNullable<UploadProps['customRequest']>
@@ -24,6 +29,7 @@ export type ChangeInfrastructureOrderFormProps = {
 
 const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
   data,
+  managerIsCurrentUser,
 
   canUploadFile,
   onUploadFile,
@@ -32,9 +38,27 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
   isDeleting,
   onDeleteFile,
 }) => {
-  const { urgencyRateType, attachments } = data
-
+  const { urgencyRateType, attachments, works, id } = data
   const defaultFiles: UploadFile<FileResponse>[] = attachmentsToFiles(attachments ?? [])
+
+  const form = Form.useFormInstance<ChangeInfrastructureOrdersFormsTabFormFields>()
+
+  const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
+
+  useEffect(() => {
+    if (works.length) {
+      const tableRows: ChangeInfrastructureOrderFormTableRow[] = []
+      const editableTableRowKeys: Key[] = []
+
+      works.forEach((work) => {
+        editableTableRowKeys.push(work.id)
+        tableRows.push({ rowId: work.id, ...work })
+      })
+
+      form.setFieldValue([id, 'works'], tableRows)
+      setEditableTableRowKeys(editableTableRowKeys)
+    }
+  }, [form, id, works])
 
   return (
     <Space $block direction='vertical' size='middle'>
@@ -59,6 +83,13 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
       >
         {canUploadFile && <UploadButton label='Добавить файлы' />}
       </Upload>
+
+      <ChangeInfrastructureOrderFormTable
+        name={[id, 'works']}
+        loading={false}
+        editableKeys={editableTableRowKeys}
+        managerIsCurrentUser={managerIsCurrentUser}
+      />
     </Space>
   )
 }

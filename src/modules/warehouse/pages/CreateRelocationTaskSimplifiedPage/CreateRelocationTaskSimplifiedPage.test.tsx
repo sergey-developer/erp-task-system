@@ -4,7 +4,6 @@ import * as reactRouterDom from 'react-router-dom'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationEquipmentSimplifiedEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentSimplifiedEditableTable/RelocationEquipmentSimplifiedEditableTable.test'
-import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import { getEquipmentListTemplateErrMsg } from 'modules/warehouse/constants/equipment'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
