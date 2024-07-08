@@ -8,6 +8,8 @@ import {
   CreateEquipmentsMutationArgs,
   CreateEquipmentsSuccessResponse,
   CreateEquipmentSuccessResponse,
+  CreateEquipmentTechnicalExaminationMutationArgs,
+  CreateEquipmentTechnicalExaminationSuccessResponse,
   GetEquipmentAttachmentListQueryArgs,
   GetEquipmentAttachmentListSuccessResponse,
   GetEquipmentCatalogListQueryArgs,
@@ -202,6 +204,17 @@ const equipmentApiService = baseApiService
           method: HttpMethodEnum.Get,
         }),
       }),
+
+      createEquipmentTechnicalExamination: build.mutation<
+        CreateEquipmentTechnicalExaminationSuccessResponse,
+        CreateEquipmentTechnicalExaminationMutationArgs
+      >({
+        query: (data) => ({
+          url: EquipmentApiEnum.CreateEquipmentTechnicalExamination,
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+      }),
     }),
   })
 
@@ -225,4 +238,6 @@ export const {
   useGetEquipmentCategoriesQuery,
 
   useLazyGetEquipmentListTemplateQuery,
+
+  useCreateEquipmentTechnicalExaminationMutation,
 } = equipmentApiService
