@@ -14,6 +14,7 @@ export const UPDATE_TEXT = 'Обновить'
 export const ADD_TEXT = 'Добавить'
 export const SEND_TEXT = 'Отправить'
 export const CONFIRM_TEXT = 'Подтвердить'
+export const NO_ASSIGNEE_TEXT = 'Не назначен'
 
 export const LAYOUT_CONTENT_PADDING_V = 32
 export const HEADER_HEIGHT = 64

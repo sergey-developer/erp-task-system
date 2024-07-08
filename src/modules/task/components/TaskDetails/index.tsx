@@ -1,10 +1,11 @@
 import { useBoolean } from 'ahooks'
-import { App, Button, Col, Divider, Drawer, FormInstance, Row } from 'antd'
+import { App, Button, Col, Divider, Drawer, Flex, FormInstance, Row, Typography } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useAuthUser } from 'modules/auth/hooks'
+import { useUpdateInfrastructure } from 'modules/infrastructures/hooks'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { makeChangeInfrastructurePageLink } from 'modules/infrastructures/utils/pagesLinks'
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
@@ -68,7 +69,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
-import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
+import { DEFAULT_DEBOUNCE_VALUE, NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetFaChangeTypes } from 'shared/hooks/catalogs/faChangeTypes'
 import { useSystemSettingsState } from 'shared/hooks/system'
@@ -81,12 +82,13 @@ import {
 } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
-import { base64ToBytes, isFalse, isTrue } from 'shared/utils/common'
+import { base64ToBytes, isFalse, isTrue, valueOr } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { downloadFile, extractIdsFromFilesResponse, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import TaskAssignee from '../TaskAssignee'
 import AssigneeBlock from './AssigneeBlock'
 import WorkGroupBlock from './WorkGroupBlock'
 
@@ -130,6 +132,8 @@ const UpdateTaskDeadlineModal = React.lazy(
   () => import('modules/task/components/UpdateTaskDeadlineModal'),
 )
 
+const { Text } = Typography
+
 export type TaskDetailsProps = {
   taskId: IdType
 
@@ -160,7 +164,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const permissions = useUserPermissions([
     UserPermissionsEnum.InfrastructureProjectRead,
     UserPermissionsEnum.AnyStatusInfrastructureProjectRead,
+    UserPermissionsEnum.InfrastructureProjectLeading,
   ])
+
   const onClose = useDebounceFn(originOnClose)
 
   const { currentData: userActions, isFetching: userActionsIsFetching } = useGetUserActions(
@@ -226,6 +232,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const getTaskCalledAfterSuccessfullyRequestCreation =
     getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
+
+  const [
+    updateInfrastructureMutation,
+    { isLoading: updateInfrastructureIsLoading, data: updateInfrastructureResult },
+  ] = useUpdateInfrastructure()
 
   const [takeTask, { isLoading: takeTaskIsLoading }] = useTakeTask()
   const [resolveTask, { isLoading: taskIsResolving }] = useResolveTask()
@@ -659,15 +670,30 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     [createTaskAttachment, task],
   )
 
-  const onClickChangeInfrastructure = () => {
-    if (task && task.infrastructureProject) {
-      navigate(
-        makeChangeInfrastructurePageLink({
-          infrastructureId: task.infrastructureProject.id,
-        }),
-        { state: { task: getChangeInfrastructurePageLocationState(task) } },
-      )
+  const onUpdateInfrastructure = async () => {
+    if (!task?.infrastructureProject || !authUser) {
+      console.error('task.infrastructureProject or authUser does not exist')
+      return
     }
+
+    await updateInfrastructureMutation({
+      infrastructureId: task.infrastructureProject.id,
+      manager: authUser.id,
+    })
+  }
+
+  const onClickChangeInfrastructure = () => {
+    if (!task?.infrastructureProject) {
+      console.error('task.infrastructureProject does not exist')
+      return
+    }
+
+    navigate(
+      makeChangeInfrastructurePageLink({
+        infrastructureId: task.infrastructureProject.id,
+      }),
+      { state: getChangeInfrastructurePageLocationState(task) },
+    )
   }
 
   const title = task && userActions && (
@@ -859,12 +885,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
                   <Divider />
 
-                  {task.infrastructureProject &&
-                    task.workType?.actions?.includes(
-                      WorkTypeActionsEnum.CreateInfrastructureProject,
-                    ) && (
-                      <Row justify='space-between'>
-                        <Col>
+                  {task.infrastructureProject && (
+                    <Row justify='space-between'>
+                      <Col span={11}>
+                        {task.workType?.actions?.includes(
+                          WorkTypeActionsEnum.CreateInfrastructureProject,
+                        ) && (
                           <Button
                             disabled={
                               !permissions.infrastructureProjectRead &&
@@ -874,9 +900,43 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                           >
                             Изменение инфраструктуры
                           </Button>
-                        </Col>
-                      </Row>
-                    )}
+                        )}
+                      </Col>
+
+                      <Col span={11}>
+                        <Flex data-testid='support-manager-block' vertical gap='small'>
+                          <Flex justify='space-between' gap='middle'>
+                            <Text type='secondary'>Менеджер по сопровождению</Text>
+
+                            {permissions.infrastructureProjectLeading && (
+                              <Button
+                                type='link'
+                                loading={updateInfrastructureIsLoading}
+                                onClick={onUpdateInfrastructure}
+                              >
+                                Назначить на себя
+                              </Button>
+                            )}
+                          </Flex>
+
+                          <Text>
+                            {valueOr(
+                              updateInfrastructureResult?.manager ||
+                                task.infrastructureProject.manager,
+                              (value) => (
+                                <TaskAssignee
+                                  {...value}
+                                  position={value.position?.title}
+                                  hasPopover
+                                />
+                              ),
+                              NO_ASSIGNEE_TEXT,
+                            )}
+                          </Text>
+                        </Flex>
+                      </Col>
+                    </Row>
+                  )}
 
                   <Tabs task={task} activeTab={activeTab} userActions={userActions} />
                 </Space>
