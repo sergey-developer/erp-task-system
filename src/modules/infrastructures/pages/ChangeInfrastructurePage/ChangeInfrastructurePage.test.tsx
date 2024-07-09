@@ -10,8 +10,8 @@ import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/Task
 import {
   activeChangeInfrastructureButton,
   showChangeInfrastructureButton,
+  testUtils as taskDetailsTestUtils,
 } from 'modules/task/components/TaskDetails/TaskDetails.test'
-import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
@@ -60,7 +60,7 @@ const getManagerBlock = () => within(getContainer()).getByTestId('manager')
 const getStatusBlock = () => within(getContainer()).getByTestId('status')
 
 // go back button
-const getGoBackButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Вернуться')
+const getGoBackButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Вернуться в заявку')
 const clickGoBackButton = async (user: UserEvent) => user.click(getGoBackButton())
 
 export const testUtils = {
