@@ -50,6 +50,7 @@ const ChangeInfrastructurePage: FC = () => {
                 <Space $block direction='vertical' size='middle'>
                   <ReadonlyField
                     data-testid='executor'
+                    align='top'
                     label='Исполнитель'
                     value={valueOr(
                       task?.assignee,
@@ -62,6 +63,7 @@ const ChangeInfrastructurePage: FC = () => {
 
                   <ReadonlyField
                     data-testid='manager'
+                    align='top'
                     label='Менеджер по сопровождению'
                     value={valueOr(
                       infrastructure?.manager,
@@ -80,6 +82,7 @@ const ChangeInfrastructurePage: FC = () => {
 
                   <ReadonlyField
                     data-testid='status'
+                    align='top'
                     label='Статус'
                     value={valueOr(infrastructure.status, (value) => (
                       <Flex vertical gap='small'>
