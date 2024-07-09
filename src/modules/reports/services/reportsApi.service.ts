@@ -13,6 +13,8 @@ import {
   GetHistoryNomenclatureOperationsReportQueryArgs,
   GetHistoryNomenclatureOperationsReportSuccessResponse,
   GetHistoryNomenclatureOperationsReportXlsxQueryArgs,
+  GetInventorizationReportQueryArgs,
+  GetInventorizationReportSuccessResponse,
   GetMacroregionsMtsrReportQueryArgs,
   GetMacroregionsMtsrReportSuccessResponse,
   GetSupportGroupsMtsrReportQueryArgs,
@@ -29,10 +31,12 @@ import {
   GetEmployeesActionsReportXlsxTransformedSuccessResponse,
   GetHistoryNomenclatureOperationsReportTransformedSuccessResponse,
   GetHistoryNomenclatureOperationsReportXlsxTransformedSuccessResponse,
+  GetInventorizationReportTransformedSuccessResponse,
 } from 'modules/reports/types'
 import {
   getEmployeesActionsReportUrl,
   getHistoryNomenclatureOperationsReportUrl,
+  makeGetInventorizationReportUrl,
 } from 'modules/reports/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -167,6 +171,20 @@ const reportsApiService = baseApiService.injectEndpoints({
         }),
       },
     ),
+
+    getInventorizationReport: build.query<
+      GetInventorizationReportTransformedSuccessResponse,
+      GetInventorizationReportQueryArgs
+    >({
+      query: ({ inventorizationId }) => ({
+        url: makeGetInventorizationReportUrl({ inventorizationId }),
+        method: HttpMethodEnum.Get,
+      }),
+      transformResponse: (value: GetInventorizationReportSuccessResponse, meta) => ({
+        value,
+        meta,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
@@ -185,6 +203,8 @@ export const {
   useGetSupportGroupsMtsrReportQuery,
   useGetWorkGroupsMtsrReportQuery,
   useGetUsersMtsrReportQuery,
+
+  useLazyGetInventorizationReportQuery,
 
   endpoints,
 } = reportsApiService
