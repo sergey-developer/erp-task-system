@@ -10,13 +10,16 @@ import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/Task
 import {
   activeChangeInfrastructureButton,
   showChangeInfrastructureButton,
+  testUtils as taskDetailsTestUtils,
 } from 'modules/task/components/TaskDetails/TaskDetails.test'
-import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
 import { testUtils as tasksPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { getFullUserName } from 'modules/user/utils'
 
+import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { formatDate } from 'shared/utils/date'
 
 import commonFixtures from '_tests_/fixtures/common'
@@ -25,11 +28,13 @@ import taskFixtures from '_tests_/fixtures/task'
 import { useLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import {
+  mockGetInfrastructureOrdersFormsSuccess,
   mockGetInfrastructureSuccess,
   mockGetTaskCountersSuccess,
   mockGetTasksSuccess,
   mockGetTaskSuccess,
   mockGetUserActionsSuccess,
+  mockUpdateInfrastructureSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -48,6 +53,7 @@ import { getChangeInfrastructurePageLocationState } from './utils'
 const getContainer = () => screen.getByTestId('change-infrastructure-page')
 
 // loading
+const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('infrastructure-loading')
 const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('infrastructure-loading')
 
 // executor
@@ -55,6 +61,17 @@ const getExecutorBlock = () => within(getContainer()).getByTestId('executor')
 
 // manager
 const getManagerBlock = () => within(getContainer()).getByTestId('manager')
+
+const getAssigneeOnMeButton = () =>
+  buttonTestUtils.getButtonIn(getManagerBlock(), /Назначить на себя/)
+
+const queryAssigneeOnMeButton = () =>
+  buttonTestUtils.queryButtonIn(getManagerBlock(), /Назначить на себя/)
+
+const clickAssigneeOnMeButton = async (user: UserEvent) => user.click(getAssigneeOnMeButton())
+
+const assigneeOnMeLoadingFinished = () =>
+  buttonTestUtils.expectLoadingFinished(getAssigneeOnMeButton())
 
 // status
 const getStatusBlock = () => within(getContainer()).getByTestId('status')
@@ -67,12 +84,19 @@ export const testUtils = {
   getContainer,
 
   getExecutorBlock,
+
   getManagerBlock,
+  getAssigneeOnMeButton,
+  queryAssigneeOnMeButton,
+  clickAssigneeOnMeButton,
+  assigneeOnMeLoadingFinished,
+
   getStatusBlock,
 
   getGoBackButton,
   clickGoBackButton,
 
+  expectLoadingStarted,
   expectLoadingFinished,
 }
 
@@ -97,8 +121,15 @@ describe('Страница изменения инфраструктуры за�
 
     const infrastructure = infrastructuresFixtures.infrastructure()
     mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+    mockGetInfrastructureOrdersFormsSuccess()
 
-    render(<ChangeInfrastructurePage />)
+    const currentUser = userFixtures.user()
+
+    render(<ChangeInfrastructurePage />, {
+      store: getStoreWithAuth(currentUser, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(currentUser) },
+      }),
+    })
 
     await testUtils.expectLoadingFinished()
 
@@ -120,8 +151,15 @@ describe('Страница изменения инфраструктуры за�
 
     const infrastructure = infrastructuresFixtures.infrastructure()
     mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+    mockGetInfrastructureOrdersFormsSuccess()
 
-    render(<ChangeInfrastructurePage />)
+    const currentUser = userFixtures.user()
+
+    render(<ChangeInfrastructurePage />, {
+      store: getStoreWithAuth(currentUser, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(currentUser) },
+      }),
+    })
 
     await testUtils.expectLoadingFinished()
 
@@ -133,27 +171,159 @@ describe('Страница изменения инфраструктуры за�
     expect(taskAssignee).toBeInTheDocument()
   })
 
-  test('Менеджер по сопровождению отображается', async () => {
-    jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
+  describe('Менеджер по сопровождению', () => {
+    test('Отображается если он есть', async () => {
+      jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-    const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
-    jest
-      .spyOn(reactRouterDom, 'useLocation')
-      .mockReturnValue(useLocationResult({ state: locationState }))
+      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      jest
+        .spyOn(reactRouterDom, 'useLocation')
+        .mockReturnValue(useLocationResult({ state: locationState }))
 
-    const infrastructure = infrastructuresFixtures.infrastructure()
-    mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+      const infrastructure = infrastructuresFixtures.infrastructure()
+      mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+      mockGetInfrastructureOrdersFormsSuccess()
 
-    render(<ChangeInfrastructurePage />)
+      const currentUser = userFixtures.user()
 
-    await testUtils.expectLoadingFinished()
+      render(<ChangeInfrastructurePage />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
 
-    const managerBlock = testUtils.getManagerBlock()
-    const label = within(managerBlock).getByText('Менеджер по сопровождению')
-    const taskAssignee = taskAssigneeTestUtils.getContainerIn(managerBlock)
+      await testUtils.expectLoadingFinished()
 
-    expect(label).toBeInTheDocument()
-    expect(taskAssignee).toBeInTheDocument()
+      const managerBlock = testUtils.getManagerBlock()
+      const label = within(managerBlock).getByText('Менеджер по сопровождению')
+      const taskAssignee = taskAssigneeTestUtils.getContainerIn(managerBlock)
+
+      expect(label).toBeInTheDocument()
+      expect(taskAssignee).toBeInTheDocument()
+    })
+
+    test('Соответствующий текст отображается если нет менеджера', async () => {
+      jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
+
+      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      jest
+        .spyOn(reactRouterDom, 'useLocation')
+        .mockReturnValue(useLocationResult({ state: locationState }))
+
+      const infrastructure = infrastructuresFixtures.infrastructure({ manager: null })
+      mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+      mockGetInfrastructureOrdersFormsSuccess()
+
+      const currentUser = userFixtures.user()
+
+      render(<ChangeInfrastructurePage />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      const managerBlock = testUtils.getManagerBlock()
+      const noAssigneeText = within(managerBlock).getByText(NO_ASSIGNEE_TEXT)
+
+      expect(noAssigneeText).toBeInTheDocument()
+    })
+
+    describe('Кнопка назначить на себя', () => {
+      test(`Отображается если есть права ${UserPermissionsEnum.InfrastructureProjectLeading}`, async () => {
+        jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
+
+        const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+        jest
+          .spyOn(reactRouterDom, 'useLocation')
+          .mockReturnValue(useLocationResult({ state: locationState }))
+
+        const infrastructure = infrastructuresFixtures.infrastructure()
+        mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+        mockGetInfrastructureOrdersFormsSuccess()
+
+        const currentUser = userFixtures.user({
+          permissions: [UserPermissionsEnum.InfrastructureProjectLeading],
+        })
+
+        render(<ChangeInfrastructurePage />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        const button = testUtils.getAssigneeOnMeButton()
+
+        expect(button).toBeInTheDocument()
+      })
+
+      test(`Не отображается если нет прав ${UserPermissionsEnum.InfrastructureProjectLeading}`, async () => {
+        jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
+
+        const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+        jest
+          .spyOn(reactRouterDom, 'useLocation')
+          .mockReturnValue(useLocationResult({ state: locationState }))
+
+        const infrastructure = infrastructuresFixtures.infrastructure()
+        mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+        mockGetInfrastructureOrdersFormsSuccess()
+
+        const currentUser = userFixtures.user({ permissions: [] })
+
+        render(<ChangeInfrastructurePage />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+        const button = testUtils.queryAssigneeOnMeButton()
+
+        expect(button).not.toBeInTheDocument()
+      })
+
+      test('После назначения отображает нового менеджера', async () => {
+        jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
+
+        const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+        jest
+          .spyOn(reactRouterDom, 'useLocation')
+          .mockReturnValue(useLocationResult({ state: locationState }))
+
+        const infrastructure = infrastructuresFixtures.infrastructure({
+          id: infrastructureId,
+          manager: null,
+        })
+        mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure, once: false })
+        mockGetInfrastructureOrdersFormsSuccess({ body: [], once: false })
+
+        const currentUser = userFixtures.user({
+          permissions: [UserPermissionsEnum.InfrastructureProjectLeading],
+        })
+
+        mockUpdateInfrastructureSuccess({ infrastructureId: infrastructure.id })
+
+        const { user } = render(<ChangeInfrastructurePage />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        await testUtils.expectLoadingFinished()
+
+        const newInfrastructure = infrastructuresFixtures.infrastructure({ id: infrastructureId })
+        mockGetInfrastructureSuccess({ infrastructureId }, { body: newInfrastructure })
+
+        await testUtils.clickAssigneeOnMeButton(user)
+        await testUtils.expectLoadingStarted()
+        await testUtils.expectLoadingFinished()
+        const assignee = taskAssigneeTestUtils.getContainerIn(testUtils.getManagerBlock())
+
+        expect(assignee).toHaveTextContent(getFullUserName(newInfrastructure.manager!))
+      })
+    })
   })
 
   test('Статус отображается', async () => {
@@ -166,8 +336,15 @@ describe('Страница изменения инфраструктуры за�
 
     const infrastructure = infrastructuresFixtures.infrastructure()
     mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+    mockGetInfrastructureOrdersFormsSuccess()
 
-    render(<ChangeInfrastructurePage />)
+    const currentUser = userFixtures.user()
+
+    render(<ChangeInfrastructurePage />, {
+      store: getStoreWithAuth(currentUser, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(currentUser) },
+      }),
+    })
 
     await testUtils.expectLoadingFinished()
 
@@ -194,8 +371,15 @@ describe('Страница изменения инфраструктуры за�
 
       const infrastructure = infrastructuresFixtures.infrastructure()
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+      mockGetInfrastructureOrdersFormsSuccess()
 
-      render(<ChangeInfrastructurePage />)
+      const currentUser = userFixtures.user()
+
+      render(<ChangeInfrastructurePage />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
 
       await testUtils.expectLoadingFinished()
       const button = testUtils.getGoBackButton()
@@ -214,6 +398,7 @@ describe('Страница изменения инфраструктуры за�
 
       const infrastructure = infrastructuresFixtures.infrastructure()
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+      mockGetInfrastructureOrdersFormsSuccess({ body: [] })
 
       const taskListItem = taskFixtures.taskListItem()
       mockGetTasksSuccess({
