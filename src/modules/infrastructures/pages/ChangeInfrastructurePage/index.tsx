@@ -99,7 +99,7 @@ const ChangeInfrastructurePage: FC = () => {
 
               <Col span={3}>
                 <Flex justify='end'>
-                  <GoBackButton text='Вернуться в заявку' />
+                  <GoBackButton text='Вернуться' />
                 </Flex>
               </Col>
             </Row>
