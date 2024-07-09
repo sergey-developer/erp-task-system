@@ -72,6 +72,7 @@ const ChangeInfrastructurePage: FC = () => {
                   <Space $block direction='vertical' size='middle'>
                     <ReadonlyField
                       data-testid='executor'
+                      rowProps={{ align: 'top' }}
                       label='Исполнитель'
                       value={valueOr(
                         task?.assignee,
@@ -89,6 +90,7 @@ const ChangeInfrastructurePage: FC = () => {
 
                     <Flex data-testid='manager' vertical gap='small'>
                       <ReadonlyField
+                        rowProps={{ align: 'top' }}
                         label='Менеджер по сопровождению'
                         value={valueOr(
                           infrastructure?.manager,
@@ -118,6 +120,7 @@ const ChangeInfrastructurePage: FC = () => {
 
                     <ReadonlyField
                       data-testid='status'
+                      rowProps={{ align: 'top' }}
                       label='Статус'
                       value={valueOr(infrastructure.status, (value) => (
                         <Flex vertical gap='small'>
@@ -130,8 +133,12 @@ const ChangeInfrastructurePage: FC = () => {
                   </Space>
                 </Col>
 
+                <Col span={11}></Col>
+
                 <Col span={3}>
-                  <GoBackButton text='Вернуться' />
+                  <Flex justify='end'>
+                    <GoBackButton text='Вернуться в заявку' />
+                  </Flex>
                 </Col>
               </Row>
             </Space>

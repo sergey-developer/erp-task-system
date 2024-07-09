@@ -77,7 +77,7 @@ const assigneeOnMeLoadingFinished = () =>
 const getStatusBlock = () => within(getContainer()).getByTestId('status')
 
 // go back button
-const getGoBackButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Вернуться')
+const getGoBackButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Вернуться в заявку')
 const clickGoBackButton = async (user: UserEvent) => user.click(getGoBackButton())
 
 export const testUtils = {
