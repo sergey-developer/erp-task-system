@@ -30,3 +30,5 @@ export const getSupportGroupsMtsrReportErrMsg =
 
 export const getMacroregionsMtsrReportErrMsg =
   'Ошибка получения данных для отчета основных показателей на уровне макрорегионов'
+
+export const getInventorizationReportErrMsg = 'Ошибка формирования отчета по инвентаризации'
