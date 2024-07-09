@@ -9,8 +9,9 @@ import { fakeId } from '_tests_/utils'
 import { infrastructureStatusHistory } from './infrastructureStatusHistory'
 
 export const infrastructure = (
-  props?: Partial<Pick<InfrastructureModel, 'manager'>>,
+  props?: Partial<Pick<InfrastructureModel, 'id' | 'manager'>>,
 ): InfrastructureModel => ({
+  id: isUndefined(props?.id) ? fakeId() : props!.id,
   manager: isUndefined(props?.manager)
     ? pick(
         userFixtures.user(),
@@ -25,6 +26,5 @@ export const infrastructure = (
       )
     : props!.manager,
 
-  id: fakeId(),
   status: infrastructureStatusHistory(),
 })
