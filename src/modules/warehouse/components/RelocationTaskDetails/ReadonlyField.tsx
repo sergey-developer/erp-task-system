@@ -26,9 +26,15 @@ const ReadonlyField: FC<ReadonlyFieldProps> = ({
       </Col>
 
       {forceDisplayValue ? (
-        <Col span={16}>{displayValue}</Col>
+        <Col span={16}>
+          <Text>{displayValue}</Text>
+        </Col>
       ) : (
-        value && <Col span={16}>{displayValue}</Col>
+        value && (
+          <Col span={16}>
+            <Text>{displayValue}</Text>
+          </Col>
+        )
       )}
     </Row>
   )
