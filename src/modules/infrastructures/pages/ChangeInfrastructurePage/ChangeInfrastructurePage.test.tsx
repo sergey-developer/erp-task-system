@@ -60,7 +60,7 @@ const getManagerBlock = () => within(getContainer()).getByTestId('manager')
 const getStatusBlock = () => within(getContainer()).getByTestId('status')
 
 // go back button
-const getGoBackButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Вернуться в заявку')
+const getGoBackButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Вернуться')
 const clickGoBackButton = async (user: UserEvent) => user.click(getGoBackButton())
 
 export const testUtils = {
