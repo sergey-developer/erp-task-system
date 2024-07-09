@@ -672,7 +672,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const onUpdateInfrastructure = async () => {
     if (!task?.infrastructureProject || !authUser) {
-      console.error('task.infrastructureProject or authUser does not exist')
+      console.error('Required data not supplied:', {
+        infrastructureProject: task?.infrastructureProject,
+        authUser,
+      })
       return
     }
 
@@ -684,14 +687,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const onClickChangeInfrastructure = () => {
     if (!task?.infrastructureProject) {
-      console.error('task.infrastructureProject does not exist')
+      console.error('Required data not supplied:', {
+        infrastructureProject: task?.infrastructureProject,
+      })
       return
     }
 
     navigate(
-      makeChangeInfrastructurePageLink({
-        infrastructureId: task.infrastructureProject.id,
-      }),
+      makeChangeInfrastructurePageLink({ infrastructureId: task.infrastructureProject.id }),
       { state: getChangeInfrastructurePageLocationState(task) },
     )
   }
@@ -928,6 +931,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                                   {...value}
                                   position={value.position?.title}
                                   hasPopover
+                                  showPhone={false}
                                 />
                               ),
                               NO_ASSIGNEE_TEXT,
