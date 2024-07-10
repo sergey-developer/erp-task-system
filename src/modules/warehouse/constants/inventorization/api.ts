@@ -4,7 +4,7 @@ export enum InventorizationApiEnum {
   CreateInventorization = '/inventorizations/',
   CompleteInventorization = '/inventorizations/:id/complete',
 
-  GetInventorizationEquipments = '/inventorizations/:id/equipments',
+  GetInventorizationEquipments = '/inventorizations/:inventorizationId/equipments',
   CreateInventorizationEquipment = '/inventorizations/:inventorizationId/equipments',
   UpdateInventorizationEquipment = '/inventorizations/equipments/:inventorizationEquipmentId',
 }
