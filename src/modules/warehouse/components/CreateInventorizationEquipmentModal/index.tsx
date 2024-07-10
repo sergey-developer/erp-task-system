@@ -54,7 +54,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
 
   return (
     <BaseModal
-      data-testid='create-equipment-for-revise-modal'
+      data-testid='create-inventorization-equipment-modal'
       title='Добавление оборудования'
       confirmLoading={isLoading}
       onOk={form.submit}
@@ -66,13 +66,18 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
         layout='vertical'
         onFinish={onFinish}
       >
-        <Form.Item name='equipment' label='Оборудование' rules={onlyRequiredRules}>
+        <Form.Item
+          data-testid='equipment-form-item'
+          name='equipment'
+          label='Оборудование'
+          rules={onlyRequiredRules}
+        >
           <Select<EquipmentCatalogListItemModel['id']>
             dropdownRender={(menu) => (
               <Space $block direction='vertical'>
                 <SelectOptionButton
                   type='link'
-                  onClick={locationFactFormValue ? () => {} : setLocationFactIsEmpty}
+                  onClick={locationFactFormValue ? undefined : setLocationFactIsEmpty}
                 >
                   Добавить оборудование
                 </SelectOptionButton>
@@ -83,14 +88,14 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
             placeholder='Оборудование'
             options={equipmentCatalogOptions}
             loading={equipmentCatalogIsLoading}
-            disabled={equipmentCatalogIsLoading}
+            disabled={equipmentCatalogIsLoading || isLoading}
             showSearch
             filterOption={filterOptionBy('label')}
             onChange={onChangeEquipment}
           />
         </Form.Item>
 
-        <Form.Item label='Плановое местонахождение'>
+        <Form.Item data-testid='location-plan-form-item' label='Плановое местонахождение'>
           <Select
             placeholder='Плановое местонахождение'
             disabled
@@ -101,6 +106,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
         </Form.Item>
 
         <Form.Item
+          data-testid='location-fact-form-item'
           name='locationFact'
           label='Фактическое местонахождение'
           rules={onlyRequiredRules}
@@ -109,6 +115,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
           <Select
             placeholder='Фактическое местонахождение'
             options={warehouses}
+            disabled={isLoading}
             fieldNames={idAndTitleSelectFieldNames}
             showSearch
             filterOption={filterOptionBy('label')}
