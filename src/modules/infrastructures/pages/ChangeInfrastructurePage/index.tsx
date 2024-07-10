@@ -108,13 +108,18 @@ const ChangeInfrastructurePage: FC = () => {
                       />
 
                       {permissions.infrastructureProjectLeading && (
-                        <Button
-                          type='link'
-                          loading={updateInfrastructureIsLoading}
-                          onClick={onUpdateInfrastructure}
-                        >
-                          Назначить на себя
-                        </Button>
+                        <Row>
+                          <Col span={8}></Col>
+                          <Col span={16}>
+                            <Button
+                              type='link'
+                              loading={updateInfrastructureIsLoading}
+                              onClick={onUpdateInfrastructure}
+                            >
+                              Назначить на себя
+                            </Button>
+                          </Col>
+                        </Row>
                       )}
                     </Flex>
 
