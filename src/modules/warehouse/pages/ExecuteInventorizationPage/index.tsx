@@ -177,7 +177,12 @@ const ExecuteInventorizationPage: FC = () => {
           {
             key: ExecuteInventorizationPageTabsEnum.Revise,
             label: 'Сверка',
-            children: <ExecuteInventorizationReviseTab inventorizationId={inventorizationId} />,
+            children: (
+              <ExecuteInventorizationReviseTab
+                inventorizationId={inventorizationId}
+                warehouses={inventorization?.warehouses || []}
+              />
+            ),
           },
           {
             key: ExecuteInventorizationPageTabsEnum.Discrepancies,

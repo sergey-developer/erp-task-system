@@ -8,6 +8,7 @@ import ExecuteInventorizationReviseTab, { ExecuteInventorizationReviseTabProps }
 
 const props: ExecuteInventorizationReviseTabProps = {
   inventorizationId: fakeId(),
+  warehouses: [],
 }
 
 const getContainer = () => screen.getByTestId('execute-inventorization-revise-tab')

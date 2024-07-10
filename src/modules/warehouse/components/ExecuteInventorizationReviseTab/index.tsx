@@ -6,20 +6,30 @@ import React, { FC, useCallback, useMemo, useState } from 'react'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
+  useGetEquipment,
   useGetEquipmentCatalogList,
   useGetEquipmentCategories,
 } from 'modules/warehouse/hooks/equipment'
 import {
+  useCreateInventorizationEquipment,
   useGetInventorizationEquipments,
   useUpdateInventorizationEquipment,
 } from 'modules/warehouse/hooks/inventorization'
-import { GetInventorizationEquipmentsQueryArgs } from 'modules/warehouse/models'
+import {
+  GetInventorizationEquipmentsQueryArgs,
+  WarehouseListItemModel,
+} from 'modules/warehouse/models'
 import { InventorizationRequestArgs } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
+
+import ModalFallback from 'components/Modals/ModalFallback'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
 import { useGetLocations } from 'shared/hooks/catalogs/location'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import { IdType } from 'shared/types/common'
+import { getFieldsErrors } from 'shared/utils/form'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -27,35 +37,55 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
+import { CreateInventorizationEquipmentModalProps } from '../CreateInventorizationEquipmentModal/types'
 import ReviseEquipmentTable from '../ReviseEquipmentTable'
 import { ReviseEquipmentTableProps } from '../ReviseEquipmentTable/types'
+
+const CreateInventorizationEquipmentModal = React.lazy(
+  () => import('../CreateInventorizationEquipmentModal'),
+)
 
 export type ExecuteInventorizationReviseTabProps = Pick<
   InventorizationRequestArgs,
   'inventorizationId'
->
+> & {
+  warehouses: Pick<WarehouseListItemModel, 'id' | 'title'>[]
+}
 
 const { Title } = Typography
 const { Search } = Input
 
 const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> = ({
   inventorizationId,
+  warehouses,
 }) => {
   const [searchValue, setSearchValue] = useState<string>()
 
+  const [selectedEquipmentId, setSelectedEquipmentId] = useState<IdType>()
+
   const [
-    createEquipmentModalOpened,
-    { setTrue: openCreateEquipmentModal, setFalse: closeCreateEquipmentModal },
+    createInventorizationEquipmentModalOpened,
+    {
+      setTrue: openCreateInventorizationEquipmentModal,
+      setFalse: closeCreateInventorizationEquipmentModal,
+    },
   ] = useBoolean(false)
 
-  const debouncedOpenCreateEquipmentModal = useDebounceFn(openCreateEquipmentModal)
-  const debouncedCloseCreateEquipmentModal = useDebounceFn(closeCreateEquipmentModal)
+  const debouncedOpenCreateInventorizationEquipmentModal = useDebounceFn(
+    openCreateInventorizationEquipmentModal,
+  )
 
-  const {
-    currentData: equipmentCategories = [],
-    isFetching: equipmentCategoriesIsFetching,
-    isSuccess: isEquipmentCategoriesFetchedSuccess,
-  } = useGetEquipmentCategories(undefined, { skip: !createEquipmentModalOpened })
+  const onCloseCreateInventorizationEquipmentModal = useCallback(() => {
+    closeCreateInventorizationEquipmentModal()
+    setSelectedEquipmentId(undefined)
+  }, [closeCreateInventorizationEquipmentModal])
+
+  const debouncedCloseCreateInventorizationEquipmentModal = useDebounceFn(
+    onCloseCreateInventorizationEquipmentModal,
+  )
+
+  const { currentData: equipmentCategories = [], isSuccess: isEquipmentCategoriesFetchedSuccess } =
+    useGetEquipmentCategories(undefined, { skip: !createInventorizationEquipmentModalOpened })
 
   const notConsumableEquipmentCategoriesIds = useMemo(
     () =>
@@ -65,7 +95,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     [equipmentCategories],
   )
 
-  const { currentData: equipmentCatalogs = [], isFetching: equipmentCatalogsIsFetching } =
+  const { currentData: equipmentCatalog = [], isFetching: equipmentCatalogIsFetching } =
     useGetEquipmentCatalogList(
       {
         conditions: [
@@ -75,12 +105,17 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         ],
         categories: notConsumableEquipmentCategoriesIds,
       },
-      { skip: !createEquipmentModalOpened || !isEquipmentCategoriesFetchedSuccess },
+      { skip: !createInventorizationEquipmentModalOpened || !isEquipmentCategoriesFetchedSuccess },
     )
 
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations({
     responsibilityArea: false,
   })
+
+  const { currentData: equipment, isFetching: equipmentIsFetching } = useGetEquipment(
+    { equipmentId: selectedEquipmentId! },
+    { skip: !selectedEquipmentId },
+  )
 
   const [getInventorizationEquipmentsArgs, setGetInventorizationEquipmentsArgs] =
     useSetState<GetInventorizationEquipmentsQueryArgs>({
@@ -93,7 +128,32 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     isFetching: inventorizationEquipmentsIsFetching,
   } = useGetInventorizationEquipments(getInventorizationEquipmentsArgs)
 
+  const [
+    createInventorizationEquipmentMutation,
+    { isLoading: createInventorizationEquipmentIsLoading },
+  ] = useCreateInventorizationEquipment()
+
   const [updateInventorizationEquipmentMutation] = useUpdateInventorizationEquipment()
+
+  const onCreateInventorizationEquipment = useCallback<
+    CreateInventorizationEquipmentModalProps['onSubmit']
+  >(
+    async (values, setFields) => {
+      try {
+        await createInventorizationEquipmentMutation({ inventorizationId, ...values }).unwrap()
+        onCloseCreateInventorizationEquipmentModal()
+      } catch (error) {
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
+        }
+      }
+    },
+    [
+      createInventorizationEquipmentMutation,
+      inventorizationId,
+      onCloseCreateInventorizationEquipmentModal,
+    ],
+  )
 
   const onTablePagination = useCallback(
     (pagination: Parameters<ReviseEquipmentTableProps['onTableChange']>[0]) => {
@@ -153,7 +213,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       <Flex data-testid='execute-inventorization-revise-tab' vertical gap='small'>
         <Title level={5}>Перечень оборудования для сверки</Title>
 
-        <Row>
+        <Row justify='space-between'>
           <Col span={5}>
             <Search
               allowClear
@@ -166,7 +226,9 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
           </Col>
 
           <Col>
-            <Button onClick={debouncedOpenCreateEquipmentModal}>Добавить оборудование</Button>
+            <Button onClick={debouncedOpenCreateInventorizationEquipmentModal}>
+              Добавить оборудование
+            </Button>
           </Col>
         </Row>
 
@@ -181,6 +243,27 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
           onChangeLocationFact={onChangeLocationFact}
         />
       </Flex>
+
+      {createInventorizationEquipmentModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback open onCancel={debouncedCloseCreateInventorizationEquipmentModal} />
+          }
+        >
+          <CreateInventorizationEquipmentModal
+            open={createInventorizationEquipmentModalOpened}
+            onCancel={debouncedCloseCreateInventorizationEquipmentModal}
+            equipmentCatalog={equipmentCatalog}
+            equipmentCatalogIsLoading={equipmentCatalogIsFetching}
+            equipment={equipment}
+            equipmentIsLoading={equipmentIsFetching}
+            onChangeEquipment={setSelectedEquipmentId}
+            warehouses={warehouses}
+            isLoading={createInventorizationEquipmentIsLoading}
+            onSubmit={onCreateInventorizationEquipment}
+          />
+        </React.Suspense>
+      )}
     </>
   )
 }

@@ -9,4 +9,5 @@ export * from './getInventorizations.model'
 export * from './inventorizationEquipments.model'
 export * from './getInventorizationEquipments.model'
 
+export * from './createInventorizationEquipment.model'
 export * from './updateInventorizationEquipment.model'

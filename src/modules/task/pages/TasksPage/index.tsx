@@ -46,7 +46,7 @@ import {
 } from 'modules/user/hooks'
 import { checkUserStatusOffline } from 'modules/user/utils'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
-import { useGetWorkGroups } from 'modules/workGroup/hooks'
+import { useGetWorkGroups } from 'modules/workGroup/hooks/useGetWorkGroups'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
