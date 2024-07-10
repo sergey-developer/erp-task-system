@@ -1,6 +1,6 @@
 import { Button } from 'antd'
 import styled from 'styled-components'
 
-export const CreateEquipmentButton = styled(Button)`
+export const SelectOptionButton = styled(Button)`
   padding: 4px 15px !important;
 `
