@@ -44,7 +44,7 @@ import {
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useCreateRelocationTask } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWarehouse } from 'modules/warehouse/hooks/warehouse'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
+import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType/useGetWorkTypeList'
 import {
   CreateEquipmentsBadRequestErrorResponse,
   EquipmentCategoryListItemModel,

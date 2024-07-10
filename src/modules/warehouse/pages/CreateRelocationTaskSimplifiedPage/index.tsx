@@ -49,7 +49,7 @@ import {
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useCreateRelocationTaskITSM } from 'modules/warehouse/hooks/relocationTask'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
+import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType/useGetWorkTypeList'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { SimplifiedRelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
