@@ -53,7 +53,7 @@ import {
   useUpdateRelocationTask,
 } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWarehouse } from 'modules/warehouse/hooks/warehouse'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
+import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType/useGetWorkTypeList'
 import {
   CreateEquipmentsBadRequestErrorResponse,
   EquipmentCategoryListItemModel,

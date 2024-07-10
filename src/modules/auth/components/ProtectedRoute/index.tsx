@@ -9,6 +9,7 @@ import { useUserMeState } from 'modules/user/hooks'
 import { UserModel } from 'modules/user/models'
 
 import { CommonLocationState } from 'shared/types/common'
+import { MaybeNull } from 'shared/types/utils'
 import { getPathByLocation } from 'shared/utils/url'
 
 type ProtectedRouteProps<LocationState> = {
@@ -23,9 +24,9 @@ function ProtectedRoute<LocationState>({
   permitted,
   onlyGuest = false,
   redirectPath,
-}: ProtectedRouteProps<LocationState>) {
+}: ProtectedRouteProps<MaybeNull<LocationState>>) {
   const location = useLocation()
-  const locationState = location.state as LocationState
+  const locationState = location.state as MaybeNull<LocationState>
   const navigationState: CommonLocationState = { from: getPathByLocation(location) }
 
   const isLoggedIn = useIsLoggedIn()
