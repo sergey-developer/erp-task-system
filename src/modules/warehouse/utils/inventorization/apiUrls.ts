@@ -20,7 +20,14 @@ export const makeGetInventorizationEquipmentsUrl = ({
   inventorizationId,
 }: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
   generateApiPath(InventorizationApiEnum.GetInventorizationEquipments, {
-    id: String(inventorizationId),
+    inventorizationId: String(inventorizationId),
+  })
+
+export const makeCreateInventorizationEquipmentUrl = ({
+  inventorizationId,
+}: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
+  generateApiPath(InventorizationApiEnum.CreateInventorizationEquipment, {
+    inventorizationId: String(inventorizationId),
   })
 
 export const makeUpdateInventorizationEquipmentUrl = ({

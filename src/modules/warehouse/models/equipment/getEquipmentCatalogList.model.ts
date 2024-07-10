@@ -9,6 +9,7 @@ export type GetEquipmentCatalogListQueryArgs = Partial<{
   conditions: EquipmentConditionEnum[]
   isWarranty: boolean
   isCredited: boolean
+  categories: IdType[]
 }>
 
 export type GetEquipmentCatalogListSuccessResponse = EquipmentCatalogListModel

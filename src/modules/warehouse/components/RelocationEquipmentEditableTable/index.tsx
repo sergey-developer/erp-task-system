@@ -14,18 +14,20 @@ import {
 } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
-import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
+import {
+  checkEquipmentCategoryIsConsumable,
+  makeEquipmentsCatalogSelectOptions,
+} from 'modules/warehouse/utils/equipment'
 import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
+import { SelectOptionButton } from 'components/Buttons/SelectOptionButton'
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
 
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
-import { makeString } from 'shared/utils/string'
 
-import { CreateEquipmentButton } from './styles'
 import { RelocationEquipmentEditableTableProps, RelocationEquipmentRow } from './types'
 
 const formItemProps: EditableProTableProps<RelocationEquipmentRow, any>['formItemProps'] = {
@@ -71,11 +73,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(typeFormValue)
 
   const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
-    () =>
-      equipmentCatalogList.map((eqp) => ({
-        label: makeString(', ', eqp.title, eqp.serialNumber, eqp.inventoryNumber),
-        value: eqp.id,
-      })),
+    () => makeEquipmentsCatalogSelectOptions(equipmentCatalogList),
     [equipmentCatalogList],
   )
 
@@ -111,13 +109,13 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         dropdownRender: canCreateEquipment
           ? (menu: ReactNode) => (
               <Space $block direction='vertical'>
-                <CreateEquipmentButton
+                <SelectOptionButton
                   type='link'
                   disabled={createEquipmentBtnDisabled}
                   onClick={() => onClickCreateEquipment({ rowIndex: config.rowIndex })}
                 >
                   Добавить оборудование
-                </CreateEquipmentButton>
+                </SelectOptionButton>
 
                 {menu}
               </Space>
