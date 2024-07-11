@@ -41,7 +41,7 @@ import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useCreateEquipments,
-  useGetEquipmentCatalogList,
+  useGetEquipmentCatalogs,
   useGetEquipmentCategories,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
@@ -49,7 +49,7 @@ import {
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useCreateRelocationTaskITSM } from 'modules/warehouse/hooks/relocationTask'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
+import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType/useGetWorkTypeList'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { SimplifiedRelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
@@ -244,12 +244,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const {
     currentData: equipmentCatalogsFromWarehouse = [],
     isFetching: equipmentCatalogsFromWarehouseIsFetching,
-  } = useGetEquipmentCatalogList({ locationId: warehouseMSI?.id! }, { skip: !warehouseMSI?.id })
+  } = useGetEquipmentCatalogs({ locationId: warehouseMSI?.id! }, { skip: !warehouseMSI?.id })
 
   const {
     currentData: equipmentCatalogsToWarehouse = [],
     isFetching: equipmentCatalogsToWarehouseIsFetching,
-  } = useGetEquipmentCatalogList({ locationId: taskShop?.id! }, { skip: !taskShop?.id })
+  } = useGetEquipmentCatalogs({ locationId: taskShop?.id! }, { skip: !taskShop?.id })
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 

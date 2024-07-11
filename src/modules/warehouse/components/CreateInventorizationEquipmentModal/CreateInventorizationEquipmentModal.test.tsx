@@ -20,6 +20,7 @@ const props: CreateInventorizationEquipmentModalProps = {
   equipmentCatalog: [],
   equipmentCatalogIsLoading: false,
   onChangeEquipment: jest.fn(),
+  onClickCreateEquipment: jest.fn(),
 
   warehouses: [],
 

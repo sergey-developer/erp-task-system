@@ -1,13 +1,18 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Button, Col, Flex, Input, Row, Typography } from 'antd'
+import { Button, Col, Flex, FormInstance, Input, Row, Typography, UploadProps } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import isNumber from 'lodash/isNumber'
-import React, { FC, useCallback, useMemo, useState } from 'react'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
+import { AttachmentTypeEnum } from 'modules/attachment/constants'
+import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
+import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
+  useCreateEquipment,
   useGetEquipment,
-  useGetEquipmentCatalogList,
+  useGetEquipmentCatalogs,
   useGetEquipmentCategories,
 } from 'modules/warehouse/hooks/equipment'
 import {
@@ -15,7 +20,11 @@ import {
   useGetInventorizationEquipments,
   useUpdateInventorizationEquipment,
 } from 'modules/warehouse/hooks/inventorization'
+import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
 import {
+  EquipmentCategoryListItemModel,
+  GetEquipmentCatalogListQueryArgs,
   GetInventorizationEquipmentsQueryArgs,
   WarehouseListItemModel,
 } from 'modules/warehouse/models'
@@ -26,9 +35,12 @@ import ModalFallback from 'components/Modals/ModalFallback'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
 import { useGetLocations } from 'shared/hooks/catalogs/location'
+import { useGetCurrencyList } from 'shared/hooks/currency'
+import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import {
   calculatePaginationParams,
@@ -37,12 +49,20 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
-import { CreateInventorizationEquipmentModalProps } from '../CreateInventorizationEquipmentModal/types'
+import {
+  CreateInventorizationEquipmentFormFields,
+  CreateInventorizationEquipmentModalProps,
+} from '../CreateInventorizationEquipmentModal/types'
+import { EquipmentFormModalProps } from '../EquipmentFormModal/types'
 import ReviseEquipmentTable from '../ReviseEquipmentTable'
 import { ReviseEquipmentTableProps } from '../ReviseEquipmentTable/types'
 
 const CreateInventorizationEquipmentModal = React.lazy(
   () => import('../CreateInventorizationEquipmentModal'),
+)
+
+const EquipmentFormModal = React.lazy(
+  () => import('modules/warehouse/components/EquipmentFormModal'),
 )
 
 export type ExecuteInventorizationReviseTabProps = Pick<
@@ -61,7 +81,44 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 }) => {
   const [searchValue, setSearchValue] = useState<string>()
 
-  const [selectedEquipmentId, setSelectedEquipmentId] = useState<IdType>()
+  const [equipmentId, setEquipmentId] = useState<IdType>()
+
+  const [createInventorizationEquipmentForm, setCreateInventorizationEquipmentForm] =
+    useState<FormInstance<CreateInventorizationEquipmentFormFields>>()
+
+  const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
+
+  const [selectedOwnerId, setSelectedOwnerId] = useState<IdType>()
+
+  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
+  const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
+
+  const [
+    createEquipmentModalOpened,
+    { setTrue: openCreateEquipmentModal, setFalse: closeCreateEquipmentModal },
+  ] = useBoolean(false)
+
+  const onOpenCreateEquipmentModal = useDebounceFn<
+    CreateInventorizationEquipmentModalProps['onClickCreateEquipment']
+  >(
+    (form) => () => {
+      setCreateInventorizationEquipmentForm(form)
+      openCreateEquipmentModal()
+    },
+    [openCreateEquipmentModal],
+  )
+
+  const onCloseCreateEquipmentModal = useCallback(() => {
+    closeCreateEquipmentModal()
+    setCreateInventorizationEquipmentForm(undefined)
+    setSelectedNomenclatureId(undefined)
+    setSelectedCategory(undefined)
+    setSelectedOwnerId(undefined)
+  }, [closeCreateEquipmentModal])
+
+  const debouncedCloseCreateEquipmentModal = useDebounceFn(onCloseCreateEquipmentModal, [
+    onCloseCreateEquipmentModal,
+  ])
 
   const [
     createInventorizationEquipmentModalOpened,
@@ -77,44 +134,108 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 
   const onCloseCreateInventorizationEquipmentModal = useCallback(() => {
     closeCreateInventorizationEquipmentModal()
-    setSelectedEquipmentId(undefined)
+    setEquipmentId(undefined)
   }, [closeCreateInventorizationEquipmentModal])
 
   const debouncedCloseCreateInventorizationEquipmentModal = useDebounceFn(
     onCloseCreateInventorizationEquipmentModal,
   )
 
-  const { currentData: equipmentCategories = [], isSuccess: isEquipmentCategoriesFetchedSuccess } =
-    useGetEquipmentCategories(undefined, { skip: !createInventorizationEquipmentModalOpened })
+  const [
+    createInventorizationEquipmentMutation,
+    { isLoading: createInventorizationEquipmentIsLoading },
+  ] = useCreateInventorizationEquipment()
 
-  const notConsumableEquipmentCategoriesIds = useMemo(
-    () =>
-      equipmentCategories
+  const [updateInventorizationEquipmentMutation] = useUpdateInventorizationEquipment()
+
+  const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
+
+  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
+  const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
+
+  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } =
+    useGetNomenclatureList(
+      categoryIsConsumable
+        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
+        : defaultGetNomenclatureListParams,
+      { skip: !createEquipmentModalOpened || !selectedCategory },
+    )
+
+  const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
+    selectedNomenclatureId!,
+    { skip: !selectedNomenclatureId || !createEquipmentModalOpened },
+  )
+
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypeList(
+    undefined,
+    {
+      skip: !createEquipmentModalOpened || !selectedCategory || !selectedNomenclatureId,
+    },
+  )
+
+  const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList()
+
+  const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
+    useLazyGetCustomerList()
+
+  useEffect(() => {
+    if (
+      createEquipmentModalOpened &&
+      !!selectedCategory &&
+      !categoryIsConsumable &&
+      !!selectedNomenclatureId
+    ) {
+      getCustomers()
+    }
+  }, [
+    createEquipmentModalOpened,
+    categoryIsConsumable,
+    getCustomers,
+    selectedCategory,
+    selectedNomenclatureId,
+  ])
+
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
+    { customers: [selectedOwnerId!] },
+    { skip: !selectedOwnerId },
+  )
+
+  const {
+    currentData: equipmentCategories = [],
+    isFetching: equipmentCategoriesIsFetching,
+    isSuccess: isEquipmentCategoriesFetchedSuccess,
+  } = useGetEquipmentCategories(undefined, {
+    skip: !createInventorizationEquipmentModalOpened && !createEquipmentModalOpened,
+  })
+
+  const getEquipmentCatalogQueryArgs = useMemo<GetEquipmentCatalogListQueryArgs>(
+    () => ({
+      categories: equipmentCategories
         .filter((c) => !checkEquipmentCategoryIsConsumable(c.code))
         .map((c) => c.id),
+      conditions: [
+        EquipmentConditionEnum.Working,
+        EquipmentConditionEnum.Broken,
+        EquipmentConditionEnum.NonRepairable,
+      ],
+    }),
     [equipmentCategories],
   )
 
+  // todo: Пока поправить не получилось.
+  //  Отправляется лишний запрос после добавления оборудования из модалки добавления оборудования инвентаризации
   const { currentData: equipmentCatalog = [], isFetching: equipmentCatalogIsFetching } =
-    useGetEquipmentCatalogList(
-      {
-        conditions: [
-          EquipmentConditionEnum.Working,
-          EquipmentConditionEnum.Broken,
-          EquipmentConditionEnum.NonRepairable,
-        ],
-        categories: notConsumableEquipmentCategoriesIds,
-      },
-      { skip: !createInventorizationEquipmentModalOpened || !isEquipmentCategoriesFetchedSuccess },
-    )
+    useGetEquipmentCatalogs(getEquipmentCatalogQueryArgs, {
+      skip: !createInventorizationEquipmentModalOpened || !isEquipmentCategoriesFetchedSuccess,
+    })
 
   const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations({
     responsibilityArea: false,
   })
 
   const { currentData: equipment, isFetching: equipmentIsFetching } = useGetEquipment(
-    { equipmentId: selectedEquipmentId! },
-    { skip: !selectedEquipmentId },
+    { equipmentId: equipmentId! },
+    { skip: !equipmentId },
   )
 
   const [getInventorizationEquipmentsArgs, setGetInventorizationEquipmentsArgs] =
@@ -128,23 +249,16 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     isFetching: inventorizationEquipmentsIsFetching,
   } = useGetInventorizationEquipments(getInventorizationEquipmentsArgs)
 
-  const [
-    createInventorizationEquipmentMutation,
-    { isLoading: createInventorizationEquipmentIsLoading },
-  ] = useCreateInventorizationEquipment()
-
-  const [updateInventorizationEquipmentMutation] = useUpdateInventorizationEquipment()
-
   const onCreateInventorizationEquipment = useCallback<
     CreateInventorizationEquipmentModalProps['onSubmit']
   >(
-    async (values, setFields) => {
+    async (values, form) => {
       try {
         await createInventorizationEquipmentMutation({ inventorizationId, ...values }).unwrap()
         onCloseCreateInventorizationEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
-          setFields(getFieldsErrors(error.data))
+          form.setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -200,6 +314,58 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     500,
   )
 
+  const onChangeCategory = useCallback<EquipmentFormModalProps['onChangeCategory']>((category) => {
+    setSelectedCategory(category)
+    setSelectedNomenclatureId(undefined)
+  }, [])
+
+  const onChangeNomenclature = useCallback<EquipmentFormModalProps['onChangeNomenclature']>(
+    (id) => setSelectedNomenclatureId(id),
+    [],
+  )
+
+  const onCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
+    async (options) => {
+      await createAttachment({ type: AttachmentTypeEnum.EquipmentImage }, options)
+    },
+    [createAttachment],
+  )
+
+  const onCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
+    async ({ images, ...values }, setFields) => {
+      if (!createInventorizationEquipmentForm) return
+
+      const createInventorizationEquipmentFormValues =
+        createInventorizationEquipmentForm.getFieldsValue()
+
+      try {
+        const newEquipment = await createEquipmentMutation({
+          ...values,
+          images: images?.length ? extractIdsFromFilesResponse(images) : undefined,
+          location: createInventorizationEquipmentFormValues.locationFact,
+          warehouse: createInventorizationEquipmentFormValues.locationFact,
+        }).unwrap()
+
+        onCloseCreateEquipmentModal()
+
+        await onCreateInventorizationEquipment(
+          { ...createInventorizationEquipmentFormValues, equipment: newEquipment.id },
+          createInventorizationEquipmentForm,
+        )
+      } catch (error) {
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          setFields(getFieldsErrors(error.data))
+        }
+      }
+    },
+    [
+      createEquipmentMutation,
+      createInventorizationEquipmentForm,
+      onCloseCreateEquipmentModal,
+      onCreateInventorizationEquipment,
+    ],
+  )
+
   const onSearch = useDebounceFn<NonNullable<SearchProps['onSearch']>>(
     (value) => setGetInventorizationEquipmentsArgs({ search: value || undefined }),
     [setGetInventorizationEquipmentsArgs],
@@ -207,6 +373,12 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 
   const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) =>
     setSearchValue(event.target.value)
+
+  const createEquipmentFormValues = useMemo(
+    () =>
+      createEquipmentModalOpened ? { title: nomenclature ? nomenclature.title : '' } : undefined,
+    [createEquipmentModalOpened, nomenclature],
+  )
 
   return (
     <>
@@ -257,10 +429,56 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             equipmentCatalogIsLoading={equipmentCatalogIsFetching}
             equipment={equipment}
             equipmentIsLoading={equipmentIsFetching}
-            onChangeEquipment={setSelectedEquipmentId}
+            onChangeEquipment={setEquipmentId}
+            onClickCreateEquipment={onOpenCreateEquipmentModal}
             warehouses={warehouses}
             isLoading={createInventorizationEquipmentIsLoading}
             onSubmit={onCreateInventorizationEquipment}
+          />
+        </React.Suspense>
+      )}
+
+      {createEquipmentModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              open
+              onCancel={debouncedCloseCreateEquipmentModal}
+              tip='Загрузка модалки добавления оборудования'
+            />
+          }
+        >
+          <EquipmentFormModal
+            open={createEquipmentModalOpened}
+            mode='create'
+            title='Добавление оборудования'
+            okText='Добавить'
+            isLoading={createEquipmentIsLoading}
+            values={createEquipmentFormValues}
+            categories={equipmentCategories}
+            categoriesIsLoading={equipmentCategoriesIsFetching}
+            category={selectedCategory}
+            onChangeCategory={onChangeCategory}
+            currencies={currencies}
+            currenciesIsLoading={currenciesIsFetching}
+            owners={customers}
+            ownersIsLoading={customersIsFetching}
+            onChangeOwner={setSelectedOwnerId}
+            macroregions={macroregions}
+            macroregionsIsLoading={macroregionsIsFetching}
+            workTypes={workTypes}
+            workTypesIsLoading={workTypesIsFetching}
+            nomenclature={nomenclature}
+            nomenclatureIsLoading={nomenclatureIsFetching}
+            nomenclatures={extractPaginationResults(nomenclatures)}
+            nomenclaturesIsLoading={nomenclaturesIsFetching}
+            onChangeNomenclature={onChangeNomenclature}
+            onCancel={debouncedCloseCreateEquipmentModal}
+            onSubmit={onCreateEquipment}
+            onUploadImage={onCreateEquipmentImage}
+            imageIsUploading={createAttachmentIsLoading}
+            onDeleteImage={deleteAttachment}
+            imageIsDeleting={deleteAttachmentIsLoading}
           />
         </React.Suspense>
       )}
