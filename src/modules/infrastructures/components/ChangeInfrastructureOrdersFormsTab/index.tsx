@@ -48,7 +48,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
     () =>
       infrastructureOrdersForms.map((orderForm) => ({
         key: orderForm.id,
-        label: <Text strong>Бланк-заказ №${orderForm.number}</Text>,
+        label: <Text strong>Бланк-заказ №{orderForm.number}</Text>,
         children: (
           <ChangeInfrastructureOrderForm
             data={orderForm}
