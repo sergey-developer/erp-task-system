@@ -95,7 +95,6 @@ const ChangeInfrastructurePage: FC = () => {
                           (value) => (
                             <TaskAssignee
                               {...value}
-                              position={value.position?.title}
                               showAvatar={false}
                               showPhone={false}
                               hasPopover

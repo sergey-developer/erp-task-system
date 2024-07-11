@@ -927,12 +927,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                               updateInfrastructureResult?.manager ||
                                 task.infrastructureProject.manager,
                               (value) => (
-                                <TaskAssignee
-                                  {...value}
-                                  position={value.position?.title}
-                                  hasPopover
-                                  showPhone={false}
-                                />
+                                <TaskAssignee {...value} hasPopover showPhone={false} />
                               ),
                               NO_ASSIGNEE_TEXT,
                             )}
