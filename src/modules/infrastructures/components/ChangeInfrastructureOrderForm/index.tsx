@@ -86,7 +86,6 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
 
       <ChangeInfrastructureOrderFormTable
         name={[id, 'works']}
-        loading={false}
         editableKeys={editableTableRowKeys}
         managerIsCurrentUser={managerIsCurrentUser}
       />

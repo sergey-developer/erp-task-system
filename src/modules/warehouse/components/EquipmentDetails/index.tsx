@@ -33,7 +33,7 @@ import {
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
+import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType/useGetWorkTypeList'
 import {
   CreateEquipmentTechnicalExaminationSuccessResponse,
   EquipmentCategoryListItemModel,

@@ -19,9 +19,6 @@ export type ChangeInfrastructureOrderFormTableProps = SetNonNullable<
   RowEditableConfig<ChangeInfrastructureOrderFormTableRow>,
   'editableKeys'
 > &
-  SetNonNullable<
-    EditableProTableProps<ChangeInfrastructureOrderFormTableRow, any>,
-    'loading' | 'name'
-  > & {
+  SetNonNullable<EditableProTableProps<ChangeInfrastructureOrderFormTableRow, any>, 'name'> & {
     managerIsCurrentUser: boolean
   }
