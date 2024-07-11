@@ -41,7 +41,6 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
       }),
     },
     {
-      key: 'budgetType',
       dataIndex: ['type', 'budgetType'],
       title: 'Бюджет',
       fieldProps: { disabled: true, placeholder: null },
