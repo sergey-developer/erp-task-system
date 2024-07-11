@@ -6,7 +6,6 @@ import { attachmentsToFiles, renderUploadedFile } from 'modules/attachment/utils
 import { InfrastructureOrderFormListItemModel } from 'modules/infrastructures/models'
 import ReadonlyField from 'modules/warehouse/components/RelocationTaskDetails/ReadonlyField'
 
-import UploadButton from 'components/Buttons/UploadButton'
 import Space from 'components/Space'
 
 import { FileResponse } from 'shared/types/file'
@@ -81,7 +80,7 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
         defaultFileList={defaultFiles}
         itemRender={renderUploadedFile({ canDelete: !isDeleting, showDelete: canDeleteFile })}
       >
-        {canUploadFile && <UploadButton label='Добавить файлы' />}
+        {/*{canUploadFile && <UploadButton label='Добавить файлы' />}*/}
       </Upload>
 
       <ChangeInfrastructureOrderFormTable
