@@ -37,7 +37,7 @@ import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useCreateEquipments,
-  useGetEquipmentCatalogList,
+  useGetEquipmentCatalogs,
   useGetEquipmentCategories,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
@@ -53,7 +53,7 @@ import {
   useUpdateRelocationTask,
 } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWarehouse } from 'modules/warehouse/hooks/warehouse'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
+import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType/useGetWorkTypeList'
 import {
   CreateEquipmentsBadRequestErrorResponse,
   EquipmentCategoryListItemModel,
@@ -316,7 +316,7 @@ const EditRelocationTaskPage: FC = () => {
   )
 
   const { currentData: equipmentCatalogList = [], isFetching: equipmentCatalogListIsFetching } =
-    useGetEquipmentCatalogList(
+    useGetEquipmentCatalogs(
       {
         locationId: selectedRelocateFrom?.value || selectedRelocateTo?.value,
         ...getEquipmentCatalogListParams(selectedType!),

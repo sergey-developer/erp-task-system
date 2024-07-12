@@ -20,6 +20,7 @@ const props: CreateInventorizationEquipmentModalProps = {
   equipmentCatalog: [],
   equipmentCatalogIsLoading: false,
   onChangeEquipment: jest.fn(),
+  onClickCreateEquipment: jest.fn(),
 
   warehouses: [],
 
@@ -41,6 +42,11 @@ const openEquipmentSelect = (user: UserEvent) =>
 const setEquipment = selectTestUtils.clickSelectOption
 const getSelectedEquipment = () => selectTestUtils.getSelectedOption(getEquipmentFormItem())
 const findEquipmentError = async (text: string) => within(getEquipmentFormItem()).findByText(text)
+
+const getCreateEquipmentButton = () =>
+  buttonTestUtils.getButtonIn(screen.getByTestId('equipment-dropdown'), 'Добавить оборудование')
+
+const clickCreateEquipmentButton = async (user: UserEvent) => user.click(getCreateEquipmentButton())
 
 const expectEquipmentLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getEquipmentFormItem())
@@ -88,6 +94,7 @@ export const testUtils = {
   setEquipment,
   getSelectedEquipment,
   findEquipmentError,
+  clickCreateEquipmentButton,
   expectEquipmentLoadingFinished,
 
   getLocationPlanSelectInput,

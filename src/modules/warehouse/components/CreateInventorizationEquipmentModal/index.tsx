@@ -29,9 +29,10 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
 
   equipmentCatalog,
   equipmentCatalogIsLoading,
-  onChangeEquipment,
   equipment,
   equipmentIsLoading,
+  onChangeEquipment,
+  onClickCreateEquipment,
 
   ...props
 }) => {
@@ -49,7 +50,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
   )
 
   const onFinish = async (values: CreateInventorizationEquipmentFormFields) => {
-    await onSubmit(values, form.setFields)
+    await onSubmit(values, form)
   }
 
   return (
@@ -74,10 +75,12 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
         >
           <Select<EquipmentCatalogListItemModel['id']>
             dropdownRender={(menu) => (
-              <Space $block direction='vertical'>
+              <Space data-testid='equipment-dropdown' $block direction='vertical'>
                 <SelectOptionButton
                   type='link'
-                  onClick={locationFactFormValue ? undefined : setLocationFactIsEmpty}
+                  onClick={
+                    locationFactFormValue ? onClickCreateEquipment(form) : setLocationFactIsEmpty
+                  }
                 >
                   Добавить оборудование
                 </SelectOptionButton>
