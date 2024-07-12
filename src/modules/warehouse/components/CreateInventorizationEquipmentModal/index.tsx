@@ -75,7 +75,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
         >
           <Select<EquipmentCatalogListItemModel['id']>
             dropdownRender={(menu) => (
-              <Space $block direction='vertical'>
+              <Space data-testid='equipment-dropdown' $block direction='vertical'>
                 <SelectOptionButton
                   type='link'
                   onClick={
