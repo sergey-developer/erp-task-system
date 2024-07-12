@@ -41,7 +41,7 @@ import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useCreateEquipments,
-  useGetEquipmentCatalogList,
+  useGetEquipmentCatalogs,
   useGetEquipmentCategories,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
@@ -244,12 +244,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const {
     currentData: equipmentCatalogsFromWarehouse = [],
     isFetching: equipmentCatalogsFromWarehouseIsFetching,
-  } = useGetEquipmentCatalogList({ locationId: warehouseMSI?.id! }, { skip: !warehouseMSI?.id })
+  } = useGetEquipmentCatalogs({ locationId: warehouseMSI?.id! }, { skip: !warehouseMSI?.id })
 
   const {
     currentData: equipmentCatalogsToWarehouse = [],
     isFetching: equipmentCatalogsToWarehouseIsFetching,
-  } = useGetEquipmentCatalogList({ locationId: taskShop?.id! }, { skip: !taskShop?.id })
+  } = useGetEquipmentCatalogs({ locationId: taskShop?.id! }, { skip: !taskShop?.id })
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 

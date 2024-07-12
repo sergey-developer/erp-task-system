@@ -154,10 +154,10 @@ const expectNomenclaturesLoadingStarted = () =>
 const expectNomenclaturesLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getNomenclatureFormItem())
 
-const expectNomenclatureLoadingStarted = () =>
+const expectNomenclatureLoadingStarted =
   spinnerTestUtils.expectLoadingStarted('nomenclature-loading')
 
-const expectNomenclatureLoadingFinished = () =>
+const expectNomenclatureLoadingFinished =
   spinnerTestUtils.expectLoadingFinished('nomenclature-loading')
 
 // title field

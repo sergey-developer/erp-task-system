@@ -23,7 +23,7 @@ type UseGetEquipmentCatalogListOptions = CustomUseQueryOptions<
   GetEquipmentCatalogListSuccessResponse
 >
 
-export const useGetEquipmentCatalogList = (
+export const useGetEquipmentCatalogs = (
   args?: GetEquipmentCatalogListQueryArgs,
   options?: UseGetEquipmentCatalogListOptions,
 ): UseGetEquipmentCatalogListResult => {

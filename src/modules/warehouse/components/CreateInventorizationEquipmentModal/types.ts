@@ -3,13 +3,13 @@ import { FormInstance } from 'antd'
 import {
   EquipmentCatalogListModel,
   EquipmentModel,
-  InventorizationModel,
+  WarehouseListItemModel,
 } from 'modules/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { IdType } from 'shared/types/common'
-import { SetNonNullable } from 'shared/types/utils'
+import { EmptyFn, SetNonNullable } from 'shared/types/utils'
 
 export type CreateInventorizationEquipmentFormFields = {
   equipment: IdType
@@ -24,12 +24,13 @@ export type CreateInventorizationEquipmentModalProps = SetNonNullable<
   onChangeEquipment: (value: IdType) => void
   equipment?: Pick<EquipmentModel, 'location'>
   equipmentIsLoading: boolean
+  onClickCreateEquipment: (form: FormInstance<CreateInventorizationEquipmentFormFields>) => EmptyFn
 
-  warehouses: InventorizationModel['warehouses']
+  warehouses: Pick<WarehouseListItemModel, 'id' | 'title'>[]
 
   isLoading: boolean
   onSubmit: (
     values: CreateInventorizationEquipmentFormFields,
-    setFields: FormInstance<CreateInventorizationEquipmentFormFields>['setFields'],
+    form: FormInstance<CreateInventorizationEquipmentFormFields>,
   ) => Promise<void>
 }
