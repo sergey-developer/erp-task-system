@@ -23,7 +23,7 @@ import {
   mockGetLocationListSuccess,
   mockGetNomenclatureListSuccess,
   mockGetNomenclatureSuccess,
-  mockGetWorkTypeListSuccess,
+  mockGetWorkTypesSuccess,
 } from '_tests_/mocks/api'
 import { buttonTestUtils, fakeId, fakeInteger, render, setupApiTests } from '_tests_/utils'
 
@@ -163,7 +163,7 @@ describe('Вкладка списка оборудования с расхожд
       })
 
       const workTypeListItem = warehouseFixtures.workTypeListItem()
-      mockGetWorkTypeListSuccess({ body: [workTypeListItem] })
+      mockGetWorkTypesSuccess({ body: [workTypeListItem] })
       mockGetEquipmentCatalogListSuccess({ body: [], once: false })
       mockCreateEquipmentSuccess()
       mockCreateInventorizationEquipmentSuccess({ inventorizationId: props.inventorizationId })

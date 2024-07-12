@@ -21,7 +21,7 @@ import {
   useUpdateInventorizationEquipment,
 } from 'modules/warehouse/hooks/inventorization'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
+import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 import {
   EquipmentCategoryListItemModel,
   GetEquipmentCatalogListQueryArgs,
@@ -166,7 +166,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     { skip: !selectedNomenclatureId || !createEquipmentModalOpened },
   )
 
-  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypeList(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
     undefined,
     {
       skip: !createEquipmentModalOpened || !selectedCategory || !selectedNomenclatureId,
