@@ -70,8 +70,6 @@ const setReason = async (user: UserEvent, reason: SuspendReasonEnum) => {
   return field
 }
 
-const expectReasonLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
-
 // task link field
 const getTaskLinkFormItem = () => within(getContainer()).getByTestId('task-link-form-item')
 const queryTaskLinkFormItem = () => within(getContainer()).queryByTestId('task-link-form-item')
@@ -154,8 +152,8 @@ const setComment = async (user: UserEvent, value: string) => {
 }
 
 // loading
-const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
-const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
+const expectSubmittingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
+const expectSubmittingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const testUtils = {
   getContainer,
@@ -202,8 +200,8 @@ export const testUtils = {
   findCommentError,
   setComment,
 
-  expectLoadingStarted,
-  expectLoadingFinished,
+  expectSubmittingStarted,
+  expectSubmittingFinished,
 }
 
 describe('Модалка создания запроса о переводе в ожидание', () => {

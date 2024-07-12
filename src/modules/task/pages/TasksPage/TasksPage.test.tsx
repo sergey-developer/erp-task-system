@@ -1149,7 +1149,7 @@ describe('Страница реестра заявок', () => {
   })
 
   describe('Сохраненные фильтры', () => {
-    afterEach(() => {
+    beforeEach(() => {
       taskLocalStorageService.clearTasksFilters()
     })
 
