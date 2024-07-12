@@ -22,8 +22,6 @@ import {
 } from 'modules/task/constants/taskSuspendRequest'
 import { CreateTaskSuspendRequestBadRequestErrorResponse } from 'modules/task/models'
 
-import { commonApiMessages } from 'shared/constants/common'
-
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import systemFixtures from '_tests_/fixtures/system'
 import taskFixtures from '_tests_/fixtures/task'
@@ -41,7 +39,6 @@ import {
   mockDeleteTaskSuspendRequestServerError,
   mockDeleteTaskSuspendRequestSuccess,
   mockGetFaChangeTypesSuccess,
-  mockGetSystemSettingsSuccess,
   mockGetTaskReclassificationRequestSuccess,
   mockGetTaskRegistrationRequestRecipientsFNSuccess,
   mockGetTaskSuccess,
@@ -51,6 +48,7 @@ import {
   mockTakeTaskServerError,
   mockTakeTaskSuccess,
 } from '_tests_/mocks/api'
+import { getSystemSettingsQueryMock } from '_tests_/mocks/state/system'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeId,
@@ -108,6 +106,7 @@ export const testUtils = {
 }
 
 setupApiTests()
+notificationTestUtils.setupNotifications()
 
 describe('Карточка заявки', () => {
   test('Блок информации о рабочей группе отображается', async () => {
@@ -419,11 +418,12 @@ describe('Карточка заявки', () => {
             }),
           })
 
-          mockGetSystemSettingsSuccess({ body: systemFixtures.settings() })
-
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth(currentUser, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(currentUser) },
+              queries: {
+                ...getUserMeQueryMock(currentUser),
+                ...getSystemSettingsQueryMock(systemFixtures.settings()),
+              },
             }),
           })
 
@@ -447,21 +447,33 @@ describe('Карточка заявки', () => {
         test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
-          mockGetTaskSuccess(props.taskId, {
-            body: taskFixtures.task({
-              id: props.taskId,
-              ...activeRequestSuspendItemProps,
+          const task = taskFixtures.task({
+            id: props.taskId,
+            ...activeRequestSuspendItemProps,
+          })
+          mockGetTaskSuccess(task.id, { body: task })
+
+          const currentUser = userFixtures.user()
+          mockGetUserActionsSuccess(currentUser.id, {
+            body: userFixtures.userActions({
+              tasks: {
+                ...userFixtures.taskActionsPermissions,
+                CAN_SUSPEND_REQUESTS_CREATE: [task.id],
+              },
             }),
           })
 
-          const currentUser = userFixtures.user()
-          mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
-
-          mockCreateTaskSuspendRequestNotFoundError(props.taskId)
+          const detailError = fakeWord()
+          mockCreateTaskSuspendRequestNotFoundError(props.taskId, {
+            body: { detail: [detailError] },
+          })
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth(currentUser, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(currentUser) },
+              queries: {
+                ...getUserMeQueryMock(currentUser),
+                ...getSystemSettingsQueryMock(systemFixtures.settings()),
+              },
             }),
           })
 
@@ -478,18 +490,25 @@ describe('Карточка заявки', () => {
           await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
           await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-          expect(
-            await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
-          ).toBeInTheDocument()
+          expect(await notificationTestUtils.findNotification(detailError)).toBeInTheDocument()
         })
 
         test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
-          mockGetTaskSuccess(props.taskId, {
-            body: taskFixtures.task({
-              id: props.taskId,
-              ...activeRequestSuspendItemProps,
+          const task = taskFixtures.task({
+            id: props.taskId,
+            ...activeRequestSuspendItemProps,
+          })
+          mockGetTaskSuccess(task.id, { body: task })
+
+          const currentUser = userFixtures.user()
+          mockGetUserActionsSuccess(currentUser.id, {
+            body: userFixtures.userActions({
+              tasks: {
+                ...userFixtures.taskActionsPermissions,
+                CAN_SUSPEND_REQUESTS_CREATE: [task.id],
+              },
             }),
           })
 
@@ -501,16 +520,17 @@ describe('Карточка заявки', () => {
             externalResponsibleCompany: [fakeWord()],
           }
 
-          const currentUser = userFixtures.user()
-          mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
-
-          mockCreateTaskSuspendRequestBadRequestError(props.taskId, {
-            body: badRequestResponse,
-          })
+          mockCreateTaskSuspendRequestBadRequestError<CreateTaskSuspendRequestBadRequestErrorResponse>(
+            task.id,
+            { body: { ...badRequestResponse } },
+          )
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth(currentUser, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(currentUser) },
+              queries: {
+                ...getUserMeQueryMock(currentUser),
+                ...getSystemSettingsQueryMock(systemFixtures.settings()),
+              },
             }),
           })
 
@@ -526,10 +546,6 @@ describe('Карточка заявки', () => {
           )
           await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
           await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
-
-          expect(
-            await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
-          ).toBeInTheDocument()
 
           expect(
             await requestTaskSuspendModalTestUtils.findReasonError(
@@ -552,43 +568,39 @@ describe('Карточка заявки', () => {
               badRequestResponse.suspendEndAt[0],
             ),
           ).toBeInTheDocument()
-
-          expect(
-            await requestTaskSuspendModalTestUtils.findEndTimeError(
-              badRequestResponse.externalRevisionLink[0],
-            ),
-          ).toBeInTheDocument()
-
-          expect(
-            await requestTaskSuspendModalTestUtils.findEndTimeError(
-              badRequestResponse.externalResponsibleCompany[0],
-            ),
-          ).toBeInTheDocument()
         })
 
         test('Обрабатывается неизвестная ошибка', async () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
-          mockGetTaskSuccess(props.taskId, {
-            body: taskFixtures.task({
-              id: props.taskId,
-              ...activeRequestSuspendItemProps,
-            }),
+          const task = taskFixtures.task({
+            id: props.taskId,
+            ...activeRequestSuspendItemProps,
           })
+          mockGetTaskSuccess(task.id, { body: task })
 
           const currentUser = userFixtures.user()
-          mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+          mockGetUserActionsSuccess(currentUser.id, {
+            body: userFixtures.userActions({
+              tasks: {
+                ...userFixtures.taskActionsPermissions,
+                CAN_SUSPEND_REQUESTS_CREATE: [task.id],
+              },
+            }),
+          })
 
           mockCreateTaskSuspendRequestServerError(props.taskId)
 
           const { user } = render(<TaskDetails {...props} />, {
             store: getStoreWithAuth(currentUser, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(currentUser) },
+              queries: {
+                ...getUserMeQueryMock(currentUser),
+                ...getSystemSettingsQueryMock(systemFixtures.settings()),
+              },
             }),
           })
 
           await testUtils.expectTaskLoadingFinished()
-
           await taskDetailsTitleTestUtils.openMenu(user)
           await taskDetailsTitleTestUtils.clickRequestSuspendItem(user)
           await requestTaskSuspendModalTestUtils.findContainer()
@@ -601,7 +613,7 @@ describe('Карточка заявки', () => {
           await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await notificationTestUtils.findNotification(commonApiMessages.unknownError),
+            await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
           ).toBeInTheDocument()
         })
       })
