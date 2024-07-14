@@ -46,7 +46,7 @@ Tests:
         - node_modules/
       policy: pull
   only:
-    - rc
+#    - rc
     - master
     # - develop
   tags:
