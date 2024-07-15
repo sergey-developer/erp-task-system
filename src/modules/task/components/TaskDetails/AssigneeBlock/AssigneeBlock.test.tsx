@@ -797,7 +797,7 @@ describe('Блок "Исполнитель заявки"', () => {
           }),
         })
 
-        expect(testUtils.getSelectedAssignee()).toHaveTextContent(String(props.assignee.id))
+        expect(testUtils.getSelectedAssignee()).toHaveTextContent(getFullUserName(props.assignee))
       })
 
       test('Не имеет значения по умолчанию если нет исполнителя', () => {
@@ -812,11 +812,34 @@ describe('Блок "Исполнитель заявки"', () => {
         expect(testUtils.getSelectedAssignee()).not.toBeInTheDocument()
       })
 
-      test('Верно отображает варианты выбора', async () => {
+      test('Верно отображает варианты выбора если нет исполнителя', async () => {
+        const { user } = render(
+          <AssigneeBlock {...props} {...canSelectAssigneeProps} assignee={null} />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({
+                  permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
+                }),
+              },
+            }),
+          },
+        )
+
+        await testUtils.openAssigneeSelect(user)
+
+        expect(testUtils.getAllAssigneeOption()).toHaveLength(
+          canSelectAssigneeProps.workGroup.members.length,
+        )
+      })
+
+      test('Верно отображает варианты выбора если есть исполнитель', async () => {
         const { user } = render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate] }),
+              ...getUserMeQueryMock({
+                permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
+              }),
             },
           }),
         })
@@ -824,7 +847,7 @@ describe('Блок "Исполнитель заявки"', () => {
         await testUtils.openAssigneeSelect(user)
 
         expect(testUtils.getAllAssigneeOption()).toHaveLength(
-          canSelectAssigneeProps.workGroup.members.length,
+          canSelectAssigneeProps.workGroup.members.length + 1,
         )
       })
 
@@ -928,13 +951,23 @@ describe('Блок "Исполнитель заявки"', () => {
 
     describe('Исполнитель не отображается', () => {
       test('Если его можно выбрать и если он есть', () => {
-        render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate] }),
-            },
-          }),
-        })
+        render(
+          <AssigneeBlock
+            {...props}
+            {...canSelectAssigneeProps}
+            assignee={null}
+            workGroup={{ ...canSelectAssigneeProps.workGroup, members: [] }}
+          />,
+          {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: {
+                ...getUserMeQueryMock({
+                  permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
+                }),
+              },
+            }),
+          },
+        )
 
         expect(
           taskAssigneeTestUtils.queryContainerIn(testUtils.getContainer()),

@@ -436,7 +436,7 @@ describe('Страница реестра заявок', () => {
       await taskDetailsTestUtils.findContainer()
       await taskDetailsTestUtils.expectTaskLoadingFinished()
       await taskDetailsTitleTestUtils.openMenu(user)
-      screen.debug(taskDetailsTitleTestUtils.getExecuteTaskMenuItem())
+      // screen.debug(taskDetailsTitleTestUtils.getExecuteTaskMenuItem())
       await taskDetailsTitleTestUtils.clickExecuteTaskMenuItem(user)
       await executeTaskModalTestUtils.findContainer()
       await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
