@@ -1620,7 +1620,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
 
-        expect(testUtils.getTasksFilterButton()).toBeEnabled()
+        await waitFor(() => expect(testUtils.getTasksFilterButton()).toBeEnabled())
         await testUtils.clickTasksFilterButton(user)
         await tasksFilterTestUtils.findContainer()
         await tasksFilterTestUtils.workGroup.expectLoadingFinished()
