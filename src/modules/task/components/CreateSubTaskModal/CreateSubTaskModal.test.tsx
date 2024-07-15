@@ -782,8 +782,9 @@ describe('Модалка создания задачи заявки', () => {
           description: [fakeWord()],
           templateX5: [fakeWord()],
         }
+        const detailError = fakeWord()
         mockCreateSubTaskBadRequestError(props.task.id, {
-          body: badRequestResponse,
+          body: { detail: [detailError], ...badRequestResponse },
         })
 
         const { user } = render(<CreateSubTaskModal {...props} />, {
@@ -809,7 +810,7 @@ describe('Модалка создания задачи заявки', () => {
           await testUtils.description.findError(badRequestResponse.description[0]),
         ).toBeInTheDocument()
 
-        const notification = await notificationTestUtils.findNotification(createSubTaskErrMsg)
+        const notification = await notificationTestUtils.findNotification(detailError)
         expect(notification).toBeInTheDocument()
       })
 
