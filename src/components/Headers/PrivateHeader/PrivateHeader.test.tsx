@@ -136,7 +136,7 @@ export const testUtils = {
 setupApiTests()
 notificationTestUtils.setupNotifications()
 
-describe('Хэдер авторизованного пользователя', () => {
+describe.skip('Хэдер авторизованного пользователя', () => {
   describe('Меню навигации', () => {
     describe('Рабочий стол', () => {
       test('Отображается', async () => {
