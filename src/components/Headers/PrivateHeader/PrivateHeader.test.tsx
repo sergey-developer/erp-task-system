@@ -136,6 +136,7 @@ export const testUtils = {
 setupApiTests()
 notificationTestUtils.setupNotifications()
 
+// todo: не проходит на CI
 describe.skip('Хэдер авторизованного пользователя', () => {
   describe('Меню навигации', () => {
     describe('Рабочий стол', () => {
