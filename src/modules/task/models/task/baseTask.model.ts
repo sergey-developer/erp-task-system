@@ -4,12 +4,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/task'
-import {
-  TaskAssigneeModel,
-  TaskResponseTimeModel,
-  TaskSupportGroupModel,
-  TaskWorkGroupModel,
-} from 'modules/task/models'
+import { TaskAssigneeModel, TaskResponseTimeModel, TaskWorkGroupModel } from 'modules/task/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -35,7 +30,6 @@ export type BaseTaskModel = {
   workGroup: MaybeNull<TaskWorkGroupModel>
   assignee: MaybeNull<TaskAssigneeModel>
   responseTime: MaybeNull<Pick<TaskResponseTimeModel, 'progress' | 'timedelta' | 'value'>>
-  supportGroup: MaybeNull<TaskSupportGroupModel>
   contactPhone: MaybeNull<string>
   portablePhone: MaybeNull<string>
   olaNextBreachTime: MaybeNull<string>

@@ -8,7 +8,6 @@ import {
 } from 'modules/task/constants/task'
 import { TaskModel, TaskResponseTimeModel } from 'modules/task/models'
 
-import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import taskFixtures from '_tests_/fixtures/task'
 import {
   fakeDateString,
@@ -112,7 +111,7 @@ export const task = (
   productClassifier1: fakeWord(),
   productClassifier2: fakeWord(),
   productClassifier3: fakeWord(),
-  supportGroup: supportGroupFixtures.supportGroup(),
+  supportGroup: taskFixtures.supportGroup(),
   olaEstimatedTime: Date.now(),
   description: fakeWord(),
   contactPhone: fakePhone(),

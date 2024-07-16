@@ -1,6 +1,11 @@
 import { InfrastructureModel } from 'modules/infrastructures/models'
-import { BaseTaskModel, SuspendRequestModel, TaskAttachmentListModel } from 'modules/task/models'
 import { WorkTypeModel } from 'modules/warehouse/models'
+import {
+  BaseTaskModel,
+  SuspendRequestModel,
+  TaskAttachmentListModel,
+  TaskSupportGroupModel,
+} from 'modules/task/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -30,4 +35,5 @@ export type TaskModel = BaseTaskModel & {
     isRequestApproved: MaybeNull<boolean>
   }>
   infrastructureProject: MaybeNull<InfrastructureModel>
+  supportGroup: MaybeNull<TaskSupportGroupModel>
 }
