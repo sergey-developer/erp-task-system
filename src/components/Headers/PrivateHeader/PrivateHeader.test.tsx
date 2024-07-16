@@ -140,7 +140,7 @@ notificationTestUtils.setupNotifications()
 describe.skip('Хэдер авторизованного пользователя', () => {
   describe('Меню навигации', () => {
     describe('Рабочий стол', () => {
-      test('Отображается', async () => {
+      test.skip('Отображается', async () => {
         const currentUser = userFixtures.user()
         mockGetUserMeSuccess({ body: currentUser })
         mockGetTimeZoneListSuccess()
@@ -155,7 +155,7 @@ describe.skip('Хэдер авторизованного пользовател�
         expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
       })
 
-      test('При клике переходит на страницу реестра заявок', async () => {
+      test.skip('При клике переходит на страницу реестра заявок', async () => {
         const currentUser = userFixtures.user()
         mockGetUserMeSuccess({ body: currentUser })
         mockGetTimeZoneListSuccess()
@@ -180,7 +180,7 @@ describe.skip('Хэдер авторизованного пользовател�
     })
 
     describe('Отчёты', () => {
-      test(`Отображается если есть права ${UserPermissionsEnum.FiscalAccumulatorTasksRead} и нет ${UserPermissionsEnum.ReportMainIndicatorsRead}`, async () => {
+      test.skip(`Отображается если есть права ${UserPermissionsEnum.FiscalAccumulatorTasksRead} и нет ${UserPermissionsEnum.ReportMainIndicatorsRead}`, async () => {
         const currentUser = userFixtures.user({
           permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead],
         })
@@ -204,7 +204,7 @@ describe.skip('Хэдер авторизованного пользовател�
         expect(testUtils.getNavMenuItem('Отчёты')).toBeInTheDocument()
       })
 
-      test(`Отображается если есть права ${UserPermissionsEnum.ReportMainIndicatorsRead} и нет ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
+      test.skip(`Отображается если есть права ${UserPermissionsEnum.ReportMainIndicatorsRead} и нет ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
         const currentUser = userFixtures.user({
           permissions: [UserPermissionsEnum.ReportMainIndicatorsRead],
         })
@@ -228,7 +228,7 @@ describe.skip('Хэдер авторизованного пользовател�
         expect(testUtils.getNavMenuItem('Отчёты')).toBeInTheDocument()
       })
 
-      test(`Отображается если есть права ${UserPermissionsEnum.ReportMainIndicatorsRead} и ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
+      test.skip(`Отображается если есть права ${UserPermissionsEnum.ReportMainIndicatorsRead} и ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
         const currentUser = userFixtures.user({
           permissions: [
             UserPermissionsEnum.ReportMainIndicatorsRead,
@@ -255,7 +255,7 @@ describe.skip('Хэдер авторизованного пользовател�
         expect(testUtils.getNavMenuItem('Отчёты')).toBeInTheDocument()
       })
 
-      test(`Не отображается если нет прав ${UserPermissionsEnum.ReportMainIndicatorsRead} или ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
+      test.skip(`Не отображается если нет прав ${UserPermissionsEnum.ReportMainIndicatorsRead} или ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
         const currentUser = userFixtures.user({ permissions: [] })
         mockGetUserMeSuccess({ body: currentUser })
         mockGetTimeZoneListSuccess()
@@ -281,7 +281,7 @@ describe.skip('Хэдер авторизованного пользовател�
     })
 
     describe('Управление складами', () => {
-      test('Отображается корректно', async () => {
+      test.skip('Отображается корректно', async () => {
         const fakeUser = userFixtures.user({})
         mockGetUserMeSuccess({ body: fakeUser })
 
@@ -302,7 +302,7 @@ describe.skip('Хэдер авторизованного пользовател�
   })
 
   describe('Селект выбора временной зоны', () => {
-    test('Отображается', async () => {
+    test.skip('Отображается', async () => {
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
       mockGetSystemSettingsSuccess()
@@ -321,7 +321,7 @@ describe.skip('Хэдер авторизованного пользовател�
   })
 
   describe('Селект выбора статуса пользователя', () => {
-    test('Отображается', async () => {
+    test.skip('Отображается', async () => {
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
       mockGetSystemSettingsSuccess()
@@ -337,7 +337,7 @@ describe.skip('Хэдер авторизованного пользовател�
       expect(selectContainer).toBeInTheDocument()
     })
 
-    test('Отображает установленный статус', async () => {
+    test.skip('Отображает установленный статус', async () => {
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
       mockGetSystemSettingsSuccess()
@@ -361,7 +361,7 @@ describe.skip('Хэдер авторизованного пользовател�
 
     describe('Выбор статуса', () => {
       describe('При успешном запросе', () => {
-        test('Меняется выбранный статус', async () => {
+        test.skip('Меняется выбранный статус', async () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
@@ -392,7 +392,7 @@ describe.skip('Хэдер авторизованного пользовател�
           expect(selectedUserStatus).toHaveTextContent(new RegExp(fakeUserStatus1.title))
         })
 
-        test('Если выбран статус OFFLINE, то удаляются фильтры заявок из localStorage', async () => {
+        test.skip('Если выбран статус OFFLINE, то удаляются фильтры заявок из localStorage', async () => {
           mockGetTasksSuccess()
           mockGetTaskCountersSuccess()
           mockGetUserMeCodeSuccess()
@@ -428,7 +428,7 @@ describe.skip('Хэдер авторизованного пользовател�
       })
 
       describe('При не успешном запросе', () => {
-        test('Обрабатывается ошибка 400', async () => {
+        test.skip('Обрабатывается ошибка 400', async () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
@@ -465,7 +465,7 @@ describe.skip('Хэдер авторизованного пользовател�
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка 401', async () => {
+        test.skip('Обрабатывается ошибка 401', async () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
@@ -504,7 +504,7 @@ describe.skip('Хэдер авторизованного пользовател�
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка 404', async () => {
+        test.skip('Обрабатывается ошибка 404', async () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
@@ -541,7 +541,7 @@ describe.skip('Хэдер авторизованного пользовател�
           expect(notification).toBeInTheDocument()
         })
 
-        test('Обрабатывается ошибка 500', async () => {
+        test.skip('Обрабатывается ошибка 500', async () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
@@ -581,7 +581,7 @@ describe.skip('Хэдер авторизованного пользовател�
   })
 
   describe('Logout', () => {
-    test('При успешном запросе переходит на страницу авторизации и очищает localStorage', async () => {
+    test.skip('При успешном запросе переходит на страницу авторизации и очищает localStorage', async () => {
       mockGetUserMeSuccess()
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
