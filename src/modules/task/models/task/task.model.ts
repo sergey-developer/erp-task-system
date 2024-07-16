@@ -1,4 +1,9 @@
-import { BaseTaskModel, SuspendRequestModel, TaskAttachmentListModel } from 'modules/task/models'
+import {
+  BaseTaskModel,
+  SuspendRequestModel,
+  TaskAttachmentListModel,
+  TaskSupportGroupModel,
+} from 'modules/task/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -26,4 +31,5 @@ export type TaskModel = BaseTaskModel & {
     isRequestSent: MaybeNull<boolean>
     isRequestApproved: MaybeNull<boolean>
   }>
+  supportGroup: MaybeNull<TaskSupportGroupModel>
 }
