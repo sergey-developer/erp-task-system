@@ -4,4 +4,5 @@ export enum CatalogsApiEnum {
   GetUserStatusList = '/catalogs/statuses/',
   GetLocations = '/catalogs/locations/',
   GetFaChangeTypes = '/fa-change-types/',
+  GetResolutionClassifications = '/catalogs/resolution-classifications/',
 }

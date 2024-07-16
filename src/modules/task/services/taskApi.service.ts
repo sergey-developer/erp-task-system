@@ -11,8 +11,6 @@ import {
 import {
   ClassifyTaskWorkTypeMutationArgs,
   ClassifyTaskWorkTypeSuccessResponse,
-  CreateCompletedWorkMutationArgs,
-  CreateCompletedWorkSuccessResponse,
   CreateInitiationReasonMutationArgs,
   CreateInitiationReasonSuccessResponse,
   CreateSubTaskMutationArgs,
@@ -21,6 +19,8 @@ import {
   CreateTaskAttachmentSuccessResponse,
   CreateTaskCommentMutationArgs,
   CreateTaskCommentSuccessResponse,
+  CreateTaskCompletedWorkMutationArgs,
+  CreateTaskCompletedWorkSuccessResponse,
   CreateTaskCompletionDocumentsMutationArgs,
   CreateTaskCompletionDocumentsSuccessResponse,
   CreateTaskReclassificationRequestMutationArgs,
@@ -375,8 +375,8 @@ const taskApiService = baseApiService
       }),
 
       createCompletedWork: build.mutation<
-        CreateCompletedWorkSuccessResponse,
-        CreateCompletedWorkMutationArgs
+        CreateTaskCompletedWorkSuccessResponse,
+        CreateTaskCompletedWorkMutationArgs
       >({
         query: ({ taskId, ...data }) => ({
           url: createCompletedWorkUrl(taskId),

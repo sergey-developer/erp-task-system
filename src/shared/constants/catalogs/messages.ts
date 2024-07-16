@@ -9,3 +9,5 @@ export const getSubTaskTemplateListMessages: ApiRequestMessages<'commonError'> =
 export const getUserStatusesErrMsg = 'Ошибка получения статусов пользователя'
 export const getLocationsErrMsg = 'Ошибка получения списка меcтонахождений'
 export const getFaChangeTypesErrMsg = 'Ошибка получения списка типов замены фискальных накопителей'
+export const getResolutionClassificationsErrMsg =
+  'Ошибка получения списка классификаций решения уровня 1'
