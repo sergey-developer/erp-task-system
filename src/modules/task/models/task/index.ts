@@ -20,8 +20,10 @@ export * from './initiationReason.model'
 export * from './createInitiationReason.model'
 export * from './deleteInitiationReason.model'
 
-export * from './completedWork.model'
-export * from './createCompletedWork.model'
+export * from './taskSupportGroup.model'
+
+export * from './taskCompletedWork.model'
+export * from './createTaskCompletedWork.model'
 export * from './deleteCompletedWork.model'
 
 export * from './createTaskAttachment.model'

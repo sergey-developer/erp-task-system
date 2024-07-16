@@ -26,7 +26,6 @@ const getContainer = () => screen.getByTestId('mtsr-report-form')
 
 // customers
 const getCustomersFormItem = () => screen.getByTestId('customers-form-item')
-
 const getCustomersSelect = () => selectTestUtils.getSelect(getCustomersFormItem())
 
 const openCustomersSelect = (user: UserEvent) =>

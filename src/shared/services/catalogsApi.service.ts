@@ -1,6 +1,14 @@
 import { CatalogsApiEnum } from 'shared/constants/catalogs'
 import { HttpMethodEnum } from 'shared/constants/http'
+import {
+  GetFaChangeTypesQueryArgs,
+  GetFaChangeTypesSuccessResponse,
+} from 'shared/models/catalogs/faChangeTypes'
 import { GetLocationsQueryArgs, GetLocationsSuccessResponse } from 'shared/models/catalogs/location'
+import {
+  GetResolutionClassificationsQueryArgs,
+  GetResolutionClassificationsSuccessResponse,
+} from 'shared/models/catalogs/resolutionClassifications'
 import {
   GetSubTaskTemplateListQueryArgs,
   GetSubTaskTemplateListSuccessResponse,
@@ -15,10 +23,6 @@ import {
 } from 'shared/models/catalogs/userStatus'
 import { MaybeUndefined } from 'shared/types/utils'
 
-import {
-  GetFaChangeTypesQueryArgs,
-  GetFaChangeTypesSuccessResponse,
-} from '../models/catalogs/faChangeTypes'
 import { baseApiService } from './baseApi'
 
 export const catalogsApiService = baseApiService.injectEndpoints({
@@ -61,6 +65,16 @@ export const catalogsApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    getResolutionClassifications: build.query<
+      GetResolutionClassificationsSuccessResponse,
+      GetResolutionClassificationsQueryArgs
+    >({
+      query: (params) => ({
+        url: CatalogsApiEnum.GetResolutionClassifications,
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+    }),
   }),
 })
 
@@ -75,6 +89,8 @@ export const {
   useLazyGetLocationsQuery,
 
   useGetFaChangeTypesQuery,
+
+  useGetResolutionClassificationsQuery,
 
   endpoints,
 } = catalogsApiService

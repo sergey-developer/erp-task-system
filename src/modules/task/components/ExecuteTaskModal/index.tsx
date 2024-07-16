@@ -1,5 +1,5 @@
 import { useMount } from 'ahooks'
-import { Button, Col, Flex, Form, Input, InputNumber, Row, Typography, Upload } from 'antd'
+import { Button, Col, Flex, Form, Input, InputNumber, Row, Select, Typography, Upload } from 'antd'
 import stubFalse from 'lodash/stubFalse'
 import React, { FC } from 'react'
 
@@ -11,6 +11,8 @@ import BaseModal from 'components/Modals/BaseModal'
 import Space from 'components/Space'
 
 import { filesFormItemProps } from 'shared/constants/form'
+import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
+import { onlyRequiredRules } from 'shared/constants/validation'
 
 import { ExecuteTaskFormFields, ExecuteTaskModalProps } from './types'
 import {
@@ -32,10 +34,14 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
   open,
   isLoading,
   onSubmit,
-
   onCancel,
+
   recordId,
   type,
+  supportGroup,
+
+  resolutionClassifications,
+  resolutionClassificationsIsLoading,
 }) => {
   const [form] = Form.useForm<ExecuteTaskFormFields>()
   const techResolutionFormValue = Form.useWatch('techResolution', form)
@@ -109,7 +115,7 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
             <Flex gap='middle'>
               <Label block={false} label='Часов' labelPosition='right' direction='horizontal'>
                 <Form.Item data-testid='spent-hours' rules={spentHoursRules} name='spentHours'>
-                  <InputNumber style={{ width: 60 }} min={0} />
+                  <InputNumber style={{ width: 60 }} min={0} disabled={isLoading} />
                 </Form.Item>
               </Label>
 
@@ -119,11 +125,28 @@ const ExecuteTaskModal: FC<ExecuteTaskModalProps> = ({
                   rules={spentMinutesRules}
                   name='spentMinutes'
                 >
-                  <InputNumber style={{ width: 60 }} min={0} max={59} />
+                  <InputNumber style={{ width: 60 }} min={0} max={59} disabled={isLoading} />
                 </Form.Item>
               </Label>
             </Flex>
           </Form.Item>
+
+          {supportGroup?.hasResolutionClassifiers && (
+            <Form.Item
+              data-testid='resolution-classification-form-item'
+              name='resolutionClassifier1'
+              label='Категория решения'
+              rules={onlyRequiredRules}
+            >
+              <Select
+                fieldNames={idAndTitleSelectFieldNames}
+                options={resolutionClassifications}
+                loading={resolutionClassificationsIsLoading}
+                disabled={isLoading || resolutionClassificationsIsLoading}
+                placeholder='Выберите категорию решения'
+              />
+            </Form.Item>
+          )}
 
           <Form.Item
             data-testid='tech-resolution'

@@ -4,8 +4,8 @@ import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { createCompletedWorkErrMsg } from 'modules/task/constants/task'
 import {
-  CreateCompletedWorkMutationArgs,
-  CreateCompletedWorkSuccessResponse,
+  CreateTaskCompletedWorkMutationArgs,
+  CreateTaskCompletedWorkSuccessResponse,
 } from 'modules/task/models'
 import { useCreateCompletedWorkMutation } from 'modules/task/services/taskApi.service'
 
@@ -13,8 +13,8 @@ import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/service
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateCompletedWorkResult = CustomUseMutationResult<
-  CreateCompletedWorkMutationArgs,
-  CreateCompletedWorkSuccessResponse
+  CreateTaskCompletedWorkMutationArgs,
+  CreateTaskCompletedWorkSuccessResponse
 >
 
 export const useCreateCompletedWork = (): UseCreateCompletedWorkResult => {

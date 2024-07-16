@@ -82,6 +82,7 @@ import { downloadFile, extractIdsFromFilesResponse, extractOriginFiles } from 's
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { useGetResolutionClassifications } from '../../../../shared/hooks/catalogs/resolutionClassifications'
 import AssigneeBlock from './AssigneeBlock'
 import WorkGroupBlock from './WorkGroupBlock'
 
@@ -376,6 +377,20 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const { data: systemSettings, isFetching: systemSettingsIsFetching } = useSystemSettingsState()
 
+  const {
+    currentData: resolutionClassifications = [],
+    isFetching: resolutionClassificationsIsFetching,
+  } = useGetResolutionClassifications(
+    { supportGroup: task?.supportGroup?.id! },
+    {
+      skip:
+        !task?.supportGroup?.id ||
+        !task?.supportGroup?.hasResolutionClassifiers ||
+        !executeTaskModalOpened,
+    },
+  )
+
+  // cancel reclassification request
   const [
     confirmCancelReclassificationRequestModalOpened,
     {
@@ -408,6 +423,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     originRefetchTask,
     reclassificationRequest,
   ])
+  // cancel reclassification request
 
   const onCreateTaskRegistrationFNRequest = useCallback<
     CreateRegistrationFNRequestModalProps['onSubmit']
@@ -473,11 +489,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const onExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
     async (values, setFields) => {
-      if (!task) return
-
       try {
         await resolveTask({
-          taskId: task.id,
+          taskId,
           ...values,
           techResolution: values.techResolution.trim(),
           userResolution: values.userResolution?.trim(),
@@ -493,7 +507,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [task, originOnClose, resolveTask],
+    [taskId, originOnClose, resolveTask],
   )
 
   const onGetAct = useCallback<ExecuteTaskModalProps['onGetAct']>(
@@ -848,6 +862,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             open={executeTaskModalOpened}
             type={task.type}
             recordId={task.recordId}
+            supportGroup={task.supportGroup}
+            resolutionClassifications={resolutionClassifications}
+            resolutionClassificationsIsLoading={resolutionClassificationsIsFetching}
             isLoading={taskIsResolving}
             onCancel={onCloseExecuteTaskModal}
             onSubmit={onExecuteTask}
