@@ -136,10 +136,10 @@ export const testUtils = {
 setupApiTests()
 notificationTestUtils.setupNotifications()
 
-// todo: не проходит на CI
-describe.skip('Хэдер авторизованного пользователя', () => {
+describe('Хэдер авторизованного пользователя', () => {
   describe('Меню навигации', () => {
     describe('Рабочий стол', () => {
+      // todo: не проходит на CI
       test.skip('Отображается', async () => {
         const currentUser = userFixtures.user()
         mockGetUserMeSuccess({ body: currentUser })
@@ -155,6 +155,7 @@ describe.skip('Хэдер авторизованного пользовател�
         expect(testUtils.getNavMenuItem('Рабочий стол')).toBeInTheDocument()
       })
 
+      // todo: не проходит на CI
       test.skip('При клике переходит на страницу реестра заявок', async () => {
         const currentUser = userFixtures.user()
         mockGetUserMeSuccess({ body: currentUser })
@@ -180,6 +181,7 @@ describe.skip('Хэдер авторизованного пользовател�
     })
 
     describe('Отчёты', () => {
+      // todo: не проходит на CI
       test.skip(`Отображается если есть права ${UserPermissionsEnum.FiscalAccumulatorTasksRead} и нет ${UserPermissionsEnum.ReportMainIndicatorsRead}`, async () => {
         const currentUser = userFixtures.user({
           permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead],
@@ -204,6 +206,7 @@ describe.skip('Хэдер авторизованного пользовател�
         expect(testUtils.getNavMenuItem('Отчёты')).toBeInTheDocument()
       })
 
+      // todo: не проходит на CI
       test.skip(`Отображается если есть права ${UserPermissionsEnum.ReportMainIndicatorsRead} и нет ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
         const currentUser = userFixtures.user({
           permissions: [UserPermissionsEnum.ReportMainIndicatorsRead],
@@ -228,6 +231,7 @@ describe.skip('Хэдер авторизованного пользовател�
         expect(testUtils.getNavMenuItem('Отчёты')).toBeInTheDocument()
       })
 
+      // todo: не проходит на CI
       test.skip(`Отображается если есть права ${UserPermissionsEnum.ReportMainIndicatorsRead} и ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
         const currentUser = userFixtures.user({
           permissions: [
@@ -255,6 +259,7 @@ describe.skip('Хэдер авторизованного пользовател�
         expect(testUtils.getNavMenuItem('Отчёты')).toBeInTheDocument()
       })
 
+      // todo: не проходит на CI
       test.skip(`Не отображается если нет прав ${UserPermissionsEnum.ReportMainIndicatorsRead} или ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
         const currentUser = userFixtures.user({ permissions: [] })
         mockGetUserMeSuccess({ body: currentUser })
@@ -281,6 +286,7 @@ describe.skip('Хэдер авторизованного пользовател�
     })
 
     describe('Управление складами', () => {
+      // todo: не проходит на CI
       test.skip('Отображается корректно', async () => {
         const fakeUser = userFixtures.user({})
         mockGetUserMeSuccess({ body: fakeUser })
@@ -302,6 +308,7 @@ describe.skip('Хэдер авторизованного пользовател�
   })
 
   describe('Селект выбора временной зоны', () => {
+    // todo: не проходит на CI
     test.skip('Отображается', async () => {
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
@@ -321,6 +328,7 @@ describe.skip('Хэдер авторизованного пользовател�
   })
 
   describe('Селект выбора статуса пользователя', () => {
+    // todo: не проходит на CI
     test.skip('Отображается', async () => {
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
@@ -337,6 +345,7 @@ describe.skip('Хэдер авторизованного пользовател�
       expect(selectContainer).toBeInTheDocument()
     })
 
+    // todo: не проходит на CI
     test.skip('Отображает установленный статус', async () => {
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
@@ -361,6 +370,7 @@ describe.skip('Хэдер авторизованного пользовател�
 
     describe('Выбор статуса', () => {
       describe('При успешном запросе', () => {
+        // todo: не проходит на CI
         test.skip('Меняется выбранный статус', async () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
@@ -392,6 +402,7 @@ describe.skip('Хэдер авторизованного пользовател�
           expect(selectedUserStatus).toHaveTextContent(new RegExp(fakeUserStatus1.title))
         })
 
+        // todo: не проходит на CI
         test.skip('Если выбран статус OFFLINE, то удаляются фильтры заявок из localStorage', async () => {
           mockGetTasksSuccess()
           mockGetTaskCountersSuccess()
@@ -428,6 +439,7 @@ describe.skip('Хэдер авторизованного пользовател�
       })
 
       describe('При не успешном запросе', () => {
+        // todo: не проходит на CI
         test.skip('Обрабатывается ошибка 400', async () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
@@ -465,6 +477,7 @@ describe.skip('Хэдер авторизованного пользовател�
           expect(notification).toBeInTheDocument()
         })
 
+        // todo: не проходит на CI
         test.skip('Обрабатывается ошибка 401', async () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
@@ -504,6 +517,7 @@ describe.skip('Хэдер авторизованного пользовател�
           expect(notification).toBeInTheDocument()
         })
 
+        // todo: не проходит на CI
         test.skip('Обрабатывается ошибка 404', async () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
@@ -541,6 +555,7 @@ describe.skip('Хэдер авторизованного пользовател�
           expect(notification).toBeInTheDocument()
         })
 
+        // todo: не проходит на CI
         test.skip('Обрабатывается ошибка 500', async () => {
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
@@ -581,6 +596,7 @@ describe.skip('Хэдер авторизованного пользовател�
   })
 
   describe('Logout', () => {
+    // todo: не проходит на CI
     test.skip('При успешном запросе переходит на страницу авторизации и очищает localStorage', async () => {
       mockGetUserMeSuccess()
       mockGetUserMeCodeSuccess()
