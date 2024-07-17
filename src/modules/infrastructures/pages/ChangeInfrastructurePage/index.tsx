@@ -1,17 +1,21 @@
 import { Button, Col, Flex, Row, Tabs, Typography } from 'antd'
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 
+import { useAuthUser } from 'modules/auth/hooks'
 import ChangeInfrastructureOrdersFormsTab from 'modules/infrastructures/components/ChangeInfrastructureOrdersFormsTab'
 import { infrastructureStatusDict } from 'modules/infrastructures/constants'
-import { useGetInfrastructure } from 'modules/infrastructures/hooks'
+import { useGetInfrastructure, useUpdateInfrastructure } from 'modules/infrastructures/hooks'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useUserPermissions } from 'modules/user/hooks'
 import ReadonlyField from 'modules/warehouse/components/RelocationTaskDetails/ReadonlyField'
 
 import GoBackButton from 'components/Buttons/GoBackButton'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
+import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
@@ -29,8 +33,23 @@ const ChangeInfrastructurePage: FC = () => {
   const params = useParams<'id'>()
   const infrastructureId = Number(params?.id) || undefined
 
+  const authUser = useAuthUser()
+  const permissions = useUserPermissions([UserPermissionsEnum.InfrastructureProjectLeading])
+
   const { currentData: infrastructure, isFetching: infrastructureIsFetching } =
     useGetInfrastructure({ infrastructureId: infrastructureId! }, { skip: !infrastructureId })
+
+  const [updateInfrastructureMutation, { isLoading: updateInfrastructureIsLoading }] =
+    useUpdateInfrastructure()
+
+  const onUpdateInfrastructure = async () => {
+    if (!authUser || !infrastructureId) {
+      console.error('Required data not supplied:', { infrastructureId, authUser })
+      return
+    }
+
+    await updateInfrastructureMutation({ infrastructureId, manager: authUser.id })
+  }
 
   return (
     <div data-testid='change-infrastructure-page'>
@@ -64,27 +83,42 @@ const ChangeInfrastructurePage: FC = () => {
                             hasPopover
                           />
                         ),
-                        'Не назначен',
+                        NO_ASSIGNEE_TEXT,
                       )}
                     />
 
-                    <ReadonlyField
-                      data-testid='manager'
-                      label='Менеджер по сопровождению'
-                      value={valueOr(
-                        infrastructure?.manager,
-                        (value) => (
-                          <TaskAssignee
-                            {...value}
-                            position={value.position?.title}
-                            showAvatar={false}
-                            showPhone={false}
-                            hasPopover
-                          />
-                        ),
-                        'Не назначен',
+                    <Flex data-testid='manager' vertical gap='small'>
+                      <ReadonlyField
+                        label='Менеджер по сопровождению'
+                        value={valueOr(
+                          infrastructure?.manager,
+                          (value) => (
+                            <TaskAssignee
+                              {...value}
+                              showAvatar={false}
+                              showPhone={false}
+                              hasPopover
+                            />
+                          ),
+                          NO_ASSIGNEE_TEXT,
+                        )}
+                      />
+
+                      {permissions.infrastructureProjectLeading && (
+                        <Row>
+                          <Col span={8}></Col>
+                          <Col span={16}>
+                            <Button
+                              type='link'
+                              loading={updateInfrastructureIsLoading}
+                              onClick={onUpdateInfrastructure}
+                            >
+                              Назначить на себя
+                            </Button>
+                          </Col>
+                        </Row>
                       )}
-                    />
+                    </Flex>
 
                     <ReadonlyField
                       data-testid='status'

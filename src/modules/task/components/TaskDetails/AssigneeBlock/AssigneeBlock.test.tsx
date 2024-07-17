@@ -12,6 +12,7 @@ import { TaskWorkGroupModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
+import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { ArrayFirst, SetNonNullable } from 'shared/types/utils'
 
 import taskFixtures from '_tests_/fixtures/task'
@@ -994,7 +995,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      expect(testUtils.getChildByText('Не назначен')).toBeInTheDocument()
+      expect(testUtils.getChildByText(NO_ASSIGNEE_TEXT)).toBeInTheDocument()
     })
 
     test('Отображается кнопка "В работу"', () => {
