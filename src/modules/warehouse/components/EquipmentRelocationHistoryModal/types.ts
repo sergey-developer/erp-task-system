@@ -13,6 +13,7 @@ export type EquipmentRelocationHistoryTableItem = Pick<
   | 'relocateTo'
   | 'createdBy'
   | 'status'
+  | 'documents'
   | 'externalRelocation'
 >
 

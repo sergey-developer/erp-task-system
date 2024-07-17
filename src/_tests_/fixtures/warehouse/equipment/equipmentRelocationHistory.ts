@@ -19,6 +19,7 @@ export const equipmentRelocationHistoryItem = (): EquipmentRelocationHistoryItem
   createdBy: fakeWord(),
   status: RelocationTaskStatusEnum.New,
   externalRelocation: pick(warehouseFixtures.relocationTask().externalRelocation!, 'number'),
+  documents: [],
 })
 
 export const equipmentRelocationHistory = (length: number = 1): EquipmentRelocationHistoryModel =>

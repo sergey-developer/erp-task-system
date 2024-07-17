@@ -1,6 +1,6 @@
 import { PaperClipOutlined } from '@ant-design/icons'
 import { Col, Flex, Space, Typography } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, MouseEvent } from 'react'
 
 import { AttachmentListItem } from 'modules/attachment/components/Attachments/types'
 
@@ -12,12 +12,15 @@ const { Text, Link } = Typography
 
 type UploadedAttachmentProps = AttachmentListItem
 
+const handleStopPropagation = (event: MouseEvent) => event.stopPropagation()
+
 const UploadedAttachment: FC<UploadedAttachmentProps> = ({
   url,
   size,
   name,
   externalId,
   createdAt,
+  createdBy,
   firstName,
   middleName,
   lastName,
@@ -26,7 +29,7 @@ const UploadedAttachment: FC<UploadedAttachmentProps> = ({
   return (
     <Space size='middle'>
       <Space data-testid={`attachment-${name}`} size={4} wrap>
-        <Link download={name} href={url} target='_blank'>
+        <Link download={name} href={url} target='_blank' onClick={handleStopPropagation}>
           <Flex gap='small'>
             <PaperClipOutlined />
             {name}
@@ -39,7 +42,11 @@ const UploadedAttachment: FC<UploadedAttachmentProps> = ({
             {
               size,
               createdAt,
-              user: firstName && lastName ? { firstName, middleName, lastName } : undefined,
+              user: createdBy
+                ? { ...createdBy, middleName: createdBy?.middleName ?? undefined }
+                : firstName && lastName
+                ? { firstName, middleName, lastName }
+                : undefined,
             },
             getInfoOpts,
           )}

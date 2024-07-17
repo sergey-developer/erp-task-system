@@ -4,6 +4,7 @@ import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocation
 
 import { formatDate } from 'shared/utils/date'
 
+import Attachments from '../../../attachment/components/Attachments'
 import { EquipmentRelocationHistoryTableItem } from './types'
 
 export const columns: ColumnsType<EquipmentRelocationHistoryTableItem> = [
@@ -39,6 +40,13 @@ export const columns: ColumnsType<EquipmentRelocationHistoryTableItem> = [
     title: 'Статус',
     render: (value: EquipmentRelocationHistoryTableItem['status']) =>
       relocationTaskStatusDict[value],
+  },
+  {
+    dataIndex: 'documents',
+    title: 'Вложения',
+    render: (value: EquipmentRelocationHistoryTableItem['documents']) => (
+      <Attachments data={value || []} />
+    ),
   },
   {
     dataIndex: 'externalRelocation',
