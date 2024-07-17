@@ -11,7 +11,7 @@ import { MaybeNull } from 'shared/types/utils'
 
 import { RelocationTaskAttachmentModel } from './relocationTaskAttachment.model'
 
-type ExternalRelocationModel = {
+export type ExternalRelocationModel = {
   id: IdType
   number: MaybeNull<string>
   status: MaybeNull<ExternalRelocationStatusEnum>
