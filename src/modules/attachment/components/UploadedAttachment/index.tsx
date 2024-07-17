@@ -1,5 +1,6 @@
 import { PaperClipOutlined } from '@ant-design/icons'
 import { Button, Col, Flex, Popover, Space, Typography } from 'antd'
+import isNumber from 'lodash/isNumber'
 import React, { FC, MouseEvent } from 'react'
 
 import {
@@ -75,7 +76,7 @@ const UploadedAttachment: FC<UploadedAttachmentProps> = ({
 
                 <Flex gap='small'>
                   <Text type='secondary'>Размер:</Text>
-                  <Text>{prettyBytes(size)}</Text>
+                  {isNumber(size) && <Text>{prettyBytes(size)}</Text>}
                 </Flex>
               </Flex>
             }
