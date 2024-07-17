@@ -451,6 +451,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
           onClick: onOpenEditEquipmentModal,
         },
         {
+          key: 'relocationHistory',
+          label: 'История перемещений',
+          disabled: !permissions.equipmentsRead || !permissions.relocationTasksRead,
+          onClick: onToggleOpenRelocationHistoryModal,
+        },
+        {
           key: 'technicalExaminationsHistory',
           label: 'История АТЭ',
           onClick: onToggleTechnicalExaminationsHistoryModal,
@@ -471,11 +477,13 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       ],
     }),
     [
-      equipment,
       onOpenEditEquipmentModal,
-      onOpenCreateEquipmentTechnicalExaminationModal,
-      onToggleTechnicalExaminationsHistoryModal,
       permissions.equipmentsRead,
+      permissions.relocationTasksRead,
+      onToggleOpenRelocationHistoryModal,
+      onToggleTechnicalExaminationsHistoryModal,
+      onOpenCreateEquipmentTechnicalExaminationModal,
+      equipment,
     ],
   )
 
@@ -545,17 +553,6 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 </Col>
 
                 <Col span={16}>{valueOrHyphen(equipment.location?.title)}</Col>
-              </Row>
-
-              <Row data-testid='relocation-history'>
-                <Col>
-                  <Button
-                    disabled={!permissions.equipmentsRead || !permissions.relocationTasksRead}
-                    onClick={onToggleOpenRelocationHistoryModal}
-                  >
-                    История перемещений
-                  </Button>
-                </Col>
               </Row>
 
               <Row data-testid='is-credited'>

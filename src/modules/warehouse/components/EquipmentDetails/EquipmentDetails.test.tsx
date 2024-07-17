@@ -12,8 +12,8 @@ import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/c
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
-  getEquipmentAttachmentListErrMsg,
   EquipmentConditionEnum,
+  getEquipmentAttachmentListErrMsg,
   getEquipmentMessages,
   getEquipmentRelocationHistoryMessages,
 } from 'modules/warehouse/constants/equipment'
@@ -119,41 +119,31 @@ const clickCloseButton = async (user: UserEvent) => {
   await user.click(button)
 }
 
-// relocation history button
-const getRelocationHistoryButton = () =>
-  buttonTestUtils.getButtonIn(getBlock('relocation-history'), /История перемещений/)
-
-const clickRelocationHistoryButton = async (user: UserEvent) => {
-  const button = getRelocationHistoryButton()
-  await user.click(button)
-}
-
 // menu
 const getMenuButton = () => buttonTestUtils.getMenuButtonIn(getContainer())
 const openMenu = async (user: UserEvent) => menuTestUtils.openMenu(user, getMenuButton())
 
 // edit menu item
 const getEditMenuItem = () => menuTestUtils.getMenuItem('Редактировать')
-const clickEditMenuItem = async (user: UserEvent) => {
-  const button = getEditMenuItem()
-  await user.click(button)
-}
+const clickEditMenuItem = async (user: UserEvent) => user.click(getEditMenuItem())
+
+// relocation history menu item
+const getRelocationHistoryMenuItem = () => menuTestUtils.getMenuItem('История перемещений')
+
+const clickRelocationHistoryMenuItem = async (user: UserEvent) =>
+  user.click(getRelocationHistoryMenuItem())
 
 // technical examinations menu item
 const getTechnicalExaminationsMenuItem = () => menuTestUtils.getMenuItem('История АТЭ')
-const clickTechnicalExaminationsMenuItem = async (user: UserEvent) => {
-  const button = getTechnicalExaminationsMenuItem()
-  await user.click(button)
-}
+const clickTechnicalExaminationsMenuItem = async (user: UserEvent) =>
+  user.click(getTechnicalExaminationsMenuItem())
 
 // create equipment technical examination menu item
 const getCreateEquipmentTechnicalExaminationMenuItem = () =>
   menuTestUtils.getMenuItem('Сформировать АТЭ')
 
-const clickCreateEquipmentTechnicalExaminationMenuItem = async (user: UserEvent) => {
-  const button = getCreateEquipmentTechnicalExaminationMenuItem()
-  await user.click(button)
-}
+const clickCreateEquipmentTechnicalExaminationMenuItem = async (user: UserEvent) =>
+  user.click(getCreateEquipmentTechnicalExaminationMenuItem())
 
 // loading
 const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('equipment-details-loading')
@@ -172,8 +162,8 @@ export const testUtils = {
   getCloseButton,
   clickCloseButton,
 
-  getRelocationHistoryButton,
-  clickRelocationHistoryButton,
+  getRelocationHistoryMenuItem,
+  clickRelocationHistoryMenuItem,
 
   openMenu,
   getEditMenuItem,
@@ -1045,23 +1035,24 @@ describe('Информация об оборудовании', () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />, {
+      const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
       await testUtils.expectLoadingFinished()
-      const button = testUtils.getRelocationHistoryButton()
+      await testUtils.openMenu(user)
+      const menuItem = testUtils.getRelocationHistoryMenuItem()
 
-      expect(button).toBeInTheDocument()
+      expect(menuItem).toBeInTheDocument()
     })
 
     test('Кнопка активна если условия соблюдены', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />, {
+      const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({
@@ -1075,16 +1066,17 @@ describe('Информация об оборудовании', () => {
       })
 
       await testUtils.expectLoadingFinished()
-      const button = testUtils.getRelocationHistoryButton()
+      await testUtils.openMenu(user)
+      const menuItem = testUtils.getRelocationHistoryMenuItem()
 
-      expect(button).toBeEnabled()
+      menuTestUtils.expectMenuItemNotDisabled(menuItem)
     })
 
     test('Кнопка не активна если условия соблюдены, но нет прав на чтение оборудования', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />, {
+      const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksRead] }),
@@ -1093,16 +1085,17 @@ describe('Информация об оборудовании', () => {
       })
 
       await testUtils.expectLoadingFinished()
-      const button = testUtils.getRelocationHistoryButton()
+      await testUtils.openMenu(user)
+      const menuItem = testUtils.getRelocationHistoryMenuItem()
 
-      expect(button).toBeDisabled()
+      menuTestUtils.expectMenuItemDisabled(menuItem)
     })
 
     test('Кнопка не активна если условия соблюдены, но нет прав на чтение заявок на перемещение', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentAttachmentListSuccess(props.equipmentId)
 
-      render(<EquipmentDetails {...props} />, {
+      const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
@@ -1111,9 +1104,10 @@ describe('Информация об оборудовании', () => {
       })
 
       await testUtils.expectLoadingFinished()
-      const button = testUtils.getRelocationHistoryButton()
+      await testUtils.openMenu(user)
+      const menuItem = testUtils.getRelocationHistoryMenuItem()
 
-      expect(button).toBeDisabled()
+      menuTestUtils.expectMenuItemDisabled(menuItem)
     })
 
     test('При клике на кнопку открывается модалка', async () => {
@@ -1135,7 +1129,8 @@ describe('Информация об оборудовании', () => {
       })
 
       await testUtils.expectLoadingFinished()
-      await testUtils.clickRelocationHistoryButton(user)
+      await testUtils.openMenu(user)
+      await testUtils.clickRelocationHistoryMenuItem(user)
       const modal = await equipmentRelocationHistoryModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
@@ -1164,7 +1159,8 @@ describe('Информация об оборудовании', () => {
       })
 
       await testUtils.expectLoadingFinished()
-      await testUtils.clickRelocationHistoryButton(user)
+      await testUtils.openMenu(user)
+      await testUtils.clickRelocationHistoryMenuItem(user)
       await equipmentRelocationHistoryModalTestUtils.findContainer()
       await equipmentRelocationHistoryModalTestUtils.expectLoadingFinished()
 
@@ -1198,7 +1194,8 @@ describe('Информация об оборудовании', () => {
         })
 
         await testUtils.expectLoadingFinished()
-        await testUtils.clickRelocationHistoryButton(user)
+        await testUtils.openMenu(user)
+        await testUtils.clickRelocationHistoryMenuItem(user)
         await equipmentRelocationHistoryModalTestUtils.findContainer()
 
         const notification = await notificationTestUtils.findNotification(errorMsg)
@@ -1228,7 +1225,8 @@ describe('Информация об оборудовании', () => {
         })
 
         await testUtils.expectLoadingFinished()
-        await testUtils.clickRelocationHistoryButton(user)
+        await testUtils.openMenu(user)
+        await testUtils.clickRelocationHistoryMenuItem(user)
         await equipmentRelocationHistoryModalTestUtils.findContainer()
 
         const notification = await notificationTestUtils.findNotification(errorMsg)
@@ -1254,7 +1252,8 @@ describe('Информация об оборудовании', () => {
         })
 
         await testUtils.expectLoadingFinished()
-        await testUtils.clickRelocationHistoryButton(user)
+        await testUtils.openMenu(user)
+        await testUtils.clickRelocationHistoryMenuItem(user)
         await equipmentRelocationHistoryModalTestUtils.findContainer()
 
         const notification = await notificationTestUtils.findNotification(
@@ -1290,7 +1289,8 @@ describe('Информация об оборудовании', () => {
       })
 
       await testUtils.expectLoadingFinished()
-      await testUtils.clickRelocationHistoryButton(user)
+      await testUtils.openMenu(user)
+      await testUtils.clickRelocationHistoryMenuItem(user)
       await equipmentRelocationHistoryModalTestUtils.findContainer()
       await equipmentRelocationHistoryModalTestUtils.expectLoadingFinished()
       await equipmentRelocationHistoryModalTestUtils.clickRow(
