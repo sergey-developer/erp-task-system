@@ -5,6 +5,7 @@
 import { PreloadedState } from '@reduxjs/toolkit'
 import { render as baseRender, RenderOptions as BaseRenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { App } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { ReactElement } from 'react'
 import { BrowserRouter, createMemoryRouter, RouterProvider } from 'react-router-dom'
@@ -64,9 +65,14 @@ export const renderInRoute_latest = (
   const router = createMemoryRouter(routes, routerOptions)
 
   return {
-    ...render(<RouterProvider router={router} />, {
-      ...renderOptions,
-      useBrowserRouter: false,
-    }),
+    ...render(
+      <App>
+        <RouterProvider router={router} />
+      </App>,
+      {
+        ...renderOptions,
+        useBrowserRouter: false,
+      },
+    ),
   }
 }

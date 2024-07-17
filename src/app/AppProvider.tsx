@@ -1,3 +1,4 @@
+import { App } from 'antd'
 import React from 'react'
 import { Provider as StoreProvider } from 'react-redux'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
@@ -19,11 +20,13 @@ type AppProviderProps = {
 
 const AppProvider: FCWithChildren<AppProviderProps> = ({ children, store = appStore }) => {
   return (
-    <StoreProvider store={store}>
-      <AntdConfigProvider>
-        <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>
-      </AntdConfigProvider>
-    </StoreProvider>
+    <App>
+      <StoreProvider store={store}>
+        <AntdConfigProvider>
+          <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>
+        </AntdConfigProvider>
+      </StoreProvider>
+    </App>
   )
 }
 
