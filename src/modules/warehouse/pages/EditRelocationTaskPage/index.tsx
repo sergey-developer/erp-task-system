@@ -53,7 +53,7 @@ import {
   useUpdateRelocationTask,
 } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWarehouse } from 'modules/warehouse/hooks/warehouse'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType/useGetWorkTypeList'
+import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 import {
   CreateEquipmentsBadRequestErrorResponse,
   EquipmentCategoryListItemModel,
@@ -331,7 +331,7 @@ const EditRelocationTaskPage: FC = () => {
       skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened,
     })
 
-  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypeList(
+  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypes(
     undefined,
     {
       skip:

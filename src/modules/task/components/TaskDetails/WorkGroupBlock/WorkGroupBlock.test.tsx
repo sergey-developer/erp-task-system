@@ -7,6 +7,7 @@ import {
   TaskActionsPermissionsEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
+  TaskTypeEnum,
 } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { UserPermissionsEnum } from 'modules/user/constants'
@@ -35,6 +36,7 @@ const props: Readonly<
   }
 > = {
   id: fakeId(),
+  type: TaskTypeEnum.Request,
   recordId: fakeIdStr(),
   status: TaskStatusEnum.New,
   extendedStatus: TaskExtendedStatusEnum.New,

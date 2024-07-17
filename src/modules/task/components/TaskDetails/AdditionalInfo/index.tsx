@@ -1,23 +1,30 @@
-import { Col, Row, Typography } from 'antd'
+import { Col, Row, Select, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import { TaskModel } from 'modules/task/models'
+import { MatchedUserPermissions } from 'modules/user/utils'
+import EditableField from 'modules/warehouse/components/RelocationTaskDetails/EditableField'
+import { WorkTypesModel } from 'modules/warehouse/models'
 
 import Expandable from 'components/Expandable'
 import { MapPointIcon } from 'components/Icons'
 import Label from 'components/Label'
 import Space from 'components/Space'
 
+import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 import { valueOr } from 'shared/utils/common'
 
+import { useTaskStatus } from '../../../hooks/task'
 import { makeYandexMapLink } from './utils'
 
 const { Text, Link } = Typography
 
 export type AdditionalInfoProps = Pick<
   TaskModel,
+  | 'status'
   | 'weight'
   | 'address'
   | 'company'
@@ -29,7 +36,10 @@ export type AdditionalInfoProps = Pick<
   | 'productClassifier3'
   | 'latitude'
   | 'longitude'
+  | 'workType'
+  | 'workGroup'
 > & {
+  permissions: MatchedUserPermissions
   impact: string
   severity: string
   priority: string
@@ -37,10 +47,19 @@ export type AdditionalInfoProps = Pick<
   expanded: boolean
   onExpand: EmptyFn
 
+  workTypes: WorkTypesModel
+  workTypesIsLoading: boolean
+
+  toggleEditWorkType: () => void
+  onSaveWorkType: (workTypeId: IdType) => Promise<void>
+  saveWorkTypeIsLoading: boolean
+
   supportGroup?: string
 }
 
 const AdditionalInfo: FC<AdditionalInfoProps> = ({
+  permissions,
+  status,
   email,
   sapId,
   weight,
@@ -57,9 +76,17 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   latitude,
   longitude,
   expanded,
+  workGroup,
+  workType,
+  workTypes,
+  workTypesIsLoading,
+  toggleEditWorkType,
+  onSaveWorkType,
+  saveWorkTypeIsLoading,
   onExpand,
 }) => {
   const handleExpand = useDebounceFn(onExpand, [onExpand])
+  const taskStatus = useTaskStatus(status)
 
   return (
     <Expandable
@@ -72,6 +99,38 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
       onClick={handleExpand}
     >
       <Space data-testid='additional-info-content' direction='vertical' size={30} $block>
+        <EditableField
+          data-testid='work-type'
+          leftColProps={{ span: 6 }}
+          label='Тип работ'
+          value={workType?.id}
+          displayValue={workType?.title}
+          renderEditable={({ value, onChange }) => (
+            <Select
+              popupMatchSelectWidth={200}
+              placeholder='Выберите из списка'
+              value={value}
+              onChange={(value) => onChange(value)}
+              options={workTypes}
+              disabled={workTypesIsLoading}
+              loading={workTypesIsLoading}
+              fieldNames={idAndTitleSelectFieldNames}
+            />
+          )}
+          editButtonHidden={
+            !(
+              permissions.classificationOfWorkTypes &&
+              !!workGroup &&
+              !taskStatus.isClosed &&
+              !taskStatus.isCompleted
+            )
+          }
+          onEdit={toggleEditWorkType}
+          onCancel={toggleEditWorkType}
+          onSave={onSaveWorkType}
+          isLoading={saveWorkTypeIsLoading}
+        />
+
         <Row justify='space-between'>
           <Col span={11}>
             <Space direction='vertical' $block>

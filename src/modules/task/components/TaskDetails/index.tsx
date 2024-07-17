@@ -34,6 +34,7 @@ import {
   taskSeverityMap,
 } from 'modules/task/constants/task'
 import {
+  useClassifyTaskWorkType,
   useCreateTaskAttachment,
   useCreateTaskRegistrationFNRequest,
   useGetTask,
@@ -60,9 +61,10 @@ import {
   TaskAssigneeModel,
 } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
-import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUserActions, useUserPermissions } from 'modules/user/hooks'
 import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -165,6 +167,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     UserPermissionsEnum.InfrastructureProjectRead,
     UserPermissionsEnum.AnyStatusInfrastructureProjectRead,
     UserPermissionsEnum.InfrastructureProjectLeading,
+    UserPermissionsEnum.ClassificationOfWorkTypes,
   ])
 
   const onClose = useDebounceFn(originOnClose)
@@ -214,15 +217,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   ] = useCreateTaskReclassificationRequest()
 
   const canGetTaskReclassificationRequest =
-    !!task?.id && taskExtendedStatus.isInReclassification && !createReclassificationRequestResult
+    taskExtendedStatus.isInReclassification && !createReclassificationRequestResult
 
   const {
     currentData: getReclassificationRequestResult,
     isFetching: reclassificationRequestIsFetching,
-  } = useGetTaskReclassificationRequest(
-    { taskId: task?.id! },
-    { skip: !canGetTaskReclassificationRequest },
-  )
+  } = useGetTaskReclassificationRequest({ taskId }, { skip: !canGetTaskReclassificationRequest })
 
   const [cancelReclassificationRequest, { isLoading: cancelReclassificationRequestIsLoading }] =
     useCancelReclassificationRequest()
@@ -264,9 +264,19 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     data: taskRegistrationRequestRecipients,
     isFetching: taskRegistrationRequestRecipientsIsFetching,
   } = useGetTaskRegistrationRequestRecipientsFN(
-    { taskId: task?.id! },
-    { skip: !task?.id || !createRegistrationFNRequestModalOpened },
+    { taskId },
+    { skip: !createRegistrationFNRequestModalOpened },
   )
+
+  const [workTypeIsEditable, { toggle: toggleWorkTypeEditable }] = useBoolean(false)
+
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
+    { taskType: task?.type! },
+    { skip: !workTypeIsEditable || !task?.type },
+  )
+
+  const [classifyTaskWorkTypeMutation, { isLoading: classifyTaskWorkTypeIsLoading }] =
+    useClassifyTaskWorkType()
 
   const [createTaskAttachment, { isLoading: createTaskAttachmentIsLoading }] =
     useCreateTaskAttachment()
@@ -434,11 +444,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     CreateRegistrationFNRequestModalProps['onSubmit']
   >(
     async (values, setFields) => {
-      if (!task) return
-
       try {
         await createTaskRegistrationFNRequest({
-          taskId: task.id,
+          taskId,
           changeType: values.changeType,
           attachments: extractIdsFromFilesResponse(values.attachments),
         }).unwrap()
@@ -450,15 +458,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [createTaskRegistrationFNRequest, task, toggleCreateRegistrationFNRequestModal],
+    [createTaskRegistrationFNRequest, taskId, toggleCreateRegistrationFNRequestModal],
   )
 
   const onUpdateDescription: UpdateTaskDescriptionModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
-      if (!task) return
-
       try {
-        await updateTaskDescriptionMutation({ taskId: task.id, ...values }).unwrap()
+        await updateTaskDescriptionMutation({ taskId, ...values }).unwrap()
         toggleUpdateDescriptionModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
@@ -466,16 +472,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [task, toggleUpdateDescriptionModal, updateTaskDescriptionMutation],
+    [taskId, toggleUpdateDescriptionModal, updateTaskDescriptionMutation],
   )
 
   const onUpdateDeadline: UpdateTaskDeadlineModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
-      if (!task) return
-
       try {
         await updateTaskDeadlineMutation({
-          taskId: task.id,
+          taskId,
           internalOlaNextBreachTime:
             values.date && values.time
               ? mergeDateTime(values.date, values.time).toISOString()
@@ -489,16 +493,18 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [task, toggleUpdateDeadlineModal, updateTaskDeadlineMutation],
+    [taskId, toggleUpdateDeadlineModal, updateTaskDeadlineMutation],
   )
+
+  const onClassifyTaskWorkType = async (workTypeId: IdType) => {
+    await classifyTaskWorkTypeMutation({ taskId, workType: workTypeId })
+  }
 
   const onExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
     async (values, setFields) => {
-      if (!task) return
-
       try {
         await resolveTask({
-          taskId: task.id,
+          taskId,
           ...values,
           techResolution: values.techResolution.trim(),
           userResolution: values.userResolution?.trim(),
@@ -514,7 +520,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [task, originOnClose, resolveTask],
+    [taskId, originOnClose, resolveTask],
   )
 
   const onGetAct = useCallback<ExecuteTaskModalProps['onGetAct']>(
@@ -549,11 +555,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     RequestTaskReclassificationModalProps['onSubmit']
   >(
     async (values, setFields) => {
-      if (!task) return
-
       try {
         await createReclassificationRequest({
-          taskId: task.id,
+          taskId,
           ...values,
         }).unwrap()
         closeTaskReclassificationModal()
@@ -563,7 +567,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [closeTaskReclassificationModal, createReclassificationRequest, task],
+    [closeTaskReclassificationModal, createReclassificationRequest, taskId],
   )
 
   const onTransferTaskToSecondLine = useCallback(
@@ -572,10 +576,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       setFields: FormInstance<TaskSecondLineFormFields>['setFields'],
       closeTaskSecondLineModal: EmptyFn,
     ) => {
-      if (!task) return
-
       try {
-        await updateWorkGroup({ taskId: task.id, ...values }).unwrap()
+        await updateWorkGroup({ taskId, ...values }).unwrap()
         closeTaskSecondLineModal()
         originOnClose()
       } catch (error) {
@@ -584,7 +586,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [task, originOnClose, updateWorkGroup],
+    [taskId, originOnClose, updateWorkGroup],
   )
 
   const onTransferTaskToFirstLine = useCallback(
@@ -593,10 +595,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       setFields: FormInstance<TaskFirstLineFormFields>['setFields'],
       closeTaskFirstLineModal: EmptyFn,
     ) => {
-      if (!task) return
-
       try {
-        await deleteWorkGroup({ taskId: task.id, ...values }).unwrap()
+        await deleteWorkGroup({ taskId, ...values }).unwrap()
         closeTaskFirstLineModal()
         originOnClose()
       } catch (error) {
@@ -605,29 +605,25 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [originOnClose, deleteWorkGroup, task],
+    [originOnClose, deleteWorkGroup, taskId],
   )
 
   const onUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
-      if (!task) return
-      await updateAssignee({ taskId: task.id, assignee })
+      await updateAssignee({ taskId, assignee })
     },
-    [task, updateAssignee],
+    [taskId, updateAssignee],
   )
 
   const onTakeTask = useCallback(async () => {
-    if (!task) return
-    await takeTask({ taskId: task.id })
-  }, [takeTask, task])
+    await takeTask({ taskId })
+  }, [takeTask, taskId])
 
   const onCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
     async (values: RequestTaskSuspendFormFields, setFields) => {
-      if (!task) return
-
       try {
         await createSuspendRequest({
-          taskId: task.id,
+          taskId,
           suspendReason: values.reason,
           suspendEndAt: mergeDateTime(values.endDate, values.endTime).toISOString(),
           externalRevisionLink: values.taskLink,
@@ -648,26 +644,20 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [closeRequestTaskSuspendModal, createSuspendRequest, task],
+    [closeRequestTaskSuspendModal, createSuspendRequest, taskId],
   )
 
   const onDeleteTaskSuspendRequest = useDebounceFn(async () => {
-    if (!task) return
-    await deleteSuspendRequest({ taskId: task.id })
-  }, [deleteSuspendRequest, task])
+    await deleteSuspendRequest({ taskId })
+  }, [deleteSuspendRequest, taskId])
 
   const onCreateTaskAttachment = useCallback<
     CreateRegistrationFNRequestModalProps['onCreateAttachment']
   >(
     async (options) => {
-      if (!task) return
-
-      await createTaskAttachment(
-        { taskId: task.id, parentType: TaskAttachmentTypeEnum.Journal },
-        options,
-      )
+      await createTaskAttachment({ taskId, parentType: TaskAttachmentTypeEnum.Journal }, options)
     },
-    [createTaskAttachment, task],
+    [createTaskAttachment, taskId],
   )
 
   const onUpdateInfrastructure = async () => {
@@ -831,6 +821,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                   />
 
                   <AdditionalInfo
+                    permissions={permissions}
+                    status={task.status}
                     email={task.email}
                     sapId={task.sapId}
                     weight={task.weight}
@@ -846,6 +838,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     productClassifier3={task.productClassifier3}
                     latitude={task.latitude}
                     longitude={task.longitude}
+                    workGroup={task.workGroup}
+                    workType={task.workType}
+                    workTypes={workTypes}
+                    workTypesIsLoading={workTypesIsFetching}
+                    toggleEditWorkType={toggleWorkTypeEditable}
+                    onSaveWorkType={onClassifyTaskWorkType}
+                    saveWorkTypeIsLoading={classifyTaskWorkTypeIsLoading}
                     expanded={additionalInfoExpanded}
                     onExpand={onExpandAdditionalInfo}
                   />
@@ -856,6 +855,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     <Col span={11}>
                       <WorkGroupBlock
                         id={task.id}
+                        type={task.type}
                         recordId={task.recordId}
                         status={task.status}
                         extendedStatus={task.extendedStatus}

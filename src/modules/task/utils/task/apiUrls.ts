@@ -3,6 +3,8 @@ import { TaskApiEnum } from 'modules/task/constants/task'
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
 
+import { TaskRequestArgs } from '../../types'
+
 export const getTaskUrl = (taskId: IdType): string =>
   generateApiPath(TaskApiEnum.GetTask, { id: String(taskId) })
 
@@ -53,3 +55,6 @@ export const getTaskRegistrationRequestRecipientsFNUrl = (id: IdType): string =>
 
 export const createTaskAttachmentUrl = (id: IdType): string =>
   generateApiPath(TaskApiEnum.CreateTaskAttachment, { id: String(id) })
+
+export const makeClassifyTaskWorkTypeUrl = ({ taskId }: TaskRequestArgs): string =>
+  generateApiPath(TaskApiEnum.ClassifyTaskWorkType, { id: String(taskId) })

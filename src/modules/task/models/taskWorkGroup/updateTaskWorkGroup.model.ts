@@ -5,6 +5,7 @@ import { IdType } from 'shared/types/common'
 
 export type UpdateTaskWorkGroupMutationArgs = TaskRequestArgs & {
   workGroup: IdType
+  workType?: IdType
   comment?: string
 }
 

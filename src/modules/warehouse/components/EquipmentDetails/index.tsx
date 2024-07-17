@@ -33,7 +33,8 @@ import {
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType/useGetWorkTypeList'
+import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
+import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import {
   CreateEquipmentTechnicalExaminationSuccessResponse,
   EquipmentCategoryListItemModel,
@@ -196,7 +197,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     { skip: !editEquipmentModalOpened },
   )
 
-  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypeList(
+  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypes(
     undefined,
     { skip: !editEquipmentModalOpened },
   )
