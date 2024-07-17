@@ -1,3 +1,5 @@
+import { CommonRouteEnum } from 'configs/routes'
+
 import { ReportsRoutesEnum } from 'modules/reports/constants'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import { UserPermissionsEnum } from 'modules/user/constants'
@@ -9,9 +11,9 @@ import { NavMenuItem } from './types'
 
 const navMenuConfig: NavMenuItem[] = [
   {
-    key: TasksRoutesEnum.DesktopTasks,
+    key: CommonRouteEnum.Desktop,
     icon: UnorderedListIcon,
-    link: TasksRoutesEnum.DesktopTaskList,
+    link: TasksRoutesEnum.DesktopTasks,
     text: 'Рабочий стол',
   },
   {

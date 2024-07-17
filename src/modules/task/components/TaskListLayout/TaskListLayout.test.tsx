@@ -67,7 +67,7 @@ describe('TaskListLayout', () => {
       const button = testUtils.getTaskListButton()
 
       expect(button).toBeInTheDocument()
-      expect(button).toHaveAttribute('value', TasksRoutesEnum.DesktopTaskList)
+      expect(button).toHaveAttribute('value', TasksRoutesEnum.DesktopTasks)
     })
 
     test('При клике переходит на страницу реестра заявок', async () => {
@@ -78,19 +78,19 @@ describe('TaskListLayout', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: TasksRoutesEnum.DesktopTasks,
+            path: CommonRouteEnum.Desktop,
             element: <TaskListLayout />,
           },
           {
-            path: TasksRoutesEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTasks,
             element: <TasksPage />,
           },
           {
-            path: TasksRoutesEnum.DesktopTaskListMap,
+            path: TasksRoutesEnum.DesktopTasksMap,
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [TasksRoutesEnum.DesktopTasks], initialIndex: 0 },
+        { initialEntries: [CommonRouteEnum.Desktop], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, null, null, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -117,7 +117,7 @@ describe('TaskListLayout', () => {
       const button = testUtils.getTaskListMapButton()
 
       expect(button).toBeInTheDocument()
-      expect(button).toHaveAttribute('value', TasksRoutesEnum.DesktopTaskListMap)
+      expect(button).toHaveAttribute('value', TasksRoutesEnum.DesktopTasksMap)
     })
 
     test('При клике переходит на страницу карты с заявками', async () => {
@@ -128,19 +128,19 @@ describe('TaskListLayout', () => {
       const { user } = renderInRoute_latest(
         [
           {
-            path: TasksRoutesEnum.DesktopTasks,
+            path: CommonRouteEnum.Desktop,
             element: <TaskListLayout />,
           },
           {
-            path: TasksRoutesEnum.DesktopTaskList,
+            path: TasksRoutesEnum.DesktopTasks,
             element: <TasksPage />,
           },
           {
-            path: TasksRoutesEnum.DesktopTaskListMap,
+            path: TasksRoutesEnum.DesktopTasksMap,
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [TasksRoutesEnum.DesktopTasks], initialIndex: 0 },
+        { initialEntries: [CommonRouteEnum.Desktop], initialIndex: 0 },
       )
 
       await testUtils.clickTaskListMapButton(user)

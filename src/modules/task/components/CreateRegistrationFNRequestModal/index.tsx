@@ -98,7 +98,7 @@ const CreateRegistrationFNRequestModal: FC<CreateRegistrationFNRequestModalProps
               multiple
               disabled={isLoading}
               customRequest={onCreateAttachment}
-              itemRender={renderUploadedFile}
+              itemRender={renderUploadedFile()}
             >
               <UploadButton label='Добавить вложение' disabled={isLoading} />
             </Upload>
