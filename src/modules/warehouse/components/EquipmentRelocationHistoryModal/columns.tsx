@@ -1,10 +1,10 @@
 import { ColumnsType } from 'antd/es/table'
 
+import Attachments from 'modules/attachment/components/Attachments'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 
 import { formatDate } from 'shared/utils/date'
 
-import Attachments from '../../../attachment/components/Attachments'
 import { EquipmentRelocationHistoryTableItem } from './types'
 
 export const columns: ColumnsType<EquipmentRelocationHistoryTableItem> = [
@@ -44,9 +44,8 @@ export const columns: ColumnsType<EquipmentRelocationHistoryTableItem> = [
   {
     dataIndex: 'documents',
     title: 'Вложения',
-    render: (value: EquipmentRelocationHistoryTableItem['documents']) => (
-      <Attachments data={value || []} />
-    ),
+    render: (value: EquipmentRelocationHistoryTableItem['documents']) =>
+      value?.length && <Attachments data={value} showAboutInPopover />,
   },
   {
     dataIndex: 'externalRelocation',

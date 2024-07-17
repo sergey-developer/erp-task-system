@@ -1,16 +1,24 @@
 import { PaperClipOutlined } from '@ant-design/icons'
-import { Col, Flex, Space, Typography } from 'antd'
+import { Col, Flex, Popover, Space, Typography } from 'antd'
 import React, { FC, MouseEvent } from 'react'
 
-import { AttachmentListItem } from 'modules/attachment/components/Attachments/types'
+import {
+  AttachmentListItem,
+  AttachmentsProps,
+} from 'modules/attachment/components/Attachments/types'
+import { getShortUserName } from 'modules/user/utils'
 
 import { DeleteIcon } from 'components/Icons'
+
+import { DATE_FORMAT } from 'shared/constants/dateTime'
+import { formatDate } from 'shared/utils/date'
+import { prettyBytes } from 'shared/utils/file'
 
 import { getInfo, getInfoOpts } from './utils'
 
 const { Text, Link } = Typography
 
-type UploadedAttachmentProps = AttachmentListItem
+type UploadedAttachmentProps = AttachmentListItem & Pick<AttachmentsProps, 'showAboutInPopover'>
 
 const handleStopPropagation = (event: MouseEvent) => event.stopPropagation()
 
@@ -25,35 +33,58 @@ const UploadedAttachment: FC<UploadedAttachmentProps> = ({
   middleName,
   lastName,
   remove,
+  showAboutInPopover,
 }) => {
+  const link = (
+    <Link download={name} href={url} target='_blank'>
+      <Flex gap='small'>
+        <PaperClipOutlined />
+        {name}
+      </Flex>
+    </Link>
+  )
+
+  const createdByResult = createdBy
+    ? { ...createdBy, middleName: createdBy?.middleName ?? undefined }
+    : firstName && lastName
+    ? { firstName, middleName, lastName }
+    : undefined
+
   return (
-    <Space size='middle'>
+    <Space size='middle' onClick={handleStopPropagation}>
       <Space data-testid={`attachment-${name}`} size={4} wrap>
-        <Link download={name} href={url} target='_blank' onClick={handleStopPropagation}>
-          <Flex gap='small'>
-            <PaperClipOutlined />
-            {name}
-          </Flex>
-        </Link>
+        {showAboutInPopover ? (
+          <Popover
+            content={
+              <Flex vertical gap='small'>
+                <Flex gap='small'>
+                  <Text type='secondary'>Автор:</Text>
+                  {createdByResult && <Text>{getShortUserName(createdByResult)}</Text>}
+                </Flex>
 
-        <Text>
-          (
-          {getInfo(
-            {
-              size,
-              createdAt,
-              user: createdBy
-                ? { ...createdBy, middleName: createdBy?.middleName ?? undefined }
-                : firstName && lastName
-                ? { firstName, middleName, lastName }
-                : undefined,
-            },
-            getInfoOpts,
-          )}
-          )
-        </Text>
+                <Flex gap='small'>
+                  <Text type='secondary'>Добавлено:</Text>
+                  <Text>{formatDate(createdAt, DATE_FORMAT)}</Text>
+                </Flex>
 
-        {externalId === '' && <Text type='secondary'>Не передано в Х5</Text>}
+                <Flex gap='small'>
+                  <Text type='secondary'>Размер:</Text>
+                  <Text>{prettyBytes(size)}</Text>
+                </Flex>
+              </Flex>
+            }
+          >
+            {link}
+          </Popover>
+        ) : (
+          link
+        )}
+
+        {!showAboutInPopover && (
+          <Text>({getInfo({ size, createdAt, user: createdByResult }, getInfoOpts)})</Text>
+        )}
+
+        {!showAboutInPopover && externalId === '' && <Text type='secondary'>Не передано в Х5</Text>}
       </Space>
 
       {remove && (

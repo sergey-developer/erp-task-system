@@ -16,4 +16,5 @@ export type AttachmentListItem = Pick<AttachmentModel, 'name' | 'size' | 'url'> 
 
 export type AttachmentsProps = {
   data: AttachmentListItem[]
+  showAboutInPopover?: boolean
 }
