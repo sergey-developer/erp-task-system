@@ -3,6 +3,8 @@ import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocation
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
+import { ExternalRelocationModel } from '../relocationTask'
+
 export type EquipmentRelocationHistoryItemModel = {
   id: IdType
   createdAt: string
@@ -12,6 +14,7 @@ export type EquipmentRelocationHistoryItemModel = {
   status: RelocationTaskStatusEnum
 
   completedAt: MaybeNull<string>
+  externalRelocation: MaybeNull<Pick<ExternalRelocationModel, 'number'>>
 }
 
 export type EquipmentRelocationHistoryModel = EquipmentRelocationHistoryItemModel[]

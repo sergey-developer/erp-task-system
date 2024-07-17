@@ -8,38 +8,41 @@ import { EquipmentRelocationHistoryTableItem } from './types'
 
 export const columns: ColumnsType<EquipmentRelocationHistoryTableItem> = [
   {
-    key: 'createdAt',
+    dataIndex: 'id',
+    title: '№ заявки',
+  },
+  {
     dataIndex: 'createdAt',
     title: 'Инициировано',
     render: (value: EquipmentRelocationHistoryTableItem['createdAt']) => formatDate(value),
   },
   {
-    key: 'completedAt',
     dataIndex: 'completedAt',
     title: 'Дата перемещения',
     render: (value: EquipmentRelocationHistoryTableItem['completedAt']) =>
       value && formatDate(value),
   },
   {
-    key: 'relocateFrom',
     dataIndex: 'relocateFrom',
     title: 'Объект выбытия',
   },
   {
-    key: 'relocateTo',
     dataIndex: 'relocateTo',
     title: 'Объект прибытия',
   },
   {
-    key: 'createdBy',
     dataIndex: 'createdBy',
     title: 'Инициатор',
   },
   {
-    key: 'status',
     dataIndex: 'status',
     title: 'Статус',
     render: (value: EquipmentRelocationHistoryTableItem['status']) =>
       relocationTaskStatusDict[value],
+  },
+  {
+    dataIndex: 'externalRelocation',
+    title: 'Номер перемещения на портале заказчика',
+    render: (value: EquipmentRelocationHistoryTableItem['externalRelocation']) => value?.number,
   },
 ]
