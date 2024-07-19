@@ -1,4 +1,6 @@
 import { Col, ColProps, Row, RowProps, Typography } from 'antd'
+import isNumber from 'lodash/isNumber'
+import isString from 'lodash/isString'
 import React, { FC, ReactNode } from 'react'
 
 const { Text } = Typography
@@ -21,17 +23,23 @@ const ReadonlyField: FC<ReadonlyFieldProps> = ({
   leftColProps,
   ...props
 }) => {
+  const valueComponent = (
+    <Col span={16}>
+      {isString(displayValue) || isNumber(displayValue) ? (
+        <Text>{displayValue}</Text>
+      ) : (
+        displayValue
+      )}
+    </Col>
+  )
+
   return (
     <Row {...props}>
       <Col span={8} {...leftColProps}>
         <Text type='secondary'>{label}</Text>
       </Col>
 
-      {forceDisplayValue ? (
-        <Col span={16}>{displayValue}</Col>
-      ) : (
-        value && <Col span={16}>{displayValue}</Col>
-      )}
+      {forceDisplayValue ? valueComponent : !!value && valueComponent}
     </Row>
   )
 }
