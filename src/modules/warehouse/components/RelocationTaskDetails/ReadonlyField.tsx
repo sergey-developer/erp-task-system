@@ -11,6 +11,7 @@ export type ReadonlyFieldProps = Pick<RowProps, 'align'> & {
   displayValue?: ReactNode
   forceDisplayValue?: boolean
   leftColProps?: ColProps
+  rightColProps?: ColProps
 }
 
 // todo: переиспользовать где возможно
@@ -21,10 +22,11 @@ const ReadonlyField: FC<ReadonlyFieldProps> = ({
   label,
   align = 'middle',
   leftColProps,
+  rightColProps,
   ...props
 }) => {
   const valueComponent = (
-    <Col span={16}>
+    <Col span={16} {...rightColProps}>
       {isString(displayValue) || isNumber(displayValue) ? (
         <Text>{displayValue}</Text>
       ) : (
