@@ -29,7 +29,7 @@ const ReadonlyField: FC<ReadonlyFieldProps> = ({
   ...props
 }) => {
   const valueComponent = (
-    <Col span={16}>
+    <Col span={16} {...rightColProps}>
       {isString(displayValue) || isNumber(displayValue) ? (
         <Text>{displayValue}</Text>
       ) : (
