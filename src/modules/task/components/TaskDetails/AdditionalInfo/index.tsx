@@ -105,7 +105,6 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
           label='Тип работ'
           value={workType?.id}
           displayValue={workType?.title}
-          forceDisplayValue
           renderEditable={({ value, onChange }) => (
             <Select
               popupMatchSelectWidth={200}

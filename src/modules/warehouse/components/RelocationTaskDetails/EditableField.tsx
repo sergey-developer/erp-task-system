@@ -86,7 +86,6 @@ const EditableField: FC<EditableFieldProps> = ({
 
             {!editButtonHidden && (
               <Button
-                block
                 type='text'
                 disabled={editButtonDisabled}
                 icon={<EditIcon $size='large' $cursor='pointer' $color='bleuDeFrance' />}
