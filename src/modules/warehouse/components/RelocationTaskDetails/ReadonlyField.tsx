@@ -1,9 +1,11 @@
 import { Col, ColProps, Row, RowProps, Typography } from 'antd'
 import React, { FC, ReactNode } from 'react'
 
+import { WithTestIdType } from 'shared/types/common'
+
 const { Text } = Typography
 
-export type ReadonlyFieldProps = {
+export type ReadonlyFieldProps = WithTestIdType & {
   label: string
   value: any
   displayValue?: ReactNode
