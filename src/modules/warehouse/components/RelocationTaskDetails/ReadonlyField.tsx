@@ -1,4 +1,6 @@
 import { Col, ColProps, Row, RowProps, Typography } from 'antd'
+import isNumber from 'lodash/isNumber'
+import isString from 'lodash/isString'
 import React, { FC, ReactNode } from 'react'
 
 import { WithTestIdType } from 'shared/types/common'
@@ -26,23 +28,23 @@ const ReadonlyField: FC<ReadonlyFieldProps> = ({
   rightColProps,
   ...props
 }) => {
+  const valueComponent = (
+    <Col span={16}>
+      {isString(displayValue) || isNumber(displayValue) ? (
+        <Text>{displayValue}</Text>
+      ) : (
+        displayValue
+      )}
+    </Col>
+  )
+
   return (
     <Row {...props} {...rowProps} align={rowProps?.align ? rowProps.align : 'middle'}>
       <Col span={8} {...leftColProps}>
         <Text type='secondary'>{label}</Text>
       </Col>
 
-      {forceDisplayValue ? (
-        <Col span={16} {...rightColProps}>
-          <Text>{displayValue}</Text>
-        </Col>
-      ) : (
-        value && (
-          <Col span={16} {...rightColProps}>
-            <Text>{displayValue}</Text>
-          </Col>
-        )
-      )}
+      {forceDisplayValue ? valueComponent : !!value && valueComponent}
     </Row>
   )
 }
