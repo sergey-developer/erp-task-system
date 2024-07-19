@@ -68,7 +68,7 @@ const EditableField: FC<EditableFieldProps> = ({
         isLoading ? (
           <Spinner centered={false} />
         ) : editable ? (
-          <Space>
+          <Space align='center'>
             {renderEditable({ value: newValue, onChange: setNewValue })}
 
             <Button
@@ -81,11 +81,12 @@ const EditableField: FC<EditableFieldProps> = ({
             <Button type='text' icon={<CloseIcon $color='fireOpal' />} onClick={handleCancel} />
           </Space>
         ) : (
-          <Space>
+          <Space align='center'>
             {displayValue}
 
             {!editButtonHidden && (
               <Button
+                block
                 type='text'
                 disabled={editButtonDisabled}
                 icon={<EditIcon $size='large' $cursor='pointer' $color='bleuDeFrance' />}
