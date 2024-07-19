@@ -1,7 +1,7 @@
 import { useBoolean } from 'ahooks'
 import { Form, Select } from 'antd'
 import { DefaultOptionType } from 'rc-select/lib/Select'
-import React, { FC, useMemo } from 'react'
+import React, { FC, useMemo, useState } from 'react'
 
 import { EquipmentCatalogListItemModel } from 'modules/warehouse/models'
 import { makeEquipmentsCatalogSelectOptions } from 'modules/warehouse/utils/equipment'
@@ -44,10 +44,17 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
     { setTrue: setLocationFactIsEmpty, setFalse: setLocationFactIsNotEmpty },
   ] = useBoolean(false)
 
+  const [equipmentSelectOpened, setEquipmentSelectOpened] = useState<boolean>(false)
+
   const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
     () => makeEquipmentsCatalogSelectOptions(equipmentCatalog),
     [equipmentCatalog],
   )
+
+  const onClickCreateEquipmentWhenLocationFactEmpty = () => {
+    setLocationFactIsEmpty()
+    setEquipmentSelectOpened(false)
+  }
 
   const onFinish = async (values: CreateInventorizationEquipmentFormFields) => {
     await onSubmit(values, form)
@@ -74,12 +81,16 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
           rules={onlyRequiredRules}
         >
           <Select<EquipmentCatalogListItemModel['id']>
+            open={equipmentSelectOpened}
+            onDropdownVisibleChange={setEquipmentSelectOpened}
             dropdownRender={(menu) => (
               <Space data-testid='equipment-dropdown' $block direction='vertical'>
                 <SelectOptionButton
                   type='link'
                   onClick={
-                    locationFactFormValue ? onClickCreateEquipment(form) : setLocationFactIsEmpty
+                    locationFactFormValue
+                      ? onClickCreateEquipment(form)
+                      : onClickCreateEquipmentWhenLocationFactEmpty
                   }
                 >
                   Добавить оборудование
