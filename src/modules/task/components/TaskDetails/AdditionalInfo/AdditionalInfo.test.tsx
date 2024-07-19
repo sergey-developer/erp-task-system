@@ -1,6 +1,9 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { TaskStatusEnum } from 'modules/task/constants/task'
+
+import taskFixtures from '_tests_/fixtures/task'
 import {
   buttonTestUtils,
   fakeAddress,
@@ -13,27 +16,11 @@ import {
 import AdditionalInfo, { AdditionalInfoProps } from './index'
 
 const props: Readonly<
-  Pick<
-    AdditionalInfoProps,
-    | 'expanded'
-    | 'priority'
-    | 'severity'
-    | 'impact'
-    | 'productClassifier1'
-    | 'productClassifier2'
-    | 'productClassifier3'
-    | 'address'
-    | 'longitude'
-    | 'latitude'
-    | 'weight'
-    | 'company'
-    | 'email'
-    | 'sapId'
-    | 'contactType'
-  > & {
+  AdditionalInfoProps & {
     onExpand: jest.MockedFn<AdditionalInfoProps['onExpand']>
   }
 > = {
+  permissions: {},
   expanded: true,
   onExpand: jest.fn(),
   severity: fakeWord(),
@@ -42,6 +29,8 @@ const props: Readonly<
   productClassifier1: fakeWord(),
   productClassifier2: fakeWord(),
   productClassifier3: fakeWord(),
+  status: TaskStatusEnum.New,
+  workGroup: taskFixtures.workGroup(),
   address: null,
   longitude: null,
   latitude: null,
@@ -50,12 +39,17 @@ const props: Readonly<
   sapId: null,
   company: null,
   contactType: null,
+  workType: null,
+  supportGroup: undefined,
+  toggleEditWorkType: jest.fn(),
+  onSaveWorkType: jest.fn(),
+  saveWorkTypeIsLoading: false,
+  workTypes: [],
+  workTypesIsLoading: false,
 }
 
 const getContainer = () => screen.getByTestId('task-details-additional-info')
-
 const queryContainer = () => screen.queryByTestId('task-details-additional-info')
-
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 
 const getAdditionalInfoContent = () => within(getContainer()).getByTestId('additional-info-content')

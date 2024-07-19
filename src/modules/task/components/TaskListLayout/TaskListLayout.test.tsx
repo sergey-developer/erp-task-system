@@ -10,12 +10,19 @@ import { testUtils as taskListMapPageTestUtils } from 'modules/task/pages/TaskLi
 import TasksPage from 'modules/task/pages/TasksPage'
 import { testUtils as taskListPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
 
+import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetTaskCountersSuccess,
   mockGetTaskListMapSuccess,
   mockGetTasksSuccess,
 } from '_tests_/mocks/api'
-import { radioButtonTestUtils, renderInRoute_latest, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
+import {
+  getStoreWithAuth,
+  radioButtonTestUtils,
+  renderInRoute_latest,
+  setupApiTests,
+} from '_tests_/utils'
 
 import TaskListLayout from './index'
 
@@ -84,6 +91,11 @@ describe('TaskListLayout', () => {
           },
         ],
         { initialEntries: [CommonRouteEnum.Desktop], initialIndex: 0 },
+        {
+          store: getStoreWithAuth(undefined, null, null, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
       )
 
       await testUtils.clickTaskListButton(user)

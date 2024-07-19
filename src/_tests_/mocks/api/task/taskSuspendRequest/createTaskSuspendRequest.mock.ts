@@ -24,7 +24,7 @@ export const mockCreateTaskSuspendRequestSuccess = (
 
 export const mockCreateTaskSuspendRequestNotFoundError = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions>,
+  options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getNotFoundErrorMockFn(createTaskSuspendRequestMockFn(id), options)()
 
 export const mockCreateTaskSuspendRequestBadRequestError = <T extends object>(

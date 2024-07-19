@@ -5,4 +5,5 @@ export enum AttachmentTypeEnum {
   RelocationTaskResolution = 'RELOCATION_TASK_RESOLUTION',
   RelocationTaskImage = 'RELOCATION_TASK_IMAGE',
   InventorizationFile = 'INVENTORIZATION_FILE',
+  OrderFormFile = 'ORDER_FORM_FILE',
 }

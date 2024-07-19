@@ -6,6 +6,7 @@ import { Camelize, Writeable } from 'shared/types/utils'
 
 import { UserPermissionsEnum } from '../constants'
 
+// todo: вынести в типы user
 export type MatchedUserPermissions = Readonly<
   Camelize<Partial<Record<Lowercase<UserPermissionsEnum>, boolean>>>
 >

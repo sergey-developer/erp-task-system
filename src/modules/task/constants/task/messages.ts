@@ -37,3 +37,5 @@ export const getSubTasksErrMsg = 'Не удалось получить спис�
 export const createSubTaskErrMsg = 'Не удалось создать задание'
 export const cancelSubTaskErrMsg = 'Не удалось отменить задание'
 export const reworkSubTaskErrMsg = 'Не удалось вернуть задание на доработку'
+
+export const classifyTaskWorkTypeErrMsg = 'Ошибка классификации типа работ по заявке'

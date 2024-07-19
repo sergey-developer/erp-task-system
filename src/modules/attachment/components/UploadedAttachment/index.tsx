@@ -1,5 +1,5 @@
 import { PaperClipOutlined } from '@ant-design/icons'
-import { Col, Flex, Space, Typography } from 'antd'
+import { Button, Col, Flex, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import { AttachmentListItem } from 'modules/attachment/components/Attachments/types'
@@ -10,21 +10,27 @@ import { getInfo, getInfoOpts } from './utils'
 
 const { Text, Link } = Typography
 
-type UploadedAttachmentProps = AttachmentListItem
+type UploadedAttachmentProps = AttachmentListItem &
+  Partial<{
+    showDelete: boolean
+    canDelete: boolean
+  }>
 
 const UploadedAttachment: FC<UploadedAttachmentProps> = ({
+  name,
   url,
   size,
-  name,
   externalId,
   createdAt,
   firstName,
   middleName,
   lastName,
   remove,
+  showDelete = true,
+  canDelete = true,
 }) => {
   return (
-    <Space size='middle'>
+    <Space size='middle' align='center'>
       <Space data-testid={`attachment-${name}`} size={4} wrap>
         <Link download={name} href={url} target='_blank'>
           <Flex gap='small'>
@@ -49,9 +55,20 @@ const UploadedAttachment: FC<UploadedAttachmentProps> = ({
         {externalId === '' && <Text type='secondary'>Не передано в Х5</Text>}
       </Space>
 
-      {remove && (
+      {remove && showDelete && (
         <Col>
-          <DeleteIcon $cursor='pointer' onClick={remove} title='Удалить файл' />
+          <Button
+            type='text'
+            disabled={!canDelete}
+            icon={
+              <DeleteIcon
+                $cursor='pointer'
+                $color='fireOpal'
+                onClick={remove}
+                title='Удалить файл'
+              />
+            }
+          />
         </Col>
       )}
     </Space>

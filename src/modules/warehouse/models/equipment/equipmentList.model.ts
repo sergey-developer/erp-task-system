@@ -1,5 +1,5 @@
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { EquipmentCategoryModel, WorkTypeModel } from 'modules/warehouse/models'
+import { EquipmentCategoryModel, WorkTypeListItemModel } from 'modules/warehouse/models'
 
 import { LocationModel } from 'shared/models/catalogs/location'
 import { IdType } from 'shared/types/common'
@@ -11,7 +11,7 @@ export type EquipmentListItemModel = {
   condition: EquipmentConditionEnum
   quantity: number
   category: Pick<EquipmentCategoryModel, 'id' | 'title'>
-  purpose: Pick<WorkTypeModel, 'id' | 'title'>
+  purpose: Pick<WorkTypeListItemModel, 'id' | 'title'>
   isCredited: boolean
 
   serialNumber: MaybeNull<string>

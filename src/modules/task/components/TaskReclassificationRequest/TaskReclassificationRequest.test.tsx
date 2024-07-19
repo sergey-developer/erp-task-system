@@ -28,7 +28,6 @@ const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /от�
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)
-  return button
 }
 
 export const testUtils = {

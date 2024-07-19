@@ -15,7 +15,7 @@ import {
   useGetTaskCompletionDocuments,
 } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
-import { CreateTechnicalExaminationModalProps } from 'modules/warehouse/components/CreateTechnicalExaminationModal/types'
+import { CreateRelocationEquipmentTechnicalExaminationModalProps } from 'modules/warehouse/components/CreateRelocationEquipmentTechnicalExaminationModal/types'
 import DocumentsPackageRelocationEquipmentTable from 'modules/warehouse/components/DocumentsPackageRelocationEquipmentTable'
 import { DocumentsPackageRelocationEquipmentTableItem } from 'modules/warehouse/components/DocumentsPackageRelocationEquipmentTable/types'
 import { useGetMeasurementUnitList } from 'modules/warehouse/hooks/measurementUnit'
@@ -57,8 +57,8 @@ const CreateCompletedWorkModal = React.lazy(
   () => import('modules/task/components/CreateCompletedWorkModal'),
 )
 
-const CreateTechnicalExaminationModal = React.lazy(
-  () => import('modules/warehouse/components/CreateTechnicalExaminationModal'),
+const CreateRelocationEquipmentTechnicalExaminationModal = React.lazy(
+  () => import('modules/warehouse/components/CreateRelocationEquipmentTechnicalExaminationModal'),
 )
 
 const { Title } = Typography
@@ -190,7 +190,7 @@ const CreateDocumentsPackagePage: FC = () => {
   }
 
   const onCreateTechnicalExamination = useCallback<
-    CreateTechnicalExaminationModalProps['onSubmit']
+    CreateRelocationEquipmentTechnicalExaminationModalProps['onSubmit']
   >(
     async (values, setFields) => {
       if (!selectedRelocationEquipment) return
@@ -396,7 +396,7 @@ const CreateDocumentsPackagePage: FC = () => {
         <React.Suspense
           fallback={<ModalFallback open onCancel={onCloseCreateTechnicalExaminationModal} />}
         >
-          <CreateTechnicalExaminationModal
+          <CreateRelocationEquipmentTechnicalExaminationModal
             open={createTechnicalExaminationModalOpened}
             onCancel={onCloseCreateTechnicalExaminationModal}
             onSubmit={onCreateTechnicalExamination}
