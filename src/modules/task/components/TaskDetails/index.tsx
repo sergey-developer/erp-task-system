@@ -1,9 +1,13 @@
 import { useBoolean } from 'ahooks'
-import { App, Col, Drawer, FormInstance, Row } from 'antd'
+import { App, Button, Col, Divider, Drawer, Flex, FormInstance, Row, Typography } from 'antd'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { useAuthUser } from 'modules/auth/hooks'
+import { useUpdateInfrastructure } from 'modules/infrastructures/hooks'
+import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
+import { makeChangeInfrastructurePageLink } from 'modules/infrastructures/utils/pagesLinks'
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
 import { CreateRegistrationFNRequestModalProps } from 'modules/task/components/CreateRegistrationFNRequestModal/types'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
@@ -30,6 +34,7 @@ import {
   taskSeverityMap,
 } from 'modules/task/constants/task'
 import {
+  useClassifyTaskWorkType,
   useCreateTaskAttachment,
   useCreateTaskRegistrationFNRequest,
   useGetTask,
@@ -56,14 +61,17 @@ import {
   TaskAssigneeModel,
 } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
-import { useGetUserActions } from 'modules/user/hooks'
+import { useGetUserActions, useUserPermissions } from 'modules/user/hooks'
+import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
-import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
+import { DEFAULT_DEBOUNCE_VALUE, NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetFaChangeTypes } from 'shared/hooks/catalogs/faChangeTypes'
 import { useSystemSettingsState } from 'shared/hooks/system'
@@ -76,12 +84,13 @@ import {
 } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
-import { base64ToBytes, isFalse, isTrue } from 'shared/utils/common'
+import { base64ToBytes, isFalse, isTrue, valueOr } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'
 import { downloadFile, extractIdsFromFilesResponse, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import TaskAssignee from '../TaskAssignee'
 import AssigneeBlock from './AssigneeBlock'
 import WorkGroupBlock from './WorkGroupBlock'
 
@@ -125,6 +134,8 @@ const UpdateTaskDeadlineModal = React.lazy(
   () => import('modules/task/components/UpdateTaskDeadlineModal'),
 )
 
+const { Text } = Typography
+
 export type TaskDetailsProps = {
   taskId: IdType
 
@@ -149,8 +160,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   onClose: originOnClose,
 }) => {
   const { modal } = App.useApp()
+  const navigate = useNavigate()
 
   const authUser = useAuthUser()
+  const permissions = useUserPermissions([
+    UserPermissionsEnum.InfrastructureProjectRead,
+    UserPermissionsEnum.AnyStatusInfrastructureProjectRead,
+    UserPermissionsEnum.InfrastructureProjectLeading,
+    UserPermissionsEnum.ClassificationOfWorkTypes,
+  ])
+
   const onClose = useDebounceFn(originOnClose)
 
   const { currentData: userActions, isFetching: userActionsIsFetching } = useGetUserActions(
@@ -198,15 +217,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   ] = useCreateTaskReclassificationRequest()
 
   const canGetTaskReclassificationRequest =
-    !!task?.id && taskExtendedStatus.isInReclassification && !createReclassificationRequestResult
+    taskExtendedStatus.isInReclassification && !createReclassificationRequestResult
 
   const {
     currentData: getReclassificationRequestResult,
     isFetching: reclassificationRequestIsFetching,
-  } = useGetTaskReclassificationRequest(
-    { taskId: task?.id! },
-    { skip: !canGetTaskReclassificationRequest },
-  )
+  } = useGetTaskReclassificationRequest({ taskId }, { skip: !canGetTaskReclassificationRequest })
 
   const [cancelReclassificationRequest, { isLoading: cancelReclassificationRequestIsLoading }] =
     useCancelReclassificationRequest()
@@ -216,6 +232,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const getTaskCalledAfterSuccessfullyRequestCreation =
     getTaskStartedTimeStamp > createReclassificationRequestFulfilledTimeStamp
+
+  const [
+    updateInfrastructureMutation,
+    { isLoading: updateInfrastructureIsLoading, data: updateInfrastructureResult },
+  ] = useUpdateInfrastructure()
 
   const [takeTask, { isLoading: takeTaskIsLoading }] = useTakeTask()
   const [resolveTask, { isLoading: taskIsResolving }] = useResolveTask()
@@ -243,9 +264,19 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     data: taskRegistrationRequestRecipients,
     isFetching: taskRegistrationRequestRecipientsIsFetching,
   } = useGetTaskRegistrationRequestRecipientsFN(
-    { taskId: task?.id! },
-    { skip: !task?.id || !createRegistrationFNRequestModalOpened },
+    { taskId },
+    { skip: !createRegistrationFNRequestModalOpened },
   )
+
+  const [workTypeIsEditable, { toggle: toggleWorkTypeEditable }] = useBoolean(false)
+
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
+    { taskType: task?.type! },
+    { skip: !workTypeIsEditable || !task?.type },
+  )
+
+  const [classifyTaskWorkTypeMutation, { isLoading: classifyTaskWorkTypeIsLoading }] =
+    useClassifyTaskWorkType()
 
   const [createTaskAttachment, { isLoading: createTaskAttachmentIsLoading }] =
     useCreateTaskAttachment()
@@ -413,11 +444,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     CreateRegistrationFNRequestModalProps['onSubmit']
   >(
     async (values, setFields) => {
-      if (!task) return
-
       try {
         await createTaskRegistrationFNRequest({
-          taskId: task.id,
+          taskId,
           changeType: values.changeType,
           attachments: extractIdsFromFilesResponse(values.attachments),
         }).unwrap()
@@ -429,15 +458,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [createTaskRegistrationFNRequest, task, toggleCreateRegistrationFNRequestModal],
+    [createTaskRegistrationFNRequest, taskId, toggleCreateRegistrationFNRequestModal],
   )
 
   const onUpdateDescription: UpdateTaskDescriptionModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
-      if (!task) return
-
       try {
-        await updateTaskDescriptionMutation({ taskId: task.id, ...values }).unwrap()
+        await updateTaskDescriptionMutation({ taskId, ...values }).unwrap()
         toggleUpdateDescriptionModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
@@ -445,16 +472,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [task, toggleUpdateDescriptionModal, updateTaskDescriptionMutation],
+    [taskId, toggleUpdateDescriptionModal, updateTaskDescriptionMutation],
   )
 
   const onUpdateDeadline: UpdateTaskDeadlineModalProps['onSubmit'] = useCallback(
     async (values, setFields) => {
-      if (!task) return
-
       try {
         await updateTaskDeadlineMutation({
-          taskId: task.id,
+          taskId,
           internalOlaNextBreachTime:
             values.date && values.time
               ? mergeDateTime(values.date, values.time).toISOString()
@@ -468,16 +493,18 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [task, toggleUpdateDeadlineModal, updateTaskDeadlineMutation],
+    [taskId, toggleUpdateDeadlineModal, updateTaskDeadlineMutation],
   )
+
+  const onClassifyTaskWorkType = async (workTypeId: IdType) => {
+    await classifyTaskWorkTypeMutation({ taskId, workType: workTypeId })
+  }
 
   const onExecuteTask = useCallback<ExecuteTaskModalProps['onSubmit']>(
     async (values, setFields) => {
-      if (!task) return
-
       try {
         await resolveTask({
-          taskId: task.id,
+          taskId,
           ...values,
           techResolution: values.techResolution.trim(),
           userResolution: values.userResolution?.trim(),
@@ -493,7 +520,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [task, originOnClose, resolveTask],
+    [taskId, originOnClose, resolveTask],
   )
 
   const onGetAct = useCallback<ExecuteTaskModalProps['onGetAct']>(
@@ -528,11 +555,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
     RequestTaskReclassificationModalProps['onSubmit']
   >(
     async (values, setFields) => {
-      if (!task) return
-
       try {
         await createReclassificationRequest({
-          taskId: task.id,
+          taskId,
           ...values,
         }).unwrap()
         closeTaskReclassificationModal()
@@ -542,7 +567,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [closeTaskReclassificationModal, createReclassificationRequest, task],
+    [closeTaskReclassificationModal, createReclassificationRequest, taskId],
   )
 
   const onTransferTaskToSecondLine = useCallback(
@@ -551,10 +576,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       setFields: FormInstance<TaskSecondLineFormFields>['setFields'],
       closeTaskSecondLineModal: EmptyFn,
     ) => {
-      if (!task) return
-
       try {
-        await updateWorkGroup({ taskId: task.id, ...values }).unwrap()
+        await updateWorkGroup({ taskId, ...values }).unwrap()
         closeTaskSecondLineModal()
         originOnClose()
       } catch (error) {
@@ -563,7 +586,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [task, originOnClose, updateWorkGroup],
+    [taskId, originOnClose, updateWorkGroup],
   )
 
   const onTransferTaskToFirstLine = useCallback(
@@ -572,10 +595,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       setFields: FormInstance<TaskFirstLineFormFields>['setFields'],
       closeTaskFirstLineModal: EmptyFn,
     ) => {
-      if (!task) return
-
       try {
-        await deleteWorkGroup({ taskId: task.id, ...values }).unwrap()
+        await deleteWorkGroup({ taskId, ...values }).unwrap()
         closeTaskFirstLineModal()
         originOnClose()
       } catch (error) {
@@ -584,29 +605,25 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [originOnClose, deleteWorkGroup, task],
+    [originOnClose, deleteWorkGroup, taskId],
   )
 
   const onUpdateAssignee = useCallback(
     async (assignee: TaskAssigneeModel['id']) => {
-      if (!task) return
-      await updateAssignee({ taskId: task.id, assignee })
+      await updateAssignee({ taskId, assignee })
     },
-    [task, updateAssignee],
+    [taskId, updateAssignee],
   )
 
   const onTakeTask = useCallback(async () => {
-    if (!task) return
-    await takeTask({ taskId: task.id })
-  }, [takeTask, task])
+    await takeTask({ taskId })
+  }, [takeTask, taskId])
 
   const onCreateTaskSuspendRequest: RequestTaskSuspendModalProps['onSubmit'] = useCallback(
     async (values: RequestTaskSuspendFormFields, setFields) => {
-      if (!task) return
-
       try {
         await createSuspendRequest({
-          taskId: task.id,
+          taskId,
           suspendReason: values.reason,
           suspendEndAt: mergeDateTime(values.endDate, values.endTime).toISOString(),
           externalRevisionLink: values.taskLink,
@@ -627,27 +644,50 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }
       }
     },
-    [closeRequestTaskSuspendModal, createSuspendRequest, task],
+    [closeRequestTaskSuspendModal, createSuspendRequest, taskId],
   )
 
   const onDeleteTaskSuspendRequest = useDebounceFn(async () => {
-    if (!task) return
-    await deleteSuspendRequest({ taskId: task.id })
-  }, [deleteSuspendRequest, task])
+    await deleteSuspendRequest({ taskId })
+  }, [deleteSuspendRequest, taskId])
 
   const onCreateTaskAttachment = useCallback<
     CreateRegistrationFNRequestModalProps['onCreateAttachment']
   >(
     async (options) => {
-      if (!task) return
-
-      await createTaskAttachment(
-        { taskId: task.id, parentType: TaskAttachmentTypeEnum.Journal },
-        options,
-      )
+      await createTaskAttachment({ taskId, parentType: TaskAttachmentTypeEnum.Journal }, options)
     },
-    [createTaskAttachment, task],
+    [createTaskAttachment, taskId],
   )
+
+  const onUpdateInfrastructure = async () => {
+    if (!task?.infrastructureProject || !authUser) {
+      console.error('Required data not supplied:', {
+        infrastructureProject: task?.infrastructureProject,
+        authUser,
+      })
+      return
+    }
+
+    await updateInfrastructureMutation({
+      infrastructureId: task.infrastructureProject.id,
+      manager: authUser.id,
+    })
+  }
+
+  const onClickChangeInfrastructure = () => {
+    if (!task?.infrastructureProject) {
+      console.error('Required data not supplied:', {
+        infrastructureProject: task?.infrastructureProject,
+      })
+      return
+    }
+
+    navigate(
+      makeChangeInfrastructurePageLink({ infrastructureId: task.infrastructureProject.id }),
+      { state: getChangeInfrastructurePageLocationState(task) },
+    )
+  }
 
   const title = task && userActions && (
     <TaskDetailsTitle
@@ -781,6 +821,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                   />
 
                   <AdditionalInfo
+                    permissions={permissions}
+                    status={task.status}
                     email={task.email}
                     sapId={task.sapId}
                     weight={task.weight}
@@ -796,14 +838,24 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     productClassifier3={task.productClassifier3}
                     latitude={task.latitude}
                     longitude={task.longitude}
+                    workGroup={task.workGroup}
+                    workType={task.workType}
+                    workTypes={workTypes}
+                    workTypesIsLoading={workTypesIsFetching}
+                    toggleEditWorkType={toggleWorkTypeEditable}
+                    onSaveWorkType={onClassifyTaskWorkType}
+                    saveWorkTypeIsLoading={classifyTaskWorkTypeIsLoading}
                     expanded={additionalInfoExpanded}
                     onExpand={onExpandAdditionalInfo}
                   />
+
+                  <Divider />
 
                   <Row justify='space-between'>
                     <Col span={11}>
                       <WorkGroupBlock
                         id={task.id}
+                        type={task.type}
                         recordId={task.recordId}
                         status={task.status}
                         extendedStatus={task.extendedStatus}
@@ -833,6 +885,57 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                       />
                     </Col>
                   </Row>
+
+                  <Divider />
+
+                  {task.infrastructureProject && (
+                    <Row justify='space-between'>
+                      <Col span={11}>
+                        {task.workType?.actions?.includes(
+                          WorkTypeActionsEnum.CreateInfrastructureProject,
+                        ) && (
+                          <Button
+                            disabled={
+                              !permissions.infrastructureProjectRead &&
+                              !permissions.anyStatusInfrastructureProjectRead
+                            }
+                            onClick={onClickChangeInfrastructure}
+                          >
+                            Изменение инфраструктуры
+                          </Button>
+                        )}
+                      </Col>
+
+                      <Col span={11}>
+                        <Flex data-testid='support-manager-block' vertical gap='small'>
+                          <Flex justify='space-between' gap='middle'>
+                            <Text type='secondary'>Менеджер по сопровождению</Text>
+
+                            {permissions.infrastructureProjectLeading && (
+                              <Button
+                                type='link'
+                                loading={updateInfrastructureIsLoading}
+                                onClick={onUpdateInfrastructure}
+                              >
+                                Назначить на себя
+                              </Button>
+                            )}
+                          </Flex>
+
+                          <Text>
+                            {valueOr(
+                              updateInfrastructureResult?.manager ||
+                                task.infrastructureProject.manager,
+                              (value) => (
+                                <TaskAssignee {...value} hasPopover showPhone={false} />
+                              ),
+                              NO_ASSIGNEE_TEXT,
+                            )}
+                          </Text>
+                        </Flex>
+                      </Col>
+                    </Row>
+                  )}
 
                   <Tabs task={task} activeTab={activeTab} userActions={userActions} />
                 </Space>

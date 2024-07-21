@@ -10,12 +10,15 @@ import Spinner from 'components/Spinner'
 import ReadonlyField, { ReadonlyFieldProps } from './ReadonlyField'
 
 export type EditableFieldProps = ReadonlyFieldProps & {
+  editButtonHidden?: boolean
   editButtonDisabled?: boolean
   renderEditable: ({
     value,
   }: Pick<ReadonlyFieldProps, 'value'> & { onChange: (value: any) => void }) => ReactElement
 
   onSave: (value: any) => Promise<void>
+  onEdit?: () => void
+  onCancel?: () => void
   isLoading: boolean
 }
 
@@ -24,27 +27,37 @@ const EditableField: FC<EditableFieldProps> = ({
   value,
   displayValue = value,
 
+  editButtonHidden = false,
   editButtonDisabled = false,
   renderEditable,
 
   onSave,
+  onEdit,
+  onCancel,
   isLoading,
 
   ...props
 }) => {
   const [editable, { setTrue: setEditable, setFalse: setNotEditable }] = useBoolean(false)
-  const [newValue, setNewValue] = useState(value)
+  const [newValue, setNewValue] = useState<any>(value)
 
   const onChange = async () => {
     try {
       await onSave(newValue)
       setNotEditable()
+      onCancel && onCancel()
     } catch {}
   }
 
-  const onCancel = () => {
+  const handleCancel = () => {
     setNewValue(value)
     setNotEditable()
+    onCancel && onCancel()
+  }
+
+  const onClickEdit = () => {
+    setEditable()
+    onEdit && onEdit()
   }
 
   return (
@@ -55,7 +68,7 @@ const EditableField: FC<EditableFieldProps> = ({
         isLoading ? (
           <Spinner centered={false} />
         ) : editable ? (
-          <Space>
+          <Space align='center'>
             {renderEditable({ value: newValue, onChange: setNewValue })}
 
             <Button
@@ -65,18 +78,21 @@ const EditableField: FC<EditableFieldProps> = ({
               onClick={onChange}
             />
 
-            <Button type='text' icon={<CloseIcon $color='fireOpal' />} onClick={onCancel} />
+            <Button type='text' icon={<CloseIcon $color='fireOpal' />} onClick={handleCancel} />
           </Space>
         ) : (
-          <Space>
+          <Space align='center'>
             {displayValue}
 
-            <Button
-              type='text'
-              disabled={editButtonDisabled}
-              icon={<EditIcon $size='large' $cursor='pointer' $color='bleuDeFrance' />}
-              onClick={setEditable}
-            />
+            {!editButtonHidden && (
+              <Button
+                block
+                type='text'
+                disabled={editButtonDisabled}
+                icon={<EditIcon $size='large' $cursor='pointer' $color='bleuDeFrance' />}
+                onClick={onClickEdit}
+              />
+            )}
           </Space>
         )
       }

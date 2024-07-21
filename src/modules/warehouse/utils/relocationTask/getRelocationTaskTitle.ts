@@ -1,11 +1,11 @@
 import { RelocationTaskModel } from 'modules/warehouse/models'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 
 export const getRelocateFromToTitle = (
   relocationTask?: Pick<RelocationTaskModel, 'relocateFrom' | 'relocateTo'>,
   text: string = 'Заявка на перемещение оборудования',
 ): string =>
-  `${text} ${valueOrHyphen(relocationTask?.relocateFrom?.title)} → ${valueOrHyphen(
+  `${text} ${valueOr(relocationTask?.relocateFrom?.title)} → ${valueOr(
     relocationTask?.relocateTo?.title,
   )}`

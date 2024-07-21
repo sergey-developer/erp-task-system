@@ -29,3 +29,5 @@ export * from './createTaskAttachment.model'
 export * from './taskRegistrationRequestRecipientsFN.model'
 export * from './getTaskRegistrationRequestRecipientsFN.model'
 export * from './createTaskRegistrationFNRequest.model'
+
+export * from './classifyTaskWorkType.model'

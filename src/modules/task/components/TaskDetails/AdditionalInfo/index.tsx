@@ -1,23 +1,30 @@
-import { Col, Row, Typography } from 'antd'
+import { Col, Row, Select, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import { TaskModel } from 'modules/task/models'
+import { MatchedUserPermissions } from 'modules/user/utils'
+import EditableField from 'modules/warehouse/components/RelocationTaskDetails/EditableField'
+import { WorkTypesModel } from 'modules/warehouse/models'
 
 import Expandable from 'components/Expandable'
 import { MapPointIcon } from 'components/Icons'
 import Label from 'components/Label'
 import Space from 'components/Space'
 
+import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 
+import { useTaskStatus } from '../../../hooks/task'
 import { makeYandexMapLink } from './utils'
 
 const { Text, Link } = Typography
 
 export type AdditionalInfoProps = Pick<
   TaskModel,
+  | 'status'
   | 'weight'
   | 'address'
   | 'company'
@@ -29,7 +36,10 @@ export type AdditionalInfoProps = Pick<
   | 'productClassifier3'
   | 'latitude'
   | 'longitude'
+  | 'workType'
+  | 'workGroup'
 > & {
+  permissions: MatchedUserPermissions
   impact: string
   severity: string
   priority: string
@@ -37,10 +47,19 @@ export type AdditionalInfoProps = Pick<
   expanded: boolean
   onExpand: EmptyFn
 
+  workTypes: WorkTypesModel
+  workTypesIsLoading: boolean
+
+  toggleEditWorkType: () => void
+  onSaveWorkType: (workTypeId: IdType) => Promise<void>
+  saveWorkTypeIsLoading: boolean
+
   supportGroup?: string
 }
 
 const AdditionalInfo: FC<AdditionalInfoProps> = ({
+  permissions,
+  status,
   email,
   sapId,
   weight,
@@ -57,9 +76,17 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   latitude,
   longitude,
   expanded,
+  workGroup,
+  workType,
+  workTypes,
+  workTypesIsLoading,
+  toggleEditWorkType,
+  onSaveWorkType,
+  saveWorkTypeIsLoading,
   onExpand,
 }) => {
   const handleExpand = useDebounceFn(onExpand, [onExpand])
+  const taskStatus = useTaskStatus(status)
 
   return (
     <Expandable
@@ -72,6 +99,39 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
       onClick={handleExpand}
     >
       <Space data-testid='additional-info-content' direction='vertical' size={30} $block>
+        <EditableField
+          data-testid='work-type'
+          leftColProps={{ span: 6 }}
+          label='Тип работ'
+          value={workType?.id}
+          displayValue={workType?.title}
+          forceDisplayValue
+          renderEditable={({ value, onChange }) => (
+            <Select
+              popupMatchSelectWidth={200}
+              placeholder='Выберите из списка'
+              value={value}
+              onChange={(value) => onChange(value)}
+              options={workTypes}
+              disabled={workTypesIsLoading}
+              loading={workTypesIsLoading}
+              fieldNames={idAndTitleSelectFieldNames}
+            />
+          )}
+          editButtonHidden={
+            !(
+              permissions.classificationOfWorkTypes &&
+              !!workGroup &&
+              !taskStatus.isClosed &&
+              !taskStatus.isCompleted
+            )
+          }
+          onEdit={toggleEditWorkType}
+          onCancel={toggleEditWorkType}
+          onSave={onSaveWorkType}
+          isLoading={saveWorkTypeIsLoading}
+        />
+
         <Row justify='space-between'>
           <Col span={11}>
             <Space direction='vertical' $block>
@@ -81,7 +141,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Col>
 
                 <Col span={11}>
-                  <Text strong>{valueOrHyphen(company)}</Text>
+                  <Text strong>{valueOr(company)}</Text>
                 </Col>
               </Row>
 
@@ -91,7 +151,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Col>
 
                 <Col span={11}>
-                  <Text strong>{valueOrHyphen(contactType)}</Text>
+                  <Text strong>{valueOr(contactType)}</Text>
                 </Col>
               </Row>
 
@@ -101,7 +161,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Col>
 
                 <Col span={11}>
-                  <Text strong>{valueOrHyphen(sapId)}</Text>
+                  <Text strong>{valueOr(sapId)}</Text>
                 </Col>
               </Row>
 
@@ -111,7 +171,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
                 </Col>
 
                 <Col span={11}>
-                  <Text strong>{valueOrHyphen(email)}</Text>
+                  <Text strong>{valueOr(email)}</Text>
                 </Col>
               </Row>
             </Space>
@@ -133,7 +193,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
               </Space>
 
               <Label label='Наименование группы поддержки Х5'>
-                <Text strong>{valueOrHyphen(supportGroup)}</Text>
+                <Text strong>{valueOr(supportGroup)}</Text>
               </Label>
             </Space>
           </Col>
@@ -171,7 +231,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
           <Col span={5}>
             <Label label='Приоритет заявки' size={0}>
               <Label label='Вес:' direction='horizontal'>
-                <Text>{valueOrHyphen(weight)}</Text>
+                <Text>{valueOr(weight)}</Text>
               </Label>
             </Label>
           </Col>
@@ -180,19 +240,19 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
             <Row gutter={20}>
               <Col span={8}>
                 <Label label='Влияние'>
-                  <Text>{valueOrHyphen(impact)}</Text>
+                  <Text>{valueOr(impact)}</Text>
                 </Label>
               </Col>
 
               <Col span={8}>
                 <Label label='Срочность'>
-                  <Text>{valueOrHyphen(severity)}</Text>
+                  <Text>{valueOr(severity)}</Text>
                 </Label>
               </Col>
 
               <Col span={8}>
                 <Label label='Приоритет'>
-                  <Text>{valueOrHyphen(priority)}</Text>
+                  <Text>{valueOr(priority)}</Text>
                 </Label>
               </Col>
             </Row>

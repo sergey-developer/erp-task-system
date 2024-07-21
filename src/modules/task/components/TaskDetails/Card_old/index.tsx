@@ -12,19 +12,12 @@ import {
   RequestTaskSuspendModalProps,
 } from 'modules/task/components/RequestTaskSuspendModal/types'
 import { getFormErrorsFromBadRequestError } from 'modules/task/components/RequestTaskSuspendModal/utils'
-import AdditionalInfo from 'modules/task/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'modules/task/components/TaskDetails/MainDetails'
 import Tabs from 'modules/task/components/TaskDetails/Tabs'
 import Title from 'modules/task/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'modules/task/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'modules/task/components/TaskSecondLineModal/types'
-import {
-  getTaskWorkPerformedActMessages,
-  TaskDetailsTabsEnum,
-  taskImpactMap,
-  taskPriorityMap,
-  taskSeverityMap,
-} from 'modules/task/constants/task'
+import { getTaskWorkPerformedActMessages, TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import {
@@ -545,25 +538,25 @@ const TaskCard: FC<TaskCardProps> = ({
                 assignee={task.assignee}
               />
 
-              <AdditionalInfo
-                email={task.email}
-                sapId={task.sapId}
-                weight={task.weight}
-                address={task.address}
-                company={task.company}
-                contactType={task.contactType}
-                severity={taskSeverityMap.get(task.severity)!}
-                priority={taskPriorityMap.get(task.priorityCode)!}
-                impact={taskImpactMap.get(task.initialImpact)!}
-                supportGroup={task.supportGroup?.name}
-                productClassifier1={task.productClassifier1}
-                productClassifier2={task.productClassifier2}
-                productClassifier3={task.productClassifier3}
-                latitude={task.latitude}
-                longitude={task.longitude}
-                expanded={additionalInfoExpanded}
-                onExpand={onExpandAdditionalInfo}
-              />
+              {/*<AdditionalInfo*/}
+              {/*  email={task.email}*/}
+              {/*  sapId={task.sapId}*/}
+              {/*  weight={task.weight}*/}
+              {/*  address={task.address}*/}
+              {/*  company={task.company}*/}
+              {/*  contactType={task.contactType}*/}
+              {/*  severity={taskSeverityMap.get(task.severity)!}*/}
+              {/*  priority={taskPriorityMap.get(task.priorityCode)!}*/}
+              {/*  impact={taskImpactMap.get(task.initialImpact)!}*/}
+              {/*  supportGroup={task.supportGroup?.name}*/}
+              {/*  productClassifier1={task.productClassifier1}*/}
+              {/*  productClassifier2={task.productClassifier2}*/}
+              {/*  productClassifier3={task.productClassifier3}*/}
+              {/*  latitude={task.latitude}*/}
+              {/*  longitude={task.longitude}*/}
+              {/*  expanded={additionalInfoExpanded}*/}
+              {/*  onExpand={onExpandAdditionalInfo}*/}
+              {/*/>*/}
 
               {!additionalInfoExpanded && <DividerStyled />}
 

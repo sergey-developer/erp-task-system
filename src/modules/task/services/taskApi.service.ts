@@ -9,6 +9,8 @@ import {
   TaskExtendedStatusEnum,
 } from 'modules/task/constants/task'
 import {
+  ClassifyTaskWorkTypeMutationArgs,
+  ClassifyTaskWorkTypeSuccessResponse,
   CreateCompletedWorkMutationArgs,
   CreateCompletedWorkSuccessResponse,
   CreateInitiationReasonMutationArgs,
@@ -88,6 +90,7 @@ import {
   getTaskRegistrationRequestRecipientsFNUrl,
   getTaskUrl,
   getTaskWorkPerformedActUrl,
+  makeClassifyTaskWorkTypeUrl,
   resolveTaskUrl,
   takeTaskUrl,
   updateTaskDeadlineUrl,
@@ -610,6 +613,18 @@ const taskApiService = baseApiService
           } catch {}
         },
       }),
+
+      classifyTaskWorkType: build.mutation<
+        ClassifyTaskWorkTypeSuccessResponse,
+        ClassifyTaskWorkTypeMutationArgs
+      >({
+        invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
+        query: ({ taskId, ...data }) => ({
+          url: makeClassifyTaskWorkTypeUrl({ taskId }),
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+      }),
     }),
     overrideExisting: false,
   })
@@ -660,6 +675,8 @@ export const {
   useGetTaskRegistrationRequestRecipientsFNQuery,
 
   useCreateTaskAttachmentMutation,
+
+  useClassifyTaskWorkTypeMutation,
 } = taskApiService
 
 export default taskApiService

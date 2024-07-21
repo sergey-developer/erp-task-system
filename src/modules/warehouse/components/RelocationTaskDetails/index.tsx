@@ -83,7 +83,7 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/services/baseApi'
-import { base64ToBytes, valueOrHyphen } from 'shared/utils/common'
+import { base64ToBytes, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -468,18 +468,18 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                   <ReadonlyField
                     data-testid='relocate-from'
                     label='Объект выбытия:'
-                    value={valueOrHyphen(relocationTask.relocateFrom?.title)}
+                    value={valueOr(relocationTask.relocateFrom?.title)}
                   />
 
                   <ReadonlyField
                     data-testid='relocate-to'
                     label='Объект прибытия:'
-                    value={valueOrHyphen(relocationTask.relocateTo?.title)}
+                    value={valueOr(relocationTask.relocateTo?.title)}
                   />
 
                   <ReadonlyField
                     data-testid='executor'
-                    align='top'
+                    rowProps={{ align: 'top' }}
                     label='Исполнитель:'
                     value={
                       relocationTask?.completedBy?.fullName || (
@@ -495,7 +495,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                   <ReadonlyField
                     data-testid='controller'
                     label='Контролер:'
-                    value={valueOrHyphen(relocationTask.controller?.fullName)}
+                    value={valueOr(relocationTask.controller?.fullName)}
                   />
 
                   <ReadonlyField
@@ -577,7 +577,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                   <ReadonlyField
                     data-testid='created-by'
                     label='Инициатор:'
-                    value={valueOrHyphen(relocationTask.createdBy?.fullName)}
+                    value={valueOr(relocationTask.createdBy?.fullName)}
                   />
 
                   <ReadonlyField
@@ -602,7 +602,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                   <ReadonlyField
                     data-testid='comment'
                     label='Комментарий:'
-                    value={valueOrHyphen(relocationTask.comment)}
+                    value={valueOr(relocationTask.comment)}
                   />
 
                   <ReadonlyField

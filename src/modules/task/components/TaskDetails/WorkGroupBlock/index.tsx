@@ -32,7 +32,7 @@ const { Text } = Typography
 
 export type WorkGroupBlockProps = Pick<
   TaskModel,
-  'id' | 'recordId' | 'status' | 'extendedStatus'
+  'id' | 'type' | 'recordId' | 'status' | 'extendedStatus'
 > & {
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
@@ -54,8 +54,10 @@ export type WorkGroupBlockProps = Pick<
   workGroup?: TaskModel['workGroup']
 }
 
+// todo: перенести модалки в TaskDetails
 const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   id,
+  type,
   recordId,
 
   workGroup,
@@ -72,7 +74,10 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
 
   userActions,
 }) => {
-  const permissions = useUserPermissions([UserPermissionsEnum.PutFirstLineTasksOnSecondLine])
+  const permissions = useUserPermissions([
+    UserPermissionsEnum.PutFirstLineTasksOnSecondLine,
+    UserPermissionsEnum.ClassificationOfWorkTypes,
+  ])
 
   const [isTaskFirstLineModalOpened, { toggle: toggleOpenTaskFirstLineModal }] = useBoolean(false)
   const debouncedToggleOpenTaskFirstLineModal = useDebounceFn(toggleOpenTaskFirstLineModal)
@@ -215,10 +220,12 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
         >
           <TaskSecondLineModal
             id={id}
+            type={type}
             recordId={recordId}
             onCancel={debouncedToggleOpenTaskSecondLineModal}
             onSubmit={onReturnTaskToSecondLine}
             isLoading={transferTaskToSecondLineIsLoading}
+            permissions={permissions}
           />
         </React.Suspense>
       )}

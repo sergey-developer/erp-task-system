@@ -15,11 +15,11 @@ import { UserActionsModel } from 'modules/user/models'
 
 import Space from 'components/Space'
 
+import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
+
 import { DropdownSelectWrapperStyled, SelectStyled } from './styles'
 
 const { Text } = Typography
-
-const NOT_ASSIGNED_TEXT = 'Не назначен'
 
 export type AssigneeBlockProps = Pick<
   TaskModel,
@@ -157,7 +157,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
             dropdownRender={(menu) => (
               <DropdownSelectWrapperStyled>{menu}</DropdownSelectWrapperStyled>
             )}
-            placeholder={assignee ? null : NOT_ASSIGNED_TEXT}
+            placeholder={assignee ? null : NO_ASSIGNEE_TEXT}
             onSelect={setSelectedAssigneeId}
           >
             {workGroupMembers.map((member) => {
@@ -180,7 +180,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
         ) : assignee ? (
           <TaskAssignee {...assignee} hasPopover />
         ) : (
-          <Text>{NOT_ASSIGNED_TEXT}</Text>
+          <Text>{NO_ASSIGNEE_TEXT}</Text>
         )}
 
         <Row justify={canSelectAssignee ? 'space-between' : 'end'}>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { getWarehousePageLink } from 'modules/warehouse/utils/warehouse'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 
 import { WarehouseTableItem } from './types'
 
@@ -35,6 +35,6 @@ export const columns: ColumnsType<WarehouseTableItem> = [
     dataIndex: 'parent',
     title: 'Родительский склад',
     sorter: true,
-    render: (value: WarehouseTableItem['parent']) => valueOrHyphen(value?.title),
+    render: (value: WarehouseTableItem['parent']) => valueOr(value?.title),
   },
 ]

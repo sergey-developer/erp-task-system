@@ -49,7 +49,7 @@ import {
 } from 'modules/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
 import { useCreateRelocationTaskITSM } from 'modules/warehouse/hooks/relocationTask'
-import { useGetWorkTypeList } from 'modules/warehouse/hooks/workType'
+import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
 import { SimplifiedRelocationTaskFormFields } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
@@ -71,7 +71,7 @@ import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/ser
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 import { MaybeUndefined } from 'shared/types/utils'
-import { filterOptionBy, valueOrHyphen } from 'shared/utils/common'
+import { filterOptionBy, valueOr } from 'shared/utils/common'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
@@ -258,7 +258,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened,
     })
 
-  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypeList(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
     undefined,
     {
       skip:
@@ -702,9 +702,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         <Row gutter={[40, 40]}>
           <Col span={24}>
             <SeparatedText>
-              <Text strong>
-                Перемещение оборудования для заявки {valueOrHyphen(task?.recordId)}
-              </Text>
+              <Text strong>Перемещение оборудования для заявки {valueOr(task?.recordId)}</Text>
 
               {task?.olaStatus && isNumber(task?.olaEstimatedTime) && task?.olaNextBreachTime ? (
                 <Text type={getOlaStatusTextType(task.olaStatus)}>
@@ -755,10 +753,10 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 {warehouseMSIIsFetching ? (
                   <Spinner centered={false} />
                 ) : (
-                  <Text strong>"{valueOrHyphen(warehouseMSI?.title)}"</Text>
+                  <Text strong>"{valueOr(warehouseMSI?.title)}"</Text>
                 )}
 
-                <Text strong>на объект "{valueOrHyphen(taskShop?.title)}"</Text>
+                <Text strong>на объект "{valueOr(taskShop?.title)}"</Text>
               </Space>
 
               <RelocationEquipmentSimplifiedEditableTable
@@ -782,7 +780,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                     listType='picture'
                     customRequest={onCreateCommonRelocationEquipmentImage}
                     onRemove={deleteAttachment}
-                    itemRender={renderUploadedFile}
+                    itemRender={renderUploadedFile()}
                     disabled={
                       createTaskIsLoading || createAttachmentIsLoading || deleteAttachmentIsLoading
                     }
@@ -808,14 +806,14 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 <Col>
                   <Space>
                     <Text strong>
-                      Перечень оборудования для перемещения с объекта "
-                      {valueOrHyphen(taskShop?.title)}" на склад
+                      Перечень оборудования для перемещения с объекта "{valueOr(taskShop?.title)}"
+                      на склад
                     </Text>
 
                     {warehouseMSIIsFetching ? (
                       <Spinner centered={false} />
                     ) : (
-                      <Text strong>"{valueOrHyphen(warehouseMSI?.title)}"</Text>
+                      <Text strong>"{valueOr(warehouseMSI?.title)}"</Text>
                     )}
                   </Space>
                 </Col>
@@ -863,7 +861,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                   listType='picture'
                   customRequest={onCreateCommonRelocationEquipmentImage}
                   onRemove={deleteAttachment}
-                  itemRender={renderUploadedFile}
+                  itemRender={renderUploadedFile()}
                   disabled={
                     createTaskIsLoading || createAttachmentIsLoading || deleteAttachmentIsLoading
                   }

@@ -4,7 +4,7 @@ import { ColumnsType } from 'antd/es/table'
 import { fiscalAccumulatorFormatColorDict } from 'modules/reports/constants'
 import { getFullUserName } from 'modules/user/utils'
 
-import { valueOrHyphen } from 'shared/utils/common'
+import { valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { BodyCellProps } from './components'
@@ -21,7 +21,7 @@ export const columns: ColumnsType<FiscalAccumulatorTasksReportTableItem> = [
     onCell: (data): BodyCellProps => ({
       bgColor: data.faFormat ? fiscalAccumulatorFormatColorDict[data.faFormat] : undefined,
     }),
-    render: (value: FiscalAccumulatorTasksReportTableItem['blockingIn']) => valueOrHyphen(value),
+    render: (value: FiscalAccumulatorTasksReportTableItem['blockingIn']) => valueOr(value),
   },
   {
     key: 'olaNextBreachTime',
@@ -59,7 +59,7 @@ export const columns: ColumnsType<FiscalAccumulatorTasksReportTableItem> = [
     dataIndex: 'fiscalAccumulator',
     title: 'ФН',
     render: (value: FiscalAccumulatorTasksReportTableItem['fiscalAccumulator']) =>
-      valueOrHyphen(value?.faNumber),
+      valueOr(value?.faNumber),
   },
   {
     key: 'deadlineOrTotalFiscalDocs',
@@ -67,14 +67,14 @@ export const columns: ColumnsType<FiscalAccumulatorTasksReportTableItem> = [
     width: 100,
     title: 'Срок / Всего ФД',
     render: (value: FiscalAccumulatorTasksReportTableItem['deadlineOrTotalFiscalDocs']) =>
-      valueOrHyphen(value),
+      valueOr(value),
   },
   {
     key: 'mr',
     dataIndex: 'supportGroup',
     title: 'МР',
     render: (value: FiscalAccumulatorTasksReportTableItem['supportGroup']) =>
-      valueOrHyphen(value.macroregion?.title),
+      valueOr(value.macroregion?.title),
   },
   {
     key: 'supportGroup',
