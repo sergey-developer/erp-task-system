@@ -11,8 +11,6 @@ import {
 import {
   ClassifyTaskWorkTypeMutationArgs,
   ClassifyTaskWorkTypeSuccessResponse,
-  CreateCompletedWorkMutationArgs,
-  CreateCompletedWorkSuccessResponse,
   CreateInitiationReasonMutationArgs,
   CreateInitiationReasonSuccessResponse,
   CreateSubTaskMutationArgs,
@@ -21,6 +19,8 @@ import {
   CreateTaskAttachmentSuccessResponse,
   CreateTaskCommentMutationArgs,
   CreateTaskCommentSuccessResponse,
+  CreateTaskCompletedWorkMutationArgs,
+  CreateTaskCompletedWorkSuccessResponse,
   CreateTaskCompletionDocumentsMutationArgs,
   CreateTaskCompletionDocumentsSuccessResponse,
   CreateTaskReclassificationRequestMutationArgs,
@@ -184,6 +184,7 @@ const taskApiService = baseApiService
           userResolution,
           spentHours,
           spentMinutes,
+          resolutionClassifier1,
           attachments,
         }) => {
           const formData = new FormData()
@@ -192,6 +193,8 @@ const taskApiService = baseApiService
           formData.append(decamelize('spentHours'), String(spentHours))
           formData.append(decamelize('spentMinutes'), String(spentMinutes))
           if (userResolution) formData.append(decamelize('userResolution'), userResolution)
+          if (resolutionClassifier1)
+            formData.append(decamelize('resolutionClassifier1'), String(resolutionClassifier1))
 
           if (attachments?.length) {
             attachments.forEach((att) => formData.append('attachments', att))
@@ -375,8 +378,8 @@ const taskApiService = baseApiService
       }),
 
       createCompletedWork: build.mutation<
-        CreateCompletedWorkSuccessResponse,
-        CreateCompletedWorkMutationArgs
+        CreateTaskCompletedWorkSuccessResponse,
+        CreateTaskCompletedWorkMutationArgs
       >({
         query: ({ taskId, ...data }) => ({
           url: createCompletedWorkUrl(taskId),

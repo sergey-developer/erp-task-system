@@ -1,6 +1,7 @@
 import { TaskRequestArgs } from 'modules/task/types'
 
 import { ErrorData } from 'shared/services/baseApi'
+import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 
 export type ResolveTaskMutationArgs = TaskRequestArgs & {
@@ -8,6 +9,7 @@ export type ResolveTaskMutationArgs = TaskRequestArgs & {
   spentMinutes: number
   techResolution: string
   userResolution?: string
+  resolutionClassifier1?: IdType
   attachments?: FileToSend[]
 }
 
