@@ -45,7 +45,7 @@ export const columns: ColumnsType<EquipmentRelocationHistoryTableItem> = [
     dataIndex: 'documents',
     title: 'Вложения',
     render: (value: EquipmentRelocationHistoryTableItem['documents']) =>
-      value?.length && <Attachments data={value} showAboutInPopover />,
+      !!value?.length && <Attachments data={value} showAboutInPopover />,
   },
   {
     dataIndex: 'externalRelocation',
