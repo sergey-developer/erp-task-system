@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
+import { useLazyGetInventorizationReport } from 'modules/reports/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
 import ExecuteInventorizationReviseTab from 'modules/warehouse/components/ExecuteInventorizationReviseTab'
@@ -21,8 +22,11 @@ import {
 
 import Spinner from 'components/Spinner'
 
-import { valueOr } from 'shared/utils/common'
+import { MimetypeEnum } from 'shared/constants/mimetype'
+import { base64ToBytes, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
+import { extractFileNameFromHeaders } from 'shared/utils/extractFileNameFromHeaders'
+import { downloadFile } from 'shared/utils/file'
 
 import { TabsStyled } from './styles'
 
@@ -48,6 +52,9 @@ const ExecuteInventorizationPage: FC = () => {
   const permissions = useUserPermissions([UserPermissionsEnum.InventorizationUpdate])
   const executorIsCurrentUser = useIdBelongAuthUser(inventorization?.executor.id)
 
+  const [getInventorizationReport, { isFetching: getInventorizationReportIsFetching }] =
+    useLazyGetInventorizationReport()
+
   const [completeInventorizationMutation, { isLoading: completeInventorizationIsLoading }] =
     useCompleteInventorization()
 
@@ -60,6 +67,15 @@ const ExecuteInventorizationPage: FC = () => {
       await completeInventorizationMutation({ inventorizationId }).unwrap()
       onReturnToInventorizationDetails()
     } catch {}
+  }
+
+  const onMakeReport = async () => {
+    const { data } = await getInventorizationReport({ inventorizationId })
+
+    if (data?.value && data?.meta?.response) {
+      const fileName = extractFileNameFromHeaders(data.meta.response.headers)
+      downloadFile(base64ToBytes(data.value), MimetypeEnum.Xlsx, fileName)
+    }
   }
 
   return (
@@ -162,6 +178,10 @@ const ExecuteInventorizationPage: FC = () => {
               )}
 
             <Button onClick={onReturnToInventorizationDetails}>Вернуться в карточку</Button>
+
+            <Button onClick={onMakeReport} loading={getInventorizationReportIsFetching}>
+              Сформировать отчет
+            </Button>
           </Flex>
         </Col>
       </Row>

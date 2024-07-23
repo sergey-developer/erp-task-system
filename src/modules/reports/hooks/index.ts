@@ -13,3 +13,5 @@ export * from './useGetMacroregionsMtsrReport'
 export * from './useGetSupportGroupsMtsrReport'
 export * from './useGetWorkGroupsMtsrReport'
 export * from './useGetUsersMtsrReport'
+
+export * from './useLazyGetInventorizationReport'

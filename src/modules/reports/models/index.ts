@@ -24,3 +24,5 @@ export * from './getWorkGroupsMtsrReport.model'
 
 export * from './usersMtsrReport.model'
 export * from './getUsersMtsrReport.model'
+
+export * from './getInventorizationReport.model'
