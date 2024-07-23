@@ -13,10 +13,12 @@ import { render, tableTestUtils } from '_tests_/utils'
 import EquipmentRelocationHistoryModal from './index'
 import { EquipmentRelocationHistoryModalProps } from './types'
 
+const equipmentRelocationHistoryItem = warehouseFixtures.equipmentRelocationHistoryItem()
+
 const props: EquipmentRelocationHistoryModalProps = {
   open: true,
   loading: false,
-  dataSource: [warehouseFixtures.equipmentRelocationHistoryItem()],
+  dataSource: [equipmentRelocationHistoryItem],
   onCancel: jest.fn(),
   onRow: jest.fn(),
 }
@@ -28,7 +30,9 @@ const getTable = () => within(getContainer()).getByTestId('equipment-relocation-
 const getRow = (id: IdType) => tableTestUtils.getRowIn(getTable(), id)
 const clickRow = async (user: UserEvent, id: IdType) =>
   tableTestUtils.clickRowIn(getTable(), user, id)
+
 const getColTitle = (text: string) => within(getTable()).getByText(text)
+
 const getColValue = (id: IdType, value: NumberOrString): HTMLElement =>
   within(getRow(id)).getByText(value)
 
@@ -68,6 +72,16 @@ describe('Модалка истории заявок на перемещение
         const row = testUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
+    })
+
+    test('Номер заявки отображается', () => {
+      render(<EquipmentRelocationHistoryModal {...props} />)
+
+      const title = testUtils.getColTitle('№ заявки')
+      const value = testUtils.getColValue(props.dataSource[0].id, props.dataSource[0].id)
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
     })
 
     test('Инициировано отображается корректно', () => {
@@ -133,6 +147,30 @@ describe('Модалка истории заявок на перемещение
       const value = testUtils.getColValue(
         props.dataSource[0].id,
         relocationTaskStatusDict[props.dataSource[0].status],
+      )
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
+    test('Вложения отображается', () => {
+      render(<EquipmentRelocationHistoryModal {...props} />)
+
+      const title = testUtils.getColTitle('Вложения')
+      const row = testUtils.getRow(equipmentRelocationHistoryItem.id)
+      const value = within(row).getByTestId('attachments')
+
+      expect(title).toBeInTheDocument()
+      expect(value).toBeInTheDocument()
+    })
+
+    test('Номер перемещения на портале заказчика отображается', () => {
+      render(<EquipmentRelocationHistoryModal {...props} />)
+
+      const title = testUtils.getColTitle('Номер перемещения на портале заказчика')
+      const value = testUtils.getColValue(
+        equipmentRelocationHistoryItem.id,
+        equipmentRelocationHistoryItem.externalRelocation!.number!,
       )
 
       expect(title).toBeInTheDocument()

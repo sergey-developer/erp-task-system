@@ -1,4 +1,5 @@
 import { AttachmentModel } from 'modules/attachment/models'
+import { UserModel } from 'modules/user/models'
 
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
@@ -7,6 +8,7 @@ export type AttachmentListItem = Pick<AttachmentModel, 'name'> & {
   url?: AttachmentModel['url']
   size?: AttachmentModel['size']
   createdAt?: string
+  createdBy?: Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>
   firstName?: string
   lastName?: string
   middleName?: MaybeNull<string>
@@ -16,4 +18,5 @@ export type AttachmentListItem = Pick<AttachmentModel, 'name'> & {
 
 export type AttachmentsProps = {
   data: AttachmentListItem[]
+  showAboutInPopover?: boolean
 }

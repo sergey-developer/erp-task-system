@@ -1,9 +1,10 @@
 import { BaseUserModel } from 'modules/user/models'
 
+import { Nullable } from 'shared/types/utils'
 import { addDotToEnd, getFirstLetterInUpperCase, makeString } from 'shared/utils/string'
 
 export const getShortUserName = <
-  T extends Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>,
+  T extends Pick<BaseUserModel, 'firstName' | 'lastName'> & { middleName: Nullable<string> },
 >({
   firstName,
   lastName,
