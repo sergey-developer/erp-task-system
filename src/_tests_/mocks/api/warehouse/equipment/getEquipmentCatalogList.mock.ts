@@ -3,7 +3,7 @@ import { GetEquipmentCatalogListSuccessResponse } from 'modules/warehouse/models
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentCatalogListMockFn = () =>
@@ -12,7 +12,3 @@ const getEquipmentCatalogListMockFn = () =>
 export const mockGetEquipmentCatalogListSuccess = (
   options?: Partial<ResponseResolverOptions<GetEquipmentCatalogListSuccessResponse>>,
 ) => getSuccessMockFn(getEquipmentCatalogListMockFn(), options)()
-
-export const mockGetEquipmentCatalogListServerError = (
-  options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(getEquipmentCatalogListMockFn(), options)()

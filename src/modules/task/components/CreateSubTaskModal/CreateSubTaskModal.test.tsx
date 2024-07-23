@@ -40,9 +40,7 @@ const props: Readonly<CreateSubTaskModalProps> = {
 }
 
 const getContainer = () => screen.getByTestId('create-sub-task-modal')
-
 const findContainer = () => screen.findByTestId('create-sub-task-modal')
-
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // support group field
@@ -306,9 +304,7 @@ describe('Модалка создания задачи заявки', () => {
 
       test('Отображает состояние загрузки во время загрузки групп поддержки', async () => {
         mockGetSupportGroupListSuccess()
-
         render(<CreateSubTaskModal {...props} />)
-
         await testUtils.supportGroup.expectLoadingStarted()
       })
 

@@ -222,6 +222,7 @@ export const {
   useGetEquipmentNomenclaturesQuery,
 
   useGetEquipmentCatalogListQuery,
+  useLazyGetEquipmentCatalogListQuery,
 
   useGetEquipmentAttachmentListQuery,
 

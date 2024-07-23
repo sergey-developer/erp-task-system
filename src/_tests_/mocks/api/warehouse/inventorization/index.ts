@@ -4,3 +4,5 @@ export * from './createInventorization.mock'
 export * from './completeInventorization.mock'
 
 export * from './getInventorizationEquipments.mock'
+
+export * from './createInventorizationEquipment.mock'
