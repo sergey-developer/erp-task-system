@@ -61,6 +61,19 @@ export const testUtils = {
   clickExecuteInventorizationButton,
 }
 
+jest.mock('react-router-dom', () => ({
+  __esModule: true,
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest.fn(),
+  useLocation: jest.fn(() => ({
+    state: {},
+    key: '',
+    hash: '',
+    pathname: '',
+    search: '',
+  })),
+}))
+
 setupApiTests()
 
 describe('Карточка инвентаризации', () => {
