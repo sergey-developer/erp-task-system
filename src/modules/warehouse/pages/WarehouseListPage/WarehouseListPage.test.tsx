@@ -7,7 +7,7 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetLegalEntityListSuccess, mockGetWarehouseListSuccess } from '_tests_/mocks/api'
-import { buttonTestUtils, renderInRoute_latest, setupApiTests } from '_tests_/utils'
+import { buttonTestUtils, renderWithRouter, setupApiTests } from '_tests_/utils'
 
 import WarehouseListPage from './index'
 
@@ -35,7 +35,7 @@ describe('Страница списка складов', () => {
     const warehouseList = [warehouseFixtures.warehouseListItem()]
     mockGetWarehouseListSuccess({ body: warehouseList })
 
-    renderInRoute_latest(
+    renderWithRouter(
       [
         {
           path: WarehouseRouteEnum.Warehouses,
@@ -57,7 +57,7 @@ describe('Страница списка складов', () => {
     test('Отображается корректно', async () => {
       mockGetWarehouseListSuccess()
 
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Warehouses,
@@ -79,7 +79,7 @@ describe('Страница списка складов', () => {
       mockGetWarehouseListSuccess({ once: false })
       mockGetLegalEntityListSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Warehouses,

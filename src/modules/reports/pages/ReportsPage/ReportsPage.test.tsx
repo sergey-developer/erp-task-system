@@ -16,7 +16,7 @@ import {
   mockGetMacroregionsMtsrReportSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, linkTestUtils, render, renderInRoute_latest } from '_tests_/utils'
+import { getStoreWithAuth, linkTestUtils, render, renderWithRouter } from '_tests_/utils'
 
 import ReportsPage from './index'
 
@@ -92,7 +92,7 @@ describe('Страница отчётов', () => {
     test('При клике переходит на страницу отчёта по фискальным накопителям', async () => {
       mockGetFiscalAccumulatorTasksSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: ReportsRoutesEnum.Reports,
@@ -157,7 +157,7 @@ describe('Страница отчётов', () => {
       mockGetMacroregionsMtsrReportSuccess()
       mockGetCustomerListSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: ReportsRoutesEnum.Reports,

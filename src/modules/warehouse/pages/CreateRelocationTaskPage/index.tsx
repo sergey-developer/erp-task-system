@@ -69,6 +69,7 @@ import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/ser
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
+import { extractLocationState } from 'shared/utils/common'
 import { mergeDateTime } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -403,7 +404,7 @@ const CreateRelocationTaskPage: FC = () => {
         images: values.images?.length ? extractIdsFromFilesResponse(values.images) : undefined,
       }).unwrap()
 
-      const fromPath = location.state?.from
+      const fromPath = extractLocationState(location)?.from
 
       fromPath
         ? navigate(fromPath)

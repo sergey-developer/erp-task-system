@@ -14,7 +14,7 @@ import {
 import {
   fakeWord,
   notificationTestUtils,
-  renderInRoute_latest,
+  renderWithRouter,
   setupApiTests,
   tableTestUtils,
 } from '_tests_/utils'
@@ -43,7 +43,7 @@ describe('Страница списка номенклатуры оборудо�
         body: commonFixtures.paginatedListResponse(equipmentNomenclatureList),
       })
 
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.EquipmentNomenclatures,
@@ -68,7 +68,7 @@ describe('Страница списка номенклатуры оборудо�
           body: { detail: errorMessage },
         })
 
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.EquipmentNomenclatures,
@@ -87,7 +87,7 @@ describe('Страница списка номенклатуры оборудо�
       test('Обрабатывается ошибка 500', async () => {
         mockGetEquipmentNomenclaturesServerError()
 
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.EquipmentNomenclatures,
@@ -114,7 +114,7 @@ describe('Страница списка номенклатуры оборудо�
         once: false,
       })
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.EquipmentNomenclatures,

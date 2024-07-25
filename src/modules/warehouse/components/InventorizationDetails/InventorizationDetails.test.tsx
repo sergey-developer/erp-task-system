@@ -1,5 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import * as reactRouterDom from 'react-router-dom'
 
 import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 import { UserPermissionsEnum } from 'modules/user/constants'
@@ -11,7 +12,10 @@ import {
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import ExecuteInventorizationPage from 'modules/warehouse/pages/ExecuteInventorizationPage'
 import { testUtils as executeInventorizationPageTestUtils } from 'modules/warehouse/pages/ExecuteInventorizationPage/ExecuteInventorizationPage.test'
-import { mapInventorizationWarehousesTitles } from 'modules/warehouse/utils/inventorization'
+import {
+  getExecuteInventorizationPageLocationState,
+  mapInventorizationWarehousesTitles,
+} from 'modules/warehouse/utils/inventorization'
 
 import { formatDate } from 'shared/utils/date'
 
@@ -24,11 +28,12 @@ import {
   fakeId,
   getStoreWithAuth,
   render,
-  renderInRoute_latest,
+  renderWithRouter,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
 
+import { useLocationResult } from '../../../../_tests_/fixtures/useLocation'
 import InventorizationDetails, { InventorizationDetailsProps } from './index'
 
 const props: InventorizationDetailsProps = {
@@ -64,14 +69,6 @@ export const testUtils = {
 jest.mock('react-router-dom', () => ({
   __esModule: true,
   ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(),
-  useLocation: jest.fn(() => ({
-    state: {},
-    key: '',
-    hash: '',
-    pathname: '',
-    search: '',
-  })),
 }))
 
 setupApiTests()
@@ -293,7 +290,14 @@ describe('Карточка инвентаризации', () => {
         { body: inventorization },
       )
 
-      const { user } = renderInRoute_latest(
+      const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
+      jest
+        .spyOn(reactRouterDom, 'useLocation')
+        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+
+      jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
+
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Inventorizations,

@@ -18,7 +18,7 @@ import {
   mockGetRelocationTasksSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, linkTestUtils, renderInRoute_latest } from '_tests_/utils'
+import { getStoreWithAuth, linkTestUtils, renderWithRouter } from '_tests_/utils'
 
 import ReserveCatalogListPage from './index'
 
@@ -73,7 +73,7 @@ export const testUtils = {
 describe('Страница списка справочников запасов', () => {
   describe('Оборудование', () => {
     test('Отображается если есть права', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reserves,
@@ -97,7 +97,7 @@ describe('Страница списка справочников запасов'
     })
 
     test('Не отображается если нет прав', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reserves,
@@ -119,7 +119,7 @@ describe('Страница списка справочников запасов'
     test('При клике переходит на страницу списка номенклатуры оборудования', async () => {
       mockGetEquipmentNomenclaturesSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reserves,
@@ -149,7 +149,7 @@ describe('Страница списка справочников запасов'
 
   describe('Заявки на перемещение оборудования', () => {
     test('Отображается если есть права', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reserves,
@@ -173,7 +173,7 @@ describe('Страница списка справочников запасов'
     })
 
     test('Не отображается если нет прав', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reserves,
@@ -195,7 +195,7 @@ describe('Страница списка справочников запасов'
     test('При клике переходит на страницу списка заявок на перемещение', async () => {
       mockGetRelocationTasksSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reserves,
@@ -225,7 +225,7 @@ describe('Страница списка справочников запасов'
 
   describe('Инвентаризация', () => {
     test('Отображается если есть права', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reserves,
@@ -249,7 +249,7 @@ describe('Страница списка справочников запасов'
     })
 
     test('Не отображается если нет прав', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reserves,
@@ -271,7 +271,7 @@ describe('Страница списка справочников запасов'
     test('При клике переходит на страницу списка инвентаризаций', async () => {
       mockGetInventorizationsSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reserves,

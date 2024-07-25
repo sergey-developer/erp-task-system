@@ -42,7 +42,7 @@ import {
   fakeId,
   getStoreWithAuth,
   render,
-  renderInRoute_latest,
+  renderWithRouter,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -416,7 +416,7 @@ describe('Страница изменения инфраструктуры за�
       })
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: TasksRoutesEnum.DesktopTasks,

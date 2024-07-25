@@ -36,7 +36,7 @@ import {
   getStoreWithAuth,
   notificationTestUtils,
   render,
-  renderInRoute_latest,
+  renderWithRouter,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -153,7 +153,7 @@ describe('Вкладка списка заявок на перемещение',
       mockGetEquipmentCatalogListSuccess()
       mockGetWarehouseMSISuccess(fakeId())
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: TasksRoutesEnum.DesktopTasks,
@@ -206,7 +206,7 @@ describe('Вкладка списка заявок на перемещение',
       mockGetEquipmentCatalogListSuccess()
       mockGetWarehouseMSISuccess(fakeId())
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: TasksRoutesEnum.DesktopTasks,
@@ -296,7 +296,7 @@ describe('Вкладка списка заявок на перемещение',
       mockGetRelocationTaskSuccess(relocationTaskListItem.id)
       mockGetRelocationEquipmentListSuccess(relocationTaskListItem.id)
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: TasksRoutesEnum.DesktopTasks,

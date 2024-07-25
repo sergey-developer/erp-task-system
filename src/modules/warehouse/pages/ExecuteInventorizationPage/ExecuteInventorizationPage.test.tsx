@@ -25,6 +25,7 @@ import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCompleteInventorizationSuccess,
+  mockGetCurrencyListSuccess,
   mockGetInventorizationEquipmentsSuccess,
   mockGetInventorizationReportSuccess,
   mockGetInventorizationsSuccess,
@@ -37,7 +38,7 @@ import {
   fakeWord,
   getStoreWithAuth,
   render,
-  renderInRoute_latest,
+  renderWithRouter,
   setupApiTests,
 } from '_tests_/utils'
 
@@ -96,8 +97,6 @@ export const testUtils = {
 jest.mock('react-router-dom', () => ({
   __esModule: true,
   ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn(),
-  useLocation: jest.fn(),
 }))
 
 setupApiTests()
@@ -115,6 +114,7 @@ describe('Страница проведения инвентаризации', (
 
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
     mockGetLocationListSuccess()
+    mockGetCurrencyListSuccess()
 
     render(<ExecuteInventorizationPage />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -186,6 +186,7 @@ describe('Страница проведения инвентаризации', (
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationListSuccess()
+      mockGetCurrencyListSuccess()
 
       render(<ExecuteInventorizationPage />, {
         store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
@@ -215,6 +216,7 @@ describe('Страница проведения инвентаризации', (
 
         mockGetLocationListSuccess()
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
+        mockGetCurrencyListSuccess()
 
         render(<ExecuteInventorizationPage />, {
           store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
@@ -240,6 +242,7 @@ describe('Страница проведения инвентаризации', (
 
         mockGetLocationListSuccess()
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
+        mockGetCurrencyListSuccess()
 
         render(<ExecuteInventorizationPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -267,6 +270,7 @@ describe('Страница проведения инвентаризации', (
 
         mockGetLocationListSuccess()
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
+        mockGetCurrencyListSuccess()
 
         render(<ExecuteInventorizationPage />, {
           store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
@@ -296,10 +300,11 @@ describe('Страница проведения инвентаризации', (
       mockGetInventorizationSuccess({ inventorizationId: inventorization.id })
       mockGetInventorizationsSuccess()
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-      mockGetLocationListSuccess()
+      mockGetLocationListSuccess({ body: [] })
       mockCompleteInventorizationSuccess({ inventorizationId: inventorization.id })
+      mockGetCurrencyListSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.ExecuteInventorization,
@@ -340,6 +345,7 @@ describe('Страница проведения инвентаризации', (
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationListSuccess()
+      mockGetCurrencyListSuccess()
 
       render(<ExecuteInventorizationPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -365,9 +371,10 @@ describe('Страница проведения инвентаризации', (
       mockGetInventorizationSuccess({ inventorizationId: inventorization.id })
       mockGetInventorizationsSuccess()
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-      mockGetLocationListSuccess()
+      mockGetLocationListSuccess({ body: [] })
+      mockGetCurrencyListSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.ExecuteInventorization,
@@ -411,6 +418,7 @@ describe('Страница проведения инвентаризации', (
         .mockReturnValue(useLocationResult({ state: inventorizationState }))
 
       mockGetLocationListSuccess({ body: [] })
+      mockGetCurrencyListSuccess()
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       const file = fakeWord()
