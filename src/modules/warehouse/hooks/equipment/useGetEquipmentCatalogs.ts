@@ -9,7 +9,7 @@ import {
 } from 'modules/warehouse/models'
 import { useGetEquipmentCatalogListQuery } from 'modules/warehouse/services/equipmentApi.service'
 
-import { isErrorResponse } from 'shared/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -23,7 +23,7 @@ type UseGetEquipmentCatalogListOptions = CustomUseQueryOptions<
   GetEquipmentCatalogListSuccessResponse
 >
 
-export const useGetEquipmentCatalogList = (
+export const useGetEquipmentCatalogs = (
   args?: GetEquipmentCatalogListQueryArgs,
   options?: UseGetEquipmentCatalogListOptions,
 ): UseGetEquipmentCatalogListResult => {
@@ -31,7 +31,11 @@ export const useGetEquipmentCatalogList = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getEquipmentCatalogListErrMsg)
+      if (isForbiddenError(state.error)) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(getEquipmentCatalogListErrMsg)
+      }
     }
   }, [state.error])
 

@@ -13,10 +13,10 @@ import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
 
 import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
 
-import {
-  checkInventorizationStatusIsInProgress,
-  checkInventorizationStatusIsNew,
-} from './utils/inventorization'
+// import {
+//   checkInventorizationStatusIsInProgress,
+//   checkInventorizationStatusIsNew,
+// } from './utils/inventorization'
 
 const WarehouseCatalogListPage = React.lazy(
   () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
@@ -294,13 +294,13 @@ export const route: Readonly<RouteObject> = {
                 // todo: сделать в других местах также где используется locationState
                 <ProtectedRoute<ExecuteInventorizationPageLocationState>
                   component={<ExecuteInventorizationPage />}
-                  permitted={(user, locationState) =>
-                    userHasPermissions(user, [UserPermissionsEnum.InventorizationUpdate]) &&
-                    !!locationState &&
-                    locationState.executor.id === user.id &&
-                    (checkInventorizationStatusIsNew(locationState.status) ||
-                      checkInventorizationStatusIsInProgress(locationState.status))
-                  }
+                  // permitted={(user, locationState) =>
+                  //   userHasPermissions(user, [UserPermissionsEnum.InventorizationUpdate]) &&
+                  //   !!locationState &&
+                  //   locationState.executor.id === user.id &&
+                  //   (checkInventorizationStatusIsNew(locationState.status) ||
+                  //     checkInventorizationStatusIsInProgress(locationState.status))
+                  // }
                 />
               ),
               handle: {

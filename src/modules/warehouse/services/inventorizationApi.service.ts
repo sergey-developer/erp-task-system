@@ -7,6 +7,8 @@ import {
 import {
   CompleteInventorizationMutationArgs,
   CompleteInventorizationSuccessResponse,
+  CreateInventorizationEquipmentMutationArgs,
+  CreateInventorizationEquipmentSuccessResponse,
   CreateInventorizationMutationArgs,
   CreateInventorizationSuccessResponse,
   GetInventorizationEquipmentsQueryArgs,
@@ -24,6 +26,7 @@ import {
 } from 'modules/warehouse/types'
 import {
   makeCompleteInventorizationUrl,
+  makeCreateInventorizationEquipmentUrl,
   makeGetInventorizationEquipmentsUrl,
   makeGetInventorizationUrl,
   makeUpdateInventorizationEquipmentUrl,
@@ -35,7 +38,10 @@ import { MaybeUndefined } from 'shared/types/utils'
 
 const inventorizationApiService = baseApiService
   .enhanceEndpoints({
-    addTagTypes: [InventorizationApiTagEnum.Inventorizations],
+    addTagTypes: [
+      InventorizationApiTagEnum.Inventorizations,
+      InventorizationApiTagEnum.InventorizationEquipments,
+    ],
   })
   .injectEndpoints({
     endpoints: (build) => ({
@@ -88,6 +94,8 @@ const inventorizationApiService = baseApiService
         GetInventorizationEquipmentsTransformedSuccessResponse,
         GetInventorizationEquipmentsQueryArgs
       >({
+        providesTags: (result, error) =>
+          error ? [] : [InventorizationApiTagEnum.InventorizationEquipments],
         query: ({ inventorizationId, ...params }) => ({
           url: makeGetInventorizationEquipmentsUrl({ inventorizationId }),
           method: HttpMethodEnum.Get,
@@ -95,6 +103,18 @@ const inventorizationApiService = baseApiService
         }),
         transformResponse: (response: GetInventorizationEquipmentsSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
+      }),
+      createInventorizationEquipment: build.mutation<
+        CreateInventorizationEquipmentSuccessResponse,
+        CreateInventorizationEquipmentMutationArgs
+      >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [InventorizationApiTagEnum.InventorizationEquipments],
+        query: ({ inventorizationId, ...data }) => ({
+          url: makeCreateInventorizationEquipmentUrl({ inventorizationId }),
+          method: HttpMethodEnum.Post,
+          data,
+        }),
       }),
       updateInventorizationEquipment: build.mutation<
         UpdateInventorizationEquipmentSuccessResponse,
@@ -140,5 +160,6 @@ export const {
   useCreateInventorizationMutation,
   useCompleteInventorizationMutation,
   useGetInventorizationEquipmentsQuery,
+  useCreateInventorizationEquipmentMutation,
   useUpdateInventorizationEquipmentMutation,
 } = inventorizationApiService

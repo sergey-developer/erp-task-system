@@ -9,17 +9,19 @@ import { env } from 'configs/env'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 import { EquipmentModel } from 'modules/warehouse/models'
-import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
+import {
+  checkEquipmentCategoryIsConsumable,
+  makeEquipmentsCatalogSelectOptions,
+} from 'modules/warehouse/utils/equipment'
 
+import { SelectOptionButton } from 'components/Buttons/SelectOptionButton'
 import { MinusCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
 
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
-import { makeString } from 'shared/utils/string'
 
-import { CreateEquipmentButton } from '../RelocationEquipmentEditableTable/styles'
 import { RelocationEquipmentRow, RelocationEquipmentSimplifiedEditableTableProps } from './types'
 
 const RelocationEquipmentSimplifiedEditableTable: FC<
@@ -46,11 +48,7 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
   const form = Form.useFormInstance()
 
   const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
-    () =>
-      equipmentCatalogList.map((eqp) => ({
-        label: makeString(', ', eqp.title, eqp.serialNumber, eqp.inventoryNumber),
-        value: eqp.id,
-      })),
+    () => makeEquipmentsCatalogSelectOptions(equipmentCatalogList),
     [equipmentCatalogList],
   )
 
@@ -75,14 +73,14 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
           canCreateEquipment && onClickCreateEquipment
             ? (menu: ReactNode) => (
                 <Space $block direction='vertical'>
-                  <CreateEquipmentButton
+                  <SelectOptionButton
                     type='link'
                     onClick={() =>
                       onClickCreateEquipment({ tableName: name, rowIndex: config.rowIndex })
                     }
                   >
                     Добавить оборудование
-                  </CreateEquipmentButton>
+                  </SelectOptionButton>
 
                   {menu}
                 </Space>

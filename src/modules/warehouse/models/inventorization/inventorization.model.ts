@@ -4,7 +4,7 @@ import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
 } from 'modules/warehouse/constants/inventorization'
-import { NomenclatureModel, WarehouseModel } from 'modules/warehouse/models'
+import { NomenclatureModel, WarehouseListItemModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -15,7 +15,7 @@ export type InventorizationModel = {
   status: InventorizationStatusEnum
   deadlineAt: string
   createdAt: string
-  warehouses: Pick<WarehouseModel, 'id' | 'title'>[]
+  warehouses: Pick<WarehouseListItemModel, 'id' | 'title'>[]
   executor: Pick<UserModel, 'id' | 'fullName'>
   createdBy: Pick<UserModel, 'id' | 'fullName'>
   nomenclatures: Array<Pick<NomenclatureModel, 'id' | 'title' | 'group'>>

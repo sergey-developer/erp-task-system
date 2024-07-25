@@ -34,7 +34,7 @@ const ReworkSubTaskModal: FC<ReworkSubTaskModalProps> = ({
     </Text>
   )
 
-  const handleFinish = async (values: ReworkSubTaskFormFields) => {
+  const onFinish = async (values: ReworkSubTaskFormFields) => {
     await onSubmit(values, form.setFields)
   }
 
@@ -48,12 +48,7 @@ const ReworkSubTaskModal: FC<ReworkSubTaskModalProps> = ({
       okText={SAVE_TEXT}
       onCancel={onCancel}
     >
-      <Form<ReworkSubTaskFormFields>
-        form={form}
-        layout='vertical'
-        onFinish={handleFinish}
-        preserve={false}
-      >
+      <Form<ReworkSubTaskFormFields> form={form} layout='vertical' onFinish={onFinish}>
         <Form.Item
           data-testid='return-reason'
           label='Причина возврата'

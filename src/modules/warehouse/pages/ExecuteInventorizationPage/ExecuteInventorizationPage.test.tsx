@@ -15,7 +15,10 @@ import {
   mapInventorizationWarehousesTitles,
 } from 'modules/warehouse/utils/inventorization'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
+import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
+import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import { useLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
@@ -23,6 +26,7 @@ import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCompleteInventorizationSuccess,
   mockGetInventorizationEquipmentsSuccess,
+  mockGetInventorizationReportSuccess,
   mockGetInventorizationsSuccess,
   mockGetInventorizationSuccess,
   mockGetLocationListSuccess,
@@ -30,6 +34,7 @@ import {
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
+  fakeWord,
   getStoreWithAuth,
   render,
   renderInRoute_latest,
@@ -62,6 +67,17 @@ const clickCompleteInventorizationButton = async (user: UserEvent) => {
   await user.click(button)
 }
 
+// make report button
+const getMakeReportButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сформировать отчет/)
+
+const clickMakeReportButton = async (user: UserEvent) => {
+  const button = getMakeReportButton()
+  await user.click(button)
+}
+
+const expectMakeReportLoadingFinished = () =>
+  buttonTestUtils.expectLoadingFinished(getMakeReportButton())
+
 export const testUtils = {
   getContainer,
 
@@ -71,6 +87,10 @@ export const testUtils = {
   getCompleteInventorizationButton,
   queryCompleteInventorizationButton,
   clickCompleteInventorizationButton,
+
+  getMakeReportButton,
+  clickMakeReportButton,
+  expectMakeReportLoadingFinished,
 }
 
 jest.mock('react-router-dom', () => ({
@@ -370,6 +390,46 @@ describe('Страница проведения инвентаризации', (
       const details = await inventorizationDetailsTestUtils.findContainer()
 
       expect(details).toBeInTheDocument()
+    })
+  })
+
+  describe('Сформировать отчет', () => {
+    test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
+      const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
+
+      const base64ToBytes = jest.spyOn(base64Utils, 'base64ToBytes')
+      const fakeArrayBuffer = new Uint8Array()
+      base64ToBytes.mockReturnValueOnce(fakeArrayBuffer)
+
+      const inventorization = warehouseFixtures.inventorization()
+      const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
+
+      jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
+
+      jest
+        .spyOn(reactRouterDom, 'useLocation')
+        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+
+      mockGetLocationListSuccess({ body: [] })
+
+      mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
+      const file = fakeWord()
+      mockGetInventorizationReportSuccess({ inventorizationId: inventorization.id }, { body: file })
+
+      const { user } = render(<ExecuteInventorizationPage />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await testUtils.clickMakeReportButton(user)
+      await testUtils.expectMakeReportLoadingFinished()
+
+      expect(base64ToBytes).toBeCalledTimes(1)
+      expect(base64ToBytes).toBeCalledWith(file)
+
+      expect(downloadFileSpy).toBeCalledTimes(1)
+      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, 'filename')
     })
   })
 

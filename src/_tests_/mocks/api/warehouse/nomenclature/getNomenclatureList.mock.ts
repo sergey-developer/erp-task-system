@@ -1,25 +1,14 @@
 import { NomenclatureApiEnum } from 'modules/warehouse/constants/nomenclature'
-import { GetNomenclatureListTransformedSuccessResponse } from 'modules/warehouse/types'
+import { GetNomenclatureListSuccessResponse } from 'modules/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import {
-  getForbiddenErrorMockFn,
-  getRequestMockFn,
-  getServerErrorMockFn,
-  getSuccessMockFn,
-} from '_tests_/mocks/request'
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getNomenclatureListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, NomenclatureApiEnum.GetNomenclatureList)
 
 export const mockGetNomenclatureListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetNomenclatureListTransformedSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetNomenclatureListSuccessResponse>>,
 ) => getSuccessMockFn(getNomenclatureListMockFn(), options)()
-
-export const mockGetNomenclatureListForbiddenError = (options?: Partial<ResponseResolverOptions>) =>
-  getForbiddenErrorMockFn(getNomenclatureListMockFn(), options)()
-
-export const mockGetNomenclatureListServerError = (options?: Partial<ResponseResolverOptions>) =>
-  getServerErrorMockFn(getNomenclatureListMockFn(), options)()

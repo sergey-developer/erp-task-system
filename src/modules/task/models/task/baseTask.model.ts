@@ -1,4 +1,3 @@
-import { SupportGroupModel } from 'modules/supportGroup/models'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -31,7 +30,6 @@ export type BaseTaskModel = {
   workGroup: MaybeNull<TaskWorkGroupModel>
   assignee: MaybeNull<TaskAssigneeModel>
   responseTime: MaybeNull<Pick<TaskResponseTimeModel, 'progress' | 'timedelta' | 'value'>>
-  supportGroup: MaybeNull<Pick<SupportGroupModel, 'id' | 'name'>>
   contactPhone: MaybeNull<string>
   portablePhone: MaybeNull<string>
   olaNextBreachTime: MaybeNull<string>

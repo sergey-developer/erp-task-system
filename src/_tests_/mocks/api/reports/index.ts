@@ -11,3 +11,5 @@ export * from './getMacroregionsMtsrReport.mock'
 export * from './getSupportGroupsMtsrReport.mock'
 export * from './getWorkGroupsMtsrReport.mock'
 export * from './getUsersMtsrReport.mock'
+
+export * from './getInventorizationReport.mock'

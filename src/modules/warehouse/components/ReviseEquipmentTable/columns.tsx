@@ -134,9 +134,9 @@ export const getColumns = ({
 
         const locationFact:
           | ReviseEquipmentTableItem['locationFact']
-          | NonNullable<ReviseEquipmentTableItem['locationFact']>['id'] = form.getFieldValue(
-          (config.rowKey as unknown as string[]).concat('locationFact'),
-        )
+          | NonNullable<ReviseEquipmentTableItem['locationFact']>['id'] =
+          form.getFieldValue((config.rowKey as unknown as string[]).concat('locationFact')) ||
+          config.entity.locationFact
 
         const locationPlan: ReviseEquipmentTableItem['locationPlan'] = config.entity.locationPlan
 

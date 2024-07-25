@@ -5,20 +5,37 @@ import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { validationMessages, validationSizes } from 'shared/constants/validation'
 
-import { buttonTestUtils, fakeIdStr, fakeWord, render } from '_tests_/utils'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
+import taskFixtures from '_tests_/fixtures/task'
+import { buttonTestUtils, fakeIdStr, fakeWord, render, selectTestUtils } from '_tests_/utils'
 
 import ExecuteTaskModal from './index'
 import { ExecuteTaskModalProps } from './types'
 
 const props: Readonly<ExecuteTaskModalProps> = {
   open: true,
+  isLoading: false,
+
   type: TaskTypeEnum.Request,
   recordId: fakeIdStr(),
-  isLoading: false,
+  supportGroup: taskFixtures.supportGroup(),
+
   onSubmit: jest.fn(),
   onCancel: jest.fn(),
+
+  resolutionClassifications: [],
+  resolutionClassificationsIsLoading: false,
+
   onGetAct: jest.fn(),
   getActIsLoading: false,
+}
+
+const showResolutionClassifierFieldProps: Readonly<Pick<ExecuteTaskModalProps, 'supportGroup'>> = {
+  supportGroup: taskFixtures.supportGroup({ hasResolutionClassifiers: true }),
+}
+
+const hideResolutionClassifierFieldProps: Readonly<Pick<ExecuteTaskModalProps, 'supportGroup'>> = {
+  supportGroup: taskFixtures.supportGroup({ hasResolutionClassifiers: false }),
 }
 
 const getContainer = () => screen.getByTestId('execute-task-modal')
@@ -57,6 +74,35 @@ const clickSubmitButton = async (user: UserEvent) => {
   const button = getSubmitButton()
   await user.click(button)
 }
+
+// resolutionClassifier1
+const getResolutionClassificationFormItem = () =>
+  screen.getByTestId('resolution-classification-form-item')
+const queryResolutionClassificationFormItem = () =>
+  screen.queryByTestId('resolution-classification-form-item')
+
+const getResolutionClassificationLabel = () =>
+  within(getResolutionClassificationFormItem()).getByLabelText('Категория решения')
+
+const getResolutionClassificationSelectInput = () =>
+  selectTestUtils.getSelect(getResolutionClassificationFormItem())
+
+const openResolutionClassificationSelect = (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getResolutionClassificationFormItem())
+
+const setResolutionClassification = selectTestUtils.clickSelectOption
+
+const getSelectedResolutionClassification = (text: string) =>
+  selectTestUtils.getSelectedOptionByTitle(getResolutionClassificationFormItem(), text)
+
+const querySelectedResolutionClassification = (title: string) =>
+  selectTestUtils.querySelectedOptionByTitle(getResolutionClassificationFormItem(), title)
+
+const findResolutionClassificationError = (text: string) =>
+  within(getResolutionClassificationFormItem()).findByText(text)
+
+const expectResolutionClassificationLoadingFinished = () =>
+  selectTestUtils.expectLoadingFinished(getResolutionClassificationFormItem())
 
 // tech resolution
 const getTechResolutionBlock = () => within(getContainer()).getByTestId('tech-resolution')
@@ -141,6 +187,16 @@ export const testUtils = {
   clickGetActButton,
   expectGetActLoadingStarted,
   expectGetActLoadingFinished,
+
+  queryResolutionClassificationFormItem,
+  getResolutionClassificationLabel,
+  getResolutionClassificationSelectInput,
+  openResolutionClassificationSelect,
+  setResolutionClassification,
+  getSelectedResolutionClassification,
+  querySelectedResolutionClassification,
+  findResolutionClassificationError,
+  expectResolutionClassificationLoadingFinished,
 
   getTechResolutionBlock,
   getTechResolutionTitle,
@@ -291,6 +347,66 @@ describe('Модалка выполнения заявки', () => {
         await testUtils.clickSubmitButton(user)
         expect(props.onSubmit).not.toBeCalled()
       })
+    })
+  })
+
+  describe('Поле категории решения', () => {
+    test('Отображается если у группы поддержки поле hasResolutionClassifiers=true', () => {
+      const resolutionClassificationListItem = catalogsFixtures.resolutionClassificationListItem()
+
+      render(
+        <ExecuteTaskModal
+          {...props}
+          {...showResolutionClassifierFieldProps}
+          resolutionClassifications={[resolutionClassificationListItem]}
+        />,
+      )
+
+      const label = testUtils.getResolutionClassificationLabel()
+      const field = testUtils.getResolutionClassificationSelectInput()
+      const selectedOption = testUtils.querySelectedResolutionClassification(
+        resolutionClassificationListItem.title,
+      )
+
+      expect(label).toBeInTheDocument()
+      expect(field).toBeInTheDocument()
+      expect(field).toBeEnabled()
+      expect(selectedOption).not.toBeInTheDocument()
+    })
+
+    test('Не отображается если у группы поддержки поле hasResolutionClassifiers=false', () => {
+      render(<ExecuteTaskModal {...props} {...hideResolutionClassifierFieldProps} />)
+      const formItem = testUtils.queryResolutionClassificationFormItem()
+      expect(formItem).not.toBeInTheDocument()
+    })
+
+    test('Можно установить значение', async () => {
+      const resolutionClassificationListItem = catalogsFixtures.resolutionClassificationListItem()
+
+      const { user } = render(
+        <ExecuteTaskModal
+          {...props}
+          {...showResolutionClassifierFieldProps}
+          resolutionClassifications={[resolutionClassificationListItem]}
+        />,
+      )
+
+      await testUtils.openResolutionClassificationSelect(user)
+      await testUtils.setResolutionClassification(user, resolutionClassificationListItem.title)
+      const selectedOption = testUtils.getSelectedResolutionClassification(
+        resolutionClassificationListItem.title,
+      )
+
+      expect(selectedOption).toBeInTheDocument()
+    })
+
+    test('Обязательное поле', async () => {
+      const { user } = render(
+        <ExecuteTaskModal {...props} {...showResolutionClassifierFieldProps} />,
+      )
+      await testUtils.clickSubmitButton(user)
+      const error = await testUtils.findResolutionClassificationError(validationMessages.required)
+      expect(error).toBeInTheDocument()
     })
   })
 

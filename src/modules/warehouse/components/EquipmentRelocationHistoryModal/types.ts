@@ -6,7 +6,15 @@ import { BaseModalProps } from 'components/Modals/BaseModal'
 
 export type EquipmentRelocationHistoryTableItem = Pick<
   EquipmentRelocationHistoryItemModel,
-  'id' | 'createdAt' | 'completedAt' | 'relocateFrom' | 'relocateTo' | 'createdBy' | 'status'
+  | 'id'
+  | 'createdAt'
+  | 'completedAt'
+  | 'relocateFrom'
+  | 'relocateTo'
+  | 'createdBy'
+  | 'status'
+  | 'documents'
+  | 'externalRelocation'
 >
 
 export type EquipmentRelocationHistoryModalProps = Required<

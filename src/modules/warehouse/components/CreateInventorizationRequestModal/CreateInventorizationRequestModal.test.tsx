@@ -222,6 +222,8 @@ export const testUtils = {
   expectExecutorLoadingFinished,
 }
 
+// todo: добавить тесты по другим полям
+
 describe('Модалка создания запроса на инвентаризацию', () => {
   describe('Поле описания', () => {
     test('Отображается', () => {

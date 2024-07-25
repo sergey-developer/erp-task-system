@@ -36,6 +36,7 @@ Tests:
     - export REACT_APP_API_URL=http://localhost:3000
     - export REACT_APP_ENVIRONMENT=test
     - export CI=true
+    - export DEBUG_PRINT_LIMIT=20
     - yarn install
     - yarn test:ci
   cache:
