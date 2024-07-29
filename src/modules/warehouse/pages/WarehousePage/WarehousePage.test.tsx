@@ -14,7 +14,7 @@ import {
   fakeId,
   fakeWord,
   notificationTestUtils,
-  renderInRoute_latest,
+  renderWithRouter,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -45,7 +45,7 @@ describe('Страница склада', () => {
         const warehouse = warehouseFixtures.warehouse({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouse,
@@ -69,7 +69,7 @@ describe('Страница склада', () => {
         const warehouse = warehouseFixtures.warehouse({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouse,
@@ -93,7 +93,7 @@ describe('Страница склада', () => {
         const warehouse = warehouseFixtures.warehouse({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouse,
@@ -117,7 +117,7 @@ describe('Страница склада', () => {
         const warehouse = warehouseFixtures.warehouse({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouse,
@@ -141,7 +141,7 @@ describe('Страница склада', () => {
         const warehouse = warehouseFixtures.warehouse({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouse,
@@ -167,7 +167,7 @@ describe('Страница склада', () => {
         const warehouse = warehouseFixtures.warehouse({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouse,
@@ -191,7 +191,7 @@ describe('Страница склада', () => {
         const warehouse = warehouseFixtures.warehouse({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouse,
@@ -219,7 +219,7 @@ describe('Страница склада', () => {
         body: { detail: errorMessage },
       })
 
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Warehouse,
@@ -239,7 +239,7 @@ describe('Страница склада', () => {
       const warehouseId = fakeId()
       mockGetWarehouseServerError(warehouseId)
 
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Warehouse,

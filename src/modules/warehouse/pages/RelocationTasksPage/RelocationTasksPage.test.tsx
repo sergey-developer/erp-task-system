@@ -37,7 +37,7 @@ import {
   linkTestUtils,
   notificationTestUtils,
   render,
-  renderInRoute_latest,
+  renderWithRouter,
   selectTestUtils,
   setupApiTests,
   tableTestUtils,
@@ -400,7 +400,7 @@ describe('Страница списка заявок на перемещение
         mockGetCurrencyListSuccess()
         mockGetLocationListSuccess({ once: false })
 
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.RelocationTasks,

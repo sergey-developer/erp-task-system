@@ -11,7 +11,7 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetEquipmentListSuccess } from '_tests_/mocks/api'
-import { linkTestUtils, renderInRoute_latest, setupApiTests, tableTestUtils } from '_tests_/utils'
+import { linkTestUtils, renderWithRouter, setupApiTests, tableTestUtils } from '_tests_/utils'
 
 import EquipmentNomenclatureTable from './index'
 import { EquipmentNomenclatureTableProps } from './types'
@@ -81,7 +81,7 @@ setupApiTests()
 
 describe('Таблица номенклатуры оборудования', () => {
   test('Отображается корректно', () => {
-    renderInRoute_latest(
+    renderWithRouter(
       [
         {
           path: WarehouseRouteEnum.EquipmentNomenclatures,
@@ -105,7 +105,7 @@ describe('Таблица номенклатуры оборудования', () 
   test('Пагинация работает', async () => {
     const equipmentNomenclatureList = warehouseFixtures.equipmentNomenclatures(11)
 
-    const { user } = renderInRoute_latest(
+    const { user } = renderWithRouter(
       [
         {
           path: WarehouseRouteEnum.EquipmentNomenclatures,
@@ -133,7 +133,7 @@ describe('Таблица номенклатуры оборудования', () 
 
   describe('Наименование', () => {
     test('Отображается корректно', () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.EquipmentNomenclatures,
@@ -163,7 +163,7 @@ describe('Таблица номенклатуры оборудования', () 
     test('При клике переходит на страницу списка оборудования', async () => {
       mockGetEquipmentListSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.EquipmentNomenclatures,
@@ -190,7 +190,7 @@ describe('Таблица номенклатуры оборудования', () 
 
   describe('Количество оборудования', () => {
     test('Отображается корректно', () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.EquipmentNomenclatures,

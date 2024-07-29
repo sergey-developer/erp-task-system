@@ -17,7 +17,7 @@ import {
 } from '_tests_/constants/components'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetWarehouseSuccess } from '_tests_/mocks/api'
-import { iconTestUtils, renderInRoute_latest, tableTestUtils } from '_tests_/utils'
+import { iconTestUtils, renderWithRouter, tableTestUtils } from '_tests_/utils'
 
 import WarehouseTable from './index'
 import { WarehouseTableProps } from './types'
@@ -91,7 +91,7 @@ afterEach(() => {
 // todo: сделать тесты для сортировки как в EquipmentTable
 describe('Таблица складов', () => {
   test('Отображается корректно', () => {
-    renderInRoute_latest(
+    renderWithRouter(
       [
         {
           path: WarehouseRouteEnum.Warehouses,
@@ -114,7 +114,7 @@ describe('Таблица складов', () => {
   describe('Колонка', () => {
     describe('Наименование объекта', () => {
       test('Отображается корректно', () => {
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -141,7 +141,7 @@ describe('Таблица складов', () => {
       test('При клике переходит на страницу склада', async () => {
         mockGetWarehouseSuccess(warehouseListItem.id)
 
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -162,7 +162,7 @@ describe('Таблица складов', () => {
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -184,7 +184,7 @@ describe('Таблица складов', () => {
       })
 
       test('Сортировка работает корректно', async () => {
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -213,7 +213,7 @@ describe('Таблица складов', () => {
 
     describe('Юридическое лицо', () => {
       test('Отображается корректно', () => {
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -237,7 +237,7 @@ describe('Таблица складов', () => {
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -259,7 +259,7 @@ describe('Таблица складов', () => {
       })
 
       test('Сортировка работает корректно', async () => {
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -288,7 +288,7 @@ describe('Таблица складов', () => {
 
     describe('Адрес', () => {
       test('Отображается корректно', () => {
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -309,7 +309,7 @@ describe('Таблица складов', () => {
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -331,7 +331,7 @@ describe('Таблица складов', () => {
       })
 
       test('Сортировка работает корректно', async () => {
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -360,7 +360,7 @@ describe('Таблица складов', () => {
 
     describe('Родительский склад', () => {
       test('Отображается корректно', () => {
-        renderInRoute_latest(
+        renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -381,7 +381,7 @@ describe('Таблица складов', () => {
       })
 
       test('При клике на заголовок обработчик вызывается корректно', async () => {
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,
@@ -403,7 +403,7 @@ describe('Таблица складов', () => {
       })
 
       test('Сортировка работает корректно', async () => {
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.Warehouses,

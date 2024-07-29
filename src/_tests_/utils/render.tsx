@@ -5,7 +5,6 @@
 import { PreloadedState } from '@reduxjs/toolkit'
 import { render as baseRender, RenderOptions as BaseRenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { App } from 'antd'
 import isEqual from 'lodash/isEqual'
 import React, { ReactElement } from 'react'
 import { BrowserRouter, createMemoryRouter, RouterProvider } from 'react-router-dom'
@@ -56,8 +55,8 @@ export const renderInRoute = (component: ReactElement, route: string, options?: 
   }
 }
 
-// todo: использовать вместо renderInRoute и переименовать
-export const renderInRoute_latest = (
+// todo: использовать вместо renderInRoute
+export const renderWithRouter = (
   routes: Parameters<typeof createMemoryRouter>[0],
   routerOptions?: Parameters<typeof createMemoryRouter>[1],
   renderOptions: RenderOptions = {},
@@ -65,14 +64,9 @@ export const renderInRoute_latest = (
   const router = createMemoryRouter(routes, routerOptions)
 
   return {
-    ...render(
-      <App>
-        <RouterProvider router={router} />
-      </App>,
-      {
-        ...renderOptions,
-        useBrowserRouter: false,
-      },
-    ),
+    ...render(<RouterProvider router={router} />, {
+      ...renderOptions,
+      useBrowserRouter: false,
+    }),
   }
 }

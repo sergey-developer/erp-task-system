@@ -36,7 +36,7 @@ import {
   getStoreWithAuth,
   render,
   renderInRoute,
-  renderInRoute_latest,
+  renderWithRouter,
   setupApiTests,
 } from '_tests_/utils'
 
@@ -227,7 +227,7 @@ describe('Страница авторизации', () => {
       mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: AuthRouteEnum.Login,
