@@ -16,8 +16,7 @@ import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
-import { MaybeUndefined } from 'shared/types/utils'
-import { valueOr } from 'shared/utils/common'
+import { extractLocationState, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { changeInfrastructurePageTabNames, ChangeInfrastructurePageTabsEnum } from './constants'
@@ -27,7 +26,7 @@ const { Title, Text } = Typography
 
 const ChangeInfrastructurePage: FC = () => {
   const location = useLocation()
-  const locationState: MaybeUndefined<ChangeInfrastructurePageLocationState> = location.state
+  const locationState = extractLocationState<ChangeInfrastructurePageLocationState>(location)
   const task = locationState?.task
 
   const params = useParams<'id'>()

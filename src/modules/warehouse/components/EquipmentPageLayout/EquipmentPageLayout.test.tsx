@@ -20,13 +20,7 @@ import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetLocationListSuccess,
 } from '_tests_/mocks/api'
-import {
-  buttonTestUtils,
-  fakeWord,
-  render,
-  renderInRoute_latest,
-  setupApiTests,
-} from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render, renderWithRouter, setupApiTests } from '_tests_/utils'
 
 import EquipmentPageLayout from './index'
 
@@ -69,7 +63,7 @@ describe('Layout номенклатуры оборудования', () => {
   test('Отображает дочерний роут', () => {
     mockGetEquipmentNomenclaturesSuccess()
 
-    renderInRoute_latest(
+    renderWithRouter(
       [
         {
           path: WarehouseRouteEnum.EquipmentNomenclatures,
@@ -152,7 +146,7 @@ describe('Layout номенклатуры оборудования', () => {
       mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategoryList() })
       mockGetEquipmentNomenclaturesSuccess({ once: false })
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.EquipmentNomenclatures,
@@ -194,7 +188,7 @@ describe('Layout номенклатуры оборудования', () => {
 
       mockGetEquipmentListSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.EquipmentNomenclatures,
@@ -263,7 +257,7 @@ describe('Layout номенклатуры оборудования', () => {
 
       mockGetEquipmentListSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.EquipmentNomenclatures,

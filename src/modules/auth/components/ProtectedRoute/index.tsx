@@ -1,16 +1,16 @@
-import { ReactElement } from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
+import { ReactElement } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 
-import { CommonRouteEnum } from 'configs/routes'
+import { CommonRouteEnum } from "configs/routes";
 
-import { AuthRouteEnum } from 'modules/auth/constants/routes'
-import { useIsLoggedIn } from 'modules/auth/hooks'
-import { useUserMeState } from 'modules/user/hooks'
-import { UserModel } from 'modules/user/models'
+import { AuthRouteEnum } from "modules/auth/constants/routes";
+import { useIsLoggedIn } from "modules/auth/hooks";
+import { useUserMeState } from "modules/user/hooks";
+import { UserModel } from "modules/user/models";
 
-import { CommonLocationState } from 'shared/types/common'
-import { MaybeNull } from 'shared/types/utils'
-import { getPathByLocation } from 'shared/utils/url'
+import { CommonLocationState } from "shared/types/common";
+import { extractLocationState } from "shared/utils/common";
+import { getPathByLocation } from "shared/utils/url";
 
 type ProtectedRouteProps<LocationState> = {
   component: ReactElement
@@ -24,9 +24,9 @@ function ProtectedRoute<LocationState>({
   permitted,
   onlyGuest = false,
   redirectPath,
-}: ProtectedRouteProps<MaybeNull<LocationState>>) {
+}: ProtectedRouteProps<ReturnType<typeof extractLocationState<LocationState>>>) {
   const location = useLocation()
-  const locationState = location.state as MaybeNull<LocationState>
+  const locationState = extractLocationState<LocationState>(location)
   const navigationState: CommonLocationState = { from: getPathByLocation(location) }
 
   const isLoggedIn = useIsLoggedIn()
@@ -34,7 +34,7 @@ function ProtectedRoute<LocationState>({
 
   if (onlyGuest) {
     if (isLoggedIn) {
-      const to = location.state?.from || redirectPath || CommonRouteEnum.Home
+      const to = locationState?.from || redirectPath || CommonRouteEnum.Home
       return <Navigate to={to} replace state={navigationState} />
     } else {
       return component

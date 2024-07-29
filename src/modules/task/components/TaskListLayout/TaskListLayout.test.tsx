@@ -20,7 +20,7 @@ import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   getStoreWithAuth,
   radioButtonTestUtils,
-  renderInRoute_latest,
+  renderWithRouter,
   setupApiTests,
 } from '_tests_/utils'
 
@@ -57,7 +57,7 @@ setupApiTests()
 describe('TaskListLayout', () => {
   describe('Ссылка на реестр', () => {
     test('Отображается корректно', () => {
-      renderInRoute_latest([
+      renderWithRouter([
         {
           path: CommonRouteEnum.Root,
           element: <TaskListLayout />,
@@ -75,7 +75,7 @@ describe('TaskListLayout', () => {
       mockGetTaskCountersSuccess()
       mockGetTaskListMapSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: CommonRouteEnum.Desktop,
@@ -107,7 +107,7 @@ describe('TaskListLayout', () => {
 
   describe('Ссылка на карту', () => {
     test('Отображается корректно', () => {
-      renderInRoute_latest([
+      renderWithRouter([
         {
           path: CommonRouteEnum.Root,
           element: <TaskListLayout />,
@@ -125,7 +125,7 @@ describe('TaskListLayout', () => {
       mockGetTaskCountersSuccess()
       mockGetTaskListMapSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: CommonRouteEnum.Desktop,

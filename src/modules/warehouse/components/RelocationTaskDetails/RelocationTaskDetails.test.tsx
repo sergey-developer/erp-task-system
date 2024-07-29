@@ -99,7 +99,7 @@ import {
   menuTestUtils,
   notificationTestUtils,
   render,
-  renderInRoute_latest,
+  renderWithRouter,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -565,7 +565,7 @@ describe('Информация о заявке о перемещении', () =>
         mockGetTasksSuccess()
         mockGetTaskCountersSuccess()
 
-        const { user } = renderInRoute_latest(
+        const { user } = renderWithRouter(
           [
             {
               path: WarehouseRouteEnum.RelocationTasks,
@@ -2870,7 +2870,7 @@ describe('Информация о заявке о перемещении', () =>
       mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
       mockGetRelocationTaskCompletionDocumentsSuccess(props.relocationTaskId)
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.RelocationTasks,

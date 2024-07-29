@@ -19,13 +19,13 @@ import { getInfo, getInfoOpts } from './utils'
 
 const { Text, Link } = Typography
 
+const handleStopPropagation = (event: MouseEvent) => event.stopPropagation()
+
 type UploadedAttachmentProps = AttachmentListItem & Pick<AttachmentsProps, 'showAboutInPopover'> &
   Partial<{
     showDelete: boolean
     canDelete: boolean
   }>
-
-const handleStopPropagation = (event: MouseEvent) => event.stopPropagation()
 
 const UploadedAttachment: FC<UploadedAttachmentProps> = ({
   name,
@@ -38,9 +38,9 @@ const UploadedAttachment: FC<UploadedAttachmentProps> = ({
   middleName,
   lastName,
   remove,
+  showAboutInPopover,
   showDelete = true,
   canDelete = true,
-  showAboutInPopover,
 }) => {
   const link = (
     <Link download={name} href={url} target='_blank'>

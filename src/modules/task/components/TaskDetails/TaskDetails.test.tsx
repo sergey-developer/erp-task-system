@@ -34,8 +34,8 @@ import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import systemFixtures from '_tests_/fixtures/system'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
+import systemFixtures from '_tests_/fixtures/system'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -72,7 +72,7 @@ import {
   menuTestUtils,
   notificationTestUtils,
   render,
-  renderInRoute_latest,
+  renderWithRouter,
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
@@ -1102,7 +1102,7 @@ describe('Карточка заявки', () => {
       })
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: TasksRoutesEnum.DesktopTasks,

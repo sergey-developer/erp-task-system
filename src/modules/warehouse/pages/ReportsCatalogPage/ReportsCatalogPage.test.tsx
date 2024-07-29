@@ -5,7 +5,7 @@ import React from 'react'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { mockGetEquipmentNomenclaturesSuccess, mockGetLocationListSuccess } from '_tests_/mocks/api'
-import { linkTestUtils, renderInRoute_latest } from '_tests_/utils'
+import { linkTestUtils, renderWithRouter } from '_tests_/utils'
 
 import AmountEquipmentSpentReportPage from '../AmountEquipmentSpentReportPage'
 import { testUtils as amountEquipmentSpentReportPageTestUtils } from '../AmountEquipmentSpentReportPage/AmountEquipmentSpentReportPage.test'
@@ -57,7 +57,7 @@ export const testUtils = {
 describe('Страница каталога отчетов', () => {
   describe('История операций по номенклатуре', () => {
     test('Отображается', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reports,
@@ -76,7 +76,7 @@ describe('Страница каталога отчетов', () => {
     test('При клике переходит на страницу списка отчета по истории операций по номенклатуре', async () => {
       mockGetEquipmentNomenclaturesSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reports,
@@ -99,7 +99,7 @@ describe('Страница каталога отчетов', () => {
 
   describe('Действия сотрудников', () => {
     test('Отображается', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reports,
@@ -116,7 +116,7 @@ describe('Страница каталога отчетов', () => {
     })
 
     test('При клике переходит на страницу списка отчета действий сотрудников', async () => {
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reports,
@@ -139,7 +139,7 @@ describe('Страница каталога отчетов', () => {
 
   describe('Количество потраченного оборудования', () => {
     test('Отображается', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reports,
@@ -159,7 +159,7 @@ describe('Страница каталога отчетов', () => {
       mockGetEquipmentNomenclaturesSuccess()
       mockGetLocationListSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.Reports,

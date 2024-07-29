@@ -23,7 +23,7 @@ import {
 import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { base64ToBytes, valueOr } from 'shared/utils/common'
+import { base64ToBytes, extractLocationState, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { extractFileNameFromHeaders } from 'shared/utils/extractFileNameFromHeaders'
 import { downloadFile } from 'shared/utils/file'
@@ -46,7 +46,7 @@ const ExecuteInventorizationPage: FC = () => {
   const params = useParams<'id'>()
   const location = useLocation()
   const navigate = useNavigate()
-  const inventorization = location.state as ExecuteInventorizationPageLocationState
+  const inventorization = extractLocationState<ExecuteInventorizationPageLocationState>(location)
   const inventorizationId = Number(params.id!)
 
   const permissions = useUserPermissions([UserPermissionsEnum.InventorizationUpdate])

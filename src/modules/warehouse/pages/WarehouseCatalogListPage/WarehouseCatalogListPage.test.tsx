@@ -12,7 +12,7 @@ import {
   mockGetWarehouseListSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, linkTestUtils, renderInRoute_latest } from '_tests_/utils'
+import { getStoreWithAuth, linkTestUtils, renderWithRouter } from '_tests_/utils'
 
 import NomenclatureListPage from '../NomenclatureListPage'
 import { testUtils as nomenclatureListPageTestUtils } from '../NomenclatureListPage/NomenclatureListPage.test'
@@ -54,7 +54,7 @@ export const testUtils = {
 describe('Страница списка справочников складов', () => {
   describe('Элемент "Склады"', () => {
     test('Отображается корректно', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.WarehouseCatalogs,
@@ -78,7 +78,7 @@ describe('Страница списка справочников складов'
     test('При клике переходит на страницу складов', async () => {
       mockGetWarehouseListSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.WarehouseCatalogs,
@@ -106,7 +106,7 @@ describe('Страница списка справочников складов'
 
   describe('Элемент "Номенклатура"', () => {
     test('Отображается если есть права', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.WarehouseCatalogs,
@@ -130,7 +130,7 @@ describe('Страница списка справочников складов'
     })
 
     test('Не отображается если нет прав', async () => {
-      renderInRoute_latest(
+      renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.WarehouseCatalogs,
@@ -153,7 +153,7 @@ describe('Страница списка справочников складов'
       mockGetNomenclatureListSuccess()
       mockGetNomenclatureGroupListSuccess()
 
-      const { user } = renderInRoute_latest(
+      const { user } = renderWithRouter(
         [
           {
             path: WarehouseRouteEnum.WarehouseCatalogs,
