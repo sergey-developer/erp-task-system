@@ -21,7 +21,7 @@ import {
   mockGetInventorizationsServerError,
   mockGetInventorizationsSuccess,
   mockGetInventorizationSuccess,
-} from '_tests_/mocks/api/warehouse'
+} from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,

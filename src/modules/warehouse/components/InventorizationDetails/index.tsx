@@ -16,7 +16,7 @@ import {
   checkInventorizationStatusIsInProgress,
   checkInventorizationStatusIsNew,
   getExecuteInventorizationPageLink,
-  getExecuteInventorizationPageLocationState,
+  makeExecuteInventorizationPageLocationState,
   mapInventorizationWarehousesTitles,
 } from 'modules/warehouse/utils/inventorization'
 
@@ -52,7 +52,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
 
   const onClickExecuteInventorization = () =>
     navigate(getExecuteInventorizationPageLink({ inventorizationId }), {
-      state: getExecuteInventorizationPageLocationState(inventorization!),
+      state: makeExecuteInventorizationPageLocationState(inventorization!),
     })
 
   const drawerFooter = (

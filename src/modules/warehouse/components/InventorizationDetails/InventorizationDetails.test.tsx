@@ -13,7 +13,7 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import ExecuteInventorizationPage from 'modules/warehouse/pages/ExecuteInventorizationPage'
 import { testUtils as executeInventorizationPageTestUtils } from 'modules/warehouse/pages/ExecuteInventorizationPage/ExecuteInventorizationPage.test'
 import {
-  getExecuteInventorizationPageLocationState,
+  makeExecuteInventorizationPageLocationState,
   mapInventorizationWarehousesTitles,
 } from 'modules/warehouse/utils/inventorization'
 
@@ -290,7 +290,7 @@ describe('Карточка инвентаризации', () => {
         { body: inventorization },
       )
 
-      const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
+      const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(useLocationResult({ state: inventorizationState }))
