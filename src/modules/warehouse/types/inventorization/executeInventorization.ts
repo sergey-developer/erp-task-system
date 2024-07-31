@@ -1,6 +1,8 @@
 import { InventorizationModel } from 'modules/warehouse/models'
 
-export type ExecuteInventorizationPageLocationState = Pick<
-  InventorizationModel,
-  'executor' | 'status' | 'type' | 'deadlineAt' | 'createdAt' | 'createdBy' | 'warehouses'
->
+export type ExecuteInventorizationPageLocationState = {
+  inventorization: Pick<
+    InventorizationModel,
+    'id' | 'executor' | 'status' | 'type' | 'deadlineAt' | 'createdAt' | 'createdBy' | 'warehouses'
+  >
+}

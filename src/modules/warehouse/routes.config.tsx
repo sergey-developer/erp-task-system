@@ -6,23 +6,26 @@ import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { userHasPermissions } from 'modules/user/utils'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types'
+import {
+  CreateRelocationTaskDraftPageLocationState,
+  ExecuteInventorizationPageLocationState,
+} from 'modules/warehouse/types'
+import {
+  checkInventorizationStatusIsInProgress,
+  checkInventorizationStatusIsNew,
+} from 'modules/warehouse/utils/inventorization'
 
 import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
 import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
 
 import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
 
-// import {
-//   checkInventorizationStatusIsInProgress,
-//   checkInventorizationStatusIsNew,
-// } from './utils/inventorization'
-
 const WarehouseCatalogListPage = React.lazy(
   () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
 )
 
 const WarehouseListPage = React.lazy(() => import('modules/warehouse/pages/WarehouseListPage'))
+
 const WarehousePage = React.lazy(() => import('modules/warehouse/pages/WarehousePage'))
 
 const NomenclatureListPage = React.lazy(
@@ -48,9 +51,15 @@ const RelocationTasksPage = React.lazy(() => import('modules/warehouse/pages/Rel
 const CreateRelocationTaskPage = React.lazy(
   () => import('modules/warehouse/pages/CreateRelocationTaskPage'),
 )
+
+const CreateRelocationTaskDraftPage = React.lazy(
+  () => import('modules/warehouse/pages/CreateRelocationTaskDraftPage'),
+)
+
 const CreateRelocationTaskSimplifiedPage = React.lazy(
   () => import('modules/warehouse/pages/CreateRelocationTaskSimplifiedPage'),
 )
+
 const EditRelocationTaskPage = React.lazy(
   () => import('modules/warehouse/pages/EditRelocationTaskPage'),
 )
@@ -294,18 +303,38 @@ export const route: Readonly<RouteObject> = {
                 // todo: сделать в других местах также где используется locationState
                 <ProtectedRoute<ExecuteInventorizationPageLocationState>
                   component={<ExecuteInventorizationPage />}
-                  // permitted={(user, locationState) =>
-                  //   userHasPermissions(user, [UserPermissionsEnum.InventorizationUpdate]) &&
-                  //   !!locationState &&
-                  //   locationState.executor.id === user.id &&
-                  //   (checkInventorizationStatusIsNew(locationState.status) ||
-                  //     checkInventorizationStatusIsInProgress(locationState.status))
-                  // }
+                  permitted={(user, locationState) =>
+                    userHasPermissions(user, [UserPermissionsEnum.InventorizationUpdate]) &&
+                    !!locationState &&
+                    locationState.inventorization.executor.id === user.id &&
+                    (checkInventorizationStatusIsNew(locationState.inventorization.status) ||
+                      checkInventorizationStatusIsInProgress(locationState.inventorization.status))
+                  }
                 />
               ),
               handle: {
                 crumb: ({ match }: BreadCrumbData) => (
                   <Breadcrumb link={match.pathname} text='Проведение инвентаризации' />
+                ),
+              },
+            },
+            {
+              path: WarehouseRouteEnum.CreateRelocationTaskDraft,
+              element: (
+                <ProtectedRoute<CreateRelocationTaskDraftPageLocationState>
+                  component={<CreateRelocationTaskDraftPage />}
+                  permitted={(user, locationState) =>
+                    userHasPermissions(user, [UserPermissionsEnum.InventorizationUpdate]) &&
+                    !!locationState &&
+                    locationState.inventorization.executor.id === user.id &&
+                    (checkInventorizationStatusIsNew(locationState.inventorization.status) ||
+                      checkInventorizationStatusIsInProgress(locationState.inventorization.status))
+                  }
+                />
+              ),
+              handle: {
+                crumb: ({ match }: BreadCrumbData) => (
+                  <Breadcrumb link={match.pathname} text='Создать черновик заявки на перемещение' />
                 ),
               },
             },
