@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getEquipmentCatalogListErrMsg } from 'modules/warehouse/constants/equipment'
+import { getEquipmentsCatalogErrMsg } from 'modules/warehouse/constants/equipment'
 import {
-  GetEquipmentCatalogListQueryArgs,
-  GetEquipmentCatalogListSuccessResponse,
+  GetEquipmentsCatalogQueryArgs,
+  GetEquipmentsCatalogSuccessResponse,
 } from 'modules/warehouse/models'
 import { useGetEquipmentCatalogListQuery } from 'modules/warehouse/services/equipmentApi.service'
 
@@ -13,20 +13,20 @@ import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/servic
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetEquipmentCatalogListResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetEquipmentCatalogListQueryArgs>,
-  GetEquipmentCatalogListSuccessResponse
+type UseGetEquipmentsCatalogResult = CustomUseQueryHookResult<
+  MaybeUndefined<GetEquipmentsCatalogQueryArgs>,
+  GetEquipmentsCatalogSuccessResponse
 >
 
-type UseGetEquipmentCatalogListOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetEquipmentCatalogListQueryArgs>,
-  GetEquipmentCatalogListSuccessResponse
+type UseGetEquipmentsCatalogOptions = CustomUseQueryOptions<
+  MaybeUndefined<GetEquipmentsCatalogQueryArgs>,
+  GetEquipmentsCatalogSuccessResponse
 >
 
-export const useGetEquipmentCatalogs = (
-  args?: GetEquipmentCatalogListQueryArgs,
-  options?: UseGetEquipmentCatalogListOptions,
-): UseGetEquipmentCatalogListResult => {
+export const useGetEquipmentsCatalog = (
+  args?: GetEquipmentsCatalogQueryArgs,
+  options?: UseGetEquipmentsCatalogOptions,
+): UseGetEquipmentsCatalogResult => {
   const state = useGetEquipmentCatalogListQuery(args, options)
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export const useGetEquipmentCatalogs = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentCatalogListErrMsg)
+        showErrorNotification(getEquipmentsCatalogErrMsg)
       }
     }
   }, [state.error])

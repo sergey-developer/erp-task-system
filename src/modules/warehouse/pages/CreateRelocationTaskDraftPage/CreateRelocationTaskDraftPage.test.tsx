@@ -138,7 +138,7 @@ describe('Страница создания заявки на перемещен
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
-        body: warehouseFixtures.equipmentCatalogList(),
+        body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
 
@@ -173,7 +173,7 @@ describe('Страница создания заявки на перемещен
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
-        body: warehouseFixtures.equipmentCatalogList(),
+        body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
 

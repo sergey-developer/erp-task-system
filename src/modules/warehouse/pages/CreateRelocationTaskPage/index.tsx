@@ -35,8 +35,8 @@ import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useCreateEquipments,
-  useGetEquipmentCatalogs,
   useGetEquipmentCategories,
+  useGetEquipmentsCatalog,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
   useLazyGetEquipmentListTemplate,
@@ -276,8 +276,8 @@ const CreateRelocationTaskPage: FC = () => {
   const { currentData: currencyList = [], isFetching: currencyListIsFetching } =
     useGetCurrencyList()
 
-  const { currentData: equipmentCatalogList = [], isFetching: equipmentCatalogListIsFetching } =
-    useGetEquipmentCatalogs(
+  const { currentData: equipmentsCatalog = [], isFetching: equipmentCatalogListIsFetching } =
+    useGetEquipmentsCatalog(
       {
         locationId: selectedRelocateFrom?.value || selectedRelocateTo?.value,
         ...getEquipmentCatalogListParams(selectedType),
@@ -819,14 +819,15 @@ const CreateRelocationTaskPage: FC = () => {
               </Row>
 
               <RelocationEquipmentEditableTable
+                name='equipments'
                 editableKeys={editableTableRowKeys}
                 setEditableKeys={setEditableTableRowKeys}
                 isLoading={createTaskIsLoading}
                 equipmentIsLoading={equipmentIsFetching}
                 currencyList={currencyList}
                 currencyListIsLoading={currencyListIsFetching}
-                equipmentCatalogList={equipmentCatalogList}
-                equipmentCatalogListIsLoading={equipmentCatalogListIsFetching}
+                equipmentsCatalog={equipmentsCatalog}
+                equipmentsCatalogIsLoading={equipmentCatalogListIsFetching}
                 canCreateEquipment={!!permissions.equipmentsCreate}
                 createEquipmentBtnDisabled={!createEquipmentBtnEnabled}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}

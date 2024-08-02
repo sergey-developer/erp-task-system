@@ -11,6 +11,7 @@ import RelocationEquipmentEditableTable from './index'
 import { RelocationEquipmentEditableTableProps } from './types'
 
 const props: RelocationEquipmentEditableTableProps = {
+  name: 'equipments',
   editableKeys: undefined,
   setEditableKeys: jest.fn(),
 
@@ -22,8 +23,8 @@ const props: RelocationEquipmentEditableTableProps = {
   currencyList: [],
   currencyListIsLoading: false,
 
-  equipmentCatalogList: [],
-  equipmentCatalogListIsLoading: false,
+  equipmentsCatalog: [],
+  equipmentsCatalogIsLoading: false,
 
   canCreateEquipment: false,
   createEquipmentBtnDisabled: false,

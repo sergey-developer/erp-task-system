@@ -2,9 +2,9 @@ import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 
 import { IdType } from 'shared/types/common'
 
-import { EquipmentCatalogListModel } from './equipmentCatalogList.model'
+import { EquipmentsCatalogModel } from './equipmentsCatalog.model'
 
-export type GetEquipmentCatalogListQueryArgs = Partial<{
+export type GetEquipmentsCatalogQueryArgs = Partial<{
   locationId: IdType
   conditions: EquipmentConditionEnum[]
   isWarranty: boolean
@@ -12,4 +12,4 @@ export type GetEquipmentCatalogListQueryArgs = Partial<{
   categories: IdType[]
 }>
 
-export type GetEquipmentCatalogListSuccessResponse = EquipmentCatalogListModel
+export type GetEquipmentsCatalogSuccessResponse = EquipmentsCatalogModel

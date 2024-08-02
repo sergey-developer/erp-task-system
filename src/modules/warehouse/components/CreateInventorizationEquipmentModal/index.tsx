@@ -46,7 +46,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
 
   const [equipmentSelectOpened, setEquipmentSelectOpened] = useState<boolean>(false)
 
-  const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
+  const equipmentsCatalogOptions = useMemo<DefaultOptionType[]>(
     () => makeEquipmentsCatalogSelectOptions(equipmentCatalog),
     [equipmentCatalog],
   )
@@ -100,7 +100,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
               </Space>
             )}
             placeholder='Оборудование'
-            options={equipmentCatalogOptions}
+            options={equipmentsCatalogOptions}
             loading={equipmentCatalogIsLoading}
             disabled={equipmentCatalogIsLoading || isLoading}
             showSearch

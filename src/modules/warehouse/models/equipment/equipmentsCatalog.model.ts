@@ -5,4 +5,4 @@ export type EquipmentCatalogListItemModel = Pick<
   'id' | 'title' | 'serialNumber' | 'inventoryNumber'
 >
 
-export type EquipmentCatalogListModel = EquipmentCatalogListItemModel[]
+export type EquipmentsCatalogModel = EquipmentCatalogListItemModel[]
