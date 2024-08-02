@@ -12,8 +12,8 @@ import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useGetEquipment,
-  useGetEquipmentCatalogs,
   useGetEquipmentCategories,
+  useGetEquipmentsCatalog,
 } from 'modules/warehouse/hooks/equipment'
 import {
   useCreateInventorizationEquipment,
@@ -24,7 +24,7 @@ import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/ho
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 import {
   EquipmentCategoryListItemModel,
-  GetEquipmentCatalogListQueryArgs,
+  GetEquipmentsCatalogQueryArgs,
   GetInventorizationEquipmentsQueryArgs,
   InventorizationModel,
 } from 'modules/warehouse/models'
@@ -203,7 +203,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     skip: !createInventorizationEquipmentModalOpened && !createEquipmentModalOpened,
   })
 
-  const getEquipmentCatalogQueryArgs = useMemo<GetEquipmentCatalogListQueryArgs>(
+  const getEquipmentCatalogQueryArgs = useMemo<GetEquipmentsCatalogQueryArgs>(
     () => ({
       categories: equipmentCategories
         .filter((c) => !checkEquipmentCategoryIsConsumable(c.code))
@@ -220,7 +220,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   // todo: Пока поправить не получилось.
   //  Отправляется лишний запрос после добавления оборудования из модалки добавления оборудования инвентаризации
   const { currentData: equipmentCatalog = [], isFetching: equipmentCatalogIsFetching } =
-    useGetEquipmentCatalogs(getEquipmentCatalogQueryArgs, {
+    useGetEquipmentsCatalog(getEquipmentCatalogQueryArgs, {
       skip: !createInventorizationEquipmentModalOpened || !isEquipmentCategoriesFetchedSuccess,
     })
 

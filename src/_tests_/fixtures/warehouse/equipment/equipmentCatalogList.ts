@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { EquipmentCatalogListItemModel, EquipmentCatalogListModel } from 'modules/warehouse/models'
+import { EquipmentCatalogListItemModel, EquipmentsCatalogModel } from 'modules/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
@@ -11,5 +11,5 @@ export const equipmentCatalogListItem = (): EquipmentCatalogListItemModel => ({
   inventoryNumber: fakeWord(),
 })
 
-export const equipmentCatalogList = (length: number = 1): EquipmentCatalogListModel =>
+export const equipmentsCatalog = (length: number = 1): EquipmentsCatalogModel =>
   times(length, () => equipmentCatalogListItem())

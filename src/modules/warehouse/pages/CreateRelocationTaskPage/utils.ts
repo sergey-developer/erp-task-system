@@ -7,7 +7,7 @@ import { LocationOption } from 'modules/warehouse/components/RelocationTaskForm/
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
-import { GetEquipmentCatalogListQueryArgs } from 'modules/warehouse/models'
+import { GetEquipmentsCatalogQueryArgs } from 'modules/warehouse/models'
 import {
   checkRelocationTaskTypeIsCustomer,
   checkRelocationTaskTypeIsWarranty,
@@ -106,7 +106,7 @@ const getRelocateToWarehouseTypes = (
 
 export const getEquipmentCatalogListParams = (
   type: RelocationTaskTypeEnum,
-): Pick<GetEquipmentCatalogListQueryArgs, 'conditions' | 'isWarranty' | 'isCredited'> => ({
+): Pick<GetEquipmentsCatalogQueryArgs, 'conditions' | 'isWarranty' | 'isCredited'> => ({
   conditions: getConditionsByType(type),
   isWarranty: checkRelocationTaskTypeIsWarranty(type) ? true : undefined,
   isCredited: checkRelocationTaskTypeIsCustomer(type) ? false : undefined,

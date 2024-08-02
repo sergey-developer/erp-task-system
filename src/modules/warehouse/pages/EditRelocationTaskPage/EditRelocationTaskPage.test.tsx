@@ -159,7 +159,7 @@ describe('Страница редактирования заявки на пер
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
-        body: warehouseFixtures.equipmentCatalogList(),
+        body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
       mockGetRelocationTaskSuccess(relocationTaskId)
@@ -200,7 +200,7 @@ describe('Страница редактирования заявки на пер
       mockGetLocationListSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
-        body: warehouseFixtures.equipmentCatalogList(),
+        body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
       mockGetRelocationTaskSuccess(relocationTaskId)
