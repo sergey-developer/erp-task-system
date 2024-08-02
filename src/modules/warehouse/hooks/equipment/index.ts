@@ -10,7 +10,7 @@ export * from './useGetEquipmentRelocationHistory'
 
 export * from './useGetEquipmentNomenclatures'
 
-export * from './useGetEquipmentCatalogs'
+export * from './useGetEquipmentsCatalog'
 export * from './useLazyGetEquipmentCatalogs'
 
 export * from './useLazyGetEquipmentListTemplate'

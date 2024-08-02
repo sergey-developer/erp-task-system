@@ -1,8 +1,8 @@
 import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
 
-import { EquipmentCatalogListModel } from 'modules/warehouse/models'
-import { SimplifiedRelocationTaskEquipment } from 'modules/warehouse/types/relocationTask/simplifiedRelocationTaskForm'
+import { EquipmentsCatalogModel } from 'modules/warehouse/models'
+import { SimplifiedRelocationTaskEquipment } from 'modules/warehouse/types/relocationTask/createSimplifiedRelocationTask'
 
 export type RelocationEquipmentRow = Partial<SimplifiedRelocationTaskEquipment> & {
   rowId: number
@@ -24,8 +24,8 @@ export type RelocationEquipmentSimplifiedEditableTableProps = {
   equipmentIsLoading: boolean
   equipmentListIsLoading?: boolean
 
-  equipmentCatalogList: EquipmentCatalogListModel
-  equipmentCatalogListIsLoading: boolean
+  equipmentsCatalog: EquipmentsCatalogModel
+  equipmentsCatalogIsLoading: boolean
 
   canCreateEquipment?: boolean
   onClickCreateEquipment?: (row: ActiveEquipmentRow) => void

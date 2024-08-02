@@ -37,8 +37,8 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
   equipmentIsLoading,
   equipmentListIsLoading,
 
-  equipmentCatalogList,
-  equipmentCatalogListIsLoading,
+  equipmentsCatalog,
+  equipmentsCatalogIsLoading,
 
   canCreateEquipment,
   onClickCreateEquipment,
@@ -47,9 +47,9 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
 }) => {
   const form = Form.useFormInstance()
 
-  const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
-    () => makeEquipmentsCatalogSelectOptions(equipmentCatalogList),
-    [equipmentCatalogList],
+  const equipmentsCatalogOptions = useMemo<DefaultOptionType[]>(
+    () => makeEquipmentsCatalogSelectOptions(equipmentsCatalog),
+    [equipmentsCatalog],
   )
 
   const handleDeleteRow = useCallback(
@@ -87,9 +87,9 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
               )
             : undefined,
         allowClear: false,
-        loading: equipmentCatalogListIsLoading,
-        disabled: isLoading || equipmentCatalogListIsLoading,
-        options: equipmentCatalogOptions,
+        loading: equipmentsCatalogIsLoading,
+        disabled: isLoading || equipmentsCatalogIsLoading,
+        options: equipmentsCatalogOptions,
         showSearch: true,
         virtual: true,
         onChange: () => form.resetFields(['quantity']),

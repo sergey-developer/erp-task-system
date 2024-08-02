@@ -1,7 +1,9 @@
 import { screen, within } from '@testing-library/react'
+import pick from 'lodash/pick'
 
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetInventorizationEquipmentsSuccess } from '_tests_/mocks/api'
-import { fakeId, render } from '_tests_/utils'
+import { render } from '_tests_/utils'
 
 import { testUtils as discrepanciesEquipmentTableTestUtils } from '../DiscrepanciesEquipmentTable/DiscrepanciesEquipmentTable.test'
 import ExecuteInventorizationDiscrepanciesTab, {
@@ -9,7 +11,7 @@ import ExecuteInventorizationDiscrepanciesTab, {
 } from './index'
 
 const props: ExecuteInventorizationDiscrepanciesProps = {
-  inventorizationId: fakeId(),
+  inventorization: pick(warehouseFixtures.inventorization(), 'id'),
 }
 
 const getContainer = () => screen.getByTestId('execute-inventorization-discrepancies-tab')
@@ -20,7 +22,7 @@ export const testUtils = {
 
 describe('Вкладка списка оборудования с расхождением', () => {
   test('Отображает заголовок и таблицу', () => {
-    mockGetInventorizationEquipmentsSuccess({ inventorizationId: props.inventorizationId })
+    mockGetInventorizationEquipmentsSuccess({ inventorizationId: props.inventorization.id })
 
     render(<ExecuteInventorizationDiscrepanciesTab {...props} />)
 

@@ -12,8 +12,6 @@ import {
   CreateEquipmentTechnicalExaminationSuccessResponse,
   GetEquipmentAttachmentListQueryArgs,
   GetEquipmentAttachmentListSuccessResponse,
-  GetEquipmentCatalogListQueryArgs,
-  GetEquipmentCatalogListSuccessResponse,
   GetEquipmentCategoriesQueryArgs,
   GetEquipmentCategoriesSuccessResponse,
   GetEquipmentListQueryArgs,
@@ -25,6 +23,8 @@ import {
   GetEquipmentQueryArgs,
   GetEquipmentRelocationHistoryQueryArgs,
   GetEquipmentRelocationHistorySuccessResponse,
+  GetEquipmentsCatalogQueryArgs,
+  GetEquipmentsCatalogSuccessResponse,
   GetEquipmentSuccessResponse,
   GetEquipmentsXlsxQueryArgs,
   GetEquipmentsXlsxSuccessResponse,
@@ -75,8 +75,8 @@ const equipmentApiService = baseApiService
       }),
 
       getEquipmentCatalogList: build.query<
-        GetEquipmentCatalogListSuccessResponse,
-        MaybeUndefined<GetEquipmentCatalogListQueryArgs>
+        GetEquipmentsCatalogSuccessResponse,
+        MaybeUndefined<GetEquipmentsCatalogQueryArgs>
       >({
         providesTags: (result, error) => (error ? [] : [EquipmentApiTagEnum.EquipmentCatalogList]),
         query: (params) => ({

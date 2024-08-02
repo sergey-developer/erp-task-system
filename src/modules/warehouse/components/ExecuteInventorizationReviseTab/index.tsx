@@ -12,8 +12,8 @@ import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useGetEquipment,
-  useGetEquipmentCatalogs,
   useGetEquipmentCategories,
+  useGetEquipmentsCatalog,
 } from 'modules/warehouse/hooks/equipment'
 import {
   useCreateInventorizationEquipment,
@@ -24,11 +24,10 @@ import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/ho
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 import {
   EquipmentCategoryListItemModel,
-  GetEquipmentCatalogListQueryArgs,
+  GetEquipmentsCatalogQueryArgs,
   GetInventorizationEquipmentsQueryArgs,
-  WarehouseListItemModel,
+  InventorizationModel,
 } from 'modules/warehouse/models'
-import { InventorizationRequestArgs } from 'modules/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -65,19 +64,15 @@ const EquipmentFormModal = React.lazy(
   () => import('modules/warehouse/components/EquipmentFormModal'),
 )
 
-export type ExecuteInventorizationReviseTabProps = Pick<
-  InventorizationRequestArgs,
-  'inventorizationId'
-> & {
-  warehouses: Pick<WarehouseListItemModel, 'id' | 'title'>[]
+export type ExecuteInventorizationReviseTabProps = {
+  inventorization: Pick<InventorizationModel, 'id' | 'warehouses'>
 }
 
 const { Title } = Typography
 const { Search } = Input
 
 const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> = ({
-  inventorizationId,
-  warehouses,
+  inventorization,
 }) => {
   const [searchValue, setSearchValue] = useState<string>()
 
@@ -208,7 +203,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     skip: !createInventorizationEquipmentModalOpened && !createEquipmentModalOpened,
   })
 
-  const getEquipmentCatalogQueryArgs = useMemo<GetEquipmentCatalogListQueryArgs>(
+  const getEquipmentCatalogQueryArgs = useMemo<GetEquipmentsCatalogQueryArgs>(
     () => ({
       categories: equipmentCategories
         .filter((c) => !checkEquipmentCategoryIsConsumable(c.code))
@@ -225,7 +220,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   // todo: Пока поправить не получилось.
   //  Отправляется лишний запрос после добавления оборудования из модалки добавления оборудования инвентаризации
   const { currentData: equipmentCatalog = [], isFetching: equipmentCatalogIsFetching } =
-    useGetEquipmentCatalogs(getEquipmentCatalogQueryArgs, {
+    useGetEquipmentsCatalog(getEquipmentCatalogQueryArgs, {
       skip: !createInventorizationEquipmentModalOpened || !isEquipmentCategoriesFetchedSuccess,
     })
 
@@ -240,7 +235,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 
   const [getInventorizationEquipmentsArgs, setGetInventorizationEquipmentsArgs] =
     useSetState<GetInventorizationEquipmentsQueryArgs>({
-      inventorizationId,
+      inventorizationId: inventorization.id,
       ...getInitialPaginationParams(),
     })
 
@@ -254,7 +249,10 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   >(
     async (values, form) => {
       try {
-        await createInventorizationEquipmentMutation({ inventorizationId, ...values }).unwrap()
+        await createInventorizationEquipmentMutation({
+          inventorizationId: inventorization.id,
+          ...values,
+        }).unwrap()
         onCloseCreateInventorizationEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
@@ -264,7 +262,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     },
     [
       createInventorizationEquipmentMutation,
-      inventorizationId,
+      inventorization.id,
       onCloseCreateInventorizationEquipmentModal,
     ],
   )
@@ -431,7 +429,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             equipmentIsLoading={equipmentIsFetching}
             onChangeEquipment={setEquipmentId}
             onClickCreateEquipment={onOpenCreateEquipmentModal}
-            warehouses={warehouses}
+            warehouses={inventorization.warehouses}
             isLoading={createInventorizationEquipmentIsLoading}
             onSubmit={onCreateInventorizationEquipment}
           />

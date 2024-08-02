@@ -41,9 +41,9 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import CreateRelocationTaskPage from './index'
+import CreateRelocationTaskDraftPage from './index'
 
-const getContainer = () => screen.getByTestId('create-relocation-task-page')
+const getContainer = () => screen.getByTestId('create-relocation-task-draft-page')
 
 // add by excel button
 const getAddByExcelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Добавить из Excel/)
@@ -120,7 +120,7 @@ describe('Страница создания заявки на перемещен
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
-      render(<CreateRelocationTaskPage />, {
+      render(<CreateRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -142,8 +142,8 @@ describe('Страница создания заявки на перемещен
         once: false,
       })
 
-      const { user } = render(<CreateRelocationTaskPage />, {
-        store: getStoreWithAuth(currentUser, undefined, undefined, {
+      const { user } = render(<CreateRelocationTaskDraftPage />, {
+        store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
@@ -177,8 +177,8 @@ describe('Страница создания заявки на перемещен
         once: false,
       })
 
-      const { user } = render(<CreateRelocationTaskPage />, {
-        store: getStoreWithAuth(currentUser, undefined, undefined, {
+      const { user } = render(<CreateRelocationTaskDraftPage />, {
+        store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
@@ -205,7 +205,7 @@ describe('Страница создания заявки на перемещен
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
-      render(<CreateRelocationTaskPage />, {
+      render(<CreateRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -227,7 +227,7 @@ describe('Страница создания заявки на перемещен
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
-      render(<CreateRelocationTaskPage />, {
+      render(<CreateRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
@@ -247,7 +247,7 @@ describe('Страница создания заявки на перемещен
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
-      render(<CreateRelocationTaskPage />, {
+      render(<CreateRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -272,7 +272,7 @@ describe('Страница создания заявки на перемещен
       const arrayBuffer = new Uint8Array()
       base64ToArrayBufferSpy.mockReturnValueOnce(arrayBuffer)
 
-      const { user } = render(<CreateRelocationTaskPage />, {
+      const { user } = render(<CreateRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
@@ -301,7 +301,7 @@ describe('Страница создания заявки на перемещен
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentListTemplateServerError()
 
-      const { user } = render(<CreateRelocationTaskPage />, {
+      const { user } = render(<CreateRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
@@ -325,7 +325,7 @@ describe('Страница создания заявки на перемещен
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
-      render(<CreateRelocationTaskPage />, {
+      render(<CreateRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
@@ -343,7 +343,7 @@ describe('Страница создания заявки на перемещен
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
 
-      render(<CreateRelocationTaskPage />, {
+      render(<CreateRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -363,7 +363,7 @@ describe('Страница создания заявки на перемещен
       mockGetEquipmentCatalogListSuccess({ body: [] })
       mockGetCurrencyListSuccess({ body: [] })
 
-      const { user } = render(<CreateRelocationTaskPage />, {
+      const { user } = render(<CreateRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
@@ -394,7 +394,7 @@ describe('Страница создания заявки на перемещен
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
 
-        render(<CreateRelocationTaskPage />, {
+        render(<CreateRelocationTaskDraftPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
@@ -416,7 +416,7 @@ describe('Страница создания заявки на перемещен
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
 
-        const { user } = render(<CreateRelocationTaskPage />, {
+        const { user } = render(<CreateRelocationTaskDraftPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
@@ -442,7 +442,7 @@ describe('Страница создания заявки на перемещен
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
 
-        const { user } = render(<CreateRelocationTaskPage />, {
+        const { user } = render(<CreateRelocationTaskDraftPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
@@ -474,7 +474,7 @@ describe('Страница создания заявки на перемещен
       mockGetCurrencyListSuccess({ body: [] })
       mockImportEquipmentsByFileSuccess({ body: [warehouseFixtures.importedEquipmentByFile()] })
 
-      const { user } = render(<CreateRelocationTaskPage />, {
+      const { user } = render(<CreateRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
@@ -513,7 +513,7 @@ describe('Страница создания заявки на перемещен
         const errorMsg = fakeWord()
         mockImportEquipmentsByFileBadRequestError({ body: { detail: errorMsg } })
 
-        const { user } = render(<CreateRelocationTaskPage />, {
+        const { user } = render(<CreateRelocationTaskDraftPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),
@@ -549,7 +549,7 @@ describe('Страница создания заявки на перемещен
         mockGetCurrencyListSuccess({ body: [] })
         mockImportEquipmentsByFileServerError()
 
-        const { user } = render(<CreateRelocationTaskPage />, {
+        const { user } = render(<CreateRelocationTaskDraftPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.EquipmentsCreate] }),

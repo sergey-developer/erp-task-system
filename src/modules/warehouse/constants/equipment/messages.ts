@@ -11,7 +11,7 @@ export const getEquipmentRelocationHistoryMessages: ApiRequestMessages<'commonEr
 }
 
 export const getEquipmentAttachmentListErrMsg = 'Ошибка получения изображений оборудования'
-export const getEquipmentCatalogListErrMsg = 'Ошибка получения каталога оборудования'
+export const getEquipmentsCatalogErrMsg = 'Ошибка получения каталога оборудования'
 
 export const getEquipmentMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка получения оборудования',

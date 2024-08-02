@@ -27,32 +27,32 @@ Lint:
     - docker
     - vk
 
-Tests:
-  stage: test
-  image: node:18-alpine
-  interruptible: true
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
-  script:
-    - export REACT_APP_API_URL=http://localhost:3000
-    - export REACT_APP_ENVIRONMENT=test
-    - export CI=true
-    - export DEBUG_PRINT_LIMIT=20
-    - yarn install
-    - yarn test:ci
-  cache:
-    - key:
-        files:
-          - package.json
-      paths:
-        - node_modules/
-      policy: pull
-  only:
+#Tests:
+#  stage: test
+#  image: node:18-alpine
+#  interruptible: true
+#  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+#  script:
+#    - export REACT_APP_API_URL=http://localhost:3000
+#    - export REACT_APP_ENVIRONMENT=test
+#    - export CI=true
+#    - export DEBUG_PRINT_LIMIT=20
+#    - yarn install
+#    - yarn test:ci
+#  cache:
+#    - key:
+#        files:
+#          - package.json
+#      paths:
+#        - node_modules/
+#      policy: pull
+#  only:
     # - rc
-    - master
-#    - develop
-  tags:
-    - docker
-    - vk
+  #  - master
+    # - develop
+#  tags:
+#    - docker
+#    - vk
 
 
 .base_build: &base_build

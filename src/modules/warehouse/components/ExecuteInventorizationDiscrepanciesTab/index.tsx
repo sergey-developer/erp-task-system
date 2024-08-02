@@ -3,8 +3,10 @@ import { Flex, Typography } from 'antd'
 import React, { FC, useCallback } from 'react'
 
 import { useGetInventorizationEquipments } from 'modules/warehouse/hooks/inventorization'
-import { GetInventorizationEquipmentsQueryArgs } from 'modules/warehouse/models'
-import { InventorizationRequestArgs } from 'modules/warehouse/types'
+import {
+  GetInventorizationEquipmentsQueryArgs,
+  InventorizationModel,
+} from 'modules/warehouse/models'
 
 import {
   calculatePaginationParams,
@@ -21,19 +23,18 @@ import {
 } from '../DiscrepanciesEquipmentTable/sort'
 import { DiscrepanciesEquipmentTableProps } from '../DiscrepanciesEquipmentTable/types'
 
-export type ExecuteInventorizationDiscrepanciesProps = Pick<
-  InventorizationRequestArgs,
-  'inventorizationId'
->
+export type ExecuteInventorizationDiscrepanciesProps = {
+  inventorization: Pick<InventorizationModel, 'id'>
+}
 
 const { Title } = Typography
 
 const ExecuteInventorizationDiscrepanciesTab: FC<ExecuteInventorizationDiscrepanciesProps> = ({
-  inventorizationId,
+  inventorization,
 }) => {
   const [getInventorizationEquipmentsParams, setGetInventorizationEquipmentsParams] =
     useSetState<GetInventorizationEquipmentsQueryArgs>({
-      inventorizationId,
+      inventorizationId: inventorization.id,
       isFilled: true,
       hasDiff: true,
       ordering: '-title',

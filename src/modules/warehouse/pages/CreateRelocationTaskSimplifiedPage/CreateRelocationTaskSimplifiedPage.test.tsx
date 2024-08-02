@@ -139,7 +139,7 @@ describe('Упрощенная страница создания заявки н
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
       mockGetEquipmentCatalogListSuccess({
-        body: warehouseFixtures.equipmentCatalogList(),
+        body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
 
