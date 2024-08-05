@@ -24,7 +24,7 @@ const getContainer = () => screen.getByTestId('nomenclature-table')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
-const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
 const getHeadCell = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access
   return getChildByText(text).parentElement?.parentElement!

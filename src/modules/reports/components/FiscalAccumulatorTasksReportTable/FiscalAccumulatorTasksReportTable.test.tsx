@@ -28,7 +28,7 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
 const getRow = (id: FiscalAccumulatorTasksReportTableItem['olaNextBreachTime']) =>
-  tableTestUtils.getRowIn(getContainer(), id)
+  tableTestUtils.getRowById(getContainer(), id)
 
 const clickRow = async (
   user: UserEvent,

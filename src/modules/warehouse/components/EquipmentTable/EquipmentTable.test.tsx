@@ -31,7 +31,7 @@ const props: Readonly<EquipmentTableProps> = {
 
 const getContainer = () => screen.getByTestId('equipment-table')
 
-const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
 
 const clickRow = async (user: UserEvent, id: IdType) =>
   tableTestUtils.clickRowIn(getContainer(), user, id)
