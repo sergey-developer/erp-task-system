@@ -31,7 +31,7 @@ const props: RelocationEquipmentDraftEditableTableProps = {
 
 const getContainer = () => screen.getByTestId('relocation-equipment-draft-editable-table-container')
 
-const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
 const clickRow = async (user: UserEvent, id: IdType) =>
   tableTestUtils.clickRowIn(getContainer(), user, id)
 
@@ -66,17 +66,30 @@ export const testUtils = {
 
 describe('Таблица добавления оборудования для перемещения', () => {
   describe('Кнопка добавить оборудование', () => {
-    test('Отображается корректно', () => {
+    test('Отображается и активна', () => {
       render(
         <Form>
           <RelocationEquipmentEditableTable {...props} />
         </Form>,
       )
 
-      const button = buttonTestUtils.getButtonIn(getContainer(), /Добавить оборудование/)
+      const button = buttonTestUtils.getButtonIn(testUtils.getContainer(), /Добавить оборудование/)
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
+    })
+
+    test('Добавляет пустую строку в таблицу', async () => {
+      const { user } = render(
+        <Form>
+          <RelocationEquipmentEditableTable {...props} />
+        </Form>,
+      )
+
+      const container = testUtils.getContainer()
+      const button = buttonTestUtils.getButtonIn(container, /Добавить оборудование/)
+      await user.click(button)
+      const row = tableTestUtils.getOneRowByRole(container)
     })
   })
 })

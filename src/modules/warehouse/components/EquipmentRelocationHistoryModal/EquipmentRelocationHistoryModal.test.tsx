@@ -27,7 +27,7 @@ const getContainer = () => screen.getByTestId('equipment-relocation-history-moda
 const findContainer = () => screen.findByTestId('equipment-relocation-history-modal')
 
 const getTable = () => within(getContainer()).getByTestId('equipment-relocation-history-table')
-const getRow = (id: IdType) => tableTestUtils.getRowIn(getTable(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowById(getTable(), id)
 const clickRow = async (user: UserEvent, id: IdType) =>
   tableTestUtils.clickRowIn(getTable(), user, id)
 

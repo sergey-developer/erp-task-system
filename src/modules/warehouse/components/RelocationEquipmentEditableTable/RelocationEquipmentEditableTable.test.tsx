@@ -35,7 +35,7 @@ const props: RelocationEquipmentEditableTableProps = {
 
 const getContainer = () => screen.getByTestId('relocation-equipment-editable-table-container')
 
-const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
 const clickRow = async (user: UserEvent, id: IdType) =>
   tableTestUtils.clickRowIn(getContainer(), user, id)
 
