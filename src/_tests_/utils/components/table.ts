@@ -6,7 +6,7 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import { iconTestUtils } from '_tests_/utils'
 
-const getRowIn = (container: HTMLElement, id: NumberOrString): HTMLElement => {
+const getRowById = (container: HTMLElement, id: NumberOrString): HTMLElement => {
   const row = container.querySelector(`[data-row-key='${id}']`) as HTMLElement
 
   if (row) {
@@ -16,8 +16,10 @@ const getRowIn = (container: HTMLElement, id: NumberOrString): HTMLElement => {
   }
 }
 
+const getOneRowByRole = (container: HTMLElement) => within(container).getAllByRole('row')[1]
+
 const clickRowIn = async (container: HTMLElement, user: UserEvent, id: NumberOrString) => {
-  const row = getRowIn(container, id)
+  const row = getRowById(container, id)
   await user.click(row)
   return row
 }
@@ -30,7 +32,7 @@ const expectRowsRendered = <T extends { id: IdType }>(
   data: T[] | ReadonlyArray<T>,
 ) => {
   data.forEach((item) => {
-    const row = getRowIn(container, item.id)
+    const row = getRowById(container, item.id)
     expect(row).toBeInTheDocument()
   })
 }
@@ -60,7 +62,8 @@ const expectLoadingFinished = (container: HTMLElement) =>
   iconTestUtils.expectLoadingFinishedIn(container)
 
 const utils = {
-  getRowIn,
+  getOneRowByRole,
+  getRowById,
   clickRowIn,
 
   getHeadCell,

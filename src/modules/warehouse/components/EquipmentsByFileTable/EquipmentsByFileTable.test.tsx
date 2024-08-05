@@ -46,7 +46,7 @@ const props: Readonly<EquipmentsByFileTableProps> = {
 }
 
 const getContainer = () => screen.getByTestId('equipments-by-file-table')
-const getRow = (id: number) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: number) => tableTestUtils.getRowById(getContainer(), id)
 const getColTitle = (text: string) => within(getContainer()).getByText(text)
 const getColValue = (id: number, value: NumberOrString): MaybeNull<HTMLElement> => {
   const row = getRow(id)
