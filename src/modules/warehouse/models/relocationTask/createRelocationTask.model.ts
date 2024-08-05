@@ -20,6 +20,7 @@ export type CreateRelocationTaskMutationArgs = {
     attachments?: IdType[]
   }[]
 
+  inventorization?: IdType
   relocateFromId?: IdType
   relocateToId?: IdType
   comment?: string

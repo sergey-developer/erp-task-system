@@ -1,7 +1,7 @@
 import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
 
-import { EquipmentsCatalogModel } from 'modules/warehouse/models'
+import { InventorizationEquipmentsModel } from 'modules/warehouse/models'
 import { RelocationTaskInventorizationEquipment } from 'modules/warehouse/types'
 
 import { CurrencyListModel } from 'shared/models/currency'
@@ -20,15 +20,12 @@ export type RelocationEquipmentDraftEditableTableProps = {
   setEditableKeys?: (keys: Key[]) => void
   isLoading: boolean
 
-  equipmentIsLoading: boolean
-  equipmentsIsLoading?: boolean
-
   currencies: CurrencyListModel
   currenciesIsLoading: boolean
 
-  equipmentsCatalog: EquipmentsCatalogModel
-  equipmentsCatalogIsLoading: boolean
-  equipmentsCatalogDisabled?: boolean
+  equipments: InventorizationEquipmentsModel
+  equipmentsIsLoading: boolean
+  equipmentIsLoading: boolean
 
   onClickCreateImage: (activeRow: ActiveEquipmentTableRow) => void
 }

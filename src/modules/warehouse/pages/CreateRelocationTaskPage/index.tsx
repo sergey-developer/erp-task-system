@@ -77,10 +77,10 @@ import { extractPaginationResults } from 'shared/utils/pagination'
 
 import {
   checkCreateEquipmentBtnEnabled,
-  getEquipmentCatalogListParams,
   getEquipmentFormInitialValues,
-  getRelocateFromLocationListParams,
-  getRelocateToLocationListParams,
+  getEquipmentsCatalogParams,
+  getRelocateFromLocationsParams,
+  getRelocateToLocationsParams,
 } from './utils'
 
 const CreateEquipmentsByFileModal = React.lazy(
@@ -97,6 +97,7 @@ const EquipmentFormModal = React.lazy(
 
 const { Text } = Typography
 
+const equipmentTableNamePath = 'equipments'
 const deadlineAtDate = moment().add(24, 'hours')
 
 const initialValues: Pick<
@@ -104,7 +105,7 @@ const initialValues: Pick<
   'equipments' | 'equipmentsByFile' | 'type' | 'deadlineAtDate' | 'deadlineAtTime'
 > = {
   type: RelocationTaskTypeEnum.Relocation,
-  equipments: [],
+  [equipmentTableNamePath]: [],
   equipmentsByFile: [],
   deadlineAtDate,
   deadlineAtTime: deadlineAtDate.clone(),
@@ -254,33 +255,32 @@ const CreateRelocationTaskPage: FC = () => {
 
   const [
     getRelocateFromLocationList,
-    { currentData: relocateFromLocationList = [], isFetching: relocateFromLocationListIsFetching },
+    { currentData: relocateFromLocations = [], isFetching: relocateFromLocationsIsFetching },
   ] = useLazyGetLocations()
 
   const [
     getRelocateToLocationList,
-    { currentData: relocateToLocationList = [], isFetching: relocateToLocationListIsFetching },
+    { currentData: relocateToLocations = [], isFetching: relocateToLocationsIsFetching },
   ] = useLazyGetLocations()
 
   /* сделано через lazy т.к. по каким-то причинам запрос не отправляется снова если один из параметров не изменился */
   useEffect(() => {
-    getRelocateFromLocationList(getRelocateFromLocationListParams(selectedType))
+    getRelocateFromLocationList(getRelocateFromLocationsParams(selectedType))
   }, [getRelocateFromLocationList, selectedType])
 
   useEffect(() => {
     if (!typeIsWriteOff) {
-      getRelocateToLocationList(getRelocateToLocationListParams(selectedType))
+      getRelocateToLocationList(getRelocateToLocationsParams(selectedType))
     }
   }, [getRelocateToLocationList, selectedType, typeIsWriteOff])
 
-  const { currentData: currencyList = [], isFetching: currencyListIsFetching } =
-    useGetCurrencyList()
+  const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList()
 
-  const { currentData: equipmentsCatalog = [], isFetching: equipmentCatalogListIsFetching } =
+  const { currentData: equipmentsCatalog = [], isFetching: equipmentsCatalogIsFetching } =
     useGetEquipmentsCatalog(
       {
         locationId: selectedRelocateFrom?.value || selectedRelocateTo?.value,
-        ...getEquipmentCatalogListParams(selectedType),
+        ...getEquipmentsCatalogParams(selectedType),
       },
       { skip: !selectedRelocateFrom?.value && !selectedRelocateTo?.value },
     )
@@ -420,14 +420,17 @@ const CreateRelocationTaskPage: FC = () => {
     changedValues,
     values,
   ) => {
-    if (changedValues.equipments && !Array.isArray(changedValues.equipments)) {
-      const [index, changes] = Object.entries(changedValues.equipments)[0] as [
+    if (
+      changedValues[equipmentTableNamePath] &&
+      !Array.isArray(changedValues[equipmentTableNamePath])
+    ) {
+      const [index, changes] = Object.entries(changedValues[equipmentTableNamePath])[0] as [
         string,
         Partial<RelocationEquipmentRow>,
       ]
 
       if (changes.id) {
-        const equipmentPath: NamePath = ['equipments', index]
+        const equipmentPath: NamePath = [equipmentTableNamePath, index]
         const currentEquipment = values.equipments[Number(index)]
 
         try {
@@ -501,8 +504,7 @@ const CreateRelocationTaskPage: FC = () => {
         })),
       ).unwrap()
 
-      const equipmentsPath = 'equipments'
-      const currentEquipments: RelocationEquipmentRow[] = form.getFieldValue(equipmentsPath)
+      const currentEquipments: RelocationEquipmentRow[] = form.getFieldValue(equipmentTableNamePath)
       const newEquipments: RelocationEquipmentRow[] = []
       const newEditableTableRowKeys: Key[] = []
 
@@ -524,7 +526,7 @@ const CreateRelocationTaskPage: FC = () => {
         newEditableTableRowKeys.push(eqp.id)
       })
 
-      form.setFieldValue(equipmentsPath, [...currentEquipments, ...newEquipments])
+      form.setFieldValue(equipmentTableNamePath, [...currentEquipments, ...newEquipments])
       setEditableTableRowKeys((prevState) => prevState.concat(newEditableTableRowKeys))
       handleCloseCreateEquipmentsByFileModal()
     } catch (error) {
@@ -553,7 +555,7 @@ const CreateRelocationTaskPage: FC = () => {
           warehouse: selectedRelocateTo.value,
         }).unwrap()
 
-        const rowPath = ['equipments', activeEquipmentRow.rowIndex]
+        const rowPath = [equipmentTableNamePath, activeEquipmentRow.rowIndex]
         const currentRow: RelocationEquipmentRow = form.getFieldValue(rowPath)
         const equipmentRow: RelocationEquipmentRow = {
           rowId: currentRow.rowId,
@@ -598,7 +600,7 @@ const CreateRelocationTaskPage: FC = () => {
         ...values,
         rowId: editableEquipmentByFile.rowId,
         category: equipmentCategoryList.find((c) => c.id === values.category),
-        currency: values.currency ? currencyList.find((c) => c.id === values.currency) : undefined,
+        currency: values.currency ? currencies.find((c) => c.id === values.currency) : undefined,
         owner: values.owner ? customerList.find((c) => c.id === values.owner) : undefined,
         macroregion: values.macroregion
           ? macroregions.find((m) => m.id === values.macroregion)
@@ -627,7 +629,7 @@ const CreateRelocationTaskPage: FC = () => {
       handleCloseEditEquipmentByFileModal()
     },
     [
-      currencyList,
+      currencies,
       customerList,
       editableEquipmentByFile,
       editableEquipmentByFileIndex,
@@ -659,7 +661,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const handleChangeRelocateFrom = useCallback<RelocationTaskFormProps['onChangeRelocateFrom']>(
     (value, option) => {
-      const equipments: RelocationEquipmentRow[] = form.getFieldValue('equipments') || []
+      const equipments: RelocationEquipmentRow[] = form.getFieldValue(equipmentTableNamePath) || []
       const relocateFrom = form.getFieldValue('relocateFrom')
       const isShowConfirmation = !!equipments.length && !!relocateFrom
       form.setFieldValue('relocateFrom', value)
@@ -684,12 +686,13 @@ const CreateRelocationTaskPage: FC = () => {
         form.setFieldValue('relocateTo', relocateToValue)
         setSelectedRelocateTo(relocateToValue)
 
-        const equipments: RelocationEquipmentRow[] = form.getFieldValue('equipments') || []
+        const equipments: RelocationEquipmentRow[] =
+          form.getFieldValue(equipmentTableNamePath) || []
         const newEquipments = equipments.map((eqp) => ({
           ...eqp,
           condition: EquipmentConditionEnum.WrittenOff,
         }))
-        form.setFieldValue('equipments', newEquipments)
+        form.setFieldValue(equipmentTableNamePath, newEquipments)
       }
     },
     [form],
@@ -717,7 +720,7 @@ const CreateRelocationTaskPage: FC = () => {
 
   const equipmentImagesFormPath =
     createRelocationEquipmentImagesModalOpened && activeEquipmentRow
-      ? ['equipments', activeEquipmentRow.rowIndex, 'attachments']
+      ? [equipmentTableNamePath, activeEquipmentRow.rowIndex, 'attachments']
       : undefined
 
   const createEquipmentFormValues = useMemo(
@@ -762,10 +765,10 @@ const CreateRelocationTaskPage: FC = () => {
               authUser={authUser}
               permissions={permissions}
               isLoading={createTaskIsLoading}
-              relocateFromLocationList={relocateFromLocationList}
-              relocateFromLocationListIsLoading={relocateFromLocationListIsFetching}
-              relocateToLocationList={relocateToLocationList}
-              relocateToLocationListIsLoading={relocateToLocationListIsFetching}
+              relocateFromLocations={relocateFromLocations}
+              relocateFromLocationListIsLoading={relocateFromLocationsIsFetching}
+              relocateToLocations={relocateToLocations}
+              relocateToLocationListIsLoading={relocateToLocationsIsFetching}
               users={users}
               usersIsLoading={usersIsFetching}
               usersGroups={usersGroups}
@@ -819,15 +822,15 @@ const CreateRelocationTaskPage: FC = () => {
               </Row>
 
               <RelocationEquipmentEditableTable
-                name='equipments'
+                name={equipmentTableNamePath}
                 editableKeys={editableTableRowKeys}
                 setEditableKeys={setEditableTableRowKeys}
                 isLoading={createTaskIsLoading}
                 equipmentIsLoading={equipmentIsFetching}
-                currencyList={currencyList}
-                currencyListIsLoading={currencyListIsFetching}
-                equipmentsCatalog={equipmentsCatalog}
-                equipmentsCatalogIsLoading={equipmentCatalogListIsFetching}
+                currencies={currencies}
+                currenciesIsLoading={currenciesIsFetching}
+                equipments={equipmentsCatalog}
+                equipmentsIsLoading={equipmentsCatalogIsFetching}
                 canCreateEquipment={!!permissions.equipmentsCreate}
                 createEquipmentBtnDisabled={!createEquipmentBtnEnabled}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
@@ -871,7 +874,7 @@ const CreateRelocationTaskPage: FC = () => {
         }}
         onOk={() => {
           toggleConfirmModal()
-          form.setFieldValue('equipments', [])
+          form.setFieldValue(equipmentTableNamePath, [])
         }}
       >
         <Text>Вы действительно хотите сменить объект выбытия?</Text>
@@ -898,8 +901,8 @@ const CreateRelocationTaskPage: FC = () => {
             categoriesIsLoading={equipmentCategoryListIsFetching}
             category={selectedCategory}
             onChangeCategory={handleChangeCategory}
-            currencies={currencyList}
-            currenciesIsLoading={currencyListIsFetching}
+            currencies={currencies}
+            currenciesIsLoading={currenciesIsFetching}
             owners={customerList}
             ownersIsLoading={customerListIsFetching}
             onChangeOwner={setSelectedOwnerId}
@@ -937,8 +940,8 @@ const CreateRelocationTaskPage: FC = () => {
             categoriesIsLoading={equipmentCategoryListIsFetching}
             category={selectedCategory}
             onChangeCategory={handleChangeCategory}
-            currencies={currencyList}
-            currenciesIsLoading={currencyListIsFetching}
+            currencies={currencies}
+            currenciesIsLoading={currenciesIsFetching}
             owners={customerList}
             ownersIsLoading={customerListIsFetching}
             onChangeOwner={setSelectedOwnerId}

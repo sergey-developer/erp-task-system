@@ -18,13 +18,13 @@ const props: RelocationEquipmentEditableTableProps = {
   isLoading: false,
 
   equipmentIsLoading: false,
-  equipmentListIsLoading: false,
+  relocationEquipmentsIsLoading: false,
 
-  currencyList: [],
-  currencyListIsLoading: false,
+  currencies: [],
+  currenciesIsLoading: false,
 
-  equipmentsCatalog: [],
-  equipmentsCatalogIsLoading: false,
+  equipments: [],
+  equipmentsIsLoading: false,
 
   canCreateEquipment: false,
   createEquipmentBtnDisabled: false,

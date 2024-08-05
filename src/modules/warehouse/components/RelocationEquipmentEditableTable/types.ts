@@ -20,15 +20,14 @@ export type RelocationEquipmentEditableTableProps = {
   setEditableKeys?: (keys: Key[]) => void
   isLoading: boolean
 
+  currencies: CurrencyListModel
+  currenciesIsLoading: boolean
+
+  relocationEquipmentsIsLoading?: boolean
+
+  equipments: EquipmentsCatalogModel
+  equipmentsIsLoading: boolean
   equipmentIsLoading: boolean
-  equipmentListIsLoading?: boolean
-
-  currencyList: CurrencyListModel
-  currencyListIsLoading: boolean
-
-  equipmentsCatalog: EquipmentsCatalogModel
-  equipmentsCatalogIsLoading: boolean
-  equipmentsCatalogDisabled?: boolean
 
   canCreateEquipment?: boolean
   createEquipmentBtnDisabled: boolean

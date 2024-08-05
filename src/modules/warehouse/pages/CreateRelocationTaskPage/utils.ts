@@ -104,7 +104,7 @@ const getRelocateToWarehouseTypes = (
   }
 }
 
-export const getEquipmentCatalogListParams = (
+export const getEquipmentsCatalogParams = (
   type: RelocationTaskTypeEnum,
 ): Pick<GetEquipmentsCatalogQueryArgs, 'conditions' | 'isWarranty' | 'isCredited'> => ({
   conditions: getConditionsByType(type),
@@ -112,14 +112,14 @@ export const getEquipmentCatalogListParams = (
   isCredited: checkRelocationTaskTypeIsCustomer(type) ? false : undefined,
 })
 
-export const getRelocateFromLocationListParams = (
+export const getRelocateFromLocationsParams = (
   type: RelocationTaskTypeEnum,
 ): Pick<GetLocationsQueryArgs, 'locationTypes' | 'warehouseTypes'> => ({
   locationTypes: getRelocateFromLocationTypes(type),
   warehouseTypes: getRelocateFromWarehouseTypes(type),
 })
 
-export const getRelocateToLocationListParams = (
+export const getRelocateToLocationsParams = (
   type: RelocationTaskTypeEnum,
 ): Pick<GetLocationsQueryArgs, 'locationTypes' | 'warehouseTypes'> => ({
   locationTypes: getRelocateToLocationTypes(type),

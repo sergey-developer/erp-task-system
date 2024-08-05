@@ -16,7 +16,7 @@ import { EquipmentModel } from 'modules/warehouse/models'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import {
   checkEquipmentCategoryIsConsumable,
-  makeEquipmentsCatalogSelectOptions,
+  makeEquipmentsSelectOptions,
 } from 'modules/warehouse/utils/equipment'
 import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
@@ -48,14 +48,15 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   setEditableKeys,
   isLoading,
 
+  currencies,
+  currenciesIsLoading,
+
+  relocationEquipmentsIsLoading,
+
+  equipments,
+  equipmentsIsLoading,
+
   equipmentIsLoading,
-  equipmentListIsLoading,
-
-  currencyList,
-  currencyListIsLoading,
-
-  equipmentsCatalog,
-  equipmentsCatalogIsLoading,
 
   canCreateEquipment = false,
   createEquipmentBtnDisabled,
@@ -72,25 +73,22 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
 
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(typeFormValue)
 
-  const equipmentsCatalogOptions = useMemo<DefaultOptionType[]>(
-    () => makeEquipmentsCatalogSelectOptions(equipmentsCatalog),
-    [equipmentsCatalog],
+  const equipmentsOptions = useMemo<DefaultOptionType[]>(
+    () => makeEquipmentsSelectOptions(equipments),
+    [equipments],
   )
 
   const currencyOptions = useMemo<DefaultOptionType[]>(
-    () => currencyList.map((cur) => ({ label: cur.title, value: cur.id })),
-    [currencyList],
+    () => currencies.map((cur) => ({ label: cur.title, value: cur.id })),
+    [currencies],
   )
 
   const handleDeleteRow = useCallback(
     (row: RelocationEquipmentRow) => {
-      const tableDataSource: RelocationEquipmentRow[] = form.getFieldValue('equipments')
-
-      form.setFieldsValue({
-        equipments: tableDataSource.filter((item) => item.rowId !== row.rowId),
-      })
+      const tableDataSource: RelocationEquipmentRow[] = form.getFieldValue(name)
+      form.setFieldsValue({ [name]: tableDataSource.filter((item) => item.rowId !== row.rowId) })
     },
-    [form],
+    [form, name],
   )
 
   const columns: ProColumns<RelocationEquipmentRow>[] = [
@@ -122,9 +120,9 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
             )
           : undefined,
         allowClear: false,
-        loading: equipmentsCatalogIsLoading,
-        disabled: isLoading || equipmentsCatalogIsLoading,
-        options: equipmentsCatalogOptions,
+        loading: equipmentsIsLoading,
+        disabled: isLoading || equipmentsIsLoading,
+        options: equipmentsOptions,
         showSearch: true,
         virtual: true,
         onChange: () => form.resetFields(['quantity']),
@@ -176,8 +174,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       valueType: 'select',
       fieldProps: {
         options: currencyOptions,
-        loading: currencyListIsLoading,
-        disabled: isLoading || typeIsWriteOff || equipmentIsLoading || currencyListIsLoading,
+        loading: currenciesIsLoading,
+        disabled: isLoading || typeIsWriteOff || equipmentIsLoading || currenciesIsLoading,
       },
     },
     {
@@ -259,11 +257,11 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
             rowId: random(1, 9999999),
             ...(typeIsWriteOff && { condition: EquipmentConditionEnum.WrittenOff }),
           }),
-          disabled: isLoading || equipmentListIsLoading,
+          disabled: isLoading || relocationEquipmentsIsLoading,
           creatorButtonText: 'Добавить оборудование',
         }}
         formItemProps={formItemProps}
-        loading={equipmentListIsLoading}
+        loading={relocationEquipmentsIsLoading}
         editable={{
           type: 'multiple',
           form,

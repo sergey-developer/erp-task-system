@@ -7,7 +7,7 @@ import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import RelocationTasks from 'modules/task/components/RelocationTasks'
 import { RelocationTasksProps } from 'modules/task/components/RelocationTasks/types'
 import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
-import { getTaskListPageLink } from 'modules/task/utils/task'
+import { getTasksPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
@@ -61,19 +61,20 @@ const RelocationTasksTab: FC<RelocationTasksTabProps> = ({ task }) => {
 
   const onClickCreate = useNavigateToCreateRelocationTaskSimplifiedPage({
     task,
-    from: getTaskListPageLink({
+    from: getTasksPageLink({
       viewTask: task.id,
-      taskDetailsTab: TaskDetailsTabsEnum.RelocationTasks,
+      tab: TaskDetailsTabsEnum.RelocationTasks,
     }),
   })
 
   const onClickCreateDocumentsPackage = () =>
+    // todo: формировать state через функцию как сделано например для создания черновика заявки на перемещение
     navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
       state: {
         task: pick(task, 'id', 'recordId'),
-        from: getTaskListPageLink({
+        from: getTasksPageLink({
           viewTask: task.id,
-          taskDetailsTab: TaskDetailsTabsEnum.RelocationTasks,
+          tab: TaskDetailsTabsEnum.RelocationTasks,
         }),
       },
     })

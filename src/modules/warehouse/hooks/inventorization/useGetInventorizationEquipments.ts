@@ -9,6 +9,7 @@ import { GetInventorizationEquipmentsTransformedSuccessResponse } from 'modules/
 
 import {
   getErrorDetail,
+  isBadRequestError,
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
@@ -33,7 +34,11 @@ export const useGetInventorizationEquipments = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
+      if (
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
+      ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
         showErrorNotification(getInventorizationEquipmentsErrMsg)
