@@ -13,7 +13,7 @@ import {
   equipmentConditionOptions,
 } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskDraftFormFields } from 'modules/warehouse/types'
-import { makeEquipmentsCatalogSelectOptions } from 'modules/warehouse/utils/equipment'
+import { makeInventorizationEquipmentsSelectOptions } from 'modules/warehouse/utils/inventorization'
 import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
 import { MinusCircleIcon } from 'components/Icons'
@@ -46,15 +46,13 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
   setEditableKeys,
   isLoading,
 
-  equipmentIsLoading,
-  equipmentsIsLoading,
-
   currencies,
   currenciesIsLoading,
 
-  equipmentsCatalog,
-  equipmentsCatalogIsLoading,
-  equipmentsCatalogDisabled = false,
+  equipmentIsLoading,
+
+  equipments,
+  equipmentsIsLoading,
 
   onClickCreateImage,
 }) => {
@@ -67,9 +65,9 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
 
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(typeFormValue)
 
-  const equipmentsCatalogOptions = useMemo<DefaultOptionType[]>(
-    () => makeEquipmentsCatalogSelectOptions(equipmentsCatalog),
-    [equipmentsCatalog],
+  const equipmentsOptions = useMemo<DefaultOptionType[]>(
+    () => makeInventorizationEquipmentsSelectOptions(equipments),
+    [equipments],
   )
 
   const currencyOptions = useMemo<DefaultOptionType[]>(
@@ -79,13 +77,10 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
 
   const handleDeleteRow = useCallback(
     (row: InventorizationEquipmentTableRow) => {
-      const tableDataSource: InventorizationEquipmentTableRow[] = form.getFieldValue('equipments')
-
-      form.setFieldsValue({
-        equipments: tableDataSource.filter((item) => item.rowId !== row.rowId),
-      })
+      const tableDataSource: InventorizationEquipmentTableRow[] = form.getFieldValue(name)
+      form.setFieldsValue({ [name]: tableDataSource.filter((item) => item.rowId !== row.rowId) })
     },
-    [form],
+    [form, name],
   )
 
   const columns: ProColumns<InventorizationEquipmentTableRow>[] = [
@@ -102,9 +97,9 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
       },
       fieldProps: (form) => ({
         allowClear: false,
-        loading: equipmentsCatalogIsLoading,
-        disabled: isLoading || equipmentsCatalogIsLoading || equipmentsCatalogDisabled,
-        options: equipmentsCatalogOptions,
+        loading: equipmentsIsLoading,
+        disabled: isLoading || equipmentsIsLoading,
+        options: equipmentsOptions,
         showSearch: true,
         virtual: true,
         onChange: () => form.resetFields(['quantity']),
@@ -153,7 +148,7 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
       title: 'Количество',
       valueType: 'digit',
       formItemProps: { rules: onlyRequiredRules },
-      fieldProps: { disabled: true },
+      fieldProps: { disabled: true, placeholder: null },
     },
     {
       key: 'attachments',
@@ -203,11 +198,10 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
             rowId: random(1, 9999999),
             ...(typeIsWriteOff && { condition: EquipmentConditionEnum.WrittenOff }),
           }),
-          disabled: isLoading || equipmentsIsLoading,
+          disabled: isLoading,
           creatorButtonText: 'Добавить оборудование',
         }}
         formItemProps={formItemProps}
-        loading={equipmentsIsLoading}
         editable={{
           type: 'multiple',
           form,

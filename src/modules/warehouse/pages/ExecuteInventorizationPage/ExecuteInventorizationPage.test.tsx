@@ -41,10 +41,8 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import ExecuteInventorizationPage, {
-  executeInventorizationPageTabNames,
-  ExecuteInventorizationPageTabsEnum,
-} from './index'
+import { executeInventorizationPageTabNames, ExecuteInventorizationPageTabsEnum } from './constants'
+import ExecuteInventorizationPage from './index'
 
 const getContainer = () => screen.getByTestId('execute-inventorization-page')
 

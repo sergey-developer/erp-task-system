@@ -17,14 +17,13 @@ const props: RelocationEquipmentDraftEditableTableProps = {
 
   isLoading: false,
 
-  equipmentIsLoading: false,
-  equipmentsIsLoading: false,
-
   currencies: [],
   currenciesIsLoading: false,
 
-  equipmentsCatalog: [],
-  equipmentsCatalogIsLoading: false,
+  equipments: [],
+  equipmentsIsLoading: false,
+
+  equipmentIsLoading: false,
 
   onClickCreateImage: jest.fn(),
 }

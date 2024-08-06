@@ -45,15 +45,16 @@ export type RelocationTaskFormProps = {
 
   controllerIsRequired: boolean
 
-  onUploadImage: NonNullable<UploadProps['customRequest']>
-  imageIsUploading: boolean
-  onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
-  imageIsDeleting: boolean
+  showUploadImages?: boolean
+  onUploadImage?: NonNullable<UploadProps['customRequest']>
+  imageIsUploading?: boolean
+  onDeleteImage?: NonNullable<UploadProps<FileResponse>['onRemove']>
+  imageIsDeleting?: boolean
   imagesIsLoading?: boolean
 
-  relocateFromLocationList: LocationsModel
+  relocateFromLocations: LocationsModel
   relocateFromLocationListIsLoading: boolean
-  relocateToLocationList: LocationsModel
+  relocateToLocations: LocationsModel
   relocateToLocationListIsLoading: boolean
 
   type?: RelocationTaskTypeEnum

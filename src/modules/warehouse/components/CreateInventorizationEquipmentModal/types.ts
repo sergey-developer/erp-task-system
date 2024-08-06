@@ -19,8 +19,9 @@ export type CreateInventorizationEquipmentFormFields = {
 export type CreateInventorizationEquipmentModalProps = SetNonNullable<
   Pick<BaseModalProps, 'open' | 'onCancel'>
 > & {
-  equipmentCatalog: EquipmentsCatalogModel
-  equipmentCatalogIsLoading: boolean
+  equipments: EquipmentsCatalogModel
+  equipmentsIsLoading: boolean
+
   onChangeEquipment: (value: IdType) => void
   equipment?: Pick<EquipmentModel, 'location'>
   equipmentIsLoading: boolean

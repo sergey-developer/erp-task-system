@@ -3,12 +3,13 @@ import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { InventorizationModel } from 'modules/warehouse/models'
+import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'modules/warehouse/utils/relocationTask'
 
-export type ExecuteInventorizationRelocationsTabProps = {
-  inventorization: Pick<InventorizationModel, 'executor' | 'status'>
-}
+export type ExecuteInventorizationRelocationsTabProps = Pick<
+  ExecuteInventorizationPageLocationState,
+  'inventorization'
+>
 
 const { Title } = Typography
 

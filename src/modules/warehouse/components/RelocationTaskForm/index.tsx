@@ -49,15 +49,16 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
 
   controllerIsRequired,
 
+  showUploadImages = true,
   onUploadImage,
   imageIsUploading,
   onDeleteImage,
   imageIsDeleting,
   imagesIsLoading,
 
-  relocateFromLocationList,
+  relocateFromLocations,
   relocateFromLocationListIsLoading,
-  relocateToLocationList,
+  relocateToLocations,
   relocateToLocationListIsLoading,
 
   type,
@@ -84,13 +85,13 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
 
   const relocateFromLocationOptions = useMemo(
-    () => makeLocationOptions(relocateFromLocationList),
-    [relocateFromLocationList],
+    () => makeLocationOptions(relocateFromLocations),
+    [relocateFromLocations],
   )
 
   const relocateToLocationOptions = useMemo(
-    () => makeLocationOptions(relocateToLocationList),
-    [relocateToLocationList],
+    () => makeLocationOptions(relocateToLocations),
+    [relocateToLocations],
   )
 
   const typeOptions = useMemo(
@@ -267,29 +268,31 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         </Form.Item>
       </Col>
 
-      <Col span={6}>
-        <Space direction='vertical'>
-          <Text type='secondary'>Общие фотографии к перемещению (до 10 штук)</Text>
+      {showUploadImages && (
+        <Col span={6}>
+          <Space direction='vertical'>
+            <Text type='secondary'>Общие фотографии к перемещению (до 10 штук)</Text>
 
-          <Form.Item name='images' {...filesFormItemProps}>
-            <Upload
-              multiple
-              listType='picture'
-              customRequest={onUploadImage}
-              onRemove={onDeleteImage}
-              itemRender={renderUploadedFile()}
-              disabled={isLoading || imageIsUploading || imageIsDeleting || imagesIsLoading}
-              maxCount={10}
-            >
-              <UploadButton
-                label='Добавить фото'
-                loading={imagesIsLoading}
-                disabled={isLoading || imageIsUploading || imageIsDeleting}
-              />
-            </Upload>
-          </Form.Item>
-        </Space>
-      </Col>
+            <Form.Item name='images' {...filesFormItemProps}>
+              <Upload
+                multiple
+                listType='picture'
+                customRequest={onUploadImage}
+                onRemove={onDeleteImage}
+                itemRender={renderUploadedFile()}
+                disabled={isLoading || imageIsUploading || imageIsDeleting || imagesIsLoading}
+                maxCount={10}
+              >
+                <UploadButton
+                  label='Добавить фото'
+                  loading={imagesIsLoading}
+                  disabled={isLoading || imageIsUploading || imageIsDeleting}
+                />
+              </Upload>
+            </Form.Item>
+          </Space>
+        </Col>
+      )}
     </Row>
   )
 }

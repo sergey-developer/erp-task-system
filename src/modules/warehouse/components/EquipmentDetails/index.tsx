@@ -191,7 +191,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
     useGetEquipmentCategories(undefined, { skip: !editEquipmentModalOpened })
 
-  const { currentData: currencyList = [], isFetching: currencyListIsFetching } = useGetCurrencyList(
+  const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList(
     undefined,
     { skip: !editEquipmentModalOpened },
   )
@@ -785,8 +785,8 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             onChangeCategory={onChangeCategory}
             warehouses={warehouseList}
             warehousesIsLoading={warehouseListIsFetching}
-            currencies={currencyList}
-            currenciesIsLoading={currencyListIsFetching}
+            currencies={currencies}
+            currenciesIsLoading={currenciesIsFetching}
             owners={customerList}
             ownersIsLoading={customerListIsFetching}
             onChangeOwner={setSelectedOwnerId}

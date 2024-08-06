@@ -18,7 +18,17 @@ import ExecuteInventorizationRelocationsTab, {
 } from './index'
 
 const props: ExecuteInventorizationRelocationsTabProps = {
-  inventorization: pick(warehouseFixtures.inventorization(), 'executor', 'status'),
+  inventorization: pick(
+    warehouseFixtures.inventorization(),
+    'id',
+    'executor',
+    'status',
+    'type',
+    'deadlineAt',
+    'createdAt',
+    'createdBy',
+    'warehouses',
+  ),
 }
 
 const getContainer = () => screen.getByTestId('execute-inventorization-relocations-tab')

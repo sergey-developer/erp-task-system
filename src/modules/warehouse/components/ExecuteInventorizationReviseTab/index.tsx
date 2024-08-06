@@ -168,7 +168,10 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     },
   )
 
-  const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList()
+  const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList(
+    undefined,
+    { skip: !createEquipmentModalOpened },
+  )
 
   const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
     useLazyGetCustomerList()
@@ -423,8 +426,8 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
           <CreateInventorizationEquipmentModal
             open={createInventorizationEquipmentModalOpened}
             onCancel={debouncedCloseCreateInventorizationEquipmentModal}
-            equipmentCatalog={equipmentCatalog}
-            equipmentCatalogIsLoading={equipmentCatalogIsFetching}
+            equipments={equipmentCatalog}
+            equipmentsIsLoading={equipmentCatalogIsFetching}
             equipment={equipment}
             equipmentIsLoading={equipmentIsFetching}
             onChangeEquipment={setEquipmentId}

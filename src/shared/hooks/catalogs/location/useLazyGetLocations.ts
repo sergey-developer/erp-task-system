@@ -6,9 +6,9 @@ import { getLocationsErrMsg } from 'shared/constants/catalogs'
 import { GetLocationsQueryArgs, GetLocationsSuccessResponse } from 'shared/models/catalogs/location'
 import {
   getErrorDetail,
+  isBadRequestError,
   isErrorResponse,
   isForbiddenError,
-  isNotFoundError,
 } from 'shared/services/baseApi'
 import { useLazyGetLocationsQuery } from 'shared/services/catalogsApi.service'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -24,7 +24,7 @@ export const useLazyGetLocations = (): UseGetLocationsResult => {
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
+      if (isForbiddenError(state.error) || isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
         showErrorNotification(getLocationsErrMsg)
