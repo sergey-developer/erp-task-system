@@ -54,9 +54,9 @@ const props: RelocationTaskFormProps = {
   usersGroups: [],
   usersGroupsIsLoading: false,
 
-  relocateFromLocationList: [],
+  relocateFromLocations: [],
   relocateFromLocationListIsLoading: false,
-  relocateToLocationList: [],
+  relocateToLocations: [],
   relocateToLocationListIsLoading: false,
 
   controllerIsRequired: true,
@@ -480,7 +480,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateFromLocationList={locationList} />
+          <RelocationTaskForm {...props} relocateFromLocations={locationList} />
         </Form>,
       )
 
@@ -502,7 +502,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateFromLocationList={[locationListItem]} />
+          <RelocationTaskForm {...props} relocateFromLocations={[locationListItem]} />
         </Form>,
       )
 
@@ -539,7 +539,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateToLocationList={locationList} />
+          <RelocationTaskForm {...props} relocateToLocations={locationList} />
         </Form>,
       )
 
@@ -561,7 +561,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateToLocationList={[locationListItem]} />
+          <RelocationTaskForm {...props} relocateToLocations={[locationListItem]} />
         </Form>,
       )
 

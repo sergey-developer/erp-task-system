@@ -9,7 +9,7 @@ import { testUtils as taskAttachmentListTestUtils } from 'modules/attachment/com
 import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
-import { getTaskListPageLink } from 'modules/task/utils/task'
+import { getTasksPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as cancelRelocationTaskModalTestUtils } from 'modules/warehouse/components/CancelRelocationTaskModal/CancelRelocationTaskModal.test'
 import { testUtils as confirmExecutionRelocationTaskModalTestUtils } from 'modules/warehouse/components/ConfirmExecutionRelocationTaskModal/ConfirmExecutionRelocationTaskModal.test'
@@ -553,7 +553,7 @@ describe('Информация о заявке о перемещении', () =>
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute(
           'href',
-          getTaskListPageLink({ viewTask: relocationTask.task!.id }),
+          getTasksPageLink({ viewTask: relocationTask.task!.id }),
         )
       })
 

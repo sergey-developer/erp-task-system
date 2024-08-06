@@ -31,7 +31,11 @@ export type GetInventorizationEquipmentsQueryArgs = InventorizationRequestArgs &
   PaginationParams &
   FilterParams &
   SortParams<GetInventorizationEquipmentsSortValue> &
-  GetInventorizationEquipmentsFilter
+  GetInventorizationEquipmentsFilter &
+  Partial<{
+    locationFact: IdType
+    hasRelocationTask: boolean
+  }>
 
 export type GetInventorizationEquipmentsSuccessResponse =
   PaginationResponse<InventorizationEquipmentListItemModel>

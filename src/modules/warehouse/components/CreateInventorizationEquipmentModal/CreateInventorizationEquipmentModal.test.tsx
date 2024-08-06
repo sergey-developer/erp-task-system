@@ -17,8 +17,8 @@ const props: CreateInventorizationEquipmentModalProps = {
 
   equipment: undefined,
   equipmentIsLoading: false,
-  equipmentCatalog: [],
-  equipmentCatalogIsLoading: false,
+  equipments: [],
+  equipmentsIsLoading: false,
   onChangeEquipment: jest.fn(),
   onClickCreateEquipment: jest.fn(),
 
@@ -139,7 +139,7 @@ describe('Модалка создания оборудования для инв
       const { user } = render(
         <CreateInventorizationEquipmentModal
           {...props}
-          equipmentCatalog={[equipmentCatalogListItem]}
+          equipments={[equipmentCatalogListItem]}
           warehouses={[warehouseListItem]}
         />,
       )
@@ -198,10 +198,7 @@ describe('Модалка создания оборудования для инв
       const equipmentCatalogListItem = warehouseFixtures.equipmentCatalogListItem()
 
       const { user } = render(
-        <CreateInventorizationEquipmentModal
-          {...props}
-          equipmentCatalog={[equipmentCatalogListItem]}
-        />,
+        <CreateInventorizationEquipmentModal {...props} equipments={[equipmentCatalogListItem]} />,
       )
 
       await testUtils.openEquipmentSelect(user)

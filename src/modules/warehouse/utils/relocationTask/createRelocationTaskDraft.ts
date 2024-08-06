@@ -1,10 +1,22 @@
 import pick from 'lodash/pick'
 
-import { InventorizationModel } from 'modules/warehouse/models'
-import { CreateRelocationTaskDraftPageLocationState } from 'modules/warehouse/types'
+import {
+  CreateRelocationTaskDraftPageLocationState,
+  ExecuteInventorizationPageLocationState,
+} from 'modules/warehouse/types'
 
 export const makeCreateRelocationTaskDraftPageLocationState = (
-  inventorization: Pick<InventorizationModel, 'executor' | 'status'>,
+  inventorization: ExecuteInventorizationPageLocationState['inventorization'],
 ): NonNullable<CreateRelocationTaskDraftPageLocationState> => ({
-  inventorization: pick(inventorization, 'executor', 'status'),
+  inventorization: pick(
+    inventorization,
+    'id',
+    'executor',
+    'status',
+    'type',
+    'deadlineAt',
+    'createdAt',
+    'createdBy',
+    'warehouses',
+  ),
 })

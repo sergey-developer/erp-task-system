@@ -11,7 +11,7 @@ import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment
 import { EquipmentModel } from 'modules/warehouse/models'
 import {
   checkEquipmentCategoryIsConsumable,
-  makeEquipmentsCatalogSelectOptions,
+  makeEquipmentsSelectOptions,
 } from 'modules/warehouse/utils/equipment'
 
 import { SelectOptionButton } from 'components/Buttons/SelectOptionButton'
@@ -37,8 +37,8 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
   equipmentIsLoading,
   equipmentListIsLoading,
 
-  equipmentsCatalog,
-  equipmentsCatalogIsLoading,
+  equipments,
+  equipmentsIsLoading,
 
   canCreateEquipment,
   onClickCreateEquipment,
@@ -47,9 +47,9 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
 }) => {
   const form = Form.useFormInstance()
 
-  const equipmentsCatalogOptions = useMemo<DefaultOptionType[]>(
-    () => makeEquipmentsCatalogSelectOptions(equipmentsCatalog),
-    [equipmentsCatalog],
+  const equipmentsOptions = useMemo<DefaultOptionType[]>(
+    () => makeEquipmentsSelectOptions(equipments),
+    [equipments],
   )
 
   const handleDeleteRow = useCallback(
@@ -87,9 +87,9 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
               )
             : undefined,
         allowClear: false,
-        loading: equipmentsCatalogIsLoading,
-        disabled: isLoading || equipmentsCatalogIsLoading,
-        options: equipmentsCatalogOptions,
+        loading: equipmentsIsLoading,
+        disabled: isLoading || equipmentsIsLoading,
+        options: equipmentsOptions,
         showSearch: true,
         virtual: true,
         onChange: () => form.resetFields(['quantity']),

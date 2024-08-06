@@ -766,8 +766,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 setEditableKeys={setFromWarehouseEditableTableRowKeys}
                 isLoading={createTaskIsLoading}
                 equipmentIsLoading={equipmentIsFetching}
-                equipmentsCatalog={equipmentCatalogsFromWarehouse}
-                equipmentsCatalogIsLoading={equipmentCatalogsFromWarehouseIsFetching}
+                equipments={equipmentCatalogsFromWarehouse}
+                equipmentsIsLoading={equipmentCatalogsFromWarehouseIsFetching}
                 onClickCreateImage={onOpenCreateRelocationEquipmentImagesModal}
               />
 
@@ -848,8 +848,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 setEditableKeys={setToWarehouseEditableTableRowKeys}
                 isLoading={createTaskIsLoading}
                 equipmentIsLoading={equipmentIsFetching}
-                equipmentsCatalog={equipmentCatalogsToWarehouse}
-                equipmentsCatalogIsLoading={equipmentCatalogsToWarehouseIsFetching}
+                equipments={equipmentCatalogsToWarehouse}
+                equipmentsIsLoading={equipmentCatalogsToWarehouseIsFetching}
                 canCreateEquipment={!!permissions.equipmentsCreate}
                 onClickCreateEquipment={onOpenCreateEquipmentModal}
                 onClickCreateImage={onOpenCreateRelocationEquipmentImagesModal}

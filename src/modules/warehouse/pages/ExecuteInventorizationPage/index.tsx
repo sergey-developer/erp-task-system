@@ -1,6 +1,6 @@
 import { Button, Col, Flex, Row, Typography } from 'antd'
 import React, { FC } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import { useLazyGetInventorizationReport } from 'modules/reports/hooks'
 import ExecuteInventorizationReviseTab from 'modules/warehouse/components/ExecuteInventorizationReviseTab'
@@ -18,11 +18,13 @@ import {
 import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { MaybeNull } from 'shared/types/utils'
 import { base64ToBytes, extractLocationState } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { extractFileNameFromHeaders } from 'shared/utils/extractFileNameFromHeaders'
 import { downloadFile } from 'shared/utils/file'
 
+import { executeInventorizationPageTabNames, ExecuteInventorizationPageTabsEnum } from './constants'
 import { TabsStyled } from './styles'
 
 const ExecuteInventorizationDiscrepanciesTab = React.lazy(
@@ -35,27 +37,18 @@ const ExecuteInventorizationRelocationsTab = React.lazy(
 
 const { Text } = Typography
 
-export enum ExecuteInventorizationPageTabsEnum {
-  Revise = 'Revise',
-  Discrepancies = 'Discrepancies',
-  Relocations = 'Relocations',
-}
-
-export const executeInventorizationPageTabNames: Record<
-  ExecuteInventorizationPageTabsEnum,
-  string
-> = {
-  [ExecuteInventorizationPageTabsEnum.Revise]: 'Сверка',
-  [ExecuteInventorizationPageTabsEnum.Discrepancies]: 'Расхождения',
-  [ExecuteInventorizationPageTabsEnum.Relocations]: 'Перемещения',
-}
-
 const ExecuteInventorizationPage: FC = () => {
   const params = useParams<'id'>()
-  const location = useLocation()
-  const navigate = useNavigate()
-  const locationState = extractLocationState<ExecuteInventorizationPageLocationState>(location)
   const inventorizationId = Number(params.id!)
+
+  const navigate = useNavigate()
+
+  const [searchParams] = useSearchParams()
+  const currentTab = searchParams.get('tab') as MaybeNull<ExecuteInventorizationPageTabsEnum>
+  const relocationTaskDraftId = Number(searchParams.get('relocationTaskDraftId')) || undefined
+
+  const location = useLocation()
+  const locationState = extractLocationState<ExecuteInventorizationPageLocationState>(location)
 
   const [getInventorizationReport, { isFetching: getInventorizationReportIsFetching }] =
     useLazyGetInventorizationReport()
@@ -182,7 +175,7 @@ const ExecuteInventorizationPage: FC = () => {
           <TabsStyled
             type='card'
             destroyInactiveTabPane
-            defaultActiveKey={ExecuteInventorizationPageTabsEnum.Revise}
+            defaultActiveKey={currentTab || ExecuteInventorizationPageTabsEnum.Revise}
             items={[
               {
                 key: ExecuteInventorizationPageTabsEnum.Revise,
