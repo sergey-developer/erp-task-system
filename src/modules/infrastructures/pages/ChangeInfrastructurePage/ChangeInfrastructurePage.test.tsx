@@ -25,7 +25,7 @@ import { formatDate } from 'shared/utils/date'
 import commonFixtures from '_tests_/fixtures/common'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import taskFixtures from '_tests_/fixtures/task'
-import { useLocationResult } from '_tests_/fixtures/useLocation'
+import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetInfrastructureOrdersFormsSuccess,
@@ -117,7 +117,7 @@ describe('Страница изменения инфраструктуры за�
     const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
     jest
       .spyOn(reactRouterDom, 'useLocation')
-      .mockReturnValue(useLocationResult({ state: locationState }))
+      .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
     const infrastructure = infrastructuresFixtures.infrastructure()
     mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
@@ -147,7 +147,7 @@ describe('Страница изменения инфраструктуры за�
     const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
     jest
       .spyOn(reactRouterDom, 'useLocation')
-      .mockReturnValue(useLocationResult({ state: locationState }))
+      .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
     const infrastructure = infrastructuresFixtures.infrastructure()
     mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
@@ -178,7 +178,7 @@ describe('Страница изменения инфраструктуры за�
       const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: locationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
       const infrastructure = infrastructuresFixtures.infrastructure()
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
@@ -208,7 +208,7 @@ describe('Страница изменения инфраструктуры за�
       const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: locationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
       const infrastructure = infrastructuresFixtures.infrastructure({ manager: null })
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
@@ -236,7 +236,7 @@ describe('Страница изменения инфраструктуры за�
         const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
         jest
           .spyOn(reactRouterDom, 'useLocation')
-          .mockReturnValue(useLocationResult({ state: locationState }))
+          .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
         const infrastructure = infrastructuresFixtures.infrastructure()
         mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
@@ -264,7 +264,7 @@ describe('Страница изменения инфраструктуры за�
         const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
         jest
           .spyOn(reactRouterDom, 'useLocation')
-          .mockReturnValue(useLocationResult({ state: locationState }))
+          .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
         const infrastructure = infrastructuresFixtures.infrastructure()
         mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
@@ -290,7 +290,7 @@ describe('Страница изменения инфраструктуры за�
         const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
         jest
           .spyOn(reactRouterDom, 'useLocation')
-          .mockReturnValue(useLocationResult({ state: locationState }))
+          .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
         const infrastructure = infrastructuresFixtures.infrastructure({
           id: infrastructureId,
@@ -332,7 +332,7 @@ describe('Страница изменения инфраструктуры за�
     const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
     jest
       .spyOn(reactRouterDom, 'useLocation')
-      .mockReturnValue(useLocationResult({ state: locationState }))
+      .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
     const infrastructure = infrastructuresFixtures.infrastructure()
     mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
@@ -367,7 +367,7 @@ describe('Страница изменения инфраструктуры за�
       const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: locationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
       const infrastructure = infrastructuresFixtures.infrastructure()
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
@@ -394,7 +394,7 @@ describe('Страница изменения инфраструктуры за�
       const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: locationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
       const infrastructure = infrastructuresFixtures.infrastructure()
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })

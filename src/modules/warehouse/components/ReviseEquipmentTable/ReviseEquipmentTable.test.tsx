@@ -47,7 +47,7 @@ const getContainer = () => screen.getByTestId('revise-equipment-table')
 const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
 
 const clickRow = async (user: UserEvent, id: IdType) =>
-  tableTestUtils.clickRowIn(getContainer(), user, id)
+  tableTestUtils.clickRowById(getContainer(), user, id)
 
 const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
 

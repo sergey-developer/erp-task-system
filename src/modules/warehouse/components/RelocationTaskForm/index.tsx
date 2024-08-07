@@ -270,7 +270,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
 
       {showUploadImages && (
         <Col span={6}>
-          <Space direction='vertical'>
+          <Space data-testid='attachments' direction='vertical'>
             <Text type='secondary'>Общие фотографии к перемещению (до 10 штук)</Text>
 
             <Form.Item name='images' {...filesFormItemProps}>
