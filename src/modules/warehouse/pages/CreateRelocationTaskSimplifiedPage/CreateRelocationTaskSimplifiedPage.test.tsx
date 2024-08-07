@@ -12,7 +12,7 @@ import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import taskFixtures from '_tests_/fixtures/task'
-import { useLocationResult } from '_tests_/fixtures/useLocation'
+import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -130,7 +130,7 @@ describe('Упрощенная страница создания заявки н
       const locationStateTask = taskFixtures.task()
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: { task: locationStateTask } }))
+        .mockReturnValue(fakeUseLocationResult({ state: { task: locationStateTask } }))
 
       const taskAssigneeUser = userFixtures.userListItem({ id: locationStateTask.assignee!.id })
       const currentUser = userFixtures.userListItem()

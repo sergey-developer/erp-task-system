@@ -33,7 +33,7 @@ const getRow = (id: FiscalAccumulatorTasksReportTableItem['olaNextBreachTime']) 
 const clickRow = async (
   user: UserEvent,
   id: FiscalAccumulatorTasksReportTableItem['olaNextBreachTime'],
-) => tableTestUtils.clickRowIn(getContainer(), user, id)
+) => tableTestUtils.clickRowById(getContainer(), user, id)
 
 const getHeadCell = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access

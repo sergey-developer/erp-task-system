@@ -25,7 +25,7 @@ const getContainer = () => screen.getByTestId('technical-examinations-history-ta
 const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
 
 const clickRow = async (user: UserEvent, id: IdType) =>
-  tableTestUtils.clickRowIn(getContainer(), user, id)
+  tableTestUtils.clickRowById(getContainer(), user, id)
 
 const getColTitle = (text: string) => within(getContainer()).getByText(text)
 const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> => {

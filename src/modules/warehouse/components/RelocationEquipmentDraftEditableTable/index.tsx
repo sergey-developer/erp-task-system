@@ -14,7 +14,10 @@ import {
 } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskDraftFormFields } from 'modules/warehouse/types'
 import { makeInventorizationEquipmentsSelectOptions } from 'modules/warehouse/utils/inventorization'
-import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
+import {
+  checkRelocationTaskTypeIsReturnWrittenOff,
+  checkRelocationTaskTypeIsWriteOff,
+} from 'modules/warehouse/utils/relocationTask'
 
 import { MinusCircleIcon } from 'components/Icons'
 
@@ -64,6 +67,7 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
   )
 
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(typeFormValue)
+  const typeIsReturnWrittenOff = checkRelocationTaskTypeIsReturnWrittenOff(typeFormValue)
 
   const equipmentsOptions = useMemo<DefaultOptionType[]>(
     () => makeInventorizationEquipmentsSelectOptions(equipments),
@@ -95,22 +99,23 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
         // @ts-ignore
         'data-testid': 'equipment-form-item',
       },
-      fieldProps: (form) => ({
+      fieldProps: {
         allowClear: false,
         loading: equipmentsIsLoading,
         disabled: isLoading || equipmentsIsLoading,
         options: equipmentsOptions,
         showSearch: true,
         virtual: true,
-        onChange: () => form.resetFields(['quantity']),
         filterOption: filterOptionBy('label'),
-      }),
+      },
     },
     {
       key: 'serialNumber',
       dataIndex: 'serialNumber',
       title: 'Серийный номер',
       fieldProps: { disabled: true, placeholder: null },
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'serial-number-form-item' },
     },
     {
       key: 'condition',
@@ -118,7 +123,11 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
       width: 190,
       title: 'Состояние',
       valueType: 'select',
-      formItemProps: { rules: onlyRequiredRules },
+      formItemProps: {
+        rules: onlyRequiredRules,
+        // @ts-ignore
+        'data-testid': 'condition-form-item',
+      },
       fieldProps: {
         disabled: isLoading || typeIsWriteOff || equipmentIsLoading,
         options: equipmentConditionOptions,
@@ -130,6 +139,8 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
       title: 'Стоимость',
       valueType: 'digit',
       fieldProps: { disabled: isLoading || typeIsWriteOff || equipmentIsLoading, min: 0 },
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'price-form-item' },
     },
     {
       key: 'currency',
@@ -141,14 +152,17 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
         loading: currenciesIsLoading,
         disabled: isLoading || typeIsWriteOff || equipmentIsLoading || currenciesIsLoading,
       },
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'currency-form-item' },
     },
     {
       key: 'quantity',
       dataIndex: 'quantity',
       title: 'Количество',
       valueType: 'digit',
-      formItemProps: { rules: onlyRequiredRules },
       fieldProps: { disabled: true, placeholder: null },
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'quantity-form-item' },
     },
     {
       key: 'attachments',
@@ -166,6 +180,8 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
           )
         }
       },
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'attachments-form-item' },
     },
     {
       key: 'delete',
@@ -188,7 +204,6 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
   return (
     <div data-testid='relocation-equipment-draft-editable-table-container'>
       <EditableProTable<InventorizationEquipmentTableRow>
-        data-testid='relocation-equipment-draft-editable-table'
         virtual={!env.isTest}
         rowKey='rowId'
         name={name}
@@ -197,6 +212,7 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
           record: () => ({
             rowId: random(1, 9999999),
             ...(typeIsWriteOff && { condition: EquipmentConditionEnum.WrittenOff }),
+            ...(typeIsReturnWrittenOff && { condition: EquipmentConditionEnum.Working }),
           }),
           disabled: isLoading,
           creatorButtonText: 'Добавить оборудование',

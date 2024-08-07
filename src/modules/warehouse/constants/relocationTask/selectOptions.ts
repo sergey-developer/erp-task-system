@@ -36,6 +36,10 @@ export const relocationTaskTypeOptions: RelocationTaskTypeOption[] = [
     value: RelocationTaskTypeEnum.WriteOff,
   },
   {
+    label: relocationTaskTypeDict[RelocationTaskTypeEnum.ReturnWrittenOff],
+    value: RelocationTaskTypeEnum.ReturnWrittenOff,
+  },
+  {
     label: relocationTaskTypeDict[RelocationTaskTypeEnum.Customer],
     value: RelocationTaskTypeEnum.Customer,
   },
