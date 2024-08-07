@@ -5,6 +5,7 @@ import * as reactRouterDom from 'react-router-dom'
 import { CommonRouteEnum } from 'configs/routes'
 
 import { testUtils as relocationEquipmentDraftEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentDraftEditableTable/RelocationEquipmentDraftEditableTable.test'
+import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import ExecuteInventorizationPage from 'modules/warehouse/pages/ExecuteInventorizationPage'
@@ -26,6 +27,8 @@ import {
   mockGetInventorizationEquipmentsSuccess,
   mockGetInventorizationEquipmentSuccess,
   mockGetLocationListSuccess,
+  mockGetRelocationEquipmentListSuccess,
+  mockGetRelocationTaskSuccess,
   mockGetUsersGroupsSuccess,
   mockGetUsersSuccess,
 } from '_tests_/mocks/api'
@@ -276,7 +279,7 @@ describe('Страница создания черновика заявки на
     expect(page).toBeInTheDocument()
   })
 
-  test('При успешном создании возвращается на страницу выполнения инвентаризации во вкладку перемещений', async () => {
+  test('При успешном создании возвращается на страницу выполнения инвентаризации во вкладку перемещений и открывает карточку', async () => {
     const locationStateMock = makeCreateRelocationTaskDraftPageLocationState(
       warehouseFixtures.inventorization(),
     )
@@ -314,7 +317,11 @@ describe('Страница создания черновика заявки на
       { body: warehouseFixtures.inventorizationEquipment() },
     )
 
-    mockCreateRelocationTaskSuccess({ body: warehouseFixtures.relocationTask() })
+    const relocationTask = warehouseFixtures.relocationTask()
+    mockCreateRelocationTaskSuccess({ body: relocationTask })
+
+    mockGetRelocationTaskSuccess(relocationTask.id)
+    mockGetRelocationEquipmentListSuccess(relocationTask.id)
 
     const { user } = renderWithRouter(
       [
@@ -355,8 +362,11 @@ describe('Страница создания черновика заявки на
       ),
     )
     await testUtils.clickSubmitButton(user)
-    const page = await executeInventorizationPageTestUtils.findContainer()
 
+    const page = await executeInventorizationPageTestUtils.findContainer()
     expect(page).toBeInTheDocument()
+
+    const details = await relocationTaskDetailsTestUtils.findContainer()
+    expect(details).toBeInTheDocument()
   })
 })

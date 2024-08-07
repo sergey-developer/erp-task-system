@@ -4,10 +4,10 @@ import isNumber from 'lodash/isNumber'
 import { PaginationParams } from 'shared/types/pagination'
 
 export const getInitialPaginationParams = (
-  defaults?: PaginationParams,
+  params?: PaginationParams,
 ): Required<PaginationParams> => ({
-  limit: defaults?.limit || 10,
-  offset: defaults?.offset || 0,
+  limit: params?.limit || 50,
+  offset: params?.offset || 0,
 })
 
 export const calculatePaginationParams = ({

@@ -211,6 +211,7 @@ const ExecuteInventorizationPage: FC = () => {
                   <React.Suspense fallback={<Spinner tip='Загрузка вкладки перемещений' />}>
                     <ExecuteInventorizationRelocationsTab
                       inventorization={locationState.inventorization}
+                      defaultRelocationTaskId={relocationTaskDraftId}
                     />
                   </React.Suspense>
                 ),
