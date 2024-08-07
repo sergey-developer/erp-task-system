@@ -212,7 +212,7 @@ const CreateRelocationTaskDraftPage: FC = () => {
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetInventorizationEquipment()
 
-  const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
+  const [createAttachment] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   const [createTaskMutation, { isLoading: createTaskIsLoading }] = useCreateRelocationTask()

@@ -58,10 +58,12 @@ const EmployeesActionsReportPage: FC = () => {
   const [relocationTaskId, setRelocationTaskId] = useState<IdType>()
   const [relocationTaskOpened, { setTrue: openRelocationTask, setFalse: closeRelocationTask }] =
     useBoolean(false)
+
   const onOpenRelocationTask = useDebounceFn((id: IdType) => {
     openRelocationTask()
     setRelocationTaskId(id)
   })
+
   const onCloseRelocationTask = useDebounceFn(() => {
     closeRelocationTask()
     setRelocationTaskId(undefined)
