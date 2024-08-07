@@ -15,10 +15,10 @@ export enum RelocationTaskApiEnum {
 
   GetRelocationTasks = '/relocation-tasks/',
 
-  GetRelocationEquipmentList = '/relocation-tasks/:id/equipments',
-  GetRelocationEquipmentBalanceList = '/relocation-tasks/:id/equipments/balance',
+  GetRelocationEquipmentList = '/relocation-tasks/:relocationTaskId/equipments',
+  GetRelocationEquipmentBalanceList = '/relocation-tasks/:relocationTaskId/equipments/balance',
 
-  UpdateExternalRelocation = '/relocation-tasks/:id/external-relocation',
+  UpdateExternalRelocation = '/relocation-tasks/:relocationTaskId/external-relocation',
 }
 
 export enum RelocationTaskApiTagEnum {
