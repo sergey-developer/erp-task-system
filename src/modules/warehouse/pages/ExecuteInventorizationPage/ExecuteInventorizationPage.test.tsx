@@ -19,7 +19,7 @@ import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
-import { useLocationResult } from '_tests_/fixtures/useLocation'
+import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -45,6 +45,7 @@ import { executeInventorizationPageTabNames, ExecuteInventorizationPageTabsEnum 
 import ExecuteInventorizationPage from './index'
 
 const getContainer = () => screen.getByTestId('execute-inventorization-page')
+const findContainer = () => screen.findByTestId('execute-inventorization-page')
 
 // tabs
 const getTabsNav = () => within(getContainer()).getByRole('tablist')
@@ -88,6 +89,7 @@ const expectMakeReportLoadingFinished = () =>
 
 export const testUtils = {
   getContainer,
+  findContainer,
 
   getOpenedTab,
   clickTab,
@@ -119,7 +121,7 @@ describe('Страница проведения инвентаризации', (
 
     jest
       .spyOn(reactRouterDom, 'useLocation')
-      .mockReturnValue(useLocationResult({ state: inventorizationState }))
+      .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
     mockGetLocationListSuccess()
@@ -187,7 +189,7 @@ describe('Страница проведения инвентаризации', (
 
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationListSuccess()
@@ -210,7 +212,7 @@ describe('Страница проведения инвентаризации', (
 
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetInventorizationSuccess({ inventorizationId: inventorization.id })
       mockGetInventorizationsSuccess()
@@ -254,7 +256,7 @@ describe('Страница проведения инвентаризации', (
 
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationListSuccess()
@@ -277,7 +279,7 @@ describe('Страница проведения инвентаризации', (
 
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetInventorizationSuccess({ inventorizationId: inventorization.id })
       mockGetInventorizationsSuccess()
@@ -326,7 +328,7 @@ describe('Страница проведения инвентаризации', (
 
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetLocationListSuccess({ body: [] })
       mockGetCurrencyListSuccess()
@@ -358,7 +360,7 @@ describe('Страница проведения инвентаризации', (
 
     jest
       .spyOn(reactRouterDom, 'useLocation')
-      .mockReturnValue(useLocationResult({ state: inventorizationState }))
+      .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
     mockGetLocationListSuccess()
@@ -380,7 +382,7 @@ describe('Страница проведения инвентаризации', (
 
     jest
       .spyOn(reactRouterDom, 'useLocation')
-      .mockReturnValue(useLocationResult({ state: inventorizationState }))
+      .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
     mockGetInventorizationEquipmentsSuccess(
       { inventorizationId: inventorization.id },

@@ -127,6 +127,7 @@ const CreateRelocationTaskDraftPage: FC = () => {
     RelocationTaskTypeEnum.Relocation,
   )
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(selectedType)
+  const typeIsReturnWrittenOff = checkRelocationTaskTypeIsReturnWrittenOff(selectedType)
 
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
@@ -296,7 +297,11 @@ const CreateRelocationTaskDraftPage: FC = () => {
           const newEquipment: InventorizationEquipmentTableRow = {
             ...currentEquipment,
             serialNumber: equipment.serialNumber || undefined,
-            condition: typeIsWriteOff ? EquipmentConditionEnum.WrittenOff : equipment.condition,
+            condition: typeIsWriteOff
+              ? EquipmentConditionEnum.WrittenOff
+              : typeIsReturnWrittenOff
+              ? EquipmentConditionEnum.Working
+              : equipment.condition,
             price: isNumber(equipment.price) ? equipment.price : undefined,
             currency: equipment.currency?.id,
             quantity: isConsumable

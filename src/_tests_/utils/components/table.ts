@@ -16,16 +16,31 @@ const getRowById = (container: HTMLElement, id: NumberOrString): HTMLElement => 
   }
 }
 
+/**
+ * Возвращает строку с названиями колонок
+ */
+const getHeadRowByRole = (container: HTMLElement) => within(container).getAllByRole('row')[0]
+
+/**
+ * Возвращает 1-ю строку таблицы.
+ * Используется для получения строки, id которой генерируется при её добавлении внутри таблицы
+ */
 const getOneRowByRole = (container: HTMLElement) => within(container).getAllByRole('row')[1]
 
-const clickRowIn = async (container: HTMLElement, user: UserEvent, id: NumberOrString) => {
+const clickRowById = async (container: HTMLElement, user: UserEvent, id: NumberOrString) => {
   const row = getRowById(container, id)
   await user.click(row)
   return row
 }
 
-const getHeadCell = (container: HTMLElement, text: string) =>
-  within(container).getByText(text).parentElement?.parentElement
+// todo: описать также другие утилиты
+/**
+ * Возвращает ячейку с названием колонки
+ * @param container Таблица
+ * @param name Название колонки
+ */
+const getHeadCell = (container: HTMLElement, name: string) =>
+  within(getHeadRowByRole(container)).getByRole('columnheader', { name })
 
 const expectRowsRendered = <T extends { id: IdType }>(
   container: HTMLElement,
@@ -62,9 +77,10 @@ const expectLoadingFinished = (container: HTMLElement) =>
   iconTestUtils.expectLoadingFinishedIn(container)
 
 const utils = {
+  getHeadRowByRole,
   getOneRowByRole,
   getRowById,
-  clickRowIn,
+  clickRowById,
 
   getHeadCell,
 
