@@ -47,6 +47,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   usersGroups,
   usersGroupsIsLoading,
 
+  deadlineDisabled,
   controllerIsRequired,
 
   showUploadImages = true,
@@ -200,7 +201,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
                 name='deadlineAtDate'
                 rules={deadlineAtDateRules}
               >
-                <DatePicker disabled={isLoading} />
+                <DatePicker disabled={isLoading || deadlineDisabled} />
               </Form.Item>
             </Col>
 
@@ -211,7 +212,11 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
                 dependencies={['deadlineAtDate']}
                 rules={deadlineAtTimeRules}
               >
-                <TimePicker disabled={isLoading} format={TIME_PICKER_FORMAT} placeholder='Время' />
+                <TimePicker
+                  disabled={isLoading || deadlineDisabled}
+                  format={TIME_PICKER_FORMAT}
+                  placeholder='Время'
+                />
               </Form.Item>
             </Col>
           </Row>
