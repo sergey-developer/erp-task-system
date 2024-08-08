@@ -43,6 +43,7 @@ export type RelocationTaskFormProps = {
   usersGroups: UsersGroupsModel
   usersGroupsIsLoading: boolean
 
+  deadlineDisabled?: boolean
   controllerIsRequired: boolean
 
   showUploadImages?: boolean
