@@ -387,10 +387,13 @@ const CreateRelocationTaskDraftPage: FC = () => {
 
   /* Установка значений формы */
   useEffect(() => {
-    if (authUser && users.length) {
-      form.setFieldsValue({ executors: [authUser.id] })
-    }
-  }, [form, authUser, users.length])
+    form.setFieldsValue({
+      deadlineAtDate: moment(locationState?.inventorization.deadlineAt),
+      deadlineAtTime: moment(locationState?.inventorization.deadlineAt),
+      executors: authUser && users.length ? [authUser.id] : undefined,
+      comment: 'На основании инвентаризации',
+    })
+  }, [form, authUser, users.length, locationState?.inventorization.deadlineAt])
 
   const isRelocationFromMainToMsi =
     relocateFromWarehouse?.type === WarehouseTypeEnum.Main &&
@@ -434,6 +437,7 @@ const CreateRelocationTaskDraftPage: FC = () => {
               onChangeRelocateFrom={onChangeRelocateFrom}
               onChangeRelocateTo={setSelectedRelocateTo}
               showUploadImages={false}
+              deadlineDisabled
             />
           </Col>
 

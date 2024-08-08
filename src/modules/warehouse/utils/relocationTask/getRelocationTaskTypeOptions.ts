@@ -8,5 +8,5 @@ export const getRelocationTaskTypeOptions = (
 ): SelectProps['options'] =>
   relocationTaskTypeOptions.map(({ hasPermissions, ...opt }) => ({
     ...opt,
-    disabled: !hasPermissions?.(permissions),
+    disabled: hasPermissions && !hasPermissions(permissions),
   }))
