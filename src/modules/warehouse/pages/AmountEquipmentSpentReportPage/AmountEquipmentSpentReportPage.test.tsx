@@ -1,6 +1,8 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import * as reactRouterDom from 'react-router-dom'
 
+import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { testUtils as amountEquipmentSpentReportFilterTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportFilter/AmountEquipmentSpentReportFilter.test'
 import { testUtils as amountEquipmentSpentReportFormTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportForm/AmountEquipmentSpentReportForm.test'
 import { testUtils as amountEquipmentSpentReportTableTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportTable/AmountEquipmentSpentReportTable.test'
@@ -15,6 +17,8 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
+import taskFixtures from '_tests_/fixtures/task'
+import { useLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -29,7 +33,14 @@ import {
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { buttonTestUtils, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
+import {
+  buttonTestUtils,
+  fakeId,
+  fakeWord,
+  getStoreWithAuth,
+  render,
+  setupApiTests,
+} from '_tests_/utils'
 
 import AmountEquipmentSpentReportPage from './index'
 
@@ -65,11 +76,23 @@ export const testUtils = {
   expectExportToExcelLoadingFinished,
 }
 
+jest.mock('react-router-dom', () => ({
+  __esModule: true,
+  ...jest.requireActual('react-router-dom'),
+}))
+
 setupApiTests()
 
 describe('Страница отчета количества потраченного оборудования', () => {
   describe('Таблица отчета', () => {
     test('При клике на оборудование открывается карточка оборудования', async () => {
+      jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(fakeId()) })
+
+      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      jest
+        .spyOn(reactRouterDom, 'useLocation')
+        .mockReturnValue(useLocationResult({ state: locationState }))
+
       const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
       mockGetAmountEquipmentSpentReportSuccess({
         body: commonFixtures.paginatedListResponse([reportListItem]),
@@ -115,6 +138,13 @@ describe('Страница отчета количества потраченн�
     })
 
     test('При клике на перемещение открывается карточка заявки на перемещение', async () => {
+      jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(fakeId()) })
+
+      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      jest
+        .spyOn(reactRouterDom, 'useLocation')
+        .mockReturnValue(useLocationResult({ state: locationState }))
+
       const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
       mockGetAmountEquipmentSpentReportSuccess({
         body: commonFixtures.paginatedListResponse([reportListItem]),

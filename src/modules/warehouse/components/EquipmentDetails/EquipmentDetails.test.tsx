@@ -21,6 +21,7 @@ import {
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { NumberOrString } from 'shared/types/utils'
 import { getYesNoWord } from 'shared/utils/common'
+import * as printImageUtils from 'shared/utils/common/printImage'
 import { formatDate } from 'shared/utils/date'
 import { makeString } from 'shared/utils/string'
 
@@ -952,7 +953,7 @@ describe('Информация об оборудовании', () => {
         })
 
         test('При клике обработчик вызывается корректно', async () => {
-          const { printImage } = await import('shared/utils/common/printImage')
+          const printImageSpy = jest.spyOn(printImageUtils, 'printImage')
 
           const equipment = warehouseFixtures.equipment()
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
@@ -969,8 +970,8 @@ describe('Информация об оборудовании', () => {
           const button = buttonTestUtils.getButtonIn(block, 'Печать')
           await user.click(button)
 
-          expect(printImage).toBeCalledTimes(1)
-          expect(printImage).toBeCalledWith(equipment.qrCode)
+          expect(printImageSpy).toBeCalledTimes(1)
+          expect(printImageSpy).toBeCalledWith(equipment.qrCode)
         })
       })
     })
