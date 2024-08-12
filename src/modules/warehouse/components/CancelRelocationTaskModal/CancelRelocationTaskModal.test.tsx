@@ -1,6 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { CANCEL_TEXT } from 'shared/constants/common'
+
 import { buttonTestUtils, render } from '_tests_/utils'
 
 import CancelRelocationTaskModal, { CancelRelocationTaskModalProps } from './index'
@@ -23,7 +25,7 @@ const clickConfirmButton = async (user: UserEvent) => {
 }
 
 // cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Отменить')
+const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
 const clickCancelButton = async (user: UserEvent) => {
   const button = getCancelButton()
   await user.click(button)

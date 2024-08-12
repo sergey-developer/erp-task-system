@@ -5,33 +5,30 @@ import { CANCEL_TEXT } from 'shared/constants/common'
 
 import { buttonTestUtils, render } from '_tests_/utils'
 
-import ConfirmExecutionRelocationTaskModal, {
-  ConfirmExecutionRelocationTaskModalProps,
+import ConfirmTransferDraftRelocationTaskToWorkModal, {
+  ConfirmTransferDraftRelocationTaskToWorkModalProps,
 } from './index'
 
-const props: ConfirmExecutionRelocationTaskModalProps = {
+const props: ConfirmTransferDraftRelocationTaskToWorkModalProps = {
   open: true,
   isLoading: false,
   onCancel: jest.fn(),
   onConfirm: jest.fn(),
 }
 
-const getContainer = () => screen.getByTestId('confirm-execution-relocation-task-modal')
-const findContainer = () => screen.findByTestId('confirm-execution-relocation-task-modal')
+const getContainer = () =>
+  screen.getByTestId('confirm-transfer-draft-relocation-task-to-work-modal')
+
+const findContainer = () =>
+  screen.findByTestId('confirm-transfer-draft-relocation-task-to-work-modal')
 
 // confirm button
-const getConfirmButton = () => buttonTestUtils.getButtonIn(getContainer(), /Подтвердить выполнение/)
-const clickConfirmButton = async (user: UserEvent) => {
-  const button = getConfirmButton()
-  await user.click(button)
-}
+const getConfirmButton = () => buttonTestUtils.getButtonIn(getContainer(), /Подтвердить/)
+const clickConfirmButton = async (user: UserEvent) => user.click(getConfirmButton())
 
 // cancel button
 const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
-const clickCancelButton = async (user: UserEvent) => {
-  const button = getCancelButton()
-  await user.click(button)
-}
+const clickCancelButton = async (user: UserEvent) => user.click(getCancelButton())
 
 export const testUtils = {
   getContainer,
@@ -47,23 +44,25 @@ export const testUtils = {
   expectLoadingFinished: () => buttonTestUtils.expectLoadingFinished(getConfirmButton()),
 }
 
-describe('Модалка подтверждения выполнения заявки на перемещение', () => {
+describe('Модалка подтверждения перевода черновика заявки на перемещение в работу', () => {
   test('Заголовок и описание отображается', () => {
-    render(<ConfirmExecutionRelocationTaskModal {...props} />)
+    render(<ConfirmTransferDraftRelocationTaskToWorkModal {...props} />)
 
     const container = getContainer()
-    const title = within(container).getByText('Подтверждение выполнения')
-    const description = within(container).getByText(
-      'Вы уверены, что хотите подтвердить выполнение заявки?',
+    const title = within(container).getByText('Перевести черновик в работу')
+    const description1 = within(container).getByText(
+      'Вы уверены, что хотите перевести черновик в работу?',
     )
+    const description2 = within(container).getByText('Заявку на перемещение нельзя будет удалить')
 
     expect(title).toBeInTheDocument()
-    expect(description).toBeInTheDocument()
+    expect(description1).toBeInTheDocument()
+    expect(description2).toBeInTheDocument()
   })
 
   describe('Кнопка подтверждения', () => {
     test('Отображается и активна', () => {
-      render(<ConfirmExecutionRelocationTaskModal {...props} />)
+      render(<ConfirmTransferDraftRelocationTaskToWorkModal {...props} />)
 
       const button = testUtils.getConfirmButton()
 
@@ -72,7 +71,7 @@ describe('Модалка подтверждения выполнения зая�
     })
 
     test('При клике обработчик вызывается', async () => {
-      const { user } = render(<ConfirmExecutionRelocationTaskModal {...props} />)
+      const { user } = render(<ConfirmTransferDraftRelocationTaskToWorkModal {...props} />)
       await testUtils.clickConfirmButton(user)
       expect(props.onConfirm).toBeCalledTimes(1)
     })
@@ -80,7 +79,7 @@ describe('Модалка подтверждения выполнения зая�
 
   describe('Кнопка отмены', () => {
     test('Отображается и активна', () => {
-      render(<ConfirmExecutionRelocationTaskModal {...props} />)
+      render(<ConfirmTransferDraftRelocationTaskToWorkModal {...props} />)
 
       const button = testUtils.getCancelButton()
 
@@ -89,7 +88,7 @@ describe('Модалка подтверждения выполнения зая�
     })
 
     test('При клике обработчик вызывается', async () => {
-      const { user } = render(<ConfirmExecutionRelocationTaskModal {...props} />)
+      const { user } = render(<ConfirmTransferDraftRelocationTaskToWorkModal {...props} />)
       await testUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })

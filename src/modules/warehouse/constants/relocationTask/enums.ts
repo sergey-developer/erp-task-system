@@ -4,6 +4,7 @@ export enum RelocationTaskStatusEnum {
   Returned = 'RETURNED',
   Closed = 'CLOSED',
   Canceled = 'CANCELED',
+  Draft = 'DRAFT',
 }
 
 export enum RelocationTaskTypeEnum {
