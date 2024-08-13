@@ -150,12 +150,12 @@ describe('Список заявок', () => {
   test('Объект отображается', () => {
     render(<TaskList {...props} />)
 
-    const object = testUtils.getListItemChildByText(taskListItem.id, taskListItem.name)
+    const object = testUtils.getListItemChildByText(taskListItem.id, taskListItem.name!)
 
     expect(object).toBeInTheDocument()
   })
 
-  test('Срок выполнения если есть', () => {
+  test('Срок выполнения отображается', () => {
     render(<TaskList {...props} />)
 
     const olaNextBreachTime = testUtils.getListItemChildByText(
@@ -164,17 +164,6 @@ describe('Список заявок', () => {
     )
 
     expect(olaNextBreachTime).toBeInTheDocument()
-  })
-
-  test('Срок выполнения не отображается если его нет', () => {
-    render(<TaskList {...props} tasks={[{ ...taskListItem, olaNextBreachTime: null }]} />)
-
-    const olaNextBreachTime = testUtils.queryListItemChildByText(
-      taskListItem.id,
-      formatDate(taskListItem.olaNextBreachTime),
-    )
-
-    expect(olaNextBreachTime).not.toBeInTheDocument()
   })
 
   test('Тема отображается', () => {

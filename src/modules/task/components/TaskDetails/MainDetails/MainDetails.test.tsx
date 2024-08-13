@@ -28,7 +28,7 @@ const props: Readonly<MainDetailsProps> = {
   contactService: fakeWord(),
   olaEstimatedTime: Date.now(),
   olaStatus: TaskOlaStatusEnum.NotExpired,
-  olaNextBreachTime: null,
+  olaNextBreachTime: fakeWord(),
   previousOlaNextBreachTime: null,
   isOlaNextBreachTimeChanged: false,
   address: null,
@@ -71,7 +71,7 @@ describe('Блок детальной информации заявки', () => 
     expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
   })
 
-  test('Срок выполнения отображается если присутствует', () => {
+  test('Срок выполнения отображается', () => {
     render(<MainDetails {...props} olaNextBreachTime={fakeDateString()} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
         queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -194,7 +194,7 @@ describe('Блок детальной информации заявки', () => 
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
-      expect(testUtils.getChildByText(props.name)).toBeInTheDocument()
+      expect(testUtils.getChildByText(props.name!)).toBeInTheDocument()
     })
 
     test('Адрес отображается если присутствует', () => {
