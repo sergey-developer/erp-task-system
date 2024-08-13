@@ -20,6 +20,7 @@ import {
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { NumberOrString } from 'shared/types/utils'
+import * as commonUtils from 'shared/utils/common'
 import { getYesNoWord } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { makeString } from 'shared/utils/string'
@@ -68,13 +69,11 @@ import {
 import EquipmentDetails from './index'
 import { EquipmentDetailsProps } from './types'
 
-jest.mock<typeof import('shared/utils/common/printImage')>(
-  'shared/utils/common/printImage',
-  () => ({
-    __esModule: true,
-    printImage: jest.fn(),
-  }),
-)
+jest.mock('shared/utils/common', () => ({
+  __esModule: true,
+  ...jest.requireActual('shared/utils/common'),
+  printImage: jest.fn(),
+}))
 
 const props: Readonly<EquipmentDetailsProps> = {
   open: true,
@@ -952,7 +951,7 @@ describe('Информация об оборудовании', () => {
         })
 
         test('При клике обработчик вызывается корректно', async () => {
-          const { printImage } = await import('shared/utils/common/printImage')
+          const printImageSpy = jest.spyOn(commonUtils, 'printImage')
 
           const equipment = warehouseFixtures.equipment()
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
@@ -969,8 +968,8 @@ describe('Информация об оборудовании', () => {
           const button = buttonTestUtils.getButtonIn(block, 'Печать')
           await user.click(button)
 
-          expect(printImage).toBeCalledTimes(1)
-          expect(printImage).toBeCalledWith(equipment.qrCode)
+          expect(printImageSpy).toBeCalledTimes(1)
+          expect(printImageSpy).toBeCalledWith(equipment.qrCode)
         })
       })
     })
