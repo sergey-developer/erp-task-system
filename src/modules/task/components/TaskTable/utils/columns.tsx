@@ -33,7 +33,7 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
       return (
         <TaskStatus
           status={extendedStatusIcon ? extendedStatus : status}
-          icon={extendedStatusIcon || taskStatusIcon}
+          icon={taskStatusIcon || extendedStatusIcon}
           badge={badge}
         />
       )
@@ -43,11 +43,13 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
     dataIndex: 'id',
     title: 'Заявка',
     sorter: true,
+    render: (value: TaskTableListItem['id']) => valueOr(value),
   },
   {
     dataIndex: 'recordId',
     title: 'Внеш.номер',
     sorter: true,
+    render: (value: TaskTableListItem['recordId']) => valueOr(value),
   },
   {
     dataIndex: 'name',
@@ -61,6 +63,7 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
     title: 'Тема',
     ellipsis: true,
     sorter: true,
+    render: (value: TaskTableListItem['title']) => valueOr(value),
   },
   {
     dataIndex: 'assignee',
@@ -97,11 +100,12 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
   {
     dataIndex: 'olaNextBreachTime',
     title: 'Выполнить до',
-    render: (value: TaskTableListItem['olaNextBreachTime'], { olaStatus }) => (
-      <Text type={olaStatus ? getOlaStatusTextType(olaStatus) : undefined}>
-        {formatDate(value)}
-      </Text>
-    ),
+    render: (value: TaskTableListItem['olaNextBreachTime'], { olaStatus }) =>
+      valueOr(value, (value) => (
+        <Text type={olaStatus ? getOlaStatusTextType(olaStatus) : undefined}>
+          {formatDate(value)}
+        </Text>
+      )),
     sorter: true,
     ellipsis: true,
   },
@@ -109,7 +113,7 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
     dataIndex: 'status',
     title: 'Статус',
     ellipsis: true,
-    render: (_, { status }) => taskStatusDict[status],
+    render: (_, { status }) => valueOr(status, (value) => taskStatusDict[value]),
   },
   {
     dataIndex: 'subtasksCounter',
@@ -128,7 +132,7 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
   {
     dataIndex: 'createdAt',
     title: 'Дата создания',
-    render: (value: TaskTableListItem['createdAt']) => formatDate(value),
+    render: (value: TaskTableListItem['createdAt']) => valueOr(value, (value) => formatDate(value)),
     sorter: true,
     ellipsis: true,
   },
