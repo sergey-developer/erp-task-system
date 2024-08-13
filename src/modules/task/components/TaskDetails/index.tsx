@@ -61,6 +61,7 @@ import {
   TaskAssigneeModel,
 } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUserActions, useUserPermissions } from 'modules/user/hooks'
 import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
@@ -74,6 +75,7 @@ import Spinner from 'components/Spinner'
 import { DEFAULT_DEBOUNCE_VALUE, NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetFaChangeTypes } from 'shared/hooks/catalogs/faChangeTypes'
+import { useGetResolutionClassifications } from 'shared/hooks/catalogs/resolutionClassifications'
 import { useSystemSettingsState } from 'shared/hooks/system'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
