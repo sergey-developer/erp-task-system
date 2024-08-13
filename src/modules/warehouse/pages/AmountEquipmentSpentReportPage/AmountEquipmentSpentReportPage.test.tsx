@@ -81,6 +81,12 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
 }))
 
+jest.mock('shared/utils/common/base64', () => ({
+  __esModule: true,
+  ...jest.requireActual('shared/utils/common/base64'),
+  base64ToBytes: jest.fn(),
+}))
+
 setupApiTests()
 
 describe('Страница отчета количества потраченного оборудования', () => {
@@ -243,9 +249,9 @@ describe('Страница отчета количества потраченн�
     test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
-      const base64ToArrayBufferSpy = jest.spyOn(base64Utils, 'base64ToBytes')
+      const base64ToBytesSpy = jest.spyOn(base64Utils, 'base64ToBytes')
       const fakeArrayBuffer = new Uint8Array()
-      base64ToArrayBufferSpy.mockReturnValueOnce(fakeArrayBuffer)
+      base64ToBytesSpy.mockReturnValueOnce(fakeArrayBuffer)
 
       const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
       mockGetAmountEquipmentSpentReportSuccess({
@@ -281,8 +287,8 @@ describe('Страница отчета количества потраченн�
       await testUtils.clickExportToExcelButton(user)
       await testUtils.expectExportToExcelLoadingFinished()
 
-      expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
-      expect(base64ToArrayBufferSpy).toBeCalledWith(file)
+      expect(base64ToBytesSpy).toBeCalledTimes(1)
+      expect(base64ToBytesSpy).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
       expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, 'filename')
