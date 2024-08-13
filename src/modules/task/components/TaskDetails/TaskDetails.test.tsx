@@ -1,9 +1,11 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
+import * as reactRouterDom from 'react-router-dom'
 
 import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/routes'
 import ChangeInfrastructurePage from 'modules/infrastructures/pages/ChangeInfrastructurePage'
 import { testUtils as changeInfrastructurePageTestUtils } from 'modules/infrastructures/pages/ChangeInfrastructurePage/ChangeInfrastructurePage.test'
+import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { testUtils as confirmCancelReclassificationRequestModalTestUtils } from 'modules/task/components/ConfirmCancelReclassificationRequestModal/ConfirmCancelReclassificationRequestModal.test'
 import { testUtils as confirmExecuteTaskReclassificationTasksModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskReclassificationTasksModal/ConfirmExecuteTaskReclassificationTasksModal.test'
 import { testUtils as confirmExecuteTaskRegistrationFNModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskRegistrationFNModal/ConfirmExecuteTaskRegistrationFNModal.test'
@@ -37,6 +39,7 @@ import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'
 import taskFixtures from '_tests_/fixtures/task'
+import { useLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -173,6 +176,11 @@ export const testUtils = {
   expectReclassificationRequestLoadingStarted,
   expectReclassificationRequestLoadingFinished,
 }
+
+jest.mock('react-router-dom', () => ({
+  __esModule: true,
+  ...jest.requireActual('react-router-dom'),
+}))
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -1090,6 +1098,13 @@ describe('Карточка заявки', () => {
     })
 
     test('При нажатии переходит на страницу изменения инфраструктуры', async () => {
+      jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(fakeId()) })
+
+      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      jest
+        .spyOn(reactRouterDom, 'useLocation')
+        .mockReturnValue(useLocationResult({ state: locationState }))
+
       const task = taskFixtures.task({
         id: props.taskId,
         ...showChangeInfrastructureButton.task,
