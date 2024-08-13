@@ -20,8 +20,8 @@ import {
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { NumberOrString } from 'shared/types/utils'
+import * as commonUtils from 'shared/utils/common'
 import { getYesNoWord } from 'shared/utils/common'
-import * as printImageUtils from 'shared/utils/common/printImage'
 import { formatDate } from 'shared/utils/date'
 import { makeString } from 'shared/utils/string'
 
@@ -69,13 +69,11 @@ import {
 import EquipmentDetails from './index'
 import { EquipmentDetailsProps } from './types'
 
-jest.mock<typeof import('shared/utils/common/printImage')>(
-  'shared/utils/common/printImage',
-  () => ({
-    __esModule: true,
-    printImage: jest.fn(),
-  }),
-)
+jest.mock('shared/utils/common', () => ({
+  __esModule: true,
+  ...jest.requireActual('shared/utils/common'),
+  printImage: jest.fn(),
+}))
 
 const props: Readonly<EquipmentDetailsProps> = {
   open: true,
@@ -953,7 +951,7 @@ describe('Информация об оборудовании', () => {
         })
 
         test('При клике обработчик вызывается корректно', async () => {
-          const printImageSpy = jest.spyOn(printImageUtils, 'printImage')
+          const printImageSpy = jest.spyOn(commonUtils, 'printImage')
 
           const equipment = warehouseFixtures.equipment()
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })

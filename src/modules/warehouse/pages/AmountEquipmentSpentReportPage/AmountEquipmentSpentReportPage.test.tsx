@@ -106,7 +106,8 @@ describe('Страница отчета количества потраченн�
       const locationListItem = catalogsFixtures.locationListItem()
       mockGetLocationListSuccess({ body: [locationListItem] })
 
-      mockGetEquipmentSuccess(reportListItem.equipment.id)
+      const equipment = warehouseFixtures.equipment()
+      mockGetEquipmentSuccess(reportListItem.equipment.id, { body: equipment })
       mockGetEquipmentAttachmentListSuccess(reportListItem.equipment.id)
 
       const { user } = render(<AmountEquipmentSpentReportPage />, {
