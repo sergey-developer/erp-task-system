@@ -39,7 +39,7 @@ import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'
 import taskFixtures from '_tests_/fixtures/task'
-import { useLocationResult } from '_tests_/fixtures/useLocation'
+import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -1103,7 +1103,7 @@ describe('Карточка заявки', () => {
       const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: locationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
       const task = taskFixtures.task({
         id: props.taskId,

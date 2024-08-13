@@ -65,7 +65,6 @@ import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUserActions, useUserPermissions } from 'modules/user/hooks'
 import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
-import { UserPermissionsEnum } from 'modules/user/constants'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -93,7 +92,6 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import TaskAssignee from '../TaskAssignee'
-import { useGetResolutionClassifications } from 'shared/hooks/catalogs/resolutionClassifications'
 import AssigneeBlock from './AssigneeBlock'
 import WorkGroupBlock from './WorkGroupBlock'
 
