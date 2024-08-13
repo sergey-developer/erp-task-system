@@ -9,14 +9,14 @@ import {
   iconByTaskStatus,
 } from 'modules/task/components/TaskStatus/constants'
 import TaskStatus from 'modules/task/components/TaskStatus/index'
+import { TaskTableListItem } from 'modules/task/components/TaskTable/types'
 import { taskStatusDict } from 'modules/task/constants/task'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { getShortUserName } from 'modules/user/utils'
 
-import { MaybeNull } from 'shared/types/utils'
+import { HYPHEN } from 'shared/constants/common'
+import { valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
-
-import { TaskTableListItem } from '../types'
 
 const { Text } = Typography
 
@@ -25,13 +25,15 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
     key: 'noop',
     render: (_, { status, extendedStatus }) => {
       const taskStatusIcon = iconByTaskStatus[status]
-      const extendedStatusIcon = iconByTaskExtendedStatus[extendedStatus]
+      const extendedStatusIcon = extendedStatus
+        ? iconByTaskExtendedStatus[extendedStatus]
+        : undefined
       const badge = badgeByTaskStatus[status]
 
       return (
         <TaskStatus
           status={extendedStatusIcon ? extendedStatus : status}
-          icon={taskStatusIcon || extendedStatusIcon}
+          icon={extendedStatusIcon || taskStatusIcon}
           badge={badge}
         />
       )
@@ -52,6 +54,7 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
     title: 'Объект',
     ellipsis: true,
     sorter: true,
+    render: (value: TaskTableListItem['name']) => valueOr(value),
   },
   {
     dataIndex: 'title',
@@ -62,22 +65,22 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
   {
     dataIndex: 'assignee',
     title: 'Исполнитель',
-    render: (value: MaybeNull<TaskTableListItem['assignee']>) =>
-      value ? getShortUserName(value) : '',
+    render: (value: TaskTableListItem['assignee']) =>
+      valueOr(value, (value) => getShortUserName(value)),
     ellipsis: true,
     sorter: true,
   },
   {
     dataIndex: 'supportGroup',
     title: 'Группа поддержки',
-    render: (value: TaskTableListItem['supportGroup']) => value?.name,
+    render: (value: TaskTableListItem['supportGroup']) => valueOr(value?.name),
     sorter: true,
     ellipsis: true,
   },
   {
     dataIndex: 'workGroup',
     title: 'Рабочая группа',
-    render: (value: TaskTableListItem['workGroup']) => value?.name,
+    render: (value: TaskTableListItem['workGroup']) => valueOr(value?.name),
     sorter: true,
     ellipsis: true,
   },
@@ -85,9 +88,9 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
     dataIndex: 'responseTime',
     title: 'Срок реакции',
     render: (value: TaskTableListItem['responseTime'], { workGroup, assignee }) => {
-      if (!!assignee) return null
+      if (!!assignee) return valueOr(null)
       const responseTime = parseResponseTime(value, workGroup)
-      return responseTime ? <Text type={responseTime.type}>{responseTime.value}</Text> : null
+      return valueOr(responseTime, (time) => <Text type={time.type}>{time.value}</Text>)
     },
     ellipsis: true,
   },
@@ -95,7 +98,9 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
     dataIndex: 'olaNextBreachTime',
     title: 'Выполнить до',
     render: (value: TaskTableListItem['olaNextBreachTime'], { olaStatus }) => (
-      <Text type={getOlaStatusTextType(olaStatus)}>{formatDate(value)}</Text>
+      <Text type={olaStatus ? getOlaStatusTextType(olaStatus) : undefined}>
+        {formatDate(value)}
+      </Text>
     ),
     sorter: true,
     ellipsis: true,
@@ -108,15 +113,17 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
   },
   {
     dataIndex: 'subtasksCounter',
+    width: 100,
     title: <Text title='Выполнено/Всего'>Задания</Text>,
     render: (_, { subtasksCounter }) =>
-      subtasksCounter.all ? `${subtasksCounter.completed}/${subtasksCounter.all}` : '-',
+      subtasksCounter.all ? `${subtasksCounter.completed}/${subtasksCounter.all}` : HYPHEN,
   },
   {
     dataIndex: 'lastComment',
     title: 'Комментарий',
     ellipsis: true,
     sorter: true,
+    render: (value: TaskTableListItem['lastComment']) => valueOr(value),
   },
   {
     dataIndex: 'createdAt',

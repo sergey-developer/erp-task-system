@@ -1,6 +1,7 @@
 import { Col, Row, Select, Typography } from 'antd'
 import React, { FC } from 'react'
 
+import { useTaskStatus } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
 import { MatchedUserPermissions } from 'modules/user/utils'
 import EditableField from 'modules/warehouse/components/RelocationTaskDetails/EditableField'
@@ -17,7 +18,6 @@ import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 import { valueOr } from 'shared/utils/common'
 
-import { useTaskStatus } from '../../../hooks/task'
 import { makeYandexMapLink } from './utils'
 
 const { Text, Link } = Typography

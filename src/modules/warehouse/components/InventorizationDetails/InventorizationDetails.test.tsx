@@ -19,6 +19,7 @@ import {
 
 import { formatDate } from 'shared/utils/date'
 
+import { useLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetInventorizationSuccess } from '_tests_/mocks/api'
@@ -33,7 +34,6 @@ import {
   spinnerTestUtils,
 } from '_tests_/utils'
 
-import { useLocationResult } from '../../../../_tests_/fixtures/useLocation'
 import InventorizationDetails, { InventorizationDetailsProps } from './index'
 
 const props: InventorizationDetailsProps = {
