@@ -31,6 +31,7 @@ const props: Readonly<MainDetailsProps> = {
   olaNextBreachTime: fakeWord(),
   previousOlaNextBreachTime: null,
   isOlaNextBreachTimeChanged: false,
+  createdBy: null,
   address: null,
   contactPhone: null,
   portablePhone: null,
