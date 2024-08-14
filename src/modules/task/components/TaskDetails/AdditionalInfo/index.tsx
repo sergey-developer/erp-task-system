@@ -5,6 +5,7 @@ import { useTaskStatus } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
 import { MatchedUserPermissions } from 'modules/user/utils'
 import EditableField from 'modules/warehouse/components/RelocationTaskDetails/EditableField'
+import ReadonlyField from 'modules/warehouse/components/RelocationTaskDetails/ReadonlyField'
 import { WorkTypesModel } from 'modules/warehouse/models'
 
 import Expandable from 'components/Expandable'
@@ -38,6 +39,7 @@ export type AdditionalInfoProps = Pick<
   | 'longitude'
   | 'workType'
   | 'workGroup'
+  | 'parentTask'
 > & {
   permissions: MatchedUserPermissions
   impact: string
@@ -75,14 +77,17 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   productClassifier3,
   latitude,
   longitude,
-  expanded,
   workGroup,
+  parentTask,
+
   workType,
   workTypes,
   workTypesIsLoading,
   toggleEditWorkType,
   onSaveWorkType,
   saveWorkTypeIsLoading,
+
+  expanded,
   onExpand,
 }) => {
   const handleExpand = useDebounceFn(onExpand, [onExpand])
@@ -130,6 +135,14 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
           onCancel={toggleEditWorkType}
           onSave={onSaveWorkType}
           isLoading={saveWorkTypeIsLoading}
+        />
+
+        <ReadonlyField
+          rowProps={{ gutter: 8 }}
+          leftColProps={{ span: undefined }}
+          rightColProps={{ span: undefined }}
+          label='Родительская заявка'
+          value={parentTask?.recordId}
         />
 
         <Row justify='space-between'>

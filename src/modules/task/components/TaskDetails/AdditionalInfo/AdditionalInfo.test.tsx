@@ -31,6 +31,7 @@ const props: Readonly<
   productClassifier3: fakeWord(),
   status: TaskStatusEnum.New,
   workGroup: taskFixtures.workGroup(),
+  parentTask: null,
   address: null,
   longitude: null,
   latitude: null,

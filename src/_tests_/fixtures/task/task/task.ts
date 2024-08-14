@@ -85,6 +85,9 @@ export const task = (
     : props!.infrastructureProject,
   workType: isUndefined(props?.workType) ? null : props!.workType,
 
+  createdBy: null,
+  observers: null,
+  parentTask: null,
   shop: { id: fakeId(), title: fakeWord() },
   attachments: [taskFixtures.attachment()],
   resolution: {

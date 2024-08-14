@@ -13,6 +13,7 @@ import {
   TaskSupportGroupModel,
   TaskWorkGroupModel,
 } from 'modules/task/models'
+import { UserModel, UserPositionModel } from 'modules/user/models'
 import { WorkTypeModel } from 'modules/warehouse/models'
 
 import { IdType } from 'shared/types/common'
@@ -34,6 +35,19 @@ export type TaskModel = {
   priorityCode: 1 | 2 | 3 | 4
   olaNextBreachTime: string
 
+  observers: MaybeNull<
+    Array<
+      Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {
+        position: MaybeNull<UserPositionModel['title']>
+      }
+    >
+  >
+  createdBy: MaybeNull<
+    Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {
+      position: MaybeNull<UserPositionModel['title']>
+    }
+  >
+  parentTask: MaybeNull<Pick<TaskModel, 'id' | 'recordId'>>
   name: MaybeNull<string>
   olaStatus: MaybeNull<TaskOlaStatusEnum>
   extendedStatus: MaybeNull<TaskExtendedStatusEnum>

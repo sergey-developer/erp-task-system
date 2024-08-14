@@ -76,6 +76,7 @@ export type TaskCardProps = {
       | 'recordId'
       | 'title'
       | 'createdAt'
+      | 'createdBy'
       | 'name'
       | 'address'
       | 'contactService'
@@ -523,6 +524,7 @@ const TaskCard: FC<TaskCardProps> = ({
                 status={task.status}
                 title={task.title}
                 createdAt={formatDate(task.createdAt)}
+                createdBy={task.createdBy}
                 name={task.name}
                 address={task.address}
                 contactService={task.contactService}

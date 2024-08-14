@@ -66,6 +66,7 @@ import { useGetUserActions, useUserPermissions } from 'modules/user/hooks'
 import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 
+import Label from 'components/Label'
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
@@ -821,6 +822,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     status={task.status}
                     title={task.title}
                     createdAt={formatDate(task.createdAt)}
+                    createdBy={task.createdBy}
                     name={task.name}
                     address={task.address}
                     contactService={task.contactService}
@@ -854,6 +856,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     productClassifier3={task.productClassifier3}
                     latitude={task.latitude}
                     longitude={task.longitude}
+                    parentTask={task.parentTask}
                     workGroup={task.workGroup}
                     workType={task.workType}
                     workTypes={workTypes}
@@ -900,6 +903,31 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                         userActions={userActions}
                       />
                     </Col>
+                  </Row>
+
+                  <Row justify='space-between'>
+                    <Col span={11}>
+                      <Label label='Наблюдатели'>
+                        {valueOr(
+                          task.observers,
+                          (observers) => (
+                            <Space direction='vertical'>
+                              {observers.map((obs) => (
+                                <TaskAssignee
+                                  {...obs}
+                                  hasPopover
+                                  showAvatar={false}
+                                  showPhone={false}
+                                />
+                              ))}
+                            </Space>
+                          ),
+                          'Не назначены',
+                        )}
+                      </Label>
+                    </Col>
+
+                    <Col span={11}></Col>
                   </Row>
 
                   <Divider />
