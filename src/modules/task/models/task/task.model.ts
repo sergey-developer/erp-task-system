@@ -24,17 +24,17 @@ export type TaskModel = {
   createdAt: string
   type: TaskTypeEnum
   contactService: string
-  productClassifier1: string
-  productClassifier2: string
-  productClassifier3: string
   recordId: string
   status: TaskStatusEnum
   title: string
-  initialImpact: 1 | 2 | 3 | 4
-  severity: 1 | 2 | 3 | 4
-  priorityCode: 1 | 2 | 3 | 4
   olaNextBreachTime: string
 
+  initialImpact: MaybeNull<1 | 2 | 3 | 4>
+  severity: MaybeNull<1 | 2 | 3 | 4>
+  priorityCode: MaybeNull<1 | 2 | 3 | 4>
+  productClassifier1: MaybeNull<string>
+  productClassifier2: MaybeNull<string>
+  productClassifier3: MaybeNull<string>
   observers: MaybeNull<
     Array<
       Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {

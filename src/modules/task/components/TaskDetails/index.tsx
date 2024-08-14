@@ -164,6 +164,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const { modal } = App.useApp()
   const navigate = useNavigate()
 
+  const [parentTaskAdditionalInfoExpanded, { toggle: toggleParentTaskAdditionalInfoExpanded }] =
+    useBoolean(false)
+
+  const [parentTaskOpened, { setTrue: openParentTask, setFalse: closeParentTask }] =
+    useBoolean(false)
+
+  const debouncedOpenParentTask = useDebounceFn(openParentTask)
+  const debouncedCloseParentTask = useDebounceFn(closeParentTask)
+
   const authUser = useAuthUser()
   const permissions = useUserPermissions([
     UserPermissionsEnum.InfrastructureProjectRead,
@@ -847,9 +856,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     address={task.address}
                     company={task.company}
                     contactType={task.contactType}
-                    severity={taskSeverityMap.get(task.severity)!}
-                    priority={taskPriorityMap.get(task.priorityCode)!}
-                    impact={taskImpactMap.get(task.initialImpact)!}
+                    severity={taskSeverityMap.get(task.severity)}
+                    priority={taskPriorityMap.get(task.priorityCode)}
+                    impact={taskImpactMap.get(task.initialImpact)}
                     supportGroup={task.supportGroup?.name}
                     productClassifier1={task.productClassifier1}
                     productClassifier2={task.productClassifier2}
@@ -857,6 +866,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     latitude={task.latitude}
                     longitude={task.longitude}
                     parentTask={task.parentTask}
+                    openParentTask={debouncedOpenParentTask}
                     workGroup={task.workGroup}
                     workType={task.workType}
                     workTypes={workTypes}
@@ -1134,6 +1144,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             recipientsIsLoading={taskRegistrationRequestRecipientsIsFetching}
           />
         </React.Suspense>
+      )}
+
+      {parentTaskOpened && task?.parentTask?.id && (
+        <TaskDetails
+          taskId={task.parentTask.id}
+          onClose={debouncedCloseParentTask}
+          additionalInfoExpanded={parentTaskAdditionalInfoExpanded}
+          onExpandAdditionalInfo={toggleParentTaskAdditionalInfoExpanded}
+          height={height}
+        />
       )}
     </>
   )

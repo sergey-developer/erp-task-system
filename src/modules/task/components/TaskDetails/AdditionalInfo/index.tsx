@@ -1,4 +1,4 @@
-import { Col, Row, Select, Typography } from 'antd'
+import { Button, Col, Flex, Row, Select, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import { useTaskStatus } from 'modules/task/hooks/task'
@@ -42,9 +42,6 @@ export type AdditionalInfoProps = Pick<
   | 'parentTask'
 > & {
   permissions: MatchedUserPermissions
-  impact: string
-  severity: string
-  priority: string
 
   expanded: boolean
   onExpand: EmptyFn
@@ -57,6 +54,11 @@ export type AdditionalInfoProps = Pick<
   saveWorkTypeIsLoading: boolean
 
   supportGroup?: string
+  impact?: string
+  severity?: string
+  priority?: string
+
+  openParentTask?: EmptyFn
 }
 
 const AdditionalInfo: FC<AdditionalInfoProps> = ({
@@ -78,7 +80,9 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   latitude,
   longitude,
   workGroup,
+
   parentTask,
+  openParentTask,
 
   workType,
   workTypes,
@@ -104,173 +108,210 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
       onClick={handleExpand}
     >
       <Space data-testid='additional-info-content' direction='vertical' size={30} $block>
-        <EditableField
-          data-testid='work-type'
-          leftColProps={{ span: 6 }}
-          label='Тип работ'
-          value={workType?.id}
-          displayValue={workType?.title}
-          forceDisplayValue
-          renderEditable={({ value, onChange }) => (
-            <Select
-              popupMatchSelectWidth={200}
-              placeholder='Выберите из списка'
-              value={value}
-              onChange={(value) => onChange(value)}
-              options={workTypes}
-              disabled={workTypesIsLoading}
-              loading={workTypesIsLoading}
-              fieldNames={idAndTitleSelectFieldNames}
+        <Flex vertical gap='small'>
+          <EditableField
+            data-testid='work-type'
+            leftColProps={{ span: 6 }}
+            label='Тип работ'
+            value={workType?.id}
+            displayValue={workType?.title}
+            forceDisplayValue
+            renderEditable={({ value, onChange }) => (
+              <Select
+                popupMatchSelectWidth={200}
+                placeholder='Выберите из списка'
+                value={value}
+                onChange={(value) => onChange(value)}
+                options={workTypes}
+                disabled={workTypesIsLoading}
+                loading={workTypesIsLoading}
+                fieldNames={idAndTitleSelectFieldNames}
+              />
+            )}
+            editButtonHidden={
+              !(
+                permissions.classificationOfWorkTypes &&
+                !!workGroup &&
+                !taskStatus.isClosed &&
+                !taskStatus.isCompleted
+              )
+            }
+            onEdit={toggleEditWorkType}
+            onCancel={toggleEditWorkType}
+            onSave={onSaveWorkType}
+            isLoading={saveWorkTypeIsLoading}
+          />
+
+          {parentTask?.recordId && (
+            <ReadonlyField
+              leftColProps={{ span: 6 }}
+              rightColProps={{ span: 16 }}
+              label='Родительская заявка'
+              value={
+                <Button type='link' onClick={openParentTask}>
+                  {parentTask.recordId}
+                </Button>
+              }
             />
           )}
-          editButtonHidden={
-            !(
-              permissions.classificationOfWorkTypes &&
-              !!workGroup &&
-              !taskStatus.isClosed &&
-              !taskStatus.isCompleted
-            )
-          }
-          onEdit={toggleEditWorkType}
-          onCancel={toggleEditWorkType}
-          onSave={onSaveWorkType}
-          isLoading={saveWorkTypeIsLoading}
-        />
 
-        <ReadonlyField
-          rowProps={{ gutter: 8 }}
-          leftColProps={{ span: undefined }}
-          rightColProps={{ span: undefined }}
-          label='Родительская заявка'
-          value={parentTask?.recordId}
-        />
+          <Row justify='space-between'>
+            <Col span={11}>
+              <Space direction='vertical' $block>
+                {parentTask?.recordId && (
+                  <ReadonlyField
+                    rowProps={{ justify: 'space-between' }}
+                    leftColProps={{ span: 11 }}
+                    rightColProps={{ span: 11 }}
+                    label='Компания'
+                    value={<Text strong>{valueOr(company)}</Text>}
+                  />
+                )}
 
-        <Row justify='space-between'>
-          <Col span={11}>
-            <Space direction='vertical' $block>
-              <Row justify='space-between'>
-                <Col span={11}>
-                  <Text type='secondary'>Компания</Text>
-                </Col>
+                {contactType && (
+                  <ReadonlyField
+                    rowProps={{ justify: 'space-between' }}
+                    leftColProps={{ span: 11 }}
+                    rightColProps={{ span: 11 }}
+                    label='Формат магазина'
+                    value={<Text strong>{contactType}</Text>}
+                  />
+                )}
 
-                <Col span={11}>
-                  <Text strong>{valueOr(company)}</Text>
-                </Col>
-              </Row>
+                {sapId && (
+                  <ReadonlyField
+                    rowProps={{ justify: 'space-between' }}
+                    leftColProps={{ span: 11 }}
+                    rightColProps={{ span: 11 }}
+                    label='SAP ID'
+                    value={<Text strong>{sapId}</Text>}
+                  />
+                )}
 
-              <Row justify='space-between'>
-                <Col span={11}>
-                  <Text type='secondary'>Формат магазина</Text>
-                </Col>
-
-                <Col span={11}>
-                  <Text strong>{valueOr(contactType)}</Text>
-                </Col>
-              </Row>
-
-              <Row justify='space-between'>
-                <Col span={11}>
-                  <Text type='secondary'>SAP ID</Text>
-                </Col>
-
-                <Col span={11}>
-                  <Text strong>{valueOr(sapId)}</Text>
-                </Col>
-              </Row>
-
-              <Row justify='space-between'>
-                <Col span={11}>
-                  <Text type='secondary'>Email</Text>
-                </Col>
-
-                <Col span={11}>
-                  <Text strong>{valueOr(email)}</Text>
-                </Col>
-              </Row>
-            </Space>
-          </Col>
-
-          <Col span={11}>
-            <Space direction='vertical' size='large'>
-              <Space align='start' data-testid='additional-info-address'>
-                <MapPointIcon $size='large' />
-
-                <Link
-                  href={!!address ? makeYandexMapLink({ longitude, latitude }) : undefined}
-                  target='_blank'
-                >
-                  <Text strong={!!address} underline={!!address}>
-                    {address || 'Не определено'}
-                  </Text>
-                </Link>
+                {email && (
+                  <ReadonlyField
+                    rowProps={{ justify: 'space-between' }}
+                    leftColProps={{ span: 11 }}
+                    rightColProps={{ span: 11 }}
+                    label='Email'
+                    value={<Text strong>{email}</Text>}
+                  />
+                )}
               </Space>
+            </Col>
 
-              <Label label='Наименование группы поддержки Х5'>
-                <Text strong>{valueOr(supportGroup)}</Text>
-              </Label>
-            </Space>
-          </Col>
-        </Row>
+            {(address || supportGroup) && (
+              <Col span={11}>
+                <Space direction='vertical' size='large'>
+                  {address && (
+                    <Space align='start' data-testid='additional-info-address'>
+                      <MapPointIcon $size='large' />
 
-        <Row align='middle' justify='space-between'>
-          <Col span={5}>
-            <Text type='secondary'>Категория заявки</Text>
-          </Col>
+                      <Link
+                        href={
+                          longitude && latitude
+                            ? makeYandexMapLink({ longitude, latitude })
+                            : undefined
+                        }
+                        target='_blank'
+                      >
+                        <Text strong underline>
+                          {address}
+                        </Text>
+                      </Link>
+                    </Space>
+                  )}
 
-          <Col span={18}>
-            <Row gutter={20}>
-              <Col span={8}>
-                <Label label='Уровень 1'>
-                  <Text>{productClassifier1}</Text>
+                  {supportGroup && (
+                    <Label label='Наименование группы поддержки Х5'>
+                      <Text strong>{supportGroup}</Text>
+                    </Label>
+                  )}
+                </Space>
+              </Col>
+            )}
+          </Row>
+        </Flex>
+
+        {(productClassifier1 || productClassifier2 || productClassifier3) && (
+          <Row align='middle' justify='space-between'>
+            <Col span={5}>
+              <Text type='secondary'>Категория заявки</Text>
+            </Col>
+
+            <Col span={18}>
+              <Row gutter={20}>
+                {productClassifier1 && (
+                  <Col span={8}>
+                    <Label label='Уровень 1'>
+                      <Text>{productClassifier1}</Text>
+                    </Label>
+                  </Col>
+                )}
+
+                {productClassifier2 && (
+                  <Col span={8}>
+                    <Label label='Уровень 2'>
+                      <Text>{productClassifier2}</Text>
+                    </Label>
+                  </Col>
+                )}
+
+                {productClassifier3 && (
+                  <Col span={8}>
+                    <Label label='Уровень 3'>
+                      <Text>{productClassifier3}</Text>
+                    </Label>
+                  </Col>
+                )}
+              </Row>
+            </Col>
+          </Row>
+        )}
+
+        {(weight || impact || severity) && (
+          <Row align='bottom' justify='space-between'>
+            {weight && (
+              <Col span={5}>
+                <Label label='Приоритет заявки' size={0}>
+                  <Label label='Вес:' direction='horizontal'>
+                    <Text>{weight}</Text>
+                  </Label>
                 </Label>
               </Col>
+            )}
 
-              <Col span={8}>
-                <Label label='Уровень 2'>
-                  <Text>{productClassifier2}</Text>
-                </Label>
+            {(impact || severity || priority) && (
+              <Col span={18}>
+                <Row gutter={20}>
+                  {impact && (
+                    <Col span={8}>
+                      <Label label='Влияние'>
+                        <Text>{impact}</Text>
+                      </Label>
+                    </Col>
+                  )}
+
+                  {severity && (
+                    <Col span={8}>
+                      <Label label='Срочность'>
+                        <Text>{severity}</Text>
+                      </Label>
+                    </Col>
+                  )}
+
+                  {priority && (
+                    <Col span={8}>
+                      <Label label='Приоритет'>
+                        <Text>{priority}</Text>
+                      </Label>
+                    </Col>
+                  )}
+                </Row>
               </Col>
-
-              <Col span={8}>
-                <Label label='Уровень 3'>
-                  <Text>{productClassifier3}</Text>
-                </Label>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-
-        <Row align='bottom' justify='space-between'>
-          <Col span={5}>
-            <Label label='Приоритет заявки' size={0}>
-              <Label label='Вес:' direction='horizontal'>
-                <Text>{valueOr(weight)}</Text>
-              </Label>
-            </Label>
-          </Col>
-
-          <Col span={18}>
-            <Row gutter={20}>
-              <Col span={8}>
-                <Label label='Влияние'>
-                  <Text>{valueOr(impact)}</Text>
-                </Label>
-              </Col>
-
-              <Col span={8}>
-                <Label label='Срочность'>
-                  <Text>{valueOr(severity)}</Text>
-                </Label>
-              </Col>
-
-              <Col span={8}>
-                <Label label='Приоритет'>
-                  <Text>{valueOr(priority)}</Text>
-                </Label>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+            )}
+          </Row>
+        )}
       </Space>
     </Expandable>
   )
