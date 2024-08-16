@@ -1,6 +1,6 @@
 import { EquipmentModel } from 'modules/warehouse/models'
 
-import { LocationModel } from 'shared/models/catalogs/location'
+import { LocationCatalogListItemModel } from 'shared/models/catalogs/locations'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, SetNonNullable } from 'shared/types/utils'
 
@@ -11,8 +11,8 @@ export type InventorizationEquipmentListItemModel = {
     'id' | 'title' | 'category' | 'serialNumber' | 'inventoryNumber'
   >
   isLocationFactUndefined: boolean
-  locationPlan: MaybeNull<LocationModel>
-  locationFact: MaybeNull<LocationModel>
+  locationPlan: MaybeNull<Pick<LocationCatalogListItemModel, 'id' | 'title'>>
+  locationFact: MaybeNull<Pick<LocationCatalogListItemModel, 'id' | 'title'>>
   quantity: {
     plan: number
     fact: MaybeNull<number>

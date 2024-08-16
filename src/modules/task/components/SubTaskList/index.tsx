@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { SubTaskModel } from 'modules/task/models'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 import Space from 'components/Space'
 

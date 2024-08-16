@@ -16,7 +16,7 @@ export const deadlineAtTimeRules: Rule[] = [
     required: true,
     validator: timeValidator({
       dateGetter: getFieldValue,
-      dateFieldName: 'deadlineAtDate',
+      dateFieldPath: 'deadlineAtDate',
       required: true,
     }),
   }),

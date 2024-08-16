@@ -28,7 +28,7 @@ import {
   mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentNomenclaturesSuccess,
   mockGetEquipmentSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
@@ -109,8 +109,8 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(reportListItem.equipment.id, { body: equipment })
@@ -162,8 +162,8 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
       mockGetRelocationTaskSuccess(reportListItem.relocationTask.id)
       mockGetRelocationEquipmentListSuccess(reportListItem.relocationTask.id)
@@ -211,8 +211,8 @@ describe('Страница отчета количества потраченн�
         once: false,
       })
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
       const equipmentCategoryListItem = warehouseFixtures.equipmentCategoryListItem()
       mockGetEquipmentCategoryListSuccess({ body: [equipmentCategoryListItem] })
@@ -263,8 +263,8 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
       const { user } = render(<AmountEquipmentSpentReportPage />)
 

@@ -26,7 +26,7 @@ import {
   mockGetEquipmentCatalogListSuccess,
   mockGetEquipmentListTemplateServerError,
   mockGetEquipmentListTemplateSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
   mockGetRelocationEquipmentBalanceListSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskAttachmentsSuccess,
@@ -132,7 +132,7 @@ describe('Страница редактирования заявки на пер
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
       mockGetRelocationTaskSuccess(relocationTaskId)
@@ -156,7 +156,7 @@ describe('Страница редактирования заявки на пер
       const currentUser = userFixtures.userListItem()
       const otherUser = userFixtures.userListItem()
       mockGetUsersSuccess({ body: [executorUser, currentUser, otherUser] })
-      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
         body: warehouseFixtures.equipmentCatalogList(),
@@ -197,7 +197,7 @@ describe('Страница редактирования заявки на пер
       const controllerUser = userFixtures.userListItem()
       const currentUser = userFixtures.userListItem()
       mockGetUsersSuccess({ body: [controllerUser, currentUser] })
-      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
         body: warehouseFixtures.equipmentCatalogList(),
@@ -234,7 +234,7 @@ describe('Страница редактирования заявки на пер
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
       mockGetRelocationTaskSuccess(relocationTaskId)
@@ -260,7 +260,7 @@ describe('Страница редактирования заявки на пер
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
       mockGetRelocationTaskSuccess(relocationTaskId)
@@ -285,7 +285,7 @@ describe('Страница редактирования заявки на пер
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
       mockGetRelocationTaskSuccess(relocationTaskId)
@@ -306,7 +306,7 @@ describe('Страница редактирования заявки на пер
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess({ body: [] })
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationsCatalogSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
       mockGetRelocationTaskSuccess(relocationTaskId)
@@ -347,7 +347,7 @@ describe('Страница редактирования заявки на пер
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess({ body: [] })
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationsCatalogSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
       mockGetRelocationTaskSuccess(relocationTaskId)
@@ -377,7 +377,7 @@ describe('Страница редактирования заявки на пер
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
       mockGetRelocationTaskSuccess(relocationTaskId)
@@ -400,7 +400,7 @@ describe('Страница редактирования заявки на пер
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
       mockGetRelocationTaskSuccess(relocationTaskId)
@@ -427,9 +427,11 @@ describe('Страница редактирования заявки на пер
       mockGetEquipmentCatalogListSuccess({ body: [] })
       mockGetCurrencyListSuccess({ body: [] })
 
-      const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-      const locationFrom = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+      const locationTo = catalogsFixtures.locationCatalogListItem({
+        type: LocationTypeEnum.Warehouse,
+      })
+      const locationFrom = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
       const { user } = render(<EditRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -463,9 +465,11 @@ describe('Страница редактирования заявки на пер
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
 
-        const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-        const locationFrom = catalogsFixtures.locationListItem()
-        mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+        const locationTo = catalogsFixtures.locationCatalogListItem({
+          type: LocationTypeEnum.Warehouse,
+        })
+        const locationFrom = catalogsFixtures.locationCatalogListItem()
+        mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
         render(<EditRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -489,9 +493,11 @@ describe('Страница редактирования заявки на пер
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
 
-        const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-        const locationFrom = catalogsFixtures.locationListItem()
-        mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+        const locationTo = catalogsFixtures.locationCatalogListItem({
+          type: LocationTypeEnum.Warehouse,
+        })
+        const locationFrom = catalogsFixtures.locationCatalogListItem()
+        mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
         const { user } = render(<EditRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -520,9 +526,9 @@ describe('Страница редактирования заявки на пер
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
 
-        const locationTo = catalogsFixtures.locationListItem()
-        const locationFrom = catalogsFixtures.locationListItem()
-        mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+        const locationTo = catalogsFixtures.locationCatalogListItem()
+        const locationFrom = catalogsFixtures.locationCatalogListItem()
+        mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
         const { user } = render(<EditRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -558,9 +564,13 @@ describe('Страница редактирования заявки на пер
       mockGetRelocationTaskAttachmentsSuccess(relocationTaskId)
       mockCreateAttachmentSuccess()
 
-      const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-      const locationFrom = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-      mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+      const locationTo = catalogsFixtures.locationCatalogListItem({
+        type: LocationTypeEnum.Warehouse,
+      })
+      const locationFrom = catalogsFixtures.locationCatalogListItem({
+        type: LocationTypeEnum.Warehouse,
+      })
+      mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
       mockImportEquipmentsByFileSuccess({ body: [warehouseFixtures.importedEquipmentByFile()] })
 
@@ -601,9 +611,11 @@ describe('Страница редактирования заявки на пер
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
 
-        const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-        const locationFrom = catalogsFixtures.locationListItem()
-        mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+        const locationTo = catalogsFixtures.locationCatalogListItem({
+          type: LocationTypeEnum.Warehouse,
+        })
+        const locationFrom = catalogsFixtures.locationCatalogListItem()
+        mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
         const errorMsg = fakeWord()
         mockImportEquipmentsByFileBadRequestError({ body: { detail: errorMsg } })
@@ -642,9 +654,11 @@ describe('Страница редактирования заявки на пер
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
 
-        const locationTo = catalogsFixtures.locationListItem({ type: LocationTypeEnum.Warehouse })
-        const locationFrom = catalogsFixtures.locationListItem()
-        mockGetLocationListSuccess({ body: [locationTo, locationFrom], once: false })
+        const locationTo = catalogsFixtures.locationCatalogListItem({
+          type: LocationTypeEnum.Warehouse,
+        })
+        const locationFrom = catalogsFixtures.locationCatalogListItem()
+        mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
         mockImportEquipmentsByFileServerError()
 

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getResolutionClassificationsErrMsg } from 'shared/constants/catalogs'
+import { getResolutionClassificationsCatalogErrMsg } from 'shared/constants/catalogs'
 import {
   GetResolutionClassificationsQueryArgs,
   GetResolutionClassificationsSuccessResponse,
@@ -32,7 +32,7 @@ export const useGetResolutionClassifications = (
       if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getResolutionClassificationsErrMsg)
+        showErrorNotification(getResolutionClassificationsCatalogErrMsg)
       }
     }
   }, [state.error])

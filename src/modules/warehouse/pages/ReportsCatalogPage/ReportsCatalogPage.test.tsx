@@ -4,7 +4,10 @@ import React from 'react'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
-import { mockGetEquipmentNomenclaturesSuccess, mockGetLocationListSuccess } from '_tests_/mocks/api'
+import {
+  mockGetEquipmentNomenclaturesSuccess,
+  mockGetLocationsCatalogSuccess,
+} from '_tests_/mocks/api'
 import { linkTestUtils, renderWithRouter } from '_tests_/utils'
 
 import AmountEquipmentSpentReportPage from '../AmountEquipmentSpentReportPage'
@@ -157,7 +160,7 @@ describe('Страница каталога отчетов', () => {
 
     test('При клике переходит на страницу списка отчета действий сотрудников', async () => {
       mockGetEquipmentNomenclaturesSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
 
       const { user } = renderWithRouter(
         [

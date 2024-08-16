@@ -9,6 +9,7 @@ export enum TaskApiEnum {
   CreateTaskCompletionDocuments = '/tasks/:id/completion-documents',
   GetTaskCompletionDocuments = '/tasks/:id/completion-documents',
 
+  CreateTask = '/tasks/',
   GetTasks = '/tasks/',
   GetTaskListMap = '/tasks/map/',
 

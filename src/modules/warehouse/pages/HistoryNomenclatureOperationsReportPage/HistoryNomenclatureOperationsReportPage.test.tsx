@@ -28,7 +28,7 @@ import {
   mockGetEquipmentSuccess,
   mockGetHistoryNomenclatureOperationsReportSuccess,
   mockGetHistoryNomenclatureOperationsReportXlsxSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
@@ -84,8 +84,8 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
       mockGetEquipmentSuccess(reportListItem.id)
       mockGetEquipmentAttachmentListSuccess(reportListItem.id)
@@ -125,8 +125,8 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
       mockGetRelocationTaskSuccess(reportListItem.lastRelocationTask.id)
       mockGetRelocationEquipmentListSuccess(reportListItem.lastRelocationTask.id)
@@ -169,7 +169,7 @@ describe('Страница отчета истории операций по н�
         once: false,
       })
 
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
       mockGetCustomerListSuccess()
 
       const { user } = render(<HistoryNomenclatureOperationsReportPage />, {

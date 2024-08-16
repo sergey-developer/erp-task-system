@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getUserStatusesErrMsg } from 'shared/constants/catalogs'
+import { getUserStatusesCatalogErrMsg } from 'shared/constants/catalogs'
 import {
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,
@@ -28,7 +28,7 @@ export const useGetUserStatusList = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getUserStatusesErrMsg)
+      showErrorNotification(getUserStatusesCatalogErrMsg)
     }
   }, [state.error])
 
