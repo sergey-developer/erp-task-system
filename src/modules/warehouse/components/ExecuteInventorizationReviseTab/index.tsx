@@ -34,7 +34,7 @@ import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equi
 import ModalFallback from 'components/Modals/ModalFallback'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
-import { useGetLocations } from 'shared/hooks/catalogs/location'
+import { useGetLocationsCatalog } from 'shared/hooks/catalogs/locations'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -229,7 +229,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       skip: !createInventorizationEquipmentModalOpened || !isEquipmentCategoriesFetchedSuccess,
     })
 
-  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations({
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocationsCatalog({
     responsibilityArea: false,
   })
 

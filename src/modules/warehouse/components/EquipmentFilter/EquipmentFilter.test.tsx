@@ -22,7 +22,7 @@ const props: Readonly<EquipmentFilterProps> = {
   values: {},
   initialValues: {},
 
-  locations: catalogsFixtures.locationList(2),
+  locations: catalogsFixtures.locationsCatalog(2),
   locationsIsLoading: false,
 
   categories: warehouseFixtures.equipmentCategoryList(2),

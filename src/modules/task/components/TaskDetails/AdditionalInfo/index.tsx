@@ -2,7 +2,7 @@ import { Col, Row, Select, Typography } from 'antd'
 import React, { FC } from 'react'
 
 import { TaskModel } from 'modules/task/models'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 import EditableField from 'modules/warehouse/components/RelocationTaskDetails/EditableField'
 import { WorkTypesModel } from 'modules/warehouse/models'
 

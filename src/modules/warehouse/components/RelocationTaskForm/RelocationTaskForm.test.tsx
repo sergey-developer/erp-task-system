@@ -21,7 +21,7 @@ import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetCurrencyListSuccess,
   mockGetEquipmentCatalogListSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
   mockGetUsersSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
@@ -328,7 +328,7 @@ describe('Форма создания заявки на перемещение �
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           mockGetUsersSuccess({ body: [] })
-          mockGetLocationListSuccess({ body: [], once: false })
+          mockGetLocationsCatalogSuccess({ body: [], once: false })
           mockGetEquipmentCatalogListSuccess()
           mockGetCurrencyListSuccess({ body: [] })
 
@@ -394,7 +394,7 @@ describe('Форма создания заявки на перемещение �
       describe('Отображается ошибка', () => {
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           mockGetUsersSuccess({ body: [] })
-          mockGetLocationListSuccess({ body: [], once: false })
+          mockGetLocationsCatalogSuccess({ body: [], once: false })
           mockGetEquipmentCatalogListSuccess()
           mockGetCurrencyListSuccess({ body: [] })
 
@@ -475,7 +475,7 @@ describe('Форма создания заявки на перемещение �
 
   describe('Объект выбытия', () => {
     test('Отображается корректно', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
       const locationList = [locationListItem]
 
       const { user } = render(
@@ -498,7 +498,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
         <Form>
@@ -515,7 +515,7 @@ describe('Форма создания заявки на перемещение �
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUsersSuccess({ body: [] })
-      mockGetLocationListSuccess({ body: catalogsFixtures.locationList(), once: false })
+      mockGetLocationsCatalogSuccess({ body: catalogsFixtures.locationsCatalog(), once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
@@ -534,7 +534,7 @@ describe('Форма создания заявки на перемещение �
 
   describe('Объект прибытия', () => {
     test('Отображается корректно', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
       const locationList = [locationListItem]
 
       const { user } = render(
@@ -557,7 +557,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
         <Form>
@@ -615,7 +615,7 @@ describe('Форма создания заявки на перемещение �
 
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUsersSuccess({ body: [] })
-      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
@@ -674,7 +674,7 @@ describe('Форма создания заявки на перемещение �
 
     test.skip('Обязателен если перемещение не с основного склада на склад МСИ', async () => {
       mockGetUsersSuccess()
-      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
@@ -688,7 +688,7 @@ describe('Форма создания заявки на перемещение �
 
     test.skip('Не обязателен если перемещение с основного склада на склад МСИ', async () => {
       mockGetUsersSuccess()
-      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
 
