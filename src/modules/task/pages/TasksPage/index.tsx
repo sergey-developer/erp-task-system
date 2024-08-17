@@ -311,10 +311,11 @@ const TasksPage: FC = () => {
   }, [])
 
   const onCreateTask = useCallback<CreateTaskModalProps['onSubmit']>(
-    async ({ attachments, olaNextBreachDate, olaNextBreachTime, ...values }, form) => {
+    async ({ attachments, olaNextBreachDate, olaNextBreachTime, workGroup, ...values }, form) => {
       try {
         const newTask = await createTaskMutation({
           ...values,
+          workGroup: workGroup === firstLineOptionValue ? undefined : workGroup,
           olaNextBreachTime: mergeDateTime(olaNextBreachDate, olaNextBreachTime).toISOString(),
           attachments: attachments?.length ? extractOriginFiles(attachments) : undefined,
         }).unwrap()
