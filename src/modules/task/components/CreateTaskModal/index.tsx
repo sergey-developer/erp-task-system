@@ -15,8 +15,7 @@ import {
 } from 'antd'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
 import stubFalse from 'lodash/stubFalse'
-import { DefaultOptionType } from 'rc-select/lib/Select'
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
 
 import { TaskTypeEnum } from 'modules/task/constants/task'
 
@@ -29,6 +28,7 @@ import TimePicker from 'components/TimePicker'
 import { filesFormItemProps } from 'shared/constants/form'
 import {
   idAndFullNameSelectFieldNames,
+  idAndNameSelectFieldNames,
   idAndTitleSelectFieldNames,
 } from 'shared/constants/selectField'
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
@@ -49,7 +49,7 @@ import {
 
 const { TextArea } = Input
 
-export const firstLineOptionValue = 'I линия'
+export const firstLineOptionValue = -1
 
 const initialValues: Partial<CreateTaskFormFields> = {
   isPrivate: false,
@@ -95,13 +95,7 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
 
   const [additionalParamsExpanded, { toggle: toggleAdditionalParams }] = useBoolean(false)
 
-  const workGroupsOptions: DefaultOptionType[] = useMemo(
-    () => [
-      { label: '1 линия', value: firstLineOptionValue },
-      ...workGroups.map((wg) => ({ label: wg.name, value: wg.id })),
-    ],
-    [workGroups],
-  )
+  const workGroupsOptions = [{ id: firstLineOptionValue, name: 'I линия' }, ...workGroups]
 
   const onFinish = async (values: CreateTaskFormFields) => {
     await onSubmit(values, form)
@@ -185,6 +179,7 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
                   loading={workGroupsIsLoading}
                   options={workGroupsOptions}
                   disabled={workGroupsIsLoading || confirmLoading}
+                  fieldNames={idAndNameSelectFieldNames}
                   allowClear
                   showSearch
                   filterOption={filterOptionBy('label')}

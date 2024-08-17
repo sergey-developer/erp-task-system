@@ -9,7 +9,7 @@ export type CreateTaskMutationArgs = {
   title: string
   description: string
 
-  workGroup?: IdType | 'I линия'
+  workGroup?: IdType
   assignee?: IdType
   isPrivate?: boolean
   attachments?: FileToSend[]
