@@ -482,8 +482,8 @@ describe('Форма создания заявки на перемещение �
 
   describe('Объект выбытия', () => {
     test('Отображается корректно', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
-      const locationList = [locationListItem]
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationList = [locationCatalogListItem]
 
       const { user } = render(
         <Form>
@@ -493,7 +493,9 @@ describe('Форма создания заявки на перемещение �
 
       const input = testUtils.getRelocateFromSelectInput()
       await testUtils.openRelocateFromSelect(user)
-      const selectedRelocateFrom = testUtils.querySelectedRelocateFrom(locationListItem.title)
+      const selectedRelocateFrom = testUtils.querySelectedRelocateFrom(
+        locationCatalogListItem.title,
+      )
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -505,17 +507,17 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateFromLocations={[locationListItem]} />
+          <RelocationTaskForm {...props} relocateFromLocations={[locationCatalogListItem]} />
         </Form>,
       )
 
       await testUtils.openRelocateFromSelect(user)
-      await testUtils.setRelocateFrom(user, locationListItem.title)
-      const selectedRelocateFrom = testUtils.getSelectedRelocateFrom(locationListItem.title)
+      await testUtils.setRelocateFrom(user, locationCatalogListItem.title)
+      const selectedRelocateFrom = testUtils.getSelectedRelocateFrom(locationCatalogListItem.title)
 
       expect(selectedRelocateFrom).toBeInTheDocument()
     })
@@ -541,8 +543,8 @@ describe('Форма создания заявки на перемещение �
 
   describe('Объект прибытия', () => {
     test('Отображается корректно', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
-      const locationList = [locationListItem]
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationList = [locationCatalogListItem]
 
       const { user } = render(
         <Form>
@@ -552,7 +554,7 @@ describe('Форма создания заявки на перемещение �
 
       const input = testUtils.getRelocateToSelectInput()
       await testUtils.openRelocateToSelect(user)
-      const selectedRelocateTo = testUtils.querySelectedRelocateTo(locationListItem.title)
+      const selectedRelocateTo = testUtils.querySelectedRelocateTo(locationCatalogListItem.title)
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -564,17 +566,17 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateToLocations={[locationListItem]} />
+          <RelocationTaskForm {...props} relocateToLocations={[locationCatalogListItem]} />
         </Form>,
       )
 
       await testUtils.openRelocateToSelect(user)
-      await testUtils.setRelocateTo(user, locationListItem.title)
-      const selectedRelocateTo = testUtils.getSelectedRelocateTo(locationListItem.title)
+      await testUtils.setRelocateTo(user, locationCatalogListItem.title)
+      const selectedRelocateTo = testUtils.getSelectedRelocateTo(locationCatalogListItem.title)
 
       expect(selectedRelocateTo).toBeInTheDocument()
     })

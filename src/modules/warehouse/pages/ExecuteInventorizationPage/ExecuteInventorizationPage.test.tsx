@@ -363,7 +363,7 @@ describe('Страница проведения инвентаризации', (
       .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-    mockGetLocationListSuccess()
+    mockGetLocationsCatalogSuccess()
     mockGetCurrencyListSuccess()
 
     render(<ExecuteInventorizationPage />, {
@@ -388,7 +388,7 @@ describe('Страница проведения инвентаризации', (
       { inventorizationId: inventorization.id },
       { once: false },
     )
-    mockGetLocationListSuccess()
+    mockGetLocationsCatalogSuccess()
     mockGetCurrencyListSuccess()
 
     const { user } = render(<ExecuteInventorizationPage />, {

@@ -188,15 +188,15 @@ describe('Форма отчета количества потраченного 
 
   describe('Поле объект выбытия', () => {
     test('Можно установить значение', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
-        <AmountEquipmentSpentReportForm {...props} locations={[locationListItem]} />,
+        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogListItem]} />,
       )
 
       await testUtils.openRelocateFromSelect(user)
-      await testUtils.setRelocateFrom(user, locationListItem.title)
-      const value = testUtils.getSelectedRelocateFrom(locationListItem.title)
+      await testUtils.setRelocateFrom(user, locationCatalogListItem.title)
+      const value = testUtils.getSelectedRelocateFrom(locationCatalogListItem.title)
 
       expect(value).toBeInTheDocument()
     })
@@ -209,14 +209,14 @@ describe('Форма отчета количества потраченного 
     })
 
     test('Не обязательное поле если объект прибытия выбран', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
-        <AmountEquipmentSpentReportForm {...props} locations={[locationListItem]} />,
+        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogListItem]} />,
       )
 
       await testUtils.openRelocateToSelect(user)
-      await testUtils.setRelocateTo(user, locationListItem.title)
+      await testUtils.setRelocateTo(user, locationCatalogListItem.title)
       await testUtils.clickSubmitButton(user)
       const error = testUtils.queryRelocateFromError(validationMessages.required)
       expect(error).not.toBeInTheDocument()
@@ -225,15 +225,15 @@ describe('Форма отчета количества потраченного 
 
   describe('Поле объект прибытия', () => {
     test('Можно установить значение', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
-        <AmountEquipmentSpentReportForm {...props} locations={[locationListItem]} />,
+        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogListItem]} />,
       )
 
       await testUtils.openRelocateToSelect(user)
-      await testUtils.setRelocateTo(user, locationListItem.title)
-      const value = testUtils.getSelectedRelocateTo(locationListItem.title)
+      await testUtils.setRelocateTo(user, locationCatalogListItem.title)
+      const value = testUtils.getSelectedRelocateTo(locationCatalogListItem.title)
 
       expect(value).toBeInTheDocument()
     })
@@ -246,14 +246,14 @@ describe('Форма отчета количества потраченного 
     })
 
     test('Не обязательное поле если объект выбытия выбран', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
-        <AmountEquipmentSpentReportForm {...props} locations={[locationListItem]} />,
+        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogListItem]} />,
       )
 
       await testUtils.openRelocateFromSelect(user)
-      await testUtils.setRelocateFrom(user, locationListItem.title)
+      await testUtils.setRelocateFrom(user, locationCatalogListItem.title)
       await testUtils.clickSubmitButton(user)
       const error = testUtils.queryRelocateToError(validationMessages.required)
       expect(error).not.toBeInTheDocument()

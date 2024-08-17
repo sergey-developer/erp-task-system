@@ -84,8 +84,8 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
 
       mockGetEquipmentSuccess(reportListItem.id)
       mockGetEquipmentAttachmentListSuccess(reportListItem.id)
@@ -125,8 +125,8 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
 
       mockGetRelocationTaskSuccess(reportListItem.lastRelocationTask.id)
       mockGetRelocationEquipmentListSuccess(reportListItem.lastRelocationTask.id)

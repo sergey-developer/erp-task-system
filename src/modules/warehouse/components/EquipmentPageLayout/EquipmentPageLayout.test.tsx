@@ -140,8 +140,8 @@ describe('Layout номенклатуры оборудования', () => {
     test('После применения фильтр закрывается и отправляется запрос', async () => {
       mockGetCustomerListSuccess()
 
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
 
       mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategoryList() })
       mockGetEquipmentNomenclaturesSuccess({ once: false })
@@ -166,7 +166,7 @@ describe('Layout номенклатуры оборудования', () => {
       await testUtils.clickFilterButton(user)
       await equipmentFilterTestUtils.findContainer()
       await equipmentFilterTestUtils.openLocationsSelect(user)
-      await equipmentFilterTestUtils.setLocation(user, locationListItem.title)
+      await equipmentFilterTestUtils.setLocation(user, locationCatalogListItem.title)
       await equipmentFilterTestUtils.clickApplyButton(user)
       const filter = equipmentFilterTestUtils.queryContainer()
 

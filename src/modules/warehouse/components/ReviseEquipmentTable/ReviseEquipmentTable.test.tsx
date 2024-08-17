@@ -353,15 +353,15 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Устанавливается значение по умолчанию если оно есть', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
-        locationFact: locationListItem,
+        locationFact: locationCatalogListItem,
       })
 
       const { user } = render(
         <ReviseEquipmentTable
           {...props}
-          locations={[locationListItem]}
+          locations={[locationCatalogListItem]}
           dataSource={[inventorizationEquipmentListItem]}
         />,
       )
@@ -370,11 +370,11 @@ describe('Таблица сверки оборудования', () => {
       const selectedOption = testUtils.getSelectedLocationFact(inventorizationEquipmentListItem.id)
 
       expect(selectedOption).toBeInTheDocument()
-      expect(selectedOption).toHaveTextContent(locationListItem.title)
+      expect(selectedOption).toHaveTextContent(locationCatalogListItem.title)
     })
 
     test(`Устанавливается значение по умолчанию "${undefinedSelectOption.label}" если isLocationFactUndefined=true`, async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
         isLocationFactUndefined: true,
       })
@@ -382,7 +382,7 @@ describe('Таблица сверки оборудования', () => {
       const { user } = render(
         <ReviseEquipmentTable
           {...props}
-          locations={[locationListItem]}
+          locations={[locationCatalogListItem]}
           dataSource={[inventorizationEquipmentListItem]}
         />,
       )
@@ -395,35 +395,37 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
 
-      const { user } = render(<ReviseEquipmentTable {...props} locations={[locationListItem]} />)
+      const { user } = render(
+        <ReviseEquipmentTable {...props} locations={[locationCatalogListItem]} />,
+      )
 
       await testUtils.openLocationFactSelect(user, inventorizationEquipmentListItem.id)
-      await testUtils.setLocationFact(user, locationListItem.title)
+      await testUtils.setLocationFact(user, locationCatalogListItem.title)
       const selectedOption = testUtils.getSelectedLocationFact(inventorizationEquipmentListItem.id)
 
       expect(selectedOption).toBeInTheDocument()
-      expect(selectedOption).toHaveTextContent(locationListItem.title)
+      expect(selectedOption).toHaveTextContent(locationCatalogListItem.title)
       expect(props.onChangeLocationFact).toBeCalledTimes(1)
       expect(props.onChangeLocationFact).toBeCalledWith(
         inventorizationEquipmentListItem,
-        locationListItem.id,
+        locationCatalogListItem.id,
         inventorizationEquipmentListItem.quantity.fact,
       )
     })
 
     test('Подсвечивается зелёным если значение равно плановому местонахождению', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
-        locationFact: locationListItem,
-        locationPlan: locationListItem,
+        locationFact: locationCatalogListItem,
+        locationPlan: locationCatalogListItem,
       })
 
       render(
         <ReviseEquipmentTable
           {...props}
-          locations={[locationListItem]}
+          locations={[locationCatalogListItem]}
           dataSource={[inventorizationEquipmentListItem]}
         />,
       )

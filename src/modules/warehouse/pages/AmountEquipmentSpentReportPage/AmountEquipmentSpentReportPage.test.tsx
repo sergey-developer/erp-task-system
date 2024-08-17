@@ -109,8 +109,8 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
 
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(reportListItem.equipment.id, { body: equipment })
@@ -131,7 +131,10 @@ describe('Страница отчета количества потраченн�
         equipmentNomenclatureListItem.title,
       )
       await amountEquipmentSpentReportFormTestUtils.openRelocateFromSelect(user)
-      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(user, locationListItem.title)
+      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(
+        user,
+        locationCatalogListItem.title,
+      )
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
       await amountEquipmentSpentReportTableTestUtils.clickColValue(
@@ -162,8 +165,8 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
 
       mockGetRelocationTaskSuccess(reportListItem.relocationTask.id)
       mockGetRelocationEquipmentListSuccess(reportListItem.relocationTask.id)
@@ -183,7 +186,10 @@ describe('Страница отчета количества потраченн�
         equipmentNomenclatureListItem.title,
       )
       await amountEquipmentSpentReportFormTestUtils.openRelocateFromSelect(user)
-      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(user, locationListItem.title)
+      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(
+        user,
+        locationCatalogListItem.title,
+      )
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
       await amountEquipmentSpentReportTableTestUtils.clickColValue(
@@ -211,8 +217,8 @@ describe('Страница отчета количества потраченн�
         once: false,
       })
 
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
 
       const equipmentCategoryListItem = warehouseFixtures.equipmentCategoryListItem()
       mockGetEquipmentCategoryListSuccess({ body: [equipmentCategoryListItem] })
@@ -228,7 +234,10 @@ describe('Страница отчета количества потраченн�
         equipmentNomenclatureListItem.title,
       )
       await amountEquipmentSpentReportFormTestUtils.openRelocateFromSelect(user)
-      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(user, locationListItem.title)
+      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(
+        user,
+        locationCatalogListItem.title,
+      )
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
@@ -263,8 +272,8 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
+      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
 
       const { user } = render(<AmountEquipmentSpentReportPage />)
 
@@ -277,7 +286,10 @@ describe('Страница отчета количества потраченн�
         equipmentNomenclatureListItem.title,
       )
       await amountEquipmentSpentReportFormTestUtils.openRelocateFromSelect(user)
-      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(user, locationListItem.title)
+      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(
+        user,
+        locationCatalogListItem.title,
+      )
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
 
