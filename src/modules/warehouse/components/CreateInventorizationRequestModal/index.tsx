@@ -3,8 +3,6 @@ import sortBy from 'lodash/sortBy'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useMemo } from 'react'
 
-import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
-
 import { renderUploadedFile } from 'modules/attachment/utils'
 import { inventorizationTypeOptions } from 'modules/warehouse/constants/inventorization'
 import { WarehouseListItemModel } from 'modules/warehouse/models'
@@ -180,7 +178,7 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
                 dependencies={['deadlineAtDate']}
                 rules={deadlineAtTimeRules}
               >
-                <TimePicker disabled={isLoading} format={TIME_PICKER_FORMAT} placeholder='Время' />
+                <TimePicker disabled={isLoading} />
               </Form.Item>
             </Col>
           </Row>

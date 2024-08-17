@@ -1,5 +1,6 @@
 export * from './task.model'
 export * from './getTask.model'
+export * from './createTask.model'
 
 export * from './resolveTask.model'
 export * from './takeTask.model'

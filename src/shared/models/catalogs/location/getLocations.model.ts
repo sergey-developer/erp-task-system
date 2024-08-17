@@ -1,7 +1,7 @@
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
-import { LocationsModel } from 'shared/models/catalogs/location'
+import { LocationsCatalogModel } from 'shared/models/catalogs/locations'
 import { IdType } from 'shared/types/common'
 import { ExtendSortKey } from 'shared/types/sort'
 
@@ -17,4 +17,4 @@ export type GetLocationsQueryArgs = Partial<{
   inventorization: IdType
 }>
 
-export type GetLocationsSuccessResponse = LocationsModel
+export type GetLocationsSuccessResponse = LocationsCatalogModel

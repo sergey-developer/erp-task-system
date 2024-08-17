@@ -3,10 +3,13 @@ import { ReactNode } from 'react'
 
 import { UseAuthUserResult } from 'modules/auth/hooks'
 import { UsersGroupsModel, UsersModel } from 'modules/user/models'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 
-import { LocationListItemModel, LocationsModel } from 'shared/models/catalogs/location'
+import {
+  LocationCatalogListItemModel,
+  LocationsCatalogModel,
+} from 'shared/models/catalogs/locations'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { MaybeNull } from 'shared/types/utils'
@@ -16,7 +19,7 @@ export type LocationOptionGroup = Pick<LocationOption, 'type' | 'label'> & {
 }
 
 export type LocationOption = {
-  type: LocationListItemModel['type']
+  type: LocationCatalogListItemModel['type']
   label: ReactNode
   value: IdType
 }
@@ -53,9 +56,9 @@ export type RelocationTaskFormProps = {
   imageIsDeleting?: boolean
   imagesIsLoading?: boolean
 
-  relocateFromLocations: LocationsModel
+  relocateFromLocations: LocationsCatalogModel
   relocateFromLocationListIsLoading: boolean
-  relocateToLocations: LocationsModel
+  relocateToLocations: LocationsCatalogModel
   relocateToLocationListIsLoading: boolean
 
   type?: RelocationTaskTypeEnum

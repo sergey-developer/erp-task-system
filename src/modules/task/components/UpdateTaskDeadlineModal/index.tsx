@@ -2,8 +2,6 @@ import { Col, Flex, Form, Row } from 'antd'
 import moment from 'moment-timezone'
 import React, { FC } from 'react'
 
-import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
-
 import { getTaskCompleteAtDate } from 'modules/task/components/TaskDetails/MainDetails/utils'
 
 import DatePicker from 'components/DatePicker'
@@ -67,7 +65,7 @@ const UpdateTaskDeadlineModal: FC<UpdateTaskDeadlineModalProps> = ({
 
               <Col span={8}>
                 <Form.Item name='time' dependencies={['date']} rules={timeRules(!!dateFormValue)}>
-                  <TimePicker format={TIME_PICKER_FORMAT} placeholder='Время' />
+                  <TimePicker />
                 </Form.Item>
               </Col>
             </Row>

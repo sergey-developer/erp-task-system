@@ -8,6 +8,7 @@ import {
   TaskDetailsTabsEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
+  TaskTypeEnum,
 } from './enums'
 
 export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
@@ -29,6 +30,13 @@ export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.Awaiting]: 'В ожидании',
   [TaskStatusEnum.Completed]: 'Выполнена',
   [TaskStatusEnum.Closed]: 'Закрыта',
+}
+
+export const taskTypeDict: Readonly<StringMap<TaskTypeEnum>> = {
+  [TaskTypeEnum.Request]: 'ЗНО',
+  [TaskTypeEnum.RequestTask]: 'Задание на ЗНО',
+  [TaskTypeEnum.Incident]: 'Инцидент',
+  [TaskTypeEnum.IncidentTask]: 'Задание на инцидент',
 }
 
 export const taskExtendedStatusDict: Readonly<Partial<StringMap<TaskExtendedStatusEnum>>> = {

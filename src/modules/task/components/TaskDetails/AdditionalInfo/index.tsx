@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import { useTaskStatus } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 import EditableField from 'modules/warehouse/components/RelocationTaskDetails/EditableField'
 import ReadonlyField from 'modules/warehouse/components/RelocationTaskDetails/ReadonlyField'
 import { WorkTypesModel } from 'modules/warehouse/models'
