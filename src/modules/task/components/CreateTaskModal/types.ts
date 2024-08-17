@@ -9,11 +9,10 @@ import { CustomerListModel, WorkTypesModel } from 'modules/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { LocationsCatalogModel } from 'shared/models/catalogs/locations'
 import { WorkGroupsCatalogModel } from 'shared/models/catalogs/workGroups'
 import { IdType } from 'shared/types/common'
 import { SetNonNullable } from 'shared/types/utils'
-
-import { LocationsCatalogModel } from '../../../../shared/models/catalogs/locations'
 
 export type CreateTaskModalProps = SetNonNullable<
   BaseModalProps,
@@ -54,8 +53,8 @@ export type CreateTaskModalProps = SetNonNullable<
 
 export type CreateTaskFormFields = {
   type: TaskTypeEnum.Request | TaskTypeEnum.Incident
-  olaNextBreachedDate: Moment
-  olaNextBreachedTime: Moment
+  olaNextBreachDate: Moment
+  olaNextBreachTime: Moment
   title: string
   description: string
 
@@ -63,8 +62,8 @@ export type CreateTaskFormFields = {
   assignee?: IdType
   isPrivate?: boolean
   attachments?: UploadFile[]
-  coExecutors?: IdType[]
-  observers?: IdType[]
+  coExecutors?: IdType
+  observers?: IdType
   workType?: IdType
   customer?: IdType
   contactType?: string

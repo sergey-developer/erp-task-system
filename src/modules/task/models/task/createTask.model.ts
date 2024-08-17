@@ -5,7 +5,7 @@ import { FileToSend } from 'shared/types/file'
 
 export type CreateTaskMutationArgs = {
   type: TaskTypeEnum
-  olaNextBreachedTime: string
+  olaNextBreachTime: string
   title: string
   description: string
 
@@ -13,8 +13,8 @@ export type CreateTaskMutationArgs = {
   assignee?: IdType
   isPrivate?: boolean
   attachments?: FileToSend[]
-  coExecutors?: IdType[]
-  observers?: IdType[]
+  coExecutors?: IdType
+  observers?: IdType
   workType?: IdType
   customer?: IdType
   contactType?: string

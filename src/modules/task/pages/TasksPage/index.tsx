@@ -312,14 +312,11 @@ const TasksPage: FC = () => {
   }, [])
 
   const onCreateTask = useCallback<CreateTaskModalProps['onSubmit']>(
-    async ({ attachments, olaNextBreachedDate, olaNextBreachedTime, ...values }, form) => {
+    async ({ attachments, olaNextBreachDate, olaNextBreachTime, ...values }, form) => {
       try {
         const newTask = await createTaskMutation({
           ...values,
-          olaNextBreachedTime: mergeDateTime(
-            olaNextBreachedDate,
-            olaNextBreachedTime,
-          ).toISOString(),
+          olaNextBreachTime: mergeDateTime(olaNextBreachDate, olaNextBreachTime).toISOString(),
           attachments: attachments?.length ? extractOriginFiles(attachments) : undefined,
         }).unwrap()
 
@@ -524,9 +521,9 @@ const TasksPage: FC = () => {
                       onAutoUpdate={toggleAutoUpdateEnabled}
                     />
 
-                    {/*{permissions.internalTasksCreate && (*/}
-                    <Button onClick={debouncedOpenCreateTaskModal}>Создать заявку</Button>
-                    {/*)}*/}
+                    {permissions.internalTasksCreate && (
+                      <Button onClick={debouncedOpenCreateTaskModal}>Создать заявку</Button>
+                    )}
                   </Space>
                 </Col>
               </Row>
@@ -548,7 +545,9 @@ const TasksPage: FC = () => {
       </Row>
 
       {!!selectedTaskId && (
-        <React.Suspense fallback={<ModalFallback open onCancel={closeTask} />}>
+        <React.Suspense
+          fallback={<ModalFallback tip='Загрузка карточки заявки' open onCancel={closeTask} />}
+        >
           <TaskDetails
             taskId={selectedTaskId}
             activeTab={activeTaskDetailsTab}
@@ -561,7 +560,15 @@ const TasksPage: FC = () => {
       )}
 
       {tasksFilterOpened && (
-        <React.Suspense fallback={<ModalFallback open onCancel={debouncedToggleTasksFilter} />}>
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              tip='Загрузка компонента фильтров заявок'
+              open
+              onCancel={debouncedToggleTasksFilter}
+            />
+          }
+        >
           <TasksFilter
             open={tasksFilterOpened}
             permissions={permissions}
@@ -586,7 +593,15 @@ const TasksPage: FC = () => {
       )}
 
       {createTaskModalOpened && (
-        <React.Suspense fallback={<ModalFallback open onCancel={debouncedCloseCreateTaskModal} />}>
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              tip='Загрузка модалки создания заявки'
+              open
+              onCancel={debouncedCloseCreateTaskModal}
+            />
+          }
+        >
           <CreateTaskModal
             open={createTaskModalOpened}
             onCancel={debouncedCloseCreateTaskModal}

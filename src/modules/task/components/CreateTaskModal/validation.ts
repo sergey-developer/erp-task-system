@@ -15,7 +15,7 @@ export const typeRules: Rule[] = [
   },
 ]
 
-export const olaNextBreachedDateRules: Rule[] = [
+export const olaNextBreachDateRules: Rule[] = [
   {
     type: 'date',
     required: true,
@@ -23,13 +23,13 @@ export const olaNextBreachedDateRules: Rule[] = [
   },
 ]
 
-export const olaNextBreachedTimeRules: Rule[] = [
+export const olaNextBreachTimeRules: Rule[] = [
   ({ getFieldValue }) => ({
     type: 'date',
     required: true,
     validator: timeValidator({
       dateGetter: getFieldValue,
-      dateFieldPath: 'olaNextBreachedDate',
+      dateFieldPath: 'olaNextBreachDate',
       required: true,
     }),
   }),

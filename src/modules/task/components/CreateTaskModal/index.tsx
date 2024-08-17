@@ -41,14 +41,19 @@ import {
   addressRules,
   contactTypeRules,
   emailRules,
-  olaNextBreachedDateRules,
-  olaNextBreachedTimeRules,
+  olaNextBreachDateRules,
+  olaNextBreachTimeRules,
   titleRules,
   typeRules,
 } from './validation'
 
-export const firstLineOptionValue = 'I линия'
 const { TextArea } = Input
+
+export const firstLineOptionValue = 'I линия'
+
+const initialValues: Partial<CreateTaskFormFields> = {
+  isPrivate: false,
+}
 
 const CreateTaskModal: FC<CreateTaskModalProps> = ({
   onSubmit,
@@ -110,7 +115,7 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
     LocationCatalogListItemModel['id'],
     LocationCatalogListItemModel
   >['onChange'] = (value, option) => {
-    if (!Array.isArray(option)) form.setFieldValue('address', option.address)
+    if (!Array.isArray(option) && option.address) form.setFieldValue('address', option.address)
   }
 
   return (
@@ -122,7 +127,12 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
       onOk={form.submit}
       okText='Создать заявку'
     >
-      <Form<CreateTaskFormFields> form={form} layout='vertical' onFinish={onFinish}>
+      <Form<CreateTaskFormFields>
+        form={form}
+        layout='vertical'
+        initialValues={initialValues}
+        onFinish={onFinish}
+      >
         <Form.Item data-testid='type-form-item' label='Тип заявки' name='type' rules={typeRules}>
           <Radio.Group
             disabled={confirmLoading}
@@ -135,13 +145,13 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item data-testid='ola-next-breached-form-item' label='Выполнить до'>
+        <Form.Item data-testid='ola-next-breach-form-item' label='Выполнить до'>
           <Row justify='space-between' gutter={24}>
             <Col span={12}>
               <Form.Item
-                data-testid='ola-next-breached-date-form-item'
-                name='olaNextBreachedDate'
-                rules={olaNextBreachedDateRules}
+                data-testid='ola-next-breach-date-form-item'
+                name='olaNextBreachDate'
+                rules={olaNextBreachDateRules}
               >
                 <DatePicker disabled={confirmLoading} allowClear={false} />
               </Form.Item>
@@ -149,10 +159,10 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
 
             <Col span={12}>
               <Form.Item
-                data-testid='ola-next-breached-time-form-item'
-                name='olaNextBreachedTime'
-                dependencies={['olaNextBreachedDate']}
-                rules={olaNextBreachedTimeRules}
+                data-testid='ola-next-breach-time-form-item'
+                name='olaNextBreachTime'
+                dependencies={['olaNextBreachDate']}
+                rules={olaNextBreachTimeRules}
               >
                 <TimePicker disabled={confirmLoading} allowClear={false} />
               </Form.Item>
@@ -168,6 +178,7 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
                 label='Рабочая группа'
                 name='workGroup'
                 rules={assigneeFormValue ? undefined : onlyRequiredRules}
+                dependencies={['assignee']}
               >
                 <Select
                   placeholder='Выберите рабочую группу'
@@ -190,6 +201,7 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
                   label='Исполнитель'
                   name='assignee'
                   rules={workGroupFormValue ? undefined : onlyRequiredRules}
+                  dependencies={['workGroup']}
                 >
                   <Select
                     placeholder='Выберите исполнителя'
@@ -212,7 +224,6 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
                     <Checkbox
                       onChange={onChangeIsPrivate}
                       checked={isPrivateFormValue}
-                      defaultChecked={false}
                       disabled={!assigneeFormValue || confirmLoading}
                     >
                       Приватная заявка

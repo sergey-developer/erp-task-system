@@ -168,7 +168,7 @@ const taskApiService = baseApiService
         invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Tasks]),
         query: ({
           type,
-          olaNextBreachedTime,
+          olaNextBreachTime,
           title,
           description,
           workGroup,
@@ -187,7 +187,7 @@ const taskApiService = baseApiService
           const formData = new FormData()
 
           formData.append('type', type)
-          formData.append(decamelize('olaNextBreachedTime'), olaNextBreachedTime)
+          formData.append(decamelize('olaNextBreachTime'), olaNextBreachTime)
           formData.append('title', title)
           formData.append('description', description)
 
@@ -195,10 +195,8 @@ const taskApiService = baseApiService
           if (assignee) formData.append('assignee', String(assignee))
           if (isBoolean(isPrivate)) formData.append(decamelize('isPrivate'), String(isPrivate))
           if (attachments?.length) attachments.forEach((att) => formData.append('attachments', att))
-          if (coExecutors?.length)
-            coExecutors.forEach((coEx) => formData.append(decamelize('coExecutors'), String(coEx)))
-          if (observers?.length)
-            observers.forEach((obs) => formData.append('observers', String(obs)))
+          if (coExecutors) formData.append(decamelize('coExecutors'), String(coExecutors))
+          if (observers) formData.append('observers', String(observers))
           if (workType) formData.append(decamelize('workType'), String(workType))
           if (customer) formData.append('customer', String(customer))
           if (contactType) formData.append(decamelize('contactType'), contactType)
