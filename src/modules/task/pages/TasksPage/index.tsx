@@ -266,7 +266,7 @@ const TasksPage: FC = () => {
   const { currentData: observers = [], isFetching: observersIsFetching } = useGetUsers(
     {
       readTasksWorkGroup:
-        selectedTaskWorkGroup === firstLineOptionValue ? null : selectedTaskWorkGroup!,
+        selectedTaskWorkGroup === firstLineOptionValue ? 'null' : selectedTaskWorkGroup!,
     },
     { skip: !(createTaskModalOpened && selectedTaskWorkGroup) },
   )
@@ -274,7 +274,7 @@ const TasksPage: FC = () => {
   const { currentData: executors = [], isFetching: executorsIsFetching } = useGetUsers(
     {
       resolveTasksWorkGroup:
-        selectedTaskWorkGroup === firstLineOptionValue ? null : selectedTaskWorkGroup!,
+        selectedTaskWorkGroup === firstLineOptionValue ? 'null' : selectedTaskWorkGroup!,
     },
     { skip: !(createTaskModalOpened && selectedTaskWorkGroup) },
   )

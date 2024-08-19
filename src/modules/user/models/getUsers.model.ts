@@ -1,5 +1,5 @@
 import { IdType } from 'shared/types/common'
-import { MaybeNull } from 'shared/types/utils'
+import { MaybeNullStr } from 'shared/types/utils'
 
 import { UsersModel } from './users.model'
 
@@ -8,8 +8,8 @@ export type GetUsersQueryArgs = Partial<{
   isManager: boolean
   allHierarchySubordinates: boolean
   warehouses: IdType[]
-  readTasksWorkGroup: MaybeNull<IdType>
-  resolveTasksWorkGroup: MaybeNull<IdType>
+  readTasksWorkGroup: MaybeNullStr<IdType>
+  resolveTasksWorkGroup: MaybeNullStr<IdType>
 }>
 
 export type GetUsersSuccessResponse = UsersModel

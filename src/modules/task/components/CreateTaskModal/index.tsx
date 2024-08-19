@@ -255,7 +255,11 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
             placeholder='Выберите из списка'
             loading={workGroupFormValue ? executorsIsLoading : usersIsLoading}
             options={workGroupFormValue ? executors : users}
-            disabled={(workGroupFormValue ? executorsIsLoading : usersIsLoading) || confirmLoading}
+            disabled={
+              !assigneeFormValue ||
+              (workGroupFormValue ? executorsIsLoading : usersIsLoading) ||
+              confirmLoading
+            }
             fieldNames={idAndFullNameSelectFieldNames}
             showSearch
             filterOption={filterOptionBy('fullName')}
@@ -281,6 +285,7 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
             options={workTypes}
             disabled={
               !permissions.classificationOfWorkTypes ||
+              !workGroupFormValue ||
               !typeFormValue ||
               workTypesIsLoading ||
               confirmLoading
