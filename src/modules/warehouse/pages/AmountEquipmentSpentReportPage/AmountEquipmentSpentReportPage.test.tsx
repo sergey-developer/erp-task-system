@@ -97,7 +97,7 @@ describe('Страница отчета количества потраченн�
       const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: locationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
       const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
       mockGetAmountEquipmentSpentReportSuccess({
@@ -150,7 +150,7 @@ describe('Страница отчета количества потраченн�
       const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: locationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
       const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
       mockGetAmountEquipmentSpentReportSuccess({

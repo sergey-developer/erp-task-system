@@ -1103,7 +1103,7 @@ describe('Карточка заявки', () => {
       const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: locationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
       const task = taskFixtures.task({
         id: props.taskId,
