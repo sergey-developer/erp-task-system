@@ -12,14 +12,15 @@ export type CreateRelocationTaskMutationArgs = {
   controller: IdType
   equipments: {
     id: IdType
-    quantity: number
     condition: EquipmentConditionEnum
 
+    quantity?: number
     price?: number
     currency?: IdType
     attachments?: IdType[]
   }[]
 
+  inventorization?: IdType
   relocateFromId?: IdType
   relocateToId?: IdType
   comment?: string

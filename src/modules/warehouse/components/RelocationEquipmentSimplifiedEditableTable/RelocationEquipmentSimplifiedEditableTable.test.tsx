@@ -19,8 +19,8 @@ const props: RelocationEquipmentSimplifiedEditableTableProps = {
   equipmentIsLoading: false,
   equipmentListIsLoading: false,
 
-  equipmentCatalogList: [],
-  equipmentCatalogListIsLoading: false,
+  equipments: [],
+  equipmentsIsLoading: false,
 
   canCreateEquipment: false,
   onClickCreateEquipment: jest.fn(),
@@ -34,9 +34,9 @@ const getContainer = () =>
 const getContainerIn = (container: HTMLElement) =>
   within(container).getByTestId('relocation-equipment-simplified-editable-table-container')
 
-const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
 const clickRow = async (user: UserEvent, id: IdType) =>
-  tableTestUtils.clickRowIn(getContainer(), user, id)
+  tableTestUtils.clickRowById(getContainer(), user, id)
 
 const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
 const getColTitle = (text: string) => within(getContainer()).getByText(text)

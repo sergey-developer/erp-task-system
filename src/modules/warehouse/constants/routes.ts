@@ -16,7 +16,8 @@ export enum WarehouseRouteEnum {
   CreateRelocationTaskSimplified = '/home/manage-warehouses/reserves-catalogs/relocation-tasks/create/simplified',
   EditRelocationTask = '/home/manage-warehouses/reserves-catalogs/relocation-tasks/:id/edit',
   Inventorizations = '/home/manage-warehouses/reserves-catalogs/inventorizations',
-  ExecuteInventorization = '/home/manage-warehouses/reserves-catalogs/inventorizations/:id/execute',
+  CreateRelocationTaskDraft = '/home/manage-warehouses/reserves-catalogs/inventorizations/relocation-tasks/create/draft',
+  ExecuteInventorization = '/home/manage-warehouses/reserves-catalogs/inventorizations/:inventorizationId/execute',
 
   Reports = '/home/manage-warehouses/reports',
   EmployeesActions = '/home/manage-warehouses/reports/employees-actions',

@@ -11,8 +11,10 @@ import {
   CreateInventorizationEquipmentSuccessResponse,
   CreateInventorizationMutationArgs,
   CreateInventorizationSuccessResponse,
+  GetInventorizationEquipmentQueryArgs,
   GetInventorizationEquipmentsQueryArgs,
   GetInventorizationEquipmentsSuccessResponse,
+  GetInventorizationEquipmentSuccessResponse,
   GetInventorizationQueryArgs,
   GetInventorizationsQueryArgs,
   GetInventorizationsSuccessResponse,
@@ -28,6 +30,7 @@ import {
   makeCompleteInventorizationUrl,
   makeCreateInventorizationEquipmentUrl,
   makeGetInventorizationEquipmentsUrl,
+  makeGetInventorizationEquipmentUrl,
   makeGetInventorizationUrl,
   makeUpdateInventorizationEquipmentUrl,
 } from 'modules/warehouse/utils/inventorization'
@@ -104,6 +107,15 @@ const inventorizationApiService = baseApiService
         transformResponse: (response: GetInventorizationEquipmentsSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
+      getInventorizationEquipment: build.query<
+        GetInventorizationEquipmentSuccessResponse,
+        GetInventorizationEquipmentQueryArgs
+      >({
+        query: ({ equipmentId }) => ({
+          url: makeGetInventorizationEquipmentUrl({ equipmentId }),
+          method: HttpMethodEnum.Get,
+        }),
+      }),
       createInventorizationEquipment: build.mutation<
         CreateInventorizationEquipmentSuccessResponse,
         CreateInventorizationEquipmentMutationArgs
@@ -159,6 +171,8 @@ export const {
   useGetInventorizationQuery,
   useCreateInventorizationMutation,
   useCompleteInventorizationMutation,
+  useGetInventorizationEquipmentQuery,
+  useLazyGetInventorizationEquipmentQuery,
   useGetInventorizationEquipmentsQuery,
   useCreateInventorizationEquipmentMutation,
   useUpdateInventorizationEquipmentMutation,

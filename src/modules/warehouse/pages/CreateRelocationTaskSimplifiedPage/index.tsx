@@ -41,8 +41,8 @@ import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useCreateEquipments,
-  useGetEquipmentCatalogs,
   useGetEquipmentCategories,
+  useGetEquipmentsCatalog,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
   useLazyGetEquipmentListTemplate,
@@ -244,12 +244,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const {
     currentData: equipmentCatalogsFromWarehouse = [],
     isFetching: equipmentCatalogsFromWarehouseIsFetching,
-  } = useGetEquipmentCatalogs({ locationId: warehouseMSI?.id! }, { skip: !warehouseMSI?.id })
+  } = useGetEquipmentsCatalog({ locationId: warehouseMSI?.id! }, { skip: !warehouseMSI?.id })
 
   const {
     currentData: equipmentCatalogsToWarehouse = [],
     isFetching: equipmentCatalogsToWarehouseIsFetching,
-  } = useGetEquipmentCatalogs({ locationId: taskShop?.id! }, { skip: !taskShop?.id })
+  } = useGetEquipmentsCatalog({ locationId: taskShop?.id! }, { skip: !taskShop?.id })
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 
@@ -766,8 +766,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 setEditableKeys={setFromWarehouseEditableTableRowKeys}
                 isLoading={createTaskIsLoading}
                 equipmentIsLoading={equipmentIsFetching}
-                equipmentCatalogList={equipmentCatalogsFromWarehouse}
-                equipmentCatalogListIsLoading={equipmentCatalogsFromWarehouseIsFetching}
+                equipments={equipmentCatalogsFromWarehouse}
+                equipmentsIsLoading={equipmentCatalogsFromWarehouseIsFetching}
                 onClickCreateImage={onOpenCreateRelocationEquipmentImagesModal}
               />
 
@@ -848,8 +848,8 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
                 setEditableKeys={setToWarehouseEditableTableRowKeys}
                 isLoading={createTaskIsLoading}
                 equipmentIsLoading={equipmentIsFetching}
-                equipmentCatalogList={equipmentCatalogsToWarehouse}
-                equipmentCatalogListIsLoading={equipmentCatalogsToWarehouseIsFetching}
+                equipments={equipmentCatalogsToWarehouse}
+                equipmentsIsLoading={equipmentCatalogsToWarehouseIsFetching}
                 canCreateEquipment={!!permissions.equipmentsCreate}
                 onClickCreateEquipment={onOpenCreateEquipmentModal}
                 onClickCreateImage={onOpenCreateRelocationEquipmentImagesModal}

@@ -54,9 +54,9 @@ const props: RelocationTaskFormProps = {
   usersGroups: [],
   usersGroupsIsLoading: false,
 
-  relocateFromLocationList: [],
+  relocateFromLocations: [],
   relocateFromLocationListIsLoading: false,
-  relocateToLocationList: [],
+  relocateToLocations: [],
   relocateToLocationListIsLoading: false,
 
   controllerIsRequired: true,
@@ -228,6 +228,10 @@ const setComment = async (user: UserEvent, value: string) => {
   return field
 }
 
+// attachments
+const getAttachmentsBlock = () => within(getContainer()).getByTestId('attachments')
+const queryAttachmentsBlock = () => within(getContainer()).queryByTestId('attachments')
+
 export const testUtils = {
   getContainer,
 
@@ -289,6 +293,9 @@ export const testUtils = {
   getCommentField,
   findCommentError,
   setComment,
+
+  getAttachmentsBlock,
+  queryAttachmentsBlock,
 }
 
 setupApiTests()
@@ -436,7 +443,7 @@ describe('Форма создания заявки на перемещение �
   })
 
   describe('Тип', () => {
-    test('Отображается корректно', async () => {
+    test('Отображается и активно', async () => {
       const { user } = render(
         <Form>
           <RelocationTaskForm {...props} />
@@ -467,9 +474,9 @@ describe('Форма создания заявки на перемещение �
 
       await testUtils.openTypeSelect(user)
       await testUtils.setType(user, relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation])
-      const selectedType = testUtils.getSelectedType()
+      const selectedOption = testUtils.getSelectedType()
 
-      expect(selectedType).toBeInTheDocument()
+      expect(selectedOption).toBeInTheDocument()
     })
   })
 
@@ -480,7 +487,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateFromLocationList={locationList} />
+          <RelocationTaskForm {...props} relocateFromLocations={locationList} />
         </Form>,
       )
 
@@ -502,7 +509,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateFromLocationList={[locationListItem]} />
+          <RelocationTaskForm {...props} relocateFromLocations={[locationListItem]} />
         </Form>,
       )
 
@@ -539,7 +546,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateToLocationList={locationList} />
+          <RelocationTaskForm {...props} relocateToLocations={locationList} />
         </Form>,
       )
 
@@ -561,7 +568,7 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateToLocationList={[locationListItem]} />
+          <RelocationTaskForm {...props} relocateToLocations={[locationListItem]} />
         </Form>,
       )
 
@@ -744,6 +751,30 @@ describe('Форма создания заявки на перемещение �
 
         expect(error).toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Блок общих фотографий к перемещению', () => {
+    test('Отображается если параметр showUploadImages=true', () => {
+      render(
+        <Form>
+          <RelocationTaskForm {...props} showUploadImages />
+        </Form>,
+      )
+
+      const attachmentsBlock = testUtils.getAttachmentsBlock()
+      expect(attachmentsBlock).toBeInTheDocument()
+    })
+
+    test('Не отображаеются если параметр showUploadImages=false', () => {
+      render(
+        <Form>
+          <RelocationTaskForm {...props} showUploadImages={false} />
+        </Form>,
+      )
+
+      const attachmentsBlock = testUtils.queryAttachmentsBlock()
+      expect(attachmentsBlock).not.toBeInTheDocument()
     })
   })
 })

@@ -93,8 +93,8 @@ const TasksPage: FC = () => {
   // todo: создать хук для useSearchParams который парсит значения в нужный тип
   const [searchParams] = useSearchParams()
   const viewTaskId = Number(searchParams.get('viewTask')) || undefined
-  const taskDetailsTab = taskDetailsTabExist(searchParams.get('taskDetailsTab') || '')
-    ? (searchParams.get('taskDetailsTab') as TaskDetailsTabsEnum)
+  const currentTab = taskDetailsTabExist(searchParams.get('tab') || '')
+    ? (searchParams.get('tab') as TaskDetailsTabsEnum)
     : undefined
 
   const [autoUpdateEnabled, { toggle: toggleAutoUpdateEnabled }] = useBoolean(false)
@@ -102,8 +102,7 @@ const TasksPage: FC = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<MaybeUndefined<IdType>>(viewTaskId)
   const [additionalInfoExpanded, { toggle: toggleAdditionalInfoExpanded }] = useBoolean(false)
 
-  const [activeTaskDetailsTab, setActiveTaskDetailsTab] =
-    useState<MaybeUndefined<TaskDetailsTabsEnum>>(taskDetailsTab)
+  const [activeTab, setActiveTab] = useState<MaybeUndefined<TaskDetailsTabsEnum>>(currentTab)
 
   const initialFastFilter = FastFilterEnum.All
   const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
@@ -305,7 +304,7 @@ const TasksPage: FC = () => {
 
   const closeTask = useCallback(() => {
     setSelectedTaskId(undefined)
-    setActiveTaskDetailsTab(undefined)
+    setActiveTab(undefined)
   }, [])
 
   const onTableSort = useCallback(
@@ -451,7 +450,7 @@ const TasksPage: FC = () => {
         <React.Suspense fallback={<ModalFallback open onCancel={closeTask} />}>
           <TaskDetails
             taskId={selectedTaskId}
-            activeTab={activeTaskDetailsTab}
+            activeTab={activeTab}
             additionalInfoExpanded={additionalInfoExpanded}
             onExpandAdditionalInfo={toggleAdditionalInfoExpanded}
             onClose={closeTask}

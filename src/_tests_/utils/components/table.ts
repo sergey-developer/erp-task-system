@@ -6,7 +6,7 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import { iconTestUtils } from '_tests_/utils'
 
-const getRowIn = (container: HTMLElement, id: NumberOrString): HTMLElement => {
+const getRowById = (container: HTMLElement, id: NumberOrString): HTMLElement => {
   const row = container.querySelector(`[data-row-key='${id}']`) as HTMLElement
 
   if (row) {
@@ -16,21 +16,38 @@ const getRowIn = (container: HTMLElement, id: NumberOrString): HTMLElement => {
   }
 }
 
-const clickRowIn = async (container: HTMLElement, user: UserEvent, id: NumberOrString) => {
-  const row = getRowIn(container, id)
+/**
+ * Возвращает строку с названиями колонок
+ */
+const getHeadRowByRole = (container: HTMLElement) => within(container).getAllByRole('row')[0]
+
+/**
+ * Возвращает 1-ю строку таблицы.
+ * Используется для получения строки, id которой генерируется при её добавлении внутри таблицы
+ */
+const getOneRowByRole = (container: HTMLElement) => within(container).getAllByRole('row')[1]
+
+const clickRowById = async (container: HTMLElement, user: UserEvent, id: NumberOrString) => {
+  const row = getRowById(container, id)
   await user.click(row)
   return row
 }
 
-const getHeadCell = (container: HTMLElement, text: string) =>
-  within(container).getByText(text).parentElement?.parentElement
+// todo: описать также другие утилиты
+/**
+ * Возвращает ячейку с названием колонки
+ * @param container Таблица
+ * @param name Название колонки
+ */
+const getHeadCell = (container: HTMLElement, name: string) =>
+  within(getHeadRowByRole(container)).getByRole('columnheader', { name })
 
 const expectRowsRendered = <T extends { id: IdType }>(
   container: HTMLElement,
   data: T[] | ReadonlyArray<T>,
 ) => {
   data.forEach((item) => {
-    const row = getRowIn(container, item.id)
+    const row = getRowById(container, item.id)
     expect(row).toBeInTheDocument()
   })
 }
@@ -60,8 +77,10 @@ const expectLoadingFinished = (container: HTMLElement) =>
   iconTestUtils.expectLoadingFinishedIn(container)
 
 const utils = {
-  getRowIn,
-  clickRowIn,
+  getHeadRowByRole,
+  getOneRowByRole,
+  getRowById,
+  clickRowById,
 
   getHeadCell,
 

@@ -6,8 +6,10 @@ export * from './completeInventorization.model'
 export * from './inventorizations.model'
 export * from './getInventorizations.model'
 
-export * from './inventorizationEquipments.model'
-export * from './getInventorizationEquipments.model'
-
+export * from './inventorizationEquipment.model'
+export * from './getInventorizationEquipment.model'
 export * from './createInventorizationEquipment.model'
 export * from './updateInventorizationEquipment.model'
+
+export * from './inventorizationEquipments.model'
+export * from './getInventorizationEquipments.model'

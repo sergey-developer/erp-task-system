@@ -2,16 +2,15 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import * as reactRouterDom from 'react-router-dom'
 
-import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as inventorizationDetailsTestUtils } from 'modules/warehouse/components/InventorizationDetails/InventorizationDetails.test'
 import {
   inventorizationStatusDict,
-  InventorizationStatusEnum,
   inventorizationTypeDict,
 } from 'modules/warehouse/constants/inventorization'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import InventorizationsPage from 'modules/warehouse/pages/InventorizationsPage'
 import {
-  getExecuteInventorizationPageLocationState,
+  makeExecuteInventorizationPageLocationState,
   mapInventorizationWarehousesTitles,
 } from 'modules/warehouse/utils/inventorization'
 
@@ -20,7 +19,7 @@ import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
-import { useLocationResult } from '_tests_/fixtures/useLocation'
+import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -42,10 +41,24 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import InventorizationsPage from '../InventorizationsPage'
+import { executeInventorizationPageTabNames, ExecuteInventorizationPageTabsEnum } from './constants'
 import ExecuteInventorizationPage from './index'
 
 const getContainer = () => screen.getByTestId('execute-inventorization-page')
+const findContainer = () => screen.findByTestId('execute-inventorization-page')
+
+// tabs
+const getTabsNav = () => within(getContainer()).getByRole('tablist')
+
+const getNavItem = (tab: ExecuteInventorizationPageTabsEnum) =>
+  within(getTabsNav()).getByRole('tab', { name: executeInventorizationPageTabNames[tab] })
+
+const getOpenedTab = (tab: ExecuteInventorizationPageTabsEnum) =>
+  within(getContainer()).getByRole('tabpanel', { name: executeInventorizationPageTabNames[tab] })
+
+const clickTab = async (user: UserEvent, tab: ExecuteInventorizationPageTabsEnum) => {
+  await user.click(getNavItem(tab))
+}
 
 // return to inventorization details
 const getReturnToInventorizationDetailsButton = () =>
@@ -60,13 +73,8 @@ const clickReturnToInventorizationDetailsButton = async (user: UserEvent) => {
 const getCompleteInventorizationButton = () =>
   buttonTestUtils.getButtonIn(getContainer(), 'Завершить инвентаризацию')
 
-const queryCompleteInventorizationButton = () =>
-  buttonTestUtils.queryButtonIn(getContainer(), 'Завершить инвентаризацию')
-
-const clickCompleteInventorizationButton = async (user: UserEvent) => {
-  const button = getReturnToInventorizationDetailsButton()
-  await user.click(button)
-}
+const clickCompleteInventorizationButton = async (user: UserEvent) =>
+  user.click(getCompleteInventorizationButton())
 
 // make report button
 const getMakeReportButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сформировать отчет/)
@@ -81,12 +89,15 @@ const expectMakeReportLoadingFinished = () =>
 
 export const testUtils = {
   getContainer,
+  findContainer,
+
+  getOpenedTab,
+  clickTab,
 
   getReturnToInventorizationDetailsButton,
   clickReturnToInventorizationDetailsButton,
 
   getCompleteInventorizationButton,
-  queryCompleteInventorizationButton,
   clickCompleteInventorizationButton,
 
   getMakeReportButton,
@@ -104,22 +115,20 @@ setupApiTests()
 describe('Страница проведения инвентаризации', () => {
   test('Информации об инвентаризации отображается', () => {
     const inventorization = warehouseFixtures.inventorization()
-    const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
+    const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
     jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
 
     jest
       .spyOn(reactRouterDom, 'useLocation')
-      .mockReturnValue(useLocationResult({ state: inventorizationState }))
+      .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
     mockGetLocationListSuccess()
     mockGetCurrencyListSuccess()
 
     render(<ExecuteInventorizationPage />, {
-      store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock(userFixtures.user()) },
-      }),
+      store: getStoreWithAuth(undefined, undefined, undefined),
     })
 
     const container = testUtils.getContainer()
@@ -172,28 +181,22 @@ describe('Страница проведения инвентаризации', (
   })
 
   describe('Кнопка завершения инвентаризации', () => {
-    test('Отображается и активна если условия соблюдены', () => {
-      const inventorization = warehouseFixtures.inventorization({
-        status: InventorizationStatusEnum.New,
-      })
-      const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
+    test('Отображается и активна', () => {
+      const inventorization = warehouseFixtures.inventorization()
+      const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
 
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationListSuccess()
       mockGetCurrencyListSuccess()
 
       render(<ExecuteInventorizationPage />, {
-        store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
-          queries: {
-            ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
-          },
-        }),
+        store: getStoreWithAuth(undefined, undefined, undefined),
       })
 
       const button = testUtils.getCompleteInventorizationButton()
@@ -201,101 +204,15 @@ describe('Страница проведения инвентаризации', (
       expect(button).toBeEnabled()
     })
 
-    describe('Не отображается если условия соблюдены', () => {
-      test('Но нет прав', () => {
-        const inventorization = warehouseFixtures.inventorization({
-          status: InventorizationStatusEnum.New,
-        })
-        const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
-
-        jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
-
-        jest
-          .spyOn(reactRouterDom, 'useLocation')
-          .mockReturnValue(useLocationResult({ state: inventorizationState }))
-
-        mockGetLocationListSuccess()
-        mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-        mockGetCurrencyListSuccess()
-
-        render(<ExecuteInventorizationPage />, {
-          store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
-          }),
-        })
-
-        const button = testUtils.queryCompleteInventorizationButton()
-        expect(button).not.toBeInTheDocument()
-      })
-
-      test('Но исполнитель не текущий пользователь', () => {
-        const inventorization = warehouseFixtures.inventorization({
-          status: InventorizationStatusEnum.New,
-        })
-        const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
-
-        jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
-
-        jest
-          .spyOn(reactRouterDom, 'useLocation')
-          .mockReturnValue(useLocationResult({ state: inventorizationState }))
-
-        mockGetLocationListSuccess()
-        mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-        mockGetCurrencyListSuccess()
-
-        render(<ExecuteInventorizationPage />, {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
-            },
-          }),
-        })
-
-        const button = testUtils.queryCompleteInventorizationButton()
-        expect(button).not.toBeInTheDocument()
-      })
-
-      test(`Но статус инвентаризации не ${InventorizationStatusEnum.New} или ${InventorizationStatusEnum.InProgress}`, () => {
-        const inventorization = warehouseFixtures.inventorization({
-          status: InventorizationStatusEnum.Closed,
-        })
-        const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
-
-        jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
-
-        jest
-          .spyOn(reactRouterDom, 'useLocation')
-          .mockReturnValue(useLocationResult({ state: inventorizationState }))
-
-        mockGetLocationListSuccess()
-        mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-        mockGetCurrencyListSuccess()
-
-        render(<ExecuteInventorizationPage />, {
-          store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
-            },
-          }),
-        })
-
-        const button = testUtils.queryCompleteInventorizationButton()
-        expect(button).not.toBeInTheDocument()
-      })
-    })
-
-    test('При клике возвращается на страницу списка инвентаризаций и открывает карточку инвентаризации', async () => {
-      const inventorization = warehouseFixtures.inventorization({
-        status: InventorizationStatusEnum.New,
-      })
-      const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
+    test('По завершению возвращается на страницу списка инвентаризаций и открывает карточку инвентаризации', async () => {
+      const inventorization = warehouseFixtures.inventorization()
+      const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
 
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetInventorizationSuccess({ inventorizationId: inventorization.id })
       mockGetInventorizationsSuccess()
@@ -317,10 +234,8 @@ describe('Страница проведения инвентаризации', (
         ],
         { initialEntries: [WarehouseRouteEnum.ExecuteInventorization], initialIndex: 0 },
         {
-          store: getStoreWithAuth(inventorizationState.executor, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.InventorizationUpdate] }),
-            },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         },
       )
@@ -333,24 +248,22 @@ describe('Страница проведения инвентаризации', (
   })
 
   describe('Кнопка возврата в карточку', () => {
-    test('Отображается', () => {
+    test('Отображается и активна', () => {
       const inventorization = warehouseFixtures.inventorization()
-      const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
+      const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
 
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationListSuccess()
       mockGetCurrencyListSuccess()
 
       render(<ExecuteInventorizationPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
-        }),
+        store: getStoreWithAuth(undefined, undefined, undefined),
       })
 
       const button = testUtils.getReturnToInventorizationDetailsButton()
@@ -360,13 +273,13 @@ describe('Страница проведения инвентаризации', (
 
     test('При клике возвращается на страницу списка инвентаризаций и открывает карточку инвентаризации', async () => {
       const inventorization = warehouseFixtures.inventorization()
-      const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
+      const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
 
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetInventorizationSuccess({ inventorizationId: inventorization.id })
       mockGetInventorizationsSuccess()
@@ -409,13 +322,13 @@ describe('Страница проведения инвентаризации', (
       base64ToBytes.mockReturnValueOnce(fakeArrayBuffer)
 
       const inventorization = warehouseFixtures.inventorization()
-      const inventorizationState = getExecuteInventorizationPageLocationState(inventorization)
+      const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
 
       jest
         .spyOn(reactRouterDom, 'useLocation')
-        .mockReturnValue(useLocationResult({ state: inventorizationState }))
+        .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetLocationListSuccess({ body: [] })
       mockGetCurrencyListSuccess()
@@ -425,9 +338,7 @@ describe('Страница проведения инвентаризации', (
       mockGetInventorizationReportSuccess({ inventorizationId: inventorization.id }, { body: file })
 
       const { user } = render(<ExecuteInventorizationPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
-        }),
+        store: getStoreWithAuth(undefined, undefined, undefined),
       })
 
       await testUtils.clickMakeReportButton(user)
@@ -441,6 +352,57 @@ describe('Страница проведения инвентаризации', (
     })
   })
 
-  test.todo('Отображается верная вкладка по умолчанию')
-  test.todo('Вкладка расхождения открывается')
+  test('Вкладка "Сверка" отображается по умолчанию', () => {
+    const inventorization = warehouseFixtures.inventorization()
+    const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
+
+    jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
+
+    jest
+      .spyOn(reactRouterDom, 'useLocation')
+      .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
+
+    mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
+    mockGetLocationListSuccess()
+    mockGetCurrencyListSuccess()
+
+    render(<ExecuteInventorizationPage />, {
+      store: getStoreWithAuth(undefined, undefined, undefined),
+    })
+
+    const reviseTab = testUtils.getOpenedTab(ExecuteInventorizationPageTabsEnum.Revise)
+    expect(reviseTab).toBeInTheDocument()
+  })
+
+  test('Все вкладки открываются', async () => {
+    const inventorization = warehouseFixtures.inventorization()
+    const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
+
+    jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
+
+    jest
+      .spyOn(reactRouterDom, 'useLocation')
+      .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
+
+    mockGetInventorizationEquipmentsSuccess(
+      { inventorizationId: inventorization.id },
+      { once: false },
+    )
+    mockGetLocationListSuccess()
+    mockGetCurrencyListSuccess()
+
+    const { user } = render(<ExecuteInventorizationPage />, {
+      store: getStoreWithAuth(undefined, undefined, undefined),
+    })
+
+    await testUtils.clickTab(user, ExecuteInventorizationPageTabsEnum.Discrepancies)
+    const discrepanciesTab = testUtils.getOpenedTab(
+      ExecuteInventorizationPageTabsEnum.Discrepancies,
+    )
+    expect(discrepanciesTab).toBeInTheDocument()
+
+    await testUtils.clickTab(user, ExecuteInventorizationPageTabsEnum.Relocations)
+    const relocationsTab = testUtils.getOpenedTab(ExecuteInventorizationPageTabsEnum.Relocations)
+    expect(relocationsTab).toBeInTheDocument()
+  })
 })

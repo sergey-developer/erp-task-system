@@ -7,7 +7,7 @@ import { LocationOption } from 'modules/warehouse/components/RelocationTaskForm/
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
-import { GetEquipmentCatalogListQueryArgs } from 'modules/warehouse/models'
+import { GetEquipmentsCatalogQueryArgs } from 'modules/warehouse/models'
 import {
   checkRelocationTaskTypeIsCustomer,
   checkRelocationTaskTypeIsWarranty,
@@ -104,22 +104,22 @@ const getRelocateToWarehouseTypes = (
   }
 }
 
-export const getEquipmentCatalogListParams = (
+export const getEquipmentsCatalogParams = (
   type: RelocationTaskTypeEnum,
-): Pick<GetEquipmentCatalogListQueryArgs, 'conditions' | 'isWarranty' | 'isCredited'> => ({
+): Pick<GetEquipmentsCatalogQueryArgs, 'conditions' | 'isWarranty' | 'isCredited'> => ({
   conditions: getConditionsByType(type),
   isWarranty: checkRelocationTaskTypeIsWarranty(type) ? true : undefined,
   isCredited: checkRelocationTaskTypeIsCustomer(type) ? false : undefined,
 })
 
-export const getRelocateFromLocationListParams = (
+export const getRelocateFromLocationsParams = (
   type: RelocationTaskTypeEnum,
 ): Pick<GetLocationsQueryArgs, 'locationTypes' | 'warehouseTypes'> => ({
   locationTypes: getRelocateFromLocationTypes(type),
   warehouseTypes: getRelocateFromWarehouseTypes(type),
 })
 
-export const getRelocateToLocationListParams = (
+export const getRelocateToLocationsParams = (
   type: RelocationTaskTypeEnum,
 ): Pick<GetLocationsQueryArgs, 'locationTypes' | 'warehouseTypes'> => ({
   locationTypes: getRelocateToLocationTypes(type),

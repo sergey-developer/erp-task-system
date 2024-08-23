@@ -32,7 +32,7 @@ const props: Readonly<WarehouseTableProps> = {
 
 const getContainer = () => screen.getByTestId('warehouse-table')
 
-const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
 
 const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
 

@@ -11,19 +11,20 @@ import RelocationEquipmentEditableTable from './index'
 import { RelocationEquipmentEditableTableProps } from './types'
 
 const props: RelocationEquipmentEditableTableProps = {
+  name: 'equipments',
   editableKeys: undefined,
   setEditableKeys: jest.fn(),
 
   isLoading: false,
 
   equipmentIsLoading: false,
-  equipmentListIsLoading: false,
+  relocationEquipmentsIsLoading: false,
 
-  currencyList: [],
-  currencyListIsLoading: false,
+  currencies: [],
+  currenciesIsLoading: false,
 
-  equipmentCatalogList: [],
-  equipmentCatalogListIsLoading: false,
+  equipments: [],
+  equipmentsIsLoading: false,
 
   canCreateEquipment: false,
   createEquipmentBtnDisabled: false,
@@ -34,9 +35,9 @@ const props: RelocationEquipmentEditableTableProps = {
 
 const getContainer = () => screen.getByTestId('relocation-equipment-editable-table-container')
 
-const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
 const clickRow = async (user: UserEvent, id: IdType) =>
-  tableTestUtils.clickRowIn(getContainer(), user, id)
+  tableTestUtils.clickRowById(getContainer(), user, id)
 
 const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
 const getColTitle = (text: string) => within(getContainer()).getByText(text)

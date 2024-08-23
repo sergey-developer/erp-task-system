@@ -1,5 +1,6 @@
 import { InventorizationApiEnum } from 'modules/warehouse/constants/inventorization'
 import {
+  EquipmentRequestArgs,
   InventorizationEquipmentRequestArgs,
   InventorizationRequestArgs,
 } from 'modules/warehouse/types'
@@ -21,6 +22,13 @@ export const makeGetInventorizationEquipmentsUrl = ({
 }: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
   generateApiPath(InventorizationApiEnum.GetInventorizationEquipments, {
     inventorizationId: String(inventorizationId),
+  })
+
+export const makeGetInventorizationEquipmentUrl = ({
+  equipmentId,
+}: Pick<EquipmentRequestArgs, 'equipmentId'>): string =>
+  generateApiPath(InventorizationApiEnum.GetInventorizationEquipment, {
+    equipmentId: String(equipmentId),
   })
 
 export const makeCreateInventorizationEquipmentUrl = ({

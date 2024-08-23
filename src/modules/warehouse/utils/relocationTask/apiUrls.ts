@@ -1,10 +1,10 @@
-import { generatePath } from "react-router-dom";
+import { generatePath } from 'react-router-dom'
 
 import { RelocationTaskApiEnum } from 'modules/warehouse/constants/relocationTask'
 
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
-import { appendSlashAtEnd } from "shared/utils/string";
+import { appendSlashAtEnd } from 'shared/utils/string'
 
 export const getRelocationTaskUrl = (id: IdType): string =>
   generateApiPath(RelocationTaskApiEnum.GetRelocationTask, { id: String(id) })
@@ -36,14 +36,22 @@ export const createRelocationTaskAttachmentUrl = (id: IdType): string =>
 export const getRelocationTaskWaybillM15Url = (id: IdType): string =>
   generateApiPath(RelocationTaskApiEnum.GetRelocationTaskWaybillM15, { id: String(id) })
 
-export const getRelocationEquipmentListUrl = (id: IdType): string =>
-  generateApiPath(RelocationTaskApiEnum.GetRelocationEquipmentList, { id: String(id) })
+export const getRelocationEquipmentListUrl = (relocationTaskId: IdType): string =>
+  generateApiPath(RelocationTaskApiEnum.GetRelocationEquipmentList, {
+    relocationTaskId: String(relocationTaskId),
+  })
 
-export const getRelocationEquipmentBalanceListUrl = (id: IdType): string =>
-  generateApiPath(RelocationTaskApiEnum.GetRelocationEquipmentBalanceList, { id: String(id) })
+export const getRelocationEquipmentBalanceListUrl = (relocationTaskId: IdType): string =>
+  generateApiPath(RelocationTaskApiEnum.GetRelocationEquipmentBalanceList, {
+    relocationTaskId: String(relocationTaskId),
+  })
 
 export const updateRelocationTaskUrl = (id: IdType): string =>
   generateApiPath(RelocationTaskApiEnum.UpdateRelocationTask, { id: String(id) })
 
-export const updateExternalRelocationUrl = (id: IdType): string =>
-  appendSlashAtEnd(generatePath(RelocationTaskApiEnum.UpdateExternalRelocation, { id: String(id) }))
+export const updateExternalRelocationUrl = (relocationTaskId: IdType): string =>
+  appendSlashAtEnd(
+    generatePath(RelocationTaskApiEnum.UpdateExternalRelocation, {
+      relocationTaskId: String(relocationTaskId),
+    }),
+  )

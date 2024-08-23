@@ -16,7 +16,7 @@ import { EquipmentModel } from 'modules/warehouse/models'
 import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import {
   checkEquipmentCategoryIsConsumable,
-  makeEquipmentsCatalogSelectOptions,
+  makeEquipmentsSelectOptions,
 } from 'modules/warehouse/utils/equipment'
 import { checkRelocationTaskTypeIsWriteOff } from 'modules/warehouse/utils/relocationTask'
 
@@ -43,21 +43,22 @@ const formItemProps: EditableProTableProps<RelocationEquipmentRow, any>['formIte
 }
 
 const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps> = ({
+  name,
   editableKeys,
   setEditableKeys,
-
   isLoading,
+
+  currencies,
+  currenciesIsLoading,
+
+  relocationEquipmentsIsLoading,
+
+  equipments,
+  equipmentsIsLoading,
+
   equipmentIsLoading,
 
-  equipmentListIsLoading,
-
-  currencyList,
-  currencyListIsLoading,
-
-  equipmentCatalogList,
-  equipmentCatalogListIsLoading,
-
-  canCreateEquipment,
+  canCreateEquipment = false,
   createEquipmentBtnDisabled,
   onClickCreateEquipment,
 
@@ -72,25 +73,22 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
 
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(typeFormValue)
 
-  const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
-    () => makeEquipmentsCatalogSelectOptions(equipmentCatalogList),
-    [equipmentCatalogList],
+  const equipmentsOptions = useMemo<DefaultOptionType[]>(
+    () => makeEquipmentsSelectOptions(equipments),
+    [equipments],
   )
 
   const currencyOptions = useMemo<DefaultOptionType[]>(
-    () => currencyList.map((cur) => ({ label: cur.title, value: cur.id })),
-    [currencyList],
+    () => currencies.map((cur) => ({ label: cur.title, value: cur.id })),
+    [currencies],
   )
 
   const handleDeleteRow = useCallback(
     (row: RelocationEquipmentRow) => {
-      const tableDataSource: RelocationEquipmentRow[] = form.getFieldValue('equipments')
-
-      form.setFieldsValue({
-        equipments: tableDataSource.filter((item) => item.rowId !== row.rowId),
-      })
+      const tableDataSource: RelocationEquipmentRow[] = form.getFieldValue(name)
+      form.setFieldsValue({ [name]: tableDataSource.filter((item) => item.rowId !== row.rowId) })
     },
-    [form],
+    [form, name],
   )
 
   const columns: ProColumns<RelocationEquipmentRow>[] = [
@@ -122,9 +120,9 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
             )
           : undefined,
         allowClear: false,
-        loading: equipmentCatalogListIsLoading,
-        disabled: isLoading || equipmentCatalogListIsLoading,
-        options: equipmentCatalogOptions,
+        loading: equipmentsIsLoading,
+        disabled: isLoading || equipmentsIsLoading,
+        options: equipmentsOptions,
         showSearch: true,
         virtual: true,
         onChange: () => form.resetFields(['quantity']),
@@ -176,8 +174,8 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
       valueType: 'select',
       fieldProps: {
         options: currencyOptions,
-        loading: currencyListIsLoading,
-        disabled: isLoading || typeIsWriteOff || equipmentIsLoading || currencyListIsLoading,
+        loading: currenciesIsLoading,
+        disabled: isLoading || typeIsWriteOff || equipmentIsLoading || currenciesIsLoading,
       },
     },
     {
@@ -252,24 +250,24 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
         data-testid='relocation-equipment-editable-table'
         virtual={!env.isTest}
         rowKey='rowId'
-        name='equipments'
+        name={name}
         columns={columns}
         recordCreatorProps={{
           record: () => ({
             rowId: random(1, 9999999),
             ...(typeIsWriteOff && { condition: EquipmentConditionEnum.WrittenOff }),
           }),
-          disabled: isLoading || equipmentListIsLoading,
+          disabled: isLoading || relocationEquipmentsIsLoading,
           creatorButtonText: 'Добавить оборудование',
         }}
         formItemProps={formItemProps}
-        loading={equipmentListIsLoading}
+        loading={relocationEquipmentsIsLoading}
         editable={{
           type: 'multiple',
           form,
           editableKeys,
           onChange: setEditableKeys,
-          onValuesChange: (record, recordList) => form.setFieldValue('equipments', recordList),
+          onValuesChange: (record, recordList) => form.setFieldValue(name, recordList),
         }}
       />
     </div>

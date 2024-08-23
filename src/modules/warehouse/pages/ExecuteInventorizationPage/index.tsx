@@ -1,11 +1,8 @@
 import { Button, Col, Flex, Row, Typography } from 'antd'
 import React, { FC } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
-import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { useLazyGetInventorizationReport } from 'modules/reports/hooks'
-import { UserPermissionsEnum } from 'modules/user/constants'
-import { useUserPermissions } from 'modules/user/hooks'
 import ExecuteInventorizationReviseTab from 'modules/warehouse/components/ExecuteInventorizationReviseTab'
 import {
   inventorizationStatusDict,
@@ -14,8 +11,6 @@ import {
 import { useCompleteInventorization } from 'modules/warehouse/hooks/inventorization'
 import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types'
 import {
-  checkInventorizationStatusIsInProgress,
-  checkInventorizationStatusIsNew,
   getInventorizationsPageLink,
   mapInventorizationWarehousesTitles,
 } from 'modules/warehouse/utils/inventorization'
@@ -23,34 +18,37 @@ import {
 import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { base64ToBytes, extractLocationState, valueOr } from 'shared/utils/common'
+import { MaybeNull } from 'shared/types/utils'
+import { base64ToBytes, extractLocationState } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { extractFileNameFromHeaders } from 'shared/utils/extractFileNameFromHeaders'
 import { downloadFile } from 'shared/utils/file'
 
+import { executeInventorizationPageTabNames, ExecuteInventorizationPageTabsEnum } from './constants'
 import { TabsStyled } from './styles'
 
 const ExecuteInventorizationDiscrepanciesTab = React.lazy(
   () => import('modules/warehouse/components/ExecuteInventorizationDiscrepanciesTab'),
 )
 
-const { Text } = Typography
+const ExecuteInventorizationRelocationsTab = React.lazy(
+  () => import('modules/warehouse/components/ExecuteInventorizationRelocationsTab'),
+)
 
-enum ExecuteInventorizationPageTabsEnum {
-  Revise = 'Revise',
-  Discrepancies = 'Discrepancies',
-  Relocations = 'Relocations',
-}
+const { Text } = Typography
 
 const ExecuteInventorizationPage: FC = () => {
   const params = useParams<'id'>()
-  const location = useLocation()
-  const navigate = useNavigate()
-  const inventorization = extractLocationState<ExecuteInventorizationPageLocationState>(location)
   const inventorizationId = Number(params.id!)
 
-  const permissions = useUserPermissions([UserPermissionsEnum.InventorizationUpdate])
-  const executorIsCurrentUser = useIdBelongAuthUser(inventorization?.executor.id)
+  const navigate = useNavigate()
+
+  const [searchParams] = useSearchParams()
+  const currentTab = searchParams.get('tab') as MaybeNull<ExecuteInventorizationPageTabsEnum>
+  const relocationTaskDraftId = Number(searchParams.get('relocationTaskDraftId')) || undefined
+
+  const location = useLocation()
+  const locationState = extractLocationState<ExecuteInventorizationPageLocationState>(location)
 
   const [getInventorizationReport, { isFetching: getInventorizationReportIsFetching }] =
     useLazyGetInventorizationReport()
@@ -80,94 +78,83 @@ const ExecuteInventorizationPage: FC = () => {
 
   return (
     <Flex data-testid='execute-inventorization-page' vertical gap='large'>
-      <Row gutter={16}>
-        <Col span={6}>
-          <Flex vertical gap='small'>
-            <Row>
-              <Col span={9}>
-                <Text type='secondary'>Тип:</Text>
-              </Col>
+      {locationState?.inventorization ? (
+        <>
+          <Row gutter={16}>
+            <Col span={6}>
+              <Flex vertical gap='small'>
+                <Row>
+                  <Col span={9}>
+                    <Text type='secondary'>Тип:</Text>
+                  </Col>
 
-              <Col span={15}>
-                {valueOr(inventorization?.type, (value) => inventorizationTypeDict[value])}
-              </Col>
-            </Row>
+                  <Col span={15}>{inventorizationTypeDict[locationState.inventorization.type]}</Col>
+                </Row>
 
-            <Row>
-              <Col span={9}>
-                <Text type='secondary'>Статус:</Text>
-              </Col>
+                <Row>
+                  <Col span={9}>
+                    <Text type='secondary'>Статус:</Text>
+                  </Col>
 
-              <Col span={15}>
-                {valueOr(inventorization?.status, (value) => inventorizationStatusDict[value])}
-              </Col>
-            </Row>
+                  <Col span={15}>
+                    {inventorizationStatusDict[locationState.inventorization.status]}
+                  </Col>
+                </Row>
 
-            <Row>
-              <Col span={9}>
-                <Text type='secondary'>Срок выполнения:</Text>
-              </Col>
+                <Row>
+                  <Col span={9}>
+                    <Text type='secondary'>Срок выполнения:</Text>
+                  </Col>
 
-              <Col span={15}>
-                {valueOr(inventorization?.deadlineAt, (value) => formatDate(value))}
-              </Col>
-            </Row>
-          </Flex>
-        </Col>
+                  <Col span={15}>{formatDate(locationState.inventorization.deadlineAt)}</Col>
+                </Row>
+              </Flex>
+            </Col>
 
-        <Col span={7}>
-          <Flex vertical gap='small'>
-            <Row>
-              <Col span={6}>
-                <Text type='secondary'>Создано:</Text>
-              </Col>
+            <Col span={7}>
+              <Flex vertical gap='small'>
+                <Row>
+                  <Col span={6}>
+                    <Text type='secondary'>Создано:</Text>
+                  </Col>
 
-              <Col span={18}>
-                {valueOr(inventorization?.createdAt, (value) => formatDate(value))}
-              </Col>
-            </Row>
+                  <Col span={18}>{formatDate(locationState.inventorization.createdAt)}</Col>
+                </Row>
 
-            <Row>
-              <Col span={6}>
-                <Text type='secondary'>Исполнитель:</Text>
-              </Col>
+                <Row>
+                  <Col span={6}>
+                    <Text type='secondary'>Исполнитель:</Text>
+                  </Col>
 
-              <Col span={18}>{valueOr(inventorization?.executor.fullName)}</Col>
-            </Row>
+                  <Col span={18}>{locationState.inventorization.executor.fullName}</Col>
+                </Row>
 
-            <Row>
-              <Col span={6}>
-                <Text type='secondary'>Автор:</Text>
-              </Col>
+                <Row>
+                  <Col span={6}>
+                    <Text type='secondary'>Автор:</Text>
+                  </Col>
 
-              <Col span={18}>{valueOr(inventorization?.createdBy.fullName)}</Col>
-            </Row>
-          </Flex>
-        </Col>
+                  <Col span={18}>{locationState.inventorization.createdBy.fullName}</Col>
+                </Row>
+              </Flex>
+            </Col>
 
-        <Col span={7}>
-          <Flex vertical gap='small'>
-            <Row>
-              <Col span={6}>
-                <Text type='secondary'>Склады:</Text>
-              </Col>
+            <Col span={7}>
+              <Flex vertical gap='small'>
+                <Row>
+                  <Col span={6}>
+                    <Text type='secondary'>Склады:</Text>
+                  </Col>
 
-              <Col span={18}>
-                {valueOr(inventorization?.warehouses, (value) =>
-                  mapInventorizationWarehousesTitles(value),
-                )}
-              </Col>
-            </Row>
-          </Flex>
-        </Col>
+                  <Col span={18}>
+                    {mapInventorizationWarehousesTitles(locationState.inventorization.warehouses)}
+                  </Col>
+                </Row>
+              </Flex>
+            </Col>
 
-        <Col span={4}>
-          <Flex vertical gap='small'>
-            {inventorization &&
-              permissions.inventorizationUpdate &&
-              executorIsCurrentUser &&
-              (checkInventorizationStatusIsNew(inventorization.status) ||
-                checkInventorizationStatusIsInProgress(inventorization.status)) && (
+            <Col span={4}>
+              <Flex vertical gap='small'>
                 <Button
                   type='primary'
                   onClick={onCompleteInventorization}
@@ -175,45 +162,67 @@ const ExecuteInventorizationPage: FC = () => {
                 >
                   Завершить инвентаризацию
                 </Button>
-              )}
 
-            <Button onClick={onReturnToInventorizationDetails}>Вернуться в карточку</Button>
+                <Button onClick={onReturnToInventorizationDetails}>Вернуться в карточку</Button>
 
-            <Button onClick={onMakeReport} loading={getInventorizationReportIsFetching}>
-              Сформировать отчет
-            </Button>
-          </Flex>
-        </Col>
-      </Row>
+                <Button onClick={onMakeReport} loading={getInventorizationReportIsFetching}>
+                  Сформировать отчет
+                </Button>
+              </Flex>
+            </Col>
+          </Row>
 
-      <TabsStyled
-        type='card'
-        destroyInactiveTabPane
-        defaultActiveKey={ExecuteInventorizationPageTabsEnum.Revise}
-        items={[
-          {
-            key: ExecuteInventorizationPageTabsEnum.Revise,
-            label: 'Сверка',
-            children: (
-              <ExecuteInventorizationReviseTab
-                inventorizationId={inventorizationId}
-                warehouses={inventorization?.warehouses || []}
-              />
-            ),
-          },
-          {
-            key: ExecuteInventorizationPageTabsEnum.Discrepancies,
-            label: 'Расхождения',
-            children: (
-              <React.Suspense fallback={<Spinner tip='Загрузка вкладки расхождений' />}>
-                <ExecuteInventorizationDiscrepanciesTab inventorizationId={inventorizationId} />
-              </React.Suspense>
-            ),
-          },
-        ]}
-      />
+          <TabsStyled
+            type='card'
+            destroyInactiveTabPane
+            defaultActiveKey={currentTab || ExecuteInventorizationPageTabsEnum.Revise}
+            items={[
+              {
+                key: ExecuteInventorizationPageTabsEnum.Revise,
+                label:
+                  executeInventorizationPageTabNames[ExecuteInventorizationPageTabsEnum.Revise],
+                children: (
+                  <ExecuteInventorizationReviseTab
+                    inventorization={locationState.inventorization}
+                  />
+                ),
+              },
+              {
+                key: ExecuteInventorizationPageTabsEnum.Discrepancies,
+                label:
+                  executeInventorizationPageTabNames[
+                    ExecuteInventorizationPageTabsEnum.Discrepancies
+                  ],
+                children: (
+                  <React.Suspense fallback={<Spinner tip='Загрузка вкладки расхождений' />}>
+                    <ExecuteInventorizationDiscrepanciesTab
+                      inventorization={locationState.inventorization}
+                    />
+                  </React.Suspense>
+                ),
+              },
+              {
+                key: ExecuteInventorizationPageTabsEnum.Relocations,
+                label:
+                  executeInventorizationPageTabNames[
+                    ExecuteInventorizationPageTabsEnum.Relocations
+                  ],
+                children: (
+                  <React.Suspense fallback={<Spinner tip='Загрузка вкладки перемещений' />}>
+                    <ExecuteInventorizationRelocationsTab
+                      inventorization={locationState.inventorization}
+                      defaultRelocationTaskId={relocationTaskDraftId}
+                    />
+                  </React.Suspense>
+                ),
+              },
+            ]}
+          />
+        </>
+      ) : (
+        <Text type='danger'>Отсутствуют данные об инвентаризации</Text>
+      )}
     </Flex>
   )
 }
-
 export default ExecuteInventorizationPage

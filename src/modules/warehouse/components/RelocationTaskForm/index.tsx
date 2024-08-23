@@ -47,17 +47,19 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   usersGroups,
   usersGroupsIsLoading,
 
+  deadlineDisabled,
   controllerIsRequired,
 
+  showUploadImages = true,
   onUploadImage,
   imageIsUploading,
   onDeleteImage,
   imageIsDeleting,
   imagesIsLoading,
 
-  relocateFromLocationList,
+  relocateFromLocations,
   relocateFromLocationListIsLoading,
-  relocateToLocationList,
+  relocateToLocations,
   relocateToLocationListIsLoading,
 
   type,
@@ -84,13 +86,13 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
 
   const relocateFromLocationOptions = useMemo(
-    () => makeLocationOptions(relocateFromLocationList),
-    [relocateFromLocationList],
+    () => makeLocationOptions(relocateFromLocations),
+    [relocateFromLocations],
   )
 
   const relocateToLocationOptions = useMemo(
-    () => makeLocationOptions(relocateToLocationList),
-    [relocateToLocationList],
+    () => makeLocationOptions(relocateToLocations),
+    [relocateToLocations],
   )
 
   const typeOptions = useMemo(
@@ -199,7 +201,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
                 name='deadlineAtDate'
                 rules={deadlineAtDateRules}
               >
-                <DatePicker disabled={isLoading} />
+                <DatePicker disabled={isLoading || deadlineDisabled} />
               </Form.Item>
             </Col>
 
@@ -210,7 +212,11 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
                 dependencies={['deadlineAtDate']}
                 rules={deadlineAtTimeRules}
               >
-                <TimePicker disabled={isLoading} format={TIME_PICKER_FORMAT} placeholder='Время' />
+                <TimePicker
+                  disabled={isLoading || deadlineDisabled}
+                  format={TIME_PICKER_FORMAT}
+                  placeholder='Время'
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -267,29 +273,31 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         </Form.Item>
       </Col>
 
-      <Col span={6}>
-        <Space direction='vertical'>
-          <Text type='secondary'>Общие фотографии к перемещению (до 10 штук)</Text>
+      {showUploadImages && (
+        <Col span={6}>
+          <Space data-testid='attachments' direction='vertical'>
+            <Text type='secondary'>Общие фотографии к перемещению (до 10 штук)</Text>
 
-          <Form.Item name='images' {...filesFormItemProps}>
-            <Upload
-              multiple
-              listType='picture'
-              customRequest={onUploadImage}
-              onRemove={onDeleteImage}
-              itemRender={renderUploadedFile()}
-              disabled={isLoading || imageIsUploading || imageIsDeleting || imagesIsLoading}
-              maxCount={10}
-            >
-              <UploadButton
-                label='Добавить фото'
-                loading={imagesIsLoading}
-                disabled={isLoading || imageIsUploading || imageIsDeleting}
-              />
-            </Upload>
-          </Form.Item>
-        </Space>
-      </Col>
+            <Form.Item name='images' {...filesFormItemProps}>
+              <Upload
+                multiple
+                listType='picture'
+                customRequest={onUploadImage}
+                onRemove={onDeleteImage}
+                itemRender={renderUploadedFile()}
+                disabled={isLoading || imageIsUploading || imageIsDeleting || imagesIsLoading}
+                maxCount={10}
+              >
+                <UploadButton
+                  label='Добавить фото'
+                  loading={imagesIsLoading}
+                  disabled={isLoading || imageIsUploading || imageIsDeleting}
+                />
+              </Upload>
+            </Form.Item>
+          </Space>
+        </Col>
+      )}
     </Row>
   )
 }
