@@ -2,32 +2,44 @@ import moment, { Moment } from 'moment-timezone'
 import { FormInstance, NamePath, ValidatorRule } from 'rc-field-form/es/interface'
 
 import { validationMessages } from 'shared/constants/validation'
-import { MaybeUndefined } from 'shared/types/utils'
+import { MaybeNull, MaybeUndefined } from 'shared/types/utils'
 
-type DateValidatorArgs = Partial<{
+export type DateValidatorArgs = Partial<{
   required: boolean
   canBeInPast: boolean
+  maxDate: MaybeNull<string>
+  maxDateMsg: string
 }>
 
 export const dateValidator =
-  ({ required, canBeInPast = false }: DateValidatorArgs): ValidatorRule['validator'] =>
+  ({
+    required,
+    canBeInPast = false,
+    maxDate,
+    maxDateMsg,
+  }: DateValidatorArgs): ValidatorRule['validator'] =>
   (rule, value: Moment) => {
     const currentDate = moment()
 
-    return value
-      ? !canBeInPast && value.isBefore(currentDate, 'day')
-        ? Promise.reject(validationMessages.date.canNotBeInPast)
-        : Promise.resolve()
-      : required
-      ? Promise.reject(validationMessages.required)
-      : Promise.resolve()
+    if (value) {
+      if (maxDate && value.isAfter(maxDate, 'day')) {
+        return Promise.reject(maxDateMsg)
+      } else if (!canBeInPast && value.isBefore(currentDate, 'day')) {
+        return Promise.reject(validationMessages.date.canNotBeInPast)
+      }
+    } else if (required) {
+      return Promise.reject(validationMessages.required)
+    }
+
+    return Promise.resolve()
   }
 
-type TimeValidatorArgs = {
+export type TimeValidatorArgs = Pick<DateValidatorArgs, 'maxDate'> & {
   dateGetter: FormInstance['getFieldValue']
   dateFieldPath: NamePath
   required: boolean
   canBeInPast?: boolean
+  maxTimeMsg?: string
 }
 
 export const timeValidator =
@@ -36,17 +48,20 @@ export const timeValidator =
     dateFieldPath,
     required,
     canBeInPast = false,
+    maxDate,
+    maxTimeMsg,
   }: TimeValidatorArgs): ValidatorRule['validator'] =>
   (rule, value: Moment) => {
     if (required && !value) return Promise.reject(validationMessages.required)
 
-    const currentDate = moment()
     const date: MaybeUndefined<Moment> = dateGetter(dateFieldPath)
     if (!date) {
       console.warn(
         'Time validation goes wrong because date value was not received in time validator because date field path is wrong or date value is falsy value',
       )
     }
+
+    const currentDate = moment()
 
     if (!date || date.isAfter(currentDate, 'day')) {
       return Promise.resolve()

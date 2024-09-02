@@ -186,11 +186,11 @@ const taskApiService = baseApiService
         }) => {
           const formData = new FormData()
 
-          formData.append('type', type)
           formData.append(decamelize('olaNextBreachTime'), olaNextBreachTime)
           formData.append('title', title)
           formData.append('description', description)
 
+          if (type) formData.append('type', type)
           if (workGroup) formData.append(decamelize('workGroup'), String(workGroup))
           if (assignee) formData.append('assignee', String(assignee))
           if (isBoolean(isPrivate)) formData.append(decamelize('isPrivate'), String(isPrivate))

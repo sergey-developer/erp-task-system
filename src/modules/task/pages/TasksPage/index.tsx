@@ -69,6 +69,8 @@ import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { MaybeUndefined } from 'shared/types/utils'
+import { mergeDateTime } from 'shared/utils/date'
+import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import {
   calculatePaginationParams,
@@ -77,8 +79,6 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
-import { mergeDateTime } from 'shared/utils/date'
-import { extractOriginFiles } from 'shared/utils/file'
 import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
 import {
   getInitialTasksFilterValues,

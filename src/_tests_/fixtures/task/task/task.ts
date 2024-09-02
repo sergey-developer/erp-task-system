@@ -8,6 +8,8 @@ import {
 } from 'modules/task/constants/task'
 import { TaskModel, TaskResponseTimeModel } from 'modules/task/models'
 
+import { SystemEnum } from 'shared/constants/enums'
+
 import taskFixtures from '_tests_/fixtures/task'
 import {
   fakeDateString,
@@ -49,12 +51,14 @@ export const task = (
       | 'fiscalAccumulator'
       | 'infrastructureProject'
       | 'workType'
+      | 'system'
     >
   >,
 ): Omit<TaskModel, 'responseTime'> & {
   responseTime: TaskResponseTimeModel
 } => ({
   id: props?.id || fakeId(),
+  system: props?.system || SystemEnum.ITSM,
   type: props?.type || TaskTypeEnum.Request,
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,

@@ -16,11 +16,13 @@ import {
 import { UserModel, UserPositionModel } from 'modules/user/models'
 import { WorkTypeModel } from 'modules/warehouse/models'
 
+import { SystemEnum } from 'shared/constants/enums'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type TaskModel = {
   id: IdType
+  system: SystemEnum
   createdAt: string
   type: TaskTypeEnum
   contactService: string
