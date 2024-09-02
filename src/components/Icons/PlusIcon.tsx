@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { fontSizeStyles } from './styles'
 import { IconProps } from './types'
 
-const PlusIconStyled = styled(PlusCircleTwoTone)<Pick<IconProps, '$size' | '$cursor'>>`
+const PlusIconStyled = styled(PlusCircleTwoTone)<Pick<IconProps, '$size'>>`
   ${fontSizeStyles}
 `
 

@@ -46,6 +46,7 @@ const props: Readonly<TaskDetailsTitleProps> = {
   onRequestReclassification: jest.fn(),
   onUpdateDescription: jest.fn(),
   onUpdateDeadline: jest.fn(),
+  onCreateInternalTask: jest.fn(),
 }
 
 export const canExecuteTaskProps: Pick<

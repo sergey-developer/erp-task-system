@@ -3,6 +3,12 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
 import stubFalse from 'lodash/stubFalse'
 import React, { FC } from 'react'
 
+import {
+  formItemNoMarginBottom,
+  overlayInnerStyle,
+} from 'modules/task/components/CreateTaskModal/styles'
+import { titleRules } from 'modules/task/components/CreateTaskModal/validation'
+
 import UploadButton from 'components/Buttons/UploadButton'
 import DatePicker from 'components/DatePicker'
 import BaseModal from 'components/Modals/BaseModal'
@@ -17,9 +23,8 @@ import {
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { filterOptionBy } from 'shared/utils/common'
 
-import { formItemNoMarginBottom, overlayInnerStyle } from './styles'
 import { CreateInternalTaskFormFields, CreateInternalTaskModalProps } from './types'
-import { olaNextBreachDateRules, olaNextBreachTimeRules, titleRules } from './validation'
+import { olaNextBreachDateRules, olaNextBreachTimeRules } from './validation'
 
 const { TextArea } = Input
 
@@ -34,6 +39,9 @@ const CreateInternalTaskModal: FC<CreateInternalTaskModalProps> = ({
   confirmLoading,
 
   permissions,
+
+  recordId,
+  olaNextBreachTime,
 
   workGroupsIsLoading,
   workGroups,
@@ -83,8 +91,8 @@ const CreateInternalTaskModal: FC<CreateInternalTaskModalProps> = ({
         initialValues={initialValues}
         onFinish={onFinish}
       >
-        <Form.Item data-testid='external-task-form-item' name='id' label='Внешняя заявка'>
-          <Input disabled />
+        <Form.Item data-testid='external-task-form-item' label='Внешняя заявка'>
+          <Input disabled value={recordId} />
         </Form.Item>
 
         <Form.Item data-testid='ola-next-breach-form-item' label='Выполнить до'>
@@ -93,7 +101,7 @@ const CreateInternalTaskModal: FC<CreateInternalTaskModalProps> = ({
               <Form.Item
                 data-testid='ola-next-breach-date-form-item'
                 name='olaNextBreachDate'
-                rules={olaNextBreachDateRules}
+                rules={olaNextBreachDateRules({ maxDate: olaNextBreachTime })}
               >
                 <DatePicker disabled={confirmLoading} allowClear={false} />
               </Form.Item>
@@ -104,7 +112,7 @@ const CreateInternalTaskModal: FC<CreateInternalTaskModalProps> = ({
                 data-testid='ola-next-breach-time-form-item'
                 name='olaNextBreachTime'
                 dependencies={['olaNextBreachDate']}
-                rules={olaNextBreachTimeRules}
+                rules={olaNextBreachTimeRules({ maxDate: olaNextBreachTime })}
               >
                 <TimePicker disabled={confirmLoading} allowClear={false} />
               </Form.Item>

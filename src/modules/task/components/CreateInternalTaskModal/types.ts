@@ -2,6 +2,7 @@ import { FormInstance } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 import { Moment } from 'moment-timezone'
 
+import { TaskModel } from 'modules/task/models'
 import { UsersModel } from 'modules/user/models'
 import { MatchedUserPermissions } from 'modules/user/types'
 import { WorkTypesModel } from 'modules/warehouse/models'
@@ -15,31 +16,32 @@ import { SetNonNullable } from 'shared/types/utils'
 export type CreateInternalTaskModalProps = SetNonNullable<
   BaseModalProps,
   'open' | 'onCancel' | 'confirmLoading'
-> & {
-  permissions: MatchedUserPermissions
+> &
+  Pick<TaskModel, 'recordId' | 'olaNextBreachTime'> & {
+    permissions: MatchedUserPermissions
 
-  onSubmit: (
-    values: CreateInternalTaskFormFields,
-    form: FormInstance<CreateInternalTaskFormFields>,
-  ) => Promise<void>
+    onSubmit: (
+      values: CreateInternalTaskFormFields,
+      form: FormInstance<CreateInternalTaskFormFields>,
+    ) => Promise<void>
 
-  onChangeWorkGroup: (value: IdType) => void
+    onChangeWorkGroup: (value: IdType) => void
 
-  workGroups: WorkGroupsCatalogModel
-  workGroupsIsLoading: boolean
+    workGroups: WorkGroupsCatalogModel
+    workGroupsIsLoading: boolean
 
-  workTypes: WorkTypesModel
-  workTypesIsLoading: boolean
+    workTypes: WorkTypesModel
+    workTypesIsLoading: boolean
 
-  users: UsersModel
-  usersIsLoading: boolean
+    users: UsersModel
+    usersIsLoading: boolean
 
-  observers: UsersModel
-  observersIsLoading: boolean
+    observers: UsersModel
+    observersIsLoading: boolean
 
-  executors: UsersModel
-  executorsIsLoading: boolean
-}
+    executors: UsersModel
+    executorsIsLoading: boolean
+  }
 
 export type CreateInternalTaskFormFields = {
   olaNextBreachDate: Moment

@@ -1,29 +1,26 @@
 import { Rule } from 'rc-field-form/es/interface'
 
-import { TaskTypeEnum } from 'modules/task/constants/task'
+import {
+  dateValidator,
+  DateValidatorArgs,
+  timeValidator,
+  TimeValidatorArgs,
+} from 'shared/utils/validation'
 
-import { onlyNotEmptyStringRules, requiredStringRules } from 'shared/constants/validation'
-import { dateValidator, timeValidator } from 'shared/utils/validation'
-
-export const typeRules: Rule[] = [
-  {
-    required: true,
-    type: 'enum',
-    enum: Object.values(TaskTypeEnum).filter(
-      (value) => value !== TaskTypeEnum.RequestTask && value !== TaskTypeEnum.IncidentTask,
-    ),
-  },
-]
-
-export const olaNextBreachDateRules: Rule[] = [
+export const olaNextBreachDateRules = ({ maxDate }: Pick<DateValidatorArgs, 'maxDate'>): Rule[] => [
   {
     type: 'date',
     required: true,
-    validator: dateValidator({ required: true }),
+    validator: dateValidator({
+      required: true,
+      canBeInPast: true,
+      maxDate,
+      maxDateMsg: 'Дата не может быть больше указанной в заявке',
+    }),
   },
 ]
 
-export const olaNextBreachTimeRules: Rule[] = [
+export const olaNextBreachTimeRules = ({ maxDate }: Pick<TimeValidatorArgs, 'maxDate'>): Rule[] => [
   ({ getFieldValue }) => ({
     type: 'date',
     required: true,
@@ -31,11 +28,9 @@ export const olaNextBreachTimeRules: Rule[] = [
       dateGetter: getFieldValue,
       dateFieldPath: 'olaNextBreachDate',
       required: true,
+      canBeInPast: true,
+      maxDate,
+      maxTimeMsg: 'Время не может быть больше указанной в заявке',
     }),
   }),
 ]
-
-export const titleRules: Rule[] = requiredStringRules.concat([{ max: 500 }])
-export const contactTypeRules: Rule[] = onlyNotEmptyStringRules.concat([{ max: 255 }])
-export const emailRules: Rule[] = [{ type: 'email', max: 140 }]
-export const addressRules: Rule[] = onlyNotEmptyStringRules.concat([{ max: 255 }])
