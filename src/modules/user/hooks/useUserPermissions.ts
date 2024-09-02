@@ -1,6 +1,7 @@
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { getPermissionsObj, MatchedUserPermissions } from 'modules/user/utils'
+import { getPermissionsObj } from 'modules/user/utils'
 
+import { MatchedUserPermissions } from '../types'
 import { useUserMeState } from './useUserMeState'
 
 export const useUserPermissions = (permissions: UserPermissionsEnum[]): MatchedUserPermissions => {

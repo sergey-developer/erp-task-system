@@ -25,7 +25,7 @@ import Space from 'components/Space'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { useGetLocations } from 'shared/hooks/catalogs/location'
+import { useGetLocationsCatalog } from 'shared/hooks/catalogs/locations'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -112,7 +112,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
   const { currentData: equipmentNomenclatures, isFetching: equipmentNomenclaturesIsFetching } =
     useGetEquipmentNomenclatures({ ...filterValues, limit: 999999 })
 
-  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations()
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocationsCatalog()
 
   const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
     useGetEquipmentCategories(undefined, { skip: !filterOpened })

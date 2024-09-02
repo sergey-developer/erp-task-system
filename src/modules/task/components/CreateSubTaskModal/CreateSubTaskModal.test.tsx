@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
 import { createSubTaskErrMsg } from 'modules/task/constants/task'
 
-import { getSubTaskTemplateListMessages } from 'shared/constants/catalogs'
+import { getSubTaskTemplatesCatalogErrMsg } from 'shared/constants/catalogs'
 import { validationMessages } from 'shared/constants/validation'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
@@ -860,7 +860,7 @@ describe('Модалка создания задачи заявки', () => {
         await testUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
 
         const notification = await notificationTestUtils.findNotification(
-          getSubTaskTemplateListMessages.commonError,
+          getSubTaskTemplatesCatalogErrMsg,
         )
         expect(notification).toBeInTheDocument()
       })

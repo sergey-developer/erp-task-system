@@ -26,7 +26,7 @@ import {
   mockGetEquipmentCatalogListSuccess,
   mockGetInventorizationEquipmentsSuccess,
   mockGetInventorizationEquipmentSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
   mockGetUsersGroupsSuccess,
@@ -90,7 +90,7 @@ describe('Страница создания черновика заявки на
         .mockReturnValue(fakeUseLocationResult({ state: locationStateMock }))
 
       mockGetUsersSuccess()
-      mockGetLocationListSuccess({ once: false })
+      mockGetLocationsCatalogSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
       mockGetUsersGroupsSuccess()
@@ -121,7 +121,7 @@ describe('Страница создания черновика заявки на
       const currentUser = userFixtures.userListItem()
       const otherUser = userFixtures.userListItem()
       mockGetUsersSuccess({ body: [executorUser, currentUser, otherUser] })
-      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
         body: warehouseFixtures.equipmentsCatalog(),
@@ -168,7 +168,7 @@ describe('Страница создания черновика заявки на
       const controllerUser = userFixtures.userListItem()
       const currentUser = userFixtures.userListItem()
       mockGetUsersSuccess({ body: [controllerUser, currentUser] })
-      mockGetLocationListSuccess({ body: [], once: false })
+      mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetCurrencyListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess({
         body: warehouseFixtures.equipmentsCatalog(),
@@ -211,7 +211,7 @@ describe('Страница создания черновика заявки на
         .mockReturnValue(fakeUseLocationResult({ state: locationStateMock }))
 
       mockGetUsersSuccess()
-      mockGetLocationListSuccess({ once: false })
+      mockGetLocationsCatalogSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
       mockGetUsersGroupsSuccess()
@@ -247,7 +247,7 @@ describe('Страница создания черновика заявки на
       .mockReturnValue({ id: String(locationStateMock.inventorization.id) })
 
     mockGetUsersSuccess()
-    mockGetLocationListSuccess({ once: false })
+    mockGetLocationsCatalogSuccess({ once: false })
     mockGetEquipmentCatalogListSuccess()
     mockGetCurrencyListSuccess()
     mockGetUsersGroupsSuccess()
@@ -295,8 +295,8 @@ describe('Страница создания черновика заявки на
     const controllerUser = userFixtures.userListItem()
     mockGetUsersSuccess({ body: [controllerUser] })
 
-    const locationFrom = catalogsFixtures.locationListItem()
-    mockGetLocationListSuccess({ body: [locationFrom], once: false })
+    const locationFrom = catalogsFixtures.locationCatalogListItem()
+    mockGetLocationsCatalogSuccess({ body: [locationFrom], once: false })
     mockGetEquipmentCatalogListSuccess({ body: [] })
     mockGetCurrencyListSuccess({ body: [] })
     mockGetUsersGroupsSuccess({ body: [] })

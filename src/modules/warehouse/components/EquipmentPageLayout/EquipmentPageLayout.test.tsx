@@ -18,7 +18,7 @@ import {
   mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentListSuccess,
   mockGetEquipmentNomenclaturesSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
 } from '_tests_/mocks/api'
 import { buttonTestUtils, fakeWord, render, renderWithRouter, setupApiTests } from '_tests_/utils'
 
@@ -95,7 +95,7 @@ describe('Layout номенклатуры оборудования', () => {
       })
 
       test('Открывает фильтр', async () => {
-        mockGetLocationListSuccess({ body: [] })
+        mockGetLocationsCatalogSuccess({ body: [] })
         mockGetCustomerListSuccess()
         mockGetEquipmentCategoryListSuccess()
 
@@ -120,7 +120,7 @@ describe('Layout номенклатуры оборудования', () => {
 
     test('Можно закрыть фильтр', async () => {
       mockGetCustomerListSuccess()
-      mockGetLocationListSuccess({ body: catalogsFixtures.locationList() })
+      mockGetLocationsCatalogSuccess({ body: catalogsFixtures.locationsCatalog() })
       mockGetEquipmentCategoryListSuccess({
         body: warehouseFixtures.equipmentCategoryList(),
       })
@@ -140,8 +140,8 @@ describe('Layout номенклатуры оборудования', () => {
     test('После применения фильтр закрывается и отправляется запрос', async () => {
       mockGetCustomerListSuccess()
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
       mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategoryList() })
       mockGetEquipmentNomenclaturesSuccess({ once: false })
@@ -177,7 +177,7 @@ describe('Layout номенклатуры оборудования', () => {
 
     test('После применения переходит на страницу списка номенклатуры оборудования', async () => {
       mockGetCustomerListSuccess()
-      mockGetLocationListSuccess({ body: catalogsFixtures.locationList() })
+      mockGetLocationsCatalogSuccess({ body: catalogsFixtures.locationsCatalog() })
       mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategoryList() })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()

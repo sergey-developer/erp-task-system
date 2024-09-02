@@ -19,7 +19,7 @@ const props: Readonly<HistoryNomenclatureOperationsReportFilterProps> = {
   values: {},
   initialValues: {},
 
-  locations: catalogsFixtures.locationList(2),
+  locations: catalogsFixtures.locationsCatalog(2),
   locationsIsLoading: false,
 
   owners: warehouseFixtures.customerList(2),
