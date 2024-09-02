@@ -19,7 +19,7 @@ export type CreateTaskMutationArgs = {
   customer?: IdType
   contactType?: string
   email?: string
-  sapId?: IdType
+  shopId?: IdType
   address?: string
   parentTask?: IdType
 }
