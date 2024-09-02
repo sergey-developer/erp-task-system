@@ -181,7 +181,7 @@ const taskApiService = baseApiService
           customer,
           contactType,
           email,
-          sapId,
+          shopId,
           address,
         }) => {
           const formData = new FormData()
@@ -201,7 +201,7 @@ const taskApiService = baseApiService
           if (customer) formData.append('customer', String(customer))
           if (contactType) formData.append(decamelize('contactType'), contactType)
           if (email) formData.append('email', email)
-          if (sapId) formData.append(decamelize('sapId'), String(sapId))
+          if (shopId) formData.append(decamelize('shopId'), String(shopId))
           if (address) formData.append('address', address)
 
           return {
