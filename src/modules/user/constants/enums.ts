@@ -69,8 +69,6 @@ export enum UserPermissionsEnum {
 
   TasksCommentCreate = 'TASKS_COMMENT_CREATE',
 
-  InternalTasksCreate = 'INTERNAL_TASKS_CREATE',
-
   AssigneeSubtasksCreate = 'ASSIGNEE_SUBTASKS_CREATE',
   WorkGroupSubtasksCreate = 'WORK_GROUP_SUBTASKS_CREATE',
   FirstLineSubtasksCreate = 'FIRST_LINE_SUBTASKS_CREATE',
