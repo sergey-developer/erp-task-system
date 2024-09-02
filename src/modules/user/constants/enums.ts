@@ -3,6 +3,8 @@ import { TaskActionsPermissionsEnum } from 'modules/task/constants/task'
 export enum UserPermissionsEnum {
   WarehouseReportsRead = 'WAREHOUSE_REPORTS_READ',
 
+  InternalTasksCreate = 'INTERNAL_TASKS_CREATE',
+
   RelocationTasksRead = 'RELOCATION_TASKS_READ',
   RelocationTasksCreate = 'RELOCATION_TASKS_CREATE',
   RelocationTasksUpdate = 'RELOCATION_TASKS_UPDATE',

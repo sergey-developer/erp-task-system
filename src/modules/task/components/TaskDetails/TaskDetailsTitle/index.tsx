@@ -1,3 +1,4 @@
+import { PlusCircleTwoTone } from '@ant-design/icons'
 import { Button, Dropdown, Row, Space, Typography } from 'antd'
 import { MenuProps } from 'antd/es/menu'
 import React, { FC } from 'react'
@@ -24,11 +25,15 @@ import {
   SyncIcon,
 } from 'components/Icons'
 
+import { SystemEnum } from 'shared/constants/enums'
+
 import { MenuActionsKeysEnum, TaskDetailsTitleProps } from './types'
 
 const { Text } = Typography
 
 const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
+  userActions,
+
   id,
   type,
   status,
@@ -37,7 +42,8 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   olaStatus,
   suspendRequest,
   assignee,
-  userActions,
+  system,
+
   onReloadTask,
   onExecuteTask,
   onRegisterFN,
@@ -57,6 +63,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   const permissions = useUserPermissions([
     UserPermissionsEnum.TaskInternalDescriptionUpdate,
     UserPermissionsEnum.TaskInternalDeadlineUpdate,
+    UserPermissionsEnum.InternalTasksCreate,
   ])
 
   const assigneeIsCurrentUser = useIdBelongAuthUser(assignee?.id)
@@ -89,6 +96,18 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
         icon: <MailIcon />,
         label: 'Зарегистрировать ФН',
         onClick: onRegisterFN,
+      },
+      {
+        key: MenuActionsKeysEnum.CreateInternalTask,
+        disabled: !(
+          (taskType.isIncident || taskType.isRequest) &&
+          system !== SystemEnum.ITSM &&
+          permissions.internalTasksCreate &&
+          userActions.tasks.CAN_READ.includes(id)
+        ),
+        icon: <PlusCircleTwoTone />,
+        label: 'Создать внутреннюю заявку',
+        onClick: () => {},
       },
       {
         key: MenuActionsKeysEnum.ExecuteTask,

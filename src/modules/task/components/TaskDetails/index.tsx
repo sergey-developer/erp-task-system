@@ -61,9 +61,9 @@ import {
   TaskAssigneeModel,
 } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUserActions, useUserPermissions } from 'modules/user/hooks'
 import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
-import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 
 import LoadingArea from 'components/LoadingArea'
@@ -715,6 +715,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       extendedStatus={task.extendedStatus}
       olaStatus={task.olaStatus}
       suspendRequest={task.suspendRequest}
+      system={task.system}
       userActions={userActions}
       onReloadTask={debouncedRefetchTask}
       onExecuteTask={onOpenExecuteTaskModal}
