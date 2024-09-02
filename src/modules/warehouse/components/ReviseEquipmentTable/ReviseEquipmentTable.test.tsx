@@ -353,7 +353,7 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Устанавливается значение по умолчанию если оно есть', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
         locationFact: locationListItem,
       })
@@ -374,7 +374,7 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test(`Устанавливается значение по умолчанию "${undefinedSelectOption.label}" если isLocationFactUndefined=true`, async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
         isLocationFactUndefined: true,
       })
@@ -395,7 +395,7 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(<ReviseEquipmentTable {...props} locations={[locationListItem]} />)
 
@@ -414,7 +414,7 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Подсвечивается зелёным если значение равно плановому местонахождению', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
         locationFact: locationListItem,
         locationPlan: locationListItem,
@@ -436,8 +436,8 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Подсвечивается красным если значение не равно плановому местонахождению', () => {
-      const locationListItem1 = catalogsFixtures.locationListItem()
-      const locationListItem2 = catalogsFixtures.locationListItem()
+      const locationListItem1 = catalogsFixtures.locationCatalogListItem()
+      const locationListItem2 = catalogsFixtures.locationCatalogListItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
         locationFact: locationListItem1,
         locationPlan: locationListItem2,

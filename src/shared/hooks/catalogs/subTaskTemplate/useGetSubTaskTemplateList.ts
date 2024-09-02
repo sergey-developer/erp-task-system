@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getSubTaskTemplateListMessages } from 'shared/constants/catalogs'
+import { getSubTaskTemplatesCatalogErrMsg } from 'shared/constants/catalogs'
 import {
   GetSubTaskTemplateListQueryArgs,
   GetSubTaskTemplateListSuccessResponse,
@@ -29,7 +29,7 @@ export const useGetSubTaskTemplateList = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getSubTaskTemplateListMessages.commonError)
+      showErrorNotification(getSubTaskTemplatesCatalogErrMsg)
     }
   }, [state.error])
 
