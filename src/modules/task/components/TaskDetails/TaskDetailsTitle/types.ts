@@ -23,6 +23,7 @@ export type TaskDetailsTitleProps = Pick<
   onRequestReclassification: EmptyFn
   onUpdateDescription: EmptyFn
   onUpdateDeadline: EmptyFn
+  onCreateInternalTask: EmptyFn
 }
 
 export enum MenuActionsKeysEnum {

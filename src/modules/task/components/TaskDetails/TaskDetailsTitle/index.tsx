@@ -1,4 +1,3 @@
-import { PlusCircleTwoTone } from '@ant-design/icons'
 import { Button, Dropdown, Row, Space, Typography } from 'antd'
 import { MenuProps } from 'antd/es/menu'
 import React, { FC } from 'react'
@@ -21,6 +20,7 @@ import {
   MailIcon,
   MenuIcon,
   PauseCircleIcon,
+  PlusIcon,
   QuestionCircleIcon,
   SyncIcon,
 } from 'components/Icons'
@@ -51,6 +51,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
   onRequestReclassification,
   onUpdateDescription,
   onUpdateDeadline,
+  onCreateInternalTask,
 }) => {
   const taskType = useTaskType(type)
 
@@ -105,9 +106,9 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
           permissions.internalTasksCreate &&
           userActions.tasks.CAN_READ.includes(id)
         ),
-        icon: <PlusCircleTwoTone />,
+        icon: <PlusIcon />,
         label: 'Создать внутреннюю заявку',
-        onClick: () => {},
+        onClick: onCreateInternalTask,
       },
       {
         key: MenuActionsKeysEnum.ExecuteTask,

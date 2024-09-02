@@ -4,11 +4,11 @@ import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 
 export type CreateTaskMutationArgs = {
-  type: TaskTypeEnum
   olaNextBreachTime: string
   title: string
   description: string
 
+  type?: TaskTypeEnum
   workGroup?: IdType
   assignee?: IdType
   isPrivate?: boolean
@@ -21,6 +21,7 @@ export type CreateTaskMutationArgs = {
   email?: string
   sapId?: IdType
   address?: string
+  parentTask?: IdType
 }
 
 export type CreateTaskSuccessResponse = { id: IdType }

@@ -1,7 +1,7 @@
 import { useBoolean } from 'ahooks'
 import { App, Button, Col, Divider, Drawer, Flex, FormInstance, Row, Typography } from 'antd'
 import debounce from 'lodash/debounce'
-import React, { FC, useCallback, useEffect, useMemo } from 'react'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useAuthUser } from 'modules/auth/hooks'
@@ -9,7 +9,12 @@ import { useUpdateInfrastructure } from 'modules/infrastructures/hooks'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { makeChangeInfrastructurePageLink } from 'modules/infrastructures/utils/pagesLinks'
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
+import {
+  CreateInternalTaskFormFields,
+  CreateInternalTaskModalProps,
+} from 'modules/task/components/CreateInternalTaskModal/types'
 import { CreateRegistrationFNRequestModalProps } from 'modules/task/components/CreateRegistrationFNRequestModal/types'
+import { firstLineOptionValue } from 'modules/task/components/CreateTaskModal'
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { RequestTaskReclassificationModalProps } from 'modules/task/components/RequestTaskReclassificationModal/types'
 import {
@@ -35,6 +40,7 @@ import {
 } from 'modules/task/constants/task'
 import {
   useClassifyTaskWorkType,
+  useCreateTask,
   useCreateTaskAttachment,
   useCreateTaskRegistrationFNRequest,
   useGetTask,
@@ -62,7 +68,7 @@ import {
 } from 'modules/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'modules/task/services/taskApi.service'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { useGetUserActions, useUserPermissions } from 'modules/user/hooks'
+import { useGetUserActions, useGetUsers, useUserPermissions } from 'modules/user/hooks'
 import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 
@@ -74,6 +80,8 @@ import Spinner from 'components/Spinner'
 import { DEFAULT_DEBOUNCE_VALUE, NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetFaChangeTypes } from 'shared/hooks/catalogs/faChangeTypes'
+import { useGetResolutionClassifications } from 'shared/hooks/catalogs/resolutionClassifications'
+import { useGetWorkGroupsCatalog } from 'shared/hooks/catalogs/workGroups'
 import { useSystemSettingsState } from 'shared/hooks/system'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import {
@@ -90,7 +98,6 @@ import { downloadFile, extractIdsFromFilesResponse, extractOriginFiles } from 's
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { useGetResolutionClassifications } from '../../../../shared/hooks/catalogs/resolutionClassifications'
 import TaskAssignee from '../TaskAssignee'
 import AssigneeBlock from './AssigneeBlock'
 import WorkGroupBlock from './WorkGroupBlock'
@@ -133,6 +140,10 @@ const UpdateTaskDescriptionModal = React.lazy(
 
 const UpdateTaskDeadlineModal = React.lazy(
   () => import('modules/task/components/UpdateTaskDeadlineModal'),
+)
+
+const CreateInternalTaskModal = React.lazy(
+  () => import('modules/task/components/CreateInternalTaskModal'),
 )
 
 const { Text } = Typography
@@ -189,6 +200,69 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   useEffect(() => {
     if (isGetTaskError) originOnClose()
   }, [isGetTaskError, originOnClose])
+
+  // create internal task
+  const [selectedTaskWorkGroup, setSelectedTaskWorkGroup] =
+    useState<CreateInternalTaskFormFields['workGroup']>()
+
+  const [
+    createInternalTaskModalOpened,
+    { setTrue: openCreateInternalTaskModal, setFalse: closeCreateInternalTaskModal },
+  ] = useBoolean(false)
+
+  const debouncedOpenCreateInternalTaskModal = useDebounceFn(openCreateInternalTaskModal)
+
+  const debouncedCloseCreateInternalTaskModal = useDebounceFn(() => {
+    closeCreateInternalTaskModal()
+    setSelectedTaskWorkGroup(undefined)
+  }, [closeCreateInternalTaskModal])
+
+  const { currentData: workGroupsCatalog = [], isFetching: workGroupsCatalogIsFetching } =
+    useGetWorkGroupsCatalog(undefined, { skip: !createInternalTaskModalOpened })
+
+  const { currentData: observers = [], isFetching: observersIsFetching } = useGetUsers(
+    {
+      readTasksWorkGroup:
+        selectedTaskWorkGroup === firstLineOptionValue ? 'None' : selectedTaskWorkGroup!,
+    },
+    { skip: !(createInternalTaskModalOpened && selectedTaskWorkGroup) },
+  )
+
+  const { currentData: executors = [], isFetching: executorsIsFetching } = useGetUsers(
+    {
+      resolveTasksWorkGroup:
+        selectedTaskWorkGroup === firstLineOptionValue ? 'None' : selectedTaskWorkGroup!,
+    },
+    { skip: !(createInternalTaskModalOpened && selectedTaskWorkGroup) },
+  )
+
+  const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers(undefined, {
+    skip: !createInternalTaskModalOpened,
+  })
+
+  const [createInternalTaskMutation, { isLoading: createInternalTaskIsLoading }] = useCreateTask()
+
+  const onCreateInternalTask = useCallback<CreateInternalTaskModalProps['onSubmit']>(
+    async ({ attachments, olaNextBreachDate, olaNextBreachTime, workGroup, ...values }, form) => {
+      try {
+        const newTask = await createInternalTaskMutation({
+          ...values,
+          parentTask: taskId,
+          workGroup: workGroup === firstLineOptionValue ? undefined : workGroup,
+          olaNextBreachTime: mergeDateTime(olaNextBreachDate, olaNextBreachTime).toISOString(),
+          attachments: attachments?.length ? extractOriginFiles(attachments) : undefined,
+        }).unwrap()
+
+        // setSelectedTaskId(newTask.id)
+      } catch (error) {
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          form.setFields(getFieldsErrors(error.data))
+        }
+      }
+    },
+    [createInternalTaskMutation, taskId],
+  )
+  // create internal task
 
   const debouncedRefetchTask = useDebounceFn(originRefetchTask)
 
@@ -273,7 +347,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
     { taskType: task?.type! },
-    { skip: !workTypeIsEditable || !task?.type },
+    { skip: !((workTypeIsEditable || createInternalTaskModalOpened) && !!task?.type) },
   )
 
   const [classifyTaskWorkTypeMutation, { isLoading: classifyTaskWorkTypeIsLoading }] =
@@ -724,6 +798,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       onRequestReclassification={onOpenTaskReclassificationModal}
       onUpdateDescription={debouncedToggleUpdateDescriptionModal}
       onUpdateDeadline={debouncedToggleUpdateDeadlineModal}
+      onCreateInternalTask={debouncedOpenCreateInternalTaskModal}
     />
   )
 
@@ -1105,6 +1180,37 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             email={taskRegistrationRequestRecipients?.email || []}
             emailAsCopy={taskRegistrationRequestRecipients?.emailAsCopy || []}
             recipientsIsLoading={taskRegistrationRequestRecipientsIsFetching}
+          />
+        </React.Suspense>
+      )}
+
+      {createInternalTaskModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              tip='Загрузка модалки создания внутренней заявки'
+              open
+              onCancel={debouncedCloseCreateInternalTaskModal}
+            />
+          }
+        >
+          <CreateInternalTaskModal
+            open={createInternalTaskModalOpened}
+            onCancel={debouncedCloseCreateInternalTaskModal}
+            onSubmit={onCreateInternalTask}
+            confirmLoading={createInternalTaskIsLoading}
+            permissions={permissions}
+            workGroups={workGroupsCatalog}
+            workGroupsIsLoading={workGroupsCatalogIsFetching}
+            onChangeWorkGroup={setSelectedTaskWorkGroup}
+            users={users}
+            usersIsLoading={usersIsFetching}
+            executors={executors}
+            executorsIsLoading={executorsIsFetching}
+            observers={observers}
+            observersIsLoading={observersIsFetching}
+            workTypes={workTypes}
+            workTypesIsLoading={workTypesIsFetching}
           />
         </React.Suspense>
       )}
