@@ -123,11 +123,15 @@ const TasksPage: FC = () => {
 
   const debouncedOpenCreateTaskModal = useDebounceFn(openCreateTaskModal)
 
-  const debouncedCloseCreateTaskModal = useDebounceFn(() => {
+  const onCloseCreateTaskModal = useCallback(() => {
     closeCreateTaskModal()
     setSelectedTaskType(undefined)
     setSelectedTaskWorkGroup(undefined)
   }, [closeCreateTaskModal])
+
+  const debouncedOnCloseCreateTaskModal = useDebounceFn(onCloseCreateTaskModal, [
+    onCloseCreateTaskModal,
+  ])
   // create task
 
   const [autoUpdateEnabled, { toggle: toggleAutoUpdateEnabled }] = useBoolean(false)
@@ -322,13 +326,14 @@ const TasksPage: FC = () => {
         }).unwrap()
 
         setSelectedTaskId(newTask.id)
+        onCloseCreateTaskModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
           form.setFields(getFieldsErrors(error.data))
         }
       }
     },
-    [createTaskMutation],
+    [createTaskMutation, onCloseCreateTaskModal],
   )
 
   const onApplyFilter = useCallback<TasksFilterProps['onSubmit']>(
@@ -599,13 +604,13 @@ const TasksPage: FC = () => {
             <ModalFallback
               tip='Загрузка модалки создания заявки'
               open
-              onCancel={debouncedCloseCreateTaskModal}
+              onCancel={debouncedOnCloseCreateTaskModal}
             />
           }
         >
           <CreateTaskModal
             open={createTaskModalOpened}
-            onCancel={debouncedCloseCreateTaskModal}
+            onCancel={debouncedOnCloseCreateTaskModal}
             onSubmit={onCreateTask}
             confirmLoading={createTaskIsLoading}
             permissions={permissions}

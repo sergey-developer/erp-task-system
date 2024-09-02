@@ -68,6 +68,6 @@ export type CreateTaskFormFields = {
   customer?: IdType
   contactType?: string
   email?: string
-  sapId?: IdType
+  shopId?: IdType
   address?: string
 }

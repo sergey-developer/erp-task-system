@@ -331,7 +331,7 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
             <Input placeholder='Введите почту' disabled={confirmLoading} />
           </Form.Item>
 
-          <Form.Item data-testid='sap-id-form-item' label='SAP ID объекта' name='sapId'>
+          <Form.Item data-testid='sap-id-form-item' label='SAP ID объекта' name='shopId'>
             <Select<LocationCatalogListItemModel['id'], LocationCatalogListItemModel>
               placeholder='Выберите из списка'
               loading={locationsIsLoading}
