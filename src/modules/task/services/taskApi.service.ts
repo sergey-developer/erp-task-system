@@ -183,6 +183,7 @@ const taskApiService = baseApiService
           email,
           shopId,
           address,
+          parentTask,
         }) => {
           const formData = new FormData()
 
@@ -191,6 +192,7 @@ const taskApiService = baseApiService
           formData.append('description', description)
 
           if (type) formData.append('type', type)
+          if (parentTask) formData.append(decamelize('parentTask'), String(parentTask))
           if (workGroup) formData.append(decamelize('workGroup'), String(workGroup))
           if (assignee) formData.append('assignee', String(assignee))
           if (isBoolean(isPrivate)) formData.append(decamelize('isPrivate'), String(isPrivate))
