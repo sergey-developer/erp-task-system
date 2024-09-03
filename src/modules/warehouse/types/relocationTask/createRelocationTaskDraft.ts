@@ -3,7 +3,7 @@ import { Moment } from 'moment-timezone'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
-import { EquipmentModel } from 'modules/warehouse/models'
+import { EquipmentModel, InventorizationEquipmentListItemModel } from 'modules/warehouse/models'
 import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types/inventorization'
 
 import { IdType } from 'shared/types/common'
@@ -17,6 +17,7 @@ export type CreateRelocationTaskDraftPageLocationState = Pick<
 export type RelocationTaskInventorizationEquipment = {
   rowId: number
   id: IdType
+  equipment: InventorizationEquipmentListItemModel['equipment']
   condition: EquipmentConditionEnum
 
   quantity?: number
