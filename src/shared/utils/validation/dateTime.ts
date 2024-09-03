@@ -63,6 +63,20 @@ export const timeValidator =
 
     const currentDate = moment()
 
+    if (date && maxDate) {
+      const maxDateMoment = moment(maxDate)
+      if (date.isSame(maxDateMoment, 'day')) {
+        const updatedDate = date.set({
+          hours: value.get('hours'),
+          minutes: value.get('minutes'),
+          seconds: value.get('seconds'),
+        })
+        if (updatedDate.isAfter(maxDateMoment, 'minute')) {
+          return Promise.reject(maxTimeMsg)
+        }
+      }
+    }
+
     if (!date || date.isAfter(currentDate, 'day')) {
       return Promise.resolve()
     }
