@@ -77,7 +77,7 @@ export const timeValidator =
       }
     }
 
-    if (!date || date.isAfter(currentDate, 'day')) {
+    if (!date || date?.isAfter(currentDate, 'day')) {
       return Promise.resolve()
     }
 
