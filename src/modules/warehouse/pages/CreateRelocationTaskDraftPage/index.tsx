@@ -249,7 +249,7 @@ const CreateRelocationTaskDraftPage: FC = () => {
         type: values.type,
         deadlineAt: mergeDateTime(values.deadlineAtDate, values.deadlineAtTime).toISOString(),
         equipments: values.equipments.map((eqp) => ({
-          id: eqp.id,
+          id: eqp.equipment.id,
           quantity: eqp.quantity,
           condition: eqp.condition,
           currency: eqp.currency,
