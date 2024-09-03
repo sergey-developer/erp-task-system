@@ -3,6 +3,7 @@ import { EditableProTableProps } from '@ant-design/pro-table/es/components/Edita
 import { Button, Form } from 'antd'
 import isUndefined from 'lodash/isUndefined'
 import random from 'lodash/random'
+import { NamePath } from 'rc-field-form/es/interface'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, useCallback, useMemo } from 'react'
 
@@ -12,6 +13,7 @@ import {
   EquipmentConditionEnum,
   equipmentConditionOptions,
 } from 'modules/warehouse/constants/equipment'
+import { InventorizationEquipmentListItemModel } from 'modules/warehouse/models'
 import { RelocationTaskDraftFormFields } from 'modules/warehouse/types'
 import { makeInventorizationEquipmentsSelectOptions } from 'modules/warehouse/utils/inventorization'
 import {
@@ -99,15 +101,22 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
         // @ts-ignore
         'data-testid': 'equipment-form-item',
       },
-      fieldProps: {
+      fieldProps: (form, config) => ({
         allowClear: false,
         loading: equipmentsIsLoading,
         disabled: isLoading || equipmentsIsLoading,
         options: equipmentsOptions,
+        onChange: (
+          value: InventorizationEquipmentListItemModel['id'],
+          option: { equipment: InventorizationEquipmentListItemModel['equipment'] },
+        ) => {
+          const rowKey = config.rowKey as NamePath
+          form.setFieldValue([...rowKey, 'equipment'], option.equipment)
+        },
         showSearch: true,
         virtual: true,
         filterOption: filterOptionBy('label'),
-      },
+      }),
     },
     {
       key: 'serialNumber',
