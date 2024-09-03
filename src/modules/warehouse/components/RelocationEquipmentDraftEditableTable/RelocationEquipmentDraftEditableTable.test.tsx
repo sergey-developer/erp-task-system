@@ -22,6 +22,7 @@ const props: RelocationEquipmentDraftEditableTableProps = {
 
   equipments: [],
   equipmentsIsLoading: false,
+  onChangeEquipment: jest.fn(),
 
   equipmentIsLoading: false,
 

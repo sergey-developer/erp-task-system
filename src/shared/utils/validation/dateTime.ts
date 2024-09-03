@@ -42,7 +42,7 @@ export const timeValidator =
     const date: Moment = dateGetter(dateFieldName)
     const currentDate = moment()
 
-    if (!date || date.isAfter(currentDate, 'day')) {
+    if (!date || date?.isAfter(currentDate, 'day')) {
       return Promise.resolve()
     }
 

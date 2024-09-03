@@ -3,7 +3,6 @@ import { EditableProTableProps } from '@ant-design/pro-table/es/components/Edita
 import { Button, Form } from 'antd'
 import isUndefined from 'lodash/isUndefined'
 import random from 'lodash/random'
-import { NamePath } from 'rc-field-form/es/interface'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, useCallback, useMemo } from 'react'
 
@@ -55,6 +54,7 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
   currenciesIsLoading,
 
   equipmentIsLoading,
+  onChangeEquipment,
 
   equipments,
   equipmentsIsLoading,
@@ -109,10 +109,7 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
         onChange: (
           value: InventorizationEquipmentListItemModel['id'],
           option: { equipment: InventorizationEquipmentListItemModel['equipment'] },
-        ) => {
-          const rowKey = config.rowKey as NamePath
-          form.setFieldValue([...rowKey, 'equipment'], option.equipment)
-        },
+        ) => onChangeEquipment(value, option, config.rowKey),
         showSearch: true,
         virtual: true,
         filterOption: filterOptionBy('label'),
