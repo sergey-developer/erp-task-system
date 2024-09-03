@@ -1,8 +1,7 @@
 import { useBoolean, usePrevious } from 'ahooks'
-import { Button, Col, Form, FormProps, Modal, Row, Typography, UploadProps } from 'antd'
+import { Button, Col, Form, Modal, Row, Typography, UploadProps } from 'antd'
 import isNumber from 'lodash/isNumber'
 import moment from 'moment-timezone'
-import { NamePath } from 'rc-field-form/es/interface'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -15,6 +14,7 @@ import RelocationEquipmentDraftEditableTable from 'modules/warehouse/components/
 import {
   ActiveEquipmentTableRow,
   InventorizationEquipmentTableRow,
+  RelocationEquipmentDraftEditableTableProps,
 } from 'modules/warehouse/components/RelocationEquipmentDraftEditableTable/types'
 import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
 import {
@@ -269,55 +269,46 @@ const CreateRelocationTaskDraftPage: FC = () => {
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))
+      } else {
+        console.error(error)
       }
     }
   }
 
-  // todo: переделать на обработчик изменения оборудования, здесь и в других страницах
-  const pickEquipment: FormProps<RelocationTaskDraftFormFields>['onValuesChange'] = async (
-    changedValues,
-    values,
+  // todo: заменить pickEquipment на такую функцию в других местах
+  const onChangeEquipment: RelocationEquipmentDraftEditableTableProps['onChangeEquipment'] = async (
+    value,
+    option,
+    path,
   ) => {
-    if (
-      changedValues[equipmentTableNamePath] &&
-      !Array.isArray(changedValues[equipmentTableNamePath])
-    ) {
-      const [index, changes] = Object.entries(changedValues[equipmentTableNamePath])[0] as [
-        string,
-        Partial<InventorizationEquipmentTableRow>,
-      ]
+    form.setFieldValue([...path, 'equipment'], option.equipment)
+    const currentEquipment = form.getFieldValue(path)
 
-      if (changes.id) {
-        const equipmentPath: NamePath = [equipmentTableNamePath, index]
-        const currentEquipment = values.equipments[Number(index)]
+    try {
+      const equipment = await getEquipment({ equipmentId: value }).unwrap()
+      const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
+      const newEquipment: InventorizationEquipmentTableRow = {
+        ...currentEquipment,
+        serialNumber: equipment.serialNumber || undefined,
+        condition: typeIsWriteOff
+          ? EquipmentConditionEnum.WrittenOff
+          : typeIsReturnWrittenOff
+          ? EquipmentConditionEnum.Working
+          : equipment.condition,
+        price: isNumber(equipment.price) ? equipment.price : undefined,
+        currency: equipment.currency?.id,
+        quantity: isConsumable
+          ? isNumber(equipment.quantity.diff)
+            ? equipment.quantity.diff
+            : undefined
+          : 1,
+        category: equipment.category,
+      }
 
-        try {
-          const equipment = await getEquipment({ equipmentId: changes.id }).unwrap()
-          const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
-          const newEquipment: InventorizationEquipmentTableRow = {
-            ...currentEquipment,
-            serialNumber: equipment.serialNumber || undefined,
-            condition: typeIsWriteOff
-              ? EquipmentConditionEnum.WrittenOff
-              : typeIsReturnWrittenOff
-              ? EquipmentConditionEnum.Working
-              : equipment.condition,
-            price: isNumber(equipment.price) ? equipment.price : undefined,
-            currency: equipment.currency?.id,
-            quantity: isConsumable
-              ? isNumber(equipment.quantity.diff)
-                ? equipment.quantity.diff
-                : undefined
-              : 1,
-            category: equipment.category,
-          }
-
-          form.setFieldValue(equipmentPath, newEquipment)
-        } catch (error) {
-          if (isErrorResponse(error) && isForbiddenError(error)) {
-            form.setFieldValue(equipmentPath, { rowId: currentEquipment.rowId })
-          }
-        }
+      form.setFieldValue(path, newEquipment)
+    } catch (error) {
+      if (isErrorResponse(error) && isForbiddenError(error)) {
+        form.setFieldValue(path, { rowId: currentEquipment.rowId })
       }
     }
   }
@@ -414,7 +405,6 @@ const CreateRelocationTaskDraftPage: FC = () => {
         form={form}
         layout='vertical'
         onFinish={createTaskDraft}
-        onValuesChange={pickEquipment}
         initialValues={initialValues}
       >
         <Row gutter={[40, 40]}>
@@ -450,6 +440,7 @@ const CreateRelocationTaskDraftPage: FC = () => {
                 editableKeys={editableTableRowKeys}
                 setEditableKeys={setEditableTableRowKeys}
                 isLoading={createTaskIsLoading}
+                onChangeEquipment={onChangeEquipment}
                 equipmentIsLoading={equipmentIsFetching}
                 currencies={currencies}
                 currenciesIsLoading={currenciesIsFetching}
