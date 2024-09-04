@@ -81,7 +81,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
             taskExtendedStatus.isInReclassification ||
             suspendRequestStatus.isNew ||
             suspendRequestStatus.isInProgress ||
-            !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE.includes(id),
+            !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE?.includes(id),
         icon: <PauseCircleIcon $size='middle' />,
         label: 'Запросить перевод в ожидание',
         onClick: onRequestSuspend,
@@ -112,7 +112,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
       },
       {
         key: MenuActionsKeysEnum.ExecuteTask,
-        disabled: !userActions.tasks.CAN_RESOLVE.includes(id),
+        disabled: !userActions.tasks.CAN_RESOLVE?.includes(id),
         icon: <CheckCircleIcon $color='crayola' />,
         label: 'Выполнить заявку',
         onClick: onExecuteTask,
@@ -127,7 +127,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
                 taskType.isIncidentTask ||
                 suspendRequestStatus.isNew ||
                 suspendRequestStatus.isInProgress ||
-                !userActions.tasks.CAN_RECLASSIFICATION_REQUESTS_CREATE.includes(id),
+                !userActions.tasks.CAN_RECLASSIFICATION_REQUESTS_CREATE?.includes(id),
               icon: <QuestionCircleIcon />,
               label: 'Запросить переклассификацию',
               onClick: onRequestReclassification,

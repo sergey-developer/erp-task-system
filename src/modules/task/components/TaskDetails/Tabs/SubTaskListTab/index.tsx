@@ -143,7 +143,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task, userActions, permission
             onClick={debouncedToggleCreateSubTaskModalOpened}
             disabled={
               !(
-                userActions.tasks.CAN_SUBTASKS_CREATE.includes(task.id) &&
+                userActions.tasks.CAN_SUBTASKS_CREATE?.includes(task.id) &&
                 taskStatus.isInProgress &&
                 (taskType.isIncident || taskType.isRequest)
               ) ||
