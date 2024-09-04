@@ -11,9 +11,7 @@ import {
   TaskSecondLineModalProps,
 } from 'modules/task/components/TaskSecondLineModal/types'
 import UserShortInfo from 'modules/task/components/UserShortInfo'
-import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
-import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
-import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
+import { useTaskStatus } from 'modules/task/hooks/task'
 import { TaskModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
@@ -30,10 +28,7 @@ const TaskSecondLineModal = React.lazy(() => import('modules/task/components/Tas
 
 const { Text } = Typography
 
-export type WorkGroupBlockProps = Pick<
-  TaskModel,
-  'id' | 'type' | 'recordId' | 'status' | 'extendedStatus'
-> & {
+export type WorkGroupBlockProps = Pick<TaskModel, 'id' | 'type' | 'recordId' | 'status'> & {
   transferTaskToFirstLine: (
     values: TaskFirstLineFormFields,
     setFields: FormInstance<TaskFirstLineFormFields>['setFields'],
@@ -50,7 +45,6 @@ export type WorkGroupBlockProps = Pick<
 
   userActions: UserActionsModel
 
-  taskSuspendRequestStatus?: SuspendRequestStatusEnum
   workGroup?: TaskModel['workGroup']
 }
 
@@ -63,14 +57,11 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   workGroup,
 
   status,
-  extendedStatus,
 
   transferTaskToFirstLine,
   transferTaskToFirstLineIsLoading,
   transferTaskToSecondLine,
   transferTaskToSecondLineIsLoading,
-
-  taskSuspendRequestStatus: rawTaskSuspendRequestStatus,
 
   userActions,
 }) => {
@@ -86,9 +77,6 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
   const debouncedToggleOpenTaskSecondLineModal = useDebounceFn(toggleOpenTaskSecondLineModal)
 
   const taskStatus = useTaskStatus(status)
-  const taskExtendedStatus = useTaskExtendedStatus(extendedStatus)
-  const taskSuspendRequestStatus = useTaskSuspendRequestStatus(rawTaskSuspendRequestStatus)
-
   const hasWorkGroup = !!workGroup
 
   const onReturnTaskToSecondLine: TaskSecondLineModalProps['onSubmit'] = async (
@@ -119,15 +107,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                 type='link'
                 onClick={debouncedToggleOpenTaskFirstLineModal}
                 loading={transferTaskToFirstLineIsLoading}
-                disabled={
-                  (!rawTaskSuspendRequestStatus || taskSuspendRequestStatus.isApproved) &&
-                  userActions.tasks.CAN_PUT_ON_FIRST_LINE.includes(id)
-                    ? false
-                    : taskSuspendRequestStatus.isNew ||
-                      taskSuspendRequestStatus.isInProgress ||
-                      taskStatus.isAwaiting ||
-                      taskExtendedStatus.isInReclassification
-                }
+                disabled={!userActions.tasks.CAN_PUT_ON_FIRST_LINE.includes(id)}
               >
                 Вернуть на I линию
               </Button>
@@ -138,15 +118,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                 type='link'
                 onClick={debouncedToggleOpenTaskSecondLineModal}
                 loading={transferTaskToSecondLineIsLoading}
-                disabled={
-                  taskSuspendRequestStatus.isApproved
-                    ? false
-                    : !permissions.putFirstLineTasksOnSecondLine ||
-                      taskSuspendRequestStatus.isNew ||
-                      taskSuspendRequestStatus.isInProgress ||
-                      taskExtendedStatus.isInReclassification ||
-                      (!taskStatus.isNew && !taskStatus.isInProgress)
-                }
+                disabled={!userActions.tasks.CAN_PUT_ON_SECOND_LINE.includes(id)}
               >
                 Перевести на II линию
               </Button>

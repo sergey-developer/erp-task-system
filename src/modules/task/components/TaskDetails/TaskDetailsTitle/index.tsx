@@ -112,13 +112,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
       },
       {
         key: MenuActionsKeysEnum.ExecuteTask,
-        disabled: suspendRequestStatus.isApproved
-          ? false
-          : !taskStatus.isInProgress ||
-            !assigneeIsCurrentUser ||
-            taskExtendedStatus.isInReclassification ||
-            suspendRequestStatus.isNew ||
-            suspendRequestStatus.isInProgress,
+        disabled: !userActions.tasks.CAN_RESOLVE.includes(id),
         icon: <CheckCircleIcon $color='crayola' />,
         label: 'Выполнить заявку',
         onClick: onExecuteTask,

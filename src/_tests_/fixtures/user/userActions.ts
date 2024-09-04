@@ -10,6 +10,8 @@ export const taskActionsPermissions: UserActionsModel['tasks'] = {
   [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [fakeId()],
   [TaskActionsPermissionsEnum.CanReclassificationRequestsCreate]: [fakeId()],
   [TaskActionsPermissionsEnum.CanSubtasksCreate]: [fakeId()],
+  [TaskActionsPermissionsEnum.CanPutOnSecondLine]: [fakeId()],
+  [TaskActionsPermissionsEnum.CanResolve]: [fakeId()],
 }
 
 export const userActions = (props?: Partial<UserActionsModel>): UserActionsModel => ({

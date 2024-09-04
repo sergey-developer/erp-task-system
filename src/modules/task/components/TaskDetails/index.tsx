@@ -978,13 +978,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                         type={task.type}
                         recordId={task.recordId}
                         status={task.status}
-                        extendedStatus={task.extendedStatus}
                         workGroup={task.workGroup}
                         transferTaskToFirstLine={onTransferTaskToFirstLine}
                         transferTaskToFirstLineIsLoading={deleteWorkGroupIsLoading}
                         transferTaskToSecondLine={onTransferTaskToSecondLine}
                         transferTaskToSecondLineIsLoading={updateWorkGroupIsLoading}
-                        taskSuspendRequestStatus={task.suspendRequest?.status}
                         userActions={userActions}
                       />
                     </Col>

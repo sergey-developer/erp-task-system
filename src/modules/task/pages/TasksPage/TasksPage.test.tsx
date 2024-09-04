@@ -12,13 +12,8 @@ import {
   testUtils as assigneeBlockTestUtils,
 } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
+import { testUtils as taskDetailsTitleTestUtils } from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
 import {
-  canExecuteTaskProps,
-  testUtils as taskDetailsTitleTestUtils,
-} from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
-import {
-  activeFirstLineButtonProps,
-  activeSecondLineButtonProps,
   showFirstLineButtonProps,
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
@@ -403,9 +398,6 @@ describe('Страница реестра заявок', () => {
 
     test('Перезапрашивается при выполнении заявки', async () => {
       mockGetTaskCountersSuccess({ once: false })
-      mockGetUserActionsSuccess(canExecuteTaskProps.assignee!.id, {
-        body: userFixtures.userActions(),
-      })
 
       const taskListItem = taskFixtures.taskListItem()
       mockGetTasksSuccess({
@@ -413,17 +405,23 @@ describe('Страница реестра заявок', () => {
         once: false,
       })
 
-      const task = taskFixtures.task({
-        id: taskListItem.id,
-        hasRelocationTasks: true,
-        ...canExecuteTaskProps,
-      })
+      const task = taskFixtures.task({ id: taskListItem.id, hasRelocationTasks: true })
       mockGetTaskSuccess(task.id, { body: task })
       mockResolveTaskSuccess(task.id)
 
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanResolve]: [task.id],
+          },
+        }),
+      })
+
       const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth({ id: canExecuteTaskProps.assignee!.id }, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
 
@@ -455,13 +453,19 @@ describe('Страница реестра заявок', () => {
       const task = taskFixtures.task({
         id: taskListItem.id,
         ...showFirstLineButtonProps,
-        ...activeFirstLineButtonProps,
       })
       mockGetTaskSuccess(task.id, { body: task })
       mockDeleteTaskWorkGroupSuccess(task.id)
 
       const currentUser = userFixtures.user()
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [task.id],
+          },
+        }),
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
@@ -497,7 +501,6 @@ describe('Страница реестра заявок', () => {
       const task = taskFixtures.task({
         id: taskListItem.id,
         ...showSecondLineButtonProps,
-        ...activeSecondLineButtonProps,
       })
       mockGetTaskSuccess(task.id, { body: task })
 
@@ -509,7 +512,14 @@ describe('Страница реестра заявок', () => {
       const currentUser = userFixtures.user({
         permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
       })
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanPutOnSecondLine]: [task.id],
+          },
+        }),
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
