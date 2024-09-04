@@ -119,15 +119,10 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
               type='link'
               loading={updateAssigneeIsLoading}
               disabled={
-                taskSuspendRequestStatus.isApproved
-                  ? false
-                  : (!permissions.selfAssigneeTasksUpdate && !permissions.anyAssigneeTasksUpdate) ||
-                    taskStatus.isClosed ||
-                    taskStatus.isCompleted ||
-                    taskStatus.isAwaiting ||
-                    taskExtendedStatus.isInReclassification ||
-                    taskSuspendRequestStatus.isNew ||
-                    taskSuspendRequestStatus.isInProgress
+                !(
+                  (permissions.selfAssigneeTasksUpdate || permissions.anyAssigneeTasksUpdate) &&
+                  userActions.tasks.CAN_ASSIGNEE.includes(id)
+                )
               }
               onClick={onAssignOnMe}
             >
