@@ -765,7 +765,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                   user={reclassificationRequest.user}
                   onCancel={debouncedToggleConfirmCancelReclassificationRequestModal}
                   cancelBtnDisabled={
-                    !userActions.tasks.CAN_RECLASSIFICATION_REQUESTS_CREATE.includes(taskId)
+                    !userActions.tasks.CAN_RECLASSIFICATION_REQUESTS_CREATE?.includes(taskId)
                   }
                 />
               </React.Suspense>
@@ -798,7 +798,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                             onClick: onDeleteTaskSuspendRequest,
                             loading: deleteSuspendRequestIsLoading,
                             disabled:
-                              !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE.includes(taskId),
+                              !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE?.includes(taskId),
                           }
                         : taskSuspendRequestStatus.isApproved
                         ? {
@@ -806,7 +806,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                             onClick: onTakeTask,
                             loading: takeTaskIsLoading,
                             disabled:
-                              !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE.includes(taskId),
+                              !userActions.tasks.CAN_SUSPEND_REQUESTS_CREATE?.includes(taskId),
                           }
                         : undefined
                     }
@@ -886,15 +886,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     <Col span={11}>
                       <AssigneeBlock
                         id={task.id}
-                        status={task.status}
-                        extendedStatus={task.extendedStatus}
                         assignee={task.assignee}
                         workGroup={task.workGroup}
                         updateAssignee={onUpdateAssignee}
                         updateAssigneeIsLoading={updateAssigneeIsLoading}
                         takeTask={onTakeTask}
                         takeTaskIsLoading={takeTaskIsLoading}
-                        taskSuspendRequestStatus={task.suspendRequest?.status}
                         userActions={userActions}
                       />
                     </Col>

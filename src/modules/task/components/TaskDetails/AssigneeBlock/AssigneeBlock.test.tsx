@@ -1,13 +1,8 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
-import {
-  TaskActionsPermissionsEnum,
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/task'
-import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
+import { TaskActionsPermissionsEnum } from 'modules/task/constants/task'
 import { TaskWorkGroupModel } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
@@ -29,11 +24,8 @@ const props: Readonly<SetNonNullable<AssigneeBlockProps>> = {
   takeTaskIsLoading: false,
   updateAssignee: jest.fn(),
   updateAssigneeIsLoading: false,
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
   assignee: taskFixtures.assignee(),
   workGroup: taskFixtures.workGroup(),
-  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
 export const activeTakeTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'userActions'>> = {
@@ -60,14 +52,6 @@ export const activeAssignOnMeButtonProps: Readonly<
   ],
 }
 
-export const activeAssignButtonProps: Readonly<
-  SetNonNullable<Pick<AssigneeBlockProps, 'status' | 'extendedStatus' | 'assignee'>>
-> = {
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
-  assignee: taskFixtures.assignee(),
-}
-
 const showRefuseTaskButtonProps: Readonly<SetNonNullable<Pick<AssigneeBlockProps, 'assignee'>>> = {
   assignee: taskFixtures.assignee(),
 }
@@ -82,10 +66,15 @@ const activeRefuseTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'userAction
 }
 
 export const canSelectAssigneeProps: Readonly<
-  SetNonNullable<Pick<AssigneeBlockProps, 'status' | 'workGroup'>>
+  SetNonNullable<Pick<AssigneeBlockProps, 'userActions'> & { permissions: UserPermissionsEnum[] }>
 > = {
-  status: TaskStatusEnum.New,
-  workGroup: taskFixtures.workGroup(),
+  userActions: userFixtures.userActions({
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanAssignee]: [props.id],
+    },
+  }),
+  permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
 }
 
 const getContainer = () => screen.getByTestId('task-assignee-block')
@@ -103,11 +92,7 @@ const takeTaskExpectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(
 
 // assign on me button
 const getAssignOnMeButton = () => buttonTestUtils.getButtonIn(getContainer(), /назначить на себя$/i)
-
-const clickAssignOnMeButton = async (user: UserEvent) => {
-  const button = getAssignOnMeButton()
-  await user.click(button)
-}
+const clickAssignOnMeButton = async (user: UserEvent) => user.click(getAssignOnMeButton())
 
 const assignOnMeExpectLoadingStarted = () =>
   buttonTestUtils.expectLoadingStarted(getAssignOnMeButton())
@@ -117,9 +102,7 @@ const assignOnMeExpectLoadingFinished = () =>
 
 // assign button
 const getAssignButton = () => buttonTestUtils.getButtonIn(getContainer(), /назначить$/i)
-
 const queryAssignButton = () => buttonTestUtils.queryButtonIn(getContainer(), /назначить$/i)
-
 const clickAssignButton = async (user: UserEvent) => {
   const button = getAssignButton()
   await user.click(button)
@@ -147,7 +130,7 @@ const queryAssigneeSelect = () => selectTestUtils.querySelect(getContainer())
 const findAssigneeSelect = () => selectTestUtils.findSelect(getContainer())
 const getSelectedAssignee = () => selectTestUtils.getSelectedOption(getContainer())
 const openAssigneeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getContainer())
-const selectAssignee = selectTestUtils.clickSelectOption
+const setAssignee = selectTestUtils.clickSelectOption
 const getAssigneeOption = selectTestUtils.getSelectOptionById
 const getAllAssigneeOption = selectTestUtils.getAllSelectOption
 
@@ -184,7 +167,7 @@ export const testUtils = {
   findAssigneeSelect,
   getSelectedAssignee,
   openAssigneeSelect,
-  selectAssignee,
+  setAssignee,
   getAssigneeOption,
   getAllAssigneeOption,
   expectAssigneeSelectLoadingStarted,
@@ -298,38 +281,6 @@ describe('Блок "Исполнитель заявки"', () => {
       expect(props.updateAssignee).toBeCalledTimes(1)
       expect(props.updateAssignee).toBeCalledWith(currentUser.id)
     })
-
-    describe('После назначения на себя', () => {
-      test('Кнопка "Назначить" становится не активна', async () => {
-        const { user } = render(
-          <AssigneeBlock
-            {...props}
-            {...activeAssignOnMeButtonProps}
-            {...canSelectAssigneeProps}
-            {...activeAssignButtonProps}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({ permissions: activeAssignOnMeButtonProps.permissions }),
-              },
-            }),
-          },
-        )
-
-        await testUtils.openAssigneeSelect(user)
-        await testUtils.selectAssignee(
-          user,
-          getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
-        )
-
-        const button = testUtils.getAssignButton()
-        expect(button).toBeEnabled()
-
-        await testUtils.clickAssignOnMeButton(user)
-        expect(button).toBeDisabled()
-      })
-    })
   })
 
   describe('Кнопка "Отказаться от заявки"', () => {
@@ -440,12 +391,14 @@ describe('Блок "Исполнитель заявки"', () => {
   })
 
   describe('Блок выбора исполнителя', () => {
-    describe('Выбор исполнителя', () => {
-      test('Отображается если условия соблюдены', async () => {
+    describe('Поле выбора исполнителя', () => {
+      test(`Отображается и активно если userActions содержит id заявки и есть права ${UserPermissionsEnum.AnyAssigneeTasksUpdate}`, async () => {
         render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate] }),
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+              ),
             },
           }),
         })
@@ -454,75 +407,50 @@ describe('Блок "Исполнитель заявки"', () => {
         await testUtils.expectAssigneeSelectNotDisabled()
       })
 
-      describe('Не отображается если условия соблюдены', () => {
-        test('Но статус заявки "Закрыта"', () => {
-          render(
-            <AssigneeBlock {...props} {...canSelectAssigneeProps} status={TaskStatusEnum.Closed} />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
-                },
-              }),
-            },
-          )
+      describe('Не отображается', () => {
+        test(`Если userActions содержит id заявки но нет прав ${UserPermissionsEnum.AnyAssigneeTasksUpdate}`, () => {
+          render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
+            store: getStoreWithAuth(undefined, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            }),
+          })
 
           expect(testUtils.queryAssigneeSelect()).not.toBeInTheDocument()
         })
 
-        test('Но статус заявки "Завершена"', () => {
+        test(`Если есть права ${UserPermissionsEnum.AnyAssigneeTasksUpdate} но userActions не содержит id заявки`, () => {
           render(
             <AssigneeBlock
               {...props}
-              {...canSelectAssigneeProps}
-              status={TaskStatusEnum.Completed}
+              userActions={{
+                tasks: {
+                  ...userFixtures.taskActionsPermissions,
+                  [TaskActionsPermissionsEnum.CanAssignee]: [],
+                },
+              }}
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
                 queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
+                  ...getUserMeQueryMock(
+                    userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                  ),
                 },
               }),
             },
           )
-
-          expect(testUtils.queryAssigneeSelect()).not.toBeInTheDocument()
-        })
-
-        test('Но нет рабочей группы', () => {
-          render(<AssigneeBlock {...props} {...canSelectAssigneeProps} workGroup={null} />, {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({
-                  permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                }),
-              },
-            }),
-          })
-
-          expect(testUtils.queryAssigneeSelect()).not.toBeInTheDocument()
-        })
-
-        test('Но нет прав', () => {
-          render(<AssigneeBlock {...props} {...canSelectAssigneeProps} workGroup={null} />, {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          })
 
           expect(testUtils.queryAssigneeSelect()).not.toBeInTheDocument()
         })
       })
 
       test('Имеет значение по умолчанию если есть исполнитель', () => {
-        render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
+        render(<AssigneeBlock {...props} {...canSelectAssigneeProps} assignee={props.assignee} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate] }),
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+              ),
             },
           }),
         })
@@ -534,7 +462,9 @@ describe('Блок "Исполнитель заявки"', () => {
         render(<AssigneeBlock {...props} {...canSelectAssigneeProps} assignee={null} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate] }),
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+              ),
             },
           }),
         })
@@ -548,9 +478,9 @@ describe('Блок "Исполнитель заявки"', () => {
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({
-                  permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                }),
+                ...getUserMeQueryMock(
+                  userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                ),
               },
             }),
           },
@@ -558,27 +488,23 @@ describe('Блок "Исполнитель заявки"', () => {
 
         await testUtils.openAssigneeSelect(user)
 
-        expect(testUtils.getAllAssigneeOption()).toHaveLength(
-          canSelectAssigneeProps.workGroup.members.length,
-        )
+        expect(testUtils.getAllAssigneeOption()).toHaveLength(props.workGroup.members.length)
       })
 
       test('Верно отображает варианты выбора если есть исполнитель', async () => {
         const { user } = render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({
-                permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-              }),
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+              ),
             },
           }),
         })
 
         await testUtils.openAssigneeSelect(user)
 
-        expect(testUtils.getAllAssigneeOption()).toHaveLength(
-          canSelectAssigneeProps.workGroup.members.length + 1,
-        )
+        expect(testUtils.getAllAssigneeOption()).toHaveLength(props.workGroup.members.length + 1)
       })
 
       test('Можно выбрать исполнителя', async () => {
@@ -587,9 +513,9 @@ describe('Блок "Исполнитель заявки"', () => {
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({
-                  permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                }),
+                ...getUserMeQueryMock(
+                  userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                ),
               },
             }),
           },
@@ -598,10 +524,7 @@ describe('Блок "Исполнитель заявки"', () => {
         expect(testUtils.getSelectedAssignee()).not.toBeInTheDocument()
 
         await testUtils.openAssigneeSelect(user)
-        await testUtils.selectAssignee(
-          user,
-          getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
-        )
+        await testUtils.setAssignee(user, getFullUserName(props.workGroup.members[0]))
 
         expect(testUtils.getSelectedAssignee()).toBeInTheDocument()
       })
@@ -609,7 +532,7 @@ describe('Блок "Исполнитель заявки"', () => {
       describe('Вариант исполнителя не активен', () => {
         test('Если выбранный исполнитель является исполнителем заявки', async () => {
           const assigneeOption: ArrayFirst<TaskWorkGroupModel['members']> = {
-            ...canSelectAssigneeProps.workGroup.members[0],
+            ...props.workGroup.members[0],
             id: props.assignee.id,
           }
 
@@ -617,17 +540,14 @@ describe('Блок "Исполнитель заявки"', () => {
             <AssigneeBlock
               {...props}
               {...canSelectAssigneeProps}
-              workGroup={{
-                ...canSelectAssigneeProps.workGroup,
-                members: [assigneeOption],
-              }}
+              workGroup={{ ...props.workGroup, members: [assigneeOption] }}
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
                 queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
+                  ...getUserMeQueryMock(
+                    userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                  ),
                 },
               }),
             },
@@ -639,7 +559,7 @@ describe('Блок "Исполнитель заявки"', () => {
 
         test('Если выбранный исполнитель является авторизованным пользователем', async () => {
           const assigneeOption: ArrayFirst<TaskWorkGroupModel['members']> = {
-            ...canSelectAssigneeProps.workGroup.members[0],
+            ...props.workGroup.members[0],
             id: props.assignee.id,
           }
 
@@ -648,16 +568,16 @@ describe('Блок "Исполнитель заявки"', () => {
               {...props}
               {...canSelectAssigneeProps}
               workGroup={{
-                ...canSelectAssigneeProps.workGroup,
+                ...props.workGroup,
                 members: [assigneeOption],
               }}
             />,
             {
               store: getStoreWithAuth(props.assignee, undefined, undefined, {
                 queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
+                  ...getUserMeQueryMock(
+                    userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                  ),
                 },
               }),
             },
@@ -672,7 +592,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Исполнитель отображается если его нельзя выбрать и если он есть', () => {
       render(<AssigneeBlock {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
@@ -686,14 +606,14 @@ describe('Блок "Исполнитель заявки"', () => {
             {...props}
             {...canSelectAssigneeProps}
             assignee={null}
-            workGroup={{ ...canSelectAssigneeProps.workGroup, members: [] }}
+            workGroup={{ ...props.workGroup, members: [] }}
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
-                ...getUserMeQueryMock({
-                  permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                }),
+                ...getUserMeQueryMock(
+                  userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                ),
               },
             }),
           },
@@ -707,7 +627,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Если его нельзя выбрать и если его нет', () => {
         render(<AssigneeBlock {...props} assignee={null} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         })
 
@@ -720,7 +640,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Отображается соответствующий текст если исполнителя нельзя выбрать и если его нет', () => {
       render(<AssigneeBlock {...props} assignee={null} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
@@ -730,7 +650,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Отображается кнопка "В работу"', () => {
       render(<AssigneeBlock {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
@@ -738,236 +658,77 @@ describe('Блок "Исполнитель заявки"', () => {
     })
 
     describe('Кнопка "Назначить"', () => {
-      test('Отображается если условия соблюдены', async () => {
+      test(`Отображается и активна если userActions содержит id заявки и есть права ${UserPermissionsEnum.AnyAssigneeTasksUpdate}`, async () => {
         render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
-              ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate] }),
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+              ),
             },
           }),
         })
 
-        expect(testUtils.getAssignButton()).toBeInTheDocument()
+        const button = testUtils.getAssignButton()
+
+        expect(button).toBeInTheDocument()
+        expect(button).toBeEnabled()
       })
 
-      describe('Не отображается если условия соблюдены', () => {
-        test('Но статус заявки "Закрыта"', () => {
-          render(
-            <AssigneeBlock {...props} {...canSelectAssigneeProps} status={TaskStatusEnum.Closed} />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
-                },
-              }),
-            },
-          )
-
-          expect(testUtils.queryAssignButton()).not.toBeInTheDocument()
-        })
-
-        test('Но статус заявки "Завершена"', () => {
-          render(
-            <AssigneeBlock
-              {...props}
-              {...canSelectAssigneeProps}
-              status={TaskStatusEnum.Completed}
-            />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
-                },
-              }),
-            },
-          )
-
-          expect(testUtils.queryAssignButton()).not.toBeInTheDocument()
-        })
-
-        test('Но нет рабочей группы', () => {
-          render(<AssigneeBlock {...props} {...canSelectAssigneeProps} workGroup={null} />, {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({
-                  permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                }),
-              },
-            }),
-          })
-
-          expect(testUtils.queryAssignButton()).not.toBeInTheDocument()
-        })
-
-        test('Но нет прав', () => {
+      describe('Не отображается', () => {
+        test(`Если userActions содержит id заявки но нет прав ${UserPermissionsEnum.AnyAssigneeTasksUpdate}`, () => {
           render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
             }),
           })
 
           expect(testUtils.queryAssignButton()).not.toBeInTheDocument()
         })
-      })
 
-      describe('Активна если условия соблюдены', () => {
-        test('И если есть исполнитель заявки и если выбрать другого', async () => {
-          const { user } = render(
-            <AssigneeBlock {...props} {...canSelectAssigneeProps} {...activeAssignButtonProps} />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
-                },
-              }),
-            },
-          )
-
-          await testUtils.openAssigneeSelect(user)
-          await testUtils.selectAssignee(
-            user,
-            getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
-          )
-
-          const button = testUtils.getAssignButton()
-
-          await waitFor(() => {
-            expect(button).toBeEnabled()
-          })
-        })
-      })
-
-      describe('Не активна если условия соблюдены', () => {
-        test('Но есть исполнитель заявки и другой не выбран', () => {
-          render(
-            <AssigneeBlock {...props} {...canSelectAssigneeProps} {...activeAssignButtonProps} />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
-                },
-              }),
-            },
-          )
-
-          expect(testUtils.getAssignButton()).toBeDisabled()
-        })
-
-        test('Но выбранный исполнитель является авторизованным пользователем', () => {
-          render(
-            <AssigneeBlock {...props} {...canSelectAssigneeProps} {...activeAssignButtonProps} />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
-                },
-              }),
-            },
-          )
-
-          expect(testUtils.getAssignButton()).toBeDisabled()
-        })
-
-        test('Но нет исполнителя заявки', () => {
+        test(`Если есть права ${UserPermissionsEnum.AnyAssigneeTasksUpdate} но userActions не содержит id заявки`, () => {
           render(
             <AssigneeBlock
               {...props}
-              {...canSelectAssigneeProps}
-              {...activeAssignButtonProps}
-              assignee={null}
+              userActions={{
+                tasks: {
+                  ...userFixtures.taskActionsPermissions,
+                  [TaskActionsPermissionsEnum.CanAssignee]: [],
+                },
+              }}
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
                 queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
+                  ...getUserMeQueryMock(
+                    userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                  ),
                 },
               }),
             },
           )
 
-          expect(testUtils.getAssignButton()).toBeDisabled()
-        })
-
-        test('Но статус заявки "В ожидании"', () => {
-          render(
-            <AssigneeBlock
-              {...props}
-              {...canSelectAssigneeProps}
-              {...activeAssignButtonProps}
-              status={TaskStatusEnum.Awaiting}
-            />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
-                },
-              }),
-            },
-          )
-
-          expect(testUtils.getAssignButton()).toBeDisabled()
-        })
-
-        test('Но расширенный статус заявки "На переклассификации"', () => {
-          render(
-            <AssigneeBlock
-              {...props}
-              {...canSelectAssigneeProps}
-              {...activeAssignButtonProps}
-              extendedStatus={TaskExtendedStatusEnum.InReclassification}
-            />,
-            {
-              store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: {
-                  ...getUserMeQueryMock({
-                    permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                  }),
-                },
-              }),
-            },
-          )
-
-          expect(testUtils.getAssignButton()).toBeDisabled()
+          expect(testUtils.queryAssignButton()).not.toBeInTheDocument()
         })
       })
 
-      test('Переданный обработчик вызывается корректно', async () => {
-        const { user } = render(
-          <AssigneeBlock {...props} {...canSelectAssigneeProps} {...activeAssignButtonProps} />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({
-                  permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-                }),
-              },
-            }),
-          },
-        )
+      test('Переданный обработчик вызывается', async () => {
+        const { user } = render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+              ),
+            },
+          }),
+        })
 
         await testUtils.openAssigneeSelect(user)
-        await testUtils.selectAssignee(
-          user,
-          getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
-        )
+        await testUtils.setAssignee(user, getFullUserName(props.workGroup.members[0]))
         await testUtils.clickAssignButton(user)
 
         expect(props.updateAssignee).toBeCalledTimes(1)
-        expect(props.updateAssignee).toBeCalledWith(canSelectAssigneeProps.workGroup.members[0].id)
+        expect(props.updateAssignee).toBeCalledWith(props.workGroup.members[0].id)
       })
     })
   })
