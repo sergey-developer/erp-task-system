@@ -6,7 +6,7 @@ import moment from 'moment-timezone'
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
 import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilters/FastFilters.test'
 import {
-  activeAssignButtonProps,
+  activeAssignOnMeButtonProps,
   canSelectAssigneeProps,
   testUtils as assigneeBlockTestUtils,
 } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
@@ -594,22 +594,23 @@ describe('Страница реестра заявок', () => {
         once: false,
       })
 
-      const currentUser = userFixtures.user({
-        id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-        permissions: [UserPermissionsEnum.SelfAssigneeTasksUpdate],
-      })
-
-      const task = taskFixtures.task({
-        id: taskListItem.id,
-        status: canSelectAssigneeProps.status,
-        extendedStatus: activeAssignButtonProps.extendedStatus,
-        assignee: activeAssignButtonProps.assignee,
-        workGroup: taskFixtures.workGroup({ id: canSelectAssigneeProps.workGroup.id }),
-      })
+      const task = taskFixtures.task({ id: taskListItem.id })
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockUpdateTaskAssigneeSuccess(task.id)
 
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions(), once: false })
+      const currentUser = userFixtures.user({
+        permissions: activeAssignOnMeButtonProps.permissions,
+      })
+
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanAssignee]: [task.id],
+          },
+        }),
+        once: false,
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -638,22 +639,21 @@ describe('Страница реестра заявок', () => {
         once: false,
       })
 
-      const task = taskFixtures.task({
-        id: taskListItem.id,
-        status: canSelectAssigneeProps.status,
-        extendedStatus: activeAssignButtonProps.extendedStatus,
-        assignee: activeAssignButtonProps.assignee,
-        workGroup: canSelectAssigneeProps.workGroup,
-      })
+      const task = taskFixtures.task({ id: taskListItem.id })
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockUpdateTaskAssigneeSuccess(task.id)
 
-      const currentUser = userFixtures.user({
-        id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-        permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-      })
+      const currentUser = userFixtures.user({ permissions: canSelectAssigneeProps.permissions })
 
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions(), once: false })
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanAssignee]: [task.id],
+          },
+        }),
+        once: false,
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -669,10 +669,7 @@ describe('Страница реестра заявок', () => {
 
       await assigneeBlockTestUtils.findAssigneeSelect()
       await assigneeBlockTestUtils.openAssigneeSelect(user)
-      await assigneeBlockTestUtils.selectAssignee(
-        user,
-        getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
-      )
+      await assigneeBlockTestUtils.setAssignee(user, getFullUserName(task.workGroup!.members[0]))
       await assigneeBlockTestUtils.clickAssignButton(user)
 
       await fastFilterListTestUtils.expectLoadingStarted()

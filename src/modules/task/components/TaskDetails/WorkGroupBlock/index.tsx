@@ -107,7 +107,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                 type='link'
                 onClick={debouncedToggleOpenTaskFirstLineModal}
                 loading={transferTaskToFirstLineIsLoading}
-                disabled={!userActions.tasks.CAN_PUT_ON_FIRST_LINE.includes(id)}
+                disabled={!userActions.tasks.CAN_PUT_ON_FIRST_LINE?.includes(id)}
               >
                 Вернуть на I линию
               </Button>
@@ -118,7 +118,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                 type='link'
                 onClick={debouncedToggleOpenTaskSecondLineModal}
                 loading={transferTaskToSecondLineIsLoading}
-                disabled={!userActions.tasks.CAN_PUT_ON_SECOND_LINE.includes(id)}
+                disabled={!userActions.tasks.CAN_PUT_ON_SECOND_LINE?.includes(id)}
               >
                 Перевести на II линию
               </Button>
