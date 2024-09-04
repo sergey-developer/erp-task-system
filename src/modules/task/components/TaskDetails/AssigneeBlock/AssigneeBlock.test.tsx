@@ -64,11 +64,14 @@ const showRefuseTaskButtonProps: Readonly<SetNonNullable<Pick<AssigneeBlockProps
   assignee: taskFixtures.assignee(),
 }
 
-const activeRefuseTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>> =
-  {
-    status: TaskStatusEnum.New,
-    extendedStatus: TaskExtendedStatusEnum.New,
-  }
+const activeRefuseTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'userActions'>> = {
+  userActions: userFixtures.userActions({
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanAssignee]: [props.id],
+    },
+  }),
+}
 
 export const canSelectAssigneeProps: Readonly<
   SetNonNullable<Pick<AssigneeBlockProps, 'status' | 'workGroup'>>
@@ -430,14 +433,14 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Отображается если текущий пользователь исполнитель заявки', () => {
       render(<AssigneeBlock {...props} {...showRefuseTaskButtonProps} />, {
         store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
       expect(testUtils.getRefuseTaskButton()).toBeInTheDocument()
     })
 
-    test('Активна если условия соблюдены', () => {
+    test('Активна если userActions содержит id заявки', () => {
       render(
         <AssigneeBlock
           {...props}
@@ -446,7 +449,7 @@ describe('Блок "Исполнитель заявки"', () => {
         />,
         {
           store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         },
       )
@@ -454,114 +457,26 @@ describe('Блок "Исполнитель заявки"', () => {
       expect(testUtils.getRefuseTaskButton()).toBeEnabled()
     })
 
-    describe('Не активна если условия соблюдены', () => {
-      test('Но статус заявки "Закрыта"', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...showRefuseTaskButtonProps}
-            {...activeRefuseTaskButtonProps}
-            status={TaskStatusEnum.Closed}
-          />,
-          {
-            store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
+    test('Не активна если userActions не содержит id заявки', () => {
+      render(
+        <AssigneeBlock
+          {...props}
+          {...showRefuseTaskButtonProps}
+          userActions={{
+            tasks: {
+              ...userFixtures.taskActionsPermissions,
+              [TaskActionsPermissionsEnum.CanAssignee]: [],
+            },
+          }}
+        />,
+        {
+          store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
+      )
 
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
-      })
-
-      test('Но статус заявки "Завершена"', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...showRefuseTaskButtonProps}
-            {...activeRefuseTaskButtonProps}
-            status={TaskStatusEnum.Completed}
-          />,
-          {
-            store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
-      })
-
-      test('Но статус заявки "В ожидании"', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...showRefuseTaskButtonProps}
-            {...activeRefuseTaskButtonProps}
-            status={TaskStatusEnum.Awaiting}
-          />,
-          {
-            store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
-      })
-
-      test('Но расширенный статус заявки "На переклассификации"', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...showRefuseTaskButtonProps}
-            {...activeRefuseTaskButtonProps}
-            extendedStatus={TaskExtendedStatusEnum.InReclassification}
-          />,
-          {
-            store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
-      })
-
-      test('Но статус заявки на ожидание "Новый"', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...showRefuseTaskButtonProps}
-            {...activeRefuseTaskButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
-          />,
-          {
-            store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
-      })
-
-      test('Но статус заявки на ожидание "В процессе"', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...showRefuseTaskButtonProps}
-            {...activeRefuseTaskButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.InProgress}
-          />,
-          {
-            store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
-      })
+      expect(testUtils.getRefuseTaskButton()).toBeDisabled()
     })
   })
 

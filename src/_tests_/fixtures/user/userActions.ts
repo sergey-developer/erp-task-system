@@ -12,6 +12,7 @@ export const taskActionsPermissions: UserActionsModel['tasks'] = {
   [TaskActionsPermissionsEnum.CanSubtasksCreate]: [fakeId()],
   [TaskActionsPermissionsEnum.CanPutOnSecondLine]: [fakeId()],
   [TaskActionsPermissionsEnum.CanResolve]: [fakeId()],
+  [TaskActionsPermissionsEnum.CanAssignee]: [fakeId()],
 }
 
 export const userActions = (props?: Partial<UserActionsModel>): UserActionsModel => ({
