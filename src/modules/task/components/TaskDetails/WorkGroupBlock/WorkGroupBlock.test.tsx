@@ -5,11 +5,9 @@ import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/component
 import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
 import {
   TaskActionsPermissionsEnum,
-  TaskExtendedStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/task'
-import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { getFullUserName } from 'modules/user/utils'
 
 import taskFixtures from '_tests_/fixtures/task'
@@ -29,21 +27,15 @@ import {
 
 import WorkGroupBlock, { WorkGroupBlockProps } from './index'
 
-const props: Readonly<
-  Omit<WorkGroupBlockProps, 'workGroup'> & {
-    taskSuspendRequestStatus: SuspendRequestStatusEnum
-  }
-> = {
+const props: Readonly<WorkGroupBlockProps> = {
   id: fakeId(),
   type: TaskTypeEnum.Request,
   recordId: fakeIdStr(),
   status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
   transferTaskToFirstLine: jest.fn(),
   transferTaskToFirstLineIsLoading: false,
   transferTaskToSecondLine: jest.fn(),
   transferTaskToSecondLineIsLoading: false,
-  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
   userActions: userFixtures.userActions(),
 }
 
@@ -53,26 +45,13 @@ export const showFirstLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup' | '
   status: TaskStatusEnum.New,
 }
 
-export const forceActiveFirstLineButtonProps: Pick<
-  WorkGroupBlockProps,
-  'userActions' | 'taskSuspendRequestStatus'
-> = {
+export const activeFirstLineButtonProps: Pick<WorkGroupBlockProps, 'userActions'> = {
   userActions: userFixtures.userActions({
     tasks: {
       ...userFixtures.taskActionsPermissions,
       [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [props.id],
     },
   }),
-  taskSuspendRequestStatus: SuspendRequestStatusEnum.Approved,
-}
-
-export const activeFirstLineButtonProps: Pick<WorkGroupBlockProps, 'status' | 'extendedStatus'> = {
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
-}
-
-export const disableFirstLineButtonProps: Pick<WorkGroupBlockProps, 'status'> = {
-  status: TaskStatusEnum.Awaiting,
 }
 
 // second line button
@@ -101,15 +80,10 @@ const findFirstLineButton = () =>
 const queryFirstLineButton = () =>
   buttonTestUtils.queryButtonIn(getContainer(), /вернуть на I линию/i)
 
-const clickFirstLineButton = async (user: UserEvent) => {
-  const button = getFirstLineButton()
-  await user.click(button)
-  return button
-}
+const clickFirstLineButton = async (user: UserEvent) => user.click(getFirstLineButton())
 
-const expectFirstLineLoadingStarted = async () => {
-  await buttonTestUtils.expectLoadingStarted(getFirstLineButton())
-}
+const expectFirstLineLoadingStarted = async () =>
+  buttonTestUtils.expectLoadingStarted(getFirstLineButton())
 
 // second line button
 const getSecondLineButton = () =>
@@ -367,7 +341,7 @@ describe('Блок рабочей группы', () => {
         <WorkGroupBlock {...props} {...showFirstLineButtonProps} {...activeFirstLineButtonProps} />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         },
       )
@@ -378,173 +352,26 @@ describe('Блок рабочей группы', () => {
       expect(button).toBeEnabled()
     })
 
-    describe('Всегда активна если', () => {
-      test(`Статус запроса на ожидание "Одобрено" и id заявки есть в ${TaskActionsPermissionsEnum.CanPutOnFirstLine}`, () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showFirstLineButtonProps}
-            {...forceActiveFirstLineButtonProps}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getFirstLineButton()).toBeEnabled()
-      })
-
-      test(`Статуса запроса на ожидание нет и id заявки есть в ${TaskActionsPermissionsEnum.CanPutOnFirstLine}`, () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showFirstLineButtonProps}
-            {...forceActiveFirstLineButtonProps}
-            taskSuspendRequestStatus={undefined}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getFirstLineButton()).toBeEnabled()
-      })
-    })
-
-    describe('Не может быть всегда активна если', () => {
-      test('Статус запроса на ожидание "Одобрено" но id заявки нет в "CAN_PUT_ON_FIRST_LINE"', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showFirstLineButtonProps}
-            {...disableFirstLineButtonProps}
-            {...forceActiveFirstLineButtonProps}
-            userActions={userFixtures.userActions()}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getFirstLineButton()).toBeDisabled()
-      })
-
-      test('id заявки есть в "CAN_PUT_ON_FIRST_LINE" но статус запроса на ожидание не "Одобрено"', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showFirstLineButtonProps}
-            {...disableFirstLineButtonProps}
-            {...forceActiveFirstLineButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getFirstLineButton()).toBeDisabled()
-      })
-    })
-
-    describe('Не активна если условия соблюдены', () => {
-      test('Но есть запрос на переклассификацию', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-            extendedStatus={TaskExtendedStatusEnum.InReclassification}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getFirstLineButton()).toBeDisabled()
-      })
-
-      test('Но статус заявки "В ожидании"', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-            status={TaskStatusEnum.Awaiting}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getFirstLineButton()).toBeDisabled()
-      })
-
-      test('Но статус запроса на ожидание "Новый"', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getFirstLineButton()).toBeDisabled()
-      })
-
-      test('Но статус запроса на ожидание "В процессе"', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showFirstLineButtonProps}
-            {...activeFirstLineButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.InProgress}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getFirstLineButton()).toBeDisabled()
-      })
-    })
-
-    test('В состоянии загрузки во время перевода на 1-ю линию', async () => {
+    test('Не активна если userActions не содержит id заявки', () => {
       render(
         <WorkGroupBlock
           {...props}
           {...showFirstLineButtonProps}
-          {...activeFirstLineButtonProps}
-          transferTaskToFirstLineIsLoading
+          userActions={{
+            tasks: {
+              ...userFixtures.taskActionsPermissions,
+              [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [],
+            },
+          }}
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         },
       )
 
-      await testUtils.expectFirstLineLoadingStarted()
+      expect(testUtils.getFirstLineButton()).toBeDisabled()
     })
 
     test('При клике открывается модальное окно', async () => {
@@ -552,7 +379,7 @@ describe('Блок рабочей группы', () => {
         <WorkGroupBlock {...props} {...showFirstLineButtonProps} {...activeFirstLineButtonProps} />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         },
       )
@@ -565,7 +392,7 @@ describe('Блок рабочей группы', () => {
       test('Но нет рабочей группы', () => {
         render(<WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         })
 
@@ -581,7 +408,7 @@ describe('Блок рабочей группы', () => {
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
             }),
           },
         )
@@ -598,7 +425,7 @@ describe('Блок рабочей группы', () => {
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
             }),
           },
         )
@@ -614,7 +441,7 @@ describe('Блок рабочей группы', () => {
         <WorkGroupBlock {...props} {...showFirstLineButtonProps} {...activeFirstLineButtonProps} />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         },
       )
