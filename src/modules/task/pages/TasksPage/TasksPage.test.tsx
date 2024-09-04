@@ -17,7 +17,6 @@ import {
   testUtils as taskDetailsTitleTestUtils,
 } from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
 import {
-  activeFirstLineButtonProps,
   showFirstLineButtonProps,
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
@@ -454,13 +453,19 @@ describe('Страница реестра заявок', () => {
       const task = taskFixtures.task({
         id: taskListItem.id,
         ...showFirstLineButtonProps,
-        ...activeFirstLineButtonProps,
       })
       mockGetTaskSuccess(task.id, { body: task })
       mockDeleteTaskWorkGroupSuccess(task.id)
 
       const currentUser = userFixtures.user()
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [task.id],
+          },
+        }),
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
