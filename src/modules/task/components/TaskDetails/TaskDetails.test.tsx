@@ -20,7 +20,6 @@ import {
   takeTaskErrMsg,
   TaskActionsPermissionsEnum,
   TaskExtendedStatusEnum,
-  TaskStatusEnum,
 } from 'modules/task/constants/task'
 import {
   createSuspendRequestErrMsg,
@@ -84,7 +83,6 @@ import { testUtils as requestTaskSuspendModalTestUtils } from '../RequestTaskSus
 import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import {
   activeRequestSuspendItemProps,
-  canExecuteTaskProps,
   canRegisterFNItemProps,
   testUtils as taskDetailsTitleTestUtils,
 } from './TaskDetailsTitle/TaskDetailsTitle.test'
@@ -225,16 +223,23 @@ describe('Карточка заявки', () => {
   })
 
   describe('Выполнить заявку', () => {
-    test('Кнопка активная если условия соблюдены', async () => {
-      const task = taskFixtures.task({ id: props.taskId, ...canExecuteTaskProps })
+    test('Кнопка активная если userActions содержит id заявки', async () => {
+      const task = taskFixtures.task({ id: props.taskId })
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const userId = task.assignee!.id
-      mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanResolve]: [task.id],
+          },
+        }),
+      })
 
       const { user } = render(<TaskDetails {...props} />, {
-        store: getStoreWithAuth({ id: userId }, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
 
@@ -246,81 +251,36 @@ describe('Карточка заявки', () => {
       menuTestUtils.expectMenuItemNotDisabled(menuItem)
     })
 
-    describe('Кнопка не активна если условия соблюдены', () => {
-      test('Но пользователь не является исполнителем заявки', async () => {
-        const task = taskFixtures.task({ id: props.taskId, ...canExecuteTaskProps })
-        mockGetTaskSuccess(props.taskId, { body: task })
+    test('Кнопка не активна если userActions не содержит id заявки', async () => {
+      const task = taskFixtures.task({ id: props.taskId })
+      mockGetTaskSuccess(task.id, { body: task })
 
-        const userId = fakeId()
-        mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
-
-        const { user } = render(<TaskDetails {...props} />, {
-          store: getStoreWithAuth({ id: userId }, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
-          }),
-        })
-
-        await testUtils.expectTaskLoadingFinished()
-        await taskDetailsTitleTestUtils.openMenu(user)
-        const menuItem = taskDetailsTitleTestUtils.getExecuteTaskMenuItem()
-
-        menuTestUtils.expectMenuItemDisabled(menuItem)
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanResolve]: [],
+          },
+        }),
       })
 
-      test(`Но статус заявки не ${TaskStatusEnum.InProgress}`, async () => {
-        const task = taskFixtures.task({
-          id: props.taskId,
-          ...canExecuteTaskProps,
-          status: TaskStatusEnum.New,
-        })
-        mockGetTaskSuccess(props.taskId, { body: task })
-
-        const userId = task.assignee!.id
-        mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
-
-        const { user } = render(<TaskDetails {...props} />, {
-          store: getStoreWithAuth({ id: userId }, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
-          }),
-        })
-
-        await testUtils.expectTaskLoadingFinished()
-        await taskDetailsTitleTestUtils.openMenu(user)
-        const menuItem = taskDetailsTitleTestUtils.getExecuteTaskMenuItem()
-
-        menuTestUtils.expectMenuItemDisabled(menuItem)
+      const { user } = render(<TaskDetails {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
       })
 
-      test(`Но расширенный статус заявки ${TaskExtendedStatusEnum.InReclassification}`, async () => {
-        const task = taskFixtures.task({
-          id: props.taskId,
-          ...canExecuteTaskProps,
-          extendedStatus: TaskExtendedStatusEnum.InReclassification,
-        })
-        mockGetTaskSuccess(props.taskId, { body: task })
-        mockGetTaskReclassificationRequestSuccess(props.taskId)
+      await testUtils.expectTaskLoadingFinished()
+      await taskDetailsTitleTestUtils.openMenu(user)
+      const menuItem = taskDetailsTitleTestUtils.getExecuteTaskMenuItem()
 
-        const userId = task.assignee!.id
-        mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
-
-        const { user } = render(<TaskDetails {...props} />, {
-          store: getStoreWithAuth({ id: userId }, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
-          }),
-        })
-
-        await testUtils.expectTaskLoadingFinished()
-        await taskDetailsTitleTestUtils.openMenu(user)
-        const menuItem = taskDetailsTitleTestUtils.getExecuteTaskMenuItem()
-
-        menuTestUtils.expectMenuItemDisabled(menuItem)
-      })
+      menuTestUtils.expectMenuItemDisabled(menuItem)
     })
 
     test('Модалка выполнения заявки открывается после показа всех предупреждений', async () => {
       const task = taskFixtures.task({
         id: props.taskId,
-        ...canExecuteTaskProps,
         hasRelocationTasks: false,
         fiscalAccumulator: {
           isRequestSent: true,
@@ -329,12 +289,19 @@ describe('Карточка заявки', () => {
       })
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const userId = task.assignee!.id
-      mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanResolve]: [task.id],
+          },
+        }),
+      })
 
       const { user } = render(<TaskDetails {...props} />, {
-        store: getStoreWithAuth({ id: userId }, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
 
@@ -359,18 +326,24 @@ describe('Карточка заявки', () => {
     test('После успешного запроса закрывается модалка и вызывается обработчик закрытия карточки заявки', async () => {
       const task = taskFixtures.task({
         id: props.taskId,
-        ...canExecuteTaskProps,
         hasRelocationTasks: true,
       })
       mockGetTaskSuccess(props.taskId, { body: task })
       mockResolveTaskSuccess(props.taskId)
 
-      const userId = task.assignee!.id
-      mockGetUserActionsSuccess(userId, { body: userFixtures.userActions() })
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanResolve]: [task.id],
+          },
+        }),
+      })
 
       const { user } = render(<TaskDetails {...props} />, {
-        store: getStoreWithAuth({ id: userId }, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
 
