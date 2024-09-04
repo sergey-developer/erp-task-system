@@ -88,9 +88,11 @@ const MainDetails: FC<MainDetailsProps> = ({
     <Space data-testid='task-details-main-details' direction='vertical' size='middle' $block>
       <Space direction='vertical' $block>
         <SeparatedText>
-          <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>
-            {recordId}
-          </RecordIdStyled>
+          {recordId && (
+            <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>
+              {recordId}
+            </RecordIdStyled>
+          )}
 
           <Space>
             {olaNextBreachTime && (
