@@ -36,12 +36,7 @@ const props: Readonly<SetNonNullable<AssigneeBlockProps>> = {
   taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
-export const activeTakeTaskButtonProps: Readonly<
-  Pick<AssigneeBlockProps, 'assignee' | 'status' | 'extendedStatus' | 'userActions'>
-> = {
-  assignee: null,
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
+export const activeTakeTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'userActions'>> = {
   userActions: userFixtures.userActions({
     tasks: {
       ...userFixtures.taskActionsPermissions,
@@ -574,7 +569,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Отображается', () => {
       render(<AssigneeBlock {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
@@ -582,10 +577,10 @@ describe('Блок "Исполнитель заявки"', () => {
       expect(button).toBeInTheDocument()
     })
 
-    test('Активна если условия соблюдены', () => {
+    test('Активна если userActions содержит id заявки', () => {
       render(<AssigneeBlock {...props} {...activeTakeTaskButtonProps} />, {
-        store: getStoreWithAuth(props.assignee!, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
@@ -593,115 +588,31 @@ describe('Блок "Исполнитель заявки"', () => {
       expect(button).toBeEnabled()
     })
 
-    describe('Не активна если условия соблюдены', () => {
-      test('Но статус заявки не "Новая"', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...activeTakeTaskButtonProps}
-            status={TaskStatusEnum.InProgress}
-          />,
-          {
-            store: getStoreWithAuth(props.assignee!, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
+    test('Не активна если userActions не содержит id заявки', () => {
+      render(
+        <AssigneeBlock
+          {...props}
+          userActions={{
+            tasks: {
+              ...userFixtures.taskActionsPermissions,
+              [TaskActionsPermissionsEnum.CanExecute]: [],
+            },
+          }}
+        />,
+        {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
+      )
 
-        expect(testUtils.getTakeTaskButton()).toBeDisabled()
-      })
-
-      test('Но исполнитель назначен и не является авторизованным пользователем', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...activeTakeTaskButtonProps}
-            assignee={taskFixtures.assignee()}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getTakeTaskButton()).toBeDisabled()
-      })
-
-      test('Но расширенный статус заявки "На переклассификации"', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...activeTakeTaskButtonProps}
-            extendedStatus={TaskExtendedStatusEnum.InReclassification}
-          />,
-          {
-            store: getStoreWithAuth(props.assignee!, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getTakeTaskButton()).toBeDisabled()
-      })
-
-      test(`Но ${TaskActionsPermissionsEnum.CanExecute} не содержит id заявки`, () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...activeTakeTaskButtonProps}
-            userActions={userFixtures.userActions()}
-          />,
-          {
-            store: getStoreWithAuth(props.assignee!, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        const button = testUtils.getTakeTaskButton()
-        expect(button).toBeDisabled()
-      })
-
-      test('Но статус заявки на ожидание "Новый"', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...activeTakeTaskButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
-          />,
-          {
-            store: getStoreWithAuth(props.assignee!, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getTakeTaskButton()).toBeDisabled()
-      })
-
-      test('Но статус заявки на ожидание "В процессе"', () => {
-        render(
-          <AssigneeBlock
-            {...props}
-            {...activeTakeTaskButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.InProgress}
-          />,
-          {
-            store: getStoreWithAuth(props.assignee!, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getTakeTaskButton()).toBeDisabled()
-      })
+      expect(testUtils.getTakeTaskButton()).toBeDisabled()
     })
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<AssigneeBlock {...props} {...activeTakeTaskButtonProps} />, {
-        store: getStoreWithAuth(props.assignee!, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ permissions: [] }) },
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 

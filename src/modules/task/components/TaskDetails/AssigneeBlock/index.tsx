@@ -188,18 +188,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
             type='primary'
             ghost
             loading={takeTaskIsLoading}
-            disabled={
-              taskSuspendRequestStatus.isApproved
-                ? false
-                : !(
-                    taskStatus.isNew &&
-                    (currentAssigneeIsCurrentUser || !assignee) &&
-                    !taskExtendedStatus.isInReclassification &&
-                    userActions.tasks.CAN_EXECUTE.includes(id)
-                  ) ||
-                  taskSuspendRequestStatus.isNew ||
-                  taskSuspendRequestStatus.isInProgress
-            }
+            disabled={!userActions.tasks.CAN_EXECUTE.includes(id)}
             onClick={takeTask}
           >
             В работу
