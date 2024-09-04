@@ -111,19 +111,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
 
         <Col>
           {currentAssigneeIsCurrentUser ? (
-            <Button
-              type='link'
-              disabled={
-                taskSuspendRequestStatus.isApproved
-                  ? false
-                  : taskStatus.isClosed ||
-                    taskStatus.isCompleted ||
-                    taskStatus.isAwaiting ||
-                    taskExtendedStatus.isInReclassification ||
-                    taskSuspendRequestStatus.isNew ||
-                    taskSuspendRequestStatus.isInProgress
-              }
-            >
+            <Button type='link' disabled={!userActions.tasks.CAN_ASSIGNEE.includes(id)}>
               Отказаться от заявки
             </Button>
           ) : (
@@ -131,15 +119,10 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
               type='link'
               loading={updateAssigneeIsLoading}
               disabled={
-                taskSuspendRequestStatus.isApproved
-                  ? false
-                  : (!permissions.selfAssigneeTasksUpdate && !permissions.anyAssigneeTasksUpdate) ||
-                    taskStatus.isClosed ||
-                    taskStatus.isCompleted ||
-                    taskStatus.isAwaiting ||
-                    taskExtendedStatus.isInReclassification ||
-                    taskSuspendRequestStatus.isNew ||
-                    taskSuspendRequestStatus.isInProgress
+                !(
+                  (permissions.selfAssigneeTasksUpdate || permissions.anyAssigneeTasksUpdate) &&
+                  userActions.tasks.CAN_ASSIGNEE.includes(id)
+                )
               }
               onClick={onAssignOnMe}
             >
@@ -188,18 +171,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
             type='primary'
             ghost
             loading={takeTaskIsLoading}
-            disabled={
-              taskSuspendRequestStatus.isApproved
-                ? false
-                : !(
-                    taskStatus.isNew &&
-                    (currentAssigneeIsCurrentUser || !assignee) &&
-                    !taskExtendedStatus.isInReclassification &&
-                    userActions.tasks.CAN_EXECUTE.includes(id)
-                  ) ||
-                  taskSuspendRequestStatus.isNew ||
-                  taskSuspendRequestStatus.isInProgress
-            }
+            disabled={!userActions.tasks.CAN_EXECUTE.includes(id)}
             onClick={takeTask}
           >
             В работу
