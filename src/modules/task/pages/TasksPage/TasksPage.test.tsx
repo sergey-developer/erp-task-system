@@ -7,7 +7,6 @@ import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/
 import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilters/FastFilters.test'
 import {
   activeAssignButtonProps,
-  activeTakeTaskButtonProps,
   canSelectAssigneeProps,
   testUtils as assigneeBlockTestUtils,
 } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
@@ -554,7 +553,7 @@ describe('Страница реестра заявок', () => {
         once: false,
       })
 
-      const task = taskFixtures.task({ id: taskListItem.id, ...activeTakeTaskButtonProps })
+      const task = taskFixtures.task({ id: taskListItem.id })
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockTakeTaskSuccess(task.id)
 
