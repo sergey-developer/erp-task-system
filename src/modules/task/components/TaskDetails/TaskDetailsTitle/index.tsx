@@ -104,7 +104,7 @@ const TaskDetailsTitle: FC<TaskDetailsTitleProps> = ({
           (taskType.isIncident || taskType.isRequest) &&
           system !== SystemEnum.ITSM &&
           permissions.internalTasksCreate &&
-          userActions.tasks.CAN_READ.includes(id)
+          userActions.tasks.CAN_READ?.includes(id)
         ),
         icon: <PlusIcon />,
         label: 'Создать внутреннюю заявку',
