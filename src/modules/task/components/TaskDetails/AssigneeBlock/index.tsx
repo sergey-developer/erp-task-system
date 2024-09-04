@@ -111,19 +111,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
 
         <Col>
           {currentAssigneeIsCurrentUser ? (
-            <Button
-              type='link'
-              disabled={
-                taskSuspendRequestStatus.isApproved
-                  ? false
-                  : taskStatus.isClosed ||
-                    taskStatus.isCompleted ||
-                    taskStatus.isAwaiting ||
-                    taskExtendedStatus.isInReclassification ||
-                    taskSuspendRequestStatus.isNew ||
-                    taskSuspendRequestStatus.isInProgress
-              }
-            >
+            <Button type='link' disabled={!userActions.tasks.CAN_ASSIGNEE.includes(id)}>
               Отказаться от заявки
             </Button>
           ) : (
