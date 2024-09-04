@@ -10,7 +10,6 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
-import { UserPermissionsEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
 import taskFixtures from '_tests_/fixtures/task'
@@ -81,9 +80,13 @@ export const showSecondLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup'> =
   workGroup: null,
 }
 
-export const activeSecondLineButtonProps: Pick<WorkGroupBlockProps, 'status' | 'extendedStatus'> = {
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
+export const activeSecondLineButtonProps: Pick<WorkGroupBlockProps, 'userActions'> = {
+  userActions: userFixtures.userActions({
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanPutOnSecondLine]: [props.id],
+    },
+  }),
 }
 
 const getContainer = () => screen.getByTestId('task-work-group')
@@ -115,10 +118,7 @@ const getSecondLineButton = () =>
 const querySecondLineButton = () =>
   buttonTestUtils.queryButtonIn(getContainer(), /перевести на II линию/i)
 
-const clickSecondLineButton = async (user: UserEvent) => {
-  const button = getSecondLineButton()
-  await user.click(button)
-}
+const clickSecondLineButton = async (user: UserEvent) => user.click(getSecondLineButton())
 
 const expectSecondLineLoadingStarted = async () => {
   await buttonTestUtils.expectLoadingStarted(getSecondLineButton())
@@ -265,7 +265,7 @@ describe('Блок рабочей группы', () => {
       })
     })
 
-    test('Активна если условия соблюдены', () => {
+    test('Активна если userActions содержит id заявки', () => {
       render(
         <WorkGroupBlock
           {...props}
@@ -274,158 +274,34 @@ describe('Блок рабочей группы', () => {
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({
-                permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
-              }),
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        },
+      )
+
+      expect(testUtils.getSecondLineButton()).toBeEnabled()
+    })
+
+    test('Не активна если userActions не содержит id заявки', () => {
+      render(
+        <WorkGroupBlock
+          {...props}
+          {...showSecondLineButtonProps}
+          userActions={userFixtures.userActions({
+            tasks: {
+              ...userFixtures.taskActionsPermissions,
+              [TaskActionsPermissionsEnum.CanPutOnSecondLine]: [],
             },
-          }),
-        },
-      )
-
-      expect(testUtils.getSecondLineButton()).toBeEnabled()
-    })
-
-    test('Всегда активна если статус запроса на ожидание "Одобрено"', () => {
-      render(
-        <WorkGroupBlock
-          {...props}
-          {...showSecondLineButtonProps}
-          taskSuspendRequestStatus={SuspendRequestStatusEnum.Approved}
+          })}
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         },
       )
 
-      expect(testUtils.getSecondLineButton()).toBeEnabled()
-    })
-
-    describe('Не активна если условия соблюдены', () => {
-      test('Но есть запрос на переклассификацию', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showSecondLineButtonProps}
-            {...activeSecondLineButtonProps}
-            extendedStatus={TaskExtendedStatusEnum.InReclassification}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({
-                  permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
-                }),
-              },
-            }),
-          },
-        )
-
-        expect(testUtils.getSecondLineButton()).toBeDisabled()
-      })
-
-      test('Но статус заявки не "Новая" и не "В процессе"', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showSecondLineButtonProps}
-            {...activeSecondLineButtonProps}
-            status={TaskStatusEnum.Awaiting}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({
-                  permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
-                }),
-              },
-            }),
-          },
-        )
-
-        expect(testUtils.getSecondLineButton()).toBeDisabled()
-      })
-
-      test('Но статус запроса на ожидание "Новый"', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showSecondLineButtonProps}
-            {...activeSecondLineButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.New}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({
-                  permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
-                }),
-              },
-            }),
-          },
-        )
-
-        expect(testUtils.getSecondLineButton()).toBeDisabled()
-      })
-
-      test('Но статус запроса на ожидание "В процессе"', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showSecondLineButtonProps}
-            {...activeSecondLineButtonProps}
-            taskSuspendRequestStatus={SuspendRequestStatusEnum.InProgress}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: {
-                ...getUserMeQueryMock({
-                  permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
-                }),
-              },
-            }),
-          },
-        )
-
-        expect(testUtils.getSecondLineButton()).toBeDisabled()
-      })
-
-      test('Но нет прав', () => {
-        render(
-          <WorkGroupBlock
-            {...props}
-            {...showSecondLineButtonProps}
-            {...activeSecondLineButtonProps}
-          />,
-          {
-            store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
-            }),
-          },
-        )
-
-        expect(testUtils.getSecondLineButton()).toBeDisabled()
-      })
-    })
-
-    test('Отображает состоянии загрузки во время перевода на 2-ю линию', async () => {
-      render(
-        <WorkGroupBlock
-          {...props}
-          {...showSecondLineButtonProps}
-          {...activeSecondLineButtonProps}
-          transferTaskToSecondLineIsLoading
-        />,
-        {
-          store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
-          }),
-        },
-      )
-
-      await testUtils.expectSecondLineLoadingStarted()
+      expect(testUtils.getSecondLineButton()).toBeDisabled()
     })
 
     test('При клике открывается модальное окно', async () => {
@@ -439,11 +315,7 @@ describe('Блок рабочей группы', () => {
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({
-                permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
-              }),
-            },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         },
       )
@@ -468,11 +340,7 @@ describe('Блок рабочей группы', () => {
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: {
-              ...getUserMeQueryMock({
-                permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
-              }),
-            },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         },
       )

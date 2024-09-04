@@ -138,15 +138,7 @@ const WorkGroupBlock: FC<WorkGroupBlockProps> = ({
                 type='link'
                 onClick={debouncedToggleOpenTaskSecondLineModal}
                 loading={transferTaskToSecondLineIsLoading}
-                disabled={
-                  taskSuspendRequestStatus.isApproved
-                    ? false
-                    : !permissions.putFirstLineTasksOnSecondLine ||
-                      taskSuspendRequestStatus.isNew ||
-                      taskSuspendRequestStatus.isInProgress ||
-                      taskExtendedStatus.isInReclassification ||
-                      (!taskStatus.isNew && !taskStatus.isInProgress)
-                }
+                disabled={userActions.tasks.CAN_PUT_ON_SECOND_LINE.includes(id)}
               >
                 Перевести на II линию
               </Button>

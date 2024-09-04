@@ -2,16 +2,12 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import {
-  getInventorizationEquipmentErrMsg,
-  getInventorizationEquipmentsErrMsg
-} from "modules/warehouse/constants/inventorization";
+import { getInventorizationEquipmentErrMsg } from 'modules/warehouse/constants/inventorization'
 import {
   GetInventorizationEquipmentQueryArgs,
-  GetInventorizationEquipmentsQueryArgs,
   GetInventorizationEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
-import { useGetInventorizationEquipmentQuery, useGetInventorizationEquipmentsQuery } from 'modules/warehouse/services/inventorizationApi.service'
+import { useGetInventorizationEquipmentQuery } from 'modules/warehouse/services/inventorizationApi.service'
 
 import {
   getErrorDetail,
