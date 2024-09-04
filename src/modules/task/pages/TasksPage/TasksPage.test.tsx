@@ -12,10 +12,7 @@ import {
   testUtils as assigneeBlockTestUtils,
 } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
-import {
-  canExecuteTaskProps,
-  testUtils as taskDetailsTitleTestUtils,
-} from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
+import { testUtils as taskDetailsTitleTestUtils } from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
 import {
   showFirstLineButtonProps,
   showSecondLineButtonProps,
@@ -401,9 +398,6 @@ describe('Страница реестра заявок', () => {
 
     test('Перезапрашивается при выполнении заявки', async () => {
       mockGetTaskCountersSuccess({ once: false })
-      mockGetUserActionsSuccess(canExecuteTaskProps.assignee!.id, {
-        body: userFixtures.userActions(),
-      })
 
       const taskListItem = taskFixtures.taskListItem()
       mockGetTasksSuccess({
@@ -411,17 +405,23 @@ describe('Страница реестра заявок', () => {
         once: false,
       })
 
-      const task = taskFixtures.task({
-        id: taskListItem.id,
-        hasRelocationTasks: true,
-        ...canExecuteTaskProps,
-      })
+      const task = taskFixtures.task({ id: taskListItem.id, hasRelocationTasks: true })
       mockGetTaskSuccess(task.id, { body: task })
       mockResolveTaskSuccess(task.id)
 
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanResolve]: [task.id],
+          },
+        }),
+      })
+
       const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth({ id: canExecuteTaskProps.assignee!.id }, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
 

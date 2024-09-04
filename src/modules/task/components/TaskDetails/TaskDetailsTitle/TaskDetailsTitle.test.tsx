@@ -9,7 +9,6 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
-import { TaskModel } from 'modules/task/models'
 
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
@@ -45,14 +44,13 @@ const props: Readonly<TaskDetailsTitleProps> = {
   onUpdateDeadline: jest.fn(),
 }
 
-export const canExecuteTaskProps: Pick<
-  TaskModel,
-  'status' | 'extendedStatus' | 'assignee' | 'suspendRequest'
-> = {
-  status: TaskStatusEnum.InProgress,
-  extendedStatus: TaskExtendedStatusEnum.InProgress,
-  assignee: taskFixtures.assignee(),
-  suspendRequest: null,
+export const canExecuteTaskProps: Pick<TaskDetailsTitleProps, 'userActions'> = {
+  userActions: {
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanResolve]: [props.id],
+    },
+  },
 }
 
 export const showRequestReclassificationItemProps: Readonly<
@@ -352,9 +350,9 @@ describe('Заголовок карточки заявки', () => {
 
     describe('Выполнить заявку', () => {
       test('Отображается', async () => {
-        const { user } = render(<TaskDetailsTitle {...props} />, {
+        const { user } = render(<TaskDetailsTitle {...props} {...canExecuteTaskProps} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         })
 
@@ -368,8 +366,8 @@ describe('Заголовок карточки заявки', () => {
 
       test('При клике вызывается обработчик', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canExecuteTaskProps} />, {
-          store: getStoreWithAuth({ id: canExecuteTaskProps.assignee!.id }, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         })
 
@@ -378,10 +376,10 @@ describe('Заголовок карточки заявки', () => {
         expect(props.onExecuteTask).toBeCalledTimes(1)
       })
 
-      test('Активен если условия соблюдены', async () => {
+      test('Элемент активен если userActions содержит id заявки', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canExecuteTaskProps} />, {
-          store: getStoreWithAuth({ id: canExecuteTaskProps.assignee!.id }, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ permissions: [] }) },
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
           }),
         })
 
@@ -389,109 +387,26 @@ describe('Заголовок карточки заявки', () => {
         menuTestUtils.expectMenuItemNotDisabled(testUtils.getExecuteTaskMenuItem())
       })
 
-      describe('Не активен если условия соблюдены', () => {
-        test('Но заявка не в статусе - "В процессе"', async () => {
-          const { user } = render(
-            <TaskDetailsTitle {...props} {...canExecuteTaskProps} status={TaskStatusEnum.New} />,
-            {
-              store: getStoreWithAuth(
-                { id: canExecuteTaskProps.assignee!.id },
-                undefined,
-                undefined,
-                {
-                  queries: { ...getUserMeQueryMock({ permissions: [] }) },
-                },
-              ),
-            },
-          )
-
-          await testUtils.openMenu(user)
-          menuTestUtils.expectMenuItemDisabled(testUtils.getExecuteTaskMenuItem())
-        })
-
-        test('Но исполнитель заявки не является авторизованным пользователем', async () => {
-          const { user } = render(<TaskDetailsTitle {...props} {...canExecuteTaskProps} />, {
+      test('Элемент не активен если userActions не содержит id заявки', async () => {
+        const { user } = render(
+          <TaskDetailsTitle
+            {...props}
+            userActions={{
+              tasks: {
+                ...userFixtures.taskActionsPermissions,
+                [TaskActionsPermissionsEnum.CanResolve]: [],
+              },
+            }}
+          />,
+          {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock({ permissions: [] }) },
+              queries: { ...getUserMeQueryMock(userFixtures.user()) },
             }),
-          })
+          },
+        )
 
-          await testUtils.openMenu(user)
-          menuTestUtils.expectMenuItemDisabled(testUtils.getExecuteTaskMenuItem())
-        })
-
-        test('Но есть запрос на переклассификацию', async () => {
-          const { user } = render(
-            <TaskDetailsTitle
-              {...props}
-              {...canExecuteTaskProps}
-              extendedStatus={TaskExtendedStatusEnum.InReclassification}
-            />,
-            {
-              store: getStoreWithAuth(
-                { id: canExecuteTaskProps.assignee!.id },
-                undefined,
-                undefined,
-                {
-                  queries: { ...getUserMeQueryMock({ permissions: [] }) },
-                },
-              ),
-            },
-          )
-
-          await testUtils.openMenu(user)
-          menuTestUtils.expectMenuItemDisabled(testUtils.getExecuteTaskMenuItem())
-        })
-
-        test(`Но запрос на ожидание имеет статус ${SuspendRequestStatusEnum.New}`, async () => {
-          const { user } = render(
-            <TaskDetailsTitle
-              {...props}
-              {...canExecuteTaskProps}
-              suspendRequest={taskFixtures.suspendRequest({
-                status: SuspendRequestStatusEnum.New,
-              })}
-            />,
-            {
-              store: getStoreWithAuth(
-                { id: canExecuteTaskProps.assignee!.id },
-                undefined,
-                undefined,
-                {
-                  queries: { ...getUserMeQueryMock({ permissions: [] }) },
-                },
-              ),
-            },
-          )
-
-          await testUtils.openMenu(user)
-          menuTestUtils.expectMenuItemDisabled(testUtils.getExecuteTaskMenuItem())
-        })
-
-        test(`Но запрос на ожидание имеет статус ${SuspendRequestStatusEnum.InProgress}`, async () => {
-          const { user } = render(
-            <TaskDetailsTitle
-              {...props}
-              {...canExecuteTaskProps}
-              suspendRequest={taskFixtures.suspendRequest({
-                status: SuspendRequestStatusEnum.InProgress,
-              })}
-            />,
-            {
-              store: getStoreWithAuth(
-                { id: canExecuteTaskProps.assignee!.id },
-                undefined,
-                undefined,
-                {
-                  queries: { ...getUserMeQueryMock({ permissions: [] }) },
-                },
-              ),
-            },
-          )
-
-          await testUtils.openMenu(user)
-          menuTestUtils.expectMenuItemDisabled(testUtils.getExecuteTaskMenuItem())
-        })
+        await testUtils.openMenu(user)
+        menuTestUtils.expectMenuItemDisabled(testUtils.getExecuteTaskMenuItem())
       })
     })
 
