@@ -18,7 +18,6 @@ import {
 } from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
 import {
   activeFirstLineButtonProps,
-  activeSecondLineButtonProps,
   showFirstLineButtonProps,
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
@@ -497,7 +496,6 @@ describe('Страница реестра заявок', () => {
       const task = taskFixtures.task({
         id: taskListItem.id,
         ...showSecondLineButtonProps,
-        ...activeSecondLineButtonProps,
       })
       mockGetTaskSuccess(task.id, { body: task })
 
@@ -509,7 +507,14 @@ describe('Страница реестра заявок', () => {
       const currentUser = userFixtures.user({
         permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
       })
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanPutOnSecondLine]: [task.id],
+          },
+        }),
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {

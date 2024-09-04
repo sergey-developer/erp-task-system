@@ -87,4 +87,5 @@ export enum TaskActionsPermissionsEnum {
   CanSuspendRequestsCreate = 'CAN_SUSPEND_REQUESTS_CREATE',
   CanExecute = 'CAN_EXECUTE',
   CanSubtasksCreate = 'CAN_SUBTASKS_CREATE',
+  CanPutOnSecondLine = 'CAN_PUT_ON_SECOND_LINE',
 }
