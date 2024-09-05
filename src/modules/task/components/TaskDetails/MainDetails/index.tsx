@@ -157,9 +157,14 @@ const MainDetails: FC<MainDetailsProps> = ({
           <Label label={createdBy ? 'Инициатор' : 'Заявитель'}>
             <Text strong>{createdBy ? getFullUserName(createdBy) : contactService}</Text>
 
-            {contactPhone && <Text>{contactPhone}</Text>}
-
-            {portablePhone && <Text>{portablePhone}</Text>}
+            {createdBy ? (
+              <Text>{createdBy.phone}</Text>
+            ) : (
+              <>
+                {contactPhone && <Text>{contactPhone}</Text>}
+                {portablePhone && <Text>{portablePhone}</Text>}
+              </>
+            )}
           </Label>
         </Col>
       </Row>

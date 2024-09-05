@@ -52,6 +52,7 @@ export const task = (
       | 'infrastructureProject'
       | 'workType'
       | 'system'
+      | 'createdBy'
     >
   >,
 ): Omit<TaskModel, 'responseTime'> & {
@@ -88,8 +89,8 @@ export const task = (
     ? null
     : props!.infrastructureProject,
   workType: isUndefined(props?.workType) ? null : props!.workType,
+  createdBy: isUndefined(props?.createdBy) ? null : props!.createdBy,
 
-  createdBy: null,
   observers: null,
   parentTask: null,
   shop: { id: fakeId(), title: fakeWord() },
