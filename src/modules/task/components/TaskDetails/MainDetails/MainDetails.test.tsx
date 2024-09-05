@@ -238,9 +238,23 @@ describe('Блок детальной информации заявки', () => 
       expect(testUtils.getChildByText(props.contactService)).toBeInTheDocument()
     })
 
-    test('Контактный телефон 1 отображается если присутствует', () => {
+    test('Номер инициатора отображается если инициатор указан', () => {
+      const createdBy: NonNullable<MainDetailsProps['createdBy']> = {
+        ...userFixtures.user(),
+        position: fakeWord(),
+      }
+
+      render(<MainDetails {...props} createdBy={createdBy} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+      expect(testUtils.getChildByText(createdBy!.phone)).toBeInTheDocument()
+    })
+
+    test('Контактный телефон 1 отображается если он есть и если не указан инициатор заявки', () => {
       const contactPhone = fakePhone()
-      render(<MainDetails {...props} contactPhone={contactPhone} />, {
+      render(<MainDetails {...props} contactPhone={contactPhone} createdBy={null} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -248,9 +262,9 @@ describe('Блок детальной информации заявки', () => 
       expect(testUtils.getChildByText(contactPhone)).toBeInTheDocument()
     })
 
-    test('Контактный телефон 2 отображается если присутствует', () => {
+    test('Контактный телефон 2 отображается если он есть и если не указан инициатор заявки', () => {
       const portablePhone = fakePhone()
-      render(<MainDetails {...props} portablePhone={portablePhone} />, {
+      render(<MainDetails {...props} portablePhone={portablePhone} createdBy={null} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
