@@ -41,7 +41,7 @@
 Переопределить `NODE_ENV` понадобилось, например для того, чтобы удалять атрибут `data-testid` для production, а для остальных окружений оставить.
 
 ### Environment config
-После добавления новой переменной в `.env.*` файл, её нужно добавить в `env.config.ts` который находится в папке `src/configs/env`.
+После добавления новой переменной в `.env.*` файл, её нужно добавить в `env.options.ts` который находится в папке `src/configs/env`.
 
 Данный конфиг нужен для удобства чтения переменных окружения в приложении.
 
@@ -173,7 +173,7 @@ RTK query не умеет правильно доставать ReturnType из 
 с помощью `react-testing-library` и для `e2e-tests`, которые пишутся тестировщиком.
 
 ## Сборка проекта
-Этим занимается [webpack](https://webpack.js.org/), конфиг которого настраивается с помощью [craco](https://www.npmjs.com/package/@craco/craco), файл `craco.config.ts`.
+Этим занимается [webpack](https://webpack.js.org/), конфиг которого настраивается с помощью [craco](https://www.npmjs.com/package/@craco/craco), файл `craco.options.ts`.
 
 ## Стили
 - При необходимости `Ant Design` кастомизируется с помощью `styled-components`
