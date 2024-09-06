@@ -4,21 +4,19 @@ import { camelize } from 'humps'
 import moment from 'moment-timezone'
 
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
-import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilters/FastFilters.test'
+import { testUtils as fastFilterOptionTestUtils } from 'modules/task/components/FastFilters/FastFilterOption/FastFilterOption.test'
 import {
-  activeAssignButtonProps,
-  activeTakeTaskButtonProps,
+  taskCountersFastFilterOptions,
+  tasksFastFilterOptions,
+} from 'modules/task/components/FastFilters/options'
+import {
+  activeAssignOnMeButtonProps,
   canSelectAssigneeProps,
   testUtils as assigneeBlockTestUtils,
 } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
+import { testUtils as taskDetailsTitleTestUtils } from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
 import {
-  canExecuteTaskProps,
-  testUtils as taskDetailsTitleTestUtils,
-} from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
-import {
-  activeFirstLineButtonProps,
-  activeSecondLineButtonProps,
   showFirstLineButtonProps,
   showSecondLineButtonProps,
   testUtils as workGroupBlockTestUtils,
@@ -35,10 +33,11 @@ import {
 import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 import {
-  FastFilterEnum,
   TaskActionsPermissionsEnum,
+  TaskCountersFastFilterEnum,
   taskExtendedStatusDict,
   TaskOlaStatusEnum,
+  TasksFastFilterEnum,
 } from 'modules/task/constants/task'
 import { TaskCountersKeys } from 'modules/task/models'
 import {
@@ -117,6 +116,15 @@ const getCreateTaskButton = () => buttonTestUtils.getButtonIn(getContainer(), /�
 const getTasksFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
 const clickTasksFilterButton = async (user: UserEvent) => user.click(getTasksFilterButton())
 
+// fast filters
+const getTasksFastFilter = () => within(getContainer()).getByTestId('tasks-fast-filter')
+
+const getTaskCountersFastFilter = () =>
+  within(getContainer()).getByTestId('task-counters-fast-filter')
+
+const queryTaskCountersFastFilter = () =>
+  within(getContainer()).queryByTestId('task-counters-fast-filter')
+
 export const testUtils = {
   getContainer,
   findContainer,
@@ -136,6 +144,10 @@ export const testUtils = {
 
   getTasksFilterButton,
   clickTasksFilterButton,
+
+  getTasksFastFilter,
+  getTaskCountersFastFilter,
+  queryTaskCountersFastFilter,
 }
 
 jest.mock('modules/task/constants/task/tasksUpdateVariants', () => {
@@ -153,259 +165,586 @@ jest.mock('modules/task/constants/task/tasksUpdateVariants', () => {
 setupApiTests()
 
 describe('Страница реестра заявок', () => {
-  describe('Быстрый фильтр', () => {
-    test('Отображается', async () => {
-      mockGetTaskCountersSuccess()
-      mockGetTasksSuccess()
+  describe('Быстрые фильтры', () => {
+    describe('Счетчиков', () => {
+      test(`Отображаются если есть права ${UserPermissionsEnum.FirstLineTasksRead} и ${UserPermissionsEnum.SecondLineTasksRead}`, async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTasksSuccess()
 
-      render(<TasksPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
-        }),
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.SecondLineTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        expect(testUtils.getTaskCountersFastFilter()).toBeInTheDocument()
       })
 
-      await fastFilterListTestUtils.expectLoadingFinished()
-      expect(fastFilterListTestUtils.getContainer()).toBeInTheDocument()
+      test(`Отображаются если есть права ${UserPermissionsEnum.FirstLineTasksRead} и ${UserPermissionsEnum.WorkGroupTasksRead}`, async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTasksSuccess()
+
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.WorkGroupTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        expect(testUtils.getTaskCountersFastFilter()).toBeInTheDocument()
+      })
+
+      test(`Не отображаются если есть права ${UserPermissionsEnum.FirstLineTasksRead} но нет ${UserPermissionsEnum.SecondLineTasksRead} и ${UserPermissionsEnum.WorkGroupTasksRead}`, async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTasksSuccess()
+
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: [UserPermissionsEnum.FirstLineTasksRead] }),
+              ),
+            },
+          }),
+        })
+
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        expect(testUtils.queryTaskCountersFastFilter()).not.toBeInTheDocument()
+      })
+
+      test(`Не отображаются если есть права ${UserPermissionsEnum.SecondLineTasksRead} но нет ${UserPermissionsEnum.FirstLineTasksRead}`, async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTasksSuccess()
+
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: [UserPermissionsEnum.SecondLineTasksRead] }),
+              ),
+            },
+          }),
+        })
+
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        expect(testUtils.queryTaskCountersFastFilter()).not.toBeInTheDocument()
+      })
+
+      test(`Не отображаются если есть права ${UserPermissionsEnum.WorkGroupTasksRead} но нет ${UserPermissionsEnum.FirstLineTasksRead}`, async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTasksSuccess()
+
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: [UserPermissionsEnum.WorkGroupTasksRead] }),
+              ),
+            },
+          }),
+        })
+
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        expect(testUtils.queryTaskCountersFastFilter()).not.toBeInTheDocument()
+      })
+
+      test('Количество заявок отображается', async () => {
+        const taskCounters = taskFixtures.taskCounters()
+        mockGetTaskCountersSuccess({ body: taskCounters })
+        mockGetTasksSuccess()
+
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.SecondLineTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+
+        taskCountersFastFilterOptions.forEach(({ value }) => {
+          const counterName = camelize(value.toLowerCase())
+          const counter = taskCounters[counterName as TaskCountersKeys]
+          const counterEl = fastFilterOptionTestUtils.getByTextInCheckableTag(value, counter)
+          expect(counterEl).toBeInTheDocument()
+        })
+      })
+
+      test('Имеют верное значение по умолчанию', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTasksSuccess()
+
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.SecondLineTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+
+        fastFilterOptionTestUtils.expectFilterChecked(
+          fastFilterOptionTestUtils.getCheckableTag(TaskCountersFastFilterEnum.AllLines),
+        )
+      })
+
+      test('При смене фильтра отправляется запрос', async () => {
+        mockGetTaskCountersSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
+
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.SecondLineTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.setFilter(user, TaskCountersFastFilterEnum.SecondLine)
+        await fastFilterOptionTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingStarted()
+      })
+
+      test('Сбрасывает расширенный фильтр', async () => {
+        const workGroupListItem = workGroupFixtures.workGroupListItem()
+        mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
+        mockGetTaskCountersSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
+        mockGetCustomerListSuccess({ once: false })
+        mockGetSupportGroupListSuccess({ once: false })
+        mockGetMacroregionsSuccess({ once: false })
+
+        const userListItem = userFixtures.userListItem()
+        mockGetUsersSuccess({ body: [userListItem], once: false })
+
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.SelfWorkGroupsRead,
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.SecondLineTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        await taskTableTestUtils.expectLoadingFinished()
+
+        await testUtils.clickTasksFilterButton(user)
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.manager.expectLoadingFinished()
+
+        await tasksFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
+        await tasksFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
+        await tasksFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
+
+        const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(
+          user,
+        )
+
+        const { keyword: searchByColumnKeywordValue } =
+          await tasksFilterTestUtils.searchByColumn.setKeywordValue(user)
+
+        await tasksFilterTestUtils.searchByColumn.setColumnValue(user, searchFieldDict.searchByName)
+
+        const workGroupField = await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.workGroup.openField(user, workGroupField)
+        await tasksFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
+
+        await tasksFilterTestUtils.manager.openField(user)
+        await tasksFilterTestUtils.manager.setValue(user, userListItem.fullName)
+
+        await tasksFilterTestUtils.clickApplyButton(user)
+        await taskTableTestUtils.expectLoadingFinished()
+
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.setFilter(user, TaskCountersFastFilterEnum.FirstLine)
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+
+        await testUtils.clickTasksFilterButton(user)
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.manager.expectLoadingFinished()
+
+        await waitFor(() => {
+          expect(
+            tasksFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!),
+          ).not.toBeChecked()
+        })
+
+        expect(tasksFilterTestUtils.assigned.getField(taskAssignedDict.True)).not.toBeChecked()
+
+        expect(tasksFilterTestUtils.overdue.getField(taskOverdueDict.False)).not.toBeChecked()
+
+        expect(tasksFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
+          startDateValue,
+        )
+
+        expect(tasksFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(
+          endDateValue,
+        )
+
+        expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(
+          searchByColumnKeywordValue,
+        )
+
+        expect(
+          tasksFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
+        ).not.toBeChecked()
+
+        expect(
+          selectTestUtils.getSelectedOption(tasksFilterTestUtils.workGroup.getField()),
+        ).not.toBeInTheDocument()
+
+        expect(tasksFilterTestUtils.manager.getSelected()).not.toBeInTheDocument()
+      })
+
+      // todo: не проходит на CI
+      test.skip('Закрывает карточку заявки', async () => {
+        mockGetWorkGroupsSuccess()
+        mockGetTaskCountersSuccess({ once: false })
+
+        const taskListItem = taskFixtures.taskListItem()
+        mockGetTasksSuccess({
+          once: false,
+          body: taskFixtures.getTasksResponse([taskListItem]),
+        })
+        mockGetTaskSuccess(taskListItem.id)
+
+        const currentUser = userFixtures.user({
+          permissions: [
+            UserPermissionsEnum.FirstLineTasksRead,
+            UserPermissionsEnum.SecondLineTasksRead,
+          ],
+        })
+        mockGetUserActionsSuccess(currentUser.id)
+
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        await taskTableTestUtils.clickRow(user, taskListItem.id)
+        const taskCard = await taskDetailsTestUtils.findContainer()
+        await fastFilterOptionTestUtils.setFilter(user, TaskCountersFastFilterEnum.SecondLine)
+        await waitFor(() => expect(taskCard).not.toBeInTheDocument())
+      })
+
+      test('Сбрасывает значение поля поиска', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTasksSuccess({ once: false })
+
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.SecondLineTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+
+        const searchValue = fakeWord()
+        const searchInput = await testUtils.setSearchValue(user, searchValue)
+
+        await fastFilterOptionTestUtils.setFilter(user, TaskCountersFastFilterEnum.SecondLine)
+        await taskTableTestUtils.expectLoadingFinished()
+
+        expect(searchInput).not.toHaveValue()
+        expect(searchInput).not.toHaveDisplayValue(searchValue)
+      })
     })
 
-    test('Не активный во время загрузки заявок', async () => {
-      mockGetTaskCountersSuccess()
-      mockGetTasksSuccess()
+    describe('Заявок', () => {
+      test('Отображаются', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTasksSuccess()
 
-      render(<TasksPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
-        }),
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
+
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        expect(testUtils.getTasksFastFilter()).toBeInTheDocument()
       })
 
-      await waitFor(() => fastFilterListTestUtils.expectAllFiltersDisabled())
-      await taskTableTestUtils.expectLoadingFinished()
-      fastFilterListTestUtils.expectAllFiltersNotDisabled()
-    })
+      test('Количество заявок отображается', async () => {
+        const taskCounters = taskFixtures.taskCounters()
+        mockGetTaskCountersSuccess({ body: taskCounters })
+        mockGetTasksSuccess()
 
-    test('Количество заявок отображается корректно', async () => {
-      const taskCounters = taskFixtures.taskCounters()
-      mockGetTaskCountersSuccess({ body: taskCounters })
-      mockGetTasksSuccess()
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
-      render(<TasksPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: {
-            ...getUserMeQueryMock(
-              userFixtures.user({
-                permissions: [
-                  UserPermissionsEnum.FirstLineTasksRead,
-                  UserPermissionsEnum.SecondLineTasksRead,
-                ],
-              }),
-            ),
-          },
-        }),
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+
+        tasksFastFilterOptions.forEach(({ value }) => {
+          const counterName = camelize(value.toLowerCase())
+          const counter = taskCounters[counterName as TaskCountersKeys]
+          const counterEl = fastFilterOptionTestUtils.getByTextInCheckableTag(value, counter)
+          expect(counterEl).toBeInTheDocument()
+        })
       })
 
-      await fastFilterListTestUtils.expectLoadingFinished()
+      test('Имеют верное значение по умолчанию', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTasksSuccess()
 
-      Object.values(FastFilterEnum).forEach((filter) => {
-        const counterName = camelize(filter.toLowerCase())
-        const taskCount = taskCounters[counterName as TaskCountersKeys]
+        render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
-        const counter = fastFilterListTestUtils.getByTextInCheckableTag(filter, taskCount)
-        expect(counter).toBeInTheDocument()
-      })
-    })
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
 
-    test('Имеет корректное значение по умолчанию', async () => {
-      mockGetTaskCountersSuccess()
-      mockGetTasksSuccess()
-
-      render(<TasksPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: {
-            ...getUserMeQueryMock(
-              userFixtures.user({
-                permissions: [
-                  UserPermissionsEnum.FirstLineTasksRead,
-                  UserPermissionsEnum.SecondLineTasksRead,
-                ],
-              }),
-            ),
-          },
-        }),
+        fastFilterOptionTestUtils.expectFilterChecked(
+          fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.AllInLine),
+        )
       })
 
-      await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      test('При смене фильтра отправляется запрос', async () => {
+        mockGetTaskCountersSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
 
-      fastFilterListTestUtils.expectFilterChecked(
-        fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All),
-      )
-    })
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
-    test('При смене фильтра отправляется запрос', async () => {
-      mockGetTaskCountersSuccess()
-      mockGetTasksSuccess({ once: false })
-
-      const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
-        }),
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.setFilter(user, TasksFastFilterEnum.Free)
+        await fastFilterOptionTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingStarted()
       })
 
-      await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.setFilter(user, FastFilterEnum.Free)
-      await taskTableTestUtils.expectLoadingStarted()
-    })
+      test('Сбрасывает расширенный фильтр', async () => {
+        const workGroupListItem = workGroupFixtures.workGroupListItem()
+        mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
+        mockGetTaskCountersSuccess({ once: false })
+        mockGetTasksSuccess({ once: false })
+        mockGetCustomerListSuccess({ once: false })
+        mockGetSupportGroupListSuccess({ once: false })
+        mockGetMacroregionsSuccess({ once: false })
 
-    test('Сбрасывает расширенный фильтр', async () => {
-      const workGroupListItem = workGroupFixtures.workGroupListItem()
-      mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
-      mockGetTaskCountersSuccess({ once: false })
-      mockGetTasksSuccess({ once: false })
-      mockGetCustomerListSuccess({ once: false })
-      mockGetSupportGroupListSuccess({ once: false })
-      mockGetMacroregionsSuccess({ once: false })
+        const userListItem = userFixtures.userListItem()
+        mockGetUsersSuccess({ body: [userListItem], once: false })
 
-      const userListItem = userFixtures.userListItem()
-      mockGetUsersSuccess({ body: [userListItem], once: false })
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({ permissions: [UserPermissionsEnum.SelfWorkGroupsRead] }),
+              ),
+            },
+          }),
+        })
 
-      const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: {
-            ...getUserMeQueryMock(
-              userFixtures.user({ permissions: [UserPermissionsEnum.SelfWorkGroupsRead] }),
-            ),
-          },
-        }),
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        await taskTableTestUtils.expectLoadingFinished()
+
+        await testUtils.clickTasksFilterButton(user)
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.manager.expectLoadingFinished()
+
+        await tasksFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
+        await tasksFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
+        await tasksFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
+
+        const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(
+          user,
+        )
+
+        const { keyword: searchByColumnKeywordValue } =
+          await tasksFilterTestUtils.searchByColumn.setKeywordValue(user)
+
+        await tasksFilterTestUtils.searchByColumn.setColumnValue(user, searchFieldDict.searchByName)
+
+        const workGroupField = await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.workGroup.openField(user, workGroupField)
+        await tasksFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
+
+        await tasksFilterTestUtils.manager.openField(user)
+        await tasksFilterTestUtils.manager.setValue(user, userListItem.fullName)
+
+        await tasksFilterTestUtils.clickApplyButton(user)
+        await taskTableTestUtils.expectLoadingFinished()
+
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.setFilter(user, TasksFastFilterEnum.Free)
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+
+        await testUtils.clickTasksFilterButton(user)
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.workGroup.expectLoadingFinished()
+        await tasksFilterTestUtils.manager.expectLoadingFinished()
+
+        await waitFor(() => {
+          expect(
+            tasksFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!),
+          ).not.toBeChecked()
+        })
+
+        expect(tasksFilterTestUtils.assigned.getField(taskAssignedDict.True)).not.toBeChecked()
+
+        expect(tasksFilterTestUtils.overdue.getField(taskOverdueDict.False)).not.toBeChecked()
+
+        expect(tasksFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
+          startDateValue,
+        )
+
+        expect(tasksFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(
+          endDateValue,
+        )
+
+        expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(
+          searchByColumnKeywordValue,
+        )
+
+        expect(
+          tasksFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
+        ).not.toBeChecked()
+
+        expect(
+          selectTestUtils.getSelectedOption(tasksFilterTestUtils.workGroup.getField()),
+        ).not.toBeInTheDocument()
+
+        expect(tasksFilterTestUtils.manager.getSelected()).not.toBeInTheDocument()
       })
 
-      await fastFilterListTestUtils.expectLoadingFinished()
-      await taskTableTestUtils.expectLoadingFinished()
+      // todo: не проходит на CI
+      test.skip('Закрывает карточку заявки', async () => {
+        mockGetWorkGroupsSuccess()
+        mockGetTaskCountersSuccess({ once: false })
 
-      await testUtils.clickTasksFilterButton(user)
-      await tasksFilterTestUtils.findContainer()
-      await tasksFilterTestUtils.workGroup.expectLoadingFinished()
-      await tasksFilterTestUtils.manager.expectLoadingFinished()
+        const taskListItem = taskFixtures.taskListItem()
+        mockGetTasksSuccess({
+          once: false,
+          body: taskFixtures.getTasksResponse([taskListItem]),
+        })
+        mockGetTaskSuccess(taskListItem.id)
 
-      await tasksFilterTestUtils.status.setValue(user, taskExtendedStatusDict.NEW!)
-      await tasksFilterTestUtils.assigned.setValue(user, taskAssignedDict.True)
-      await tasksFilterTestUtils.overdue.setValue(user, taskOverdueDict.False)
+        const currentUser = userFixtures.user()
+        mockGetUserActionsSuccess(currentUser.id)
 
-      const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(user)
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
 
-      const { keyword: searchByColumnKeywordValue } =
-        await tasksFilterTestUtils.searchByColumn.setKeywordValue(user)
-
-      await tasksFilterTestUtils.searchByColumn.setColumnValue(user, searchFieldDict.searchByName)
-
-      const workGroupField = await tasksFilterTestUtils.workGroup.expectLoadingFinished()
-      await tasksFilterTestUtils.workGroup.openField(user, workGroupField)
-      await tasksFilterTestUtils.workGroup.setValue(user, workGroupListItem.name)
-
-      await tasksFilterTestUtils.manager.openField(user)
-      await tasksFilterTestUtils.manager.setValue(user, userListItem.fullName)
-
-      await tasksFilterTestUtils.clickApplyButton(user)
-      await taskTableTestUtils.expectLoadingFinished()
-
-      await fastFilterListTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.setFilter(user, FastFilterEnum.Free)
-      await taskTableTestUtils.expectLoadingStarted()
-      await taskTableTestUtils.expectLoadingFinished()
-
-      await testUtils.clickTasksFilterButton(user)
-      await tasksFilterTestUtils.findContainer()
-      await tasksFilterTestUtils.workGroup.expectLoadingFinished()
-      await tasksFilterTestUtils.manager.expectLoadingFinished()
-
-      await waitFor(() => {
-        expect(tasksFilterTestUtils.status.getField(taskExtendedStatusDict.NEW!)).not.toBeChecked()
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        await taskTableTestUtils.clickRow(user, taskListItem.id)
+        const taskCard = await taskDetailsTestUtils.findContainer()
+        await fastFilterOptionTestUtils.setFilter(user, TasksFastFilterEnum.Free)
+        await waitFor(() => expect(taskCard).not.toBeInTheDocument())
       })
 
-      expect(tasksFilterTestUtils.assigned.getField(taskAssignedDict.True)).not.toBeChecked()
+      test('Сбрасывает значение поля поиска', async () => {
+        mockGetTaskCountersSuccess()
+        mockGetTasksSuccess({ once: false })
 
-      expect(tasksFilterTestUtils.overdue.getField(taskOverdueDict.False)).not.toBeChecked()
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          }),
+        })
 
-      expect(tasksFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
-        startDateValue,
-      )
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
 
-      expect(tasksFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(endDateValue)
+        const searchValue = fakeWord()
+        const searchInput = await testUtils.setSearchValue(user, searchValue)
 
-      expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(
-        searchByColumnKeywordValue,
-      )
+        await fastFilterOptionTestUtils.setFilter(user, TasksFastFilterEnum.Free)
+        await taskTableTestUtils.expectLoadingFinished()
 
-      expect(
-        tasksFilterTestUtils.searchByColumn.getColumnField(searchFieldDict.searchByName),
-      ).not.toBeChecked()
-
-      expect(
-        selectTestUtils.getSelectedOption(tasksFilterTestUtils.workGroup.getField()),
-      ).not.toBeInTheDocument()
-
-      expect(tasksFilterTestUtils.manager.getSelected()).not.toBeInTheDocument()
-    })
-
-    // todo: не проходит на CI
-    test.skip('Закрывает карточку заявки', async () => {
-      mockGetWorkGroupsSuccess()
-      mockGetTaskCountersSuccess()
-
-      const taskListItem = taskFixtures.taskListItem()
-      mockGetTasksSuccess({
-        once: false,
-        body: taskFixtures.getTasksResponse([taskListItem]),
+        expect(searchInput).not.toHaveValue()
+        expect(searchInput).not.toHaveDisplayValue(searchValue)
       })
-      mockGetTaskSuccess(taskListItem.id)
-
-      const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
-        }),
-      })
-
-      await taskTableTestUtils.expectLoadingStarted()
-      await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
-      await taskTableTestUtils.clickRow(user, taskListItem.id)
-      const taskCard = await taskDetailsTestUtils.findContainer()
-
-      await fastFilterListTestUtils.setFilter(user, FastFilterEnum.Free)
-
-      await waitFor(() => {
-        expect(taskCard).not.toBeInTheDocument()
-      })
-    })
-
-    test('Сбрасывает значение поля поиска', async () => {
-      mockGetTaskCountersSuccess()
-      mockGetTasksSuccess({ once: false })
-
-      const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
-        }),
-      })
-
-      await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
-
-      const searchValue = fakeWord()
-      const searchInput = await testUtils.setSearchValue(user, searchValue)
-
-      await fastFilterListTestUtils.setFilter(user, FastFilterEnum.Free)
-      await taskTableTestUtils.expectLoadingFinished()
-
-      expect(searchInput).not.toHaveValue()
-      expect(searchInput).not.toHaveDisplayValue(searchValue)
     })
 
     test('Перезапрашивается при выполнении заявки', async () => {
       mockGetTaskCountersSuccess({ once: false })
-      mockGetUserActionsSuccess(canExecuteTaskProps.assignee!.id, {
-        body: userFixtures.userActions(),
-      })
 
       const taskListItem = taskFixtures.taskListItem()
       mockGetTasksSuccess({
@@ -413,22 +752,28 @@ describe('Страница реестра заявок', () => {
         once: false,
       })
 
-      const task = taskFixtures.task({
-        id: taskListItem.id,
-        hasRelocationTasks: true,
-        ...canExecuteTaskProps,
-      })
+      const task = taskFixtures.task({ id: taskListItem.id, hasRelocationTasks: true })
       mockGetTaskSuccess(task.id, { body: task })
       mockResolveTaskSuccess(task.id)
 
+      const currentUser = userFixtures.user()
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanResolve]: [task.id],
+          },
+        }),
+      })
+
       const { user } = render(<TasksPage />, {
-        store: getStoreWithAuth({ id: canExecuteTaskProps.assignee!.id }, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
         }),
       })
 
       await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
       await taskTableTestUtils.clickRow(user, task.id)
       await taskDetailsTestUtils.findContainer()
       await taskDetailsTestUtils.expectTaskLoadingFinished()
@@ -439,8 +784,8 @@ describe('Страница реестра заявок', () => {
       await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
       await executeTaskModalTestUtils.clickSubmitButton(user)
       await executeTaskModalTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingStarted()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingStarted()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
     })
 
     test('Перезапрашивается при переводе на 1-ю линию', async () => {
@@ -455,13 +800,19 @@ describe('Страница реестра заявок', () => {
       const task = taskFixtures.task({
         id: taskListItem.id,
         ...showFirstLineButtonProps,
-        ...activeFirstLineButtonProps,
       })
       mockGetTaskSuccess(task.id, { body: task })
       mockDeleteTaskWorkGroupSuccess(task.id)
 
       const currentUser = userFixtures.user()
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanPutOnFirstLine]: [task.id],
+          },
+        }),
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
@@ -470,7 +821,7 @@ describe('Страница реестра заявок', () => {
       })
 
       await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
       await taskTableTestUtils.clickRow(user, task.id)
       await taskDetailsTestUtils.findContainer()
       await taskDetailsTestUtils.expectTaskLoadingFinished()
@@ -480,8 +831,8 @@ describe('Страница реестра заявок', () => {
       await taskFirstLineModalTestUtils.setDescription(user, fakeWord())
       await taskFirstLineModalTestUtils.clickSubmitButton(user)
 
-      await fastFilterListTestUtils.expectLoadingStarted()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingStarted()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
     })
 
     // todo: не проходит на CI
@@ -497,7 +848,6 @@ describe('Страница реестра заявок', () => {
       const task = taskFixtures.task({
         id: taskListItem.id,
         ...showSecondLineButtonProps,
-        ...activeSecondLineButtonProps,
       })
       mockGetTaskSuccess(task.id, { body: task })
 
@@ -509,7 +859,14 @@ describe('Страница реестра заявок', () => {
       const currentUser = userFixtures.user({
         permissions: [UserPermissionsEnum.PutFirstLineTasksOnSecondLine],
       })
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanPutOnSecondLine]: [task.id],
+          },
+        }),
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
@@ -518,7 +875,7 @@ describe('Страница реестра заявок', () => {
       })
 
       await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
       await taskTableTestUtils.clickRow(user, task.id)
       await taskDetailsTestUtils.findContainer()
       await taskDetailsTestUtils.expectTaskLoadingFinished()
@@ -531,8 +888,8 @@ describe('Страница реестра заявок', () => {
       await taskSecondLineModalTestUtils.setComment(user, fakeWord())
       await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
-      await fastFilterListTestUtils.expectLoadingStarted()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingStarted()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
     })
 
     test('Перезапрашивается при взятии в работу', async () => {
@@ -544,7 +901,7 @@ describe('Страница реестра заявок', () => {
         once: false,
       })
 
-      const task = taskFixtures.task({ id: taskListItem.id, ...activeTakeTaskButtonProps })
+      const task = taskFixtures.task({ id: taskListItem.id })
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockTakeTaskSuccess(task.id)
 
@@ -565,15 +922,15 @@ describe('Страница реестра заявок', () => {
       })
 
       await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
       await taskTableTestUtils.clickRow(user, task.id)
       await taskDetailsTestUtils.findContainer()
       await taskDetailsTestUtils.expectTaskLoadingFinished()
 
       await assigneeBlockTestUtils.clickTakeTaskButton(user)
 
-      await fastFilterListTestUtils.expectLoadingStarted()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingStarted()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
     })
 
     test('Перезапрашивается при назначении заявки на себя', async () => {
@@ -585,22 +942,23 @@ describe('Страница реестра заявок', () => {
         once: false,
       })
 
-      const currentUser = userFixtures.user({
-        id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-        permissions: [UserPermissionsEnum.SelfAssigneeTasksUpdate],
-      })
-
-      const task = taskFixtures.task({
-        id: taskListItem.id,
-        status: canSelectAssigneeProps.status,
-        extendedStatus: activeAssignButtonProps.extendedStatus,
-        assignee: activeAssignButtonProps.assignee,
-        workGroup: taskFixtures.workGroup({ id: canSelectAssigneeProps.workGroup.id }),
-      })
+      const task = taskFixtures.task({ id: taskListItem.id })
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockUpdateTaskAssigneeSuccess(task.id)
 
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions(), once: false })
+      const currentUser = userFixtures.user({
+        permissions: activeAssignOnMeButtonProps.permissions,
+      })
+
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanAssignee]: [task.id],
+          },
+        }),
+        once: false,
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -609,15 +967,15 @@ describe('Страница реестра заявок', () => {
       })
 
       await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
       await taskTableTestUtils.clickRow(user, task.id)
       await taskDetailsTestUtils.findContainer()
       await taskDetailsTestUtils.expectTaskLoadingFinished()
 
       await assigneeBlockTestUtils.clickAssignOnMeButton(user)
 
-      await fastFilterListTestUtils.expectLoadingStarted()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingStarted()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
     })
 
     test('Перезапрашивается при назначении исполнителя', async () => {
@@ -629,22 +987,21 @@ describe('Страница реестра заявок', () => {
         once: false,
       })
 
-      const task = taskFixtures.task({
-        id: taskListItem.id,
-        status: canSelectAssigneeProps.status,
-        extendedStatus: activeAssignButtonProps.extendedStatus,
-        assignee: activeAssignButtonProps.assignee,
-        workGroup: canSelectAssigneeProps.workGroup,
-      })
+      const task = taskFixtures.task({ id: taskListItem.id })
       mockGetTaskSuccess(task.id, { body: task, once: false })
       mockUpdateTaskAssigneeSuccess(task.id)
 
-      const currentUser = userFixtures.user({
-        id: canSelectAssigneeProps.workGroup.seniorEngineer.id,
-        permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
-      })
+      const currentUser = userFixtures.user({ permissions: canSelectAssigneeProps.permissions })
 
-      mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions(), once: false })
+      mockGetUserActionsSuccess(currentUser.id, {
+        body: userFixtures.userActions({
+          tasks: {
+            ...userFixtures.taskActionsPermissions,
+            [TaskActionsPermissionsEnum.CanAssignee]: [task.id],
+          },
+        }),
+        once: false,
+      })
 
       const { user } = render(<TasksPage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -653,21 +1010,18 @@ describe('Страница реестра заявок', () => {
       })
 
       await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
       await taskTableTestUtils.clickRow(user, task.id)
       await taskDetailsTestUtils.findContainer()
       await taskDetailsTestUtils.expectTaskLoadingFinished()
 
       await assigneeBlockTestUtils.findAssigneeSelect()
       await assigneeBlockTestUtils.openAssigneeSelect(user)
-      await assigneeBlockTestUtils.selectAssignee(
-        user,
-        getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
-      )
+      await assigneeBlockTestUtils.setAssignee(user, getFullUserName(task.workGroup!.members[0]))
       await assigneeBlockTestUtils.clickAssignButton(user)
 
-      await fastFilterListTestUtils.expectLoadingStarted()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingStarted()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
     })
   })
 
@@ -813,7 +1167,48 @@ describe('Страница реестра заявок', () => {
         await waitFor(() => expect(taskCard).not.toBeInTheDocument())
       })
 
-      test('Быстрый фильтр сбрасывается', async () => {
+      test('Быстрый фильтр счетчиков сбрасывается', async () => {
+        mockGetTasksSuccess({ once: false })
+        mockGetTaskCountersSuccess({ once: false })
+        mockGetWorkGroupsSuccess()
+        mockGetUsersSuccess()
+        mockGetCustomerListSuccess()
+        mockGetMacroregionsSuccess()
+        mockGetSupportGroupListSuccess()
+
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.SecondLineTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(
+          TaskCountersFastFilterEnum.AllLines,
+        )
+        fastFilterOptionTestUtils.expectFilterChecked(fastFilter)
+        await testUtils.clickTasksFilterButton(user)
+        await tasksFilterTestUtils.findContainer()
+        await tasksFilterTestUtils.clickApplyButton(user)
+
+        await waitFor(() =>
+          fastFilterOptionTestUtils.expectFilterNotChecked(
+            fastFilterOptionTestUtils.getCheckableTag(TaskCountersFastFilterEnum.AllLines),
+          ),
+        )
+      })
+
+      test('Быстрый фильтр заявок сбрасывается', async () => {
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetWorkGroupsSuccess()
@@ -829,16 +1224,16 @@ describe('Страница реестра заявок', () => {
         })
 
         await taskTableTestUtils.expectLoadingFinished()
-        await fastFilterListTestUtils.expectLoadingFinished()
-        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All)
-        fastFilterListTestUtils.expectFilterChecked(fastFilter)
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.AllInLine)
+        fastFilterOptionTestUtils.expectFilterChecked(fastFilter)
         await testUtils.clickTasksFilterButton(user)
         await tasksFilterTestUtils.findContainer()
         await tasksFilterTestUtils.clickApplyButton(user)
 
         await waitFor(() =>
-          fastFilterListTestUtils.expectFilterNotChecked(
-            fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All),
+          fastFilterOptionTestUtils.expectFilterNotChecked(
+            fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.AllInLine),
           ),
         )
       })
@@ -1205,7 +1600,7 @@ describe('Страница реестра заявок', () => {
         }),
       })
 
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
       await taskTableTestUtils.expectLoadingFinished()
 
       const filter = tasksFiltersStorageTestUtils.getFilter('customers')
@@ -1214,9 +1609,9 @@ describe('Страница реестра заявок', () => {
       await tasksFiltersStorageTestUtils.removeFilter(user, 'customers')
       expect(filter).not.toBeInTheDocument()
 
-      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterOptionTestUtils.expectLoadingStarted()
       await taskTableTestUtils.expectLoadingStarted()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
       await taskTableTestUtils.expectLoadingFinished()
     })
   })
@@ -1355,7 +1750,37 @@ describe('Страница реестра заявок', () => {
         await waitFor(() => expect(extendedFilterButton).toBeDisabled())
       })
 
-      test('Быстрый фильтр перестаёт быть выбранным', async () => {
+      test('Быстрый фильтр счетчиков перестаёт быть выбранным', async () => {
+        mockGetTasksSuccess()
+        mockGetTaskCountersSuccess()
+
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.SecondLineTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(
+          TaskCountersFastFilterEnum.FirstLine,
+        )
+        fastFilterOptionTestUtils.expectFilterChecked(fastFilter)
+        await testUtils.setSearchValue(user, fakeWord(), true)
+
+        await waitFor(() => fastFilterOptionTestUtils.expectFilterNotChecked(fastFilter))
+      })
+
+      test('Быстрый фильтр заявок перестаёт быть выбранным', async () => {
         mockGetTasksSuccess()
         mockGetTaskCountersSuccess()
 
@@ -1366,20 +1791,54 @@ describe('Страница реестра заявок', () => {
         })
 
         await taskTableTestUtils.expectLoadingFinished()
-        await fastFilterListTestUtils.expectLoadingFinished()
-        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All)
-        fastFilterListTestUtils.expectFilterChecked(fastFilter)
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.Free)
+        fastFilterOptionTestUtils.expectFilterChecked(fastFilter)
         await testUtils.setSearchValue(user, fakeWord(), true)
 
-        await waitFor(() => {
-          fastFilterListTestUtils.expectFilterNotChecked(fastFilter)
-        })
+        await waitFor(() => fastFilterOptionTestUtils.expectFilterNotChecked(fastFilter))
       })
     })
-
+    // {permissions: [UserPermissionsEnum.FirstLineTasksRead, UserPermissionsEnum.SecondLineTasksRead]}
     describe('Очищение поля через клавиатуру', () => {
       // todo: не проходит на CI
-      test.skip('Применяет быстрый фильтр если он был применён ранее', async () => {
+      test.skip('Применяет быстрый фильтр счетчиков если он был применён ранее', async () => {
+        mockGetTasksSuccess({ once: false })
+        mockGetTaskCountersSuccess()
+
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.SecondLineTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+
+        const input = await testUtils.setSearchValue(user, fakeWord({ length: 1 }), true)
+
+        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(
+          TaskCountersFastFilterEnum.SecondLine,
+        )
+
+        await waitFor(() => fastFilterOptionTestUtils.expectFilterNotChecked(fastFilter))
+        await waitFor(() => expect(input).toBeEnabled())
+        await user.clear(input)
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        await waitFor(() => fastFilterOptionTestUtils.expectFilterChecked(fastFilter))
+      })
+
+      test.skip('Применяет быстрый фильтр заявок если он был применён ранее', async () => {
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess()
 
@@ -1390,18 +1849,18 @@ describe('Страница реестра заявок', () => {
         })
 
         await taskTableTestUtils.expectLoadingFinished()
-        await fastFilterListTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
 
         const input = await testUtils.setSearchValue(user, fakeWord({ length: 1 }), true)
 
-        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All)
+        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.Free)
 
-        await waitFor(() => fastFilterListTestUtils.expectFilterNotChecked(fastFilter))
+        await waitFor(() => fastFilterOptionTestUtils.expectFilterNotChecked(fastFilter))
         await waitFor(() => expect(input).toBeEnabled())
         await user.clear(input)
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
-        await waitFor(() => fastFilterListTestUtils.expectFilterChecked(fastFilter))
+        await waitFor(() => fastFilterOptionTestUtils.expectFilterChecked(fastFilter))
       })
 
       // todo: не проходит на CI
@@ -1531,7 +1990,41 @@ describe('Страница реестра заявок', () => {
       })
 
       // todo: не проходит на CI
-      test.skip('Применяет быстрый фильтр если он был применён ранее', async () => {
+      test.skip('Применяет быстрый фильтр счетчиков если он был применён ранее', async () => {
+        mockGetTasksSuccess({ once: false })
+        mockGetTaskCountersSuccess({ body: taskFixtures.taskCounters() })
+
+        const { user } = render(<TasksPage />, {
+          store: getStoreWithAuth(undefined, undefined, undefined, {
+            queries: {
+              ...getUserMeQueryMock(
+                userFixtures.user({
+                  permissions: [
+                    UserPermissionsEnum.FirstLineTasksRead,
+                    UserPermissionsEnum.SecondLineTasksRead,
+                  ],
+                }),
+              ),
+            },
+          }),
+        })
+
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
+        await testUtils.setSearchValue(user, fakeWord(), true)
+        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(
+          TaskCountersFastFilterEnum.FirstLine,
+        )
+        await waitFor(() => fastFilterOptionTestUtils.expectFilterNotChecked(fastFilter))
+        await testUtils.clickSearchClearButton(user)
+        await taskTableTestUtils.expectLoadingStarted()
+        await taskTableTestUtils.expectLoadingFinished()
+        await waitFor(() => fastFilterOptionTestUtils.expectFilterChecked(fastFilter))
+      })
+
+      // todo: не проходит на CI
+      test.skip('Применяет быстрый фильтр заявок если он был применён ранее', async () => {
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ body: taskFixtures.taskCounters() })
 
@@ -1543,14 +2036,14 @@ describe('Страница реестра заявок', () => {
 
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
-        await fastFilterListTestUtils.expectLoadingFinished()
+        await fastFilterOptionTestUtils.expectLoadingFinished()
         await testUtils.setSearchValue(user, fakeWord(), true)
-        const fastFilter = fastFilterListTestUtils.getCheckableTag(FastFilterEnum.All)
-        await waitFor(() => fastFilterListTestUtils.expectFilterNotChecked(fastFilter))
+        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.Free)
+        await waitFor(() => fastFilterOptionTestUtils.expectFilterNotChecked(fastFilter))
         await testUtils.clickSearchClearButton(user)
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
-        await waitFor(() => fastFilterListTestUtils.expectFilterChecked(fastFilter))
+        await waitFor(() => fastFilterOptionTestUtils.expectFilterChecked(fastFilter))
       })
 
       // todo: не проходит на CI
@@ -1714,9 +2207,9 @@ describe('Страница реестра заявок', () => {
       })
 
       await taskTableTestUtils.expectLoadingFinished()
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
       await testUtils.clickUpdateTasksButton(user)
-      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterOptionTestUtils.expectLoadingStarted()
     })
 
     test('Закрывает карточку заявки', async () => {
@@ -1775,12 +2268,12 @@ describe('Страница реестра заявок', () => {
         }),
       })
 
-      await fastFilterListTestUtils.expectLoadingFinished()
+      await fastFilterOptionTestUtils.expectLoadingFinished()
       await taskTableTestUtils.expectLoadingFinished()
       await updateTasksButtonTestUtils.openDropdown(user, testUtils.getContainer())
       await updateTasksButtonTestUtils.clickAutoUpdateItem(user)
       await taskTableTestUtils.expectLoadingStarted()
-      await fastFilterListTestUtils.expectLoadingStarted()
+      await fastFilterOptionTestUtils.expectLoadingStarted()
     })
   })
 

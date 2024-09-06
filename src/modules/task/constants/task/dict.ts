@@ -4,23 +4,28 @@ import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageS
 import { StringMap } from 'shared/types/utils'
 
 import {
-  FastFilterEnum,
+  TaskCountersFastFilterEnum,
   TaskDetailsTabsEnum,
   TaskExtendedStatusEnum,
+  TasksFastFilterEnum,
   TaskStatusEnum,
 } from './enums'
 
-export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
-  [FastFilterEnum.All]: 'Все',
-  [FastFilterEnum.Mine]: 'Мои',
-  [FastFilterEnum.Overdue]: 'Просроченные',
-  [FastFilterEnum.Free]: 'Свободные',
-  [FastFilterEnum.FirstLine]: 'Первая линия',
-  [FastFilterEnum.SecondLine]: 'Вторая линия',
-  [FastFilterEnum.LessOneHour]: 'Менее 1 часа',
-  [FastFilterEnum.LessThreeHours]: 'Менее 3-х часов',
-  [FastFilterEnum.Returned]: 'На доработку',
-  [FastFilterEnum.ReclassificationDenied]: 'Отказ в переклассификации',
+export const tasksFastFilterNamesDict: StringMap<TasksFastFilterEnum> = {
+  [TasksFastFilterEnum.AllInLine]: 'Все',
+  [TasksFastFilterEnum.Mine]: 'Мои',
+  [TasksFastFilterEnum.Overdue]: 'Просроченные',
+  [TasksFastFilterEnum.Free]: 'Свободные',
+  [TasksFastFilterEnum.LessOneHour]: 'Менее 1 часа',
+  [TasksFastFilterEnum.LessThreeHours]: 'Менее 3-х часов',
+  [TasksFastFilterEnum.Returned]: 'На доработку',
+  [TasksFastFilterEnum.ReclassificationDenied]: 'Отказ в переклассификации',
+}
+
+export const taskCountersFastFilterNamesDict: StringMap<TaskCountersFastFilterEnum> = {
+  [TaskCountersFastFilterEnum.AllLines]: 'Все',
+  [TaskCountersFastFilterEnum.FirstLine]: 'Первая линия',
+  [TaskCountersFastFilterEnum.SecondLine]: 'Вторая линия',
 }
 
 export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {

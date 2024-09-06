@@ -8,7 +8,7 @@ import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TaskListMapPage from 'modules/task/pages/TaskListMapPage'
 import { testUtils as taskListMapPageTestUtils } from 'modules/task/pages/TaskListMapPage/TaskListMapPage.test'
 import TasksPage from 'modules/task/pages/TasksPage'
-import { testUtils as taskListPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
+import { testUtils as tasksPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
 
 import userFixtures from '_tests_/fixtures/user'
 import {
@@ -99,7 +99,7 @@ describe('TaskListLayout', () => {
       )
 
       await testUtils.clickTaskListButton(user)
-      const page = taskListPageTestUtils.getContainer()
+      const page = tasksPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
     })

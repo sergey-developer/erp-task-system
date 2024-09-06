@@ -3,7 +3,8 @@ import { TaskCountersModel } from 'modules/task/models'
 import { fakeInteger } from '_tests_/utils'
 
 export const taskCounters = (): TaskCountersModel => ({
-  all: fakeInteger({ min: 1, max: 100 }),
+  allLines: fakeInteger({ min: 1, max: 100 }),
+  allInLine: fakeInteger({ min: 1, max: 100 }),
   free: fakeInteger({ min: 1, max: 100 }),
   overdue: fakeInteger({ min: 1, max: 100 }),
   mine: fakeInteger({ min: 1, max: 100 }),
