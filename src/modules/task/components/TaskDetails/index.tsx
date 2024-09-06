@@ -229,10 +229,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const debouncedOpenCreateInternalTaskModal = useDebounceFn(openCreateInternalTaskModal)
 
-  const debouncedCloseCreateInternalTaskModal = useDebounceFn(() => {
+  const onCloseCreateInternalTaskModal = useCallback(() => {
     closeCreateInternalTaskModal()
     setSelectedTaskWorkGroup(undefined)
   }, [closeCreateInternalTaskModal])
+
+  const debouncedOnCloseCreateInternalTaskModal = useDebounceFn(onCloseCreateInternalTaskModal, [
+    onCloseCreateInternalTaskModal,
+  ])
 
   const { currentData: workGroupsCatalog = [], isFetching: workGroupsCatalogIsFetching } =
     useGetWorkGroupsCatalog(undefined, { skip: !createInternalTaskModalOpened })
@@ -271,13 +275,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({
         }).unwrap()
 
         setCurrentTaskId(newTask.id)
+        onCloseCreateInternalTaskModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
           form.setFields(getFieldsErrors(error.data))
         }
       }
     },
-    [createInternalTaskMutation, currentTaskId],
+    [createInternalTaskMutation, currentTaskId, onCloseCreateInternalTaskModal],
   )
   // create internal task
 
@@ -1248,13 +1253,13 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             <ModalFallback
               tip='Загрузка модалки создания внутренней заявки'
               open
-              onCancel={debouncedCloseCreateInternalTaskModal}
+              onCancel={debouncedOnCloseCreateInternalTaskModal}
             />
           }
         >
           <CreateInternalTaskModal
             open={createInternalTaskModalOpened}
-            onCancel={debouncedCloseCreateInternalTaskModal}
+            onCancel={debouncedOnCloseCreateInternalTaskModal}
             onSubmit={onCreateInternalTask}
             confirmLoading={createInternalTaskIsLoading}
             permissions={permissions}
