@@ -1194,7 +1194,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterOptionTestUtils.expectLoadingFinished()
         const fastFilter = fastFilterOptionTestUtils.getCheckableTag(
-          TaskCountersFastFilterEnum.SecondLine,
+          TaskCountersFastFilterEnum.AllLines,
         )
         fastFilterOptionTestUtils.expectFilterChecked(fastFilter)
         await testUtils.clickTasksFilterButton(user)
@@ -1203,7 +1203,7 @@ describe('Страница реестра заявок', () => {
 
         await waitFor(() =>
           fastFilterOptionTestUtils.expectFilterNotChecked(
-            fastFilterOptionTestUtils.getCheckableTag(TaskCountersFastFilterEnum.SecondLine),
+            fastFilterOptionTestUtils.getCheckableTag(TaskCountersFastFilterEnum.AllLines),
           ),
         )
       })
@@ -1225,7 +1225,7 @@ describe('Страница реестра заявок', () => {
 
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.Free)
+        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.AllInLine)
         fastFilterOptionTestUtils.expectFilterChecked(fastFilter)
         await testUtils.clickTasksFilterButton(user)
         await tasksFilterTestUtils.findContainer()
@@ -1233,7 +1233,7 @@ describe('Страница реестра заявок', () => {
 
         await waitFor(() =>
           fastFilterOptionTestUtils.expectFilterNotChecked(
-            fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.Free),
+            fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.AllInLine),
           ),
         )
       })
