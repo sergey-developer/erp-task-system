@@ -138,7 +138,7 @@ const CreateInternalTaskModal: FC<CreateInternalTaskModalProps> = ({
                   fieldNames={idAndNameSelectFieldNames}
                   allowClear
                   showSearch
-                  filterOption={filterOptionBy('label')}
+                  filterOption={filterOptionBy('name')}
                   onChange={onChangeWorkGroup}
                 />
               </Form.Item>
