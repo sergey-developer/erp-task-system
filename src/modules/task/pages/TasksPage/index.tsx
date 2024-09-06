@@ -426,9 +426,9 @@ const TasksPage: FC = () => {
 
   return (
     <>
-      <Row data-testid='task-list-page' gutter={[0, 40]}>
+      <Row data-testid='tasks-page' gutter={[0, 40]}>
         <Col span={24}>
-          <Row className='task-list-page-header' justify='space-between' gutter={[0, 20]}>
+          <Row className='tasks-page-header' justify='space-between' gutter={[0, 20]}>
             <Col xxl={16} xl={14}>
               <Row gutter={[16, 16]}>
                 <Col span={17}>
