@@ -1,23 +1,19 @@
-import { FastFilterEnum } from 'modules/task/constants/task'
-import { TaskCountersModel } from 'modules/task/models'
-import { MatchedUserPermissions } from 'modules/user/types'
+import { FastFilterOptionProps } from './FastFilterOption'
+import { FastFilterOptionType } from './options'
 
-import { Nullable } from 'shared/types/utils'
+export type FastFilterItem<Value> = Pick<
+  FastFilterOptionProps<Value>,
+  'label' | 'value' | 'counter'
+>
 
-import { FastFilterListItemProps } from './FastFilterListItem'
-import { FastFilterConfig } from './config'
+export type FastFiltersProps<Value = string, Counters = {}> = {
+  options: FastFilterOptionType<Value>[]
+  value?: Value
+  onChange: (value: Value) => void
 
-export type FastFilterItem = Pick<FastFilterListItemProps, 'text' | 'amount'> & {
-  value: FastFilterEnum
-}
-
-export type FastFiltersProps = {
-  config: FastFilterConfig[]
-  selectedFilter: Nullable<FastFilterEnum>
-  isShowCounters: boolean
-  isLoading: boolean
+  loading: boolean
   disabled: boolean
-  onChange: (value: FastFilterEnum) => void
-  permissions: MatchedUserPermissions
-  counters?: TaskCountersModel
+
+  countersVisible: boolean
+  counters?: Counters
 }

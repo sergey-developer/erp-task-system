@@ -1,8 +1,8 @@
 import {
-  FastFilterEnum,
   TaskAssignedEnum,
   TaskExtendedStatusEnum,
   TaskOverdueEnum,
+  TasksFastFilterEnum,
 } from 'modules/task/constants/task'
 import { TaskListItemModel } from 'modules/task/models'
 
@@ -28,7 +28,7 @@ export type GetTasksSortKey =
 export type GetTasksSortValue = ExtendSortKey<GetTasksSortKey>
 
 export type FastFilterQueries = Partial<{
-  filter: FastFilterEnum
+  filters: TasksFastFilterEnum
 }>
 
 export type SearchFields = Partial<{

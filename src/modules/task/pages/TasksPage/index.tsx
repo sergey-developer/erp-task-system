@@ -1,5 +1,5 @@
 import { useBoolean, useLocalStorageState, usePrevious, useSetState } from 'ahooks'
-import { Button, Col, Input, Row, Space } from 'antd'
+import { Button, Col, Flex, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
@@ -15,7 +15,11 @@ import {
   CreateTaskModalProps,
 } from 'modules/task/components/CreateTaskModal/types'
 import FastFilters from 'modules/task/components/FastFilters'
-import { fastFiltersConfig } from 'modules/task/components/FastFilters/config'
+import {
+  taskCountersFastFilterOptions,
+  tasksFastFilterOptions,
+} from 'modules/task/components/FastFilters/options'
+import { FastFiltersProps } from 'modules/task/components/FastFilters/types'
 import TaskTable from 'modules/task/components/TaskTable'
 import {
   SortableField,
@@ -29,16 +33,23 @@ import TasksFiltersStorage, {
 } from 'modules/task/components/TasksFiltersStorage'
 import UpdateTasksButton from 'modules/task/components/UpdateTasksButton'
 import {
-  FastFilterEnum,
   FilterTypeEnum,
+  TaskCountersFastFilterEnum,
   TaskDetailsTabsEnum,
+  TasksFastFilterEnum,
   TaskStorageKeysEnum,
   TasksUpdateVariantsEnum,
   tasksUpdateVariantsIntervals,
 } from 'modules/task/constants/task'
 import { useCreateTask, useGetTasks } from 'modules/task/hooks/task'
 import { useGetTaskCounters } from 'modules/task/hooks/taskCounters'
-import { FastFilterQueries, GetTasksQueryArgs, TasksFilterQueries } from 'modules/task/models'
+import {
+  FastFilterQueries,
+  GetTaskCountersQueryArgs,
+  GetTasksQueryArgs,
+  TaskCountersModel,
+  TasksFilterQueries,
+} from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils'
 import { taskDetailsTabExist } from 'modules/task/utils/task'
@@ -92,6 +103,8 @@ const CreateTaskModal = React.lazy(() => import('modules/task/components/CreateT
 
 const { Search } = Input
 const initialTasksFilterValues = getInitialTasksFilterValues()
+const initialTasksFastFilter = TasksFastFilterEnum.AllInLine
+const initialTasksCountersFastFilter = TaskCountersFastFilterEnum.AllLines
 
 const TasksPage: FC = () => {
   const { tableRef, drawerHeight } = useDrawerHeightByTable()
@@ -141,8 +154,12 @@ const TasksPage: FC = () => {
 
   const [activeTab, setActiveTab] = useState<MaybeUndefined<TaskDetailsTabsEnum>>(currentTab)
 
-  const initialFastFilter = FastFilterEnum.All
-  const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
+  const [tasksFastFilter, setTasksFastFilter] =
+    useState<MaybeUndefined<TasksFastFilterEnum>>(initialTasksFastFilter)
+
+  const [taskCountersFastFilter, setTaskCountersFastFilter] = useState<
+    MaybeUndefined<TaskCountersFastFilterEnum>
+  >(initialTasksCountersFastFilter)
 
   const [tasksFilterOpened, { toggle: toggleTasksFilter }] = useBoolean(false)
 
@@ -168,7 +185,6 @@ const TasksPage: FC = () => {
   })
 
   const [getTasksQueryArgs, setGetTasksQueryArgs] = useSetState<GetTasksQueryArgs>(() => ({
-    filter: initialFastFilter,
     ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
     ...tasksFiltersStorage,
     sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
@@ -187,7 +203,7 @@ const TasksPage: FC = () => {
         offset: 0,
         completeAtFrom: undefined,
         completeAtTo: undefined,
-        filter: undefined,
+        filters: undefined,
         status: undefined,
         isOverdue: undefined,
         isAssigned: undefined,
@@ -202,6 +218,11 @@ const TasksPage: FC = () => {
     },
     [setGetTasksQueryArgs],
   )
+
+  const closeTask = useCallback(() => {
+    setSelectedTaskId(undefined)
+    setActiveTab(undefined)
+  }, [])
 
   const onChangeUserStatus = useCallback<UseOnChangeUserStatusFn>(
     (status) => {
@@ -224,6 +245,9 @@ const TasksPage: FC = () => {
 
   useOnChangeUserStatus(onChangeUserStatus)
 
+  const [getTaskCountersQueryArgs, setGetTaskCountersQueryArgs] =
+    useSetState<GetTaskCountersQueryArgs>(tasksFiltersStorage || {})
+
   const [createTaskMutation, { isLoading: createTaskIsLoading }] = useCreateTask()
 
   const {
@@ -231,7 +255,7 @@ const TasksPage: FC = () => {
     isError: isGetTaskCountersError,
     isFetching: taskCountersIsFetching,
     refetch: refetchTaskCounters,
-  } = useGetTaskCounters(tasksFiltersStorage, {
+  } = useGetTaskCounters(getTaskCountersQueryArgs, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
@@ -240,7 +264,7 @@ const TasksPage: FC = () => {
   const {
     currentData: originalTasks,
     isFetching: tasksIsFetching,
-    refetch: refetchTaskList,
+    refetch: refetchTasks,
   } = useGetTasks(getTasksQueryArgs, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
@@ -309,10 +333,16 @@ const TasksPage: FC = () => {
       : !tasksFilterOpened,
   })
 
-  const closeTask = useCallback(() => {
-    setSelectedTaskId(undefined)
-    setActiveTab(undefined)
-  }, [])
+  const onApplyFilter: TasksFilterProps['onSubmit'] = (values) => {
+    setAppliedFilterType(FilterTypeEnum.Extended)
+    setTasksFilterValues(values)
+    triggerFilterChange(mapFilterToQueryArgs(values))
+    setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
+    setTasksFastFilter(undefined)
+    setTaskCountersFastFilter(undefined)
+    toggleTasksFilter()
+    closeTask()
+  }
 
   const onCreateTask = useCallback<CreateTaskModalProps['onSubmit']>(
     async ({ attachments, olaNextBreachDate, olaNextBreachTime, workGroup, ...values }, form) => {
@@ -335,41 +365,47 @@ const TasksPage: FC = () => {
     [createTaskMutation, onCloseCreateTaskModal],
   )
 
-  const onApplyFilter = useCallback<TasksFilterProps['onSubmit']>(
-    (values) => {
-      setAppliedFilterType(FilterTypeEnum.Extended)
-      setTasksFilterValues(values)
-      triggerFilterChange(mapFilterToQueryArgs(values))
-      setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
-      setFastFilter(undefined)
-      debouncedToggleTasksFilter()
-      closeTask()
-    },
-    [
-      closeTask,
-      debouncedToggleTasksFilter,
-      setTasksFilterValues,
-      setTasksFiltersStorage,
-      triggerFilterChange,
-    ],
-  )
-
-  const resetExtendedFilterToInitialValues = () => {
+  const resetExtendedFilterToInitialValues = useCallback(() => {
     setTasksFilterValues(initialTasksFilterValues)
     setSelectedCustomers(initialTasksFilterValues.customers)
     setSelectedMacroregions(initialTasksFilterValues.macroregions)
-  }
+  }, [setTasksFilterValues])
 
-  const onFastFilterChange = (value: FastFilterEnum) => {
+  const onBaseFastFilterChange = useCallback(() => {
     setAppliedFilterType(FilterTypeEnum.Fast)
-    setFastFilter(value)
     resetExtendedFilterToInitialValues()
     setSearchValue(undefined)
-    triggerFilterChange({ filter: value })
     closeTask()
-  }
+  }, [closeTask, resetExtendedFilterToInitialValues])
 
-  const onSearch = useDebounceFn<NonNullable<SearchProps['onSearch']>>(
+  const onTasksFastFilterChange = useCallback<
+    FastFiltersProps<TasksFastFilterEnum, TaskCountersModel>['onChange']
+  >(
+    (value: TasksFastFilterEnum) => {
+      onBaseFastFilterChange()
+      setTasksFastFilter(value)
+      triggerFilterChange({
+        filters: isEqual(value, TasksFastFilterEnum.AllInLine) ? undefined : value,
+      })
+    },
+    [onBaseFastFilterChange, triggerFilterChange],
+  )
+
+  const onTaskCountersFastFilterChange = useCallback<
+    FastFiltersProps<TaskCountersFastFilterEnum, TaskCountersModel>['onChange']
+  >(
+    (value: TaskCountersFastFilterEnum) => {
+      onBaseFastFilterChange()
+      setTaskCountersFastFilter(value)
+      refetchTasks()
+      setGetTaskCountersQueryArgs({
+        line: isEqual(value, TaskCountersFastFilterEnum.AllLines) ? undefined : value,
+      })
+    },
+    [onBaseFastFilterChange, refetchTasks, setGetTaskCountersQueryArgs],
+  )
+
+  const onSearch = useCallback<NonNullable<SearchProps['onSearch']>>(
     (value) => {
       if (value) {
         setAppliedFilterType(FilterTypeEnum.Search)
@@ -379,18 +415,35 @@ const TasksPage: FC = () => {
 
         setAppliedFilterType(prevAppliedFilterType)
 
-        const prevFilter = isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)
-          ? mapFilterToQueryArgs(tasksFilterValues)
-          : isEqual(prevAppliedFilterType, FilterTypeEnum.Fast)
-          ? { filter: fastFilter }
-          : {}
+        if (isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)) {
+          triggerFilterChange(mapFilterToQueryArgs(tasksFilterValues))
+        }
 
-        triggerFilterChange(prevFilter)
+        if (isEqual(prevAppliedFilterType, FilterTypeEnum.Fast)) {
+          triggerFilterChange({
+            filters: isEqual(tasksFastFilter, TasksFastFilterEnum.AllInLine)
+              ? undefined
+              : tasksFastFilter,
+          })
+          setGetTaskCountersQueryArgs({
+            line: isEqual(taskCountersFastFilter, TaskCountersFastFilterEnum.AllLines)
+              ? undefined
+              : taskCountersFastFilter,
+          })
+        }
       }
 
       closeTask()
     },
-    [prevAppliedFilterType, tasksFilterValues, fastFilter],
+    [
+      closeTask,
+      triggerFilterChange,
+      prevAppliedFilterType,
+      tasksFilterValues,
+      tasksFastFilter,
+      setGetTaskCountersQueryArgs,
+      taskCountersFastFilter,
+    ],
   )
 
   const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) => {
@@ -436,9 +489,9 @@ const TasksPage: FC = () => {
     [onTablePagination, onTableSort],
   )
 
-  const onRefetchTaskList = useDebounceFn(() => {
+  const onRefetchTasks = useDebounceFn(() => {
     closeTask()
-    refetchTaskList()
+    refetchTasks()
     refetchTaskCounters()
   })
 
@@ -465,9 +518,9 @@ const TasksPage: FC = () => {
 
   return (
     <>
-      <Row data-testid='task-list-page' gutter={[0, 40]}>
+      <Row data-testid='tasks-page' gutter={[0, 40]}>
         <Col span={24}>
-          <Row className='task-list-page-header' justify='space-between' gutter={[0, 20]}>
+          <Row className='tasks-page-header' justify='space-between' gutter={[0, 20]}>
             <Col xxl={16} xl={14}>
               <Row gutter={[16, 16]}>
                 <Col span={17}>
@@ -482,16 +535,32 @@ const TasksPage: FC = () => {
                     )}
 
                     <Col>
-                      <FastFilters
-                        config={fastFiltersConfig}
-                        counters={taskCounters}
-                        selectedFilter={getTasksQueryArgs.filter}
-                        onChange={onFastFilterChange}
-                        isShowCounters={!isGetTaskCountersError}
-                        disabled={tasksIsFetching}
-                        isLoading={taskCountersIsFetching}
-                        permissions={permissions}
-                      />
+                      <Flex vertical gap='small'>
+                        {permissions.firstLineTasksRead &&
+                          (permissions.secondLineTasksRead || permissions.workGroupTasksRead) && (
+                            <FastFilters<TaskCountersFastFilterEnum, TaskCountersModel>
+                              data-testid='task-counters-fast-filter'
+                              options={taskCountersFastFilterOptions}
+                              value={taskCountersFastFilter}
+                              onChange={onTaskCountersFastFilterChange}
+                              counters={taskCounters}
+                              countersVisible={!isGetTaskCountersError}
+                              disabled={tasksIsFetching}
+                              loading={taskCountersIsFetching}
+                            />
+                          )}
+
+                        <FastFilters<TasksFastFilterEnum, TaskCountersModel>
+                          data-testid='tasks-fast-filter'
+                          options={tasksFastFilterOptions}
+                          value={tasksFastFilter}
+                          onChange={onTasksFastFilterChange}
+                          counters={taskCounters}
+                          countersVisible={!isGetTaskCountersError}
+                          disabled={tasksIsFetching}
+                          loading={taskCountersIsFetching}
+                        />
+                      </Flex>
                     </Col>
                   </Row>
                 </Col>
@@ -521,7 +590,7 @@ const TasksPage: FC = () => {
                 <Col>
                   <Space align='end' size='middle'>
                     <UpdateTasksButton
-                      onClick={onRefetchTaskList}
+                      onClick={onRefetchTasks}
                       disabled={tasksIsFetching || taskCountersIsFetching}
                       onAutoUpdate={toggleAutoUpdateEnabled}
                     />
