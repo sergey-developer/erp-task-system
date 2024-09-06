@@ -84,8 +84,8 @@ import {
 import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
 import TasksPage from './index'
 
-const getContainer = () => screen.getByTestId('task-list-page')
-const findContainer = () => screen.findByTestId('task-list-page')
+const getContainer = () => screen.getByTestId('tasks-page')
+const findContainer = () => screen.findByTestId('tasks-page')
 
 // search input
 const getSearchInput = () => within(getContainer()).getByPlaceholderText('Искать заявку по номеру')
@@ -1772,7 +1772,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterOptionTestUtils.expectLoadingFinished()
         const fastFilter = fastFilterOptionTestUtils.getCheckableTag(
-          TaskCountersFastFilterEnum.FirstLine,
+          TaskCountersFastFilterEnum.AllLines,
         )
         fastFilterOptionTestUtils.expectFilterChecked(fastFilter)
         await testUtils.setSearchValue(user, fakeWord(), true)
@@ -1792,7 +1792,7 @@ describe('Страница реестра заявок', () => {
 
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.Free)
+        const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.AllInLine)
         fastFilterOptionTestUtils.expectFilterChecked(fastFilter)
         await testUtils.setSearchValue(user, fakeWord(), true)
 
@@ -2237,7 +2237,6 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.clickRow(user, taskListItem.id)
       const taskCard = await taskDetailsTestUtils.findContainer()
       await testUtils.clickUpdateTasksButton(user)
-
       await waitFor(() => expect(taskCard).not.toBeInTheDocument())
     })
 
