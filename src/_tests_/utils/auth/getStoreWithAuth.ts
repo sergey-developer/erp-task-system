@@ -11,7 +11,7 @@ import { getAuthState } from './getAuthState'
 // todo: make passing args as object
 // todo: fix type api: any
 export const getStoreWithAuth = (
-  user?: Partial<Pick<UserModel, 'id'>>,
+  authUser?: Partial<Pick<UserModel, 'id'>>,
   accessToken?: Nullable<string>,
   refreshToken?: Nullable<string>,
   api?: Partial<{ queries: Record<string, any> }>,
@@ -19,7 +19,7 @@ export const getStoreWithAuth = (
   setupStore({
     preloadedState: {
       auth: getAuthState({
-        user: { userId: user?.id || fakeId() },
+        user: { userId: authUser?.id || fakeId() },
         accessToken,
         refreshToken,
       }),
