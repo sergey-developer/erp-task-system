@@ -99,6 +99,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   ])
 
   const [selectedOwnerId, setSelectedOwnerId] = useState<IdType>()
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState<IdType>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
   const [
@@ -142,6 +143,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     closeEditEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedOwnerId(undefined)
+    setSelectedWarehouseId(undefined)
     resetUserChangedNomenclature()
     setSelectedCategory(undefined)
   }, [closeEditEquipmentModal])
@@ -235,8 +237,8 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   )
 
   const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
-    { customers: [selectedOwnerId!] },
-    { skip: !selectedOwnerId },
+    { customers: [selectedOwnerId!], warehouses: [selectedWarehouseId!] },
+    { skip: !selectedOwnerId || !selectedWarehouseId || !editEquipmentModalOpened},
   )
 
   const [
@@ -272,6 +274,18 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       setSelectedNomenclatureId(equipment.nomenclature.id)
     }
   }, [editEquipmentModalOpened, equipment?.nomenclature.id])
+
+  useEffect(() => {
+    if (equipment?.owner?.id && editEquipmentModalOpened) {
+      setSelectedOwnerId(equipment.owner.id)
+    }
+  }, [editEquipmentModalOpened, equipment?.owner?.id])
+
+  useEffect(() => {
+    if (equipment?.warehouse?.id && editEquipmentModalOpened) {
+      setSelectedWarehouseId(equipment.warehouse.id)
+    }
+  }, [editEquipmentModalOpened, equipment?.warehouse?.id])
 
   const [getCustomerList, { data: customerList = [], isFetching: customerListIsFetching }] =
     useLazyGetCustomerList()
