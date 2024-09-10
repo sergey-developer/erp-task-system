@@ -135,8 +135,8 @@ describe('Страница редактирования заявки на пер
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
-      mockGetRelocationTaskSuccess(relocationTaskId)
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess({ relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
 
       render(<EditRelocationTaskPage />, {
@@ -162,8 +162,8 @@ describe('Страница редактирования заявки на пер
         body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
-      mockGetRelocationTaskSuccess(relocationTaskId)
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess({ relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
       mockGetRelocationTaskAttachmentsSuccess(relocationTaskId)
 
@@ -203,8 +203,8 @@ describe('Страница редактирования заявки на пер
         body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
-      mockGetRelocationTaskSuccess(relocationTaskId)
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess({ relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
       mockGetRelocationTaskAttachmentsSuccess(relocationTaskId)
 
@@ -237,8 +237,8 @@ describe('Страница редактирования заявки на пер
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
-      mockGetRelocationTaskSuccess(relocationTaskId)
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess({ relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
 
       render(<EditRelocationTaskPage />, {
@@ -263,8 +263,8 @@ describe('Страница редактирования заявки на пер
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
-      mockGetRelocationTaskSuccess(relocationTaskId)
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess({ relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
 
       render(<EditRelocationTaskPage />, {
@@ -288,8 +288,8 @@ describe('Страница редактирования заявки на пер
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
-      mockGetRelocationTaskSuccess(relocationTaskId)
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess({ relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
 
       render(<EditRelocationTaskPage />, {
@@ -309,8 +309,8 @@ describe('Страница редактирования заявки на пер
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
-      mockGetRelocationTaskSuccess(relocationTaskId)
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess({ relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
 
       const file = fakeWord()
@@ -350,8 +350,8 @@ describe('Страница редактирования заявки на пер
       mockGetLocationListSuccess({ body: [] })
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess({ body: [] })
-      mockGetRelocationTaskSuccess(relocationTaskId)
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess({ relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
       mockGetEquipmentListTemplateServerError()
 
@@ -380,8 +380,8 @@ describe('Страница редактирования заявки на пер
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
-      mockGetRelocationTaskSuccess(relocationTaskId)
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess({ relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
 
       render(<EditRelocationTaskPage />, {
@@ -403,8 +403,8 @@ describe('Страница редактирования заявки на пер
       mockGetLocationListSuccess()
       mockGetEquipmentCatalogListSuccess()
       mockGetCurrencyListSuccess()
-      mockGetRelocationTaskSuccess(relocationTaskId)
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess({ relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
 
       render(<EditRelocationTaskPage />, {
@@ -421,8 +421,11 @@ describe('Страница редактирования заявки на пер
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess({ body: [] })
-      mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess(
+        { relocationTaskId },
+        { body: warehouseFixtures.relocationTask() },
+      )
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
       mockGetEquipmentCatalogListSuccess({ body: [] })
       mockGetCurrencyListSuccess({ body: [] })
@@ -457,8 +460,11 @@ describe('Страница редактирования заявки на пер
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
         mockGetUsersSuccess()
-        mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
-        mockGetRelocationEquipmentListSuccess(relocationTaskId)
+        mockGetRelocationTaskSuccess(
+          { relocationTaskId },
+          { body: warehouseFixtures.relocationTask() },
+        )
+        mockGetRelocationEquipmentListSuccess({ relocationTaskId })
         mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
@@ -483,8 +489,11 @@ describe('Страница редактирования заявки на пер
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
         mockGetUsersSuccess({ body: [] })
-        mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
-        mockGetRelocationEquipmentListSuccess(relocationTaskId)
+        mockGetRelocationTaskSuccess(
+          { relocationTaskId },
+          { body: warehouseFixtures.relocationTask() },
+        )
+        mockGetRelocationEquipmentListSuccess({ relocationTaskId })
         mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
@@ -514,8 +523,11 @@ describe('Страница редактирования заявки на пер
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
         mockGetUsersSuccess({ body: [] })
-        mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
-        mockGetRelocationEquipmentListSuccess(relocationTaskId)
+        mockGetRelocationTaskSuccess(
+          { relocationTaskId },
+          { body: warehouseFixtures.relocationTask() },
+        )
+        mockGetRelocationEquipmentListSuccess({ relocationTaskId })
         mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
@@ -550,8 +562,11 @@ describe('Страница редактирования заявки на пер
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess({ body: [] })
-      mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
-      mockGetRelocationEquipmentListSuccess(relocationTaskId)
+      mockGetRelocationTaskSuccess(
+        { relocationTaskId },
+        { body: warehouseFixtures.relocationTask() },
+      )
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
       mockGetEquipmentCatalogListSuccess({ body: [] })
       mockGetCurrencyListSuccess({ body: [] })
@@ -595,8 +610,11 @@ describe('Страница редактирования заявки на пер
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
         mockGetUsersSuccess({ body: [] })
-        mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
-        mockGetRelocationEquipmentListSuccess(relocationTaskId)
+        mockGetRelocationTaskSuccess(
+          { relocationTaskId },
+          { body: warehouseFixtures.relocationTask() },
+        )
+        mockGetRelocationEquipmentListSuccess({ relocationTaskId })
         mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })
@@ -636,8 +654,11 @@ describe('Страница редактирования заявки на пер
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
         mockGetUsersSuccess({ body: [] })
-        mockGetRelocationTaskSuccess(relocationTaskId, { body: warehouseFixtures.relocationTask() })
-        mockGetRelocationEquipmentListSuccess(relocationTaskId)
+        mockGetRelocationTaskSuccess(
+          { relocationTaskId },
+          { body: warehouseFixtures.relocationTask() },
+        )
+        mockGetRelocationEquipmentListSuccess({ relocationTaskId })
         mockGetRelocationEquipmentBalanceListSuccess(relocationTaskId)
         mockGetEquipmentCatalogListSuccess({ body: [] })
         mockGetCurrencyListSuccess({ body: [] })

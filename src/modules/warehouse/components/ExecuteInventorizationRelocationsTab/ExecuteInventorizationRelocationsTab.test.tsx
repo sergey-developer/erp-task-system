@@ -1,10 +1,11 @@
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import pick from 'lodash/pick'
 
 import { CommonRouteEnum } from 'configs/routes'
 
 import { testUtils as executeInventorizationRelocationTaskTableTestUtils } from 'modules/warehouse/components/ExecuteInventorizationRelocationTaskTable/ExecuteInventorizationRelocationTaskTable.test'
+import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CreateRelocationTaskDraftPage from 'modules/warehouse/pages/CreateRelocationTaskDraftPage'
 import { testUtils as createRelocationTaskDraftPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskDraftPage/CreateRelocationTaskDraftPage.test'
@@ -12,7 +13,11 @@ import { testUtils as createRelocationTaskDraftPageTestUtils } from 'modules/war
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { mockGetRelocationTasksSuccess } from '_tests_/mocks/api'
+import {
+  mockGetRelocationEquipmentListSuccess,
+  mockGetRelocationTasksSuccess,
+  mockGetRelocationTaskSuccess,
+} from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
@@ -68,6 +73,32 @@ describe('Вкладка списка заявок на перемещение �
     expect(table).toBeInTheDocument()
     tableTestUtils.expectPaginationEnabledIn(table)
     tableTestUtils.expectRowsRendered(table, relocationTasks)
+  })
+
+  test('Можно открыть и закрыть карточку заявки', async () => {
+    const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
+    mockGetRelocationTasksSuccess({
+      body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
+    })
+    mockGetRelocationTaskSuccess({ relocationTaskId: relocationTaskListItem.id })
+    mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTaskListItem.id })
+    const currentUser = userFixtures.user()
+
+    const { user } = render(<ExecuteInventorizationRelocationsTab {...props} />, {
+      store: getStoreWithAuth(currentUser, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(currentUser) },
+      }),
+    })
+    await executeInventorizationRelocationTaskTableTestUtils.expectLoadingFinished()
+
+    await executeInventorizationRelocationTaskTableTestUtils.clickRow(
+      user,
+      relocationTaskListItem.id,
+    )
+    const taskDetails = await relocationTaskDetailsTestUtils.findContainer()
+    expect(taskDetails).toBeInTheDocument()
+    await relocationTaskDetailsTestUtils.clickCloseButton(user)
+    await waitFor(() => expect(taskDetails).not.toBeInTheDocument())
   })
 
   describe('Кнопка создания заявки', () => {
