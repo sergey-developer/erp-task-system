@@ -122,13 +122,18 @@ export const testUtils = {
 
 describe('Фильтр списка заявок на перемещение оборудования', () => {
   describe('Статус', () => {
-    test('Отображается корректно', () => {
-      render(<RelocationTasksFilter {...props} />)
+    test(`Отображается без варианта ${RelocationTaskStatusEnum.Draft}`, async () => {
+      const { user } = render(<RelocationTasksFilter {...props} />)
 
       const input = testUtils.getStatusSelectInput()
+      await testUtils.openStatusSelect(user)
+      const draftOption = selectTestUtils.querySelectOption(
+        relocationTaskStatusDict[RelocationTaskStatusEnum.Draft],
+      )
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
+      expect(draftOption).not.toBeInTheDocument()
     })
 
     test('Можно выбрать несколько вариантов', async () => {

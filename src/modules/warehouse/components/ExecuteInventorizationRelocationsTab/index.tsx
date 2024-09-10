@@ -1,20 +1,50 @@
-import { useBoolean } from 'ahooks'
+import { useBoolean, useSetState } from 'ahooks'
 import { Button, Flex, Space, Typography } from 'antd'
-import React, { FC, useState } from 'react'
+import debounce from 'lodash/debounce'
+import React, { FC, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import ExecuteInventorizationRelocationTaskTable from 'modules/warehouse/components/ExecuteInventorizationRelocationTaskTable'
+import {
+  getSort,
+  SortableField,
+  sortableFieldToSortValues,
+} from 'modules/warehouse/components/ExecuteInventorizationRelocationTaskTable/sort'
+import {
+  ExecuteInventorizationRelocationTaskTableProps,
+  ExecuteInventorizationRelocationTaskTableSortValue,
+} from 'modules/warehouse/components/ExecuteInventorizationRelocationTaskTable/types'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import { useGetRelocationTasks } from 'modules/warehouse/hooks/relocationTask'
+import { GetRelocationTasksQueryArgs } from 'modules/warehouse/models'
 import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'modules/warehouse/utils/relocationTask'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
+import {
+  calculatePaginationParams,
+  extractPaginationParams,
+  extractPaginationResults,
+  getInitialPaginationParams,
+} from 'shared/utils/pagination'
 
 const RelocationTaskDetails = React.lazy(
   () => import('modules/warehouse/components/RelocationTaskDetails'),
 )
+
+const { Title } = Typography
+
+const initialRelocationTasksParams: Pick<
+  GetRelocationTasksQueryArgs<ExecuteInventorizationRelocationTaskTableSortValue>,
+  'ordering' | 'offset' | 'limit'
+> = {
+  ...getInitialPaginationParams(),
+  ordering: 'type',
+}
 
 export type ExecuteInventorizationRelocationsTabProps = Pick<
   ExecuteInventorizationPageLocationState,
@@ -22,8 +52,6 @@ export type ExecuteInventorizationRelocationsTabProps = Pick<
 > & {
   defaultRelocationTaskId?: IdType
 }
-
-const { Title } = Typography
 
 const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocationsTabProps> = ({
   inventorization,
@@ -35,11 +63,52 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
   const [relocationTaskOpened, { setTrue: openRelocationTask, setFalse: closeRelocationTask }] =
     useBoolean(!!relocationTaskId)
 
-  const onOpenRelocationTask = useDebounceFn(
-    (id: IdType) => {
-      openRelocationTask()
-      setRelocationTaskId(id)
+  const [getRelocationTasksParams, setGetRelocationTasksParams] = useSetState<
+    Pick<
+      GetRelocationTasksQueryArgs<ExecuteInventorizationRelocationTaskTableSortValue>,
+      'ordering' | 'offset' | 'limit' | 'inventorization'
+    >
+  >({ ...initialRelocationTasksParams, inventorization: inventorization.id })
+
+  const { currentData: relocationTasks, isFetching: relocationTasksIsFetching } =
+    useGetRelocationTasks(getRelocationTasksParams)
+
+  const onTablePagination = useCallback(
+    (pagination: Parameters<ExecuteInventorizationRelocationTaskTableProps['onChange']>[0]) => {
+      setGetRelocationTasksParams(calculatePaginationParams(pagination))
     },
+    [setGetRelocationTasksParams],
+  )
+
+  const onTableSort = useCallback(
+    (sorter: Parameters<ExecuteInventorizationRelocationTaskTableProps['onChange']>[2]) => {
+      if (sorter) {
+        const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
+        if (field && (field as string) in sortableFieldToSortValues) {
+          setGetRelocationTasksParams({
+            ordering: order ? getSort(field as SortableField, order) : undefined,
+          })
+        }
+      }
+    },
+    [setGetRelocationTasksParams],
+  )
+
+  const onChangeTable = useCallback<ExecuteInventorizationRelocationTaskTableProps['onChange']>(
+    (pagination, _, sorter) => {
+      onTablePagination(pagination)
+      onTableSort(sorter)
+    },
+    [onTablePagination, onTableSort],
+  )
+
+  const onTableRowClick = useCallback<ExecuteInventorizationRelocationTaskTableProps['onRow']>(
+    (record) => ({
+      onClick: debounce(() => {
+        setRelocationTaskId(record.id)
+        openRelocationTask()
+      }, DEFAULT_DEBOUNCE_VALUE),
+    }),
     [openRelocationTask],
   )
 
@@ -61,6 +130,15 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
 
           <Button onClick={onClickExecuteInventorization}>Создать заявку</Button>
         </Space>
+
+        <ExecuteInventorizationRelocationTaskTable
+          dataSource={extractPaginationResults(relocationTasks)}
+          pagination={extractPaginationParams(relocationTasks)}
+          loading={relocationTasksIsFetching}
+          sort={getRelocationTasksParams.ordering}
+          onChange={onChangeTable}
+          onRow={onTableRowClick}
+        />
       </Flex>
 
       {relocationTaskOpened && relocationTaskId && (
