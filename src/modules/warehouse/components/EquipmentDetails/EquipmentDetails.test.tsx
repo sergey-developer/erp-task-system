@@ -1271,8 +1271,8 @@ describe('Информация об оборудовании', () => {
         body: [equipmentRelocationHistoryItem],
       })
 
-      mockGetRelocationTaskSuccess(equipmentRelocationHistoryItem.id)
-      mockGetRelocationEquipmentListSuccess(equipmentRelocationHistoryItem.id)
+      mockGetRelocationTaskSuccess({ relocationTaskId: equipmentRelocationHistoryItem.id })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: equipmentRelocationHistoryItem.id })
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
