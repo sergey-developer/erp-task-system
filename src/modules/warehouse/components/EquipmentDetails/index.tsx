@@ -237,8 +237,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   )
 
   const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
-    { customers: [selectedOwnerId!], warehouses: [selectedWarehouseId!] },
-    { skip: !selectedOwnerId || !selectedWarehouseId || !editEquipmentModalOpened},
+    {
+      ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
+      ...(!!selectedWarehouseId && { warehouses: [selectedWarehouseId] })
+    },
+    { skip: !editEquipmentModalOpened || (!selectedOwnerId && !selectedWarehouseId) },
   )
 
   const [
