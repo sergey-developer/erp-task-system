@@ -5,6 +5,7 @@ import {
 } from './enums'
 
 export const relocationTaskStatusDict: Record<RelocationTaskStatusEnum, string> = {
+  [RelocationTaskStatusEnum.Draft]: 'Черновик',
   [RelocationTaskStatusEnum.New]: 'Новая',
   [RelocationTaskStatusEnum.Completed]: 'Выполненная',
   [RelocationTaskStatusEnum.Returned]: 'Возвращено на доработку',
