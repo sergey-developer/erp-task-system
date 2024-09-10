@@ -39,10 +39,12 @@ export type GetRelocationTasksFilter = Partial<{
   createdAtTo: string
 }>
 
-export type GetRelocationTasksQueryArgs = GetRelocationTasksFilter &
+export type GetRelocationTasksQueryArgs<
+  SortValue extends GetRelocationTasksSortValue = GetRelocationTasksSortValue,
+> = GetRelocationTasksFilter &
   PaginationParams &
   FilterParams &
-  Partial<TaskRequestArgs> &
-  SortParams<GetRelocationTasksSortValue>
+  SortParams<SortValue> &
+  Partial<TaskRequestArgs & { inventorization: IdType }>
 
 export type GetRelocationTasksSuccessResponse = PaginationResponse<RelocationTaskListItemModel>
