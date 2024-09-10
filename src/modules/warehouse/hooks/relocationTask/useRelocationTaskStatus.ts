@@ -10,6 +10,7 @@ export const useRelocationTaskStatus = (
 ): BooleanMap<BooleanKey<keyof typeof RelocationTaskStatusEnum>> => {
   return useMemo(
     () => ({
+      isDraft: isEqual(status, RelocationTaskStatusEnum.Draft),
       isNew: isEqual(status, RelocationTaskStatusEnum.New),
       isCompleted: isEqual(status, RelocationTaskStatusEnum.Completed),
       isClosed: isEqual(status, RelocationTaskStatusEnum.Closed),
