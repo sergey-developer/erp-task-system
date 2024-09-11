@@ -29,7 +29,6 @@ import TasksFiltersStorage, {
 import UpdateTasksButton from 'modules/task/components/UpdateTasksButton'
 import {
   FilterTypeEnum,
-  TaskCountersFastFilterEnum,
   TaskDetailsTabsEnum,
   TasksFastFilterEnum,
   TaskStorageKeysEnum,
@@ -42,7 +41,9 @@ import {
   FastFilterQueries,
   GetTaskCountersQueryArgs,
   GetTasksQueryArgs,
+  TaskCountersFastFilterType,
   TaskCountersModel,
+  TasksFastFilterType,
   TasksFilterQueries,
 } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
@@ -90,7 +91,7 @@ const TasksFilter = React.lazy(() => import('modules/task/components/TasksFilter
 const { Search } = Input
 const initialTasksFilterValues = getInitialTasksFilterValues()
 const initialTasksFastFilter = TasksFastFilterEnum.AllInLine
-const initialTasksCountersFastFilter = TaskCountersFastFilterEnum.AllLines
+const initialTasksCountersFastFilter = TasksFastFilterEnum.AllLines
 
 const TasksPage: FC = () => {
   const permissions = useUserPermissions([
@@ -118,10 +119,10 @@ const TasksPage: FC = () => {
   const [activeTab, setActiveTab] = useState<MaybeUndefined<TaskDetailsTabsEnum>>(currentTab)
 
   const [tasksFastFilter, setTasksFastFilter] =
-    useState<MaybeUndefined<TasksFastFilterEnum>>(initialTasksFastFilter)
+    useState<MaybeUndefined<TasksFastFilterType>>(initialTasksFastFilter)
 
   const [taskCountersFastFilter, setTaskCountersFastFilter] = useState<
-    MaybeUndefined<TaskCountersFastFilterEnum>
+    MaybeUndefined<TaskCountersFastFilterType>
   >(initialTasksCountersFastFilter)
 
   const [tasksFilterOpened, { toggle: toggleOpenTasksFilter }] = useBoolean(false)
@@ -287,9 +288,9 @@ const TasksPage: FC = () => {
   }, [closeTask, resetExtendedFilterToInitialValues])
 
   const onTasksFastFilterChange = useCallback<
-    FastFiltersProps<TasksFastFilterEnum, TaskCountersModel>['onChange']
+    FastFiltersProps<TasksFastFilterType, TaskCountersModel>['onChange']
   >(
-    (value: TasksFastFilterEnum) => {
+    (value) => {
       onBaseFastFilterChange()
       setTasksFastFilter(value)
       triggerFilterChange({
@@ -300,17 +301,18 @@ const TasksPage: FC = () => {
   )
 
   const onTaskCountersFastFilterChange = useCallback<
-    FastFiltersProps<TaskCountersFastFilterEnum, TaskCountersModel>['onChange']
+    FastFiltersProps<TaskCountersFastFilterType, TaskCountersModel>['onChange']
   >(
-    (value: TaskCountersFastFilterEnum) => {
+    (value) => {
       onBaseFastFilterChange()
       setTaskCountersFastFilter(value)
-      refetchTasks()
+      setTasksFastFilter(value)
+      triggerFilterChange({ filters: value })
       setGetTaskCountersQueryArgs({
-        line: isEqual(value, TaskCountersFastFilterEnum.AllLines) ? undefined : value,
+        line: isEqual(value, TasksFastFilterEnum.AllLines) ? undefined : value,
       })
     },
-    [onBaseFastFilterChange, refetchTasks, setGetTaskCountersQueryArgs],
+    [onBaseFastFilterChange, setGetTaskCountersQueryArgs, triggerFilterChange],
   )
 
   const onSearch = useCallback<NonNullable<SearchProps['onSearch']>>(
@@ -333,8 +335,9 @@ const TasksPage: FC = () => {
               ? undefined
               : tasksFastFilter,
           })
+
           setGetTaskCountersQueryArgs({
-            line: isEqual(taskCountersFastFilter, TaskCountersFastFilterEnum.AllLines)
+            line: isEqual(taskCountersFastFilter, TasksFastFilterEnum.AllLines)
               ? undefined
               : taskCountersFastFilter,
           })
@@ -446,7 +449,7 @@ const TasksPage: FC = () => {
                       <Flex vertical gap='small'>
                         {permissions.firstLineTasksRead &&
                           (permissions.secondLineTasksRead || permissions.workGroupTasksRead) && (
-                            <FastFilters<TaskCountersFastFilterEnum, TaskCountersModel>
+                            <FastFilters<TaskCountersFastFilterType, TaskCountersModel>
                               data-testid='task-counters-fast-filter'
                               options={taskCountersFastFilterOptions}
                               value={taskCountersFastFilter}
@@ -458,7 +461,7 @@ const TasksPage: FC = () => {
                             />
                           )}
 
-                        <FastFilters<TasksFastFilterEnum, TaskCountersModel>
+                        <FastFilters<TasksFastFilterType, TaskCountersModel>
                           data-testid='tasks-fast-filter'
                           options={tasksFastFilterOptions}
                           value={tasksFastFilter}
