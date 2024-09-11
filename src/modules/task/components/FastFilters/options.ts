@@ -1,31 +1,31 @@
 import {
-  TaskCountersFastFilterEnum,
   taskCountersFastFilterNamesDict,
   TasksFastFilterEnum,
   tasksFastFilterNamesDict,
 } from 'modules/task/constants/task'
+import { TaskCountersFastFilterType, TasksFastFilterType } from 'modules/task/models'
 
 export type FastFilterOptionType<V> = {
   label: string
   value: V
 }
 
-export const taskCountersFastFilterOptions: FastFilterOptionType<TaskCountersFastFilterEnum>[] = [
+export const taskCountersFastFilterOptions: FastFilterOptionType<TaskCountersFastFilterType>[] = [
   {
-    value: TaskCountersFastFilterEnum.AllLines,
-    label: taskCountersFastFilterNamesDict[TaskCountersFastFilterEnum.AllLines],
+    value: TasksFastFilterEnum.AllLines,
+    label: taskCountersFastFilterNamesDict[TasksFastFilterEnum.AllLines],
   },
   {
-    value: TaskCountersFastFilterEnum.FirstLine,
-    label: taskCountersFastFilterNamesDict[TaskCountersFastFilterEnum.FirstLine],
+    value: TasksFastFilterEnum.FirstLine,
+    label: taskCountersFastFilterNamesDict[TasksFastFilterEnum.FirstLine],
   },
   {
-    value: TaskCountersFastFilterEnum.SecondLine,
-    label: taskCountersFastFilterNamesDict[TaskCountersFastFilterEnum.SecondLine],
+    value: TasksFastFilterEnum.SecondLine,
+    label: taskCountersFastFilterNamesDict[TasksFastFilterEnum.SecondLine],
   },
 ]
 
-export const tasksFastFilterOptions: FastFilterOptionType<TasksFastFilterEnum>[] = [
+export const tasksFastFilterOptions: FastFilterOptionType<TasksFastFilterType>[] = [
   {
     value: TasksFastFilterEnum.AllInLine,
     label: tasksFastFilterNamesDict[TasksFastFilterEnum.AllInLine],
