@@ -308,8 +308,11 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   ])
 
   const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
-    { customers: [selectedOwnerId!] },
-    { skip: !selectedOwnerId },
+    {
+      ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
+      ...(!!warehouseMSI?.id && { warehouses: [warehouseMSI.id] })
+    },
+    { skip: !selectedOwnerId && !warehouseMSI?.id },
   )
 
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
