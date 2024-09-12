@@ -1,5 +1,6 @@
 export * from './apiRequest'
 export * from './createRelocationTask'
 export * from './createRelocationTaskDraft'
+export * from './editRelocationTaskDraft'
 export * from './createSimplifiedRelocationTask'
 export * from './getRelocationTasks'

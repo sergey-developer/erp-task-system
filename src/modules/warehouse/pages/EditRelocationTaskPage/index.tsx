@@ -63,7 +63,7 @@ import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equi
 import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
-  getRelocationTasksPageLink,
+  makeRelocationTasksPageLink,
 } from 'modules/warehouse/utils/relocationTask'
 
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -455,7 +455,7 @@ const EditRelocationTaskPage: FC = () => {
         images: values.images?.length ? extractIdsFromFilesResponse(values.images) : undefined,
       }).unwrap()
 
-      navigate(getRelocationTasksPageLink({ viewRelocationTask: updatedTask.id }))
+      navigate(makeRelocationTasksPageLink({ viewRelocationTask: updatedTask.id }))
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))

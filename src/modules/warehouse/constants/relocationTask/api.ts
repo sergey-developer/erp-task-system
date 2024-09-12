@@ -1,5 +1,10 @@
 export enum RelocationTaskApiEnum {
+  GetRelocationTasks = '/relocation-tasks/',
+  CreateRelocationTask = '/relocation-tasks/',
+
+  UpdateRelocationTask = '/relocation-tasks/:id',
   GetRelocationTask = '/relocation-tasks/:id',
+
   ReturnRelocationTaskToRework = '/relocation-tasks/:id/revision',
   ExecuteRelocationTask = '/relocation-tasks/:id/complete',
   CancelRelocationTask = '/relocation-tasks/:id/cancel',
@@ -9,16 +14,13 @@ export enum RelocationTaskApiEnum {
   CreateRelocationTaskAttachment = '/relocation-tasks/:id/attachments',
   CreateRelocationTaskCompletionDocuments = '/relocation-tasks/:id/completion-documents',
   GetRelocationTaskCompletionDocuments = '/relocation-tasks/:id/completion-documents',
-  CreateRelocationTaskITSM = '/relocation-tasks/itsm/',
-  CreateRelocationTask = '/relocation-tasks/',
-  UpdateRelocationTask = '/relocation-tasks/:id',
-
-  GetRelocationTasks = '/relocation-tasks/',
 
   GetRelocationEquipmentList = '/relocation-tasks/:relocationTaskId/equipments',
   GetRelocationEquipmentBalanceList = '/relocation-tasks/:relocationTaskId/equipments/balance',
 
   UpdateExternalRelocation = '/relocation-tasks/:relocationTaskId/external-relocation',
+
+  CreateRelocationTaskITSM = '/relocation-tasks/itsm/',
 }
 
 export enum RelocationTaskApiTagEnum {

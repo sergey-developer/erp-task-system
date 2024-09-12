@@ -12,11 +12,16 @@ export enum WarehouseRouteEnum {
   EquipmentNomenclatures = '/home/manage-warehouses/reserves-catalogs/equipment-nomenclature',
   Equipments = '/home/manage-warehouses/reserves-catalogs/equipment-nomenclature/:id',
   RelocationTasks = '/home/manage-warehouses/reserves-catalogs/relocation-tasks',
+
   CreateRelocationTask = '/home/manage-warehouses/reserves-catalogs/relocation-tasks/create',
   CreateRelocationTaskSimplified = '/home/manage-warehouses/reserves-catalogs/relocation-tasks/create/simplified',
+
   EditRelocationTask = '/home/manage-warehouses/reserves-catalogs/relocation-tasks/:id/edit',
-  Inventorizations = '/home/manage-warehouses/reserves-catalogs/inventorizations',
+
   CreateRelocationTaskDraft = '/home/manage-warehouses/reserves-catalogs/inventorizations/relocation-tasks/create/draft',
+  EditRelocationTaskDraft = '/home/manage-warehouses/reserves-catalogs/inventorizations/relocation-tasks/:relocationTaskId/edit/draft',
+
+  Inventorizations = '/home/manage-warehouses/reserves-catalogs/inventorizations',
   ExecuteInventorization = '/home/manage-warehouses/reserves-catalogs/inventorizations/:inventorizationId/execute',
 
   Reports = '/home/manage-warehouses/reports',
