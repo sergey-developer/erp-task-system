@@ -38,6 +38,7 @@ import {
   externalRelocationStatusDict,
   externalRelocationStatusOptions,
   relocationTaskStatusDict,
+  RelocationTaskStatusEnum,
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
@@ -60,10 +61,12 @@ import {
   useReturnRelocationTaskToReworkMutation,
 } from 'modules/warehouse/services/relocationTaskApi.service'
 import {
-  getEditRelocationTaskPageLink,
   getRelocateFromToTitle,
-  getRelocationTasksPageLink,
   getWaybillM15Filename,
+  makeEditRelocationTaskDraftPageLink,
+  makeEditRelocationTaskDraftPageLocationState,
+  makeEditRelocationTaskPageLink,
+  makeRelocationTasksPageLink,
 } from 'modules/warehouse/utils/relocationTask'
 
 import UploadButton from 'components/Buttons/UploadButton'
@@ -118,13 +121,20 @@ const { Text } = Typography
 const dropdownTrigger: DropdownProps['trigger'] = ['click']
 const showUploadListConfig: UploadProps['showUploadList'] = { showRemoveIcon: false }
 
-const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
+const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
+  relocationTaskId,
+  inventorization,
+  ...props
+}) => {
   const navigate = useNavigate()
 
   const permissions = useUserPermissions([
     UserPermissionsEnum.RelocationTasksRead,
     UserPermissionsEnum.RelocationTasksUpdate,
+    UserPermissionsEnum.InventorizationUpdate,
   ])
+
+  const inventorizationExecutorIsCurrentUser = useIdBelongAuthUser(inventorization?.executor.id)
 
   const [detailsStretched, { toggle: toggleStretchDetails }] = useBoolean(false)
 
@@ -341,7 +351,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const menuProps: MenuProps = {
     items: [
       {
-        key: 1,
+        key: 'Сформировать накладную М-15',
         label: (
           <Space>
             {getWaybillM15IsFetching && <Spinner />}
@@ -352,7 +362,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         onClick: handleGetWaybillM15,
       },
       {
-        key: 2,
+        key: 'Изменить заявку',
         label: 'Изменить заявку',
         disabled:
           !permissions.relocationTasksUpdate ||
@@ -360,10 +370,10 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
           relocationTaskStatus.isCanceled ||
           relocationTaskStatus.isClosed ||
           relocationTaskStatus.isCompleted,
-        onClick: () => navigate(getEditRelocationTaskPageLink(relocationTaskId)),
+        onClick: () => navigate(makeEditRelocationTaskPageLink(relocationTaskId)),
       },
       {
-        key: 3,
+        key: 'Выполнить заявку',
         label: 'Выполнить заявку',
         disabled:
           !permissions.relocationTasksUpdate ||
@@ -374,7 +384,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         onClick: debouncedToggleOpenExecuteTaskModal,
       },
       {
-        key: 4,
+        key: 'Вернуть на доработку',
         label: 'Вернуть на доработку',
         disabled:
           !permissions.relocationTasksUpdate ||
@@ -383,7 +393,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         onClick: debouncedToggleOpenReturnToReworkModal,
       },
       {
-        key: 5,
+        key: 'Отменить заявку',
         label: 'Отменить заявку',
         disabled:
           !permissions.relocationTasksUpdate ||
@@ -394,7 +404,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         onClick: debouncedToggleOpenCancelTaskModal,
       },
       {
-        key: 6,
+        key: 'Подтвердить выполнение',
         label: 'Подтвердить выполнение',
         disabled:
           !permissions.relocationTasksUpdate ||
@@ -403,15 +413,35 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         onClick: debouncedToggleOpenConfirmExecutionModal,
       },
       {
-        key: 7,
+        key: 'Сформировать пакет документов',
         label: 'Сформировать пакет документов',
         onClick: () =>
           navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
             state: {
               relocationTask: { id: relocationTaskId },
-              from: getRelocationTasksPageLink({ viewRelocationTask: relocationTaskId }),
+              from: makeRelocationTasksPageLink({ viewRelocationTask: relocationTaskId }),
             },
           }),
+      },
+      {
+        key: 'Изменить черновик',
+        label: 'Изменить черновик',
+        disabled: !(
+          permissions.relocationTasksUpdate &&
+          permissions.inventorizationUpdate &&
+          inventorizationExecutorIsCurrentUser &&
+          relocationTask?.status === RelocationTaskStatusEnum.Draft
+        ),
+        onClick:
+          relocationTask && inventorization
+            ? () =>
+                navigate(makeEditRelocationTaskDraftPageLink(relocationTaskId), {
+                  state: makeEditRelocationTaskDraftPageLocationState({
+                    inventorization,
+                    relocationTask: { status: relocationTask.status },
+                  }),
+                })
+            : undefined,
       },
     ],
   }

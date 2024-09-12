@@ -24,7 +24,7 @@ import {
 } from 'modules/warehouse/hooks/relocationTask'
 import { GetRelocationTasksQueryArgs } from 'modules/warehouse/models'
 import {
-  getRelocationTasksPageLink,
+  makeRelocationTasksPageLink,
   relocationTaskListFilterToParams,
 } from 'modules/warehouse/utils/relocationTask'
 
@@ -217,7 +217,7 @@ const RelocationTasksPage: FC = () => {
 
   const onCreateRelocationTaskByIncident = useNavigateToCreateRelocationTaskSimplifiedPage({
     task,
-    from: getRelocationTasksPageLink({ ordering: '-created_at' }),
+    from: makeRelocationTasksPageLink({ ordering: '-created_at' }),
   })
 
   /* Реализуется в другом эпике */
