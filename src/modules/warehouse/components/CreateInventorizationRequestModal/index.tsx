@@ -8,6 +8,7 @@ import {
   Row,
   Select,
   SelectProps,
+  Tooltip,
   Typography,
   Upload,
 } from 'antd'
@@ -47,9 +48,20 @@ import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 const { TextArea } = Input
 const { Text } = Typography
 
-const nomenclaturesPopoverOverlayInnerStyles: PopoverProps['overlayInnerStyle'] = { maxWidth: 400 }
 export const nomenclaturesPopoverContent =
   'Если не выбрать ни одну номенклатуру, то при создании поручения автоматически будет выбрана вся номенклатура, имеющаяся на выбранных складах'
+
+const nomenclaturesPopoverOverlayInnerStyles: PopoverProps['overlayInnerStyle'] = { maxWidth: 400 }
+
+const maxTagPlaceholderNomenclaturesSelect: SelectProps['maxTagPlaceholder'] = (omittedValues) => (
+  <Tooltip
+    placement='left'
+    overlayStyle={{ pointerEvents: 'none' }}
+    title={omittedValues.map(({ label }) => label).join(', ')}
+  >
+    +{omittedValues.length}...
+  </Tooltip>
+)
 
 const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalProps> = ({
   onSubmit,
@@ -204,6 +216,7 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
           <Select
             {...nomenclaturesSelectProps}
             maxTagCount={15}
+            maxTagPlaceholder={maxTagPlaceholderNomenclaturesSelect}
             mode='multiple'
             placeholder='Выберите номенклатуру'
             loading={nomenclaturesIsLoading}
