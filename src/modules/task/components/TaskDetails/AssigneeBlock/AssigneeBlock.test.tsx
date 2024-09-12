@@ -43,7 +43,7 @@ export const activeAssignOnMeButtonProps: Readonly<
   userActions: {
     tasks: {
       ...userFixtures.taskActionsPermissions,
-      [TaskActionsPermissionsEnum.CanAssignee]: [props.id],
+      [TaskActionsPermissionsEnum.CanSelfAssignee]: [props.id],
     },
   },
   permissions: [
@@ -60,7 +60,7 @@ const activeRefuseTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'userAction
   userActions: userFixtures.userActions({
     tasks: {
       ...userFixtures.taskActionsPermissions,
-      [TaskActionsPermissionsEnum.CanAssignee]: [props.id],
+      [TaskActionsPermissionsEnum.CanSelfAssignee]: [props.id],
     },
   }),
 }
@@ -231,7 +231,7 @@ describe('Блок "Исполнитель заявки"', () => {
             userActions={{
               tasks: {
                 ...userFixtures.taskActionsPermissions,
-                [TaskActionsPermissionsEnum.CanAssignee]: [],
+                [TaskActionsPermissionsEnum.CanSelfAssignee]: [],
               },
             }}
           />,
@@ -319,7 +319,7 @@ describe('Блок "Исполнитель заявки"', () => {
           userActions={{
             tasks: {
               ...userFixtures.taskActionsPermissions,
-              [TaskActionsPermissionsEnum.CanAssignee]: [],
+              [TaskActionsPermissionsEnum.CanSelfAssignee]: [],
             },
           }}
         />,

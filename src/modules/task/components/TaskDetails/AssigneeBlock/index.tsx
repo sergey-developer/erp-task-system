@@ -89,7 +89,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
 
         <Col>
           {currentAssigneeIsCurrentUser ? (
-            <Button type='link' disabled={!userActions.tasks.CAN_ASSIGNEE?.includes(id)}>
+            <Button type='link' disabled={!userActions.tasks.CAN_SELF_ASSIGNEE?.includes(id)}>
               Отказаться от заявки
             </Button>
           ) : (
@@ -99,7 +99,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
               disabled={
                 !(
                   (permissions.selfAssigneeTasksUpdate || permissions.anyAssigneeTasksUpdate) &&
-                  userActions.tasks.CAN_ASSIGNEE?.includes(id)
+                  userActions.tasks.CAN_SELF_ASSIGNEE?.includes(id)
                 )
               }
               onClick={onAssignOnMe}
