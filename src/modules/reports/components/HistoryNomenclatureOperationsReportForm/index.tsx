@@ -5,7 +5,7 @@ import React, { FC } from 'react'
 import { EquipmentNomenclatureListItemModel } from 'modules/warehouse/models'
 
 import DatePicker from 'components/DatePicker'
-import QuestionCircleIconStyled from 'components/Icons/QuestionCircleIcon'
+import { QuestionCircleIcon } from 'components/Icons'
 
 import { UPDATE_TEXT } from 'shared/constants/common'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
@@ -69,7 +69,7 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
             placement='right'
             content={<Text>Фильтрует список операций по дате создания заявки</Text>}
           >
-            <QuestionCircleIconStyled />
+            <QuestionCircleIcon />
           </Popover>
         </Flex>
       </Form.Item>
