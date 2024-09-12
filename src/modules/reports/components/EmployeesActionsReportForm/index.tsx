@@ -5,7 +5,7 @@ import React, { FC } from 'react'
 import { UserListItemModel } from 'modules/user/models'
 
 import DatePicker from 'components/DatePicker'
-import QuestionCircleIconStyled from 'components/Icons/QuestionCircleIcon'
+import { QuestionCircleIcon } from 'components/Icons'
 import Space from 'components/Space'
 
 import { UPDATE_TEXT } from 'shared/constants/common'
@@ -75,7 +75,7 @@ const EmployeesActionsReportForm: FC<EmployeesActionsReportFormProps> = ({
           </Form.Item>
 
           <Popover placement='right' content={periodHint}>
-            <QuestionCircleIconStyled />
+            <QuestionCircleIcon />
           </Popover>
         </Flex>
       </Form.Item>
