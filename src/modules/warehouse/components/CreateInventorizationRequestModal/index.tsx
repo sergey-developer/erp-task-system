@@ -46,6 +46,7 @@ import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 
 const { TextArea } = Input
 const { Text } = Typography
+
 const nomenclaturesPopoverOverlayInnerStyles: PopoverProps['overlayInnerStyle'] = { maxWidth: 400 }
 const nomenclaturesPopoverContent =
   'Если не выбрать ни одну номенклатуру, то при создании поручения автоматически будет выбрана вся номенклатура, имеющаяся на выбранных складах'

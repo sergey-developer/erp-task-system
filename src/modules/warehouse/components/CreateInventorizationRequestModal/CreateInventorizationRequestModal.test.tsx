@@ -1,8 +1,17 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import {
+  inventorizationTypeDict,
+  InventorizationTypeEnum,
+} from 'modules/warehouse/constants/inventorization'
+
+import { CREATE_TEXT } from 'shared/constants/common'
+import { validationMessages } from 'shared/constants/validation'
+
 import { buttonTestUtils, fakeWord, render, selectTestUtils } from '_tests_/utils'
 
+import warehouseFixtures from '../../../../_tests_/fixtures/warehouse'
 import CreateInventorizationRequestModal from './index'
 import { CreateInventorizationRequestModalProps } from './types'
 
@@ -172,6 +181,10 @@ const expectWarehouseLoadingStarted = () =>
 const expectWarehouseLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getWarehouseFormItem())
 
+// submit button
+const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), CREATE_TEXT)
+const clickSubmitButton = async (user: UserEvent) => user.click(getSubmitButton())
+
 export const testUtils = {
   getContainer,
 
@@ -220,13 +233,52 @@ export const testUtils = {
   getSelectedExecutor,
   expectExecutorLoadingStarted,
   expectExecutorLoadingFinished,
+
+  clickSubmitButton,
 }
 
 // todo: добавить тесты по другим полям
 
 describe('Модалка создания запроса на инвентаризацию', () => {
+  describe('Поле типа', () => {
+    test('Отображается, активно, не имеет значения по умолчанию, верно отображает варианты', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      const input = testUtils.getTypeSelectInput()
+      await testUtils.openTypeSelect(user)
+      const selectedType = testUtils.getSelectedType()
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(selectedType).not.toBeInTheDocument()
+      Object.keys(inventorizationTypeDict).forEach((key) => {
+        const option = selectTestUtils.getSelectOption(
+          inventorizationTypeDict[key as InventorizationTypeEnum],
+        )
+        expect(option).toBeInTheDocument()
+      })
+    })
+
+    test('Можно выбрать значение', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      await testUtils.openTypeSelect(user)
+      await testUtils.setType(user, inventorizationTypeDict[InventorizationTypeEnum.Internal])
+      const selectedOption = testUtils.getSelectedType()
+
+      expect(selectedOption).toBeInTheDocument()
+    })
+
+    test('Обязательное поле', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+      await testUtils.clickSubmitButton(user)
+      const error = await testUtils.findTypeError(validationMessages.required)
+      expect(error).toBeInTheDocument()
+    })
+  })
+
   describe('Поле описания', () => {
-    test('Отображается', () => {
+    test('Отображается и активно', () => {
       render(<CreateInventorizationRequestModal {...props} />)
       const field = testUtils.getDescriptionField()
       expect(field).toBeInTheDocument()
@@ -274,6 +326,25 @@ describe('Модалка создания запроса на инвентари
       expect(uploadedFile).not.toBeInTheDocument()
       expect(props.onDeleteAttachment).toBeCalledTimes(1)
       expect(props.onDeleteAttachment).toBeCalledWith(expect.anything())
+    })
+  })
+
+  describe('Поле номенклатуры', () => {
+    test('Можно установить значение', async () => {
+      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+
+      const { user } = render(
+        <CreateInventorizationRequestModal
+          {...props}
+          nomenclatures={[equipmentNomenclatureListItem]}
+        />,
+      )
+
+      await testUtils.openNomenclatureSelect(user)
+      await testUtils.setNomenclature(user, equipmentNomenclatureListItem.title)
+      const value = testUtils.getSelectedNomenclature(equipmentNomenclatureListItem.title)
+
+      expect(value).toBeInTheDocument()
     })
   })
 })
