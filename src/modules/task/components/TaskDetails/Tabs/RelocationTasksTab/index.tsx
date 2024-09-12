@@ -17,7 +17,7 @@ import {
   useGetRelocationTasks,
   useNavigateToCreateRelocationTaskSimplifiedPage,
 } from 'modules/warehouse/hooks/relocationTask'
-import { getRelocationTasksPageLink } from 'modules/warehouse/utils/relocationTask'
+import { makeRelocationTasksPageLink } from 'modules/warehouse/utils/relocationTask'
 
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
@@ -55,7 +55,7 @@ const RelocationTasksTab: FC<RelocationTasksTabProps> = ({ task }) => {
   const relocationTasks = extractPaginationResults(paginatedRelocationTasks)
 
   const onClickTask = useCallback(
-    (id: IdType) => navigate(getRelocationTasksPageLink({ viewRelocationTask: id })),
+    (id: IdType) => navigate(makeRelocationTasksPageLink({ viewRelocationTask: id })),
     [navigate],
   )
 

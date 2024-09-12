@@ -5,9 +5,12 @@ import {
   ExecuteInventorizationPageLocationState,
 } from 'modules/warehouse/types'
 
-export const makeCreateRelocationTaskDraftPageLocationState = (
-  inventorization: ExecuteInventorizationPageLocationState['inventorization'],
-): NonNullable<CreateRelocationTaskDraftPageLocationState> => ({
+export const makeCreateRelocationTaskDraftPageLocationState = ({
+  inventorization,
+}: Pick<
+  ExecuteInventorizationPageLocationState,
+  'inventorization'
+>): NonNullable<CreateRelocationTaskDraftPageLocationState> => ({
   inventorization: pick(
     inventorization,
     'id',

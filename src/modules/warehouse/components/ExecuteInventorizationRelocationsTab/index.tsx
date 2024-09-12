@@ -119,7 +119,7 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
 
   const onClickExecuteInventorization = () =>
     navigate(WarehouseRouteEnum.CreateRelocationTaskDraft, {
-      state: makeCreateRelocationTaskDraftPageLocationState(inventorization),
+      state: makeCreateRelocationTaskDraftPageLocationState({ inventorization }),
     })
 
   return (
@@ -149,6 +149,7 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
             open={relocationTaskOpened}
             onClose={onCloseRelocationTask}
             relocationTaskId={relocationTaskId}
+            inventorization={inventorization}
           />
         </React.Suspense>
       )}
