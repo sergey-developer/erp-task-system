@@ -9,10 +9,10 @@ import {
 import { CREATE_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
-import { buttonTestUtils, fakeWord, render, selectTestUtils } from '_tests_/utils'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { buttonTestUtils, fakeWord, iconTestUtils, render, selectTestUtils } from '_tests_/utils'
 
-import warehouseFixtures from '../../../../_tests_/fixtures/warehouse'
-import CreateInventorizationRequestModal from './index'
+import CreateInventorizationRequestModal, { nomenclaturesPopoverContent } from './index'
 import { CreateInventorizationRequestModalProps } from './types'
 
 const props: CreateInventorizationRequestModalProps = {
@@ -144,7 +144,7 @@ const getNomenclatureFormItem = () => within(getContainer()).getByTestId('nomenc
 const getNomenclatureSelectInput = () => selectTestUtils.getSelect(getNomenclatureFormItem())
 const setNomenclature = selectTestUtils.clickSelectOption
 
-const getSelectedNomenclature = (value: string): HTMLElement =>
+const getSelectedNomenclature = (value: string) =>
   within(getNomenclatureFormItem()).getByTitle(value)
 
 const openNomenclatureSelect = async (user: UserEvent) => {
@@ -203,6 +203,7 @@ export const testUtils = {
   queryUploadedAttachment,
   clickDeleteAttachmentButton,
 
+  getNomenclatureFormItem,
   getNomenclatureSelectInput,
   setNomenclature,
   getSelectedNomenclature,
@@ -330,21 +331,62 @@ describe('Модалка создания запроса на инвентари
   })
 
   describe('Поле номенклатуры', () => {
-    test('Можно установить значение', async () => {
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+    test('Можно выбрать несколько значений', async () => {
+      const equipmentNomenclatureListItem1 = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem2 = warehouseFixtures.equipmentNomenclatureListItem()
 
       const { user } = render(
         <CreateInventorizationRequestModal
           {...props}
-          nomenclatures={[equipmentNomenclatureListItem]}
+          nomenclatures={[equipmentNomenclatureListItem1, equipmentNomenclatureListItem2]}
         />,
       )
 
       await testUtils.openNomenclatureSelect(user)
-      await testUtils.setNomenclature(user, equipmentNomenclatureListItem.title)
-      const value = testUtils.getSelectedNomenclature(equipmentNomenclatureListItem.title)
+      await testUtils.setNomenclature(user, equipmentNomenclatureListItem1.title)
+      await testUtils.setNomenclature(user, equipmentNomenclatureListItem2.title)
+      const value1 = testUtils.getSelectedNomenclature(equipmentNomenclatureListItem1.title)
+      const value2 = testUtils.getSelectedNomenclature(equipmentNomenclatureListItem2.title)
 
-      expect(value).toBeInTheDocument()
+      expect(value1).toBeInTheDocument()
+      expect(value2).toBeInTheDocument()
+    })
+
+    test('Можно выбрать все значения и сбросить их', async () => {
+      const equipmentNomenclatureListItem1 = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem2 = warehouseFixtures.equipmentNomenclatureListItem()
+
+      const { user } = render(
+        <CreateInventorizationRequestModal
+          {...props}
+          nomenclatures={[equipmentNomenclatureListItem1, equipmentNomenclatureListItem2]}
+        />,
+      )
+
+      await testUtils.openNomenclatureSelect(user)
+      await testUtils.setNomenclature(user, 'Выбрать все')
+      const value1 = testUtils.getSelectedNomenclature(equipmentNomenclatureListItem1.title)
+      const value2 = testUtils.getSelectedNomenclature(equipmentNomenclatureListItem2.title)
+      expect(value1).toBeInTheDocument()
+      expect(value2).toBeInTheDocument()
+
+      await testUtils.setNomenclature(user, 'Сбросить все')
+      expect(value1).not.toBeInTheDocument()
+      expect(value2).not.toBeInTheDocument()
+    })
+
+    test('При наведении на иконку отображается текст', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      await testUtils.openNomenclatureSelect(user)
+      const icon = iconTestUtils.getIconByNameIn(
+        testUtils.getNomenclatureFormItem(),
+        'question-circle',
+      )
+      await user.hover(icon)
+      const text = await screen.findByText(nomenclaturesPopoverContent)
+
+      expect(text).toBeInTheDocument()
     })
   })
 })

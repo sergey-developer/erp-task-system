@@ -48,7 +48,7 @@ const { TextArea } = Input
 const { Text } = Typography
 
 const nomenclaturesPopoverOverlayInnerStyles: PopoverProps['overlayInnerStyle'] = { maxWidth: 400 }
-const nomenclaturesPopoverContent =
+export const nomenclaturesPopoverContent =
   'Если не выбрать ни одну номенклатуру, то при создании поручения автоматически будет выбрана вся номенклатура, имеющаяся на выбранных складах'
 
 const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalProps> = ({
