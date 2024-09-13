@@ -11,6 +11,8 @@ import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { MaybeNull } from 'shared/types/utils'
 
+import { RelocationTaskFormFields } from '../../types'
+
 export type LocationOptionGroup = Pick<LocationOption, 'type' | 'label'> & {
   options: LocationOption[]
 }
@@ -43,7 +45,7 @@ export type RelocationTaskFormProps = {
   usersGroups: UsersGroupsModel
   usersGroupsIsLoading: boolean
 
-  deadlineDisabled?: boolean
+  disabledFields?: Extract<keyof RelocationTaskFormFields, 'deadlineAtDate' | 'deadlineAtTime'>[]
   controllerIsRequired: boolean
 
   showUploadImages?: boolean

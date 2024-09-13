@@ -31,10 +31,10 @@ export type RelocationTaskFormFields = {
   equipmentsByFile?: EquipmentByFileTableRow[]
   deadlineAtDate: Moment
   deadlineAtTime: Moment
+  executors: IdType[]
   relocateFrom?: IdType
   relocateTo?: IdType
-  executors: IdType[]
-  controller: IdType
+  controllers?: IdType[]
   comment?: string
   images?: UploadFile<FileResponse>[]
 }

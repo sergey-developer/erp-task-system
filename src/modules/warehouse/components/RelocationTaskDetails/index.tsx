@@ -38,7 +38,6 @@ import {
   externalRelocationStatusDict,
   externalRelocationStatusOptions,
   relocationTaskStatusDict,
-  RelocationTaskStatusEnum,
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
@@ -92,6 +91,7 @@ import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { InventorizationStatusEnum, InventorizationTypeEnum } from '../../constants/inventorization'
 import EditableField from './EditableField'
 import ReadonlyField from './ReadonlyField'
 import { RelocationTaskDetailsProps } from './types'
@@ -123,7 +123,16 @@ const showUploadListConfig: UploadProps['showUploadList'] = { showRemoveIcon: fa
 
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
   relocationTaskId,
-  inventorization,
+  inventorization = {
+    id: 1,
+    type: InventorizationTypeEnum.Internal,
+    status: InventorizationStatusEnum.New,
+    deadlineAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+    warehouses: [{ id: 1, title: 'warehouse-title-1' }],
+    executor: { id: 1, fullName: 'executor-fullName' },
+    createdBy: { id: 1, fullName: 'executor-fullName' },
+  },
   ...props
 }) => {
   const navigate = useNavigate()
@@ -222,7 +231,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
   const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
   const currentUserInExecutors = useIdBelongAuthUser(relocationTask?.executors)
   const completedByIsCurrentUser = useIdBelongAuthUser(relocationTask?.completedBy?.id)
-  const controllerIsCurrentUser = useIdBelongAuthUser(relocationTask?.controller?.id)
+  const controllerIsCurrentUser = useIdBelongAuthUser(relocationTask?.controllers)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const onUpdateExternalRelocation =
@@ -426,19 +435,19 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
       {
         key: 'Изменить черновик',
         label: 'Изменить черновик',
-        disabled: !(
-          permissions.relocationTasksUpdate &&
-          permissions.inventorizationUpdate &&
-          inventorizationExecutorIsCurrentUser &&
-          relocationTask?.status === RelocationTaskStatusEnum.Draft
-        ),
+        // disabled: !(
+        //   permissions.relocationTasksUpdate &&
+        //   permissions.inventorizationUpdate &&
+        //   inventorizationExecutorIsCurrentUser &&
+        //   relocationTask?.status === RelocationTaskStatusEnum.Draft
+        // ),
         onClick:
           relocationTask && inventorization
             ? () =>
                 navigate(makeEditRelocationTaskDraftPageLink(relocationTaskId), {
                   state: makeEditRelocationTaskDraftPageLocationState({
                     inventorization,
-                    relocationTask: { status: relocationTask.status },
+                    relocationTask,
                   }),
                 })
             : undefined,
@@ -525,7 +534,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
                   <ReadonlyField
                     data-testid='controller'
                     label='Контролер:'
-                    value={valueOr(relocationTask.controller?.fullName)}
+                    value={valueOr(relocationTask.controllers, (controllers) => (
+                      <Space>{controllers.map((c) => c.fullName)}</Space>
+                    ))}
                   />
 
                   <ReadonlyField

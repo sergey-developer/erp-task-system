@@ -254,25 +254,25 @@ const CreateRelocationTaskPage: FC = () => {
   const { currentData: usersGroups = [], isFetching: usersGroupsIsFetching } = useGetUsersGroups()
 
   const [
-    getRelocateFromLocationList,
+    getRelocateFromLocations,
     { currentData: relocateFromLocations = [], isFetching: relocateFromLocationsIsFetching },
   ] = useLazyGetLocations()
 
   const [
-    getRelocateToLocationList,
+    getRelocateToLocations,
     { currentData: relocateToLocations = [], isFetching: relocateToLocationsIsFetching },
   ] = useLazyGetLocations()
 
   /* сделано через lazy т.к. по каким-то причинам запрос не отправляется снова если один из параметров не изменился */
   useEffect(() => {
-    getRelocateFromLocationList(getRelocateFromLocationsParams(selectedType))
-  }, [getRelocateFromLocationList, selectedType])
+    getRelocateFromLocations(getRelocateFromLocationsParams(selectedType))
+  }, [getRelocateFromLocations, selectedType])
 
   useEffect(() => {
     if (!typeIsWriteOff) {
-      getRelocateToLocationList(getRelocateToLocationsParams(selectedType))
+      getRelocateToLocations(getRelocateToLocationsParams(selectedType))
     }
-  }, [getRelocateToLocationList, selectedType, typeIsWriteOff])
+  }, [getRelocateToLocations, selectedType, typeIsWriteOff])
 
   const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList()
 
@@ -399,7 +399,7 @@ const CreateRelocationTaskPage: FC = () => {
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
         executors: values.executors,
-        controller: values.controller,
+        controllers: values.controllers,
         comment: values.comment,
         images: values.images?.length ? extractIdsFromFilesResponse(values.images) : undefined,
       }).unwrap()
