@@ -53,7 +53,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
-import { useLazyGetLocations } from 'shared/hooks/catalogs/location'
+import { useLazyGetLocationsCatalog } from 'shared/hooks/catalogs/locations'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
@@ -174,12 +174,12 @@ const EditRelocationTaskDraftPage: FC = () => {
   const [
     getRelocateFromLocationList,
     { currentData: relocateFromLocations = [], isFetching: relocateFromLocationsIsFetching },
-  ] = useLazyGetLocations()
+  ] = useLazyGetLocationsCatalog()
 
   const [
     getRelocateToLocationList,
     { currentData: relocateToLocations = [], isFetching: relocateToLocationsIsFetching },
-  ] = useLazyGetLocations()
+  ] = useLazyGetLocationsCatalog()
 
   /* сделано через lazy т.к. по каким-то причинам запрос не отправляется снова если один из параметров не изменился */
   useEffect(() => {
