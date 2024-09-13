@@ -6,7 +6,7 @@ import { relocationTaskTypeOptions } from 'modules/warehouse/constants/relocatio
 export const getRelocationTaskTypeOptions = (
   permissions: MatchedUserPermissions,
 ): SelectProps['options'] =>
-  relocationTaskTypeOptions.map(({ hasPermissions, ...opt }) => ({
+  relocationTaskTypeOptions.map(({ shouldDisable, ...opt }) => ({
     ...opt,
-    disabled: hasPermissions && !hasPermissions(permissions),
+    disabled: shouldDisable && shouldDisable(permissions),
   }))

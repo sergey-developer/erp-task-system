@@ -33,9 +33,9 @@ export type RelocationTaskDraftFormFields = {
   equipments: RelocationTaskInventorizationEquipment[]
   deadlineAtDate: Moment
   deadlineAtTime: Moment
+  executors: IdType[]
   relocateFrom?: IdType
   relocateTo?: IdType
-  executors: IdType[]
-  controller: IdType
+  controllers?: IdType[]
   comment?: string
 }

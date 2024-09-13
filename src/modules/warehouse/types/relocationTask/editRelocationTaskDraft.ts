@@ -4,4 +4,4 @@ import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types
 export type EditRelocationTaskDraftPageLocationState = Pick<
   ExecuteInventorizationPageLocationState,
   'inventorization'
-> & { relocationTask: Pick<RelocationTaskModel, 'status'> }
+> & { relocationTask: RelocationTaskModel }

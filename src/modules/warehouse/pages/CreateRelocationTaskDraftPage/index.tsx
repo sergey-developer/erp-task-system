@@ -73,7 +73,13 @@ const CreateAttachmentsModal = React.lazy(
 const { Text } = Typography
 
 const equipmentTableNamePath = 'equipments'
+
 const deadlineAtDate = moment().add(24, 'hours')
+
+const relocationTaskFormDisabledFields: RelocationTaskFormProps['disabledFields'] = [
+  'deadlineAtDate',
+  'deadlineAtTime',
+]
 
 const initialValues: Pick<
   RelocationTaskDraftFormFields,
@@ -174,31 +180,31 @@ const CreateRelocationTaskDraftPage: FC = () => {
   const inventorizationEquipments = extractPaginationResults(inventorizationEquipmentsResponse)
 
   const [
-    getRelocateFromLocationList,
+    getRelocateFromLocations,
     { currentData: relocateFromLocations = [], isFetching: relocateFromLocationsIsFetching },
   ] = useLazyGetLocations()
 
   const [
-    getRelocateToLocationList,
+    getRelocateToLocations,
     { currentData: relocateToLocations = [], isFetching: relocateToLocationsIsFetching },
   ] = useLazyGetLocations()
 
   /* сделано через lazy т.к. по каким-то причинам запрос не отправляется снова если один из параметров не изменился */
   useEffect(() => {
-    getRelocateFromLocationList({
+    getRelocateFromLocations({
       inventorization: locationState?.inventorization?.id,
       ...getRelocateFromLocationsParams(selectedType),
     })
-  }, [getRelocateFromLocationList, locationState?.inventorization?.id, selectedType])
+  }, [getRelocateFromLocations, locationState?.inventorization?.id, selectedType])
 
   useEffect(() => {
     if (!typeIsWriteOff) {
-      getRelocateToLocationList({
+      getRelocateToLocations({
         inventorization: locationState?.inventorization?.id,
         ...getRelocateToLocationsParams(selectedType),
       })
     }
-  }, [getRelocateToLocationList, locationState?.inventorization?.id, selectedType, typeIsWriteOff])
+  }, [getRelocateToLocations, locationState?.inventorization?.id, selectedType, typeIsWriteOff])
 
   const getEquipmentsFormValue = useCallback(
     (): InventorizationEquipmentTableRow[] => form.getFieldValue(equipmentTableNamePath) || [],
@@ -261,7 +267,7 @@ const CreateRelocationTaskDraftPage: FC = () => {
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
         executors: values.executors,
-        controller: values.controller,
+        controllers: values.controllers,
         comment: values.comment,
       }).unwrap()
 
@@ -378,12 +384,16 @@ const CreateRelocationTaskDraftPage: FC = () => {
 
   /* Установка значений формы */
   useEffect(() => {
-    form.setFieldsValue({
-      deadlineAtDate: moment(locationState?.inventorization.deadlineAt),
-      deadlineAtTime: moment(locationState?.inventorization.deadlineAt),
-      executors: authUser && users.length ? [authUser.id] : undefined,
-      comment: 'На основании инвентаризации',
-    })
+    if (locationState?.inventorization.deadlineAt) {
+      form.setFieldsValue({
+        deadlineAtDate: moment(locationState.inventorization.deadlineAt),
+        deadlineAtTime: moment(locationState.inventorization.deadlineAt),
+      })
+    }
+
+    if (authUser && users.length) form.setFieldValue('executors', [authUser.id])
+
+    form.setFieldValue('comment', 'На основании инвентаризации')
   }, [form, authUser, users.length, locationState?.inventorization.deadlineAt])
 
   const isRelocationFromMainToMsi =
@@ -427,7 +437,7 @@ const CreateRelocationTaskDraftPage: FC = () => {
               onChangeRelocateFrom={onChangeRelocateFrom}
               onChangeRelocateTo={setSelectedRelocateTo}
               showUploadImages={false}
-              deadlineDisabled
+              disabledFields={relocationTaskFormDisabledFields}
             />
           </Col>
 

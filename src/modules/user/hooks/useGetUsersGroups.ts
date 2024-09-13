@@ -7,15 +7,16 @@ import { GetUsersGroupsQueryArgs, GetUsersGroupsSuccessResponse } from 'modules/
 import { useGetUsersGroupsQuery } from 'modules/user/services/userApi.service'
 
 import { isErrorResponse } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetUsersGroupsResult = CustomUseQueryHookResult<
-  GetUsersGroupsQueryArgs,
+  MaybeUndefined<GetUsersGroupsQueryArgs>,
   GetUsersGroupsSuccessResponse
 >
 
 type UseGetUsersGroupsOptions = CustomUseQueryOptions<
-  GetUsersGroupsQueryArgs,
+  MaybeUndefined<GetUsersGroupsQueryArgs>,
   GetUsersGroupsSuccessResponse
 >
 

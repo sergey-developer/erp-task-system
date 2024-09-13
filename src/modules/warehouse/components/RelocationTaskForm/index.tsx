@@ -47,7 +47,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   usersGroups,
   usersGroupsIsLoading,
 
-  deadlineDisabled,
+  disabledFields,
   controllerIsRequired,
 
   showUploadImages = true,
@@ -70,8 +70,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
 }) => {
   const form = Form.useFormInstance()
 
-  const controllerFormValue: RelocationTaskFormFields['controller'] = Form.useWatch(
-    'controller',
+  const controllerFormValue: RelocationTaskFormFields['controllers'] = Form.useWatch(
+    'controllers',
     form,
   )
 
@@ -107,7 +107,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
 
   const executorsOptions: ExecutorOptionGroup[] = useMemo(() => {
     const usersOptions: ExecutorOption[] = users
-      .filter((usr) => usr.id !== controllerFormValue)
+      .filter((usr) => !controllerFormValue?.includes(usr.id))
       .map((usr) => ({ label: usr.fullName, value: usr.id }))
 
     const usersGroupsOptions: ExecutorOption[] = usersGroups.map((group) => ({
@@ -130,8 +130,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     value,
     option,
   ) => {
-    if (Array.isArray(option)) {
-      const usersIds = await collectUsersIds(option, [controllerFormValue])
+    if (Array.isArray(option) && controllerFormValue?.length) {
+      const usersIds = await collectUsersIds(option, controllerFormValue)
       form.setFieldValue('executors', usersIds)
       setExecutors(usersIds)
     }
@@ -201,7 +201,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
                 name='deadlineAtDate'
                 rules={deadlineAtDateRules}
               >
-                <DatePicker disabled={isLoading || deadlineDisabled} />
+                <DatePicker disabled={isLoading || disabledFields?.includes('deadlineAtDate')} />
               </Form.Item>
             </Col>
 
@@ -213,7 +213,7 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
                 rules={deadlineAtTimeRules}
               >
                 <TimePicker
-                  disabled={isLoading || deadlineDisabled}
+                  disabled={isLoading || disabledFields?.includes('deadlineAtTime')}
                   format={TIME_PICKER_FORMAT}
                   placeholder='Время'
                 />
@@ -245,10 +245,11 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         <Form.Item
           data-testid='controller-form-item'
           label='Контролер'
-          name='controller'
+          name='controllers'
           rules={controllerIsRequired ? onlyRequiredRules : undefined}
         >
           <Select
+            mode='multiple'
             dropdownRender={(menu) => <div data-testid='controller-select-dropdown'>{menu}</div>}
             fieldNames={idAndFullNameSelectFieldNames}
             loading={usersIsLoading}

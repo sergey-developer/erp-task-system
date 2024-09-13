@@ -104,10 +104,14 @@ const userApiService = baseApiService.injectEndpoints({
       }),
     }),
 
-    getUsersGroups: build.query<GetUsersGroupsSuccessResponse, GetUsersGroupsQueryArgs>({
-      query: () => ({
+    getUsersGroups: build.query<
+      GetUsersGroupsSuccessResponse,
+      MaybeUndefined<GetUsersGroupsQueryArgs>
+    >({
+      query: (params) => ({
         url: UserApiEnum.GetUsersGroups,
         method: HttpMethodEnum.Get,
+        params,
       }),
     }),
 

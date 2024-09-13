@@ -5,7 +5,6 @@ import { Navigate, RouteObject } from 'react-router-dom'
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { userHasPermissions } from 'modules/user/utils'
-import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
   CreateRelocationTaskDraftPageLocationState,
@@ -351,15 +350,15 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute<EditRelocationTaskDraftPageLocationState>
                   component={<EditRelocationTaskDraftPage />}
-                  permitted={(currentUser, locationState) =>
-                    userHasPermissions(currentUser, [
-                      UserPermissionsEnum.InventorizationUpdate,
-                      UserPermissionsEnum.RelocationTasksUpdate,
-                    ]) &&
-                    !!locationState &&
-                    locationState.inventorization.executor.id === currentUser.id &&
-                    locationState.relocationTask.status === RelocationTaskStatusEnum.Draft
-                  }
+                  // permitted={(currentUser, locationState) =>
+                  //   userHasPermissions(currentUser, [
+                  //     UserPermissionsEnum.InventorizationUpdate,
+                  //     UserPermissionsEnum.RelocationTasksUpdate,
+                  //   ]) &&
+                  //   !!locationState &&
+                  //   locationState.inventorization.executor.id === currentUser.id &&
+                  //   locationState.relocationTask.status === RelocationTaskStatusEnum.Draft
+                  // }
                 />
               ),
               handle: {
