@@ -9,6 +9,8 @@ import {
   GetInfrastructureSuccessResponse,
   UpdateInfrastructureMutationArgs,
   UpdateInfrastructureSuccessResponse,
+  CreateInfrastructureOrderFormAttachmentMutationArgs,
+  CreateInfrastructureOrderFormAttachmentSuccessResponse,
 } from 'modules/infrastructures/models'
 import {
   makeGetInfrastructureUrl,
@@ -17,6 +19,8 @@ import {
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
+import { decamelize } from 'humps'
+
 
 const infrastructuresApiService = baseApiService
   .enhanceEndpoints({ addTagTypes: [InfrastructuresApiTagEnum.Infrastructure] })
@@ -52,6 +56,23 @@ const infrastructuresApiService = baseApiService
           params,
         }),
       }),
+
+      createInfrastructureOrderFormAttachment: build.mutation<
+        CreateInfrastructureOrderFormAttachmentSuccessResponse,
+        CreateInfrastructureOrderFormAttachmentMutationArgs
+      >({
+        query: ({ orderFormId, file }) => {
+          const formData = new FormData()
+          formData.append(decamelize('orderForm'), String(orderFormId))
+          formData.append('file', file)
+
+          return {
+            url: InfrastructuresApiEnum.CreateInfrastructureOrdersFormAttachment,
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
     }),
     overrideExisting: false,
   })
@@ -60,4 +81,5 @@ export const {
   useGetInfrastructureQuery,
   useUpdateInfrastructureMutation,
   useGetInfrastructureOrdersFormsQuery,
+  useCreateInfrastructureOrderFormAttachmentMutation,
 } = infrastructuresApiService
