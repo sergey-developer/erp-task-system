@@ -1,14 +1,14 @@
-import { useBoolean, usePrevious } from 'ahooks'
+import { useBoolean, useMount, usePrevious } from 'ahooks'
 import { Button, Col, Form, Modal, Row, Typography, UploadProps } from 'antd'
 import isNumber from 'lodash/isNumber'
 import moment from 'moment-timezone'
-import React, { FC, Key, useCallback, useEffect, useState } from 'react'
+import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { useAuthUser } from 'modules/auth/hooks'
-import { UserPermissionsEnum } from 'modules/user/constants'
+import { UserGroupCategoryEnum, UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'modules/user/hooks'
 import RelocationEquipmentDraftEditableTable from 'modules/warehouse/components/RelocationEquipmentDraftEditableTable'
 import {
@@ -20,7 +20,9 @@ import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
 import {
   LocationOption,
   RelocationTaskFormProps,
+  UserGroupOptionGroup,
 } from 'modules/warehouse/components/RelocationTaskForm/types'
+import { makeUserGroupOptions } from 'modules/warehouse/components/RelocationTaskForm/utils'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
@@ -95,8 +97,11 @@ const CreateRelocationTaskDraftPage: FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const locationState = extractLocationState<CreateRelocationTaskDraftPageLocationState>(location)
-  if (!locationState?.inventorization)
-    console.error('Inventorization was not provided through location state')
+
+  useMount(() => {
+    if (!locationState?.inventorization)
+      console.error('Inventorization was not provided through location state')
+  })
 
   const authUser = useAuthUser()
   const permissions = useUserPermissions([UserPermissionsEnum.EnteringBalances])
@@ -155,11 +160,20 @@ const CreateRelocationTaskDraftPage: FC = () => {
         !checkLocationTypeIsWarehouse(selectedRelocateFrom.type),
     })
 
-  const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers({
+  const { currentData: executors = [], isFetching: executorsIsFetching } = useGetUsers({
     isManager: false,
   })
 
-  const { currentData: usersGroups = [], isFetching: usersGroupsIsFetching } = useGetUsersGroups()
+  const { currentData: controllers = [], isFetching: controllersIsFetching } = useGetUsers({
+    isManager: false,
+    permissions: [UserPermissionsEnum.ControlRelocationTask],
+  })
+
+  const { currentData: executorsUsersGroups = [], isFetching: executorsUsersGroupsIsFetching } =
+    useGetUsersGroups({ category: UserGroupCategoryEnum.ExecuteRelocation })
+
+  const { currentData: controllersUsersGroups = [], isFetching: controllersUsersGroupsIsFetching } =
+    useGetUsersGroups({ category: UserGroupCategoryEnum.ControlRelocation })
 
   const {
     currentData: inventorizationEquipmentsResponse,
@@ -391,10 +405,10 @@ const CreateRelocationTaskDraftPage: FC = () => {
       })
     }
 
-    if (authUser && users.length) form.setFieldValue('executors', [authUser.id])
+    if (authUser && executors.length) form.setFieldValue('executors', [authUser.id])
 
     form.setFieldValue('comment', 'На основании инвентаризации')
-  }, [form, authUser, users.length, locationState?.inventorization.deadlineAt])
+  }, [form, authUser, executors.length, locationState?.inventorization.deadlineAt])
 
   const isRelocationFromMainToMsi =
     relocateFromWarehouse?.type === WarehouseTypeEnum.Main &&
@@ -408,6 +422,14 @@ const CreateRelocationTaskDraftPage: FC = () => {
       ? [equipmentTableNamePath, activeEquipmentRow.rowIndex, 'attachments']
       : undefined
 
+  const executorsOptions: UserGroupOptionGroup[] = useMemo(() => {
+    return makeUserGroupOptions(executors, executorsUsersGroups)
+  }, [executors, executorsUsersGroups])
+
+  const controllersOptions: UserGroupOptionGroup[] = useMemo(() => {
+    return authUser ? makeUserGroupOptions(controllers, controllersUsersGroups, [authUser.id]) : []
+  }, [authUser, controllers, controllersUsersGroups])
+
   return (
     <>
       <Form<RelocationTaskDraftFormFields>
@@ -420,17 +442,16 @@ const CreateRelocationTaskDraftPage: FC = () => {
         <Row gutter={[40, 40]}>
           <Col span={24}>
             <RelocationTaskForm
-              authUser={authUser}
               permissions={permissions}
               isLoading={createTaskIsLoading}
               relocateFromLocations={relocateFromLocations}
-              relocateFromLocationListIsLoading={relocateFromLocationsIsFetching}
+              relocateFromLocationsIsLoading={relocateFromLocationsIsFetching}
               relocateToLocations={relocateToLocations}
-              relocateToLocationListIsLoading={relocateToLocationsIsFetching}
-              users={users}
-              usersIsLoading={usersIsFetching}
-              usersGroups={usersGroups}
-              usersGroupsIsLoading={usersGroupsIsFetching}
+              relocateToLocationsIsLoading={relocateToLocationsIsFetching}
+              executorsOptions={executorsOptions}
+              executorsIsLoading={executorsIsFetching || executorsUsersGroupsIsFetching}
+              controllersOptions={controllersOptions}
+              controllersIsLoading={controllersIsFetching || controllersUsersGroupsIsFetching}
               controllerIsRequired={controllerIsRequired}
               type={selectedType}
               onChangeType={onChangeType}

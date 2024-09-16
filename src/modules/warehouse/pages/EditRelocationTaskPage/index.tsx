@@ -14,7 +14,7 @@ import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { attachmentsToFiles } from 'modules/attachment/utils'
 import { useAuthUser } from 'modules/auth/hooks'
-import { UserPermissionsEnum } from 'modules/user/constants'
+import { UserGroupCategoryEnum, UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'modules/user/hooks'
 import { CreateEquipmentsByFileModalProps } from 'modules/warehouse/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
@@ -28,7 +28,9 @@ import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
 import {
   LocationOption,
   RelocationTaskFormProps,
+  UserGroupOptionGroup,
 } from 'modules/warehouse/components/RelocationTaskForm/types'
+import { makeUserGroupOptions } from 'modules/warehouse/components/RelocationTaskForm/utils'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
@@ -210,14 +212,12 @@ const EditRelocationTaskPage: FC = () => {
     },
   ] = useBoolean(false)
 
-  const handleOpenCreateRelocationEquipmentImagesModal = useDebounceFn(
-    (row: ActiveEquipmentRow) => {
-      setActiveEquipmentRow(row)
-      openCreateRelocationEquipmentImagesModal()
-    },
-  )
+  const onOpenCreateRelocationEquipmentImagesModal = useDebounceFn((row: ActiveEquipmentRow) => {
+    setActiveEquipmentRow(row)
+    openCreateRelocationEquipmentImagesModal()
+  })
 
-  const handleCloseCreateRelocationEquipmentImagesModal = useDebounceFn(() => {
+  const onCloseCreateRelocationEquipmentImagesModal = useDebounceFn(() => {
     closeCreateRelocationEquipmentImagesModal()
     setActiveEquipmentRow(undefined)
   })
@@ -253,24 +253,20 @@ const EditRelocationTaskPage: FC = () => {
   const { currentData: relocationTask, isFetching: relocationTaskIsFetching } =
     useGetRelocationTask({ relocationTaskId: relocationTaskId! })
 
-  const {
-    currentData: relocationEquipmentList = [],
-    isFetching: relocationEquipmentListIsFetching,
-  } = useGetRelocationEquipmentList({ relocationTaskId: relocationTaskId! })
+  const { currentData: relocationEquipments = [], isFetching: relocationEquipmentsIsFetching } =
+    useGetRelocationEquipmentList({ relocationTaskId: relocationTaskId! })
 
   const activeEquipmentIsRelocationEquipment =
-    createRelocationEquipmentImagesModalOpened &&
-    activeEquipmentRow &&
-    relocationEquipmentList.length
+    createRelocationEquipmentImagesModalOpened && activeEquipmentRow && relocationEquipments.length
       ? Boolean(
-          relocationEquipmentList.find(
+          relocationEquipments.find(
             (eqp) => eqp.relocationEquipmentId === activeEquipmentRow.relocationEquipmentId,
           ),
         )
       : false
 
   const {
-    currentData: relocationEquipmentAttachmentList = [],
+    currentData: relocationEquipmentAttachments = [],
     isFetching: relocationEquipmentAttachmentListIsFetching,
   } = useGetRelocationEquipmentAttachmentList(
     { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
@@ -282,11 +278,20 @@ const EditRelocationTaskPage: FC = () => {
     },
   )
 
-  const { currentData: users = [], isFetching: usersIsFetching } = useGetUsers({
+  const { currentData: executors = [], isFetching: executorsIsFetching } = useGetUsers({
     isManager: false,
   })
 
-  const { currentData: usersGroups = [], isFetching: usersGroupsIsFetching } = useGetUsersGroups()
+  const { currentData: controllers = [], isFetching: controllersIsFetching } = useGetUsers({
+    isManager: false,
+    permissions: [UserPermissionsEnum.ControlRelocationTask],
+  })
+
+  const { currentData: executorsUsersGroups = [], isFetching: executorsUsersGroupsIsFetching } =
+    useGetUsersGroups({ category: UserGroupCategoryEnum.ExecuteRelocation })
+
+  const { currentData: controllersUsersGroups = [], isFetching: controllersUsersGroupsIsFetching } =
+    useGetUsersGroups({ category: UserGroupCategoryEnum.ControlRelocation })
 
   const [
     getRelocateFromLocations,
@@ -833,12 +838,12 @@ const EditRelocationTaskPage: FC = () => {
 
   /* Установка значений перечня оборудования */
   useEffect(() => {
-    if (relocationTask && relocationEquipmentList.length) {
+    if (relocationTask && relocationEquipments.length) {
       const equipments: RelocationEquipmentRow[] = []
       const editableTableRowKeys: Key[] = []
       const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(relocationTask.type)
 
-      relocationEquipmentList.forEach((eqp) => {
+      relocationEquipments.forEach((eqp) => {
         editableTableRowKeys.push(eqp.id)
         const balance = relocationEquipmentBalanceList.find((b) => b.equipmentId === eqp.id)
 
@@ -860,7 +865,7 @@ const EditRelocationTaskPage: FC = () => {
       form.setFieldValue(equipmentTableNamePath, equipments)
       setEditableTableRowKeys(editableTableRowKeys)
     }
-  }, [form, relocationEquipmentBalanceList, relocationEquipmentList, relocationTask])
+  }, [form, relocationEquipmentBalanceList, relocationEquipments, relocationTask])
 
   const isRelocationFromMainToMsi =
     relocateFromWarehouse?.type === WarehouseTypeEnum.Main &&
@@ -906,6 +911,14 @@ const EditRelocationTaskPage: FC = () => {
     ],
   )
 
+  const executorsOptions: UserGroupOptionGroup[] = useMemo(() => {
+    return makeUserGroupOptions(executors, executorsUsersGroups)
+  }, [executors, executorsUsersGroups])
+
+  const controllersOptions: UserGroupOptionGroup[] = useMemo(() => {
+    return authUser ? makeUserGroupOptions(controllers, controllersUsersGroups, [authUser.id]) : []
+  }, [authUser, controllers, controllersUsersGroups])
+
   return (
     <>
       <Form<RelocationTaskFormFields>
@@ -919,17 +932,16 @@ const EditRelocationTaskPage: FC = () => {
         <Row gutter={[40, 40]}>
           <Col span={24}>
             <RelocationTaskForm
-              authUser={authUser}
               permissions={permissions}
               isLoading={updateTaskIsLoading || relocationTaskIsFetching}
               relocateFromLocations={relocateFromLocations}
-              relocateFromLocationListIsLoading={relocateFromLocationsIsFetching}
+              relocateFromLocationsIsLoading={relocateFromLocationsIsFetching}
               relocateToLocations={relocateToLocations}
-              relocateToLocationListIsLoading={relocateToLocationsIsFetching}
-              users={users}
-              usersIsLoading={usersIsFetching}
-              usersGroups={usersGroups}
-              usersGroupsIsLoading={usersGroupsIsFetching}
+              relocateToLocationsIsLoading={relocateToLocationsIsFetching}
+              executorsOptions={executorsOptions}
+              executorsIsLoading={executorsIsFetching || executorsUsersGroupsIsFetching}
+              controllersOptions={controllersOptions}
+              controllersIsLoading={controllersIsFetching || controllersUsersGroupsIsFetching}
               controllerIsRequired={controllerIsRequired}
               type={selectedType}
               onChangeType={handleChangeType}
@@ -985,7 +997,7 @@ const EditRelocationTaskPage: FC = () => {
                 setEditableKeys={setEditableTableRowKeys}
                 isLoading={updateTaskIsLoading}
                 equipmentIsLoading={equipmentIsFetching}
-                relocationEquipmentsIsLoading={relocationEquipmentListIsFetching}
+                relocationEquipmentsIsLoading={relocationEquipmentsIsFetching}
                 currencies={currencies}
                 currenciesIsLoading={currenciesIsFetching}
                 equipments={equipmentsCatalog}
@@ -993,7 +1005,7 @@ const EditRelocationTaskPage: FC = () => {
                 canCreateEquipment={!!permissions.equipmentsCreate}
                 createEquipmentBtnDisabled={!createEquipmentBtnEnabled}
                 onClickCreateEquipment={handleOpenCreateEquipmentModal}
-                onClickCreateImage={handleOpenCreateRelocationEquipmentImagesModal}
+                onClickCreateImage={onOpenCreateRelocationEquipmentImagesModal}
               />
             </Space>
           </Col>
@@ -1130,7 +1142,7 @@ const EditRelocationTaskPage: FC = () => {
           fallback={
             <ModalFallback
               open
-              onCancel={handleCloseCreateRelocationEquipmentImagesModal}
+              onCancel={onCloseCreateRelocationEquipmentImagesModal}
               tip='Загрузка модалки добавления изображений оборудования'
             />
           }
@@ -1140,7 +1152,7 @@ const EditRelocationTaskPage: FC = () => {
             formItemName={equipmentImagesFormPath}
             open={createRelocationEquipmentImagesModalOpened}
             title='Добавить изображения оборудования'
-            onCancel={handleCloseCreateRelocationEquipmentImagesModal}
+            onCancel={onCloseCreateRelocationEquipmentImagesModal}
             isLoading={relocationEquipmentAttachmentListIsFetching}
             onCreate={createRelocationEquipmentImage}
             onDelete={deleteAttachment}
@@ -1149,7 +1161,7 @@ const EditRelocationTaskPage: FC = () => {
               equipmentImagesFormPath
                 ? concat(
                     form.getFieldValue(equipmentImagesFormPath) || [],
-                    attachmentsToFiles(relocationEquipmentAttachmentList),
+                    attachmentsToFiles(relocationEquipmentAttachments),
                   )
                 : undefined
             }

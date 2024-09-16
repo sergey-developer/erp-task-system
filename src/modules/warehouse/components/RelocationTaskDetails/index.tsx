@@ -193,7 +193,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
     useGetRelocationEquipmentList({ relocationTaskId })
 
   const {
-    currentData: relocationEquipmentAttachmentList = [],
+    currentData: relocationEquipmentAttachments = [],
     isFetching: relocationEquipmentAttachmentListIsFetching,
   } = useGetRelocationEquipmentAttachmentList(
     { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
@@ -775,7 +775,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
           <AttachmentListModal
             open={equipmentImagesModalOpened}
             title='Изображения оборудования'
-            data={relocationEquipmentAttachmentList}
+            data={relocationEquipmentAttachments}
             onCancel={onCloseEquipmentImagesModal}
             isLoading={relocationEquipmentAttachmentListIsFetching}
           />

@@ -1,7 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { Form } from 'antd'
-import pick from 'lodash/pick'
 import moment from 'moment-timezone'
 
 import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
@@ -39,7 +38,6 @@ import { RelocationTaskFormProps } from './types'
 
 const props: RelocationTaskFormProps = {
   isLoading: false,
-  authUser: pick(userFixtures.user(), 'id'),
   permissions: {},
 
   onUploadImage: jest.fn(),
@@ -48,16 +46,16 @@ const props: RelocationTaskFormProps = {
   imageIsDeleting: false,
   imagesIsLoading: false,
 
-  users: [],
-  usersIsLoading: false,
+  executorsOptions: [],
+  executorsIsLoading: false,
 
-  usersGroups: [],
-  usersGroupsIsLoading: false,
+  controllersOptions: [],
+  controllersIsLoading: false,
 
   relocateFromLocations: [],
-  relocateFromLocationListIsLoading: false,
+  relocateFromLocationsIsLoading: false,
   relocateToLocations: [],
-  relocateToLocationListIsLoading: false,
+  relocateToLocationsIsLoading: false,
 
   controllerIsRequired: true,
 
