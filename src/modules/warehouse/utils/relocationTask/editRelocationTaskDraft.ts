@@ -7,7 +7,7 @@ import {
 type MakeEditRelocationTaskDraftPageLocationStateFnParams = Pick<
   ExecuteInventorizationPageLocationState,
   'inventorization'
-> & { relocationTask: Pick<RelocationTaskModel, 'status'> }
+> & { relocationTask: RelocationTaskModel }
 
 export const makeEditRelocationTaskDraftPageLocationState = ({
   inventorization,

@@ -9,7 +9,6 @@ export type CreateRelocationTaskMutationArgs = {
   type: RelocationTaskTypeEnum
   deadlineAt: string
   executors: IdType[]
-  controller: IdType
   equipments: {
     id: IdType
     condition: EquipmentConditionEnum
@@ -20,6 +19,7 @@ export type CreateRelocationTaskMutationArgs = {
     attachments?: IdType[]
   }[]
 
+  controllers?: IdType[]
   inventorization?: IdType
   relocateFromId?: IdType
   relocateToId?: IdType

@@ -30,7 +30,7 @@ export const relocationTask = (
   deadlineAt: fakeDateString(),
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.user(), 'id', 'fullName'),
-  controller: pick(userFixtures.user(), 'id', 'fullName'),
+  controllers: [pick(userFixtures.user(), 'id', 'fullName', 'phone')],
   relocateFrom: { id: fakeId(), title: fakeWord() },
   relocateTo: { id: fakeId(), title: fakeWord() },
   comment: fakeWord(),

@@ -33,7 +33,7 @@ export type RelocationTaskModel = {
     id: IdType
     title: string
   }>
-  controller: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
+  controllers: MaybeNull<Array<Pick<UserModel, 'id' | 'fullName' | 'phone'>>>
   createdBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   completedBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
   comment: MaybeNull<string>

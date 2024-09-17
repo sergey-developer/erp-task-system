@@ -5,7 +5,6 @@ import { Navigate, RouteObject } from 'react-router-dom'
 import ProtectedRoute from 'modules/auth/components/ProtectedRoute'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { userHasPermissions } from 'modules/user/utils'
-import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
   CreateRelocationTaskDraftPageLocationState,
@@ -21,6 +20,8 @@ import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
 import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
 
 import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
+
+import { RelocationTaskStatusEnum } from './constants/relocationTask'
 
 const WarehouseCatalogListPage = React.lazy(
   () => import('modules/warehouse/pages/WarehouseCatalogListPage'),

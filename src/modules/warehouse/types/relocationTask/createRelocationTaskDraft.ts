@@ -1,8 +1,7 @@
 import { UploadFile } from 'antd/es/upload'
-import { Moment } from 'moment-timezone'
 
+import { BaseRelocationTaskFormFields } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { EquipmentModel, InventorizationEquipmentListItemModel } from 'modules/warehouse/models'
 import { ExecuteInventorizationPageLocationState } from 'modules/warehouse/types/inventorization'
 
@@ -23,19 +22,11 @@ export type RelocationTaskInventorizationEquipment = {
   quantity?: number
   serialNumber?: string
   price?: number
+  relocationEquipmentId?: IdType
   currency?: IdType
   category?: EquipmentModel['category']
   attachments?: UploadFile<FileResponse>[]
 }
 
-export type RelocationTaskDraftFormFields = {
-  type: RelocationTaskTypeEnum
-  equipments: RelocationTaskInventorizationEquipment[]
-  deadlineAtDate: Moment
-  deadlineAtTime: Moment
-  relocateFrom?: IdType
-  relocateTo?: IdType
-  executors: IdType[]
-  controller: IdType
-  comment?: string
-}
+export type RelocationTaskDraftFormFields =
+  BaseRelocationTaskFormFields<RelocationTaskInventorizationEquipment>
