@@ -35,6 +35,7 @@ import {
 
 import RelocationTaskForm from './index'
 import { RelocationTaskFormProps } from './types'
+import { makeUserGroupOptions } from './utils'
 
 const props: RelocationTaskFormProps = {
   isLoading: false,
@@ -581,11 +582,11 @@ describe('Форма создания заявки на перемещение �
   describe('Исполнитель', () => {
     test('Отображается корректно', async () => {
       const userListItem = userFixtures.userListItem()
-      const userList = [userListItem]
+      const users = [userListItem]
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} users={userList} />
+          <RelocationTaskForm {...props} executorsOptions={makeUserGroupOptions(users, [])} />
         </Form>,
       )
 
@@ -596,7 +597,7 @@ describe('Форма создания заявки на перемещение �
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
       expect(selectedExecutor).not.toBeInTheDocument()
-      userList.forEach((usr) => {
+      users.forEach((usr) => {
         const option = selectTestUtils.getSelectOption(usr.fullName)
         expect(option).toBeInTheDocument()
       })
@@ -607,7 +608,10 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} users={[userListItem]} />
+          <RelocationTaskForm
+            {...props}
+            executorsOptions={makeUserGroupOptions([userListItem], [])}
+          />
         </Form>,
       )
 
@@ -640,11 +644,11 @@ describe('Форма создания заявки на перемещение �
   describe('Контролер', () => {
     test('Отображается корректно', async () => {
       const userListItem = userFixtures.userListItem()
-      const userList = [userListItem]
+      const users = [userListItem]
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} users={userList} />
+          <RelocationTaskForm {...props} controllersOptions={makeUserGroupOptions(users, [])} />
         </Form>,
       )
 
@@ -655,7 +659,7 @@ describe('Форма создания заявки на перемещение �
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
       expect(selectedController).not.toBeInTheDocument()
-      userList.forEach((usr) => {
+      users.forEach((usr) => {
         const option = selectTestUtils.getSelectOption(usr.fullName)
         expect(option).toBeInTheDocument()
       })
@@ -666,7 +670,10 @@ describe('Форма создания заявки на перемещение �
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} users={[userListItem]} />
+          <RelocationTaskForm
+            {...props}
+            controllersOptions={makeUserGroupOptions([userListItem], [])}
+          />
         </Form>,
       )
 
@@ -677,6 +684,7 @@ describe('Форма создания заявки на перемещение �
       expect(selectedController).toBeInTheDocument()
     })
 
+    // skip for rc
     test.skip('Обязателен если перемещение не с основного склада на склад МСИ', async () => {
       mockGetUsersSuccess()
       mockGetLocationListSuccess({ body: [], once: false })
@@ -691,6 +699,7 @@ describe('Форма создания заявки на перемещение �
       expect(error).toBeInTheDocument()
     })
 
+    // skip for rc
     test.skip('Не обязателен если перемещение с основного склада на склад МСИ', async () => {
       mockGetUsersSuccess()
       mockGetLocationListSuccess({ body: [], once: false })

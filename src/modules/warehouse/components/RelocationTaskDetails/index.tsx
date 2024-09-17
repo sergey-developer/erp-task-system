@@ -38,6 +38,7 @@ import {
   externalRelocationStatusDict,
   externalRelocationStatusOptions,
   relocationTaskStatusDict,
+  RelocationTaskStatusEnum,
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
@@ -435,12 +436,12 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
       {
         key: 'Изменить черновик',
         label: 'Изменить черновик',
-        // disabled: !(
-        //   permissions.relocationTasksUpdate &&
-        //   permissions.inventorizationUpdate &&
-        //   inventorizationExecutorIsCurrentUser &&
-        //   relocationTask?.status === RelocationTaskStatusEnum.Draft
-        // ),
+        disabled: !(
+          permissions.relocationTasksUpdate &&
+          permissions.inventorizationUpdate &&
+          inventorizationExecutorIsCurrentUser &&
+          relocationTask?.status === RelocationTaskStatusEnum.Draft
+        ),
         onClick:
           relocationTask && inventorization
             ? () =>
