@@ -6,8 +6,8 @@ import moment from 'moment-timezone'
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
 import { testUtils as fastFilterOptionTestUtils } from 'modules/task/components/FastFilters/FastFilterOption/FastFilterOption.test'
 import {
-  taskCountersFastFilterOptions,
-  tasksFastFilterOptions,
+  fastFilterByLinesOptions,
+  fastFilterOptions,
 } from 'modules/task/components/FastFilters/options'
 import {
   activeAssignOnMeButtonProps,
@@ -116,13 +116,9 @@ const getTasksFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /
 const clickTasksFilterButton = async (user: UserEvent) => user.click(getTasksFilterButton())
 
 // fast filters
-const getTasksFastFilter = () => within(getContainer()).getByTestId('tasks-fast-filter')
-
-const getTaskCountersFastFilter = () =>
-  within(getContainer()).getByTestId('task-counters-fast-filter')
-
-const queryTaskCountersFastFilter = () =>
-  within(getContainer()).queryByTestId('task-counters-fast-filter')
+const getFastFilter = () => within(getContainer()).getByTestId('fast-filter')
+const getFastFilterByLines = () => within(getContainer()).getByTestId('fast-filter-by-lines')
+const queryFastFilterByLines = () => within(getContainer()).queryByTestId('fast-filter-by-lines')
 
 export const testUtils = {
   getContainer,
@@ -144,9 +140,9 @@ export const testUtils = {
   getTasksFilterButton,
   clickTasksFilterButton,
 
-  getTasksFastFilter,
-  getTaskCountersFastFilter,
-  queryTaskCountersFastFilter,
+  getFastFilter,
+  getFastFilterByLines,
+  queryFastFilterByLines,
 }
 
 jest.mock('modules/task/constants/task/tasksUpdateVariants', () => {
@@ -165,7 +161,7 @@ setupApiTests()
 
 describe('Страница реестра заявок', () => {
   describe('Быстрые фильтры', () => {
-    describe('Счетчиков', () => {
+    describe('По линиям', () => {
       test(`Отображаются если есть права ${UserPermissionsEnum.FirstLineTasksRead} и ${UserPermissionsEnum.SecondLineTasksRead}`, async () => {
         mockGetTaskCountersSuccess()
         mockGetTasksSuccess()
@@ -186,7 +182,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.getTaskCountersFastFilter()).toBeInTheDocument()
+        expect(testUtils.getFastFilterByLines()).toBeInTheDocument()
       })
 
       test(`Отображаются если есть права ${UserPermissionsEnum.FirstLineTasksRead} и ${UserPermissionsEnum.WorkGroupTasksRead}`, async () => {
@@ -209,7 +205,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.getTaskCountersFastFilter()).toBeInTheDocument()
+        expect(testUtils.getFastFilterByLines()).toBeInTheDocument()
       })
 
       test(`Не отображаются если есть права ${UserPermissionsEnum.FirstLineTasksRead} но нет ${UserPermissionsEnum.SecondLineTasksRead} и ${UserPermissionsEnum.WorkGroupTasksRead}`, async () => {
@@ -227,7 +223,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.queryTaskCountersFastFilter()).not.toBeInTheDocument()
+        expect(testUtils.queryFastFilterByLines()).not.toBeInTheDocument()
       })
 
       test(`Не отображаются если есть права ${UserPermissionsEnum.SecondLineTasksRead} но нет ${UserPermissionsEnum.FirstLineTasksRead}`, async () => {
@@ -245,7 +241,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.queryTaskCountersFastFilter()).not.toBeInTheDocument()
+        expect(testUtils.queryFastFilterByLines()).not.toBeInTheDocument()
       })
 
       test(`Не отображаются если есть права ${UserPermissionsEnum.WorkGroupTasksRead} но нет ${UserPermissionsEnum.FirstLineTasksRead}`, async () => {
@@ -263,7 +259,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.queryTaskCountersFastFilter()).not.toBeInTheDocument()
+        expect(testUtils.queryFastFilterByLines()).not.toBeInTheDocument()
       })
 
       test('Количество заявок отображается', async () => {
@@ -289,7 +285,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterOptionTestUtils.expectLoadingFinished()
 
-        taskCountersFastFilterOptions.forEach(({ value }) => {
+        fastFilterByLinesOptions.forEach(({ value }) => {
           const counterName = camelize(value.toLowerCase())
           const counter = taskCounters[counterName as TaskCountersKeys]
           const counterEl = fastFilterOptionTestUtils.getByTextInCheckableTag(value, counter)
@@ -520,7 +516,7 @@ describe('Страница реестра заявок', () => {
       })
     })
 
-    describe('Заявок', () => {
+    describe('Базовые', () => {
       test('Отображаются', async () => {
         mockGetTaskCountersSuccess()
         mockGetTasksSuccess()
@@ -532,7 +528,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.getTasksFastFilter()).toBeInTheDocument()
+        expect(testUtils.getFastFilter()).toBeInTheDocument()
       })
 
       test('Количество заявок отображается', async () => {
@@ -549,7 +545,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterOptionTestUtils.expectLoadingFinished()
 
-        tasksFastFilterOptions.forEach(({ value }) => {
+        fastFilterOptions.forEach(({ value }) => {
           const counterName = camelize(value.toLowerCase())
           const counter = taskCounters[counterName as TaskCountersKeys]
           const counterEl = fastFilterOptionTestUtils.getByTextInCheckableTag(value, counter)

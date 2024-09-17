@@ -1,61 +1,73 @@
 import {
-  taskCountersFastFilterNamesDict,
+  fastFilterByLinesNamesDict,
+  fastFilterNamesDict,
   TasksFastFilterEnum,
-  tasksFastFilterNamesDict,
 } from 'modules/task/constants/task'
-import { TaskCountersFastFilterType, TasksFastFilterType } from 'modules/task/models'
+import { FastFilterByLinesType, FastFilterType, TaskCountersModel } from 'modules/task/models'
 
 export type FastFilterOptionType<V> = {
   label: string
   value: V
+  counterKey: keyof TaskCountersModel
 }
 
-export const taskCountersFastFilterOptions: FastFilterOptionType<TaskCountersFastFilterType>[] = [
+export const fastFilterByLinesOptions: FastFilterOptionType<FastFilterByLinesType>[] = [
   {
     value: TasksFastFilterEnum.AllLines,
-    label: taskCountersFastFilterNamesDict[TasksFastFilterEnum.AllLines],
+    label: fastFilterByLinesNamesDict[TasksFastFilterEnum.AllLines],
+    counterKey: 'allLines',
   },
   {
     value: TasksFastFilterEnum.FirstLine,
-    label: taskCountersFastFilterNamesDict[TasksFastFilterEnum.FirstLine],
+    label: fastFilterByLinesNamesDict[TasksFastFilterEnum.FirstLine],
+    counterKey: 'firstLine',
   },
   {
     value: TasksFastFilterEnum.SecondLine,
-    label: taskCountersFastFilterNamesDict[TasksFastFilterEnum.SecondLine],
+    label: fastFilterByLinesNamesDict[TasksFastFilterEnum.SecondLine],
+    counterKey: 'secondLine',
   },
 ]
 
-export const tasksFastFilterOptions: FastFilterOptionType<TasksFastFilterType>[] = [
+export const fastFilterOptions: FastFilterOptionType<FastFilterType>[] = [
   {
-    value: TasksFastFilterEnum.AllInLine,
-    label: tasksFastFilterNamesDict[TasksFastFilterEnum.AllInLine],
+    value: TasksFastFilterEnum.AllLines,
+    label: fastFilterNamesDict[TasksFastFilterEnum.AllLines],
+    counterKey: 'allInLine',
   },
   {
     value: TasksFastFilterEnum.Mine,
-    label: tasksFastFilterNamesDict[TasksFastFilterEnum.Mine],
+    label: fastFilterNamesDict[TasksFastFilterEnum.Mine],
+    counterKey: 'mine',
   },
   {
     value: TasksFastFilterEnum.Free,
-    label: tasksFastFilterNamesDict[TasksFastFilterEnum.Free],
+    label: fastFilterNamesDict[TasksFastFilterEnum.Free],
+    counterKey: 'free',
   },
   {
     value: TasksFastFilterEnum.LessThreeHours,
-    label: tasksFastFilterNamesDict[TasksFastFilterEnum.LessThreeHours],
+    label: fastFilterNamesDict[TasksFastFilterEnum.LessThreeHours],
+    counterKey: 'less3Hours',
   },
   {
     value: TasksFastFilterEnum.LessOneHour,
-    label: tasksFastFilterNamesDict[TasksFastFilterEnum.LessOneHour],
+    label: fastFilterNamesDict[TasksFastFilterEnum.LessOneHour],
+    counterKey: 'less1Hour',
   },
   {
     value: TasksFastFilterEnum.Overdue,
-    label: tasksFastFilterNamesDict[TasksFastFilterEnum.Overdue],
+    label: fastFilterNamesDict[TasksFastFilterEnum.Overdue],
+    counterKey: 'overdue',
   },
   {
     value: TasksFastFilterEnum.Returned,
-    label: tasksFastFilterNamesDict[TasksFastFilterEnum.Returned],
+    label: fastFilterNamesDict[TasksFastFilterEnum.Returned],
+    counterKey: 'returned',
   },
   {
     value: TasksFastFilterEnum.ReclassificationDenied,
-    label: tasksFastFilterNamesDict[TasksFastFilterEnum.ReclassificationDenied],
+    label: fastFilterNamesDict[TasksFastFilterEnum.ReclassificationDenied],
+    counterKey: 'reclassificationDenied',
   },
 ]

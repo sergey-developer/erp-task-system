@@ -1,6 +1,5 @@
 export enum TasksFastFilterEnum {
   AllLines = 'ALL_LINES',
-  AllInLine = 'ALL_IN_LINE',
   FirstLine = 'FIRST_LINE',
   SecondLine = 'SECOND_LINE',
   Free = 'FREE',
