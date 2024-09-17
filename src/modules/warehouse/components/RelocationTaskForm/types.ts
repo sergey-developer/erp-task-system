@@ -2,7 +2,7 @@ import { UploadProps } from 'antd'
 import { Moment } from 'moment-timezone'
 import { ReactNode } from 'react'
 
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 
 import {

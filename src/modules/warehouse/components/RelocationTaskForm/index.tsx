@@ -2,7 +2,6 @@ import { Col, Form, Input, Row, Select, SelectProps, Typography, Upload } from '
 import React, { useMemo } from 'react'
 
 import { renderUploadedFile } from 'modules/attachment/utils'
-import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
