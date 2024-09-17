@@ -13,7 +13,10 @@ export type InventorizationEquipmentTableRow = Partial<RelocationTaskInventoriza
   rowId: number
 }
 
-export type ActiveEquipmentTableRow = {
+export type ActiveEquipmentTableRow = Pick<
+  RelocationTaskInventorizationEquipment,
+  'relocationEquipmentId'
+> & {
   rowIndex: number
 }
 
@@ -22,6 +25,8 @@ export type RelocationEquipmentDraftEditableTableProps = {
   editableKeys?: Key[]
   setEditableKeys?: (keys: Key[]) => void
   isLoading: boolean
+
+  relocationEquipmentsIsLoading?: boolean
 
   currencies: CurrencyListModel
   currenciesIsLoading: boolean

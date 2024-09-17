@@ -1,5 +1,5 @@
 import { Col, Form, Input, Row, Select, SelectProps, Typography, Upload } from 'antd'
-import React, { FC, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 
@@ -16,19 +16,17 @@ import Space from 'components/Space'
 import TimePicker from 'components/TimePicker'
 
 import { filesFormItemProps } from 'shared/constants/form'
-import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 
-import { RelocationTaskFormFields } from '../../types'
 import {
-  ExecutorOption,
-  ExecutorOptionGroup,
+  BaseRelocationTaskFormFields,
   LocationOption,
   LocationOptionGroup,
   RelocationTaskFormProps,
+  UserGroupOption,
 } from './types'
 import { collectUsersIds, makeLocationOptions } from './utils'
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
@@ -36,16 +34,15 @@ import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 const { TextArea } = Input
 const { Text } = Typography
 
-const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
-  authUser,
+const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
   permissions,
   isLoading,
 
-  users,
-  usersIsLoading,
+  controllersOptions,
+  controllersIsLoading,
 
-  usersGroups,
-  usersGroupsIsLoading,
+  executorsOptions,
+  executorsIsLoading,
 
   disabledFields,
   controllerIsRequired,
@@ -58,29 +55,19 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
   imagesIsLoading,
 
   relocateFromLocations,
-  relocateFromLocationListIsLoading,
+  relocateFromLocationsIsLoading,
   relocateToLocations,
-  relocateToLocationListIsLoading,
+  relocateToLocationsIsLoading,
 
   type,
   onChangeType,
 
   onChangeRelocateFrom,
   onChangeRelocateTo,
-}) => {
-  const form = Form.useFormInstance()
-
-  const controllerFormValue: RelocationTaskFormFields['controllers'] = Form.useWatch(
-    'controllers',
-    form,
-  )
-
-  const executorsFormValue: MaybeUndefined<RelocationTaskFormFields['executors']> = Form.useWatch(
-    'executors',
-    form,
-  )
-
-  const [executors, setExecutors] = useState<ExecutorOption['value'][]>([])
+}: RelocationTaskFormProps<FormFields>) => {
+  const form = Form.useFormInstance<FormFields>()
+  const executorsFormValue: MaybeUndefined<IdType[]> = Form.useWatch('executors', form)
+  const controllersFormValue: MaybeUndefined<IdType[]> = Form.useWatch('controllers', form)
 
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(type)
   const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
@@ -100,41 +87,22 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
     [permissions],
   )
 
-  const controllerOptions = useMemo(
-    () => users.filter((usr) => usr.id !== authUser?.id && !executorsFormValue?.includes(usr.id)),
-    [authUser?.id, executorsFormValue, users],
-  )
-
-  const executorsOptions: ExecutorOptionGroup[] = useMemo(() => {
-    const usersOptions: ExecutorOption[] = users
-      .filter((usr) => !controllerFormValue?.includes(usr.id))
-      .map((usr) => ({ label: usr.fullName, value: usr.id }))
-
-    const usersGroupsOptions: ExecutorOption[] = usersGroups.map((group) => ({
-      label: group.title,
-      users: group.users,
-      value: `${group.id}-${group.title}`,
-    }))
-
-    const options = []
-    if (usersOptions.length)
-      options.push({ label: 'Пользователи', options: usersOptions, value: -1 })
-
-    if (usersGroupsOptions.length)
-      options.push({ label: 'Группы', options: usersGroupsOptions, value: -2 })
-
-    return options
-  }, [controllerFormValue, users, usersGroups])
-
-  const onChangeExecutors: SelectProps<IdType | string, ExecutorOption>['onChange'] = async (
-    value,
+  const onChangeExecutors: SelectProps<IdType[], UserGroupOption>['onChange'] = async (
+    _,
     option,
   ) => {
-    if (Array.isArray(option) && controllerFormValue?.length) {
-      const usersIds = await collectUsersIds(option, controllerFormValue)
-      form.setFieldValue('executors', usersIds)
-      setExecutors(usersIds)
-    }
+    if (!Array.isArray(option)) return
+    const usersIds = await collectUsersIds(option)
+    form.setFieldValue('executors', usersIds)
+  }
+
+  const onChangeControllers: SelectProps<IdType[], UserGroupOption>['onChange'] = async (
+    _,
+    option,
+  ) => {
+    if (!Array.isArray(option)) return
+    const usersIds = await collectUsersIds(option)
+    form.setFieldValue('controllers', usersIds)
   }
 
   return (
@@ -163,8 +131,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         >
           <Select<IdType, LocationOptionGroup>
             dropdownRender={(menu) => <div data-testid='relocate-from-select-dropdown'>{menu}</div>}
-            loading={relocateFromLocationListIsLoading}
-            disabled={typeIsEnteringBalances || isLoading || relocateFromLocationListIsLoading}
+            loading={relocateFromLocationsIsLoading}
+            disabled={typeIsEnteringBalances || isLoading || relocateFromLocationsIsLoading}
             options={relocateFromLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
@@ -179,8 +147,8 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
         <Form.Item data-testid='relocate-to-form-item' label='Объект прибытия' name='relocateTo'>
           <Select<IdType, LocationOptionGroup>
             dropdownRender={(menu) => <div data-testid='relocate-to-select-dropdown'>{menu}</div>}
-            loading={relocateToLocationListIsLoading}
-            disabled={isLoading || typeIsWriteOff || relocateToLocationListIsLoading}
+            loading={relocateToLocationsIsLoading}
+            disabled={isLoading || typeIsWriteOff || relocateToLocationsIsLoading}
             options={relocateToLocationOptions}
             placeholder='Выберите объект'
             onChange={(value, option) => {
@@ -228,17 +196,17 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           name='executors'
           rules={onlyRequiredRules}
         >
-          <Select<IdType | string, ExecutorOption>
+          <Select<IdType[], UserGroupOption>
             mode='multiple'
             dropdownRender={(menu) => <div data-testid='executors-select-dropdown'>{menu}</div>}
-            loading={usersIsLoading || usersGroupsIsLoading}
-            disabled={isLoading || usersIsLoading || usersGroupsIsLoading}
+            loading={executorsIsLoading}
+            disabled={isLoading || executorsIsLoading}
             options={executorsOptions}
             placeholder='Выберите исполнителя'
             showSearch
             filterOption={filterOptionBy('label')}
             onChange={onChangeExecutors}
-            value={executors as any}
+            value={executorsFormValue}
           />
         </Form.Item>
 
@@ -248,17 +216,18 @@ const RelocationTaskForm: FC<RelocationTaskFormProps> = ({
           name='controllers'
           rules={controllerIsRequired ? onlyRequiredRules : undefined}
         >
-          <Select
+          <Select<IdType[], UserGroupOption>
             mode='multiple'
             dropdownRender={(menu) => <div data-testid='controller-select-dropdown'>{menu}</div>}
-            fieldNames={idAndFullNameSelectFieldNames}
-            loading={usersIsLoading}
-            disabled={isLoading || usersIsLoading}
-            options={controllerOptions}
+            loading={controllersIsLoading}
+            disabled={isLoading || controllersIsLoading}
+            options={controllersOptions}
             placeholder='Выберите контролера'
             allowClear
             showSearch
-            filterOption={filterOptionBy('fullName')}
+            filterOption={filterOptionBy('label')}
+            onChange={onChangeControllers}
+            value={controllersFormValue}
           />
         </Form.Item>
       </Col>

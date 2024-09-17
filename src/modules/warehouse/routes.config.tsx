@@ -21,6 +21,8 @@ import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
 
 import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
 
+import { RelocationTaskStatusEnum } from './constants/relocationTask'
+
 const WarehouseCatalogListPage = React.lazy(
   () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
 )
@@ -350,15 +352,15 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute<EditRelocationTaskDraftPageLocationState>
                   component={<EditRelocationTaskDraftPage />}
-                  // permitted={(currentUser, locationState) =>
-                  //   userHasPermissions(currentUser, [
-                  //     UserPermissionsEnum.InventorizationUpdate,
-                  //     UserPermissionsEnum.RelocationTasksUpdate,
-                  //   ]) &&
-                  //   !!locationState &&
-                  //   locationState.inventorization.executor.id === currentUser.id &&
-                  //   locationState.relocationTask.status === RelocationTaskStatusEnum.Draft
-                  // }
+                  permitted={(currentUser, locationState) =>
+                    userHasPermissions(currentUser, [
+                      UserPermissionsEnum.InventorizationUpdate,
+                      UserPermissionsEnum.RelocationTasksUpdate,
+                    ]) &&
+                    !!locationState &&
+                    locationState.inventorization.executor.id === currentUser.id &&
+                    locationState.relocationTask.status === RelocationTaskStatusEnum.Draft
+                  }
                 />
               ),
               handle: {

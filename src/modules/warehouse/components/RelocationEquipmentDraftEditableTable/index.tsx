@@ -50,6 +50,8 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
   setEditableKeys,
   isLoading,
 
+  relocationEquipmentsIsLoading,
+
   currencies,
   currenciesIsLoading,
 
@@ -224,6 +226,7 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
           creatorButtonText: 'Добавить оборудование',
         }}
         formItemProps={formItemProps}
+        loading={relocationEquipmentsIsLoading}
         editable={{
           type: 'multiple',
           form,

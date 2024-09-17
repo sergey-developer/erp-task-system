@@ -38,6 +38,7 @@ import {
   externalRelocationStatusDict,
   externalRelocationStatusOptions,
   relocationTaskStatusDict,
+  RelocationTaskStatusEnum,
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
@@ -193,7 +194,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
     useGetRelocationEquipmentList({ relocationTaskId })
 
   const {
-    currentData: relocationEquipmentAttachmentList = [],
+    currentData: relocationEquipmentAttachments = [],
     isFetching: relocationEquipmentAttachmentListIsFetching,
   } = useGetRelocationEquipmentAttachmentList(
     { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
@@ -435,12 +436,12 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
       {
         key: 'Изменить черновик',
         label: 'Изменить черновик',
-        // disabled: !(
-        //   permissions.relocationTasksUpdate &&
-        //   permissions.inventorizationUpdate &&
-        //   inventorizationExecutorIsCurrentUser &&
-        //   relocationTask?.status === RelocationTaskStatusEnum.Draft
-        // ),
+        disabled: !(
+          permissions.relocationTasksUpdate &&
+          permissions.inventorizationUpdate &&
+          inventorizationExecutorIsCurrentUser &&
+          relocationTask?.status === RelocationTaskStatusEnum.Draft
+        ),
         onClick:
           relocationTask && inventorization
             ? () =>
@@ -775,7 +776,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
           <AttachmentListModal
             open={equipmentImagesModalOpened}
             title='Изображения оборудования'
-            data={relocationEquipmentAttachmentList}
+            data={relocationEquipmentAttachments}
             onCancel={onCloseEquipmentImagesModal}
             isLoading={relocationEquipmentAttachmentListIsFetching}
           />
