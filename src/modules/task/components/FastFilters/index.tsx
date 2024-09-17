@@ -1,5 +1,4 @@
 import { Space } from 'antd'
-import { camelize } from 'humps'
 import React, { useMemo } from 'react'
 
 import FastFilterOption from './FastFilterOption'
@@ -22,8 +21,7 @@ const FastFilters = <Value extends string, Counters extends Record<string, numbe
     const counters = initialCounters || ({} as Counters)
 
     return initialOptions.map((option) => {
-      const counterKey = camelize(option.value.toLowerCase())
-      const counterValue = countersVisible ? counters[counterKey] : undefined
+      const counterValue = countersVisible ? counters[option.counterKey] : undefined
       return { label: option.label, value: option.value, counter: counterValue }
     })
   }, [countersVisible, initialCounters, initialOptions])
