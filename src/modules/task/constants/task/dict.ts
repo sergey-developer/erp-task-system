@@ -1,4 +1,4 @@
-import { BaseTaskModel, TaskCountersFastFilterType, TasksFastFilterType } from 'modules/task/models'
+import { BaseTaskModel, FastFilterByLinesType, FastFilterType } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 
 import { StringMap } from 'shared/types/utils'
@@ -10,13 +10,10 @@ import {
   TaskStatusEnum,
 } from './enums'
 
-export const tasksFastFilterNamesDict: StringMap<
-  Exclude<
-    TasksFastFilterType,
-    TasksFastFilterEnum.AllLines | TasksFastFilterEnum.FirstLine | TasksFastFilterEnum.SecondLine
-  >
+export const fastFilterNamesDict: StringMap<
+  Exclude<FastFilterType, TasksFastFilterEnum.FirstLine | TasksFastFilterEnum.SecondLine>
 > = {
-  [TasksFastFilterEnum.AllInLine]: 'Все',
+  [TasksFastFilterEnum.AllLines]: 'Все',
   [TasksFastFilterEnum.Mine]: 'Мои',
   [TasksFastFilterEnum.Overdue]: 'Просроченные',
   [TasksFastFilterEnum.Free]: 'Свободные',
@@ -26,7 +23,7 @@ export const tasksFastFilterNamesDict: StringMap<
   [TasksFastFilterEnum.ReclassificationDenied]: 'Отказ в переклассификации',
 }
 
-export const taskCountersFastFilterNamesDict: StringMap<TaskCountersFastFilterType> = {
+export const fastFilterByLinesNamesDict: StringMap<FastFilterByLinesType> = {
   [TasksFastFilterEnum.AllLines]: 'Все',
   [TasksFastFilterEnum.FirstLine]: 'Первая линия',
   [TasksFastFilterEnum.SecondLine]: 'Вторая линия',

@@ -4,13 +4,18 @@ import { fakeWord, render } from '_tests_/utils'
 
 import { testUtils as fastFilterOptionTestUtils } from './FastFilterOption/FastFilterOption.test'
 import FastFilters from './index'
+import { FastFilterOptionType } from './options'
 import { FastFiltersProps } from './types'
 
-const option = { label: fakeWord(), value: fakeWord() }
+const option: FastFilterOptionType<string> = {
+  label: fakeWord(),
+  value: fakeWord(),
+  counterKey: 'allLines',
+}
 
 const props: Readonly<FastFiltersProps<string, Record<string, number>>> = {
   options: [option],
-  counters: { [option.value]: 1 },
+  counters: { [option.counterKey]: 1 },
   countersVisible: true,
   disabled: false,
   loading: false,
@@ -28,11 +33,11 @@ describe('Быстрый фильтр', () => {
   test('Отображаются', () => {
     render(<FastFilters {...props} />)
 
-    props.options.forEach(({ label, value }) => {
+    props.options.forEach(({ label, value, counterKey }) => {
       const optionEl = fastFilterOptionTestUtils.getByTextInCheckableTag(value, label)
       const counterEl = fastFilterOptionTestUtils.getByTextInCheckableTag(
         value,
-        props.counters![value],
+        props.counters![counterKey],
       )
 
       expect(optionEl).toBeInTheDocument()
@@ -43,10 +48,10 @@ describe('Быстрый фильтр', () => {
   test('Можно скрыть отображение количества', () => {
     render(<FastFilters {...props} countersVisible={false} />)
 
-    props.options.forEach(({ value }) => {
+    props.options.forEach(({ value, counterKey }) => {
       const counterEl = fastFilterOptionTestUtils.queryByTextInCheckableTag(
         value,
-        props.counters![value],
+        props.counters![counterKey],
       )
       expect(counterEl).not.toBeInTheDocument()
     })
