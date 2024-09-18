@@ -102,6 +102,11 @@ const TasksPage: FC = () => {
     UserPermissionsEnum.WorkGroupTasksRead,
   ])
 
+  const isShowFastFilterByLines = !!(
+    permissions.firstLineTasksRead &&
+    (permissions.secondLineTasksRead || permissions.workGroupTasksRead)
+  )
+
   const { tableRef, drawerHeight } = useDrawerHeightByTable()
 
   // todo: создать хук для useSearchParams который парсит значения в нужный тип
@@ -148,7 +153,7 @@ const TasksPage: FC = () => {
   const [getTasksQueryArgs, setGetTasksQueryArgs] = useSetState<GetTasksQueryArgs>(() => ({
     ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
     ...tasksFiltersStorage,
-    filters: fastFilter,
+    filters: [initialFastFilter],
     sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
   }))
 
@@ -158,7 +163,7 @@ const TasksPage: FC = () => {
   const prevAppliedFilterType = usePrevious<typeof appliedFilterType>(appliedFilterType)
 
   // todo: refactor to avoid setting undefined
-  const triggerFilterChange = useCallback(
+  const triggerGetTasks = useCallback(
     (filterQueryParams: TasksFilterQueries | FastFilterQueries | FilterParams) => {
       setGetTasksQueryArgs((prevState) => ({
         ...prevState,
@@ -199,16 +204,20 @@ const TasksPage: FC = () => {
         setTasksFilterValues(initialSupportGroupFilters)
         setSelectedCustomers(initialSupportGroupFilters.customers)
         setSelectedMacroregions(initialSupportGroupFilters.macroregions)
-        triggerFilterChange(initialSupportGroupFilters)
+        triggerGetTasks(initialSupportGroupFilters)
       }
     },
-    [setTasksFilterValues, setTasksFiltersStorage, triggerFilterChange],
+    [setTasksFilterValues, setTasksFiltersStorage, triggerGetTasks],
   )
 
   useOnChangeUserStatus(onChangeUserStatus)
 
   const [getTaskCountersQueryArgs, setGetTaskCountersQueryArgs] =
-    useSetState<GetTaskCountersQueryArgs>(tasksFiltersStorage || {})
+    useSetState<GetTaskCountersQueryArgs>(
+      tasksFiltersStorage
+        ? { ...tasksFiltersStorage, line: [initialFastFilterByLines] }
+        : { line: [initialFastFilterByLines] },
+    )
 
   const {
     data: taskCounters,
@@ -265,7 +274,7 @@ const TasksPage: FC = () => {
   const onApplyFilter: TasksFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     setTasksFilterValues(values)
-    triggerFilterChange(mapFilterToQueryArgs(values))
+    triggerGetTasks(mapFilterToQueryArgs(values))
     setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
     setFastFilter(undefined)
     setFastFilterByLines(undefined)
@@ -286,17 +295,36 @@ const TasksPage: FC = () => {
     closeTask()
   }, [closeTask, resetExtendedFilterToInitialValues])
 
+  const getFastFilterByLinesValue = useCallback(
+    (fastFilterByLines: FastFilterByLinesType): TasksFastFilterEnum =>
+      isShowFastFilterByLines ? fastFilterByLines : TasksFastFilterEnum.AllLines,
+    [isShowFastFilterByLines],
+  )
+
+  const getFastFilterQueryValue = useCallback(
+    (
+      fastFilter?: FastFilterType,
+      fastFilterByLines?: FastFilterByLinesType,
+    ): TasksFastFilterEnum[] => {
+      const filter = fastFilter ? [fastFilter] : []
+      const filterByLines = fastFilterByLines ? [getFastFilterByLinesValue(fastFilterByLines)] : []
+
+      return fastFilter === TasksFastFilterEnum.AllLines
+        ? filterByLines
+        : [...filter, ...filterByLines]
+    },
+    [getFastFilterByLinesValue],
+  )
+
   const onFastFilterChange = useCallback<
     FastFiltersProps<FastFilterType, TaskCountersModel>['onChange']
   >(
     (value) => {
       onBaseFastFilterChange()
       setFastFilter(value)
-      triggerFilterChange({
-        filters: value === TasksFastFilterEnum.AllLines ? undefined : value,
-      })
+      triggerGetTasks({ filters: getFastFilterQueryValue(value, fastFilterByLines) })
     },
-    [onBaseFastFilterChange, triggerFilterChange],
+    [fastFilterByLines, getFastFilterQueryValue, onBaseFastFilterChange, triggerGetTasks],
   )
 
   const onFastFilterByLinesChange = useCallback<
@@ -305,53 +333,42 @@ const TasksPage: FC = () => {
     (value) => {
       onBaseFastFilterChange()
       setFastFilterByLines(value)
-      setFastFilter(value)
-      triggerFilterChange({ filters: value })
-      setGetTaskCountersQueryArgs({ line: value })
-    },
-    [onBaseFastFilterChange, setGetTaskCountersQueryArgs, triggerFilterChange],
-  )
-
-  const onSearch = useCallback<NonNullable<SearchProps['onSearch']>>(
-    (value) => {
-      if (value) {
-        setAppliedFilterType(FilterTypeEnum.Search)
-        triggerFilterChange({ search: value })
-      } else {
-        if (!prevAppliedFilterType) return
-
-        setAppliedFilterType(prevAppliedFilterType)
-
-        if (isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)) {
-          triggerFilterChange(mapFilterToQueryArgs(tasksFilterValues))
-        }
-
-        if (isEqual(prevAppliedFilterType, FilterTypeEnum.Fast)) {
-          triggerFilterChange({
-            filters:
-              fastFilterByLines === TasksFastFilterEnum.AllLines
-                ? fastFilterByLines
-                : fastFilter === TasksFastFilterEnum.AllLines
-                ? undefined
-                : fastFilter,
-          })
-
-          setGetTaskCountersQueryArgs({ line: fastFilterByLines })
-        }
-      }
-
-      closeTask()
+      triggerGetTasks({ filters: getFastFilterQueryValue(fastFilter, value) })
+      setGetTaskCountersQueryArgs({ line: [getFastFilterByLinesValue(value)] })
     },
     [
-      closeTask,
-      triggerFilterChange,
-      prevAppliedFilterType,
-      tasksFilterValues,
       fastFilter,
+      getFastFilterByLinesValue,
+      getFastFilterQueryValue,
+      onBaseFastFilterChange,
       setGetTaskCountersQueryArgs,
-      fastFilterByLines,
+      triggerGetTasks,
     ],
   )
+
+  const onSearch: NonNullable<SearchProps['onSearch']> = (value) => {
+    if (value) {
+      setAppliedFilterType(FilterTypeEnum.Search)
+      triggerGetTasks({ search: value })
+    } else {
+      if (!prevAppliedFilterType) return
+
+      setAppliedFilterType(prevAppliedFilterType)
+
+      if (isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)) {
+        triggerGetTasks(mapFilterToQueryArgs(tasksFilterValues))
+      }
+
+      if (isEqual(prevAppliedFilterType, FilterTypeEnum.Fast)) {
+        triggerGetTasks({ filters: getFastFilterQueryValue(fastFilter, fastFilterByLines) })
+        setGetTaskCountersQueryArgs({
+          line: fastFilterByLines ? [getFastFilterByLinesValue(fastFilterByLines)] : [],
+        })
+      }
+    }
+
+    closeTask()
+  }
 
   const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) => {
     const value = event.target.value
@@ -409,7 +426,7 @@ const TasksPage: FC = () => {
     setTasksFilterValues({ [filter.name]: undefined })
     if (filter.name === 'customers') setSelectedCustomers([])
     if (filter.name === 'macroregions') setSelectedMacroregions([])
-    triggerFilterChange({ [filter.name]: undefined })
+    triggerGetTasks({ [filter.name]: undefined })
   }
 
   const tasks = useMemo(() => {
@@ -443,19 +460,18 @@ const TasksPage: FC = () => {
 
                     <Col>
                       <Flex vertical gap='small'>
-                        {permissions.firstLineTasksRead &&
-                          (permissions.secondLineTasksRead || permissions.workGroupTasksRead) && (
-                            <FastFilters<FastFilterByLinesType, TaskCountersModel>
-                              data-testid='fast-filter-by-lines'
-                              options={fastFilterByLinesOptions}
-                              value={fastFilterByLines}
-                              onChange={onFastFilterByLinesChange}
-                              counters={taskCounters}
-                              countersVisible={!isGetTaskCountersError}
-                              disabled={tasksIsFetching}
-                              loading={taskCountersIsFetching}
-                            />
-                          )}
+                        {isShowFastFilterByLines && (
+                          <FastFilters<FastFilterByLinesType, TaskCountersModel>
+                            data-testid='fast-filter-by-lines'
+                            options={fastFilterByLinesOptions}
+                            value={fastFilterByLines}
+                            onChange={onFastFilterByLinesChange}
+                            counters={taskCounters}
+                            countersVisible={!isGetTaskCountersError}
+                            disabled={tasksIsFetching}
+                            loading={taskCountersIsFetching}
+                          />
+                        )}
 
                         <FastFilters<FastFilterType, TaskCountersModel>
                           data-testid='fast-filter'
