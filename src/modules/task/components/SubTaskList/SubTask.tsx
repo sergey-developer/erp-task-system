@@ -10,7 +10,8 @@ import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequ
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
 import { SubTaskModel, TaskModel } from 'modules/task/models'
-import { makeUserByFullName, MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
+import { makeUserByFullName } from 'modules/user/utils'
 
 import Expandable from 'components/Expandable'
 import Label from 'components/Label'
