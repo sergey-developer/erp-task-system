@@ -26,7 +26,6 @@ import {
 import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/components/TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
-import { testUtils as tasksFilterTestUtils } from 'modules/task/components/TasksFilter/TasksFilter.test'
 import {
   searchFieldDict,
   taskAssignedDict,
@@ -48,6 +47,7 @@ import {
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
+import { testUtils as tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
