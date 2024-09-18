@@ -51,6 +51,7 @@ export const task = (
       | 'fiscalAccumulator'
       | 'infrastructureProject'
       | 'workType'
+      | 'createdBy'
       | 'system'
     >
   >,
@@ -88,7 +89,10 @@ export const task = (
     ? null
     : props!.infrastructureProject,
   workType: isUndefined(props?.workType) ? null : props!.workType,
+  createdBy: isUndefined(props?.createdBy) ? null : props!.createdBy,
 
+  observers: null,
+  parentTask: null,
   shop: { id: fakeId(), title: fakeWord() },
   attachments: [taskFixtures.attachment()],
   resolution: {

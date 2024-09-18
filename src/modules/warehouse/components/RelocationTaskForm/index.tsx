@@ -2,6 +2,7 @@ import { Col, Form, Input, Row, Select, SelectProps, Typography, Upload } from '
 import React, { FC, useMemo, useState } from 'react'
 
 import { renderUploadedFile } from 'modules/attachment/utils'
+import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
@@ -20,7 +21,6 @@ import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 
-import { RelocationTaskFormFields } from '../../types'
 import {
   ExecutorOption,
   ExecutorOptionGroup,

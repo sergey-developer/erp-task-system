@@ -72,6 +72,7 @@ import { useGetUserActions, useGetUsers, useUserPermissions } from 'modules/user
 import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 
+import Label from 'components/Label'
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
@@ -179,6 +180,15 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   useEffect(() => {
     setCurrentTaskId(taskId)
   }, [taskId])
+
+  const [parentTaskAdditionalInfoExpanded, { toggle: toggleParentTaskAdditionalInfoExpanded }] =
+    useBoolean(false)
+
+  const [parentTaskOpened, { setTrue: openParentTask, setFalse: closeParentTask }] =
+    useBoolean(false)
+
+  const debouncedOpenParentTask = useDebounceFn(openParentTask)
+  const debouncedCloseParentTask = useDebounceFn(closeParentTask)
 
   const authUser = useAuthUser()
   const permissions = useUserPermissions([
@@ -916,6 +926,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     status={task.status}
                     title={task.title}
                     createdAt={formatDate(task.createdAt)}
+                    createdBy={task.createdBy}
                     name={task.name}
                     address={task.address}
                     contactService={task.contactService}
@@ -940,15 +951,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     address={task.address}
                     company={task.company}
                     contactType={task.contactType}
-                    severity={taskSeverityMap.get(task.severity)!}
-                    priority={taskPriorityMap.get(task.priorityCode)!}
-                    impact={taskImpactMap.get(task.initialImpact)!}
+                    severity={taskSeverityMap.get(task.severity)}
+                    priority={taskPriorityMap.get(task.priorityCode)}
+                    impact={taskImpactMap.get(task.initialImpact)}
                     supportGroup={task.supportGroup?.name}
                     productClassifier1={task.productClassifier1}
                     productClassifier2={task.productClassifier2}
                     productClassifier3={task.productClassifier3}
                     latitude={task.latitude}
                     longitude={task.longitude}
+                    parentTask={task.parentTask}
+                    openParentTask={debouncedOpenParentTask}
                     workGroup={task.workGroup}
                     workType={task.workType}
                     workTypes={workTypes}
@@ -990,6 +1003,31 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                         userActions={userActions}
                       />
                     </Col>
+                  </Row>
+
+                  <Row justify='space-between'>
+                    <Col span={11}>
+                      <Label label='Наблюдатели'>
+                        {valueOr(
+                          task.observers,
+                          (observers) => (
+                            <Space direction='vertical'>
+                              {observers.map((obs) => (
+                                <TaskAssignee
+                                  {...obs}
+                                  hasPopover
+                                  showAvatar={false}
+                                  showPhone={false}
+                                />
+                              ))}
+                            </Space>
+                          ),
+                          'Не назначены',
+                        )}
+                      </Label>
+                    </Col>
+
+                    <Col span={11}></Col>
                   </Row>
 
                   <Divider />
@@ -1229,6 +1267,16 @@ const TaskDetails: FC<TaskDetailsProps> = ({
             workTypesIsLoading={workTypesIsFetching}
           />
         </React.Suspense>
+      )}
+
+      {parentTaskOpened && task?.parentTask?.id && (
+        <TaskDetails
+          taskId={task.parentTask.id}
+          onClose={debouncedCloseParentTask}
+          additionalInfoExpanded={parentTaskAdditionalInfoExpanded}
+          onExpandAdditionalInfo={toggleParentTaskAdditionalInfoExpanded}
+          height={height}
+        />
       )}
     </>
   )

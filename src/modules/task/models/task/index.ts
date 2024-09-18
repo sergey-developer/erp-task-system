@@ -1,5 +1,3 @@
-export * from './baseTask.model'
-
 export * from './task.model'
 export * from './getTask.model'
 export * from './createTask.model'
