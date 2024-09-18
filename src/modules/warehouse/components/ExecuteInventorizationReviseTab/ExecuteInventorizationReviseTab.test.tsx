@@ -21,7 +21,7 @@ import {
   mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentSuccess,
   mockGetInventorizationEquipmentsSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
   mockGetNomenclatureListSuccess,
   mockGetNomenclatureSuccess,
   mockGetWorkTypesSuccess,
@@ -56,7 +56,7 @@ setupApiTests()
 describe('Вкладка списка оборудования с расхождением', () => {
   test('Отображает заголовок и таблицу', () => {
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: props.inventorization.id })
-    mockGetLocationListSuccess()
+    mockGetLocationsCatalogSuccess()
 
     render(<ExecuteInventorizationReviseTab {...props} />)
 
@@ -72,7 +72,7 @@ describe('Вкладка списка оборудования с расхожд
     describe('Кнопка создания оборудования', () => {
       test('Отображается и активна', () => {
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: props.inventorization.id })
-        mockGetLocationListSuccess()
+        mockGetLocationsCatalogSuccess()
 
         render(<ExecuteInventorizationReviseTab {...props} />)
 
@@ -84,7 +84,7 @@ describe('Вкладка списка оборудования с расхожд
 
       test('При клике открывается модалка добавления оборудования', async () => {
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: props.inventorization.id })
-        mockGetLocationListSuccess({ body: [] })
+        mockGetLocationsCatalogSuccess({ body: [] })
         mockGetEquipmentCategoryListSuccess({ body: [] })
         mockGetEquipmentCatalogListSuccess()
 
@@ -102,7 +102,7 @@ describe('Вкладка списка оборудования с расхожд
         { inventorizationId: props.inventorization.id },
         { once: false },
       )
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationsCatalogSuccess({ body: [] })
       mockGetEquipmentCategoryListSuccess({ body: [] })
 
       const equipmentCatalogListItem = warehouseFixtures.equipmentCatalogListItem()
@@ -144,7 +144,7 @@ describe('Вкладка списка оборудования с расхожд
         { once: false },
       )
 
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationsCatalogSuccess({ body: [] })
 
       const equipmentCategoryListItem = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,

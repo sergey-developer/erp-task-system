@@ -1,5 +1,6 @@
 import { ApiRequestMessages } from 'shared/types/messages'
 
+export const createTaskErrMsg = 'Ошибка создания заявки itsm'
 export const getTaskErrMsg = 'Ошибка получения заявки'
 export const getTasksErrMsg = 'Ошибка получения списка заявок'
 export const getTaskListMapErrMsg = 'Ошибка получения списка заявок для карты'

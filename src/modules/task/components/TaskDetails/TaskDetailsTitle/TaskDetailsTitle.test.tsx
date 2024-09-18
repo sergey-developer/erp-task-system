@@ -10,6 +10,8 @@ import {
 } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 
+import { SystemEnum } from 'shared/constants/enums'
+
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
@@ -34,6 +36,7 @@ const props: Readonly<TaskDetailsTitleProps> = {
   assignee: null,
   workGroup: null,
   suspendRequest: null,
+  system: SystemEnum.ITSM,
   userActions: userFixtures.userActions(),
   onExecuteTask: jest.fn(),
   onRegisterFN: jest.fn(),
@@ -42,6 +45,7 @@ const props: Readonly<TaskDetailsTitleProps> = {
   onRequestReclassification: jest.fn(),
   onUpdateDescription: jest.fn(),
   onUpdateDeadline: jest.fn(),
+  onCreateInternalTask: jest.fn(),
 }
 
 export const canExecuteTaskProps: Pick<TaskDetailsTitleProps, 'userActions'> = {

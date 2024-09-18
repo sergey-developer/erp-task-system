@@ -4,7 +4,10 @@ import {
   GetFaChangeTypesQueryArgs,
   GetFaChangeTypesSuccessResponse,
 } from 'shared/models/catalogs/faChangeTypes'
-import { GetLocationsQueryArgs, GetLocationsSuccessResponse } from 'shared/models/catalogs/location'
+import {
+  GetLocationsCatalogQueryArgs,
+  GetLocationsCatalogSuccessResponse,
+} from 'shared/models/catalogs/locations'
 import {
   GetResolutionClassificationsQueryArgs,
   GetResolutionClassificationsSuccessResponse,
@@ -21,6 +24,10 @@ import {
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,
 } from 'shared/models/catalogs/userStatus'
+import {
+  GetWorkGroupsCatalogQueryArgs,
+  GetWorkGroupsCatalogSuccessResponse,
+} from 'shared/models/catalogs/workGroups'
 import { MaybeUndefined } from 'shared/types/utils'
 
 import { baseApiService } from './baseApi'
@@ -49,13 +56,18 @@ export const catalogsApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
-    getLocations: build.query<GetLocationsSuccessResponse, MaybeUndefined<GetLocationsQueryArgs>>({
+
+    getLocationsCatalog: build.query<
+      GetLocationsCatalogSuccessResponse,
+      MaybeUndefined<GetLocationsCatalogQueryArgs>
+    >({
       query: (params) => ({
         url: CatalogsApiEnum.GetLocations,
         method: HttpMethodEnum.Get,
         params,
       }),
     }),
+
     getFaChangeTypes: build.query<
       GetFaChangeTypesSuccessResponse,
       MaybeUndefined<GetFaChangeTypesQueryArgs>
@@ -75,6 +87,15 @@ export const catalogsApiService = baseApiService.injectEndpoints({
         params,
       }),
     }),
+    getWorkGroupsCatalog: build.query<
+      GetWorkGroupsCatalogSuccessResponse,
+      GetWorkGroupsCatalogQueryArgs
+    >({
+      query: () => ({
+        url: CatalogsApiEnum.GetWorkGroups,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
 })
 
@@ -85,12 +106,14 @@ export const {
 
   useGetUserStatusListQuery,
 
-  useGetLocationsQuery,
-  useLazyGetLocationsQuery,
+  useGetLocationsCatalogQuery,
+  useLazyGetLocationsCatalogQuery,
 
   useGetFaChangeTypesQuery,
 
   useGetResolutionClassificationsQuery,
+
+  useGetWorkGroupsCatalogQuery,
 
   endpoints,
 } = catalogsApiService

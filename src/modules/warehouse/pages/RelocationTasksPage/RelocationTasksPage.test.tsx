@@ -21,7 +21,7 @@ import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTasksForbiddenError,
   mockGetRelocationTasksServerError,
@@ -217,7 +217,7 @@ describe('Страница списка заявок на перемещение
       test('Открывает фильтры', async () => {
         mockGetRelocationTasksSuccess()
         mockGetUsersSuccess()
-        mockGetLocationListSuccess()
+        mockGetLocationsCatalogSuccess()
 
         const { user } = render(<RelocationTasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -238,7 +238,7 @@ describe('Страница списка заявок на перемещение
     test.skip('Устанавливаются корректные значения по умолчанию', async () => {
       mockGetRelocationTasksSuccess()
       mockGetUsersSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
 
       const { user } = render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -278,7 +278,7 @@ describe('Страница списка заявок на перемещение
         once: false,
       })
       mockGetUsersSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
 
       const { user } = render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -398,7 +398,7 @@ describe('Страница списка заявок на перемещение
         mockGetRelocationTasksSuccess()
         mockGetUsersSuccess()
         mockGetCurrencyListSuccess()
-        mockGetLocationListSuccess({ once: false })
+        mockGetLocationsCatalogSuccess({ once: false })
 
         const { user } = renderWithRouter(
           [

@@ -50,7 +50,7 @@ export const equipment = (
   condition: isUndefined(props?.condition) ? EquipmentConditionEnum.Working : props!.condition,
 
   title: fakeWord(),
-  location: pick(catalogsFixtures.location(), 'id', 'title'),
+  location: pick(catalogsFixtures.locationCatalogListItem(), 'id', 'title'),
   warehouse: pick(warehouseFixtures.warehouse(), 'id', 'title'),
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.user(), 'id', 'fullName'),

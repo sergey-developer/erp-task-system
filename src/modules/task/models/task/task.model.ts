@@ -1,16 +1,18 @@
+import { InfrastructureModel } from 'modules/infrastructures/models'
 import {
   BaseTaskModel,
   SuspendRequestModel,
   TaskAttachmentListModel,
   TaskSupportGroupModel,
 } from 'modules/task/models'
-import { InfrastructureModel } from 'modules/infrastructures/models'
 import { WorkTypeModel } from 'modules/warehouse/models'
 
+import { SystemEnum } from 'shared/constants/enums'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
 export type TaskModel = BaseTaskModel & {
+  system: SystemEnum
   olaEstimatedTime: number
   workType: MaybeNull<Pick<WorkTypeModel, 'id' | 'title' | 'actions'>>
   isOlaNextBreachTimeChanged: MaybeNull<boolean>

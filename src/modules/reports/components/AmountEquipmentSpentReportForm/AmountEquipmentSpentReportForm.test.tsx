@@ -188,7 +188,7 @@ describe('Форма отчета количества потраченного 
 
   describe('Поле объект выбытия', () => {
     test('Можно установить значение', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
         <AmountEquipmentSpentReportForm {...props} locations={[locationListItem]} />,
@@ -209,7 +209,7 @@ describe('Форма отчета количества потраченного 
     })
 
     test('Не обязательное поле если объект прибытия выбран', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
         <AmountEquipmentSpentReportForm {...props} locations={[locationListItem]} />,
@@ -225,7 +225,7 @@ describe('Форма отчета количества потраченного 
 
   describe('Поле объект прибытия', () => {
     test('Можно установить значение', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
         <AmountEquipmentSpentReportForm {...props} locations={[locationListItem]} />,
@@ -246,7 +246,7 @@ describe('Форма отчета количества потраченного 
     })
 
     test('Не обязательное поле если объект выбытия выбран', async () => {
-      const locationListItem = catalogsFixtures.locationListItem()
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
         <AmountEquipmentSpentReportForm {...props} locations={[locationListItem]} />,
