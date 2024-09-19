@@ -9,7 +9,6 @@ import {
   canSelectAssigneeProps,
   testUtils as assigneeBlockTestUtils,
 } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
-import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import {
   canExecuteTaskProps,
   testUtils as taskDetailsTitleTestUtils,
@@ -46,8 +45,9 @@ import { UserPermissionsEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
 import { executeTaskModalTestUtils } from '_tests_/features/tasks/ExecuteTaskModal/testUtils'
-import { tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
 import { fastFilterListTestUtils } from '_tests_/features/tasks/FastFilters/testUtils'
+import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
+import { tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'

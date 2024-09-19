@@ -6,11 +6,6 @@ import {
   InfrastructuresRoutesEnum,
   infrastructureStatusDict,
 } from 'modules/infrastructures/constants'
-import {
-  activeChangeInfrastructureButton,
-  showChangeInfrastructureButton,
-  testUtils as taskDetailsTestUtils,
-} from 'modules/task/components/TaskDetails/TaskDetails.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
@@ -22,6 +17,11 @@ import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { formatDate } from 'shared/utils/date'
 
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
+import {
+  activeChangeInfrastructureButton,
+  showChangeInfrastructureButton,
+} from '_tests_/features/tasks/TaskDetails/constants'
+import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import taskFixtures from '_tests_/fixtures/task'

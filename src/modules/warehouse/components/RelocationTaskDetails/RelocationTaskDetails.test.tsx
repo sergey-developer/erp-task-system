@@ -6,7 +6,6 @@ import pick from 'lodash/pick'
 import { testUtils as attachmentImagesTestUtils } from 'modules/attachment/components/AttachmentImages/AttachmentImages.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as taskAttachmentListTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
-import { testUtils as taskCardTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
 import { getTasksPageLink } from 'modules/task/utils/task'
@@ -44,6 +43,7 @@ import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
+import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -590,7 +590,7 @@ describe('Информация о заявке о перемещении', () =>
 
         const link = testUtils.getBlockInfo('task', relocationTask.task!.recordId)
         await user.click(link)
-        const card = await taskCardTestUtils.findContainer()
+        const card = await taskDetailsTestUtils.findContainer()
 
         expect(card).toBeInTheDocument()
       })
