@@ -5,14 +5,14 @@ import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequ
 
 import { formatDate } from 'shared/utils/date'
 
-import taskFixtures from '_tests_/fixtures/task'
-import { render } from '_tests_/utils'
-
 import {
   showCancelButtonProps,
   showReworkButtonProps,
-  testUtils as subTaskTestUtils,
-} from './SubTask.test'
+} from '_tests_/features/tasks/SubTask/constants'
+import { subTaskTestUtils } from '_tests_/features/tasks/SubTask/testUtils'
+import taskFixtures from '_tests_/fixtures/task'
+import { render } from '_tests_/utils'
+
 import SubTaskList, { SubTaskListProps } from './index'
 
 const props: Readonly<SubTaskListProps> = {
