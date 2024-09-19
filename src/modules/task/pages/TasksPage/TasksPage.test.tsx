@@ -3,13 +3,6 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { camelize } from 'humps'
 import moment from 'moment-timezone'
 
-import {
-  activeFirstLineButtonProps,
-  activeSecondLineButtonProps,
-  showFirstLineButtonProps,
-  showSecondLineButtonProps,
-  testUtils as workGroupBlockTestUtils,
-} from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
 import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/components/TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
 import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
@@ -44,6 +37,13 @@ import {
 import { assigneeBlockTestUtils } from '_tests_/features/tasks/TaskDetails/AssigneeBlock/testUtils'
 import { canExecuteTaskProps } from '_tests_/features/tasks/TaskDetails/TaskDetailsTitle/constants'
 import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/TaskDetails/TaskDetailsTitle/testUtils'
+import {
+  activeFirstLineButtonProps,
+  activeSecondLineButtonProps,
+  showFirstLineButtonProps,
+  showSecondLineButtonProps,
+} from '_tests_/features/tasks/TaskDetails/WorkGroupBlock/constants'
+import { workGroupBlockTestUtils } from '_tests_/features/tasks/TaskDetails/WorkGroupBlock/testUtils'
 import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
