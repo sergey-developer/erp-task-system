@@ -1,6 +1,5 @@
 import { screen, within } from '@testing-library/react'
 
-import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/components/TaskFirstLineModal/TaskFirstLineModal.test'
 import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
 import {
   TaskActionsPermissionsEnum,
@@ -21,6 +20,7 @@ import {
   showSecondLineButtonProps,
 } from '_tests_/features/tasks/TaskDetails/WorkGroupBlock/constants'
 import { workGroupBlockTestUtils } from '_tests_/features/tasks/TaskDetails/WorkGroupBlock/testUtils'
+import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/TaskFirstLineModal/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
