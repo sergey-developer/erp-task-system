@@ -47,6 +47,7 @@ import {
 } from '_tests_/features/tasks/TaskDetails/constants'
 import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
 import { taskReclassificationRequestTestUtils } from '_tests_/features/tasks/TaskReclassificationRequest/testUtils'
+import { taskSuspendRequestTestUtils } from '_tests_/features/tasks/TaskSuspendRequest/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'
@@ -90,7 +91,6 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import TaskDetails from './index'
 
 jest.mock('react-router-dom', () => ({
