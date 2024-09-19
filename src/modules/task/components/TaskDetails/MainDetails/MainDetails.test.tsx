@@ -1,7 +1,6 @@
-import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
-
 import { props } from '_tests_/features/tasks/TaskDetails/MainDetails/constants'
 import { mainDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/MainDetails/testUtils'
+import { taskStatusTestUtils } from '_tests_/features/tasks/TaskStatus/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'

@@ -1,4 +1,3 @@
-import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 
@@ -11,6 +10,7 @@ import {
 } from '_tests_/features/tasks/SubTaskList/SubTask/constants'
 import { subTaskTestUtils } from '_tests_/features/tasks/SubTaskList/SubTask/testUtils'
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
+import { taskStatusTestUtils } from '_tests_/features/tasks/TaskStatus/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import { render } from '_tests_/utils'
 

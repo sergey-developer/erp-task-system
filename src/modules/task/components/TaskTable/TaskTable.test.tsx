@@ -3,7 +3,6 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { TablePaginationConfig } from 'antd'
 
 import { parseResponseTime } from 'modules/task/components/TaskDetails/MainDetails/utils'
-import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
 import { TaskExtendedStatusEnum, taskStatusDict, TaskStatusEnum } from 'modules/task/constants/task'
 import { DEFAULT_PAGE_SIZE } from 'modules/task/pages/TasksPage/constants'
 import { getShortUserName } from 'modules/user/utils'
@@ -18,6 +17,7 @@ import {
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
+import { taskStatusTestUtils } from '_tests_/features/tasks/TaskStatus/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import { iconTestUtils, render, tableTestUtils } from '_tests_/utils'
 

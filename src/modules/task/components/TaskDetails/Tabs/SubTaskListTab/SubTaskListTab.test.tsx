@@ -1,7 +1,6 @@
 import { waitForElementToBeRemoved } from '@testing-library/react'
 
 import { ReworkSubTaskFormErrors } from 'modules/task/components/ReworkSubTaskModal/types'
-import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
 import {
   getSubTasksErrMsg,
   TaskExtendedStatusEnum,
@@ -23,6 +22,7 @@ import {
   props,
 } from '_tests_/features/tasks/TaskDetails/Tabs/SubTaskListTab/constants'
 import { subTaskListTabTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/SubTaskListTab/testUtils'
+import { taskStatusTestUtils } from '_tests_/features/tasks/TaskStatus/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import taskFixtures from '_tests_/fixtures/task'
