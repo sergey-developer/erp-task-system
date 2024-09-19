@@ -6,7 +6,6 @@ import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/rou
 import ChangeInfrastructurePage from 'modules/infrastructures/pages/ChangeInfrastructurePage'
 import { testUtils as changeInfrastructurePageTestUtils } from 'modules/infrastructures/pages/ChangeInfrastructurePage/ChangeInfrastructurePage.test'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
-import { testUtils as createRegistrationFNRequestModalTestUtils } from 'modules/task/components/CreateRegistrationFNRequestModal/CreateRegistrationFNRequestModal.test'
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
 import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import { testUtils as assigneeBlockTestUtils } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
@@ -32,15 +31,10 @@ import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 
-import {
-  confirmCancelReclassificationRequestModalTestUtils
-} from '_tests_/features/tasks/ConfirmCancelReclassificationRequestModal/testUtils'
-import {
-  confirmExecuteTaskReclassificationTasksModalTestUtils
-} from '_tests_/features/tasks/ConfirmExecuteTaskReclassificationTasksModal/testUtils'
-import {
-  confirmExecuteTaskRegistrationFNModalTestUtils
-} from '_tests_/features/tasks/ConfirmExecuteTaskRegistrationFNModal/testUtils'
+import { confirmCancelReclassificationRequestModalTestUtils } from '_tests_/features/tasks/ConfirmCancelReclassificationRequestModal/testUtils'
+import { confirmExecuteTaskReclassificationTasksModalTestUtils } from '_tests_/features/tasks/ConfirmExecuteTaskReclassificationTasksModal/testUtils'
+import { confirmExecuteTaskRegistrationFNModalTestUtils } from '_tests_/features/tasks/ConfirmExecuteTaskRegistrationFNModal/testUtils'
+import { createRegistrationFNRequestModalTestUtils } from '_tests_/features/tasks/CreateRegistrationFNRequestModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'

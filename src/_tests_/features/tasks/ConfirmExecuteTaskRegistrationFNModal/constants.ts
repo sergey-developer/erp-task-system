@@ -9,5 +9,5 @@ export const props: Readonly<ConfirmExecuteTaskRegistrationFNModalProps> = {
 }
 
 export enum TestIdsEnum {
-  ConfirmExecuteTaskRegistrationFnModal = 'confirm-execute-task-registration-fn-modal',
+  ConfirmExecuteTaskRegistrationFNModal = 'confirm-execute-task-registration-fn-modal',
 }

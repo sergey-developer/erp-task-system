@@ -6,8 +6,8 @@ import { buttonTestUtils } from '../../../utils'
 import { CANCEL_TEXT, CONFIRM_TEXT } from '../../../../shared/constants/common'
 import { TestIdsEnum } from './constants'
 
-const getContainer = () => screen.getByTestId(TestIdsEnum.ConfirmExecuteTaskRegistrationFnModal)
-const findContainer = () => screen.findByTestId(TestIdsEnum.ConfirmExecuteTaskRegistrationFnModal)
+const getContainer = () => screen.getByTestId(TestIdsEnum.ConfirmExecuteTaskRegistrationFNModal)
+const findContainer = () => screen.findByTestId(TestIdsEnum.ConfirmExecuteTaskRegistrationFNModal)
 
 // cancel button
 const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
