@@ -8,7 +8,6 @@ import {
   taskAssignedDict,
   taskOverdueDict,
 } from 'modules/task/components/TasksFilter/constants'
-import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 import {
   FastFilterEnum,
   TaskActionsPermissionsEnum,
@@ -46,6 +45,7 @@ import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/TaskSecondL
 import { taskTableTestUtils } from '_tests_/features/tasks/TaskTable/testUtils'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
 import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/TasksFiltersStorage/testUtils'
+import { updateTasksButtonTestUtils } from '_tests_/features/tasks/UpdateTasksButton/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
