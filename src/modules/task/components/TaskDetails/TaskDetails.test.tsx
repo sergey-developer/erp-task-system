@@ -5,7 +5,6 @@ import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/rou
 import ChangeInfrastructurePage from 'modules/infrastructures/pages/ChangeInfrastructurePage'
 import { testUtils as changeInfrastructurePageTestUtils } from 'modules/infrastructures/pages/ChangeInfrastructurePage/ChangeInfrastructurePage.test'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
-import { testUtils as taskReclassificationRequestTestUtils } from 'modules/task/components/TaskReclassificationRequest/TaskReclassificationRequest.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import {
   takeTaskErrMsg,
@@ -47,6 +46,7 @@ import {
   showChangeInfrastructureButton,
 } from '_tests_/features/tasks/TaskDetails/constants'
 import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
+import { taskReclassificationRequestTestUtils } from '_tests_/features/tasks/TaskReclassificationRequest/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'
