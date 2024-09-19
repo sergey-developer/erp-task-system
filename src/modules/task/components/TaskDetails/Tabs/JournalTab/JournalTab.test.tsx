@@ -10,6 +10,7 @@ import { commonApiMessages } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as downloadLink from 'shared/utils/file/downloadFile'
 
+import { journalEntryTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/JournalEntry/testUtils'
 import { props } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/constants'
 import { journalTabTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
@@ -27,7 +28,6 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import { testUtils as journalEntryTestUtils } from './JournalEntry.test'
 import { NO_DATA_MSG } from './constants'
 import JournalTab from './index'
 import { getJournalCsvFilename } from './utils'
