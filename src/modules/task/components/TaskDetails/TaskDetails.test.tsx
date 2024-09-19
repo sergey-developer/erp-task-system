@@ -35,6 +35,7 @@ import { confirmExecuteTaskReclassificationTasksModalTestUtils } from '_tests_/f
 import { confirmExecuteTaskRegistrationFNModalTestUtils } from '_tests_/features/tasks/ConfirmExecuteTaskRegistrationFNModal/testUtils'
 import { createRegistrationFNRequestModalTestUtils } from '_tests_/features/tasks/CreateRegistrationFNRequestModal/testUtils'
 import { executeTaskModalTestUtils } from '_tests_/features/tasks/ExecuteTaskModal/testUtils'
+import { requestTaskSuspendModalTestUtils } from '_tests_/features/tasks/RequestTaskSuspendModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'
@@ -80,7 +81,6 @@ import {
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
-import { testUtils as requestTaskSuspendModalTestUtils } from '../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import {
   activeRequestSuspendItemProps,
