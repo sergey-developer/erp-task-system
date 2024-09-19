@@ -1,11 +1,13 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils } from '../../../utils'
+import { buttonTestUtils } from '_tests_/utils'
+
 import { TestIdsEnum } from './constants'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.ConfirmCancelReclassificationRequestModal)
-const findContainer = () => screen.findByTestId(TestIdsEnum.ConfirmCancelReclassificationRequestModal)
+const findContainer = () =>
+  screen.findByTestId(TestIdsEnum.ConfirmCancelReclassificationRequestModal)
 
 const getConfirmButton = () => buttonTestUtils.getButtonIn(getContainer(), /ok/i)
 const clickConfirmButton = async (user: UserEvent) => {

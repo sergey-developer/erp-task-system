@@ -2,7 +2,7 @@ import { SubTaskListProps } from 'modules/task/components/SubTaskList'
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 
-import taskFixtures from '../../../fixtures/task'
+import taskFixtures from '_tests_/fixtures/task'
 
 export const props: Readonly<SubTaskListProps> = {
   list: taskFixtures.subTaskList(),

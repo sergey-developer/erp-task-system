@@ -2,7 +2,10 @@ import { ReclassificationReasonEnum } from 'modules/task/constants/taskReclassif
 
 import { validationMessages } from 'shared/constants/validation'
 
-import { props, reasonValues } from '_tests_/features/tasks/RequestTaskReclassificationModal/constants'
+import {
+  props,
+  reasonValues,
+} from '_tests_/features/tasks/RequestTaskReclassificationModal/constants'
 import { requestTaskReclassificationModalTestUtils } from '_tests_/features/tasks/RequestTaskReclassificationModal/testUtils'
 import { fakeWord, render } from '_tests_/utils'
 
@@ -12,8 +15,12 @@ describe('Модалка запроса о переклассификации з
   test('Заголовок отображается', () => {
     render(<RequestTaskReclassificationModal {...props} />)
 
-    expect(requestTaskReclassificationModalTestUtils.getChildByText('Запрос о переклассификации заявки')).toBeInTheDocument()
-    expect(requestTaskReclassificationModalTestUtils.getChildByText(props.recordId)).toBeInTheDocument()
+    expect(
+      requestTaskReclassificationModalTestUtils.getChildByText('Запрос о переклассификации заявки'),
+    ).toBeInTheDocument()
+    expect(
+      requestTaskReclassificationModalTestUtils.getChildByText(props.recordId),
+    ).toBeInTheDocument()
   })
 
   describe('Кнопка закрытия', () => {
@@ -93,14 +100,17 @@ describe('Модалка запроса о переклассификации з
     describe('Поле причины переклассификации', () => {
       test('Заголовок отображается', () => {
         render(<RequestTaskReclassificationModal {...props} />)
-        expect(requestTaskReclassificationModalTestUtils.getReclassificationReasonTitle()).toBeInTheDocument()
+        expect(
+          requestTaskReclassificationModalTestUtils.getReclassificationReasonTitle(),
+        ).toBeInTheDocument()
       })
 
       test('Отображается корректно', () => {
         render(<RequestTaskReclassificationModal {...props} />)
 
         reasonValues.forEach((reason) => {
-          const field = requestTaskReclassificationModalTestUtils.getReclassificationReasonField(reason)
+          const field =
+            requestTaskReclassificationModalTestUtils.getReclassificationReasonField(reason)
           expect(field).toBeInTheDocument()
           expect(field).toBeEnabled()
           expect(field.value).toBe(reason)
@@ -112,7 +122,10 @@ describe('Модалка запроса о переклассификации з
         const { user } = render(<RequestTaskReclassificationModal {...props} />)
 
         for await (const reason of Object.values(ReclassificationReasonEnum)) {
-          const field = await requestTaskReclassificationModalTestUtils.setReclassificationReason(user, reason)
+          const field = await requestTaskReclassificationModalTestUtils.setReclassificationReason(
+            user,
+            reason,
+          )
           expect(field).toBeChecked()
         }
       })
@@ -121,7 +134,8 @@ describe('Модалка запроса о переклассификации з
         render(<RequestTaskReclassificationModal {...props} isLoading />)
 
         reasonValues.forEach((reason) => {
-          const field = requestTaskReclassificationModalTestUtils.getReclassificationReasonField(reason)
+          const field =
+            requestTaskReclassificationModalTestUtils.getReclassificationReasonField(reason)
           expect(field).toBeDisabled()
         })
       })
@@ -133,7 +147,9 @@ describe('Модалка запроса о переклассификации з
           await requestTaskReclassificationModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await requestTaskReclassificationModalTestUtils.findReclassificationReasonError(validationMessages.required),
+            await requestTaskReclassificationModalTestUtils.findReclassificationReasonError(
+              validationMessages.required,
+            ),
           ).toBeInTheDocument()
         })
       })
@@ -176,7 +192,9 @@ describe('Модалка запроса о переклассификации з
           await requestTaskReclassificationModalTestUtils.setComment(user, ' ')
 
           expect(
-            await requestTaskReclassificationModalTestUtils.findCommentError(validationMessages.canNotBeEmpty),
+            await requestTaskReclassificationModalTestUtils.findCommentError(
+              validationMessages.canNotBeEmpty,
+            ),
           ).toBeInTheDocument()
         })
 
@@ -185,7 +203,11 @@ describe('Модалка запроса о переклассификации з
 
           await requestTaskReclassificationModalTestUtils.clickSubmitButton(user)
 
-          expect(await requestTaskReclassificationModalTestUtils.findCommentError(validationMessages.required)).toBeInTheDocument()
+          expect(
+            await requestTaskReclassificationModalTestUtils.findCommentError(
+              validationMessages.required,
+            ),
+          ).toBeInTheDocument()
         })
       })
     })

@@ -1,4 +1,5 @@
 import { within } from '@testing-library/react'
+
 import { validationMessages } from 'shared/constants/validation'
 
 import { props } from '_tests_/features/tasks/CreateRegistrationFNRequestModal/constants'
@@ -66,7 +67,9 @@ describe('Модалка создания запроса на регистрац
       const { user } = render(<CreateRegistrationFNRequestModal {...props} />)
 
       await createRegistrationFNRequestModalTestUtils.clickSubmitButton(user)
-      const error = await createRegistrationFNRequestModalTestUtils.findChangeTypeError(validationMessages.required)
+      const error = await createRegistrationFNRequestModalTestUtils.findChangeTypeError(
+        validationMessages.required,
+      )
 
       expect(error).toBeInTheDocument()
     })
@@ -77,7 +80,9 @@ describe('Модалка создания запроса на регистрац
       const { user } = render(<CreateRegistrationFNRequestModal {...props} />)
 
       const { input, file } = await createRegistrationFNRequestModalTestUtils.setAttachment(user)
-      const uploadedFile = createRegistrationFNRequestModalTestUtils.getUploadedAttachment(file.name)
+      const uploadedFile = createRegistrationFNRequestModalTestUtils.getUploadedAttachment(
+        file.name,
+      )
 
       expect(input.files!.item(0)).toBe(file)
       expect(input.files).toHaveLength(1)
@@ -91,7 +96,9 @@ describe('Модалка создания запроса на регистрац
 
       const { file } = await createRegistrationFNRequestModalTestUtils.setAttachment(user)
       await createRegistrationFNRequestModalTestUtils.clickDeleteAttachmentButton(user)
-      const uploadedFile = createRegistrationFNRequestModalTestUtils.queryUploadedAttachment(file.name)
+      const uploadedFile = createRegistrationFNRequestModalTestUtils.queryUploadedAttachment(
+        file.name,
+      )
 
       expect(uploadedFile).not.toBeInTheDocument()
     })

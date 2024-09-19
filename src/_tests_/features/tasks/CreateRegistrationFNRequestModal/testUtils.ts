@@ -1,16 +1,18 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
+import { SEND_TEXT } from 'shared/constants/common'
 
-import { buttonTestUtils, fakeWord, selectTestUtils } from '../../../utils'
-import { SEND_TEXT } from '../../../../shared/constants/common'
+import { buttonTestUtils, fakeWord, selectTestUtils } from '_tests_/utils'
+
 import { TestIdsEnum } from './constants'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CreateRegistrationFNRequestModal)
 const findContainer = () => screen.findByTestId(TestIdsEnum.CreateRegistrationFNRequestModal)
 
 // change type field
-const getChangeTypeFormItem = () => within(getContainer()).getByTestId(TestIdsEnum.ChangeTypeFormItem)
+const getChangeTypeFormItem = () =>
+  within(getContainer()).getByTestId(TestIdsEnum.ChangeTypeFormItem)
 const openChangeTypeSelect = (user: UserEvent) =>
   selectTestUtils.openSelect(user, getChangeTypeFormItem())
 
@@ -25,7 +27,8 @@ const expectChangeTypesLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getChangeTypeFormItem())
 
 // attachments
-const getAttachmentsFormItem = () => within(getContainer()).getByTestId(TestIdsEnum.AttachmentsFormItem)
+const getAttachmentsFormItem = () =>
+  within(getContainer()).getByTestId(TestIdsEnum.AttachmentsFormItem)
 
 const getAddAttachmentsButton = () =>
   buttonTestUtils.getButtonIn(getAttachmentsFormItem(), /Добавить вложение/)

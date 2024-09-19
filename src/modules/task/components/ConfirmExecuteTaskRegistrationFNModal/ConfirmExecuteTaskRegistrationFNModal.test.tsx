@@ -1,10 +1,10 @@
 import { within } from '@testing-library/react'
 
 import { props } from '_tests_/features/tasks/ConfirmExecuteTaskRegistrationFNModal/constants'
+import { confirmExecuteTaskRegistrationFNModalTestUtils } from '_tests_/features/tasks/ConfirmExecuteTaskRegistrationFNModal/testUtils'
 import { render } from '_tests_/utils'
 
 import ConfirmExecuteTaskRegistrationFNModal from './index'
-import { confirmExecuteTaskRegistrationFNModalTestUtils } from '_tests_/features/tasks/ConfirmExecuteTaskRegistrationFNModal/testUtils'
 
 describe('Модалка подтверждения выполнения заявки', () => {
   test('Заголовок и текст отображается', () => {

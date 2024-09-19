@@ -16,7 +16,10 @@ describe('Быстрый фильтр', () => {
     render(<FastFilters {...props} />)
 
     props.config.forEach(({ filter }) => {
-      const filterEl = fastFilterListTestUtils.getByTextInCheckableTag(filter, fastFilterNamesDict[filter])
+      const filterEl = fastFilterListTestUtils.getByTextInCheckableTag(
+        filter,
+        fastFilterNamesDict[filter],
+      )
       const taskCount = fastFilterListTestUtils.getByTextInCheckableTag(
         filter,
         props.counters![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -43,7 +46,10 @@ describe('Быстрый фильтр', () => {
           />,
         )
 
-        const filterEl = fastFilterListTestUtils.getByTextInCheckableTag(filter, fastFilterNamesDict[filter])
+        const filterEl = fastFilterListTestUtils.getByTextInCheckableTag(
+          filter,
+          fastFilterNamesDict[filter],
+        )
         const taskCount = fastFilterListTestUtils.getByTextInCheckableTag(
           filter,
           props.counters![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -67,7 +73,10 @@ describe('Быстрый фильтр', () => {
           />,
         )
 
-        const filterEl = fastFilterListTestUtils.getByTextInCheckableTag(filter, fastFilterNamesDict[filter])
+        const filterEl = fastFilterListTestUtils.getByTextInCheckableTag(
+          filter,
+          fastFilterNamesDict[filter],
+        )
         const taskCount = fastFilterListTestUtils.getByTextInCheckableTag(
           filter,
           props.counters![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -93,7 +102,10 @@ describe('Быстрый фильтр', () => {
           />,
         )
 
-        const filterEl = fastFilterListTestUtils.queryByTextInCheckableTag(filter, fastFilterNamesDict[filter])
+        const filterEl = fastFilterListTestUtils.queryByTextInCheckableTag(
+          filter,
+          fastFilterNamesDict[filter],
+        )
         const taskCount = fastFilterListTestUtils.queryByTextInCheckableTag(
           filter,
           props.counters![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -117,7 +129,10 @@ describe('Быстрый фильтр', () => {
           />,
         )
 
-        const filterEl = fastFilterListTestUtils.queryByTextInCheckableTag(filter, fastFilterNamesDict[filter])
+        const filterEl = fastFilterListTestUtils.queryByTextInCheckableTag(
+          filter,
+          fastFilterNamesDict[filter],
+        )
         const taskCount = fastFilterListTestUtils.queryByTextInCheckableTag(
           filter,
           props.counters![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -145,7 +160,10 @@ describe('Быстрый фильтр', () => {
           />,
         )
 
-        const filterEl = fastFilterListTestUtils.getByTextInCheckableTag(filter, fastFilterNamesDict[filter])
+        const filterEl = fastFilterListTestUtils.getByTextInCheckableTag(
+          filter,
+          fastFilterNamesDict[filter],
+        )
         const taskCount = fastFilterListTestUtils.getByTextInCheckableTag(
           filter,
           props.counters![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -169,7 +187,10 @@ describe('Быстрый фильтр', () => {
           />,
         )
 
-        const filterEl = fastFilterListTestUtils.getByTextInCheckableTag(filter, fastFilterNamesDict[filter])
+        const filterEl = fastFilterListTestUtils.getByTextInCheckableTag(
+          filter,
+          fastFilterNamesDict[filter],
+        )
         const taskCount = fastFilterListTestUtils.getByTextInCheckableTag(
           filter,
           props.counters![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -195,7 +216,10 @@ describe('Быстрый фильтр', () => {
           />,
         )
 
-        const filterEl = fastFilterListTestUtils.queryByTextInCheckableTag(filter, fastFilterNamesDict[filter])
+        const filterEl = fastFilterListTestUtils.queryByTextInCheckableTag(
+          filter,
+          fastFilterNamesDict[filter],
+        )
         const taskCount = fastFilterListTestUtils.queryByTextInCheckableTag(
           filter,
           props.counters![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -219,7 +243,10 @@ describe('Быстрый фильтр', () => {
           />,
         )
 
-        const filterEl = fastFilterListTestUtils.queryByTextInCheckableTag(filter, fastFilterNamesDict[filter])
+        const filterEl = fastFilterListTestUtils.queryByTextInCheckableTag(
+          filter,
+          fastFilterNamesDict[filter],
+        )
         const taskCount = fastFilterListTestUtils.queryByTextInCheckableTag(
           filter,
           props.counters![camelize(filter.toLowerCase()) as TaskCountersKeys],
@@ -260,7 +287,9 @@ describe('Быстрый фильтр', () => {
   test('Правильно определяет выбранный элемент', () => {
     const selectedFilter = FastFilterEnum.Mine
     render(<FastFilters {...props} selectedFilter={selectedFilter} />)
-    fastFilterListTestUtils.expectFilterChecked(fastFilterListTestUtils.getCheckableTag(selectedFilter))
+    fastFilterListTestUtils.expectFilterChecked(
+      fastFilterListTestUtils.getCheckableTag(selectedFilter),
+    )
   })
 
   test('Можно сделать все фильтры не активными', () => {

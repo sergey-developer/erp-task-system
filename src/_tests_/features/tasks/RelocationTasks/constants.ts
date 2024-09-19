@@ -1,5 +1,6 @@
-import warehouseFixtures from '../../../fixtures/warehouse'
 import { RelocationTasksProps } from 'modules/task/components/RelocationTasks/types'
+
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
 export const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
 

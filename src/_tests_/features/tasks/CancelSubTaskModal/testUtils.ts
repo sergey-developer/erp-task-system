@@ -1,24 +1,22 @@
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { screen, within } from '@testing-library/react'
+import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils } from '../../../utils'
+import { buttonTestUtils } from '_tests_/utils'
+
 import { TestIdsEnum } from './constants'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CancelSubTaskModal)
 
 const findContainer = () => screen.findByTestId(TestIdsEnum.CancelSubTaskModal)
 
-const getChildByText = (text: string | RegExp) =>
-  within(getContainer()).getByText(text)
+const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // cancel reason
 const getCancelReasonFieldContainer = () =>
   within(getContainer()).getByTestId(TestIdsEnum.CancelReason)
 
 const getCancelReasonField = () =>
-  within(getCancelReasonFieldContainer()).getByPlaceholderText(
-    /опишите причину отмены/i,
-  )
+  within(getCancelReasonFieldContainer()).getByPlaceholderText(/опишите причину отмены/i)
 
 const setCancelReason = async (user: UserEvent, value: string) => {
   const field = getCancelReasonField()
@@ -48,11 +46,9 @@ const clickCancelButton = async (user: UserEvent) => {
 }
 
 // loading
-const expectLoadingStarted = () =>
-  buttonTestUtils.expectLoadingStarted(getSubmitButton())
+const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
 
-const expectLoadingFinished = () =>
-  buttonTestUtils.expectLoadingFinished(getSubmitButton())
+const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
 
 export const cancelSubTaskModalTestUtils = {
   getContainer,

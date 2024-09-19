@@ -1,7 +1,8 @@
 import { ExecuteTaskModalProps } from 'modules/task/components/ExecuteTaskModal/types'
 import { TaskTypeEnum } from 'modules/task/constants/task'
-import { fakeIdStr } from '../../../utils'
-import taskFixtures from '../../../fixtures/task'
+
+import taskFixtures from '_tests_/fixtures/task'
+import { fakeIdStr } from '_tests_/utils'
 
 export const props: Readonly<ExecuteTaskModalProps> = {
   open: true,
@@ -21,11 +22,15 @@ export const props: Readonly<ExecuteTaskModalProps> = {
   getActIsLoading: false,
 }
 
-export const showResolutionClassifierFieldProps: Readonly<Pick<ExecuteTaskModalProps, 'supportGroup'>> = {
+export const showResolutionClassifierFieldProps: Readonly<
+  Pick<ExecuteTaskModalProps, 'supportGroup'>
+> = {
   supportGroup: taskFixtures.supportGroup({ hasResolutionClassifiers: true }),
 }
 
-export const hideResolutionClassifierFieldProps: Readonly<Pick<ExecuteTaskModalProps, 'supportGroup'>> = {
+export const hideResolutionClassifierFieldProps: Readonly<
+  Pick<ExecuteTaskModalProps, 'supportGroup'>
+> = {
   supportGroup: taskFixtures.supportGroup({ hasResolutionClassifiers: false }),
 }
 

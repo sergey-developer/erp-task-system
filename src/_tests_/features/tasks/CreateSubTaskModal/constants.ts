@@ -1,5 +1,6 @@
 import { CreateSubTaskModalProps } from 'modules/task/components/CreateSubTaskModal/types'
-import taskFixtures from '../../../fixtures/task'
+
+import taskFixtures from '_tests_/fixtures/task/index'
 
 export const onCancel = jest.fn()
 

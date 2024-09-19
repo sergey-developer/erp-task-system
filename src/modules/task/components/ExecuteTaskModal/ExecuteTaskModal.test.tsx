@@ -2,7 +2,11 @@ import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { validationMessages, validationSizes } from 'shared/constants/validation'
 
-import { hideResolutionClassifierFieldProps, showResolutionClassifierFieldProps, props } from '_tests_/features/tasks/ExecuteTaskModal/constants'
+import {
+  hideResolutionClassifierFieldProps,
+  props,
+  showResolutionClassifierFieldProps,
+} from '_tests_/features/tasks/ExecuteTaskModal/constants'
 import { executeTaskModalTestUtils } from '_tests_/features/tasks/ExecuteTaskModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { fakeWord, render } from '_tests_/utils'
@@ -27,7 +31,9 @@ describe('Модалка выполнения заявки', () => {
     ).toBeInTheDocument()
 
     expect(
-      executeTaskModalTestUtils.getChildByText('После выполнения заявка будет доступна только в режиме просмотра.'),
+      executeTaskModalTestUtils.getChildByText(
+        'После выполнения заявка будет доступна только в режиме просмотра.',
+      ),
     ).toBeInTheDocument()
   })
 
@@ -181,7 +187,10 @@ describe('Модалка выполнения заявки', () => {
       )
 
       await executeTaskModalTestUtils.openResolutionClassificationSelect(user)
-      await executeTaskModalTestUtils.setResolutionClassification(user, resolutionClassificationListItem.title)
+      await executeTaskModalTestUtils.setResolutionClassification(
+        user,
+        resolutionClassificationListItem.title,
+      )
       const selectedOption = executeTaskModalTestUtils.getSelectedResolutionClassification(
         resolutionClassificationListItem.title,
       )
@@ -194,7 +203,9 @@ describe('Модалка выполнения заявки', () => {
         <ExecuteTaskModal {...props} {...showResolutionClassifierFieldProps} />,
       )
       await executeTaskModalTestUtils.clickSubmitButton(user)
-      const error = await executeTaskModalTestUtils.findResolutionClassificationError(validationMessages.required)
+      const error = await executeTaskModalTestUtils.findResolutionClassificationError(
+        validationMessages.required,
+      )
       expect(error).toBeInTheDocument()
     })
   })
@@ -259,7 +270,9 @@ describe('Модалка выполнения заявки', () => {
         )
 
         expect(
-          await executeTaskModalTestUtils.findTechResolutionError(validationMessages.string.max.long),
+          await executeTaskModalTestUtils.findTechResolutionError(
+            validationMessages.string.max.long,
+          ),
         ).toBeInTheDocument()
       })
     })
@@ -337,7 +350,9 @@ describe('Модалка выполнения заявки', () => {
         )
 
         expect(
-          await executeTaskModalTestUtils.findUserResolutionError(validationMessages.string.max.long),
+          await executeTaskModalTestUtils.findUserResolutionError(
+            validationMessages.string.max.long,
+          ),
         ).toBeInTheDocument()
       })
     })

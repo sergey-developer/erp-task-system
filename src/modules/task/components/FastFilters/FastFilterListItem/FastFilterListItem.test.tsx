@@ -1,4 +1,4 @@
-import { props } from '_tests_/features/tasks/FastFilterListItem/constants'
+import { props } from '_tests_/features/tasks/FastFilters/FastFilterListItem/constants'
 import { fastFilterListTestUtils } from '_tests_/features/tasks/FastFilters/testUtils'
 import { render } from '_tests_/utils'
 
@@ -13,7 +13,9 @@ describe('Элемент быстрого фильтра', () => {
   test('Отображает текст', () => {
     render(<FastFilterListItem {...props} />)
 
-    expect(fastFilterListTestUtils.getByTextInCheckableTag(props.value, props.text)).toBeInTheDocument()
+    expect(
+      fastFilterListTestUtils.getByTextInCheckableTag(props.value, props.text),
+    ).toBeInTheDocument()
   })
 
   describe('Количество', () => {
@@ -21,7 +23,9 @@ describe('Элемент быстрого фильтра', () => {
       const amount = 0
       render(<FastFilterListItem {...props} amount={amount} />)
 
-      expect(fastFilterListTestUtils.getByTextInCheckableTag(props.value, amount)).toBeInTheDocument()
+      expect(
+        fastFilterListTestUtils.getByTextInCheckableTag(props.value, amount),
+      ).toBeInTheDocument()
     })
 
     test('Не отображается если оно отсутствует', () => {
@@ -36,25 +40,33 @@ describe('Элемент быстрого фильтра', () => {
   test('Можно сделать выбранным', () => {
     render(<FastFilterListItem {...props} checked />)
 
-    fastFilterListTestUtils.expectFilterChecked(fastFilterListTestUtils.getCheckableTag(props.value))
+    fastFilterListTestUtils.expectFilterChecked(
+      fastFilterListTestUtils.getCheckableTag(props.value),
+    )
   })
 
   test('Можно сделать не выбранным', () => {
     render(<FastFilterListItem {...props} checked={false} />)
 
-    fastFilterListTestUtils.expectFilterNotChecked(fastFilterListTestUtils.getCheckableTag(props.value))
+    fastFilterListTestUtils.expectFilterNotChecked(
+      fastFilterListTestUtils.getCheckableTag(props.value),
+    )
   })
 
   test('Можно сделать не активным', () => {
     render(<FastFilterListItem {...props} disabled />)
 
-    fastFilterListTestUtils.expectFilterNotChecked(fastFilterListTestUtils.getCheckableTag(props.value))
+    fastFilterListTestUtils.expectFilterNotChecked(
+      fastFilterListTestUtils.getCheckableTag(props.value),
+    )
   })
 
   test('Если элемент не активный, он перестаёт быть выбранным', () => {
     render(<FastFilterListItem {...props} checked disabled />)
 
-    fastFilterListTestUtils.expectFilterNotChecked(fastFilterListTestUtils.getCheckableTag(props.value))
+    fastFilterListTestUtils.expectFilterNotChecked(
+      fastFilterListTestUtils.getCheckableTag(props.value),
+    )
   })
 
   describe('Обработчик onChange', () => {

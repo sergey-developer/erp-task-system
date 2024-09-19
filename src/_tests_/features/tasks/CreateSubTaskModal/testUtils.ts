@@ -1,8 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils, selectTestUtils } from '../../../utils'
 import { CreateSubTaskFormFields } from 'modules/task/components/CreateSubTaskModal/types'
+
+import { buttonTestUtils, selectTestUtils } from '_tests_/utils'
+
 import { TestIdsEnum } from './constants'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CreateSubTaskModal)
@@ -10,7 +12,8 @@ const findContainer = () => screen.findByTestId(TestIdsEnum.CreateSubTaskModal)
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // support group field
-const getSupportGroupFormItem = () => within(getContainer()).getByTestId(TestIdsEnum.SupportGroupFormItem)
+const getSupportGroupFormItem = () =>
+  within(getContainer()).getByTestId(TestIdsEnum.SupportGroupFormItem)
 const getSupportGroupSelect = () => selectTestUtils.getSelect(getSupportGroupFormItem())
 const querySupportGroupSelect = () => selectTestUtils.querySelect(getSupportGroupFormItem())
 
@@ -42,7 +45,8 @@ const supportGroupExpectLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getSupportGroupFormItem())
 
 // service field
-const getServiceFieldFormItem = () => within(getContainer()).getByTestId(TestIdsEnum.ServiceFormItem)
+const getServiceFieldFormItem = () =>
+  within(getContainer()).getByTestId(TestIdsEnum.ServiceFormItem)
 const getServiceField = () => selectTestUtils.getSelect(getServiceFieldFormItem())
 const queryServiceField = () => selectTestUtils.querySelect(getServiceFieldFormItem())
 

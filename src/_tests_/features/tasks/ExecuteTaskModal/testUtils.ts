@@ -1,7 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils, selectTestUtils } from '../../../utils'
+import { buttonTestUtils, selectTestUtils } from '_tests_/utils'
+
 import { TestIdsEnum } from './constants'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.ExecuteTaskModal)
@@ -110,7 +111,8 @@ const setUserResolution = async (user: UserEvent, value: string) => {
 }
 
 // attachments
-const getAttachmentsFormItem = () => within(getContainer()).getByTestId(TestIdsEnum.AttachmentsFormItem)
+const getAttachmentsFormItem = () =>
+  within(getContainer()).getByTestId(TestIdsEnum.AttachmentsFormItem)
 
 const getAddAttachmentsButton = () =>
   buttonTestUtils.getButtonIn(getAttachmentsFormItem(), /Добавить вложение/)

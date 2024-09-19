@@ -1,10 +1,12 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { MaybeNull, NumberOrString } from '../../../../shared/types/utils'
-import { filterCheckedClass, filterDisabledClass, TestIdsEnum } from './constants'
-import { FastFilterEnum } from 'modules/task/constants/task'
 import { fastFiltersConfig } from 'modules/task/components/FastFilters/config'
+import { FastFilterEnum } from 'modules/task/constants/task'
+
+import { MaybeNull, NumberOrString } from 'shared/types/utils'
+
+import { filterCheckedClass, filterDisabledClass, TestIdsEnum } from './constants'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.FastFilterList)
 

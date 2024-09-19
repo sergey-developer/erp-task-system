@@ -17,8 +17,8 @@ import { reworkSubTaskModalTestUtils } from '_tests_/features/tasks/ReworkSubTas
 import {
   showCancelButtonProps,
   showReworkButtonProps,
-} from '_tests_/features/tasks/SubTask/constants'
-import { subTaskTestUtils } from '_tests_/features/tasks/SubTask/testUtils'
+} from '_tests_/features/tasks/SubTaskList/SubTask/constants'
+import { subTaskTestUtils } from '_tests_/features/tasks/SubTaskList/SubTask/testUtils'
 import { subTaskListTestUtils } from '_tests_/features/tasks/SubTaskList/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'

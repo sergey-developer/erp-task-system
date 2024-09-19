@@ -1,6 +1,7 @@
-import { FastFiltersProps } from 'modules/task/components/FastFilters/types'
 import { fastFiltersConfig } from 'modules/task/components/FastFilters/config'
-import taskFixtures from '../../../fixtures/task'
+import { FastFiltersProps } from 'modules/task/components/FastFilters/types'
+
+import taskFixtures from '_tests_/fixtures/task'
 
 export const filterCheckedClass = 'ant-tag-checkable-checked'
 export const filterDisabledClass = 'ant-tag-checkable--disabled'

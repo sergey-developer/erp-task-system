@@ -10,10 +10,12 @@ describe('Модалка подтверждения отмены запрос н
   test('Отображается', () => {
     render(<ConfirmCancelReclassificationRequestModal {...props} />)
 
-    const title = within(confirmCancelReclassificationRequestModalTestUtils.getContainer()).getByText('Отменить запрос на переклассификацию')
-    const description = within(confirmCancelReclassificationRequestModalTestUtils.getContainer()).getByText(
-      'Вы уверены, что хотите отменить запрос на переклассификацию?',
-    )
+    const title = within(
+      confirmCancelReclassificationRequestModalTestUtils.getContainer(),
+    ).getByText('Отменить запрос на переклассификацию')
+    const description = within(
+      confirmCancelReclassificationRequestModalTestUtils.getContainer(),
+    ).getByText('Вы уверены, что хотите отменить запрос на переклассификацию?')
 
     expect(title).toBeInTheDocument()
     expect(description).toBeInTheDocument()

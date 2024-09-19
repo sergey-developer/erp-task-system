@@ -1,13 +1,16 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils } from '../../../utils'
-import { CANCEL_TEXT, CONFIRM_TEXT } from '../../../../shared/constants/common'
+import { CANCEL_TEXT, CONFIRM_TEXT } from 'shared/constants/common'
+
+import { buttonTestUtils } from '_tests_/utils'
+
 import { TestIdsEnum } from './constants'
 
-
-const getContainer = () => screen.getByTestId(TestIdsEnum.ConfirmExecuteTaskReclassificationTasksModal)
-const findContainer = () => screen.findByTestId(TestIdsEnum.ConfirmExecuteTaskReclassificationTasksModal)
+const getContainer = () =>
+  screen.getByTestId(TestIdsEnum.ConfirmExecuteTaskReclassificationTasksModal)
+const findContainer = () =>
+  screen.findByTestId(TestIdsEnum.ConfirmExecuteTaskReclassificationTasksModal)
 
 // cancel button
 const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)

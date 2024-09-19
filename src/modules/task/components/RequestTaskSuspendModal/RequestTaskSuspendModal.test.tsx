@@ -22,8 +22,12 @@ import { getDateLimitExceedError } from './utils'
 describe('Модалка создания запроса о переводе в ожидание', () => {
   test('Заголовок отображается', () => {
     render(<RequestTaskSuspendModal {...props} />)
-    expect(within(requestTaskSuspendModalTestUtils.getContainer()).getByText(/^запрос перевода заявки/i)).toBeInTheDocument()
-    expect(within(requestTaskSuspendModalTestUtils.getContainer()).getByText(props.recordId)).toBeInTheDocument()
+    expect(
+      within(requestTaskSuspendModalTestUtils.getContainer()).getByText(/^запрос перевода заявки/i),
+    ).toBeInTheDocument()
+    expect(
+      within(requestTaskSuspendModalTestUtils.getContainer()).getByText(props.recordId),
+    ).toBeInTheDocument()
   })
 
   describe('Кнопка отмены', () => {
@@ -58,7 +62,10 @@ describe('Модалка создания запроса о переводе в 
       test('Если поля заполнены', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
 
-        await requestTaskSuspendModalTestUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
+        await requestTaskSuspendModalTestUtils.setReason(
+          user,
+          SuspendReasonEnum.AwaitingInformation,
+        )
         await requestTaskSuspendModalTestUtils.setComment(user, fakeWord())
         await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
@@ -79,7 +86,9 @@ describe('Модалка создания запроса о переводе в 
     test('Отображается корректно', () => {
       render(<RequestTaskSuspendModal {...props} />)
 
-      const title = within(requestTaskSuspendModalTestUtils.getReasonFormItem()).getByTitle('Причина ожидания')
+      const title = within(requestTaskSuspendModalTestUtils.getReasonFormItem()).getByTitle(
+        'Причина ожидания',
+      )
       expect(title).toBeInTheDocument()
 
       Object.values(SuspendReasonEnum).forEach((reason) => {
@@ -106,7 +115,9 @@ describe('Модалка создания запроса о переводе в 
 
         await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-        const error = await requestTaskSuspendModalTestUtils.findReasonError(validationMessages.required)
+        const error = await requestTaskSuspendModalTestUtils.findReasonError(
+          validationMessages.required,
+        )
         expect(error).toBeInTheDocument()
       })
     })
@@ -118,7 +129,9 @@ describe('Модалка создания запроса о переводе в 
 
       await requestTaskSuspendModalTestUtils.setReason(user, SuspendReasonEnum.AwaitingRelease)
 
-      const title = within(requestTaskSuspendModalTestUtils.getTaskLinkFormItem()).getByTitle('Ссылка на задачу')
+      const title = within(requestTaskSuspendModalTestUtils.getTaskLinkFormItem()).getByTitle(
+        'Ссылка на задачу',
+      )
       const field = requestTaskSuspendModalTestUtils.getTaskLinkField()
 
       expect(title).toBeInTheDocument()
@@ -153,7 +166,9 @@ describe('Модалка создания запроса о переводе в 
         await requestTaskSuspendModalTestUtils.setReason(user, SuspendReasonEnum.AwaitingRelease)
         await requestTaskSuspendModalTestUtils.setTaskLink(user, fakeWord())
 
-        const error = await requestTaskSuspendModalTestUtils.findTaskLinkError(validationMessages.url.incorrect)
+        const error = await requestTaskSuspendModalTestUtils.findTaskLinkError(
+          validationMessages.url.incorrect,
+        )
         expect(error).toBeInTheDocument()
       })
 
@@ -163,7 +178,9 @@ describe('Модалка создания запроса о переводе в 
         await requestTaskSuspendModalTestUtils.setReason(user, SuspendReasonEnum.AwaitingRelease)
         await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-        const error = await requestTaskSuspendModalTestUtils.findTaskLinkError(validationMessages.required)
+        const error = await requestTaskSuspendModalTestUtils.findTaskLinkError(
+          validationMessages.required,
+        )
         expect(error).toBeInTheDocument()
       })
     })
@@ -174,9 +191,9 @@ describe('Модалка создания запроса о переводе в 
       const { user } = render(<RequestTaskSuspendModal {...props} />)
 
       await requestTaskSuspendModalTestUtils.setReason(user, SuspendReasonEnum.AwaitingNonItWork)
-      const label = within(requestTaskSuspendModalTestUtils.getOrganizationFormItem()).getByLabelText(
-        'Организация (ответственная за работу вне зоны ответственности ИТ)',
-      )
+      const label = within(
+        requestTaskSuspendModalTestUtils.getOrganizationFormItem(),
+      ).getByLabelText('Организация (ответственная за работу вне зоны ответственности ИТ)')
       const input = requestTaskSuspendModalTestUtils.getOrganizationSelectInput()
 
       await requestTaskSuspendModalTestUtils.openOrganizationSelect(user)
@@ -235,7 +252,10 @@ describe('Модалка создания запроса о переводе в 
     describe('Поле даты', () => {
       test('Активно если выбрать причину', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
-        await requestTaskSuspendModalTestUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
+        await requestTaskSuspendModalTestUtils.setReason(
+          user,
+          SuspendReasonEnum.AwaitingInformation,
+        )
         expect(requestTaskSuspendModalTestUtils.getEndDateField()).toBeEnabled()
       })
 
@@ -300,7 +320,10 @@ describe('Модалка создания запроса о переводе в 
       test('Можно установить значение', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
 
-        await requestTaskSuspendModalTestUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
+        await requestTaskSuspendModalTestUtils.setReason(
+          user,
+          SuspendReasonEnum.AwaitingInformation,
+        )
         await requestTaskSuspendModalTestUtils.resetEndDate(user)
         const value = formatDate(moment(), DATE_PICKER_FORMAT)
         const field = await requestTaskSuspendModalTestUtils.setEndDate(user, value)
@@ -328,7 +351,9 @@ describe('Модалка создания запроса о переводе в 
 
           await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-          const error = await requestTaskSuspendModalTestUtils.findEndDateError(validationMessages.required)
+          const error = await requestTaskSuspendModalTestUtils.findEndDateError(
+            validationMessages.required,
+          )
           expect(error).toBeInTheDocument()
         })
 
@@ -340,7 +365,9 @@ describe('Модалка создания запроса о переводе в 
           const value = formatDate(moment().subtract(1, 'day'), DATE_PICKER_FORMAT)
           await requestTaskSuspendModalTestUtils.setEndDate(user, value)
 
-          const error = await requestTaskSuspendModalTestUtils.findEndDateError(validationMessages.date.canNotBeInPast)
+          const error = await requestTaskSuspendModalTestUtils.findEndDateError(
+            validationMessages.date.canNotBeInPast,
+          )
           expect(error).toBeInTheDocument()
         })
 
@@ -358,7 +385,9 @@ describe('Модалка создания запроса о переводе в 
           await requestTaskSuspendModalTestUtils.setEndDate(user, value)
 
           const limitDate = moment().add(limit, 'days')
-          const error = await requestTaskSuspendModalTestUtils.findEndDateError(getDateLimitExceedError(limitDate))
+          const error = await requestTaskSuspendModalTestUtils.findEndDateError(
+            getDateLimitExceedError(limitDate),
+          )
           expect(error).toBeInTheDocument()
         })
       })
@@ -367,7 +396,10 @@ describe('Модалка создания запроса о переводе в 
     describe('Поле времени', () => {
       test('Активно если выбрать причину', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
-        await requestTaskSuspendModalTestUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
+        await requestTaskSuspendModalTestUtils.setReason(
+          user,
+          SuspendReasonEnum.AwaitingInformation,
+        )
         expect(requestTaskSuspendModalTestUtils.getEndTimeField()).toBeEnabled()
       })
 
@@ -442,7 +474,10 @@ describe('Модалка создания запроса о переводе в 
       test('При выборе причины устанавливается текущее время', async () => {
         const { user } = render(<RequestTaskSuspendModal {...props} />)
 
-        await requestTaskSuspendModalTestUtils.setReason(user, SuspendReasonEnum.AwaitingInformation)
+        await requestTaskSuspendModalTestUtils.setReason(
+          user,
+          SuspendReasonEnum.AwaitingInformation,
+        )
         const field = requestTaskSuspendModalTestUtils.getEndTimeField()
         const value = moment().format(TIME_PICKER_FORMAT)
 
@@ -455,7 +490,9 @@ describe('Модалка создания запроса о переводе в 
 
           await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-          const error = await requestTaskSuspendModalTestUtils.findEndTimeError(validationMessages.required)
+          const error = await requestTaskSuspendModalTestUtils.findEndTimeError(
+            validationMessages.required,
+          )
           expect(error).toBeInTheDocument()
         })
 
@@ -471,7 +508,9 @@ describe('Модалка создания запроса о переводе в 
           const timeValue = formatDate(moment().subtract(1, 'hour'), TIME_PICKER_FORMAT)
           await requestTaskSuspendModalTestUtils.setEndTime(user, timeValue)
 
-          const error = await requestTaskSuspendModalTestUtils.findEndTimeError(validationMessages.time.canNotBeInPast)
+          const error = await requestTaskSuspendModalTestUtils.findEndTimeError(
+            validationMessages.time.canNotBeInPast,
+          )
           expect(error).toBeInTheDocument()
         })
       })
@@ -482,7 +521,9 @@ describe('Модалка создания запроса о переводе в 
     test('Отображается корректно', () => {
       render(<RequestTaskSuspendModal {...props} />)
 
-      const title = within(requestTaskSuspendModalTestUtils.getCommentFormItem()).getByTitle('Комментарий')
+      const title = within(requestTaskSuspendModalTestUtils.getCommentFormItem()).getByTitle(
+        'Комментарий',
+      )
       const field = requestTaskSuspendModalTestUtils.getCommentField()
 
       expect(title).toBeInTheDocument()
@@ -506,7 +547,9 @@ describe('Модалка создания запроса о переводе в 
 
         await requestTaskSuspendModalTestUtils.setComment(user, ' ')
 
-        const error = await requestTaskSuspendModalTestUtils.findCommentError(validationMessages.canNotBeEmpty)
+        const error = await requestTaskSuspendModalTestUtils.findCommentError(
+          validationMessages.canNotBeEmpty,
+        )
         expect(error).toBeInTheDocument()
       })
 
@@ -515,7 +558,9 @@ describe('Модалка создания запроса о переводе в 
 
         await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
-        const error = await requestTaskSuspendModalTestUtils.findCommentError(validationMessages.required)
+        const error = await requestTaskSuspendModalTestUtils.findCommentError(
+          validationMessages.required,
+        )
         expect(error).toBeInTheDocument()
       })
     })

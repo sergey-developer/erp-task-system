@@ -19,7 +19,13 @@ import {
   mockGetSupportGroupListServerError,
   mockGetSupportGroupListSuccess,
 } from '_tests_/mocks/api'
-import { fakeWord, getStoreWithAuth, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
+import {
+  fakeWord,
+  getStoreWithAuth,
+  notificationTestUtils,
+  render,
+  setupApiTests,
+} from '_tests_/utils'
 
 import CreateSubTaskModal from './index'
 import { CreateSubTaskFormErrors } from './types'
@@ -132,7 +138,9 @@ describe('Модалка создания задачи заявки', () => {
         await createSubTaskModalTestUtils.supportGroup.expectLoadingFinished()
         await createSubTaskModalTestUtils.supportGroup.openField(user)
         await createSubTaskModalTestUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
-        const value = createSubTaskModalTestUtils.supportGroup.getValue(fakeSupportGroupListItem.name)
+        const value = createSubTaskModalTestUtils.supportGroup.getValue(
+          fakeSupportGroupListItem.name,
+        )
 
         expect(value).toBeInTheDocument()
       })
@@ -144,7 +152,9 @@ describe('Модалка создания задачи заявки', () => {
           const { user } = render(<CreateSubTaskModal {...props} />)
 
           await createSubTaskModalTestUtils.clickSubmitButton(user)
-          const error = await createSubTaskModalTestUtils.supportGroup.findError(validationMessages.required)
+          const error = await createSubTaskModalTestUtils.supportGroup.findError(
+            validationMessages.required,
+          )
 
           expect(error).toBeInTheDocument()
         })
@@ -304,7 +314,9 @@ describe('Модалка создания задачи заявки', () => {
           const { user } = render(<CreateSubTaskModal {...props} />)
 
           await createSubTaskModalTestUtils.clickSubmitButton(user)
-          const error = await createSubTaskModalTestUtils.service.findError(validationMessages.required)
+          const error = await createSubTaskModalTestUtils.service.findError(
+            validationMessages.required,
+          )
 
           expect(error).toBeInTheDocument()
         })
@@ -359,7 +371,9 @@ describe('Модалка создания задачи заявки', () => {
           )
 
           await createSubTaskModalTestUtils.clickSubmitButton(user)
-          const error = await createSubTaskModalTestUtils.title.findError(validationMessages.required)
+          const error = await createSubTaskModalTestUtils.title.findError(
+            validationMessages.required,
+          )
 
           expect(error).toBeInTheDocument()
         })
@@ -456,7 +470,9 @@ describe('Модалка создания задачи заявки', () => {
           await createSubTaskModalTestUtils.description.setValue(user, ' ')
 
           expect(
-            await createSubTaskModalTestUtils.description.findError(validationMessages.canNotBeEmpty),
+            await createSubTaskModalTestUtils.description.findError(
+              validationMessages.canNotBeEmpty,
+            ),
           ).toBeInTheDocument()
         })
       })
@@ -588,10 +604,14 @@ describe('Модалка создания задачи заявки', () => {
           await createSubTaskModalTestUtils.service.findError(badRequestResponse.templateX5[0]),
         ).toBeInTheDocument()
 
-        expect(await createSubTaskModalTestUtils.title.findError(badRequestResponse.title[0])).toBeInTheDocument()
+        expect(
+          await createSubTaskModalTestUtils.title.findError(badRequestResponse.title[0]),
+        ).toBeInTheDocument()
 
         expect(
-          await createSubTaskModalTestUtils.description.findError(badRequestResponse.description[0]),
+          await createSubTaskModalTestUtils.description.findError(
+            badRequestResponse.description[0],
+          ),
         ).toBeInTheDocument()
 
         const notification = await notificationTestUtils.findNotification(detailError)

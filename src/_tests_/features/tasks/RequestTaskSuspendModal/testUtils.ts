@@ -2,7 +2,9 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { suspendReasonDict, SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
-import { buttonTestUtils, radioButtonTestUtils, selectTestUtils } from '../../../utils'
+
+import { buttonTestUtils, radioButtonTestUtils, selectTestUtils } from '_tests_/utils'
+
 import { TestIdsEnum } from './constants'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.RequestTaskSuspendModal)
@@ -37,7 +39,8 @@ const setReason = async (user: UserEvent, reason: SuspendReasonEnum) => {
 
 // task link field
 const getTaskLinkFormItem = () => within(getContainer()).getByTestId(TestIdsEnum.TaskLinkFormItem)
-const queryTaskLinkFormItem = () => within(getContainer()).queryByTestId(TestIdsEnum.TaskLinkFormItem)
+const queryTaskLinkFormItem = () =>
+  within(getContainer()).queryByTestId(TestIdsEnum.TaskLinkFormItem)
 const getTaskLinkField = () =>
   within(getTaskLinkFormItem()).getByPlaceholderText('Ссылка на задачу во внешней системе')
 const findTaskLinkError = (text: string) => within(getTaskLinkFormItem()).findByText(text)
@@ -49,7 +52,8 @@ const setTaskLink = async (user: UserEvent, value: string) => {
 }
 
 // organization field
-const getOrganizationFormItem = () => within(getContainer()).getByTestId(TestIdsEnum.OrganizationFormItem)
+const getOrganizationFormItem = () =>
+  within(getContainer()).getByTestId(TestIdsEnum.OrganizationFormItem)
 const queryOrganizationFormItem = () =>
   within(getContainer()).queryByTestId(TestIdsEnum.OrganizationFormItem)
 
@@ -69,9 +73,11 @@ const findOrganizationError = (error: string): Promise<HTMLElement> =>
   within(getOrganizationFormItem()).findByText(error)
 
 // return time field
-const getReturnTimeFormItem = () => within(getContainer()).getByTestId(TestIdsEnum.ReturnTimeFormItem)
+const getReturnTimeFormItem = () =>
+  within(getContainer()).getByTestId(TestIdsEnum.ReturnTimeFormItem)
 const getReturnTimeTitle = () => within(getReturnTimeFormItem()).getByTitle('Время возврата')
-const getEndDateFormItem = () => within(getReturnTimeFormItem()).getByTestId(TestIdsEnum.EndDateFormItem)
+const getEndDateFormItem = () =>
+  within(getReturnTimeFormItem()).getByTestId(TestIdsEnum.EndDateFormItem)
 
 const getEndDateField = (): HTMLInputElement =>
   within(getEndDateFormItem()).getByPlaceholderText('Выберите дату')
@@ -91,7 +97,8 @@ const resetEndDate = async (user: UserEvent) => {
   await user.click(clearButton)
 }
 
-const getEndTimeFormItem = () => within(getReturnTimeFormItem()).getByTestId(TestIdsEnum.EndTimeFormItem)
+const getEndTimeFormItem = () =>
+  within(getReturnTimeFormItem()).getByTestId(TestIdsEnum.EndTimeFormItem)
 
 const getEndTimeField = (): HTMLInputElement =>
   within(getEndTimeFormItem()).getByPlaceholderText('Выберите время')

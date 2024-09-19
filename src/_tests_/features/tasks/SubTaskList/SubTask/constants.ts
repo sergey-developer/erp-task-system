@@ -1,8 +1,8 @@
 import { SubTaskProps } from 'modules/task/components/SubTaskList/SubTask'
-import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
-import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task/index'
+import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest/index'
 
-import taskFixtures from '../../../fixtures/task'
+import taskFixtures from '_tests_/fixtures/task/index'
 
 const task = taskFixtures.task()
 const subTask = taskFixtures.subTask()
