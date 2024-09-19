@@ -3,7 +3,6 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { camelize } from 'humps'
 import moment from 'moment-timezone'
 
-import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import {
   searchFieldDict,
   taskAssignedDict,
@@ -44,6 +43,7 @@ import { workGroupBlockTestUtils } from '_tests_/features/tasks/TaskDetails/Work
 import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
 import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/TaskFirstLineModal/testUtils'
 import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/TaskSecondLineModal/testUtils'
+import { taskTableTestUtils } from '_tests_/features/tasks/TaskTable/testUtils'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
 import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/TasksFiltersStorage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'

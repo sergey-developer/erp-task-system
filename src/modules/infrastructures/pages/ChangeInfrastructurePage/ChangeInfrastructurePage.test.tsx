@@ -6,7 +6,6 @@ import {
   InfrastructuresRoutesEnum,
   infrastructureStatusDict,
 } from 'modules/infrastructures/constants'
-import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
 import { testUtils as tasksPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
@@ -22,6 +21,7 @@ import {
   showChangeInfrastructureButton,
 } from '_tests_/features/tasks/TaskDetails/constants'
 import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
+import { taskTableTestUtils } from '_tests_/features/tasks/TaskTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import taskFixtures from '_tests_/fixtures/task'
