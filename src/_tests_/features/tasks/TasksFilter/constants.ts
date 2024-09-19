@@ -30,7 +30,7 @@ export const props: Readonly<TasksFilterProps> = {
   onSubmit: jest.fn(),
 }
 
-export enum TestIds {
+export enum TestIdsEnum {
   ExtendedFilter = 'extended-filter',
   SupportGroupBlock = 'support-group-block',
   CustomersFormItem = 'customers-form-item',

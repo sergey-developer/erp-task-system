@@ -16,10 +16,10 @@ import {
   selectTestUtils,
 } from '_tests_/utils'
 
-import { TestIds } from './constants'
+import { TestIdsEnum } from './constants'
 
-const getContainer = () => screen.getByTestId(TestIds.ExtendedFilter)
-const findContainer = () => screen.findByTestId(TestIds.ExtendedFilter)
+const getContainer = () => screen.getByTestId(TestIdsEnum.ExtendedFilter)
+const findContainer = () => screen.findByTestId(TestIdsEnum.ExtendedFilter)
 
 // reset button
 const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /сбросить все/i)
@@ -55,9 +55,9 @@ const clickApplyButton = async (user: UserEvent) => {
 }
 
 // support group
-const getSupportGroupBlock = () => within(getContainer()).getByTestId(TestIds.SupportGroupBlock)
+const getSupportGroupBlock = () => within(getContainer()).getByTestId(TestIdsEnum.SupportGroupBlock)
 // support group. customers
-const getCustomersFormItem = () => screen.getByTestId(TestIds.CustomersFormItem)
+const getCustomersFormItem = () => screen.getByTestId(TestIdsEnum.CustomersFormItem)
 const getCustomersSelect = () => selectTestUtils.getSelect(getCustomersFormItem())
 
 const openCustomersSelect = (user: UserEvent) =>
@@ -73,7 +73,7 @@ const expectCustomersLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getCustomersFormItem())
 
 // support group. macroregions
-const getMacroregionsFormItem = () => screen.getByTestId(TestIds.MacroregionsFormItem)
+const getMacroregionsFormItem = () => screen.getByTestId(TestIdsEnum.MacroregionsFormItem)
 const getMacroregionsSelect = () => selectTestUtils.getSelect(getMacroregionsFormItem())
 
 const openMacroregionsSelect = (user: UserEvent) =>
@@ -89,7 +89,7 @@ const expectMacroregionsLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getMacroregionsFormItem())
 
 // support group. supportGroups
-const getSupportGroupsFormItem = () => screen.getByTestId(TestIds.SupportGroupsFormItem)
+const getSupportGroupsFormItem = () => screen.getByTestId(TestIdsEnum.SupportGroupsFormItem)
 const getSupportGroupsSelect = () => selectTestUtils.getSelect(getSupportGroupsFormItem())
 
 const openSupportGroupsSelect = (user: UserEvent) =>
@@ -105,7 +105,7 @@ const expectSupportGroupsLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getSupportGroupsFormItem())
 
 // status
-const getStatusFieldContainer = () => screen.getByTestId(TestIds.StatusBlock)
+const getStatusFieldContainer = () => screen.getByTestId(TestIdsEnum.StatusBlock)
 
 const getStatusField = (label: string) =>
   checkboxTestUtils.getCheckboxIn(getStatusFieldContainer(), new RegExp(label))
@@ -134,7 +134,7 @@ const status = {
 }
 
 // assigned
-const getAssignedFieldContainer = () => screen.getByTestId(TestIds.AssignedBlock)
+const getAssignedFieldContainer = () => screen.getByTestId(TestIdsEnum.AssignedBlock)
 
 const getAssignedField = (label: string) =>
   radioButtonTestUtils.getRadioButtonIn(getAssignedFieldContainer(), label)
@@ -163,7 +163,7 @@ const assigned = {
 }
 
 // overdue
-const getOverdueFieldContainer = () => screen.getByTestId(TestIds.OverdueBlock)
+const getOverdueFieldContainer = () => screen.getByTestId(TestIdsEnum.OverdueBlock)
 
 const getOverdueField = (label: string) =>
   radioButtonTestUtils.getRadioButtonIn(getOverdueFieldContainer(), label)
@@ -192,7 +192,7 @@ const overdue = {
 }
 
 // complete at
-const getCompleteAtFieldContainer = () => screen.getByTestId(TestIds.CompleteAtBlock)
+const getCompleteAtFieldContainer = () => screen.getByTestId(TestIdsEnum.CompleteAtBlock)
 
 const getStartDateField = (): HTMLInputElement =>
   within(getCompleteAtFieldContainer()).getByPlaceholderText('Начальная дата')
@@ -228,7 +228,7 @@ const completeAt = {
 }
 
 // creation date
-const getCreationDateBlock = () => screen.getByTestId(TestIds.CreationDateBlock)
+const getCreationDateBlock = () => screen.getByTestId(TestIdsEnum.CreationDateBlock)
 
 const getCreationStartDateField = (): HTMLInputElement =>
   within(getCreationDateBlock()).getByPlaceholderText('Начальная дата')
@@ -264,10 +264,10 @@ const creationDate = {
 }
 
 // work group
-const getWorkGroupFieldContainer = () => screen.getByTestId(TestIds.WorkGroupBlock)
-const queryWorkGroupFieldContainer = () => screen.queryByTestId(TestIds.WorkGroupBlock)
-const getWorkGroupField = () => screen.getByTestId(TestIds.WorkGroupSelect)
-const queryWorkGroupField = () => screen.queryByTestId(TestIds.WorkGroupSelect)
+const getWorkGroupFieldContainer = () => screen.getByTestId(TestIdsEnum.WorkGroupBlock)
+const queryWorkGroupFieldContainer = () => screen.queryByTestId(TestIdsEnum.WorkGroupBlock)
+const getWorkGroupField = () => screen.getByTestId(TestIdsEnum.WorkGroupSelect)
+const queryWorkGroupField = () => screen.queryByTestId(TestIdsEnum.WorkGroupSelect)
 
 const workGroupExpectLoadingFinished = async () => {
   const workGroupField = getWorkGroupField()
@@ -286,8 +286,8 @@ const workGroup = {
 }
 
 // manager
-const getManagerFilterBlock = () => screen.getByTestId(TestIds.ManagerBlock)
-const getManagerFieldContainer = () => screen.getByTestId(TestIds.ManagerSelect)
+const getManagerFilterBlock = () => screen.getByTestId(TestIdsEnum.ManagerBlock)
+const getManagerFieldContainer = () => screen.getByTestId(TestIdsEnum.ManagerSelect)
 const getManagerField = () => selectTestUtils.getSelect(getManagerFieldContainer())
 
 const openManagerSelect = async (user: UserEvent): Promise<HTMLElement> => {
@@ -312,7 +312,7 @@ const manager = {
 }
 
 // search by column
-const getSearchByColumnFieldContainer = () => screen.getByTestId(TestIds.SearchByColumnBlock)
+const getSearchByColumnFieldContainer = () => screen.getByTestId(TestIdsEnum.SearchByColumnBlock)
 
 const getSearchByColumnKeywordField = (): HTMLInputElement =>
   within(getSearchByColumnFieldContainer()).getByPlaceholderText('Ключевое слово')
