@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 
 import { CustomUseMutationState } from 'lib/rtk-query/types'
 
-import { createInfrastructureAttachmentErrMsg } from 'modules/infrastructures/constants'
+import { createInfrastructureOrdersFormAttachmentErrMsg } from 'modules/infrastructures/constants'
 import {
   CreateInfrastructureOrderFormAttachmentMutationArgs,
   CreateInfrastructureOrderFormAttachmentSuccessResponse,
@@ -33,38 +33,39 @@ type UseCreateInfrastructureOrderFormAttachmentResult = [
   >,
 ]
 
-export const useCreateInfrastructureOrderFormAttachment = (): UseCreateInfrastructureOrderFormAttachmentResult => {
-  const [mutation, state] = useCreateInfrastructureOrderFormAttachmentMutation()
+export const useCreateInfrastructureOrderFormAttachment =
+  (): UseCreateInfrastructureOrderFormAttachmentResult => {
+    const [mutation, state] = useCreateInfrastructureOrderFormAttachmentMutation()
 
-  useEffect(() => {
-    if (isErrorResponse(state.error)) {
-      if (
-        isBadRequestError(state.error) ||
-        isForbiddenError(state.error) ||
-        isNotFoundError(state.error)
-      ) {
-        showErrorNotification(getErrorDetail(state.error))
-      } else {
-        showErrorNotification(createInfrastructureAttachmentErrMsg)
-      }
-    }
-  }, [state.error])
-
-  const handler = useCallback<UseCreateInfrastructureOrderFormAttachmentResult[0]>(
-    async (args, { file, onSuccess, onError }) => {
-      try {
-        const response = await mutation({ ...args, file: file as FileToSend }).unwrap()
-        if (onSuccess) onSuccess(response)
-        return response
-      } catch (error) {
-        if (isErrorResponse(error) && isBadRequestError(error)) {
-          if (onError) onError({ name: '', message: getErrorDetailStr(error) || '' })
+    useEffect(() => {
+      if (isErrorResponse(state.error)) {
+        if (
+          isBadRequestError(state.error) ||
+          isForbiddenError(state.error) ||
+          isNotFoundError(state.error)
+        ) {
+          showErrorNotification(getErrorDetail(state.error))
+        } else {
+          showErrorNotification(createInfrastructureOrdersFormAttachmentErrMsg)
         }
       }
-    },
+    }, [state.error])
 
-    [mutation],
-  )
+    const handler = useCallback<UseCreateInfrastructureOrderFormAttachmentResult[0]>(
+      async (args, { file, onSuccess, onError }) => {
+        try {
+          const response = await mutation({ ...args, file: file as FileToSend }).unwrap()
+          if (onSuccess) onSuccess(response)
+          return response
+        } catch (error) {
+          if (isErrorResponse(error) && isBadRequestError(error)) {
+            if (onError) onError({ name: '', message: getErrorDetailStr(error) || '' })
+          }
+        }
+      },
 
-  return [handler, state]
-}
+      [mutation],
+    )
+
+    return [handler, state]
+  }
