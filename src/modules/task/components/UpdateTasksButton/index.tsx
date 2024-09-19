@@ -1,9 +1,11 @@
-import { CheckOutlined, DownOutlined } from '@ant-design/icons'
+import { CheckOutlined } from '@ant-design/icons'
 import { Dropdown } from 'antd'
 import { DropdownButtonProps } from 'antd/es/dropdown'
 import React, { FC, useState } from 'react'
 
 import { TasksUpdateVariantsEnum } from 'modules/task/constants/task'
+
+import { DownIcon } from 'components/Icons'
 
 export type UpdateTasksButtonProps = Required<Pick<DropdownButtonProps, 'onClick'>> &
   Pick<DropdownButtonProps, 'disabled'> & {
@@ -31,7 +33,7 @@ const UpdateTasksButton: FC<UpdateTasksButtonProps> = ({ onAutoUpdate, ...props 
         onDeselect: (info) =>
           setSelectedKeys((prevState) => prevState.filter((key) => key !== info.key)),
       }}
-      icon={<DownOutlined />}
+      icon={<DownIcon />}
       trigger={['click']}
     >
       Обновить заявки

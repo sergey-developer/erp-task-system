@@ -14,6 +14,7 @@ import {
   mapInventorizationWarehousesTitles,
 } from 'modules/warehouse/utils/inventorization'
 
+import { DEFAULT_FILE_NAME } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
@@ -78,12 +79,7 @@ const clickCompleteInventorizationButton = async (user: UserEvent) =>
 
 // make report button
 const getMakeReportButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сформировать отчет/)
-
-const clickMakeReportButton = async (user: UserEvent) => {
-  const button = getMakeReportButton()
-  await user.click(button)
-}
-
+const clickMakeReportButton = async (user: UserEvent) => user.click(getMakeReportButton())
 const expectMakeReportLoadingFinished = () =>
   buttonTestUtils.expectLoadingFinished(getMakeReportButton())
 
@@ -348,7 +344,7 @@ describe('Страница проведения инвентаризации', (
       expect(base64ToBytes).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
-      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, 'filename')
+      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, DEFAULT_FILE_NAME)
     })
   })
 

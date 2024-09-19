@@ -1,11 +1,24 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { Button, Col, Flex, FormInstance, Input, Row, Typography, UploadProps } from 'antd'
+import {
+  Button,
+  Col,
+  Dropdown,
+  Flex,
+  FormInstance,
+  Input,
+  Row,
+  Space,
+  Typography,
+  UploadProps,
+} from 'antd'
 import { SearchProps } from 'antd/es/input'
 import isNumber from 'lodash/isNumber'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
+import { UserModel } from 'modules/user/models'
+import { MatchedUserPermissions } from 'modules/user/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -18,6 +31,7 @@ import {
 import {
   useCreateInventorizationEquipment,
   useGetInventorizationEquipments,
+  useLazyGetInventorizationEquipmentsTemplate,
   useUpdateInventorizationEquipment,
 } from 'modules/warehouse/hooks/inventorization'
 import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
@@ -29,9 +43,15 @@ import {
   InventorizationModel,
 } from 'modules/warehouse/models'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
+import {
+  checkInventorizationStatusIsInProgress,
+  checkInventorizationStatusIsNew,
+} from 'modules/warehouse/utils/inventorization'
 
+import { DownIcon } from 'components/Icons'
 import ModalFallback from 'components/Modals/ModalFallback'
 
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { undefinedSelectOption } from 'shared/constants/selectField'
 import { useGetLocationsCatalog } from 'shared/hooks/catalogs/locations'
 import { useGetCurrencyList } from 'shared/hooks/currency'
@@ -39,7 +59,9 @@ import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
-import { extractIdsFromFilesResponse } from 'shared/utils/file'
+import { base64ToBytes } from 'shared/utils/common'
+import { extractFileNameFromHeaders } from 'shared/utils/extractFileNameFromHeaders'
+import { downloadFile, extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import {
   calculatePaginationParams,
@@ -65,15 +87,21 @@ const EquipmentFormModal = React.lazy(
 )
 
 export type ExecuteInventorizationReviseTabProps = {
-  inventorization: Pick<InventorizationModel, 'id' | 'warehouses'>
+  currentUser: Pick<UserModel, 'id'>
+  inventorization: Pick<InventorizationModel, 'id' | 'warehouses' | 'executor' | 'status'>
+  permissions: MatchedUserPermissions
 }
 
 const { Title } = Typography
 const { Search } = Input
 
 const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> = ({
+  currentUser,
   inventorization,
+  permissions,
 }) => {
+  const inventorizationExecutorIsCurrentUser = currentUser.id === inventorization.executor.id
+
   const [searchValue, setSearchValue] = useState<string>()
 
   const [equipmentId, setEquipmentId] = useState<IdType>()
@@ -140,6 +168,11 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     createInventorizationEquipmentMutation,
     { isLoading: createInventorizationEquipmentIsLoading },
   ] = useCreateInventorizationEquipment()
+
+  const [
+    getInventorizationEquipmentsTemplate,
+    { isFetching: getInventorizationEquipmentsTemplateIsFetching },
+  ] = useLazyGetInventorizationEquipmentsTemplate()
 
   const [updateInventorizationEquipmentMutation] = useUpdateInventorizationEquipment()
 
@@ -375,6 +408,15 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) =>
     setSearchValue(event.target.value)
 
+  const onGetInventorizationEquipmentsTemplate = useDebounceFn(async () => {
+    const { data } = await getInventorizationEquipmentsTemplate()
+
+    if (data?.value && data?.meta?.response) {
+      const fileName = extractFileNameFromHeaders(data.meta.response.headers)
+      downloadFile(base64ToBytes(data.value), MimetypeEnum.Xlsx, fileName)
+    }
+  })
+
   const createEquipmentFormValues = useMemo(
     () =>
       createEquipmentModalOpened ? { title: nomenclature ? nomenclature.title : '' } : undefined,
@@ -399,9 +441,26 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
           </Col>
 
           <Col>
-            <Button onClick={debouncedOpenCreateInventorizationEquipmentModal}>
-              Добавить оборудование
-            </Button>
+            <Space>
+              {permissions.inventorizationUpdate &&
+                inventorizationExecutorIsCurrentUser &&
+                (checkInventorizationStatusIsNew(inventorization.status) ||
+                  checkInventorizationStatusIsInProgress(inventorization.status)) && (
+                  <Dropdown.Button
+                    menu={{ items: [] }}
+                    icon={<DownIcon />}
+                    trigger={['click']}
+                    loading={getInventorizationEquipmentsTemplateIsFetching}
+                    onClick={onGetInventorizationEquipmentsTemplate}
+                  >
+                    Скачать шаблон
+                  </Dropdown.Button>
+                )}
+
+              <Button onClick={debouncedOpenCreateInventorizationEquipmentModal}>
+                Добавить оборудование
+              </Button>
+            </Space>
           </Col>
         </Row>
 

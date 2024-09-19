@@ -6,6 +6,7 @@ export enum InventorizationApiEnum {
   GetInventorizationEquipment = '/inventorizations/equipments/:equipmentId',
   CreateInventorizationEquipment = '/inventorizations/:inventorizationId/equipments',
   CompleteInventorization = '/inventorizations/:id/complete',
+  GetInventorizationEquipmentsTemplate = '/inventorizations/equipments/template/',
 
   UpdateInventorizationEquipment = '/inventorizations/equipments/:inventorizationEquipmentId',
 }

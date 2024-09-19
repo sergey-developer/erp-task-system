@@ -8,10 +8,16 @@ import {
   equipmentConditionDict,
   EquipmentConditionEnum,
 } from 'modules/warehouse/constants/equipment'
+import { InventorizationStatusEnum } from 'modules/warehouse/constants/inventorization'
 
+import { DEFAULT_FILE_NAME } from 'shared/constants/common'
+import { MimetypeEnum } from 'shared/constants/mimetype'
+import * as base64Utils from 'shared/utils/common/base64'
+import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import { makeString } from 'shared/utils/string'
 
 import commonFixtures from '_tests_/fixtures/common'
+import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCreateEquipmentSuccess,
@@ -21,19 +27,43 @@ import {
   mockGetEquipmentCategoryListSuccess,
   mockGetEquipmentSuccess,
   mockGetInventorizationEquipmentsSuccess,
+  mockGetInventorizationEquipmentsTemplateSuccess,
   mockGetLocationsCatalogSuccess,
   mockGetNomenclatureListSuccess,
   mockGetNomenclatureSuccess,
   mockGetWorkTypesSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, fakeInteger, render, setupApiTests } from '_tests_/utils'
+import { buttonTestUtils, fakeInteger, fakeWord, render, setupApiTests } from '_tests_/utils'
 
 import { testUtils as createInventorizationEquipmentModalTestUtils } from '../CreateInventorizationEquipmentModal/CreateInventorizationEquipmentModal.test'
 import { testUtils as reviseEquipmentTableTestUtils } from '../ReviseEquipmentTable/ReviseEquipmentTable.test'
 import ExecuteInventorizationReviseTab, { ExecuteInventorizationReviseTabProps } from './index'
 
 const props: ExecuteInventorizationReviseTabProps = {
-  inventorization: pick(warehouseFixtures.inventorization(), 'id', 'warehouses'),
+  inventorization: pick(
+    warehouseFixtures.inventorization(),
+    'id',
+    'warehouses',
+    'status',
+    'executor',
+  ),
+  permissions: {},
+  currentUser: userFixtures.user(),
+}
+
+export const getShowDownloadButtonProps = (): Pick<
+  ExecuteInventorizationReviseTabProps,
+  'inventorization' | 'permissions' | 'currentUser'
+> => {
+  const inventorization = warehouseFixtures.inventorization({
+    status: InventorizationStatusEnum.New,
+  })
+
+  return {
+    permissions: { inventorizationUpdate: true },
+    inventorization: inventorization,
+    currentUser: inventorization.executor,
+  }
 }
 
 const getContainer = () => screen.getByTestId('execute-inventorization-revise-tab')
@@ -44,11 +74,23 @@ const getCreateEquipmentButton = () =>
 
 const clickCreateEquipmentButton = async (user: UserEvent) => user.click(getCreateEquipmentButton())
 
+// download template button
+const getDownloadTemplateButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), /Скачать шаблон/)
+const clickDownloadTemplateButton = async (user: UserEvent) =>
+  user.click(getDownloadTemplateButton())
+const expectDownloadTemplateLoadingFinished = () =>
+  buttonTestUtils.expectLoadingFinished(getDownloadTemplateButton())
+
 export const testUtils = {
   getContainer,
 
   getCreateEquipmentButton,
   clickCreateEquipmentButton,
+
+  getDownloadTemplateButton,
+  clickDownloadTemplateButton,
+  expectDownloadTemplateLoadingFinished,
 }
 
 setupApiTests()
@@ -203,6 +245,38 @@ describe('Вкладка списка оборудования с расхожд
       await waitFor(() => expect(createInventorizationEquipmentModal).not.toBeInTheDocument())
       await reviseEquipmentTableTestUtils.expectLoadingStarted()
       await reviseEquipmentTableTestUtils.expectLoadingFinished()
+    })
+  })
+
+  describe('Скачать шаблон', () => {
+    test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
+      const showDownloadButtonProps = getShowDownloadButtonProps()
+
+      const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
+
+      const base64ToBytes = jest.spyOn(base64Utils, 'base64ToBytes')
+      const fakeArrayBuffer = new Uint8Array()
+      base64ToBytes.mockReturnValueOnce(fakeArrayBuffer)
+
+      const file = fakeWord()
+      mockGetInventorizationEquipmentsTemplateSuccess({ body: file })
+      mockGetInventorizationEquipmentsSuccess({
+        inventorizationId: showDownloadButtonProps.inventorization.id,
+      })
+      mockGetLocationsCatalogSuccess({ body: [] })
+
+      const { user } = render(
+        <ExecuteInventorizationReviseTab {...props} {...showDownloadButtonProps} />,
+      )
+
+      await testUtils.clickDownloadTemplateButton(user)
+      await testUtils.expectDownloadTemplateLoadingFinished()
+
+      await waitFor(() => expect(base64ToBytes).toBeCalledTimes(1))
+      expect(base64ToBytes).toBeCalledWith(file)
+
+      expect(downloadFileSpy).toBeCalledTimes(1)
+      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, DEFAULT_FILE_NAME)
     })
   })
 })
