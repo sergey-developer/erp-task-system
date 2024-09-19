@@ -2,13 +2,14 @@ import { within } from '@testing-library/react'
 import pick from 'lodash/pick'
 
 import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
-import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 import { getRelocateFromToTitle } from 'modules/warehouse/utils/relocationTask'
+
 import { formatDate } from 'shared/utils/date'
 
 import { props, relocationTaskListItem } from '_tests_/features/tasks/RelocationTasks/constants'
 import { relocationTasksTestUtils } from '_tests_/features/tasks/RelocationTasks/testUtils'
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render, setupApiTests } from '_tests_/utils'
@@ -55,7 +56,10 @@ describe('Список заявок на перемещение', () => {
     test('Отображаются', () => {
       render(<RelocationTasks {...props} />)
 
-      const label = relocationTasksTestUtils.getChildInListItem(relocationTaskListItem.id, /Документы/)
+      const label = relocationTasksTestUtils.getChildInListItem(
+        relocationTaskListItem.id,
+        /Документы/,
+      )
       const value = attachmentsTestUtils.getContainerIn(
         relocationTasksTestUtils.getListItem(relocationTaskListItem.id),
       )
@@ -77,7 +81,10 @@ describe('Список заявок на перемещение', () => {
       test('Вызывается обработчик и загруженный документ отображается', async () => {
         const { user } = render(<RelocationTasks {...props} />)
 
-        const { input, file } = await relocationTasksTestUtils.setDocument(relocationTaskListItem.id, user)
+        const { input, file } = await relocationTasksTestUtils.setDocument(
+          relocationTaskListItem.id,
+          user,
+        )
         const uploadedAttachment = relocationTasksTestUtils.getUploadedDocument(
           file.name,
           relocationTaskListItem.id,
@@ -94,7 +101,10 @@ describe('Список заявок на перемещение', () => {
   test('Дата создания отображается', () => {
     render(<RelocationTasks {...props} />)
 
-    const label = relocationTasksTestUtils.getChildInListItem(relocationTaskListItem.id, /Дата создания/)
+    const label = relocationTasksTestUtils.getChildInListItem(
+      relocationTaskListItem.id,
+      /Дата создания/,
+    )
     const text = formatDate(relocationTaskListItem.createdAt)
     const value = relocationTasksTestUtils.getChildInListItem(relocationTaskListItem.id, text)
 
@@ -106,7 +116,10 @@ describe('Список заявок на перемещение', () => {
     test('Отображается тот кто завершил заявку если он есть', () => {
       render(<RelocationTasks {...props} />)
 
-      const label = relocationTasksTestUtils.getChildInListItem(relocationTaskListItem.id, /Исполнитель/)
+      const label = relocationTasksTestUtils.getChildInListItem(
+        relocationTaskListItem.id,
+        /Исполнитель/,
+      )
       const value = taskAssigneeTestUtils.getContainerIn(
         relocationTasksTestUtils.getListItem(relocationTaskListItem.id),
       )
@@ -126,7 +139,10 @@ describe('Список заявок на перемещение', () => {
 
       render(<RelocationTasks {...props} data={[relocationTaskListItem]} />)
 
-      const label = relocationTasksTestUtils.getChildInListItem(relocationTaskListItem.id, /Исполнитель/)
+      const label = relocationTasksTestUtils.getChildInListItem(
+        relocationTaskListItem.id,
+        /Исполнитель/,
+      )
       const executors = taskAssigneeTestUtils.getAllContainerIn(
         relocationTasksTestUtils.getListItem(relocationTaskListItem.id),
       )

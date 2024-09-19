@@ -1,7 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import {
   TaskActionsPermissionsEnum,
   TaskExtendedStatusEnum,
@@ -15,6 +14,7 @@ import { getFullUserName } from 'modules/user/utils'
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { ArrayFirst, SetNonNullable } from 'shared/types/utils'
 
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'

@@ -6,7 +6,6 @@ import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/rou
 import ChangeInfrastructurePage from 'modules/infrastructures/pages/ChangeInfrastructurePage'
 import { testUtils as changeInfrastructurePageTestUtils } from 'modules/infrastructures/pages/ChangeInfrastructurePage/ChangeInfrastructurePage.test'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
-import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import { testUtils as assigneeBlockTestUtils } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { testUtils as workGroupBlockTestUtils } from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
 import { testUtils as taskReclassificationRequestTestUtils } from 'modules/task/components/TaskReclassificationRequest/TaskReclassificationRequest.test'
@@ -36,6 +35,7 @@ import { confirmExecuteTaskRegistrationFNModalTestUtils } from '_tests_/features
 import { createRegistrationFNRequestModalTestUtils } from '_tests_/features/tasks/CreateRegistrationFNRequestModal/testUtils'
 import { executeTaskModalTestUtils } from '_tests_/features/tasks/ExecuteTaskModal/testUtils'
 import { requestTaskSuspendModalTestUtils } from '_tests_/features/tasks/RequestTaskSuspendModal/testUtils'
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'
@@ -68,7 +68,6 @@ import {
 } from '_tests_/mocks/api'
 import { getSystemSettingsQueryMock } from '_tests_/mocks/state/system'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-
 import {
   buttonTestUtils,
   fakeId,
@@ -81,6 +80,7 @@ import {
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
+
 import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import {
   activeRequestSuspendItemProps,
@@ -89,7 +89,6 @@ import {
   testUtils as taskDetailsTitleTestUtils,
 } from './TaskDetailsTitle/TaskDetailsTitle.test'
 import TaskDetails, { TaskDetailsProps } from './index'
-
 
 const props: TaskDetailsProps = {
   taskId: fakeId(),
