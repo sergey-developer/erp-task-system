@@ -4,12 +4,6 @@ import { camelize } from 'humps'
 import moment from 'moment-timezone'
 
 import {
-  activeAssignButtonProps,
-  activeTakeTaskButtonProps,
-  canSelectAssigneeProps,
-  testUtils as assigneeBlockTestUtils,
-} from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
-import {
   canExecuteTaskProps,
   testUtils as taskDetailsTitleTestUtils,
 } from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
@@ -46,6 +40,12 @@ import { getFullUserName } from 'modules/user/utils'
 
 import { executeTaskModalTestUtils } from '_tests_/features/tasks/ExecuteTaskModal/testUtils'
 import { fastFilterListTestUtils } from '_tests_/features/tasks/FastFilters/testUtils'
+import {
+  activeAssignButtonProps,
+  activeTakeTaskButtonProps,
+  canSelectAssigneeProps,
+} from '_tests_/features/tasks/TaskDetails/AssigneeBlock/constants'
+import { assigneeBlockTestUtils } from '_tests_/features/tasks/TaskDetails/AssigneeBlock/testUtils'
 import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
 import commonFixtures from '_tests_/fixtures/common'

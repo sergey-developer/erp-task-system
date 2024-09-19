@@ -1,5 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { waitFor } from '@testing-library/react'
 
 import {
   TaskActionsPermissionsEnum,
@@ -12,179 +11,25 @@ import { UserPermissionsEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
-import { ArrayFirst, SetNonNullable } from 'shared/types/utils'
+import { ArrayFirst } from 'shared/types/utils'
 
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
+import {
+  activeAssignButtonProps,
+  activeAssignOnMeButtonProps,
+  activeRefuseTaskButtonProps,
+  activeTakeTaskButtonProps,
+  canSelectAssigneeProps,
+  props,
+  showRefuseTaskButtonProps,
+} from '_tests_/features/tasks/TaskDetails/AssigneeBlock/constants'
+import { assigneeBlockTestUtils } from '_tests_/features/tasks/TaskDetails/AssigneeBlock/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { buttonTestUtils, fakeId, getStoreWithAuth, render, selectTestUtils } from '_tests_/utils'
+import { fakeId, getStoreWithAuth, render, selectTestUtils } from '_tests_/utils'
 
-import AssigneeBlock, { AssigneeBlockProps } from './index'
-
-const props: Readonly<SetNonNullable<AssigneeBlockProps>> = {
-  id: fakeId(),
-  userActions: userFixtures.userActions(),
-  takeTask: jest.fn(),
-  takeTaskIsLoading: false,
-  updateAssignee: jest.fn(),
-  updateAssigneeIsLoading: false,
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
-  assignee: taskFixtures.assignee(),
-  workGroup: taskFixtures.workGroup(),
-  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
-}
-
-export const activeTakeTaskButtonProps: Readonly<
-  Pick<AssigneeBlockProps, 'assignee' | 'status' | 'extendedStatus' | 'userActions'>
-> = {
-  assignee: null,
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
-  userActions: userFixtures.userActions({
-    tasks: {
-      ...userFixtures.taskActionsPermissions,
-      [TaskActionsPermissionsEnum.CanExecute]: [props.id],
-    },
-  }),
-}
-
-export const activeAssignOnMeButtonProps: Readonly<
-  Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>
-> = {
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
-}
-
-export const activeAssignButtonProps: Readonly<
-  SetNonNullable<Pick<AssigneeBlockProps, 'status' | 'extendedStatus' | 'assignee'>>
-> = {
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
-  assignee: taskFixtures.assignee(),
-}
-
-const showRefuseTaskButtonProps: Readonly<SetNonNullable<Pick<AssigneeBlockProps, 'assignee'>>> = {
-  assignee: taskFixtures.assignee(),
-}
-
-const activeRefuseTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>> =
-  {
-    status: TaskStatusEnum.New,
-    extendedStatus: TaskExtendedStatusEnum.New,
-  }
-
-export const canSelectAssigneeProps: Readonly<
-  SetNonNullable<Pick<AssigneeBlockProps, 'status' | 'workGroup'>>
-> = {
-  status: TaskStatusEnum.New,
-  workGroup: taskFixtures.workGroup(),
-}
-
-const getContainer = () => screen.getByTestId('task-assignee-block')
-const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
-
-// take task
-const getTakeTaskButton = () => buttonTestUtils.getButtonIn(getContainer(), /в работу/i)
-
-const clickTakeTaskButton = async (user: UserEvent) => {
-  const button = getTakeTaskButton()
-  await user.click(button)
-}
-
-const takeTaskExpectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getTakeTaskButton())
-
-// assign on me button
-const getAssignOnMeButton = () => buttonTestUtils.getButtonIn(getContainer(), /назначить на себя$/i)
-
-const clickAssignOnMeButton = async (user: UserEvent) => {
-  const button = getAssignOnMeButton()
-  await user.click(button)
-}
-
-const assignOnMeExpectLoadingStarted = () =>
-  buttonTestUtils.expectLoadingStarted(getAssignOnMeButton())
-
-const assignOnMeExpectLoadingFinished = () =>
-  buttonTestUtils.expectLoadingFinished(getAssignOnMeButton())
-
-// assign button
-const getAssignButton = () => buttonTestUtils.getButtonIn(getContainer(), /назначить$/i)
-
-const queryAssignButton = () => buttonTestUtils.queryButtonIn(getContainer(), /назначить$/i)
-
-const clickAssignButton = async (user: UserEvent) => {
-  const button = getAssignButton()
-  await user.click(button)
-  return button
-}
-
-const assignExpectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getAssignButton())
-
-// refuse task
-const getRefuseTaskButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /отказаться от заявки/i)
-
-const userClickRefuseTaskButton = async (user: UserEvent) => {
-  const button = getRefuseTaskButton()
-  await user.click(button)
-  return button
-}
-
-const refuseTaskExpectLoadingStarted = () =>
-  buttonTestUtils.expectLoadingStarted(getRefuseTaskButton())
-
-// assignee select
-const getAssigneeSelect = () => selectTestUtils.getSelect(getContainer())
-const queryAssigneeSelect = () => selectTestUtils.querySelect(getContainer())
-const findAssigneeSelect = () => selectTestUtils.findSelect(getContainer())
-const getSelectedAssignee = () => selectTestUtils.getSelectedOption(getContainer())
-const openAssigneeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getContainer())
-const selectAssignee = selectTestUtils.clickSelectOption
-const getAssigneeOption = selectTestUtils.getSelectOptionById
-const getAllAssigneeOption = selectTestUtils.getAllSelectOption
-
-const expectAssigneeSelectLoadingStarted = () =>
-  selectTestUtils.expectLoadingStarted(getContainer())
-
-const expectAssigneeSelectDisabled = () => selectTestUtils.selectDisabledIn(getContainer())
-const expectAssigneeSelectNotDisabled = () => selectTestUtils.selectNotDisabledIn(getContainer())
-
-export const testUtils = {
-  getContainer,
-  getChildByText,
-
-  getTakeTaskButton,
-  clickTakeTaskButton,
-  takeTaskExpectLoadingStarted,
-
-  getAssignButton,
-  queryAssignButton,
-  clickAssignButton,
-  assignExpectLoadingStarted,
-
-  getAssignOnMeButton,
-  clickAssignOnMeButton,
-  assignOnMeExpectLoadingStarted,
-  assignOnMeExpectLoadingFinished,
-
-  getRefuseTaskButton,
-  userClickRefuseTaskButton,
-  refuseTaskExpectLoadingStarted,
-
-  getAssigneeSelect,
-  queryAssigneeSelect,
-  findAssigneeSelect,
-  getSelectedAssignee,
-  openAssigneeSelect,
-  selectAssignee,
-  getAssigneeOption,
-  getAllAssigneeOption,
-  expectAssigneeSelectLoadingStarted,
-  expectAssigneeSelectDisabled,
-  expectAssigneeSelectNotDisabled,
-}
+import AssigneeBlock from './index'
 
 describe('Блок "Исполнитель заявки"', () => {
   test('Заголовок блока отображается', () => {
@@ -194,7 +39,7 @@ describe('Блок "Исполнитель заявки"', () => {
       }),
     })
 
-    expect(testUtils.getChildByText(/исполнитель/i)).toBeInTheDocument()
+    expect(assigneeBlockTestUtils.getChildByText(/исполнитель/i)).toBeInTheDocument()
   })
 
   describe('Кнопка "Назначить на себя"', () => {
@@ -205,7 +50,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      expect(testUtils.getAssignOnMeButton()).toBeInTheDocument()
+      expect(assigneeBlockTestUtils.getAssignOnMeButton()).toBeInTheDocument()
     })
 
     test(`Активна если условия соблюдены и есть права ${UserPermissionsEnum.SelfAssigneeTasksUpdate}`, () => {
@@ -217,7 +62,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      expect(testUtils.getAssignOnMeButton()).toBeEnabled()
+      expect(assigneeBlockTestUtils.getAssignOnMeButton()).toBeEnabled()
     })
 
     test(`Активна если условия соблюдены и есть права ${UserPermissionsEnum.AnyAssigneeTasksUpdate}`, () => {
@@ -229,7 +74,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      expect(testUtils.getAssignOnMeButton()).toBeEnabled()
+      expect(assigneeBlockTestUtils.getAssignOnMeButton()).toBeEnabled()
     })
 
     describe('Не активна если условия соблюдены', () => {
@@ -251,7 +96,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getAssignOnMeButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getAssignOnMeButton()).toBeDisabled()
       })
 
       test('Но статус заявки "Завершена"', () => {
@@ -272,7 +117,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getAssignOnMeButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getAssignOnMeButton()).toBeDisabled()
       })
 
       test('Но статус заявки "В ожидании"', () => {
@@ -293,7 +138,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getAssignOnMeButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getAssignOnMeButton()).toBeDisabled()
       })
 
       test('Но расширенный статус заявки "На переклассификации"', () => {
@@ -314,7 +159,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getAssignOnMeButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getAssignOnMeButton()).toBeDisabled()
       })
 
       test('Но статус заявки на ожидание "Новый"', () => {
@@ -335,7 +180,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getAssignOnMeButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getAssignOnMeButton()).toBeDisabled()
       })
 
       test('Но статус заявки на ожидание "В процессе"', () => {
@@ -356,7 +201,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getAssignOnMeButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getAssignOnMeButton()).toBeDisabled()
       })
 
       test('Но нет прав', () => {
@@ -373,7 +218,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getAssignOnMeButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getAssignOnMeButton()).toBeDisabled()
       })
     })
 
@@ -390,7 +235,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      await testUtils.clickAssignOnMeButton(user)
+      await assigneeBlockTestUtils.clickAssignOnMeButton(user)
 
       expect(props.updateAssignee).toBeCalledTimes(1)
       expect(props.updateAssignee).toBeCalledWith(currentUserId)
@@ -416,16 +261,16 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        await testUtils.openAssigneeSelect(user)
-        await testUtils.selectAssignee(
+        await assigneeBlockTestUtils.openAssigneeSelect(user)
+        await assigneeBlockTestUtils.selectAssignee(
           user,
           getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
         )
 
-        const button = testUtils.getAssignButton()
+        const button = assigneeBlockTestUtils.getAssignButton()
         expect(button).toBeEnabled()
 
-        await testUtils.clickAssignOnMeButton(user)
+        await assigneeBlockTestUtils.clickAssignOnMeButton(user)
         expect(button).toBeDisabled()
       })
     })
@@ -439,7 +284,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      expect(testUtils.getRefuseTaskButton()).toBeInTheDocument()
+      expect(assigneeBlockTestUtils.getRefuseTaskButton()).toBeInTheDocument()
     })
 
     test('Активна если условия соблюдены', () => {
@@ -456,7 +301,7 @@ describe('Блок "Исполнитель заявки"', () => {
         },
       )
 
-      expect(testUtils.getRefuseTaskButton()).toBeEnabled()
+      expect(assigneeBlockTestUtils.getRefuseTaskButton()).toBeEnabled()
     })
 
     describe('Не активна если условия соблюдены', () => {
@@ -475,7 +320,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getRefuseTaskButton()).toBeDisabled()
       })
 
       test('Но статус заявки "Завершена"', () => {
@@ -493,7 +338,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getRefuseTaskButton()).toBeDisabled()
       })
 
       test('Но статус заявки "В ожидании"', () => {
@@ -511,7 +356,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getRefuseTaskButton()).toBeDisabled()
       })
 
       test('Но расширенный статус заявки "На переклассификации"', () => {
@@ -529,7 +374,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getRefuseTaskButton()).toBeDisabled()
       })
 
       test('Но статус заявки на ожидание "Новый"', () => {
@@ -547,7 +392,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getRefuseTaskButton()).toBeDisabled()
       })
 
       test('Но статус заявки на ожидание "В процессе"', () => {
@@ -565,7 +410,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getRefuseTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getRefuseTaskButton()).toBeDisabled()
       })
     })
   })
@@ -578,7 +423,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      const button = testUtils.getTakeTaskButton()
+      const button = assigneeBlockTestUtils.getTakeTaskButton()
       expect(button).toBeInTheDocument()
     })
 
@@ -589,7 +434,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      const button = testUtils.getTakeTaskButton()
+      const button = assigneeBlockTestUtils.getTakeTaskButton()
       expect(button).toBeEnabled()
     })
 
@@ -608,7 +453,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getTakeTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getTakeTaskButton()).toBeDisabled()
       })
 
       test('Но исполнитель назначен и не является авторизованным пользователем', () => {
@@ -625,7 +470,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getTakeTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getTakeTaskButton()).toBeDisabled()
       })
 
       test('Но расширенный статус заявки "На переклассификации"', () => {
@@ -642,7 +487,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getTakeTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getTakeTaskButton()).toBeDisabled()
       })
 
       test(`Но ${TaskActionsPermissionsEnum.CanExecute} не содержит id заявки`, () => {
@@ -659,7 +504,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        const button = testUtils.getTakeTaskButton()
+        const button = assigneeBlockTestUtils.getTakeTaskButton()
         expect(button).toBeDisabled()
       })
 
@@ -677,7 +522,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getTakeTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getTakeTaskButton()).toBeDisabled()
       })
 
       test('Но статус заявки на ожидание "В процессе"', () => {
@@ -694,7 +539,7 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getTakeTaskButton()).toBeDisabled()
+        expect(assigneeBlockTestUtils.getTakeTaskButton()).toBeDisabled()
       })
     })
 
@@ -705,7 +550,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      await testUtils.clickTakeTaskButton(user)
+      await assigneeBlockTestUtils.clickTakeTaskButton(user)
       expect(props.takeTask).toBeCalledTimes(1)
     })
   })
@@ -721,8 +566,8 @@ describe('Блок "Исполнитель заявки"', () => {
           }),
         })
 
-        expect(testUtils.getAssigneeSelect()).toBeInTheDocument()
-        await testUtils.expectAssigneeSelectNotDisabled()
+        expect(assigneeBlockTestUtils.getAssigneeSelect()).toBeInTheDocument()
+        await assigneeBlockTestUtils.expectAssigneeSelectNotDisabled()
       })
 
       describe('Не отображается если условия соблюдены', () => {
@@ -740,7 +585,7 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          expect(testUtils.queryAssigneeSelect()).not.toBeInTheDocument()
+          expect(assigneeBlockTestUtils.queryAssigneeSelect()).not.toBeInTheDocument()
         })
 
         test('Но статус заявки "Завершена"', () => {
@@ -761,7 +606,7 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          expect(testUtils.queryAssigneeSelect()).not.toBeInTheDocument()
+          expect(assigneeBlockTestUtils.queryAssigneeSelect()).not.toBeInTheDocument()
         })
 
         test('Но нет рабочей группы', () => {
@@ -775,7 +620,7 @@ describe('Блок "Исполнитель заявки"', () => {
             }),
           })
 
-          expect(testUtils.queryAssigneeSelect()).not.toBeInTheDocument()
+          expect(assigneeBlockTestUtils.queryAssigneeSelect()).not.toBeInTheDocument()
         })
 
         test('Но нет прав', () => {
@@ -785,7 +630,7 @@ describe('Блок "Исполнитель заявки"', () => {
             }),
           })
 
-          expect(testUtils.queryAssigneeSelect()).not.toBeInTheDocument()
+          expect(assigneeBlockTestUtils.queryAssigneeSelect()).not.toBeInTheDocument()
         })
       })
 
@@ -798,7 +643,9 @@ describe('Блок "Исполнитель заявки"', () => {
           }),
         })
 
-        expect(testUtils.getSelectedAssignee()).toHaveTextContent(getFullUserName(props.assignee))
+        expect(assigneeBlockTestUtils.getSelectedAssignee()).toHaveTextContent(
+          getFullUserName(props.assignee),
+        )
       })
 
       test('Не имеет значения по умолчанию если нет исполнителя', () => {
@@ -810,7 +657,7 @@ describe('Блок "Исполнитель заявки"', () => {
           }),
         })
 
-        expect(testUtils.getSelectedAssignee()).not.toBeInTheDocument()
+        expect(assigneeBlockTestUtils.getSelectedAssignee()).not.toBeInTheDocument()
       })
 
       test('Верно отображает варианты выбора если нет исполнителя', async () => {
@@ -827,9 +674,9 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        await testUtils.openAssigneeSelect(user)
+        await assigneeBlockTestUtils.openAssigneeSelect(user)
 
-        expect(testUtils.getAllAssigneeOption()).toHaveLength(
+        expect(assigneeBlockTestUtils.getAllAssigneeOption()).toHaveLength(
           canSelectAssigneeProps.workGroup.members.length,
         )
       })
@@ -845,9 +692,9 @@ describe('Блок "Исполнитель заявки"', () => {
           }),
         })
 
-        await testUtils.openAssigneeSelect(user)
+        await assigneeBlockTestUtils.openAssigneeSelect(user)
 
-        expect(testUtils.getAllAssigneeOption()).toHaveLength(
+        expect(assigneeBlockTestUtils.getAllAssigneeOption()).toHaveLength(
           canSelectAssigneeProps.workGroup.members.length + 1,
         )
       })
@@ -866,15 +713,15 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        expect(testUtils.getSelectedAssignee()).not.toBeInTheDocument()
+        expect(assigneeBlockTestUtils.getSelectedAssignee()).not.toBeInTheDocument()
 
-        await testUtils.openAssigneeSelect(user)
-        await testUtils.selectAssignee(
+        await assigneeBlockTestUtils.openAssigneeSelect(user)
+        await assigneeBlockTestUtils.selectAssignee(
           user,
           getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
         )
 
-        expect(testUtils.getSelectedAssignee()).toBeInTheDocument()
+        expect(assigneeBlockTestUtils.getSelectedAssignee()).toBeInTheDocument()
       })
 
       describe('Вариант исполнителя не активен', () => {
@@ -904,8 +751,10 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          await testUtils.openAssigneeSelect(user)
-          await selectTestUtils.expectOptionDisabled(testUtils.getAssigneeOption(assigneeOption.id))
+          await assigneeBlockTestUtils.openAssigneeSelect(user)
+          await selectTestUtils.expectOptionDisabled(
+            assigneeBlockTestUtils.getAssigneeOption(assigneeOption.id),
+          )
         })
 
         test('Если выбранный исполнитель является авторизованным пользователем', async () => {
@@ -934,8 +783,10 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          await testUtils.openAssigneeSelect(user)
-          await selectTestUtils.expectOptionDisabled(testUtils.getAssigneeOption(assigneeOption.id))
+          await assigneeBlockTestUtils.openAssigneeSelect(user)
+          await selectTestUtils.expectOptionDisabled(
+            assigneeBlockTestUtils.getAssigneeOption(assigneeOption.id),
+          )
         })
       })
     })
@@ -947,7 +798,9 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      expect(taskAssigneeTestUtils.getContainerIn(testUtils.getContainer())).toBeInTheDocument()
+      expect(
+        taskAssigneeTestUtils.getContainerIn(assigneeBlockTestUtils.getContainer()),
+      ).toBeInTheDocument()
     })
 
     describe('Исполнитель не отображается', () => {
@@ -971,7 +824,7 @@ describe('Блок "Исполнитель заявки"', () => {
         )
 
         expect(
-          taskAssigneeTestUtils.queryContainerIn(testUtils.getContainer()),
+          taskAssigneeTestUtils.queryContainerIn(assigneeBlockTestUtils.getContainer()),
         ).not.toBeInTheDocument()
       })
 
@@ -983,7 +836,7 @@ describe('Блок "Исполнитель заявки"', () => {
         })
 
         expect(
-          taskAssigneeTestUtils.queryContainerIn(testUtils.getContainer()),
+          taskAssigneeTestUtils.queryContainerIn(assigneeBlockTestUtils.getContainer()),
         ).not.toBeInTheDocument()
       })
     })
@@ -995,7 +848,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      expect(testUtils.getChildByText(NO_ASSIGNEE_TEXT)).toBeInTheDocument()
+      expect(assigneeBlockTestUtils.getChildByText(NO_ASSIGNEE_TEXT)).toBeInTheDocument()
     })
 
     test('Отображается кнопка "В работу"', () => {
@@ -1005,7 +858,7 @@ describe('Блок "Исполнитель заявки"', () => {
         }),
       })
 
-      expect(testUtils.getTakeTaskButton()).toBeInTheDocument()
+      expect(assigneeBlockTestUtils.getTakeTaskButton()).toBeInTheDocument()
     })
 
     describe('Кнопка "Назначить"', () => {
@@ -1018,7 +871,7 @@ describe('Блок "Исполнитель заявки"', () => {
           }),
         })
 
-        expect(testUtils.getAssignButton()).toBeInTheDocument()
+        expect(assigneeBlockTestUtils.getAssignButton()).toBeInTheDocument()
       })
 
       describe('Не отображается если условия соблюдены', () => {
@@ -1036,7 +889,7 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          expect(testUtils.queryAssignButton()).not.toBeInTheDocument()
+          expect(assigneeBlockTestUtils.queryAssignButton()).not.toBeInTheDocument()
         })
 
         test('Но статус заявки "Завершена"', () => {
@@ -1057,7 +910,7 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          expect(testUtils.queryAssignButton()).not.toBeInTheDocument()
+          expect(assigneeBlockTestUtils.queryAssignButton()).not.toBeInTheDocument()
         })
 
         test('Но нет рабочей группы', () => {
@@ -1071,7 +924,7 @@ describe('Блок "Исполнитель заявки"', () => {
             }),
           })
 
-          expect(testUtils.queryAssignButton()).not.toBeInTheDocument()
+          expect(assigneeBlockTestUtils.queryAssignButton()).not.toBeInTheDocument()
         })
 
         test('Но нет прав', () => {
@@ -1081,7 +934,7 @@ describe('Блок "Исполнитель заявки"', () => {
             }),
           })
 
-          expect(testUtils.queryAssignButton()).not.toBeInTheDocument()
+          expect(assigneeBlockTestUtils.queryAssignButton()).not.toBeInTheDocument()
         })
       })
 
@@ -1100,13 +953,13 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          await testUtils.openAssigneeSelect(user)
-          await testUtils.selectAssignee(
+          await assigneeBlockTestUtils.openAssigneeSelect(user)
+          await assigneeBlockTestUtils.selectAssignee(
             user,
             getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
           )
 
-          const button = testUtils.getAssignButton()
+          const button = assigneeBlockTestUtils.getAssignButton()
 
           await waitFor(() => {
             expect(button).toBeEnabled()
@@ -1129,7 +982,7 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          expect(testUtils.getAssignButton()).toBeDisabled()
+          expect(assigneeBlockTestUtils.getAssignButton()).toBeDisabled()
         })
 
         test('Но выбранный исполнитель является авторизованным пользователем', () => {
@@ -1146,7 +999,7 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          expect(testUtils.getAssignButton()).toBeDisabled()
+          expect(assigneeBlockTestUtils.getAssignButton()).toBeDisabled()
         })
 
         test('Но нет исполнителя заявки', () => {
@@ -1168,7 +1021,7 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          expect(testUtils.getAssignButton()).toBeDisabled()
+          expect(assigneeBlockTestUtils.getAssignButton()).toBeDisabled()
         })
 
         test('Но статус заявки "В ожидании"', () => {
@@ -1190,7 +1043,7 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          expect(testUtils.getAssignButton()).toBeDisabled()
+          expect(assigneeBlockTestUtils.getAssignButton()).toBeDisabled()
         })
 
         test('Но расширенный статус заявки "На переклассификации"', () => {
@@ -1212,7 +1065,7 @@ describe('Блок "Исполнитель заявки"', () => {
             },
           )
 
-          expect(testUtils.getAssignButton()).toBeDisabled()
+          expect(assigneeBlockTestUtils.getAssignButton()).toBeDisabled()
         })
       })
 
@@ -1230,12 +1083,12 @@ describe('Блок "Исполнитель заявки"', () => {
           },
         )
 
-        await testUtils.openAssigneeSelect(user)
-        await testUtils.selectAssignee(
+        await assigneeBlockTestUtils.openAssigneeSelect(user)
+        await assigneeBlockTestUtils.selectAssignee(
           user,
           getFullUserName(canSelectAssigneeProps.workGroup.members[0]),
         )
-        await testUtils.clickAssignButton(user)
+        await assigneeBlockTestUtils.clickAssignButton(user)
 
         expect(props.updateAssignee).toBeCalledTimes(1)
         expect(props.updateAssignee).toBeCalledWith(canSelectAssigneeProps.workGroup.members[0].id)

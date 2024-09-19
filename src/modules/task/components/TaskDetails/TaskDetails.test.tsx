@@ -5,7 +5,6 @@ import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/rou
 import ChangeInfrastructurePage from 'modules/infrastructures/pages/ChangeInfrastructurePage'
 import { testUtils as changeInfrastructurePageTestUtils } from 'modules/infrastructures/pages/ChangeInfrastructurePage/ChangeInfrastructurePage.test'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
-import { testUtils as assigneeBlockTestUtils } from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
 import { testUtils as workGroupBlockTestUtils } from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
 import { testUtils as taskReclassificationRequestTestUtils } from 'modules/task/components/TaskReclassificationRequest/TaskReclassificationRequest.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
@@ -35,6 +34,7 @@ import { createRegistrationFNRequestModalTestUtils } from '_tests_/features/task
 import { executeTaskModalTestUtils } from '_tests_/features/tasks/ExecuteTaskModal/testUtils'
 import { requestTaskSuspendModalTestUtils } from '_tests_/features/tasks/RequestTaskSuspendModal/testUtils'
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
+import { assigneeBlockTestUtils } from '_tests_/features/tasks/TaskDetails/AssigneeBlock/testUtils'
 import {
   activeChangeInfrastructureButton,
   props,
