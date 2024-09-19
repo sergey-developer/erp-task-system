@@ -2,7 +2,6 @@ import { screen, waitForElementToBeRemoved } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { ReworkSubTaskFormErrors } from 'modules/task/components/ReworkSubTaskModal/types'
-import { testUtils as subTaskListTestUtils } from 'modules/task/components/SubTaskList/SubTaskList.test'
 import { testUtils as taskStatusTestUtils } from 'modules/task/components/TaskStatus/TaskStatus.test'
 import {
   getSubTasksErrMsg,
@@ -19,6 +18,8 @@ import {
   showCancelButtonProps,
   showReworkButtonProps,
 } from '_tests_/features/tasks/SubTask/constants'
+import { subTaskTestUtils } from '_tests_/features/tasks/SubTask/testUtils'
+import { subTaskListTestUtils } from '_tests_/features/tasks/SubTaskList/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import taskFixtures from '_tests_/fixtures/task'
@@ -46,7 +47,6 @@ import {
   spinnerTestUtils,
 } from '_tests_/utils'
 
-import { subTaskTestUtils } from '../../../../../../_tests_/features/tasks/SubTask/testUtils'
 import SubTaskListTab, { SubTaskListTabProps } from './index'
 
 const props: Readonly<SubTaskListTabProps> = {
