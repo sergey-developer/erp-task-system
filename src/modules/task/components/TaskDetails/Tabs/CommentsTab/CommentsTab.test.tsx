@@ -3,6 +3,7 @@ import { within } from '@testing-library/react'
 import { createTaskCommentErrMsg } from 'modules/task/constants/taskComment'
 import { UserPermissionsEnum } from 'modules/user/constants'
 
+import { commentsTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/Comments/testUtils'
 import { props } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/constants'
 import { commentsTabTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
@@ -23,7 +24,6 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import { testUtils as commentsTestUtils } from './Comments/Comments.test'
 import { testUtils as createCommentFormTestUtils } from './CreateCommentForm/CreateCommentForm.test'
 import { CreateCommentFormFields } from './CreateCommentForm/types'
 import CommentsTab, { DEFAULT_DISPLAYABLE_COUNT } from './index'
