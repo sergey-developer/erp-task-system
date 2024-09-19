@@ -6,7 +6,6 @@ import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/rou
 import ChangeInfrastructurePage from 'modules/infrastructures/pages/ChangeInfrastructurePage'
 import { testUtils as changeInfrastructurePageTestUtils } from 'modules/infrastructures/pages/ChangeInfrastructurePage/ChangeInfrastructurePage.test'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
-import { testUtils as confirmExecuteTaskReclassificationTasksModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskReclassificationTasksModal/ConfirmExecuteTaskReclassificationTasksModal.test'
 import { testUtils as confirmExecuteTaskRegistrationFNModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskRegistrationFNModal/ConfirmExecuteTaskRegistrationFNModal.test'
 import { testUtils as createRegistrationFNRequestModalTestUtils } from 'modules/task/components/CreateRegistrationFNRequestModal/CreateRegistrationFNRequestModal.test'
 import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
@@ -37,6 +36,9 @@ import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import {
   confirmCancelReclassificationRequestModalTestUtils
 } from '_tests_/features/tasks/ConfirmCancelReclassificationRequestModal/testUtils'
+import {
+  confirmExecuteTaskReclassificationTasksModalTestUtils
+} from '_tests_/features/tasks/ConfirmExecuteTaskReclassificationTasksModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'
@@ -91,6 +93,7 @@ import {
   testUtils as taskDetailsTitleTestUtils,
 } from './TaskDetailsTitle/TaskDetailsTitle.test'
 import TaskDetails, { TaskDetailsProps } from './index'
+
 
 const props: TaskDetailsProps = {
   taskId: fakeId(),
