@@ -1,6 +1,5 @@
 import { screen, within } from '@testing-library/react'
 
-import { testUtils as relocationTasksTestUtils } from 'modules/task/components/RelocationTasks/RelocationTasks.test'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
@@ -12,6 +11,7 @@ import CreateRelocationTaskSimplifiedPage from 'modules/warehouse/pages/CreateRe
 import { testUtils as createRelocationTaskSimplifiedPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskSimplifiedPage/CreateRelocationTaskSimplifiedPage.test'
 import RelocationTasksPage from 'modules/warehouse/pages/RelocationTasksPage'
 
+import { relocationTasksTestUtils } from '_tests_/features/tasks/RelocationTasks/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
