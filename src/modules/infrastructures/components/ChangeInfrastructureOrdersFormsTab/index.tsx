@@ -1,5 +1,6 @@
 import { Collapse, Form, Typography } from 'antd'
 import { CollapseProps } from 'rc-collapse/es/interface'
+import { UploadRequestOption } from 'rc-upload/es/interface'
 import { FC, useCallback, useMemo } from 'react'
 
 import { useDeleteAttachment } from 'modules/attachment/hooks'
@@ -12,10 +13,9 @@ import Space from 'components/Space'
 
 import { IdType } from 'shared/types/common'
 
+import { useCreateInfrastructureOrderFormAttachment } from '../../hooks/useCreateInfrastructureOrderFormAttachment'
 import ChangeInfrastructureOrderForm from '../ChangeInfrastructureOrderForm'
 import { ChangeInfrastructureOrdersFormsTabFormFields } from './types'
-import { useCreateInfrastructureOrderFormAttachment } from '../../hooks/useCreateInfrastructureOrderFormAttachment'
-import { UploadRequestOption } from 'rc-upload/es/interface'
 
 const { Text } = Typography
 

@@ -1,16 +1,18 @@
+import { decamelize } from 'humps'
+
 import {
   InfrastructuresApiEnum,
   InfrastructuresApiTagEnum,
 } from 'modules/infrastructures/constants'
 import {
+  CreateInfrastructureOrderFormAttachmentMutationArgs,
+  CreateInfrastructureOrderFormAttachmentSuccessResponse,
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureOrdersFormsSuccessResponse,
   GetInfrastructureQueryArgs,
   GetInfrastructureSuccessResponse,
   UpdateInfrastructureMutationArgs,
   UpdateInfrastructureSuccessResponse,
-  CreateInfrastructureOrderFormAttachmentMutationArgs,
-  CreateInfrastructureOrderFormAttachmentSuccessResponse,
 } from 'modules/infrastructures/models'
 import {
   makeGetInfrastructureUrl,
@@ -19,8 +21,6 @@ import {
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
-import { decamelize } from 'humps'
-
 
 const infrastructuresApiService = baseApiService
   .enhanceEndpoints({ addTagTypes: [InfrastructuresApiTagEnum.Infrastructure] })
