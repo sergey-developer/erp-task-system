@@ -1,7 +1,6 @@
 import { screen, waitForElementToBeRemoved } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as reworkSubTaskModalTestUtils } from 'modules/task/components/ReworkSubTaskModal/ReworkSubTaskModal.test'
 import { ReworkSubTaskFormErrors } from 'modules/task/components/ReworkSubTaskModal/types'
 import {
   showCancelButtonProps,
@@ -20,6 +19,7 @@ import {
 
 import { cancelSubTaskModalTestUtils } from '_tests_/features/tasks/CancelSubTaskModal/testUtils'
 import { createSubTaskModalTestUtils } from '_tests_/features/tasks/CreateSubTaskModal/testUtils'
+import { reworkSubTaskModalTestUtils } from '_tests_/features/tasks/ReworkSubTaskModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import taskFixtures from '_tests_/fixtures/task'
