@@ -3,7 +3,6 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { camelize } from 'humps'
 import moment from 'moment-timezone'
 
-import { testUtils as fastFilterListTestUtils } from 'modules/task/components/FastFilters/FastFilters.test'
 import {
   activeAssignButtonProps,
   activeTakeTaskButtonProps,
@@ -48,6 +47,7 @@ import { getFullUserName } from 'modules/user/utils'
 
 import { executeTaskModalTestUtils } from '_tests_/features/tasks/ExecuteTaskModal/testUtils'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
+import { fastFilterListTestUtils } from '_tests_/features/tasks/FastFilters/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
