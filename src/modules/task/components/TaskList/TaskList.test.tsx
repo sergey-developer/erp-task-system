@@ -1,67 +1,23 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import { TaskTypeEnum } from 'modules/task/constants/task'
 
-import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
 import { hexToRGB } from 'shared/utils/hexToRGB'
 
 import theme from 'styles/theme'
 
+import { props, taskListItem } from '_tests_/features/tasks/TaskList/constants'
+import { taskListTestUtils } from '_tests_/features/tasks/TaskList/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import { render } from '_tests_/utils'
 
 import TaskList, { taskTypeText } from './index'
-import { TaskListProps } from './types'
-
-const taskListItem = taskFixtures.taskListItem()
-
-const props: Readonly<TaskListProps> = {
-  tasks: [taskListItem],
-  selectedTaskId: null,
-  onClickTask: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('task-list')
-
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
-const getListItem = (id: IdType) => within(getContainer()).getByTestId(`task-list-item-${id}`)
-
-const getListItemChildByText = (id: IdType, text: string) => {
-  const listItem = getListItem(id)
-  return within(listItem).getByText(text)
-}
-
-const queryListItemChildByText = (id: IdType, text: string) => {
-  const listItem = getListItem(id)
-  return within(listItem).queryByText(text)
-}
-
-const clickListItem = async (user: UserEvent, id: IdType) => {
-  const listItem = getListItem(id)
-  await user.click(listItem)
-  return listItem
-}
-
-export const testUtils = {
-  getContainer,
-  getChildByText,
-
-  getListItem,
-  getListItemChildByText,
-  queryListItemChildByText,
-
-  clickListItem,
-}
 
 describe('Список заявок', () => {
   test('Отображается верно количество', () => {
     render(<TaskList {...props} />)
 
     props.tasks.forEach((task) => {
-      const listItem = testUtils.getListItem(task.id)
+      const listItem = taskListTestUtils.getListItem(task.id)
       expect(listItem).toBeInTheDocument()
     })
   })
@@ -70,7 +26,7 @@ describe('Список заявок', () => {
     test('Отображается', () => {
       render(<TaskList {...props} />)
 
-      const type = testUtils.getListItemChildByText(
+      const type = taskListTestUtils.getListItemChildByText(
         taskListItem.id,
         taskTypeText[taskListItem.type],
       )
@@ -85,7 +41,7 @@ describe('Список заявок', () => {
 
       render(<TaskList {...props} tasks={[taskListItem]} />)
 
-      const type = testUtils.getListItemChildByText(
+      const type = taskListTestUtils.getListItemChildByText(
         taskListItem.id,
         taskTypeText[taskListItem.type],
       )
@@ -102,7 +58,7 @@ describe('Список заявок', () => {
 
       render(<TaskList {...props} tasks={[taskListItem]} />)
 
-      const type = testUtils.getListItemChildByText(
+      const type = taskListTestUtils.getListItemChildByText(
         taskListItem.id,
         taskTypeText[taskListItem.type],
       )
@@ -119,7 +75,7 @@ describe('Список заявок', () => {
 
       render(<TaskList {...props} tasks={[taskListItem]} />)
 
-      const type = testUtils.getListItemChildByText(
+      const type = taskListTestUtils.getListItemChildByText(
         taskListItem.id,
         taskTypeText[taskListItem.type],
       )
@@ -136,7 +92,7 @@ describe('Список заявок', () => {
 
       render(<TaskList {...props} tasks={[taskListItem]} />)
 
-      const type = testUtils.getListItemChildByText(
+      const type = taskListTestUtils.getListItemChildByText(
         taskListItem.id,
         taskTypeText[taskListItem.type],
       )
@@ -150,7 +106,7 @@ describe('Список заявок', () => {
   test('Объект отображается', () => {
     render(<TaskList {...props} />)
 
-    const object = testUtils.getListItemChildByText(taskListItem.id, taskListItem.name)
+    const object = taskListTestUtils.getListItemChildByText(taskListItem.id, taskListItem.name)
 
     expect(object).toBeInTheDocument()
   })
@@ -158,7 +114,7 @@ describe('Список заявок', () => {
   test('Срок выполнения если есть', () => {
     render(<TaskList {...props} />)
 
-    const olaNextBreachTime = testUtils.getListItemChildByText(
+    const olaNextBreachTime = taskListTestUtils.getListItemChildByText(
       taskListItem.id,
       formatDate(taskListItem.olaNextBreachTime),
     )
@@ -169,7 +125,7 @@ describe('Список заявок', () => {
   test('Срок выполнения не отображается если его нет', () => {
     render(<TaskList {...props} tasks={[{ ...taskListItem, olaNextBreachTime: null }]} />)
 
-    const olaNextBreachTime = testUtils.queryListItemChildByText(
+    const olaNextBreachTime = taskListTestUtils.queryListItemChildByText(
       taskListItem.id,
       formatDate(taskListItem.olaNextBreachTime),
     )
@@ -180,7 +136,7 @@ describe('Список заявок', () => {
   test('Тема отображается', () => {
     render(<TaskList {...props} />)
 
-    const theme = testUtils.getListItemChildByText(taskListItem.id, taskListItem.title)
+    const theme = taskListTestUtils.getListItemChildByText(taskListItem.id, taskListItem.title)
 
     expect(theme).toBeInTheDocument()
   })
@@ -188,7 +144,7 @@ describe('Список заявок', () => {
   test('Элемент списка можно сделать выбранным', () => {
     render(<TaskList {...props} selectedTaskId={taskListItem.id} />)
 
-    const listItem = testUtils.getListItem(taskListItem.id)
+    const listItem = taskListTestUtils.getListItem(taskListItem.id)
 
     expect(listItem).toHaveClass('list-item-selected')
     expect(listItem).toHaveStyle({ backgroundColor: hexToRGB(theme.colors.chineseWhite) })
@@ -197,7 +153,7 @@ describe('Список заявок', () => {
   test('По клику на элемент вызывается обработчик', async () => {
     const { user } = render(<TaskList {...props} />)
 
-    await testUtils.clickListItem(user, taskListItem.id)
+    await taskListTestUtils.clickListItem(user, taskListItem.id)
 
     expect(props.onClickTask).toBeCalledTimes(1)
     expect(props.onClickTask).toBeCalledWith(taskListItem.id)
