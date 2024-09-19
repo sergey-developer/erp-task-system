@@ -9,7 +9,6 @@ import {
   taskAssignedDict,
   taskOverdueDict,
 } from 'modules/task/components/TasksFilter/constants'
-import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 import {
   FastFilterEnum,
@@ -46,6 +45,7 @@ import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUti
 import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/TaskFirstLineModal/testUtils'
 import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/TaskSecondLineModal/testUtils'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
+import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/TasksFiltersStorage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'

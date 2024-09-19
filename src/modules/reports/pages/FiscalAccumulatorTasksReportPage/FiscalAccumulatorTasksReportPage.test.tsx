@@ -3,7 +3,6 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/reports/components/FiscalAccumulatorTasksReportTable/FiscalAccumulatorTasksReportTable.test'
 import { getFiscalAccumulatorTasksReportErrMsg } from 'modules/reports/constants'
-import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
 import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 import {
   taskLocalStorageService,
@@ -11,6 +10,7 @@ import {
 } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 
 import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
+import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/TasksFiltersStorage/testUtils'
 import reportsFixtures from '_tests_/fixtures/reports'
 import {
   mockGetFiscalAccumulatorTasksServerError,
