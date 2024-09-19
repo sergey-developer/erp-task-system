@@ -1,5 +1,4 @@
 import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import {
   getTaskJournalCsvErrMsg,
@@ -11,6 +10,8 @@ import { commonApiMessages } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as downloadLink from 'shared/utils/file/downloadFile'
 
+import { props } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/constants'
+import { journalTabTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import {
   mockGetJournalCsvServerError,
@@ -19,87 +20,17 @@ import {
   mockGetJournalSuccess,
 } from '_tests_/mocks/api'
 import {
-  buttonTestUtils,
-  fakeId,
   fakeWord,
   getStoreWithAuth,
   notificationTestUtils,
-  radioButtonTestUtils,
   render,
-  selectTestUtils,
   setupApiTests,
-  spinnerTestUtils,
 } from '_tests_/utils'
 
 import { testUtils as journalEntryTestUtils } from './JournalEntry.test'
 import { NO_DATA_MSG } from './constants'
-import JournalTab, { JournalTabProps } from './index'
+import JournalTab from './index'
 import { getJournalCsvFilename } from './utils'
-
-const props: Readonly<JournalTabProps> = {
-  taskId: fakeId(),
-}
-
-const getContainer = () => screen.getByTestId('task-journal')
-
-// filters
-const getSourceFilter = (type: TaskJournalSourceEnum) =>
-  radioButtonTestUtils.getRadioButtonIn(getContainer(), type)
-const clickSourceFilter = async (user: UserEvent, type: TaskJournalSourceEnum) => {
-  const filter = getSourceFilter(type)
-  await user.click(filter)
-}
-
-const getTypeFilterSelect = () => within(getContainer()).getByTestId('type-filter-select')
-const getTypeFilterSelectInput = () => selectTestUtils.getSelect(getTypeFilterSelect())
-const openTypeFilter = (user: UserEvent) => selectTestUtils.openSelect(user, getTypeFilterSelect())
-const setTypeFilter = selectTestUtils.clickSelectOption
-
-// reload button
-const getReloadButton = () => buttonTestUtils.getButtonIn(getContainer(), 'sync')
-const clickReloadButton = async (user: UserEvent) => {
-  const button = getReloadButton()
-  await user.click(button)
-  return button
-}
-
-// download button
-const getDownloadButton = () => screen.getByTestId('journal-btn-download')
-const clickDownloadButton = async (user: UserEvent): Promise<HTMLElement> => {
-  const button = getDownloadButton()
-  await user.click(button)
-  return button
-}
-
-const expectJournalLoadingStarted = spinnerTestUtils.expectLoadingStarted('task-journal-loading')
-const expectJournalLoadingFinished = spinnerTestUtils.expectLoadingFinished('task-journal-loading')
-
-const expectJournalCsvLoadingStarted = buttonTestUtils.expectLoadingStarted
-const expectJournalCsvLoadingFinished = buttonTestUtils.expectLoadingFinished
-
-export const testUtils = {
-  getContainer,
-
-  getSourceFilter,
-  clickSourceFilter,
-
-  getTypeFilterSelect,
-  getTypeFilterSelectInput,
-  openTypeFilter,
-  setTypeFilter,
-
-  getDownloadButton,
-  clickDownloadButton,
-
-  getReloadButton,
-  clickReloadButton,
-
-  expectJournalLoadingStarted,
-  expectJournalLoadingFinished,
-
-  expectJournalCsvLoadingStarted,
-  expectJournalCsvLoadingFinished,
-}
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -110,10 +41,10 @@ describe('Вкладка журнала задачи', () => {
       mockGetJournalSuccess(props.taskId)
       render(<JournalTab {...props} />)
 
-      await testUtils.expectJournalLoadingFinished()
+      await journalTabTestUtils.expectJournalLoadingFinished()
 
       Object.values(TaskJournalSourceEnum).forEach((value) => {
-        const filter = getSourceFilter(value)
+        const filter = journalTabTestUtils.getSourceFilter(value)
         expect(filter).toBeInTheDocument()
       })
     })
@@ -122,10 +53,10 @@ describe('Вкладка журнала задачи', () => {
       mockGetJournalSuccess(props.taskId, { once: false })
       const { user } = render(<JournalTab {...props} />)
 
-      await testUtils.expectJournalLoadingFinished()
-      await testUtils.clickSourceFilter(user, TaskJournalSourceEnum.X5)
-      await testUtils.expectJournalLoadingStarted()
-      await testUtils.expectJournalLoadingFinished()
+      await journalTabTestUtils.expectJournalLoadingFinished()
+      await journalTabTestUtils.clickSourceFilter(user, TaskJournalSourceEnum.X5)
+      await journalTabTestUtils.expectJournalLoadingStarted()
+      await journalTabTestUtils.expectJournalLoadingFinished()
     })
   })
 
@@ -134,8 +65,8 @@ describe('Вкладка журнала задачи', () => {
       mockGetJournalSuccess(props.taskId)
       render(<JournalTab {...props} />)
 
-      await testUtils.expectJournalLoadingFinished()
-      const select = testUtils.getTypeFilterSelect()
+      await journalTabTestUtils.expectJournalLoadingFinished()
+      const select = journalTabTestUtils.getTypeFilterSelect()
 
       expect(select).toBeInTheDocument()
     })
@@ -144,11 +75,11 @@ describe('Вкладка журнала задачи', () => {
       mockGetJournalSuccess(props.taskId, { once: false })
       const { user } = render(<JournalTab {...props} />)
 
-      await testUtils.expectJournalLoadingFinished()
-      await testUtils.openTypeFilter(user)
-      await testUtils.setTypeFilter(user, 'Выбрать все')
-      await testUtils.expectJournalLoadingStarted()
-      await testUtils.expectJournalLoadingFinished()
+      await journalTabTestUtils.expectJournalLoadingFinished()
+      await journalTabTestUtils.openTypeFilter(user)
+      await journalTabTestUtils.setTypeFilter(user, 'Выбрать все')
+      await journalTabTestUtils.expectJournalLoadingStarted()
+      await journalTabTestUtils.expectJournalLoadingFinished()
     })
   })
 
@@ -157,8 +88,8 @@ describe('Вкладка журнала задачи', () => {
       mockGetJournalSuccess(props.taskId)
       render(<JournalTab {...props} />)
 
-      await testUtils.expectJournalLoadingFinished()
-      const button = testUtils.getReloadButton()
+      await journalTabTestUtils.expectJournalLoadingFinished()
+      const button = journalTabTestUtils.getReloadButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -174,9 +105,9 @@ describe('Вкладка журнала задачи', () => {
         store: getStoreWithAuth(),
       })
 
-      await testUtils.expectJournalLoadingFinished()
-      await testUtils.clickReloadButton(user)
-      await testUtils.expectJournalLoadingStarted()
+      await journalTabTestUtils.expectJournalLoadingFinished()
+      await journalTabTestUtils.clickReloadButton(user)
+      await journalTabTestUtils.expectJournalLoadingStarted()
     })
   })
 
@@ -190,9 +121,9 @@ describe('Вкладка журнала задачи', () => {
         store: getStoreWithAuth(),
       })
 
-      await testUtils.expectJournalLoadingStarted()
-      await testUtils.expectJournalLoadingFinished()
-      const downloadButton = testUtils.getDownloadButton()
+      await journalTabTestUtils.expectJournalLoadingStarted()
+      await journalTabTestUtils.expectJournalLoadingFinished()
+      const downloadButton = journalTabTestUtils.getDownloadButton()
 
       expect(downloadButton).toBeInTheDocument()
       expect(downloadButton).toBeEnabled()
@@ -208,8 +139,8 @@ describe('Вкладка журнала задачи', () => {
         store: getStoreWithAuth(),
       })
 
-      await testUtils.expectJournalLoadingStarted()
-      await testUtils.expectJournalLoadingFinished()
+      await journalTabTestUtils.expectJournalLoadingStarted()
+      await journalTabTestUtils.expectJournalLoadingFinished()
 
       expect(screen.queryByTestId('journal-btn-download')).not.toBeInTheDocument()
       expect(screen.queryByTestId('journal-icon-download')).not.toBeInTheDocument()
@@ -230,13 +161,13 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await testUtils.expectJournalLoadingStarted()
-        await testUtils.expectJournalLoadingFinished()
+        await journalTabTestUtils.expectJournalLoadingStarted()
+        await journalTabTestUtils.expectJournalLoadingFinished()
 
-        const downloadButton = await testUtils.clickDownloadButton(user)
+        const downloadButton = await journalTabTestUtils.clickDownloadButton(user)
 
-        await testUtils.expectJournalCsvLoadingStarted(downloadButton)
-        await testUtils.expectJournalCsvLoadingFinished(downloadButton)
+        await journalTabTestUtils.expectJournalCsvLoadingStarted(downloadButton)
+        await journalTabTestUtils.expectJournalCsvLoadingFinished(downloadButton)
 
         expect(downloadFileSpy).toBeCalledTimes(1)
         expect(downloadFileSpy).toBeCalledWith(
@@ -263,13 +194,13 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await testUtils.expectJournalLoadingStarted()
-        await testUtils.expectJournalLoadingFinished()
+        await journalTabTestUtils.expectJournalLoadingStarted()
+        await journalTabTestUtils.expectJournalLoadingFinished()
 
-        const downloadButton = await testUtils.clickDownloadButton(user)
+        const downloadButton = await journalTabTestUtils.clickDownloadButton(user)
 
-        await testUtils.expectJournalCsvLoadingStarted(downloadButton)
-        await testUtils.expectJournalCsvLoadingFinished(downloadButton)
+        await journalTabTestUtils.expectJournalCsvLoadingStarted(downloadButton)
+        await journalTabTestUtils.expectJournalCsvLoadingFinished(downloadButton)
 
         expect(downloadFileSpy).not.toBeCalled()
 
@@ -288,8 +219,8 @@ describe('Вкладка журнала задачи', () => {
         store: getStoreWithAuth(),
       })
 
-      await testUtils.expectJournalLoadingStarted()
-      await testUtils.expectJournalLoadingFinished()
+      await journalTabTestUtils.expectJournalLoadingStarted()
+      await journalTabTestUtils.expectJournalLoadingFinished()
 
       const journalEntries = taskJournal.map((entry) =>
         journalEntryTestUtils.getContainer(entry.id),
@@ -307,8 +238,8 @@ describe('Вкладка журнала задачи', () => {
         store: getStoreWithAuth(),
       })
 
-      await testUtils.expectJournalLoadingStarted()
-      await testUtils.expectJournalLoadingFinished()
+      await journalTabTestUtils.expectJournalLoadingStarted()
+      await journalTabTestUtils.expectJournalLoadingFinished()
 
       expect(screen.queryByText(NO_DATA_MSG)).not.toBeInTheDocument()
     })
@@ -323,8 +254,8 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await testUtils.expectJournalLoadingStarted()
-        await testUtils.expectJournalLoadingFinished()
+        await journalTabTestUtils.expectJournalLoadingStarted()
+        await journalTabTestUtils.expectJournalLoadingFinished()
 
         expect(screen.getByText(NO_DATA_MSG)).toBeInTheDocument()
       })
@@ -339,8 +270,8 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await testUtils.expectJournalLoadingStarted()
-        await testUtils.expectJournalLoadingFinished()
+        await journalTabTestUtils.expectJournalLoadingStarted()
+        await journalTabTestUtils.expectJournalLoadingFinished()
 
         const journalEntries = taskJournal
           .map((entry) => journalEntryTestUtils.queryContainer(entry.id))
@@ -360,8 +291,8 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await testUtils.expectJournalLoadingStarted()
-        await testUtils.expectJournalLoadingFinished()
+        await journalTabTestUtils.expectJournalLoadingStarted()
+        await journalTabTestUtils.expectJournalLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(getTaskJournalErrMsg)
         expect(notification).toBeInTheDocument()
@@ -374,8 +305,8 @@ describe('Вкладка журнала задачи', () => {
           store: getStoreWithAuth(),
         })
 
-        await testUtils.expectJournalLoadingStarted()
-        await testUtils.expectJournalLoadingFinished()
+        await journalTabTestUtils.expectJournalLoadingStarted()
+        await journalTabTestUtils.expectJournalLoadingFinished()
 
         expect(await screen.findByText(NO_DATA_MSG)).toBeInTheDocument()
       })
