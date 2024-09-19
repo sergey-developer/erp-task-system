@@ -36,6 +36,12 @@ import { requestTaskSuspendModalTestUtils } from '_tests_/features/tasks/Request
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
 import { assigneeBlockTestUtils } from '_tests_/features/tasks/TaskDetails/AssigneeBlock/testUtils'
 import {
+  activeRequestSuspendItemProps,
+  canExecuteTaskProps,
+  canRegisterFNItemProps,
+} from '_tests_/features/tasks/TaskDetails/TaskDetailsTitle/constants'
+import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/TaskDetails/TaskDetailsTitle/testUtils'
+import {
   activeChangeInfrastructureButton,
   props,
   showChangeInfrastructureButton,
@@ -85,12 +91,6 @@ import {
 } from '_tests_/utils'
 
 import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
-import {
-  activeRequestSuspendItemProps,
-  canExecuteTaskProps,
-  canRegisterFNItemProps,
-  testUtils as taskDetailsTitleTestUtils,
-} from './TaskDetailsTitle/TaskDetailsTitle.test'
 import TaskDetails from './index'
 
 jest.mock('react-router-dom', () => ({

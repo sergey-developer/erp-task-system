@@ -4,10 +4,6 @@ import { camelize } from 'humps'
 import moment from 'moment-timezone'
 
 import {
-  canExecuteTaskProps,
-  testUtils as taskDetailsTitleTestUtils,
-} from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
-import {
   activeFirstLineButtonProps,
   activeSecondLineButtonProps,
   showFirstLineButtonProps,
@@ -46,6 +42,8 @@ import {
   canSelectAssigneeProps,
 } from '_tests_/features/tasks/TaskDetails/AssigneeBlock/constants'
 import { assigneeBlockTestUtils } from '_tests_/features/tasks/TaskDetails/AssigneeBlock/testUtils'
+import { canExecuteTaskProps } from '_tests_/features/tasks/TaskDetails/TaskDetailsTitle/constants'
+import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/TaskDetails/TaskDetailsTitle/testUtils'
 import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
