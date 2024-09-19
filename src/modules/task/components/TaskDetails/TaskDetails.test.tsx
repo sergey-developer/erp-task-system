@@ -6,7 +6,6 @@ import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/rou
 import ChangeInfrastructurePage from 'modules/infrastructures/pages/ChangeInfrastructurePage'
 import { testUtils as changeInfrastructurePageTestUtils } from 'modules/infrastructures/pages/ChangeInfrastructurePage/ChangeInfrastructurePage.test'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
-import { testUtils as confirmCancelReclassificationRequestModalTestUtils } from 'modules/task/components/ConfirmCancelReclassificationRequestModal/ConfirmCancelReclassificationRequestModal.test'
 import { testUtils as confirmExecuteTaskReclassificationTasksModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskReclassificationTasksModal/ConfirmExecuteTaskReclassificationTasksModal.test'
 import { testUtils as confirmExecuteTaskRegistrationFNModalTestUtils } from 'modules/task/components/ConfirmExecuteTaskRegistrationFNModal/ConfirmExecuteTaskRegistrationFNModal.test'
 import { testUtils as createRegistrationFNRequestModalTestUtils } from 'modules/task/components/CreateRegistrationFNRequestModal/CreateRegistrationFNRequestModal.test'
@@ -35,6 +34,9 @@ import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 
+import {
+  confirmCancelReclassificationRequestModalTestUtils
+} from '_tests_/features/tasks/ConfirmCancelReclassificationRequestModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'
@@ -67,6 +69,7 @@ import {
 } from '_tests_/mocks/api'
 import { getSystemSettingsQueryMock } from '_tests_/mocks/state/system'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
+
 import {
   buttonTestUtils,
   fakeId,
@@ -79,7 +82,6 @@ import {
   setupApiTests,
   spinnerTestUtils,
 } from '_tests_/utils'
-
 import { testUtils as requestTaskSuspendModalTestUtils } from '../RequestTaskSuspendModal/RequestTaskSuspendModal.test'
 import { testUtils as taskSuspendRequestTestUtils } from '../TaskSuspendRequest/TaskSuspendRequest.test'
 import {
