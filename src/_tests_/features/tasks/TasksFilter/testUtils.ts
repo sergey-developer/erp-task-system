@@ -364,7 +364,7 @@ const searchByColumn = {
   expectHasCorrectInitialValues: expectSearchByColumnHasCorrectInitialValues,
 }
 
-export const testUtils = {
+export const tasksFilterTestUtils = {
   getContainer,
   findContainer,
 
