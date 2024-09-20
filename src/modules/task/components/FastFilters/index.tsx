@@ -19,7 +19,6 @@ const FastFilters = <Value extends string, Counters extends Record<string, numbe
 }: FastFiltersProps<Value, Counters>) => {
   const options: FastFilterItem<Value>[] = useMemo(() => {
     const counters = initialCounters || ({} as Counters)
-
     return initialOptions.map((option) => {
       const counterValue = countersVisible ? counters[option.counterKey] : undefined
       return { label: option.label, value: option.value, counter: counterValue }

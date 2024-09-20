@@ -1,4 +1,5 @@
-import { BaseTaskModel, FastFilterByLinesType, FastFilterType } from 'modules/task/models'
+import { FastFilterByLinesType, FastFilterType } from 'modules/task/components/FastFilters/types'
+import { BaseTaskModel } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 
 import { StringMap } from 'shared/types/utils'
