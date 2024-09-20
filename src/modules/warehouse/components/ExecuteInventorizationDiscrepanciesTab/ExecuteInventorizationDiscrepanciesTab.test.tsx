@@ -1,11 +1,11 @@
 import { screen, within } from '@testing-library/react'
 import pick from 'lodash/pick'
 
+import { discrepanciesEquipmentTableTestUtils } from '_tests_/features/warehouse/DiscrepanciesEquipmentTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetInventorizationEquipmentsSuccess } from '_tests_/mocks/api'
 import { render } from '_tests_/utils'
 
-import { testUtils as discrepanciesEquipmentTableTestUtils } from '../DiscrepanciesEquipmentTable/DiscrepanciesEquipmentTable.test'
 import ExecuteInventorizationDiscrepanciesTab, {
   ExecuteInventorizationDiscrepanciesProps,
 } from './index'
