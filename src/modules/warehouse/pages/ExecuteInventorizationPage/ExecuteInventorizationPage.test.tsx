@@ -122,9 +122,12 @@ describe('Страница проведения инвентаризации', (
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
     mockGetLocationsCatalogSuccess()
     mockGetCurrencyListSuccess()
+    const currentUser = userFixtures.user()
 
     render(<ExecuteInventorizationPage />, {
-      store: getStoreWithAuth(undefined, undefined, undefined),
+      store: getStoreWithAuth(currentUser, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(currentUser) },
+      }),
     })
 
     const container = testUtils.getContainer()
@@ -190,9 +193,12 @@ describe('Страница проведения инвентаризации', (
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess()
       mockGetCurrencyListSuccess()
+      const currentUser = userFixtures.user()
 
       render(<ExecuteInventorizationPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined),
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
       })
 
       const button = testUtils.getCompleteInventorizationButton()
@@ -257,9 +263,12 @@ describe('Страница проведения инвентаризации', (
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess()
       mockGetCurrencyListSuccess()
+      const currentUser = userFixtures.user()
 
       render(<ExecuteInventorizationPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined),
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
       })
 
       const button = testUtils.getReturnToInventorizationDetailsButton()
@@ -332,9 +341,12 @@ describe('Страница проведения инвентаризации', (
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       const file = fakeWord()
       mockGetInventorizationReportSuccess({ inventorizationId: inventorization.id }, { body: file })
+      const currentUser = userFixtures.user()
 
       const { user } = render(<ExecuteInventorizationPage />, {
-        store: getStoreWithAuth(undefined, undefined, undefined),
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
       })
 
       await testUtils.clickMakeReportButton(user)
@@ -361,9 +373,12 @@ describe('Страница проведения инвентаризации', (
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
     mockGetLocationsCatalogSuccess()
     mockGetCurrencyListSuccess()
+    const currentUser = userFixtures.user()
 
     render(<ExecuteInventorizationPage />, {
-      store: getStoreWithAuth(undefined, undefined, undefined),
+      store: getStoreWithAuth(currentUser, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(currentUser) },
+      }),
     })
 
     const reviseTab = testUtils.getOpenedTab(ExecuteInventorizationPageTabsEnum.Revise)
@@ -386,9 +401,12 @@ describe('Страница проведения инвентаризации', (
     )
     mockGetLocationsCatalogSuccess()
     mockGetCurrencyListSuccess()
+    const currentUser = userFixtures.user()
 
     const { user } = render(<ExecuteInventorizationPage />, {
-      store: getStoreWithAuth(undefined, undefined, undefined),
+      store: getStoreWithAuth(currentUser, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(currentUser) },
+      }),
     })
 
     await testUtils.clickTab(user, ExecuteInventorizationPageTabsEnum.Discrepancies)

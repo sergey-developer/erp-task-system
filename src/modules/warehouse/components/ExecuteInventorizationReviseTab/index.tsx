@@ -17,8 +17,9 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
-import { UserModel } from 'modules/user/models'
-import { MatchedUserPermissions } from 'modules/user/types'
+import { useIdBelongAuthUser } from 'modules/auth/hooks'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { useUserPermissions } from 'modules/user/hooks'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -87,20 +88,17 @@ const EquipmentFormModal = React.lazy(
 )
 
 export type ExecuteInventorizationReviseTabProps = {
-  currentUser: Pick<UserModel, 'id'>
   inventorization: Pick<InventorizationModel, 'id' | 'warehouses' | 'executor' | 'status'>
-  permissions: MatchedUserPermissions
 }
 
 const { Title } = Typography
 const { Search } = Input
 
 const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> = ({
-  currentUser,
   inventorization,
-  permissions,
 }) => {
-  const inventorizationExecutorIsCurrentUser = currentUser.id === inventorization.executor.id
+  const permissions = useUserPermissions([UserPermissionsEnum.InventorizationUpdate])
+  const inventorizationExecutorIsCurrentUser = useIdBelongAuthUser(inventorization.executor.id)
 
   const [searchValue, setSearchValue] = useState<string>()
 

@@ -2,6 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import pick from 'lodash/pick'
 
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as equipmentFormModalTestUtils } from 'modules/warehouse/components/EquipmentFormModal/EquipmentFormModal.test'
 import {
   EquipmentCategoryEnum,
@@ -33,7 +34,15 @@ import {
   mockGetNomenclatureSuccess,
   mockGetWorkTypesSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, fakeInteger, fakeWord, render, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
+import {
+  buttonTestUtils,
+  fakeInteger,
+  fakeWord,
+  getStoreWithAuth,
+  render,
+  setupApiTests,
+} from '_tests_/utils'
 
 import { testUtils as createInventorizationEquipmentModalTestUtils } from '../CreateInventorizationEquipmentModal/CreateInventorizationEquipmentModal.test'
 import { testUtils as reviseEquipmentTableTestUtils } from '../ReviseEquipmentTable/ReviseEquipmentTable.test'
@@ -47,23 +56,6 @@ const props: ExecuteInventorizationReviseTabProps = {
     'status',
     'executor',
   ),
-  permissions: {},
-  currentUser: userFixtures.user(),
-}
-
-export const getShowDownloadButtonProps = (): Pick<
-  ExecuteInventorizationReviseTabProps,
-  'inventorization' | 'permissions' | 'currentUser'
-> => {
-  const inventorization = warehouseFixtures.inventorization({
-    status: InventorizationStatusEnum.New,
-  })
-
-  return {
-    permissions: { inventorizationUpdate: true },
-    inventorization: inventorization,
-    currentUser: inventorization.executor,
-  }
 }
 
 const getContainer = () => screen.getByTestId('execute-inventorization-revise-tab')
@@ -77,8 +69,13 @@ const clickCreateEquipmentButton = async (user: UserEvent) => user.click(getCrea
 // download template button
 const getDownloadTemplateButton = () =>
   buttonTestUtils.getButtonIn(getContainer(), /Скачать шаблон/)
+
+const queryDownloadTemplateButton = () =>
+  buttonTestUtils.queryButtonIn(getContainer(), /Скачать шаблон/)
+
 const clickDownloadTemplateButton = async (user: UserEvent) =>
   user.click(getDownloadTemplateButton())
+
 const expectDownloadTemplateLoadingFinished = () =>
   buttonTestUtils.expectLoadingFinished(getDownloadTemplateButton())
 
@@ -89,6 +86,7 @@ export const testUtils = {
   clickCreateEquipmentButton,
 
   getDownloadTemplateButton,
+  queryDownloadTemplateButton,
   clickDownloadTemplateButton,
   expectDownloadTemplateLoadingFinished,
 }
@@ -99,8 +97,13 @@ describe('Вкладка списка оборудования с расхожд
   test('Отображает заголовок и таблицу', () => {
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: props.inventorization.id })
     mockGetLocationsCatalogSuccess()
+    const currentUser = userFixtures.user()
 
-    render(<ExecuteInventorizationReviseTab {...props} />)
+    render(<ExecuteInventorizationReviseTab {...props} />, {
+      store: getStoreWithAuth(currentUser, undefined, undefined, {
+        queries: { ...getUserMeQueryMock(currentUser) },
+      }),
+    })
 
     const container = testUtils.getContainer()
     const title = within(container).getByText('Перечень оборудования для сверки')
@@ -115,8 +118,13 @@ describe('Вкладка списка оборудования с расхожд
       test('Отображается и активна', () => {
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: props.inventorization.id })
         mockGetLocationsCatalogSuccess()
+        const currentUser = userFixtures.user()
 
-        render(<ExecuteInventorizationReviseTab {...props} />)
+        render(<ExecuteInventorizationReviseTab {...props} />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
 
         const button = testUtils.getCreateEquipmentButton()
 
@@ -129,8 +137,13 @@ describe('Вкладка списка оборудования с расхожд
         mockGetLocationsCatalogSuccess({ body: [] })
         mockGetEquipmentCategoryListSuccess({ body: [] })
         mockGetEquipmentCatalogListSuccess()
+        const currentUser = userFixtures.user()
 
-        const { user } = render(<ExecuteInventorizationReviseTab {...props} />)
+        const { user } = render(<ExecuteInventorizationReviseTab {...props} />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
 
         await testUtils.clickCreateEquipmentButton(user)
         const modal = await createInventorizationEquipmentModalTestUtils.findContainer()
@@ -152,9 +165,14 @@ describe('Вкладка списка оборудования с расхожд
 
       mockGetEquipmentSuccess(equipmentCatalogListItem.id)
       mockCreateInventorizationEquipmentSuccess({ inventorizationId: props.inventorization.id })
-      const warehouseListItem = warehouseFixtures.warehouseListItem()
+      const warehouseListItem = props.inventorization.warehouses[0]
+      const currentUser = userFixtures.user()
 
-      const { user } = render(<ExecuteInventorizationReviseTab {...props} />)
+      const { user } = render(<ExecuteInventorizationReviseTab {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
 
       await testUtils.clickCreateEquipmentButton(user)
       const modal = await createInventorizationEquipmentModalTestUtils.findContainer()
@@ -207,10 +225,14 @@ describe('Вкладка списка оборудования с расхожд
       mockGetEquipmentCatalogListSuccess({ body: [], once: false })
       mockCreateEquipmentSuccess()
       mockCreateInventorizationEquipmentSuccess({ inventorizationId: props.inventorization.id })
+      const warehouseListItem = props.inventorization.warehouses[0]
+      const currentUser = userFixtures.user()
 
-      const warehouseListItem = warehouseFixtures.warehouseListItem()
-
-      const { user } = render(<ExecuteInventorizationReviseTab {...props} />)
+      const { user } = render(<ExecuteInventorizationReviseTab {...props} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
 
       await testUtils.clickCreateEquipmentButton(user)
       const createInventorizationEquipmentModal =
@@ -249,8 +271,125 @@ describe('Вкладка списка оборудования с расхожд
   })
 
   describe('Скачать шаблон', () => {
+    test(`Кнопка отображается и активна если есть права ${UserPermissionsEnum.InventorizationUpdate} и статус инвентаризации ${InventorizationStatusEnum.New} и текущий пользователь является исполнителем инвентаризации`, () => {
+      const inventorization = warehouseFixtures.inventorization({
+        status: InventorizationStatusEnum.New,
+      })
+      mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
+      mockGetLocationsCatalogSuccess({ body: [] })
+
+      const currentUser = userFixtures.user({
+        id: inventorization.executor.id,
+        permissions: [UserPermissionsEnum.InventorizationUpdate],
+      })
+
+      render(<ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      const button = testUtils.getDownloadTemplateButton()
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    test(`Кнопка отображается если есть права ${UserPermissionsEnum.InventorizationUpdate} и статус инвентаризации ${InventorizationStatusEnum.InProgress} и текущий пользователь является исполнителем инвентаризации`, async () => {
+      const inventorization = warehouseFixtures.inventorization({
+        status: InventorizationStatusEnum.InProgress,
+      })
+      mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
+      mockGetLocationsCatalogSuccess({ body: [] })
+
+      const currentUser = userFixtures.user({
+        id: inventorization.executor.id,
+        permissions: [UserPermissionsEnum.InventorizationUpdate],
+      })
+
+      render(<ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      const button = testUtils.getDownloadTemplateButton()
+      expect(button).toBeInTheDocument()
+      expect(button).toBeEnabled()
+    })
+
+    describe('Кнопка не отображается', () => {
+      test(`Если есть права ${UserPermissionsEnum.InventorizationUpdate} и статус инвентаризации ${InventorizationStatusEnum.New} но текущий пользователь не является исполнителем инвентаризации`, () => {
+        const inventorization = warehouseFixtures.inventorization({
+          status: InventorizationStatusEnum.New,
+        })
+        mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
+        mockGetLocationsCatalogSuccess({ body: [] })
+
+        const currentUser = userFixtures.user({
+          permissions: [UserPermissionsEnum.InventorizationUpdate],
+        })
+
+        render(<ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        const button = testUtils.queryDownloadTemplateButton()
+        expect(button).not.toBeInTheDocument()
+      })
+
+      test(`Если есть права ${UserPermissionsEnum.InventorizationUpdate} и текущий пользователь является исполнителем инвентаризации но статус инвентаризации не ${InventorizationStatusEnum.New} или ${InventorizationStatusEnum.InProgress}`, () => {
+        const inventorization = warehouseFixtures.inventorization({
+          status: InventorizationStatusEnum.Closed,
+        })
+        mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
+        mockGetLocationsCatalogSuccess({ body: [] })
+
+        const currentUser = userFixtures.user({
+          id: inventorization.executor.id,
+          permissions: [UserPermissionsEnum.InventorizationUpdate],
+        })
+
+        render(<ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        const button = testUtils.queryDownloadTemplateButton()
+        expect(button).not.toBeInTheDocument()
+      })
+
+      test(`Если статус инвентаризации ${InventorizationStatusEnum.New} и текущий пользователь является исполнителем инвентаризации но нет прав ${UserPermissionsEnum.InventorizationUpdate}`, () => {
+        const inventorization = warehouseFixtures.inventorization({
+          status: InventorizationStatusEnum.InProgress,
+        })
+        mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
+        mockGetLocationsCatalogSuccess({ body: [] })
+
+        const currentUser = userFixtures.user({ id: inventorization.executor.id, permissions: [] })
+
+        render(<ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />, {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        })
+
+        const button = testUtils.queryDownloadTemplateButton()
+        expect(button).not.toBeInTheDocument()
+      })
+    })
+
     test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
-      const showDownloadButtonProps = getShowDownloadButtonProps()
+      const inventorization = warehouseFixtures.inventorization({
+        status: InventorizationStatusEnum.New,
+      })
+
+      const currentUser = userFixtures.user({
+        id: inventorization.executor.id,
+        permissions: [UserPermissionsEnum.InventorizationUpdate],
+      })
 
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
@@ -260,13 +399,16 @@ describe('Вкладка списка оборудования с расхожд
 
       const file = fakeWord()
       mockGetInventorizationEquipmentsTemplateSuccess({ body: file })
-      mockGetInventorizationEquipmentsSuccess({
-        inventorizationId: showDownloadButtonProps.inventorization.id,
-      })
+      mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess({ body: [] })
 
       const { user } = render(
-        <ExecuteInventorizationReviseTab {...props} {...showDownloadButtonProps} />,
+        <ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />,
+        {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        },
       )
 
       await testUtils.clickDownloadTemplateButton(user)

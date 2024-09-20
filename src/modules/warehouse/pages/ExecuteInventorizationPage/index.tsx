@@ -2,10 +2,7 @@ import { Button, Col, Flex, Row, Typography } from 'antd'
 import React, { FC } from 'react'
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
-import { useAuthUser } from 'modules/auth/hooks'
 import { useLazyGetInventorizationReport } from 'modules/reports/hooks'
-import { UserPermissionsEnum } from 'modules/user/constants'
-import { useUserPermissions } from 'modules/user/hooks'
 import ExecuteInventorizationReviseTab from 'modules/warehouse/components/ExecuteInventorizationReviseTab'
 import {
   inventorizationStatusDict,
@@ -43,9 +40,6 @@ const { Text } = Typography
 const ExecuteInventorizationPage: FC = () => {
   const params = useParams<'id'>()
   const inventorizationId = Number(params.id!)
-
-  const currentUser = useAuthUser()
-  const permissions = useUserPermissions([UserPermissionsEnum.InventorizationUpdate])
 
   const navigate = useNavigate()
 
@@ -186,13 +180,7 @@ const ExecuteInventorizationPage: FC = () => {
                 key: ExecuteInventorizationPageTabsEnum.Revise,
                 label:
                   executeInventorizationPageTabNames[ExecuteInventorizationPageTabsEnum.Revise],
-                children: currentUser && (
-                  <ExecuteInventorizationReviseTab
-                    currentUser={currentUser}
-                    inventorization={inventorization}
-                    permissions={permissions}
-                  />
-                ),
+                children: <ExecuteInventorizationReviseTab inventorization={inventorization} />,
               },
               {
                 key: ExecuteInventorizationPageTabsEnum.Discrepancies,
