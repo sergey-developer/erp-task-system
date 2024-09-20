@@ -11,6 +11,7 @@ import {
 
 import { makeString } from 'shared/utils/string'
 
+import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouse/CreateInventorizationEquipmentModal/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -28,7 +29,6 @@ import {
 } from '_tests_/mocks/api'
 import { buttonTestUtils, fakeInteger, render, setupApiTests } from '_tests_/utils'
 
-import { testUtils as createInventorizationEquipmentModalTestUtils } from '../CreateInventorizationEquipmentModal/CreateInventorizationEquipmentModal.test'
 import { testUtils as reviseEquipmentTableTestUtils } from '../ReviseEquipmentTable/ReviseEquipmentTable.test'
 import ExecuteInventorizationReviseTab, { ExecuteInventorizationReviseTabProps } from './index'
 
