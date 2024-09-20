@@ -3,7 +3,6 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as logoutButtonTestUtils } from 'modules/auth/components/LogoutButton/LogoutButton.test'
 import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/LoginPage.test'
-import { testUtils as tasksPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
 import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { updateUserStatusMessages, UserPermissionsEnum } from 'modules/user/constants'
 
@@ -14,6 +13,7 @@ import { MaybeNull } from 'shared/types/utils'
 
 import App from 'app/App'
 
+import { tasksPageTestUtils } from '_tests_/features/tasks/TasksPage/testUtils'
 import authFixtures from '_tests_/fixtures/auth'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'

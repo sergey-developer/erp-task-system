@@ -1,51 +1,23 @@
-import { screen, within } from '@testing-library/react'
 import React from 'react'
 
 import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
-import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'modules/task/constants/taskJournal'
 
-import { IdType } from 'shared/types/common'
+import { props } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/JournalEntry/constants'
+import { journalEntryTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/JournalEntry/testUtils'
+import { render } from '_tests_/utils'
 
-import taskFixtures from '_tests_/fixtures/task'
-import { fakeDateString, fakeId, fakeWord, render } from '_tests_/utils'
-
-import JournalEntry, { JournalEntryProps } from './JournalEntry'
-
-const props: Readonly<JournalEntryProps> = {
-  id: fakeId(),
-  type: TaskJournalTypeEnum.StatusChange,
-  createdAt: fakeDateString(),
-  description: fakeWord(),
-  sourceSystem: TaskJournalSourceEnum.X5,
-  author: fakeWord(),
-  attachments: [taskFixtures.attachment()],
-}
-
-const getContainer = (id: IdType) => screen.getByTestId(`journal-entry-${id}`)
-
-const queryContainer = (id: IdType) => screen.queryByTestId(`journal-entry-${id}`)
-
-const getChildByText = (id: IdType, text: string) => within(getContainer(id)).getByText(text)
-
-const queryChildByText = (id: IdType, text: string) => within(getContainer(id)).queryByText(text)
-
-export const testUtils = {
-  getContainer,
-  queryContainer,
-  getChildByText,
-  queryChildByText,
-}
+import JournalEntry from './JournalEntry'
 
 describe('Элемент журнала', () => {
   test('Отображает дату создания', () => {
     render(<JournalEntry {...props} />)
-    const createdAt = testUtils.getChildByText(props.id, props.createdAt)
+    const createdAt = journalEntryTestUtils.getChildByText(props.id, props.createdAt)
     expect(createdAt).toBeInTheDocument()
   })
 
   test('Отображает описание', () => {
     render(<JournalEntry {...props} />)
-    const description = testUtils.getChildByText(props.id, props.description)
+    const description = journalEntryTestUtils.getChildByText(props.id, props.description)
     expect(description).toBeInTheDocument()
   })
 
@@ -66,8 +38,8 @@ describe('Элемент журнала', () => {
   test('Отображает тип', () => {
     render(<JournalEntry {...props} />)
 
-    const label = testUtils.getChildByText(props.id, 'Тип')
-    const type = testUtils.getChildByText(props.id, props.type)
+    const label = journalEntryTestUtils.getChildByText(props.id, 'Тип')
+    const type = journalEntryTestUtils.getChildByText(props.id, props.type)
 
     expect(label).toBeInTheDocument()
     expect(type).toBeInTheDocument()
@@ -76,8 +48,8 @@ describe('Элемент журнала', () => {
   test('Отображает источник добавления', () => {
     render(<JournalEntry {...props} />)
 
-    const label = testUtils.getChildByText(props.id, 'Где добавлено')
-    const sourceSystem = testUtils.getChildByText(props.id, props.sourceSystem)
+    const label = journalEntryTestUtils.getChildByText(props.id, 'Где добавлено')
+    const sourceSystem = journalEntryTestUtils.getChildByText(props.id, props.sourceSystem)
 
     expect(label).toBeInTheDocument()
     expect(sourceSystem).toBeInTheDocument()
@@ -87,8 +59,8 @@ describe('Элемент журнала', () => {
     test('Отображается если есть', () => {
       render(<JournalEntry {...props} />)
 
-      const label = testUtils.getChildByText(props.id, 'Кем добавлено')
-      const author = testUtils.getChildByText(props.id, props.author!)
+      const label = journalEntryTestUtils.getChildByText(props.id, 'Кем добавлено')
+      const author = journalEntryTestUtils.getChildByText(props.id, props.author!)
 
       expect(label).toBeInTheDocument()
       expect(author).toBeInTheDocument()
@@ -96,7 +68,7 @@ describe('Элемент журнала', () => {
 
     test('Не отображает если его нет', () => {
       render(<JournalEntry {...props} author={null} />)
-      const author = testUtils.queryChildByText(props.id, props.author!)
+      const author = journalEntryTestUtils.queryChildByText(props.id, props.author!)
       expect(author).not.toBeInTheDocument()
     })
   })

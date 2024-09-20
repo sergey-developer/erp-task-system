@@ -1,55 +1,16 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { within } from '@testing-library/react'
 
-import { CANCEL_TEXT, CONFIRM_TEXT } from 'shared/constants/common'
+import { props } from '_tests_/features/tasks/ConfirmExecuteTaskRegistrationFNModal/constants'
+import { confirmExecuteTaskRegistrationFNModalTestUtils } from '_tests_/features/tasks/ConfirmExecuteTaskRegistrationFNModal/testUtils'
+import { render } from '_tests_/utils'
 
-import { buttonTestUtils, render } from '_tests_/utils'
-
-import ConfirmExecuteTaskRegistrationFNModal, {
-  ConfirmExecuteTaskRegistrationFNModalProps,
-} from './index'
-
-const props: Readonly<ConfirmExecuteTaskRegistrationFNModalProps> = {
-  open: true,
-  onCancel: jest.fn(),
-  onOk: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('confirm-execute-task-registration-fn-modal')
-const findContainer = () => screen.findByTestId('confirm-execute-task-registration-fn-modal')
-
-// cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
-const clickCancelButton = async (user: UserEvent) => {
-  const button = getCancelButton()
-  await user.click(button)
-  return button
-}
-
-// submit button
-const getConfirmButton = () => buttonTestUtils.getButtonIn(getContainer(), CONFIRM_TEXT)
-const clickConfirmButton = async (user: UserEvent) => {
-  const button = getConfirmButton()
-  await user.click(button)
-  return button
-}
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-
-  getCancelButton,
-  clickCancelButton,
-
-  getConfirmButton,
-  clickConfirmButton,
-}
+import ConfirmExecuteTaskRegistrationFNModal from './index'
 
 describe('Модалка подтверждения выполнения заявки', () => {
   test('Заголовок и текст отображается', () => {
     render(<ConfirmExecuteTaskRegistrationFNModal {...props} />)
 
-    const container = testUtils.getContainer()
+    const container = confirmExecuteTaskRegistrationFNModalTestUtils.getContainer()
     const text =
       'По заявке был направлен запрос на регистрацию ФН, но карточка еще не получена. Вы уверены, что хотите выполнить заявку?'
 
@@ -61,7 +22,7 @@ describe('Модалка подтверждения выполнения зая�
     test('Отображается', () => {
       render(<ConfirmExecuteTaskRegistrationFNModal {...props} />)
 
-      const button = testUtils.getCancelButton()
+      const button = confirmExecuteTaskRegistrationFNModalTestUtils.getCancelButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -69,7 +30,7 @@ describe('Модалка подтверждения выполнения зая�
 
     test('Обработчик вызывается', async () => {
       const { user } = render(<ConfirmExecuteTaskRegistrationFNModal {...props} />)
-      await testUtils.clickCancelButton(user)
+      await confirmExecuteTaskRegistrationFNModalTestUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
   })
@@ -78,7 +39,7 @@ describe('Модалка подтверждения выполнения зая�
     test('Отображается', () => {
       render(<ConfirmExecuteTaskRegistrationFNModal {...props} />)
 
-      const button = testUtils.getConfirmButton()
+      const button = confirmExecuteTaskRegistrationFNModalTestUtils.getConfirmButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -86,7 +47,7 @@ describe('Модалка подтверждения выполнения зая�
 
     test('При клике обработчик вызывается', async () => {
       const { user } = render(<ConfirmExecuteTaskRegistrationFNModal {...props} />)
-      await testUtils.clickConfirmButton(user)
+      await confirmExecuteTaskRegistrationFNModalTestUtils.clickConfirmButton(user)
       expect(props.onOk).toBeCalledTimes(1)
     })
   })

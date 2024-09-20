@@ -1,244 +1,39 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import { TaskTypeEnum } from 'modules/task/constants/task'
 
 import { validationMessages, validationSizes } from 'shared/constants/validation'
 
+import {
+  hideResolutionClassifierFieldProps,
+  props,
+  showResolutionClassifierFieldProps,
+} from '_tests_/features/tasks/ExecuteTaskModal/constants'
+import { executeTaskModalTestUtils } from '_tests_/features/tasks/ExecuteTaskModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import taskFixtures from '_tests_/fixtures/task'
-import { buttonTestUtils, fakeIdStr, fakeWord, render, selectTestUtils } from '_tests_/utils'
+import { fakeWord, render } from '_tests_/utils'
 
 import ExecuteTaskModal from './index'
-import { ExecuteTaskModalProps } from './types'
-
-const props: Readonly<ExecuteTaskModalProps> = {
-  open: true,
-  isLoading: false,
-
-  type: TaskTypeEnum.Request,
-  recordId: fakeIdStr(),
-  supportGroup: taskFixtures.supportGroup(),
-
-  onSubmit: jest.fn(),
-  onCancel: jest.fn(),
-
-  resolutionClassifications: [],
-  resolutionClassificationsIsLoading: false,
-
-  onGetAct: jest.fn(),
-  getActIsLoading: false,
-}
-
-const showResolutionClassifierFieldProps: Readonly<Pick<ExecuteTaskModalProps, 'supportGroup'>> = {
-  supportGroup: taskFixtures.supportGroup({ hasResolutionClassifiers: true }),
-}
-
-const hideResolutionClassifierFieldProps: Readonly<Pick<ExecuteTaskModalProps, 'supportGroup'>> = {
-  supportGroup: taskFixtures.supportGroup({ hasResolutionClassifiers: false }),
-}
-
-const getContainer = () => screen.getByTestId('execute-task-modal')
-const findContainer = () => screen.findByTestId('execute-task-modal')
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
-// close button
-const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
-const clickCloseButton = async (user: UserEvent) => {
-  const button = getCloseButton()
-  await user.click(button)
-  return button
-}
-
-// cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Отменить/)
-const clickCancelButton = async (user: UserEvent) => {
-  const button = getCancelButton()
-  await user.click(button)
-  return button
-}
-
-// get act button
-const getGetActButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сформировать акт/)
-const clickGetActButton = async (user: UserEvent) => {
-  const button = getGetActButton()
-  await user.click(button)
-}
-
-const expectGetActLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getGetActButton())
-const expectGetActLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getGetActButton())
-
-// submit button
-const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /Выполнить заявку/)
-const clickSubmitButton = async (user: UserEvent) => {
-  const button = getSubmitButton()
-  await user.click(button)
-}
-
-// resolutionClassifier1
-const getResolutionClassificationFormItem = () =>
-  screen.getByTestId('resolution-classification-form-item')
-const queryResolutionClassificationFormItem = () =>
-  screen.queryByTestId('resolution-classification-form-item')
-
-const getResolutionClassificationLabel = () =>
-  within(getResolutionClassificationFormItem()).getByLabelText('Категория решения')
-
-const getResolutionClassificationSelectInput = () =>
-  selectTestUtils.getSelect(getResolutionClassificationFormItem())
-
-const openResolutionClassificationSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getResolutionClassificationFormItem())
-
-const setResolutionClassification = selectTestUtils.clickSelectOption
-
-const getSelectedResolutionClassification = (text: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getResolutionClassificationFormItem(), text)
-
-const querySelectedResolutionClassification = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getResolutionClassificationFormItem(), title)
-
-const findResolutionClassificationError = (text: string) =>
-  within(getResolutionClassificationFormItem()).findByText(text)
-
-const expectResolutionClassificationLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getResolutionClassificationFormItem())
-
-// tech resolution
-const getTechResolutionBlock = () => within(getContainer()).getByTestId('tech-resolution')
-
-const getTechResolutionTitle = () =>
-  within(getTechResolutionBlock()).getByTitle('Техническое решение')
-
-const getTechResolutionField = () =>
-  within(getContainer()).getByPlaceholderText('Расскажите о работах на объекте')
-
-const findTechResolutionError = (text: string) => within(getTechResolutionBlock()).findByText(text)
-
-const setTechResolution = async (user: UserEvent, value: string) => {
-  const field = getTechResolutionField()
-  await user.type(field, value)
-  return field
-}
-
-// user resolution
-const getUserResolutionBlock = () => within(getContainer()).getByTestId('user-resolution')
-
-const getUserResolutionTitle = () =>
-  within(getUserResolutionBlock()).getByTitle('Решение для пользователя')
-
-const getUserResolutionField = () =>
-  within(getUserResolutionBlock()).getByPlaceholderText('Расскажите заявителю о решении')
-
-const queryUserResolutionField = () =>
-  within(getContainer()).queryByRole('textbox', {
-    name: 'Решение для пользователя',
-  })
-
-const findUserResolutionError = (text: string) => within(getUserResolutionBlock()).findByText(text)
-
-const setUserResolution = async (user: UserEvent, value: string) => {
-  const field = getUserResolutionField()
-  await user.type(field, value)
-  return field
-}
-
-// attachments
-const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
-
-const getAddAttachmentsButton = () =>
-  buttonTestUtils.getButtonIn(getAttachmentsFormItem(), /Добавить вложение/)
-
-const setAttachment = async (
-  user: UserEvent,
-  file: File = new File([], '', { type: 'image/png' }),
-) => {
-  const formItem = getAttachmentsFormItem()
-  // eslint-disable-next-line testing-library/no-node-access
-  const input = formItem.querySelector('input[type="file"]') as HTMLInputElement
-  await user.upload(input, file)
-  return { input, file }
-}
-
-const getUploadedAttachment = (filename: string) =>
-  within(getAttachmentsFormItem()).getByTitle(filename)
-
-const findAttachmentsError = (error: string) => within(getAttachmentsFormItem()).findByText(error)
-
-// loading
-const expectLoadingStarted = () => buttonTestUtils.expectLoadingStarted(getSubmitButton())
-const expectLoadingFinished = () => buttonTestUtils.expectLoadingFinished(getSubmitButton())
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-  getChildByText,
-
-  getCloseButton,
-  clickCloseButton,
-
-  getCancelButton,
-  clickCancelButton,
-
-  getSubmitButton,
-  clickSubmitButton,
-
-  getGetActButton,
-  clickGetActButton,
-  expectGetActLoadingStarted,
-  expectGetActLoadingFinished,
-
-  queryResolutionClassificationFormItem,
-  getResolutionClassificationLabel,
-  getResolutionClassificationSelectInput,
-  openResolutionClassificationSelect,
-  setResolutionClassification,
-  getSelectedResolutionClassification,
-  querySelectedResolutionClassification,
-  findResolutionClassificationError,
-  expectResolutionClassificationLoadingFinished,
-
-  getTechResolutionBlock,
-  getTechResolutionTitle,
-  getTechResolutionField,
-  findTechResolutionError,
-  setTechResolution,
-
-  getUserResolutionBlock,
-  getUserResolutionTitle,
-  getUserResolutionField,
-  queryUserResolutionField,
-  findUserResolutionError,
-  setUserResolution,
-
-  getAddAttachmentsButton,
-  setAttachment,
-  getUploadedAttachment,
-  findAttachmentsError,
-
-  expectLoadingStarted,
-  expectLoadingFinished,
-}
 
 describe('Модалка выполнения заявки', () => {
   test('Заголовок отображается', () => {
     render(<ExecuteTaskModal {...props} />)
 
-    expect(testUtils.getChildByText('Решение по заявке')).toBeInTheDocument()
-    expect(testUtils.getChildByText(props.recordId)).toBeInTheDocument()
+    expect(executeTaskModalTestUtils.getChildByText('Решение по заявке')).toBeInTheDocument()
+    expect(executeTaskModalTestUtils.getChildByText(props.recordId)).toBeInTheDocument()
   })
 
   test('Текст отображается', () => {
     render(<ExecuteTaskModal {...props} />)
 
     expect(
-      testUtils.getChildByText(
+      executeTaskModalTestUtils.getChildByText(
         'Заполните информацию о работах на объекте и предложенном решении. Затем нажмите кнопку «Выполнить заявку».',
       ),
     ).toBeInTheDocument()
 
     expect(
-      testUtils.getChildByText('После выполнения заявка будет доступна только в режиме просмотра.'),
+      executeTaskModalTestUtils.getChildByText(
+        'После выполнения заявка будет доступна только в режиме просмотра.',
+      ),
     ).toBeInTheDocument()
   })
 
@@ -246,7 +41,7 @@ describe('Модалка выполнения заявки', () => {
     test('Отображается корректно', () => {
       render(<ExecuteTaskModal {...props} />)
 
-      const button = testUtils.getCloseButton()
+      const button = executeTaskModalTestUtils.getCloseButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -255,7 +50,7 @@ describe('Модалка выполнения заявки', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<ExecuteTaskModal {...props} />)
 
-      await testUtils.clickCloseButton(user)
+      await executeTaskModalTestUtils.clickCloseButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
   })
@@ -264,7 +59,7 @@ describe('Модалка выполнения заявки', () => {
     test('Отображается корректно', () => {
       render(<ExecuteTaskModal {...props} />)
 
-      const button = testUtils.getCancelButton()
+      const button = executeTaskModalTestUtils.getCancelButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -273,7 +68,7 @@ describe('Модалка выполнения заявки', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<ExecuteTaskModal {...props} />)
 
-      await testUtils.clickCancelButton(user)
+      await executeTaskModalTestUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
   })
@@ -282,7 +77,7 @@ describe('Модалка выполнения заявки', () => {
     test('Отображается корректно', () => {
       render(<ExecuteTaskModal {...props} />)
 
-      const button = testUtils.getGetActButton()
+      const button = executeTaskModalTestUtils.getGetActButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeDisabled()
@@ -291,8 +86,8 @@ describe('Модалка выполнения заявки', () => {
     test('Активна если заполнено техническое решение', async () => {
       const { user } = render(<ExecuteTaskModal {...props} />)
 
-      await testUtils.setTechResolution(user, fakeWord())
-      const button = testUtils.getGetActButton()
+      await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+      const button = executeTaskModalTestUtils.getGetActButton()
 
       expect(button).toBeEnabled()
     })
@@ -300,8 +95,8 @@ describe('Модалка выполнения заявки', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<ExecuteTaskModal {...props} />)
 
-      await testUtils.setTechResolution(user, fakeWord())
-      await testUtils.clickGetActButton(user)
+      await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+      await executeTaskModalTestUtils.clickGetActButton(user)
 
       expect(props.onGetAct).toBeCalledTimes(1)
       expect(props.onGetAct).toBeCalledWith(expect.anything())
@@ -309,7 +104,7 @@ describe('Модалка выполнения заявки', () => {
 
     test('Отображает состояние загрузки', async () => {
       render(<ExecuteTaskModal {...props} getActIsLoading />)
-      await testUtils.expectGetActLoadingStarted()
+      await executeTaskModalTestUtils.expectGetActLoadingStarted()
     })
   })
 
@@ -317,7 +112,7 @@ describe('Модалка выполнения заявки', () => {
     test('Отображается корректно', () => {
       render(<ExecuteTaskModal {...props} />)
 
-      const button = testUtils.getSubmitButton()
+      const button = executeTaskModalTestUtils.getSubmitButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -325,17 +120,17 @@ describe('Модалка выполнения заявки', () => {
 
     test('Отображает состояние загрузки', async () => {
       render(<ExecuteTaskModal {...props} isLoading />)
-      await testUtils.expectLoadingStarted()
+      await executeTaskModalTestUtils.expectLoadingStarted()
     })
 
     describe('При клике обработчик вызывается корректно', () => {
       test('Если поля заполнены', async () => {
         const { user } = render(<ExecuteTaskModal {...props} />)
 
-        await testUtils.setTechResolution(user, fakeWord())
-        await testUtils.setUserResolution(user, fakeWord())
-        await testUtils.setAttachment(user)
-        await testUtils.clickSubmitButton(user)
+        await executeTaskModalTestUtils.setTechResolution(user, fakeWord())
+        await executeTaskModalTestUtils.setUserResolution(user, fakeWord())
+        await executeTaskModalTestUtils.setAttachment(user)
+        await executeTaskModalTestUtils.clickSubmitButton(user)
 
         expect(props.onSubmit).toBeCalledTimes(1)
         expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())
@@ -344,7 +139,7 @@ describe('Модалка выполнения заявки', () => {
       test('Если поля не заполнены', async () => {
         const { user } = render(<ExecuteTaskModal {...props} />)
 
-        await testUtils.clickSubmitButton(user)
+        await executeTaskModalTestUtils.clickSubmitButton(user)
         expect(props.onSubmit).not.toBeCalled()
       })
     })
@@ -362,9 +157,9 @@ describe('Модалка выполнения заявки', () => {
         />,
       )
 
-      const label = testUtils.getResolutionClassificationLabel()
-      const field = testUtils.getResolutionClassificationSelectInput()
-      const selectedOption = testUtils.querySelectedResolutionClassification(
+      const label = executeTaskModalTestUtils.getResolutionClassificationLabel()
+      const field = executeTaskModalTestUtils.getResolutionClassificationSelectInput()
+      const selectedOption = executeTaskModalTestUtils.querySelectedResolutionClassification(
         resolutionClassificationListItem.title,
       )
 
@@ -376,7 +171,7 @@ describe('Модалка выполнения заявки', () => {
 
     test('Не отображается если у группы поддержки поле hasResolutionClassifiers=false', () => {
       render(<ExecuteTaskModal {...props} {...hideResolutionClassifierFieldProps} />)
-      const formItem = testUtils.queryResolutionClassificationFormItem()
+      const formItem = executeTaskModalTestUtils.queryResolutionClassificationFormItem()
       expect(formItem).not.toBeInTheDocument()
     })
 
@@ -391,9 +186,12 @@ describe('Модалка выполнения заявки', () => {
         />,
       )
 
-      await testUtils.openResolutionClassificationSelect(user)
-      await testUtils.setResolutionClassification(user, resolutionClassificationListItem.title)
-      const selectedOption = testUtils.getSelectedResolutionClassification(
+      await executeTaskModalTestUtils.openResolutionClassificationSelect(user)
+      await executeTaskModalTestUtils.setResolutionClassification(
+        user,
+        resolutionClassificationListItem.title,
+      )
+      const selectedOption = executeTaskModalTestUtils.getSelectedResolutionClassification(
         resolutionClassificationListItem.title,
       )
 
@@ -404,8 +202,10 @@ describe('Модалка выполнения заявки', () => {
       const { user } = render(
         <ExecuteTaskModal {...props} {...showResolutionClassifierFieldProps} />,
       )
-      await testUtils.clickSubmitButton(user)
-      const error = await testUtils.findResolutionClassificationError(validationMessages.required)
+      await executeTaskModalTestUtils.clickSubmitButton(user)
+      const error = await executeTaskModalTestUtils.findResolutionClassificationError(
+        validationMessages.required,
+      )
       expect(error).toBeInTheDocument()
     })
   })
@@ -413,13 +213,13 @@ describe('Модалка выполнения заявки', () => {
   describe('Поле технического решения', () => {
     test('Заголовок отображается', () => {
       render(<ExecuteTaskModal {...props} />)
-      expect(testUtils.getTechResolutionTitle()).toBeInTheDocument()
+      expect(executeTaskModalTestUtils.getTechResolutionTitle()).toBeInTheDocument()
     })
 
     test('Отображается корректно', () => {
       render(<ExecuteTaskModal {...props} />)
 
-      const field = testUtils.getTechResolutionField()
+      const field = executeTaskModalTestUtils.getTechResolutionField()
 
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
@@ -430,47 +230,49 @@ describe('Модалка выполнения заявки', () => {
       const { user } = render(<ExecuteTaskModal {...props} />)
 
       const value = fakeWord()
-      const field = await testUtils.setTechResolution(user, value)
+      const field = await executeTaskModalTestUtils.setTechResolution(user, value)
 
       expect(field).toHaveDisplayValue(value)
     })
 
     test('Не активно во время загрузки', () => {
       render(<ExecuteTaskModal {...props} isLoading />)
-      expect(testUtils.getTechResolutionField()).toBeDisabled()
+      expect(executeTaskModalTestUtils.getTechResolutionField()).toBeDisabled()
     })
 
     describe('Отображается ошибка', () => {
       test('Если ввести только пробелы', async () => {
         const { user } = render(<ExecuteTaskModal {...props} />)
 
-        await testUtils.setTechResolution(user, ' ')
+        await executeTaskModalTestUtils.setTechResolution(user, ' ')
 
         expect(
-          await testUtils.findTechResolutionError(validationMessages.canNotBeEmpty),
+          await executeTaskModalTestUtils.findTechResolutionError(validationMessages.canNotBeEmpty),
         ).toBeInTheDocument()
       })
 
       test('Если не заполнить поле и нажать кнопку отправки', async () => {
         const { user } = render(<ExecuteTaskModal {...props} />)
 
-        await testUtils.clickSubmitButton(user)
+        await executeTaskModalTestUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findTechResolutionError(validationMessages.required),
+          await executeTaskModalTestUtils.findTechResolutionError(validationMessages.required),
         ).toBeInTheDocument()
       })
 
       test('Если превысить лимит символов', async () => {
         const { user } = render(<ExecuteTaskModal {...props} />)
 
-        await testUtils.setTechResolution(
+        await executeTaskModalTestUtils.setTechResolution(
           user,
           fakeWord({ length: validationSizes.string.long + 1 }),
         )
 
         expect(
-          await testUtils.findTechResolutionError(validationMessages.string.max.long),
+          await executeTaskModalTestUtils.findTechResolutionError(
+            validationMessages.string.max.long,
+          ),
         ).toBeInTheDocument()
       })
     })
@@ -479,13 +281,13 @@ describe('Модалка выполнения заявки', () => {
   describe('Поле решения для пользователя', () => {
     test('Заголовок отображается', () => {
       render(<ExecuteTaskModal {...props} />)
-      expect(testUtils.getUserResolutionTitle()).toBeInTheDocument()
+      expect(executeTaskModalTestUtils.getUserResolutionTitle()).toBeInTheDocument()
     })
 
     test('Отображается корректно если условия соблюдены', () => {
       render(<ExecuteTaskModal {...props} />)
 
-      const field = testUtils.getUserResolutionField()
+      const field = executeTaskModalTestUtils.getUserResolutionField()
 
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
@@ -495,12 +297,12 @@ describe('Модалка выполнения заявки', () => {
     describe('Не отображается', () => {
       test('Если тип заявки - incident task', () => {
         render(<ExecuteTaskModal {...props} type={TaskTypeEnum.IncidentTask} />)
-        expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
+        expect(executeTaskModalTestUtils.queryUserResolutionField()).not.toBeInTheDocument()
       })
 
       test('Если тип заявки - request task', () => {
         render(<ExecuteTaskModal {...props} type={TaskTypeEnum.RequestTask} />)
-        expect(testUtils.queryUserResolutionField()).not.toBeInTheDocument()
+        expect(executeTaskModalTestUtils.queryUserResolutionField()).not.toBeInTheDocument()
       })
     })
 
@@ -508,47 +310,49 @@ describe('Модалка выполнения заявки', () => {
       const { user } = render(<ExecuteTaskModal {...props} />)
 
       const value = fakeWord()
-      const field = await testUtils.setUserResolution(user, value)
+      const field = await executeTaskModalTestUtils.setUserResolution(user, value)
 
       expect(field).toHaveDisplayValue(value)
     })
 
     test('Не активно во время загрузки', () => {
       render(<ExecuteTaskModal {...props} isLoading />)
-      expect(testUtils.getUserResolutionField()).toBeDisabled()
+      expect(executeTaskModalTestUtils.getUserResolutionField()).toBeDisabled()
     })
 
     describe('Отображается ошибка', () => {
       test('Если ввести только пробелы', async () => {
         const { user } = render(<ExecuteTaskModal {...props} />)
 
-        await testUtils.setUserResolution(user, ' ')
+        await executeTaskModalTestUtils.setUserResolution(user, ' ')
 
         expect(
-          await testUtils.findUserResolutionError(validationMessages.canNotBeEmpty),
+          await executeTaskModalTestUtils.findUserResolutionError(validationMessages.canNotBeEmpty),
         ).toBeInTheDocument()
       })
 
       test('Если не заполнить поле и нажать кнопку отправки', async () => {
         const { user } = render(<ExecuteTaskModal {...props} />)
 
-        await testUtils.clickSubmitButton(user)
+        await executeTaskModalTestUtils.clickSubmitButton(user)
 
         expect(
-          await testUtils.findUserResolutionError(validationMessages.required),
+          await executeTaskModalTestUtils.findUserResolutionError(validationMessages.required),
         ).toBeInTheDocument()
       })
 
       test('Если превысить лимит символов', async () => {
         const { user } = render(<ExecuteTaskModal {...props} />)
 
-        await testUtils.setUserResolution(
+        await executeTaskModalTestUtils.setUserResolution(
           user,
           fakeWord({ length: validationSizes.string.long + 1 }),
         )
 
         expect(
-          await testUtils.findUserResolutionError(validationMessages.string.max.long),
+          await executeTaskModalTestUtils.findUserResolutionError(
+            validationMessages.string.max.long,
+          ),
         ).toBeInTheDocument()
       })
     })
@@ -558,7 +362,7 @@ describe('Модалка выполнения заявки', () => {
     test('Кнопка отображается корректно', () => {
       render(<ExecuteTaskModal {...props} />)
 
-      const button = testUtils.getAddAttachmentsButton()
+      const button = executeTaskModalTestUtils.getAddAttachmentsButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -567,8 +371,8 @@ describe('Модалка выполнения заявки', () => {
     test('Загруженное вложение отображается', async () => {
       const { user } = render(<ExecuteTaskModal {...props} />)
 
-      const { input, file } = await testUtils.setAttachment(user)
-      const uploadedAttachment = testUtils.getUploadedAttachment(file.name)
+      const { input, file } = await executeTaskModalTestUtils.setAttachment(user)
+      const uploadedAttachment = executeTaskModalTestUtils.getUploadedAttachment(file.name)
 
       expect(input.files!.item(0)).toBe(file)
       expect(input.files).toHaveLength(1)
@@ -577,7 +381,7 @@ describe('Модалка выполнения заявки', () => {
 
     test('Кнопка не активна во время загрузки', () => {
       render(<ExecuteTaskModal {...props} isLoading />)
-      const button = testUtils.getAddAttachmentsButton()
+      const button = executeTaskModalTestUtils.getAddAttachmentsButton()
       expect(button).toBeDisabled()
     })
   })

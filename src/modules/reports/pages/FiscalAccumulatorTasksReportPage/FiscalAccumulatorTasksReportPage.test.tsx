@@ -3,14 +3,14 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'modules/reports/components/FiscalAccumulatorTasksReportTable/FiscalAccumulatorTasksReportTable.test'
 import { getFiscalAccumulatorTasksReportErrMsg } from 'modules/reports/constants'
-import { testUtils as taskTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
-import { testUtils as tasksFiltersStorageTestUtils } from 'modules/task/components/TasksFiltersStorage/TasksFiltersStorage.test'
-import { testUtils as updateTasksButtonTestUtils } from 'modules/task/components/UpdateTasksButton/UpdateTasksButton.test'
 import {
   taskLocalStorageService,
   TasksFiltersStorageType,
 } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 
+import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
+import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/TasksFiltersStorage/testUtils'
+import { updateTasksButtonTestUtils } from '_tests_/features/tasks/UpdateTasksButton/testUtils'
 import reportsFixtures from '_tests_/fixtures/reports'
 import {
   mockGetFiscalAccumulatorTasksServerError,
@@ -97,7 +97,7 @@ describe('Страница заявок фискальных накопител�
       user,
       fiscalAccumulatorTaskListItem.olaNextBreachTime,
     )
-    const task = await taskTestUtils.findContainer()
+    const task = await taskDetailsTestUtils.findContainer()
 
     expect(task).toBeInTheDocument()
   })

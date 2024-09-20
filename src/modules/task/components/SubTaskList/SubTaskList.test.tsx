@@ -1,45 +1,22 @@
-import { screen, within } from '@testing-library/react'
-
-import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
-import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
-
 import { formatDate } from 'shared/utils/date'
-
-import taskFixtures from '_tests_/fixtures/task'
-import { render } from '_tests_/utils'
 
 import {
   showCancelButtonProps,
   showReworkButtonProps,
-  testUtils as subTaskTestUtils,
-} from './SubTask.test'
-import SubTaskList, { SubTaskListProps } from './index'
+} from '_tests_/features/tasks/SubTaskList/SubTask/constants'
+import { subTaskTestUtils } from '_tests_/features/tasks/SubTaskList/SubTask/testUtils'
+import { props } from '_tests_/features/tasks/SubTaskList/constants'
+import { subTaskListTestUtils } from '_tests_/features/tasks/SubTaskList/testUtils'
+import taskFixtures from '_tests_/fixtures/task'
+import { render } from '_tests_/utils'
 
-const props: Readonly<SubTaskListProps> = {
-  list: taskFixtures.subTaskList(),
-  isError: false,
-  taskStatus: TaskStatusEnum.New,
-  taskExtendedStatus: TaskExtendedStatusEnum.New,
-  currentUserIsTaskAssignee: false,
-  onClickCancel: jest.fn(),
-  onClickRework: jest.fn(),
-  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
-  permissions: {},
-}
-
-const getContainer = () => screen.getByTestId('sub-task-list')
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
-export const testUtils = {
-  getContainer,
-  getChildByText,
-}
+import SubTaskList from './index'
 
 describe('Список подзадач', () => {
   test('Отображает верное количество задач', () => {
     render(<SubTaskList {...props} />)
 
-    expect(subTaskTestUtils.getAllContainerIn(testUtils.getContainer())).toHaveLength(
+    expect(subTaskTestUtils.getAllContainerIn(subTaskListTestUtils.getContainer())).toHaveLength(
       props.list.length,
     )
   })
@@ -62,12 +39,12 @@ describe('Список подзадач', () => {
 
   test('Отображается соответствующее сообщение если список пуст', () => {
     render(<SubTaskList {...props} list={[]} />)
-    expect(testUtils.getChildByText('Заданий нет')).toBeInTheDocument()
+    expect(subTaskListTestUtils.getChildByText('Заданий нет')).toBeInTheDocument()
   })
 
   test('При ошибке получения списка отображается соответствующее сообщение', () => {
     render(<SubTaskList {...props} list={[]} isError />)
-    expect(testUtils.getChildByText('Не удалось получить задания')).toBeInTheDocument()
+    expect(subTaskListTestUtils.getChildByText('Не удалось получить задания')).toBeInTheDocument()
   })
 
   describe('Отправка задания на доработку', () => {

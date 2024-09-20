@@ -1,103 +1,49 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { within } from '@testing-library/react'
 import pick from 'lodash/pick'
 
 import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
-import { testUtils as taskAssigneeTestUtils } from 'modules/task/components/TaskAssignee/TaskAssignee.test'
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 import { getRelocateFromToTitle } from 'modules/warehouse/utils/relocationTask'
 
-import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
 
+import { props, relocationTaskListItem } from '_tests_/features/tasks/RelocationTasks/constants'
+import { relocationTasksTestUtils } from '_tests_/features/tasks/RelocationTasks/testUtils'
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { buttonTestUtils, fakeWord, render, setupApiTests } from '_tests_/utils'
+import { render, setupApiTests } from '_tests_/utils'
 
 import RelocationTasks from './index'
-import { RelocationTasksProps } from './types'
-
-const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
-
-const props: RelocationTasksProps = {
-  data: [relocationTaskListItem],
-  onClick: jest.fn(),
-  onCreateAttachment: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('relocation-tasks')
-
-// list item
-const getListItem = (id: IdType) =>
-  within(getContainer()).getByTestId(`relocation-tasks-item-${id}`)
-
-const getChildInListItem = (id: IdType, text: string | RegExp) =>
-  within(getListItem(id)).getByText(text)
-
-const clickListItem = async (user: UserEvent, id: IdType) => {
-  const item = getListItem(id)
-  await user.click(item)
-}
-
-// documents
-const getCreateDocumentsButton = (id: IdType) =>
-  buttonTestUtils.getButtonIn(getListItem(id), /Добавить вложение/)
-
-const setDocument = async (
-  id: IdType,
-  user: UserEvent,
-  file: File = new File([], fakeWord(), { type: 'image/png' }),
-) => {
-  const listItem = getListItem(id)
-  // eslint-disable-next-line testing-library/no-node-access
-  const input = listItem.querySelector('input[type="file"]') as HTMLInputElement
-  await user.upload(input, file)
-  return { input, file }
-}
-
-const getUploadedDocument = (filename: string, id: IdType) =>
-  within(getListItem(id)).getByTitle(filename)
-
-export const testUtils = {
-  getContainer,
-
-  getListItem,
-  getChildInListItem,
-  clickListItem,
-
-  getCreateDocumentsButton,
-  setDocument,
-  getUploadedDocument,
-}
 
 setupApiTests()
 
 describe('Список заявок на перемещение', () => {
   test('Если список пуст отображается соответствующий текст', () => {
     render(<RelocationTasks {...props} data={[]} />)
-    const text = within(getContainer()).getByText('Перемещений нет')
+    const text = within(relocationTasksTestUtils.getContainer()).getByText('Перемещений нет')
     expect(text).toBeInTheDocument()
   })
 
   test('Дата дэдлайна отображается', () => {
     render(<RelocationTasks {...props} />)
     const text = `до ${formatDate(relocationTaskListItem.deadlineAt)}`
-    const value = testUtils.getChildInListItem(relocationTaskListItem.id, text)
+    const value = relocationTasksTestUtils.getChildInListItem(relocationTaskListItem.id, text)
     expect(value).toBeInTheDocument()
   })
 
   test('Заголовок отображается', () => {
     render(<RelocationTasks {...props} />)
     const text = getRelocateFromToTitle(relocationTaskListItem)
-    const value = testUtils.getChildInListItem(relocationTaskListItem.id, text)
+    const value = relocationTasksTestUtils.getChildInListItem(relocationTaskListItem.id, text)
     expect(value).toBeInTheDocument()
   })
 
   test('Статус отображается', () => {
     render(<RelocationTasks {...props} />)
 
-    const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Статус/)
-    const value = testUtils.getChildInListItem(
+    const label = relocationTasksTestUtils.getChildInListItem(relocationTaskListItem.id, /Статус/)
+    const value = relocationTasksTestUtils.getChildInListItem(
       relocationTaskListItem.id,
       relocationTaskStatusDict[relocationTaskListItem.status],
     )
@@ -110,9 +56,12 @@ describe('Список заявок на перемещение', () => {
     test('Отображаются', () => {
       render(<RelocationTasks {...props} />)
 
-      const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Документы/)
+      const label = relocationTasksTestUtils.getChildInListItem(
+        relocationTaskListItem.id,
+        /Документы/,
+      )
       const value = attachmentsTestUtils.getContainerIn(
-        testUtils.getListItem(relocationTaskListItem.id),
+        relocationTasksTestUtils.getListItem(relocationTaskListItem.id),
       )
 
       expect(label).toBeInTheDocument()
@@ -123,7 +72,7 @@ describe('Список заявок на перемещение', () => {
       test('Отображается', () => {
         render(<RelocationTasks {...props} />)
 
-        const button = testUtils.getCreateDocumentsButton(relocationTaskListItem.id)
+        const button = relocationTasksTestUtils.getCreateDocumentsButton(relocationTaskListItem.id)
 
         expect(button).toBeInTheDocument()
         expect(button).toBeEnabled()
@@ -132,8 +81,11 @@ describe('Список заявок на перемещение', () => {
       test('Вызывается обработчик и загруженный документ отображается', async () => {
         const { user } = render(<RelocationTasks {...props} />)
 
-        const { input, file } = await testUtils.setDocument(relocationTaskListItem.id, user)
-        const uploadedAttachment = testUtils.getUploadedDocument(
+        const { input, file } = await relocationTasksTestUtils.setDocument(
+          relocationTaskListItem.id,
+          user,
+        )
+        const uploadedAttachment = relocationTasksTestUtils.getUploadedDocument(
           file.name,
           relocationTaskListItem.id,
         )
@@ -149,9 +101,12 @@ describe('Список заявок на перемещение', () => {
   test('Дата создания отображается', () => {
     render(<RelocationTasks {...props} />)
 
-    const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Дата создания/)
+    const label = relocationTasksTestUtils.getChildInListItem(
+      relocationTaskListItem.id,
+      /Дата создания/,
+    )
     const text = formatDate(relocationTaskListItem.createdAt)
-    const value = testUtils.getChildInListItem(relocationTaskListItem.id, text)
+    const value = relocationTasksTestUtils.getChildInListItem(relocationTaskListItem.id, text)
 
     expect(label).toBeInTheDocument()
     expect(value).toBeInTheDocument()
@@ -161,9 +116,12 @@ describe('Список заявок на перемещение', () => {
     test('Отображается тот кто завершил заявку если он есть', () => {
       render(<RelocationTasks {...props} />)
 
-      const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Исполнитель/)
+      const label = relocationTasksTestUtils.getChildInListItem(
+        relocationTaskListItem.id,
+        /Исполнитель/,
+      )
       const value = taskAssigneeTestUtils.getContainerIn(
-        testUtils.getListItem(relocationTaskListItem.id),
+        relocationTasksTestUtils.getListItem(relocationTaskListItem.id),
       )
 
       expect(label).toBeInTheDocument()
@@ -181,9 +139,12 @@ describe('Список заявок на перемещение', () => {
 
       render(<RelocationTasks {...props} data={[relocationTaskListItem]} />)
 
-      const label = testUtils.getChildInListItem(relocationTaskListItem.id, /Исполнитель/)
+      const label = relocationTasksTestUtils.getChildInListItem(
+        relocationTaskListItem.id,
+        /Исполнитель/,
+      )
       const executors = taskAssigneeTestUtils.getAllContainerIn(
-        testUtils.getListItem(relocationTaskListItem.id),
+        relocationTasksTestUtils.getListItem(relocationTaskListItem.id),
       )
 
       expect(label).toBeInTheDocument()
@@ -195,7 +156,7 @@ describe('Список заявок на перемещение', () => {
   test('При клике по элементу вызывается обработчик', async () => {
     const { user } = render(<RelocationTasks {...props} />)
 
-    await testUtils.clickListItem(user, relocationTaskListItem.id)
+    await relocationTasksTestUtils.clickListItem(user, relocationTaskListItem.id)
 
     expect(props.onClick).toBeCalledTimes(1)
     expect(props.onClick).toBeCalledWith(relocationTaskListItem.id)
