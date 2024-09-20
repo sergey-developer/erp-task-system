@@ -1,14 +1,14 @@
+import { FastFilterByLinesType, FastFilterType } from 'modules/task/components/FastFilters/types'
 import {
   fastFilterByLinesNamesDict,
   fastFilterNamesDict,
   TasksFastFilterEnum,
 } from 'modules/task/constants/task'
-import { FastFilterByLinesType, FastFilterType, TaskCountersModel } from 'modules/task/models'
 
 export type FastFilterOptionType<V> = {
   label: string
   value: V
-  counterKey: keyof TaskCountersModel
+  counterKey: string
 }
 
 export const fastFilterByLinesOptions: FastFilterOptionType<FastFilterByLinesType>[] = [

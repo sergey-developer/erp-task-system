@@ -7,7 +7,7 @@ export type GetTaskCountersQueryArgs = Partial<{
   customers: IdType[]
   macroregions: IdType[]
   supportGroups: IdType[]
-  line: TasksFastFilterEnum[]
+  line: TasksFastFilterEnum.FirstLine | TasksFastFilterEnum.SecondLine
 }>
 
 export type GetTaskCountersSuccessResponse = TaskCountersModel
