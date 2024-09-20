@@ -175,6 +175,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const { modal } = App.useApp()
   const navigate = useNavigate()
 
+  const [currentTaskId, setCurrentTaskId] = useState<IdType>(taskId)
+
+  useEffect(() => {
+    setCurrentTaskId(taskId)
+  }, [taskId])
+
   const [parentTaskAdditionalInfoExpanded, { toggle: toggleParentTaskAdditionalInfoExpanded }] =
     useBoolean(false)
 
@@ -183,12 +189,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const debouncedOpenParentTask = useDebounceFn(openParentTask)
   const debouncedCloseParentTask = useDebounceFn(closeParentTask)
-
-  const [currentTaskId, setCurrentTaskId] = useState<IdType>(taskId)
-
-  useEffect(() => {
-    setCurrentTaskId(taskId)
-  }, [taskId])
 
   const authUser = useAuthUser()
 

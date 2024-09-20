@@ -14,6 +14,8 @@ import {
   GetInventorizationEquipmentQueryArgs,
   GetInventorizationEquipmentsQueryArgs,
   GetInventorizationEquipmentsSuccessResponse,
+  GetInventorizationEquipmentsTemplateQueryArgs,
+  GetInventorizationEquipmentsTemplateSuccessResponse,
   GetInventorizationEquipmentSuccessResponse,
   GetInventorizationQueryArgs,
   GetInventorizationsQueryArgs,
@@ -23,6 +25,7 @@ import {
   UpdateInventorizationEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
 import {
+  GetInventorizationEquipmentsTemplateTransformedSuccessResponse,
   GetInventorizationEquipmentsTransformedSuccessResponse,
   GetInventorizationsTransformedSuccessResponse,
 } from 'modules/warehouse/types'
@@ -163,6 +166,19 @@ const inventorizationApiService = baseApiService
           } catch {}
         },
       }),
+      getInventorizationEquipmentsTemplate: build.query<
+        GetInventorizationEquipmentsTemplateTransformedSuccessResponse,
+        GetInventorizationEquipmentsTemplateQueryArgs
+      >({
+        query: () => ({
+          url: InventorizationApiEnum.GetInventorizationEquipmentsTemplate,
+          method: HttpMethodEnum.Get,
+        }),
+        transformResponse: (value: GetInventorizationEquipmentsTemplateSuccessResponse, meta) => ({
+          value,
+          meta,
+        }),
+      }),
     }),
   })
 
@@ -174,6 +190,7 @@ export const {
   useGetInventorizationEquipmentQuery,
   useLazyGetInventorizationEquipmentQuery,
   useGetInventorizationEquipmentsQuery,
+  useLazyGetInventorizationEquipmentsTemplateQuery,
   useCreateInventorizationEquipmentMutation,
   useUpdateInventorizationEquipmentMutation,
 } = inventorizationApiService

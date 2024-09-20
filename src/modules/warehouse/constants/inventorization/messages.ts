@@ -15,3 +15,6 @@ export const createInventorizationEquipmentErrMsg =
 
 export const updateInventorizationEquipmentErrMsg =
   'Ошибка сохранения оборудования при проведении сверки'
+
+export const getInventorizationEquipmentsTemplateErrMsg =
+  'Ошибка формирования шаблона для проведения сверки оборудования из файла'
