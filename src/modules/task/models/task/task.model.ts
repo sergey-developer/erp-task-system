@@ -30,7 +30,6 @@ export type TaskModel = {
   status: TaskStatusEnum
   title: string
   olaNextBreachTime: string
-  system: SystemEnum
 
   initialImpact: MaybeNull<1 | 2 | 3 | 4>
   severity: MaybeNull<1 | 2 | 3 | 4>
