@@ -1,9 +1,9 @@
-import { Collapse, Form, Typography, UploadProps } from 'antd'
+import { Collapse, Form, Typography } from 'antd'
 import { CollapseProps } from 'rc-collapse/es/interface'
+import { UploadRequestOption } from 'rc-upload/es/interface'
 import { FC, useCallback, useMemo } from 'react'
 
-import { AttachmentTypeEnum } from 'modules/attachment/constants'
-import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
+import { useDeleteAttachment } from 'modules/attachment/hooks'
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { useGetInfrastructureOrdersForms } from 'modules/infrastructures/hooks'
 import { InfrastructureModel } from 'modules/infrastructures/models'
@@ -13,6 +13,7 @@ import Space from 'components/Space'
 
 import { IdType } from 'shared/types/common'
 
+import { useCreateInfrastructureOrderFormAttachment } from '../../hooks/useCreateInfrastructureOrderFormAttachment'
 import ChangeInfrastructureOrderForm from '../ChangeInfrastructureOrderForm'
 import { ChangeInfrastructureOrdersFormsTabFormFields } from './types'
 
@@ -34,14 +35,14 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
     isFetching: infrastructureOrdersFormsIsFetching,
   } = useGetInfrastructureOrdersForms({ infrastructureProject: infrastructureId })
 
-  const [createAttachment] = useCreateAttachment()
+  const [createInfrastructureOrderFormAttachment] = useCreateInfrastructureOrderFormAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
-  const onUploadFile = useCallback<NonNullable<UploadProps['customRequest']>>(
-    async (options) => {
-      await createAttachment({ type: AttachmentTypeEnum.OrderFormFile }, options)
+  const onUploadFile = useCallback(
+    (orderFormId: IdType) => async (options: UploadRequestOption) => {
+      await createInfrastructureOrderFormAttachment({ orderFormId }, options)
     },
-    [createAttachment],
+    [createInfrastructureOrderFormAttachment],
   )
 
   const ordersFormsItems: CollapseProps['items'] = useMemo(
@@ -54,7 +55,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
             data={orderForm}
             managerIsCurrentUser={managerIsCurrentUser}
             canUploadFile={managerIsCurrentUser}
-            onUploadFile={onUploadFile}
+            onUploadFile={onUploadFile(orderForm.id)}
             canDeleteFile={managerIsCurrentUser}
             isDeleting={deleteAttachmentIsLoading}
             onDeleteFile={deleteAttachment}

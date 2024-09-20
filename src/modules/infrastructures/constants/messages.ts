@@ -5,3 +5,6 @@ export const updateInfrastructureErrMsg =
 
 export const getInfrastructureOrdersFormsErrMsg =
   'Ошибка получения бланк-заказов по изменению инфраструктуры'
+
+export const createInfrastructureOrdersFormAttachmentErrMsg =
+  'Ошибка создания вложения к бланк-заказу'
