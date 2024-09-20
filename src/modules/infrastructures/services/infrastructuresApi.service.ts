@@ -1,8 +1,12 @@
+import { decamelize } from 'humps'
+
 import {
   InfrastructuresApiEnum,
   InfrastructuresApiTagEnum,
 } from 'modules/infrastructures/constants'
 import {
+  CreateInfrastructureOrderFormAttachmentMutationArgs,
+  CreateInfrastructureOrderFormAttachmentSuccessResponse,
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureOrdersFormsSuccessResponse,
   GetInfrastructureQueryArgs,
@@ -52,6 +56,23 @@ const infrastructuresApiService = baseApiService
           params,
         }),
       }),
+
+      createInfrastructureOrderFormAttachment: build.mutation<
+        CreateInfrastructureOrderFormAttachmentSuccessResponse,
+        CreateInfrastructureOrderFormAttachmentMutationArgs
+      >({
+        query: ({ orderFormId, file }) => {
+          const formData = new FormData()
+          formData.append(decamelize('orderForm'), String(orderFormId))
+          formData.append('file', file)
+
+          return {
+            url: InfrastructuresApiEnum.CreateInfrastructureOrdersFormAttachment,
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
     }),
     overrideExisting: false,
   })
@@ -60,4 +81,5 @@ export const {
   useGetInfrastructureQuery,
   useUpdateInfrastructureMutation,
   useGetInfrastructureOrdersFormsQuery,
+  useCreateInfrastructureOrderFormAttachmentMutation,
 } = infrastructuresApiService
