@@ -27,13 +27,6 @@ export type GetTasksSortKey =
 
 export type GetTasksSortValue = ExtendSortKey<GetTasksSortKey>
 
-export type FastFilterType = TasksFastFilterEnum
-
-export type FastFilterByLinesType =
-  | TasksFastFilterEnum.AllLines
-  | TasksFastFilterEnum.FirstLine
-  | TasksFastFilterEnum.SecondLine
-
 export type FastFilterQueries = Partial<{
   filters: TasksFastFilterEnum[]
 }>
