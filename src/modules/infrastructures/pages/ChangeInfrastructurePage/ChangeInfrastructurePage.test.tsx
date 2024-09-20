@@ -8,7 +8,6 @@ import {
 } from 'modules/infrastructures/constants'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
-import { testUtils as tasksPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
@@ -22,6 +21,7 @@ import {
 } from '_tests_/features/tasks/TaskDetails/constants'
 import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
 import { taskTableTestUtils } from '_tests_/features/tasks/TaskTable/testUtils'
+import { tasksPageTestUtils } from '_tests_/features/tasks/TasksPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import taskFixtures from '_tests_/fixtures/task'

@@ -10,13 +10,13 @@ import { AuthRouteEnum } from 'modules/auth/constants/routes'
 import LoginPage from 'modules/auth/pages/LoginPage'
 import { authLocalStorageService } from 'modules/auth/services/authLocalStorage.service'
 import TasksPage from 'modules/task/pages/TasksPage'
-import { testUtils as tasksPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
 
 import { setupStore } from 'state/store'
 
 import { commonApiMessages } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
+import { tasksPageTestUtils } from '_tests_/features/tasks/TasksPage/testUtils'
 import authFixtures from '_tests_/fixtures/auth'
 import userFixtures from '_tests_/fixtures/user'
 import {

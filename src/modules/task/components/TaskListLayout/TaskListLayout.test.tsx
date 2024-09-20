@@ -6,9 +6,9 @@ import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TaskListMapPage from 'modules/task/pages/TaskListMapPage'
 import { testUtils as taskListMapPageTestUtils } from 'modules/task/pages/TaskListMapPage/TaskListMapPage.test'
 import TasksPage from 'modules/task/pages/TasksPage'
-import { testUtils as taskListPageTestUtils } from 'modules/task/pages/TasksPage/TasksPage.test'
 
 import { taskListLayoutTestUtils } from '_tests_/features/tasks/TaskListLayout/testUtils'
+import { tasksPageTestUtils } from '_tests_/features/tasks/TasksPage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetTaskCountersSuccess,
@@ -67,7 +67,7 @@ describe('TaskListLayout', () => {
       )
 
       await taskListLayoutTestUtils.clickTaskListButton(user)
-      const page = taskListPageTestUtils.getContainer()
+      const page = tasksPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
     })
