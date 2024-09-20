@@ -3,9 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { buttonTestUtils } from '_tests_/utils/index'
 
-import { TestIdsEnum } from './constants'
-
-const getContainer = () => screen.getByTestId(TestIdsEnum.TaskWorkGroup)
+const getContainer = () => screen.getByTestId('task-work-group')
 const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
 
 // first line button
@@ -17,15 +15,10 @@ const findFirstLineButton = () =>
 const queryFirstLineButton = () =>
   buttonTestUtils.queryButtonIn(getContainer(), /вернуть на I линию/i)
 
-const clickFirstLineButton = async (user: UserEvent) => {
-  const button = getFirstLineButton()
-  await user.click(button)
-  return button
-}
+const clickFirstLineButton = async (user: UserEvent) => user.click(getFirstLineButton())
 
-const expectFirstLineLoadingStarted = async () => {
-  await buttonTestUtils.expectLoadingStarted(getFirstLineButton())
-}
+const expectFirstLineLoadingStarted = async () =>
+  buttonTestUtils.expectLoadingStarted(getFirstLineButton())
 
 // second line button
 const getSecondLineButton = () =>
@@ -34,10 +27,7 @@ const getSecondLineButton = () =>
 const querySecondLineButton = () =>
   buttonTestUtils.queryButtonIn(getContainer(), /перевести на II линию/i)
 
-const clickSecondLineButton = async (user: UserEvent) => {
-  const button = getSecondLineButton()
-  await user.click(button)
-}
+const clickSecondLineButton = async (user: UserEvent) => user.click(getSecondLineButton())
 
 const expectSecondLineLoadingStarted = async () => {
   await buttonTestUtils.expectLoadingStarted(getSecondLineButton())

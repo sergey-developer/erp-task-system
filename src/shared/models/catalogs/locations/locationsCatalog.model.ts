@@ -1,10 +1,11 @@
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { IdType } from 'shared/types/common'
 
-export type LocationListItemModel = {
+export type LocationCatalogListItemModel = {
   id: IdType
   title: string
   type: LocationTypeEnum
+  address?: string
 }
 
-export type LocationsModel = LocationListItemModel[]
+export type LocationsCatalogModel = LocationCatalogListItemModel[]

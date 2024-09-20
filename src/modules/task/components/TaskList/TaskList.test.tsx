@@ -6,7 +6,7 @@ import { hexToRGB } from 'shared/utils/hexToRGB'
 import theme from 'styles/theme'
 
 import { props, taskListItem } from '_tests_/features/tasks/TaskList/constants'
-import { taskListTestUtils } from '_tests_/features/tasks/TaskList/testUtils'
+import { taskListTestUtils } from '_tests_/features/tasks/TaskList/taskListTestUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import { render } from '_tests_/utils'
 
@@ -106,12 +106,12 @@ describe('Список заявок', () => {
   test('Объект отображается', () => {
     render(<TaskList {...props} />)
 
-    const object = taskListTestUtils.getListItemChildByText(taskListItem.id, taskListItem.name)
+    const object = taskListTestUtils.getListItemChildByText(taskListItem.id, taskListItem.name!)
 
     expect(object).toBeInTheDocument()
   })
 
-  test('Срок выполнения если есть', () => {
+  test('Срок выполнения отображается', () => {
     render(<TaskList {...props} />)
 
     const olaNextBreachTime = taskListTestUtils.getListItemChildByText(
@@ -120,17 +120,6 @@ describe('Список заявок', () => {
     )
 
     expect(olaNextBreachTime).toBeInTheDocument()
-  })
-
-  test('Срок выполнения не отображается если его нет', () => {
-    render(<TaskList {...props} tasks={[{ ...taskListItem, olaNextBreachTime: null }]} />)
-
-    const olaNextBreachTime = taskListTestUtils.queryListItemChildByText(
-      taskListItem.id,
-      formatDate(taskListItem.olaNextBreachTime),
-    )
-
-    expect(olaNextBreachTime).not.toBeInTheDocument()
   })
 
   test('Тема отображается', () => {

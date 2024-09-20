@@ -5,12 +5,13 @@ import React, { FC } from 'react'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import TaskStatus from 'modules/task/components/TaskStatus'
 import { badgeByTaskStatus, iconByTaskStatus } from 'modules/task/components/TaskStatus/constants'
-import { TaskExtendedStatusEnum, taskStatusDict, TaskStatusEnum } from 'modules/task/constants/task'
+import { taskStatusDict } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
 import { useTaskExtendedStatus, useTaskStatus } from 'modules/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'modules/task/hooks/taskSuspendRequest'
-import { SubTaskModel } from 'modules/task/models'
-import { makeUserByFullName, MatchedUserPermissions } from 'modules/user/utils'
+import { SubTaskModel, TaskModel } from 'modules/task/models'
+import { MatchedUserPermissions } from 'modules/user/types'
+import { makeUserByFullName } from 'modules/user/utils'
 
 import Expandable from 'components/Expandable'
 import Label from 'components/Label'
@@ -23,8 +24,8 @@ import { renderStringWithLineBreak } from 'shared/utils/string'
 const { Text, Title, Paragraph } = Typography
 
 export type SubTaskProps = Omit<SubTaskModel, 'id'> & {
-  taskStatus: TaskStatusEnum
-  taskExtendedStatus: TaskExtendedStatusEnum
+  taskStatus: TaskModel['status']
+  taskExtendedStatus: TaskModel['extendedStatus']
   currentUserIsTaskAssignee: boolean
   onClickCancel: EmptyFn
   onClickRework: EmptyFn

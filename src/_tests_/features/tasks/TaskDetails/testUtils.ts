@@ -6,7 +6,7 @@ import { buttonTestUtils, spinnerTestUtils } from '_tests_/utils/index'
 import { TestIdsEnum } from './constants'
 
 const findContainer = () => screen.findByTestId(TestIdsEnum.TaskDetails)
-const getContainer = () => screen.getByTestId(TestIdsEnum.TaskDetails)
+const getContainer = () => screen.getByTestId('task-details')
 
 // change infrastructure
 const getChangeInfrastructureButton = () =>

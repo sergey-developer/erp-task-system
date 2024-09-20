@@ -29,7 +29,7 @@ import {
   mockGetInventorizationReportSuccess,
   mockGetInventorizationsSuccess,
   mockGetInventorizationSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
@@ -124,7 +124,7 @@ describe('Страница проведения инвентаризации', (
       .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-    mockGetLocationListSuccess()
+    mockGetLocationsCatalogSuccess()
     mockGetCurrencyListSuccess()
 
     render(<ExecuteInventorizationPage />, {
@@ -192,7 +192,7 @@ describe('Страница проведения инвентаризации', (
         .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
       mockGetCurrencyListSuccess()
 
       render(<ExecuteInventorizationPage />, {
@@ -217,7 +217,7 @@ describe('Страница проведения инвентаризации', (
       mockGetInventorizationSuccess({ inventorizationId: inventorization.id })
       mockGetInventorizationsSuccess()
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationsCatalogSuccess({ body: [] })
       mockCompleteInventorizationSuccess({ inventorizationId: inventorization.id })
       mockGetCurrencyListSuccess()
 
@@ -259,7 +259,7 @@ describe('Страница проведения инвентаризации', (
         .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
       mockGetCurrencyListSuccess()
 
       render(<ExecuteInventorizationPage />, {
@@ -284,7 +284,7 @@ describe('Страница проведения инвентаризации', (
       mockGetInventorizationSuccess({ inventorizationId: inventorization.id })
       mockGetInventorizationsSuccess()
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationsCatalogSuccess({ body: [] })
       mockGetCurrencyListSuccess()
 
       const { user } = renderWithRouter(
@@ -330,7 +330,7 @@ describe('Страница проведения инвентаризации', (
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
-      mockGetLocationListSuccess({ body: [] })
+      mockGetLocationsCatalogSuccess({ body: [] })
       mockGetCurrencyListSuccess()
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -363,7 +363,7 @@ describe('Страница проведения инвентаризации', (
       .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
-    mockGetLocationListSuccess()
+    mockGetLocationsCatalogSuccess()
     mockGetCurrencyListSuccess()
 
     render(<ExecuteInventorizationPage />, {
@@ -388,7 +388,7 @@ describe('Страница проведения инвентаризации', (
       { inventorizationId: inventorization.id },
       { once: false },
     )
-    mockGetLocationListSuccess()
+    mockGetLocationsCatalogSuccess()
     mockGetCurrencyListSuccess()
 
     const { user } = render(<ExecuteInventorizationPage />, {

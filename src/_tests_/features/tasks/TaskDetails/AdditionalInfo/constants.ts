@@ -1,3 +1,5 @@
+import pick from 'lodash/pick'
+
 import { AdditionalInfoProps } from 'modules/task/components/TaskDetails/AdditionalInfo/index'
 import { TaskStatusEnum } from 'modules/task/constants/task/index'
 
@@ -20,6 +22,10 @@ export const props: Readonly<
   productClassifier3: fakeWord(),
   status: TaskStatusEnum.New,
   workGroup: taskFixtures.workGroup(),
+
+  parentTask: pick(taskFixtures.task(), 'id', 'recordId'),
+  openParentTask: jest.fn(),
+
   address: null,
   longitude: null,
   latitude: null,

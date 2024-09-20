@@ -1,5 +1,5 @@
 import { FastFilterEnum, fastFilterNamesDict } from 'modules/task/constants/task'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 export type FastFilterConfig = {
   filter: FastFilterEnum

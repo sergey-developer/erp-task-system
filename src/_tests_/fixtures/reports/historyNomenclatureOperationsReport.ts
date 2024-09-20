@@ -29,7 +29,7 @@ export const historyNomenclatureOperationsReportListItem = (
   creditedAt: fakeDateString(),
   serialNumber: fakeIdStr(),
   inventoryNumber: fakeIdStr(),
-  location: pick(catalogsFixtures.location(), 'id', 'title'),
+  location: pick(catalogsFixtures.locationCatalogListItem(), 'id', 'title'),
 })
 
 export const historyNomenclatureOperationsReport = (

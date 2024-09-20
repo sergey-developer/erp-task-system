@@ -64,7 +64,7 @@ const queryAssigneeSelect = () => selectTestUtils.querySelect(getContainer())
 const findAssigneeSelect = () => selectTestUtils.findSelect(getContainer())
 const getSelectedAssignee = () => selectTestUtils.getSelectedOption(getContainer())
 const openAssigneeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getContainer())
-const selectAssignee = selectTestUtils.clickSelectOption
+const setAssignee = selectTestUtils.clickSelectOption
 const getAssigneeOption = selectTestUtils.getSelectOptionById
 const getAllAssigneeOption = selectTestUtils.getAllSelectOption
 
@@ -101,7 +101,7 @@ export const assigneeBlockTestUtils = {
   findAssigneeSelect,
   getSelectedAssignee,
   openAssigneeSelect,
-  selectAssignee,
+  setAssignee,
   getAssigneeOption,
   getAllAssigneeOption,
   expectAssigneeSelectLoadingStarted,

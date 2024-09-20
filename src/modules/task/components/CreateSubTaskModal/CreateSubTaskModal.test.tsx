@@ -3,7 +3,7 @@ import { waitFor } from '@testing-library/react'
 import { getSupportGroupListMessages } from 'modules/supportGroup/constants'
 import { createSubTaskErrMsg } from 'modules/task/constants/task'
 
-import { getSubTaskTemplateListMessages } from 'shared/constants/catalogs'
+import { getSubTaskTemplatesCatalogErrMsg } from 'shared/constants/catalogs'
 import { validationMessages } from 'shared/constants/validation'
 
 import { onCancel, props } from '_tests_/features/tasks/CreateSubTaskModal/constants'
@@ -663,7 +663,7 @@ describe('Модалка создания задачи заявки', () => {
         await createSubTaskModalTestUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
 
         const notification = await notificationTestUtils.findNotification(
-          getSubTaskTemplateListMessages.commonError,
+          getSubTaskTemplatesCatalogErrMsg,
         )
         expect(notification).toBeInTheDocument()
       })

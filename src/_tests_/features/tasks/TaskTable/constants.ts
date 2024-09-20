@@ -22,7 +22,3 @@ export const paginationProps: Readonly<
   pageSize: DEFAULT_PAGE_SIZE,
   total: DEFAULT_PAGE_SIZE + 1,
 }
-
-export enum TestIdsEnum {
-  TaskTable = 'task-table',
-}

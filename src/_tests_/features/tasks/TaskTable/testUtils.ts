@@ -6,9 +6,7 @@ import { NumberOrString } from 'shared/types/utils'
 
 import { iconTestUtils, tableTestUtils } from '_tests_/utils/index'
 
-import { TestIdsEnum } from './constants'
-
-const getContainer = () => screen.getByTestId(TestIdsEnum.TaskTable)
+const getContainer = () => screen.getByTestId('task-table')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)

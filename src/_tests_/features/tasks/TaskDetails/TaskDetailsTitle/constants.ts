@@ -6,7 +6,8 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'modules/task/constants/task/index'
-import { TaskModel } from 'modules/task/models/index'
+
+import { SystemEnum } from 'shared/constants/enums'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 import userFixtures from '_tests_/fixtures/user/index'
@@ -21,6 +22,7 @@ export const props: Readonly<TaskDetailsTitleProps> = {
   assignee: null,
   workGroup: null,
   suspendRequest: null,
+  system: SystemEnum.ITSM,
   userActions: userFixtures.userActions(),
   onExecuteTask: jest.fn(),
   onRegisterFN: jest.fn(),
@@ -29,16 +31,16 @@ export const props: Readonly<TaskDetailsTitleProps> = {
   onRequestReclassification: jest.fn(),
   onUpdateDescription: jest.fn(),
   onUpdateDeadline: jest.fn(),
+  onCreateInternalTask: jest.fn(),
 }
 
-export const canExecuteTaskProps: Pick<
-  TaskModel,
-  'status' | 'extendedStatus' | 'assignee' | 'suspendRequest'
-> = {
-  status: TaskStatusEnum.InProgress,
-  extendedStatus: TaskExtendedStatusEnum.InProgress,
-  assignee: taskFixtures.assignee(),
-  suspendRequest: null,
+export const canExecuteTaskProps: Pick<TaskDetailsTitleProps, 'userActions'> = {
+  userActions: {
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanResolve]: [props.id],
+    },
+  },
 }
 
 export const showRequestReclassificationItemProps: Readonly<

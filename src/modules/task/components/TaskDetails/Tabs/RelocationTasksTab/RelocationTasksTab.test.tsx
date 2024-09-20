@@ -20,7 +20,7 @@ import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
   mockGetEquipmentCatalogListSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTasksForbiddenError,
   mockGetRelocationTasksServerError,
@@ -127,7 +127,7 @@ describe('Вкладка списка заявок на перемещение',
       mockGetRelocationTasksSuccess()
       mockGetUsersSuccess()
       mockGetCurrencyListSuccess()
-      mockGetLocationListSuccess({ once: false })
+      mockGetLocationsCatalogSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetWarehouseMSISuccess(fakeId())
 
@@ -180,7 +180,7 @@ describe('Вкладка списка заявок на перемещение',
       mockGetRelocationTasksSuccess()
       mockGetUsersSuccess()
       mockGetCurrencyListSuccess()
-      mockGetLocationListSuccess({ once: false })
+      mockGetLocationsCatalogSuccess({ once: false })
       mockGetEquipmentCatalogListSuccess()
       mockGetWarehouseMSISuccess(fakeId())
 

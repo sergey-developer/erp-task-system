@@ -1,6 +1,6 @@
 import { FastFilterEnum } from 'modules/task/constants/task'
 import { TaskCountersModel } from 'modules/task/models'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 import { Nullable } from 'shared/types/utils'
 

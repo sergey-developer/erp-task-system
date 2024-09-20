@@ -1,10 +1,6 @@
 import { AssigneeBlockProps } from 'modules/task/components/TaskDetails/AssigneeBlock/index'
-import {
-  TaskActionsPermissionsEnum,
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'modules/task/constants/task/index'
-import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest/index'
+import { TaskActionsPermissionsEnum } from 'modules/task/constants/task/index'
+import { UserPermissionsEnum } from 'modules/user/constants/index'
 
 import { SetNonNullable } from 'shared/types/utils'
 
@@ -19,19 +15,11 @@ export const props: Readonly<SetNonNullable<AssigneeBlockProps>> = {
   takeTaskIsLoading: false,
   updateAssignee: jest.fn(),
   updateAssigneeIsLoading: false,
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
   assignee: taskFixtures.assignee(),
   workGroup: taskFixtures.workGroup(),
-  taskSuspendRequestStatus: SuspendRequestStatusEnum.Denied,
 }
 
-export const activeTakeTaskButtonProps: Readonly<
-  Pick<AssigneeBlockProps, 'assignee' | 'status' | 'extendedStatus' | 'userActions'>
-> = {
-  assignee: null,
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
+export const activeTakeTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'userActions'>> = {
   userActions: userFixtures.userActions({
     tasks: {
       ...userFixtures.taskActionsPermissions,
@@ -41,18 +29,18 @@ export const activeTakeTaskButtonProps: Readonly<
 }
 
 export const activeAssignOnMeButtonProps: Readonly<
-  Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>
+  Pick<AssigneeBlockProps, 'userActions'> & { permissions: UserPermissionsEnum[] }
 > = {
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
-}
-
-export const activeAssignButtonProps: Readonly<
-  SetNonNullable<Pick<AssigneeBlockProps, 'status' | 'extendedStatus' | 'assignee'>>
-> = {
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
-  assignee: taskFixtures.assignee(),
+  userActions: {
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanSelfAssignee]: [props.id],
+    },
+  },
+  permissions: [
+    UserPermissionsEnum.AnyAssigneeTasksUpdate,
+    UserPermissionsEnum.SelfAssigneeTasksUpdate,
+  ],
 }
 
 export const showRefuseTaskButtonProps: Readonly<
@@ -61,18 +49,25 @@ export const showRefuseTaskButtonProps: Readonly<
   assignee: taskFixtures.assignee(),
 }
 
-export const activeRefuseTaskButtonProps: Readonly<
-  Pick<AssigneeBlockProps, 'status' | 'extendedStatus'>
-> = {
-  status: TaskStatusEnum.New,
-  extendedStatus: TaskExtendedStatusEnum.New,
+export const activeRefuseTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'userActions'>> = {
+  userActions: userFixtures.userActions({
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanSelfAssignee]: [props.id],
+    },
+  }),
 }
 
 export const canSelectAssigneeProps: Readonly<
-  SetNonNullable<Pick<AssigneeBlockProps, 'status' | 'workGroup'>>
+  SetNonNullable<Pick<AssigneeBlockProps, 'userActions'> & { permissions: UserPermissionsEnum[] }>
 > = {
-  status: TaskStatusEnum.New,
-  workGroup: taskFixtures.workGroup(),
+  userActions: userFixtures.userActions({
+    tasks: {
+      ...userFixtures.taskActionsPermissions,
+      [TaskActionsPermissionsEnum.CanAssignee]: [props.id],
+    },
+  }),
+  permissions: [UserPermissionsEnum.AnyAssigneeTasksUpdate],
 }
 
 export enum TestIdsEnum {
