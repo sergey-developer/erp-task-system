@@ -9,10 +9,12 @@ import {
   Row,
   Space,
   Typography,
+  Upload,
   UploadProps,
 } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import isNumber from 'lodash/isNumber'
+import stubFalse from 'lodash/stubFalse'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
@@ -30,6 +32,7 @@ import {
   useGetEquipmentsCatalog,
 } from 'modules/warehouse/hooks/equipment'
 import {
+  useCheckInventorizationEquipmentsTemplate,
   useCreateInventorizationEquipment,
   useGetInventorizationEquipments,
   useLazyGetInventorizationEquipmentsTemplate,
@@ -60,6 +63,7 @@ import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
+import { FileToSend } from 'shared/types/file'
 import { base64ToBytes } from 'shared/utils/common'
 import { extractFileNameFromHeaders } from 'shared/utils/extractFileNameFromHeaders'
 import { downloadFile, extractIdsFromFilesResponse } from 'shared/utils/file'
@@ -71,6 +75,7 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
+import { CheckInventorizationEquipmentsTableRow } from '../CheckInventorizationEquipmentsTable/types'
 import {
   CreateInventorizationEquipmentFormFields,
   CreateInventorizationEquipmentModalProps,
@@ -85,6 +90,10 @@ const CreateInventorizationEquipmentModal = React.lazy(
 
 const EquipmentFormModal = React.lazy(
   () => import('modules/warehouse/components/EquipmentFormModal'),
+)
+
+const CheckInventorizationEquipmentsModal = React.lazy(
+  () => import('modules/warehouse/components/CheckInventorizationEquipmentsModal'),
 )
 
 export type ExecuteInventorizationReviseTabProps = {
@@ -113,6 +122,40 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
+
+  const [checkedInventorizationEquipments, setCheckedInventorizationEquipments] = useState<
+    CheckInventorizationEquipmentsTableRow[]
+  >([])
+
+  const [
+    checkInventorizationEquipmentsModalOpened,
+    {
+      setTrue: openCheckInventorizationEquipmentsModal,
+      setFalse: closeCheckInventorizationEquipmentsModal,
+    },
+  ] = useBoolean(false)
+
+  const onCloseCheckInventorizationEquipmentsModal = useDebounceFn(() => {
+    closeCheckInventorizationEquipmentsModal()
+    setCheckedInventorizationEquipments([])
+  })
+
+  const [
+    checkInventorizationEquipmentsTemplateMutation,
+    { isLoading: checkInventorizationEquipmentsTemplateIsLoading },
+  ] = useCheckInventorizationEquipmentsTemplate()
+
+  const onCheckByExcel: NonNullable<UploadProps['onChange']> = async ({ file }) => {
+    try {
+      const equipments = await checkInventorizationEquipmentsTemplateMutation({
+        file: file as FileToSend,
+        inventorization: inventorization.id,
+      }).unwrap()
+
+      setCheckedInventorizationEquipments(equipments.map((eqp, index) => ({ row: index, ...eqp })))
+      openCheckInventorizationEquipmentsModal()
+    } catch {}
+  }
 
   const [
     createEquipmentModalOpened,
@@ -455,6 +498,22 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
                   </Dropdown.Button>
                 )}
 
+              {permissions.inventorizationUpdate &&
+                inventorizationExecutorIsCurrentUser &&
+                (checkInventorizationStatusIsNew(inventorization.status) ||
+                  checkInventorizationStatusIsInProgress(inventorization.status)) && (
+                  <Upload
+                    data-testid='check-by-excel-upload'
+                    showUploadList={false}
+                    beforeUpload={stubFalse}
+                    onChange={onCheckByExcel}
+                  >
+                    <Button loading={checkInventorizationEquipmentsTemplateIsLoading}>
+                      Сверить из Excel
+                    </Button>
+                  </Upload>
+                )}
+
               <Button onClick={debouncedOpenCreateInventorizationEquipmentModal}>
                 Добавить оборудование
               </Button>
@@ -537,6 +596,18 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             imageIsUploading={createAttachmentIsLoading}
             onDeleteImage={deleteAttachment}
             imageIsDeleting={deleteAttachmentIsLoading}
+          />
+        </React.Suspense>
+      )}
+
+      {checkInventorizationEquipmentsModalOpened && checkedInventorizationEquipments && (
+        <React.Suspense
+          fallback={<ModalFallback open onCancel={onCloseCheckInventorizationEquipmentsModal} />}
+        >
+          <CheckInventorizationEquipmentsModal
+            open={checkInventorizationEquipmentsModalOpened}
+            onCancel={onCloseCheckInventorizationEquipmentsModal}
+            data={checkedInventorizationEquipments}
           />
         </React.Suspense>
       )}

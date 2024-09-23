@@ -15,7 +15,7 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CurrencyListModel } from 'shared/models/currency'
+import { CurrenciesModel } from 'shared/models/currency'
 import { MacroregionsModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
@@ -69,7 +69,7 @@ export type EquipmentFormModalProps = Required<
     warehouses?: WarehouseListModel
     warehousesIsLoading?: boolean
 
-    currencies: CurrencyListModel
+    currencies: CurrenciesModel
     currenciesIsLoading: boolean
 
     owners: CustomerListModel
