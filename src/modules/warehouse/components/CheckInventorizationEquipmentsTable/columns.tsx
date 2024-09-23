@@ -13,9 +13,9 @@ import { CheckInventorizationEquipmentsTableRow } from './types'
 export const getColumns = (): ColumnsType<CheckInventorizationEquipmentsTableRow> => [
   {
     width: 50,
-    dataIndex: 'row',
+    dataIndex: 'rowId',
     title: '№',
-    render: (value: CheckInventorizationEquipmentsTableRow['row']) => value + 1,
+    render: (value: CheckInventorizationEquipmentsTableRow['rowId']) => value + 1,
   },
   {
     dataIndex: 'title',

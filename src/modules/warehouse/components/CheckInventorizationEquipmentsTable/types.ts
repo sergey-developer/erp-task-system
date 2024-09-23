@@ -1,11 +1,11 @@
 import { TableProps } from 'antd'
 
-import { CheckedInventorizationEquipmentModel } from 'modules/warehouse/models'
+import { CheckedInventorizationEquipmentsTemplateListItemModel } from 'modules/warehouse/models'
 
 import { SetNonNullable } from 'shared/types/utils'
 
 export type CheckInventorizationEquipmentsTableRow = Pick<
-  CheckedInventorizationEquipmentModel,
+  CheckedInventorizationEquipmentsTemplateListItemModel,
   | 'title'
   | 'serialNumber'
   | 'category'
@@ -15,7 +15,7 @@ export type CheckInventorizationEquipmentsTableRow = Pick<
   | 'locationFact'
   | 'isCredited'
 > & {
-  row: number
+  rowId: number
 }
 
 export type CheckInventorizationEquipmentsTableProps = SetNonNullable<

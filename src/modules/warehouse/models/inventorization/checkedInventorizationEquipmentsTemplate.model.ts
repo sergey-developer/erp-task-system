@@ -10,7 +10,7 @@ import { LocationCatalogListItemModel } from 'shared/models/catalogs/locations'
 import { CurrencyListItemModel } from 'shared/models/currency'
 import { MacroregionListItemModel } from 'shared/models/macroregion'
 
-export type CheckedInventorizationEquipmentModel = {
+export type CheckedInventorizationEquipmentsTemplateListItemModel = {
   title?: string
   serialNumber?: string
   inventoryNumber?: string
@@ -32,4 +32,5 @@ export type CheckedInventorizationEquipmentModel = {
   locationFact?: Pick<LocationCatalogListItemModel, 'id' | 'title'>
 }
 
-export type CheckedInventorizationEquipmentsModel = CheckedInventorizationEquipmentModel[]
+export type CheckedInventorizationEquipmentsTemplateModel =
+  CheckedInventorizationEquipmentsTemplateListItemModel[]

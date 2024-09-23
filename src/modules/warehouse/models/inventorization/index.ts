@@ -14,6 +14,6 @@ export * from './updateInventorizationEquipment.model'
 export * from './inventorizationEquipments.model'
 export * from './getInventorizationEquipments.model'
 
-export * from './checkedInventorizationEquipments.model'
+export * from './checkedInventorizationEquipmentsTemplate.model'
 export * from './getInventorizationEquipmentsTemplate.model'
 export * from './checkInventorizationEquipmentsTemplate.model'
