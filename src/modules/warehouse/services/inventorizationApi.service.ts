@@ -5,6 +5,8 @@ import {
   InventorizationApiTagEnum,
 } from 'modules/warehouse/constants/inventorization'
 import {
+  CheckInventorizationEquipmentsTemplateMutationArgs,
+  CheckInventorizationEquipmentsTemplateSuccessResponse,
   CompleteInventorizationMutationArgs,
   CompleteInventorizationSuccessResponse,
   CreateInventorizationEquipmentMutationArgs,
@@ -179,6 +181,22 @@ const inventorizationApiService = baseApiService
           meta,
         }),
       }),
+      checkInventorizationEquipmentsTemplate: build.mutation<
+        CheckInventorizationEquipmentsTemplateSuccessResponse,
+        CheckInventorizationEquipmentsTemplateMutationArgs
+      >({
+        query: ({ file, inventorization }) => {
+          const formData = new FormData()
+          formData.append('file', file)
+          formData.append('inventorization', String(inventorization))
+
+          return {
+            url: InventorizationApiEnum.CheckInventorizationEquipmentsTemplate,
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
     }),
   })
 
@@ -191,6 +209,7 @@ export const {
   useLazyGetInventorizationEquipmentQuery,
   useGetInventorizationEquipmentsQuery,
   useLazyGetInventorizationEquipmentsTemplateQuery,
+  useCheckInventorizationEquipmentsTemplateMutation,
   useCreateInventorizationEquipmentMutation,
   useUpdateInventorizationEquipmentMutation,
 } = inventorizationApiService

@@ -6,6 +6,10 @@ import { IdType } from './common'
 
 export type FileToSend = NonNullable<UploadFile['originFileObj']>
 
+export type UploadFileRequestArgs = {
+  file: FileToSend
+}
+
 export type FileResponse = Partial<{
   id: IdType
   url: string

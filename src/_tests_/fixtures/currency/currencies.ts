@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { CurrencyListItemModel } from 'shared/models/currency'
+import { CurrenciesModel, CurrencyListItemModel } from 'shared/models/currency'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 
@@ -9,4 +9,5 @@ export const currencyListItem = (): CurrencyListItemModel => ({
   title: fakeWord(),
 })
 
-export const currencyList = (length: number = 1) => times(length, () => currencyListItem())
+export const currencies = (length: number = 1): CurrenciesModel =>
+  times(length, () => currencyListItem())
