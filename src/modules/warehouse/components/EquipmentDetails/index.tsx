@@ -185,10 +185,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     equipmentId,
   })
 
-  const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
-    useGetWarehouseList({ ordering: 'title' }, { skip: !editEquipmentModalOpened })
+  const { currentData: warehouses = [], isFetching: warehousesIsFetching } = useGetWarehouseList(
+    { ordering: 'title' },
+    { skip: !editEquipmentModalOpened },
+  )
 
-  const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
+  const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
     useGetEquipmentCategories(undefined, { skip: !editEquipmentModalOpened })
 
   const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList(
@@ -196,12 +198,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     { skip: !editEquipmentModalOpened },
   )
 
-  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypes(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
     undefined,
     { skip: !editEquipmentModalOpened },
   )
 
-  const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
+  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } =
     useGetNomenclatureList(
       categoryIsConsumable
         ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
@@ -273,7 +275,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     }
   }, [editEquipmentModalOpened, equipment?.nomenclature.id])
 
-  const [getCustomerList, { data: customerList = [], isFetching: customerListIsFetching }] =
+  const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
     useLazyGetCustomerList()
 
   useEffect(() => {
@@ -283,12 +285,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       !categoryIsConsumable &&
       !!selectedNomenclatureId
     ) {
-      getCustomerList()
+      getCustomers()
     }
   }, [
     editEquipmentModalOpened,
     categoryIsConsumable,
-    getCustomerList,
+    getCustomers,
     selectedCategory,
     selectedNomenclatureId,
   ])
@@ -779,25 +781,25 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             isLoading={updateEquipmentIsLoading}
             initialValues={getEquipmentFormInitialValues(equipment)}
             values={equipmentFormValues}
-            categories={equipmentCategoryList}
-            categoriesIsLoading={equipmentCategoryListIsFetching}
+            categories={equipmentCategories}
+            categoriesIsLoading={equipmentCategoriesIsFetching}
             category={selectedCategory}
             onChangeCategory={onChangeCategory}
-            warehouses={warehouseList}
-            warehousesIsLoading={warehouseListIsFetching}
+            warehouses={warehouses}
+            warehousesIsLoading={warehousesIsFetching}
             currencies={currencies}
             currenciesIsLoading={currenciesIsFetching}
-            owners={customerList}
-            ownersIsLoading={customerListIsFetching}
+            owners={customers}
+            ownersIsLoading={customersIsFetching}
             onChangeOwner={setSelectedOwnerId}
             macroregions={macroregions}
             macroregionsIsLoading={macroregionsIsFetching}
-            workTypes={workTypeList}
-            workTypesIsLoading={workTypeListIsFetching}
+            workTypes={workTypes}
+            workTypesIsLoading={workTypesIsFetching}
             nomenclature={nomenclature}
             nomenclatureIsLoading={nomenclatureIsFetching}
-            nomenclatures={extractPaginationResults(nomenclatureList)}
-            nomenclaturesIsLoading={nomenclatureListIsFetching}
+            nomenclatures={extractPaginationResults(nomenclatures)}
+            nomenclaturesIsLoading={nomenclaturesIsFetching}
             onChangeNomenclature={onChangeNomenclature}
             onCancel={onCloseEditEquipmentModal}
             onSubmit={onEditEquipment}

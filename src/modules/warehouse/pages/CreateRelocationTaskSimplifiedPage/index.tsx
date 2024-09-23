@@ -286,7 +286,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     },
   )
 
-  const [getCustomerList, { data: customers = [], isFetching: customersIsFetching }] =
+  const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
     useLazyGetCustomerList()
 
   useEffect(() => {
@@ -296,12 +296,12 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       !categoryIsConsumable &&
       !!selectedNomenclatureId
     ) {
-      getCustomerList()
+      getCustomers()
     }
   }, [
     createEquipmentModalOpened,
     categoryIsConsumable,
-    getCustomerList,
+    getCustomers,
     selectedCategory,
     selectedNomenclatureId,
     editEquipmentByFileModalOpened,

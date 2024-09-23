@@ -1,5 +1,5 @@
 import { Table, TableProps } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 
 import { env } from 'configs/env'
 
@@ -13,8 +13,13 @@ const scrollConfig: TableProps<CheckInventorizationEquipmentsTableRow>['scroll']
 
 const CheckInventorizationEquipmentsTable: FC<CheckInventorizationEquipmentsTableProps> = ({
   dataSource,
+  onClickEdit,
+  editTouchedRowsIds,
 }) => {
-  const columns = getColumns()
+  const columns = useMemo(
+    () => getColumns({ onClickEdit, editTouchedRowsIds }),
+    [editTouchedRowsIds, onClickEdit],
+  )
 
   return (
     <div data-testid='check-inventorization-equipments-table'>

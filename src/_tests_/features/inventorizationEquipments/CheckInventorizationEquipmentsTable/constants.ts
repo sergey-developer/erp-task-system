@@ -20,6 +20,8 @@ export const tableRow: CheckInventorizationEquipmentsTableRow = {
 
 export const props: Readonly<CheckInventorizationEquipmentsTableProps> = {
   dataSource: [tableRow],
+  onClickEdit: jest.fn(),
+  editTouchedRowsIds: [],
 }
 
 export enum TestIdsEnum {

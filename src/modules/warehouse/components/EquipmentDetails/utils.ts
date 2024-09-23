@@ -22,7 +22,28 @@ export const getHiddenFieldsByCategory = (
 }
 
 export const getEquipmentFormInitialValues = (
-  equipment?: EquipmentModel,
+  equipment?: Partial<
+    Pick<
+      EquipmentModel,
+      | 'condition'
+      | 'category'
+      | 'purpose'
+      | 'isNew'
+      | 'isWarranty'
+      | 'isRepaired'
+      | 'warehouse'
+      | 'currency'
+      | 'inventoryNumber'
+      | 'serialNumber'
+      | 'quantity'
+      | 'price'
+      | 'usageCounter'
+      | 'owner'
+      | 'comment'
+    > & {
+      nomenclature: Pick<EquipmentModel['nomenclature'], 'id' | 'title'>
+    }
+  >,
 ): EquipmentFormModalProps['initialValues'] =>
   equipment
     ? {

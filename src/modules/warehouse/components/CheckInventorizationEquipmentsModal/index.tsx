@@ -5,16 +5,22 @@ import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 import { SAVE_TEXT } from 'shared/constants/common'
 
 import CheckInventorizationEquipmentsTable from '../CheckInventorizationEquipmentsTable'
-import { CheckInventorizationEquipmentsTableRow } from '../CheckInventorizationEquipmentsTable/types'
+import {
+  CheckInventorizationEquipmentsTableProps,
+  CheckInventorizationEquipmentsTableRow,
+} from '../CheckInventorizationEquipmentsTable/types'
 
 export type CheckInventorizationEquipmentsModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel'>
-> & {
-  data: CheckInventorizationEquipmentsTableRow[]
-}
+> &
+  Pick<CheckInventorizationEquipmentsTableProps, 'onClickEdit' | 'editTouchedRowsIds'> & {
+    data: CheckInventorizationEquipmentsTableRow[]
+  }
 
 const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModalProps> = ({
   data,
+  onClickEdit,
+  editTouchedRowsIds,
   ...props
 }) => {
   return (
@@ -27,7 +33,11 @@ const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModa
       width='80%'
       title='Результаты загрузки оборудования из Excel'
     >
-      <CheckInventorizationEquipmentsTable dataSource={data} />
+      <CheckInventorizationEquipmentsTable
+        dataSource={data}
+        onClickEdit={onClickEdit}
+        editTouchedRowsIds={editTouchedRowsIds}
+      />
     </BaseModal>
   )
 }

@@ -4,6 +4,8 @@ export const props: CheckInventorizationEquipmentsModalProps = {
   open: true,
   data: [],
   onCancel: jest.fn(),
+  onClickEdit: jest.fn(),
+  editTouchedRowsIds: [],
 }
 
 export enum TestIdsEnum {
