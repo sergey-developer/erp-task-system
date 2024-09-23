@@ -3,8 +3,6 @@ import React, { FC } from 'react'
 
 import { env } from 'configs/env'
 
-import { TestIdsEnum } from '_tests_/features/inventorizationEquipments/CheckInventorizationEquipmentsTable/constants'
-
 import { getColumns } from './columns'
 import {
   CheckInventorizationEquipmentsTableProps,
@@ -19,7 +17,7 @@ const CheckInventorizationEquipmentsTable: FC<CheckInventorizationEquipmentsTabl
   const columns = getColumns()
 
   return (
-    <div data-testid={TestIdsEnum.Table}>
+    <div data-testid='check-inventorization-equipments-table'>
       <Table<CheckInventorizationEquipmentsTableRow>
         virtual={!env.isTest}
         rowKey='row'
