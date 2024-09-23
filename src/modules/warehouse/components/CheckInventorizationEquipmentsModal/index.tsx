@@ -4,8 +4,6 @@ import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { SAVE_TEXT } from 'shared/constants/common'
 
-import { TestIdsEnum } from '_tests_/features/inventorizationEquipments/CheckInventorizationEquipmentsModal/constants'
-
 import CheckInventorizationEquipmentsTable from '../CheckInventorizationEquipmentsTable'
 import { CheckInventorizationEquipmentsTableRow } from '../CheckInventorizationEquipmentsTable/types'
 
@@ -22,7 +20,7 @@ const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModa
   return (
     <BaseModal
       {...props}
-      data-testid={TestIdsEnum.Modal}
+      data-testid='check-inventorization-equipments-modal'
       okText={SAVE_TEXT}
       onOk={() => {}}
       confirmLoading={false}
