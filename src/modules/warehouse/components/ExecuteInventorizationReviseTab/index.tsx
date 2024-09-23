@@ -152,7 +152,9 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         inventorization: inventorization.id,
       }).unwrap()
 
-      setCheckedInventorizationEquipments(equipments.map((eqp, index) => ({ row: index, ...eqp })))
+      setCheckedInventorizationEquipments(
+        equipments.map((eqp, index) => ({ rowId: index, ...eqp })),
+      )
       openCheckInventorizationEquipmentsModal()
     } catch {}
   }
@@ -487,31 +489,28 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
                 inventorizationExecutorIsCurrentUser &&
                 (checkInventorizationStatusIsNew(inventorization.status) ||
                   checkInventorizationStatusIsInProgress(inventorization.status)) && (
-                  <Dropdown.Button
-                    menu={{ items: [] }}
-                    icon={<DownIcon />}
-                    trigger={['click']}
-                    loading={getInventorizationEquipmentsTemplateIsFetching}
-                    onClick={onGetInventorizationEquipmentsTemplate}
-                  >
-                    Скачать шаблон
-                  </Dropdown.Button>
-                )}
+                  <>
+                    <Dropdown.Button
+                      menu={{ items: [] }}
+                      icon={<DownIcon />}
+                      trigger={['click']}
+                      loading={getInventorizationEquipmentsTemplateIsFetching}
+                      onClick={onGetInventorizationEquipmentsTemplate}
+                    >
+                      Скачать шаблон
+                    </Dropdown.Button>
 
-              {permissions.inventorizationUpdate &&
-                inventorizationExecutorIsCurrentUser &&
-                (checkInventorizationStatusIsNew(inventorization.status) ||
-                  checkInventorizationStatusIsInProgress(inventorization.status)) && (
-                  <Upload
-                    data-testid='check-by-excel-upload'
-                    showUploadList={false}
-                    beforeUpload={stubFalse}
-                    onChange={onCheckByExcel}
-                  >
-                    <Button loading={checkInventorizationEquipmentsTemplateIsLoading}>
-                      Сверить из Excel
-                    </Button>
-                  </Upload>
+                    <Upload
+                      data-testid='check-by-excel-upload'
+                      showUploadList={false}
+                      beforeUpload={stubFalse}
+                      onChange={onCheckByExcel}
+                    >
+                      <Button loading={checkInventorizationEquipmentsTemplateIsLoading}>
+                        Сверить из Excel
+                      </Button>
+                    </Upload>
+                  </>
                 )}
 
               <Button onClick={debouncedOpenCreateInventorizationEquipmentModal}>

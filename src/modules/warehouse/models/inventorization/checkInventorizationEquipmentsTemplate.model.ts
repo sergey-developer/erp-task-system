@@ -1,11 +1,11 @@
 import { IdType } from 'shared/types/common'
 import { UploadFileRequestArgs } from 'shared/types/file'
 
-import { CheckedInventorizationEquipmentsModel } from './checkedInventorizationEquipments.model'
+import { CheckedInventorizationEquipmentsTemplateModel } from './checkedInventorizationEquipmentsTemplate.model'
 
 export type CheckInventorizationEquipmentsTemplateMutationArgs = UploadFileRequestArgs & {
   inventorization: IdType
 }
 
 export type CheckInventorizationEquipmentsTemplateSuccessResponse =
-  CheckedInventorizationEquipmentsModel
+  CheckedInventorizationEquipmentsTemplateModel

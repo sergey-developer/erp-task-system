@@ -7,7 +7,7 @@ import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
 export const tableRow: CheckInventorizationEquipmentsTableRow = {
-  row: fakeId(),
+  rowId: fakeId(),
   title: fakeWord(),
   inventoryNumber: fakeWord(),
   serialNumber: fakeWord(),
