@@ -18,7 +18,7 @@ describe('Таблица проверки оборудования по инве
     expect(table).toBeInTheDocument()
 
     props.dataSource.forEach((item) => {
-      expect(testUtils.getRow(item.row)).toBeInTheDocument()
+      expect(testUtils.getRow(item.rowId)).toBeInTheDocument()
     })
   })
 
@@ -26,7 +26,7 @@ describe('Таблица проверки оборудования по инве
     render(<CheckInventorizationEquipmentsTable {...props} />)
 
     const title = testUtils.getColTitle('Наименование')
-    const value = testUtils.getColValue(tableRow.row, tableRow.title!)
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.title!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
@@ -41,7 +41,7 @@ describe('Таблица проверки оборудования по инве
       render(<CheckInventorizationEquipmentsTable {...props} dataSource={[row]} />)
 
       const title = testUtils.getColTitle('Серийный № / Артикул')
-      const value = testUtils.getColValue(tableRow.row, tableRow.nomenclature!.vendorCode)
+      const value = testUtils.getColValue(tableRow.rowId, tableRow.nomenclature!.vendorCode)
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -55,7 +55,7 @@ describe('Таблица проверки оборудования по инве
       render(<CheckInventorizationEquipmentsTable {...props} dataSource={[row]} />)
 
       const title = testUtils.getColTitle('Серийный № / Артикул')
-      const value = testUtils.getColValue(tableRow.row, tableRow.serialNumber!)
+      const value = testUtils.getColValue(tableRow.rowId, tableRow.serialNumber!)
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -66,7 +66,7 @@ describe('Таблица проверки оборудования по инве
     render(<CheckInventorizationEquipmentsTable {...props} />)
 
     const title = testUtils.getColTitle('Инвентарный №')
-    const value = testUtils.getColValue(tableRow.row, tableRow.inventoryNumber!)
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.inventoryNumber!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
@@ -76,7 +76,7 @@ describe('Таблица проверки оборудования по инве
     render(<CheckInventorizationEquipmentsTable {...props} />)
 
     const title = testUtils.getColTitle('Наличие')
-    const value = testUtils.getColValue(tableRow.row, tableRow.quantityFact!)
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.quantityFact!)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
@@ -86,7 +86,7 @@ describe('Таблица проверки оборудования по инве
     render(<CheckInventorizationEquipmentsTable {...props} />)
 
     const title = testUtils.getColTitle('Фактическое местонахождение')
-    const value = testUtils.getColValue(tableRow.row, tableRow.locationFact!.title)
+    const value = testUtils.getColValue(tableRow.rowId, tableRow.locationFact!.title)
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()

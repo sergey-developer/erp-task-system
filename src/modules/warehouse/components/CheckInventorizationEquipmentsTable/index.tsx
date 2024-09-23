@@ -20,7 +20,7 @@ const CheckInventorizationEquipmentsTable: FC<CheckInventorizationEquipmentsTabl
     <div data-testid='check-inventorization-equipments-table'>
       <Table<CheckInventorizationEquipmentsTableRow>
         virtual={!env.isTest}
-        rowKey='row'
+        rowKey='rowId'
         dataSource={dataSource}
         columns={columns}
         scroll={scrollConfig}
