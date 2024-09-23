@@ -59,7 +59,7 @@ export const equipment = (
   serialNumber: fakeWord(),
   quantity: fakeInteger(),
   price: fakeInteger(),
-  currency: pick(currencyFixtures.currency(), 'id', 'title'),
+  currency: pick(currencyFixtures.currencyListItem(), 'id', 'title'),
   comment: fakeWord(),
   amount: fakeInteger(),
   qrCode: fakeUrl(),
