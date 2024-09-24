@@ -2,7 +2,6 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import pick from 'lodash/pick'
 
-import { testUtils as equipmentFormModalTestUtils } from 'modules/warehouse/components/EquipmentFormModal/EquipmentFormModal.test'
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
@@ -12,6 +11,7 @@ import {
 import { makeString } from 'shared/utils/string'
 
 import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouse/CreateInventorizationEquipmentModal/testUtils'
+import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/EquipmentFormModal/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
