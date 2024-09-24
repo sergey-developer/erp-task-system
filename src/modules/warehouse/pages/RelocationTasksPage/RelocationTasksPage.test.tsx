@@ -3,7 +3,6 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { testUtils as relocationTaskTableTestUtils } from 'modules/warehouse/components/RelocationTaskTable/RelocationTaskTable.test'
-import { testUtils as relocationTaskListFilterTestUtils } from 'modules/warehouse/components/RelocationTasksFilter/RelocationTasksFilter.test'
 import {
   getRelocationTasksErrMsg,
   relocationTaskStatusDict,
@@ -16,6 +15,7 @@ import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehous
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/RelocationTaskDetails/testUtils'
+import { relocationTasksFilterTestUtils } from '_tests_/features/warehouse/RelocationTasksFilter/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -228,7 +228,7 @@ describe('Страница списка заявок на перемещение
         await relocationTaskTableTestUtils.expectLoadingFinished()
 
         await testUtils.clickFilterButton(user)
-        const filter = await relocationTaskListFilterTestUtils.findContainer()
+        const filter = await relocationTasksFilterTestUtils.findContainer()
 
         expect(filter).toBeInTheDocument()
       })
@@ -248,22 +248,20 @@ describe('Страница списка заявок на перемещение
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
-      await relocationTaskListFilterTestUtils.findContainer()
+      await relocationTasksFilterTestUtils.findContainer()
 
-      await relocationTaskListFilterTestUtils.openStatusSelect(user)
-      const status1 = relocationTaskListFilterTestUtils.getSelectedStatus(
+      await relocationTasksFilterTestUtils.openStatusSelect(user)
+      const status1 = relocationTasksFilterTestUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.New],
       )
-      const status2 = relocationTaskListFilterTestUtils.getSelectedStatus(
+      const status2 = relocationTasksFilterTestUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.Completed],
       )
-      const status3 = relocationTaskListFilterTestUtils.getSelectedStatus(
+      const status3 = relocationTasksFilterTestUtils.getSelectedStatus(
         relocationTaskStatusDict[RelocationTaskStatusEnum.Returned],
       )
 
-      const type = selectTestUtils.getSelectedOption(
-        relocationTaskListFilterTestUtils.getTypeSelect(),
-      )
+      const type = selectTestUtils.getSelectedOption(relocationTasksFilterTestUtils.getTypeSelect())
 
       expect(status1).toBeInTheDocument()
       expect(status2).toBeInTheDocument()
@@ -288,22 +286,22 @@ describe('Страница списка заявок на перемещение
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
       await testUtils.clickFilterButton(user)
-      await relocationTaskListFilterTestUtils.findContainer()
+      await relocationTasksFilterTestUtils.findContainer()
 
-      await relocationTaskListFilterTestUtils.openStatusSelect(user)
-      await relocationTaskListFilterTestUtils.setStatus(
+      await relocationTasksFilterTestUtils.openStatusSelect(user)
+      await relocationTasksFilterTestUtils.setStatus(
         user,
         relocationTaskStatusDict[RelocationTaskStatusEnum.Canceled],
       )
 
-      await relocationTaskListFilterTestUtils.openTypeSelect(user)
-      await relocationTaskListFilterTestUtils.setType(
+      await relocationTasksFilterTestUtils.openTypeSelect(user)
+      await relocationTasksFilterTestUtils.setType(
         user,
         relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
         true,
       )
 
-      await relocationTaskListFilterTestUtils.clickApplyButton(user)
+      await relocationTasksFilterTestUtils.clickApplyButton(user)
 
       await relocationTaskTableTestUtils.expectLoadingStarted()
       await relocationTaskTableTestUtils.expectLoadingFinished()
