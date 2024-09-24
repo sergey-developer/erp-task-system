@@ -2,11 +2,11 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants/nomenclatureGroup'
 
 import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouse/NomenclatureFormModal/testUtils'
 import { nomenclatureGroupFormModalTestUtils } from '_tests_/features/warehouse/NomenclatureGroupFormModal/testUtils'
+import { nomenclatureTableTestUtils } from '_tests_/features/warehouse/NomenclatureTable/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
