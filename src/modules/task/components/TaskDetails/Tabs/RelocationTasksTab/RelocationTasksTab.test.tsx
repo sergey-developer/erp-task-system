@@ -6,7 +6,6 @@ import { getRelocationTasksErrMsg } from 'modules/warehouse/constants/relocation
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CreateDocumentsPackagePage from 'modules/warehouse/pages/CreateDocumentsPackagePage'
 import CreateRelocationTaskSimplifiedPage from 'modules/warehouse/pages/CreateRelocationTaskSimplifiedPage'
-import { testUtils as createRelocationTaskSimplifiedPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskSimplifiedPage/CreateRelocationTaskSimplifiedPage.test'
 import RelocationTasksPage from 'modules/warehouse/pages/RelocationTasksPage'
 
 import { relocationTasksTestUtils } from '_tests_/features/tasks/components/RelocationTasks/testUtils'
@@ -14,6 +13,7 @@ import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/Reloca
 import { relocationTasksTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/RelocationTasksTab/testUtils'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
 import { createDocumentsPackagePageTestUtils } from '_tests_/features/warehouse/pages/CreateDocumentsPackagePage/testUtils'
+import { createRelocationTaskSimplifiedPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskSimplifiedPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
