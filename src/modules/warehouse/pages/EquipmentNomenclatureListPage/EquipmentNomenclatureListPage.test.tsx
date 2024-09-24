@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react'
 
-import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
 import { getEquipmentNomenclaturesErrMsg } from 'modules/warehouse/constants/equipment'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
+import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/EquipmentNomenclatureTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {

@@ -1,76 +1,18 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
 import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages/EquipmentListPage/EquipmentListPage.test'
 import { getEquipmentListPageLink } from 'modules/warehouse/utils/equipment'
 
-import { IdType } from 'shared/types/common'
-import { MaybeNull, NumberOrString } from 'shared/types/utils'
-
+import {
+  equipmentNomenclatureListItem,
+  props,
+} from '_tests_/features/warehouse/EquipmentNomenclatureTable/constants'
+import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/EquipmentNomenclatureTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetEquipmentListSuccess } from '_tests_/mocks/api'
-import { linkTestUtils, renderWithRouter, setupApiTests, tableTestUtils } from '_tests_/utils'
+import { renderWithRouter, setupApiTests, tableTestUtils } from '_tests_/utils'
 
 import EquipmentNomenclatureTable from './index'
-import { EquipmentNomenclatureTableProps } from './types'
-
-const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
-
-const props: Readonly<EquipmentNomenclatureTableProps> = {
-  dataSource: [equipmentNomenclatureListItem],
-  pagination: {},
-  loading: false,
-  onChange: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('equipment-nomenclature-table')
-
-const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
-
-const getColTitle = (text: string) => within(getContainer()).getByText(text)
-
-const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> => {
-  const row = getRow(id)
-  return row ? within(row).getByText(value) : null
-}
-
-// title
-const getTitleLink = (id: IdType, title: string): MaybeNull<HTMLElement> => {
-  const row = getRow(id)
-  return row ? linkTestUtils.getLinkIn(row, title) : null
-}
-
-const clickTitleLink = async (user: UserEvent, id: IdType, title: string) => {
-  const link = getTitleLink(id, title)
-
-  if (link) {
-    await user.click(link)
-  }
-}
-
-// loading
-const expectLoadingStarted = () => tableTestUtils.expectLoadingStarted(getContainer())
-
-const expectLoadingFinished = async (): Promise<HTMLElement> => {
-  const container = getContainer()
-  await tableTestUtils.expectLoadingFinished(container)
-  return container
-}
-
-export const testUtils = {
-  getContainer,
-  getRow,
-  getColTitle,
-  getColValue,
-
-  getTitleLink,
-  clickTitleLink,
-
-  expectLoadingStarted,
-  expectLoadingFinished,
-}
 
 afterEach(() => {
   const onChange = props.onChange as jest.Mock
@@ -91,13 +33,13 @@ describe('Таблица номенклатуры оборудования', () 
       { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
     )
 
-    const table = testUtils.getContainer()
+    const table = equipmentNomenclatureTableTestUtils.getContainer()
 
     expect(table).toBeInTheDocument()
     tableTestUtils.expectPaginationEnabledIn(table)
 
     props.dataSource.forEach((item) => {
-      const row = testUtils.getRow(item.id)
+      const row = equipmentNomenclatureTableTestUtils.getRow(item.id)
       expect(row).toBeInTheDocument()
     })
   })
@@ -115,7 +57,7 @@ describe('Таблица номенклатуры оборудования', () 
       { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
     )
 
-    const table = testUtils.getContainer()
+    const table = equipmentNomenclatureTableTestUtils.getContainer()
     await tableTestUtils.clickPaginationNextButtonIn(user, table)
 
     expect(props.onChange).toBeCalledTimes(1)
@@ -126,7 +68,7 @@ describe('Таблица номенклатуры оборудования', () 
       expect.anything(),
     )
     equipmentNomenclatureList.slice(-1).forEach((item) => {
-      const row = testUtils.getRow(item.id)
+      const row = equipmentNomenclatureTableTestUtils.getRow(item.id)
       expect(row).toBeInTheDocument()
     })
   })
@@ -143,8 +85,8 @@ describe('Таблица номенклатуры оборудования', () 
         { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
-      const title = testUtils.getColTitle('Наименование')
-      const link = testUtils.getTitleLink(
+      const title = equipmentNomenclatureTableTestUtils.getColTitle('Наименование')
+      const link = equipmentNomenclatureTableTestUtils.getTitleLink(
         equipmentNomenclatureListItem.id,
         equipmentNomenclatureListItem.title,
       )
@@ -177,7 +119,7 @@ describe('Таблица номенклатуры оборудования', () 
         { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
-      await testUtils.clickTitleLink(
+      await equipmentNomenclatureTableTestUtils.clickTitleLink(
         user,
         equipmentNomenclatureListItem.id,
         equipmentNomenclatureListItem.title,
@@ -200,8 +142,8 @@ describe('Таблица номенклатуры оборудования', () 
         { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
       )
 
-      const title = testUtils.getColTitle('Количество оборудования')
-      const value = testUtils.getColValue(
+      const title = equipmentNomenclatureTableTestUtils.getColTitle('Количество оборудования')
+      const value = equipmentNomenclatureTableTestUtils.getColValue(
         equipmentNomenclatureListItem.id,
         equipmentNomenclatureListItem.quantity,
       )
