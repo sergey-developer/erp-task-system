@@ -4,6 +4,7 @@ import React from 'react'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
+import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouse/pages/AmountEquipmentSpentReportPage/testUtils'
 import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetLocationsCatalogSuccess,
@@ -11,7 +12,6 @@ import {
 import { linkTestUtils, renderWithRouter } from '_tests_/utils'
 
 import AmountEquipmentSpentReportPage from '../AmountEquipmentSpentReportPage'
-import { testUtils as amountEquipmentSpentReportPageTestUtils } from '../AmountEquipmentSpentReportPage/AmountEquipmentSpentReportPage.test'
 import EmployeesActionsReportPage from '../EmployeesActionsReportPage'
 import { testUtils as employeesActionsReportPageTestUtils } from '../EmployeesActionsReportPage/EmployeesActionsReportPage.test'
 import HistoryNomenclatureOperationsReportPage from '../HistoryNomenclatureOperationsReportPage'
