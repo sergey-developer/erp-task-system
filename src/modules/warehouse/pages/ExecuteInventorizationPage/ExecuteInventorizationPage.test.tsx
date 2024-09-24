@@ -2,7 +2,6 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import * as reactRouterDom from 'react-router-dom'
 
-import { testUtils as inventorizationDetailsTestUtils } from 'modules/warehouse/components/InventorizationDetails/InventorizationDetails.test'
 import {
   inventorizationStatusDict,
   inventorizationTypeDict,
@@ -19,6 +18,7 @@ import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
+import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/InventorizationDetails/testUtils'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

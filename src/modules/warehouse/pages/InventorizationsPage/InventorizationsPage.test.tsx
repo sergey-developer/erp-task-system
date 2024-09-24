@@ -1,7 +1,6 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as inventorizationDetailsTestUtils } from 'modules/warehouse/components/InventorizationDetails/InventorizationDetails.test'
 import { testUtils as inventorizationTableTestUtils } from 'modules/warehouse/components/InventorizationTable/InventorizationTable.test'
 import { testUtils as inventorizationsFilterTestUtils } from 'modules/warehouse/components/InventorizationsFilter/InventorizationsFilter.test'
 import {
@@ -13,6 +12,7 @@ import {
 } from 'modules/warehouse/constants/inventorization'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
+import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/InventorizationDetails/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
