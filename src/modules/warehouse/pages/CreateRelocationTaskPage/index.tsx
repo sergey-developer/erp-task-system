@@ -27,7 +27,7 @@ import {
   RelocationTaskFormProps,
 } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
+import { defaultGetNomenclaturesParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
@@ -41,7 +41,7 @@ import {
   useLazyGetEquipment,
   useLazyGetEquipmentListTemplate,
 } from 'modules/warehouse/hooks/equipment'
-import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetNomenclature, useGetNomenclatures } from 'modules/warehouse/hooks/nomenclature'
 import { useCreateRelocationTask } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWarehouse } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
@@ -302,15 +302,14 @@ const CreateRelocationTaskPage: FC = () => {
     },
   )
 
-  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } =
-    useGetNomenclatureList(
-      categoryIsConsumable
-        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
-        : defaultGetNomenclatureListParams,
-      {
-        skip: (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) || !selectedCategory,
-      },
-    )
+  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } = useGetNomenclatures(
+    categoryIsConsumable
+      ? { ...defaultGetNomenclaturesParams, equipmentHasSerialNumber: false }
+      : defaultGetNomenclaturesParams,
+    {
+      skip: (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) || !selectedCategory,
+    },
+  )
 
   const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
     selectedNomenclatureId!,

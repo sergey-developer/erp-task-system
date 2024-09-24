@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Flex, Table } from 'antd'
 import { FC } from 'react'
 
 import { getColumns } from './columns'
@@ -9,13 +9,13 @@ const RelocationEquipmentTable: FC<RelocationEquipmentTableProps> = ({
   ...props
 }) => {
   return (
-    <div data-testid='relocation-equipment-table'>
+    <Flex data-testid='relocation-equipment-table'>
       <Table<RelocationEquipmentTableItem>
         {...props}
         rowKey='id'
         columns={getColumns({ onClickImages })}
       />
-    </div>
+    </Flex>
   )
 }
 

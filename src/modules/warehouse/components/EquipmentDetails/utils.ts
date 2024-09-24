@@ -40,6 +40,8 @@ export const getEquipmentFormInitialValues = (
       | 'usageCounter'
       | 'owner'
       | 'comment'
+      | 'location'
+      | 'macroregion'
     > & {
       nomenclature: Pick<EquipmentModel['nomenclature'], 'id' | 'title'>
     }
@@ -56,6 +58,8 @@ export const getEquipmentFormInitialValues = (
         isRepaired: isBoolean(equipment.isRepaired) ? equipment.isRepaired : undefined,
         title: equipment.nomenclature?.title,
         warehouse: equipment.warehouse?.id,
+        location: equipment.location?.id,
+        macroregion: equipment.macroregion?.id,
         currency: equipment.currency?.id,
         inventoryNumber: equipment.inventoryNumber || undefined,
         serialNumber: equipment.serialNumber || undefined,
@@ -63,6 +67,7 @@ export const getEquipmentFormInitialValues = (
         price: isNumber(equipment.price) ? equipment.price : undefined,
         usageCounter: isNumber(equipment.usageCounter) ? equipment.usageCounter : undefined,
         owner: equipment.owner?.id,
+        ownerIsObermeister: equipment.owner ? false : undefined,
         comment: equipment.comment || undefined,
       }
     : {}

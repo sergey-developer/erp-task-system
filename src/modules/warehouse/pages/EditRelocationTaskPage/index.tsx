@@ -30,7 +30,7 @@ import {
   RelocationTaskFormProps,
 } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
+import { defaultGetNomenclaturesParams } from 'modules/warehouse/constants/nomenclature'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -43,7 +43,7 @@ import {
   useLazyGetEquipment,
   useLazyGetEquipmentListTemplate,
 } from 'modules/warehouse/hooks/equipment'
-import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetNomenclature, useGetNomenclatures } from 'modules/warehouse/hooks/nomenclature'
 import { useGetRelocationEquipmentAttachmentList } from 'modules/warehouse/hooks/relocationEquipment'
 import {
   useGetRelocationEquipmentBalanceList,
@@ -342,15 +342,14 @@ const EditRelocationTaskPage: FC = () => {
     },
   )
 
-  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } =
-    useGetNomenclatureList(
-      categoryIsConsumable
-        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
-        : defaultGetNomenclatureListParams,
-      {
-        skip: (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) || !selectedCategory,
-      },
-    )
+  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } = useGetNomenclatures(
+    categoryIsConsumable
+      ? { ...defaultGetNomenclaturesParams, equipmentHasSerialNumber: false }
+      : defaultGetNomenclaturesParams,
+    {
+      skip: (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) || !selectedCategory,
+    },
+  )
 
   const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
     selectedNomenclatureId!,

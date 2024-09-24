@@ -15,6 +15,7 @@ import {
 import { SearchProps } from 'antd/es/input'
 import isNumber from 'lodash/isNumber'
 import stubFalse from 'lodash/stubFalse'
+import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
@@ -33,7 +34,7 @@ import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentF
 import ReviseEquipmentTable from 'modules/warehouse/components/ReviseEquipmentTable'
 import { ReviseEquipmentTableProps } from 'modules/warehouse/components/ReviseEquipmentTable/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
+import { defaultGetNomenclaturesParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
@@ -48,8 +49,7 @@ import {
   useLazyGetInventorizationEquipmentsTemplate,
   useUpdateInventorizationEquipment,
 } from 'modules/warehouse/hooks/inventorization'
-import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
-import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
+import { useGetNomenclature, useGetNomenclatures } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 import {
   EquipmentCategoryListItemModel,
@@ -156,6 +156,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       setEditableCheckedInventorizationEquipment(row)
       row.category && setSelectedCategory(row.category)
       row.nomenclature && setSelectedNomenclatureId(row.nomenclature.id)
+      row.owner && setSelectedOwnerId(row.owner.id)
       setEditableCheckedInventorizationEquipmentsIds((prevState) => prevState.concat(row.rowId))
     },
     [openEditCheckedInventorizationEquipmentModal],
@@ -173,11 +174,6 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   const debouncedOnCloseEditCheckedInventorizationEquipmentModal = useDebounceFn(
     onCloseEditCheckedInventorizationEquipmentModal,
     [onCloseEditCheckedInventorizationEquipmentModal],
-  )
-
-  const { currentData: warehouses = [], isFetching: warehousesIsFetching } = useGetWarehouseList(
-    { ordering: 'title' },
-    { skip: !editCheckedInventorizationEquipmentModalOpened },
   )
 
   // check inventorization equipments template
@@ -285,17 +281,16 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
-  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } =
-    useGetNomenclatureList(
-      categoryIsConsumable
-        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
-        : defaultGetNomenclatureListParams,
-      {
-        skip:
-          (!createEquipmentModalOpened && !editCheckedInventorizationEquipmentModalOpened) ||
-          !selectedCategory,
-      },
-    )
+  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } = useGetNomenclatures(
+    categoryIsConsumable
+      ? { ...defaultGetNomenclaturesParams, equipmentHasSerialNumber: false }
+      : defaultGetNomenclaturesParams,
+    {
+      skip:
+        (!createEquipmentModalOpened && !editCheckedInventorizationEquipmentModalOpened) ||
+        !selectedCategory,
+    },
+  )
 
   const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
     selectedNomenclatureId!,
@@ -326,7 +321,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 
   useEffect(() => {
     if (
-      createEquipmentModalOpened &&
+      (createEquipmentModalOpened || editCheckedInventorizationEquipmentModalOpened) &&
       !!selectedCategory &&
       !categoryIsConsumable &&
       !!selectedNomenclatureId
@@ -339,6 +334,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     getCustomers,
     selectedCategory,
     selectedNomenclatureId,
+    editCheckedInventorizationEquipmentModalOpened,
   ])
 
   const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
@@ -568,6 +564,18 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     ],
   )
 
+  const editCheckedInventorizationEquipmentModalLocationsOptions = useMemo(
+    () =>
+      editCheckedInventorizationEquipmentModalOpened && locations.length
+        ? locations.reduce<DefaultOptionType[]>((acc, loc, index) => {
+            if (index === 0 && !categoryIsConsumable) acc.push(undefinedSelectOption)
+            acc.push({ label: loc.title, value: loc.id })
+            return acc
+          }, [])
+        : [],
+    [categoryIsConsumable, editCheckedInventorizationEquipmentModalOpened, locations],
+  )
+
   return (
     <>
       <Flex data-testid='execute-inventorization-revise-tab' vertical gap='small'>
@@ -749,14 +757,17 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
               isRepaired: editableCheckedInventorizationEquipment.isRepaired,
               isWarranty: editableCheckedInventorizationEquipment.isWarranty,
               purpose: editableCheckedInventorizationEquipment.purpose,
+              location: editableCheckedInventorizationEquipment.locationFact,
+              macroregion: editableCheckedInventorizationEquipment.macroregion,
             })}
             values={editCheckedInventorizationEquipmentFormValues}
             categories={equipmentCategories}
             categoriesIsLoading={equipmentCategoriesIsFetching}
             category={selectedCategory}
             onChangeCategory={onChangeCategory}
-            warehouses={warehouses}
-            warehousesIsLoading={warehousesIsFetching}
+            locationType='location'
+            locationsOptions={editCheckedInventorizationEquipmentModalLocationsOptions}
+            locationsOptionsIsLoading={locationsIsFetching}
             currencies={currencies}
             currenciesIsLoading={currenciesIsFetching}
             owners={customers}

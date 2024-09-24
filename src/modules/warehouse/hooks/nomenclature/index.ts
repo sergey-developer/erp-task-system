@@ -1,2 +1,2 @@
 export * from './useGetNomenclature'
-export * from './useGetNomenclatureList'
+export * from './useGetNomenclatures'

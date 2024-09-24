@@ -1,4 +1,4 @@
-import { Table, TableProps } from 'antd'
+import { Flex, Table, TableProps } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import { env } from 'configs/env'
@@ -22,7 +22,7 @@ const CheckInventorizationEquipmentsTable: FC<CheckInventorizationEquipmentsTabl
   )
 
   return (
-    <div data-testid='check-inventorization-equipments-table'>
+    <Flex data-testid='check-inventorization-equipments-table'>
       <Table<CheckInventorizationEquipmentsTableRow>
         virtual={!env.isTest}
         rowKey='rowId'
@@ -31,7 +31,7 @@ const CheckInventorizationEquipmentsTable: FC<CheckInventorizationEquipmentsTabl
         scroll={scrollConfig}
         pagination={false}
       />
-    </div>
+    </Flex>
   )
 }
 

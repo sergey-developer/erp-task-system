@@ -36,7 +36,7 @@ import {
   ActiveEquipmentRow,
   RelocationEquipmentRow,
 } from 'modules/warehouse/components/RelocationEquipmentSimplifiedEditableTable/types'
-import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
+import { defaultGetNomenclaturesParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
   useCreateEquipment,
@@ -47,7 +47,7 @@ import {
   useLazyGetEquipment,
   useLazyGetEquipmentListTemplate,
 } from 'modules/warehouse/hooks/equipment'
-import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetNomenclature, useGetNomenclatures } from 'modules/warehouse/hooks/nomenclature'
 import { useCreateRelocationTaskITSM } from 'modules/warehouse/hooks/relocationTask'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'modules/warehouse/models'
@@ -268,15 +268,14 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     },
   )
 
-  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } =
-    useGetNomenclatureList(
-      categoryIsConsumable
-        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
-        : defaultGetNomenclatureListParams,
-      {
-        skip: (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) || !selectedCategory,
-      },
-    )
+  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } = useGetNomenclatures(
+    categoryIsConsumable
+      ? { ...defaultGetNomenclaturesParams, equipmentHasSerialNumber: false }
+      : defaultGetNomenclaturesParams,
+    {
+      skip: (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) || !selectedCategory,
+    },
+  )
 
   const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
     selectedNomenclatureId!,

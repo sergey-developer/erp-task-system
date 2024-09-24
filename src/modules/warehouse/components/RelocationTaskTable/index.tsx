@@ -1,10 +1,11 @@
+import { Flex } from 'antd'
 import { FC, useMemo } from 'react'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
 import { columns } from './columns'
 import { applySort } from './sort'
-import { RelocationTaskTableProps, RelocationTaskTableItem } from './types'
+import { RelocationTaskTableItem, RelocationTaskTableProps } from './types'
 
 const RelocationTaskTable: FC<RelocationTaskTableProps> = ({ sort, ...props }) => {
   const sortedColumns = useMemo(
@@ -13,14 +14,14 @@ const RelocationTaskTable: FC<RelocationTaskTableProps> = ({ sort, ...props }) =
   )
 
   return (
-    <div data-testid='relocation-task-table'>
+    <Flex data-testid='relocation-task-table'>
       <ParentSizedTable<RelocationTaskTableItem>
         {...props}
         rowKey='id'
         columns={sortedColumns}
         showSorterTooltip={false}
       />
-    </div>
+    </Flex>
   )
 }
 

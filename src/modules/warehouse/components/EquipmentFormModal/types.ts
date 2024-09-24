@@ -1,5 +1,6 @@
-import { FormInstance, UploadProps } from 'antd'
+import { FormInstance, SelectProps, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
+import { DefaultOptionType } from 'rc-select/lib/Select'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
@@ -7,6 +8,7 @@ import {
   CustomerListModel,
   EquipmentCategoriesModel,
   EquipmentCategoryListItemModel,
+  NomenclatureListItemModel,
   NomenclatureListModel,
   NomenclatureModel,
   WarehouseListModel,
@@ -29,6 +31,7 @@ export type EquipmentFormFields = {
   purpose: IdType
 
   warehouse?: IdType
+  location?: IdType
   isNew?: boolean
   isWarranty?: boolean
   isRepaired?: boolean
@@ -66,8 +69,11 @@ export type EquipmentFormModalProps = Required<
     category?: EquipmentCategoryListItemModel
     onChangeCategory: (category: EquipmentCategoryListItemModel) => void
 
+    locationType?: 'location' | 'warehouse'
     warehouses?: WarehouseListModel
     warehousesIsLoading?: boolean
+    locationsOptions?: DefaultOptionType[]
+    locationsOptionsIsLoading?: boolean
 
     currencies: CurrenciesModel
     currenciesIsLoading: boolean
@@ -87,7 +93,7 @@ export type EquipmentFormModalProps = Required<
 
     nomenclatures: NomenclatureListModel
     nomenclaturesIsLoading: boolean
-    onChangeNomenclature: (id: IdType) => void
+    onChangeNomenclature: NonNullable<SelectProps<IdType, NomenclatureListItemModel>['onChange']>
 
     values?: Partial<Pick<EquipmentFormFields, 'title' | 'images'>>
     initialValues?: Partial<EquipmentFormFields>

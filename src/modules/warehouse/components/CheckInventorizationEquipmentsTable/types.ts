@@ -24,6 +24,7 @@ export type CheckInventorizationEquipmentsTableRow = Pick<
   | 'isRepaired'
   | 'isWarranty'
   | 'purpose'
+  | 'macroregion'
 > & {
   rowId: number
 }
