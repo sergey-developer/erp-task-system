@@ -2,11 +2,11 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as nomenclatureModalTestUtils } from 'modules/warehouse/components/NomenclatureFormModal/NomenclatureFormModal.test'
 import { testUtils as nomenclatureGroupModalTestUtils } from 'modules/warehouse/components/NomenclatureGroupFormModal/NomenclatureGroupFormModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants/nomenclatureGroup'
 
+import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouse/NomenclatureFormModal/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -411,7 +411,7 @@ describe('Страница списка номенклатур', () => {
       })
 
       await testUtils.clickAddNomenclatureButton(user)
-      const modal = await nomenclatureModalTestUtils.findContainer()
+      const modal = await nomenclatureFormModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
     })
