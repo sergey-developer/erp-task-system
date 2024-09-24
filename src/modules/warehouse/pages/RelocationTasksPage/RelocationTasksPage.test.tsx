@@ -10,12 +10,12 @@ import {
   RelocationTaskTypeEnum,
 } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskPage/CreateRelocationTaskPage.test'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
 import { relocationTaskTableTestUtils } from '_tests_/features/warehouse/components/RelocationTaskTable/testUtils'
 import { relocationTasksFilterTestUtils } from '_tests_/features/warehouse/components/RelocationTasksFilter/testUtils'
+import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

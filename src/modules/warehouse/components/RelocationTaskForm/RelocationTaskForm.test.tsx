@@ -8,13 +8,13 @@ import {
   RelocationTaskTypeEnum,
 } from 'modules/warehouse/constants/relocationTask'
 import CreateRelocationTaskPage from 'modules/warehouse/pages/CreateRelocationTaskPage'
-import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskPage/CreateRelocationTaskPage.test'
 
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
 import { props } from '_tests_/features/warehouse/components/RelocationTaskForm/constants'
 import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
+import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'
 import {
