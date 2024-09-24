@@ -1,6 +1,3 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import {
   equipmentConditionDict,
   EquipmentConditionEnum,
@@ -9,272 +6,20 @@ import {
 import { yesNoOptions } from 'shared/constants/selectField'
 import { getBooleanOptions } from 'shared/utils/selectField'
 
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { buttonTestUtils, radioButtonTestUtils, render, selectTestUtils } from '_tests_/utils'
+import { props } from '_tests_/features/warehouse/EquipmentFilter/constants'
+import { equipmentFilterTestUtils } from '_tests_/features/warehouse/EquipmentFilter/testUtils'
+import { render } from '_tests_/utils'
 
 import EquipmentFilter from './index'
-import { EquipmentFilterProps } from './types'
-
-const props: Readonly<EquipmentFilterProps> = {
-  visible: true,
-
-  values: {},
-  initialValues: {},
-
-  locations: catalogsFixtures.locationsCatalog(2),
-  locationsIsLoading: false,
-
-  categories: warehouseFixtures.equipmentCategoryList(2),
-  categoriesIsLoading: false,
-
-  owners: warehouseFixtures.customerList(2),
-  ownersIsLoading: false,
-
-  onClose: jest.fn(),
-  onApply: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('equipment-filter')
-const findContainer = () => screen.findByTestId('equipment-filter')
-const queryContainer = () => screen.queryByTestId('equipment-filter')
-
-// conditions
-const getConditionsBlock = (): HTMLElement => within(getContainer()).getByTestId('conditions')
-
-const getConditionsSelect = (): HTMLElement =>
-  within(getConditionsBlock()).getByTestId('conditions-select')
-
-const getConditionsPlaceholder = (): HTMLElement =>
-  within(getConditionsSelect()).getByText('Выберите состояние')
-
-const getConditionsSelectInput = () => selectTestUtils.getSelect(getConditionsSelect())
-
-const openConditionsSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getConditionsBlock())
-
-const setCondition = selectTestUtils.clickSelectOption
-
-const getSelectedCondition = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getConditionsSelect(), title)
-
-const querySelectedCondition = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getConditionsSelect(), title)
-
-// locations
-const getLocationsBlock = () => within(getContainer()).getByTestId('locations')
-const getLocationsSelect = () => within(getLocationsBlock()).getByTestId('locations-select')
-
-const getLocationsSelectInput = () => selectTestUtils.getSelect(getLocationsSelect())
-
-const openLocationsSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getLocationsBlock())
-
-const setLocation = selectTestUtils.clickSelectOption
-
-const getSelectedLocation = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getLocationsSelect(), title)
-
-const querySelectedLocation = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getLocationsSelect(), title)
-
-const expectLocationsLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getLocationsSelect())
-
-// owners
-const getOwnersBlock = () => within(getContainer()).getByTestId('owners')
-const getOwnersSelect = () => within(getOwnersBlock()).getByTestId('owners-select')
-
-const getOwnersPlaceholder = (): HTMLElement =>
-  within(getOwnersSelect()).getByText('Выберите владельца оборудования')
-
-const getOwnersSelectInput = () => selectTestUtils.getSelect(getOwnersSelect())
-const openOwnersSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getOwnersBlock())
-const setOwner = selectTestUtils.clickSelectOption
-
-const getSelectedOwner = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getOwnersSelect(), title)
-
-const querySelectedOwner = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getOwnersSelect(), title)
-
-const expectOwnersLoadingFinished = () => selectTestUtils.expectLoadingFinished(getOwnersSelect())
-
-// categories
-const getCategoriesBlock = () => within(getContainer()).getByTestId('categories')
-const getCategoriesSelect = () => within(getCategoriesBlock()).getByTestId('categories-select')
-
-const getCategoriesPlaceholder = (): HTMLElement =>
-  within(getCategoriesSelect()).getByText('Выберите категорию')
-
-const getCategoriesSelectInput = () => selectTestUtils.getSelect(getCategoriesSelect())
-
-const openCategoriesSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getCategoriesBlock())
-
-const setCategory = selectTestUtils.clickSelectOption
-
-const getSelectedCategory = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getCategoriesSelect(), title)
-
-const querySelectedCategory = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getCategoriesSelect(), title)
-
-const expectCategoryLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getCategoriesSelect())
-
-// price
-const getPriceBlock = () => within(getContainer()).getByTestId('price')
-
-// is new
-const getIsNewBlock = () => within(getContainer()).getByTestId('is-new')
-const getIsNewField = (text: string) => radioButtonTestUtils.getRadioButtonIn(getIsNewBlock(), text)
-const clickIsNewField = async (user: UserEvent, text: string) => {
-  const field = getIsNewField(text)
-  await user.click(field)
-  return field
-}
-
-// is warranty
-const getIsWarrantyBlock = () => within(getContainer()).getByTestId('is-warranty')
-const getIsWarrantyField = (text: string) =>
-  radioButtonTestUtils.getRadioButtonIn(getIsWarrantyBlock(), text)
-
-const clickIsWarrantyField = async (user: UserEvent, text: string) => {
-  const field = getIsWarrantyField(text)
-  await user.click(field)
-  return field
-}
-
-// is repaired
-const getIsRepairedBlock = () => within(getContainer()).getByTestId('is-repaired')
-const getIsRepairedField = (text: string) =>
-  radioButtonTestUtils.getRadioButtonIn(getIsRepairedBlock(), text)
-
-const clickIsRepairedField = async (user: UserEvent, text: string) => {
-  const field = getIsRepairedField(text)
-  await user.click(field)
-  return field
-}
-
-// zero quantity
-const getZeroQuantityBlock = () => within(getContainer()).getByTestId('zero-quantity')
-const getZeroQuantityField = (text: string) =>
-  radioButtonTestUtils.getRadioButtonIn(getZeroQuantityBlock(), text)
-
-const clickZeroQuantityField = async (user: UserEvent, text: string) => {
-  const field = getZeroQuantityField(text)
-  await user.click(field)
-  return field
-}
-
-// reset button
-const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сбросить все/)
-
-const clickResetButtonIn = async (user: UserEvent, container: HTMLElement) => {
-  const button = buttonTestUtils.getButtonIn(container, /сбросить/i)
-  await user.click(button)
-}
-
-const clickResetAllButton = async (user: UserEvent) => {
-  const button = getResetAllButton()
-  await user.click(button)
-}
-
-// close button
-const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
-const clickCloseButton = async (user: UserEvent) => {
-  const button = getCloseButton()
-  await user.click(button)
-}
-
-// apply button
-const getApplyButton = () => buttonTestUtils.getButtonIn(getContainer(), /Применить/)
-const clickApplyButton = async (user: UserEvent) => {
-  const button = getApplyButton()
-  await user.click(button)
-}
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-  queryContainer,
-
-  getConditionsBlock,
-  getConditionsSelect,
-  getConditionsPlaceholder,
-  getConditionsSelectInput,
-  openConditionsSelect,
-  setCondition,
-  getSelectedCondition,
-  querySelectedCondition,
-
-  getLocationsBlock,
-  getLocationsSelect,
-  getLocationsSelectInput,
-  openLocationsSelect,
-  setLocation,
-  getSelectedLocation,
-  querySelectedLocation,
-  expectLocationsLoadingFinished,
-
-  getOwnersBlock,
-  getOwnersSelect,
-  getOwnersPlaceholder,
-  getOwnersSelectInput,
-  openOwnersSelect,
-  setOwner,
-  getSelectedOwner,
-  querySelectedOwner,
-  expectOwnersLoadingFinished,
-
-  getIsNewBlock,
-  getIsNewField,
-  clickIsNewField,
-
-  getIsWarrantyBlock,
-  getIsWarrantyField,
-  clickIsWarrantyField,
-
-  getIsRepairedBlock,
-  getIsRepairedField,
-  clickIsRepairedField,
-
-  getZeroQuantityBlock,
-  getZeroQuantityField,
-  clickZeroQuantityField,
-
-  getCategoriesBlock,
-  getCategoriesSelect,
-  getCategoriesPlaceholder,
-  getCategoriesSelectInput,
-  openCategoriesSelect,
-  setCategory,
-  getSelectedCategory,
-  querySelectedCategory,
-  expectCategoryLoadingFinished,
-
-  getPriceBlock,
-
-  getResetAllButton,
-  clickResetButtonIn,
-  clickResetAllButton,
-
-  getCloseButton,
-  clickCloseButton,
-
-  getApplyButton,
-  clickApplyButton,
-}
 
 describe('Фильтр списка номенклатуры оборудования', () => {
   describe('Состояние', () => {
     test('Отображается корректно', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
 
-      const input = testUtils.getConditionsSelectInput()
-      const placeholder = testUtils.getConditionsPlaceholder()
-      await testUtils.openConditionsSelect(user)
+      const input = equipmentFilterTestUtils.getConditionsSelectInput()
+      const placeholder = equipmentFilterTestUtils.getConditionsPlaceholder()
+      await equipmentFilterTestUtils.openConditionsSelect(user)
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -284,14 +29,20 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Можно выбрать несколько вариантов', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
 
-      await testUtils.openConditionsSelect(user)
-      await testUtils.setCondition(user, equipmentConditionDict[EquipmentConditionEnum.WrittenOff])
-      await testUtils.setCondition(user, equipmentConditionDict[EquipmentConditionEnum.Broken])
-
-      const selectedCondition1 = testUtils.getSelectedCondition(
+      await equipmentFilterTestUtils.openConditionsSelect(user)
+      await equipmentFilterTestUtils.setCondition(
+        user,
         equipmentConditionDict[EquipmentConditionEnum.WrittenOff],
       )
-      const selectedCondition2 = testUtils.getSelectedCondition(
+      await equipmentFilterTestUtils.setCondition(
+        user,
+        equipmentConditionDict[EquipmentConditionEnum.Broken],
+      )
+
+      const selectedCondition1 = equipmentFilterTestUtils.getSelectedCondition(
+        equipmentConditionDict[EquipmentConditionEnum.WrittenOff],
+      )
+      const selectedCondition2 = equipmentFilterTestUtils.getSelectedCondition(
         equipmentConditionDict[EquipmentConditionEnum.Broken],
       )
 
@@ -309,7 +60,7 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      const selectedCondition = testUtils.getSelectedCondition(
+      const selectedCondition = equipmentFilterTestUtils.getSelectedCondition(
         equipmentConditionDict[EquipmentConditionEnum.Working],
       )
 
@@ -326,15 +77,21 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      await testUtils.openConditionsSelect(user)
-      await testUtils.setCondition(user, equipmentConditionDict[EquipmentConditionEnum.Working])
+      await equipmentFilterTestUtils.openConditionsSelect(user)
+      await equipmentFilterTestUtils.setCondition(
+        user,
+        equipmentConditionDict[EquipmentConditionEnum.Working],
+      )
 
-      await testUtils.clickResetButtonIn(user, testUtils.getConditionsBlock())
+      await equipmentFilterTestUtils.clickResetButtonIn(
+        user,
+        equipmentFilterTestUtils.getConditionsBlock(),
+      )
 
-      const selectedCondition1 = testUtils.getSelectedCondition(
+      const selectedCondition1 = equipmentFilterTestUtils.getSelectedCondition(
         equipmentConditionDict[EquipmentConditionEnum.WrittenOff],
       )
-      const selectedCondition2 = testUtils.querySelectedCondition(
+      const selectedCondition2 = equipmentFilterTestUtils.querySelectedCondition(
         equipmentConditionDict[EquipmentConditionEnum.Working],
       )
 
@@ -355,10 +112,10 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      const selectedCondition1 = testUtils.getSelectedCondition(
+      const selectedCondition1 = equipmentFilterTestUtils.getSelectedCondition(
         equipmentConditionDict[EquipmentConditionEnum.NonRepairable],
       )
-      const selectedCondition2 = testUtils.querySelectedCondition(
+      const selectedCondition2 = equipmentFilterTestUtils.querySelectedCondition(
         equipmentConditionDict[EquipmentConditionEnum.Broken],
       )
 
@@ -371,7 +128,7 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Отображается', () => {
       render(<EquipmentFilter {...props} />)
 
-      const input = testUtils.getLocationsSelectInput()
+      const input = equipmentFilterTestUtils.getLocationsSelectInput()
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -380,12 +137,12 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Можно выбрать несколько вариантов', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
 
-      await testUtils.openLocationsSelect(user)
-      await testUtils.setLocation(user, props.locations[0].title)
-      await testUtils.setLocation(user, props.locations[1].title)
+      await equipmentFilterTestUtils.openLocationsSelect(user)
+      await equipmentFilterTestUtils.setLocation(user, props.locations[0].title)
+      await equipmentFilterTestUtils.setLocation(user, props.locations[1].title)
 
-      const value1 = testUtils.getSelectedLocation(props.locations[0].title)
-      const value2 = testUtils.getSelectedLocation(props.locations[1].title)
+      const value1 = equipmentFilterTestUtils.getSelectedLocation(props.locations[0].title)
+      const value2 = equipmentFilterTestUtils.getSelectedLocation(props.locations[1].title)
 
       expect(value1).toBeInTheDocument()
       expect(value2).toBeInTheDocument()
@@ -393,7 +150,7 @@ describe('Фильтр списка номенклатуры оборудова�
 
     test('Устанавливается значение по умолчанию', () => {
       render(<EquipmentFilter {...props} initialValues={{ locations: [props.locations[0].id] }} />)
-      const value = testUtils.getSelectedLocation(props.locations[0].title)
+      const value = equipmentFilterTestUtils.getSelectedLocation(props.locations[0].title)
       expect(value).toBeInTheDocument()
     })
 
@@ -402,13 +159,16 @@ describe('Фильтр списка номенклатуры оборудова�
         <EquipmentFilter {...props} initialValues={{ locations: [props.locations[0].id] }} />,
       )
 
-      await testUtils.openLocationsSelect(user)
-      await testUtils.setLocation(user, props.locations[1].title)
+      await equipmentFilterTestUtils.openLocationsSelect(user)
+      await equipmentFilterTestUtils.setLocation(user, props.locations[1].title)
 
-      await testUtils.clickResetButtonIn(user, testUtils.getLocationsBlock())
+      await equipmentFilterTestUtils.clickResetButtonIn(
+        user,
+        equipmentFilterTestUtils.getLocationsBlock(),
+      )
 
-      const value1 = testUtils.getSelectedLocation(props.locations[0].title)
-      const value2 = testUtils.querySelectedCondition(props.locations[1].title)
+      const value1 = equipmentFilterTestUtils.getSelectedLocation(props.locations[0].title)
+      const value2 = equipmentFilterTestUtils.querySelectedCondition(props.locations[1].title)
 
       expect(value1).toBeInTheDocument()
       expect(value2).not.toBeInTheDocument()
@@ -423,8 +183,8 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      const value1 = testUtils.getSelectedLocation(props.locations[1].title)
-      const value2 = testUtils.querySelectedLocation(props.locations[0].title)
+      const value1 = equipmentFilterTestUtils.getSelectedLocation(props.locations[1].title)
+      const value2 = equipmentFilterTestUtils.querySelectedLocation(props.locations[0].title)
 
       expect(value1).toBeInTheDocument()
       expect(value2).not.toBeInTheDocument()
@@ -435,8 +195,8 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Отображается корректно', () => {
       render(<EquipmentFilter {...props} />)
 
-      const input = testUtils.getOwnersSelectInput()
-      const placeholder = testUtils.getOwnersPlaceholder()
+      const input = equipmentFilterTestUtils.getOwnersSelectInput()
+      const placeholder = equipmentFilterTestUtils.getOwnersPlaceholder()
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -446,12 +206,12 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Можно выбрать несколько вариантов', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
 
-      await testUtils.openOwnersSelect(user)
-      await testUtils.setOwner(user, props.owners[0].title)
-      await testUtils.setOwner(user, props.owners[1].title)
+      await equipmentFilterTestUtils.openOwnersSelect(user)
+      await equipmentFilterTestUtils.setOwner(user, props.owners[0].title)
+      await equipmentFilterTestUtils.setOwner(user, props.owners[1].title)
 
-      const selectedOwner1 = testUtils.getSelectedOwner(props.owners[0].title)
-      const selectedOwner2 = testUtils.getSelectedOwner(props.owners[1].title)
+      const selectedOwner1 = equipmentFilterTestUtils.getSelectedOwner(props.owners[0].title)
+      const selectedOwner2 = equipmentFilterTestUtils.getSelectedOwner(props.owners[1].title)
 
       expect(selectedOwner1).toBeInTheDocument()
       expect(selectedOwner2).toBeInTheDocument()
@@ -463,8 +223,8 @@ describe('Фильтр списка номенклатуры оборудова�
         <EquipmentFilter {...props} initialValues={{ owners: [initialOwner.id] }} />,
       )
 
-      await testUtils.openOwnersSelect(user)
-      const selectedOption = testUtils.getSelectedOwner(initialOwner.title)
+      await equipmentFilterTestUtils.openOwnersSelect(user)
+      const selectedOption = equipmentFilterTestUtils.getSelectedOwner(initialOwner.title)
       expect(selectedOption).toBeInTheDocument()
     })
 
@@ -474,10 +234,13 @@ describe('Фильтр списка номенклатуры оборудова�
         <EquipmentFilter {...props} initialValues={{ owners: [initialOwner.id] }} />,
       )
 
-      await testUtils.openOwnersSelect(user)
-      await testUtils.setOwner(user, props.owners[0].title)
-      await testUtils.clickResetButtonIn(user, testUtils.getOwnersBlock())
-      const selectedOption = testUtils.getSelectedOwner(initialOwner.title)
+      await equipmentFilterTestUtils.openOwnersSelect(user)
+      await equipmentFilterTestUtils.setOwner(user, props.owners[0].title)
+      await equipmentFilterTestUtils.clickResetButtonIn(
+        user,
+        equipmentFilterTestUtils.getOwnersBlock(),
+      )
+      const selectedOption = equipmentFilterTestUtils.getSelectedOwner(initialOwner.title)
       expect(selectedOption).toBeInTheDocument()
     })
 
@@ -490,8 +253,8 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      await testUtils.openOwnersSelect(user)
-      const selectedOption = testUtils.getSelectedOwner(props.owners[0].title)
+      await equipmentFilterTestUtils.openOwnersSelect(user)
+      const selectedOption = equipmentFilterTestUtils.getSelectedOwner(props.owners[0].title)
       expect(selectedOption).toBeInTheDocument()
     })
   })
@@ -501,7 +264,7 @@ describe('Фильтр списка номенклатуры оборудова�
       render(<EquipmentFilter {...props} />)
 
       yesNoOptions.forEach((opt) => {
-        const field = testUtils.getIsNewField(opt.label as string)
+        const field = equipmentFilterTestUtils.getIsNewField(opt.label as string)
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
         expect(field).not.toBeChecked()
@@ -510,15 +273,18 @@ describe('Фильтр списка номенклатуры оборудова�
 
     test('Можно установить значение', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
-      const field = await testUtils.clickIsNewField(user, yesNoOptions[0].label as string)
+      const field = await equipmentFilterTestUtils.clickIsNewField(
+        user,
+        yesNoOptions[0].label as string,
+      )
       expect(field).toBeChecked()
     })
 
     test('Устанавливается значение по умолчанию', () => {
       render(<EquipmentFilter {...props} initialValues={{ isNew: true }} />)
 
-      const truthyField = testUtils.getIsNewField(yesNoOptions[0].label as string)
-      const falsyField = testUtils.getIsNewField(yesNoOptions[1].label as string)
+      const truthyField = equipmentFilterTestUtils.getIsNewField(yesNoOptions[0].label as string)
+      const falsyField = equipmentFilterTestUtils.getIsNewField(yesNoOptions[1].label as string)
 
       expect(truthyField).toBeChecked()
       expect(falsyField).not.toBeChecked()
@@ -527,13 +293,19 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(<EquipmentFilter {...props} initialValues={{ isNew: true }} />)
 
-      const falsyField = await testUtils.clickIsNewField(user, yesNoOptions[1].label as string)
+      const falsyField = await equipmentFilterTestUtils.clickIsNewField(
+        user,
+        yesNoOptions[1].label as string,
+      )
       expect(falsyField).toBeChecked()
 
-      await testUtils.clickResetButtonIn(user, testUtils.getIsNewBlock())
+      await equipmentFilterTestUtils.clickResetButtonIn(
+        user,
+        equipmentFilterTestUtils.getIsNewBlock(),
+      )
       expect(falsyField).not.toBeChecked()
 
-      const truthyField = testUtils.getIsNewField(yesNoOptions[0].label as string)
+      const truthyField = equipmentFilterTestUtils.getIsNewField(yesNoOptions[0].label as string)
       expect(truthyField).toBeChecked()
     })
 
@@ -542,8 +314,8 @@ describe('Фильтр списка номенклатуры оборудова�
         <EquipmentFilter {...props} initialValues={{ isNew: true }} values={{ isNew: false }} />,
       )
 
-      const truthyField = testUtils.getIsNewField(yesNoOptions[0].label as string)
-      const falsyField = testUtils.getIsNewField(yesNoOptions[1].label as string)
+      const truthyField = equipmentFilterTestUtils.getIsNewField(yesNoOptions[0].label as string)
+      const falsyField = equipmentFilterTestUtils.getIsNewField(yesNoOptions[1].label as string)
 
       expect(truthyField).not.toBeChecked()
       expect(falsyField).toBeChecked()
@@ -555,7 +327,7 @@ describe('Фильтр списка номенклатуры оборудова�
       render(<EquipmentFilter {...props} />)
 
       yesNoOptions.forEach((opt) => {
-        const field = testUtils.getIsWarrantyField(opt.label as string)
+        const field = equipmentFilterTestUtils.getIsWarrantyField(opt.label as string)
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
         expect(field).not.toBeChecked()
@@ -564,15 +336,22 @@ describe('Фильтр списка номенклатуры оборудова�
 
     test('Можно установить значение', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
-      const field = await testUtils.clickIsWarrantyField(user, yesNoOptions[0].label as string)
+      const field = await equipmentFilterTestUtils.clickIsWarrantyField(
+        user,
+        yesNoOptions[0].label as string,
+      )
       expect(field).toBeChecked()
     })
 
     test('Устанавливается значение по умолчанию', () => {
       render(<EquipmentFilter {...props} initialValues={{ isWarranty: true }} />)
 
-      const truthyField = testUtils.getIsWarrantyField(yesNoOptions[0].label as string)
-      const falsyField = testUtils.getIsWarrantyField(yesNoOptions[1].label as string)
+      const truthyField = equipmentFilterTestUtils.getIsWarrantyField(
+        yesNoOptions[0].label as string,
+      )
+      const falsyField = equipmentFilterTestUtils.getIsWarrantyField(
+        yesNoOptions[1].label as string,
+      )
 
       expect(truthyField).toBeChecked()
       expect(falsyField).not.toBeChecked()
@@ -581,13 +360,21 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(<EquipmentFilter {...props} initialValues={{ isWarranty: true }} />)
 
-      const falsyField = await testUtils.clickIsWarrantyField(user, yesNoOptions[1].label as string)
+      const falsyField = await equipmentFilterTestUtils.clickIsWarrantyField(
+        user,
+        yesNoOptions[1].label as string,
+      )
       expect(falsyField).toBeChecked()
 
-      await testUtils.clickResetButtonIn(user, testUtils.getIsWarrantyBlock())
+      await equipmentFilterTestUtils.clickResetButtonIn(
+        user,
+        equipmentFilterTestUtils.getIsWarrantyBlock(),
+      )
       expect(falsyField).not.toBeChecked()
 
-      const truthyField = testUtils.getIsWarrantyField(yesNoOptions[0].label as string)
+      const truthyField = equipmentFilterTestUtils.getIsWarrantyField(
+        yesNoOptions[0].label as string,
+      )
       expect(truthyField).toBeChecked()
     })
 
@@ -600,8 +387,12 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      const truthyField = testUtils.getIsWarrantyField(yesNoOptions[0].label as string)
-      const falsyField = testUtils.getIsWarrantyField(yesNoOptions[1].label as string)
+      const truthyField = equipmentFilterTestUtils.getIsWarrantyField(
+        yesNoOptions[0].label as string,
+      )
+      const falsyField = equipmentFilterTestUtils.getIsWarrantyField(
+        yesNoOptions[1].label as string,
+      )
 
       expect(truthyField).not.toBeChecked()
       expect(falsyField).toBeChecked()
@@ -613,7 +404,7 @@ describe('Фильтр списка номенклатуры оборудова�
       render(<EquipmentFilter {...props} />)
 
       yesNoOptions.forEach((opt) => {
-        const field = testUtils.getIsRepairedField(opt.label as string)
+        const field = equipmentFilterTestUtils.getIsRepairedField(opt.label as string)
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
         expect(field).not.toBeChecked()
@@ -622,15 +413,22 @@ describe('Фильтр списка номенклатуры оборудова�
 
     test('Можно установить значение', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
-      const field = await testUtils.clickIsRepairedField(user, yesNoOptions[0].label as string)
+      const field = await equipmentFilterTestUtils.clickIsRepairedField(
+        user,
+        yesNoOptions[0].label as string,
+      )
       expect(field).toBeChecked()
     })
 
     test('Устанавливается значение по умолчанию', () => {
       render(<EquipmentFilter {...props} initialValues={{ isRepaired: true }} />)
 
-      const truthyField = testUtils.getIsRepairedField(yesNoOptions[0].label as string)
-      const falsyField = testUtils.getIsRepairedField(yesNoOptions[1].label as string)
+      const truthyField = equipmentFilterTestUtils.getIsRepairedField(
+        yesNoOptions[0].label as string,
+      )
+      const falsyField = equipmentFilterTestUtils.getIsRepairedField(
+        yesNoOptions[1].label as string,
+      )
 
       expect(truthyField).toBeChecked()
       expect(falsyField).not.toBeChecked()
@@ -639,13 +437,21 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(<EquipmentFilter {...props} initialValues={{ isRepaired: true }} />)
 
-      const falsyField = await testUtils.clickIsRepairedField(user, yesNoOptions[1].label as string)
+      const falsyField = await equipmentFilterTestUtils.clickIsRepairedField(
+        user,
+        yesNoOptions[1].label as string,
+      )
       expect(falsyField).toBeChecked()
 
-      await testUtils.clickResetButtonIn(user, testUtils.getIsRepairedBlock())
+      await equipmentFilterTestUtils.clickResetButtonIn(
+        user,
+        equipmentFilterTestUtils.getIsRepairedBlock(),
+      )
       expect(falsyField).not.toBeChecked()
 
-      const truthyField = testUtils.getIsRepairedField(yesNoOptions[0].label as string)
+      const truthyField = equipmentFilterTestUtils.getIsRepairedField(
+        yesNoOptions[0].label as string,
+      )
       expect(truthyField).toBeChecked()
     })
 
@@ -658,8 +464,12 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      const truthyField = testUtils.getIsRepairedField(yesNoOptions[0].label as string)
-      const falsyField = testUtils.getIsRepairedField(yesNoOptions[1].label as string)
+      const truthyField = equipmentFilterTestUtils.getIsRepairedField(
+        yesNoOptions[0].label as string,
+      )
+      const falsyField = equipmentFilterTestUtils.getIsRepairedField(
+        yesNoOptions[1].label as string,
+      )
 
       expect(truthyField).not.toBeChecked()
       expect(falsyField).toBeChecked()
@@ -670,8 +480,8 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Отображается корректно', () => {
       render(<EquipmentFilter {...props} />)
 
-      const input = testUtils.getCategoriesSelectInput()
-      const placeholder = testUtils.getCategoriesPlaceholder()
+      const input = equipmentFilterTestUtils.getCategoriesSelectInput()
+      const placeholder = equipmentFilterTestUtils.getCategoriesPlaceholder()
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -681,12 +491,16 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Можно выбрать несколько вариантов', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
 
-      await testUtils.openCategoriesSelect(user)
-      await testUtils.setCategory(user, props.categories[0].title)
-      await testUtils.setCategory(user, props.categories[1].title)
+      await equipmentFilterTestUtils.openCategoriesSelect(user)
+      await equipmentFilterTestUtils.setCategory(user, props.categories[0].title)
+      await equipmentFilterTestUtils.setCategory(user, props.categories[1].title)
 
-      const selectedCategory1 = testUtils.getSelectedCategory(props.categories[0].title)
-      const selectedCategory2 = testUtils.getSelectedCategory(props.categories[1].title)
+      const selectedCategory1 = equipmentFilterTestUtils.getSelectedCategory(
+        props.categories[0].title,
+      )
+      const selectedCategory2 = equipmentFilterTestUtils.getSelectedCategory(
+        props.categories[1].title,
+      )
 
       expect(selectedCategory1).toBeInTheDocument()
       expect(selectedCategory2).toBeInTheDocument()
@@ -698,8 +512,8 @@ describe('Фильтр списка номенклатуры оборудова�
         <EquipmentFilter {...props} initialValues={{ categories: [initialCategory.id] }} />,
       )
 
-      await testUtils.openCategoriesSelect(user)
-      const selectedOption = testUtils.getSelectedCategory(initialCategory.title)
+      await equipmentFilterTestUtils.openCategoriesSelect(user)
+      const selectedOption = equipmentFilterTestUtils.getSelectedCategory(initialCategory.title)
       expect(selectedOption).toBeInTheDocument()
     })
 
@@ -709,10 +523,13 @@ describe('Фильтр списка номенклатуры оборудова�
         <EquipmentFilter {...props} initialValues={{ categories: [initialCategory.id] }} />,
       )
 
-      await testUtils.openCategoriesSelect(user)
-      await testUtils.setCategory(user, props.categories[0].title)
-      await testUtils.clickResetButtonIn(user, testUtils.getCategoriesBlock())
-      const selectedOption = testUtils.getSelectedCategory(initialCategory.title)
+      await equipmentFilterTestUtils.openCategoriesSelect(user)
+      await equipmentFilterTestUtils.setCategory(user, props.categories[0].title)
+      await equipmentFilterTestUtils.clickResetButtonIn(
+        user,
+        equipmentFilterTestUtils.getCategoriesBlock(),
+      )
+      const selectedOption = equipmentFilterTestUtils.getSelectedCategory(initialCategory.title)
       expect(selectedOption).toBeInTheDocument()
     })
 
@@ -725,8 +542,8 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      await testUtils.openCategoriesSelect(user)
-      const selectedOption = testUtils.getSelectedCategory(props.categories[0].title)
+      await equipmentFilterTestUtils.openCategoriesSelect(user)
+      const selectedOption = equipmentFilterTestUtils.getSelectedCategory(props.categories[0].title)
       expect(selectedOption).toBeInTheDocument()
     })
   })
@@ -741,7 +558,7 @@ describe('Фильтр списка номенклатуры оборудова�
       render(<EquipmentFilter {...props} />)
 
       options.forEach((opt) => {
-        const field = testUtils.getZeroQuantityField(opt.label as string)
+        const field = equipmentFilterTestUtils.getZeroQuantityField(opt.label as string)
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
         expect(field).not.toBeChecked()
@@ -750,15 +567,18 @@ describe('Фильтр списка номенклатуры оборудова�
 
     test('Можно установить значение', async () => {
       const { user } = render(<EquipmentFilter {...props} />)
-      const field = await testUtils.clickZeroQuantityField(user, options[0].label as string)
+      const field = await equipmentFilterTestUtils.clickZeroQuantityField(
+        user,
+        options[0].label as string,
+      )
       expect(field).toBeChecked()
     })
 
     test('Устанавливается значение по умолчанию', () => {
       render(<EquipmentFilter {...props} initialValues={{ zeroQuantity: true }} />)
 
-      const truthyField = testUtils.getZeroQuantityField(options[0].label as string)
-      const falsyField = testUtils.getZeroQuantityField(options[1].label as string)
+      const truthyField = equipmentFilterTestUtils.getZeroQuantityField(options[0].label as string)
+      const falsyField = equipmentFilterTestUtils.getZeroQuantityField(options[1].label as string)
 
       expect(truthyField).toBeChecked()
       expect(falsyField).not.toBeChecked()
@@ -767,13 +587,19 @@ describe('Фильтр списка номенклатуры оборудова�
     test('Сбрасывается к значению по умолчанию', async () => {
       const { user } = render(<EquipmentFilter {...props} initialValues={{ zeroQuantity: true }} />)
 
-      const falsyField = await testUtils.clickZeroQuantityField(user, options[1].label as string)
+      const falsyField = await equipmentFilterTestUtils.clickZeroQuantityField(
+        user,
+        options[1].label as string,
+      )
       expect(falsyField).toBeChecked()
 
-      await testUtils.clickResetButtonIn(user, testUtils.getZeroQuantityBlock())
+      await equipmentFilterTestUtils.clickResetButtonIn(
+        user,
+        equipmentFilterTestUtils.getZeroQuantityBlock(),
+      )
       expect(falsyField).not.toBeChecked()
 
-      const truthyField = testUtils.getZeroQuantityField(options[0].label as string)
+      const truthyField = equipmentFilterTestUtils.getZeroQuantityField(options[0].label as string)
       expect(truthyField).toBeChecked()
     })
 
@@ -786,8 +612,8 @@ describe('Фильтр списка номенклатуры оборудова�
         />,
       )
 
-      const truthyField = testUtils.getZeroQuantityField(options[0].label as string)
-      const falsyField = testUtils.getZeroQuantityField(options[1].label as string)
+      const truthyField = equipmentFilterTestUtils.getZeroQuantityField(options[0].label as string)
+      const falsyField = equipmentFilterTestUtils.getZeroQuantityField(options[1].label as string)
 
       expect(truthyField).not.toBeChecked()
       expect(falsyField).toBeChecked()
