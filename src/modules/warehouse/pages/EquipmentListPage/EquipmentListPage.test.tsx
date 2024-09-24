@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 
 import { getEquipmentsErrMsg } from 'modules/warehouse/constants/equipment'
 
@@ -25,12 +25,6 @@ import {
 } from '_tests_/utils'
 
 import EquipmentListPage from './index'
-
-const getContainer = () => screen.getByTestId('equipment-list-page')
-
-export const testUtils = {
-  getContainer,
-}
 
 setupApiTests()
 notificationTestUtils.setupNotifications()

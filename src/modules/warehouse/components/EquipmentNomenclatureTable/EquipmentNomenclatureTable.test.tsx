@@ -1,6 +1,5 @@
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
-import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages/EquipmentListPage/EquipmentListPage.test'
 import { getEquipmentListPageLink } from 'modules/warehouse/utils/equipment'
 
 import {
@@ -8,6 +7,7 @@ import {
   props,
 } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/constants'
 import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
+import { equipmentListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentListPage/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetEquipmentListSuccess } from '_tests_/mocks/api'
 import { renderWithRouter, setupApiTests, tableTestUtils } from '_tests_/utils'
