@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as warehouseTableTestUtils } from 'modules/warehouse/components/WarehouseTable/WarehouseTable.test'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { warehouseListFilterTestUtils } from '_tests_/features/warehouse/WarehouseListFilter/testUtils'
+import { warehouseTableTestUtils } from '_tests_/features/warehouse/WarehouseTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetLegalEntityListSuccess, mockGetWarehouseListSuccess } from '_tests_/mocks/api'
 import { buttonTestUtils, renderWithRouter, setupApiTests } from '_tests_/utils'
