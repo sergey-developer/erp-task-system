@@ -1,9 +1,8 @@
 import { within } from '@testing-library/react'
 
-import { testUtils as equipmentsByFileTableTestUtils } from 'modules/warehouse/components/EquipmentsByFileTable/EquipmentsByFileTable.test'
-
 import { props } from '_tests_/features/warehouse/CreateEquipmentsByFileModal/constants'
 import { createEquipmentsByFileModalTestUtils } from '_tests_/features/warehouse/CreateEquipmentsByFileModal/testUtils'
+import { equipmentsByFileTableTestUtils } from '_tests_/features/warehouse/EquipmentsByFileTable/testUtils'
 import { render } from '_tests_/utils'
 
 import CreateEquipmentsByFileModal from './index'
