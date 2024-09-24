@@ -5,7 +5,6 @@ import { CommonRouteEnum } from 'configs/routes'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import ExecuteInventorizationPage from 'modules/warehouse/pages/ExecuteInventorizationPage'
-import { testUtils as executeInventorizationPageTestUtils } from 'modules/warehouse/pages/ExecuteInventorizationPage/ExecuteInventorizationPage.test'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'modules/warehouse/utils/relocationTask'
 
 import { makeString } from 'shared/utils/string'
@@ -14,6 +13,7 @@ import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
 import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
 import { createRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskDraftPage/testUtils'
+import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'

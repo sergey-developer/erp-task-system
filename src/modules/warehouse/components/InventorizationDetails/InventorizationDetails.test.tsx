@@ -10,7 +10,6 @@ import {
 } from 'modules/warehouse/constants/inventorization'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import ExecuteInventorizationPage from 'modules/warehouse/pages/ExecuteInventorizationPage'
-import { testUtils as executeInventorizationPageTestUtils } from 'modules/warehouse/pages/ExecuteInventorizationPage/ExecuteInventorizationPage.test'
 import {
   makeExecuteInventorizationPageLocationState,
   mapInventorizationWarehousesTitles,
@@ -20,6 +19,7 @@ import { formatDate } from 'shared/utils/date'
 
 import { props } from '_tests_/features/warehouse/components/InventorizationDetails/constants'
 import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/components/InventorizationDetails/testUtils'
+import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
