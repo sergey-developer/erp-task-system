@@ -10,7 +10,6 @@ import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
 import { getTasksPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as relocationEquipmentTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentTable/RelocationEquipmentTable.test'
 import { testUtils as returnRelocationTaskToReworkModalTestUtils } from 'modules/warehouse/components/ReturnRelocationTaskToReworkModal/ReturnRelocationTaskToReworkModal.test'
 import { getRelocationEquipmentAttachmentListErrMsg } from 'modules/warehouse/constants/relocationEquipment'
 import {
@@ -44,6 +43,7 @@ import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUti
 import { cancelRelocationTaskModalTestUtils } from '_tests_/features/warehouse/CancelRelocationTaskModal/testUtils'
 import { confirmExecutionRelocationTaskModalTestUtils } from '_tests_/features/warehouse/ConfirmExecutionRelocationTaskModal/testUtils'
 import { executeRelocationTaskModalTestUtils } from '_tests_/features/warehouse/ExecuteRelocationTaskModal/testUtils'
+import { relocationEquipmentTableTestUtils } from '_tests_/features/warehouse/RelocationEquipmentTable/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
