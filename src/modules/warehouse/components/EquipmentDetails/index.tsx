@@ -333,7 +333,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   )
 
   const onEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async ({ images, ...values }, setFields) => {
+    async ({ images, ...values }, form) => {
       try {
         await updateEquipmentMutation({
           ...values,
@@ -345,7 +345,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         refetchEquipmentAttachmentList()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
-          setFields(getFieldsErrors(error.data))
+          form.setFields(getFieldsErrors(error.data))
         }
       }
     },

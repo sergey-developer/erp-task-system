@@ -281,16 +281,18 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
-  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } = useGetNomenclatures(
-    categoryIsConsumable
-      ? { ...defaultGetNomenclaturesParams, equipmentHasSerialNumber: false }
-      : defaultGetNomenclaturesParams,
-    {
-      skip:
-        (!createEquipmentModalOpened && !editCheckedInventorizationEquipmentModalOpened) ||
-        !selectedCategory,
-    },
-  )
+  const { currentData: nomenclaturesResponse, isFetching: nomenclaturesIsFetching } =
+    useGetNomenclatures(
+      categoryIsConsumable
+        ? { ...defaultGetNomenclaturesParams, equipmentHasSerialNumber: false }
+        : defaultGetNomenclaturesParams,
+      {
+        skip:
+          (!createEquipmentModalOpened && !editCheckedInventorizationEquipmentModalOpened) ||
+          !selectedCategory,
+      },
+    )
+  const nomenclatures = extractPaginationResults(nomenclaturesResponse)
 
   const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
     selectedNomenclatureId!,
@@ -487,7 +489,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   )
 
   const onCreateEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async ({ images, ...values }, setFields) => {
+    async ({ images, ...values }, form) => {
       if (!createInventorizationEquipmentForm) return
 
       const createInventorizationEquipmentFormValues =
@@ -509,7 +511,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         )
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
-          setFields(getFieldsErrors(error.data))
+          form.setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -533,10 +535,63 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     const { data } = await getInventorizationEquipmentsTemplate()
 
     if (data?.value && data?.meta?.response) {
-      const fileName = extractFileNameFromHeaders(data.meta.response.headers)
-      downloadFile(base64ToBytes(data.value), MimetypeEnum.Xlsx, fileName)
+      try {
+        const fileName = extractFileNameFromHeaders(data.meta.response.headers)
+        downloadFile(base64ToBytes(data.value), MimetypeEnum.Xlsx, fileName)
+      } catch (error) {
+        console.error('Error while downloading inventorization equipments template')
+      }
     }
   })
+
+  const onEditCheckedInventorizationEquipment = useCallback<EquipmentFormModalProps['onSubmit']>(
+    (values) => {
+      if (!editableCheckedInventorizationEquipment) return
+      const updatedEquipment: CheckInventorizationEquipmentsTableRow = {
+        rowId: editableCheckedInventorizationEquipment.rowId,
+        isCredited: editableCheckedInventorizationEquipment.isCredited,
+        title: values.title,
+        isNew: values.isNew,
+        isRepaired: values.isRepaired,
+        isWarranty: values.isWarranty,
+        comment: values.comment,
+        price: values.price,
+        usageCounter: values.usageCounter,
+        inventoryNumber: values.inventoryNumber,
+        serialNumber: values.serialNumber,
+        condition: values.condition,
+        quantityFact: values.quantity,
+        purpose: workTypes.find((w) => w.id === values.purpose),
+        nomenclature: nomenclatures.find((n) => n.id === values.nomenclature),
+        category: equipmentCategories.find((c) => c.id === values.category),
+        currency: values.currency ? currencies.find((c) => c.id === values.currency) : undefined,
+        owner: values.owner ? customers.find((c) => c.id === values.owner) : undefined,
+        macroregion: values.macroregion
+          ? macroregions.find((m) => m.id === values.macroregion)
+          : undefined,
+        locationFact: values.location ? locations.find((l) => l.id === values.location) : undefined,
+      }
+
+      setCheckedInventorizationEquipments((prevState) => {
+        const newState = [...prevState]
+        newState.splice(updatedEquipment.rowId, 1, updatedEquipment)
+        return newState
+      })
+
+      onCloseEditCheckedInventorizationEquipmentModal()
+    },
+    [
+      currencies,
+      customers,
+      editableCheckedInventorizationEquipment,
+      equipmentCategories,
+      locations,
+      macroregions,
+      nomenclatures,
+      onCloseEditCheckedInventorizationEquipmentModal,
+      workTypes,
+    ],
+  )
 
   const createEquipmentFormValues = useMemo(
     () =>
@@ -696,7 +751,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             workTypesIsLoading={workTypesIsFetching}
             nomenclature={nomenclature}
             nomenclatureIsLoading={nomenclatureIsFetching}
-            nomenclatures={extractPaginationResults(nomenclatures)}
+            nomenclatures={nomenclatures}
             nomenclaturesIsLoading={nomenclaturesIsFetching}
             onChangeNomenclature={onChangeNomenclature}
             onCancel={debouncedCloseCreateEquipmentModal}
@@ -739,8 +794,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             title='Изменить сверяемое оборудование'
             okText={SAVE_TEXT}
             onCancel={debouncedOnCloseEditCheckedInventorizationEquipmentModal}
-            isLoading={false}
-            onSubmit={async () => {}}
+            onSubmit={onEditCheckedInventorizationEquipment}
             initialValues={getEquipmentFormInitialValues({
               category: editableCheckedInventorizationEquipment.category,
               nomenclature: editableCheckedInventorizationEquipment.nomenclature,
@@ -779,7 +833,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             workTypesIsLoading={workTypesIsFetching}
             nomenclature={nomenclature}
             nomenclatureIsLoading={nomenclatureIsFetching}
-            nomenclatures={extractPaginationResults(nomenclatures)}
+            nomenclatures={nomenclatures}
             nomenclaturesIsLoading={nomenclaturesIsFetching}
             onChangeNomenclature={onChangeNomenclature}
             onUploadImage={onCreateEquipmentImage}

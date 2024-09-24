@@ -551,7 +551,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   ])
 
   const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async ({ images, ...values }, setFields) => {
+    async ({ images, ...values }, form) => {
       if (!activeEquipmentRow || !warehouseMSI || !taskShop?.id) return
 
       try {
@@ -579,14 +579,13 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
         onCloseCreateEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
-          setFields(getFieldsErrors(error.data))
+          form.setFields(getFieldsErrors(error.data))
         }
       }
     },
     [
       activeEquipmentRow,
       createEquipmentMutation,
-      form,
       onCloseCreateEquipmentModal,
       taskShop?.id,
       warehouseMSI,

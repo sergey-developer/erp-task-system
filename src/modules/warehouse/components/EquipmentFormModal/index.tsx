@@ -111,6 +111,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         inventoryNumber: undefined,
         serialNumber: undefined,
         warehouse: undefined,
+        location: undefined,
         condition: undefined,
         quantity: undefined,
         price: undefined,
@@ -128,7 +129,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
     }
   }
 
-  const handleFinish = async ({ ownerIsObermeister, ...values }: EquipmentFormFields) => {
+  const onFinish = async ({ ownerIsObermeister, ...values }: EquipmentFormFields) => {
     await onSubmit(
       {
         ...values,
@@ -137,7 +138,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         serialNumber: values.serialNumber?.trim(),
         inventoryNumber: values.inventoryNumber?.trim(),
       },
-      form.setFields,
+      form,
     )
   }
 
@@ -157,7 +158,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         form={form}
         initialValues={initialValues}
         layout='vertical'
-        onFinish={handleFinish}
+        onFinish={onFinish}
       >
         <Form.Item
           data-testid='category-form-item'
