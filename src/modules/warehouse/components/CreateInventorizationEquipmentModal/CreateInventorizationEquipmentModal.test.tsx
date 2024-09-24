@@ -3,8 +3,8 @@ import { within } from '@testing-library/react'
 import { validationMessages } from 'shared/constants/validation'
 import { makeString } from 'shared/utils/string'
 
-import { props } from '_tests_/features/warehouse/CreateInventorizationEquipmentModal/constants'
-import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouse/CreateInventorizationEquipmentModal/testUtils'
+import { props } from '_tests_/features/warehouse/components/CreateInventorizationEquipmentModal/constants'
+import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouse/components/CreateInventorizationEquipmentModal/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render } from '_tests_/utils'
 

@@ -1,8 +1,8 @@
 import { within } from '@testing-library/react'
 
-import { props } from '_tests_/features/warehouse/CreateEquipmentsByFileModal/constants'
-import { createEquipmentsByFileModalTestUtils } from '_tests_/features/warehouse/CreateEquipmentsByFileModal/testUtils'
-import { equipmentsByFileTableTestUtils } from '_tests_/features/warehouse/EquipmentsByFileTable/testUtils'
+import { props } from '_tests_/features/warehouse/components/CreateEquipmentsByFileModal/constants'
+import { createEquipmentsByFileModalTestUtils } from '_tests_/features/warehouse/components/CreateEquipmentsByFileModal/testUtils'
+import { equipmentsByFileTableTestUtils } from '_tests_/features/warehouse/components/EquipmentsByFileTable/testUtils'
 import { render } from '_tests_/utils'
 
 import CreateEquipmentsByFileModal from './index'

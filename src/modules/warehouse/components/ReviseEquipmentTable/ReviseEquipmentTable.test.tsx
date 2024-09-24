@@ -10,8 +10,8 @@ import theme from 'styles/theme'
 import {
   inventorizationEquipmentListItem,
   props,
-} from '_tests_/features/warehouse/ReviseEquipmentTable/constants'
-import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouse/ReviseEquipmentTable/testUtils'
+} from '_tests_/features/warehouse/components/ReviseEquipmentTable/constants'
+import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouse/components/ReviseEquipmentTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {

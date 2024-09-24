@@ -5,8 +5,8 @@ import {
   InventorizationTypeEnum,
 } from 'modules/warehouse/constants/inventorization'
 
-import { props } from '_tests_/features/warehouse/InventorizationsFilter/constants'
-import { inventorizationsFilterTestUtils } from '_tests_/features/warehouse/InventorizationsFilter/testUtils'
+import { props } from '_tests_/features/warehouse/components/InventorizationsFilter/constants'
+import { inventorizationsFilterTestUtils } from '_tests_/features/warehouse/components/InventorizationsFilter/testUtils'
 import { render } from '_tests_/utils'
 
 import InventorizationsFilter from './index'

@@ -6,9 +6,9 @@ import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
 import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 
-import { equipmentFilterTestUtils } from '_tests_/features/warehouse/EquipmentFilter/testUtils'
-import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/EquipmentNomenclatureTable/testUtils'
-import { equipmentPageLayoutTestUtils } from '_tests_/features/warehouse/EquipmentPageLayout/testUtils'
+import { equipmentFilterTestUtils } from '_tests_/features/warehouse/components/EquipmentFilter/testUtils'
+import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
+import { equipmentPageLayoutTestUtils } from '_tests_/features/warehouse/components/EquipmentPageLayout/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

@@ -16,7 +16,7 @@ import { setupStore } from 'state/store'
 import { commonApiMessages } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
-import { tasksPageTestUtils } from '_tests_/features/tasks/TasksPage/testUtils'
+import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
 import authFixtures from '_tests_/fixtures/auth'
 import userFixtures from '_tests_/fixtures/user'
 import {

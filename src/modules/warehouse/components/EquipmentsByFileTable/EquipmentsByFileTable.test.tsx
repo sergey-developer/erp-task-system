@@ -4,8 +4,11 @@ import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 
 import { getYesNoWord } from 'shared/utils/common'
 
-import { props, tableRow } from '_tests_/features/warehouse/EquipmentsByFileTable/constants'
-import { equipmentsByFileTableTestUtils } from '_tests_/features/warehouse/EquipmentsByFileTable/testUtils'
+import {
+  props,
+  tableRow,
+} from '_tests_/features/warehouse/components/EquipmentsByFileTable/constants'
+import { equipmentsByFileTableTestUtils } from '_tests_/features/warehouse/components/EquipmentsByFileTable/testUtils'
 import { render } from '_tests_/utils'
 
 import EquipmentsByFileTable from './index'

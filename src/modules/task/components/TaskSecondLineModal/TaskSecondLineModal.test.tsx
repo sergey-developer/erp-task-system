@@ -5,8 +5,8 @@ import { WorkGroupTypeEnum } from 'modules/workGroup/models'
 
 import { validationMessages } from 'shared/constants/validation'
 
-import { props } from '_tests_/features/tasks/TaskSecondLineModal/constants'
-import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/TaskSecondLineModal/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskSecondLineModal/constants'
+import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { mockGetWorkGroupsSuccess, mockGetWorkTypesSuccess } from '_tests_/mocks/api'

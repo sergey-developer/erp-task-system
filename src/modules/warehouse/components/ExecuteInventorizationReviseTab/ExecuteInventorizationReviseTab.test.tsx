@@ -8,11 +8,11 @@ import {
 
 import { makeString } from 'shared/utils/string'
 
-import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouse/CreateInventorizationEquipmentModal/testUtils'
-import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/EquipmentFormModal/testUtils'
-import { props } from '_tests_/features/warehouse/ExecuteInventorizationReviseTab/constants'
-import { executeInventorizationReviseTabTestUtils } from '_tests_/features/warehouse/ExecuteInventorizationReviseTab/testUtils'
-import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouse/ReviseEquipmentTable/testUtils'
+import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouse/components/CreateInventorizationEquipmentModal/testUtils'
+import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/components/EquipmentFormModal/testUtils'
+import { props } from '_tests_/features/warehouse/components/ExecuteInventorizationReviseTab/constants'
+import { executeInventorizationReviseTabTestUtils } from '_tests_/features/warehouse/components/ExecuteInventorizationReviseTab/testUtils'
+import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouse/components/ReviseEquipmentTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {

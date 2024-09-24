@@ -2,8 +2,8 @@ import { within } from '@testing-library/react'
 
 import { validationMessages } from 'shared/constants/validation'
 
-import { props } from '_tests_/features/warehouse/ExecuteRelocationTaskModal/constants'
-import { executeRelocationTaskModalTestUtils } from '_tests_/features/warehouse/ExecuteRelocationTaskModal/testUtils'
+import { props } from '_tests_/features/warehouse/components/ExecuteRelocationTaskModal/constants'
+import { executeRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/ExecuteRelocationTaskModal/testUtils'
 import { render } from '_tests_/utils'
 
 import ExecuteRelocationTaskModal from './index'

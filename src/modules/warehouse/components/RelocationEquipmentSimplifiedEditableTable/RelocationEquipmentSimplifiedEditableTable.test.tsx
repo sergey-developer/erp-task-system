@@ -1,5 +1,5 @@
-import { props } from '_tests_/features/warehouse/RelocationEquipmentSimplifiedEditableTable/constants'
-import { relocationEquipmentSimplifiedEditableTableTestUtils } from '_tests_/features/warehouse/RelocationEquipmentSimplifiedEditableTable/testUtils'
+import { props } from '_tests_/features/warehouse/components/RelocationEquipmentSimplifiedEditableTable/constants'
+import { relocationEquipmentSimplifiedEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentSimplifiedEditableTable/testUtils'
 import { buttonTestUtils, render } from '_tests_/utils'
 
 import RelocationEquipmentSimplifiedEditableTable from './index'

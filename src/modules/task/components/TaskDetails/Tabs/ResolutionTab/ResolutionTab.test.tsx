@@ -1,8 +1,8 @@
 import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 import { TaskTypeEnum } from 'modules/task/constants/task'
 
-import { props } from '_tests_/features/tasks/TaskDetails/Tabs/ResolutionTab/constants'
-import { resolutionTabTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/ResolutionTab/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/ResolutionTab/constants'
+import { resolutionTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/ResolutionTab/testUtils'
 import { fakeWord, render } from '_tests_/utils'
 
 import ResolutionTab from './index'

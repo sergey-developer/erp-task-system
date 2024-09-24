@@ -3,7 +3,7 @@ import React from 'react'
 
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 
-import { taskStatusTestUtils } from '_tests_/features/tasks/TaskStatus/testUtils'
+import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
 import { iconTestUtils, render } from '_tests_/utils'
 
 import {

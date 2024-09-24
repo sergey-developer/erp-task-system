@@ -12,9 +12,9 @@ import { makeCreateRelocationTaskDraftPageLocationState } from 'modules/warehous
 import { CANCEL_TEXT } from 'shared/constants/common'
 import { makeString } from 'shared/utils/string'
 
-import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouse/RelocationEquipmentDraftEditableTable/testUtils'
-import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/RelocationTaskDetails/testUtils'
-import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/RelocationTaskForm/testUtils'
+import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentDraftEditableTable/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
+import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'

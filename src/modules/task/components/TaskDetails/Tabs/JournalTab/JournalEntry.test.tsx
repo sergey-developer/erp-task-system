@@ -2,8 +2,8 @@ import React from 'react'
 
 import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 
-import { props } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/JournalEntry/constants'
-import { journalEntryTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/JournalEntry/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/JournalTab/JournalEntry/constants'
+import { journalEntryTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/JournalTab/JournalEntry/testUtils'
 import { render } from '_tests_/utils'
 
 import JournalEntry from './JournalEntry'

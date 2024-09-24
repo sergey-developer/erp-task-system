@@ -9,8 +9,11 @@ import {
 import { yesNoOptions } from 'shared/constants/selectField'
 import { validationMessages } from 'shared/constants/validation'
 
-import { addModeProps, props } from '_tests_/features/warehouse/EquipmentFormModal/constants'
-import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/EquipmentFormModal/testUtils'
+import {
+  addModeProps,
+  props,
+} from '_tests_/features/warehouse/components/EquipmentFormModal/constants'
+import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/components/EquipmentFormModal/testUtils'
 import currencyFixtures from '_tests_/fixtures/currency'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

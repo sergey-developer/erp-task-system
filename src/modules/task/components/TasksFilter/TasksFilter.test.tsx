@@ -8,8 +8,8 @@ import {
 } from 'modules/task/constants/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 
-import { props } from '_tests_/features/tasks/TasksFilter/constants'
-import { tasksFilterTestUtils } from '_tests_/features/tasks/TasksFilter/testUtils'
+import { props } from '_tests_/features/tasks/components/TasksFilter/constants'
+import { tasksFilterTestUtils } from '_tests_/features/tasks/components/TasksFilter/testUtils'
 import macroregionFixtures from '_tests_/fixtures/macroregion'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import userFixtures from '_tests_/fixtures/user'

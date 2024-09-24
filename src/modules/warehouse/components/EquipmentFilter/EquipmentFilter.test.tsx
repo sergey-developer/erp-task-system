@@ -6,8 +6,8 @@ import {
 import { yesNoOptions } from 'shared/constants/selectField'
 import { getBooleanOptions } from 'shared/utils/selectField'
 
-import { props } from '_tests_/features/warehouse/EquipmentFilter/constants'
-import { equipmentFilterTestUtils } from '_tests_/features/warehouse/EquipmentFilter/testUtils'
+import { props } from '_tests_/features/warehouse/components/EquipmentFilter/constants'
+import { equipmentFilterTestUtils } from '_tests_/features/warehouse/components/EquipmentFilter/testUtils'
 import { render } from '_tests_/utils'
 
 import EquipmentFilter from './index'

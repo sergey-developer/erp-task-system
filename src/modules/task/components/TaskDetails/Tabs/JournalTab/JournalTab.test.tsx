@@ -10,9 +10,9 @@ import { commonApiMessages } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as downloadLink from 'shared/utils/file/downloadFile'
 
-import { journalEntryTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/JournalEntry/testUtils'
-import { props } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/constants'
-import { journalTabTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/JournalTab/testUtils'
+import { journalEntryTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/JournalTab/JournalEntry/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/JournalTab/constants'
+import { journalTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/JournalTab/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import {
   mockGetJournalCsvServerError,

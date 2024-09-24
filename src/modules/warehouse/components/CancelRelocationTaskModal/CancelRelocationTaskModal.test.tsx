@@ -1,7 +1,7 @@
 import { within } from '@testing-library/react'
 
-import { props } from '_tests_/features/warehouse/CancelRelocationTaskModal/constants'
-import { cancelRelocationTaskModalTestUtils } from '_tests_/features/warehouse/CancelRelocationTaskModal/testUtils'
+import { props } from '_tests_/features/warehouse/components/CancelRelocationTaskModal/constants'
+import { cancelRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/CancelRelocationTaskModal/testUtils'
 import { render } from '_tests_/utils'
 
 import CancelRelocationTaskModal from './index'

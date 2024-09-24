@@ -18,8 +18,8 @@ import {
 
 import { formatDate } from 'shared/utils/date'
 
-import { props } from '_tests_/features/warehouse/InventorizationDetails/constants'
-import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/InventorizationDetails/testUtils'
+import { props } from '_tests_/features/warehouse/components/InventorizationDetails/constants'
+import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/components/InventorizationDetails/testUtils'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

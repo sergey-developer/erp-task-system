@@ -8,8 +8,11 @@ import {
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
-import { equipmentListItem, props } from '_tests_/features/warehouse/EquipmentTable/constants'
-import { equipmentTableTestUtils } from '_tests_/features/warehouse/EquipmentTable/testUtils'
+import {
+  equipmentListItem,
+  props,
+} from '_tests_/features/warehouse/components/EquipmentTable/constants'
+import { equipmentTableTestUtils } from '_tests_/features/warehouse/components/EquipmentTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render, tableTestUtils } from '_tests_/utils'
 

@@ -14,8 +14,8 @@ import {
 import {
   props,
   relocationTaskListItem,
-} from '_tests_/features/warehouse/RelocationTaskTable/constants'
-import { relocationTaskTableTestUtils } from '_tests_/features/warehouse/RelocationTaskTable/testUtils'
+} from '_tests_/features/warehouse/components/RelocationTaskTable/constants'
+import { relocationTaskTableTestUtils } from '_tests_/features/warehouse/components/RelocationTaskTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render, tableTestUtils } from '_tests_/utils'
 

@@ -8,21 +8,21 @@ import {
   TaskTypeEnum,
 } from 'modules/task/constants/task'
 
-import { cancelSubTaskModalTestUtils } from '_tests_/features/tasks/CancelSubTaskModal/testUtils'
-import { createSubTaskModalTestUtils } from '_tests_/features/tasks/CreateSubTaskModal/testUtils'
-import { reworkSubTaskModalTestUtils } from '_tests_/features/tasks/ReworkSubTaskModal/testUtils'
+import { cancelSubTaskModalTestUtils } from '_tests_/features/tasks/components/CancelSubTaskModal/testUtils'
+import { createSubTaskModalTestUtils } from '_tests_/features/tasks/components/CreateSubTaskModal/testUtils'
+import { reworkSubTaskModalTestUtils } from '_tests_/features/tasks/components/ReworkSubTaskModal/testUtils'
 import {
   showCancelButtonProps,
   showReworkButtonProps,
-} from '_tests_/features/tasks/SubTaskList/SubTask/constants'
-import { subTaskTestUtils } from '_tests_/features/tasks/SubTaskList/SubTask/testUtils'
-import { subTaskListTestUtils } from '_tests_/features/tasks/SubTaskList/testUtils'
+} from '_tests_/features/tasks/components/SubTaskList/SubTask/constants'
+import { subTaskTestUtils } from '_tests_/features/tasks/components/SubTaskList/SubTask/testUtils'
+import { subTaskListTestUtils } from '_tests_/features/tasks/components/SubTaskList/testUtils'
 import {
   activeCreateSubTaskButtonTaskProps,
   props,
-} from '_tests_/features/tasks/TaskDetails/Tabs/SubTaskListTab/constants'
-import { subTaskListTabTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/SubTaskListTab/testUtils'
-import { taskStatusTestUtils } from '_tests_/features/tasks/TaskStatus/testUtils'
+} from '_tests_/features/tasks/components/TaskDetails/Tabs/SubTaskListTab/constants'
+import { subTaskListTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/SubTaskListTab/testUtils'
+import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import taskFixtures from '_tests_/fixtures/task'

@@ -9,8 +9,11 @@ import {
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
-import { props, warehouseListItem } from '_tests_/features/warehouse/WarehouseTable/constants'
-import { warehouseTableTestUtils } from '_tests_/features/warehouse/WarehouseTable/testUtils'
+import {
+  props,
+  warehouseListItem,
+} from '_tests_/features/warehouse/components/WarehouseTable/constants'
+import { warehouseTableTestUtils } from '_tests_/features/warehouse/components/WarehouseTable/testUtils'
 import { mockGetWarehouseSuccess } from '_tests_/mocks/api'
 import { renderWithRouter } from '_tests_/utils'
 

@@ -13,8 +13,8 @@ import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehous
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
-import { props } from '_tests_/features/warehouse/RelocationTaskForm/constants'
-import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/RelocationTaskForm/testUtils'
+import { props } from '_tests_/features/warehouse/components/RelocationTaskForm/constants'
+import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'
 import {

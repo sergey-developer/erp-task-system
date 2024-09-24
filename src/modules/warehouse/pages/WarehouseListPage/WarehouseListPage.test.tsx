@@ -3,8 +3,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
-import { warehouseListFilterTestUtils } from '_tests_/features/warehouse/WarehouseListFilter/testUtils'
-import { warehouseTableTestUtils } from '_tests_/features/warehouse/WarehouseTable/testUtils'
+import { warehouseListFilterTestUtils } from '_tests_/features/warehouse/components/WarehouseListFilter/testUtils'
+import { warehouseTableTestUtils } from '_tests_/features/warehouse/components/WarehouseTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetLegalEntityListSuccess, mockGetWarehouseListSuccess } from '_tests_/mocks/api'
 import { buttonTestUtils, renderWithRouter, setupApiTests } from '_tests_/utils'

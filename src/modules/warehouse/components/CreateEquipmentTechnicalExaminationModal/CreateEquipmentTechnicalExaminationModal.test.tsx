@@ -3,8 +3,8 @@ import { within } from '@testing-library/react'
 import { yesNoOptions } from 'shared/constants/selectField'
 import { validationMessages } from 'shared/constants/validation'
 
-import { props } from '_tests_/features/warehouse/CreateEquipmentTechnicalExaminationModal/constants'
-import { createEquipmentTechnicalExaminationModalTestUtils } from '_tests_/features/warehouse/CreateEquipmentTechnicalExaminationModal/testUtils'
+import { props } from '_tests_/features/warehouse/components/CreateEquipmentTechnicalExaminationModal/constants'
+import { createEquipmentTechnicalExaminationModalTestUtils } from '_tests_/features/warehouse/components/CreateEquipmentTechnicalExaminationModal/testUtils'
 import { fakeInteger, fakeWord, render } from '_tests_/utils'
 
 import CreateEquipmentTechnicalExaminationModal from './index'

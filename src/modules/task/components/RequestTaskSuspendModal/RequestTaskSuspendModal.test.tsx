@@ -12,8 +12,8 @@ import {
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
-import { props } from '_tests_/features/tasks/RequestTaskSuspendModal/constants'
-import { requestTaskSuspendModalTestUtils } from '_tests_/features/tasks/RequestTaskSuspendModal/testUtils'
+import { props } from '_tests_/features/tasks/components/RequestTaskSuspendModal/constants'
+import { requestTaskSuspendModalTestUtils } from '_tests_/features/tasks/components/RequestTaskSuspendModal/testUtils'
 import { fakeInteger, fakeUrl, fakeWord, render } from '_tests_/utils'
 
 import RequestTaskSuspendModal from './index'

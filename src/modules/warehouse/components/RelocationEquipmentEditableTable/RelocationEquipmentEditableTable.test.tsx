@@ -1,7 +1,7 @@
 import { Form } from 'antd'
 
-import { props } from '_tests_/features/warehouse/RelocationEquipmentEditableTable/constants'
-import { relocationEquipmentEditableTableTestUtils } from '_tests_/features/warehouse/RelocationEquipmentEditableTable/testUtils'
+import { props } from '_tests_/features/warehouse/components/RelocationEquipmentEditableTable/constants'
+import { relocationEquipmentEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentEditableTable/testUtils'
 import { buttonTestUtils, render } from '_tests_/utils'
 
 import RelocationEquipmentEditableTable from './index'

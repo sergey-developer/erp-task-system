@@ -1,7 +1,7 @@
 import { within } from '@testing-library/react'
 
-import { props } from '_tests_/features/tasks/ConfirmExecuteTaskReclassificationTasksModal/constants'
-import { confirmExecuteTaskReclassificationTasksModalTestUtils } from '_tests_/features/tasks/ConfirmExecuteTaskReclassificationTasksModal/testUtils'
+import { props } from '_tests_/features/tasks/components/ConfirmExecuteTaskReclassificationTasksModal/constants'
+import { confirmExecuteTaskReclassificationTasksModalTestUtils } from '_tests_/features/tasks/components/ConfirmExecuteTaskReclassificationTasksModal/testUtils'
 import { render } from '_tests_/utils'
 
 import ConfirmExecuteTaskReclassificationTasksModal from './index'

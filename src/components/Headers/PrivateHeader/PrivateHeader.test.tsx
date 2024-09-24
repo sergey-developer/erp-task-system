@@ -13,7 +13,7 @@ import { MaybeNull } from 'shared/types/utils'
 
 import App from 'app/App'
 
-import { tasksPageTestUtils } from '_tests_/features/tasks/TasksPage/testUtils'
+import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
 import authFixtures from '_tests_/fixtures/auth'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'

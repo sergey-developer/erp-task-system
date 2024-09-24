@@ -3,10 +3,10 @@ import { formatDate } from 'shared/utils/date'
 import {
   showCancelButtonProps,
   showReworkButtonProps,
-} from '_tests_/features/tasks/SubTaskList/SubTask/constants'
-import { subTaskTestUtils } from '_tests_/features/tasks/SubTaskList/SubTask/testUtils'
-import { props } from '_tests_/features/tasks/SubTaskList/constants'
-import { subTaskListTestUtils } from '_tests_/features/tasks/SubTaskList/testUtils'
+} from '_tests_/features/tasks/components/SubTaskList/SubTask/constants'
+import { subTaskTestUtils } from '_tests_/features/tasks/components/SubTaskList/SubTask/testUtils'
+import { props } from '_tests_/features/tasks/components/SubTaskList/constants'
+import { subTaskListTestUtils } from '_tests_/features/tasks/components/SubTaskList/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import { render } from '_tests_/utils'
 

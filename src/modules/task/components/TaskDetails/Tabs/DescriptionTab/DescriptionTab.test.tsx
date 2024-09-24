@@ -1,7 +1,7 @@
 import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 
-import { props } from '_tests_/features/tasks/TaskDetails/Tabs/DescriptionTab/constants'
-import { descriptionTabTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/DescriptionTab/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/DescriptionTab/constants'
+import { descriptionTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/DescriptionTab/testUtils'
 import { render } from '_tests_/utils'
 
 import DescriptionTab from './index'

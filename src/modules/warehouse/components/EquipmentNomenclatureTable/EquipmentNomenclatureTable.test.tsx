@@ -6,8 +6,8 @@ import { getEquipmentListPageLink } from 'modules/warehouse/utils/equipment'
 import {
   equipmentNomenclatureListItem,
   props,
-} from '_tests_/features/warehouse/EquipmentNomenclatureTable/constants'
-import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/EquipmentNomenclatureTable/testUtils'
+} from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/constants'
+import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetEquipmentListSuccess } from '_tests_/mocks/api'
 import { renderWithRouter, setupApiTests, tableTestUtils } from '_tests_/utils'

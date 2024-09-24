@@ -1,7 +1,7 @@
 import { getShortUserName } from 'modules/user/utils'
 
-import { action, props } from '_tests_/features/tasks/TaskRequest/constants'
-import { taskRequestTestUtils } from '_tests_/features/tasks/TaskRequest/testUtils'
+import { action, props } from '_tests_/features/tasks/components/TaskRequest/constants'
+import { taskRequestTestUtils } from '_tests_/features/tasks/components/TaskRequest/testUtils'
 import { fakeWord, render } from '_tests_/utils'
 
 import TaskRequest from './index'

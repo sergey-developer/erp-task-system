@@ -6,8 +6,8 @@ import {
   hideResolutionClassifierFieldProps,
   props,
   showResolutionClassifierFieldProps,
-} from '_tests_/features/tasks/ExecuteTaskModal/constants'
-import { executeTaskModalTestUtils } from '_tests_/features/tasks/ExecuteTaskModal/testUtils'
+} from '_tests_/features/tasks/components/ExecuteTaskModal/constants'
+import { executeTaskModalTestUtils } from '_tests_/features/tasks/components/ExecuteTaskModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { fakeWord, render } from '_tests_/utils'
 

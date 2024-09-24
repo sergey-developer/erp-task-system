@@ -1,5 +1,5 @@
-import { props } from '_tests_/features/warehouse/WarehouseListFilter/constants'
-import { warehouseListFilterTestUtils } from '_tests_/features/warehouse/WarehouseListFilter/testUtils'
+import { props } from '_tests_/features/warehouse/components/WarehouseListFilter/constants'
+import { warehouseListFilterTestUtils } from '_tests_/features/warehouse/components/WarehouseListFilter/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetLegalEntityListSuccess, mockGetWarehouseListSuccess } from '_tests_/mocks/api'
 import { fakeWord, render, setupApiTests } from '_tests_/utils'

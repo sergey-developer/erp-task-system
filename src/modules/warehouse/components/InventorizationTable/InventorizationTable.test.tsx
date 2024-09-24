@@ -14,8 +14,8 @@ import {
 import {
   inventorizationListItem,
   props,
-} from '_tests_/features/warehouse/InventorizationTable/constants'
-import { inventorizationTableTestUtils } from '_tests_/features/warehouse/InventorizationTable/testUtils'
+} from '_tests_/features/warehouse/components/InventorizationTable/constants'
+import { inventorizationTableTestUtils } from '_tests_/features/warehouse/components/InventorizationTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render, tableTestUtils } from '_tests_/utils'
 

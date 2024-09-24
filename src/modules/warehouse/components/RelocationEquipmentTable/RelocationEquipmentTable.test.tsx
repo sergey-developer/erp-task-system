@@ -3,8 +3,8 @@ import { equipmentConditionDict } from 'modules/warehouse/constants/equipment'
 import {
   props,
   relocationEquipmentListItem,
-} from '_tests_/features/warehouse/RelocationEquipmentTable/constants'
-import { relocationEquipmentTableTestUtils } from '_tests_/features/warehouse/RelocationEquipmentTable/testUtils'
+} from '_tests_/features/warehouse/components/RelocationEquipmentTable/constants'
+import { relocationEquipmentTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentTable/testUtils'
 import { render, tableTestUtils } from '_tests_/utils'
 
 import RelocationEquipmentTable from './index'

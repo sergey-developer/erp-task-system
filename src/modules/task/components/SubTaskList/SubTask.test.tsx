@@ -7,10 +7,10 @@ import {
   props,
   showCancelButtonProps,
   showReworkButtonProps,
-} from '_tests_/features/tasks/SubTaskList/SubTask/constants'
-import { subTaskTestUtils } from '_tests_/features/tasks/SubTaskList/SubTask/testUtils'
-import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
-import { taskStatusTestUtils } from '_tests_/features/tasks/TaskStatus/testUtils'
+} from '_tests_/features/tasks/components/SubTaskList/SubTask/constants'
+import { subTaskTestUtils } from '_tests_/features/tasks/components/SubTaskList/SubTask/testUtils'
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
+import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import { render } from '_tests_/utils'
 

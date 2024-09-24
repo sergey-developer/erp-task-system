@@ -10,9 +10,9 @@ import {
 } from 'modules/warehouse/constants/inventorization'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
-import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/InventorizationDetails/testUtils'
-import { inventorizationTableTestUtils } from '_tests_/features/warehouse/InventorizationTable/testUtils'
-import { inventorizationsFilterTestUtils } from '_tests_/features/warehouse/InventorizationsFilter/testUtils'
+import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/components/InventorizationDetails/testUtils'
+import { inventorizationTableTestUtils } from '_tests_/features/warehouse/components/InventorizationTable/testUtils'
+import { inventorizationsFilterTestUtils } from '_tests_/features/warehouse/components/InventorizationsFilter/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

@@ -1,5 +1,5 @@
-import { props } from '_tests_/features/warehouse/CreateInventorizationRequestModal/constants'
-import { createInventorizationRequestModalTestUtils } from '_tests_/features/warehouse/CreateInventorizationRequestModal/testUtils'
+import { props } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/constants'
+import { createInventorizationRequestModalTestUtils } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/testUtils'
 import { fakeWord, render } from '_tests_/utils'
 
 import CreateInventorizationRequestModal from './index'

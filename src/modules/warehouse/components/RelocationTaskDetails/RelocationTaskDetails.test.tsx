@@ -35,17 +35,17 @@ import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
-import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
-import { cancelRelocationTaskModalTestUtils } from '_tests_/features/warehouse/CancelRelocationTaskModal/testUtils'
-import { confirmExecutionRelocationTaskModalTestUtils } from '_tests_/features/warehouse/ConfirmExecutionRelocationTaskModal/testUtils'
-import { executeRelocationTaskModalTestUtils } from '_tests_/features/warehouse/ExecuteRelocationTaskModal/testUtils'
-import { relocationEquipmentTableTestUtils } from '_tests_/features/warehouse/RelocationEquipmentTable/testUtils'
+import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
+import { cancelRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/CancelRelocationTaskModal/testUtils'
+import { confirmExecutionRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/ConfirmExecutionRelocationTaskModal/testUtils'
+import { executeRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/ExecuteRelocationTaskModal/testUtils'
+import { relocationEquipmentTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentTable/testUtils'
 import {
   canExecuteRelocationTaskProps,
   props,
-} from '_tests_/features/warehouse/RelocationTaskDetails/constants'
-import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/RelocationTaskDetails/testUtils'
-import { returnRelocationTaskToReworkModalTestUtils } from '_tests_/features/warehouse/ReturnRelocationTaskToReworkModal/testUtils'
+} from '_tests_/features/warehouse/components/RelocationTaskDetails/constants'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
+import { returnRelocationTaskToReworkModalTestUtils } from '_tests_/features/warehouse/components/ReturnRelocationTaskToReworkModal/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {

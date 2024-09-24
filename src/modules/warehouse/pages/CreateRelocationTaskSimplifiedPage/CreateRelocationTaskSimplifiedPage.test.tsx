@@ -10,7 +10,7 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
-import { relocationEquipmentSimplifiedEditableTableTestUtils } from '_tests_/features/warehouse/RelocationEquipmentSimplifiedEditableTable/testUtils'
+import { relocationEquipmentSimplifiedEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentSimplifiedEditableTable/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'

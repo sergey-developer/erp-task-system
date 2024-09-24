@@ -1,5 +1,8 @@
-import { nomenclatureListItem, props } from '_tests_/features/warehouse/NomenclatureTable/constants'
-import { nomenclatureTableTestUtils } from '_tests_/features/warehouse/NomenclatureTable/testUtils'
+import {
+  nomenclatureListItem,
+  props,
+} from '_tests_/features/warehouse/components/NomenclatureTable/constants'
+import { nomenclatureTableTestUtils } from '_tests_/features/warehouse/components/NomenclatureTable/testUtils'
 import { render } from '_tests_/utils'
 
 import NomenclatureTable from './index'

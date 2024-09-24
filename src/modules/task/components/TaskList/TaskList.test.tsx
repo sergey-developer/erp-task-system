@@ -5,8 +5,8 @@ import { hexToRGB } from 'shared/utils/hexToRGB'
 
 import theme from 'styles/theme'
 
-import { props, taskListItem } from '_tests_/features/tasks/TaskList/constants'
-import { taskListTestUtils } from '_tests_/features/tasks/TaskList/taskListTestUtils'
+import { props, taskListItem } from '_tests_/features/tasks/components/TaskList/constants'
+import { taskListTestUtils } from '_tests_/features/tasks/components/TaskList/taskListTestUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import { render } from '_tests_/utils'
 

@@ -2,8 +2,8 @@ import { Form } from 'antd'
 
 import { makeString } from 'shared/utils/string'
 
-import { props } from '_tests_/features/warehouse/RelocationEquipmentDraftEditableTable/constants'
-import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouse/RelocationEquipmentDraftEditableTable/testUtils'
+import { props } from '_tests_/features/warehouse/components/RelocationEquipmentDraftEditableTable/constants'
+import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentDraftEditableTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render, tableTestUtils } from '_tests_/utils'
 

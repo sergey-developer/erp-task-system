@@ -7,9 +7,9 @@ import { getRelocateFromToTitle } from 'modules/warehouse/utils/relocationTask'
 
 import { formatDate } from 'shared/utils/date'
 
-import { props, relocationTaskListItem } from '_tests_/features/tasks/RelocationTasks/constants'
-import { relocationTasksTestUtils } from '_tests_/features/tasks/RelocationTasks/testUtils'
-import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
+import { props, relocationTaskListItem } from '_tests_/features/tasks/components/RelocationTasks/constants'
+import { relocationTasksTestUtils } from '_tests_/features/tasks/components/RelocationTasks/testUtils'
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render, setupApiTests } from '_tests_/utils'

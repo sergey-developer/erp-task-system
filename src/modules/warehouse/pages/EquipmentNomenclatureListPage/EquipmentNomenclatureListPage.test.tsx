@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 import { getEquipmentNomenclaturesErrMsg } from 'modules/warehouse/constants/equipment'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
-import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/EquipmentNomenclatureTable/testUtils'
+import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
