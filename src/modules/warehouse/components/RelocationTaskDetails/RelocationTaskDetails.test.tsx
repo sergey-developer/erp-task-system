@@ -8,7 +8,6 @@ import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
 import { getTasksPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as returnRelocationTaskToReworkModalTestUtils } from 'modules/warehouse/components/ReturnRelocationTaskToReworkModal/ReturnRelocationTaskToReworkModal.test'
 import { getRelocationEquipmentAttachmentListErrMsg } from 'modules/warehouse/constants/relocationEquipment'
 import {
   cancelRelocationTaskMessages,
@@ -46,6 +45,7 @@ import {
   props,
 } from '_tests_/features/warehouse/RelocationTaskDetails/constants'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/RelocationTaskDetails/testUtils'
+import { returnRelocationTaskToReworkModalTestUtils } from '_tests_/features/warehouse/ReturnRelocationTaskToReworkModal/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {

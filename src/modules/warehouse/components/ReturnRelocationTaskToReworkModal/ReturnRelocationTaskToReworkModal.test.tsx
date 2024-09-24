@@ -1,75 +1,18 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { within } from '@testing-library/react'
 
 import { validationMessages } from 'shared/constants/validation'
 
-import { fakeWord, render, buttonTestUtils } from '_tests_/utils'
+import { props } from '_tests_/features/warehouse/ReturnRelocationTaskToReworkModal/constants'
+import { fakeWord, render } from '_tests_/utils'
 
 import ReturnRelocationTaskToReworkModal from './index'
-import { ReturnRelocationTaskToReworkModalProps } from './types'
-
-const props: Readonly<ReturnRelocationTaskToReworkModalProps> = {
-  open: true,
-  isLoading: false,
-  onSubmit: jest.fn(),
-  onCancel: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('return-relocation-task-rework-modal')
-const findContainer = () => screen.findByTestId('return-relocation-task-rework-modal')
-
-// reason field
-const getReasonFormItem = () => within(getContainer()).getByTestId('reason-form-item')
-
-const getReasonField = () =>
-  within(getReasonFormItem()).getByRole('textbox', { name: 'Причина возврата' })
-
-const findReasonError = (error: string) => within(getReasonFormItem()).findByText(error)
-
-const setReason = async (user: UserEvent, value: string) => {
-  const field = getReasonField()
-  await user.type(field, value)
-  return field
-}
-
-// submit button
-const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /Вернуть на доработку/)
-const clickSubmitButton = async (user: UserEvent) => {
-  const button = getSubmitButton()
-  await user.click(button)
-  return button
-}
-
-// cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
-const clickCancelButton = async (user: UserEvent) => {
-  const button = getCancelButton()
-  await user.click(button)
-  return button
-}
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-
-  getReasonFormItem,
-  getReasonField,
-  findReasonError,
-  setReason,
-
-  getSubmitButton,
-  clickSubmitButton,
-
-  getCancelButton,
-  clickCancelButton,
-
-  expectLoadingFinished: () => buttonTestUtils.expectLoadingFinished(getSubmitButton()),
-}
 
 describe('Модалка возврата заявки на перемещение на доработку', () => {
   test('Заголовок отображается корректно', () => {
     render(<ReturnRelocationTaskToReworkModal {...props} />)
-    const title = within(testUtils.getContainer()).getByText('Возврат на доработку')
+    const title = within(returnRelocationTaskToReworkModalTestUtils.getContainer()).getByText(
+      'Возврат на доработку',
+    )
     expect(title).toBeInTheDocument()
   })
 
@@ -77,7 +20,7 @@ describe('Модалка возврата заявки на перемещени
     test('Отображается корректно', () => {
       render(<ReturnRelocationTaskToReworkModal {...props} />)
 
-      const field = testUtils.getReasonField()
+      const field = returnRelocationTaskToReworkModalTestUtils.getReasonField()
 
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
@@ -88,18 +31,22 @@ describe('Модалка возврата заявки на перемещени
       test('Если ввести только пробелы', async () => {
         const { user } = render(<ReturnRelocationTaskToReworkModal {...props} />)
 
-        await testUtils.setReason(user, ' ')
+        await returnRelocationTaskToReworkModalTestUtils.setReason(user, ' ')
 
-        const error = await testUtils.findReasonError(validationMessages.canNotBeEmpty)
+        const error = await returnRelocationTaskToReworkModalTestUtils.findReasonError(
+          validationMessages.canNotBeEmpty,
+        )
         expect(error).toBeInTheDocument()
       })
 
       test('Если не заполнить поле и нажать кнопку отправки', async () => {
         const { user } = render(<ReturnRelocationTaskToReworkModal {...props} />)
 
-        await testUtils.clickSubmitButton(user)
+        await returnRelocationTaskToReworkModalTestUtils.clickSubmitButton(user)
 
-        const error = await testUtils.findReasonError(validationMessages.required)
+        const error = await returnRelocationTaskToReworkModalTestUtils.findReasonError(
+          validationMessages.required,
+        )
         expect(error).toBeInTheDocument()
       })
     })
@@ -109,7 +56,7 @@ describe('Модалка возврата заявки на перемещени
     test('Отображается корректно', () => {
       render(<ReturnRelocationTaskToReworkModal {...props} />)
 
-      const button = testUtils.getSubmitButton()
+      const button = returnRelocationTaskToReworkModalTestUtils.getSubmitButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -118,8 +65,8 @@ describe('Модалка возврата заявки на перемещени
     test('Обработчик вызывается корректно если обязательные поля заполнены', async () => {
       const { user } = render(<ReturnRelocationTaskToReworkModal {...props} />)
 
-      await testUtils.setReason(user, fakeWord())
-      await testUtils.clickSubmitButton(user)
+      await returnRelocationTaskToReworkModalTestUtils.setReason(user, fakeWord())
+      await returnRelocationTaskToReworkModalTestUtils.clickSubmitButton(user)
 
       expect(props.onSubmit).toBeCalledTimes(1)
       expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())
@@ -130,7 +77,7 @@ describe('Модалка возврата заявки на перемещени
     test('Отображается корректно', () => {
       render(<ReturnRelocationTaskToReworkModal {...props} />)
 
-      const button = testUtils.getCancelButton()
+      const button = returnRelocationTaskToReworkModalTestUtils.getCancelButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -138,7 +85,7 @@ describe('Модалка возврата заявки на перемещени
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<ReturnRelocationTaskToReworkModal {...props} />)
-      await testUtils.clickCancelButton(user)
+      await returnRelocationTaskToReworkModalTestUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
   })
