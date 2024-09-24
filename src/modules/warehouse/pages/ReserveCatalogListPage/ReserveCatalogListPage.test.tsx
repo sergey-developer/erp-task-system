@@ -5,12 +5,12 @@ import React from 'react'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
-import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 import InventorizationsPage from 'modules/warehouse/pages/InventorizationsPage'
 import { testUtils as inventorizationsPageTestUtils } from 'modules/warehouse/pages/InventorizationsPage/InventorizationsPage.test'
 import RelocationTasksPage from 'modules/warehouse/pages/RelocationTasksPage'
 import { testUtils as relocationTaskListPageTestUtils } from 'modules/warehouse/pages/RelocationTasksPage/RelocationTasksPage.test'
 
+import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentNomenclatureListPage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetEquipmentNomenclaturesSuccess,

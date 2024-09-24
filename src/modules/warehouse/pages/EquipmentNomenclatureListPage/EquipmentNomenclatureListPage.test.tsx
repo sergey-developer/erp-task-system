@@ -1,5 +1,3 @@
-import { screen } from '@testing-library/react'
-
 import { getEquipmentNomenclaturesErrMsg } from 'modules/warehouse/constants/equipment'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
@@ -20,16 +18,6 @@ import {
 } from '_tests_/utils'
 
 import EquipmentNomenclatureListPage from './index'
-
-const getContainer = () => screen.getByTestId('equipment-nomenclature-list-page')
-
-const findContainer = (): Promise<HTMLElement> =>
-  screen.findByTestId('equipment-nomenclature-list-page')
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-}
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
