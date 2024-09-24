@@ -23,7 +23,6 @@ import {
 } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CreateDocumentsPackagePage from 'modules/warehouse/pages/CreateDocumentsPackagePage'
-import { testUtils as createDocumentsPackagePageTestUtils } from 'modules/warehouse/pages/CreateDocumentsPackagePage/CreateDocumentsPackagePage.test'
 import {
   getRelocateFromToTitle,
   getWaybillM15Filename,
@@ -46,6 +45,7 @@ import {
 } from '_tests_/features/warehouse/components/RelocationTaskDetails/constants'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
 import { returnRelocationTaskToReworkModalTestUtils } from '_tests_/features/warehouse/components/ReturnRelocationTaskToReworkModal/testUtils'
+import { createDocumentsPackagePageTestUtils } from '_tests_/features/warehouse/pages/CreateDocumentsPackagePage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
