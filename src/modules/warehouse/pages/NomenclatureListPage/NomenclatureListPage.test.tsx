@@ -2,11 +2,11 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as nomenclatureGroupModalTestUtils } from 'modules/warehouse/components/NomenclatureGroupFormModal/NomenclatureGroupFormModal.test'
 import { testUtils as nomenclatureTableTestUtils } from 'modules/warehouse/components/NomenclatureTable/NomenclatureTable.test'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants/nomenclatureGroup'
 
 import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouse/NomenclatureFormModal/testUtils'
+import { nomenclatureGroupFormModalTestUtils } from '_tests_/features/warehouse/NomenclatureGroupFormModal/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -236,7 +236,7 @@ describe('Страница списка номенклатур', () => {
       })
 
       await testUtils.clickAddNomenclatureGroupButton(user)
-      const modal = await nomenclatureGroupModalTestUtils.findContainer()
+      const modal = await nomenclatureGroupFormModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
     })
@@ -261,10 +261,10 @@ describe('Страница списка номенклатур', () => {
 
       await testUtils.expectGroupListLoadingFinished()
       await testUtils.clickAddNomenclatureGroupButton(user)
-      const modal = await nomenclatureGroupModalTestUtils.findContainer()
-      await nomenclatureGroupModalTestUtils.setName(user, fakeWord())
-      await nomenclatureGroupModalTestUtils.clickAddButton(user)
-      await nomenclatureGroupModalTestUtils.expectLoadingFinished()
+      const modal = await nomenclatureGroupFormModalTestUtils.findContainer()
+      await nomenclatureGroupFormModalTestUtils.setName(user, fakeWord())
+      await nomenclatureGroupFormModalTestUtils.clickAddButton(user)
+      await nomenclatureGroupFormModalTestUtils.expectLoadingFinished()
       await waitFor(() => expect(modal).not.toBeInTheDocument())
       const newGroupItem = testUtils.getGroupListItem(createdGroup.title)
 
@@ -294,12 +294,14 @@ describe('Страница списка номенклатур', () => {
         })
 
         await testUtils.clickAddNomenclatureGroupButton(user)
-        await nomenclatureGroupModalTestUtils.findContainer()
-        await nomenclatureGroupModalTestUtils.setName(user, fakeWord())
-        await nomenclatureGroupModalTestUtils.clickAddButton(user)
-        await nomenclatureGroupModalTestUtils.expectLoadingFinished()
+        await nomenclatureGroupFormModalTestUtils.findContainer()
+        await nomenclatureGroupFormModalTestUtils.setName(user, fakeWord())
+        await nomenclatureGroupFormModalTestUtils.clickAddButton(user)
+        await nomenclatureGroupFormModalTestUtils.expectLoadingFinished()
 
-        const titleError = await nomenclatureGroupModalTestUtils.findNameError(titleErrorMessage)
+        const titleError = await nomenclatureGroupFormModalTestUtils.findNameError(
+          titleErrorMessage,
+        )
         const notification = await notificationTestUtils.findNotification(detailErrorMessage)
 
         expect(titleError).toBeInTheDocument()
@@ -327,10 +329,10 @@ describe('Страница списка номенклатур', () => {
         })
 
         await testUtils.clickAddNomenclatureGroupButton(user)
-        await nomenclatureGroupModalTestUtils.findContainer()
-        await nomenclatureGroupModalTestUtils.setName(user, fakeWord())
-        await nomenclatureGroupModalTestUtils.clickAddButton(user)
-        await nomenclatureGroupModalTestUtils.expectLoadingFinished()
+        await nomenclatureGroupFormModalTestUtils.findContainer()
+        await nomenclatureGroupFormModalTestUtils.setName(user, fakeWord())
+        await nomenclatureGroupFormModalTestUtils.clickAddButton(user)
+        await nomenclatureGroupFormModalTestUtils.expectLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(detailErrorMessage)
         expect(notification).toBeInTheDocument()
@@ -352,10 +354,10 @@ describe('Страница списка номенклатур', () => {
         })
 
         await testUtils.clickAddNomenclatureGroupButton(user)
-        await nomenclatureGroupModalTestUtils.findContainer()
-        await nomenclatureGroupModalTestUtils.setName(user, fakeWord())
-        await nomenclatureGroupModalTestUtils.clickAddButton(user)
-        await nomenclatureGroupModalTestUtils.expectLoadingFinished()
+        await nomenclatureGroupFormModalTestUtils.findContainer()
+        await nomenclatureGroupFormModalTestUtils.setName(user, fakeWord())
+        await nomenclatureGroupFormModalTestUtils.clickAddButton(user)
+        await nomenclatureGroupFormModalTestUtils.expectLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(
           createNomenclatureGroupMessages.commonError,
