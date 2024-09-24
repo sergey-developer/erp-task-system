@@ -12,6 +12,7 @@ import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/w
 import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/EquipmentFormModal/testUtils'
 import { props } from '_tests_/features/warehouse/ExecuteInventorizationReviseTab/constants'
 import { executeInventorizationReviseTabTestUtils } from '_tests_/features/warehouse/ExecuteInventorizationReviseTab/testUtils'
+import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouse/ReviseEquipmentTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -29,7 +30,6 @@ import {
 } from '_tests_/mocks/api'
 import { fakeInteger, render, setupApiTests } from '_tests_/utils'
 
-import { testUtils as reviseEquipmentTableTestUtils } from '../ReviseEquipmentTable/ReviseEquipmentTable.test'
 import ExecuteInventorizationReviseTab from './index'
 
 setupApiTests()
