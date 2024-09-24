@@ -1,165 +1,13 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { Form } from 'antd'
 
 import { makeString } from 'shared/utils/string'
 
+import { props } from '_tests_/features/warehouse/RelocationEquipmentDraftEditableTable/constants'
+import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouse/RelocationEquipmentDraftEditableTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { buttonTestUtils, render, selectTestUtils, tableTestUtils } from '_tests_/utils'
+import { render, tableTestUtils } from '_tests_/utils'
 
 import RelocationEquipmentEditableTable from './index'
-import { RelocationEquipmentDraftEditableTableProps } from './types'
-
-const props: RelocationEquipmentDraftEditableTableProps = {
-  name: 'equipments',
-  editableKeys: undefined,
-  setEditableKeys: jest.fn(),
-
-  isLoading: false,
-
-  currencies: [],
-  currenciesIsLoading: false,
-
-  equipments: [],
-  equipmentsIsLoading: false,
-  onChangeEquipment: jest.fn(),
-
-  equipmentIsLoading: false,
-
-  onClickCreateImage: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('relocation-equipment-draft-editable-table-container')
-
-const getRowByRole = () => tableTestUtils.getOneRowByRole(getContainer())
-
-// add equipment button
-const getAddEquipmentButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Добавить оборудование/)
-
-const clickAddEquipmentButton = async (user: UserEvent) => user.click(getAddEquipmentButton())
-
-// delete equipment button
-const getDeleteEquipmentButton = (row: HTMLElement) =>
-  buttonTestUtils.getButtonIn(row, 'minus-circle')
-
-const clickDeleteEquipmentButton = async (user: UserEvent, row: HTMLElement) =>
-  user.click(getDeleteEquipmentButton(row))
-
-// equipment field
-const getEquipmentFormItem = (row: HTMLElement) => within(row).getByTestId('equipment-form-item')
-
-const getEquipmentSelect = (row: HTMLElement) =>
-  selectTestUtils.getSelect(getEquipmentFormItem(row))
-
-const setEquipment = selectTestUtils.clickSelectOption
-
-const openEquipmentSelect = async (user: UserEvent, row: HTMLElement) =>
-  selectTestUtils.openSelect(user, getEquipmentFormItem(row))
-
-const findEquipmentError = (error: string, row: HTMLElement) =>
-  within(getEquipmentFormItem(row)).findByText(error)
-
-const expectEquipmentsLoadingFinished = (row: HTMLElement) =>
-  selectTestUtils.expectLoadingFinished(getEquipmentFormItem(row))
-
-// serial number field
-const getSerialNumberFormItem = (row: HTMLElement) =>
-  within(row).getByTestId('serial-number-form-item')
-
-const getSerialNumberField = (row: HTMLElement) =>
-  within(getSerialNumberFormItem(row)).getByRole('textbox')
-
-const setSerialNumber = async (user: UserEvent, value: string, row: HTMLElement) =>
-  user.type(getSerialNumberField(row), value)
-
-// condition field
-const getConditionFormItem = (row: HTMLElement) => within(row).getByTestId('condition-form-item')
-
-const getConditionSelect = (row: HTMLElement) =>
-  selectTestUtils.getSelect(getConditionFormItem(row))
-
-const setCondition = selectTestUtils.clickSelectOption
-
-const openConditionSelect = async (user: UserEvent, row: HTMLElement) =>
-  selectTestUtils.openSelect(user, getConditionFormItem(row))
-
-const findConditionError = (error: string, row: HTMLElement) =>
-  within(getConditionFormItem(row)).findByText(error)
-
-// price field
-const getPriceFormItem = (row: HTMLElement) => within(row).getByTestId('price-form-item')
-const getPriceField = (row: HTMLElement) => within(getPriceFormItem(row)).getByRole('spinbutton')
-const setPrice = async (user: UserEvent, value: number, row: HTMLElement) =>
-  user.type(getPriceField(row), String(value))
-
-// currency field
-const getCurrencyFormItem = (row: HTMLElement) => within(row).getByTestId('currency-form-item')
-const getCurrencySelect = (row: HTMLElement) => selectTestUtils.getSelect(getCurrencyFormItem(row))
-const setCurrency = selectTestUtils.clickSelectOption
-const openCurrencySelect = async (user: UserEvent, row: HTMLElement) =>
-  selectTestUtils.openSelect(user, getCurrencyFormItem(row))
-
-// quantity field
-const getQuantityFormItem = (row: HTMLElement) => within(row).getByTestId('quantity-form-item')
-
-const getQuantityField = (row: HTMLElement) =>
-  within(getQuantityFormItem(row)).getByRole('spinbutton')
-
-const setQuantity = async (user: UserEvent, value: number, row: HTMLElement) =>
-  user.type(getQuantityField(row), String(value))
-
-// attachments
-const getAttachmentsFormItem = (row: HTMLElement) =>
-  within(row).getByTestId('attachments-form-item')
-
-const getAttachmentsButton = (row: HTMLElement) =>
-  buttonTestUtils.getButtonIn(getAttachmentsFormItem(row), 'Добавить')
-
-const clickAttachmentsButton = async (user: UserEvent, row: HTMLElement) =>
-  user.click(getAttachmentsButton(row))
-
-// loading
-const expectLoadingStarted = () => tableTestUtils.expectLoadingStarted(getContainer())
-const expectLoadingFinished = () => tableTestUtils.expectLoadingFinished(getContainer())
-
-export const testUtils = {
-  getContainer,
-  getRowByRole,
-
-  getEquipmentSelect,
-  setEquipment,
-  openEquipmentSelect,
-  findEquipmentError,
-  expectEquipmentsLoadingFinished,
-
-  getSerialNumberField,
-  setSerialNumber,
-
-  getConditionSelect,
-  setCondition,
-  openConditionSelect,
-  findConditionError,
-
-  getPriceField,
-  setPrice,
-
-  getCurrencySelect,
-  setCurrency,
-  openCurrencySelect,
-
-  getQuantityField,
-  setQuantity,
-
-  getAttachmentsButton,
-  clickAttachmentsButton,
-
-  clickAddEquipmentButton,
-  clickDeleteEquipmentButton,
-
-  expectLoadingStarted,
-  expectLoadingFinished,
-}
 
 describe('Таблица добавления оборудования для перемещения', () => {
   test('Все колонки отображаются', async () => {
@@ -169,8 +17,8 @@ describe('Таблица добавления оборудования для п
       </Form>,
     )
 
-    await testUtils.clickAddEquipmentButton(user)
-    const container = testUtils.getContainer()
+    await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+    const container = relocationEquipmentDraftEditableTableTestUtils.getContainer()
     const equipmentCol = tableTestUtils.getHeadCell(container, 'Оборудование')
     const serialNumberCol = tableTestUtils.getHeadCell(container, 'Серийный номер')
     const conditionCol = tableTestUtils.getHeadCell(container, 'Состояние')
@@ -195,8 +43,8 @@ describe('Таблица добавления оборудования для п
       </Form>,
     )
 
-    await testUtils.clickAddEquipmentButton(user)
-    const row = testUtils.getRowByRole()
+    await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+    const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
     expect(row).toBeInTheDocument()
   })
 
@@ -207,9 +55,9 @@ describe('Таблица добавления оборудования для п
       </Form>,
     )
 
-    await testUtils.clickAddEquipmentButton(user)
-    const row = testUtils.getRowByRole()
-    await testUtils.clickDeleteEquipmentButton(user, row)
+    await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+    const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
+    await relocationEquipmentDraftEditableTableTestUtils.clickDeleteEquipmentButton(user, row)
     expect(row).not.toBeInTheDocument()
   })
 
@@ -220,9 +68,9 @@ describe('Таблица добавления оборудования для п
       </Form>,
     )
 
-    await testUtils.clickAddEquipmentButton(user)
-    const row = testUtils.getRowByRole()
-    const field = testUtils.getEquipmentSelect(row)
+    await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+    const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
+    const field = relocationEquipmentDraftEditableTableTestUtils.getEquipmentSelect(row)
 
     expect(field).toBeInTheDocument()
     expect(field).toBeEnabled()
@@ -235,9 +83,9 @@ describe('Таблица добавления оборудования для п
       </Form>,
     )
 
-    await testUtils.clickAddEquipmentButton(user)
-    const row = testUtils.getRowByRole()
-    const field = testUtils.getSerialNumberField(row)
+    await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+    const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
+    const field = relocationEquipmentDraftEditableTableTestUtils.getSerialNumberField(row)
 
     expect(field).toBeInTheDocument()
     expect(field).toBeDisabled()
@@ -250,9 +98,9 @@ describe('Таблица добавления оборудования для п
       </Form>,
     )
 
-    await testUtils.clickAddEquipmentButton(user)
-    const row = testUtils.getRowByRole()
-    const field = testUtils.getConditionSelect(row)
+    await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+    const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
+    const field = relocationEquipmentDraftEditableTableTestUtils.getConditionSelect(row)
 
     expect(field).toBeInTheDocument()
     expect(field).toBeEnabled()
@@ -265,9 +113,9 @@ describe('Таблица добавления оборудования для п
       </Form>,
     )
 
-    await testUtils.clickAddEquipmentButton(user)
-    const row = testUtils.getRowByRole()
-    const field = testUtils.getPriceField(row)
+    await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+    const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
+    const field = relocationEquipmentDraftEditableTableTestUtils.getPriceField(row)
 
     expect(field).toBeInTheDocument()
     expect(field).toBeEnabled()
@@ -280,9 +128,9 @@ describe('Таблица добавления оборудования для п
       </Form>,
     )
 
-    await testUtils.clickAddEquipmentButton(user)
-    const row = testUtils.getRowByRole()
-    const field = testUtils.getCurrencySelect(row)
+    await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+    const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
+    const field = relocationEquipmentDraftEditableTableTestUtils.getCurrencySelect(row)
 
     expect(field).toBeInTheDocument()
     expect(field).toBeEnabled()
@@ -295,9 +143,9 @@ describe('Таблица добавления оборудования для п
       </Form>,
     )
 
-    await testUtils.clickAddEquipmentButton(user)
-    const row = testUtils.getRowByRole()
-    const field = testUtils.getQuantityField(row)
+    await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+    const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
+    const field = relocationEquipmentDraftEditableTableTestUtils.getQuantityField(row)
 
     expect(field).toBeInTheDocument()
     expect(field).toBeDisabled()
@@ -316,11 +164,11 @@ describe('Таблица добавления оборудования для п
         </Form>,
       )
 
-      await testUtils.clickAddEquipmentButton(user)
-      const row = testUtils.getRowByRole()
+      await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+      const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
 
-      await testUtils.openEquipmentSelect(user, row)
-      await testUtils.setEquipment(
+      await relocationEquipmentDraftEditableTableTestUtils.openEquipmentSelect(user, row)
+      await relocationEquipmentDraftEditableTableTestUtils.setEquipment(
         user,
         makeString(
           ', ',
@@ -330,7 +178,7 @@ describe('Таблица добавления оборудования для п
         ),
       )
 
-      const button = testUtils.getAttachmentsButton(row)
+      const button = relocationEquipmentDraftEditableTableTestUtils.getAttachmentsButton(row)
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
     })
@@ -342,9 +190,9 @@ describe('Таблица добавления оборудования для п
         </Form>,
       )
 
-      await testUtils.clickAddEquipmentButton(user)
-      const row = testUtils.getRowByRole()
-      const button = testUtils.getAttachmentsButton(row)
+      await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+      const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
+      const button = relocationEquipmentDraftEditableTableTestUtils.getAttachmentsButton(row)
       expect(button).toBeDisabled()
     })
 
@@ -360,10 +208,10 @@ describe('Таблица добавления оборудования для п
         </Form>,
       )
 
-      await testUtils.clickAddEquipmentButton(user)
-      const row = testUtils.getRowByRole()
-      await testUtils.openEquipmentSelect(user, row)
-      await testUtils.setEquipment(
+      await relocationEquipmentDraftEditableTableTestUtils.clickAddEquipmentButton(user)
+      const row = relocationEquipmentDraftEditableTableTestUtils.getRowByRole()
+      await relocationEquipmentDraftEditableTableTestUtils.openEquipmentSelect(user, row)
+      await relocationEquipmentDraftEditableTableTestUtils.setEquipment(
         user,
         makeString(
           ', ',
@@ -372,7 +220,7 @@ describe('Таблица добавления оборудования для п
           inventorizationEquipmentListItem.equipment.inventoryNumber,
         ),
       )
-      await testUtils.clickAttachmentsButton(user, row)
+      await relocationEquipmentDraftEditableTableTestUtils.clickAttachmentsButton(user, row)
 
       expect(props.onClickCreateImage).toBeCalledTimes(1)
       expect(props.onClickCreateImage).toBeCalledWith(expect.anything())
