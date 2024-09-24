@@ -1,7 +1,4 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { Form } from 'antd'
-import pick from 'lodash/pick'
 import moment from 'moment-timezone'
 
 import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
@@ -16,6 +13,8 @@ import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehous
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
+import { props } from '_tests_/features/warehouse/RelocationTaskForm/constants'
+import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/RelocationTaskForm/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'
 import {
@@ -25,278 +24,9 @@ import {
   mockGetUsersSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import {
-  buttonTestUtils,
-  fakeWord,
-  getStoreWithAuth,
-  render,
-  selectTestUtils,
-  setupApiTests,
-} from '_tests_/utils'
+import { fakeWord, getStoreWithAuth, render, selectTestUtils, setupApiTests } from '_tests_/utils'
 
 import RelocationTaskForm from './index'
-import { RelocationTaskFormProps } from './types'
-
-const props: RelocationTaskFormProps = {
-  isLoading: false,
-  authUser: pick(userFixtures.user(), 'id'),
-  permissions: {},
-
-  onUploadImage: jest.fn(),
-  imageIsUploading: false,
-  onDeleteImage: jest.fn(),
-  imageIsDeleting: false,
-  imagesIsLoading: false,
-
-  users: [],
-  usersIsLoading: false,
-
-  usersGroups: [],
-  usersGroupsIsLoading: false,
-
-  relocateFromLocations: [],
-  relocateFromLocationListIsLoading: false,
-  relocateToLocations: [],
-  relocateToLocationListIsLoading: false,
-
-  controllerIsRequired: true,
-
-  type: RelocationTaskTypeEnum.Relocation,
-  onChangeType: jest.fn(),
-
-  onChangeRelocateTo: jest.fn(),
-  onChangeRelocateFrom: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('relocation-task-form')
-
-// deadline at field
-const getDeadlineAtFormItem = () => within(getContainer()).getByTestId('deadline-at-form-item')
-const getDeadlineAtTitle = () => within(getDeadlineAtFormItem()).getByTitle('Срок выполнения')
-
-const getDeadlineAtDateFormItem = () =>
-  within(getDeadlineAtFormItem()).getByTestId('deadline-at-date-form-item')
-
-const getDeadlineAtDateField = (): HTMLInputElement =>
-  within(getDeadlineAtDateFormItem()).getByPlaceholderText('Выберите дату')
-
-const findDeadlineAtDateError = (text: string) =>
-  within(getDeadlineAtDateFormItem()).findByText(text)
-
-const setDeadlineAtDate = async (user: UserEvent, value: string) => {
-  const field = getDeadlineAtDateField()
-  await user.type(field, value)
-  await user.tab()
-  return field
-}
-
-const clearDeadlineAtDate = async (user: UserEvent) => {
-  const formItem = getDeadlineAtDateFormItem()
-  await buttonTestUtils.clickCloseButtonIn(formItem, user)
-}
-
-const getDeadlineAtTimeFormItem = () =>
-  within(getDeadlineAtFormItem()).getByTestId('deadline-at-time-form-item')
-
-const getDeadlineAtTimeField = (): HTMLInputElement =>
-  within(getDeadlineAtTimeFormItem()).getByPlaceholderText('Время')
-
-const findDeadlineAtTimeError = (text: string) =>
-  within(getDeadlineAtTimeFormItem()).findByText(text)
-
-const setDeadlineAtTime = async (user: UserEvent, value: string) => {
-  const field = getDeadlineAtTimeField()
-  await user.type(field, value)
-  await user.tab()
-  return field
-}
-
-const clearDeadlineAtTime = async (user: UserEvent) => {
-  const formItem = getDeadlineAtTimeFormItem()
-  await buttonTestUtils.clickCloseButtonIn(formItem, user)
-}
-
-// executor field
-const getExecutorFormItem = () => within(getContainer()).getByTestId('executors-form-item')
-const getExecutorSelectInput = () => selectTestUtils.getSelect(getExecutorFormItem())
-const setExecutor = selectTestUtils.clickSelectOption
-const findExecutorError = (text: string) => within(getExecutorFormItem()).findByText(text)
-
-const openExecutorSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getExecutorFormItem())
-
-const getSelectedExecutor = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getExecutorFormItem(), title)
-
-const querySelectedExecutor = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getExecutorFormItem(), title)
-
-const getExecutorOption = (name: string | RegExp) =>
-  selectTestUtils.getSelectOption(name, screen.getByTestId('executors-select-dropdown'))
-
-const queryExecutorOption = (name: string | RegExp) =>
-  selectTestUtils.querySelectOption(name, screen.getByTestId('executors-select-dropdown'))
-
-const expectExecutorsLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getControllerFormItem())
-
-// controller field
-const getControllerFormItem = () => within(getContainer()).getByTestId('controller-form-item')
-const getControllerSelectInput = () => selectTestUtils.getSelect(getControllerFormItem())
-const setController = selectTestUtils.clickSelectOption
-const findControllerError = (text: string) => within(getControllerFormItem()).findByText(text)
-
-const openControllerSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getControllerFormItem())
-
-const getSelectedController = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getControllerFormItem(), title)
-
-const querySelectedController = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getControllerFormItem(), title)
-
-const getControllerOption = (name: string | RegExp) =>
-  selectTestUtils.getSelectOption(name, screen.getByTestId('controller-select-dropdown'))
-
-const queryControllerOption = (name: string | RegExp) =>
-  selectTestUtils.querySelectOption(name, screen.getByTestId('controller-select-dropdown'))
-
-const expectControllersLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getControllerFormItem())
-
-// type field
-const getTypeFormItem = () => within(getContainer()).getByTestId('type-form-item')
-const getTypeSelectInput = () => selectTestUtils.getSelect(getTypeFormItem())
-const openTypeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getTypeFormItem())
-const setType = selectTestUtils.clickSelectOption
-const getSelectedType = () => selectTestUtils.getSelectedOption(getTypeFormItem())
-const findTypeError = async (text: string) => within(getTypeFormItem()).findByText(text)
-
-// relocate from field
-const getRelocateFromFormItem = () => within(getContainer()).getByTestId('relocate-from-form-item')
-const getRelocateFromSelectInput = () => selectTestUtils.getSelect(getRelocateFromFormItem())
-const findRelocateFromError = (text: string) => within(getRelocateFromFormItem()).findByText(text)
-
-const setRelocateFrom = (user: UserEvent, name: string) =>
-  selectTestUtils.clickSelectOption(user, name, undefined, 'relocate-from-select-dropdown')
-
-const openRelocateFromSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getRelocateFromFormItem())
-
-const getSelectedRelocateFrom = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getRelocateFromFormItem(), title)
-
-const querySelectedRelocateFrom = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getRelocateFromFormItem(), title)
-
-const expectRelocateFromLoadingStarted = () =>
-  selectTestUtils.expectLoadingStarted(getRelocateFromFormItem())
-
-const expectRelocateFromLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getRelocateFromFormItem())
-
-// relocate to field
-const getRelocateToFormItem = () => within(getContainer()).getByTestId('relocate-to-form-item')
-const getRelocateToSelectInput = () => selectTestUtils.getSelect(getRelocateToFormItem())
-
-const setRelocateTo = (user: UserEvent, name: string) =>
-  selectTestUtils.clickSelectOption(user, name, undefined, 'relocate-to-select-dropdown')
-
-const openRelocateToSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getRelocateToFormItem())
-
-const getSelectedRelocateTo = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getRelocateToFormItem(), title)
-
-const querySelectedRelocateTo = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getRelocateToFormItem(), title)
-
-const expectRelocateToLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getRelocateToFormItem())
-
-// comment field
-const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
-const getCommentTitle = () => within(getCommentFormItem()).getByTitle('Комментарий')
-const findCommentError = (text: string) => within(getCommentFormItem()).findByText(text)
-
-const getCommentField = () =>
-  within(getCommentFormItem()).getByPlaceholderText('Добавьте комментарий')
-
-const setComment = async (user: UserEvent, value: string) => {
-  const field = getCommentField()
-  await user.type(field, value)
-  return field
-}
-
-// attachments
-const getAttachmentsBlock = () => within(getContainer()).getByTestId('attachments')
-const queryAttachmentsBlock = () => within(getContainer()).queryByTestId('attachments')
-
-export const testUtils = {
-  getContainer,
-
-  getTypeSelectInput,
-  openTypeSelect,
-  setType,
-  findTypeError,
-  getSelectedType,
-
-  getDeadlineAtTitle,
-  getDeadlineAtDateFormItem,
-  getDeadlineAtDateField,
-  findDeadlineAtDateError,
-  setDeadlineAtDate,
-  clearDeadlineAtDate,
-
-  getDeadlineAtTimeField,
-  findDeadlineAtTimeError,
-  setDeadlineAtTime,
-  clearDeadlineAtTime,
-
-  getRelocateFromSelectInput,
-  openRelocateFromSelect,
-  setRelocateFrom,
-  getSelectedRelocateFrom,
-  querySelectedRelocateFrom,
-  findRelocateFromError,
-  expectRelocateFromLoadingStarted,
-  expectRelocateFromLoadingFinished,
-
-  getRelocateToSelectInput,
-  openRelocateToSelect,
-  setRelocateTo,
-  getSelectedRelocateTo,
-  querySelectedRelocateTo,
-  expectRelocateToLoadingFinished,
-
-  getExecutorSelectInput,
-  openExecutorSelect,
-  setExecutor,
-  getSelectedExecutor,
-  querySelectedExecutor,
-  findExecutorError,
-  getExecutorOption,
-  queryExecutorOption,
-  expectExecutorsLoadingFinished,
-
-  getControllerSelectInput,
-  setController,
-  findControllerError,
-  openControllerSelect,
-  getSelectedController,
-  querySelectedController,
-  getControllerOption,
-  queryControllerOption,
-  expectControllersLoadingFinished,
-
-  getCommentTitle,
-  getCommentField,
-  findCommentError,
-  setComment,
-
-  getAttachmentsBlock,
-  queryAttachmentsBlock,
-}
 
 setupApiTests()
 
@@ -310,8 +40,8 @@ describe('Форма создания заявки на перемещение �
           </Form>,
         )
 
-        const title = testUtils.getDeadlineAtTitle()
-        const field = testUtils.getDeadlineAtDateField()
+        const title = relocationTaskFormTestUtils.getDeadlineAtTitle()
+        const field = relocationTaskFormTestUtils.getDeadlineAtDateField()
 
         expect(title).toBeInTheDocument()
         expect(field).toBeInTheDocument()
@@ -327,7 +57,7 @@ describe('Форма создания заявки на перемещение �
         )
 
         const value = formatDate(moment(), DATE_PICKER_FORMAT)
-        const field = await testUtils.setDeadlineAtDate(user, value)
+        const field = await relocationTaskFormTestUtils.setDeadlineAtDate(user, value)
 
         expect(field).toHaveDisplayValue(value)
       })
@@ -345,9 +75,11 @@ describe('Форма создания заявки на перемещение �
             }),
           })
 
-          await testUtils.clearDeadlineAtDate(user)
+          await relocationTaskFormTestUtils.clearDeadlineAtDate(user)
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
-          const error = await testUtils.findDeadlineAtDateError(validationMessages.required)
+          const error = await relocationTaskFormTestUtils.findDeadlineAtDateError(
+            validationMessages.required,
+          )
 
           expect(error).toBeInTheDocument()
         })
@@ -360,8 +92,8 @@ describe('Форма создания заявки на перемещение �
           )
 
           const value = formatDate(moment().subtract(1, 'day'), DATE_PICKER_FORMAT)
-          await testUtils.setDeadlineAtDate(user, value)
-          const error = await testUtils.findDeadlineAtDateError(
+          await relocationTaskFormTestUtils.setDeadlineAtDate(user, value)
+          const error = await relocationTaskFormTestUtils.findDeadlineAtDateError(
             validationMessages.date.canNotBeInPast,
           )
 
@@ -378,7 +110,7 @@ describe('Форма создания заявки на перемещение �
           </Form>,
         )
 
-        const field = testUtils.getDeadlineAtTimeField()
+        const field = relocationTaskFormTestUtils.getDeadlineAtTimeField()
 
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
@@ -393,7 +125,7 @@ describe('Форма создания заявки на перемещение �
         )
 
         const value = formatDate(moment(), TIME_PICKER_FORMAT)
-        const field = await testUtils.setDeadlineAtTime(user, value)
+        const field = await relocationTaskFormTestUtils.setDeadlineAtTime(user, value)
 
         expect(field).toHaveDisplayValue(value)
       })
@@ -411,9 +143,11 @@ describe('Форма создания заявки на перемещение �
             }),
           })
 
-          await testUtils.clearDeadlineAtTime(user)
+          await relocationTaskFormTestUtils.clearDeadlineAtTime(user)
           await createRelocationTaskPageTestUtils.clickSubmitButton(user)
-          const error = await testUtils.findDeadlineAtTimeError(validationMessages.required)
+          const error = await relocationTaskFormTestUtils.findDeadlineAtTimeError(
+            validationMessages.required,
+          )
 
           expect(error).toBeInTheDocument()
         })
@@ -427,12 +161,12 @@ describe('Форма создания заявки на перемещение �
           )
 
           const dateValue = formatDate(moment(), DATE_PICKER_FORMAT)
-          await testUtils.setDeadlineAtDate(user, dateValue)
+          await relocationTaskFormTestUtils.setDeadlineAtDate(user, dateValue)
 
           const timeValue = formatDate(moment().subtract(1, 'hour'), TIME_PICKER_FORMAT)
-          await testUtils.setDeadlineAtTime(user, timeValue)
+          await relocationTaskFormTestUtils.setDeadlineAtTime(user, timeValue)
 
-          const error = await testUtils.findDeadlineAtTimeError(
+          const error = await relocationTaskFormTestUtils.findDeadlineAtTimeError(
             validationMessages.time.canNotBeInPast,
           )
 
@@ -450,9 +184,9 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      const input = testUtils.getTypeSelectInput()
-      await testUtils.openTypeSelect(user)
-      const selectedType = testUtils.getSelectedType()
+      const input = relocationTaskFormTestUtils.getTypeSelectInput()
+      await relocationTaskFormTestUtils.openTypeSelect(user)
+      const selectedType = relocationTaskFormTestUtils.getSelectedType()
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -472,9 +206,12 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      await testUtils.openTypeSelect(user)
-      await testUtils.setType(user, relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation])
-      const selectedOption = testUtils.getSelectedType()
+      await relocationTaskFormTestUtils.openTypeSelect(user)
+      await relocationTaskFormTestUtils.setType(
+        user,
+        relocationTaskTypeDict[RelocationTaskTypeEnum.Relocation],
+      )
+      const selectedOption = relocationTaskFormTestUtils.getSelectedType()
 
       expect(selectedOption).toBeInTheDocument()
     })
@@ -491,9 +228,11 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      const input = testUtils.getRelocateFromSelectInput()
-      await testUtils.openRelocateFromSelect(user)
-      const selectedRelocateFrom = testUtils.querySelectedRelocateFrom(locationListItem.title)
+      const input = relocationTaskFormTestUtils.getRelocateFromSelectInput()
+      await relocationTaskFormTestUtils.openRelocateFromSelect(user)
+      const selectedRelocateFrom = relocationTaskFormTestUtils.querySelectedRelocateFrom(
+        locationListItem.title,
+      )
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -513,9 +252,11 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      await testUtils.openRelocateFromSelect(user)
-      await testUtils.setRelocateFrom(user, locationListItem.title)
-      const selectedRelocateFrom = testUtils.getSelectedRelocateFrom(locationListItem.title)
+      await relocationTaskFormTestUtils.openRelocateFromSelect(user)
+      await relocationTaskFormTestUtils.setRelocateFrom(user, locationListItem.title)
+      const selectedRelocateFrom = relocationTaskFormTestUtils.getSelectedRelocateFrom(
+        locationListItem.title,
+      )
 
       expect(selectedRelocateFrom).toBeInTheDocument()
     })
@@ -533,7 +274,9 @@ describe('Форма создания заявки на перемещение �
       })
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
-      const error = await testUtils.findRelocateFromError(validationMessages.required)
+      const error = await relocationTaskFormTestUtils.findRelocateFromError(
+        validationMessages.required,
+      )
 
       expect(error).toBeInTheDocument()
     })
@@ -550,9 +293,11 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      const input = testUtils.getRelocateToSelectInput()
-      await testUtils.openRelocateToSelect(user)
-      const selectedRelocateTo = testUtils.querySelectedRelocateTo(locationListItem.title)
+      const input = relocationTaskFormTestUtils.getRelocateToSelectInput()
+      await relocationTaskFormTestUtils.openRelocateToSelect(user)
+      const selectedRelocateTo = relocationTaskFormTestUtils.querySelectedRelocateTo(
+        locationListItem.title,
+      )
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -572,9 +317,11 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      await testUtils.openRelocateToSelect(user)
-      await testUtils.setRelocateTo(user, locationListItem.title)
-      const selectedRelocateTo = testUtils.getSelectedRelocateTo(locationListItem.title)
+      await relocationTaskFormTestUtils.openRelocateToSelect(user)
+      await relocationTaskFormTestUtils.setRelocateTo(user, locationListItem.title)
+      const selectedRelocateTo = relocationTaskFormTestUtils.getSelectedRelocateTo(
+        locationListItem.title,
+      )
 
       expect(selectedRelocateTo).toBeInTheDocument()
     })
@@ -591,9 +338,11 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      const input = testUtils.getExecutorSelectInput()
-      await testUtils.openExecutorSelect(user)
-      const selectedExecutor = testUtils.querySelectedExecutor(userListItem.fullName)
+      const input = relocationTaskFormTestUtils.getExecutorSelectInput()
+      await relocationTaskFormTestUtils.openExecutorSelect(user)
+      const selectedExecutor = relocationTaskFormTestUtils.querySelectedExecutor(
+        userListItem.fullName,
+      )
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -613,9 +362,11 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      await testUtils.openExecutorSelect(user)
-      await testUtils.setExecutor(user, userListItem.fullName)
-      const selectedExecutor = testUtils.getSelectedExecutor(userListItem.fullName)
+      await relocationTaskFormTestUtils.openExecutorSelect(user)
+      await relocationTaskFormTestUtils.setExecutor(user, userListItem.fullName)
+      const selectedExecutor = relocationTaskFormTestUtils.getSelectedExecutor(
+        userListItem.fullName,
+      )
 
       expect(selectedExecutor).toBeInTheDocument()
     })
@@ -633,7 +384,7 @@ describe('Форма создания заявки на перемещение �
       })
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
-      const error = await testUtils.findExecutorError(validationMessages.required)
+      const error = await relocationTaskFormTestUtils.findExecutorError(validationMessages.required)
 
       expect(error).toBeInTheDocument()
     })
@@ -650,9 +401,11 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      const input = testUtils.getControllerSelectInput()
-      await testUtils.openControllerSelect(user)
-      const selectedController = testUtils.querySelectedController(userListItem.fullName)
+      const input = relocationTaskFormTestUtils.getControllerSelectInput()
+      await relocationTaskFormTestUtils.openControllerSelect(user)
+      const selectedController = relocationTaskFormTestUtils.querySelectedController(
+        userListItem.fullName,
+      )
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -672,9 +425,11 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      await testUtils.openControllerSelect(user)
-      await testUtils.setController(user, userListItem.fullName)
-      const selectedController = testUtils.getSelectedController(userListItem.fullName)
+      await relocationTaskFormTestUtils.openControllerSelect(user)
+      await relocationTaskFormTestUtils.setController(user, userListItem.fullName)
+      const selectedController = relocationTaskFormTestUtils.getSelectedController(
+        userListItem.fullName,
+      )
 
       expect(selectedController).toBeInTheDocument()
     })
@@ -688,7 +443,9 @@ describe('Форма создания заявки на перемещение �
       const { user } = render(<CreateRelocationTaskPage />)
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
-      const error = await testUtils.findControllerError(validationMessages.required)
+      const error = await relocationTaskFormTestUtils.findControllerError(
+        validationMessages.required,
+      )
 
       expect(error).toBeInTheDocument()
     })
@@ -702,7 +459,9 @@ describe('Форма создания заявки на перемещение �
       const { user } = render(<CreateRelocationTaskPage />)
 
       await createRelocationTaskPageTestUtils.clickSubmitButton(user)
-      const error = await testUtils.findControllerError(validationMessages.required)
+      const error = await relocationTaskFormTestUtils.findControllerError(
+        validationMessages.required,
+      )
 
       expect(error).toBeInTheDocument()
     })
@@ -716,8 +475,8 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      const title = testUtils.getCommentTitle()
-      const field = testUtils.getCommentField()
+      const title = relocationTaskFormTestUtils.getCommentTitle()
+      const field = relocationTaskFormTestUtils.getCommentField()
 
       expect(title).toBeInTheDocument()
       expect(field).toBeInTheDocument()
@@ -733,7 +492,7 @@ describe('Форма создания заявки на перемещение �
       )
 
       const value = fakeWord()
-      const field = await testUtils.setComment(user, value)
+      const field = await relocationTaskFormTestUtils.setComment(user, value)
 
       expect(field).toHaveDisplayValue(value)
     })
@@ -746,8 +505,10 @@ describe('Форма создания заявки на перемещение �
           </Form>,
         )
 
-        await testUtils.setComment(user, ' ')
-        const error = await testUtils.findCommentError(validationMessages.canNotBeEmpty)
+        await relocationTaskFormTestUtils.setComment(user, ' ')
+        const error = await relocationTaskFormTestUtils.findCommentError(
+          validationMessages.canNotBeEmpty,
+        )
 
         expect(error).toBeInTheDocument()
       })
@@ -762,7 +523,7 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      const attachmentsBlock = testUtils.getAttachmentsBlock()
+      const attachmentsBlock = relocationTaskFormTestUtils.getAttachmentsBlock()
       expect(attachmentsBlock).toBeInTheDocument()
     })
 
@@ -773,7 +534,7 @@ describe('Форма создания заявки на перемещение �
         </Form>,
       )
 
-      const attachmentsBlock = testUtils.queryAttachmentsBlock()
+      const attachmentsBlock = relocationTaskFormTestUtils.queryAttachmentsBlock()
       expect(attachmentsBlock).not.toBeInTheDocument()
     })
   })

@@ -2,7 +2,6 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import {
   getEquipmentListTemplateErrMsg,
   importEquipmentsByFileErrMsg,
@@ -16,6 +15,7 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import { createEquipmentsByFileModalTestUtils } from '_tests_/features/warehouse/CreateEquipmentsByFileModal/testUtils'
 import { relocationEquipmentEditableTableTestUtils } from '_tests_/features/warehouse/RelocationEquipmentEditableTable/testUtils'
+import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/RelocationTaskForm/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
