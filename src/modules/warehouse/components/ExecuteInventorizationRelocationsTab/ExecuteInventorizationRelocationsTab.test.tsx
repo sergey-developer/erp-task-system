@@ -7,6 +7,7 @@ import CreateRelocationTaskDraftPage from 'modules/warehouse/pages/CreateRelocat
 import { testUtils as createRelocationTaskDraftPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskDraftPage/CreateRelocationTaskDraftPage.test'
 
 import { props } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/constants'
+import { executeInventorizationRelocationsTabTestUtils } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { getStoreWithAuth, render, renderWithRouter } from '_tests_/utils'

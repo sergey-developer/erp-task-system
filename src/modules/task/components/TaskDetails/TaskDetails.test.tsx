@@ -43,7 +43,7 @@ import {
   props,
   showChangeInfrastructureButton,
 } from '_tests_/features/tasks/components/TaskDetails/constants'
-import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtls'
+import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
 import { taskReclassificationRequestTestUtils } from '_tests_/features/tasks/components/TaskReclassificationRequest/testUtils'
 import { taskSuspendRequestTestUtils } from '_tests_/features/tasks/components/TaskSuspendRequest/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'

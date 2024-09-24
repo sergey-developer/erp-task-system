@@ -1,23 +1,34 @@
-import { waitFor } from '@testing-library/react';
-import { camelize } from 'humps';
-import moment from 'moment-timezone';
+import { waitFor } from '@testing-library/react'
+import { camelize } from 'humps'
+import moment from 'moment-timezone'
 
+import {
+  searchFieldDict,
+  taskAssignedDict,
+  taskOverdueDict,
+} from 'modules/task/components/TasksFilter/constants'
+import {
+  FastFilterEnum,
+  TaskActionsPermissionsEnum,
+  taskExtendedStatusDict,
+  TaskOlaStatusEnum,
+} from 'modules/task/constants/task'
+import { TaskCountersKeys } from 'modules/task/models'
+import {
+  taskLocalStorageService,
+  TasksFiltersStorageType,
+} from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
+import { UserPermissionsEnum } from 'modules/user/constants'
+import { getFullUserName } from 'modules/user/utils'
 
-
-import { searchFieldDict, taskAssignedDict, taskOverdueDict } from 'modules/task/components/TasksFilter/constants';
-import { FastFilterEnum, TaskActionsPermissionsEnum, taskExtendedStatusDict, TaskOlaStatusEnum } from 'modules/task/constants/task';
-import { TaskCountersKeys } from 'modules/task/models';
-import { taskLocalStorageService, TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service';
-import { UserPermissionsEnum } from 'modules/user/constants';
-import { getFullUserName } from 'modules/user/utils';
-
-
-
-import { executeTaskModalTestUtils } from '_tests_/features/tasks/components/ExecuteTaskModal/testUtils';
-import { fastFilterListTestUtils } from '_tests_/features/tasks/components/FastFilters/testUtils';
-import { activeAssignOnMeButtonProps, canSelectAssigneeProps } from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/constants';
-import { assigneeBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/testUtils';
-import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/testUtils';
+import { executeTaskModalTestUtils } from '_tests_/features/tasks/components/ExecuteTaskModal/testUtils'
+import { fastFilterListTestUtils } from '_tests_/features/tasks/components/FastFilters/testUtils'
+import {
+  activeAssignOnMeButtonProps,
+  canSelectAssigneeProps,
+} from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/constants'
+import { assigneeBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/testUtils'
+import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/testUtils'
 import {
   showFirstLineButtonProps,
   showSecondLineButtonProps,
@@ -25,28 +36,47 @@ import {
 import { workGroupBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/WorkGroupBlock/testUtils'
 import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
 import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/components/TaskFirstLineModal/testUtils'
-import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils';
-import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils';
-import { tasksFilterTestUtils } from '_tests_/features/tasks/components/TasksFilter/testUtils';
-import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/components/TasksFiltersStorage/testUtils';
-import { updateTasksButtonTestUtils } from '_tests_/features/tasks/components/UpdateTasksButton/testUtils';
-import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils';
-imprt commonFixtures from '_tests_/fixtures/common';
-import macroregionFixtures from '_tests_/fixtures/macroregion';
-import supportGroupFixtures from '_tests_/fixtures/supportGroup';
-import taskFixtures from '_tests_/fixtures/task';
-import userFixtures from '_tests_/fixtures/user';
-import warehouseFixtures from '_tests_/fixtures/warehouse';
-import workGroupFixtures from '_tests_/fixtures/workGroup';
-import { mockDeleteTaskWorkGroupSuccess, mockGetCustomerListSuccess, mockGetMacroregionsSuccess, mockGetSupportGroupListSuccess, mockGetTaskCountersSuccess, mockGetTasksSuccess, mockGetTaskSuccess, mockGetUserActionsSuccess, mockGetUsersSuccess, mockGetWorkGroupsSuccess, mockResolveTaskSuccess, mockTakeTaskSuccess, mockUpdateTaskAssigneeSuccess, mockUpdateTaskWorkGroupSuccess } from '_tests_/mocks/api';
-import { getUserMeQueryMock } from '_tests_/mocks/state/user';
-import { fakeId, fakeWord, getStoreWithAuth, render, selectTestUtils, setupApiTests } from '_tests_/utils';
+import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils'
+import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
+import { tasksFilterTestUtils } from '_tests_/features/tasks/components/TasksFilter/testUtils'
+import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/components/TasksFiltersStorage/testUtils'
+import { updateTasksButtonTestUtils } from '_tests_/features/tasks/components/UpdateTasksButton/testUtils'
+import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
+import commonFixtures from '_tests_/fixtures/common/index'
+import macroregionFixtures from '_tests_/fixtures/macroregion'
+import supportGroupFixtures from '_tests_/fixtures/supportGroup'
+import taskFixtures from '_tests_/fixtures/task'
+import userFixtures from '_tests_/fixtures/user'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
+import workGroupFixtures from '_tests_/fixtures/workGroup'
+import {
+  mockDeleteTaskWorkGroupSuccess,
+  mockGetCustomerListSuccess,
+  mockGetMacroregionsSuccess,
+  mockGetSupportGroupListSuccess,
+  mockGetTaskCountersSuccess,
+  mockGetTasksSuccess,
+  mockGetTaskSuccess,
+  mockGetUserActionsSuccess,
+  mockGetUsersSuccess,
+  mockGetWorkGroupsSuccess,
+  mockResolveTaskSuccess,
+  mockTakeTaskSuccess,
+  mockUpdateTaskAssigneeSuccess,
+  mockUpdateTaskWorkGroupSuccess,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/state/user'
+import {
+  fakeId,
+  fakeWord,
+  getStoreWithAuth,
+  render,
+  selectTestUtils,
+  setupApiTests,
+} from '_tests_/utils'
 
-
-
-import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants';
-import TasksPage from './index';
-
+import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
+import TasksPage from './index'
 
 jest.mock('modules/task/constants/task/tasksUpdateVariants', () => {
   const actualModule = jest.requireActual('modules/task/constants/task/tasksUpdateVariants')
