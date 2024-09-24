@@ -3,8 +3,8 @@ import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 import {
   props,
   tableRow,
-} from '_tests_/features/inventorizationEquipments/CheckInventorizationEquipmentsTable/constants'
-import { checkInventorizationEquipmentsTableTestUtils as testUtils } from '_tests_/features/inventorizationEquipments/CheckInventorizationEquipmentsTable/utils'
+} from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/constants'
+import { checkInventorizationEquipmentsTableTestUtils as testUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/utils'
 import { render } from '_tests_/utils'
 
 import CheckInventorizationEquipmentsTable from './index'
