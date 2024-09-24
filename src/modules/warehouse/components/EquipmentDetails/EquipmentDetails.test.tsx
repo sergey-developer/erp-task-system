@@ -4,7 +4,6 @@ import { testUtils as attachmentImagesTestUtils } from 'modules/attachment/compo
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as technicalExaminationsHistoryModalTestUtils } from 'modules/technicalExaminations/components/TechnicalExaminationsHistoryModal/TechnicalExaminationsHistoryModal.test'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as equipmentRelocationHistoryModalTestUtils } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/EquipmentRelocationHistoryModal.test'
 import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import {
   EquipmentCategoryEnum,
@@ -25,6 +24,7 @@ import { createEquipmentTechnicalExaminationModalTestUtils } from '_tests_/featu
 import { props } from '_tests_/features/warehouse/EquipmentDetails/constants'
 import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/EquipmentDetails/testUtils'
 import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/EquipmentFormModal/testUtils'
+import { equipmentRelocationHistoryModalTestUtils } from '_tests_/features/warehouse/EquipmentRelocationHistoryModal/testUtils'
 import attachmentFixtures from '_tests_/fixtures/attachments'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
