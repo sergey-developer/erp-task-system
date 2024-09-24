@@ -7,13 +7,13 @@ import { testUtils as amountEquipmentSpentReportFilterTestUtils } from 'modules/
 import { testUtils as amountEquipmentSpentReportFormTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportForm/AmountEquipmentSpentReportForm.test'
 import { testUtils as amountEquipmentSpentReportTableTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportTable/AmountEquipmentSpentReportTable.test'
 import { getRelocationColValue } from 'modules/reports/utils'
-import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/EquipmentDetails/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/RelocationTaskDetails/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'

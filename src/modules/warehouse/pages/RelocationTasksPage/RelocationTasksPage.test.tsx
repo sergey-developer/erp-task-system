@@ -2,7 +2,6 @@ import { screen, waitFor } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { testUtils as relocationTaskTableTestUtils } from 'modules/warehouse/components/RelocationTaskTable/RelocationTaskTable.test'
 import { testUtils as relocationTaskListFilterTestUtils } from 'modules/warehouse/components/RelocationTasksFilter/RelocationTasksFilter.test'
 import {
@@ -16,6 +15,7 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { testUtils as createRelocationTaskPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskPage/CreateRelocationTaskPage.test'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/RelocationTaskDetails/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
