@@ -1,10 +1,10 @@
 import { screen, waitFor } from '@testing-library/react'
 
-import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
 import { testUtils as equipmentTableTestUtils } from 'modules/warehouse/components/EquipmentTable/EquipmentTable.test'
 import { getEquipmentsErrMsg } from 'modules/warehouse/constants/equipment'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
+import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/EquipmentDetails/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
