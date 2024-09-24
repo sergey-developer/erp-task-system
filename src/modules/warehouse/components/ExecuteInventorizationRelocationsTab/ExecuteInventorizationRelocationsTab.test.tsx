@@ -1,6 +1,4 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-import pick from 'lodash/pick'
+import { within } from '@testing-library/react'
 
 import { CommonRouteEnum } from 'configs/routes'
 
@@ -8,46 +6,18 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CreateRelocationTaskDraftPage from 'modules/warehouse/pages/CreateRelocationTaskDraftPage'
 import { testUtils as createRelocationTaskDraftPageTestUtils } from 'modules/warehouse/pages/CreateRelocationTaskDraftPage/CreateRelocationTaskDraftPage.test'
 
+import { props } from '_tests_/features/warehouse/ExecuteInventorizationRelocationsTab/constants'
 import userFixtures from '_tests_/fixtures/user'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { buttonTestUtils, getStoreWithAuth, render, renderWithRouter } from '_tests_/utils'
+import { getStoreWithAuth, render, renderWithRouter } from '_tests_/utils'
 
-import ExecuteInventorizationRelocationsTab, {
-  ExecuteInventorizationRelocationsTabProps,
-} from './index'
-
-const props: ExecuteInventorizationRelocationsTabProps = {
-  inventorization: pick(
-    warehouseFixtures.inventorization(),
-    'id',
-    'executor',
-    'status',
-    'type',
-    'deadlineAt',
-    'createdAt',
-    'createdBy',
-    'warehouses',
-  ),
-}
-
-const getContainer = () => screen.getByTestId('execute-inventorization-relocations-tab')
-
-// create task button
-const getCreateTaskButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Создать заявку')
-const clickCreateTaskButton = async (user: UserEvent) => user.click(getCreateTaskButton())
-
-export const testUtils = {
-  getContainer,
-
-  clickCreateTaskButton,
-}
+import ExecuteInventorizationRelocationsTab from './index'
 
 describe('Вкладка списка заявок на перемещение оборудования', () => {
   test('Отображает заголовок', () => {
     render(<ExecuteInventorizationRelocationsTab {...props} />)
 
-    const container = testUtils.getContainer()
+    const container = executeInventorizationRelocationsTabTestUtils.getContainer()
     const title = within(container).getByText('Заявки на перемещение оборудования')
 
     expect(title).toBeInTheDocument()
@@ -74,7 +44,7 @@ describe('Вкладка списка заявок на перемещение �
         },
       )
 
-      await testUtils.clickCreateTaskButton(user)
+      await executeInventorizationRelocationsTabTestUtils.clickCreateTaskButton(user)
       const page = createRelocationTaskDraftPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
