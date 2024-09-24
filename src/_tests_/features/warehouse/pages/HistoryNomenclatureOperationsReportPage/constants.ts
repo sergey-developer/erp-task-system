@@ -1,1 +1,3 @@
-export enum TestIdsEnum {}
+export enum TestIdsEnum {
+  HistoryNomenclatureOperationsReportPage = 'history-nomenclature-operations-report-page',
+}

@@ -6,6 +6,7 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouse/pages/AmountEquipmentSpentReportPage/testUtils'
 import { employeesActionsReportPageTestUtils } from '_tests_/features/warehouse/pages/EmployeesActionsReportPage/testUtils'
+import { historyNomenclatureOperationsReportPageTestUtils } from '_tests_/features/warehouse/pages/HistoryNomenclatureOperationsReportPage/testUtils'
 import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetLocationsCatalogSuccess,
@@ -15,7 +16,6 @@ import { linkTestUtils, renderWithRouter } from '_tests_/utils'
 import AmountEquipmentSpentReportPage from '../AmountEquipmentSpentReportPage'
 import EmployeesActionsReportPage from '../EmployeesActionsReportPage'
 import HistoryNomenclatureOperationsReportPage from '../HistoryNomenclatureOperationsReportPage'
-import { testUtils as historyNomenclatureOperationsReportPageTestUtils } from '../HistoryNomenclatureOperationsReportPage/HistoryNomenclatureOperationsReportPage.test'
 import ReportsCatalogPage from './index'
 
 const getContainer = () => screen.getByTestId('reports-page')
