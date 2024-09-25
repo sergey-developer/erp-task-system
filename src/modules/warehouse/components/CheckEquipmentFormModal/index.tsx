@@ -1,14 +1,10 @@
 import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
 import isArray from 'lodash/isArray'
-import isEmpty from 'lodash/isEmpty'
+import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useEffect, useMemo } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
-import {
-  EquipmentCategoryListItemModel,
-  NomenclatureListItemModel,
-  WarehouseListItemModel,
-} from 'modules/warehouse/models'
+import { EquipmentCategoryListItemModel, NomenclatureListItemModel } from 'modules/warehouse/models'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
 import UploadButton from 'components/Buttons/UploadButton'
@@ -16,24 +12,26 @@ import LoadingArea from 'components/LoadingArea'
 import BaseModal from 'components/Modals/BaseModal'
 
 import { filesFormItemProps } from 'shared/constants/form'
-import { idAndTitleSelectFieldNames, yesNoOptions } from 'shared/constants/selectField'
+import {
+  idAndTitleSelectFieldNames,
+  undefinedSelectOption,
+  yesNoOptions,
+} from 'shared/constants/selectField'
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
-import { filterOptionBy, isFalse, isTrue } from 'shared/utils/common'
-import { getFieldsErrors } from 'shared/utils/form'
+import { filterOptionBy } from 'shared/utils/common'
 
-import { EquipmentFormFields, EquipmentFormModalProps } from './types'
+import { CheckEquipmentFormFields, CheckEquipmentFormModalProps } from './types'
 
 const { TextArea } = Input
 
 // todo: разделить форму как в моб.версии
-const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
-  mode,
+const CheckEquipmentFormModal: FC<CheckEquipmentFormModalProps> = ({
+  isCredited,
 
   isLoading,
   values,
   initialValues,
-  errors,
 
   onUploadImage,
   imageIsUploading,
@@ -45,8 +43,8 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   category,
   onChangeCategory,
 
-  warehouses,
-  warehousesIsLoading,
+  locations,
+  locationsIsLoading,
 
   currencies,
   currenciesIsLoading,
@@ -72,9 +70,8 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   ...props
 }) => {
-  const [form] = Form.useForm<EquipmentFormFields>()
+  const [form] = Form.useForm<CheckEquipmentFormFields>()
   const ownerFormValue = Form.useWatch('owner', form)
-  const ownerIsObermeisterFormValue = Form.useWatch('ownerIsObermeister', form)
 
   const nomenclatureSelected = Boolean(nomenclature)
 
@@ -89,12 +86,6 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
     if (values?.images?.length) form.setFieldsValue({ images: values.images })
   }, [form, values?.images])
 
-  useEffect(() => {
-    if (!isEmpty(errors) && nomenclatureSelected && categorySelected) {
-      form.setFields(getFieldsErrors(errors!))
-    }
-  }, [categorySelected, errors, form, nomenclatureSelected])
-
   const handleChangeCategory = (
     value: IdType,
     option: EquipmentCategoryListItemModel | EquipmentCategoryListItemModel[],
@@ -107,7 +98,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         title: undefined,
         inventoryNumber: undefined,
         serialNumber: undefined,
-        warehouse: undefined,
+        location: undefined,
         condition: undefined,
         quantity: undefined,
         price: undefined,
@@ -117,7 +108,6 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         isRepaired: undefined,
         usageCounter: undefined,
         owner: undefined,
-        ownerIsObermeister: undefined,
         macroregion: undefined,
         purpose: undefined,
         comment: undefined,
@@ -125,7 +115,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
     }
   }
 
-  const onFinish = async ({ ownerIsObermeister, ...values }: EquipmentFormFields) => {
+  const onFinish = async (values: CheckEquipmentFormFields) => {
     await onSubmit(
       {
         ...values,
@@ -138,6 +128,16 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
     )
   }
 
+  const locationsOptions = useMemo(
+    () =>
+      locations.reduce<DefaultOptionType[]>((acc, loc, index) => {
+        if (index === 0 && !categoryIsConsumable) acc.push(undefinedSelectOption)
+        acc.push({ label: loc.title, value: loc.id })
+        return acc
+      }, []),
+    [categoryIsConsumable, locations],
+  )
+
   const okButtonProps = useMemo(
     () => ({ loading: isLoading, disabled: imageIsUploading || imageIsDeleting }),
     [imageIsDeleting, imageIsUploading, isLoading],
@@ -146,11 +146,11 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   return (
     <BaseModal
       {...props}
-      data-testid='equipment-form-modal'
+      data-testid='check-equipment-form-modal'
       okButtonProps={okButtonProps}
       onOk={form.submit}
     >
-      <Form<EquipmentFormFields>
+      <Form<CheckEquipmentFormFields>
         form={form}
         initialValues={initialValues}
         layout='vertical'
@@ -220,7 +220,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 </Form.Item>
               )}
 
-              {nomenclature?.equipmentHasSerialNumber && (
+              {!categoryIsConsumable && nomenclature?.equipmentHasSerialNumber && (
                 <Form.Item
                   data-testid='serial-number-form-item'
                   label='Серийный номер'
@@ -231,30 +231,27 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 </Form.Item>
               )}
 
-              {mode === 'edit' && (
-                <Form.Item
-                  data-testid='warehouse-form-item'
-                  label='Склад'
-                  name='warehouse'
-                  rules={onlyRequiredRules}
-                >
-                  <Select<IdType, WarehouseListItemModel>
-                    placeholder='Выберите склад'
-                    fieldNames={idAndTitleSelectFieldNames}
-                    options={warehouses}
-                    loading={warehousesIsLoading}
-                    disabled={isLoading || warehousesIsLoading}
-                    showSearch
-                    filterOption={filterOptionBy('title')}
-                  />
-                </Form.Item>
-              )}
+              <Form.Item
+                data-testid='location-form-item'
+                label='Местонахождение'
+                name='location'
+                rules={onlyRequiredRules}
+              >
+                <Select
+                  placeholder='Выберите Местонахождение'
+                  options={locationsOptions}
+                  loading={locationsIsLoading}
+                  disabled={isLoading || locationsIsLoading}
+                  showSearch
+                  filterOption={filterOptionBy('label')}
+                />
+              </Form.Item>
 
               <Form.Item
                 data-testid='condition-form-item'
                 label='Состояние'
                 name='condition'
-                rules={onlyRequiredRules}
+                rules={categoryIsConsumable || !isCredited ? onlyRequiredRules : undefined}
               >
                 <Select
                   placeholder='Выберите состояние'
@@ -276,7 +273,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         <InputNumber
                           min={1}
                           placeholder='Введите количество'
-                          disabled={mode === 'edit' || isLoading}
+                          disabled={isLoading}
                         />
                       </Form.Item>
                     </Col>
@@ -320,7 +317,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         data-testid='is-new-form-item'
                         label='Новое'
                         name='isNew'
-                        rules={onlyRequiredRules}
+                        rules={isCredited ? undefined : onlyRequiredRules}
                       >
                         <Radio.Group options={yesNoOptions} disabled={isLoading} />
                       </Form.Item>
@@ -331,7 +328,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         data-testid='is-warranty-form-item'
                         label='На гарантии'
                         name='isWarranty'
-                        rules={onlyRequiredRules}
+                        rules={isCredited ? undefined : onlyRequiredRules}
                       >
                         <Radio.Group options={yesNoOptions} disabled={isLoading} />
                       </Form.Item>
@@ -342,7 +339,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                         data-testid='is-repaired-form-item'
                         label='Отремонтированное'
                         name='isRepaired'
-                        rules={onlyRequiredRules}
+                        rules={isCredited ? undefined : onlyRequiredRules}
                       >
                         <Radio.Group options={yesNoOptions} disabled={isLoading} />
                       </Form.Item>
@@ -362,22 +359,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
               )}
 
               {!categoryIsConsumable && (
-                <Form.Item
-                  data-testid='owner-is-obermeister-form-item'
-                  label='Владелец оборудования - Obermeister'
-                  name='ownerIsObermeister'
-                >
-                  <Radio.Group options={yesNoOptions} />
-                </Form.Item>
-              )}
-
-              {categoryIsConsumable || isTrue(ownerIsObermeisterFormValue) ? null : (
-                <Form.Item
-                  data-testid='owner-form-item'
-                  label='Владелец оборудования'
-                  name='owner'
-                  rules={isFalse(ownerIsObermeisterFormValue) ? onlyRequiredRules : undefined}
-                >
+                <Form.Item data-testid='owner-form-item' label='Владелец оборудования' name='owner'>
                   <Select
                     placeholder='Выберите владельца оборудования'
                     fieldNames={idAndTitleSelectFieldNames}
@@ -396,7 +378,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   data-testid='macroregion-form-item'
                   label='Макрорегион'
                   name='macroregion'
-                  rules={isFalse(ownerIsObermeisterFormValue) ? onlyRequiredRules : undefined}
+                  rules={onlyRequiredRules}
                 >
                   <Select
                     placeholder='Выберите макрорегион'
@@ -414,7 +396,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 data-testid='purpose-form-item'
                 label='Назначение оборудования'
                 name='purpose'
-                rules={onlyRequiredRules}
+                rules={isCredited ? undefined : onlyRequiredRules}
               >
                 <Select
                   placeholder='Выберите назначение оборудования'
@@ -456,4 +438,4 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   )
 }
 
-export default EquipmentFormModal
+export default CheckEquipmentFormModal

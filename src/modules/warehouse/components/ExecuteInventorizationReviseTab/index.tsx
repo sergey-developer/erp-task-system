@@ -6,6 +6,7 @@ import {
   Flex,
   FormInstance,
   Input,
+  notification,
   Row,
   Space,
   Typography,
@@ -15,7 +16,6 @@ import {
 import { SearchProps } from 'antd/es/input'
 import isNumber from 'lodash/isNumber'
 import stubFalse from 'lodash/stubFalse'
-import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
@@ -23,13 +23,14 @@ import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hoo
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
+import { CheckEquipmentFormModalProps } from 'modules/warehouse/components/CheckEquipmentFormModal/types'
+import { getEquipmentFormInitialValues } from 'modules/warehouse/components/CheckEquipmentFormModal/utils'
 import { CheckInventorizationEquipmentsModalProps } from 'modules/warehouse/components/CheckInventorizationEquipmentsModal'
 import { CheckInventorizationEquipmentsTableRow } from 'modules/warehouse/components/CheckInventorizationEquipmentsTable/types'
 import {
   CreateInventorizationEquipmentFormFields,
   CreateInventorizationEquipmentModalProps,
 } from 'modules/warehouse/components/CreateInventorizationEquipmentModal/types'
-import { getEquipmentFormInitialValues } from 'modules/warehouse/components/EquipmentDetails/utils'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
 import ReviseEquipmentTable from 'modules/warehouse/components/ReviseEquipmentTable'
 import { ReviseEquipmentTableProps } from 'modules/warehouse/components/ReviseEquipmentTable/types'
@@ -43,6 +44,7 @@ import {
   useGetEquipmentsCatalog,
 } from 'modules/warehouse/hooks/equipment'
 import {
+  useCheckInventorizationEquipments,
   useCheckInventorizationEquipmentsTemplate,
   useCreateInventorizationEquipment,
   useGetInventorizationEquipments,
@@ -73,7 +75,7 @@ import { useGetLocationsCatalog } from 'shared/hooks/catalogs/locations'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import { isBadRequestError, isErrorResponse, TableRowsApiErrors } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 import { base64ToBytes } from 'shared/utils/common'
@@ -87,12 +89,18 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
+import TableRowsErrors from '../../../../components/TableRowsErrors'
+
 const CreateInventorizationEquipmentModal = React.lazy(
   () => import('../CreateInventorizationEquipmentModal'),
 )
 
 const EquipmentFormModal = React.lazy(
   () => import('modules/warehouse/components/EquipmentFormModal'),
+)
+
+const CheckEquipmentFormModal = React.lazy(
+  () => import('modules/warehouse/components/CheckEquipmentFormModal'),
 )
 
 const CheckInventorizationEquipmentsModal = React.lazy(
@@ -130,10 +138,23 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
+  // get inventorization equipments
+  const [getInventorizationEquipmentsArgs, setGetInventorizationEquipmentsArgs] =
+    useSetState<GetInventorizationEquipmentsQueryArgs>({
+      inventorizationId: inventorization.id,
+      ...getInitialPaginationParams(),
+    })
+
+  const {
+    currentData: paginatedInventorizationEquipments,
+    isFetching: inventorizationEquipmentsIsFetching,
+    refetch: refetchGetInventorizationEquipments,
+  } = useGetInventorizationEquipments(getInventorizationEquipmentsArgs)
+  // get inventorization equipments
+
   // edit checked inventorization equipment
   const [editableCheckedInventorizationEquipment, setEditableCheckedInventorizationEquipment] =
     useState<CheckInventorizationEquipmentsTableRow>()
-  console.log(editableCheckedInventorizationEquipment)
 
   const [
     editableCheckedInventorizationEquipmentsIds,
@@ -211,9 +232,86 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         equipments.map((eqp, index) => ({ rowId: index, ...eqp })),
       )
       openCheckInventorizationEquipmentsModal()
-    } catch {}
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (isBadRequestError(error)) {
+          notification.error({
+            message: 'Ошибка проверки сверяемого оборудования из Excel',
+            description: <TableRowsErrors errors={error.data as TableRowsApiErrors} />,
+          })
+        }
+      } else {
+        console.error('Check inventorization equipments template error: ', error)
+      }
+    }
   }
   // check inventorization equipments template
+
+  // check inventorization equipments
+  const [
+    checkInventorizationEquipmentsMutation,
+    { isLoading: checkInventorizationEquipmentsIsLoading },
+  ] = useCheckInventorizationEquipments()
+
+  const onCheckInventorizationEquipments = useCallback(async () => {
+    try {
+      await checkInventorizationEquipmentsMutation({
+        inventorization: inventorization.id,
+        equipments: checkedInventorizationEquipments.map(
+          ({
+            rowId,
+            title,
+            condition,
+            purpose,
+            macroregion,
+            owner,
+            nomenclature,
+            category,
+            currency,
+            locationFact,
+            ...eqp
+          }) => ({
+            ...eqp,
+            row: rowId,
+            title: title!,
+            condition: condition!,
+            nomenclature: nomenclature!.id,
+            category: category!.id,
+            purpose: purpose!.id,
+            currency: currency?.id,
+            owner: owner?.id,
+            macroregion: macroregion?.id,
+            locationFact:
+              locationFact?.id === undefinedSelectOption.value ? null : locationFact?.id,
+            isLocationFactUndefined:
+              locationFact?.id === undefinedSelectOption.value ? true : undefined,
+          }),
+        ),
+      }).unwrap()
+
+      onCloseCheckInventorizationEquipmentsModal()
+      refetchGetInventorizationEquipments()
+    } catch (error) {
+      if (isErrorResponse(error)) {
+        if (isBadRequestError(error)) {
+          notification.error({
+            message: 'Ошибка проверки сверяемого оборудования',
+            description: <TableRowsErrors errors={error.data as TableRowsApiErrors} />,
+            duration: 0,
+          })
+        }
+      } else {
+        console.error('Check inventorization equipments error: ', error)
+      }
+    }
+  }, [
+    checkInventorizationEquipmentsMutation,
+    checkedInventorizationEquipments,
+    inventorization.id,
+    onCloseCheckInventorizationEquipmentsModal,
+    refetchGetInventorizationEquipments,
+  ])
+  // check inventorization equipments
 
   const [
     createEquipmentModalOpened,
@@ -385,17 +483,6 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     { skip: !equipmentId },
   )
 
-  const [getInventorizationEquipmentsArgs, setGetInventorizationEquipmentsArgs] =
-    useSetState<GetInventorizationEquipmentsQueryArgs>({
-      inventorizationId: inventorization.id,
-      ...getInitialPaginationParams(),
-    })
-
-  const {
-    currentData: paginatedInventorizationEquipments,
-    isFetching: inventorizationEquipmentsIsFetching,
-  } = useGetInventorizationEquipments(getInventorizationEquipmentsArgs)
-
   const onCreateInventorizationEquipment = useCallback<
     CreateInventorizationEquipmentModalProps['onSubmit']
   >(
@@ -544,7 +631,9 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     }
   })
 
-  const onEditCheckedInventorizationEquipment = useCallback<EquipmentFormModalProps['onSubmit']>(
+  const onEditCheckedInventorizationEquipment = useCallback<
+    CheckEquipmentFormModalProps['onSubmit']
+  >(
     (values) => {
       if (!editableCheckedInventorizationEquipment) return
       const updatedEquipment: CheckInventorizationEquipmentsTableRow = {
@@ -606,9 +695,6 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             title: userChangedNomenclature
               ? nomenclature?.title
               : editableCheckedInventorizationEquipment?.title,
-            // images: editEquipmentModalOpened && totalEquipmentAttachmentList?.results.length
-            //   ? attachmentsToFiles(totalEquipmentAttachmentList.results)
-            //   : undefined,
           }
         : undefined,
     [
@@ -617,18 +703,6 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       nomenclature?.title,
       userChangedNomenclature,
     ],
-  )
-
-  const editCheckedInventorizationEquipmentModalLocationsOptions = useMemo(
-    () =>
-      editCheckedInventorizationEquipmentModalOpened && locations.length
-        ? locations.reduce<DefaultOptionType[]>((acc, loc, index) => {
-            if (index === 0 && !categoryIsConsumable) acc.push(undefinedSelectOption)
-            acc.push({ label: loc.title, value: loc.id })
-            return acc
-          }, [])
-        : [],
-    [categoryIsConsumable, editCheckedInventorizationEquipmentModalOpened, locations],
   )
 
   return (
@@ -764,14 +838,16 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         </React.Suspense>
       )}
 
-      {checkInventorizationEquipmentsModalOpened && checkedInventorizationEquipments && (
+      {checkInventorizationEquipmentsModalOpened && (
         <React.Suspense
           fallback={<ModalFallback open onCancel={onCloseCheckInventorizationEquipmentsModal} />}
         >
           <CheckInventorizationEquipmentsModal
             open={checkInventorizationEquipmentsModalOpened}
             onCancel={onCloseCheckInventorizationEquipmentsModal}
+            onSubmit={onCheckInventorizationEquipments}
             data={checkedInventorizationEquipments}
+            isLoading={checkInventorizationEquipmentsIsLoading}
             onClickEdit={onOpenEditCheckedInventorizationEquipmentModal}
             editTouchedRowsIds={editableCheckedInventorizationEquipmentsIds}
           />
@@ -788,9 +864,8 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             />
           }
         >
-          <EquipmentFormModal
+          <CheckEquipmentFormModal
             open={editCheckedInventorizationEquipmentModalOpened}
-            mode='edit'
             title='Изменить сверяемое оборудование'
             okText={SAVE_TEXT}
             onCancel={debouncedOnCloseEditCheckedInventorizationEquipmentModal}
@@ -815,13 +890,13 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
               macroregion: editableCheckedInventorizationEquipment.macroregion,
             })}
             values={editCheckedInventorizationEquipmentFormValues}
+            isCredited={editableCheckedInventorizationEquipment.isCredited}
             categories={equipmentCategories}
             categoriesIsLoading={equipmentCategoriesIsFetching}
             category={selectedCategory}
             onChangeCategory={onChangeCategory}
-            locationType='location'
-            locationsOptions={editCheckedInventorizationEquipmentModalLocationsOptions}
-            locationsOptionsIsLoading={locationsIsFetching}
+            locations={locations}
+            locationsIsLoading={locationsIsFetching}
             currencies={currencies}
             currenciesIsLoading={currenciesIsFetching}
             owners={customers}

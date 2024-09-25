@@ -7,5 +7,6 @@ export * from './getInventorizationEquipment.mock'
 export * from './getInventorizationEquipments.mock'
 export * from './getInventorizationEquipmentsTemplate.mock'
 export * from './checkInventorizationEquipmentsTemplate.mock'
+export * from './checkInventorizationEquipments.mock'
 
 export * from './createInventorizationEquipment.mock'

@@ -14,7 +14,9 @@ import {
 import { GetTechnicalExaminationPdfTransformedSuccessResponse } from 'modules/technicalExaminations/types'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
+import { CreateEquipmentTechnicalExaminationModalProps } from 'modules/warehouse/components/CreateEquipmentTechnicalExaminationModal/types'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
+import { getEquipmentFormInitialValues } from 'modules/warehouse/components/EquipmentFormModal/utils'
 import { EquipmentRelocationHistoryModalProps } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/types'
 import {
   equipmentConditionDict,
@@ -62,9 +64,8 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 import { makeString } from 'shared/utils/string'
 
-import { CreateEquipmentTechnicalExaminationModalProps } from '../CreateEquipmentTechnicalExaminationModal/types'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
-import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
+import { getHiddenFieldsByCategory } from './utils'
 
 const AttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AttachmentListModal'),

@@ -21,6 +21,7 @@ export const tableRow: CheckInventorizationEquipmentsTableRow = {
 export const props: Readonly<CheckInventorizationEquipmentsTableProps> = {
   dataSource: [tableRow],
   onClickEdit: jest.fn(),
+  loading: false,
   editTouchedRowsIds: [],
 }
 

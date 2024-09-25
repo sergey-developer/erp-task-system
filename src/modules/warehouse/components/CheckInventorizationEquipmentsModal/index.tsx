@@ -15,10 +15,14 @@ export type CheckInventorizationEquipmentsModalProps = Required<
 > &
   Pick<CheckInventorizationEquipmentsTableProps, 'onClickEdit' | 'editTouchedRowsIds'> & {
     data: CheckInventorizationEquipmentsTableRow[]
+    onSubmit: () => Promise<void>
+    isLoading: boolean
   }
 
 const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModalProps> = ({
   data,
+  onSubmit,
+  isLoading,
   onClickEdit,
   editTouchedRowsIds,
   ...props
@@ -28,13 +32,14 @@ const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModa
       {...props}
       data-testid='check-inventorization-equipments-modal'
       okText={SAVE_TEXT}
-      onOk={() => {}}
-      confirmLoading={false}
+      onOk={onSubmit}
+      confirmLoading={isLoading}
       width='80%'
       title='Результаты загрузки оборудования из Excel'
     >
       <CheckInventorizationEquipmentsTable
         dataSource={data}
+        loading={isLoading}
         onClickEdit={onClickEdit}
         editTouchedRowsIds={editTouchedRowsIds}
       />

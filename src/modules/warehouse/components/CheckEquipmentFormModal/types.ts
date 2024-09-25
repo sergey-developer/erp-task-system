@@ -3,33 +3,31 @@ import { UploadFile } from 'antd/es/upload'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import {
-  CreateEquipmentsBadRequestErrorResponse,
   CustomerListModel,
   EquipmentCategoriesModel,
   EquipmentCategoryListItemModel,
   NomenclatureListItemModel,
   NomenclatureListModel,
   NomenclatureModel,
-  WarehouseListModel,
   WorkTypesModel,
 } from 'modules/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { LocationsCatalogModel } from 'shared/models/catalogs/locations'
 import { CurrenciesModel } from 'shared/models/currency'
 import { MacroregionsModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
-import { ArrayFirst } from 'shared/types/utils'
 
-export type EquipmentFormFields = {
+export type CheckEquipmentFormFields = {
   title: string
   nomenclature: IdType
   condition: EquipmentConditionEnum
   category: IdType
   purpose: IdType
 
-  warehouse?: IdType
+  location?: IdType
   isNew?: boolean
   isWarranty?: boolean
   isRepaired?: boolean
@@ -40,21 +38,20 @@ export type EquipmentFormFields = {
   currency?: IdType
   usageCounter?: number
   owner?: IdType
-  ownerIsObermeister?: boolean
   macroregion?: IdType
   comment?: string
   images?: UploadFile<FileResponse>[]
 }
 
-export type EquipmentFormModalProps = Required<
+export type CheckEquipmentFormModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel' | 'okText' | 'title'>
 > &
   Pick<BaseModalProps, 'isLoading'> & {
-    mode: 'create' | 'edit'
+    isCredited: boolean
 
     onSubmit: (
-      values: EquipmentFormFields,
-      form: FormInstance<EquipmentFormFields>,
+      values: CheckEquipmentFormFields,
+      form: FormInstance<CheckEquipmentFormFields>,
     ) => Promise<void> | void
 
     onUploadImage: NonNullable<UploadProps['customRequest']>
@@ -67,8 +64,8 @@ export type EquipmentFormModalProps = Required<
     category?: EquipmentCategoryListItemModel
     onChangeCategory: (category: EquipmentCategoryListItemModel) => void
 
-    warehouses?: WarehouseListModel
-    warehousesIsLoading?: boolean
+    locations: LocationsCatalogModel
+    locationsIsLoading: boolean
 
     currencies: CurrenciesModel
     currenciesIsLoading: boolean
@@ -90,7 +87,6 @@ export type EquipmentFormModalProps = Required<
     nomenclaturesIsLoading: boolean
     onChangeNomenclature: NonNullable<SelectProps<IdType, NomenclatureListItemModel>['onChange']>
 
-    values?: Partial<Pick<EquipmentFormFields, 'title' | 'images'>>
-    initialValues?: Partial<EquipmentFormFields>
-    errors?: ArrayFirst<CreateEquipmentsBadRequestErrorResponse>
+    values?: Partial<Pick<CheckEquipmentFormFields, 'title' | 'images'>>
+    initialValues?: Partial<CheckEquipmentFormFields>
   }

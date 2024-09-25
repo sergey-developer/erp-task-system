@@ -31,7 +31,7 @@ export type CheckInventorizationEquipmentsTableRow = Pick<
 
 export type CheckInventorizationEquipmentsTableProps = SetNonNullable<
   TableProps<CheckInventorizationEquipmentsTableRow>,
-  'dataSource'
+  'dataSource' | 'loading'
 > & {
   onClickEdit: (row: CheckInventorizationEquipmentsTableRow) => void
   editTouchedRowsIds: CheckInventorizationEquipmentsTableRow['rowId'][]

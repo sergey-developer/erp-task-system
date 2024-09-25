@@ -13,6 +13,7 @@ const scrollConfig: TableProps<CheckInventorizationEquipmentsTableRow>['scroll']
 
 const CheckInventorizationEquipmentsTable: FC<CheckInventorizationEquipmentsTableProps> = ({
   dataSource,
+  loading,
   onClickEdit,
   editTouchedRowsIds,
 }) => {
@@ -29,6 +30,7 @@ const CheckInventorizationEquipmentsTable: FC<CheckInventorizationEquipmentsTabl
         dataSource={dataSource}
         columns={columns}
         scroll={scrollConfig}
+        loading={loading}
         pagination={false}
       />
     </Flex>
