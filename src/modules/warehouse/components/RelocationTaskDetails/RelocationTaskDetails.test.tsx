@@ -1,7 +1,5 @@
 import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { split } from 'lodash'
-import pick from 'lodash/pick'
 
 import { testUtils as attachmentImagesTestUtils } from 'modules/attachment/components/AttachmentImages/AttachmentImages.test'
 import { testUtils as attachmentListModalTestUtils } from 'modules/attachment/components/AttachmentListModal/AttachmentListModal.test'
@@ -10,11 +8,6 @@ import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
 import { getTasksPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as cancelRelocationTaskModalTestUtils } from 'modules/warehouse/components/CancelRelocationTaskModal/CancelRelocationTaskModal.test'
-import { testUtils as confirmExecutionRelocationTaskModalTestUtils } from 'modules/warehouse/components/ConfirmExecutionRelocationTaskModal/ConfirmExecutionRelocationTaskModal.test'
-import { testUtils as executeRelocationTaskModalTestUtils } from 'modules/warehouse/components/ExecuteRelocationTaskModal/ExecuteRelocationTaskModal.test'
-import { testUtils as relocationEquipmentTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentTable/RelocationEquipmentTable.test'
-import { testUtils as returnRelocationTaskToReworkModalTestUtils } from 'modules/warehouse/components/ReturnRelocationTaskToReworkModal/ReturnRelocationTaskToReworkModal.test'
 import { getRelocationEquipmentAttachmentListErrMsg } from 'modules/warehouse/constants/relocationEquipment'
 import {
   cancelRelocationTaskMessages,
@@ -29,9 +22,7 @@ import {
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
-import { RelocationTaskModel } from 'modules/warehouse/models'
 import CreateDocumentsPackagePage from 'modules/warehouse/pages/CreateDocumentsPackagePage'
-import { testUtils as createDocumentsPackagePageTestUtils } from 'modules/warehouse/pages/CreateDocumentsPackagePage/CreateDocumentsPackagePage.test'
 import {
   getRelocateFromToTitle,
   getWaybillM15Filename,
@@ -43,7 +34,18 @@ import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
-import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
+import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
+import { cancelRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/CancelRelocationTaskModal/testUtils'
+import { confirmExecutionRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/ConfirmExecutionRelocationTaskModal/testUtils'
+import { executeRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/ExecuteRelocationTaskModal/testUtils'
+import { relocationEquipmentTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentTable/testUtils'
+import {
+  canExecuteRelocationTaskProps,
+  props,
+} from '_tests_/features/warehouse/components/RelocationTaskDetails/constants'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
+import { returnRelocationTaskToReworkModalTestUtils } from '_tests_/features/warehouse/components/ReturnRelocationTaskToReworkModal/testUtils'
+import { createDocumentsPackagePageTestUtils } from '_tests_/features/warehouse/pages/CreateDocumentsPackagePage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -92,8 +94,6 @@ import {
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
-  buttonTestUtils,
-  fakeId,
   fakeWord,
   getStoreWithAuth,
   menuTestUtils,
@@ -101,172 +101,9 @@ import {
   render,
   renderWithRouter,
   setupApiTests,
-  spinnerTestUtils,
 } from '_tests_/utils'
 
 import RelocationTaskDetails from './index'
-import { RelocationTaskDetailsProps } from './types'
-
-const props: RelocationTaskDetailsProps = {
-  open: true,
-  relocationTaskId: fakeId(),
-  onClose: jest.fn(),
-}
-
-export const canExecuteRelocationTaskProps: {
-  permissions: [UserPermissionsEnum.RelocationTasksUpdate]
-  relocationTask: Pick<RelocationTaskModel, 'status' | 'executors' | 'completedBy'>
-} = {
-  relocationTask: pick(warehouseFixtures.relocationTask(), 'status', 'executors', 'completedBy'),
-  permissions: [UserPermissionsEnum.RelocationTasksUpdate],
-}
-
-const getContainer = () => screen.getByTestId('relocation-task-details')
-const findContainer = () => screen.findByTestId('relocation-task-details')
-
-const getBlock = (testId: string) => within(getContainer()).getByTestId(testId)
-const getBlockInfo = (testId: string, text: string | RegExp) =>
-  within(getBlock(testId)).getByText(text)
-
-const openMenu = (user: UserEvent) => buttonTestUtils.clickMenuButtonIn(getContainer(), user)
-
-// waybill m15 menu item
-const getWaybillM15MenuItem = () => menuTestUtils.getMenuItem(/Сформировать накладную М-15/)
-const clickWaybillM15MenuItem = (user: UserEvent) =>
-  menuTestUtils.clickMenuItem(/Сформировать накладную М-15/, user)
-
-// edit task menu item
-const getEditTaskMenuItem = () => menuTestUtils.getMenuItem('Изменить заявку')
-const clickEditTaskMenuItem = (user: UserEvent) =>
-  menuTestUtils.clickMenuItem('Изменить заявку', user)
-
-// execute task menu item
-const getExecuteTaskMenuItem = () => menuTestUtils.getMenuItem('Выполнить заявку')
-const clickExecuteTaskMenuItem = (user: UserEvent) =>
-  menuTestUtils.clickMenuItem('Выполнить заявку', user)
-
-// rework menu item
-const getReturnToReworkMenuItem = () => menuTestUtils.getMenuItem('Вернуть на доработку')
-
-const clickReturnToReworkMenuItem = (user: UserEvent) =>
-  menuTestUtils.clickMenuItem('Вернуть на доработку', user)
-
-// cancel task menu item
-const getCancelTaskMenuItem = () => menuTestUtils.getMenuItem('Отменить заявку')
-const clickCancelTaskMenuItem = (user: UserEvent) =>
-  menuTestUtils.clickMenuItem('Отменить заявку', user)
-
-// confirm execution menu item
-const getConfirmExecutionMenuItem = () => menuTestUtils.getMenuItem('Подтвердить выполнение')
-const clickConfirmExecutionMenuItem = (user: UserEvent) =>
-  menuTestUtils.clickMenuItem('Подтвердить выполнение', user)
-
-// create documents package menu item
-const getCreateDocumentsPackageMenuItem = () =>
-  menuTestUtils.getMenuItem('Сформировать пакет документов')
-const clickCreateDocumentsPackageMenuItem = (user: UserEvent) =>
-  menuTestUtils.clickMenuItem('Сформировать пакет документов', user)
-
-// stretch details button
-const getStretchDetailsButton = () => buttonTestUtils.getButtonIn(getContainer(), 'double-right')
-const clickStretchDetailsButton = async (user: UserEvent) => {
-  const button = getStretchDetailsButton()
-  await user.click(button)
-}
-
-// documents
-const getDocumentsBlock = () => getBlock('documents')
-
-const getCreateDocumentsButton = () =>
-  buttonTestUtils.getButtonIn(getDocumentsBlock(), /Добавить вложение/)
-
-const setDocument = async (
-  user: UserEvent,
-  file: File = new File([], '', { type: 'image/png' }),
-) => {
-  const block = getDocumentsBlock()
-  // eslint-disable-next-line testing-library/no-node-access
-  const input = block.querySelector('input[type="file"]') as HTMLInputElement
-  await user.upload(input, file)
-  return { input, file }
-}
-
-const getUploadedDocument = (filename: string) => within(getDocumentsBlock()).getByTitle(filename)
-
-// common photos button
-const getCommonPhotosButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Посмотреть общие фото/)
-
-const clickCommonPhotosButton = async (user: UserEvent) => {
-  const button = getCommonPhotosButton()
-  await user.click(button)
-}
-
-const expectCommonPhotosLoadingStarted = () =>
-  buttonTestUtils.expectLoadingStarted(getCommonPhotosButton())
-const expectCommonPhotosLoadingFinished = () =>
-  buttonTestUtils.expectLoadingFinished(getCommonPhotosButton())
-
-// loading
-const expectRelocationTaskLoadingStarted = spinnerTestUtils.expectLoadingStarted(
-  'relocation-task-details-loading',
-)
-
-const expectRelocationTaskLoadingFinished = spinnerTestUtils.expectLoadingFinished(
-  'relocation-task-details-loading',
-)
-
-const expectRelocationEquipmentListLoadingFinished =
-  relocationEquipmentTableTestUtils.expectLoadingFinished
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-
-  getBlockInfo,
-
-  openMenu,
-
-  getStretchDetailsButton,
-  clickStretchDetailsButton,
-
-  getWaybillM15MenuItem,
-  clickWaybillM15MenuItem,
-
-  getReturnToReworkMenuItem,
-  clickReturnToReworkMenuItem,
-
-  getEditTaskMenuItem,
-  clickEditTaskMenuItem,
-
-  getExecuteTaskMenuItem,
-  clickExecuteTaskMenuItem,
-
-  getCancelTaskMenuItem,
-  clickCancelTaskMenuItem,
-
-  getConfirmExecutionMenuItem,
-  clickConfirmExecutionMenuItem,
-
-  getCreateDocumentsPackageMenuItem,
-  clickCreateDocumentsPackageMenuItem,
-
-  getCreateDocumentsButton,
-  setDocument,
-  getUploadedDocument,
-
-  getCommonPhotosButton,
-  clickCommonPhotosButton,
-  expectCommonPhotosLoadingStarted,
-  expectCommonPhotosLoadingFinished,
-
-  clickCloseButton: (user: UserEvent) => buttonTestUtils.clickCloseButtonIn(getContainer(), user),
-
-  expectRelocationTaskLoadingStarted,
-  expectRelocationTaskLoadingFinished,
-
-  expectRelocationEquipmentListLoadingFinished,
-}
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -284,8 +121,8 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
-      const title = within(testUtils.getContainer()).getByText(
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
+      const title = within(relocationTaskDetailsTestUtils.getContainer()).getByText(
         getRelocateFromToTitle(relocationTask),
       )
 
@@ -303,10 +140,13 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('type', /Тип заявки/)
-      const value = testUtils.getBlockInfo('type', relocationTaskTypeDict[relocationTask.type])
+      const label = relocationTaskDetailsTestUtils.getBlockInfo('type', /Тип заявки/)
+      const value = relocationTaskDetailsTestUtils.getBlockInfo(
+        'type',
+        relocationTaskTypeDict[relocationTask.type],
+      )
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -323,10 +163,13 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('deadline-at', /Срок выполнения/)
-      const value = testUtils.getBlockInfo('deadline-at', formatDate(relocationTask.deadlineAt))
+      const label = relocationTaskDetailsTestUtils.getBlockInfo('deadline-at', /Срок выполнения/)
+      const value = relocationTaskDetailsTestUtils.getBlockInfo(
+        'deadline-at',
+        formatDate(relocationTask.deadlineAt),
+      )
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -343,10 +186,13 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('relocate-from', /Объект выбытия/)
-      const value = testUtils.getBlockInfo('relocate-from', relocationTask.relocateFrom!.title)
+      const label = relocationTaskDetailsTestUtils.getBlockInfo('relocate-from', /Объект выбытия/)
+      const value = relocationTaskDetailsTestUtils.getBlockInfo(
+        'relocate-from',
+        relocationTask.relocateFrom!.title,
+      )
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -363,10 +209,13 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('relocate-to', /Объект прибытия/)
-      const value = testUtils.getBlockInfo('relocate-to', relocationTask.relocateTo!.title)
+      const label = relocationTaskDetailsTestUtils.getBlockInfo('relocate-to', /Объект прибытия/)
+      const value = relocationTaskDetailsTestUtils.getBlockInfo(
+        'relocate-to',
+        relocationTask.relocateTo!.title,
+      )
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -384,10 +233,13 @@ describe('Информация о заявке о перемещении', () =>
           }),
         })
 
-        await testUtils.expectRelocationTaskLoadingFinished()
+        await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-        const label = testUtils.getBlockInfo('executor', /Исполнитель/)
-        const value = testUtils.getBlockInfo('executor', relocationTask.completedBy!.fullName)
+        const label = relocationTaskDetailsTestUtils.getBlockInfo('executor', /Исполнитель/)
+        const value = relocationTaskDetailsTestUtils.getBlockInfo(
+          'executor',
+          relocationTask.completedBy!.fullName,
+        )
 
         expect(label).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -404,13 +256,13 @@ describe('Информация о заявке о перемещении', () =>
           }),
         })
 
-        await testUtils.expectRelocationTaskLoadingFinished()
+        await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-        const label = testUtils.getBlockInfo('executor', /Исполнитель/)
+        const label = relocationTaskDetailsTestUtils.getBlockInfo('executor', /Исполнитель/)
 
         expect(label).toBeInTheDocument()
         relocationTask.executors.forEach((e) => {
-          const value = testUtils.getBlockInfo('executor', e.fullName)
+          const value = relocationTaskDetailsTestUtils.getBlockInfo('executor', e.fullName)
           expect(value).toBeInTheDocument()
         })
       })
@@ -427,10 +279,13 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('controller', /Контролер/)
-      const value = testUtils.getBlockInfo('controller', relocationTask.controller!.fullName)
+      const label = relocationTaskDetailsTestUtils.getBlockInfo('controller', /Контролер/)
+      const value = relocationTaskDetailsTestUtils.getBlockInfo(
+        'controller',
+        relocationTask.controller!.fullName,
+      )
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -447,10 +302,10 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('status', /Статус/)
-      const value = testUtils.getBlockInfo(
+      const label = relocationTaskDetailsTestUtils.getBlockInfo('status', /Статус/)
+      const value = relocationTaskDetailsTestUtils.getBlockInfo(
         'status',
         relocationTaskStatusDict[relocationTask.status],
       )
@@ -473,10 +328,13 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('return-reason', /Причина возврата/)
-      const value = testUtils.getBlockInfo('return-reason', relocationTask.revision!.text)
+      const label = relocationTaskDetailsTestUtils.getBlockInfo('return-reason', /Причина возврата/)
+      const value = relocationTaskDetailsTestUtils.getBlockInfo(
+        'return-reason',
+        relocationTask.revision!.text,
+      )
 
       await user.hover(value)
       const date = await screen.findByText(
@@ -503,10 +361,13 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('created-by', /Инициатор/)
-      const value = testUtils.getBlockInfo('created-by', relocationTask.createdBy!.fullName)
+      const label = relocationTaskDetailsTestUtils.getBlockInfo('created-by', /Инициатор/)
+      const value = relocationTaskDetailsTestUtils.getBlockInfo(
+        'created-by',
+        relocationTask.createdBy!.fullName,
+      )
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -523,10 +384,13 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('created-at', /Создано/)
-      const value = testUtils.getBlockInfo('created-at', formatDate(relocationTask.createdAt))
+      const label = relocationTaskDetailsTestUtils.getBlockInfo('created-at', /Создано/)
+      const value = relocationTaskDetailsTestUtils.getBlockInfo(
+        'created-at',
+        formatDate(relocationTask.createdAt),
+      )
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -544,10 +408,13 @@ describe('Информация о заявке о перемещении', () =>
           }),
         })
 
-        await testUtils.expectRelocationTaskLoadingFinished()
+        await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-        const label = testUtils.getBlockInfo('task', /Заявка ITSM/)
-        const link = testUtils.getBlockInfo('task', relocationTask.task!.recordId)
+        const label = relocationTaskDetailsTestUtils.getBlockInfo('task', /Заявка ITSM/)
+        const link = relocationTaskDetailsTestUtils.getBlockInfo(
+          'task',
+          relocationTask.task!.recordId,
+        )
 
         expect(label).toBeInTheDocument()
         expect(link).toBeInTheDocument()
@@ -586,9 +453,12 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.expectRelocationTaskLoadingFinished()
+        await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-        const link = testUtils.getBlockInfo('task', relocationTask.task!.recordId)
+        const link = relocationTaskDetailsTestUtils.getBlockInfo(
+          'task',
+          relocationTask.task!.recordId,
+        )
         await user.click(link)
         const card = await taskDetailsTestUtils.findContainer()
 
@@ -607,10 +477,10 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-      const label = testUtils.getBlockInfo('comment', /Комментарий/)
-      const value = testUtils.getBlockInfo('comment', relocationTask.comment!)
+      const label = relocationTaskDetailsTestUtils.getBlockInfo('comment', /Комментарий/)
+      const value = relocationTaskDetailsTestUtils.getBlockInfo('comment', relocationTask.comment!)
 
       expect(label).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -628,10 +498,12 @@ describe('Информация о заявке о перемещении', () =>
           }),
         })
 
-        await testUtils.expectRelocationTaskLoadingFinished()
+        await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-        const label = testUtils.getBlockInfo('documents', /Документы/)
-        const value = taskAttachmentListTestUtils.getContainerIn(testUtils.getContainer())
+        const label = relocationTaskDetailsTestUtils.getBlockInfo('documents', /Документы/)
+        const value = taskAttachmentListTestUtils.getContainerIn(
+          relocationTaskDetailsTestUtils.getContainer(),
+        )
 
         expect(label).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -650,8 +522,8 @@ describe('Информация о заявке о перемещении', () =>
           }),
         })
 
-        await testUtils.expectRelocationTaskLoadingFinished()
-        const button = testUtils.getCreateDocumentsButton()
+        await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
+        const button = relocationTaskDetailsTestUtils.getCreateDocumentsButton()
 
         expect(button).toBeInTheDocument()
         expect(button).toBeEnabled()
@@ -672,10 +544,10 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.expectRelocationTaskLoadingFinished()
+        await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
-        const { input, file } = await testUtils.setDocument(user)
-        const uploadedAttachment = testUtils.getUploadedDocument(file.name)
+        const { input, file } = await relocationTaskDetailsTestUtils.setDocument(user)
+        const uploadedAttachment = relocationTaskDetailsTestUtils.getUploadedDocument(file.name)
 
         expect(input.files!.item(0)).toBe(file)
         expect(input.files).toHaveLength(1)
@@ -698,7 +570,7 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
       const notification = await notificationTestUtils.findNotification(errorMessage)
       expect(notification).toBeInTheDocument()
@@ -717,7 +589,7 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
       const notification = await notificationTestUtils.findNotification(errorMessage)
       expect(notification).toBeInTheDocument()
@@ -733,7 +605,7 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
 
       const notification = await notificationTestUtils.findNotification(
         getRelocationTaskMessages.commonError,
@@ -756,7 +628,7 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationEquipmentListLoadingFinished()
+      await relocationTaskDetailsTestUtils.expectRelocationEquipmentListLoadingFinished()
 
       relocationEquipmentList.forEach((item) => {
         const row = relocationEquipmentTableTestUtils.getRow(item.id)
@@ -778,7 +650,7 @@ describe('Информация о заявке о перемещении', () =>
           }),
         })
 
-        await testUtils.expectRelocationEquipmentListLoadingFinished()
+        await relocationTaskDetailsTestUtils.expectRelocationEquipmentListLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(errorMessage)
         expect(notification).toBeInTheDocument()
@@ -797,7 +669,7 @@ describe('Информация о заявке о перемещении', () =>
           }),
         })
 
-        await testUtils.expectRelocationEquipmentListLoadingFinished()
+        await relocationTaskDetailsTestUtils.expectRelocationEquipmentListLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(errorMessage)
         expect(notification).toBeInTheDocument()
@@ -813,7 +685,7 @@ describe('Информация о заявке о перемещении', () =>
           }),
         })
 
-        await testUtils.expectRelocationEquipmentListLoadingFinished()
+        await relocationTaskDetailsTestUtils.expectRelocationEquipmentListLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(
           getRelocationEquipmentListMessages.commonError,
@@ -846,7 +718,7 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.expectRelocationEquipmentListLoadingFinished()
+        await relocationTaskDetailsTestUtils.expectRelocationEquipmentListLoadingFinished()
         await relocationEquipmentTableTestUtils.clickViewImagesButton(
           user,
           relocationEquipmentListItem.id,
@@ -883,7 +755,7 @@ describe('Информация о заявке о перемещении', () =>
             },
           )
 
-          await testUtils.expectRelocationEquipmentListLoadingFinished()
+          await relocationTaskDetailsTestUtils.expectRelocationEquipmentListLoadingFinished()
           await relocationEquipmentTableTestUtils.clickViewImagesButton(
             user,
             relocationEquipmentListItem.id,
@@ -916,7 +788,7 @@ describe('Информация о заявке о перемещении', () =>
             },
           )
 
-          await testUtils.expectRelocationEquipmentListLoadingFinished()
+          await relocationTaskDetailsTestUtils.expectRelocationEquipmentListLoadingFinished()
           await relocationEquipmentTableTestUtils.clickViewImagesButton(
             user,
             relocationEquipmentListItem.id,
@@ -947,7 +819,7 @@ describe('Информация о заявке о перемещении', () =>
             },
           )
 
-          await testUtils.expectRelocationEquipmentListLoadingFinished()
+          await relocationTaskDetailsTestUtils.expectRelocationEquipmentListLoadingFinished()
           await relocationEquipmentTableTestUtils.clickViewImagesButton(
             user,
             relocationEquipmentListItem.id,
@@ -977,8 +849,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getWaybillM15MenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getWaybillM15MenuItem()
       expect(item).toBeInTheDocument()
     })
 
@@ -997,8 +869,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getWaybillM15MenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getWaybillM15MenuItem()
       menuTestUtils.expectMenuItemNotDisabled(item)
     })
 
@@ -1015,8 +887,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getWaybillM15MenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getWaybillM15MenuItem()
       menuTestUtils.expectMenuItemDisabled(item)
     })
 
@@ -1044,8 +916,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      await testUtils.clickWaybillM15MenuItem(user)
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      await relocationTaskDetailsTestUtils.clickWaybillM15MenuItem(user)
 
       await waitFor(() => expect(base64ToArrayBufferSpy).toBeCalledTimes(1))
       expect(base64ToArrayBufferSpy).toBeCalledWith(m15File)
@@ -1079,8 +951,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickWaybillM15MenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickWaybillM15MenuItem(user)
 
         const notification = await notificationTestUtils.findNotification(errorMessage)
         expect(notification).toBeInTheDocument()
@@ -1106,8 +978,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickWaybillM15MenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickWaybillM15MenuItem(user)
 
         const notification = await notificationTestUtils.findNotification(errorMessage)
         expect(notification).toBeInTheDocument()
@@ -1129,8 +1001,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickWaybillM15MenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickWaybillM15MenuItem(user)
 
         const notification = await notificationTestUtils.findNotification(
           getRelocationTaskWaybillM15ErrMsg,
@@ -1154,8 +1026,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getEditTaskMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getEditTaskMenuItem()
       expect(item).toBeInTheDocument()
     })
 
@@ -1186,8 +1058,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getEditTaskMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getEditTaskMenuItem()
       await waitFor(() => menuTestUtils.expectMenuItemNotDisabled(item))
     })
 
@@ -1210,8 +1082,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getEditTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getEditTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -1235,8 +1107,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getEditTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getEditTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -1262,8 +1134,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getEditTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getEditTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -1289,8 +1161,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getEditTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getEditTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -1316,8 +1188,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getEditTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getEditTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
     })
@@ -1337,8 +1209,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getExecuteTaskMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getExecuteTaskMenuItem()
       expect(item).toBeInTheDocument()
     })
 
@@ -1369,8 +1241,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getExecuteTaskMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getExecuteTaskMenuItem()
       await waitFor(() => menuTestUtils.expectMenuItemNotDisabled(item))
     })
 
@@ -1401,8 +1273,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getExecuteTaskMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getExecuteTaskMenuItem()
       await waitFor(() => menuTestUtils.expectMenuItemNotDisabled(item))
     })
 
@@ -1425,8 +1297,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getExecuteTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getExecuteTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -1450,8 +1322,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getExecuteTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getExecuteTaskMenuItem()
         await waitFor(() => menuTestUtils.expectMenuItemDisabled(item))
       })
 
@@ -1478,8 +1350,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getExecuteTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getExecuteTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -1506,8 +1378,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getExecuteTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getExecuteTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -1534,8 +1406,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getExecuteTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getExecuteTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
     })
@@ -1571,8 +1443,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickExecuteTaskMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickExecuteTaskMenuItem(user)
         const modal = await executeRelocationTaskModalTestUtils.findContainer()
         await executeRelocationTaskModalTestUtils.setDocument(user)
         await executeRelocationTaskModalTestUtils.clickSubmitButton(user)
@@ -1623,8 +1495,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickExecuteTaskMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickExecuteTaskMenuItem(user)
         await executeRelocationTaskModalTestUtils.findContainer()
         await executeRelocationTaskModalTestUtils.setDocument(user)
         await executeRelocationTaskModalTestUtils.clickSubmitButton(user)
@@ -1673,8 +1545,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickExecuteTaskMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickExecuteTaskMenuItem(user)
         await executeRelocationTaskModalTestUtils.findContainer()
         await executeRelocationTaskModalTestUtils.setDocument(user)
         await executeRelocationTaskModalTestUtils.clickSubmitButton(user)
@@ -1718,8 +1590,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickExecuteTaskMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickExecuteTaskMenuItem(user)
         await executeRelocationTaskModalTestUtils.findContainer()
         await executeRelocationTaskModalTestUtils.setDocument(user)
         await executeRelocationTaskModalTestUtils.clickSubmitButton(user)
@@ -1759,8 +1631,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickExecuteTaskMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickExecuteTaskMenuItem(user)
         await executeRelocationTaskModalTestUtils.findContainer()
         await executeRelocationTaskModalTestUtils.setDocument(user)
         await executeRelocationTaskModalTestUtils.clickSubmitButton(user)
@@ -1788,8 +1660,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getReturnToReworkMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getReturnToReworkMenuItem()
       expect(item).toBeInTheDocument()
     })
 
@@ -1813,8 +1685,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getReturnToReworkMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getReturnToReworkMenuItem()
       await waitFor(() => {
         menuTestUtils.expectMenuItemNotDisabled(item)
       })
@@ -1839,8 +1711,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getReturnToReworkMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getReturnToReworkMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -1864,8 +1736,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getReturnToReworkMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getReturnToReworkMenuItem()
         await waitFor(() => {
           menuTestUtils.expectMenuItemDisabled(item)
         })
@@ -1893,8 +1765,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getReturnToReworkMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getReturnToReworkMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
     })
@@ -1923,8 +1795,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickReturnToReworkMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickReturnToReworkMenuItem(user)
         const modal = await returnRelocationTaskToReworkModalTestUtils.findContainer()
         await returnRelocationTaskToReworkModalTestUtils.setReason(user, fakeWord())
         await returnRelocationTaskToReworkModalTestUtils.clickSubmitButton(user)
@@ -1965,8 +1837,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickReturnToReworkMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickReturnToReworkMenuItem(user)
         await returnRelocationTaskToReworkModalTestUtils.findContainer()
         await returnRelocationTaskToReworkModalTestUtils.setReason(user, fakeWord())
         await returnRelocationTaskToReworkModalTestUtils.clickSubmitButton(user)
@@ -2015,8 +1887,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickReturnToReworkMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickReturnToReworkMenuItem(user)
         await returnRelocationTaskToReworkModalTestUtils.findContainer()
         await returnRelocationTaskToReworkModalTestUtils.setReason(user, fakeWord())
         await returnRelocationTaskToReworkModalTestUtils.clickSubmitButton(user)
@@ -2060,8 +1932,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickReturnToReworkMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickReturnToReworkMenuItem(user)
         await returnRelocationTaskToReworkModalTestUtils.findContainer()
         await returnRelocationTaskToReworkModalTestUtils.setReason(user, fakeWord())
         await returnRelocationTaskToReworkModalTestUtils.clickSubmitButton(user)
@@ -2105,8 +1977,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickReturnToReworkMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickReturnToReworkMenuItem(user)
         await returnRelocationTaskToReworkModalTestUtils.findContainer()
         await returnRelocationTaskToReworkModalTestUtils.setReason(user, fakeWord())
         await returnRelocationTaskToReworkModalTestUtils.clickSubmitButton(user)
@@ -2134,8 +2006,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getCancelTaskMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getCancelTaskMenuItem()
       expect(item).toBeInTheDocument()
     })
 
@@ -2166,8 +2038,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getCancelTaskMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getCancelTaskMenuItem()
       await waitFor(() => {
         menuTestUtils.expectMenuItemNotDisabled(item)
       })
@@ -2192,8 +2064,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getCancelTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getCancelTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -2217,8 +2089,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getCancelTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getCancelTaskMenuItem()
         await waitFor(() => {
           menuTestUtils.expectMenuItemDisabled(item)
         })
@@ -2246,8 +2118,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getCancelTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getCancelTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -2273,8 +2145,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getCancelTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getCancelTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -2300,8 +2172,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getCancelTaskMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getCancelTaskMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
     })
@@ -2341,14 +2213,14 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickCancelTaskMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickCancelTaskMenuItem(user)
         const modal = await cancelRelocationTaskModalTestUtils.findContainer()
         await cancelRelocationTaskModalTestUtils.clickConfirmButton(user)
 
         await waitFor(() => expect(modal).not.toBeInTheDocument())
 
-        const status = testUtils.getBlockInfo(
+        const status = relocationTaskDetailsTestUtils.getBlockInfo(
           'status',
           relocationTaskStatusDict[cancelRelocationTaskResponse.status],
         )
@@ -2391,8 +2263,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickCancelTaskMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickCancelTaskMenuItem(user)
         await cancelRelocationTaskModalTestUtils.findContainer()
         await cancelRelocationTaskModalTestUtils.clickConfirmButton(user)
 
@@ -2434,8 +2306,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickCancelTaskMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickCancelTaskMenuItem(user)
         await cancelRelocationTaskModalTestUtils.findContainer()
         await cancelRelocationTaskModalTestUtils.clickConfirmButton(user)
 
@@ -2477,8 +2349,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickCancelTaskMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickCancelTaskMenuItem(user)
         await cancelRelocationTaskModalTestUtils.findContainer()
         await cancelRelocationTaskModalTestUtils.clickConfirmButton(user)
 
@@ -2516,8 +2388,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickCancelTaskMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickCancelTaskMenuItem(user)
         await cancelRelocationTaskModalTestUtils.findContainer()
         await cancelRelocationTaskModalTestUtils.clickConfirmButton(user)
 
@@ -2543,8 +2415,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getConfirmExecutionMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getConfirmExecutionMenuItem()
       expect(item).toBeInTheDocument()
     })
 
@@ -2575,8 +2447,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getConfirmExecutionMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getConfirmExecutionMenuItem()
       await waitFor(() => {
         menuTestUtils.expectMenuItemNotDisabled(item)
       })
@@ -2601,8 +2473,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getConfirmExecutionMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getConfirmExecutionMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
 
@@ -2626,8 +2498,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getConfirmExecutionMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getConfirmExecutionMenuItem()
         await waitFor(() => {
           menuTestUtils.expectMenuItemDisabled(item)
         })
@@ -2655,8 +2527,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        const item = testUtils.getConfirmExecutionMenuItem()
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.getConfirmExecutionMenuItem()
         menuTestUtils.expectMenuItemDisabled(item)
       })
     })
@@ -2696,14 +2568,14 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickConfirmExecutionMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickConfirmExecutionMenuItem(user)
         const modal = await confirmExecutionRelocationTaskModalTestUtils.findContainer()
         await confirmExecutionRelocationTaskModalTestUtils.clickConfirmButton(user)
 
         await waitFor(() => expect(modal).not.toBeInTheDocument())
 
-        const status = testUtils.getBlockInfo(
+        const status = relocationTaskDetailsTestUtils.getBlockInfo(
           'status',
           relocationTaskStatusDict[closeRelocationTaskResponse.status],
         )
@@ -2746,8 +2618,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickConfirmExecutionMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickConfirmExecutionMenuItem(user)
         await confirmExecutionRelocationTaskModalTestUtils.findContainer()
         await confirmExecutionRelocationTaskModalTestUtils.clickConfirmButton(user)
 
@@ -2789,8 +2661,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickConfirmExecutionMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickConfirmExecutionMenuItem(user)
         await confirmExecutionRelocationTaskModalTestUtils.findContainer()
         await confirmExecutionRelocationTaskModalTestUtils.clickConfirmButton(user)
 
@@ -2832,8 +2704,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickConfirmExecutionMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickConfirmExecutionMenuItem(user)
         await confirmExecutionRelocationTaskModalTestUtils.findContainer()
         await confirmExecutionRelocationTaskModalTestUtils.clickConfirmButton(user)
 
@@ -2864,8 +2736,8 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        await testUtils.openMenu(user)
-        await testUtils.clickConfirmExecutionMenuItem(user)
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        await relocationTaskDetailsTestUtils.clickConfirmExecutionMenuItem(user)
         await confirmExecutionRelocationTaskModalTestUtils.findContainer()
         await confirmExecutionRelocationTaskModalTestUtils.clickConfirmButton(user)
 
@@ -2891,8 +2763,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      const item = testUtils.getCreateDocumentsPackageMenuItem()
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getCreateDocumentsPackageMenuItem()
       expect(item).toBeInTheDocument()
       expect(item).toBeEnabled()
     })
@@ -2921,8 +2793,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.openMenu(user)
-      await testUtils.clickCreateDocumentsPackageMenuItem(user)
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      await relocationTaskDetailsTestUtils.clickCreateDocumentsPackageMenuItem(user)
       const page = await createDocumentsPackagePageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
@@ -2941,8 +2813,8 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
-      const button = testUtils.getCommonPhotosButton()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
+      const button = relocationTaskDetailsTestUtils.getCommonPhotosButton()
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
     })
@@ -2962,8 +2834,8 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.expectRelocationTaskLoadingFinished()
-      await testUtils.clickCommonPhotosButton(user)
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
+      await relocationTaskDetailsTestUtils.clickCommonPhotosButton(user)
       const modal = await attachmentListModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
@@ -2981,8 +2853,8 @@ describe('Информация о заявке о перемещении', () =>
         }),
       })
 
-      await testUtils.expectRelocationTaskLoadingFinished()
-      const button = testUtils.getStretchDetailsButton()
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
+      const button = relocationTaskDetailsTestUtils.getStretchDetailsButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -3001,15 +2873,21 @@ describe('Информация о заявке о перемещении', () =>
         },
       )
 
-      await testUtils.expectRelocationTaskLoadingFinished()
-      const heightBeforeFirstStretch = Number(split(testUtils.getContainer().style.height, 'px')[0])
+      await relocationTaskDetailsTestUtils.expectRelocationTaskLoadingFinished()
+      const heightBeforeFirstStretch = Number(
+        split(relocationTaskDetailsTestUtils.getContainer().style.height, 'px')[0],
+      )
 
-      await testUtils.clickStretchDetailsButton(user)
-      const heightAfterFirstStretch = Number(split(testUtils.getContainer().style.height, 'px')[0])
+      await relocationTaskDetailsTestUtils.clickStretchDetailsButton(user)
+      const heightAfterFirstStretch = Number(
+        split(relocationTaskDetailsTestUtils.getContainer().style.height, 'px')[0],
+      )
       expect(heightAfterFirstStretch).toBeGreaterThan(heightBeforeFirstStretch)
 
-      await testUtils.clickStretchDetailsButton(user)
-      const currentHeight = Number(split(testUtils.getContainer().style.height, 'px')[0])
+      await relocationTaskDetailsTestUtils.clickStretchDetailsButton(user)
+      const currentHeight = Number(
+        split(relocationTaskDetailsTestUtils.getContainer().style.height, 'px')[0],
+      )
       expect(currentHeight).toBeLessThan(heightAfterFirstStretch)
       expect(currentHeight).toBe(heightBeforeFirstStretch)
     })

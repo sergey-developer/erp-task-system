@@ -14,14 +14,14 @@ import { getFullUserName } from 'modules/user/utils'
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { formatDate } from 'shared/utils/date'
 
-import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
 import {
   activeChangeInfrastructureButton,
   showChangeInfrastructureButton,
-} from '_tests_/features/tasks/TaskDetails/constants'
-import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
-import { taskTableTestUtils } from '_tests_/features/tasks/TaskTable/testUtils'
-import { tasksPageTestUtils } from '_tests_/features/tasks/TasksPage/testUtils'
+} from '_tests_/features/tasks/components/TaskDetails/constants'
+import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
+import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
+import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import taskFixtures from '_tests_/fixtures/task'

@@ -11,9 +11,9 @@ import {
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
-import { taskStatusTestUtils } from '_tests_/features/tasks/TaskStatus/testUtils'
-import { paginationProps, props, taskTableItem } from '_tests_/features/tasks/TaskTable/constants'
-import { taskTableTestUtils } from '_tests_/features/tasks/TaskTable/testUtils'
+import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
+import { paginationProps, props, taskTableItem } from '_tests_/features/tasks/components/TaskTable/constants'
+import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import { render, tableTestUtils } from '_tests_/utils'
 

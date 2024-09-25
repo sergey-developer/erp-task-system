@@ -1,9 +1,3 @@
-import { screen } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
-import { testUtils as inventorizationDetailsTestUtils } from 'modules/warehouse/components/InventorizationDetails/InventorizationDetails.test'
-import { testUtils as inventorizationTableTestUtils } from 'modules/warehouse/components/InventorizationTable/InventorizationTable.test'
-import { testUtils as inventorizationsFilterTestUtils } from 'modules/warehouse/components/InventorizationsFilter/InventorizationsFilter.test'
 import {
   getInventorizationsErrMsg,
   inventorizationStatusDict,
@@ -13,6 +7,10 @@ import {
 } from 'modules/warehouse/constants/inventorization'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
+import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/components/InventorizationDetails/testUtils'
+import { inventorizationTableTestUtils } from '_tests_/features/warehouse/components/InventorizationTable/testUtils'
+import { inventorizationsFilterTestUtils } from '_tests_/features/warehouse/components/InventorizationsFilter/testUtils'
+import { inventorizationsPageTestUtils } from '_tests_/features/warehouse/pages/InventorizationsPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -24,7 +22,6 @@ import {
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
-  buttonTestUtils,
   fakeWord,
   getStoreWithAuth,
   notificationTestUtils,
@@ -34,20 +31,6 @@ import {
 } from '_tests_/utils'
 
 import InventorizationsPage from './index'
-
-const getContainer = () => screen.getByTestId('inventorizations-page')
-
-// filter button
-const getFilterButton = () => buttonTestUtils.getFilterButtonIn(getContainer())
-const clickFilterButton = (user: UserEvent) =>
-  buttonTestUtils.clickFilterButtonIn(getContainer(), user)
-
-export const testUtils = {
-  getContainer,
-
-  getFilterButton,
-  clickFilterButton,
-}
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -187,7 +170,7 @@ describe('Страница списка инвентаризаций', () => {
       })
 
       await inventorizationTableTestUtils.expectLoadingFinished()
-      await testUtils.clickFilterButton(user)
+      await inventorizationsPageTestUtils.clickFilterButton(user)
       const filter = await inventorizationsFilterTestUtils.findContainer()
 
       expect(filter).toBeInTheDocument()
@@ -203,7 +186,7 @@ describe('Страница списка инвентаризаций', () => {
       })
 
       await inventorizationTableTestUtils.expectLoadingFinished()
-      await testUtils.clickFilterButton(user)
+      await inventorizationsPageTestUtils.clickFilterButton(user)
       await inventorizationsFilterTestUtils.findContainer()
 
       await inventorizationsFilterTestUtils.openStatusSelect(user)
@@ -249,7 +232,7 @@ describe('Страница списка инвентаризаций', () => {
       })
 
       await inventorizationTableTestUtils.expectLoadingFinished()
-      await testUtils.clickFilterButton(user)
+      await inventorizationsPageTestUtils.clickFilterButton(user)
       await inventorizationsFilterTestUtils.findContainer()
 
       await inventorizationsFilterTestUtils.openStatusSelect(user)

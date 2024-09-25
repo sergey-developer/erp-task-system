@@ -15,8 +15,8 @@ import {
   hideRequestReclassificationItemProps,
   props,
   showRequestReclassificationItemProps,
-} from '_tests_/features/tasks/TaskDetails/TaskDetailsTitle/constants'
-import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/TaskDetails/TaskDetailsTitle/testUtils'
+} from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/constants'
+import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'

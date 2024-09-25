@@ -8,9 +8,9 @@ import {
   TasksFiltersStorageType,
 } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 
-import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
-import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/TasksFiltersStorage/testUtils'
-import { updateTasksButtonTestUtils } from '_tests_/features/tasks/UpdateTasksButton/testUtils'
+import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
+import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/components/TasksFiltersStorage/testUtils'
+import { updateTasksButtonTestUtils } from '_tests_/features/tasks/components/UpdateTasksButton/testUtils'
 import reportsFixtures from '_tests_/fixtures/reports'
 import {
   mockGetFiscalAccumulatorTasksServerError,

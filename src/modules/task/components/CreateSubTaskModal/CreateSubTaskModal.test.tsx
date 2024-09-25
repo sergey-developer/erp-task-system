@@ -6,8 +6,8 @@ import { createSubTaskErrMsg } from 'modules/task/constants/task'
 import { getSubTaskTemplatesCatalogErrMsg } from 'shared/constants/catalogs'
 import { validationMessages } from 'shared/constants/validation'
 
-import { onCancel, props } from '_tests_/features/tasks/CreateSubTaskModal/constants'
-import { createSubTaskModalTestUtils } from '_tests_/features/tasks/CreateSubTaskModal/testUtils'
+import { onCancel, props } from '_tests_/features/tasks/components/CreateSubTaskModal/constants'
+import { createSubTaskModalTestUtils } from '_tests_/features/tasks/components/CreateSubTaskModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
 import {

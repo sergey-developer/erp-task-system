@@ -1,5 +1,5 @@
-import { props } from '_tests_/features/tasks/FastFilters/FastFilterListItem/constants'
-import { fastFilterListTestUtils } from '_tests_/features/tasks/FastFilters/testUtils'
+import { props } from '_tests_/features/tasks/components/FastFilters/FastFilterListItem/constants'
+import { fastFilterListTestUtils } from '_tests_/features/tasks/components/FastFilters/testUtils'
 import { render } from '_tests_/utils'
 
 import FastFilterListItem from './'

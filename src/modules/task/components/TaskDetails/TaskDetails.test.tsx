@@ -24,28 +24,28 @@ import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 
-import { confirmCancelReclassificationRequestModalTestUtils } from '_tests_/features/tasks/ConfirmCancelReclassificationRequestModal/testUtils'
-import { confirmExecuteTaskReclassificationTasksModalTestUtils } from '_tests_/features/tasks/ConfirmExecuteTaskReclassificationTasksModal/testUtils'
-import { confirmExecuteTaskRegistrationFNModalTestUtils } from '_tests_/features/tasks/ConfirmExecuteTaskRegistrationFNModal/testUtils'
-import { createRegistrationFNRequestModalTestUtils } from '_tests_/features/tasks/CreateRegistrationFNRequestModal/testUtils'
-import { executeTaskModalTestUtils } from '_tests_/features/tasks/ExecuteTaskModal/testUtils'
-import { requestTaskSuspendModalTestUtils } from '_tests_/features/tasks/RequestTaskSuspendModal/testUtils'
-import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
-import { assigneeBlockTestUtils } from '_tests_/features/tasks/TaskDetails/AssigneeBlock/testUtils'
+import { confirmCancelReclassificationRequestModalTestUtils } from '_tests_/features/tasks/components/ConfirmCancelReclassificationRequestModal/testUtils'
+import { confirmExecuteTaskReclassificationTasksModalTestUtils } from '_tests_/features/tasks/components/ConfirmExecuteTaskReclassificationTasksModal/testUtils'
+import { confirmExecuteTaskRegistrationFNModalTestUtils } from '_tests_/features/tasks/components/ConfirmExecuteTaskRegistrationFNModal/testUtils'
+import { createRegistrationFNRequestModalTestUtils } from '_tests_/features/tasks/components/CreateRegistrationFNRequestModal/testUtils'
+import { executeTaskModalTestUtils } from '_tests_/features/tasks/components/ExecuteTaskModal/testUtils'
+import { requestTaskSuspendModalTestUtils } from '_tests_/features/tasks/components/RequestTaskSuspendModal/testUtils'
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
+import { assigneeBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/testUtils'
 import {
   activeRequestSuspendItemProps,
   canRegisterFNItemProps,
-} from '_tests_/features/tasks/TaskDetails/TaskDetailsTitle/constants'
-import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/TaskDetails/TaskDetailsTitle/testUtils'
-import { workGroupBlockTestUtils } from '_tests_/features/tasks/TaskDetails/WorkGroupBlock/testUtils'
+} from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/constants'
+import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/testUtils'
+import { workGroupBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/WorkGroupBlock/testUtils'
 import {
   activeChangeInfrastructureButton,
   props,
   showChangeInfrastructureButton,
-} from '_tests_/features/tasks/TaskDetails/constants'
-import { taskDetailsTestUtils } from '_tests_/features/tasks/TaskDetails/testUtils'
-import { taskReclassificationRequestTestUtils } from '_tests_/features/tasks/TaskReclassificationRequest/testUtils'
-import { taskSuspendRequestTestUtils } from '_tests_/features/tasks/TaskSuspendRequest/testUtils'
+} from '_tests_/features/tasks/components/TaskDetails/constants'
+import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
+import { taskReclassificationRequestTestUtils } from '_tests_/features/tasks/components/TaskReclassificationRequest/testUtils'
+import { taskSuspendRequestTestUtils } from '_tests_/features/tasks/components/TaskSuspendRequest/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'

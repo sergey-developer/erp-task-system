@@ -2,8 +2,8 @@ import { within } from '@testing-library/react'
 
 import { validationMessages } from 'shared/constants/validation'
 
-import { props } from '_tests_/features/tasks/CreateRegistrationFNRequestModal/constants'
-import { createRegistrationFNRequestModalTestUtils } from '_tests_/features/tasks/CreateRegistrationFNRequestModal/testUtils'
+import { props } from '_tests_/features/tasks/components/CreateRegistrationFNRequestModal/constants'
+import { createRegistrationFNRequestModalTestUtils } from '_tests_/features/tasks/components/CreateRegistrationFNRequestModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { fakeEmail, render } from '_tests_/utils'
 

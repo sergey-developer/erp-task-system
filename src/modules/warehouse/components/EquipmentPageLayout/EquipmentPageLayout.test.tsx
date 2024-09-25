@@ -1,15 +1,14 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
-import { testUtils as equipmentFilterTestUtils } from 'modules/warehouse/components/EquipmentFilter/EquipmentFilter.test'
-import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import EquipmentListPage from 'modules/warehouse/pages/EquipmentListPage'
-import { testUtils as equipmentListPageTestUtils } from 'modules/warehouse/pages/EquipmentListPage/EquipmentListPage.test'
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
-import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 
+import { equipmentFilterTestUtils } from '_tests_/features/warehouse/components/EquipmentFilter/testUtils'
+import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
+import { equipmentPageLayoutTestUtils } from '_tests_/features/warehouse/components/EquipmentPageLayout/testUtils'
+import { equipmentListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentListPage/testUtils'
+import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentNomenclatureListPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -20,42 +19,9 @@ import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetLocationsCatalogSuccess,
 } from '_tests_/mocks/api'
-import { buttonTestUtils, fakeWord, render, renderWithRouter, setupApiTests } from '_tests_/utils'
+import { fakeWord, render, renderWithRouter, setupApiTests } from '_tests_/utils'
 
 import EquipmentPageLayout from './index'
-
-const getContainer = () => screen.getByTestId('equipment-page-layout')
-
-// filter button
-const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
-
-const clickFilterButton = async (user: UserEvent) => {
-  const button = getFilterButton()
-  await user.click(button)
-}
-
-// search field
-const getSearchField = () => within(getContainer()).getByPlaceholderText('Поиск оборудования')
-
-const setSearch = async (
-  user: UserEvent,
-  value: string,
-  pressEnter: boolean = false,
-): Promise<HTMLElement> => {
-  const field = getSearchField()
-  await user.type(field, pressEnter ? value.concat('{enter}') : value)
-  return field
-}
-
-const testUtils = {
-  getContainer,
-
-  getFilterButton,
-  clickFilterButton,
-
-  getSearchField,
-  setSearch,
-}
 
 setupApiTests()
 
@@ -88,7 +54,7 @@ describe('Layout номенклатуры оборудования', () => {
       test('Отображается корректно', () => {
         render(<EquipmentPageLayout />)
 
-        const button = testUtils.getFilterButton()
+        const button = equipmentPageLayoutTestUtils.getFilterButton()
 
         expect(button).toBeInTheDocument()
         expect(button).toBeEnabled()
@@ -101,7 +67,7 @@ describe('Layout номенклатуры оборудования', () => {
 
         const { user } = render(<EquipmentPageLayout />)
 
-        await testUtils.clickFilterButton(user)
+        await equipmentPageLayoutTestUtils.clickFilterButton(user)
         const filter = await equipmentFilterTestUtils.findContainer()
 
         expect(filter).toBeInTheDocument()
@@ -128,7 +94,7 @@ describe('Layout номенклатуры оборудования', () => {
 
       const { user } = render(<EquipmentPageLayout />)
 
-      await testUtils.clickFilterButton(user)
+      await equipmentPageLayoutTestUtils.clickFilterButton(user)
       await equipmentFilterTestUtils.clickCloseButton(user)
       const filter = equipmentFilterTestUtils.queryContainer()
 
@@ -163,7 +129,7 @@ describe('Layout номенклатуры оборудования', () => {
       )
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
-      await testUtils.clickFilterButton(user)
+      await equipmentPageLayoutTestUtils.clickFilterButton(user)
       await equipmentFilterTestUtils.findContainer()
       await equipmentFilterTestUtils.openLocationsSelect(user)
       await equipmentFilterTestUtils.setLocation(user, locationListItem.title)
@@ -217,7 +183,7 @@ describe('Layout номенклатуры оборудования', () => {
       const equipmentListPage = equipmentListPageTestUtils.getContainer()
       expect(equipmentListPage).toBeInTheDocument()
 
-      await testUtils.clickFilterButton(user)
+      await equipmentPageLayoutTestUtils.clickFilterButton(user)
       await equipmentFilterTestUtils.clickApplyButton(user)
       const equipmentNomenclatureListPage =
         await equipmentNomenclatureListPageTestUtils.findContainer()
@@ -231,7 +197,7 @@ describe('Layout номенклатуры оборудования', () => {
       test('Отображается корректно', () => {
         render(<EquipmentPageLayout />)
 
-        const field = testUtils.getSearchField()
+        const field = equipmentPageLayoutTestUtils.getSearchField()
 
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
@@ -242,7 +208,7 @@ describe('Layout номенклатуры оборудования', () => {
         const { user } = render(<EquipmentPageLayout />)
 
         const value = fakeWord()
-        const field = await testUtils.setSearch(user, value)
+        const field = await equipmentPageLayoutTestUtils.setSearch(user, value)
 
         expect(field).toHaveDisplayValue(value)
       })
@@ -284,7 +250,7 @@ describe('Layout номенклатуры оборудования', () => {
         equipmentNomenclatureListItem.title,
       )
       equipmentListPageTestUtils.getContainer()
-      await testUtils.setSearch(user, fakeWord(), true)
+      await equipmentPageLayoutTestUtils.setSearch(user, fakeWord(), true)
       equipmentNomenclatureListPageTestUtils.getContainer()
       await equipmentNomenclatureTableTestUtils.expectLoadingStarted()
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()

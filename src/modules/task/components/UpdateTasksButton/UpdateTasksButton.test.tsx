@@ -1,5 +1,5 @@
-import { props } from '_tests_/features/tasks/UpdateTasksButton/constants'
-import { updateTasksButtonTestUtils } from '_tests_/features/tasks/UpdateTasksButton/testUtils'
+import { props } from '_tests_/features/tasks/components/UpdateTasksButton/constants'
+import { updateTasksButtonTestUtils } from '_tests_/features/tasks/components/UpdateTasksButton/testUtils'
 import { menuTestUtils, render } from '_tests_/utils'
 
 import UpdateTasksButton from './index'

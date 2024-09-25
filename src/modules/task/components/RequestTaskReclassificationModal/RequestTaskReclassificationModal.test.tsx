@@ -5,8 +5,8 @@ import { validationMessages } from 'shared/constants/validation'
 import {
   props,
   reasonValues,
-} from '_tests_/features/tasks/RequestTaskReclassificationModal/constants'
-import { requestTaskReclassificationModalTestUtils } from '_tests_/features/tasks/RequestTaskReclassificationModal/testUtils'
+} from '_tests_/features/tasks/components/RequestTaskReclassificationModal/constants'
+import { requestTaskReclassificationModalTestUtils } from '_tests_/features/tasks/components/RequestTaskReclassificationModal/testUtils'
 import { fakeWord, render } from '_tests_/utils'
 
 import RequestTaskReclassificationModal from './index'

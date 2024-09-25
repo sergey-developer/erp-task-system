@@ -1,7 +1,7 @@
 import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 
-import { props } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/Comments/Comment/constants'
-import { commentTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/Comments/Comment/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/Comments/Comment/constants'
+import { commentTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/Comments/Comment/testUtils'
 import { render } from '_tests_/utils'
 
 import Comment from './index'

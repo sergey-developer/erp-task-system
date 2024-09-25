@@ -2,8 +2,8 @@ import { screen, within } from '@testing-library/react'
 
 import { validationMessages, validationSizes } from 'shared/constants/validation'
 
-import { props } from '_tests_/features/tasks/TaskFirstLineModal/constants'
-import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/TaskFirstLineModal/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskFirstLineModal/constants'
+import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/components/TaskFirstLineModal/testUtils'
 import { buttonTestUtils, fakeWord, render } from '_tests_/utils'
 
 import TaskFirstLineModal from './index'

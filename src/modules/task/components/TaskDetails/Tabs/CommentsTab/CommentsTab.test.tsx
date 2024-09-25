@@ -3,10 +3,10 @@ import { within } from '@testing-library/react'
 import { createTaskCommentErrMsg } from 'modules/task/constants/taskComment'
 import { UserPermissionsEnum } from 'modules/user/constants'
 
-import { commentsTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/Comments/testUtils'
-import { createCommentFormTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/CreateCommentForm/testUtils'
-import { props } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/constants'
-import { commentsTabTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/testUtils'
+import { commentsTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/Comments/testUtils'
+import { createCommentFormTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/CreateCommentForm/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/constants'
+import { commentsTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import {
   mockCreateTaskCommentBadRequestError,

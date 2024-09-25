@@ -1,7 +1,7 @@
 import { validationMessages } from 'shared/constants/validation'
 
-import { props } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/CreateCommentForm/constants'
-import { createCommentFormTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/CreateCommentForm/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/CreateCommentForm/constants'
+import { createCommentFormTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/CreateCommentForm/testUtils'
 import { fakeWord, render } from '_tests_/utils'
 
 import CreateCommentForm from './index'

@@ -9,10 +9,10 @@ import {
   props,
   showFirstLineButtonProps,
   showSecondLineButtonProps,
-} from '_tests_/features/tasks/TaskDetails/WorkGroupBlock/constants'
-import { workGroupBlockTestUtils } from '_tests_/features/tasks/TaskDetails/WorkGroupBlock/testUtils'
-import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/TaskFirstLineModal/testUtils'
-import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/TaskSecondLineModal/testUtils'
+} from '_tests_/features/tasks/components/TaskDetails/WorkGroupBlock/constants'
+import { workGroupBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/WorkGroupBlock/testUtils'
+import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/components/TaskFirstLineModal/testUtils'
+import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import workGroupFixtures from '_tests_/fixtures/workGroup'

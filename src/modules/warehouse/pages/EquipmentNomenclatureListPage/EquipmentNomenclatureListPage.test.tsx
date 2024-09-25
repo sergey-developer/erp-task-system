@@ -1,9 +1,7 @@
-import { screen } from '@testing-library/react'
-
-import { testUtils as equipmentNomenclatureTableTestUtils } from 'modules/warehouse/components/EquipmentNomenclatureTable/EquipmentNomenclatureTable.test'
 import { getEquipmentNomenclaturesErrMsg } from 'modules/warehouse/constants/equipment'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
+import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -20,16 +18,6 @@ import {
 } from '_tests_/utils'
 
 import EquipmentNomenclatureListPage from './index'
-
-const getContainer = () => screen.getByTestId('equipment-nomenclature-list-page')
-
-const findContainer = (): Promise<HTMLElement> =>
-  screen.findByTestId('equipment-nomenclature-list-page')
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-}
 
 setupApiTests()
 notificationTestUtils.setupNotifications()

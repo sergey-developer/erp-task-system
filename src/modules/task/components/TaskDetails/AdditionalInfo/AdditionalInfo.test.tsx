@@ -1,7 +1,7 @@
 import { waitFor, within } from '@testing-library/react'
 
-import { props } from '_tests_/features/tasks/TaskDetails/AdditionalInfo/constants'
-import { additionalInfoTestUtils } from '_tests_/features/tasks/TaskDetails/AdditionalInfo/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/AdditionalInfo/constants'
+import { additionalInfoTestUtils } from '_tests_/features/tasks/components/TaskDetails/AdditionalInfo/testUtils'
 import {
   buttonTestUtils,
   fakeAddress,

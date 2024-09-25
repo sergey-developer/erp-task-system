@@ -6,9 +6,9 @@ import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TaskListMapPage from 'modules/task/pages/TaskListMapPage'
 import TasksPage from 'modules/task/pages/TasksPage'
 
-import { taskListLayoutTestUtils } from '_tests_/features/tasks/TaskListLayout/testUtils'
-import { testUtils as taskListMapPageTestUtils } from '_tests_/features/tasks/TaskListMapPage/testUtils'
-import { tasksPageTestUtils } from '_tests_/features/tasks/TasksPage/testUtils'
+import { taskListLayoutTestUtils } from '_tests_/features/tasks/components/TaskListLayout/testUtils'
+import { testUtils as taskListMapPageTestUtils } from '_tests_/features/tasks/pages/TaskListMapPage/testUtils'
+import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetTaskCountersSuccess,

@@ -1,5 +1,5 @@
-import { props } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/Comments/constants'
-import { commentsTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/CommentsTab/Comments/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/Comments/constants'
+import { commentsTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/Comments/testUtils'
 import { render } from '_tests_/utils'
 
 import Comments from './index'

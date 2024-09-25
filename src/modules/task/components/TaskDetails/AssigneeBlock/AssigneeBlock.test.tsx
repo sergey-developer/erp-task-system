@@ -6,7 +6,7 @@ import { getFullUserName } from 'modules/user/utils'
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { ArrayFirst } from 'shared/types/utils'
 
-import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
 import {
   activeAssignOnMeButtonProps,
   activeRefuseTaskButtonProps,
@@ -14,8 +14,8 @@ import {
   canSelectAssigneeProps,
   props,
   showRefuseTaskButtonProps,
-} from '_tests_/features/tasks/TaskDetails/AssigneeBlock/constants'
-import { assigneeBlockTestUtils } from '_tests_/features/tasks/TaskDetails/AssigneeBlock/testUtils'
+} from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/constants'
+import { assigneeBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { getStoreWithAuth, render, selectTestUtils } from '_tests_/utils'

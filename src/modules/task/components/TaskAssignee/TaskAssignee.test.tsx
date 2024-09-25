@@ -2,9 +2,9 @@ import { within } from '@testing-library/react'
 
 import { getFullUserName } from 'modules/user/utils'
 
-import { props } from '_tests_/features/tasks/TaskAssignee/constants'
-import { taskAssigneeTestUtils } from '_tests_/features/tasks/TaskAssignee/testUtils'
-import { userShortInfoTestUtils } from '_tests_/features/tasks/UserShortInfo/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskAssignee/constants'
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
+import { userShortInfoTestUtils } from '_tests_/features/tasks/components/UserShortInfo/testUtils'
 import { render } from '_tests_/utils'
 
 import TaskAssignee from './index'

@@ -4,8 +4,8 @@ import { FastFilterEnum, fastFilterNamesDict } from 'modules/task/constants/task
 import { TaskCountersKeys } from 'modules/task/models'
 import { UserPermissionsEnum } from 'modules/user/constants'
 
-import { props } from '_tests_/features/tasks/FastFilters/constants'
-import { fastFilterListTestUtils } from '_tests_/features/tasks/FastFilters/testUtils'
+import { props } from '_tests_/features/tasks/components/FastFilters/constants'
+import { fastFilterListTestUtils } from '_tests_/features/tasks/components/FastFilters/testUtils'
 import { render } from '_tests_/utils'
 
 import { fastFiltersConfig } from './config'

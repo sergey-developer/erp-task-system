@@ -1,8 +1,8 @@
 import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 
-import { props } from '_tests_/features/tasks/TaskDetails/Tabs/constants'
-import { tabsTestUtils } from '_tests_/features/tasks/TaskDetails/Tabs/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/constants'
+import { tabsTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/testUtils'
 import {
   mockGetJournalSuccess,
   mockGetRelocationTasksSuccess,

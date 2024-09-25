@@ -1,7 +1,7 @@
 import { validationMessages, validationSizes } from 'shared/constants/validation'
 
-import { props } from '_tests_/features/tasks/CancelSubTaskModal/constants'
-import { cancelSubTaskModalTestUtils } from '_tests_/features/tasks/CancelSubTaskModal/testUtils'
+import { props } from '_tests_/features/tasks/components/CancelSubTaskModal/constants'
+import { cancelSubTaskModalTestUtils } from '_tests_/features/tasks/components/CancelSubTaskModal/testUtils'
 import { buttonTestUtils, fakeIdStr, fakeWord, render } from '_tests_/utils'
 
 import CancelSubTaskModal from './index'
