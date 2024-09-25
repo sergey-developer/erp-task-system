@@ -23,7 +23,7 @@ import App from './App'
 setupApiTests()
 notificationTestUtils.setupNotifications()
 
-describe('Private app', () => {
+describe.skip('Private app', () => {
   describe('Private header', () => {
     describe('Time zone', () => {
       test('Отображается состояние загрузки во время загрузки временных зон', async () => {

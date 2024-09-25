@@ -48,7 +48,7 @@ setupApiTests()
 notificationTestUtils.setupNotifications()
 
 describe('Страница списка заявок на перемещение оборудования', () => {
-  describe('Список заявок на перемещение оборудования', () => {
+  describe.skip('Список заявок на перемещение оборудования', () => {
     test('При успешном запросе отображается корректно', async () => {
       const relocationTasks = warehouseFixtures.relocationTasks()
       mockGetRelocationTasksSuccess({

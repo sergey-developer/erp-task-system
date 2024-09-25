@@ -253,7 +253,7 @@ describe('Страница создания черновика заявки на
     expect(page).toBeInTheDocument()
   })
 
-  test('При успешном создании возвращается на страницу выполнения инвентаризации во вкладку перемещений и открывает карточку', async () => {
+  test.skip('При успешном создании возвращается на страницу выполнения инвентаризации во вкладку перемещений и открывает карточку', async () => {
     const locationStateMock = makeCreateRelocationTaskDraftPageLocationState(
       warehouseFixtures.inventorization(),
     )

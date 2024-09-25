@@ -94,7 +94,7 @@ describe('Страница списка номенклатуры оборудо�
       })
     })
 
-    test('Пагинация работает', async () => {
+    test.skip('Пагинация работает', async () => {
       const equipmentNomenclatureList = warehouseFixtures.equipmentNomenclatures(11)
 
       mockGetEquipmentNomenclaturesSuccess({

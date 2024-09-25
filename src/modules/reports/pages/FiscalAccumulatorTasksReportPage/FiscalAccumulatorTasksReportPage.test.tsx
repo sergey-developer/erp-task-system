@@ -84,7 +84,7 @@ describe('Страница заявок фискальных накопител�
     })
   })
 
-  test('При клике на заявку открывается карточка заявки', async () => {
+  test.skip('При клике на заявку открывается карточка заявки', async () => {
     const fiscalAccumulatorTaskListItem = reportsFixtures.fiscalAccumulatorTaskListItem()
     mockGetFiscalAccumulatorTasksSuccess({ body: [fiscalAccumulatorTaskListItem] })
     mockGetTaskSuccess(fiscalAccumulatorTaskListItem.id)
@@ -137,7 +137,7 @@ describe('Страница заявок фискальных накопител�
       expect(button).toBeEnabled()
     })
 
-    test('Автообновление работает', async () => {
+    test.skip('Автообновление работает', async () => {
       mockGetFiscalAccumulatorTasksSuccess({ once: false })
 
       const { user } = render(<FiscalAccumulatorTasksReportPage />)

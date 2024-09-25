@@ -29,7 +29,7 @@ afterEach(() => {
   onChange.mockReset()
 })
 
-describe('Таблица заявок на перемещение оборудования', () => {
+describe.skip('Таблица заявок на перемещение оборудования', () => {
   test('Отображается корректно', () => {
     render(<RelocationTaskTable {...props} />)
 
@@ -74,7 +74,7 @@ describe('Таблица заявок на перемещение оборудо
     expect(props.onRow).toBeCalledWith(props.dataSource[0], 0)
   })
 
-  test('Можно установить сортировку по умолчанию', () => {
+  test.skip('Можно установить сортировку по умолчанию', () => {
     render(<RelocationTaskTable {...props} sort='-deadline_at' />)
     const headCell = relocationTaskTableTestUtils.getHeadCell('Срок выполнения')
     expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)

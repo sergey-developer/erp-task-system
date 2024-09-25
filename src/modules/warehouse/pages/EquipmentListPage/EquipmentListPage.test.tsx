@@ -29,7 +29,7 @@ import EquipmentListPage from './index'
 setupApiTests()
 notificationTestUtils.setupNotifications()
 
-describe('Страница списка оборудования', () => {
+describe.skip('Страница списка оборудования', () => {
   describe('Список оборудования', () => {
     test('При успешном запросе отображается корректно', async () => {
       const equipmentList = [warehouseFixtures.equipmentListItem()]

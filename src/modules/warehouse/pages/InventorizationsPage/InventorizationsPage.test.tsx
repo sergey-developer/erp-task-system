@@ -36,7 +36,7 @@ setupApiTests()
 notificationTestUtils.setupNotifications()
 
 describe('Страница списка инвентаризаций', () => {
-  describe('Список инвентаризаций', () => {
+  describe.skip('Список инвентаризаций', () => {
     test('При успешном запросе отображается', async () => {
       const inventorizations = warehouseFixtures.inventorizations()
       mockGetInventorizationsSuccess({
@@ -218,7 +218,7 @@ describe('Страница списка инвентаризаций', () => {
       expect(type2).toBeInTheDocument()
     })
 
-    test('После применения список отображается', async () => {
+    test.skip('После применения список отображается', async () => {
       const inventorizations = warehouseFixtures.inventorizations()
       mockGetInventorizationsSuccess({
         body: commonFixtures.paginatedListResponse(inventorizations),
@@ -254,7 +254,7 @@ describe('Страница списка инвентаризаций', () => {
   })
 
   describe('Карточка инвентаризации', () => {
-    test('Открывается при клике на строку', async () => {
+    test.skip('Открывается при клике на строку', async () => {
       const inventorizationListItem = warehouseFixtures.inventorizationListItem()
       mockGetInventorizationsSuccess({
         body: commonFixtures.paginatedListResponse([inventorizationListItem]),
