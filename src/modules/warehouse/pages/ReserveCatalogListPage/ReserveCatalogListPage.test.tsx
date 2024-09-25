@@ -7,10 +7,10 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
 import InventorizationsPage from 'modules/warehouse/pages/InventorizationsPage'
 import RelocationTasksPage from 'modules/warehouse/pages/RelocationTasksPage'
-import { testUtils as relocationTaskListPageTestUtils } from 'modules/warehouse/pages/RelocationTasksPage/RelocationTasksPage.test'
 
 import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentNomenclatureListPage/testUtils'
 import { inventorizationsPageTestUtils } from '_tests_/features/warehouse/pages/InventorizationsPage/testUtils'
+import { relocationTasksPageTestUtils } from '_tests_/features/warehouse/pages/RelocationTasksPage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetEquipmentNomenclaturesSuccess,
@@ -217,7 +217,7 @@ describe('Страница списка справочников запасов'
       )
 
       await testUtils.clickRelocationTasksLink(user)
-      const page = relocationTaskListPageTestUtils.getContainer()
+      const page = relocationTasksPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
     })

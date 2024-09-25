@@ -1,5 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { waitFor } from '@testing-library/react'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import {
@@ -16,6 +15,7 @@ import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/compo
 import { relocationTaskTableTestUtils } from '_tests_/features/warehouse/components/RelocationTaskTable/testUtils'
 import { relocationTasksFilterTestUtils } from '_tests_/features/warehouse/components/RelocationTasksFilter/testUtils'
 import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
+import { relocationTasksPageTestUtils } from '_tests_/features/warehouse/pages/RelocationTasksPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -31,10 +31,8 @@ import {
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
-  buttonTestUtils,
   fakeWord,
   getStoreWithAuth,
-  linkTestUtils,
   notificationTestUtils,
   render,
   renderWithRouter,
@@ -45,28 +43,6 @@ import {
 
 import CreateRelocationTaskPage from '../CreateRelocationTaskPage'
 import RelocationTasksPage from './index'
-
-const getContainer = () => screen.getByTestId('relocation-tasks-page')
-
-const getFilterButton = () => buttonTestUtils.getFilterButtonIn(getContainer())
-const clickFilterButton = (user: UserEvent) =>
-  buttonTestUtils.clickFilterButtonIn(getContainer(), user)
-
-const getCreateTaskLink = () => linkTestUtils.getLinkIn(getContainer(), 'Создать заявку')
-const queryCreateTaskLink = () => linkTestUtils.queryLinkIn(getContainer(), 'Создать заявку')
-const clickCreateTaskLink = (user: UserEvent) =>
-  linkTestUtils.clickLinkIn(getContainer(), user, 'Создать заявку')
-
-export const testUtils = {
-  getContainer,
-
-  getFilterButton,
-  clickFilterButton,
-
-  getCreateTaskLink,
-  queryCreateTaskLink,
-  clickCreateTaskLink,
-}
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -208,7 +184,7 @@ describe('Страница списка заявок на перемещение
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
 
-        const button = testUtils.getFilterButton()
+        const button = relocationTasksPageTestUtils.getFilterButton()
 
         expect(button).toBeInTheDocument()
         expect(button).toBeEnabled()
@@ -227,7 +203,7 @@ describe('Страница списка заявок на перемещение
 
         await relocationTaskTableTestUtils.expectLoadingFinished()
 
-        await testUtils.clickFilterButton(user)
+        await relocationTasksPageTestUtils.clickFilterButton(user)
         const filter = await relocationTasksFilterTestUtils.findContainer()
 
         expect(filter).toBeInTheDocument()
@@ -247,7 +223,7 @@ describe('Страница списка заявок на перемещение
       })
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
-      await testUtils.clickFilterButton(user)
+      await relocationTasksPageTestUtils.clickFilterButton(user)
       await relocationTasksFilterTestUtils.findContainer()
 
       await relocationTasksFilterTestUtils.openStatusSelect(user)
@@ -285,7 +261,7 @@ describe('Страница списка заявок на перемещение
       })
 
       await relocationTaskTableTestUtils.expectLoadingFinished()
-      await testUtils.clickFilterButton(user)
+      await relocationTasksPageTestUtils.clickFilterButton(user)
       await relocationTasksFilterTestUtils.findContainer()
 
       await relocationTasksFilterTestUtils.openStatusSelect(user)
@@ -373,7 +349,7 @@ describe('Страница списка заявок на перемещение
           }),
         })
 
-        const link = testUtils.getCreateTaskLink()
+        const link = relocationTasksPageTestUtils.getCreateTaskLink()
 
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute('href', WarehouseRouteEnum.CreateRelocationTask)
@@ -388,7 +364,7 @@ describe('Страница списка заявок на перемещение
           }),
         })
 
-        const link = testUtils.queryCreateTaskLink()
+        const link = relocationTasksPageTestUtils.queryCreateTaskLink()
         expect(link).not.toBeInTheDocument()
       })
 
@@ -419,7 +395,7 @@ describe('Страница списка заявок на перемещение
           },
         )
 
-        await testUtils.clickCreateTaskLink(user)
+        await relocationTasksPageTestUtils.clickCreateTaskLink(user)
         const page = createRelocationTaskPageTestUtils.getContainer()
 
         expect(page).toBeInTheDocument()
