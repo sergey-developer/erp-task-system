@@ -5,6 +5,7 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
 import { nomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/NomenclatureListPage/testUtils'
 import { warehouseCatalogListPageTestUtils } from '_tests_/features/warehouse/pages/WarehouseCatalogListPage/testUtils'
+import { warehouseListPageTestUtils } from '_tests_/features/warehouse/pages/WarehouseListPage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetNomenclatureGroupListSuccess,
@@ -16,7 +17,6 @@ import { getStoreWithAuth, renderWithRouter } from '_tests_/utils'
 
 import NomenclatureListPage from '../NomenclatureListPage'
 import WarehouseListPage from '../WarehouseListPage'
-import { testUtils as warehouseListPageTestUtils } from '../WarehouseListPage/WarehouseListPage.test'
 import WarehouseCatalogListPage from './index'
 
 describe('Страница списка справочников складов', () => {
