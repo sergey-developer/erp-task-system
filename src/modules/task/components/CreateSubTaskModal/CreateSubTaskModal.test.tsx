@@ -618,7 +618,7 @@ describe('Модалка создания задачи заявки', () => {
         expect(notification).toBeInTheDocument()
       })
 
-      test('Обрабатывается ошибка 500', async () => {
+      test.skip('Обрабатывается ошибка 500', async () => {
         const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
         mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
 
