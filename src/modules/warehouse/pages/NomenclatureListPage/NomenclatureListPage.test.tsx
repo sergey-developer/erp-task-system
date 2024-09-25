@@ -1,5 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { waitFor } from '@testing-library/react'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { createNomenclatureGroupMessages } from 'modules/warehouse/constants/nomenclatureGroup'
@@ -7,6 +6,7 @@ import { createNomenclatureGroupMessages } from 'modules/warehouse/constants/nom
 import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouse/components/NomenclatureFormModal/testUtils'
 import { nomenclatureGroupFormModalTestUtils } from '_tests_/features/warehouse/components/NomenclatureGroupFormModal/testUtils'
 import { nomenclatureTableTestUtils } from '_tests_/features/warehouse/components/NomenclatureTable/testUtils'
+import { nomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/NomenclatureListPage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -26,85 +26,9 @@ import {
   notificationTestUtils,
   render,
   setupApiTests,
-  spinnerTestUtils,
 } from '_tests_/utils'
 
 import NomenclatureListPage from './index'
-
-const getContainer = () => screen.getByTestId('nomenclature-list-page')
-
-// search field
-const getSearchField = () => within(getContainer()).getByPlaceholderText('Поиск номенклатуры')
-
-const setSearchValue = async (user: UserEvent, value: string) => {
-  const field = getSearchField()
-  await user.type(field, value)
-  return field
-}
-
-// add nomenclature group button
-const getAddNomenclatureGroupButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), 'Добавить группу')
-
-const queryAddNomenclatureGroupButton = () =>
-  buttonTestUtils.queryButtonIn(getContainer(), 'Добавить группу')
-
-const clickAddNomenclatureGroupButton = async (user: UserEvent) => {
-  const button = getAddNomenclatureGroupButton()
-  await user.click(button)
-}
-
-// add nomenclature button
-const getAddNomenclatureButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), 'Добавить номенклатуру')
-
-const queryAddNomenclatureButton = () =>
-  buttonTestUtils.queryButtonIn(getContainer(), 'Добавить номенклатуру')
-
-const clickAddNomenclatureButton = async (user: UserEvent) => {
-  const button = getAddNomenclatureButton()
-  await user.click(button)
-}
-
-// all nomenclature button
-const getAllNomenclatureButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Вся номенклатура/)
-
-const clickAllNomenclatureButton = async (user: UserEvent) => {
-  const button = getAllNomenclatureButton()
-  await user.click(button)
-}
-
-// group list
-const getGroupList = () => within(getContainer()).getByRole('menu')
-const getGroupListItem = (name: string) => within(getGroupList()).getByRole('menuitem', { name })
-const getAllGroupListItems = () => within(getGroupList()).getAllByRole('menuitem')
-const expectGroupListLoadingStarted = spinnerTestUtils.expectLoadingStarted('group-list-loading')
-const expectGroupListLoadingFinished = spinnerTestUtils.expectLoadingFinished('group-list-loading')
-
-export const testUtils = {
-  getContainer,
-
-  getSearchField,
-  setSearchValue,
-
-  getAddNomenclatureGroupButton,
-  queryAddNomenclatureGroupButton,
-  clickAddNomenclatureGroupButton,
-
-  getAddNomenclatureButton,
-  queryAddNomenclatureButton,
-  clickAddNomenclatureButton,
-
-  getAllNomenclatureButton,
-  clickAllNomenclatureButton,
-
-  getGroupList,
-  getGroupListItem,
-  getAllGroupListItems,
-  expectGroupListLoadingStarted,
-  expectGroupListLoadingFinished,
-}
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -121,9 +45,9 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      await testUtils.expectGroupListLoadingFinished()
+      await nomenclatureListPageTestUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
-      const field = testUtils.getSearchField()
+      const field = nomenclatureListPageTestUtils.getSearchField()
 
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
@@ -140,10 +64,10 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      await testUtils.expectGroupListLoadingFinished()
+      await nomenclatureListPageTestUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
       const value = fakeWord()
-      const field = await testUtils.setSearchValue(user, value)
+      const field = await nomenclatureListPageTestUtils.setSearchValue(user, value)
 
       expect(field).toHaveDisplayValue(value)
     })
@@ -158,8 +82,8 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      await testUtils.expectGroupListLoadingStarted()
-      const field = await testUtils.getSearchField()
+      await nomenclatureListPageTestUtils.expectGroupListLoadingStarted()
+      const field = await nomenclatureListPageTestUtils.getSearchField()
 
       expect(field).toBeDisabled()
     })
@@ -177,15 +101,17 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      await testUtils.expectGroupListLoadingFinished()
+      await nomenclatureListPageTestUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
-      await testUtils.setSearchValue(user, groupListItem.title)
-      await user.click(buttonTestUtils.getButtonIn(getContainer(), 'search'))
-      await testUtils.expectGroupListLoadingStarted()
-      await testUtils.expectGroupListLoadingFinished()
+      await nomenclatureListPageTestUtils.setSearchValue(user, groupListItem.title)
+      await user.click(
+        buttonTestUtils.getButtonIn(nomenclatureListPageTestUtils.getContainer(), 'search'),
+      )
+      await nomenclatureListPageTestUtils.expectGroupListLoadingStarted()
+      await nomenclatureListPageTestUtils.expectGroupListLoadingFinished()
 
       groupList.forEach((group) => {
-        expect(testUtils.getGroupListItem(group.title)).toBeInTheDocument()
+        expect(nomenclatureListPageTestUtils.getGroupListItem(group.title)).toBeInTheDocument()
       })
     })
   })
@@ -203,7 +129,7 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      const button = testUtils.getAddNomenclatureGroupButton()
+      const button = nomenclatureListPageTestUtils.getAddNomenclatureGroupButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -219,7 +145,7 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      const button = testUtils.queryAddNomenclatureGroupButton()
+      const button = nomenclatureListPageTestUtils.queryAddNomenclatureGroupButton()
       expect(button).not.toBeInTheDocument()
     })
 
@@ -235,7 +161,7 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      await testUtils.clickAddNomenclatureGroupButton(user)
+      await nomenclatureListPageTestUtils.clickAddNomenclatureGroupButton(user)
       const modal = await nomenclatureGroupFormModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
@@ -259,14 +185,14 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      await testUtils.expectGroupListLoadingFinished()
-      await testUtils.clickAddNomenclatureGroupButton(user)
+      await nomenclatureListPageTestUtils.expectGroupListLoadingFinished()
+      await nomenclatureListPageTestUtils.clickAddNomenclatureGroupButton(user)
       const modal = await nomenclatureGroupFormModalTestUtils.findContainer()
       await nomenclatureGroupFormModalTestUtils.setName(user, fakeWord())
       await nomenclatureGroupFormModalTestUtils.clickAddButton(user)
       await nomenclatureGroupFormModalTestUtils.expectLoadingFinished()
       await waitFor(() => expect(modal).not.toBeInTheDocument())
-      const newGroupItem = testUtils.getGroupListItem(createdGroup.title)
+      const newGroupItem = nomenclatureListPageTestUtils.getGroupListItem(createdGroup.title)
 
       expect(newGroupItem).toBeInTheDocument()
     })
@@ -293,7 +219,7 @@ describe('Страница списка номенклатур', () => {
           }),
         })
 
-        await testUtils.clickAddNomenclatureGroupButton(user)
+        await nomenclatureListPageTestUtils.clickAddNomenclatureGroupButton(user)
         await nomenclatureGroupFormModalTestUtils.findContainer()
         await nomenclatureGroupFormModalTestUtils.setName(user, fakeWord())
         await nomenclatureGroupFormModalTestUtils.clickAddButton(user)
@@ -328,7 +254,7 @@ describe('Страница списка номенклатур', () => {
           }),
         })
 
-        await testUtils.clickAddNomenclatureGroupButton(user)
+        await nomenclatureListPageTestUtils.clickAddNomenclatureGroupButton(user)
         await nomenclatureGroupFormModalTestUtils.findContainer()
         await nomenclatureGroupFormModalTestUtils.setName(user, fakeWord())
         await nomenclatureGroupFormModalTestUtils.clickAddButton(user)
@@ -353,7 +279,7 @@ describe('Страница списка номенклатур', () => {
           }),
         })
 
-        await testUtils.clickAddNomenclatureGroupButton(user)
+        await nomenclatureListPageTestUtils.clickAddNomenclatureGroupButton(user)
         await nomenclatureGroupFormModalTestUtils.findContainer()
         await nomenclatureGroupFormModalTestUtils.setName(user, fakeWord())
         await nomenclatureGroupFormModalTestUtils.clickAddButton(user)
@@ -380,7 +306,7 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      const button = testUtils.getAddNomenclatureButton()
+      const button = nomenclatureListPageTestUtils.getAddNomenclatureButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -396,7 +322,7 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      const button = testUtils.queryAddNomenclatureButton()
+      const button = nomenclatureListPageTestUtils.queryAddNomenclatureButton()
       expect(button).not.toBeInTheDocument()
     })
 
@@ -412,7 +338,7 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      await testUtils.clickAddNomenclatureButton(user)
+      await nomenclatureListPageTestUtils.clickAddNomenclatureButton(user)
       const modal = await nomenclatureFormModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
@@ -430,9 +356,9 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      await testUtils.expectGroupListLoadingFinished()
+      await nomenclatureListPageTestUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
-      const button = testUtils.getAllNomenclatureButton()
+      const button = nomenclatureListPageTestUtils.getAllNomenclatureButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -449,12 +375,12 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      await testUtils.expectGroupListLoadingFinished()
+      await nomenclatureListPageTestUtils.expectGroupListLoadingFinished()
       await nomenclatureTableTestUtils.expectLoadingFinished()
       await menuTestUtils.clickMenuItem(nomenclatureGroupListItem.title, user)
       await nomenclatureTableTestUtils.expectLoadingStarted()
       await nomenclatureTableTestUtils.expectLoadingFinished()
-      await testUtils.clickAllNomenclatureButton(user)
+      await nomenclatureListPageTestUtils.clickAllNomenclatureButton(user)
       await nomenclatureTableTestUtils.expectLoadingStarted()
       await nomenclatureTableTestUtils.expectLoadingFinished()
     })
@@ -472,10 +398,10 @@ describe('Страница списка номенклатур', () => {
         }),
       })
 
-      await testUtils.expectGroupListLoadingFinished()
+      await nomenclatureListPageTestUtils.expectGroupListLoadingFinished()
 
       groupList.forEach((g) => {
-        const item = testUtils.getGroupListItem(g.title)
+        const item = nomenclatureListPageTestUtils.getGroupListItem(g.title)
         expect(item).toBeInTheDocument()
       })
     })

@@ -5,6 +5,7 @@ import React from 'react'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
+import { nomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/NomenclatureListPage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetNomenclatureGroupListSuccess,
@@ -15,7 +16,6 @@ import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { getStoreWithAuth, linkTestUtils, renderWithRouter } from '_tests_/utils'
 
 import NomenclatureListPage from '../NomenclatureListPage'
-import { testUtils as nomenclatureListPageTestUtils } from '../NomenclatureListPage/NomenclatureListPage.test'
 import WarehouseListPage from '../WarehouseListPage'
 import { testUtils as warehouseListPageTestUtils } from '../WarehouseListPage/WarehouseListPage.test'
 import WarehouseCatalogListPage from './index'
