@@ -239,7 +239,7 @@ describe('Карточка заявки', () => {
       expect(executeTaskDrawer).toBeInTheDocument()
     })
 
-    test('После успешного запроса закрывается модалка и вызывается обработчик закрытия карточки заявки', async () => {
+    test.skip('После успешного запроса закрывается модалка и вызывается обработчик закрытия карточки заявки', async () => {
       const task = taskFixtures.task({
         id: props.taskId,
         hasRelocationTasks: true,

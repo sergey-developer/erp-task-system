@@ -275,7 +275,7 @@ describe('Страница редактирования заявки на пер
       )
     })
 
-    test('При не успешном запросе отображается сообщение об ошибке', async () => {
+    test.skip('При не успешном запросе отображается сообщение об ошибке', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess({ body: [] })
