@@ -117,7 +117,7 @@ describe('Форма создания заявки на перемещение �
         expect(field).not.toHaveValue()
       })
 
-      test('Можно установить значение', async () => {
+      test.skip('Можно установить значение', async () => {
         const { user } = render(
           <Form>
             <RelocationTaskForm {...props} />

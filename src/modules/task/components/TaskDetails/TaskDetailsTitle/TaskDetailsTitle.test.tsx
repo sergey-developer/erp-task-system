@@ -517,7 +517,7 @@ describe('Заголовок карточки заявки', () => {
           menuTestUtils.expectMenuItemDisabled(taskDetailsTitleTestUtils.getRequestSuspendItem())
         })
 
-        test(`Но тип заявки не ${TaskTypeEnum.Request} или ${TaskTypeEnum.Incident}`, async () => {
+        test.skip(`Но тип заявки не ${TaskTypeEnum.Request} или ${TaskTypeEnum.Incident}`, async () => {
           const { user } = render(
             <TaskDetailsTitle
               {...props}

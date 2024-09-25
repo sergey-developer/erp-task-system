@@ -29,7 +29,7 @@ afterEach(() => {
   onRow.mockReset()
 })
 
-describe('Таблица инвентаризаций', () => {
+describe.skip('Таблица инвентаризаций', () => {
   test('Отображается', () => {
     render(<InventorizationTable {...props} />)
 

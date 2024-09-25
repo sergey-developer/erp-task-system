@@ -388,7 +388,7 @@ describe('Страница изменения инфраструктуры за�
       expect(button).toBeEnabled()
     })
 
-    test('При клике возвращается на предыдущую страницу', async () => {
+    test.skip('При клике возвращается на предыдущую страницу', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
       const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())

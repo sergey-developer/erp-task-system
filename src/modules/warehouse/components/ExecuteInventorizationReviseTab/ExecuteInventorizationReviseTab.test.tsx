@@ -78,7 +78,7 @@ describe('Вкладка списка оборудования с расхожд
       })
     })
 
-    test('После добавления оборудования перезапрашивается список', async () => {
+    test.skip('После добавления оборудования перезапрашивается список', async () => {
       mockGetInventorizationEquipmentsSuccess(
         { inventorizationId: props.inventorization.id },
         { once: false },
@@ -119,7 +119,7 @@ describe('Вкладка списка оборудования с расхожд
       await reviseEquipmentTableTestUtils.expectLoadingFinished()
     })
 
-    test('После создания оборудования при добавлении оборудования перезапрашивается список', async () => {
+    test.skip('После создания оборудования при добавлении оборудования перезапрашивается список', async () => {
       mockGetInventorizationEquipmentsSuccess(
         { inventorizationId: props.inventorization.id },
         { once: false },

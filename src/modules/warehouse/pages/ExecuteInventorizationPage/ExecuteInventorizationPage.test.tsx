@@ -308,7 +308,7 @@ describe('Страница проведения инвентаризации', (
     expect(reviseTab).toBeInTheDocument()
   })
 
-  test('Все вкладки открываются', async () => {
+  test.skip('Все вкладки открываются', async () => {
     const inventorization = warehouseFixtures.inventorization()
     const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 

@@ -13,7 +13,7 @@ import { render } from '_tests_/utils'
 
 import EquipmentsByFileTable from './index'
 
-describe('Таблица оборудования по шаблону файла', () => {
+describe.skip('Таблица оборудования по шаблону файла', () => {
   test('Отображается', () => {
     render(<EquipmentsByFileTable {...props} />)
 

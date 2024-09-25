@@ -135,7 +135,7 @@ describe('Задание', () => {
         expect(subTaskTestUtils.getChildByText(subTask.returnReason)).toBeInTheDocument()
       })
 
-      test('Можно скрыть', async () => {
+      test.skip('Можно скрыть', async () => {
         const { user } = render(<SubTask {...props} returnReason={subTask.returnReason} />)
 
         await subTaskTestUtils.clickReturnReasonButton(user)

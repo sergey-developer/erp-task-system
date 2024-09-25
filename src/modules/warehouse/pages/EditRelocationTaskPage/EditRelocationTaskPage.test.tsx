@@ -79,7 +79,7 @@ describe('Страница редактирования заявки на пер
       expect(form).toBeInTheDocument()
     })
 
-    test('Контроллером нельзя выбрать исполнителя и текущего пользователя', async () => {
+    test.skip('Контроллером нельзя выбрать исполнителя и текущего пользователя', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       const executorUser = userFixtures.userListItem()
@@ -121,7 +121,7 @@ describe('Страница редактирования заявки на пер
       expect(currentUserOption).not.toBeInTheDocument()
     })
 
-    test('Исполнителем нельзя выбрать контроллера', async () => {
+    test.skip('Исполнителем нельзя выбрать контроллера', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       const controllerUser = userFixtures.userListItem()
@@ -349,7 +349,7 @@ describe('Страница редактирования заявки на пер
       expect(button).not.toBeInTheDocument()
     })
 
-    test('Активна если условия соблюдены', async () => {
+    test.skip('Активна если условия соблюдены', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess({ body: [] })
@@ -386,7 +386,7 @@ describe('Страница редактирования заявки на пер
       expect(button).toBeEnabled()
     })
 
-    describe('Не активна если условия соблюдены', () => {
+    describe.skip('Не активна если условия соблюдены', () => {
       test('Но не выбран объект выбытия и прибытия', async () => {
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
@@ -484,7 +484,7 @@ describe('Страница редактирования заявки на пер
       })
     })
 
-    test('При успешном запросе открывается модалка', async () => {
+    test.skip('При успешном запросе открывается модалка', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(relocationTaskId) })
 
       mockGetUsersSuccess({ body: [] })

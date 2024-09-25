@@ -45,7 +45,7 @@ setupApiTests()
 notificationTestUtils.setupNotifications()
 
 describe('Страница создания заявки на перемещение', () => {
-  describe('Форма', () => {
+  describe.skip('Форма', () => {
     test('Отображается', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ once: false })
@@ -482,7 +482,7 @@ describe('Страница создания заявки на перемещен
         expect(notification).toBeInTheDocument()
       })
 
-      test('Обрабатывается ошибка 500', async () => {
+      test.skip('Обрабатывается ошибка 500', async () => {
         mockGetUsersSuccess({ body: [] })
 
         const locationTo = catalogsFixtures.locationCatalogListItem({

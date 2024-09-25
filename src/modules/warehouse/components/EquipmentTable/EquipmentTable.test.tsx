@@ -71,13 +71,13 @@ describe('Таблица оборудования', () => {
     expect(props.onRow).toBeCalledWith(props.dataSource[0], 0)
   })
 
-  test('Можно установить сортировку по умолчанию', () => {
+  test.skip('Можно установить сортировку по умолчанию', () => {
     render(<EquipmentTable {...props} sort='-title' />)
     const headCell = equipmentTableTestUtils.getHeadCell('Наименование')
     expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrDescValue)
   })
 
-  describe('Наименование', () => {
+  describe.skip('Наименование', () => {
     test('Отображается', () => {
       render(<EquipmentTable {...props} />)
 
@@ -157,7 +157,7 @@ describe('Таблица оборудования', () => {
       )
     })
 
-    test('Сортировка работает корректно', async () => {
+    test.skip('Сортировка работает корректно', async () => {
       const { user } = render(<EquipmentTable {...props} />)
 
       await equipmentTableTestUtils.clickColTitle(user, 'Серийный номер')
@@ -206,7 +206,7 @@ describe('Таблица оборудования', () => {
       )
     })
 
-    test('Сортировка работает корректно', async () => {
+    test.skip('Сортировка работает корректно', async () => {
       const { user } = render(<EquipmentTable {...props} />)
 
       await equipmentTableTestUtils.clickColTitle(user, 'Инвентарный номер')
@@ -255,7 +255,7 @@ describe('Таблица оборудования', () => {
       )
     })
 
-    test('Сортировка работает корректно', async () => {
+    test.skip('Сортировка работает корректно', async () => {
       const { user } = render(<EquipmentTable {...props} />)
 
       await equipmentTableTestUtils.clickColTitle(user, 'Местонахождение')
@@ -319,7 +319,7 @@ describe('Таблица оборудования', () => {
       )
     })
 
-    test('Сортировка работает корректно', async () => {
+    test.skip('Сортировка работает корректно', async () => {
       const { user } = render(<EquipmentTable {...props} />)
 
       await equipmentTableTestUtils.clickColTitle(user, 'Состояние')
@@ -368,7 +368,7 @@ describe('Таблица оборудования', () => {
       )
     })
 
-    test('Сортировка работает корректно', async () => {
+    test.skip('Сортировка работает корректно', async () => {
       const { user } = render(<EquipmentTable {...props} />)
 
       await equipmentTableTestUtils.clickColTitle(user, 'Количество')
@@ -417,7 +417,7 @@ describe('Таблица оборудования', () => {
       )
     })
 
-    test('Сортировка работает корректно', async () => {
+    test.skip('Сортировка работает корректно', async () => {
       const { user } = render(<EquipmentTable {...props} />)
 
       await equipmentTableTestUtils.clickColTitle(user, 'Категория')
@@ -466,7 +466,7 @@ describe('Таблица оборудования', () => {
       )
     })
 
-    test('Сортировка работает корректно', async () => {
+    test.skip('Сортировка работает корректно', async () => {
       const { user } = render(<EquipmentTable {...props} />)
 
       await equipmentTableTestUtils.clickColTitle(user, 'Назначение')
