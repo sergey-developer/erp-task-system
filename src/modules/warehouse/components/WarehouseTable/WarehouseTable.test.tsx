@@ -1,6 +1,5 @@
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import WarehousePage from 'modules/warehouse/pages/WarehousePage'
-import { testUtils as warehousePageTestUtils } from 'modules/warehouse/pages/WarehousePage/WarehousePage.test'
 import { getWarehousePageLink } from 'modules/warehouse/utils/warehouse'
 
 import {
@@ -14,6 +13,7 @@ import {
   warehouseListItem,
 } from '_tests_/features/warehouse/components/WarehouseTable/constants'
 import { warehouseTableTestUtils } from '_tests_/features/warehouse/components/WarehouseTable/testUtils'
+import { warehousePageTestUtils } from '_tests_/features/warehouse/pages/WarehousePage/testUtils'
 import { mockGetWarehouseSuccess } from '_tests_/mocks/api'
 import { renderWithRouter } from '_tests_/utils'
 

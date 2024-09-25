@@ -1,1 +1,3 @@
-export enum TestIdsEnum {}
+export enum TestIdsEnum {
+  WarehousePage = 'warehouse-page',
+}
