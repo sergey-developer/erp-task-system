@@ -5,7 +5,7 @@ import { EquipmentModel } from 'modules/warehouse/models'
 
 import { CheckEquipmentFormModalProps } from './types'
 
-export const getEquipmentFormInitialValues = (
+export const getCheckEquipmentFormInitialValues = (
   equipment?: Partial<
     Pick<
       EquipmentModel,
@@ -25,6 +25,7 @@ export const getEquipmentFormInitialValues = (
       | 'owner'
       | 'comment'
       | 'macroregion'
+      | 'title'
     > & {
       nomenclature: Pick<EquipmentModel['nomenclature'], 'id' | 'title'>
     }
@@ -39,7 +40,7 @@ export const getEquipmentFormInitialValues = (
         isNew: isBoolean(equipment.isNew) ? equipment.isNew : undefined,
         isWarranty: isBoolean(equipment.isWarranty) ? equipment.isWarranty : undefined,
         isRepaired: isBoolean(equipment.isRepaired) ? equipment.isRepaired : undefined,
-        title: equipment.nomenclature?.title,
+        title: equipment.title,
         location: equipment.location?.id,
         macroregion: equipment.macroregion?.id,
         currency: equipment.currency?.id,

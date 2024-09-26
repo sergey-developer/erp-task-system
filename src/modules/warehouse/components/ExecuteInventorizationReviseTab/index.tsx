@@ -24,7 +24,7 @@ import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
 import { CheckEquipmentFormModalProps } from 'modules/warehouse/components/CheckEquipmentFormModal/types'
-import { getEquipmentFormInitialValues } from 'modules/warehouse/components/CheckEquipmentFormModal/utils'
+import { getCheckEquipmentFormInitialValues } from 'modules/warehouse/components/CheckEquipmentFormModal/utils'
 import { CheckInventorizationEquipmentsModalProps } from 'modules/warehouse/components/CheckInventorizationEquipmentsModal'
 import { CheckInventorizationEquipmentsTableRow } from 'modules/warehouse/components/CheckInventorizationEquipmentsTable/types'
 import {
@@ -32,8 +32,8 @@ import {
   CreateInventorizationEquipmentModalProps,
 } from 'modules/warehouse/components/CreateInventorizationEquipmentModal/types'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
-import ReviseEquipmentTable from 'modules/warehouse/components/ReviseEquipmentTable'
-import { ReviseEquipmentTableProps } from 'modules/warehouse/components/ReviseEquipmentTable/types'
+import ReviseInventorizationEquipmentTable from 'modules/warehouse/components/ReviseInventorizationEquipmentTable'
+import { ReviseInventorizationEquipmentTableProps } from 'modules/warehouse/components/ReviseInventorizationEquipmentTable/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclaturesParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -67,8 +67,8 @@ import {
 
 import { DownIcon } from 'components/Icons'
 import ModalFallback from 'components/Modals/ModalFallback'
+import TableRowsErrors from 'components/TableRowsErrors'
 
-import { SAVE_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { undefinedSelectOption } from 'shared/constants/selectField'
 import { useGetLocationsCatalog } from 'shared/hooks/catalogs/locations'
@@ -89,10 +89,8 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
-import TableRowsErrors from '../../../../components/TableRowsErrors'
-
 const CreateInventorizationEquipmentModal = React.lazy(
-  () => import('../CreateInventorizationEquipmentModal'),
+  () => import('modules/warehouse/components/CreateInventorizationEquipmentModal'),
 )
 
 const EquipmentFormModal = React.lazy(
@@ -237,7 +235,12 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         if (isBadRequestError(error)) {
           notification.error({
             message: 'Ошибка проверки сверяемого оборудования из Excel',
-            description: <TableRowsErrors errors={error.data as TableRowsApiErrors} />,
+            description: (
+              <TableRowsErrors
+                data-testid='check-inventorization-equipments-template-errors'
+                errors={error.data as TableRowsApiErrors}
+              />
+            ),
           })
         }
       } else {
@@ -296,7 +299,12 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         if (isBadRequestError(error)) {
           notification.error({
             message: 'Ошибка проверки сверяемого оборудования',
-            description: <TableRowsErrors errors={error.data as TableRowsApiErrors} />,
+            description: (
+              <TableRowsErrors
+                data-testid='check-inventorization-equipments-errors'
+                errors={error.data as TableRowsApiErrors}
+              />
+            ),
             duration: 0,
           })
         }
@@ -507,49 +515,51 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   )
 
   const onTablePagination = useCallback(
-    (pagination: Parameters<ReviseEquipmentTableProps['onTableChange']>[0]) => {
+    (pagination: Parameters<ReviseInventorizationEquipmentTableProps['onTableChange']>[0]) => {
       setGetInventorizationEquipmentsArgs(calculatePaginationParams(pagination))
     },
     [setGetInventorizationEquipmentsArgs],
   )
 
-  const onChangeTable = useCallback<ReviseEquipmentTableProps['onTableChange']>(
+  const onChangeTable = useCallback<ReviseInventorizationEquipmentTableProps['onTableChange']>(
     (pagination) => {
       onTablePagination(pagination)
     },
     [onTablePagination],
   )
 
-  const onChangeQuantityFact: ReviseEquipmentTableProps['onChangeQuantityFact'] = useDebounceFn(
-    async (record, value, locationFact) => {
-      const valueIsNumber = isNumber(value)
-      if (valueIsNumber && value < 0) return
+  const onChangeQuantityFact: ReviseInventorizationEquipmentTableProps['onChangeQuantityFact'] =
+    useDebounceFn(
+      async (record, value, locationFact) => {
+        const valueIsNumber = isNumber(value)
+        if (valueIsNumber && value < 0) return
 
-      await updateInventorizationEquipmentMutation({
-        inventorizationEquipmentId: record.id,
-        quantityFact: valueIsNumber ? value : null,
-        locationFact: locationFact === undefinedSelectOption.value ? null : locationFact,
-        isLocationFactUndefined: locationFact === undefinedSelectOption.value,
-        getInventorizationEquipmentsArgs,
-      })
-    },
-    [getInventorizationEquipmentsArgs, updateInventorizationEquipmentMutation],
-    500,
-  )
+        await updateInventorizationEquipmentMutation({
+          inventorizationEquipmentId: record.id,
+          quantityFact: valueIsNumber ? value : null,
+          locationFact: locationFact === undefinedSelectOption.value ? null : locationFact,
+          isLocationFactUndefined: locationFact === undefinedSelectOption.value,
+          getInventorizationEquipmentsArgs,
+        })
+      },
+      [getInventorizationEquipmentsArgs, updateInventorizationEquipmentMutation],
+      500,
+    )
 
-  const onChangeLocationFact: ReviseEquipmentTableProps['onChangeLocationFact'] = useDebounceFn(
-    async (record, value, quantityFact) => {
-      await updateInventorizationEquipmentMutation({
-        inventorizationEquipmentId: record.id,
-        locationFact: value === undefinedSelectOption.value ? null : value,
-        isLocationFactUndefined: value === undefinedSelectOption.value,
-        quantityFact,
-        getInventorizationEquipmentsArgs,
-      })
-    },
-    [getInventorizationEquipmentsArgs, updateInventorizationEquipmentMutation],
-    500,
-  )
+  const onChangeLocationFact: ReviseInventorizationEquipmentTableProps['onChangeLocationFact'] =
+    useDebounceFn(
+      async (record, value, quantityFact) => {
+        await updateInventorizationEquipmentMutation({
+          inventorizationEquipmentId: record.id,
+          locationFact: value === undefinedSelectOption.value ? null : value,
+          isLocationFactUndefined: value === undefinedSelectOption.value,
+          quantityFact,
+          getInventorizationEquipmentsArgs,
+        })
+      },
+      [getInventorizationEquipmentsArgs, updateInventorizationEquipmentMutation],
+      500,
+    )
 
   const onChangeCategory = useCallback<EquipmentFormModalProps['onChangeCategory']>(
     (category) => {
@@ -759,7 +769,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
           </Col>
         </Row>
 
-        <ReviseEquipmentTable
+        <ReviseInventorizationEquipmentTable
           pagination={extractPaginationParams(paginatedInventorizationEquipments)}
           dataSource={extractPaginationResults(paginatedInventorizationEquipments)}
           loading={inventorizationEquipmentsIsFetching}
@@ -867,10 +877,10 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
           <CheckEquipmentFormModal
             open={editCheckedInventorizationEquipmentModalOpened}
             title='Изменить сверяемое оборудование'
-            okText={SAVE_TEXT}
             onCancel={debouncedOnCloseEditCheckedInventorizationEquipmentModal}
             onSubmit={onEditCheckedInventorizationEquipment}
-            initialValues={getEquipmentFormInitialValues({
+            initialValues={getCheckEquipmentFormInitialValues({
+              title: editableCheckedInventorizationEquipment.title,
               category: editableCheckedInventorizationEquipment.category,
               nomenclature: editableCheckedInventorizationEquipment.nomenclature,
               inventoryNumber: editableCheckedInventorizationEquipment.inventoryNumber,
@@ -911,10 +921,6 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             nomenclatures={nomenclatures}
             nomenclaturesIsLoading={nomenclaturesIsFetching}
             onChangeNomenclature={onChangeNomenclature}
-            onUploadImage={onCreateEquipmentImage}
-            imageIsUploading={createAttachmentIsLoading}
-            onDeleteImage={deleteAttachment}
-            imageIsDeleting={deleteAttachmentIsLoading}
           />
         </React.Suspense>
       )}

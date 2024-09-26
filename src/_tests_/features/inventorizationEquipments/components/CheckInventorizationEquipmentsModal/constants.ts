@@ -11,5 +11,5 @@ export const props: CheckInventorizationEquipmentsModalProps = {
 }
 
 export enum TestIdsEnum {
-  Modal = 'check-inventorization-equipments-modal',
+  Container = 'check-inventorization-equipments-modal',
 }

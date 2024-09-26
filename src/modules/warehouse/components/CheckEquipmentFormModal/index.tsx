@@ -1,4 +1,4 @@
-import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
+import { Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd'
 import isArray from 'lodash/isArray'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useEffect, useMemo } from 'react'
@@ -7,11 +7,10 @@ import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment
 import { EquipmentCategoryListItemModel, NomenclatureListItemModel } from 'modules/warehouse/models'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
-import UploadButton from 'components/Buttons/UploadButton'
 import LoadingArea from 'components/LoadingArea'
 import BaseModal from 'components/Modals/BaseModal'
 
-import { filesFormItemProps } from 'shared/constants/form'
+import { SAVE_TEXT } from 'shared/constants/common'
 import {
   idAndTitleSelectFieldNames,
   undefinedSelectOption,
@@ -32,11 +31,6 @@ const CheckEquipmentFormModal: FC<CheckEquipmentFormModalProps> = ({
   isLoading,
   values,
   initialValues,
-
-  onUploadImage,
-  imageIsUploading,
-  onDeleteImage,
-  imageIsDeleting,
 
   categories,
   categoriesIsLoading,
@@ -81,10 +75,6 @@ const CheckEquipmentFormModal: FC<CheckEquipmentFormModalProps> = ({
   useEffect(() => {
     if (values?.title) form.setFieldsValue({ title: values.title })
   }, [form, values?.title])
-
-  useEffect(() => {
-    if (values?.images?.length) form.setFieldsValue({ images: values.images })
-  }, [form, values?.images])
 
   const handleChangeCategory = (
     value: IdType,
@@ -138,16 +128,12 @@ const CheckEquipmentFormModal: FC<CheckEquipmentFormModalProps> = ({
     [categoryIsConsumable, locations],
   )
 
-  const okButtonProps = useMemo(
-    () => ({ loading: isLoading, disabled: imageIsUploading || imageIsDeleting }),
-    [imageIsDeleting, imageIsUploading, isLoading],
-  )
-
   return (
     <BaseModal
       {...props}
       data-testid='check-equipment-form-modal'
-      okButtonProps={okButtonProps}
+      confirmLoading={isLoading}
+      okText={SAVE_TEXT}
       onOk={form.submit}
     >
       <Form<CheckEquipmentFormFields>
@@ -409,26 +395,6 @@ const CheckEquipmentFormModal: FC<CheckEquipmentFormModalProps> = ({
 
               <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
                 <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
-              </Form.Item>
-
-              <Form.Item
-                data-testid='images-form-item'
-                label='Изображения оборудования'
-                name='images'
-                {...filesFormItemProps}
-              >
-                <Upload
-                  listType='picture'
-                  multiple
-                  disabled={isLoading || imageIsDeleting}
-                  // todo: применить здесь функцию renderUploadedFile
-                  itemRender={(originNode, file) => (file.error ? null : originNode)}
-                  customRequest={onUploadImage}
-                  onRemove={onDeleteImage}
-                  defaultFileList={values?.images}
-                >
-                  <UploadButton label='Добавить фото' disabled={isLoading} />
-                </Upload>
               </Form.Item>
             </>
           )}
