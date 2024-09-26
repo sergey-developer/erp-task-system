@@ -1,44 +1,21 @@
-import { screen, within } from '@testing-library/react'
-
 import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 import { TaskTypeEnum } from 'modules/task/constants/task'
 
-import taskFixtures from '_tests_/fixtures/task'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/ResolutionTab/constants'
+import { resolutionTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/ResolutionTab/testUtils'
 import { fakeWord, render } from '_tests_/utils'
 
-import ResolutionTab, { ResolutionTabProps } from './index'
-
-const props: Readonly<
-  Pick<ResolutionTabProps, 'title' | 'type' | 'techResolution' | 'userResolution' | 'attachments'>
-> = {
-  type: TaskTypeEnum.Request,
-  title: fakeWord(),
-  techResolution: null,
-  userResolution: null,
-  attachments: [taskFixtures.attachment()],
-}
-
-const getContainer = () => screen.getByTestId('task-resolution-tab')
-
-const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
-
-const queryChildByText = (text: string | RegExp) => within(getContainer()).queryByText(text)
-
-export const testUtils = {
-  getContainer,
-  getChildByText,
-  queryChildByText,
-}
+import ResolutionTab from './index'
 
 describe('Вкладка решение заявки', () => {
   test('Заголовок отображается', () => {
     render(<ResolutionTab {...props} />)
-    expect(testUtils.getChildByText(props.title)).toBeInTheDocument()
+    expect(resolutionTabTestUtils.getChildByText(props.title)).toBeInTheDocument()
   })
 
   test('Если все решения отсутствуют, отображается прочерк', () => {
     render(<ResolutionTab {...props} />)
-    expect(testUtils.getChildByText('-')).toBeInTheDocument()
+    expect(resolutionTabTestUtils.getChildByText('-')).toBeInTheDocument()
   })
 
   describe('Вложения', () => {
@@ -59,8 +36,8 @@ describe('Вкладка решение заявки', () => {
     const techResolution = fakeWord()
     render(<ResolutionTab {...props} techResolution={techResolution} />)
 
-    expect(testUtils.getChildByText('Техническое решение')).toBeInTheDocument()
-    expect(testUtils.getChildByText(techResolution)).toBeInTheDocument()
+    expect(resolutionTabTestUtils.getChildByText('Техническое решение')).toBeInTheDocument()
+    expect(resolutionTabTestUtils.getChildByText(techResolution)).toBeInTheDocument()
   })
 
   describe('Решение для пользователя', () => {
@@ -70,9 +47,9 @@ describe('Вкладка решение заявки', () => {
         <ResolutionTab {...props} type={TaskTypeEnum.Request} userResolution={userResolution} />,
       )
 
-      expect(testUtils.getChildByText('Решение для пользователя')).toBeInTheDocument()
+      expect(resolutionTabTestUtils.getChildByText('Решение для пользователя')).toBeInTheDocument()
 
-      expect(testUtils.getChildByText(userResolution)).toBeInTheDocument()
+      expect(resolutionTabTestUtils.getChildByText(userResolution)).toBeInTheDocument()
     })
 
     test('Не отображается если условия соблюдены но тип заявки "IncidentTask"', () => {
@@ -85,7 +62,7 @@ describe('Вкладка решение заявки', () => {
         />,
       )
 
-      expect(testUtils.queryChildByText(userResolution)).not.toBeInTheDocument()
+      expect(resolutionTabTestUtils.queryChildByText(userResolution)).not.toBeInTheDocument()
     })
 
     test('Не отображается если условия соблюдены но тип заявки "RequestTask"', () => {
@@ -98,7 +75,7 @@ describe('Вкладка решение заявки', () => {
         />,
       )
 
-      expect(testUtils.queryChildByText(userResolution)).not.toBeInTheDocument()
+      expect(resolutionTabTestUtils.queryChildByText(userResolution)).not.toBeInTheDocument()
     })
   })
 })
