@@ -1,9 +1,12 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { Form } from 'antd'
 import random from 'lodash/random'
-import { FC } from 'react'
+import { DefaultOptionType } from 'rc-select/lib/Select'
+import { FC, useMemo } from 'react'
 
 import { env } from 'configs/env'
+
+import { makeInfrastructureWorkTypesSelectOptions } from 'modules/infrastructures/utils/infrastructureWorkType/infrastructureWorkTypesSelectOptions'
 
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -19,9 +22,19 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
   editableKeys,
   name,
 
+  infrastructureWorkTypes,
+
   managerIsCurrentUser,
 }) => {
   const form = Form.useFormInstance<ChangeInfrastructureOrdersFormsTabFormFields>()
+
+  const infrastructureWorkTypesOptions = useMemo<DefaultOptionType[]>(
+    () =>
+      infrastructureWorkTypes
+        ? makeInfrastructureWorkTypesSelectOptions(infrastructureWorkTypes)
+        : [],
+    [infrastructureWorkTypes],
+  )
 
   const columns: ProColumns<ChangeInfrastructureOrderFormTableRow>[] = [
     {
@@ -36,9 +49,10 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
         allowClear: false,
         loading: false,
         disabled: !managerIsCurrentUser,
-        options: [{ label: config.entity.type?.title, value: config.entity.type?.id }],
         showSearch: true,
         filterOption: filterOptionBy('label'),
+        options: infrastructureWorkTypesOptions,
+        virtual: true,
       }),
     },
     {

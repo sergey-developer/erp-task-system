@@ -3,6 +3,7 @@ import { RowEditableConfig } from '@ant-design/pro-utils/es/useEditableArray'
 
 import { InfrastructureWorkModel } from 'modules/infrastructures/models'
 
+import { InfrastructureWorkTypesCatalogModel } from 'shared/models/catalogs/infrastructureWorkTypes/index'
 import { SetNonNullable } from 'shared/types/utils'
 
 export type ChangeInfrastructureOrderFormTableRow = Partial<
@@ -21,4 +22,5 @@ export type ChangeInfrastructureOrderFormTableProps = SetNonNullable<
 > &
   SetNonNullable<EditableProTableProps<ChangeInfrastructureOrderFormTableRow, any>, 'name'> & {
     managerIsCurrentUser: boolean
+    infrastructureWorkTypes?: InfrastructureWorkTypesCatalogModel
   }

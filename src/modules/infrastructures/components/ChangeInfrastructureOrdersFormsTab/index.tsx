@@ -58,6 +58,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
         children: (
           <ChangeInfrastructureOrderForm
             data={orderForm}
+            infrastructureWorkTypes={infrastructureWorkTypes}
             managerIsCurrentUser={managerIsCurrentUser}
             canUploadFile={managerIsCurrentUser}
             onUploadFile={onUploadFile}
