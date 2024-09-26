@@ -1,5 +1,6 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { Form } from 'antd'
+import random from 'lodash/random'
 import { FC } from 'react'
 
 import { env } from 'configs/env'
@@ -86,7 +87,13 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
         rowKey='rowId'
         name={name}
         columns={columns}
-        recordCreatorProps={false}
+        recordCreatorProps={{
+          record: () => ({
+            rowId: random(1, 9999999),
+          }),
+          creatorButtonText: 'Добавить работы',
+          disabled: !managerIsCurrentUser,
+        }}
         editable={{
           type: 'multiple',
           form,
