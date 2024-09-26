@@ -1,22 +1,8 @@
-import {
-  CheckInventorizationEquipmentsTableProps,
-  CheckInventorizationEquipmentsTableRow,
-} from 'modules/warehouse/components/CheckInventorizationEquipmentsTable/types'
-import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
+import { CheckInventorizationEquipmentsTableProps } from 'modules/warehouse/components/CheckInventorizationEquipmentsTable/types'
 
-import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 
-export const tableRow: CheckInventorizationEquipmentsTableRow = {
-  rowId: fakeId(),
-  title: fakeWord(),
-  inventoryNumber: fakeWord(),
-  serialNumber: fakeWord(),
-  nomenclature: { id: fakeId(), title: fakeWord(), vendorCode: fakeWord() },
-  category: { id: fakeId(), title: fakeWord(), code: EquipmentCategoryEnum.Equipment },
-  isCredited: false,
-  locationFact: { id: fakeId(), title: fakeWord() },
-  quantityFact: fakeInteger(),
-}
+export const tableRow = warehouseFixtures.checkInventorizationEquipmentsTableRow()
 
 export const props: Readonly<CheckInventorizationEquipmentsTableProps> = {
   dataSource: [tableRow],
