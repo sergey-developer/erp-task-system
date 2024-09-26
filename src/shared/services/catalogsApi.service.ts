@@ -5,6 +5,10 @@ import {
   GetFaChangeTypesSuccessResponse,
 } from 'shared/models/catalogs/faChangeTypes'
 import {
+  GetInfrastructureWorkTypesQueryArgs,
+  GetInfrastructureWorkTypesSuccessResponse,
+} from 'shared/models/catalogs/infrastructureWorkTypes'
+import {
   GetLocationsCatalogQueryArgs,
   GetLocationsCatalogSuccessResponse,
 } from 'shared/models/catalogs/locations'
@@ -96,6 +100,15 @@ export const catalogsApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
+    getInfrastructureWorkTypes: build.query<
+      GetInfrastructureWorkTypesSuccessResponse,
+      GetInfrastructureWorkTypesQueryArgs
+    >({
+      query: () => ({
+        url: CatalogsApiEnum.GetInfrastructureWorkTypes,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
 })
 
@@ -114,6 +127,8 @@ export const {
   useGetResolutionClassificationsQuery,
 
   useGetWorkGroupsCatalogQuery,
+
+  useGetInfrastructureWorkTypesQuery,
 
   endpoints,
 } = catalogsApiService
