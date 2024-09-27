@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Flex, Table } from 'antd'
 import { FC, useMemo } from 'react'
 
 import { getColumns } from './columns'
@@ -8,9 +8,9 @@ const CompletedWorkTable: FC<CompletedWorkTableProps> = ({ onDelete, disabled, .
   const columns = useMemo(() => getColumns({ onDelete, disabled }), [onDelete, disabled])
 
   return (
-    <div data-testid='completed-work-table'>
+    <Flex data-testid='completed-work-table'>
       <Table<CompletedWorkTableItem> {...props} rowKey='id' columns={columns} pagination={false} />
-    </div>
+    </Flex>
   )
 }
 

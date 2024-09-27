@@ -7,6 +7,7 @@ import {
   EquipmentConditionEnum,
 } from 'modules/warehouse/constants/equipment'
 
+import { DEFAULT_FILE_NAME } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
@@ -210,7 +211,7 @@ describe('Страница отчета истории операций по н�
       expect(base64ToBytes).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
-      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, 'filename')
+      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, DEFAULT_FILE_NAME)
     })
   })
 })

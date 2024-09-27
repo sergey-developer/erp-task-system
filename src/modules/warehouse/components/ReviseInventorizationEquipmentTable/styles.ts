@@ -1,6 +1,7 @@
+import { Flex } from 'antd'
 import styled from 'styled-components'
 
-export const TableWrapperStyled = styled.div`
+export const TableWrapperStyled = styled(Flex)`
   && .ant-select-selector {
     border-color: inherit;
   }

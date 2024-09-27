@@ -6,6 +6,7 @@ import { testUtils as amountEquipmentSpentReportFormTestUtils } from 'modules/re
 import { testUtils as amountEquipmentSpentReportTableTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportTable/AmountEquipmentSpentReportTable.test'
 import { getRelocationColValue } from 'modules/reports/utils'
 
+import { DEFAULT_FILE_NAME } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
@@ -251,7 +252,7 @@ describe('Страница отчета количества потраченн�
       expect(base64ToBytesSpy).toBeCalledWith(file)
 
       expect(downloadFileSpy).toBeCalledTimes(1)
-      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, 'filename')
+      expect(downloadFileSpy).toBeCalledWith(fakeArrayBuffer, MimetypeEnum.Xlsx, DEFAULT_FILE_NAME)
     })
   })
 })

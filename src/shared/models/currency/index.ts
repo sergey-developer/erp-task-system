@@ -1,4 +1,2 @@
-export * from './currency.model'
-
-export * from './currencyList.model'
-export * from './getCurrencyList.model'
+export * from './currencies.model'
+export * from './getCurrencies.model'

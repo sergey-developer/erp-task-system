@@ -6,9 +6,12 @@ import { undefinedSelectOption } from 'shared/constants/selectField'
 
 import { getColumns } from './columns'
 import { TableWrapperStyled } from './styles'
-import { ReviseEquipmentTableItem, ReviseEquipmentTableProps } from './types'
+import {
+  ReviseInventorizationEquipmentTableItem,
+  ReviseInventorizationEquipmentTableProps,
+} from './types'
 
-const ReviseEquipmentTable: FC<ReviseEquipmentTableProps> = ({
+const ReviseInventorizationEquipmentTable: FC<ReviseInventorizationEquipmentTableProps> = ({
   dataSource,
 
   locations,
@@ -39,7 +42,7 @@ const ReviseEquipmentTable: FC<ReviseEquipmentTableProps> = ({
 
   return (
     <TableWrapperStyled data-testid='revise-equipment-table'>
-      <EditableProTable<ReviseEquipmentTableItem>
+      <EditableProTable<ReviseInventorizationEquipmentTableItem>
         rowKey='id'
         columns={columns}
         ghost
@@ -52,4 +55,4 @@ const ReviseEquipmentTable: FC<ReviseEquipmentTableProps> = ({
   )
 }
 
-export default ReviseEquipmentTable
+export default ReviseInventorizationEquipmentTable

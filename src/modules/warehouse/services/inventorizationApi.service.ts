@@ -5,6 +5,10 @@ import {
   InventorizationApiTagEnum,
 } from 'modules/warehouse/constants/inventorization'
 import {
+  CheckInventorizationEquipmentsMutationArgs,
+  CheckInventorizationEquipmentsSuccessResponse,
+  CheckInventorizationEquipmentsTemplateMutationArgs,
+  CheckInventorizationEquipmentsTemplateSuccessResponse,
   CompleteInventorizationMutationArgs,
   CompleteInventorizationSuccessResponse,
   CreateInventorizationEquipmentMutationArgs,
@@ -14,6 +18,8 @@ import {
   GetInventorizationEquipmentQueryArgs,
   GetInventorizationEquipmentsQueryArgs,
   GetInventorizationEquipmentsSuccessResponse,
+  GetInventorizationEquipmentsTemplateQueryArgs,
+  GetInventorizationEquipmentsTemplateSuccessResponse,
   GetInventorizationEquipmentSuccessResponse,
   GetInventorizationQueryArgs,
   GetInventorizationsQueryArgs,
@@ -23,6 +29,7 @@ import {
   UpdateInventorizationEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
 import {
+  GetInventorizationEquipmentsTemplateTransformedSuccessResponse,
   GetInventorizationEquipmentsTransformedSuccessResponse,
   GetInventorizationsTransformedSuccessResponse,
 } from 'modules/warehouse/types'
@@ -163,6 +170,45 @@ const inventorizationApiService = baseApiService
           } catch {}
         },
       }),
+      getInventorizationEquipmentsTemplate: build.query<
+        GetInventorizationEquipmentsTemplateTransformedSuccessResponse,
+        GetInventorizationEquipmentsTemplateQueryArgs
+      >({
+        query: () => ({
+          url: InventorizationApiEnum.GetInventorizationEquipmentsTemplate,
+          method: HttpMethodEnum.Get,
+        }),
+        transformResponse: (value: GetInventorizationEquipmentsTemplateSuccessResponse, meta) => ({
+          value,
+          meta,
+        }),
+      }),
+      checkInventorizationEquipmentsTemplate: build.mutation<
+        CheckInventorizationEquipmentsTemplateSuccessResponse,
+        CheckInventorizationEquipmentsTemplateMutationArgs
+      >({
+        query: ({ file, inventorization }) => {
+          const formData = new FormData()
+          formData.append('file', file)
+          formData.append('inventorization', String(inventorization))
+
+          return {
+            url: InventorizationApiEnum.CheckInventorizationEquipmentsTemplate,
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
+      checkInventorizationEquipments: build.mutation<
+        CheckInventorizationEquipmentsSuccessResponse,
+        CheckInventorizationEquipmentsMutationArgs
+      >({
+        query: (data) => ({
+          url: InventorizationApiEnum.CheckInventorizationEquipments,
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+      }),
     }),
   })
 
@@ -174,6 +220,9 @@ export const {
   useGetInventorizationEquipmentQuery,
   useLazyGetInventorizationEquipmentQuery,
   useGetInventorizationEquipmentsQuery,
+  useLazyGetInventorizationEquipmentsTemplateQuery,
+  useCheckInventorizationEquipmentsTemplateMutation,
+  useCheckInventorizationEquipmentsMutation,
   useCreateInventorizationEquipmentMutation,
   useUpdateInventorizationEquipmentMutation,
 } = inventorizationApiService

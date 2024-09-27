@@ -6,7 +6,7 @@ import { LocationsCatalogModel } from 'shared/models/catalogs/locations'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, Nullable, SetNonNullable } from 'shared/types/utils'
 
-export type ReviseEquipmentTableItem = Pick<
+export type ReviseInventorizationEquipmentTableItem = Pick<
   InventorizationEquipmentListItemModel,
   | 'id'
   | 'equipment'
@@ -18,27 +18,22 @@ export type ReviseEquipmentTableItem = Pick<
   | 'isLocationFactUndefined'
 >
 
-export type ActiveReviseEquipmentTableRow = {
-  rowIndex: number
-  tableName: EditableProTableProps<ReviseEquipmentTableItem, any>['name']
-}
-
-export type ReviseEquipmentTableProps = SetNonNullable<
-  EditableProTableProps<ReviseEquipmentTableItem, any>,
+export type ReviseInventorizationEquipmentTableProps = SetNonNullable<
+  EditableProTableProps<ReviseInventorizationEquipmentTableItem, any>,
   'pagination' | 'dataSource' | 'onTableChange' | 'loading'
 > & {
   locations: LocationsCatalogModel
   locationsIsLoading: boolean
 
   onChangeQuantityFact: (
-    record: ReviseEquipmentTableItem,
+    record: ReviseInventorizationEquipmentTableItem,
     value: Nullable<number>,
     locationFact: MaybeNull<IdType>,
   ) => Promise<void>
 
   onChangeLocationFact: (
-    record: ReviseEquipmentTableItem,
+    record: ReviseInventorizationEquipmentTableItem,
     value: IdType,
-    quantityFact: ReviseEquipmentTableItem['quantity']['fact'],
+    quantityFact: ReviseInventorizationEquipmentTableItem['quantity']['fact'],
   ) => Promise<void>
 }

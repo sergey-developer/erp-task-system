@@ -1,10 +1,11 @@
+import { Flex } from 'antd'
 import { FC, useMemo } from 'react'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
 
 import { columns } from './columns'
 import { applySort } from './sort'
-import { EquipmentTableProps, EquipmentTableItem } from './types'
+import { EquipmentTableItem, EquipmentTableProps } from './types'
 
 const EquipmentTable: FC<EquipmentTableProps> = ({ sort, ...props }) => {
   const sortedColumns = useMemo(
@@ -13,14 +14,14 @@ const EquipmentTable: FC<EquipmentTableProps> = ({ sort, ...props }) => {
   )
 
   return (
-    <div data-testid='equipment-table'>
+    <Flex data-testid='equipment-table'>
       <ParentSizedTable<EquipmentTableItem>
         {...props}
         rowKey='id'
         columns={sortedColumns}
         showSorterTooltip={false}
       />
-    </div>
+    </Flex>
   )
 }
 

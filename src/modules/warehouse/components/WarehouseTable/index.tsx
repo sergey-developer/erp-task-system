@@ -1,3 +1,4 @@
+import { Flex } from 'antd'
 import { FC, useMemo } from 'react'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
@@ -13,7 +14,7 @@ const WarehouseTable: FC<WarehouseTableProps> = ({ sort, ...props }) => {
   )
 
   return (
-    <div data-testid='warehouse-table'>
+    <Flex data-testid='warehouse-table'>
       <ParentSizedTable<WarehouseTableItem>
         {...props}
         rowKey='id'
@@ -21,7 +22,7 @@ const WarehouseTable: FC<WarehouseTableProps> = ({ sort, ...props }) => {
         pagination={false}
         showSorterTooltip={false}
       />
-    </div>
+    </Flex>
   )
 }
 

@@ -9,12 +9,11 @@ import {
 import { fakeId, fakeWord } from '_tests_/utils'
 
 export const locationCatalogListItem = (
-  props?: Partial<LocationCatalogListItemModel>,
+  props?: Partial<Pick<LocationCatalogListItemModel, 'type' | 'id' | 'title'>>,
 ): LocationCatalogListItemModel => ({
   type: props?.type || LocationTypeEnum.Shop,
-
-  id: fakeId(),
-  title: fakeWord(),
+  id: props?.id || fakeId(),
+  title: props?.title || fakeWord(),
 })
 
 export const locationsCatalog = (length: number = 1): LocationsCatalogModel =>
