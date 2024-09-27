@@ -9,6 +9,7 @@ export enum InventorizationApiEnum {
   CreateInventorizationEquipment = '/inventorizations/:inventorizationId/equipments',
   GetInventorizationEquipmentsTemplate = '/inventorizations/equipments/template/',
   CheckInventorizationEquipmentsTemplate = '/inventorizations/equipments/template/',
+  CheckInventorizationEquipments = '/inventorizations/equipments/batch/',
 
   UpdateInventorizationEquipment = '/inventorizations/equipments/:inventorizationEquipmentId',
 }

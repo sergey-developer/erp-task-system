@@ -1,5 +1,5 @@
-import { Table, TableProps } from 'antd'
-import React, { FC } from 'react'
+import { Flex, Table, TableProps } from 'antd'
+import React, { FC, useMemo } from 'react'
 
 import { env } from 'configs/env'
 
@@ -13,20 +13,27 @@ const scrollConfig: TableProps<CheckInventorizationEquipmentsTableRow>['scroll']
 
 const CheckInventorizationEquipmentsTable: FC<CheckInventorizationEquipmentsTableProps> = ({
   dataSource,
+  loading,
+  onClickEdit,
+  editTouchedRowsIds,
 }) => {
-  const columns = getColumns()
+  const columns = useMemo(
+    () => getColumns({ onClickEdit, editTouchedRowsIds }),
+    [editTouchedRowsIds, onClickEdit],
+  )
 
   return (
-    <div data-testid='check-inventorization-equipments-table'>
+    <Flex data-testid='check-inventorization-equipments-table'>
       <Table<CheckInventorizationEquipmentsTableRow>
         virtual={!env.isTest}
         rowKey='rowId'
         dataSource={dataSource}
         columns={columns}
         scroll={scrollConfig}
+        loading={loading}
         pagination={false}
       />
-    </div>
+    </Flex>
   )
 }
 

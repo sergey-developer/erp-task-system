@@ -1,10 +1,13 @@
+import { screen } from '@testing-library/react'
+
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 
 import {
   props,
   tableRow,
-} from '_tests_/features/inventorizationEquipments/CheckInventorizationEquipmentsTable/constants'
-import { checkInventorizationEquipmentsTableTestUtils as testUtils } from '_tests_/features/inventorizationEquipments/CheckInventorizationEquipmentsTable/utils'
+} from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/constants'
+import { checkInventorizationEquipmentsTableTestUtils as testUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/utils'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render } from '_tests_/utils'
 
 import CheckInventorizationEquipmentsTable from './index'
@@ -90,5 +93,113 @@ describe('Таблица проверки оборудования по инве
 
     expect(title).toBeInTheDocument()
     expect(value).toBeInTheDocument()
+  })
+
+  describe('Колонка иконки isCredited', () => {
+    test('Отображает зеленую галочку если поле isCredited=false и была попытка редактирования', () => {
+      const tableRow = warehouseFixtures.checkInventorizationEquipmentsTableRow({
+        isCredited: false,
+      })
+
+      render(
+        <CheckInventorizationEquipmentsTable
+          {...props}
+          dataSource={[tableRow]}
+          editTouchedRowsIds={[tableRow.rowId]}
+        />,
+      )
+
+      const icon = testUtils.getIsCreditedIcon('check-circle')
+      expect(icon).toBeInTheDocument()
+    })
+
+    test('При наведении на зеленую галочку отображается текст', async () => {
+      const tableRow = warehouseFixtures.checkInventorizationEquipmentsTableRow({
+        isCredited: false,
+      })
+
+      const { user } = render(
+        <CheckInventorizationEquipmentsTable
+          {...props}
+          dataSource={[tableRow]}
+          editTouchedRowsIds={[tableRow.rowId]}
+        />,
+      )
+
+      const icon = testUtils.getIsCreditedIcon('check-circle')
+      await user.hover(icon)
+      const text = await screen.findByText(
+        'Оборудование отсутствует и будет оприходовано. Проверьте заполнение обязательных параметров, нажав на карандаш',
+      )
+      expect(text).toBeInTheDocument()
+    })
+
+    test('Отображает восклицательный знак если поле isCredited=false и попытки редактирования не было', () => {
+      const tableRow = warehouseFixtures.checkInventorizationEquipmentsTableRow({
+        isCredited: false,
+      })
+
+      render(
+        <CheckInventorizationEquipmentsTable
+          {...props}
+          dataSource={[tableRow]}
+          editTouchedRowsIds={[]}
+        />,
+      )
+
+      const icon = testUtils.getIsCreditedIcon('exclamation-circle')
+      expect(icon).toBeInTheDocument()
+    })
+
+    test('При наведении на восклицательный знак отображается текст', async () => {
+      const tableRow = warehouseFixtures.checkInventorizationEquipmentsTableRow({
+        isCredited: false,
+      })
+
+      const { user } = render(
+        <CheckInventorizationEquipmentsTable
+          {...props}
+          dataSource={[tableRow]}
+          editTouchedRowsIds={[]}
+        />,
+      )
+
+      const icon = testUtils.getIsCreditedIcon('exclamation-circle')
+      await user.hover(icon)
+      const text = await screen.findByText(
+        'Оборудование отсутствует и будет оприходовано. Проверьте заполнение обязательных параметров, нажав на карандаш',
+      )
+      expect(text).toBeInTheDocument()
+    })
+
+    test('Никакая иконка не отображается если поле isCredited не false, даже если была попытка редактирования', () => {
+      const tableRow = warehouseFixtures.checkInventorizationEquipmentsTableRow({
+        isCredited: true,
+      })
+
+      render(
+        <CheckInventorizationEquipmentsTable
+          {...props}
+          dataSource={[tableRow]}
+          editTouchedRowsIds={[tableRow.rowId]}
+        />,
+      )
+
+      const checkIcon = testUtils.queryIsCreditedIcon('check-circle')
+      const exclamationIcon = testUtils.queryIsCreditedIcon('exclamation-circle')
+      expect(checkIcon).not.toBeInTheDocument()
+      expect(exclamationIcon).not.toBeInTheDocument()
+    })
+  })
+
+  test('Колонка иконки редактирования отображается и при клике вызывается обработчик', async () => {
+    const { user } = render(<CheckInventorizationEquipmentsTable {...props} />)
+
+    const icon = testUtils.getEditIcon()
+    expect(icon).toBeInTheDocument()
+
+    await testUtils.clickEditIcon(user)
+    expect(props.onClickEdit).toBeCalledTimes(1)
+    expect(props.onClickEdit).toBeCalledWith(props.dataSource[0])
   })
 })

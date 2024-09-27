@@ -3,9 +3,13 @@ import { CheckInventorizationEquipmentsModalProps } from 'modules/warehouse/comp
 export const props: CheckInventorizationEquipmentsModalProps = {
   open: true,
   data: [],
+  isLoading: false,
   onCancel: jest.fn(),
+  onClickEdit: jest.fn(),
+  onSubmit: jest.fn(),
+  editTouchedRowsIds: [],
 }
 
 export enum TestIdsEnum {
-  Modal = 'check-inventorization-equipments-modal',
+  Container = 'check-inventorization-equipments-modal',
 }

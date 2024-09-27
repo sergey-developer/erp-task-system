@@ -23,12 +23,12 @@ import {
   tableTestUtils,
 } from '_tests_/utils'
 
-import ReviseEquipmentTable from './index'
-import { ReviseEquipmentTableProps } from './types'
+import ReviseInventorizationEquipmentTable from './index'
+import { ReviseInventorizationEquipmentTableProps } from './types'
 
 const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem()
 
-const props: ReviseEquipmentTableProps = {
+const props: ReviseInventorizationEquipmentTableProps = {
   dataSource: [inventorizationEquipmentListItem],
   pagination: {},
   loading: false,
@@ -113,7 +113,7 @@ export const testUtils = {
 
 describe('Таблица сверки оборудования', () => {
   test('Отображается', () => {
-    render(<ReviseEquipmentTable {...props} />)
+    render(<ReviseInventorizationEquipmentTable {...props} />)
 
     const table = testUtils.getContainer()
 
@@ -130,7 +130,7 @@ describe('Таблица сверки оборудования', () => {
     const inventorizationEquipments = warehouseFixtures.inventorizationEquipments(21)
 
     const { user } = render(
-      <ReviseEquipmentTable {...props} dataSource={inventorizationEquipments} />,
+      <ReviseInventorizationEquipmentTable {...props} dataSource={inventorizationEquipments} />,
     )
 
     const table = testUtils.getContainer()
@@ -152,7 +152,7 @@ describe('Таблица сверки оборудования', () => {
 
   describe('Наименование', () => {
     test('Отображается корректно', () => {
-      render(<ReviseEquipmentTable {...props} />)
+      render(<ReviseInventorizationEquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Наименование')
       const input = within(testUtils.getRow(inventorizationEquipmentListItem.id)).getByDisplayValue(
@@ -167,7 +167,7 @@ describe('Таблица сверки оборудования', () => {
 
   describe('Серийный номер', () => {
     test('Отображается корректно', () => {
-      render(<ReviseEquipmentTable {...props} />)
+      render(<ReviseInventorizationEquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Серийный номер')
       const input = within(testUtils.getRow(inventorizationEquipmentListItem.id)).getByDisplayValue(
@@ -182,7 +182,7 @@ describe('Таблица сверки оборудования', () => {
 
   describe('Инвентарный номер', () => {
     test('Отображается корректно', () => {
-      render(<ReviseEquipmentTable {...props} />)
+      render(<ReviseInventorizationEquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Инвентарный номер')
       const input = within(testUtils.getRow(inventorizationEquipmentListItem.id)).getByDisplayValue(
@@ -197,7 +197,7 @@ describe('Таблица сверки оборудования', () => {
 
   describe('Плановое местонахождение', () => {
     test('Отображается корректно', () => {
-      render(<ReviseEquipmentTable {...props} />)
+      render(<ReviseInventorizationEquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Плановое местонахождение')
       const input = within(testUtils.getRow(inventorizationEquipmentListItem.id)).getByDisplayValue(
@@ -212,7 +212,7 @@ describe('Таблица сверки оборудования', () => {
 
   describe('Количество', () => {
     test('Отображается корректно', () => {
-      render(<ReviseEquipmentTable {...props} />)
+      render(<ReviseInventorizationEquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Количество')
       const input = within(testUtils.getRow(inventorizationEquipmentListItem.id)).getByDisplayValue(
@@ -227,7 +227,7 @@ describe('Таблица сверки оборудования', () => {
 
   describe('Наличие', () => {
     test('Отображается и активно', () => {
-      render(<ReviseEquipmentTable {...props} />)
+      render(<ReviseInventorizationEquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Наличие')
       const input = testUtils.getQuantityFactInput(inventorizationEquipmentListItem.id)
@@ -238,7 +238,7 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const { user } = render(<ReviseEquipmentTable {...props} />)
+      const { user } = render(<ReviseInventorizationEquipmentTable {...props} />)
 
       const value = fakeInteger()
       const input = testUtils.getQuantityFactInput(inventorizationEquipmentListItem.id)
@@ -260,7 +260,12 @@ describe('Таблица сверки оборудования', () => {
         quantity: { plan: 1, fact: 1, diff: fakeInteger() },
       })
 
-      render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+      render(
+        <ReviseInventorizationEquipmentTable
+          {...props}
+          dataSource={[inventorizationEquipmentListItem]}
+        />,
+      )
 
       const formItem = testUtils.getQuantityFactFormItem(inventorizationEquipmentListItem.id)
       // eslint-disable-next-line testing-library/no-node-access
@@ -273,7 +278,12 @@ describe('Таблица сверки оборудования', () => {
         quantity: { plan: 2, fact: 1, diff: fakeInteger() },
       })
 
-      render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+      render(
+        <ReviseInventorizationEquipmentTable
+          {...props}
+          dataSource={[inventorizationEquipmentListItem]}
+        />,
+      )
 
       const formItem = testUtils.getQuantityFactFormItem(inventorizationEquipmentListItem.id)
       // eslint-disable-next-line testing-library/no-node-access
@@ -284,7 +294,7 @@ describe('Таблица сверки оборудования', () => {
 
   describe('Фактическое местонахождение', () => {
     test('Отображается и активно', () => {
-      render(<ReviseEquipmentTable {...props} />)
+      render(<ReviseInventorizationEquipmentTable {...props} />)
 
       const title = testUtils.getColTitle('Фактическое местонахождение')
       const select = testUtils.getLocationFactSelect(inventorizationEquipmentListItem.id)
@@ -296,7 +306,7 @@ describe('Таблица сверки оборудования', () => {
 
     describe('Не активно если условия соблюдены', () => {
       test('Но загружаются местонахождения', () => {
-        render(<ReviseEquipmentTable {...props} locationsIsLoading />)
+        render(<ReviseInventorizationEquipmentTable {...props} locationsIsLoading />)
         const select = testUtils.getLocationFactSelect(inventorizationEquipmentListItem.id)
         expect(select).toBeDisabled()
       })
@@ -320,7 +330,12 @@ describe('Таблица сверки оборудования', () => {
           },
         )
 
-        render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+        render(
+          <ReviseInventorizationEquipmentTable
+            {...props}
+            dataSource={[inventorizationEquipmentListItem]}
+          />,
+        )
 
         const select = testUtils.getLocationFactSelect(inventorizationEquipmentListItem.id)
         expect(select).toBeDisabled()
@@ -345,7 +360,12 @@ describe('Таблица сверки оборудования', () => {
           },
         )
 
-        render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+        render(
+          <ReviseInventorizationEquipmentTable
+            {...props}
+            dataSource={[inventorizationEquipmentListItem]}
+          />,
+        )
 
         const select = testUtils.getLocationFactSelect(inventorizationEquipmentListItem.id)
         expect(select).toBeDisabled()
@@ -359,7 +379,7 @@ describe('Таблица сверки оборудования', () => {
       })
 
       const { user } = render(
-        <ReviseEquipmentTable
+        <ReviseInventorizationEquipmentTable
           {...props}
           locations={[locationCatalogListItem]}
           dataSource={[inventorizationEquipmentListItem]}
@@ -380,7 +400,7 @@ describe('Таблица сверки оборудования', () => {
       })
 
       const { user } = render(
-        <ReviseEquipmentTable
+        <ReviseInventorizationEquipmentTable
           {...props}
           locations={[locationCatalogListItem]}
           dataSource={[inventorizationEquipmentListItem]}
@@ -398,7 +418,7 @@ describe('Таблица сверки оборудования', () => {
       const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
 
       const { user } = render(
-        <ReviseEquipmentTable {...props} locations={[locationCatalogListItem]} />,
+        <ReviseInventorizationEquipmentTable {...props} locations={[locationCatalogListItem]} />,
       )
 
       await testUtils.openLocationFactSelect(user, inventorizationEquipmentListItem.id)
@@ -423,7 +443,7 @@ describe('Таблица сверки оборудования', () => {
       })
 
       render(
-        <ReviseEquipmentTable
+        <ReviseInventorizationEquipmentTable
           {...props}
           locations={[locationCatalogListItem]}
           dataSource={[inventorizationEquipmentListItem]}
@@ -446,7 +466,7 @@ describe('Таблица сверки оборудования', () => {
       })
 
       render(
-        <ReviseEquipmentTable
+        <ReviseInventorizationEquipmentTable
           {...props}
           locations={[locationListItem1, locationListItem2]}
           dataSource={[inventorizationEquipmentListItem]}
@@ -468,7 +488,12 @@ describe('Таблица сверки оборудования', () => {
           { isFilled: true, hasDiff: true },
         )
 
-        render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+        render(
+          <ReviseInventorizationEquipmentTable
+            {...props}
+            dataSource={[inventorizationEquipmentListItem]}
+          />,
+        )
 
         const row = testUtils.getRow(inventorizationEquipmentListItem.id)
         const icon = iconTestUtils.getIconByNameIn(row, 'exclamation-circle')
@@ -481,7 +506,12 @@ describe('Таблица сверки оборудования', () => {
           { isFilled: false, hasDiff: true },
         )
 
-        render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+        render(
+          <ReviseInventorizationEquipmentTable
+            {...props}
+            dataSource={[inventorizationEquipmentListItem]}
+          />,
+        )
 
         const row = testUtils.getRow(inventorizationEquipmentListItem.id)
         const icon = iconTestUtils.queryIconByNameIn(row, 'exclamation-circle')
@@ -494,7 +524,12 @@ describe('Таблица сверки оборудования', () => {
           { isFilled: true, hasDiff: null },
         )
 
-        render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+        render(
+          <ReviseInventorizationEquipmentTable
+            {...props}
+            dataSource={[inventorizationEquipmentListItem]}
+          />,
+        )
 
         const row = testUtils.getRow(inventorizationEquipmentListItem.id)
         const icon = iconTestUtils.queryIconByNameIn(row, 'exclamation-circle')
@@ -509,7 +544,12 @@ describe('Таблица сверки оборудования', () => {
           { isFilled: true, hasDiff: false },
         )
 
-        render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+        render(
+          <ReviseInventorizationEquipmentTable
+            {...props}
+            dataSource={[inventorizationEquipmentListItem]}
+          />,
+        )
 
         const row = testUtils.getRow(inventorizationEquipmentListItem.id)
         const icon = iconTestUtils.getIconByNameIn(row, 'check-circle')
@@ -522,7 +562,12 @@ describe('Таблица сверки оборудования', () => {
           { isFilled: true, hasDiff: true },
         )
 
-        render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+        render(
+          <ReviseInventorizationEquipmentTable
+            {...props}
+            dataSource={[inventorizationEquipmentListItem]}
+          />,
+        )
 
         const row = testUtils.getRow(inventorizationEquipmentListItem.id)
         const icon = iconTestUtils.queryIconByNameIn(row, 'check-circle')
@@ -535,7 +580,12 @@ describe('Таблица сверки оборудования', () => {
           { isFilled: false, hasDiff: true },
         )
 
-        render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+        render(
+          <ReviseInventorizationEquipmentTable
+            {...props}
+            dataSource={[inventorizationEquipmentListItem]}
+          />,
+        )
 
         const row = testUtils.getRow(inventorizationEquipmentListItem.id)
         const icon = iconTestUtils.queryIconByNameIn(row, 'check-circle')
@@ -548,7 +598,12 @@ describe('Таблица сверки оборудования', () => {
           { isFilled: true, hasDiff: null },
         )
 
-        render(<ReviseEquipmentTable {...props} dataSource={[inventorizationEquipmentListItem]} />)
+        render(
+          <ReviseInventorizationEquipmentTable
+            {...props}
+            dataSource={[inventorizationEquipmentListItem]}
+          />,
+        )
 
         const row = testUtils.getRow(inventorizationEquipmentListItem.id)
         const icon = iconTestUtils.queryIconByNameIn(row, 'check-circle')

@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Flex, Table } from 'antd'
 import { FC, useMemo } from 'react'
 
 import { columns } from './columns'
@@ -17,7 +17,7 @@ const MtsrReportTable: FC<MtsrReportTableProps> = ({
   )
 
   return (
-    <div data-testid='mtsr-report-table'>
+    <Flex data-testid='mtsr-report-table'>
       <Table<MtsrReportTableItem>
         {...props}
         rowKey='id'
@@ -26,7 +26,7 @@ const MtsrReportTable: FC<MtsrReportTableProps> = ({
         pagination={false}
         rowSelection={{ type: 'checkbox', onChange: onSelect, selectedRowKeys }}
       />
-    </div>
+    </Flex>
   )
 }
 

@@ -1,3 +1,4 @@
+import { TableRowsApiErrors } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { UploadFileRequestArgs } from 'shared/types/file'
 
@@ -9,3 +10,5 @@ export type CheckInventorizationEquipmentsTemplateMutationArgs = UploadFileReque
 
 export type CheckInventorizationEquipmentsTemplateSuccessResponse =
   CheckedInventorizationEquipmentsTemplateModel
+
+export type CheckInventorizationEquipmentsTemplateBadRequestErrorResponse = TableRowsApiErrors

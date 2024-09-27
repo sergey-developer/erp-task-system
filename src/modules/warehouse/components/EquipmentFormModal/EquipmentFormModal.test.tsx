@@ -397,7 +397,6 @@ const queryMacroregionFormItem = () => within(getContainer()).queryByTestId('mac
 const getMacroregionLabel = () => within(getMacroregionFormItem()).getByLabelText('Макрорегион')
 const getMacroregionSelectInput = () => selectTestUtils.getSelect(getMacroregionFormItem())
 const setMacroregion = selectTestUtils.clickSelectOption
-const getMacroregionOption = selectTestUtils.getSelectOption
 const findMacroregionError = (error: string): Promise<HTMLElement> =>
   within(getMacroregionFormItem()).findByText(error)
 
@@ -408,8 +407,6 @@ const openMacroregionSelect = async (user: UserEvent) => {
   await selectTestUtils.openSelect(user, getMacroregionFormItem())
 }
 
-const expectMacroregionLoadingStarted = () =>
-  selectTestUtils.expectLoadingStarted(getMacroregionFormItem())
 const expectMacroregionLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getMacroregionFormItem())
 
@@ -608,11 +605,9 @@ export const testUtils = {
   getMacroregionLabel,
   getMacroregionSelectInput,
   setMacroregion,
-  getMacroregionOption,
   findMacroregionError,
   getSelectedMacroregion,
   openMacroregionSelect,
-  expectMacroregionLoadingStarted,
   expectMacroregionLoadingFinished,
 
   getPurposeLabel,

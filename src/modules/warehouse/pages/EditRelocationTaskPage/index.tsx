@@ -32,7 +32,7 @@ import {
 } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { makeUserGroupOptions } from 'modules/warehouse/components/RelocationTaskForm/utils'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
+import { defaultGetNomenclaturesParams } from 'modules/warehouse/constants/nomenclature'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -45,7 +45,7 @@ import {
   useLazyGetEquipment,
   useLazyGetEquipmentListTemplate,
 } from 'modules/warehouse/hooks/equipment'
-import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetNomenclature, useGetNomenclatures } from 'modules/warehouse/hooks/nomenclature'
 import { useGetRelocationEquipmentAttachmentList } from 'modules/warehouse/hooks/relocationEquipment'
 import {
   useGetRelocationEquipmentBalanceList,
@@ -333,12 +333,12 @@ const EditRelocationTaskPage: FC = () => {
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetEquipment()
 
-  const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
+  const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
     useGetEquipmentCategories(undefined, {
       skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened,
     })
 
-  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypes(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
     undefined,
     {
       skip:
@@ -348,15 +348,14 @@ const EditRelocationTaskPage: FC = () => {
     },
   )
 
-  const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
-    useGetNomenclatureList(
-      categoryIsConsumable
-        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
-        : defaultGetNomenclatureListParams,
-      {
-        skip: (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) || !selectedCategory,
-      },
-    )
+  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } = useGetNomenclatures(
+    categoryIsConsumable
+      ? { ...defaultGetNomenclaturesParams, equipmentHasSerialNumber: false }
+      : defaultGetNomenclaturesParams,
+    {
+      skip: (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) || !selectedCategory,
+    },
+  )
 
   const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
     selectedNomenclatureId!,
@@ -366,7 +365,7 @@ const EditRelocationTaskPage: FC = () => {
     },
   )
 
-  const [getCustomerList, { data: customerList = [], isFetching: customerListIsFetching }] =
+  const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
     useLazyGetCustomerList()
 
   useEffect(() => {
@@ -376,12 +375,12 @@ const EditRelocationTaskPage: FC = () => {
       !categoryIsConsumable &&
       !!selectedNomenclatureId
     ) {
-      getCustomerList()
+      getCustomers()
     }
   }, [
     createEquipmentModalOpened,
     categoryIsConsumable,
-    getCustomerList,
+    getCustomers,
     selectedCategory,
     selectedNomenclatureId,
     editEquipmentByFileModalOpened,
@@ -601,7 +600,7 @@ const EditRelocationTaskPage: FC = () => {
   ])
 
   const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async ({ images, ...values }, setFields) => {
+    async ({ images, ...values }, form) => {
       if (!activeEquipmentRow || !selectedRelocateTo) return
 
       try {
@@ -633,7 +632,7 @@ const EditRelocationTaskPage: FC = () => {
         handleCloseCreateEquipmentModal()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
-          setFields(getFieldsErrors(error.data))
+          form.setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -642,7 +641,6 @@ const EditRelocationTaskPage: FC = () => {
       selectedRelocateTo,
       createEquipmentMutation,
       selectedRelocateFrom?.value,
-      form,
       typeIsWriteOff,
       handleCloseCreateEquipmentModal,
     ],
@@ -656,13 +654,13 @@ const EditRelocationTaskPage: FC = () => {
       const updatableEquipmentByFile: EquipmentByFileTableRow = {
         ...values,
         rowId: editableEquipmentByFile.rowId,
-        category: equipmentCategoryList.find((c) => c.id === values.category),
+        category: equipmentCategories.find((c) => c.id === values.category),
         currency: values.currency ? currencies.find((c) => c.id === values.currency) : undefined,
-        owner: values.owner ? customerList.find((c) => c.id === values.owner) : undefined,
+        owner: values.owner ? customers.find((c) => c.id === values.owner) : undefined,
         macroregion: values.macroregion
           ? macroregions.find((m) => m.id === values.macroregion)
           : undefined,
-        purpose: workTypeList.find((w) => w.id === values.purpose),
+        purpose: workTypes.find((w) => w.id === values.purpose),
         nomenclature: nomenclature
           ? {
               id: nomenclature.id,
@@ -687,15 +685,15 @@ const EditRelocationTaskPage: FC = () => {
     },
     [
       currencies,
-      customerList,
+      customers,
       editableEquipmentByFile,
       editableEquipmentByFileIndex,
-      equipmentCategoryList,
+      equipmentCategories,
       form,
       handleCloseEditEquipmentByFileModal,
       macroregions,
       nomenclature,
-      workTypeList,
+      workTypes,
     ],
   )
 
@@ -1065,23 +1063,23 @@ const EditRelocationTaskPage: FC = () => {
             okText='Добавить'
             isLoading={createEquipmentIsLoading}
             values={createEquipmentFormValues}
-            categories={equipmentCategoryList}
-            categoriesIsLoading={equipmentCategoryListIsFetching}
+            categories={equipmentCategories}
+            categoriesIsLoading={equipmentCategoriesIsFetching}
             category={selectedCategory}
             onChangeCategory={handleChangeCategory}
             currencies={currencies}
             currenciesIsLoading={currenciesIsFetching}
-            owners={customerList}
-            ownersIsLoading={customerListIsFetching}
+            owners={customers}
+            ownersIsLoading={customersIsFetching}
             onChangeOwner={setSelectedOwnerId}
             macroregions={macroregions}
             macroregionsIsLoading={macroregionsIsFetching}
-            workTypes={workTypeList}
-            workTypesIsLoading={workTypeListIsFetching}
+            workTypes={workTypes}
+            workTypesIsLoading={workTypesIsFetching}
             nomenclature={nomenclature}
             nomenclatureIsLoading={nomenclatureIsFetching}
-            nomenclatures={extractPaginationResults(nomenclatureList)}
-            nomenclaturesIsLoading={nomenclatureListIsFetching}
+            nomenclatures={extractPaginationResults(nomenclatures)}
+            nomenclaturesIsLoading={nomenclaturesIsFetching}
             onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseCreateEquipmentModal}
             onSubmit={createEquipment}
@@ -1104,23 +1102,23 @@ const EditRelocationTaskPage: FC = () => {
             okText={SAVE_TEXT}
             initialValues={getEquipmentFormInitialValues(editableEquipmentByFile)}
             values={equipmentByFileFormValues}
-            categories={equipmentCategoryList}
-            categoriesIsLoading={equipmentCategoryListIsFetching}
+            categories={equipmentCategories}
+            categoriesIsLoading={equipmentCategoriesIsFetching}
             category={selectedCategory}
             onChangeCategory={handleChangeCategory}
             currencies={currencies}
             currenciesIsLoading={currenciesIsFetching}
-            owners={customerList}
-            ownersIsLoading={customerListIsFetching}
+            owners={customers}
+            ownersIsLoading={customersIsFetching}
             onChangeOwner={setSelectedOwnerId}
             macroregions={macroregions}
             macroregionsIsLoading={macroregionsIsFetching}
-            workTypes={workTypeList}
-            workTypesIsLoading={workTypeListIsFetching}
+            workTypes={workTypes}
+            workTypesIsLoading={workTypesIsFetching}
             nomenclature={nomenclature}
             nomenclatureIsLoading={nomenclatureIsFetching}
-            nomenclatures={extractPaginationResults(nomenclatureList)}
-            nomenclaturesIsLoading={nomenclatureListIsFetching}
+            nomenclatures={extractPaginationResults(nomenclatures)}
+            nomenclaturesIsLoading={nomenclaturesIsFetching}
             onChangeNomenclature={onChangeNomenclature}
             onCancel={handleCloseEditEquipmentByFileModal}
             onSubmit={editEquipmentByFile}

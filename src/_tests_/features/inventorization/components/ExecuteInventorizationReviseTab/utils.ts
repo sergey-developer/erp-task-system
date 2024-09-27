@@ -45,6 +45,12 @@ const clickCheckByExcelButton = async (
 const expectCheckByExcelLoadingFinished = () =>
   buttonTestUtils.expectLoadingFinished(getCheckByExcelButton())
 
+const checkInventorizationEquipmentsErrorsContainer = () =>
+  screen.getByTestId(TestIdsEnum.CheckInventorizationEquipmentsErrorsContainer)
+
+const checkInventorizationEquipmentsTemplateErrorsContainer = () =>
+  screen.getByTestId(TestIdsEnum.CheckInventorizationEquipmentsTemplateErrorsContainer)
+
 export const executeInventorizationReviseTabTestUtils = {
   getContainer,
 
@@ -60,4 +66,6 @@ export const executeInventorizationReviseTabTestUtils = {
   queryCheckByExcelButton,
   clickCheckByExcelButton,
   expectCheckByExcelLoadingFinished,
+  checkInventorizationEquipmentsErrorsContainer,
+  checkInventorizationEquipmentsTemplateErrorsContainer,
 }

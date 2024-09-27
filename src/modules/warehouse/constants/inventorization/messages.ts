@@ -21,3 +21,6 @@ export const getInventorizationEquipmentsTemplateErrMsg =
 
 export const checkInventorizationEquipmentsTemplateErrMsg =
   'Ошибка загрузки оборудования из файла для сверки'
+
+export const checkInventorizationEquipmentsErrMsg =
+  'Ошибка сверки оборудования, загруженного из файла'

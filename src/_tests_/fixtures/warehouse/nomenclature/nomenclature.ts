@@ -6,16 +6,25 @@ import { fakeId, fakeWord } from '_tests_/utils'
 
 export const nomenclature = (
   props?: Partial<
-    Pick<NomenclatureModel, 'country' | 'group' | 'measurementUnit' | 'equipmentHasSerialNumber'>
+    Pick<
+      NomenclatureModel,
+      | 'country'
+      | 'group'
+      | 'measurementUnit'
+      | 'equipmentHasSerialNumber'
+      | 'id'
+      | 'title'
+      | 'vendorCode'
+    >
   >,
 ): NomenclatureModel => ({
   country: props?.country || countryFixtures.country(),
   group: props?.group || warehouseFixtures.nomenclatureGroup(),
   measurementUnit: props?.measurementUnit || warehouseFixtures.measurementUnit(),
   equipmentHasSerialNumber: props?.equipmentHasSerialNumber || false,
+  id: props?.id || fakeId(),
+  title: props?.title || fakeWord(),
+  vendorCode: props?.vendorCode || fakeWord(),
 
-  id: fakeId(),
-  title: fakeWord(),
   shortTitle: fakeWord(),
-  vendorCode: fakeWord(),
 })
