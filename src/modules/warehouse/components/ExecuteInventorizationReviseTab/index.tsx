@@ -22,6 +22,14 @@ import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hoo
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
+import { CheckInventorizationEquipmentsTableRow } from 'modules/warehouse/components/CheckInventorizationEquipmentsTable/types'
+import {
+  CreateInventorizationEquipmentFormFields,
+  CreateInventorizationEquipmentModalProps,
+} from 'modules/warehouse/components/CreateInventorizationEquipmentModal/types'
+import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
+import ReviseEquipmentTable from 'modules/warehouse/components/ReviseEquipmentTable'
+import { ReviseEquipmentTableProps } from 'modules/warehouse/components/ReviseEquipmentTable/types'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
@@ -75,17 +83,8 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
-import { CheckInventorizationEquipmentsTableRow } from '../CheckInventorizationEquipmentsTable/types'
-import {
-  CreateInventorizationEquipmentFormFields,
-  CreateInventorizationEquipmentModalProps,
-} from '../CreateInventorizationEquipmentModal/types'
-import { EquipmentFormModalProps } from '../EquipmentFormModal/types'
-import ReviseEquipmentTable from '../ReviseEquipmentTable'
-import { ReviseEquipmentTableProps } from '../ReviseEquipmentTable/types'
-
 const CreateInventorizationEquipmentModal = React.lazy(
-  () => import('../CreateInventorizationEquipmentModal'),
+  () => import('modules/warehouse/components/CreateInventorizationEquipmentModal'),
 )
 
 const EquipmentFormModal = React.lazy(
