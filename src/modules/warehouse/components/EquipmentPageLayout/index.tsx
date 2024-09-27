@@ -107,7 +107,9 @@ const EquipmentPageLayout: FC = () => {
       ).unwrap()
 
       downloadFile(base64ToBytes(equipments), MimetypeEnum.Xlsx, 'Оборудование')
-    } catch {}
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const routeContext = useMemo<EquipmentPageContextType>(
