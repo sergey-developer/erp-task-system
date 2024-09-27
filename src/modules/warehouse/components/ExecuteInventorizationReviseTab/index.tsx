@@ -111,7 +111,7 @@ export type ExecuteInventorizationReviseTabProps = {
 
 const { Title } = Typography
 const { Search } = Input
-
+// test commit
 const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> = ({
   inventorization,
 }) => {
