@@ -20,7 +20,7 @@ type UseGetNomenclatureListOptions = CustomUseQueryOptions<
   GetNomenclatureListTransformedSuccessResponse
 >
 
-export const useGetNomenclatureList = (
+export const useGetNomenclatures = (
   args?: GetNomenclatureListQueryArgs,
   options?: UseGetNomenclatureListOptions,
 ): UseGetNomenclatureListResult => {

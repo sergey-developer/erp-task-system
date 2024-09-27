@@ -1,9 +1,12 @@
 import { InventorizationApiEnum } from 'modules/warehouse/constants/inventorization'
-import { CheckInventorizationEquipmentsTemplateSuccessResponse } from 'modules/warehouse/models'
+import {
+  CheckInventorizationEquipmentsTemplateBadRequestErrorResponse,
+  CheckInventorizationEquipmentsTemplateSuccessResponse,
+} from 'modules/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { getBadRequestErrorMockFn, getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const checkInventorizationEquipmentsTemplateMockFn = () =>
@@ -15,3 +18,9 @@ const checkInventorizationEquipmentsTemplateMockFn = () =>
 export const mockCheckInventorizationEquipmentsTemplateSuccess = (
   options?: Partial<ResponseResolverOptions<CheckInventorizationEquipmentsTemplateSuccessResponse>>,
 ) => getSuccessMockFn(checkInventorizationEquipmentsTemplateMockFn(), options)()
+
+export const mockCheckInventorizationEquipmentsTemplateBadRequestError = (
+  options?: Partial<
+    ResponseResolverOptions<CheckInventorizationEquipmentsTemplateBadRequestErrorResponse>
+  >,
+) => getBadRequestErrorMockFn(checkInventorizationEquipmentsTemplateMockFn(), options)()

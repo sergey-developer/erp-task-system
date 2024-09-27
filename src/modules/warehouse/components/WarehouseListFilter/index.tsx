@@ -21,8 +21,7 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
 }) => {
   const [form] = Form.useForm<WarehouseListFilterFormFields>()
 
-  const { isFetching: warehouseListIsFetching, currentData: warehouseList = [] } =
-    useGetWarehouseList()
+  const { isFetching: warehousesIsFetching, currentData: warehouses = [] } = useGetWarehouseList()
 
   const {
     currentData: legalEntityList = [],
@@ -101,8 +100,8 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
             <Select
               data-testid='parent-select'
               fieldNames={idAndTitleSelectFieldNames}
-              loading={warehouseListIsFetching}
-              options={warehouseList}
+              loading={warehousesIsFetching}
+              options={warehouses}
               placeholder='Наименование родительского склада'
             />
           </Form.Item>

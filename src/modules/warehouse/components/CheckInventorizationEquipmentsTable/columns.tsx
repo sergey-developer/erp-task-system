@@ -4,13 +4,24 @@ import { ColumnsType } from 'antd/es/table'
 import { overlayInnerStyle } from 'modules/task/components/CreateTaskModal/styles'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 
-import { ExclamationCircleIcon } from 'components/Icons'
+import { CheckCircleIcon, EditTwoToneIcon, ExclamationCircleIcon } from 'components/Icons'
 
 import { isFalse } from 'shared/utils/common'
 
-import { CheckInventorizationEquipmentsTableRow } from './types'
+import {
+  CheckInventorizationEquipmentsTableProps,
+  CheckInventorizationEquipmentsTableRow,
+} from './types'
 
-export const getColumns = (): ColumnsType<CheckInventorizationEquipmentsTableRow> => [
+type GetColumnsArgs = Pick<
+  CheckInventorizationEquipmentsTableProps,
+  'onClickEdit' | 'editTouchedRowsIds'
+>
+
+export const getColumns = ({
+  onClickEdit,
+  editTouchedRowsIds,
+}: GetColumnsArgs): ColumnsType<CheckInventorizationEquipmentsTableRow> => [
   {
     width: 50,
     dataIndex: 'rowId',
@@ -44,15 +55,24 @@ export const getColumns = (): ColumnsType<CheckInventorizationEquipmentsTableRow
   },
   {
     width: 50,
+    key: 'edit',
+    render: (_, record) => <EditTwoToneIcon $size='large' onClick={() => onClickEdit(record)} />,
+  },
+  {
+    width: 50,
     dataIndex: 'isCredited',
-    render: (value: CheckInventorizationEquipmentsTableRow['isCredited']) =>
-      isFalse(value) ? (
+    render: (value: CheckInventorizationEquipmentsTableRow['isCredited'], record) =>
+      isFalse(value) && (
         <Popover
           overlayInnerStyle={overlayInnerStyle}
           content='Оборудование отсутствует и будет оприходовано. Проверьте заполнение обязательных параметров, нажав на карандаш'
         >
-          <ExclamationCircleIcon $color='fireOpal' $size='large' $cursor='pointer' />
+          {editTouchedRowsIds.includes(record.rowId) ? (
+            <CheckCircleIcon $size='large' $color='green' />
+          ) : (
+            <ExclamationCircleIcon $color='fireOpal' $size='large' $cursor='pointer' />
+          )}
         </Popover>
-      ) : undefined,
+      ),
   },
 ]

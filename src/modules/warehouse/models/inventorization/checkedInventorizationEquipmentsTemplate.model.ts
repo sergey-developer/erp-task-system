@@ -11,6 +11,7 @@ import { CurrencyListItemModel } from 'shared/models/currency'
 import { MacroregionListItemModel } from 'shared/models/macroregion'
 
 export type CheckedInventorizationEquipmentsTemplateListItemModel = {
+  isCredited: boolean
   title?: string
   serialNumber?: string
   inventoryNumber?: string
@@ -22,7 +23,6 @@ export type CheckedInventorizationEquipmentsTemplateListItemModel = {
   isNew?: boolean
   isWarranty?: boolean
   isRepaired?: boolean
-  isCredited?: boolean
   usageCounter?: number
   owner?: Pick<CustomerListItemModel, 'id' | 'title'>
   macroregion?: Pick<MacroregionListItemModel, 'id' | 'title'>

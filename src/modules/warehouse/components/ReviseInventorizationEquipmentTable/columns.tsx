@@ -15,10 +15,13 @@ import { filterOptionBy } from 'shared/utils/common'
 
 import theme from 'styles/theme'
 
-import { ReviseEquipmentTableItem, ReviseEquipmentTableProps } from './types'
+import {
+  ReviseInventorizationEquipmentTableItem,
+  ReviseInventorizationEquipmentTableProps,
+} from './types'
 
 type GetColumnsArgs = Pick<
-  ReviseEquipmentTableProps,
+  ReviseInventorizationEquipmentTableProps,
   'locationsIsLoading' | 'onChangeQuantityFact' | 'onChangeLocationFact'
 > & {
   locationOptions: DefaultOptionType[]
@@ -29,7 +32,7 @@ export const getColumns = ({
   locationsIsLoading,
   onChangeQuantityFact,
   onChangeLocationFact,
-}: GetColumnsArgs): ProColumns<ReviseEquipmentTableItem>[] => {
+}: GetColumnsArgs): ProColumns<ReviseInventorizationEquipmentTableItem>[] => {
   return [
     {
       key: 'title',
@@ -77,19 +80,16 @@ export const getColumns = ({
       formItemProps: { 'data-testid': 'quantity-fact-form-item' },
 
       fieldProps: (form, config) => {
-        const quantityFact: ReviseEquipmentTableItem['quantity']['fact'] = form.getFieldValue(
-          (config.rowKey as unknown as string[]).concat('quantityFact'),
-        )
+        const quantityFact: ReviseInventorizationEquipmentTableItem['quantity']['fact'] =
+          form.getFieldValue((config.rowKey as unknown as string[]).concat('quantityFact'))
 
-        const quantityPlan: ReviseEquipmentTableItem['quantity']['plan'] = form.getFieldValue(
-          (config.rowKey as unknown as string[]).concat('quantityPlan'),
-        )
+        const quantityPlan: ReviseInventorizationEquipmentTableItem['quantity']['plan'] =
+          form.getFieldValue((config.rowKey as unknown as string[]).concat('quantityPlan'))
 
         const locationFact:
-          | ReviseEquipmentTableItem['locationFact']
-          | NonNullable<ReviseEquipmentTableItem['locationFact']>['id'] = form.getFieldValue(
-          (config.rowKey as unknown as string[]).concat('locationFact'),
-        )
+          | ReviseInventorizationEquipmentTableItem['locationFact']
+          | NonNullable<ReviseInventorizationEquipmentTableItem['locationFact']>['id'] =
+          form.getFieldValue((config.rowKey as unknown as string[]).concat('locationFact'))
 
         return {
           min: 0,
@@ -120,25 +120,24 @@ export const getColumns = ({
       formItemProps: { 'data-testid': 'location-fact-form-item' },
 
       fieldProps: (form, config) => {
-        const quantityFact: ReviseEquipmentTableItem['quantity']['fact'] = form.getFieldValue(
-          (config.rowKey as unknown as string[]).concat('quantityFact'),
-        )
+        const quantityFact: ReviseInventorizationEquipmentTableItem['quantity']['fact'] =
+          form.getFieldValue((config.rowKey as unknown as string[]).concat('quantityFact'))
 
-        const quantityPlan: ReviseEquipmentTableItem['quantity']['plan'] = form.getFieldValue(
-          (config.rowKey as unknown as string[]).concat('quantityPlan'),
-        )
+        const quantityPlan: ReviseInventorizationEquipmentTableItem['quantity']['plan'] =
+          form.getFieldValue((config.rowKey as unknown as string[]).concat('quantityPlan'))
 
         const equipmentCategoryIsConsumable = checkEquipmentCategoryIsConsumable(
           config.entity.equipment.category.code,
         )
 
         const locationFact:
-          | ReviseEquipmentTableItem['locationFact']
-          | NonNullable<ReviseEquipmentTableItem['locationFact']>['id'] =
+          | ReviseInventorizationEquipmentTableItem['locationFact']
+          | NonNullable<ReviseInventorizationEquipmentTableItem['locationFact']>['id'] =
           form.getFieldValue((config.rowKey as unknown as string[]).concat('locationFact')) ||
           config.entity.locationFact
 
-        const locationPlan: ReviseEquipmentTableItem['locationPlan'] = config.entity.locationPlan
+        const locationPlan: ReviseInventorizationEquipmentTableItem['locationPlan'] =
+          config.entity.locationPlan
 
         return {
           loading: locationsIsLoading,

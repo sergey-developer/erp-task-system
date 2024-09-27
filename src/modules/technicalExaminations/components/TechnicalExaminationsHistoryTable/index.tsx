@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Flex, Table } from 'antd'
 import { FC } from 'react'
 
 import { columns } from './columns'
@@ -9,7 +9,7 @@ import {
 
 const TechnicalExaminationsHistoryTable: FC<TechnicalExaminationsHistoryTableProps> = (props) => {
   return (
-    <div data-testid='technical-examinations-history-table'>
+    <Flex data-testid='technical-examinations-history-table'>
       <Table<TechnicalExaminationsHistoryTableItem>
         {...props}
         virtual
@@ -17,7 +17,7 @@ const TechnicalExaminationsHistoryTable: FC<TechnicalExaminationsHistoryTablePro
         columns={columns}
         pagination={false}
       />
-    </div>
+    </Flex>
   )
 }
 
