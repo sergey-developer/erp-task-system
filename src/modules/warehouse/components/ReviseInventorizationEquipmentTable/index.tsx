@@ -41,7 +41,7 @@ const ReviseInventorizationEquipmentTable: FC<ReviseInventorizationEquipmentTabl
   )
 
   return (
-    <TableWrapperStyled data-testid='revise-equipment-table'>
+    <TableWrapperStyled data-testid='revise-inventorization-equipment-table'>
       <EditableProTable<ReviseInventorizationEquipmentTableItem>
         rowKey='id'
         columns={columns}

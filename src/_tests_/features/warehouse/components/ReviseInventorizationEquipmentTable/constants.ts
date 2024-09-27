@@ -1,10 +1,10 @@
-import { ReviseEquipmentTableProps } from 'modules/warehouse/components/ReviseEquipmentTable/types'
+import { ReviseInventorizationEquipmentTableProps } from 'modules/warehouse/components/ReviseInventorizationEquipmentTable/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 
 export const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem()
 
-export const props: ReviseEquipmentTableProps = {
+export const props: ReviseInventorizationEquipmentTableProps = {
   dataSource: [inventorizationEquipmentListItem],
   pagination: {},
   loading: false,
@@ -19,7 +19,7 @@ export const props: ReviseEquipmentTableProps = {
 }
 
 export enum TestIdsEnum {
-  ReviseEquipmentTable = 'revise-equipment-table',
+  ReviseEquipmentTable = 'revise-inventorization-equipment-table',
   LocationFactFormItem = 'location-fact-form-item',
   QuantityFactFormItem = 'quantity-fact-form-item',
 }

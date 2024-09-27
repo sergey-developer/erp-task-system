@@ -6,7 +6,7 @@ import {
   props,
   tableRow,
 } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/constants'
-import { checkInventorizationEquipmentsTableTestUtils as testUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/utils'
+import { checkInventorizationEquipmentsTableTestUtils as testUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { render } from '_tests_/utils'
 

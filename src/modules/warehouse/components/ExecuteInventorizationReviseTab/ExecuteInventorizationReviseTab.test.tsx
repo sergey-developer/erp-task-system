@@ -1,9 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as createInventorizationEquipmentModalTestUtils } from 'modules/warehouse/components/CreateInventorizationEquipmentModal/CreateInventorizationEquipmentModal.test'
-import { testUtils as equipmentFormModalTestUtils } from 'modules/warehouse/components/EquipmentFormModal/EquipmentFormModal.test'
-import { testUtils as reviseEquipmentTableTestUtils } from 'modules/warehouse/components/ReviseInventorizationEquipmentTable/ReviseInventorizationEquipmentTable.test'
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
@@ -17,16 +14,14 @@ import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import { makeString } from 'shared/utils/string'
 
-import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouse/components/CreateInventorizationEquipmentModal/testUtils'
-import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/components/EquipmentFormModal/testUtils'
-import { props } from '_tests_/features/warehouse/components/ExecuteInventorizationReviseTab/constants'
-import { executeInventorizationReviseTabTestUtils } from '_tests_/features/warehouse/components/ExecuteInventorizationReviseTab/testUtils'
-import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouse/components/ReviseEquipmentTable/testUtils'
 import { checkEquipmentFormModalTestUtils } from '_tests_/features/equipment/components/CheckEquipmentFormModal/utils'
 import { props } from '_tests_/features/inventorization/components/ExecuteInventorizationReviseTab/constants'
-import { executeInventorizationReviseTabTestUtils as testUtils } from '_tests_/features/inventorization/components/ExecuteInventorizationReviseTab/utils'
-import { checkInventorizationEquipmentsModalTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsModal/utils'
-import { checkInventorizationEquipmentsTableTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/utils'
+import { executeInventorizationReviseTabTestUtils as testUtils } from '_tests_/features/inventorization/components/ExecuteInventorizationReviseTab/testUtils'
+import { checkInventorizationEquipmentsModalTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsModal/testUtils'
+import { checkInventorizationEquipmentsTableTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/testUtils'
+import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouse/components/CreateInventorizationEquipmentModal/testUtils'
+import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/components/EquipmentFormModal/testUtils'
+import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouse/components/ReviseInventorizationEquipmentTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
@@ -70,7 +65,7 @@ describe('Вкладка списка оборудования с расхожд
       }),
     })
 
-    const container = executeInventorizationReviseTabTestUtils.getContainer()
+    const container = testUtils.getContainer()
     const title = within(container).getByText('Перечень оборудования для сверки')
     const table = reviseEquipmentTableTestUtils.getContainer()
 
@@ -91,7 +86,7 @@ describe('Вкладка списка оборудования с расхожд
           }),
         })
 
-        const button = executeInventorizationReviseTabTestUtils.getCreateEquipmentButton()
+        const button = testUtils.getCreateEquipmentButton()
 
         expect(button).toBeInTheDocument()
         expect(button).toBeEnabled()
@@ -110,7 +105,7 @@ describe('Вкладка списка оборудования с расхожд
           }),
         })
 
-        await executeInventorizationReviseTabTestUtils.clickCreateEquipmentButton(user)
+        await testUtils.clickCreateEquipmentButton(user)
         const modal = await createInventorizationEquipmentModalTestUtils.findContainer()
 
         expect(modal).toBeInTheDocument()
@@ -139,7 +134,7 @@ describe('Вкладка списка оборудования с расхожд
         }),
       })
 
-      await executeInventorizationReviseTabTestUtils.clickCreateEquipmentButton(user)
+      await testUtils.clickCreateEquipmentButton(user)
       const modal = await createInventorizationEquipmentModalTestUtils.findContainer()
       await createInventorizationEquipmentModalTestUtils.expectEquipmentLoadingFinished()
       await createInventorizationEquipmentModalTestUtils.openEquipmentSelect(user)
@@ -199,7 +194,7 @@ describe('Вкладка списка оборудования с расхожд
         }),
       })
 
-      await executeInventorizationReviseTabTestUtils.clickCreateEquipmentButton(user)
+      await testUtils.clickCreateEquipmentButton(user)
       const createInventorizationEquipmentModal =
         await createInventorizationEquipmentModalTestUtils.findContainer()
       await createInventorizationEquipmentModalTestUtils.openLocationFactSelect(user)
