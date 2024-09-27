@@ -11,7 +11,7 @@ import { InfrastructureModel } from 'modules/infrastructures/models'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
-import { useGetInfrastructureWorkTypes } from 'shared/hooks/catalogs/infrastructureWorkTypes/index'
+import { useGetInfrastructureWorkTypes } from 'shared/hooks/catalogs/infrastructureWorkTypes'
 import { IdType } from 'shared/types/common'
 
 import ChangeInfrastructureOrderForm from '../ChangeInfrastructureOrderForm'
@@ -72,6 +72,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
       deleteAttachment,
       deleteAttachmentIsLoading,
       infrastructureOrdersForms,
+      infrastructureWorkTypes,
       managerIsCurrentUser,
       onUploadFile,
     ],

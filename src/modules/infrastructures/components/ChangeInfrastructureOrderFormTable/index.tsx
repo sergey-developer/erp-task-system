@@ -1,7 +1,6 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { Form } from 'antd'
 import random from 'lodash/random'
-import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, useMemo } from 'react'
 
 import { env } from 'configs/env'
@@ -28,7 +27,7 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
 }) => {
   const form = Form.useFormInstance<ChangeInfrastructureOrdersFormsTabFormFields>()
 
-  const infrastructureWorkTypesOptions = useMemo<DefaultOptionType[]>(
+  const infrastructureWorkTypesOptions = useMemo(
     () =>
       infrastructureWorkTypes
         ? makeInfrastructureWorkTypesSelectOptions(infrastructureWorkTypes)
@@ -52,7 +51,6 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
         showSearch: true,
         filterOption: filterOptionBy('label'),
         options: infrastructureWorkTypesOptions,
-        virtual: true,
       }),
     },
     {

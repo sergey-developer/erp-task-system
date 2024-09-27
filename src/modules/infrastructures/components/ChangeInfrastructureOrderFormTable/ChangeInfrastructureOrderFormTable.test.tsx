@@ -1,32 +1,24 @@
-import { screen } from '@testing-library/react'
 import { Form } from 'antd'
 
-import ChangeInfrastructureOrderFormTable from 'modules/infrastructures/components/ChangeInfrastructureOrderFormTable/index'
-import { ChangeInfrastructureOrderFormTableProps } from 'modules/infrastructures/components/ChangeInfrastructureOrderFormTable/types'
+import ChangeInfrastructureOrderFormTable from 'modules/infrastructures/components/ChangeInfrastructureOrderFormTable'
 
-import { buttonTestUtils, fakeWord, render } from '_tests_/utils/index'
-
-const props: ChangeInfrastructureOrderFormTableProps = {
-  editableKeys: [],
-  name: fakeWord(),
-
-  infrastructureWorkTypes: [],
-
-  managerIsCurrentUser: true,
-}
-
-const getContainer = () => screen.getByTestId('change-infrastructure-order-form-table-container')
+import { props } from '_tests_/features/infrastructures/components/ChangeInfrastructurePage/constants'
+import { changeInfrastructureOrderFormTableTestUtils } from '_tests_/features/infrastructures/components/ChangeInfrastructurePage/testUtils'
+import { buttonTestUtils, render } from '_tests_/utils'
 
 describe('Таблица добавления работ к бланк-заказу', () => {
   describe('Кнопка добавить работы', () => {
-    test('Отображается корректно', () => {
+    test('Отображается и активна', () => {
       render(
         <Form>
           <ChangeInfrastructureOrderFormTable {...props} />
         </Form>,
       )
 
-      const button = buttonTestUtils.getButtonIn(getContainer(), /Добавить работы/)
+      const button = buttonTestUtils.getButtonIn(
+        changeInfrastructureOrderFormTableTestUtils.getContainer(),
+        /Добавить работы/,
+      )
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -39,9 +31,11 @@ describe('Таблица добавления работ к бланк-зака�
         </Form>,
       )
 
-      const button = buttonTestUtils.getButtonIn(getContainer(), /Добавить работы/)
+      const button = buttonTestUtils.getButtonIn(
+        changeInfrastructureOrderFormTableTestUtils.getContainer(),
+        /Добавить работы/,
+      )
 
-      expect(button).toBeInTheDocument()
       expect(button).toBeDisabled()
     })
   })

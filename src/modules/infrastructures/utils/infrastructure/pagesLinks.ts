@@ -1,7 +1,7 @@
 import { generatePath } from 'react-router-dom'
 
 import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/routes'
-import { InfrastructureRequestArgs } from 'modules/infrastructures/types/index'
+import { InfrastructureRequestArgs } from 'modules/infrastructures/types'
 
 export const makeChangeInfrastructurePageLink = ({
   infrastructureId,

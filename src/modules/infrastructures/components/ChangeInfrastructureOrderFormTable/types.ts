@@ -3,7 +3,7 @@ import { RowEditableConfig } from '@ant-design/pro-utils/es/useEditableArray'
 
 import { InfrastructureWorkModel } from 'modules/infrastructures/models'
 
-import { InfrastructureWorkTypesCatalogModel } from 'shared/models/catalogs/infrastructureWorkTypes/index'
+import { InfrastructureWorkTypesCatalogModel } from 'shared/models/catalogs/infrastructureWorkTypes'
 import { SetNonNullable } from 'shared/types/utils'
 
 export type ChangeInfrastructureOrderFormTableRow = Partial<

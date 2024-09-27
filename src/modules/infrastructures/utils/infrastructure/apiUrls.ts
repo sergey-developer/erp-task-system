@@ -1,5 +1,5 @@
-import { InfrastructuresApiEnum } from 'modules/infrastructures/constants/index'
-import { InfrastructureRequestArgs } from 'modules/infrastructures/types/index'
+import { InfrastructuresApiEnum } from 'modules/infrastructures/constants'
+import { InfrastructureRequestArgs } from 'modules/infrastructures/types'
 
 import { generateApiPath } from 'shared/utils/api'
 
