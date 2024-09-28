@@ -1,14 +1,18 @@
-import React, { FC } from 'react'
+import { Checkbox, CheckboxProps, Flex, Typography } from 'antd'
+import React, { FC, useMemo, useState } from 'react'
 
+import CheckInventorizationEquipmentsTable from 'modules/warehouse/components/CheckInventorizationEquipmentsTable'
+import {
+  CheckInventorizationEquipmentsTableProps,
+  CheckInventorizationEquipmentsTableRow,
+} from 'modules/warehouse/components/CheckInventorizationEquipmentsTable/types'
+
+import { ExclamationCircleIcon } from 'components/Icons'
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { SAVE_TEXT } from 'shared/constants/common'
 
-import CheckInventorizationEquipmentsTable from '../CheckInventorizationEquipmentsTable'
-import {
-  CheckInventorizationEquipmentsTableProps,
-  CheckInventorizationEquipmentsTableRow,
-} from '../CheckInventorizationEquipmentsTable/types'
+const { Text } = Typography
 
 export type CheckInventorizationEquipmentsModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel'>
@@ -27,6 +31,21 @@ const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModa
   editTouchedRowsIds,
   ...props
 }) => {
+  const [isNotCredited, setIsNotCredited] = useState(false)
+  const hasIsNotCredited = useMemo(() => data.some(({ isCredited }) => !isCredited), [data])
+
+  const filteredData = useMemo(
+    () =>
+      hasIsNotCredited
+        ? data.filter((item) => (isNotCredited ? !item.isCredited : item.isCredited))
+        : data,
+    [data, hasIsNotCredited, isNotCredited],
+  )
+
+  const handleChangeIsNotCredited: CheckboxProps['onChange'] = (event) => {
+    setIsNotCredited(event.target.checked)
+  }
+
   return (
     <BaseModal
       {...props}
@@ -37,12 +56,30 @@ const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModa
       width='80%'
       title='Результаты загрузки оборудования из Excel'
     >
-      <CheckInventorizationEquipmentsTable
-        dataSource={data}
-        loading={isLoading}
-        onClickEdit={onClickEdit}
-        editTouchedRowsIds={editTouchedRowsIds}
-      />
+      <Flex vertical gap='middle'>
+        {hasIsNotCredited && (
+          <>
+            <Flex gap='small'>
+              <ExclamationCircleIcon $size='large' $color='fireOpal' />
+
+              <Text>В списке результатов загрузки есть оборудование, требующее оприходования</Text>
+            </Flex>
+
+            <Flex gap='small'>
+              <Checkbox checked={isNotCredited} onChange={handleChangeIsNotCredited}>
+                Показывать только оборудование, требующее оприходования
+              </Checkbox>
+            </Flex>
+          </>
+        )}
+
+        <CheckInventorizationEquipmentsTable
+          dataSource={filteredData}
+          loading={isLoading}
+          onClickEdit={onClickEdit}
+          editTouchedRowsIds={editTouchedRowsIds}
+        />
+      </Flex>
     </BaseModal>
   )
 }
