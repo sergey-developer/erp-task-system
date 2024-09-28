@@ -18,12 +18,17 @@ import {
 } from './types'
 
 const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableProps> = ({
-  editableKeys,
   name,
+
+  editableKeys,
+  onChange,
 
   infrastructureWorkTypes,
 
   managerIsCurrentUser,
+
+  onChangeWorkType,
+  onChangeAmount,
 }) => {
   const form = Form.useFormInstance<ChangeInfrastructureOrdersFormsTabFormFields>()
 
@@ -51,6 +56,7 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
         showSearch: true,
         filterOption: filterOptionBy('label'),
         options: infrastructureWorkTypesOptions,
+        onChange: (value: IdType) => onChangeWorkType(config.entity, value),
       }),
     },
     {
@@ -73,7 +79,18 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
           (config.rowKey as unknown as string[]).concat(['type', 'id']),
         )
 
-        return { disabled: !managerIsCurrentUser || !name, placeholder: null, min: 0 }
+        const amount: ChangeInfrastructureOrderFormTableRow['amount'] = form.getFieldValue(
+          (config.rowKey as unknown as string[]).concat('amount'),
+        )
+
+        return {
+          disabled: !managerIsCurrentUser || !name,
+          placeholder: null,
+          min: 0,
+          onBlur: async () => {
+            await onChangeAmount(config.entity, amount)
+          },
+        }
       },
     },
     {
@@ -110,6 +127,7 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
           type: 'multiple',
           form,
           editableKeys,
+          onChange: onChange,
         }}
       />
     </div>

@@ -3,12 +3,17 @@ import { ChangeInfrastructureOrderFormTableProps } from 'modules/infrastructures
 import { fakeWord } from '_tests_/utils'
 
 export const props: ChangeInfrastructureOrderFormTableProps = {
-  editableKeys: [],
   name: fakeWord(),
+
+  editableKeys: [],
+  onChange: jest.fn(),
 
   infrastructureWorkTypes: [],
 
   managerIsCurrentUser: true,
+
+  onChangeWorkType: jest.fn(),
+  onChangeAmount: jest.fn(),
 }
 
 export enum TestIdsEnum {
