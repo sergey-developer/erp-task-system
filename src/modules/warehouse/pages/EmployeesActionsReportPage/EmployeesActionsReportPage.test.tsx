@@ -1,17 +1,15 @@
-import { screen } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import { testUtils as employeesActionsReportFormTestUtils } from 'modules/reports/components/EmployeesActionsReportForm/EmployeesActionsReportForm.test'
 import { testUtils as employeesActionsReportTableTestUtils } from 'modules/reports/components/EmployeesActionsReportTable/EmployeesActionsReportTable.test'
 import { getRelocationColValue } from 'modules/reports/utils'
-import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
-import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 
 import { DEFAULT_FILE_NAME } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
+import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/components/EquipmentDetails/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
+import { employeesActionsReportPageTestUtils } from '_tests_/features/warehouse/pages/EmployeesActionsReportPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
 import userFixtures from '_tests_/fixtures/user'
@@ -25,31 +23,9 @@ import {
   mockGetUsersSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { buttonTestUtils, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
+import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
 
 import EmployeesActionsReportPage from './index'
-
-const getContainer = () => screen.getByTestId('employees-actions-report-page')
-
-// export to excel button
-const getExportToExcelButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Выгрузить в Excel/)
-
-const clickExportToExcelButton = async (user: UserEvent) => {
-  const button = getExportToExcelButton()
-  await user.click(button)
-}
-
-const expectExportToExcelLoadingFinished = () =>
-  buttonTestUtils.expectLoadingFinished(getExportToExcelButton())
-
-export const testUtils = {
-  getContainer,
-
-  getExportToExcelButton,
-  clickExportToExcelButton,
-  expectExportToExcelLoadingFinished,
-}
 
 setupApiTests()
 
@@ -150,8 +126,8 @@ describe('Страница отчета действия сотрудников'
       const file = fakeWord()
       mockGetEmployeesActionsReportXlsxSuccess(userListItem.id, { body: file })
 
-      await testUtils.clickExportToExcelButton(user)
-      await testUtils.expectExportToExcelLoadingFinished()
+      await employeesActionsReportPageTestUtils.clickExportToExcelButton(user)
+      await employeesActionsReportPageTestUtils.expectExportToExcelLoadingFinished()
 
       expect(base64ToArrayBufferSpy).toBeCalledTimes(1)
       expect(base64ToArrayBufferSpy).toBeCalledWith(file)

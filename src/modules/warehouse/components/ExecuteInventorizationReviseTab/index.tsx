@@ -15,6 +15,7 @@ import {
 } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import isNumber from 'lodash/isNumber'
+import omit from 'lodash/omit'
 import stubFalse from 'lodash/stubFalse'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -49,6 +50,7 @@ import {
   useCreateInventorizationEquipment,
   useGetInventorizationEquipments,
   useLazyGetInventorizationEquipmentsTemplate,
+  useLazyGetInventorizationEquipmentsXlsx,
   useUpdateInventorizationEquipment,
 } from 'modules/warehouse/hooks/inventorization'
 import { useGetNomenclature, useGetNomenclatures } from 'modules/warehouse/hooks/nomenclature'
@@ -636,7 +638,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         const fileName = extractFileNameFromHeaders(data.meta.response.headers)
         downloadFile(base64ToBytes(data.value), MimetypeEnum.Xlsx, fileName)
       } catch (error) {
-        console.error('Error while downloading inventorization equipments template')
+        console.error('Error while downloading inventorization equipments template file')
       }
     }
   })
@@ -692,6 +694,26 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     ],
   )
 
+  const [
+    getInventorizationEquipmentsXlsx,
+    { isFetching: getInventorizationEquipmentsXlsxIsFetching },
+  ] = useLazyGetInventorizationEquipmentsXlsx()
+
+  const onDownloadInventorizationEquipments = async () => {
+    const { data } = await getInventorizationEquipmentsXlsx(
+      omit(getInventorizationEquipmentsArgs, 'limit', 'offset'),
+    )
+
+    if (data?.value && data?.meta?.response) {
+      try {
+        const fileName = extractFileNameFromHeaders(data.meta.response.headers)
+        downloadFile(base64ToBytes(data.value), MimetypeEnum.Xlsx, fileName)
+      } catch (error) {
+        console.error('Error while downloading inventorization equipments file')
+      }
+    }
+  }
+
   const createEquipmentFormValues = useMemo(
     () =>
       createEquipmentModalOpened ? { title: nomenclature ? nomenclature.title : '' } : undefined,
@@ -740,7 +762,22 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
                   checkInventorizationStatusIsInProgress(inventorization.status)) && (
                   <>
                     <Dropdown.Button
-                      menu={{ items: [] }}
+                      menu={{
+                        items: [
+                          {
+                            key: 'Скачать с оборудованием',
+                            label: (
+                              <Button
+                                type='text'
+                                loading={getInventorizationEquipmentsXlsxIsFetching}
+                              >
+                                Скачать с оборудованием
+                              </Button>
+                            ),
+                            onClick: onDownloadInventorizationEquipments,
+                          },
+                        ],
+                      }}
                       icon={<DownIcon />}
                       trigger={['click']}
                       loading={getInventorizationEquipmentsTemplateIsFetching}

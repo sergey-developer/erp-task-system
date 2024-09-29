@@ -21,6 +21,8 @@ import {
   GetInventorizationEquipmentsTemplateQueryArgs,
   GetInventorizationEquipmentsTemplateSuccessResponse,
   GetInventorizationEquipmentSuccessResponse,
+  GetInventorizationEquipmentsXlsxQueryArgs,
+  GetInventorizationEquipmentsXlsxSuccessResponse,
   GetInventorizationQueryArgs,
   GetInventorizationsQueryArgs,
   GetInventorizationsSuccessResponse,
@@ -31,6 +33,7 @@ import {
 import {
   GetInventorizationEquipmentsTemplateTransformedSuccessResponse,
   GetInventorizationEquipmentsTransformedSuccessResponse,
+  GetInventorizationEquipmentsXlsxTransformedSuccessResponse,
   GetInventorizationsTransformedSuccessResponse,
 } from 'modules/warehouse/types'
 import {
@@ -43,6 +46,7 @@ import {
 } from 'modules/warehouse/utils/inventorization'
 
 import { HttpMethodEnum } from 'shared/constants/http'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { baseApiService } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
@@ -113,6 +117,21 @@ const inventorizationApiService = baseApiService
         }),
         transformResponse: (response: GetInventorizationEquipmentsSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
+      }),
+      getInventorizationEquipmentsXlsx: build.query<
+        GetInventorizationEquipmentsXlsxTransformedSuccessResponse,
+        GetInventorizationEquipmentsXlsxQueryArgs
+      >({
+        query: ({ inventorizationId, ...params }) => ({
+          url: makeGetInventorizationEquipmentsUrl({ inventorizationId }),
+          method: HttpMethodEnum.Get,
+          headers: { Accept: MimetypeEnum.Xlsx },
+          params,
+        }),
+        transformResponse: (value: GetInventorizationEquipmentsXlsxSuccessResponse, meta) => ({
+          value,
+          meta,
+        }),
       }),
       getInventorizationEquipment: build.query<
         GetInventorizationEquipmentSuccessResponse,
@@ -220,6 +239,7 @@ export const {
   useGetInventorizationEquipmentQuery,
   useLazyGetInventorizationEquipmentQuery,
   useGetInventorizationEquipmentsQuery,
+  useLazyGetInventorizationEquipmentsXlsxQuery,
   useLazyGetInventorizationEquipmentsTemplateQuery,
   useCheckInventorizationEquipmentsTemplateMutation,
   useCheckInventorizationEquipmentsMutation,

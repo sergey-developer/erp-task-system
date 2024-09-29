@@ -4,6 +4,7 @@ export * from './useCreateInventorization'
 export * from './useCompleteInventorization'
 
 export * from './useGetInventorizationEquipments'
+export * from './useLazyGetInventorizationEquipmentsXlsx'
 
 export * from './useLazyGetInventorizationEquipmentsTemplate'
 export * from './useCheckInventorizationEquipmentsTemplate'

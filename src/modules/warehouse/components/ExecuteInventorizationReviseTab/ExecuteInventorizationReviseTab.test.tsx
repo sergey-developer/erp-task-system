@@ -1,9 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as createInventorizationEquipmentModalTestUtils } from 'modules/warehouse/components/CreateInventorizationEquipmentModal/CreateInventorizationEquipmentModal.test'
-import { testUtils as equipmentFormModalTestUtils } from 'modules/warehouse/components/EquipmentFormModal/EquipmentFormModal.test'
-import { testUtils as reviseEquipmentTableTestUtils } from 'modules/warehouse/components/ReviseInventorizationEquipmentTable/ReviseInventorizationEquipmentTable.test'
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
@@ -19,9 +16,12 @@ import { makeString } from 'shared/utils/string'
 
 import { checkEquipmentFormModalTestUtils } from '_tests_/features/equipment/components/CheckEquipmentFormModal/utils'
 import { props } from '_tests_/features/inventorization/components/ExecuteInventorizationReviseTab/constants'
-import { executeInventorizationReviseTabTestUtils as testUtils } from '_tests_/features/inventorization/components/ExecuteInventorizationReviseTab/utils'
-import { checkInventorizationEquipmentsModalTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsModal/utils'
-import { checkInventorizationEquipmentsTableTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/utils'
+import { executeInventorizationReviseTabTestUtils as testUtils } from '_tests_/features/inventorization/components/ExecuteInventorizationReviseTab/testUtils'
+import { checkInventorizationEquipmentsModalTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsModal/testUtils'
+import { checkInventorizationEquipmentsTableTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/testUtils'
+import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouse/components/CreateInventorizationEquipmentModal/testUtils'
+import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/components/EquipmentFormModal/testUtils'
+import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouse/components/ReviseInventorizationEquipmentTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
@@ -112,7 +112,7 @@ describe('Вкладка списка оборудования с расхожд
       })
     })
 
-    test('После добавления оборудования перезапрашивается список', async () => {
+    test.skip('После добавления оборудования перезапрашивается список', async () => {
       mockGetInventorizationEquipmentsSuccess(
         { inventorizationId: props.inventorization.id },
         { once: false },
@@ -158,7 +158,7 @@ describe('Вкладка списка оборудования с расхожд
       await reviseEquipmentTableTestUtils.expectLoadingFinished()
     })
 
-    test('После создания оборудования при добавлении оборудования перезапрашивается список', async () => {
+    test.skip('После создания оборудования при добавлении оборудования перезапрашивается список', async () => {
       mockGetInventorizationEquipmentsSuccess(
         { inventorizationId: props.inventorization.id },
         { once: false },

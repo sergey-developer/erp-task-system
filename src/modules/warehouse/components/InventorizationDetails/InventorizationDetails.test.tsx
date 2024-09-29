@@ -1,5 +1,4 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { within } from '@testing-library/react'
 import * as reactRouterDom from 'react-router-dom'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
@@ -11,7 +10,6 @@ import {
 } from 'modules/warehouse/constants/inventorization'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import ExecuteInventorizationPage from 'modules/warehouse/pages/ExecuteInventorizationPage'
-import { testUtils as executeInventorizationPageTestUtils } from 'modules/warehouse/pages/ExecuteInventorizationPage/ExecuteInventorizationPage.test'
 import {
   makeExecuteInventorizationPageLocationState,
   mapInventorizationWarehousesTitles,
@@ -19,52 +17,17 @@ import {
 
 import { formatDate } from 'shared/utils/date'
 
+import { props } from '_tests_/features/warehouse/components/InventorizationDetails/constants'
+import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/components/InventorizationDetails/testUtils'
+import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetInventorizationSuccess } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import {
-  buttonTestUtils,
-  fakeId,
-  getStoreWithAuth,
-  render,
-  renderWithRouter,
-  setupApiTests,
-  spinnerTestUtils,
-} from '_tests_/utils'
+import { getStoreWithAuth, render, renderWithRouter, setupApiTests } from '_tests_/utils'
 
-import InventorizationDetails, { InventorizationDetailsProps } from './index'
-
-const props: InventorizationDetailsProps = {
-  open: true,
-  inventorizationId: fakeId(),
-  onClose: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('inventorization-details')
-const findContainer = () => screen.findByTestId('inventorization-details')
-
-const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished(
-  'inventorization-details-loading',
-)
-
-const getExecuteInventorizationButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), 'Провести инвентаризацию')
-const clickExecuteInventorizationButton = async (user: UserEvent) => {
-  const button = getExecuteInventorizationButton()
-  await user.click(button)
-}
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-
-  expectLoadingFinished,
-
-  getExecuteInventorizationButton,
-  clickExecuteInventorizationButton,
-}
+import InventorizationDetails from './index'
 
 jest.mock('react-router-dom', () => ({
   __esModule: true,
@@ -83,7 +46,9 @@ describe('Карточка инвентаризации', () => {
       }),
     })
 
-    const title = within(getContainer()).getByText('Поручение на инвентаризацию')
+    const title = within(inventorizationDetailsTestUtils.getContainer()).getByText(
+      'Поручение на инвентаризацию',
+    )
     expect(title).toBeInTheDocument()
   })
 
@@ -100,9 +65,9 @@ describe('Карточка инвентаризации', () => {
       }),
     })
 
-    await testUtils.expectLoadingFinished()
+    await inventorizationDetailsTestUtils.expectLoadingFinished()
 
-    const container = getContainer()
+    const container = inventorizationDetailsTestUtils.getContainer()
 
     const typeLabel = within(container).getByText('Тип:')
     const typeValue = within(container).getByText(inventorizationTypeDict[inventorization.type])
@@ -183,7 +148,7 @@ describe('Карточка инвентаризации', () => {
         }),
       })
 
-      const button = testUtils.getExecuteInventorizationButton()
+      const button = inventorizationDetailsTestUtils.getExecuteInventorizationButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeDisabled()
@@ -206,8 +171,8 @@ describe('Карточка инвентаризации', () => {
         }),
       })
 
-      await testUtils.expectLoadingFinished()
-      const button = testUtils.getExecuteInventorizationButton()
+      await inventorizationDetailsTestUtils.expectLoadingFinished()
+      const button = inventorizationDetailsTestUtils.getExecuteInventorizationButton()
 
       expect(button).toBeEnabled()
     })
@@ -230,8 +195,8 @@ describe('Карточка инвентаризации', () => {
           }),
         })
 
-        await testUtils.expectLoadingFinished()
-        const button = testUtils.getExecuteInventorizationButton()
+        await inventorizationDetailsTestUtils.expectLoadingFinished()
+        const button = inventorizationDetailsTestUtils.getExecuteInventorizationButton()
 
         expect(button).toBeDisabled()
       })
@@ -253,8 +218,8 @@ describe('Карточка инвентаризации', () => {
           }),
         })
 
-        await testUtils.expectLoadingFinished()
-        const button = testUtils.getExecuteInventorizationButton()
+        await inventorizationDetailsTestUtils.expectLoadingFinished()
+        const button = inventorizationDetailsTestUtils.getExecuteInventorizationButton()
 
         expect(button).toBeDisabled()
       })
@@ -274,8 +239,8 @@ describe('Карточка инвентаризации', () => {
           }),
         })
 
-        await testUtils.expectLoadingFinished()
-        const button = testUtils.getExecuteInventorizationButton()
+        await inventorizationDetailsTestUtils.expectLoadingFinished()
+        const button = inventorizationDetailsTestUtils.getExecuteInventorizationButton()
 
         expect(button).toBeDisabled()
       })
@@ -318,8 +283,8 @@ describe('Карточка инвентаризации', () => {
         },
       )
 
-      await testUtils.expectLoadingFinished()
-      await testUtils.clickExecuteInventorizationButton(user)
+      await inventorizationDetailsTestUtils.expectLoadingFinished()
+      await inventorizationDetailsTestUtils.clickExecuteInventorizationButton(user)
       const page = executeInventorizationPageTestUtils.getContainer()
 
       expect(page).toBeEnabled()

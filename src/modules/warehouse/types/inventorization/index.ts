@@ -1,5 +1,6 @@
 export * from './apiRequest'
 export * from './getInventorizations'
 export * from './getInventorizationEquipments'
+export * from './getInventorizationEquipmentsXlsx'
 export * from './getInventorizationEquipmentsTemplate'
 export * from './executeInventorization'

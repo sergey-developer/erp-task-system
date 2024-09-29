@@ -8,6 +8,9 @@ export const completeInventorizationErrMsg = 'Ошибка выполнения 
 export const getInventorizationEquipmentsErrMsg =
   'Ошибка получения списка оборудования для инвентаризации'
 
+export const getInventorizationEquipmentsXlsxErrMsg =
+  'Ошибка скачивания файла списка оборудования для инвентаризации'
+
 export const getInventorizationEquipmentErrMsg = 'Ошибка получения оборудования для инвентаризации'
 
 export const createInventorizationEquipmentErrMsg =

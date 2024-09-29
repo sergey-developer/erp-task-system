@@ -1,100 +1,15 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { validationMessages, validationSizes } from 'shared/constants/validation'
 
-import {
-  validationMessages,
-  validationSizes,
-} from 'shared/constants/validation'
-
-import {
-  fakeWord,
-  render,
-  fakeIdStr, buttonTestUtils
-} from "_tests_/utils";
+import { props } from '_tests_/features/tasks/components/ReworkSubTaskModal/constants'
+import { reworkSubTaskModalTestUtils } from '_tests_/features/tasks/components/ReworkSubTaskModal/testUtils'
+import { buttonTestUtils, fakeIdStr, fakeWord, render } from '_tests_/utils'
 
 import ReworkSubTaskModal from './index'
-import { ReworkSubTaskModalProps } from './types'
-
-const props: Readonly<ReworkSubTaskModalProps> = {
-  isLoading: false,
-  recordId: null,
-  onSubmit: jest.fn(),
-  onCancel: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('rework-sub-task-modal')
-
-const findContainer = () => screen.findByTestId('rework-sub-task-modal')
-
-const getChildByText = (text: string | RegExp) =>
-  within(getContainer()).getByText(text)
-
-// return reason
-const getReturnReasonFieldContainer = () =>
-  within(getContainer()).getByTestId('return-reason')
-
-const getReturnReasonField = () =>
-  within(getReturnReasonFieldContainer()).getByPlaceholderText(
-    /опишите причину возврата/i,
-  )
-
-const setReturnReason = async (user: UserEvent, value: string) => {
-  const field = getReturnReasonField()
-  await user.type(field, value)
-  return field
-}
-
-const findReturnReasonFieldError = async (error: string) =>
-  within(getReturnReasonFieldContainer()).findByText(error)
-
-// submit button
-const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), /сохранить/i)
-
-const clickSubmitButton = async (user: UserEvent) => {
-  const button = getSubmitButton()
-  await user.click(button)
-  return button
-}
-
-// cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /отменить/i)
-
-const clickCancelButton = async (user: UserEvent) => {
-  const button = getCancelButton()
-  await user.click(button)
-  return button
-}
-
-// other
-const expectLoadingStarted = () =>
-  buttonTestUtils.expectLoadingStarted(getSubmitButton())
-const expectLoadingFinished = () =>
-  buttonTestUtils.expectLoadingFinished(getSubmitButton())
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-  getChildByText,
-
-  getReturnReasonFieldContainer,
-  getReturnReasonField,
-  setReturnReason,
-  findReturnReasonFieldError,
-
-  getSubmitButton,
-  clickSubmitButton,
-
-  getCancelButton,
-  clickCancelButton,
-
-  expectLoadingStarted,
-  expectLoadingFinished,
-}
 
 describe('Модалка отправки запроса на доработку', () => {
   test('Отображается корректно', () => {
     render(<ReworkSubTaskModal {...props} />)
-    expect(testUtils.getContainer()).toBeInTheDocument()
+    expect(reworkSubTaskModalTestUtils.getContainer()).toBeInTheDocument()
   })
 
   test('Заголовок отображается корректно', () => {
@@ -102,10 +17,10 @@ describe('Модалка отправки запроса на доработку
     render(<ReworkSubTaskModal {...props} recordId={recordId} />)
 
     expect(
-      testUtils.getChildByText(/возврат на доработку задания/i),
+      reworkSubTaskModalTestUtils.getChildByText(/возврат на доработку задания/i),
     ).toBeInTheDocument()
 
-    expect(testUtils.getChildByText(recordId)).toBeInTheDocument()
+    expect(reworkSubTaskModalTestUtils.getChildByText(recordId)).toBeInTheDocument()
   })
 
   describe('Форма', () => {
@@ -113,7 +28,7 @@ describe('Модалка отправки запроса на доработку
       test('Отображается корректно', () => {
         render(<ReworkSubTaskModal {...props} />)
 
-        const field = testUtils.getReturnReasonField()
+        const field = reworkSubTaskModalTestUtils.getReturnReasonField()
 
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
@@ -122,14 +37,14 @@ describe('Модалка отправки запроса на доработку
 
       test('Не активно при загрузке', () => {
         render(<ReworkSubTaskModal {...props} isLoading />)
-        expect(testUtils.getReturnReasonField()).toBeDisabled()
+        expect(reworkSubTaskModalTestUtils.getReturnReasonField()).toBeDisabled()
       })
 
       test('Можно ввести значение', async () => {
         const { user } = render(<ReworkSubTaskModal {...props} />)
 
         const value = fakeWord()
-        const field = await testUtils.setReturnReason(user, value)
+        const field = await reworkSubTaskModalTestUtils.setReturnReason(user, value)
 
         expect(field).toHaveValue(value)
       })
@@ -138,10 +53,10 @@ describe('Модалка отправки запроса на доработку
         test('Если ввести только пробелы', async () => {
           const { user } = render(<ReworkSubTaskModal {...props} />)
 
-          await testUtils.setReturnReason(user, ' ')
+          await reworkSubTaskModalTestUtils.setReturnReason(user, ' ')
 
           expect(
-            await testUtils.findReturnReasonFieldError(
+            await reworkSubTaskModalTestUtils.findReturnReasonFieldError(
               validationMessages.canNotBeEmpty,
             ),
           ).toBeInTheDocument()
@@ -150,13 +65,13 @@ describe('Модалка отправки запроса на доработку
         test('Если превысить лимит символов', async () => {
           const { user } = render(<ReworkSubTaskModal {...props} />)
 
-          await testUtils.setReturnReason(
+          await reworkSubTaskModalTestUtils.setReturnReason(
             user,
             fakeWord({ length: validationSizes.string.middle + 1 }),
           )
 
           expect(
-            await testUtils.findReturnReasonFieldError(
+            await reworkSubTaskModalTestUtils.findReturnReasonFieldError(
               validationMessages.string.max.middle,
             ),
           ).toBeInTheDocument()
@@ -165,10 +80,10 @@ describe('Модалка отправки запроса на доработку
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           const { user } = render(<ReworkSubTaskModal {...props} />)
 
-          await testUtils.clickSubmitButton(user)
+          await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await testUtils.findReturnReasonFieldError(
+            await reworkSubTaskModalTestUtils.findReturnReasonFieldError(
               validationMessages.required,
             ),
           ).toBeInTheDocument()
@@ -180,7 +95,7 @@ describe('Модалка отправки запроса на доработку
       test('Отображается корректно', () => {
         render(<ReworkSubTaskModal {...props} />)
 
-        const submitButton = testUtils.getSubmitButton()
+        const submitButton = reworkSubTaskModalTestUtils.getSubmitButton()
 
         expect(submitButton).toBeInTheDocument()
         expect(submitButton).toBeEnabled()
@@ -189,21 +104,18 @@ describe('Модалка отправки запроса на доработку
       test('Отображает процесс загрузки', async () => {
         render(<ReworkSubTaskModal {...props} isLoading />)
 
-        const submitButton = testUtils.getSubmitButton()
+        const submitButton = reworkSubTaskModalTestUtils.getSubmitButton()
         await buttonTestUtils.expectLoadingStarted(submitButton)
       })
 
       test('Обработчик вызывается корректно', async () => {
         const { user } = render(<ReworkSubTaskModal {...props} />)
 
-        await testUtils.setReturnReason(user, fakeWord())
-        await testUtils.clickSubmitButton(user)
+        await reworkSubTaskModalTestUtils.setReturnReason(user, fakeWord())
+        await reworkSubTaskModalTestUtils.clickSubmitButton(user)
 
         expect(props.onSubmit).toBeCalledTimes(1)
-        expect(props.onSubmit).toBeCalledWith(
-          expect.anything(),
-          expect.anything(),
-        )
+        expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())
       })
     })
 
@@ -211,7 +123,7 @@ describe('Модалка отправки запроса на доработку
       test('Отображается корректно', () => {
         render(<ReworkSubTaskModal {...props} />)
 
-        const cancelButton = testUtils.getCancelButton()
+        const cancelButton = reworkSubTaskModalTestUtils.getCancelButton()
 
         expect(cancelButton).toBeInTheDocument()
         expect(cancelButton).toBeEnabled()
@@ -220,7 +132,7 @@ describe('Модалка отправки запроса на доработку
       test('Обработчик вызывается корректно', async () => {
         const { user } = render(<ReworkSubTaskModal {...props} />)
 
-        await testUtils.clickCancelButton(user)
+        await reworkSubTaskModalTestUtils.clickCancelButton(user)
         expect(props.onCancel).toBeCalledTimes(1)
       })
     })

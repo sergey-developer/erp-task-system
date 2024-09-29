@@ -1,15 +1,17 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { within } from '@testing-library/react'
 import pick from 'lodash/pick'
 
 import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
-import { IdType } from 'shared/types/common'
-import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import theme from 'styles/theme'
 
+import {
+  inventorizationEquipmentListItem,
+  props,
+} from '_tests_/features/warehouse/components/ReviseInventorizationEquipmentTable/constants'
+import { reviseEquipmentTableTestUtils as testUtils } from '_tests_/features/warehouse/components/ReviseInventorizationEquipmentTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -19,97 +21,10 @@ import {
   fakeWord,
   iconTestUtils,
   render,
-  selectTestUtils,
   tableTestUtils,
 } from '_tests_/utils'
 
 import ReviseInventorizationEquipmentTable from './index'
-import { ReviseInventorizationEquipmentTableProps } from './types'
-
-const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem()
-
-const props: ReviseInventorizationEquipmentTableProps = {
-  dataSource: [inventorizationEquipmentListItem],
-  pagination: {},
-  loading: false,
-
-  locations: [],
-  locationsIsLoading: false,
-
-  onTableChange: jest.fn(),
-
-  onChangeQuantityFact: jest.fn(),
-  onChangeLocationFact: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('revise-equipment-table')
-
-const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
-
-const clickRow = async (user: UserEvent, id: IdType) =>
-  tableTestUtils.clickRowById(getContainer(), user, id)
-
-const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
-
-const getColTitle = (text: string) => within(getContainer()).getByText(text)
-const getColValue = (id: IdType, value: NumberOrString): MaybeNull<HTMLElement> => {
-  const row = getRow(id)
-  return row ? within(row).getByText(value) : null
-}
-
-// loading
-const expectLoadingStarted = () => tableTestUtils.expectLoadingStarted(getContainer())
-const expectLoadingFinished = () => tableTestUtils.expectLoadingFinished(getContainer())
-
-// location fact
-const getLocationFactFormItem = (id: IdType) =>
-  within(getRow(id)).getByTestId('location-fact-form-item')
-
-const getLocationFactSelect = (id: IdType) => selectTestUtils.getSelect(getLocationFactFormItem(id))
-
-const openLocationFactSelect = (user: UserEvent, id: IdType) =>
-  selectTestUtils.openSelect(user, getLocationFactFormItem(id))
-
-const setLocationFact = selectTestUtils.clickSelectOption
-
-const getSelectedLocationFact = (id: IdType) =>
-  selectTestUtils.getSelectedOption(getLocationFactFormItem(id))
-
-// quantity fact
-const getQuantityFactFormItem = (id: IdType) =>
-  within(getRow(id)).getByTestId('quantity-fact-form-item')
-
-const getQuantityFactInput = (id: IdType) =>
-  within(getQuantityFactFormItem(id)).getByRole('spinbutton')
-
-const setQuantityFact = async (user: UserEvent, id: IdType, value: number) => {
-  const input = getQuantityFactInput(id)
-  await user.type(input, String(value))
-  return input
-}
-
-export const testUtils = {
-  getContainer,
-
-  getRow,
-  clickRow,
-  getHeadCell,
-  getColTitle,
-  getColValue,
-
-  expectLoadingStarted,
-  expectLoadingFinished,
-
-  getLocationFactFormItem,
-  getLocationFactSelect,
-  openLocationFactSelect,
-  setLocationFact,
-  getSelectedLocationFact,
-
-  getQuantityFactFormItem,
-  getQuantityFactInput,
-  setQuantityFact,
-}
 
 describe('Таблица сверки оборудования', () => {
   test('Отображается', () => {

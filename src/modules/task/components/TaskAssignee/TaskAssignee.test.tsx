@@ -1,42 +1,19 @@
-import { screen, within } from '@testing-library/react'
+import { within } from '@testing-library/react'
 
-import { testUtils as userShortInfoTestUtils } from 'modules/task/components/UserShortInfo/UserShortInfo.test'
 import { getFullUserName } from 'modules/user/utils'
 
-import userFixtures from '_tests_/fixtures/user'
+import { props } from '_tests_/features/tasks/components/TaskAssignee/constants'
+import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
+import { userShortInfoTestUtils } from '_tests_/features/tasks/components/UserShortInfo/testUtils'
 import { render } from '_tests_/utils'
 
-import TaskAssignee, { TaskAssigneeProps } from './index'
-
-const user = userFixtures.user()
-
-const props: TaskAssigneeProps = {
-  ...user,
-  position: user.position!.title,
-  hasPopover: false,
-}
-
-const getContainer = () => screen.getByTestId('task-assignee')
-const getContainerIn = (container: HTMLElement) => within(container).getByTestId('task-assignee')
-
-const getAllContainerIn = (container: HTMLElement) =>
-  within(container).getAllByTestId('task-assignee')
-
-const queryContainerIn = (container: HTMLElement) =>
-  within(container).queryByTestId('task-assignee')
-
-export const testUtils = {
-  getContainer,
-  getContainerIn,
-  getAllContainerIn,
-  queryContainerIn,
-}
+import TaskAssignee from './index'
 
 describe('Исполнитель заявки', () => {
   test('Данные исполнителя отображаются при наведении', async () => {
     const { user } = render(<TaskAssignee {...props} hasPopover />)
 
-    const name = within(getContainer()).getByText(
+    const name = within(taskAssigneeTestUtils.getContainer()).getByText(
       getFullUserName({
         firstName: props.firstName,
         lastName: props.lastName,
