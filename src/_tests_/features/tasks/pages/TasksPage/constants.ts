@@ -1,3 +1,5 @@
 export enum TestIdsEnum {
-  TaskListPage = 'task-list-page',
+  TasksPage = 'tasks-page',
+  FastFilter = 'fast-filter',
+  FastFilterByLines = 'fast-filter-by-lines',
 }

@@ -1,9 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils, fakeWord, selectTestUtils } from '_tests_/utils/index'
+import { CREATE_TEXT } from 'shared/constants/common'
 
 import { TestIdsEnum } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/constants'
+import { buttonTestUtils, fakeWord, selectTestUtils } from '_tests_/utils/index'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CreateInventorizationRequestModal)
 
@@ -113,6 +114,7 @@ const expectExecutorLoadingFinished = () =>
 // nomenclature field
 const getNomenclatureFormItem = () =>
   within(getContainer()).getByTestId(TestIdsEnum.NomenclaturesFormItem)
+
 const getNomenclatureSelectInput = () => selectTestUtils.getSelect(getNomenclatureFormItem())
 const setNomenclature = selectTestUtils.clickSelectOption
 
@@ -154,6 +156,9 @@ const expectWarehouseLoadingStarted = () =>
 const expectWarehouseLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getWarehouseFormItem())
 
+const clickSubmitButton = async (user: UserEvent) =>
+  user.click(buttonTestUtils.getButtonIn(getContainer(), CREATE_TEXT))
+
 export const createInventorizationRequestModalTestUtils = {
   getContainer,
 
@@ -172,6 +177,7 @@ export const createInventorizationRequestModalTestUtils = {
   queryUploadedAttachment,
   clickDeleteAttachmentButton,
 
+  getNomenclatureFormItem,
   getNomenclatureSelectInput,
   setNomenclature,
   getSelectedNomenclature,
@@ -202,4 +208,6 @@ export const createInventorizationRequestModalTestUtils = {
   getSelectedExecutor,
   expectExecutorLoadingStarted,
   expectExecutorLoadingFinished,
+
+  clickSubmitButton,
 }

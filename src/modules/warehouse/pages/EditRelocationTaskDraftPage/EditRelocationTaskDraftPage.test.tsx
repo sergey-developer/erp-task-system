@@ -4,17 +4,17 @@ import * as reactRouterDom from 'react-router-dom'
 
 import { CommonRouteEnum } from 'configs/routes'
 
-import { testUtils as relocationEquipmentDraftEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentDraftEditableTable/RelocationEquipmentDraftEditableTable.test'
-import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
-import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import ExecuteInventorizationPage from 'modules/warehouse/pages/ExecuteInventorizationPage'
-import { testUtils as executeInventorizationPageTestUtils } from 'modules/warehouse/pages/ExecuteInventorizationPage/ExecuteInventorizationPage.test'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'modules/warehouse/utils/relocationTask'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
 import { makeString } from 'shared/utils/string'
 
+import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentDraftEditableTable/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
+import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
+import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'

@@ -1,13 +1,8 @@
-import pick from 'lodash/pick'
-
 import { RelocationTaskFormProps } from 'modules/warehouse/components/RelocationTaskForm/types'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask/index'
 
-import userFixtures from '_tests_/fixtures/user/index'
-
 export const props: RelocationTaskFormProps = {
   isLoading: false,
-  authUser: pick(userFixtures.user(), 'id'),
   permissions: {},
 
   onUploadImage: jest.fn(),
@@ -16,18 +11,17 @@ export const props: RelocationTaskFormProps = {
   imageIsDeleting: false,
   imagesIsLoading: false,
 
-  users: [],
-  usersIsLoading: false,
-
-  usersGroups: [],
-  usersGroupsIsLoading: false,
-
   relocateFromLocations: [],
-  relocateFromLocationListIsLoading: false,
+  relocateFromLocationsIsLoading: false,
   relocateToLocations: [],
-  relocateToLocationListIsLoading: false,
+  relocateToLocationsIsLoading: false,
 
+  controllersOptions: [],
+  controllersIsLoading: false,
   controllerIsRequired: true,
+
+  executorsOptions: [],
+  executorsIsLoading: false,
 
   type: RelocationTaskTypeEnum.Relocation,
   onChangeType: jest.fn(),

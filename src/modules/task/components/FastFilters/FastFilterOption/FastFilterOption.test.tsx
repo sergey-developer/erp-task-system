@@ -1,79 +1,8 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { props } from '_tests_/features/tasks/components/FastFilters/FastFilterOption/constants'
+import { fastFilterOptionTestUtils as testUtils } from '_tests_/features/tasks/components/FastFilters/FastFilterOption/testUtils'
+import { render } from '_tests_/utils'
 
-import { MaybeNull, NumberOrString } from 'shared/types/utils'
-
-import { fakeWord, render, spinnerTestUtils } from '_tests_/utils'
-
-import FastFilterOption, { FastFilterOptionProps } from './index'
-
-const filterCheckedClass = 'ant-tag-checkable-checked'
-const filterDisabledClass = 'ant-tag-checkable--disabled'
-
-export const props: Readonly<
-  Pick<FastFilterOptionProps, 'label' | 'checked' | 'counter' | 'value'>
-> = {
-  label: fakeWord(),
-  value: fakeWord(),
-  counter: 1,
-  checked: false,
-}
-
-const getFilterTag = () => screen.getByTestId('fast-filters-option')
-const getAllFilterTag = () => screen.getAllByTestId('fast-filters-option')
-
-const getCheckableTag = (value: string): HTMLElement => screen.getByTestId(`checkable-tag-${value}`)
-
-const queryCheckableTag = (value: string): MaybeNull<HTMLElement> =>
-  screen.queryByTestId(`checkable-tag-${value}`)
-
-const getByTextInCheckableTag = (value: string, label: NumberOrString) =>
-  within(getCheckableTag(value)).getByText(label)
-
-const queryByTextInCheckableTag = (value: string, label: NumberOrString) => {
-  const tag = queryCheckableTag(value)
-  return tag ? within(tag).queryByText(label) : null
-}
-
-const setFilter = async (user: UserEvent, value: string) => user.click(getCheckableTag(value))
-
-const expectFilterChecked = (filter: HTMLElement) => expect(filter).toHaveClass(filterCheckedClass)
-
-const expectFilterNotChecked = (filter: HTMLElement) =>
-  expect(filter).not.toHaveClass(filterCheckedClass)
-
-const expectFilterDisabled = (filter: HTMLElement) =>
-  expect(filter).toHaveClass(filterDisabledClass)
-
-const expectFilterNotDisabled = (filter: HTMLElement) =>
-  expect(filter).not.toHaveClass(filterDisabledClass)
-
-const expectLoadingStarted = async () =>
-  spinnerTestUtils.expectLoadingStarted('fast-filters-option-counter-loading')
-
-const expectLoadingFinished = async () =>
-  spinnerTestUtils.expectLoadingFinished('fast-filters-option-counter-loading')
-
-export const testUtils = {
-  getFilterTag,
-  getAllFilterTag,
-
-  getCheckableTag,
-  queryCheckableTag,
-  getByTextInCheckableTag,
-  queryByTextInCheckableTag,
-
-  setFilter,
-
-  expectLoadingStarted,
-  expectLoadingFinished,
-
-  expectFilterChecked,
-  expectFilterNotChecked,
-
-  expectFilterDisabled,
-  expectFilterNotDisabled,
-}
+import FastFilterOption from './index'
 
 describe('Элемент быстрого фильтра', () => {
   test('Отображает состояние загрузки', async () => {

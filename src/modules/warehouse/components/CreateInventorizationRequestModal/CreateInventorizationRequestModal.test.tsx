@@ -1,8 +1,18 @@
-import { props } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/constants'
-import { createInventorizationRequestModalTestUtils } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/testUtils'
-import { fakeWord, render } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 
-import CreateInventorizationRequestModal from './index'
+import {
+  inventorizationTypeDict,
+  InventorizationTypeEnum,
+} from 'modules/warehouse/constants/inventorization'
+
+import { validationMessages } from 'shared/constants/validation'
+
+import { props } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/constants'
+import { createInventorizationRequestModalTestUtils as testUtils } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/testUtils'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { fakeWord, iconTestUtils, render, selectTestUtils } from '_tests_/utils'
+
+import CreateInventorizationRequestModal, { nomenclaturesPopoverContent } from './index'
 
 // todo: добавить тесты по другим полям
 
@@ -47,7 +57,7 @@ describe('Модалка создания запроса на инвентари
   describe('Поле описания', () => {
     test('Отображается и активно', () => {
       render(<CreateInventorizationRequestModal {...props} />)
-      const field = createInventorizationRequestModalTestUtils.getDescriptionField()
+      const field = testUtils.getDescriptionField()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
     })
@@ -55,7 +65,7 @@ describe('Модалка создания запроса на инвентари
     test('Можно установить значение', async () => {
       const { user } = render(<CreateInventorizationRequestModal {...props} />)
       const value = fakeWord()
-      const field = await createInventorizationRequestModalTestUtils.setDescription(user, value)
+      const field = await testUtils.setDescription(user, value)
       expect(field).toHaveDisplayValue(value)
     })
   })
@@ -64,7 +74,7 @@ describe('Модалка создания запроса на инвентари
     test('Кнопка отображается и активна', () => {
       render(<CreateInventorizationRequestModal {...props} />)
 
-      const button = createInventorizationRequestModalTestUtils.getAddAttachmentsButton()
+      const button = testUtils.getAddAttachmentsButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -73,10 +83,8 @@ describe('Модалка создания запроса на инвентари
     test('Загрузка работает', async () => {
       const { user } = render(<CreateInventorizationRequestModal {...props} />)
 
-      const { input, file } = await createInventorizationRequestModalTestUtils.setAttachment(user)
-      const uploadedFile = createInventorizationRequestModalTestUtils.getUploadedAttachment(
-        file.name,
-      )
+      const { input, file } = await testUtils.setAttachment(user)
+      const uploadedFile = testUtils.getUploadedAttachment(file.name)
 
       expect(input.files!.item(0)).toBe(file)
       expect(input.files).toHaveLength(1)
@@ -88,11 +96,9 @@ describe('Модалка создания запроса на инвентари
     test('Удаление работает', async () => {
       const { user } = render(<CreateInventorizationRequestModal {...props} />)
 
-      const { file } = await createInventorizationRequestModalTestUtils.setAttachment(user)
-      await createInventorizationRequestModalTestUtils.clickDeleteAttachmentButton(user)
-      const uploadedFile = createInventorizationRequestModalTestUtils.queryUploadedAttachment(
-        file.name,
-      )
+      const { file } = await testUtils.setAttachment(user)
+      await testUtils.clickDeleteAttachmentButton(user)
+      const uploadedFile = testUtils.queryUploadedAttachment(file.name)
 
       expect(uploadedFile).not.toBeInTheDocument()
       expect(props.onDeleteAttachment).toBeCalledTimes(1)

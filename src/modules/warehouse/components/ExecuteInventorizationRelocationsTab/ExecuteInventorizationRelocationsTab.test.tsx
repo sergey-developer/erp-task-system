@@ -1,14 +1,14 @@
-import { within } from '@testing-library/react'
+import { waitFor, within } from '@testing-library/react'
 
 import { CommonRouteEnum } from 'configs/routes'
 
 import { testUtils as executeInventorizationRelocationTaskTableTestUtils } from 'modules/warehouse/components/ExecuteInventorizationRelocationTaskTable/ExecuteInventorizationRelocationTaskTable.test'
-import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CreateRelocationTaskDraftPage from 'modules/warehouse/pages/CreateRelocationTaskDraftPage'
 
 import { props } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/constants'
 import { executeInventorizationRelocationsTabTestUtils } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
 import { createRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskDraftPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/user'
@@ -19,7 +19,7 @@ import {
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, render, renderWithRouter } from '_tests_/utils'
+import { getStoreWithAuth, render, renderWithRouter, tableTestUtils } from '_tests_/utils'
 
 import ExecuteInventorizationRelocationsTab from './index'
 

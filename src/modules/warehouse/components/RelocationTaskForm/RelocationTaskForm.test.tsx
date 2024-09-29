@@ -27,6 +27,7 @@ import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { fakeWord, getStoreWithAuth, render, selectTestUtils, setupApiTests } from '_tests_/utils'
 
 import RelocationTaskForm from './index'
+import { makeUserGroupOptions } from './utils'
 
 setupApiTests()
 
