@@ -10,7 +10,7 @@ import { GetRelocationTasksTransformedSuccessResponse } from 'modules/warehouse/
 import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetRelocationTasksResult = CustomUseQueryHookResult<
+export type UseGetRelocationTasksResult = CustomUseQueryHookResult<
   GetRelocationTasksQueryArgs,
   GetRelocationTasksTransformedSuccessResponse
 >

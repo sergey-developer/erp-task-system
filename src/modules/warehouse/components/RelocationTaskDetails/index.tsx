@@ -123,7 +123,11 @@ const { Text } = Typography
 const dropdownTrigger: DropdownProps['trigger'] = ['click']
 const showUploadListConfig: UploadProps['showUploadList'] = { showRemoveIcon: false }
 
-const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
+const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
+  relocationTaskId,
+  refetchRelocationTasks,
+  ...props
+}) => {
   const navigate = useNavigate()
 
   const permissions = useUserPermissions([
@@ -162,6 +166,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
     try {
       await moveRelocationTaskDraftToWorkMutation({ relocationTaskId: relocationTaskId }).unwrap()
       toggleOpenConfirmMoveDraftToWorkModal()
+      refetchRelocationTasks && refetchRelocationTasks()
     } catch (error) {
       console.error('Move relocation task draft to work error: ', { error, relocationTaskId })
     }
@@ -374,6 +379,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                 {
                   key: 'Перевести черновик в работу',
                   label: 'Перевести черновик в работу',
+                  onClick: debouncedToggleOpenConfirmMoveDraftToWorkModal,
                 },
               ]
             : []),

@@ -329,16 +329,6 @@ const relocationTaskApiService = baseApiService
                 },
               ),
             )
-
-            dispatch(
-              baseApiService.util.updateQueryData(
-                RelocationTaskApiTriggerEnum.GetRelocationTasks as never,
-                { relocationTaskId } as never,
-                (task: GetRelocationTaskSuccessResponse) => {
-                  Object.assign(task, { status: data.status })
-                },
-              ),
-            )
           } catch {}
         },
       }),

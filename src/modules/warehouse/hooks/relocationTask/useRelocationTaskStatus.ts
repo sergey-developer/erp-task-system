@@ -16,7 +16,6 @@ export const useRelocationTaskStatus = (
       isClosed: isEqual(status, RelocationTaskStatusEnum.Closed),
       isCanceled: isEqual(status, RelocationTaskStatusEnum.Canceled),
       isReturned: isEqual(status, RelocationTaskStatusEnum.Returned),
-      isDraft: isEqual(status, RelocationTaskStatusEnum.Draft),
     }),
     [status],
   )
