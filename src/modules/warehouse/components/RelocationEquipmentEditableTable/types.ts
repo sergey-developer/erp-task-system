@@ -1,6 +1,7 @@
+import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
 
-import { EquipmentCatalogListModel } from 'modules/warehouse/models'
+import { EquipmentsCatalogModel } from 'modules/warehouse/models'
 import { RelocationTaskEquipment } from 'modules/warehouse/types'
 
 import { CurrencyListModel } from 'shared/models/currency'
@@ -14,21 +15,21 @@ export type ActiveEquipmentRow = Pick<RelocationEquipmentRow, 'relocationEquipme
 }
 
 export type RelocationEquipmentEditableTableProps = {
+  name: NamePath
   editableKeys?: Key[]
   setEditableKeys?: (keys: Key[]) => void
-
   isLoading: boolean
 
+  currencies: CurrencyListModel
+  currenciesIsLoading: boolean
+
+  relocationEquipmentsIsLoading?: boolean
+
+  equipments: EquipmentsCatalogModel
+  equipmentsIsLoading: boolean
   equipmentIsLoading: boolean
-  equipmentListIsLoading?: boolean
 
-  currencyList: CurrencyListModel
-  currencyListIsLoading: boolean
-
-  equipmentCatalogList: EquipmentCatalogListModel
-  equipmentCatalogListIsLoading: boolean
-
-  canCreateEquipment: boolean
+  canCreateEquipment?: boolean
   createEquipmentBtnDisabled: boolean
   onClickCreateEquipment: (activeRow: ActiveEquipmentRow) => void
 

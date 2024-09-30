@@ -1,98 +1,36 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import { getShortUserName } from 'modules/user/utils'
 
-import { PauseCircleIcon } from 'components/Icons'
+import { action, props } from '_tests_/features/tasks/components/TaskRequest/constants'
+import { taskRequestTestUtils } from '_tests_/features/tasks/components/TaskRequest/testUtils'
+import { fakeWord, render } from '_tests_/utils'
 
-import { ArrayFirst } from 'shared/types/utils'
-
-import userFixtures from '_tests_/fixtures/user'
-import { fakeDateString, fakeWord, iconTestUtils, render, buttonTestUtils } from '_tests_/utils'
-
-import TaskRequest, { TaskRequestProps } from './index'
-
-const action: ArrayFirst<TaskRequestProps['actions']> = {
-  text: fakeWord(),
-  onClick: jest.fn(),
-  disabled: false,
-  loading: false,
-}
-
-const props: Readonly<TaskRequestProps & { 'data-testid': string }> = {
-  user: userFixtures.baseUser(),
-  title: fakeWord(),
-  comment: fakeWord(),
-  date: fakeDateString(),
-  icon: <PauseCircleIcon />,
-  actions: [action],
-  'data-testid': 'task-request',
-}
-
-const getContainer = () => screen.getByTestId(props['data-testid'])
-
-const findContainer = () => screen.findByTestId(props['data-testid'])
-
-const queryContainer = () => screen.queryByTestId(props['data-testid'])
-
-const getChildByText = (text: string | RegExp) => within(getContainer()).getByText(text)
-
-const getIcon = () => iconTestUtils.getIconByNameIn(getContainer(), 'pause-circle')
-
-const getActionButton = (label: string) =>
-  buttonTestUtils.getButtonIn(getContainer(), new RegExp(label))
-
-const queryActionButton = (label: string) =>
-  buttonTestUtils.queryButtonIn(getContainer(), new RegExp(label))
-
-const clickActionButton = async (user: UserEvent, label: string) => {
-  const button = getActionButton(label)
-  await user.click(button)
-  return button
-}
-
-const expectActionLoadingStarted = (label: string) =>
-  buttonTestUtils.expectLoadingStarted(getActionButton(label))
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-  queryContainer,
-
-  getChildByText,
-  getIcon,
-
-  getActionButton,
-  queryActionButton,
-  clickActionButton,
-  expectActionLoadingStarted,
-}
+import TaskRequest from './index'
 
 describe('Запрос заявки', () => {
   describe('Отображается корректно', () => {
     test('Иконка', () => {
       render(<TaskRequest {...props} />)
-      expect(testUtils.getIcon()).toBeInTheDocument()
+      expect(taskRequestTestUtils.getIcon()).toBeInTheDocument()
     })
 
     test('Заголовок', () => {
       render(<TaskRequest {...props} />)
-      expect(testUtils.getChildByText(props.title)).toBeInTheDocument()
+      expect(taskRequestTestUtils.getChildByText(props.title)).toBeInTheDocument()
     })
 
     test('Комментарий', () => {
       render(<TaskRequest {...props} />)
-      expect(testUtils.getChildByText(props.comment)).toBeInTheDocument()
+      expect(taskRequestTestUtils.getChildByText(props.comment)).toBeInTheDocument()
     })
 
     test('Данные пользователя', () => {
       render(<TaskRequest {...props} />)
-      expect(testUtils.getChildByText(getShortUserName(props.user!))).toBeInTheDocument()
+      expect(taskRequestTestUtils.getChildByText(getShortUserName(props.user!))).toBeInTheDocument()
     })
 
     test('Дата создания', () => {
       render(<TaskRequest {...props} />)
-      expect(testUtils.getChildByText(props.date)).toBeInTheDocument()
+      expect(taskRequestTestUtils.getChildByText(props.date)).toBeInTheDocument()
     })
   })
 
@@ -102,7 +40,7 @@ describe('Запрос заявки', () => {
     render(<TaskRequest {...props} actions={actions} />)
 
     actions.forEach((action) => {
-      const button = testUtils.getActionButton(action.text)
+      const button = taskRequestTestUtils.getActionButton(action.text)
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
     })
@@ -112,7 +50,7 @@ describe('Запрос заявки', () => {
     test('Отображается если присутствует', () => {
       render(<TaskRequest {...props} />)
 
-      const button = testUtils.getActionButton(action.text)
+      const button = taskRequestTestUtils.getActionButton(action.text)
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -120,23 +58,23 @@ describe('Запрос заявки', () => {
 
     test('Не отображается если отсутствует', () => {
       render(<TaskRequest {...props} actions={[]} />)
-      expect(testUtils.queryActionButton(action.text)).not.toBeInTheDocument()
+      expect(taskRequestTestUtils.queryActionButton(action.text)).not.toBeInTheDocument()
     })
 
     test('Можно сделать не активной', () => {
       render(<TaskRequest {...props} actions={[{ ...action, disabled: true }]} />)
-      expect(testUtils.getActionButton(action.text)).toBeDisabled()
+      expect(taskRequestTestUtils.getActionButton(action.text)).toBeDisabled()
     })
 
     test('Отображает состояние загрузки', async () => {
       render(<TaskRequest {...props} actions={[{ ...action, loading: true }]} />)
-      await expectActionLoadingStarted(action.text)
+      await taskRequestTestUtils.expectActionLoadingStarted(action.text)
     })
 
     test('При клике обработчик вызывается корректно', async () => {
       const { user } = render(<TaskRequest {...props} />)
 
-      await testUtils.clickActionButton(user, action.text)
+      await taskRequestTestUtils.clickActionButton(user, action.text)
       expect(action.onClick).toBeCalledTimes(1)
     })
   })

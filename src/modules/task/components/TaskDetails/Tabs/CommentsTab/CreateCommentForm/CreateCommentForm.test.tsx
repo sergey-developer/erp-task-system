@@ -1,116 +1,17 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import { validationMessages } from 'shared/constants/validation'
 
-import { buttonTestUtils, fakeWord, render } from '_tests_/utils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/CreateCommentForm/constants'
+import { createCommentFormTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/CreateCommentForm/testUtils'
+import { fakeWord, render } from '_tests_/utils'
 
 import CreateCommentForm from './index'
-import { CreateCommentFormProps } from './types'
-
-const props: Readonly<CreateCommentFormProps> = {
-  isLoading: false,
-  onSubmit: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('create-comment-form')
-const queryContainer = () => screen.queryByTestId('create-comment-form')
-const findChildByText = (text: string) => within(getContainer()).findByText(text)
-
-// comment
-const getCommentFormItem = () => within(getContainer()).getByTestId('comment-form-item')
-const findCommentError = (error: string) => within(getCommentFormItem()).findByText(error)
-
-const getCommentField = () =>
-  within(getCommentFormItem()).getByPlaceholderText('Дополните информацию о заявке')
-
-const setComment = async (user: UserEvent, comment: string) => {
-  const input = getCommentField()
-  await user.type(input, comment)
-  return input
-}
-
-// attachment
-const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
-
-const getAddAttachmentsButton = () =>
-  buttonTestUtils.getButtonIn(getAttachmentsFormItem(), /Добавить вложение/)
-
-const clickAddAttachmentsButton = async (user: UserEvent) => {
-  const button = getAddAttachmentsButton()
-  await user.click(button)
-}
-
-const setAttachment = async (
-  user: UserEvent,
-  file: File = new File([], fakeWord(), { type: 'image/png' }),
-) => {
-  const formItem = getAttachmentsFormItem()
-  // eslint-disable-next-line testing-library/no-node-access
-  const input = formItem.querySelector('input[type="file"]') as HTMLInputElement
-  await user.upload(input, file)
-  return { input, file }
-}
-
-const getUploadedAttachment = (filename: string) =>
-  within(getAttachmentsFormItem()).getByTitle(filename)
-
-const queryUploadedAttachment = (filename: string) =>
-  within(getAttachmentsFormItem()).queryByTitle(filename)
-
-const findAttachmentsError = (error: string) => within(getAttachmentsFormItem()).findByText(error)
-
-// submit button
-const getSubmitButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /опубликовать комментарий/i)
-
-const clickSubmitButton = async (user: UserEvent) => {
-  const button = getSubmitButton()
-  await user.click(button)
-  return button
-}
-
-// loading
-const expectLoadingStarted = async () => {
-  const submitButton = getSubmitButton()
-  await buttonTestUtils.expectLoadingStarted(submitButton)
-}
-
-const expectLoadingFinished = async () => {
-  const submitButton = getSubmitButton()
-  await buttonTestUtils.expectLoadingFinished(submitButton)
-}
-
-export const testUtils = {
-  getContainer,
-  queryContainer,
-  findChildByText,
-
-  getCommentFormItem,
-  findCommentError,
-  getCommentField,
-  setComment,
-
-  getAddAttachmentsButton,
-  clickAddAttachmentsButton,
-  setAttachment,
-  getUploadedAttachment,
-  queryUploadedAttachment,
-  findAttachmentsError,
-
-  getSubmitButton,
-  clickSubmitButton,
-
-  expectLoadingStarted,
-  expectLoadingFinished,
-}
 
 describe('Форма добавления комментария заявки', () => {
   describe('Поле ввода комментария', () => {
     test('Отображается корректно', () => {
       render(<CreateCommentForm {...props} />)
 
-      const commentInput = testUtils.getCommentField()
+      const commentInput = createCommentFormTestUtils.getCommentField()
 
       expect(commentInput).toBeInTheDocument()
       expect(commentInput).not.toHaveValue()
@@ -120,7 +21,7 @@ describe('Форма добавления комментария заявки', 
     test('Не активно при загрузке', () => {
       render(<CreateCommentForm {...props} isLoading />)
 
-      const commentInput = testUtils.getCommentField()
+      const commentInput = createCommentFormTestUtils.getCommentField()
       expect(commentInput).toBeDisabled()
     })
 
@@ -128,7 +29,7 @@ describe('Форма добавления комментария заявки', 
       const { user } = render(<CreateCommentForm {...props} />)
 
       const commentText = fakeWord()
-      const commentInput = await testUtils.setComment(user, commentText)
+      const commentInput = await createCommentFormTestUtils.setComment(user, commentText)
 
       expect(commentInput).toHaveValue(commentText)
     })
@@ -137,8 +38,10 @@ describe('Форма добавления комментария заявки', 
       test('Если ввести только пробелы', async () => {
         const { user } = render(<CreateCommentForm {...props} />)
 
-        await testUtils.setComment(user, ' ')
-        const error = await testUtils.findCommentError(validationMessages.canNotBeEmpty)
+        await createCommentFormTestUtils.setComment(user, ' ')
+        const error = await createCommentFormTestUtils.findCommentError(
+          validationMessages.canNotBeEmpty,
+        )
 
         expect(error).toBeInTheDocument()
       })
@@ -146,8 +49,8 @@ describe('Форма добавления комментария заявки', 
       test('Если не заполнить поле и нажать кнопку отправки', async () => {
         const { user } = render(<CreateCommentForm {...props} />)
 
-        await testUtils.clickSubmitButton(user)
-        const error = await testUtils.findCommentError(validationMessages.required)
+        await createCommentFormTestUtils.clickSubmitButton(user)
+        const error = await createCommentFormTestUtils.findCommentError(validationMessages.required)
 
         expect(error).toBeInTheDocument()
       })
@@ -158,7 +61,7 @@ describe('Форма добавления комментария заявки', 
     test('Кнопка отображается корректно', () => {
       render(<CreateCommentForm {...props} />)
 
-      const button = testUtils.getAddAttachmentsButton()
+      const button = createCommentFormTestUtils.getAddAttachmentsButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -167,8 +70,8 @@ describe('Форма добавления комментария заявки', 
     test('Загрузка вложения работает корректно', async () => {
       const { user } = render(<CreateCommentForm {...props} />)
 
-      const { input, file } = await testUtils.setAttachment(user)
-      const uploadedAttachment = testUtils.getUploadedAttachment(file.name)
+      const { input, file } = await createCommentFormTestUtils.setAttachment(user)
+      const uploadedAttachment = createCommentFormTestUtils.getUploadedAttachment(file.name)
 
       expect(input.files!.item(0)).toBe(file)
       expect(input.files).toHaveLength(1)
@@ -177,7 +80,7 @@ describe('Форма добавления комментария заявки', 
 
     test('Кнопка не активна во время загрузки', () => {
       render(<CreateCommentForm {...props} isLoading />)
-      const button = testUtils.getAddAttachmentsButton()
+      const button = createCommentFormTestUtils.getAddAttachmentsButton()
       expect(button).toBeDisabled()
     })
   })
@@ -186,7 +89,7 @@ describe('Форма добавления комментария заявки', 
     test('Отображается корректно', () => {
       render(<CreateCommentForm {...props} />)
 
-      const button = testUtils.getSubmitButton()
+      const button = createCommentFormTestUtils.getSubmitButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -194,15 +97,15 @@ describe('Форма добавления комментария заявки', 
 
     test('Отображает процесс загрузки', async () => {
       render(<CreateCommentForm {...props} isLoading />)
-      await testUtils.expectLoadingStarted()
+      await createCommentFormTestUtils.expectLoadingStarted()
     })
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<CreateCommentForm {...props} />)
 
-      await testUtils.setComment(user, fakeWord())
-      await testUtils.setAttachment(user)
-      await testUtils.clickSubmitButton(user)
+      await createCommentFormTestUtils.setComment(user, fakeWord())
+      await createCommentFormTestUtils.setAttachment(user)
+      await createCommentFormTestUtils.clickSubmitButton(user)
 
       expect(props.onSubmit).toBeCalledTimes(1)
       expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())

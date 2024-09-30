@@ -2,7 +2,7 @@ import { Location } from '@remix-run/router/history'
 
 import { fakeWord } from '../utils'
 
-export const useLocationResult = (props?: Pick<Partial<Location>, 'state'>): Location => ({
+export const fakeUseLocationResult = (props?: Pick<Partial<Location>, 'state'>): Location => ({
   state: props?.state || null,
 
   key: fakeWord(),

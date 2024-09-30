@@ -21,7 +21,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import Attachments from 'modules/attachment/components/Attachments'
 import { useIdBelongAuthUser } from 'modules/auth/hooks'
-import { getTaskListPageLink } from 'modules/task/utils/task'
+import { getTasksPageLink } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
 import { ExecuteRelocationTaskModalProps } from 'modules/warehouse/components/ExecuteRelocationTaskModal/types'
@@ -615,7 +615,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
                     value={relocationTask.task}
                     displayValue={
                       relocationTask.task && (
-                        <Link to={getTaskListPageLink({ viewTask: relocationTask.task.id })}>
+                        <Link to={getTasksPageLink({ viewTask: relocationTask.task.id })}>
                           {relocationTask.task.recordId}
                         </Link>
                       )

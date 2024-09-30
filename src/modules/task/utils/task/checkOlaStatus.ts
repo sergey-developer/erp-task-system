@@ -2,16 +2,16 @@ import isEqual from 'lodash/isEqual'
 
 import { TaskOlaStatusEnum } from 'modules/task/constants/task'
 
-import { BooleanKey, BooleanMap } from 'shared/types/utils'
+import { BooleanKey, BooleanMap, Nullable } from 'shared/types/utils'
 
-export const checkOlaStatusExpired = (olaStatus: TaskOlaStatusEnum): boolean =>
+export const checkOlaStatusExpired = (olaStatus: Nullable<TaskOlaStatusEnum>): boolean =>
   isEqual(olaStatus, TaskOlaStatusEnum.Expired)
 
-export const checkOlaStatusHalfExpired = (olaStatus: TaskOlaStatusEnum): boolean =>
+export const checkOlaStatusHalfExpired = (olaStatus: Nullable<TaskOlaStatusEnum>): boolean =>
   isEqual(olaStatus, TaskOlaStatusEnum.HalfExpired)
 
 export const getOlaStatusMap = (
-  olaStatus: TaskOlaStatusEnum,
+  olaStatus: Nullable<TaskOlaStatusEnum>,
 ): BooleanMap<BooleanKey<keyof typeof TaskOlaStatusEnum>> => ({
   isExpired: checkOlaStatusExpired(olaStatus),
   isHalfExpired: checkOlaStatusHalfExpired(olaStatus),

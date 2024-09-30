@@ -40,10 +40,10 @@ export const inventorizationEquipmentListItem = (
       }
     : props!.equipment,
   locationFact: isUndefined(props?.locationFact)
-    ? catalogsFixtures.location()
+    ? catalogsFixtures.locationCatalogListItem()
     : props!.locationFact,
   locationPlan: isUndefined(props?.locationPlan)
-    ? catalogsFixtures.location()
+    ? catalogsFixtures.locationCatalogListItem()
     : props!.locationPlan,
   isLocationFactUndefined: isUndefined(props?.isLocationFactUndefined)
     ? false

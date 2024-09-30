@@ -17,6 +17,7 @@ export const relocationTaskTypeDict: Record<RelocationTaskTypeEnum, string> = {
   [RelocationTaskTypeEnum.Relocation]: 'Перемещение',
   [RelocationTaskTypeEnum.Repair]: 'Ремонт',
   [RelocationTaskTypeEnum.Warranty]: 'Гарантийное обслуживание',
+  [RelocationTaskTypeEnum.ReturnWrittenOff]: 'Возврат списанного',
   [RelocationTaskTypeEnum.WriteOff]: 'Списание',
   [RelocationTaskTypeEnum.Customer]: 'Поступление от заказчика',
   [RelocationTaskTypeEnum.EnteringBalances]: 'Ввод начальных остатков',

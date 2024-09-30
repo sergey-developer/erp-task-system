@@ -1,8 +1,8 @@
 import { FormInstance } from 'antd'
 
 import {
-  EquipmentCatalogListModel,
   EquipmentModel,
+  EquipmentsCatalogModel,
   WarehouseListItemModel,
 } from 'modules/warehouse/models'
 
@@ -19,8 +19,9 @@ export type CreateInventorizationEquipmentFormFields = {
 export type CreateInventorizationEquipmentModalProps = SetNonNullable<
   Pick<BaseModalProps, 'open' | 'onCancel'>
 > & {
-  equipmentCatalog: EquipmentCatalogListModel
-  equipmentCatalogIsLoading: boolean
+  equipments: EquipmentsCatalogModel
+  equipmentsIsLoading: boolean
+
   onChangeEquipment: (value: IdType) => void
   equipment?: Pick<EquipmentModel, 'location'>
   equipmentIsLoading: boolean

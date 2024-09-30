@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getTimeZonesErrMsg } from 'shared/constants/catalogs'
+import { getTimeZonesCatalogErrMsg } from 'shared/constants/catalogs'
 import {
   GetTimeZoneListQueryArgs,
   GetTimeZoneListSuccessResponse,
@@ -28,7 +28,7 @@ export const useGetTimeZoneList = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getTimeZonesErrMsg)
+      showErrorNotification(getTimeZonesCatalogErrMsg)
     }
   }, [state.error])
 

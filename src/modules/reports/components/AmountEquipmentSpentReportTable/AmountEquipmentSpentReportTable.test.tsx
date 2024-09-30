@@ -25,9 +25,9 @@ const props: Readonly<AmountEquipmentSpentReportTableProps> = {
 
 const getContainer = () => screen.getByTestId('amount-equipment-spent-report-table')
 
-const getRow = (id: IdType) => tableTestUtils.getRowIn(getContainer(), id)
+const getRow = (id: IdType) => tableTestUtils.getRowById(getContainer(), id)
 const clickRow = async (user: UserEvent, id: IdType) =>
-  tableTestUtils.clickRowIn(getContainer(), user, id)
+  tableTestUtils.clickRowById(getContainer(), user, id)
 
 const getHeadCell = (text: string) => tableTestUtils.getHeadCell(getContainer(), text)
 const getColTitle = (text: string) => within(getContainer()).getByText(text)

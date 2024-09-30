@@ -1,7 +1,7 @@
 import { SelectProps } from 'antd'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 import {
   externalRelocationStatusDict,
@@ -34,6 +34,10 @@ export const relocationTaskTypeOptions: RelocationTaskTypeOption[] = [
   {
     label: relocationTaskTypeDict[RelocationTaskTypeEnum.WriteOff],
     value: RelocationTaskTypeEnum.WriteOff,
+  },
+  {
+    label: relocationTaskTypeDict[RelocationTaskTypeEnum.ReturnWrittenOff],
+    value: RelocationTaskTypeEnum.ReturnWrittenOff,
   },
   {
     label: relocationTaskTypeDict[RelocationTaskTypeEnum.Customer],

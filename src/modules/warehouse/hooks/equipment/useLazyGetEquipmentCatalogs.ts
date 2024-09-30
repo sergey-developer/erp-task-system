@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
-import { getEquipmentCatalogListErrMsg } from 'modules/warehouse/constants/equipment'
+import { getEquipmentsCatalogErrMsg } from 'modules/warehouse/constants/equipment'
 import {
-  GetEquipmentCatalogListQueryArgs,
-  GetEquipmentCatalogListSuccessResponse,
+  GetEquipmentsCatalogQueryArgs,
+  GetEquipmentsCatalogSuccessResponse,
 } from 'modules/warehouse/models'
 import { useLazyGetEquipmentCatalogListQuery } from 'modules/warehouse/services/equipmentApi.service'
 
@@ -14,8 +14,8 @@ import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetEquipmentCatalogListResult = CustomUseLazyQueryHookResult<
-  MaybeUndefined<GetEquipmentCatalogListQueryArgs>,
-  GetEquipmentCatalogListSuccessResponse
+  MaybeUndefined<GetEquipmentsCatalogQueryArgs>,
+  GetEquipmentsCatalogSuccessResponse
 >
 
 export const useLazyGetEquipmentCatalogs = (): UseGetEquipmentCatalogListResult => {
@@ -26,7 +26,7 @@ export const useLazyGetEquipmentCatalogs = (): UseGetEquipmentCatalogListResult 
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentCatalogListErrMsg)
+        showErrorNotification(getEquipmentsCatalogErrMsg)
       }
     }
   }, [state.error])

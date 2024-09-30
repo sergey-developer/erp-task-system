@@ -4,10 +4,10 @@ import { TaskDetailsTabsEnum } from 'modules/task/constants/task'
 import { IdType } from 'shared/types/common'
 import { getPathWithQs } from 'shared/utils/url'
 
-type GetTaskListPageLinkParams = {
+type GetTasksPageLinkParams = {
   viewTask?: IdType
-  taskDetailsTab?: TaskDetailsTabsEnum
+  tab?: TaskDetailsTabsEnum
 }
 
-export const getTaskListPageLink = (params: GetTaskListPageLinkParams): string =>
-  getPathWithQs<GetTaskListPageLinkParams>(TasksRoutesEnum.DesktopTasks, params)
+export const getTasksPageLink = (params: GetTasksPageLinkParams): string =>
+  getPathWithQs<GetTasksPageLinkParams>(TasksRoutesEnum.DesktopTasks, params)

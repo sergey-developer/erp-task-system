@@ -28,12 +28,12 @@ const getChildByText = (text: string) => within(getContainer()).getByText(text)
 const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
 
 const getRow = (id: FiscalAccumulatorTasksReportTableItem['olaNextBreachTime']) =>
-  tableTestUtils.getRowIn(getContainer(), id)
+  tableTestUtils.getRowById(getContainer(), id)
 
 const clickRow = async (
   user: UserEvent,
   id: FiscalAccumulatorTasksReportTableItem['olaNextBreachTime'],
-) => tableTestUtils.clickRowIn(getContainer(), user, id)
+) => tableTestUtils.clickRowById(getContainer(), user, id)
 
 const getHeadCell = (text: string) => {
   // eslint-disable-next-line testing-library/no-node-access

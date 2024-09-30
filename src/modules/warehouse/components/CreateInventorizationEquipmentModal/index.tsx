@@ -4,7 +4,7 @@ import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useMemo, useState } from 'react'
 
 import { EquipmentCatalogListItemModel } from 'modules/warehouse/models'
-import { makeEquipmentsCatalogSelectOptions } from 'modules/warehouse/utils/equipment'
+import { makeEquipmentsSelectOptions } from 'modules/warehouse/utils/equipment'
 
 import { SelectOptionButton } from 'components/Buttons/SelectOptionButton'
 import BaseModal from 'components/Modals/BaseModal'
@@ -27,8 +27,9 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
 
   warehouses,
 
-  equipmentCatalog,
-  equipmentCatalogIsLoading,
+  equipments,
+  equipmentsIsLoading,
+
   equipment,
   equipmentIsLoading,
   onChangeEquipment,
@@ -46,9 +47,9 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
 
   const [equipmentSelectOpened, setEquipmentSelectOpened] = useState<boolean>(false)
 
-  const equipmentCatalogOptions = useMemo<DefaultOptionType[]>(
-    () => makeEquipmentsCatalogSelectOptions(equipmentCatalog),
-    [equipmentCatalog],
+  const equipmentsOptions = useMemo<DefaultOptionType[]>(
+    () => makeEquipmentsSelectOptions(equipments),
+    [equipments],
   )
 
   const onClickCreateEquipmentWhenLocationFactEmpty = () => {
@@ -100,9 +101,9 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
               </Space>
             )}
             placeholder='Оборудование'
-            options={equipmentCatalogOptions}
-            loading={equipmentCatalogIsLoading}
-            disabled={equipmentCatalogIsLoading || isLoading}
+            options={equipmentsOptions}
+            loading={equipmentsIsLoading}
+            disabled={equipmentsIsLoading || isLoading}
             showSearch
             filterOption={filterOptionBy('label')}
             onChange={onChangeEquipment}

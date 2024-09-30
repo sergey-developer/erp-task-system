@@ -1,12 +1,12 @@
 import sortBy from 'lodash/sortBy'
 
 import { locationTypeDict } from 'shared/constants/catalogs'
-import { LocationsModel } from 'shared/models/catalogs/location'
+import { LocationsCatalogModel } from 'shared/models/catalogs/locations'
 import { IdType } from 'shared/types/common'
 
 import { ExecutorOption, LocationOption, LocationOptionGroup } from './types'
 
-export const makeLocationOptions = (data: LocationsModel): LocationOptionGroup[] =>
+export const makeLocationOptions = (data: LocationsCatalogModel): LocationOptionGroup[] =>
   data
     .reduce<LocationOptionGroup[]>((acc, loc) => {
       const optionGroup = acc.find((item) => item.type === loc.type)
