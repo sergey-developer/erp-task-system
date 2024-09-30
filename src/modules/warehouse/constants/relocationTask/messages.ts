@@ -51,3 +51,6 @@ export const getRelocationEquipmentBalanceListMessages: ApiRequestMessages<'comm
 }
 
 export const updateExternalRelocationErrMsg = 'Ошибка обновления внешнего перемещения'
+
+export const moveRelocationTaskDraftToWorkErrMsg =
+  'Ошибка перевода в работу черновиков заявок на перемещение'

@@ -6,6 +6,8 @@ import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
 import { appendSlashAtEnd } from 'shared/utils/string'
 
+import { RelocationTaskRequestArgs } from '../../types'
+
 export const getRelocationTaskUrl = (id: IdType): string =>
   generateApiPath(RelocationTaskApiEnum.GetRelocationTask, { id: String(id) })
 
@@ -55,3 +57,10 @@ export const updateExternalRelocationUrl = (relocationTaskId: IdType): string =>
       relocationTaskId: String(relocationTaskId),
     }),
   )
+
+export const makeMoveRelocationTaskDraftToWorkApiUrl = ({
+  relocationTaskId,
+}: RelocationTaskRequestArgs): string =>
+  generateApiPath(RelocationTaskApiEnum.MoveRelocationTaskDraftToWork, {
+    id: String(relocationTaskId),
+  })

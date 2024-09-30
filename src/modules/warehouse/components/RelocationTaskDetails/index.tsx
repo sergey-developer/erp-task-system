@@ -49,6 +49,7 @@ import {
   useGetRelocationTask,
   useGetRelocationTaskAttachments,
   useLazyGetRelocationTaskWaybillM15,
+  useMoveRelocationTaskDraftToWork,
   useRelocationTaskStatus,
   useUpdateExternalRelocation,
 } from 'modules/warehouse/hooks/relocationTask'
@@ -113,8 +114,8 @@ const ConfirmExecutionRelocationTaskModal = React.lazy(
   () => import('modules/warehouse/components/ConfirmExecutionRelocationTaskModal'),
 )
 
-const ConfirmTransferDraftRelocationTaskToWorkModal = React.lazy(
-  () => import('modules/warehouse/components/ConfirmTransferDraftRelocationTaskToWorkModal'),
+const ConfirmMoveRelocationTaskDraftToWorkModal = React.lazy(
+  () => import('modules/warehouse/components/ConfirmMoveRelocationTaskDraftToWorkModal'),
 )
 
 const { Text } = Typography
@@ -144,13 +145,28 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   const [confirmExecutionModalOpened, { toggle: toggleOpenConfirmExecutionModal }] = useBoolean()
   const debouncedToggleOpenConfirmExecutionModal = useDebounceFn(toggleOpenConfirmExecutionModal)
 
-  const [
-    confirmTransferDraftToWorkModalOpened,
-    { toggle: toggleOpenConfirmTransferDraftToWorkModal },
-  ] = useBoolean()
-  const debouncedToggleOpenConfirmTransferDraftToWorkModal = useDebounceFn(
-    toggleOpenConfirmTransferDraftToWorkModal,
+  // move relocation task draft to work
+  const [confirmMoveDraftToWorkModalOpened, { toggle: toggleOpenConfirmMoveDraftToWorkModal }] =
+    useBoolean()
+
+  const debouncedToggleOpenConfirmMoveDraftToWorkModal = useDebounceFn(
+    toggleOpenConfirmMoveDraftToWorkModal,
   )
+
+  const [
+    moveRelocationTaskDraftToWorkMutation,
+    { isLoading: moveRelocationTaskDraftToWorkIsLoading },
+  ] = useMoveRelocationTaskDraftToWork()
+
+  const onMoveRelocationTaskDraftToWork = async () => {
+    try {
+      await moveRelocationTaskDraftToWorkMutation({ relocationTaskId: relocationTaskId }).unwrap()
+      toggleOpenConfirmMoveDraftToWorkModal()
+    } catch (error) {
+      console.error('Move relocation task draft to work error: ', { error, relocationTaskId })
+    }
+  }
+  // move relocation task draft to work
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<RelocationEquipmentTableItem>()
   const [
@@ -744,20 +760,17 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
         </React.Suspense>
       )}
 
-      {confirmTransferDraftToWorkModalOpened && (
+      {confirmMoveDraftToWorkModalOpened && (
         <React.Suspense
           fallback={
-            <ModalFallback
-              open={confirmTransferDraftToWorkModalOpened}
-              onCancel={debouncedToggleOpenConfirmTransferDraftToWorkModal}
-            />
+            <ModalFallback open onCancel={debouncedToggleOpenConfirmMoveDraftToWorkModal} />
           }
         >
-          <ConfirmTransferDraftRelocationTaskToWorkModal
-            open={confirmTransferDraftToWorkModalOpened}
-            isLoading={false}
-            onCancel={debouncedToggleOpenConfirmTransferDraftToWorkModal}
-            onConfirm={async () => {}}
+          <ConfirmMoveRelocationTaskDraftToWorkModal
+            open={confirmMoveDraftToWorkModalOpened}
+            isLoading={moveRelocationTaskDraftToWorkIsLoading}
+            onCancel={debouncedToggleOpenConfirmMoveDraftToWorkModal}
+            onConfirm={onMoveRelocationTaskDraftToWork}
           />
         </React.Suspense>
       )}

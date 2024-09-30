@@ -5,15 +5,15 @@ import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
 const { Text } = Typography
 
-export type ConfirmTransferDraftRelocationTaskToWorkModalProps = Required<
+export type ConfirmMoveRelocationTaskDraftToWorkModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel'>
 > & {
   isLoading: boolean
   onConfirm: () => Promise<void>
 }
 
-const ConfirmTransferDraftRelocationTaskToWorkModal: FC<
-  ConfirmTransferDraftRelocationTaskToWorkModalProps
+const ConfirmMoveRelocationTaskDraftToWorkModal: FC<
+  ConfirmMoveRelocationTaskDraftToWorkModalProps
 > = ({ isLoading, onConfirm, ...props }) => {
   return (
     <BaseModal
@@ -32,4 +32,4 @@ const ConfirmTransferDraftRelocationTaskToWorkModal: FC<
   )
 }
 
-export default ConfirmTransferDraftRelocationTaskToWorkModal
+export default ConfirmMoveRelocationTaskDraftToWorkModal
