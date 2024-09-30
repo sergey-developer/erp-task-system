@@ -1,4 +1,5 @@
 export enum RelocationTaskStatusEnum {
+  Draft = 'DRAFT',
   New = 'NEW',
   Completed = 'COMPLETED',
   Returned = 'RETURNED',
