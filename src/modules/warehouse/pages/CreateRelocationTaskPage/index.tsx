@@ -557,7 +557,7 @@ const CreateRelocationTaskPage: FC = () => {
   ])
 
   const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async ({ images, ...values }, form) => {
+    async ({ images, ...values }) => {
       if (!activeEquipmentRow || !selectedRelocateTo) return
 
       try {
@@ -588,16 +588,21 @@ const CreateRelocationTaskPage: FC = () => {
         form.setFieldValue(rowPath, equipmentRow)
         handleCloseCreateEquipmentModal()
       } catch (error) {
-        if (isErrorResponse(error) && isBadRequestError(error)) {
-          form.setFields(getFieldsErrors(error.data))
+        if (isErrorResponse(error)) {
+          if (isBadRequestError(error)) {
+            form.setFields(getFieldsErrors(error.data))
+          }
+        } else {
+          console.log('createEquipment error: ', error)
         }
       }
     },
     [
       activeEquipmentRow,
       selectedRelocateTo,
-      selectedRelocateFrom,
       createEquipmentMutation,
+      selectedRelocateFrom?.value,
+      form,
       typeIsWriteOff,
       handleCloseCreateEquipmentModal,
     ],

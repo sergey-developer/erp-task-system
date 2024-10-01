@@ -554,7 +554,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   ])
 
   const createEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async ({ images, ...values }, form) => {
+    async ({ images, ...values }) => {
       if (!activeEquipmentRow || !warehouseMSI || !taskShop?.id) return
 
       try {
@@ -589,6 +589,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     [
       activeEquipmentRow,
       createEquipmentMutation,
+      form,
       onCloseCreateEquipmentModal,
       taskShop?.id,
       warehouseMSI,
