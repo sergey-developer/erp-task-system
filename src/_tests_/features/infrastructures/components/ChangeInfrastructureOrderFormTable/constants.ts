@@ -5,7 +5,7 @@ import { fakeWord } from '_tests_/utils'
 export const props: ChangeInfrastructureOrderFormTableProps = {
   name: fakeWord(),
 
-  editableKeys: [],
+  editableKeys: undefined,
   onChange: jest.fn(),
 
   infrastructureWorkTypes: [],
@@ -13,6 +13,7 @@ export const props: ChangeInfrastructureOrderFormTableProps = {
   managerIsCurrentUser: true,
 
   onChangeWorkType: jest.fn(),
+  infrastructureOrderFormWorkTypeCostIsFetching: false,
   onChangeAmount: jest.fn(),
 }
 

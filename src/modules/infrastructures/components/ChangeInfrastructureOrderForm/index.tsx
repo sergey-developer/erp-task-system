@@ -71,7 +71,10 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
     }
   }, [form, id, works])
 
-  const [getInfrastructureOrderFormWorkTypeCost] = useLazyGetInfrastructureOrderFormWorkTypeCost()
+  const [
+    getInfrastructureOrderFormWorkTypeCost,
+    { isFetching: infrastructureOrderFormWorkTypeCostIsFetching },
+  ] = useLazyGetInfrastructureOrderFormWorkTypeCost()
 
   const [createInfrastructureOrderFormWorksMutation] = useCreateInfrastructureOrderFormWorks()
 
@@ -174,6 +177,9 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
         infrastructureWorkTypes={infrastructureWorkTypes}
         managerIsCurrentUser={managerIsCurrentUser}
         onChangeWorkType={onChangeWorkType}
+        infrastructureOrderFormWorkTypeCostIsFetching={
+          infrastructureOrderFormWorkTypeCostIsFetching
+        }
         onChangeAmount={onChangeAmount}
       />
     </Space>

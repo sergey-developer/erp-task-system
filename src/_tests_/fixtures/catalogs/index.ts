@@ -1,4 +1,5 @@
 import * as faChangeType from './faChangeType'
+import * as infrastructureWorkTypes from './infrastructureWorkTypes'
 import * as locations from './locations'
 import * as resolutionClassifications from './resolutionClassifications'
 import * as subTaskTemplate from './subTaskTemplate'
@@ -12,6 +13,7 @@ const catalogsFixtures = {
   ...userStatus,
   ...locations,
   ...resolutionClassifications,
+  ...infrastructureWorkTypes,
 } as const
 
 export default catalogsFixtures

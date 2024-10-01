@@ -1,5 +1,6 @@
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { RowEditableConfig } from '@ant-design/pro-utils/es/useEditableArray'
+import { Key } from 'react'
 
 import { InfrastructureWorkModel } from 'modules/infrastructures/models'
 
@@ -19,9 +20,11 @@ export type ActiveChangeInfrastructureOrderFormTableRow = {
 
 export type ChangeInfrastructureOrderFormTableProps = SetNonNullable<
   RowEditableConfig<ChangeInfrastructureOrderFormTableRow>,
-  'editableKeys' | 'onChange'
+  'onChange'
 > &
   SetNonNullable<EditableProTableProps<ChangeInfrastructureOrderFormTableRow, any>, 'name'> & {
+    editableKeys?: Key[]
+
     managerIsCurrentUser: boolean
     infrastructureWorkTypes?: InfrastructureWorkTypesCatalogModel
 
@@ -29,6 +32,7 @@ export type ChangeInfrastructureOrderFormTableProps = SetNonNullable<
       record: ChangeInfrastructureOrderFormTableRow,
       value: IdType,
     ) => Promise<void>
+    infrastructureOrderFormWorkTypeCostIsFetching: boolean
 
     onChangeAmount: (
       record: ChangeInfrastructureOrderFormTableRow,
