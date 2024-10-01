@@ -34,7 +34,7 @@ import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 const { TextArea } = Input
 const { Text } = Typography
 
-const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
+const RelocationTaskDraftForm = <FormFields extends BaseRelocationTaskFormFields>({
   permissions,
   isLoading,
 
@@ -67,7 +67,7 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
 }: RelocationTaskFormProps<FormFields>) => {
   const form = Form.useFormInstance<FormFields>()
   const executorsFormValue: MaybeUndefined<IdType[]> = Form.useWatch('executors', form)
-  const controllersFormValue: MaybeUndefined<IdType> = Form.useWatch('controller', form)
+  const controllersFormValue: MaybeUndefined<IdType[]> = Form.useWatch('controllers', form)
 
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(type)
   const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
@@ -96,7 +96,7 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
     form.setFieldValue('executors', usersIds)
   }
 
-  const onChangeControllers: SelectProps<IdType, UserGroupOption>['onChange'] = async (
+  const onChangeControllers: SelectProps<IdType[], UserGroupOption>['onChange'] = async (
     _,
     option,
   ) => {
@@ -213,10 +213,11 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
         <Form.Item
           data-testid='controller-form-item'
           label='Контролер'
-          name='controller'
+          name='controllers'
           rules={controllerIsRequired ? onlyRequiredRules : undefined}
         >
-          <Select<IdType, UserGroupOption>
+          <Select<IdType[], UserGroupOption>
+            mode='multiple'
             dropdownRender={(menu) => <div data-testid='controller-select-dropdown'>{menu}</div>}
             loading={controllersIsLoading}
             disabled={isLoading || controllersIsLoading}
@@ -271,4 +272,4 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
   )
 }
 
-export default RelocationTaskForm
+export default RelocationTaskDraftForm

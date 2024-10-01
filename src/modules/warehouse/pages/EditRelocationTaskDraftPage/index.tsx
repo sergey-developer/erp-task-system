@@ -18,13 +18,13 @@ import {
   InventorizationEquipmentTableRow,
   RelocationEquipmentDraftEditableTableProps,
 } from 'modules/warehouse/components/RelocationEquipmentDraftEditableTable/types'
-import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
+import RelocationTaskDraftForm from 'modules/warehouse/components/RelocationTaskDraftForm'
 import {
   LocationOption,
   RelocationTaskFormProps,
   UserGroupOptionGroup,
-} from 'modules/warehouse/components/RelocationTaskForm/types'
-import { makeUserGroupOptions } from 'modules/warehouse/components/RelocationTaskForm/utils'
+} from 'modules/warehouse/components/RelocationTaskDraftForm/types'
+import { makeUserGroupOptions } from 'modules/warehouse/components/RelocationTaskDraftForm/utils'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 import {
@@ -548,7 +548,7 @@ const EditRelocationTaskDraftPage: FC = () => {
       >
         <Row gutter={[40, 40]}>
           <Col span={24}>
-            <RelocationTaskForm
+            <RelocationTaskDraftForm
               permissions={permissions}
               isLoading={updateTaskIsLoading}
               relocateFromLocations={relocateFromLocations}

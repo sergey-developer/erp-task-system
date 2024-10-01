@@ -456,7 +456,7 @@ const EditRelocationTaskPage: FC = () => {
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
         executors: values.executors,
-        controllers: values.controllers,
+        controller: values.controller,
         comment: values.comment,
         images: values.images?.length ? extractIdsFromFilesResponse(values.images) : undefined,
       }).unwrap()
