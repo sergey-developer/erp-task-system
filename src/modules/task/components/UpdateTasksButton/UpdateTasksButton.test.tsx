@@ -1,59 +1,15 @@
-import { screen } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { props } from '_tests_/features/tasks/components/UpdateTasksButton/constants'
+import { updateTasksButtonTestUtils } from '_tests_/features/tasks/components/UpdateTasksButton/testUtils'
+import { menuTestUtils, render } from '_tests_/utils'
 
-import { buttonTestUtils, menuTestUtils, render } from '_tests_/utils'
-
-import UpdateTasksButton, { UpdateTasksButtonProps } from './index'
-
-const props: UpdateTasksButtonProps = {
-  disabled: false,
-  onClick: jest.fn(),
-  onAutoUpdate: jest.fn(),
-}
-
-const getUpdateTasksButton = (container?: HTMLElement) =>
-  container
-    ? buttonTestUtils.getButtonIn(container, /Обновить заявки/)
-    : screen.getByRole('button', { name: /Обновить заявки/ })
-
-const clickUpdateTasksButton = async (user: UserEvent, container?: HTMLElement) => {
-  const button = getUpdateTasksButton(container)
-  await user.click(button)
-}
-
-const getDownButton = (container?: HTMLElement) =>
-  container
-    ? buttonTestUtils.getButtonIn(container, 'down')
-    : screen.getByRole('button', { name: 'down' })
-
-const openDropdown = async (user: UserEvent, container?: HTMLElement) => {
-  const button = getDownButton(container)
-  await user.click(button)
-}
-
-const getAutoUpdateItem = () => menuTestUtils.getMenuItem('Автообновление')
-const clickAutoUpdateItem = async (user: UserEvent) => {
-  const item = getAutoUpdateItem()
-  await user.click(item)
-}
-
-export const testUtils = {
-  getUpdateTasksButton,
-  clickUpdateTasksButton,
-
-  getDownButton,
-  openDropdown,
-
-  getAutoUpdateItem,
-  clickAutoUpdateItem,
-}
+import UpdateTasksButton from './index'
 
 describe('Кнопка обновления заявок', () => {
   test('Отображается', () => {
     render(<UpdateTasksButton {...props} />)
 
-    const updateTasksButton = testUtils.getUpdateTasksButton()
-    const downButton = testUtils.getDownButton()
+    const updateTasksButton = updateTasksButtonTestUtils.getUpdateTasksButton()
+    const downButton = updateTasksButtonTestUtils.getDownButton()
 
     expect(updateTasksButton).toBeInTheDocument()
     expect(updateTasksButton).toBeEnabled()
@@ -63,7 +19,7 @@ describe('Кнопка обновления заявок', () => {
 
   test('При клике вызывается обработчик', async () => {
     const { user } = render(<UpdateTasksButton {...props} />)
-    await testUtils.clickUpdateTasksButton(user)
+    await updateTasksButtonTestUtils.clickUpdateTasksButton(user)
     expect(props.onClick).toBeCalledTimes(1)
   })
 
@@ -71,8 +27,8 @@ describe('Кнопка обновления заявок', () => {
     test('Отображается', async () => {
       const { user } = render(<UpdateTasksButton {...props} />)
 
-      await testUtils.openDropdown(user)
-      const item = testUtils.getAutoUpdateItem()
+      await updateTasksButtonTestUtils.openDropdown(user)
+      const item = updateTasksButtonTestUtils.getAutoUpdateItem()
 
       expect(item).toBeInTheDocument()
       menuTestUtils.expectMenuItemNotDisabled(item)
@@ -81,8 +37,8 @@ describe('Кнопка обновления заявок', () => {
     test('При клике вызывается обработчик', async () => {
       const { user } = render(<UpdateTasksButton {...props} />)
 
-      await testUtils.openDropdown(user)
-      await testUtils.clickAutoUpdateItem(user)
+      await updateTasksButtonTestUtils.openDropdown(user)
+      await updateTasksButtonTestUtils.clickAutoUpdateItem(user)
 
       expect(props.onAutoUpdate).toBeCalledTimes(1)
     })
