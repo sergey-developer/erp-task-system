@@ -19,6 +19,7 @@ export type CreateRelocationTaskMutationArgs = {
     attachments?: IdType[]
   }[]
 
+  controller?: IdType
   controllers?: IdType[]
   inventorization?: IdType
   relocateFromId?: IdType

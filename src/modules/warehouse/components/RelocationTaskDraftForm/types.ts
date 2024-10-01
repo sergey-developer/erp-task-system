@@ -2,19 +2,16 @@ import { UploadProps } from 'antd'
 import { Moment } from 'moment-timezone'
 import { ReactNode } from 'react'
 
-import { MatchedUserPermissions } from 'modules/user/types'
+import { MatchedUserPermissions } from 'modules/user/utils'
 import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 
-import {
-  LocationCatalogListItemModel,
-  LocationsCatalogModel,
-} from 'shared/models/catalogs/locations'
+import { LocationListItemModel, LocationsModel } from 'shared/models/catalogs/location'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { MaybeNull } from 'shared/types/utils'
 
 export type LocationOption = {
-  type: LocationCatalogListItemModel['type']
+  type: LocationListItemModel['type']
   label: ReactNode
   value: IdType
 }
@@ -62,9 +59,9 @@ export type RelocationTaskFormProps<
   imageIsDeleting?: boolean
   imagesIsLoading?: boolean
 
-  relocateFromLocations: LocationsCatalogModel
+  relocateFromLocations: LocationsModel
   relocateFromLocationsIsLoading: boolean
-  relocateToLocations: LocationsCatalogModel
+  relocateToLocations: LocationsModel
   relocateToLocationsIsLoading: boolean
 
   type?: RelocationTaskTypeEnum
