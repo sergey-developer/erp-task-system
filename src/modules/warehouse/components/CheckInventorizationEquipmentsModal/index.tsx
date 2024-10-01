@@ -36,9 +36,7 @@ const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModa
 
   const filteredData = useMemo(
     () =>
-      hasIsNotCredited
-        ? data.filter((item) => (isNotCredited ? !item.isCredited : item.isCredited))
-        : data,
+      hasIsNotCredited ? data.filter((item) => (isNotCredited ? !item.isCredited : true)) : data,
     [data, hasIsNotCredited, isNotCredited],
   )
 
@@ -58,7 +56,7 @@ const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModa
     >
       <Flex vertical gap='middle'>
         {hasIsNotCredited && (
-          <>
+          <Flex data-testid='is-credited-block' vertical gap='middle'>
             <Flex gap='small'>
               <ExclamationCircleIcon $size='large' $color='fireOpal' />
 
@@ -70,7 +68,7 @@ const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModa
                 Показывать только оборудование, требующее оприходования
               </Checkbox>
             </Flex>
-          </>
+          </Flex>
         )}
 
         <CheckInventorizationEquipmentsTable
