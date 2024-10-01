@@ -13,7 +13,7 @@ import {
 import {
   makeGetInfrastructureUrl,
   makeUpdateInfrastructureUrl,
-} from 'modules/infrastructures/utils/apiUrls'
+} from 'modules/infrastructures/utils/infrastructure/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
