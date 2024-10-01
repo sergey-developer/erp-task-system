@@ -30,7 +30,6 @@ Lint:
 Tests:
   stage: test
   image: node:18-alpine
-  allow_failure: true
   interruptible: true
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   script:
