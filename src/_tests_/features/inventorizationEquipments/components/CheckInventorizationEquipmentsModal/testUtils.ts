@@ -14,8 +14,8 @@ const getSaveButton = () => buttonTestUtils.getButtonIn(getContainer(), new RegE
 const clickSaveButton = async (user: UserEvent) => user.click(getSaveButton())
 
 // is-credited-block
-const getIsCreditedBlock = () => within(getContainer()).getByTestId('is-credited-block')
-const queryIsCreditedBlock = () => within(getContainer()).queryByTestId('is-credited-block')
+const getIsCreditedBlock = () => within(getContainer()).getByTestId(TestIdsEnum.IsCreditedBlock)
+const queryIsCreditedBlock = () => within(getContainer()).queryByTestId(TestIdsEnum.IsCreditedBlock)
 
 const getIsCreditedCheckbox = () =>
   checkboxTestUtils.getCheckboxIn(

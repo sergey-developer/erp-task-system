@@ -12,4 +12,5 @@ export const props: CheckInventorizationEquipmentsModalProps = {
 
 export enum TestIdsEnum {
   Container = 'check-inventorization-equipments-modal',
+  IsCreditedBlock = 'is-credited-block',
 }
