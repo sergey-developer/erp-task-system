@@ -1,14 +1,61 @@
 import { props } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/constants'
 import { createInventorizationRequestModalTestUtils } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/testUtils'
-import { fakeWord, render } from '_tests_/utils'
+import { screen } from '@testing-library/react'
 
-import CreateInventorizationRequestModal from './index'
+import {
+  inventorizationTypeDict,
+  InventorizationTypeEnum,
+} from 'modules/warehouse/constants/inventorization'
+
+import { validationMessages } from 'shared/constants/validation'
+
+import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { fakeWord, iconTestUtils, render, selectTestUtils } from '_tests_/utils'
+
+import CreateInventorizationRequestModal, { nomenclaturesPopoverContent } from './index'
 
 // todo: добавить тесты по другим полям
 
 describe('Модалка создания запроса на инвентаризацию', () => {
+  describe('Поле типа', () => {
+    test('Отображается, активно, не имеет значения по умолчанию, верно отображает варианты', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      const input = createInventorizationRequestModalTestUtils.getTypeSelectInput()
+      await createInventorizationRequestModalTestUtils.openTypeSelect(user)
+      const selectedType = createInventorizationRequestModalTestUtils.getSelectedType()
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(selectedType).not.toBeInTheDocument()
+      Object.keys(inventorizationTypeDict).forEach((key) => {
+        const option = selectTestUtils.getSelectOption(
+          inventorizationTypeDict[key as InventorizationTypeEnum],
+        )
+        expect(option).toBeInTheDocument()
+      })
+    })
+
+    test('Можно выбрать значение', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      await createInventorizationRequestModalTestUtils.openTypeSelect(user)
+      await createInventorizationRequestModalTestUtils.setType(user, inventorizationTypeDict[InventorizationTypeEnum.Internal])
+      const selectedOption = createInventorizationRequestModalTestUtils.getSelectedType()
+
+      expect(selectedOption).toBeInTheDocument()
+    })
+
+    test('Обязательное поле', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+      await createInventorizationRequestModalTestUtils.clickSubmitButton(user)
+      const error = await createInventorizationRequestModalTestUtils.findTypeError(validationMessages.required)
+      expect(error).toBeInTheDocument()
+    })
+  })
+
   describe('Поле описания', () => {
-    test('Отображается', () => {
+    test('Отображается и активно', () => {
       render(<CreateInventorizationRequestModal {...props} />)
       const field = createInventorizationRequestModalTestUtils.getDescriptionField()
       expect(field).toBeInTheDocument()
@@ -60,6 +107,66 @@ describe('Модалка создания запроса на инвентари
       expect(uploadedFile).not.toBeInTheDocument()
       expect(props.onDeleteAttachment).toBeCalledTimes(1)
       expect(props.onDeleteAttachment).toBeCalledWith(expect.anything())
+    })
+  })
+
+  describe('Поле номенклатуры', () => {
+    test('Можно выбрать несколько значений', async () => {
+      const equipmentNomenclatureListItem1 = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem2 = warehouseFixtures.equipmentNomenclatureListItem()
+
+      const { user } = render(
+        <CreateInventorizationRequestModal
+          {...props}
+          nomenclatures={[equipmentNomenclatureListItem1, equipmentNomenclatureListItem2]}
+        />,
+      )
+
+      await createInventorizationRequestModalTestUtils.openNomenclatureSelect(user)
+      await createInventorizationRequestModalTestUtils.setNomenclature(user, equipmentNomenclatureListItem1.title)
+      await createInventorizationRequestModalTestUtils.setNomenclature(user, equipmentNomenclatureListItem2.title)
+      const value1 = createInventorizationRequestModalTestUtils.getSelectedNomenclature(equipmentNomenclatureListItem1.title)
+      const value2 = createInventorizationRequestModalTestUtils.getSelectedNomenclature(equipmentNomenclatureListItem2.title)
+
+      expect(value1).toBeInTheDocument()
+      expect(value2).toBeInTheDocument()
+    })
+
+    test('Можно выбрать все значения и сбросить их', async () => {
+      const equipmentNomenclatureListItem1 = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem2 = warehouseFixtures.equipmentNomenclatureListItem()
+
+      const { user } = render(
+        <CreateInventorizationRequestModal
+          {...props}
+          nomenclatures={[equipmentNomenclatureListItem1, equipmentNomenclatureListItem2]}
+        />,
+      )
+
+      await createInventorizationRequestModalTestUtils.openNomenclatureSelect(user)
+      await createInventorizationRequestModalTestUtils.setNomenclature(user, 'Выбрать все')
+      const value1 = createInventorizationRequestModalTestUtils.getSelectedNomenclature(equipmentNomenclatureListItem1.title)
+      const value2 = createInventorizationRequestModalTestUtils.getSelectedNomenclature(equipmentNomenclatureListItem2.title)
+      expect(value1).toBeInTheDocument()
+      expect(value2).toBeInTheDocument()
+
+      await createInventorizationRequestModalTestUtils.setNomenclature(user, 'Сбросить все')
+      expect(value1).not.toBeInTheDocument()
+      expect(value2).not.toBeInTheDocument()
+    })
+
+    test('При наведении на иконку отображается текст', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      await createInventorizationRequestModalTestUtils.openNomenclatureSelect(user)
+      const icon = iconTestUtils.getIconByNameIn(
+        createInventorizationRequestModalTestUtils.getNomenclatureFormItem(),
+        'question-circle',
+      )
+      await user.hover(icon)
+      const text = await screen.findByText(nomenclaturesPopoverContent)
+
+      expect(text).toBeInTheDocument()
     })
   })
 })
