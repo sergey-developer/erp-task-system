@@ -2875,9 +2875,12 @@ describe('Информация о заявке о перемещении', () =>
         status: RelocationTaskStatusEnum.Draft,
         createdBy: currentUser,
       })
-      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+      mockGetRelocationTaskSuccess(
+        { relocationTaskId: relocationTask.id },
+        { body: relocationTask },
+      )
 
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTask.id })
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -2902,9 +2905,12 @@ describe('Информация о заявке о перемещении', () =>
           status: RelocationTaskStatusEnum.Draft,
           createdBy: currentUser,
         })
-        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationTaskSuccess(
+          { relocationTaskId: relocationTask.id },
+          { body: relocationTask },
+        )
 
-        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+        mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTask.id })
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -2928,9 +2934,12 @@ describe('Информация о заявке о перемещении', () =>
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Draft,
         })
-        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationTaskSuccess(
+          { relocationTaskId: relocationTask.id },
+          { body: relocationTask },
+        )
 
-        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+        mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTask.id })
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -2955,9 +2964,12 @@ describe('Информация о заявке о перемещении', () =>
           status: RelocationTaskStatusEnum.New,
           createdBy: currentUser,
         })
-        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+        mockGetRelocationTaskSuccess(
+          { relocationTaskId: relocationTask.id },
+          { body: relocationTask },
+        )
 
-        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+        mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTask.id })
 
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -2983,9 +2995,12 @@ describe('Информация о заявке о перемещении', () =>
         status: RelocationTaskStatusEnum.Draft,
         createdBy: currentUser,
       })
-      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+      mockGetRelocationTaskSuccess(
+        { relocationTaskId: relocationTask.id },
+        { body: relocationTask },
+      )
 
-      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTask.id })
 
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
@@ -3011,8 +3026,11 @@ describe('Информация о заявке о перемещении', () =>
         status: RelocationTaskStatusEnum.Draft,
         createdBy: currentUser,
       })
-      mockGetRelocationTaskSuccess(relocationTask.id, { body: relocationTask })
-      mockGetRelocationEquipmentListSuccess(relocationTask.id)
+      mockGetRelocationTaskSuccess(
+        { relocationTaskId: relocationTask.id },
+        { body: relocationTask },
+      )
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTask.id })
 
       const updatedRelocationTask = warehouseFixtures.relocationTask({
         status: RelocationTaskStatusEnum.New,

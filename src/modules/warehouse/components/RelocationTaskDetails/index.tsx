@@ -93,7 +93,6 @@ import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { InventorizationStatusEnum, InventorizationTypeEnum } from '../../constants/inventorization'
 import EditableField from './EditableField'
 import ReadonlyField from './ReadonlyField'
 import { RelocationTaskDetailsProps } from './types'
@@ -382,15 +381,15 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
   const menuProps: MenuProps = {
     items: relocationTaskStatus.isDraft
       ? [
-        ...(permissions.relocationTasksUpdate && creatorIsCurrentUser
-          ? [
-              {
-                key: 'Перевести черновик в работу',
-                label: 'Перевести черновик в работу',
-                onClick: debouncedToggleOpenConfirmMoveDraftToWorkModal,
-              },
-          ]
-          : []),
+          ...(permissions.relocationTasksUpdate && creatorIsCurrentUser
+            ? [
+                {
+                  key: 'Перевести черновик в работу',
+                  label: 'Перевести черновик в работу',
+                  onClick: debouncedToggleOpenConfirmMoveDraftToWorkModal,
+                },
+              ]
+            : []),
         ]
       : [
           {
