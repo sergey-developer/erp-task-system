@@ -6,9 +6,10 @@ import {
   WorkTypeListItemModel,
 } from 'modules/warehouse/models'
 
-import { LocationCatalogListItemModel } from 'shared/models/catalogs/locations'
 import { CurrencyListItemModel } from 'shared/models/currency'
 import { MacroregionListItemModel } from 'shared/models/macroregion'
+import { IdType } from 'shared/types/common'
+import { MaybeNull } from 'shared/types/utils'
 
 export type CheckedInventorizationEquipmentsTemplateListItemModel = {
   isCredited: boolean
@@ -29,7 +30,10 @@ export type CheckedInventorizationEquipmentsTemplateListItemModel = {
   purpose?: Pick<WorkTypeListItemModel, 'id' | 'title'>
   comment?: string
   quantityFact?: number
-  locationFact?: Pick<LocationCatalogListItemModel, 'id' | 'title'>
+  locationFact?: {
+    id: MaybeNull<IdType>
+    title: string
+  }
 }
 
 export type CheckedInventorizationEquipmentsTemplateModel =

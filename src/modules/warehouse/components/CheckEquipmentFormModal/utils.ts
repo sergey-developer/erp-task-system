@@ -3,23 +3,26 @@ import isNumber from 'lodash/isNumber'
 
 import { EquipmentModel } from 'modules/warehouse/models'
 
+import { undefinedSelectOption } from 'shared/constants/selectField'
+
+import { CheckInventorizationEquipmentsTableRow } from '../CheckInventorizationEquipmentsTable/types'
 import { CheckEquipmentFormModalProps } from './types'
 
 export const getCheckEquipmentFormInitialValues = (
   equipment?: Partial<
     Pick<
-      EquipmentModel,
+      CheckInventorizationEquipmentsTableRow,
       | 'condition'
       | 'category'
       | 'purpose'
       | 'isNew'
       | 'isWarranty'
       | 'isRepaired'
-      | 'location'
+      | 'locationFact'
       | 'currency'
       | 'inventoryNumber'
       | 'serialNumber'
-      | 'quantity'
+      | 'quantityFact'
       | 'price'
       | 'usageCounter'
       | 'owner'
@@ -41,12 +44,15 @@ export const getCheckEquipmentFormInitialValues = (
         isWarranty: isBoolean(equipment.isWarranty) ? equipment.isWarranty : undefined,
         isRepaired: isBoolean(equipment.isRepaired) ? equipment.isRepaired : undefined,
         title: equipment.title,
-        location: equipment.location?.id,
+        location:
+          equipment.locationFact?.id === null
+            ? undefinedSelectOption.value
+            : equipment.locationFact?.id,
         macroregion: equipment.macroregion?.id,
         currency: equipment.currency?.id,
         inventoryNumber: equipment.inventoryNumber || undefined,
         serialNumber: equipment.serialNumber || undefined,
-        quantity: isNumber(equipment.quantity) ? equipment.quantity : undefined,
+        quantity: isNumber(equipment.quantityFact) ? equipment.quantityFact : undefined,
         price: isNumber(equipment.price) ? equipment.price : undefined,
         usageCounter: isNumber(equipment.usageCounter) ? equipment.usageCounter : undefined,
         owner: equipment.owner?.id,

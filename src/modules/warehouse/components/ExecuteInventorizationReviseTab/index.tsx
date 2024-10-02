@@ -661,7 +661,9 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         inventoryNumber: values.inventoryNumber,
         serialNumber: values.serialNumber,
         condition: values.condition,
-        quantityFact: values.quantity,
+        quantityFact: isNumber(values.quantity)
+          ? values.quantity
+          : editableCheckedInventorizationEquipment.quantityFact,
         purpose: workTypes.find((w) => w.id === values.purpose),
         nomenclature: nomenclatures.find((n) => n.id === values.nomenclature),
         category: equipmentCategories.find((c) => c.id === values.category),
@@ -670,7 +672,10 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         macroregion: values.macroregion
           ? macroregions.find((m) => m.id === values.macroregion)
           : undefined,
-        locationFact: values.location ? locations.find((l) => l.id === values.location) : undefined,
+        locationFact:
+          values.location === undefinedSelectOption.value
+            ? editableCheckedInventorizationEquipment.locationFact
+            : locations.find((l) => l.id === values.location),
       }
 
       setCheckedInventorizationEquipments((prevState) => {
@@ -916,26 +921,9 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             title='Изменить сверяемое оборудование'
             onCancel={debouncedOnCloseEditCheckedInventorizationEquipmentModal}
             onSubmit={onEditCheckedInventorizationEquipment}
-            initialValues={getCheckEquipmentFormInitialValues({
-              title: editableCheckedInventorizationEquipment.title,
-              category: editableCheckedInventorizationEquipment.category,
-              nomenclature: editableCheckedInventorizationEquipment.nomenclature,
-              inventoryNumber: editableCheckedInventorizationEquipment.inventoryNumber,
-              serialNumber: editableCheckedInventorizationEquipment.serialNumber,
-              condition: editableCheckedInventorizationEquipment.condition,
-              comment: editableCheckedInventorizationEquipment.comment,
-              owner: editableCheckedInventorizationEquipment.owner,
-              price: editableCheckedInventorizationEquipment.price,
-              usageCounter: editableCheckedInventorizationEquipment.usageCounter,
-              quantity: editableCheckedInventorizationEquipment.quantityFact,
-              currency: editableCheckedInventorizationEquipment.currency,
-              isNew: editableCheckedInventorizationEquipment.isNew,
-              isRepaired: editableCheckedInventorizationEquipment.isRepaired,
-              isWarranty: editableCheckedInventorizationEquipment.isWarranty,
-              purpose: editableCheckedInventorizationEquipment.purpose,
-              location: editableCheckedInventorizationEquipment.locationFact,
-              macroregion: editableCheckedInventorizationEquipment.macroregion,
-            })}
+            initialValues={getCheckEquipmentFormInitialValues(
+              editableCheckedInventorizationEquipment,
+            )}
             values={editCheckedInventorizationEquipmentFormValues}
             isCredited={editableCheckedInventorizationEquipment.isCredited}
             categories={equipmentCategories}

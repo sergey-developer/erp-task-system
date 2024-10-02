@@ -10,6 +10,7 @@ import { InventorizationStatusEnum } from 'modules/warehouse/constants/inventori
 
 import { DEFAULT_FILE_NAME } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { IdType } from 'shared/types/common'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import { makeString } from 'shared/utils/string'
@@ -644,7 +645,8 @@ describe('Вкладка списка оборудования с расхожд
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
 
       const locationCatalogListItem = catalogsFixtures.locationCatalogListItem({
-        ...checkedInventorizationEquipmentsTemplateListItem.locationFact!,
+        id: checkedInventorizationEquipmentsTemplateListItem.locationFact!.id as IdType,
+        title: checkedInventorizationEquipmentsTemplateListItem.locationFact!.title,
       })
       mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
 
