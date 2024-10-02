@@ -344,11 +344,6 @@ const TasksPage: FC = () => {
       : !tasksFilterOpened,
   })
 
-  const closeTask = useCallback(() => {
-    setSelectedTaskId(undefined)
-    setActiveTab(undefined)
-  }, [])
-
   const onCreateTask = useCallback<CreateTaskModalProps['onSubmit']>(
     async ({ attachments, olaNextBreachDate, olaNextBreachTime, workGroup, ...values }, form) => {
       try {
@@ -377,7 +372,7 @@ const TasksPage: FC = () => {
     setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
     setFastFilter(undefined)
     setFastFilterByLines(undefined)
-    toggleOpenTasksFilter()
+    toggleTasksFilter()
     closeTask()
   }
 

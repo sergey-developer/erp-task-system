@@ -2,28 +2,10 @@ import { waitFor } from '@testing-library/react'
 import { camelize } from 'humps'
 import moment from 'moment-timezone'
 
-import { testUtils as executeTaskModalTestUtils } from 'modules/task/components/ExecuteTaskModal/ExecuteTaskModal.test'
-import { testUtils as fastFilterOptionTestUtils } from 'modules/task/components/FastFilters/FastFilterOption/FastFilterOption.test'
 import {
   fastFilterByLinesOptions,
   fastFilterOptions,
 } from 'modules/task/components/FastFilters/options'
-import {
-  activeAssignOnMeButtonProps,
-  canSelectAssigneeProps,
-  testUtils as assigneeBlockTestUtils,
-} from 'modules/task/components/TaskDetails/AssigneeBlock/AssigneeBlock.test'
-import { testUtils as taskDetailsTestUtils } from 'modules/task/components/TaskDetails/TaskDetails.test'
-import { testUtils as taskDetailsTitleTestUtils } from 'modules/task/components/TaskDetails/TaskDetailsTitle/TaskDetailsTitle.test'
-import {
-  showFirstLineButtonProps,
-  showSecondLineButtonProps,
-  testUtils as workGroupBlockTestUtils,
-} from 'modules/task/components/TaskDetails/WorkGroupBlock/WorkGroupBlock.test'
-import { testUtils as taskFirstLineModalTestUtils } from 'modules/task/components/TaskFirstLineModal/TaskFirstLineModal.test'
-import { testUtils as taskSecondLineModalTestUtils } from 'modules/task/components/TaskSecondLineModal/TaskSecondLineModal.test'
-import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
-import { testUtils as tasksFilterTestUtils } from 'modules/task/components/TasksFilter/TasksFilter.test'
 import {
   searchFieldDict,
   taskAssignedDict,
@@ -44,7 +26,7 @@ import { UserPermissionsEnum } from 'modules/user/constants'
 import { getFullUserName } from 'modules/user/utils'
 
 import { executeTaskModalTestUtils } from '_tests_/features/tasks/components/ExecuteTaskModal/testUtils'
-import { fastFilterListTestUtils } from '_tests_/features/tasks/components/FastFilters/testUtils'
+import { fastFilterOptionTestUtils } from '_tests_/features/tasks/components/FastFilters/FastFilterOption/testUtils'
 import {
   activeAssignOnMeButtonProps,
   canSelectAssigneeProps,
@@ -137,7 +119,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.getFastFilterByLines()).toBeInTheDocument()
+        expect(tasksPageTestUtils.getFastFilterByLines()).toBeInTheDocument()
       })
 
       test(`Отображаются если есть права ${UserPermissionsEnum.FirstLineTasksRead} и ${UserPermissionsEnum.WorkGroupTasksRead}`, async () => {
@@ -160,7 +142,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.getFastFilterByLines()).toBeInTheDocument()
+        expect(tasksPageTestUtils.getFastFilterByLines()).toBeInTheDocument()
       })
 
       test(`Не отображаются если есть права ${UserPermissionsEnum.FirstLineTasksRead} но нет ${UserPermissionsEnum.SecondLineTasksRead} и ${UserPermissionsEnum.WorkGroupTasksRead}`, async () => {
@@ -178,7 +160,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.queryFastFilterByLines()).not.toBeInTheDocument()
+        expect(tasksPageTestUtils.queryFastFilterByLines()).not.toBeInTheDocument()
       })
 
       test(`Не отображаются если есть права ${UserPermissionsEnum.SecondLineTasksRead} но нет ${UserPermissionsEnum.FirstLineTasksRead}`, async () => {
@@ -196,7 +178,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.queryFastFilterByLines()).not.toBeInTheDocument()
+        expect(tasksPageTestUtils.queryFastFilterByLines()).not.toBeInTheDocument()
       })
 
       test(`Не отображаются если есть права ${UserPermissionsEnum.WorkGroupTasksRead} но нет ${UserPermissionsEnum.FirstLineTasksRead}`, async () => {
@@ -214,7 +196,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.queryFastFilterByLines()).not.toBeInTheDocument()
+        expect(tasksPageTestUtils.queryFastFilterByLines()).not.toBeInTheDocument()
       })
 
       test('Количество заявок отображается', async () => {
@@ -332,7 +314,7 @@ describe('Страница реестра заявок', () => {
         await fastFilterOptionTestUtils.expectLoadingFinished()
         await taskTableTestUtils.expectLoadingFinished()
 
-        await testUtils.clickTasksFilterButton(user)
+        await tasksPageTestUtils.clickTasksFilterButton(user)
         await tasksFilterTestUtils.findContainer()
         await tasksFilterTestUtils.workGroup.expectLoadingFinished()
         await tasksFilterTestUtils.manager.expectLoadingFinished()
@@ -365,7 +347,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
 
-        await testUtils.clickTasksFilterButton(user)
+        await tasksPageTestUtils.clickTasksFilterButton(user)
         await tasksFilterTestUtils.findContainer()
         await tasksFilterTestUtils.workGroup.expectLoadingFinished()
         await tasksFilterTestUtils.manager.expectLoadingFinished()
@@ -461,7 +443,7 @@ describe('Страница реестра заявок', () => {
         await fastFilterOptionTestUtils.expectLoadingFinished()
 
         const searchValue = fakeWord()
-        const searchInput = await testUtils.setSearchValue(user, searchValue)
+        const searchInput = await tasksPageTestUtils.setSearchValue(user, searchValue)
 
         await fastFilterOptionTestUtils.setFilter(user, TasksFastFilterEnum.SecondLine)
         await taskTableTestUtils.expectLoadingFinished()
@@ -483,7 +465,7 @@ describe('Страница реестра заявок', () => {
         })
 
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        expect(testUtils.getFastFilter()).toBeInTheDocument()
+        expect(tasksPageTestUtils.getFastFilter()).toBeInTheDocument()
       })
 
       test('Количество заявок отображается', async () => {
@@ -1145,7 +1127,7 @@ describe('Страница реестра заявок', () => {
         await fastFilterOptionTestUtils.expectLoadingFinished()
         const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.AllLines)
         fastFilterOptionTestUtils.expectFilterChecked(fastFilter)
-        await testUtils.clickTasksFilterButton(user)
+        await tasksPageTestUtils.clickTasksFilterButton(user)
         await tasksFilterTestUtils.findContainer()
         await tasksFilterTestUtils.clickApplyButton(user)
 
@@ -1721,7 +1703,7 @@ describe('Страница реестра заявок', () => {
         await fastFilterOptionTestUtils.expectLoadingFinished()
         const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.AllLines)
         fastFilterOptionTestUtils.expectFilterChecked(fastFilter)
-        await testUtils.setSearchValue(user, fakeWord(), true)
+        await tasksPageTestUtils.setSearchValue(user, fakeWord(), true)
 
         await waitFor(() => fastFilterOptionTestUtils.expectFilterNotChecked(fastFilter))
       })
@@ -1770,7 +1752,7 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterOptionTestUtils.expectLoadingFinished()
 
-        const input = await testUtils.setSearchValue(user, fakeWord({ length: 1 }), true)
+        const input = await tasksPageTestUtils.setSearchValue(user, fakeWord({ length: 1 }), true)
 
         const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.SecondLine)
 
@@ -1960,10 +1942,10 @@ describe('Страница реестра заявок', () => {
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await fastFilterOptionTestUtils.expectLoadingFinished()
-        await testUtils.setSearchValue(user, fakeWord(), true)
+        await tasksPageTestUtils.setSearchValue(user, fakeWord(), true)
         const fastFilter = fastFilterOptionTestUtils.getCheckableTag(TasksFastFilterEnum.FirstLine)
         await waitFor(() => fastFilterOptionTestUtils.expectFilterNotChecked(fastFilter))
-        await testUtils.clickSearchClearButton(user)
+        await tasksPageTestUtils.clickSearchClearButton(user)
         await taskTableTestUtils.expectLoadingStarted()
         await taskTableTestUtils.expectLoadingFinished()
         await waitFor(() => fastFilterOptionTestUtils.expectFilterChecked(fastFilter))

@@ -1,33 +1,8 @@
-import { screen } from '@testing-library/react'
+import { fastFilterOptionTestUtils } from '_tests_/features/tasks/components/FastFilters/FastFilterOption/testUtils'
+import { option, props } from '_tests_/features/tasks/components/FastFilters/constants'
+import { render } from '_tests_/utils'
 
-import { fakeWord, render } from '_tests_/utils'
-
-import { testUtils as fastFilterOptionTestUtils } from './FastFilterOption/FastFilterOption.test'
 import FastFilters from './index'
-import { FastFilterOptionType } from './options'
-import { FastFiltersProps } from './types'
-
-const option: FastFilterOptionType<string> = {
-  label: fakeWord(),
-  value: fakeWord(),
-  counterKey: 'allLines',
-}
-
-const props: Readonly<FastFiltersProps<string, Record<string, number>>> = {
-  options: [option],
-  counters: { [option.counterKey]: 1 },
-  countersVisible: true,
-  disabled: false,
-  loading: false,
-  value: undefined,
-  onChange: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('fast-filters')
-
-export const testUtils = {
-  getContainer,
-}
 
 describe('Быстрый фильтр', () => {
   test('Отображаются', () => {
