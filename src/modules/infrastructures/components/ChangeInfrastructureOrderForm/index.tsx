@@ -8,6 +8,7 @@ import ReadonlyField from 'modules/warehouse/components/RelocationTaskDetails/Re
 
 import Space from 'components/Space'
 
+import { InfrastructureWorkTypesCatalogModel } from 'shared/models/catalogs/infrastructureWorkTypes'
 import { FileResponse } from 'shared/types/file'
 
 import ChangeInfrastructureOrderFormTable from '../ChangeInfrastructureOrderFormTable'
@@ -16,6 +17,7 @@ import { ChangeInfrastructureOrdersFormsTabFormFields } from '../ChangeInfrastru
 
 export type ChangeInfrastructureOrderFormProps = {
   data: InfrastructureOrderFormListItemModel
+  infrastructureWorkTypes: InfrastructureWorkTypesCatalogModel
   managerIsCurrentUser: boolean
 
   canUploadFile: boolean
@@ -28,6 +30,7 @@ export type ChangeInfrastructureOrderFormProps = {
 
 const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
   data,
+  infrastructureWorkTypes,
   managerIsCurrentUser,
 
   canUploadFile,
@@ -86,6 +89,7 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
       <ChangeInfrastructureOrderFormTable
         name={[id, 'works']}
         editableKeys={editableTableRowKeys}
+        infrastructureWorkTypes={infrastructureWorkTypes}
         managerIsCurrentUser={managerIsCurrentUser}
       />
     </Space>
