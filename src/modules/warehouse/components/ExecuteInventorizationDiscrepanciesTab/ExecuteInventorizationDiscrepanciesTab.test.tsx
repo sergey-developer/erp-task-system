@@ -1,24 +1,12 @@
-import { screen, within } from '@testing-library/react'
-import pick from 'lodash/pick'
+import { within } from '@testing-library/react'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { discrepanciesEquipmentTableTestUtils } from '_tests_/features/warehouse/components/DiscrepanciesEquipmentTable/testUtils'
+import { props } from '_tests_/features/warehouse/components/ExecuteInventorizationDiscrepanciesTab/constants'
+import { executeInventorizationDiscrepanciesTabTestUtils } from '_tests_/features/warehouse/components/ExecuteInventorizationDiscrepanciesTab/testUtils'
 import { mockGetInventorizationEquipmentsSuccess } from '_tests_/mocks/api'
 import { render } from '_tests_/utils'
 
-import { testUtils as discrepanciesEquipmentTableTestUtils } from '../DiscrepanciesEquipmentTable/DiscrepanciesEquipmentTable.test'
-import ExecuteInventorizationDiscrepanciesTab, {
-  ExecuteInventorizationDiscrepanciesProps,
-} from './index'
-
-const props: ExecuteInventorizationDiscrepanciesProps = {
-  inventorization: pick(warehouseFixtures.inventorization(), 'id'),
-}
-
-const getContainer = () => screen.getByTestId('execute-inventorization-discrepancies-tab')
-
-export const testUtils = {
-  getContainer,
-}
+import ExecuteInventorizationDiscrepanciesTab from './index'
 
 describe('Вкладка списка оборудования с расхождением', () => {
   test('Отображает заголовок и таблицу', () => {
@@ -26,7 +14,7 @@ describe('Вкладка списка оборудования с расхожд
 
     render(<ExecuteInventorizationDiscrepanciesTab {...props} />)
 
-    const container = testUtils.getContainer()
+    const container = executeInventorizationDiscrepanciesTabTestUtils.getContainer()
     const title = within(container).getByText('Список оборудования с расхождением')
     const table = discrepanciesEquipmentTableTestUtils.getContainer()
 

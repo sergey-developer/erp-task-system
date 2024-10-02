@@ -1,7 +1,7 @@
 import { FormInstance, ModalProps } from 'antd'
 
 import { TaskModel } from 'modules/task/models'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 import { IdType } from 'shared/types/common'
 

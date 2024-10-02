@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getFaChangeTypesErrMsg } from 'shared/constants/catalogs'
+import { getFaChangeTypesCatalogErrMsg } from 'shared/constants/catalogs'
 import {
   GetFaChangeTypesQueryArgs,
   GetFaChangeTypesSuccessResponse,
@@ -30,7 +30,7 @@ export const useGetFaChangeTypes = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getFaChangeTypesErrMsg)
+      showErrorNotification(getFaChangeTypesCatalogErrMsg)
     }
   }, [state.error])
 

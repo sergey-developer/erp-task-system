@@ -1,57 +1,18 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { within } from '@testing-library/react'
 
-import { testUtils as equipmentsByFileTableTestUtils } from 'modules/warehouse/components/EquipmentsByFileTable/EquipmentsByFileTable.test'
+import { props } from '_tests_/features/warehouse/components/CreateEquipmentsByFileModal/constants'
+import { createEquipmentsByFileModalTestUtils } from '_tests_/features/warehouse/components/CreateEquipmentsByFileModal/testUtils'
+import { equipmentsByFileTableTestUtils } from '_tests_/features/warehouse/components/EquipmentsByFileTable/testUtils'
+import { render } from '_tests_/utils'
 
-import { ADD_TEXT, CANCEL_TEXT } from 'shared/constants/common'
-
-import { buttonTestUtils, render } from '_tests_/utils'
-
-import CreateEquipmentsByFileModal, { CreateEquipmentsByFileModalProps } from './index'
-
-const props: CreateEquipmentsByFileModalProps = {
-  open: true,
-  data: [],
-  errors: undefined,
-
-  onCreate: jest.fn(),
-  isCreating: false,
-
-  onEdit: jest.fn(),
-
-  onCancel: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('create-equipments-by-file-modal')
-const findContainer = () => screen.findByTestId('create-equipments-by-file-modal')
-
-const getAddButton = () => buttonTestUtils.getButtonIn(getContainer(), new RegExp(ADD_TEXT))
-const clickAddButton = async (user: UserEvent) => {
-  const button = getAddButton()
-  await user.click(button)
-}
-
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
-const clickCancelButton = async (user: UserEvent) => {
-  const button = getCancelButton()
-  await user.click(button)
-}
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-
-  getAddButton,
-  clickAddButton,
-
-  getCancelButton,
-  clickCancelButton,
-}
+import CreateEquipmentsByFileModal from './index'
 
 describe('Модалка создания оборудования по шаблону файла', () => {
   test('Заголовок отображается', () => {
     render(<CreateEquipmentsByFileModal {...props} />)
-    const title = within(testUtils.getContainer()).getByText('Оборудование из Excel')
+    const title = within(createEquipmentsByFileModalTestUtils.getContainer()).getByText(
+      'Оборудование из Excel',
+    )
     expect(title).toBeInTheDocument()
   })
 
@@ -65,7 +26,7 @@ describe('Модалка создания оборудования по шабл
     test('Отображается', () => {
       render(<CreateEquipmentsByFileModal {...props} />)
 
-      const button = testUtils.getAddButton()
+      const button = createEquipmentsByFileModalTestUtils.getAddButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -73,7 +34,7 @@ describe('Модалка создания оборудования по шабл
 
     test('При клике вызывается обработчик', async () => {
       const { user } = render(<CreateEquipmentsByFileModal {...props} />)
-      await testUtils.clickAddButton(user)
+      await createEquipmentsByFileModalTestUtils.clickAddButton(user)
       expect(props.onCreate).toBeCalledTimes(1)
     })
   })
@@ -82,7 +43,7 @@ describe('Модалка создания оборудования по шабл
     test('Отображается', () => {
       render(<CreateEquipmentsByFileModal {...props} />)
 
-      const button = testUtils.getCancelButton()
+      const button = createEquipmentsByFileModalTestUtils.getCancelButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -90,7 +51,7 @@ describe('Модалка создания оборудования по шабл
 
     test('При клике вызывается обработчик', async () => {
       const { user } = render(<CreateEquipmentsByFileModal {...props} />)
-      await testUtils.clickCancelButton(user)
+      await createEquipmentsByFileModalTestUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
   })

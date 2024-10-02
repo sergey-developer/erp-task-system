@@ -2,14 +2,14 @@ import { Moment } from 'moment-timezone'
 
 import { EquipmentNomenclaturesModel } from 'modules/warehouse/models'
 
-import { LocationsModel } from 'shared/models/catalogs/location'
+import { LocationsCatalogModel } from 'shared/models/catalogs/locations'
 import { IdType } from 'shared/types/common'
 
 export type AmountEquipmentSpentReportFormProps = {
   nomenclatures: EquipmentNomenclaturesModel
   nomenclaturesIsLoading: boolean
 
-  locations: LocationsModel
+  locations: LocationsCatalogModel
   locationsIsLoading: boolean
 
   onSubmit: (values: AmountEquipmentSpentReportFormFields) => void

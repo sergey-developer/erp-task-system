@@ -15,7 +15,7 @@ export const inventorizationEquipment = (): InventorizationEquipmentModel => ({
   condition: EquipmentConditionEnum.Working,
   currency: currencyFixtures.currency(),
   price: fakeInteger(),
-  locationFact: catalogsFixtures.location(),
-  locationPlan: catalogsFixtures.location(),
+  locationFact: catalogsFixtures.locationCatalogListItem(),
+  locationPlan: catalogsFixtures.locationCatalogListItem(),
   id: fakeId(),
 })

@@ -10,7 +10,7 @@ import { useCancelSubTask, useGetSubTaskList, useReworkSubTask } from 'modules/t
 import { useTaskExtendedStatus, useTaskStatus, useTaskType } from 'modules/task/hooks/task'
 import { SubTaskModel, TaskModel } from 'modules/task/models'
 import { UserActionsModel } from 'modules/user/models'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -143,7 +143,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task, userActions, permission
             onClick={debouncedToggleCreateSubTaskModalOpened}
             disabled={
               !(
-                userActions.tasks.CAN_SUBTASKS_CREATE.includes(task.id) &&
+                userActions.tasks.CAN_SUBTASKS_CREATE?.includes(task.id) &&
                 taskStatus.isInProgress &&
                 (taskType.isIncident || taskType.isRequest)
               ) ||

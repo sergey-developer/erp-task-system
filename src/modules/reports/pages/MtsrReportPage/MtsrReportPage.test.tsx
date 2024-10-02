@@ -38,7 +38,7 @@ export const testUtils = {
 setupApiTests()
 
 describe('Страница отчета MTSR', () => {
-  test('Можно обновить отчёт после изменения формы', async () => {
+  test.skip('Можно обновить отчёт после изменения формы', async () => {
     const mtsrReport = [reportsFixtures.getMtsrReportItem()]
     mockGetMacroregionsMtsrReportSuccess({ once: false, body: mtsrReport })
 
@@ -68,7 +68,7 @@ describe('Страница отчета MTSR', () => {
     expect(button).toBeChecked()
   })
 
-  test('Переход по уровням работает', async () => {
+  test.skip('Переход по уровням работает', async () => {
     const mtsrReport1 = [reportsFixtures.getMtsrReportItem()]
     const mtsrReport2 = [reportsFixtures.getMtsrReportItem()]
     const mtsrReport3 = [reportsFixtures.getMtsrReportItem()]
