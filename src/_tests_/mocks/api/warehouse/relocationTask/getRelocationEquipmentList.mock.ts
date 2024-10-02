@@ -1,9 +1,9 @@
 import { GetRelocationEquipmentListSuccessResponse } from 'modules/warehouse/models'
+import { RelocationTaskRequestArgs } from 'modules/warehouse/types'
 import { getRelocationEquipmentListUrl } from 'modules/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/services/baseApi'
-import { IdType } from 'shared/types/common'
 
 import {
   getForbiddenErrorMockFn,
@@ -14,25 +14,25 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const getRelocationEquipmentListMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getRelocationEquipmentListUrl(id))
+const getRelocationEquipmentListMockFn = ({ relocationTaskId }: RelocationTaskRequestArgs) =>
+  getRequestMockFn(HttpMethodEnum.Get, getRelocationEquipmentListUrl({ relocationTaskId }))
 
 export const mockGetRelocationEquipmentListSuccess = (
-  id: IdType,
+  { relocationTaskId }: RelocationTaskRequestArgs,
   options?: Partial<ResponseResolverOptions<GetRelocationEquipmentListSuccessResponse>>,
-) => getSuccessMockFn(getRelocationEquipmentListMockFn(id), options)()
+) => getSuccessMockFn(getRelocationEquipmentListMockFn({ relocationTaskId }), options)()
 
 export const mockGetRelocationEquipmentListForbiddenError = (
-  id: IdType,
+  { relocationTaskId }: RelocationTaskRequestArgs,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
-) => getForbiddenErrorMockFn(getRelocationEquipmentListMockFn(id), options)()
+) => getForbiddenErrorMockFn(getRelocationEquipmentListMockFn({ relocationTaskId }), options)()
 
 export const mockGetRelocationEquipmentListNotFoundError = (
-  id: IdType,
+  { relocationTaskId }: RelocationTaskRequestArgs,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
-) => getNotFoundErrorMockFn(getRelocationEquipmentListMockFn(id), options)()
+) => getNotFoundErrorMockFn(getRelocationEquipmentListMockFn({ relocationTaskId }), options)()
 
 export const mockGetRelocationEquipmentListServerError = (
-  id: IdType,
+  { relocationTaskId }: RelocationTaskRequestArgs,
   options?: Partial<ResponseResolverOptions>,
-) => getServerErrorMockFn(getRelocationEquipmentListMockFn(id), options)()
+) => getServerErrorMockFn(getRelocationEquipmentListMockFn({ relocationTaskId }), options)()

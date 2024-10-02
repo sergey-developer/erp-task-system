@@ -7,19 +7,24 @@ import {
 
 import { props } from '_tests_/features/warehouse/components/RelocationTasksFilter/constants'
 import { relocationTasksFilterTestUtils } from '_tests_/features/warehouse/components/RelocationTasksFilter/testUtils'
-import { render } from '_tests_/utils'
+import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
 
 import RelocationTasksFilter from './index'
 
 describe('Фильтр списка заявок на перемещение оборудования', () => {
   describe('Статус', () => {
-    test('Отображается корректно', () => {
-      render(<RelocationTasksFilter {...props} />)
+    test(`Отображается без варианта ${RelocationTaskStatusEnum.Draft}`, async () => {
+      const { user } = render(<RelocationTasksFilter {...props} />)
 
       const input = relocationTasksFilterTestUtils.getStatusSelectInput()
+      await relocationTasksFilterTestUtils.openStatusSelect(user)
+      const draftOption = selectTestUtils.querySelectOption(
+        relocationTaskStatusDict[RelocationTaskStatusEnum.Draft],
+      )
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
+      expect(draftOption).not.toBeInTheDocument()
     })
 
     test('Можно выбрать несколько вариантов', async () => {

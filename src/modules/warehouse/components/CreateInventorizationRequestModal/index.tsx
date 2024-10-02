@@ -1,7 +1,20 @@
-import { Col, Form, Input, Row, Select, Upload } from 'antd'
+import {
+  Col,
+  Flex,
+  Form,
+  Input,
+  Popover,
+  PopoverProps,
+  Row,
+  Select,
+  SelectProps,
+  Tooltip,
+  Typography,
+  Upload,
+} from 'antd'
 import sortBy from 'lodash/sortBy'
 import { DefaultOptionType } from 'rc-select/lib/Select'
-import React, { FC, useMemo } from 'react'
+import React, { FC, useCallback, useMemo } from 'react'
 
 import { renderUploadedFile } from 'modules/attachment/utils'
 import { inventorizationTypeOptions } from 'modules/warehouse/constants/inventorization'
@@ -9,6 +22,7 @@ import { WarehouseListItemModel } from 'modules/warehouse/models'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import DatePicker from 'components/DatePicker'
+import { QuestionCircleIcon } from 'components/Icons'
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
@@ -19,6 +33,7 @@ import {
   idAndTitleSelectFieldNames,
 } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
+import { useSelectAll } from 'shared/hooks/useSelectAll'
 import { IdType } from 'shared/types/common'
 import { filterOptionBy } from 'shared/utils/common'
 
@@ -29,6 +44,22 @@ import {
 import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 
 const { TextArea } = Input
+const { Text } = Typography
+
+export const nomenclaturesPopoverContent =
+  'Если не выбрать ни одну номенклатуру, то при создании поручения автоматически будет выбрана вся номенклатура, имеющаяся на выбранных складах'
+
+const nomenclaturesPopoverOverlayInnerStyles: PopoverProps['overlayInnerStyle'] = { maxWidth: 400 }
+
+const maxTagPlaceholderNomenclaturesSelect: SelectProps['maxTagPlaceholder'] = (omittedValues) => (
+  <Tooltip
+    placement='left'
+    overlayStyle={{ pointerEvents: 'none' }}
+    title={omittedValues.map(({ label }) => label).join(', ')}
+  >
+    +{omittedValues.length}...
+  </Tooltip>
+)
 
 const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalProps> = ({
   onSubmit,
@@ -53,6 +84,8 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
   const { confirmLoading: isLoading } = props
 
   const [form] = Form.useForm<CreateInventorizationRequestFormFields>()
+  const nomenclaturesFormValue: CreateInventorizationRequestFormFields['nomenclatures'] =
+    Form.useWatch('nomenclatures', form)
 
   const equipmentNomenclatures = useMemo(
     () =>
@@ -73,6 +106,19 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
       ),
     [nomenclatures],
   )
+
+  const onChangeNomenclatures = useCallback<NonNullable<SelectProps['onChange']>>(
+    (value: CreateInventorizationRequestFormFields['nomenclatures']) =>
+      form.setFieldValue('nomenclatures', value),
+    [form],
+  )
+
+  const nomenclaturesSelectProps = useSelectAll({
+    showSelectAll: true,
+    value: nomenclaturesFormValue,
+    onChange: onChangeNomenclatures,
+    options: equipmentNomenclatures,
+  })
 
   const onFinish = async ({ description, ...values }: CreateInventorizationRequestFormFields) => {
     await onSubmit({ ...values, description: description?.trim() }, form.setFields)
@@ -148,11 +194,29 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
           />
         </Form.Item>
 
-        <Form.Item data-testid='nomenclatures-form-item' name='nomenclatures' label='Номенклатура'>
+        <Form.Item
+          data-testid='nomenclatures-form-item'
+          name='nomenclatures'
+          label={
+            <Flex gap='small' justify='center'>
+              <Text type='secondary'>Номенклатура</Text>
+
+              <Popover
+                overlayInnerStyle={nomenclaturesPopoverOverlayInnerStyles}
+                content={nomenclaturesPopoverContent}
+                placement='right'
+              >
+                <QuestionCircleIcon $size='large' />
+              </Popover>
+            </Flex>
+          }
+        >
           <Select
+            {...nomenclaturesSelectProps}
+            maxTagCount={15}
+            maxTagPlaceholder={maxTagPlaceholderNomenclaturesSelect}
             mode='multiple'
             placeholder='Выберите номенклатуру'
-            options={equipmentNomenclatures}
             loading={nomenclaturesIsLoading}
             disabled={isLoading || nomenclaturesIsLoading}
             filterOption={filterOptionBy('label')}
