@@ -2,11 +2,14 @@ import { FC } from 'react'
 
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { SetNonNullable } from 'shared/types/utils'
+
 import AttachmentImages from '../AttachmentImages'
 import { AttachmentImagesProps } from '../AttachmentImages/types'
 
-export type AttachmentListModalProps = Required<
-  Pick<BaseModalProps, 'open' | 'title' | 'onCancel'>
+export type AttachmentListModalProps = SetNonNullable<
+  BaseModalProps,
+  'open' | 'title' | 'onCancel'
 > &
   Pick<BaseModalProps, 'isLoading'> &
   Pick<AttachmentImagesProps, 'data'>

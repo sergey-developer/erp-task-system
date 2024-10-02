@@ -1,58 +1,21 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 
-import { mockGetEquipmentNomenclaturesSuccess, mockGetLocationListSuccess } from '_tests_/mocks/api'
-import { linkTestUtils, renderWithRouter } from '_tests_/utils'
+import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouse/pages/AmountEquipmentSpentReportPage/testUtils'
+import { employeesActionsReportPageTestUtils } from '_tests_/features/warehouse/pages/EmployeesActionsReportPage/testUtils'
+import { historyNomenclatureOperationsReportPageTestUtils } from '_tests_/features/warehouse/pages/HistoryNomenclatureOperationsReportPage/testUtils'
+import { reportsCatalogPageTestUtils } from '_tests_/features/warehouse/pages/ReportsCatalogPage/testUtils'
+import {
+  mockGetEquipmentNomenclaturesSuccess,
+  mockGetLocationsCatalogSuccess,
+} from '_tests_/mocks/api'
+import { renderWithRouter } from '_tests_/utils'
 
 import AmountEquipmentSpentReportPage from '../AmountEquipmentSpentReportPage'
-import { testUtils as amountEquipmentSpentReportPageTestUtils } from '../AmountEquipmentSpentReportPage/AmountEquipmentSpentReportPage.test'
 import EmployeesActionsReportPage from '../EmployeesActionsReportPage'
-import { testUtils as employeesActionsReportPageTestUtils } from '../EmployeesActionsReportPage/EmployeesActionsReportPage.test'
 import HistoryNomenclatureOperationsReportPage from '../HistoryNomenclatureOperationsReportPage'
-import { testUtils as historyNomenclatureOperationsReportPageTestUtils } from '../HistoryNomenclatureOperationsReportPage/HistoryNomenclatureOperationsReportPage.test'
 import ReportsCatalogPage from './index'
-
-const getContainer = () => screen.getByTestId('reports-page')
-const getCatalogContainer = () => within(getContainer()).getByTestId('reports')
-
-// history nomenclature operations link
-const getHistoryNomenclatureOperationsReportPageLink = () =>
-  linkTestUtils.getLinkIn(getCatalogContainer(), 'История операций по номенклатуре')
-
-const clickHistoryNomenclatureOperationsReportPageLink = async (user: UserEvent) =>
-  linkTestUtils.clickLinkIn(getCatalogContainer(), user, 'История операций по номенклатуре')
-
-// employees actions link
-const getEmployeesActionsReportPageLink = () =>
-  linkTestUtils.getLinkIn(getCatalogContainer(), 'Действия сотрудников')
-
-const clickEmployeesActionsReportPageLink = async (user: UserEvent) =>
-  linkTestUtils.clickLinkIn(getCatalogContainer(), user, 'Действия сотрудников')
-
-// amount equipment spent link
-const getAmountEquipmentSpentReportPageLink = () =>
-  linkTestUtils.getLinkIn(getCatalogContainer(), 'Количество потраченного оборудования')
-
-const clickAmountEquipmentSpentReportPageLink = async (user: UserEvent) =>
-  linkTestUtils.clickLinkIn(getCatalogContainer(), user, 'Количество потраченного оборудования')
-
-export const testUtils = {
-  getContainer,
-
-  getCatalogContainer,
-
-  getHistoryNomenclatureOperationsReportPageLink,
-  clickHistoryNomenclatureOperationsReportPageLink,
-
-  getEmployeesActionsReportPageLink,
-  clickEmployeesActionsReportPageLink,
-
-  getAmountEquipmentSpentReportPageLink,
-  clickAmountEquipmentSpentReportPageLink,
-}
 
 describe('Страница каталога отчетов', () => {
   describe('История операций по номенклатуре', () => {
@@ -67,7 +30,7 @@ describe('Страница каталога отчетов', () => {
         { initialEntries: [WarehouseRouteEnum.Reports], initialIndex: 0 },
       )
 
-      const link = testUtils.getHistoryNomenclatureOperationsReportPageLink()
+      const link = reportsCatalogPageTestUtils.getHistoryNomenclatureOperationsReportPageLink()
 
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute('href', WarehouseRouteEnum.HistoryNomenclatureOperations)
@@ -90,7 +53,7 @@ describe('Страница каталога отчетов', () => {
         { initialEntries: [WarehouseRouteEnum.Reports], initialIndex: 0 },
       )
 
-      await testUtils.clickHistoryNomenclatureOperationsReportPageLink(user)
+      await reportsCatalogPageTestUtils.clickHistoryNomenclatureOperationsReportPageLink(user)
       const page = historyNomenclatureOperationsReportPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
@@ -109,7 +72,7 @@ describe('Страница каталога отчетов', () => {
         { initialEntries: [WarehouseRouteEnum.Reports], initialIndex: 0 },
       )
 
-      const link = testUtils.getEmployeesActionsReportPageLink()
+      const link = reportsCatalogPageTestUtils.getEmployeesActionsReportPageLink()
 
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute('href', WarehouseRouteEnum.EmployeesActions)
@@ -130,7 +93,7 @@ describe('Страница каталога отчетов', () => {
         { initialEntries: [WarehouseRouteEnum.Reports], initialIndex: 0 },
       )
 
-      await testUtils.clickEmployeesActionsReportPageLink(user)
+      await reportsCatalogPageTestUtils.clickEmployeesActionsReportPageLink(user)
       const page = employeesActionsReportPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
@@ -149,7 +112,7 @@ describe('Страница каталога отчетов', () => {
         { initialEntries: [WarehouseRouteEnum.Reports], initialIndex: 0 },
       )
 
-      const link = testUtils.getAmountEquipmentSpentReportPageLink()
+      const link = reportsCatalogPageTestUtils.getAmountEquipmentSpentReportPageLink()
 
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute('href', WarehouseRouteEnum.AmountEquipmentSpent)
@@ -157,7 +120,7 @@ describe('Страница каталога отчетов', () => {
 
     test('При клике переходит на страницу списка отчета действий сотрудников', async () => {
       mockGetEquipmentNomenclaturesSuccess()
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
 
       const { user } = renderWithRouter(
         [
@@ -173,7 +136,7 @@ describe('Страница каталога отчетов', () => {
         { initialEntries: [WarehouseRouteEnum.Reports], initialIndex: 0 },
       )
 
-      await testUtils.clickAmountEquipmentSpentReportPageLink(user)
+      await reportsCatalogPageTestUtils.clickAmountEquipmentSpentReportPageLink(user)
       const page = amountEquipmentSpentReportPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()

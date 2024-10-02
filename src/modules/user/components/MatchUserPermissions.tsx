@@ -2,7 +2,7 @@ import { FC, ReactElement } from 'react'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 import { MaybeNull } from 'shared/types/utils'
 

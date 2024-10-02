@@ -2,7 +2,7 @@ import { EditableProTableProps } from '@ant-design/pro-table/es/components/Edita
 
 import { InventorizationEquipmentListItemModel } from 'modules/warehouse/models'
 
-import { LocationsModel } from 'shared/models/catalogs/location'
+import { LocationsCatalogModel } from 'shared/models/catalogs/locations'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, Nullable, SetNonNullable } from 'shared/types/utils'
 
@@ -27,7 +27,7 @@ export type ReviseEquipmentTableProps = SetNonNullable<
   EditableProTableProps<ReviseEquipmentTableItem, any>,
   'pagination' | 'dataSource' | 'onTableChange' | 'loading'
 > & {
-  locations: LocationsModel
+  locations: LocationsCatalogModel
   locationsIsLoading: boolean
 
   onChangeQuantityFact: (
