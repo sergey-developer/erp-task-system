@@ -7,7 +7,7 @@ import {
 
 import { props } from '_tests_/features/warehouse/components/RelocationTasksFilter/constants'
 import { relocationTasksFilterTestUtils } from '_tests_/features/warehouse/components/RelocationTasksFilter/testUtils'
-import { render, selectTestUtils } from '_tests_/utils'
+import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
 
 import RelocationTasksFilter from './index'
 
