@@ -1,12 +1,7 @@
-import { screen } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import { testUtils as historyNomenclatureOperationsReportFilterTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportFilter/HistoryNomenclatureOperationsReportFilter.test'
 import { testUtils as historyNomenclatureOperationsReportFormTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportForm/HistoryNomenclatureOperationsReportForm.test'
 import { testUtils as historyNomenclatureOperationsReportTableTestUtils } from 'modules/reports/components/HistoryNomenclatureOperationsReportTable/HistoryNomenclatureOperationsReportTable.test'
 import { getRelocationColValue } from 'modules/reports/utils'
-import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
-import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 import {
   equipmentConditionDict,
   EquipmentConditionEnum,
@@ -16,6 +11,9 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
+import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/components/EquipmentDetails/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
+import { historyNomenclatureOperationsReportPageTestUtils } from '_tests_/features/warehouse/pages/HistoryNomenclatureOperationsReportPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
@@ -28,46 +26,14 @@ import {
   mockGetEquipmentSuccess,
   mockGetHistoryNomenclatureOperationsReportSuccess,
   mockGetHistoryNomenclatureOperationsReportXlsxSuccess,
-  mockGetLocationListSuccess,
+  mockGetLocationsCatalogSuccess,
   mockGetRelocationEquipmentListSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { buttonTestUtils, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
+import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
 
 import HistoryNomenclatureOperationsReportPage from './index'
-
-const getContainer = () => screen.getByTestId('history-nomenclature-operations-report-page')
-
-// filter button
-const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
-
-const clickFilterButton = async (user: UserEvent) => {
-  const button = getFilterButton()
-  await user.click(button)
-}
-
-// export to excel button
-const getExportToExcelButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Выгрузить в Excel/)
-
-const clickExportToExcelButton = async (user: UserEvent) => {
-  const button = getExportToExcelButton()
-  await user.click(button)
-}
-
-const expectExportToExcelLoadingFinished = () =>
-  buttonTestUtils.expectLoadingFinished(getExportToExcelButton())
-
-export const testUtils = {
-  getContainer,
-
-  clickFilterButton,
-
-  getExportToExcelButton,
-  clickExportToExcelButton,
-  expectExportToExcelLoadingFinished,
-}
 
 setupApiTests()
 
@@ -84,8 +50,8 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
       mockGetEquipmentSuccess(reportListItem.id)
       mockGetEquipmentAttachmentListSuccess(reportListItem.id)
@@ -125,8 +91,8 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const locationListItem = catalogsFixtures.locationListItem()
-      mockGetLocationListSuccess({ body: [locationListItem] })
+      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
       mockGetRelocationTaskSuccess(reportListItem.lastRelocationTask.id)
       mockGetRelocationEquipmentListSuccess(reportListItem.lastRelocationTask.id)
@@ -169,7 +135,7 @@ describe('Страница отчета истории операций по н�
         once: false,
       })
 
-      mockGetLocationListSuccess()
+      mockGetLocationsCatalogSuccess()
       mockGetCustomerListSuccess()
 
       const { user } = render(<HistoryNomenclatureOperationsReportPage />, {
@@ -186,7 +152,7 @@ describe('Страница отчета истории операций по н�
       )
       await historyNomenclatureOperationsReportFormTestUtils.clickSubmitButton(user)
       await historyNomenclatureOperationsReportTableTestUtils.expectLoadingFinished()
-      await testUtils.clickFilterButton(user)
+      await historyNomenclatureOperationsReportPageTestUtils.clickFilterButton(user)
       await historyNomenclatureOperationsReportFilterTestUtils.findContainer()
       await historyNomenclatureOperationsReportFilterTestUtils.openConditionsSelect(user)
       await historyNomenclatureOperationsReportFilterTestUtils.setCondition(
@@ -237,8 +203,8 @@ describe('Страница отчета истории операций по н�
         body: file,
       })
 
-      await testUtils.clickExportToExcelButton(user)
-      await testUtils.expectExportToExcelLoadingFinished()
+      await historyNomenclatureOperationsReportPageTestUtils.clickExportToExcelButton(user)
+      await historyNomenclatureOperationsReportPageTestUtils.expectExportToExcelLoadingFinished()
 
       expect(base64ToBytes).toBeCalledTimes(1)
       expect(base64ToBytes).toBeCalledWith(file)

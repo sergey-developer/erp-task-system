@@ -15,7 +15,7 @@ export const equipmentListItem = (): EquipmentListItemModel => ({
   inventoryNumber: fakeWord(),
   condition: EquipmentConditionEnum.Working,
   quantity: fakeInteger(),
-  location: catalogsFixtures.location(),
+  location: pick(catalogsFixtures.locationCatalogListItem(), 'id', 'title'),
   isCredited: false,
   category: pick(warehouseFixtures.equipmentCategory(), 'id', 'title'),
   purpose: pick(warehouseFixtures.workType(), 'id', 'title'),

@@ -1,10 +1,15 @@
-import { Col, Radio, Row } from 'antd'
+import { Col, Radio, RadioGroupProps, Row } from 'antd'
 import React, { FC } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 
 import Space from 'components/Space'
+
+const radioOptions: RadioGroupProps['options'] = [
+  { label: 'Реестр', value: TasksRoutesEnum.DesktopTasks },
+  { label: 'Карта', value: TasksRoutesEnum.DesktopTasksMap },
+]
 
 const TaskListLayout: FC = () => {
   const navigate = useNavigate()
@@ -22,12 +27,11 @@ const TaskListLayout: FC = () => {
       <Row className='task-list-layout-header' justify='end'>
         <Col>
           <Radio.Group
+            optionType='button'
             onChange={(event) => navigate(event.target.value)}
             defaultValue={location.pathname}
-          >
-            <Radio.Button value={TasksRoutesEnum.DesktopTasks}>Реестр</Radio.Button>
-            <Radio.Button value={TasksRoutesEnum.DesktopTasksMap}>Карта</Radio.Button>
-          </Radio.Group>
+            options={radioOptions}
+          />
         </Col>
       </Row>
 

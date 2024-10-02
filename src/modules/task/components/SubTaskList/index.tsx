@@ -1,10 +1,9 @@
 import { Divider, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { TaskExtendedStatusEnum, TaskStatusEnum } from 'modules/task/constants/task'
 import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
-import { SubTaskModel } from 'modules/task/models'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { SubTaskModel, TaskModel } from 'modules/task/models'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 import Space from 'components/Space'
 
@@ -16,8 +15,8 @@ import SubTask from './SubTask'
 const { Text } = Typography
 
 export type SubTaskListProps = {
-  taskStatus: TaskStatusEnum
-  taskExtendedStatus: TaskExtendedStatusEnum
+  taskStatus: TaskModel['status']
+  taskExtendedStatus: TaskModel['extendedStatus']
   currentUserIsTaskAssignee: boolean
   list: SubTaskModel[]
   isError: boolean

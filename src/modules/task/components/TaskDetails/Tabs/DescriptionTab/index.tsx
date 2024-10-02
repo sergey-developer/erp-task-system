@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import Attachments from 'modules/attachment/components/Attachments'
 import { TaskModel } from 'modules/task/models'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 import { EditIcon } from 'components/Icons'
 import Space from 'components/Space'
