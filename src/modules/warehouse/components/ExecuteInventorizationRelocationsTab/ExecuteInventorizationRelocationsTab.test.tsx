@@ -2,17 +2,10 @@ import { waitFor, within } from '@testing-library/react'
 
 import { CommonRouteEnum } from 'configs/routes'
 
+import { testUtils as executeInventorizationRelocationTaskTableTestUtils } from 'modules/warehouse/components/ExecuteInventorizationRelocationTaskTable/ExecuteInventorizationRelocationTaskTable.test'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import CreateRelocationTaskDraftPage from 'modules/warehouse/pages/CreateRelocationTaskDraftPage'
 
-import { testUtils as executeInventorizationRelocationTaskTableTestUtils } from 'modules/warehouse/components/ExecuteInventorizationRelocationTaskTable/ExecuteInventorizationRelocationTaskTable.test'
-import { props } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/constants'
-import { executeInventorizationRelocationsTabTestUtils } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/testUtils'
-import { createRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskDraftPage/testUtils'
-import commonFixtures from '_tests_/fixtures/common'
-import userFixtures from '_tests_/fixtures/user'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { mockGetRelocationTasksSuccess } from '_tests_/mocks/api'
 import { props } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/constants'
 import { executeInventorizationRelocationsTabTestUtils } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/testUtils'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
