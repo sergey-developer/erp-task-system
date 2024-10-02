@@ -1,307 +1,21 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { within } from '@testing-library/react'
 
 import { validationMessages } from 'shared/constants/validation'
-import { MaybeNull } from 'shared/types/utils'
 
-import countryFixtures from '_tests_/fixtures/country'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
-  buttonTestUtils,
-  checkboxTestUtils,
-  fakeWord,
-  render,
-  selectTestUtils,
-} from '_tests_/utils'
+  addModeProps,
+  props,
+} from '_tests_/features/warehouse/components/NomenclatureFormModal/constants'
+import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouse/components/NomenclatureFormModal/testUtils'
+import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { fakeWord, render } from '_tests_/utils'
 
 import NomenclatureFormModal from './index'
-import { NomenclatureFormModalProps } from './types'
-
-const props: Readonly<NomenclatureFormModalProps> = {
-  open: true,
-  isLoading: false,
-  submitBtnDisabled: false,
-
-  nomenclature: undefined,
-  nomenclatureIsLoading: false,
-
-  groups: [warehouseFixtures.nomenclatureGroupListItem()],
-  groupsIsLoading: false,
-
-  countries: [countryFixtures.countryListItem()],
-  countriesIsLoading: false,
-
-  measurementUnits: [warehouseFixtures.measurementUnitListItem()],
-  measurementUnitsIsLoading: false,
-  title: fakeWord(),
-  okText: fakeWord(),
-  onCancel: jest.fn(),
-  onSubmit: jest.fn(),
-}
-
-const addModeProps: Pick<NomenclatureFormModalProps, 'okText'> = {
-  okText: 'Добавить',
-}
-
-const editModeProps: Pick<NomenclatureFormModalProps, 'okText'> = {
-  okText: 'Сохранить',
-}
-
-const getContainer = () => screen.getByTestId('nomenclature-form-modal')
-const findContainer = (): Promise<HTMLElement> => screen.findByTestId('nomenclature-form-modal')
-
-// name field
-const getNameFormItem = () => within(getContainer()).getByTestId('name-form-item')
-
-const getNameLabel = () => within(getNameFormItem()).getByLabelText('Наименование')
-
-const getNameField = () => within(getNameFormItem()).getByPlaceholderText('Введите наименование')
-
-const setName = async (user: UserEvent, value: string) => {
-  const field = getNameField()
-  await user.type(field, value)
-  return field
-}
-
-const findNameError = (error: string): Promise<HTMLElement> =>
-  within(getNameFormItem()).findByText(error)
-
-// short name field
-const getShortNameFormItem = () => within(getContainer()).getByTestId('short-name-form-item')
-
-const getShortNameLabel = () =>
-  within(getShortNameFormItem()).getByLabelText('Краткое наименование')
-
-const getShortNameField = () =>
-  within(getShortNameFormItem()).getByPlaceholderText('Введите краткое наименование')
-
-const setShortName = async (user: UserEvent, value: string) => {
-  const field = getShortNameField()
-  await user.type(field, value)
-  return field
-}
-
-const findShortNameError = (error: string): Promise<HTMLElement> =>
-  within(getShortNameFormItem()).findByText(error)
-
-// group field
-const getGroupFormItem = () => within(getContainer()).getByTestId('group-form-item')
-const getGroupLabel = () => within(getGroupFormItem()).getByLabelText('Группа')
-const getGroupField = () => selectTestUtils.getSelect(getGroupFormItem())
-const setGroup = selectTestUtils.clickSelectOption
-const getGroupOption = selectTestUtils.getSelectOption
-
-const getSelectedGroup = (value: string): HTMLElement =>
-  within(getGroupFormItem()).getByTitle(value)
-
-const querySelectedGroup = (value: string): MaybeNull<HTMLElement> =>
-  within(getGroupFormItem()).queryByTitle(value)
-
-const openGroupSelect = async (user: UserEvent) => {
-  await selectTestUtils.openSelect(user, getGroupFormItem())
-}
-
-const findGroupError = (error: string): Promise<HTMLElement> =>
-  within(getGroupFormItem()).findByText(error)
-
-const expectGroupLoadingStarted = () => selectTestUtils.expectLoadingStarted(getGroupFormItem())
-
-const expectGroupLoadingFinished = () => selectTestUtils.expectLoadingFinished(getGroupFormItem())
-
-// vendor code field
-const getVendorCodeFormItem = () => within(getContainer()).getByTestId('vendor-code-form-item')
-
-const getVendorCodeLabel = () => within(getVendorCodeFormItem()).getByLabelText('Артикул')
-
-const getVendorCodeField = () =>
-  within(getVendorCodeFormItem()).getByPlaceholderText('Введите артикул')
-
-const setVendorCode = async (user: UserEvent, value: string) => {
-  const field = getVendorCodeField()
-  await user.type(field, value)
-  return field
-}
-
-const findVendorCodeError = (error: string): Promise<HTMLElement> =>
-  within(getVendorCodeFormItem()).findByText(error)
-
-// measurement unit field
-const getMeasurementUnitFormItem = () =>
-  within(getContainer()).getByTestId('measurement-unit-form-item')
-
-const getMeasurementUnitLabel = () =>
-  within(getMeasurementUnitFormItem()).getByLabelText('Единица измерения')
-
-const getMeasurementUnitField = () => selectTestUtils.getSelect(getMeasurementUnitFormItem())
-const setMeasurementUnit = selectTestUtils.clickSelectOption
-const getMeasurementUnitOption = selectTestUtils.getSelectOption
-
-const getSelectedMeasurementUnit = (value: string): HTMLElement =>
-  within(getMeasurementUnitFormItem()).getByTitle(value)
-
-const querySelectedMeasurementUnit = (value: string): MaybeNull<HTMLElement> =>
-  within(getMeasurementUnitFormItem()).queryByTitle(value)
-
-const openMeasurementUnitSelect = async (user: UserEvent) => {
-  await selectTestUtils.openSelect(user, getMeasurementUnitFormItem())
-}
-
-const findMeasurementUnitError = (error: string): Promise<HTMLElement> =>
-  within(getMeasurementUnitFormItem()).findByText(error)
-
-const expectMeasurementUnitLoadingStarted = () =>
-  selectTestUtils.expectLoadingStarted(getMeasurementUnitFormItem())
-
-const expectMeasurementUnitLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getMeasurementUnitFormItem())
-
-// country field
-const getCountryFormItem = () => within(getContainer()).getByTestId('country-form-item')
-const getCountryLabel = () => within(getCountryFormItem()).getByLabelText('Страна производитель')
-const getCountryField = () => selectTestUtils.getSelect(getCountryFormItem())
-const setCountry = selectTestUtils.clickSelectOption
-const getCountryOption = selectTestUtils.getSelectOption
-
-const getSelectedCountry = (value: string): HTMLElement =>
-  within(getCountryFormItem()).getByTitle(value)
-
-const querySelectedCountry = (value: string): MaybeNull<HTMLElement> =>
-  within(getCountryFormItem()).queryByTitle(value)
-
-const openCountrySelect = async (user: UserEvent) => {
-  await selectTestUtils.openSelect(user, getCountryFormItem())
-}
-
-const findCountryError = (error: string): Promise<HTMLElement> =>
-  within(getCountryFormItem()).findByText(error)
-
-const expectCountryLoadingStarted = () => selectTestUtils.expectLoadingStarted(getCountryFormItem())
-
-const expectCountryLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getCountryFormItem())
-
-// submit button
-const getSubmitButton = (name: RegExp) => buttonTestUtils.getButtonIn(getContainer(), name)
-
-const querySubmitButton = (name: RegExp) => buttonTestUtils.queryButtonIn(getContainer(), name)
-
-const clickSubmitButton = async (user: UserEvent, name: RegExp) => {
-  const button = getSubmitButton(name)
-  await user.click(button)
-}
-
-// equipment has serial number field
-const getEquipmentHasSerialNumberFormItem = () =>
-  within(getContainer()).getByTestId('equipment-has-serial-number-form-item')
-
-const getEquipmentHasSerialNumberField = () =>
-  checkboxTestUtils.getCheckboxIn(getEquipmentHasSerialNumberFormItem())
-
-const setEquipmentHasSerialNumber = async (user: UserEvent) => {
-  const field = getEquipmentHasSerialNumberField()
-  await user.click(field)
-  return field
-}
-
-// add button
-const getAddButton = () => getSubmitButton(new RegExp(addModeProps.okText))
-
-const queryAddButton = () => querySubmitButton(new RegExp(addModeProps.okText))
-
-const clickAddButton = async (user: UserEvent) => {
-  const button = getAddButton()
-  await user.click(button)
-}
-
-// close button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Отменить/)
-
-const queryCancelButton = () => buttonTestUtils.queryButtonIn(getContainer(), /Отменить/)
-
-const clickCancelButton = async (user: UserEvent) => {
-  const button = getCancelButton()
-  await user.click(button)
-}
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-
-  getSubmitButton,
-  querySubmitButton,
-  clickSubmitButton,
-
-  getAddButton,
-  queryAddButton,
-  clickAddButton,
-
-  getCancelButton,
-  queryCancelButton,
-  clickCancelButton,
-
-  getNameFormItem,
-  getNameLabel,
-  getNameField,
-  setName,
-  findNameError,
-
-  getShortNameFormItem,
-  getShortNameLabel,
-  getShortNameField,
-  setShortName,
-  findShortNameError,
-
-  getGroupFormItem,
-  getGroupLabel,
-  getGroupField,
-  setGroup,
-  getGroupOption,
-  getSelectedGroup,
-  querySelectedGroup,
-  openGroupSelect,
-  findGroupError,
-  expectGroupLoadingStarted,
-  expectGroupLoadingFinished,
-
-  getVendorCodeFormItem,
-  getVendorCodeLabel,
-  getVendorCodeField,
-  setVendorCode,
-  findVendorCodeError,
-
-  getMeasurementUnitFormItem,
-  getMeasurementUnitLabel,
-  getMeasurementUnitField,
-  setMeasurementUnit,
-  getMeasurementUnitOption,
-  getSelectedMeasurementUnit,
-  querySelectedMeasurementUnit,
-  openMeasurementUnitSelect,
-  findMeasurementUnitError,
-  expectMeasurementUnitLoadingStarted,
-  expectMeasurementUnitLoadingFinished,
-
-  getCountryFormItem,
-  getCountryLabel,
-  getCountryField,
-  setCountry,
-  getCountryOption,
-  getSelectedCountry,
-  querySelectedCountry,
-  openCountrySelect,
-  findCountryError,
-  expectCountryLoadingStarted,
-  expectCountryLoadingFinished,
-
-  getEquipmentHasSerialNumberFormItem,
-  getEquipmentHasSerialNumberField,
-  setEquipmentHasSerialNumber,
-}
 
 describe('Модалка создания и редактирования номенклатурной позиции', () => {
   test('Заголовок отображается', () => {
     render(<NomenclatureFormModal {...props} />)
-    const title = within(getContainer()).getByText(props.title)
+    const title = within(nomenclatureFormModalTestUtils.getContainer()).getByText(props.title)
     expect(title).toBeInTheDocument()
   })
 
@@ -309,7 +23,7 @@ describe('Модалка создания и редактирования ном
     test('Отображается', () => {
       render(<NomenclatureFormModal {...props} />)
 
-      const button = testUtils.getSubmitButton(new RegExp(props.okText))
+      const button = nomenclatureFormModalTestUtils.getSubmitButton(new RegExp(props.okText))
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -317,27 +31,27 @@ describe('Модалка создания и редактирования ном
 
     test('Можно сделать не активной', () => {
       render(<NomenclatureFormModal {...props} submitBtnDisabled />)
-      const button = testUtils.getSubmitButton(new RegExp(props.okText))
+      const button = nomenclatureFormModalTestUtils.getSubmitButton(new RegExp(props.okText))
       expect(button).toBeDisabled()
     })
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<NomenclatureFormModal {...props} />)
 
-      await testUtils.setName(user, fakeWord())
-      await testUtils.setShortName(user, fakeWord())
+      await nomenclatureFormModalTestUtils.setName(user, fakeWord())
+      await nomenclatureFormModalTestUtils.setShortName(user, fakeWord())
 
-      await testUtils.openGroupSelect(user)
-      await testUtils.setGroup(user, props.groups[0].title)
+      await nomenclatureFormModalTestUtils.openGroupSelect(user)
+      await nomenclatureFormModalTestUtils.setGroup(user, props.groups[0].title)
 
-      await testUtils.setVendorCode(user, fakeWord())
+      await nomenclatureFormModalTestUtils.setVendorCode(user, fakeWord())
 
-      await testUtils.openMeasurementUnitSelect(user)
-      await testUtils.setMeasurementUnit(user, props.measurementUnits[0].title)
+      await nomenclatureFormModalTestUtils.openMeasurementUnitSelect(user)
+      await nomenclatureFormModalTestUtils.setMeasurementUnit(user, props.measurementUnits[0].title)
 
-      await testUtils.setEquipmentHasSerialNumber(user)
+      await nomenclatureFormModalTestUtils.setEquipmentHasSerialNumber(user)
 
-      await testUtils.clickSubmitButton(user, new RegExp(props.okText))
+      await nomenclatureFormModalTestUtils.clickSubmitButton(user, new RegExp(props.okText))
 
       expect(props.onSubmit).toBeCalledTimes(1)
       expect(props.onSubmit).toBeCalledWith(expect.anything(), expect.anything())
@@ -345,7 +59,7 @@ describe('Модалка создания и редактирования ном
 
     test('Не отображается во время загрузки номенклатуры', () => {
       render(<NomenclatureFormModal {...props} nomenclatureIsLoading />)
-      const button = testUtils.querySubmitButton(new RegExp(props.okText))
+      const button = nomenclatureFormModalTestUtils.querySubmitButton(new RegExp(props.okText))
       expect(button).not.toBeInTheDocument()
     })
   })
@@ -354,7 +68,7 @@ describe('Модалка создания и редактирования ном
     test('Отображается корректно', () => {
       render(<NomenclatureFormModal {...props} />)
 
-      const button = testUtils.getCancelButton()
+      const button = nomenclatureFormModalTestUtils.getCancelButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -362,13 +76,13 @@ describe('Модалка создания и редактирования ном
 
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<NomenclatureFormModal {...props} />)
-      await testUtils.clickCancelButton(user)
+      await nomenclatureFormModalTestUtils.clickCancelButton(user)
       expect(props.onCancel).toBeCalledTimes(1)
     })
 
     test('Не отображается во время загрузки номенклатуры', () => {
       render(<NomenclatureFormModal {...props} nomenclatureIsLoading />)
-      const button = testUtils.queryCancelButton()
+      const button = nomenclatureFormModalTestUtils.queryCancelButton()
       expect(button).not.toBeInTheDocument()
     })
   })
@@ -377,8 +91,8 @@ describe('Модалка создания и редактирования ном
     test('Отображается корректно', () => {
       render(<NomenclatureFormModal {...props} />)
 
-      const label = testUtils.getNameLabel()
-      const field = testUtils.getNameField()
+      const label = nomenclatureFormModalTestUtils.getNameLabel()
+      const field = nomenclatureFormModalTestUtils.getNameField()
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
@@ -390,7 +104,7 @@ describe('Модалка создания и редактирования ном
       const { user } = render(<NomenclatureFormModal {...props} />)
 
       const value = fakeWord()
-      const field = await testUtils.setName(user, value)
+      const field = await nomenclatureFormModalTestUtils.setName(user, value)
 
       expect(field).toHaveDisplayValue(value)
     })
@@ -400,16 +114,16 @@ describe('Модалка создания и редактирования ном
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
-      const field = testUtils.getNameField()
+      const field = nomenclatureFormModalTestUtils.getNameField()
       expect(field).toHaveDisplayValue(nomenclature.title)
     })
 
     test('Обязательное поле', async () => {
       const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
 
-      await testUtils.clickAddButton(user)
+      await nomenclatureFormModalTestUtils.clickAddButton(user)
 
-      const error = await testUtils.findNameError(validationMessages.required)
+      const error = await nomenclatureFormModalTestUtils.findNameError(validationMessages.required)
       expect(error).toBeInTheDocument()
     })
   })
@@ -418,8 +132,8 @@ describe('Модалка создания и редактирования ном
     test('Отображается корректно', () => {
       render(<NomenclatureFormModal {...props} />)
 
-      const label = testUtils.getShortNameLabel()
-      const field = testUtils.getShortNameField()
+      const label = nomenclatureFormModalTestUtils.getShortNameLabel()
+      const field = nomenclatureFormModalTestUtils.getShortNameField()
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
@@ -431,7 +145,7 @@ describe('Модалка создания и редактирования ном
       const { user } = render(<NomenclatureFormModal {...props} />)
 
       const value = fakeWord()
-      const field = await testUtils.setShortName(user, value)
+      const field = await nomenclatureFormModalTestUtils.setShortName(user, value)
 
       expect(field).toHaveDisplayValue(value)
     })
@@ -441,16 +155,18 @@ describe('Модалка создания и редактирования ном
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
-      const field = testUtils.getShortNameField()
+      const field = nomenclatureFormModalTestUtils.getShortNameField()
       expect(field).toHaveDisplayValue(nomenclature.shortTitle)
     })
 
     test('Обязательное поле', async () => {
       const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
 
-      await testUtils.clickAddButton(user)
+      await nomenclatureFormModalTestUtils.clickAddButton(user)
 
-      const error = await testUtils.findShortNameError(validationMessages.required)
+      const error = await nomenclatureFormModalTestUtils.findShortNameError(
+        validationMessages.required,
+      )
       expect(error).toBeInTheDocument()
     })
   })
@@ -459,16 +175,16 @@ describe('Модалка создания и редактирования ном
     test('Отображается корректно', async () => {
       const { user } = render(<NomenclatureFormModal {...props} />)
 
-      const label = testUtils.getGroupLabel()
-      const field = testUtils.getGroupField()
-      const selectedGroup = testUtils.querySelectedGroup(props.groups[0].title)
-      await testUtils.openGroupSelect(user)
+      const label = nomenclatureFormModalTestUtils.getGroupLabel()
+      const field = nomenclatureFormModalTestUtils.getGroupField()
+      const selectedGroup = nomenclatureFormModalTestUtils.querySelectedGroup(props.groups[0].title)
+      await nomenclatureFormModalTestUtils.openGroupSelect(user)
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
       props.groups.forEach((g) => {
-        const opt = testUtils.getGroupOption(g.title)
+        const opt = nomenclatureFormModalTestUtils.getGroupOption(g.title)
         expect(opt).toBeInTheDocument()
       })
       expect(selectedGroup).not.toBeInTheDocument()
@@ -477,9 +193,9 @@ describe('Модалка создания и редактирования ном
     test('Можно установить значение', async () => {
       const { user } = render(<NomenclatureFormModal {...props} />)
 
-      await testUtils.openGroupSelect(user)
-      await testUtils.setGroup(user, props.groups[0].title)
-      const selectedGroup = testUtils.getSelectedGroup(props.groups[0].title)
+      await nomenclatureFormModalTestUtils.openGroupSelect(user)
+      await nomenclatureFormModalTestUtils.setGroup(user, props.groups[0].title)
+      const selectedGroup = nomenclatureFormModalTestUtils.getSelectedGroup(props.groups[0].title)
 
       expect(selectedGroup).toBeInTheDocument()
     })
@@ -489,7 +205,9 @@ describe('Модалка создания и редактирования ном
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
-      const selectedGroup = testUtils.getSelectedGroup(String(nomenclature.group.id))
+      const selectedGroup = nomenclatureFormModalTestUtils.getSelectedGroup(
+        String(nomenclature.group.id),
+      )
 
       expect(selectedGroup).toBeInTheDocument()
     })
@@ -497,8 +215,8 @@ describe('Модалка создания и редактирования ном
     test('Обязательное поле', async () => {
       const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
 
-      await testUtils.clickAddButton(user)
-      const error = await testUtils.findGroupError(validationMessages.required)
+      await nomenclatureFormModalTestUtils.clickAddButton(user)
+      const error = await nomenclatureFormModalTestUtils.findGroupError(validationMessages.required)
 
       expect(error).toBeInTheDocument()
     })
@@ -508,8 +226,8 @@ describe('Модалка создания и редактирования ном
     test('Отображается корректно', () => {
       render(<NomenclatureFormModal {...props} />)
 
-      const label = testUtils.getVendorCodeLabel()
-      const field = testUtils.getVendorCodeField()
+      const label = nomenclatureFormModalTestUtils.getVendorCodeLabel()
+      const field = nomenclatureFormModalTestUtils.getVendorCodeField()
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
@@ -521,7 +239,7 @@ describe('Модалка создания и редактирования ном
       const { user } = render(<NomenclatureFormModal {...props} />)
 
       const value = fakeWord()
-      const field = await testUtils.setVendorCode(user, value)
+      const field = await nomenclatureFormModalTestUtils.setVendorCode(user, value)
 
       expect(field).toHaveDisplayValue(value)
     })
@@ -531,16 +249,18 @@ describe('Модалка создания и редактирования ном
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
-      const field = testUtils.getVendorCodeField()
+      const field = nomenclatureFormModalTestUtils.getVendorCodeField()
       expect(field).toHaveDisplayValue(nomenclature.vendorCode)
     })
 
     test('Обязательное поле', async () => {
       const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
 
-      await testUtils.clickAddButton(user)
+      await nomenclatureFormModalTestUtils.clickAddButton(user)
 
-      const error = await testUtils.findVendorCodeError(validationMessages.required)
+      const error = await nomenclatureFormModalTestUtils.findVendorCodeError(
+        validationMessages.required,
+      )
       expect(error).toBeInTheDocument()
     })
   })
@@ -549,18 +269,18 @@ describe('Модалка создания и редактирования ном
     test('Отображается корректно', async () => {
       const { user } = render(<NomenclatureFormModal {...props} />)
 
-      const label = testUtils.getMeasurementUnitLabel()
-      const field = testUtils.getMeasurementUnitField()
-      const selectedMeasurementUnit = testUtils.querySelectedMeasurementUnit(
+      const label = nomenclatureFormModalTestUtils.getMeasurementUnitLabel()
+      const field = nomenclatureFormModalTestUtils.getMeasurementUnitField()
+      const selectedMeasurementUnit = nomenclatureFormModalTestUtils.querySelectedMeasurementUnit(
         props.measurementUnits[0].title,
       )
-      await testUtils.openMeasurementUnitSelect(user)
+      await nomenclatureFormModalTestUtils.openMeasurementUnitSelect(user)
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
       props.measurementUnits.forEach((m) => {
-        const opt = testUtils.getMeasurementUnitOption(m.title)
+        const opt = nomenclatureFormModalTestUtils.getMeasurementUnitOption(m.title)
         expect(opt).toBeInTheDocument()
       })
       expect(selectedMeasurementUnit).not.toBeInTheDocument()
@@ -569,9 +289,9 @@ describe('Модалка создания и редактирования ном
     test('Можно установить значение', async () => {
       const { user } = render(<NomenclatureFormModal {...props} />)
 
-      await testUtils.openMeasurementUnitSelect(user)
-      await testUtils.setMeasurementUnit(user, props.measurementUnits[0].title)
-      const selectedMeasurementUnit = testUtils.getSelectedMeasurementUnit(
+      await nomenclatureFormModalTestUtils.openMeasurementUnitSelect(user)
+      await nomenclatureFormModalTestUtils.setMeasurementUnit(user, props.measurementUnits[0].title)
+      const selectedMeasurementUnit = nomenclatureFormModalTestUtils.getSelectedMeasurementUnit(
         props.measurementUnits[0].title,
       )
 
@@ -583,7 +303,7 @@ describe('Модалка создания и редактирования ном
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
-      const selectedMeasurementUnit = testUtils.getSelectedMeasurementUnit(
+      const selectedMeasurementUnit = nomenclatureFormModalTestUtils.getSelectedMeasurementUnit(
         String(nomenclature.measurementUnit.id),
       )
       expect(selectedMeasurementUnit).toBeInTheDocument()
@@ -592,8 +312,10 @@ describe('Модалка создания и редактирования ном
     test('Обязательное поле', async () => {
       const { user } = render(<NomenclatureFormModal {...props} {...addModeProps} />)
 
-      await testUtils.clickAddButton(user)
-      const error = await testUtils.findMeasurementUnitError(validationMessages.required)
+      await nomenclatureFormModalTestUtils.clickAddButton(user)
+      const error = await nomenclatureFormModalTestUtils.findMeasurementUnitError(
+        validationMessages.required,
+      )
 
       expect(error).toBeInTheDocument()
     })
@@ -603,16 +325,18 @@ describe('Модалка создания и редактирования ном
     test('Отображается корректно', async () => {
       const { user } = render(<NomenclatureFormModal {...props} />)
 
-      const label = testUtils.getCountryLabel()
-      const field = testUtils.getCountryField()
-      const selectedCountry = testUtils.querySelectedCountry(props.countries[0].title)
-      await testUtils.openCountrySelect(user)
+      const label = nomenclatureFormModalTestUtils.getCountryLabel()
+      const field = nomenclatureFormModalTestUtils.getCountryField()
+      const selectedCountry = nomenclatureFormModalTestUtils.querySelectedCountry(
+        props.countries[0].title,
+      )
+      await nomenclatureFormModalTestUtils.openCountrySelect(user)
 
       expect(label).toBeInTheDocument()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
       props.countries.forEach((c) => {
-        const opt = testUtils.getCountryOption(c.title)
+        const opt = nomenclatureFormModalTestUtils.getCountryOption(c.title)
         expect(opt).toBeInTheDocument()
       })
       expect(selectedCountry).not.toBeInTheDocument()
@@ -621,9 +345,11 @@ describe('Модалка создания и редактирования ном
     test('Можно установить значение', async () => {
       const { user } = render(<NomenclatureFormModal {...props} />)
 
-      await testUtils.openCountrySelect(user)
-      await testUtils.setCountry(user, props.countries[0].title)
-      const selectedCountry = testUtils.getSelectedCountry(props.countries[0].title)
+      await nomenclatureFormModalTestUtils.openCountrySelect(user)
+      await nomenclatureFormModalTestUtils.setCountry(user, props.countries[0].title)
+      const selectedCountry = nomenclatureFormModalTestUtils.getSelectedCountry(
+        props.countries[0].title,
+      )
 
       expect(selectedCountry).toBeInTheDocument()
     })
@@ -633,7 +359,9 @@ describe('Модалка создания и редактирования ном
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
-      const selectedCountry = testUtils.getSelectedCountry(String(nomenclature.country!.id))
+      const selectedCountry = nomenclatureFormModalTestUtils.getSelectedCountry(
+        String(nomenclature.country!.id),
+      )
       expect(selectedCountry).toBeInTheDocument()
     })
   })
@@ -642,7 +370,7 @@ describe('Модалка создания и редактирования ном
     test('Отображается корректно', () => {
       render(<NomenclatureFormModal {...props} />)
 
-      const field = testUtils.getEquipmentHasSerialNumberField()
+      const field = nomenclatureFormModalTestUtils.getEquipmentHasSerialNumberField()
 
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
@@ -651,7 +379,7 @@ describe('Модалка создания и редактирования ном
 
     test('Можно установить значение', async () => {
       const { user } = render(<NomenclatureFormModal {...props} />)
-      const field = await testUtils.setEquipmentHasSerialNumber(user)
+      const field = await nomenclatureFormModalTestUtils.setEquipmentHasSerialNumber(user)
       expect(field).toBeChecked()
     })
   })

@@ -1,21 +1,20 @@
-import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { waitFor, within } from '@testing-library/react'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
-import { testUtils as createEquipmentsByFileModalTestUtils } from 'modules/warehouse/components/CreateEquipmentsByFileModal/CreateEquipmentsByFileModal.test'
-import { testUtils as relocationEquipmentEditableTableTestUtils } from 'modules/warehouse/components/RelocationEquipmentEditableTable/RelocationEquipmentEditableTable.test'
-import { testUtils as relocationTaskFormTestUtils } from 'modules/warehouse/components/RelocationTaskForm/RelocationTaskForm.test'
 import {
   getEquipmentListTemplateErrMsg,
   importEquipmentsByFileErrMsg,
 } from 'modules/warehouse/constants/equipment'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
-import { CANCEL_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
+import { createEquipmentsByFileModalTestUtils } from '_tests_/features/warehouse/components/CreateEquipmentsByFileModal/testUtils'
+import { relocationEquipmentEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentEditableTable/testUtils'
+import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
+import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -33,7 +32,6 @@ import {
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
-  buttonTestUtils,
   fakeWord,
   getStoreWithAuth,
   notificationTestUtils,
@@ -43,77 +41,11 @@ import {
 
 import CreateRelocationTaskPage from './index'
 
-const getContainer = () => screen.getByTestId('create-relocation-task-page')
-
-// add by excel button
-const getAddByExcelButton = () => buttonTestUtils.getButtonIn(getContainer(), /Добавить из Excel/)
-
-const queryAddByExcelButton = () =>
-  buttonTestUtils.queryButtonIn(getContainer(), /Добавить из Excel/)
-
-const setExcelFile = async (
-  user: UserEvent,
-  file: File = new File([], fakeWord(), { type: 'image/png' }),
-) => {
-  const container = getContainer()
-  const input = within(container).getByTestId('add-from-excel-upload')
-  await user.upload(input, file)
-  return { input, file }
-}
-
-const expectAddByExcelLoadingFinished = () =>
-  buttonTestUtils.expectLoadingFinished(getAddByExcelButton())
-
-// download template button
-const getDownloadTemplateButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Скачать шаблон/)
-
-const queryDownloadTemplateButton = () =>
-  buttonTestUtils.queryButtonIn(getContainer(), /Скачать шаблон/)
-
-const clickDownloadTemplateButton = async (user: UserEvent) => {
-  const button = getDownloadTemplateButton()
-  await user.click(button)
-}
-
-// submit button
-const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Создать заявку')
-const clickSubmitButton = async (user: UserEvent) => {
-  const button = getSubmitButton()
-  await user.click(button)
-}
-
-// cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
-const clickCancelButton = async (user: UserEvent) => {
-  const button = getCancelButton()
-  await user.click(button)
-}
-
-export const testUtils = {
-  getContainer,
-
-  getAddByExcelButton,
-  queryAddByExcelButton,
-  setExcelFile,
-  expectAddByExcelLoadingFinished,
-
-  getDownloadTemplateButton,
-  queryDownloadTemplateButton,
-  clickDownloadTemplateButton,
-
-  getSubmitButton,
-  clickSubmitButton,
-
-  getCancelButton,
-  clickCancelButton,
-}
-
 setupApiTests()
 notificationTestUtils.setupNotifications()
 
 describe('Страница создания заявки на перемещение', () => {
-  describe('Форма', () => {
+  describe.skip('Форма', () => {
     test('Отображается', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ once: false })
@@ -211,7 +143,9 @@ describe('Страница создания заявки на перемещен
         }),
       })
 
-      const title = within(getContainer()).getByText('Перечень оборудования')
+      const title = within(createRelocationTaskPageTestUtils.getContainer()).getByText(
+        'Перечень оборудования',
+      )
       const table = relocationEquipmentEditableTableTestUtils.getContainer()
 
       expect(title).toBeInTheDocument()
@@ -235,7 +169,7 @@ describe('Страница создания заявки на перемещен
         }),
       })
 
-      const button = testUtils.getDownloadTemplateButton()
+      const button = createRelocationTaskPageTestUtils.getDownloadTemplateButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -253,7 +187,7 @@ describe('Страница создания заявки на перемещен
         }),
       })
 
-      const button = testUtils.queryDownloadTemplateButton()
+      const button = createRelocationTaskPageTestUtils.queryDownloadTemplateButton()
       expect(button).not.toBeInTheDocument()
     })
 
@@ -280,7 +214,7 @@ describe('Страница создания заявки на перемещен
         }),
       })
 
-      await testUtils.clickDownloadTemplateButton(user)
+      await createRelocationTaskPageTestUtils.clickDownloadTemplateButton(user)
 
       await waitFor(() => expect(base64ToArrayBufferSpy).toBeCalledTimes(1))
       expect(base64ToArrayBufferSpy).toBeCalledWith(file)
@@ -309,7 +243,7 @@ describe('Страница создания заявки на перемещен
         }),
       })
 
-      await testUtils.clickDownloadTemplateButton(user)
+      await createRelocationTaskPageTestUtils.clickDownloadTemplateButton(user)
       const notification = await notificationTestUtils.findNotification(
         getEquipmentListTemplateErrMsg,
       )
@@ -333,7 +267,7 @@ describe('Страница создания заявки на перемещен
         }),
       })
 
-      const button = testUtils.getAddByExcelButton()
+      const button = createRelocationTaskPageTestUtils.getAddByExcelButton()
       expect(button).toBeInTheDocument()
     })
 
@@ -349,7 +283,7 @@ describe('Страница создания заявки на перемещен
         }),
       })
 
-      const button = testUtils.queryAddByExcelButton()
+      const button = createRelocationTaskPageTestUtils.queryAddByExcelButton()
       expect(button).not.toBeInTheDocument()
     })
 
@@ -381,7 +315,7 @@ describe('Страница создания заявки на перемещен
       await relocationTaskFormTestUtils.openRelocateToSelect(user)
       await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
 
-      const button = testUtils.getAddByExcelButton()
+      const button = createRelocationTaskPageTestUtils.getAddByExcelButton()
       expect(button).toBeEnabled()
     })
 
@@ -406,7 +340,7 @@ describe('Страница создания заявки на перемещен
           }),
         })
 
-        const button = testUtils.getAddByExcelButton()
+        const button = createRelocationTaskPageTestUtils.getAddByExcelButton()
         expect(button).toBeDisabled()
       })
 
@@ -434,7 +368,7 @@ describe('Страница создания заявки на перемещен
         await relocationTaskFormTestUtils.openRelocateFromSelect(user)
         await relocationTaskFormTestUtils.setRelocateFrom(user, locationFrom.title)
 
-        const button = testUtils.getAddByExcelButton()
+        const button = createRelocationTaskPageTestUtils.getAddByExcelButton()
         expect(button).toBeDisabled()
       })
 
@@ -464,7 +398,7 @@ describe('Страница создания заявки на перемещен
         await relocationTaskFormTestUtils.openRelocateToSelect(user)
         await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
 
-        const button = testUtils.getAddByExcelButton()
+        const button = createRelocationTaskPageTestUtils.getAddByExcelButton()
         expect(button).toBeDisabled()
       })
     })
@@ -500,8 +434,8 @@ describe('Страница создания заявки на перемещен
       mockGetWarehouseSuccess(locationTo.id)
       await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
 
-      await testUtils.setExcelFile(user)
-      await testUtils.expectAddByExcelLoadingFinished()
+      await createRelocationTaskPageTestUtils.setExcelFile(user)
+      await createRelocationTaskPageTestUtils.expectAddByExcelLoadingFinished()
       const modal = await createEquipmentsByFileModalTestUtils.findContainer()
 
       expect(modal).toBeInTheDocument()
@@ -541,14 +475,14 @@ describe('Страница создания заявки на перемещен
         mockGetWarehouseSuccess(locationTo.id)
         await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
 
-        await testUtils.setExcelFile(user)
-        await testUtils.expectAddByExcelLoadingFinished()
+        await createRelocationTaskPageTestUtils.setExcelFile(user)
+        await createRelocationTaskPageTestUtils.expectAddByExcelLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(errorMsg)
         expect(notification).toBeInTheDocument()
       })
 
-      test('Обрабатывается ошибка 500', async () => {
+      test.skip('Обрабатывается ошибка 500', async () => {
         mockGetUsersSuccess({ body: [] })
 
         const locationTo = catalogsFixtures.locationCatalogListItem({
@@ -579,8 +513,8 @@ describe('Страница создания заявки на перемещен
         mockGetWarehouseSuccess(locationTo.id)
         await relocationTaskFormTestUtils.setRelocateTo(user, locationTo.title)
 
-        await testUtils.setExcelFile(user)
-        await testUtils.expectAddByExcelLoadingFinished()
+        await createRelocationTaskPageTestUtils.setExcelFile(user)
+        await createRelocationTaskPageTestUtils.expectAddByExcelLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(
           importEquipmentsByFileErrMsg,

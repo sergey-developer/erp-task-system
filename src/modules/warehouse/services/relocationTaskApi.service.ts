@@ -176,7 +176,7 @@ const relocationTaskApiService = baseApiService
       >({
         providesTags: (result, error) => (error ? [] : [RelocationTaskApiTagEnum.RelocationTask]),
         query: ({ relocationTaskId }) => ({
-          url: getRelocationTaskUrl(relocationTaskId),
+          url: getRelocationTaskUrl({ relocationTaskId }),
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -261,7 +261,7 @@ const relocationTaskApiService = baseApiService
         providesTags: (result, error) =>
           error ? [] : [RelocationTaskApiTagEnum.RelocationEquipmentList],
         query: ({ relocationTaskId }) => ({
-          url: getRelocationEquipmentListUrl(relocationTaskId),
+          url: getRelocationEquipmentListUrl({ relocationTaskId }),
           method: HttpMethodEnum.Get,
         }),
       }),

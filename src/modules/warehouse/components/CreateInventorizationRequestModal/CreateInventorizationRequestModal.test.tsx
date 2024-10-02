@@ -1,234 +1,63 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { props } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/constants'
+import { createInventorizationRequestModalTestUtils } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/testUtils'
+import { screen } from '@testing-library/react'
 
-import { buttonTestUtils, fakeWord, render, selectTestUtils } from '_tests_/utils'
+import {
+  inventorizationTypeDict,
+  InventorizationTypeEnum,
+} from 'modules/warehouse/constants/inventorization'
 
-import CreateInventorizationRequestModal from './index'
-import { CreateInventorizationRequestModalProps } from './types'
+import { validationMessages } from 'shared/constants/validation'
 
-const props: CreateInventorizationRequestModalProps = {
-  open: true,
-  confirmLoading: false,
-  onCancel: jest.fn(),
-  onSubmit: jest.fn(),
+import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { fakeWord, iconTestUtils, render, selectTestUtils } from '_tests_/utils'
 
-  warehouses: [],
-  warehousesIsLoading: false,
-  onChangeWarehouses: jest.fn(),
-
-  executors: [],
-  executorsIsLoading: false,
-
-  nomenclatures: [],
-  nomenclaturesIsLoading: false,
-
-  onCreateAttachment: jest.fn(),
-  attachmentIsCreating: false,
-  onDeleteAttachment: jest.fn(),
-  attachmentIsDeleting: false,
-}
-
-const getContainer = () => screen.getByTestId('create-inventorization-request-modal')
-
-// deadline at field
-const getDeadlineAtFormItem = () => within(getContainer()).getByTestId('deadline-at-form-item')
-
-const getDeadlineAtDateFormItem = () =>
-  within(getDeadlineAtFormItem()).getByTestId('deadline-at-date-form-item')
-
-const getDeadlineAtDateField = (): HTMLInputElement =>
-  within(getDeadlineAtDateFormItem()).getByPlaceholderText('Выберите дату')
-
-const findDeadlineAtDateError = (text: string) =>
-  within(getDeadlineAtDateFormItem()).findByText(text)
-
-const setDeadlineAtDate = async (user: UserEvent, value: string) => {
-  const field = getDeadlineAtDateField()
-  await user.type(field, value)
-  await user.tab()
-  return field
-}
-
-const getDeadlineAtTimeFormItem = () =>
-  within(getDeadlineAtFormItem()).getByTestId('deadline-at-time-form-item')
-
-const getDeadlineAtTimeField = (): HTMLInputElement =>
-  within(getDeadlineAtTimeFormItem()).getByPlaceholderText('Время')
-
-const findDeadlineAtTimeError = (text: string) =>
-  within(getDeadlineAtTimeFormItem()).findByText(text)
-
-const setDeadlineAtTime = async (user: UserEvent, value: string) => {
-  const field = getDeadlineAtTimeField()
-  await user.type(field, value)
-  await user.tab()
-  return field
-}
-
-// type field
-const getTypeFormItem = () => within(getContainer()).getByTestId('type-form-item')
-const getTypeSelectInput = () => selectTestUtils.getSelect(getTypeFormItem())
-const openTypeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getTypeFormItem())
-const setType = selectTestUtils.clickSelectOption
-const getSelectedType = () => selectTestUtils.getSelectedOption(getTypeFormItem())
-const findTypeError = async (text: string) => within(getTypeFormItem()).findByText(text)
-
-// description field
-const getDescriptionFormItem = () => within(getContainer()).getByTestId('description-form-item')
-
-const getDescriptionField = () =>
-  within(getDescriptionFormItem()).getByPlaceholderText('Укажите описание')
-
-const setDescription = async (user: UserEvent, value: string) => {
-  const field = getDescriptionField()
-  await user.type(field, value)
-  return field
-}
-
-// attachments
-const getAttachmentsFormItem = () => within(getContainer()).getByTestId('attachments-form-item')
-
-const getAddAttachmentsButton = () =>
-  buttonTestUtils.getButtonIn(getAttachmentsFormItem(), /Добавить вложение/)
-
-const setAttachment = async (
-  user: UserEvent,
-  file: File = new File([], fakeWord(), { type: 'image/png' }),
-) => {
-  const formItem = getAttachmentsFormItem()
-  const input = within(formItem).getByLabelText('Вложения') as HTMLInputElement
-  await user.upload(input, file)
-  return { input, file }
-}
-
-const getUploadedAttachment = (filename: string) =>
-  within(getAttachmentsFormItem()).getByTitle(filename)
-
-const queryUploadedAttachment = (filename: string) =>
-  within(getAttachmentsFormItem()).queryByTitle(filename)
-
-const clickDeleteAttachmentButton = async (user: UserEvent) => {
-  const button = buttonTestUtils.getButtonIn(getAttachmentsFormItem(), 'delete')
-  await user.click(button)
-}
-
-// executor field
-const getExecutorFormItem = () => within(getContainer()).getByTestId('executor-form-item')
-const getExecutorSelectInput = () => selectTestUtils.getSelect(getExecutorFormItem())
-const setExecutor = selectTestUtils.clickSelectOption
-const findExecutorError = (text: string) => within(getExecutorFormItem()).findByText(text)
-
-const openExecutorSelect = (user: UserEvent) =>
-  selectTestUtils.openSelect(user, getExecutorFormItem())
-
-const getSelectedExecutor = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getExecutorFormItem(), title)
-
-const expectExecutorLoadingStarted = () =>
-  selectTestUtils.expectLoadingStarted(getExecutorFormItem())
-
-const expectExecutorLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getExecutorFormItem())
-
-// nomenclature field
-const getNomenclatureFormItem = () => within(getContainer()).getByTestId('nomenclatures-form-item')
-const getNomenclatureSelectInput = () => selectTestUtils.getSelect(getNomenclatureFormItem())
-const setNomenclature = selectTestUtils.clickSelectOption
-
-const getSelectedNomenclature = (value: string): HTMLElement =>
-  within(getNomenclatureFormItem()).getByTitle(value)
-
-const openNomenclatureSelect = async (user: UserEvent) => {
-  await selectTestUtils.openSelect(user, getNomenclatureFormItem())
-}
-
-const findNomenclatureError = (error: string): Promise<HTMLElement> =>
-  within(getNomenclatureFormItem()).findByText(error)
-
-const expectNomenclatureLoadingStarted = () =>
-  selectTestUtils.expectLoadingStarted(getNomenclatureFormItem())
-
-const expectNomenclatureLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getNomenclatureFormItem())
-
-// warehouse field
-const getWarehouseFormItem = () => within(getContainer()).getByTestId('warehouses-form-item')
-const getWarehouseSelectInput = () => selectTestUtils.getSelect(getWarehouseFormItem())
-const setWarehouse = selectTestUtils.clickSelectOption
-
-const getSelectedWarehouse = (value: string): HTMLElement =>
-  within(getWarehouseFormItem()).getByTitle(value)
-
-const openWarehouseSelect = async (user: UserEvent) => {
-  await selectTestUtils.openSelect(user, getWarehouseFormItem())
-}
-
-const findWarehouseError = (error: string): Promise<HTMLElement> =>
-  within(getWarehouseFormItem()).findByText(error)
-
-const expectWarehouseLoadingStarted = () =>
-  selectTestUtils.expectLoadingStarted(getWarehouseFormItem())
-
-const expectWarehouseLoadingFinished = () =>
-  selectTestUtils.expectLoadingFinished(getWarehouseFormItem())
-
-export const testUtils = {
-  getContainer,
-
-  getTypeSelectInput,
-  openTypeSelect,
-  setType,
-  findTypeError,
-  getSelectedType,
-
-  getDescriptionField,
-  setDescription,
-
-  getAddAttachmentsButton,
-  setAttachment,
-  getUploadedAttachment,
-  queryUploadedAttachment,
-  clickDeleteAttachmentButton,
-
-  getNomenclatureSelectInput,
-  setNomenclature,
-  getSelectedNomenclature,
-  openNomenclatureSelect,
-  findNomenclatureError,
-  expectNomenclatureLoadingStarted,
-  expectNomenclatureLoadingFinished,
-
-  getWarehouseSelectInput,
-  setWarehouse,
-  getSelectedWarehouse,
-  openWarehouseSelect,
-  findWarehouseError,
-  expectWarehouseLoadingStarted,
-  expectWarehouseLoadingFinished,
-
-  getDeadlineAtDateField,
-  findDeadlineAtDateError,
-  setDeadlineAtDate,
-  getDeadlineAtTimeField,
-  findDeadlineAtTimeError,
-  setDeadlineAtTime,
-
-  getExecutorSelectInput,
-  setExecutor,
-  findExecutorError,
-  openExecutorSelect,
-  getSelectedExecutor,
-  expectExecutorLoadingStarted,
-  expectExecutorLoadingFinished,
-}
+import CreateInventorizationRequestModal, { nomenclaturesPopoverContent } from './index'
 
 // todo: добавить тесты по другим полям
 
 describe('Модалка создания запроса на инвентаризацию', () => {
+  describe('Поле типа', () => {
+    test('Отображается, активно, не имеет значения по умолчанию, верно отображает варианты', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      const input = createInventorizationRequestModalTestUtils.getTypeSelectInput()
+      await createInventorizationRequestModalTestUtils.openTypeSelect(user)
+      const selectedType = createInventorizationRequestModalTestUtils.getSelectedType()
+
+      expect(input).toBeInTheDocument()
+      expect(input).toBeEnabled()
+      expect(selectedType).not.toBeInTheDocument()
+      Object.keys(inventorizationTypeDict).forEach((key) => {
+        const option = selectTestUtils.getSelectOption(
+          inventorizationTypeDict[key as InventorizationTypeEnum],
+        )
+        expect(option).toBeInTheDocument()
+      })
+    })
+
+    test('Можно выбрать значение', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      await createInventorizationRequestModalTestUtils.openTypeSelect(user)
+      await createInventorizationRequestModalTestUtils.setType(user, inventorizationTypeDict[InventorizationTypeEnum.Internal])
+      const selectedOption = createInventorizationRequestModalTestUtils.getSelectedType()
+
+      expect(selectedOption).toBeInTheDocument()
+    })
+
+    test('Обязательное поле', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+      await createInventorizationRequestModalTestUtils.clickSubmitButton(user)
+      const error = await createInventorizationRequestModalTestUtils.findTypeError(validationMessages.required)
+      expect(error).toBeInTheDocument()
+    })
+  })
+
   describe('Поле описания', () => {
-    test('Отображается', () => {
+    test('Отображается и активно', () => {
       render(<CreateInventorizationRequestModal {...props} />)
-      const field = testUtils.getDescriptionField()
+      const field = createInventorizationRequestModalTestUtils.getDescriptionField()
       expect(field).toBeInTheDocument()
       expect(field).toBeEnabled()
     })
@@ -236,7 +65,7 @@ describe('Модалка создания запроса на инвентари
     test('Можно установить значение', async () => {
       const { user } = render(<CreateInventorizationRequestModal {...props} />)
       const value = fakeWord()
-      const field = await testUtils.setDescription(user, value)
+      const field = await createInventorizationRequestModalTestUtils.setDescription(user, value)
       expect(field).toHaveDisplayValue(value)
     })
   })
@@ -245,7 +74,7 @@ describe('Модалка создания запроса на инвентари
     test('Кнопка отображается и активна', () => {
       render(<CreateInventorizationRequestModal {...props} />)
 
-      const button = testUtils.getAddAttachmentsButton()
+      const button = createInventorizationRequestModalTestUtils.getAddAttachmentsButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -254,8 +83,10 @@ describe('Модалка создания запроса на инвентари
     test('Загрузка работает', async () => {
       const { user } = render(<CreateInventorizationRequestModal {...props} />)
 
-      const { input, file } = await testUtils.setAttachment(user)
-      const uploadedFile = testUtils.getUploadedAttachment(file.name)
+      const { input, file } = await createInventorizationRequestModalTestUtils.setAttachment(user)
+      const uploadedFile = createInventorizationRequestModalTestUtils.getUploadedAttachment(
+        file.name,
+      )
 
       expect(input.files!.item(0)).toBe(file)
       expect(input.files).toHaveLength(1)
@@ -267,13 +98,75 @@ describe('Модалка создания запроса на инвентари
     test('Удаление работает', async () => {
       const { user } = render(<CreateInventorizationRequestModal {...props} />)
 
-      const { file } = await testUtils.setAttachment(user)
-      await testUtils.clickDeleteAttachmentButton(user)
-      const uploadedFile = testUtils.queryUploadedAttachment(file.name)
+      const { file } = await createInventorizationRequestModalTestUtils.setAttachment(user)
+      await createInventorizationRequestModalTestUtils.clickDeleteAttachmentButton(user)
+      const uploadedFile = createInventorizationRequestModalTestUtils.queryUploadedAttachment(
+        file.name,
+      )
 
       expect(uploadedFile).not.toBeInTheDocument()
       expect(props.onDeleteAttachment).toBeCalledTimes(1)
       expect(props.onDeleteAttachment).toBeCalledWith(expect.anything())
+    })
+  })
+
+  describe('Поле номенклатуры', () => {
+    test('Можно выбрать несколько значений', async () => {
+      const equipmentNomenclatureListItem1 = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem2 = warehouseFixtures.equipmentNomenclatureListItem()
+
+      const { user } = render(
+        <CreateInventorizationRequestModal
+          {...props}
+          nomenclatures={[equipmentNomenclatureListItem1, equipmentNomenclatureListItem2]}
+        />,
+      )
+
+      await createInventorizationRequestModalTestUtils.openNomenclatureSelect(user)
+      await createInventorizationRequestModalTestUtils.setNomenclature(user, equipmentNomenclatureListItem1.title)
+      await createInventorizationRequestModalTestUtils.setNomenclature(user, equipmentNomenclatureListItem2.title)
+      const value1 = createInventorizationRequestModalTestUtils.getSelectedNomenclature(equipmentNomenclatureListItem1.title)
+      const value2 = createInventorizationRequestModalTestUtils.getSelectedNomenclature(equipmentNomenclatureListItem2.title)
+
+      expect(value1).toBeInTheDocument()
+      expect(value2).toBeInTheDocument()
+    })
+
+    test('Можно выбрать все значения и сбросить их', async () => {
+      const equipmentNomenclatureListItem1 = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem2 = warehouseFixtures.equipmentNomenclatureListItem()
+
+      const { user } = render(
+        <CreateInventorizationRequestModal
+          {...props}
+          nomenclatures={[equipmentNomenclatureListItem1, equipmentNomenclatureListItem2]}
+        />,
+      )
+
+      await createInventorizationRequestModalTestUtils.openNomenclatureSelect(user)
+      await createInventorizationRequestModalTestUtils.setNomenclature(user, 'Выбрать все')
+      const value1 = createInventorizationRequestModalTestUtils.getSelectedNomenclature(equipmentNomenclatureListItem1.title)
+      const value2 = createInventorizationRequestModalTestUtils.getSelectedNomenclature(equipmentNomenclatureListItem2.title)
+      expect(value1).toBeInTheDocument()
+      expect(value2).toBeInTheDocument()
+
+      await createInventorizationRequestModalTestUtils.setNomenclature(user, 'Сбросить все')
+      expect(value1).not.toBeInTheDocument()
+      expect(value2).not.toBeInTheDocument()
+    })
+
+    test('При наведении на иконку отображается текст', async () => {
+      const { user } = render(<CreateInventorizationRequestModal {...props} />)
+
+      await createInventorizationRequestModalTestUtils.openNomenclatureSelect(user)
+      const icon = iconTestUtils.getIconByNameIn(
+        createInventorizationRequestModalTestUtils.getNomenclatureFormItem(),
+        'question-circle',
+      )
+      await user.hover(icon)
+      const text = await screen.findByText(nomenclaturesPopoverContent)
+
+      expect(text).toBeInTheDocument()
     })
   })
 })

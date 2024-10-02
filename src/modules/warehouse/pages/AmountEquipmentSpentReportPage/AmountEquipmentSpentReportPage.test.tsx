@@ -1,5 +1,3 @@
-import { screen } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 import * as reactRouterDom from 'react-router-dom'
 
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
@@ -7,13 +5,14 @@ import { testUtils as amountEquipmentSpentReportFilterTestUtils } from 'modules/
 import { testUtils as amountEquipmentSpentReportFormTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportForm/AmountEquipmentSpentReportForm.test'
 import { testUtils as amountEquipmentSpentReportTableTestUtils } from 'modules/reports/components/AmountEquipmentSpentReportTable/AmountEquipmentSpentReportTable.test'
 import { getRelocationColValue } from 'modules/reports/utils'
-import { testUtils as equipmentDetailsTestUtils } from 'modules/warehouse/components/EquipmentDetails/EquipmentDetails.test'
-import { testUtils as relocationTaskDetailsTestUtils } from 'modules/warehouse/components/RelocationTaskDetails/RelocationTaskDetails.test'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
+import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/components/EquipmentDetails/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
+import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouse/pages/AmountEquipmentSpentReportPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
@@ -33,48 +32,9 @@ import {
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import {
-  buttonTestUtils,
-  fakeId,
-  fakeWord,
-  getStoreWithAuth,
-  render,
-  setupApiTests,
-} from '_tests_/utils'
+import { fakeId, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
 
 import AmountEquipmentSpentReportPage from './index'
-
-const getContainer = () => screen.getByTestId('amount-equipment-spent-report-page')
-
-// filter button
-const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
-
-const clickFilterButton = async (user: UserEvent) => {
-  const button = getFilterButton()
-  await user.click(button)
-}
-
-// export to excel button
-const getExportToExcelButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /Выгрузить в Excel/)
-
-const clickExportToExcelButton = async (user: UserEvent) => {
-  const button = getExportToExcelButton()
-  await user.click(button)
-}
-
-const expectExportToExcelLoadingFinished = () =>
-  buttonTestUtils.expectLoadingFinished(getExportToExcelButton())
-
-export const testUtils = {
-  getContainer,
-
-  clickFilterButton,
-
-  getExportToExcelButton,
-  clickExportToExcelButton,
-  expectExportToExcelLoadingFinished,
-}
 
 jest.mock('react-router-dom', () => ({
   __esModule: true,
@@ -165,8 +125,8 @@ describe('Страница отчета количества потраченн�
       const locationListItem = catalogsFixtures.locationCatalogListItem()
       mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
-      mockGetRelocationTaskSuccess(reportListItem.relocationTask.id)
-      mockGetRelocationEquipmentListSuccess(reportListItem.relocationTask.id)
+      mockGetRelocationTaskSuccess({ relocationTaskId: reportListItem.relocationTask.id })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: reportListItem.relocationTask.id })
 
       const { user } = render(<AmountEquipmentSpentReportPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -231,7 +191,7 @@ describe('Страница отчета количества потраченн�
       await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(user, locationListItem.title)
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
-      await testUtils.clickFilterButton(user)
+      await amountEquipmentSpentReportPageTestUtils.clickFilterButton(user)
       await amountEquipmentSpentReportFilterTestUtils.findContainer()
       await amountEquipmentSpentReportFilterTestUtils.expectCategoryLoadingFinished()
       await amountEquipmentSpentReportFilterTestUtils.openCategoriesSelect(user)
@@ -284,8 +244,8 @@ describe('Страница отчета количества потраченн�
       const file = fakeWord()
       mockGetAmountEquipmentSpentReportXlsxSuccess({ body: file })
 
-      await testUtils.clickExportToExcelButton(user)
-      await testUtils.expectExportToExcelLoadingFinished()
+      await amountEquipmentSpentReportPageTestUtils.clickExportToExcelButton(user)
+      await amountEquipmentSpentReportPageTestUtils.expectExportToExcelLoadingFinished()
 
       expect(base64ToBytesSpy).toBeCalledTimes(1)
       expect(base64ToBytesSpy).toBeCalledWith(file)
