@@ -1,4 +1,4 @@
-import { BaseTaskModel } from 'modules/task/models'
+import { TaskModel } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 
 import { StringMap } from 'shared/types/utils'
@@ -8,6 +8,7 @@ import {
   TaskDetailsTabsEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
+  TaskTypeEnum,
 } from './enums'
 
 export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
@@ -31,6 +32,13 @@ export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.Closed]: 'Закрыта',
 }
 
+export const taskTypeDict: Readonly<StringMap<TaskTypeEnum>> = {
+  [TaskTypeEnum.Request]: 'ЗНО',
+  [TaskTypeEnum.RequestTask]: 'Задание на ЗНО',
+  [TaskTypeEnum.Incident]: 'Инцидент',
+  [TaskTypeEnum.IncidentTask]: 'Задание на инцидент',
+}
+
 export const taskExtendedStatusDict: Readonly<Partial<StringMap<TaskExtendedStatusEnum>>> = {
   [TaskExtendedStatusEnum.New]: 'Новые',
   [TaskExtendedStatusEnum.InProgress]: 'В работе',
@@ -47,21 +55,21 @@ export const tasksFiltersDict: Readonly<StringMap<keyof TasksFiltersStorageType>
   supportGroups: 'Группы поддержки',
 }
 
-export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> = new Map([
+export const taskImpactMap: Map<TaskModel['initialImpact'], string> = new Map([
   [1, '1-всеохватывающее/широкое'],
   [2, '2-значительное/большое'],
   [3, '3-умеренное/ограниченное'],
   [4, '4-малое/локализованное'],
 ])
 
-export const taskSeverityMap: Map<BaseTaskModel['severity'], string> = new Map([
+export const taskSeverityMap: Map<TaskModel['severity'], string> = new Map([
   [1, '1-критическая'],
   [2, '2-высокая'],
   [3, '3-средняя'],
   [4, '4-низкая'],
 ])
 
-export const taskPriorityMap: Map<BaseTaskModel['priorityCode'], string> = new Map([
+export const taskPriorityMap: Map<TaskModel['priorityCode'], string> = new Map([
   [1, '1-критический'],
   [2, '2-высокий'],
   [3, '3-средний'],

@@ -17,11 +17,17 @@ const taskRemainingTimeDurationSettings: DurationFormatSettings = {
 const getTaskRemainingTime = (value: number): string =>
   humanizeDuration(value, 'milliseconds', taskRemainingTimeDurationSettings)
 
+type GetTaskCompleteAtDateParams = Partial<
+  Pick<TaskModel, 'olaStatus' | 'olaEstimatedTime'> & {
+    olaNextBreachTime: MaybeNull<TaskModel['olaNextBreachTime']>
+  }
+>
+
 export const getTaskCompleteAtDate = ({
   olaStatus,
   olaEstimatedTime,
   olaNextBreachTime,
-}: Partial<Pick<TaskModel, 'olaStatus' | 'olaNextBreachTime' | 'olaEstimatedTime'>>): string => {
+}: GetTaskCompleteAtDateParams): string => {
   if (!olaNextBreachTime) return ''
 
   const taskRemainingTime =

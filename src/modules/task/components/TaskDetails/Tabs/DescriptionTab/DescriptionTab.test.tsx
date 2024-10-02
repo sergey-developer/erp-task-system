@@ -1,50 +1,22 @@
-import { screen, within } from '@testing-library/react'
-
 import { testUtils as attachmentsTestUtils } from 'modules/attachment/components/Attachments/Attachments.test'
 
-import taskFixtures from '_tests_/fixtures/task'
-import { buttonTestUtils, fakeWord, render } from '_tests_/utils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/DescriptionTab/constants'
+import { descriptionTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/DescriptionTab/testUtils'
+import { render } from '_tests_/utils'
 
-import DescriptionTab, { DescriptionTabProps } from './index'
-
-const props: Readonly<DescriptionTabProps> = {
-  permissions: {},
-  title: fakeWord(),
-  taskTitle: fakeWord(),
-  description: fakeWord(),
-  previousDescription: fakeWord(),
-  isDescriptionChanged: false,
-  attachments: [taskFixtures.attachment()],
-}
-
-const getContainer = () => screen.getByTestId('task-description-tab')
-
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
-const queryChildByText = (text: string) => within(getContainer()).queryByText(text)
-
-// copy button
-const getCopyButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Копировать')
-
-export const testUtils = {
-  getContainer,
-  getChildByText,
-  queryChildByText,
-
-  getCopyButton,
-}
+import DescriptionTab from './index'
 
 describe('Вкладка описания заявки', () => {
   test('Заголовок отображается', () => {
     render(<DescriptionTab {...props} />)
-    const title = testUtils.getChildByText(props.title)
+    const title = descriptionTabTestUtils.getChildByText(props.title)
     expect(title).toBeInTheDocument()
   })
 
   test('Кнопка копирования отображается корректно', async () => {
     render(<DescriptionTab {...props} />)
 
-    const copyButton = testUtils.getCopyButton()
+    const copyButton = descriptionTabTestUtils.getCopyButton()
 
     expect(copyButton).toBeInTheDocument()
     expect(copyButton).toBeEnabled()
@@ -53,13 +25,13 @@ describe('Вкладка описания заявки', () => {
   describe('Описание', () => {
     test('Отображается если есть', () => {
       render(<DescriptionTab {...props} />)
-      const description = testUtils.getChildByText(props.description!)
+      const description = descriptionTabTestUtils.getChildByText(props.description!)
       expect(description).toBeInTheDocument()
     })
 
     test('Не отображается если его нет', () => {
       render(<DescriptionTab {...props} description={null} />)
-      const description = testUtils.queryChildByText(props.description!)
+      const description = descriptionTabTestUtils.queryChildByText(props.description!)
       expect(description).not.toBeInTheDocument()
     })
   })

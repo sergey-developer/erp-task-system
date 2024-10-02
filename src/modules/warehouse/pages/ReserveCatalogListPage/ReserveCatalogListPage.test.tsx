@@ -1,16 +1,15 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
 import React from 'react'
 
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import EquipmentNomenclatureListPage from 'modules/warehouse/pages/EquipmentNomenclatureListPage'
-import { testUtils as equipmentNomenclatureListPageTestUtils } from 'modules/warehouse/pages/EquipmentNomenclatureListPage/EquipmentNomenclatureListPage.test'
 import InventorizationsPage from 'modules/warehouse/pages/InventorizationsPage'
-import { testUtils as inventorizationsPageTestUtils } from 'modules/warehouse/pages/InventorizationsPage/InventorizationsPage.test'
 import RelocationTasksPage from 'modules/warehouse/pages/RelocationTasksPage'
-import { testUtils as relocationTaskListPageTestUtils } from 'modules/warehouse/pages/RelocationTasksPage/RelocationTasksPage.test'
 
+import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentNomenclatureListPage/testUtils'
+import { inventorizationsPageTestUtils } from '_tests_/features/warehouse/pages/InventorizationsPage/testUtils'
+import { relocationTasksPageTestUtils } from '_tests_/features/warehouse/pages/RelocationTasksPage/testUtils'
+import { reserveCatalogListPageTestUtils } from '_tests_/features/warehouse/pages/ReserveCatalogListPage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
 import {
   mockGetEquipmentNomenclaturesSuccess,
@@ -18,57 +17,9 @@ import {
   mockGetRelocationTasksSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, linkTestUtils, renderWithRouter } from '_tests_/utils'
+import { getStoreWithAuth, renderWithRouter } from '_tests_/utils'
 
 import ReserveCatalogListPage from './index'
-
-const getContainer = () => screen.getByTestId('reserve-catalog-list-page')
-const getCatalogContainer = () => within(getContainer()).getByTestId('reserve-catalog-list')
-
-// equipment link
-const getEquipmentLink = () => linkTestUtils.getLinkIn(getCatalogContainer(), 'Оборудование')
-const queryEquipmentLink = () => linkTestUtils.queryLinkIn(getCatalogContainer(), 'Оборудование')
-
-const clickEquipmentLink = async (user: UserEvent) =>
-  linkTestUtils.clickLinkIn(getCatalogContainer(), user, 'Оборудование')
-
-// relocation tasks link
-const getRelocationTasksLink = () =>
-  linkTestUtils.getLinkIn(getCatalogContainer(), 'Заявки на перемещение оборудования')
-
-const queryRelocationTasksLink = () =>
-  linkTestUtils.queryLinkIn(getCatalogContainer(), 'Заявки на перемещение оборудования')
-
-const clickRelocationTasksLink = async (user: UserEvent) =>
-  linkTestUtils.clickLinkIn(getCatalogContainer(), user, 'Заявки на перемещение оборудования')
-
-// inventorizations link
-const getInventorizationsLink = () =>
-  linkTestUtils.getLinkIn(getCatalogContainer(), 'Инвентаризация')
-
-const queryInventorizationsLink = () =>
-  linkTestUtils.queryLinkIn(getCatalogContainer(), 'Инвентаризация')
-
-const clickInventorizationsLink = async (user: UserEvent) =>
-  linkTestUtils.clickLinkIn(getCatalogContainer(), user, 'Инвентаризация')
-
-export const testUtils = {
-  getContainer,
-
-  getCatalogContainer,
-
-  getEquipmentLink,
-  queryEquipmentLink,
-  clickEquipmentLink,
-
-  getRelocationTasksLink,
-  queryRelocationTasksLink,
-  clickRelocationTasksLink,
-
-  getInventorizationsLink,
-  queryInventorizationsLink,
-  clickInventorizationsLink,
-}
 
 describe('Страница списка справочников запасов', () => {
   describe('Оборудование', () => {
@@ -90,7 +41,7 @@ describe('Страница списка справочников запасов'
         },
       )
 
-      const link = testUtils.getEquipmentLink()
+      const link = reserveCatalogListPageTestUtils.getEquipmentLink()
 
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute('href', WarehouseRouteEnum.EquipmentNomenclatures)
@@ -112,7 +63,7 @@ describe('Страница списка справочников запасов'
         },
       )
 
-      const link = testUtils.queryEquipmentLink()
+      const link = reserveCatalogListPageTestUtils.queryEquipmentLink()
       expect(link).not.toBeInTheDocument()
     })
 
@@ -140,7 +91,7 @@ describe('Страница списка справочников запасов'
         },
       )
 
-      await testUtils.clickEquipmentLink(user)
+      await reserveCatalogListPageTestUtils.clickEquipmentLink(user)
       const page = equipmentNomenclatureListPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
@@ -166,7 +117,7 @@ describe('Страница списка справочников запасов'
         },
       )
 
-      const link = testUtils.getRelocationTasksLink()
+      const link = reserveCatalogListPageTestUtils.getRelocationTasksLink()
 
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute('href', WarehouseRouteEnum.RelocationTasks)
@@ -188,7 +139,7 @@ describe('Страница списка справочников запасов'
         },
       )
 
-      const link = testUtils.queryRelocationTasksLink()
+      const link = reserveCatalogListPageTestUtils.queryRelocationTasksLink()
       expect(link).not.toBeInTheDocument()
     })
 
@@ -216,8 +167,8 @@ describe('Страница списка справочников запасов'
         },
       )
 
-      await testUtils.clickRelocationTasksLink(user)
-      const page = relocationTaskListPageTestUtils.getContainer()
+      await reserveCatalogListPageTestUtils.clickRelocationTasksLink(user)
+      const page = relocationTasksPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
     })
@@ -242,7 +193,7 @@ describe('Страница списка справочников запасов'
         },
       )
 
-      const link = testUtils.getInventorizationsLink()
+      const link = reserveCatalogListPageTestUtils.getInventorizationsLink()
 
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute('href', WarehouseRouteEnum.Inventorizations)
@@ -264,7 +215,7 @@ describe('Страница списка справочников запасов'
         },
       )
 
-      const link = testUtils.queryInventorizationsLink()
+      const link = reserveCatalogListPageTestUtils.queryInventorizationsLink()
       expect(link).not.toBeInTheDocument()
     })
 
@@ -292,7 +243,7 @@ describe('Страница списка справочников запасов'
         },
       )
 
-      await testUtils.clickInventorizationsLink(user)
+      await reserveCatalogListPageTestUtils.clickInventorizationsLink(user)
       const page = inventorizationsPageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()

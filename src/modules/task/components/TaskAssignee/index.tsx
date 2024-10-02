@@ -16,6 +16,7 @@ export type TaskAssigneeProps = Pick<TaskAssigneeModel, 'firstName' | 'lastName'
     hasPopover?: boolean
   }
 
+// todo: переименовать в UserInfo и переместить в папку user
 const TaskAssignee: FC<TaskAssigneeProps> = ({
   firstName,
   lastName,

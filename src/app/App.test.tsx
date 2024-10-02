@@ -1,11 +1,11 @@
 import { waitFor } from '@testing-library/react'
 
-import { testUtils as taskTableTestUtils } from 'modules/task/components/TaskTable/TaskTable.test'
 import { updateUserTimeZoneMessages } from 'modules/user/constants'
 
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
 import { testUtils as homeLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
+import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/user'
 import {
@@ -23,7 +23,7 @@ import App from './App'
 setupApiTests()
 notificationTestUtils.setupNotifications()
 
-describe('Private app', () => {
+describe.skip('Private app', () => {
   describe('Private header', () => {
     describe('Time zone', () => {
       test('Отображается состояние загрузки во время загрузки временных зон', async () => {

@@ -1,9 +1,12 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { within } from '@testing-library/react'
 
 import { createTaskCommentErrMsg } from 'modules/task/constants/taskComment'
 import { UserPermissionsEnum } from 'modules/user/constants'
 
+import { commentsTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/Comments/testUtils'
+import { createCommentFormTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/CreateCommentForm/testUtils'
+import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/constants'
+import { commentsTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import {
   mockCreateTaskCommentBadRequestError,
@@ -15,8 +18,6 @@ import {
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
-  buttonTestUtils,
-  fakeId,
   fakeWord,
   getStoreWithAuth,
   notificationTestUtils,
@@ -24,56 +25,8 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import { testUtils as commentsTestUtils } from './Comments/Comments.test'
-import { testUtils as createCommentFormTestUtils } from './CreateCommentForm/CreateCommentForm.test'
 import { CreateCommentFormFields } from './CreateCommentForm/types'
-import CommentsTab, { CommentsTabProps, DEFAULT_DISPLAYABLE_COUNT } from './index'
-
-const props: Readonly<CommentsTabProps> = {
-  title: fakeWord(),
-  taskId: fakeId(),
-}
-
-const getContainer = () => screen.getByTestId('task-comments-tab')
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
-const getExpandButton = (commentCount?: number) =>
-  buttonTestUtils.getButtonIn(
-    getContainer(),
-    commentCount ? `Отобразить все комментарии: ${commentCount}` : /Отобразить все комментарии/,
-  )
-
-const queryExpandButton = (commentCount?: number) =>
-  buttonTestUtils.queryButtonIn(
-    getContainer(),
-    commentCount ? `Отобразить все комментарии: ${commentCount}` : /Отобразить все комментарии/,
-  )
-
-const clickExpandButton = async (user: UserEvent) => {
-  const button = getExpandButton()
-  await user.click(button)
-  return button
-}
-
-const getCollapseButton = () => buttonTestUtils.getButtonIn(getContainer(), /скрыть комментарии/i)
-
-const clickCollapseButton = async (user: UserEvent) => {
-  const button = getCollapseButton()
-  await user.click(button)
-  return button
-}
-
-export const testUtils = {
-  getContainer,
-  getChildByText,
-
-  getExpandButton,
-  queryExpandButton,
-  clickExpandButton,
-
-  getCollapseButton,
-  clickCollapseButton,
-}
+import CommentsTab, { DEFAULT_DISPLAYABLE_COUNT } from './index'
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -86,7 +39,7 @@ describe('Вкладка списка комментариев заявки', ()
         queries: { ...getUserMeQueryMock({ permissions: [] }) },
       }),
     })
-    expect(testUtils.getChildByText(props.title)).toBeInTheDocument()
+    expect(commentsTabTestUtils.getChildByText(props.title)).toBeInTheDocument()
   })
 
   describe('Кнопка раскрытия/скрытия комментариев', () => {
@@ -104,7 +57,7 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         await commentsTestUtils.expectLoadingFinished()
-        const button = testUtils.getExpandButton(taskCommentList.length)
+        const button = commentsTabTestUtils.getExpandButton(taskCommentList.length)
 
         expect(button).toBeInTheDocument()
         expect(button).toBeEnabled()
@@ -124,8 +77,8 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         await commentsTestUtils.expectLoadingFinished()
-        await testUtils.clickExpandButton(user)
-        const button = testUtils.getCollapseButton()
+        await commentsTabTestUtils.clickExpandButton(user)
+        const button = commentsTabTestUtils.getCollapseButton()
 
         expect(button).toBeInTheDocument()
         expect(button).toBeEnabled()
@@ -145,7 +98,7 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         await commentsTestUtils.expectLoadingFinished()
-        const button = testUtils.queryExpandButton()
+        const button = commentsTabTestUtils.queryExpandButton()
 
         expect(button).not.toBeInTheDocument()
       })
@@ -160,7 +113,7 @@ describe('Вкладка списка комментариев заявки', ()
         })
 
         await commentsTestUtils.expectLoadingFinished()
-        const button = testUtils.queryExpandButton()
+        const button = commentsTabTestUtils.queryExpandButton()
 
         expect(button).not.toBeInTheDocument()
       })
@@ -181,7 +134,7 @@ describe('Вкладка списка комментариев заявки', ()
       await commentsTestUtils.expectLoadingFinished()
       expect(commentsTestUtils.getAllComments()).toHaveLength(DEFAULT_DISPLAYABLE_COUNT)
 
-      await testUtils.clickExpandButton(user)
+      await commentsTabTestUtils.clickExpandButton(user)
       expect(commentsTestUtils.getAllComments()).toHaveLength(allCommentCount)
     })
 
@@ -200,10 +153,10 @@ describe('Вкладка списка комментариев заявки', ()
       await commentsTestUtils.expectLoadingFinished()
       expect(commentsTestUtils.getAllComments()).toHaveLength(DEFAULT_DISPLAYABLE_COUNT)
 
-      await testUtils.clickExpandButton(user)
+      await commentsTabTestUtils.clickExpandButton(user)
       expect(commentsTestUtils.getAllComments()).toHaveLength(allCommentCount)
 
-      await testUtils.clickCollapseButton(user)
+      await commentsTabTestUtils.clickCollapseButton(user)
       expect(commentsTestUtils.getAllComments()).toHaveLength(DEFAULT_DISPLAYABLE_COUNT)
     })
   })
