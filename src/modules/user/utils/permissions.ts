@@ -2,14 +2,10 @@ import { camelizeKeys } from 'humps'
 
 import { UserModel } from 'modules/user/models'
 
-import { Camelize, Writeable } from 'shared/types/utils'
+import { Writeable } from 'shared/types/utils'
 
 import { UserPermissionsEnum } from '../constants'
-
-// todo: вынести в типы user
-export type MatchedUserPermissions = Readonly<
-  Camelize<Partial<Record<Lowercase<UserPermissionsEnum>, boolean>>>
->
+import { MatchedUserPermissions } from '../types'
 
 export const getPermissionsObj = (
   user: UserModel,

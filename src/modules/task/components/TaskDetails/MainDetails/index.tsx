@@ -8,6 +8,7 @@ import { TaskModel } from 'modules/task/models'
 import { getOlaStatusTextType } from 'modules/task/utils/task'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
+import { getFullUserName } from 'modules/user/utils'
 
 import { FieldTimeIcon } from 'components/Icons'
 import Label from 'components/Label'
@@ -25,6 +26,7 @@ export type MainDetailsProps = Pick<
   | 'title'
   | 'status'
   | 'createdAt'
+  | 'createdBy'
   | 'name'
   | 'address'
   | 'contactService'
@@ -45,6 +47,7 @@ const MainDetails: FC<MainDetailsProps> = ({
   status,
   title,
   createdAt,
+  createdBy,
   name,
   address,
   contactService,
@@ -85,9 +88,11 @@ const MainDetails: FC<MainDetailsProps> = ({
     <Space data-testid='task-details-main-details' direction='vertical' size='middle' $block>
       <Space direction='vertical' $block>
         <SeparatedText>
-          <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>
-            {recordId}
-          </RecordIdStyled>
+          {recordId && (
+            <RecordIdStyled type='secondary' ellipsis={{ tooltip: recordId }}>
+              {recordId}
+            </RecordIdStyled>
+          )}
 
           <Space>
             {olaNextBreachTime && (
@@ -149,12 +154,17 @@ const MainDetails: FC<MainDetailsProps> = ({
         </Col>
 
         <Col span={11}>
-          <Label label='Заявитель'>
-            <Text strong>{contactService}</Text>
+          <Label label={createdBy ? 'Инициатор' : 'Заявитель'}>
+            <Text strong>{createdBy ? getFullUserName(createdBy) : contactService}</Text>
 
-            {contactPhone && <Text>{contactPhone}</Text>}
-
-            {portablePhone && <Text>{portablePhone}</Text>}
+            {createdBy ? (
+              <Text>{createdBy.phone}</Text>
+            ) : (
+              <>
+                {contactPhone && <Text>{contactPhone}</Text>}
+                {portablePhone && <Text>{portablePhone}</Text>}
+              </>
+            )}
           </Label>
         </Col>
       </Row>

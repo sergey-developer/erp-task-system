@@ -1,7 +1,7 @@
 import { SelectProps } from 'antd'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 import {
   externalRelocationStatusDict,

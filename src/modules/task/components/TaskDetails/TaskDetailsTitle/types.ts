@@ -13,6 +13,7 @@ export type TaskDetailsTitleProps = Pick<
   | 'workGroup'
   | 'assignee'
   | 'suspendRequest'
+  | 'system'
 > & {
   userActions: UserActionsModel
   onReloadTask: EmptyFn
@@ -22,11 +23,13 @@ export type TaskDetailsTitleProps = Pick<
   onRequestReclassification: EmptyFn
   onUpdateDescription: EmptyFn
   onUpdateDeadline: EmptyFn
+  onCreateInternalTask: EmptyFn
 }
 
 export enum MenuActionsKeysEnum {
   RequestSuspend = 'RequestSuspend',
   RegisterFN = 'RegisterFN',
+  CreateInternalTask = 'CreateInternalTask',
   ExecuteTask = 'ExecuteTask',
   RequestReclassification = 'RequestReclassification',
   CancelReclassification = 'CancelReclassification',

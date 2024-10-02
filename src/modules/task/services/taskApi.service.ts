@@ -1,4 +1,5 @@
 import { decamelize } from 'humps'
+import isBoolean from 'lodash/isBoolean'
 
 import { getPaginatedList } from 'lib/antd/utils'
 
@@ -23,10 +24,12 @@ import {
   CreateTaskCompletedWorkSuccessResponse,
   CreateTaskCompletionDocumentsMutationArgs,
   CreateTaskCompletionDocumentsSuccessResponse,
+  CreateTaskMutationArgs,
   CreateTaskReclassificationRequestMutationArgs,
   CreateTaskReclassificationRequestSuccessResponse,
   CreateTaskRegistrationFNRequestMutationArgs,
   CreateTaskRegistrationFNRequestSuccessResponse,
+  CreateTaskSuccessResponse,
   CreateTaskSuspendRequestMutationArgs,
   CreateTaskSuspendRequestSuccessResponse,
   DeleteCompletedWorkMutationArgs,
@@ -159,6 +162,56 @@ const taskApiService = baseApiService
           url: getTaskUrl(taskId),
           method: HttpMethodEnum.Get,
         }),
+      }),
+
+      createTask: build.mutation<CreateTaskSuccessResponse, CreateTaskMutationArgs>({
+        invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Tasks]),
+        query: ({
+          type,
+          olaNextBreachTime,
+          title,
+          description,
+          workGroup,
+          assignee,
+          isPrivate,
+          attachments,
+          coExecutors,
+          observers,
+          workType,
+          customer,
+          contactType,
+          email,
+          shopId,
+          address,
+          parentTask,
+        }) => {
+          const formData = new FormData()
+
+          formData.append(decamelize('olaNextBreachTime'), olaNextBreachTime)
+          formData.append('title', title)
+          formData.append('description', description)
+
+          if (type) formData.append('type', type)
+          if (parentTask) formData.append(decamelize('parentTask'), String(parentTask))
+          if (workGroup) formData.append(decamelize('workGroup'), String(workGroup))
+          if (assignee) formData.append('assignee', String(assignee))
+          if (isBoolean(isPrivate)) formData.append(decamelize('isPrivate'), String(isPrivate))
+          if (attachments?.length) attachments.forEach((att) => formData.append('attachments', att))
+          if (coExecutors) formData.append(decamelize('coExecutors'), String(coExecutors))
+          if (observers) formData.append('observers', String(observers))
+          if (workType) formData.append(decamelize('workType'), String(workType))
+          if (customer) formData.append('customer', String(customer))
+          if (contactType) formData.append(decamelize('contactType'), contactType)
+          if (email) formData.append('email', email)
+          if (shopId) formData.append(decamelize('shopId'), String(shopId))
+          if (address) formData.append('address', address)
+
+          return {
+            url: TaskApiEnum.CreateTask,
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
       }),
 
       [TaskApiTriggerEnum.GetWorkPerformedAct]: build.mutation<
@@ -634,6 +687,7 @@ const taskApiService = baseApiService
 
 export const {
   useGetTaskQuery,
+  useCreateTaskMutation,
 
   useGetTaskCountersQuery,
 

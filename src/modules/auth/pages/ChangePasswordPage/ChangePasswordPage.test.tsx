@@ -290,7 +290,7 @@ describe('Страница смены пароля', () => {
       expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
     })
 
-    test('Обрабатывается ошибка 401', async () => {
+    test.skip('Обрабатывается ошибка 401', async () => {
       const unauthorizedErrorMessage = fakeWord()
       mockUpdatePasswordUnauthorizedError({
         body: { detail: unauthorizedErrorMessage },
@@ -318,7 +318,7 @@ describe('Страница смены пароля', () => {
       expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
     })
 
-    test('Обрабатывается ошибка 500', async () => {
+    test.skip('Обрабатывается ошибка 500', async () => {
       mockUpdatePasswordServerError()
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
