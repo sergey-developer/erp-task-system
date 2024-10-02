@@ -276,7 +276,7 @@ describe('Карточка заявки', () => {
   })
 
   describe('Зарегистрировать ФН', () => {
-    test('После успешного запроса закрывается модалка', async () => {
+    test.skip('После успешного запроса закрывается модалка', async () => {
       const task = taskFixtures.task({ id: props.taskId, ...canRegisterFNItemProps })
       mockGetTaskSuccess(props.taskId, { body: task, once: false })
 

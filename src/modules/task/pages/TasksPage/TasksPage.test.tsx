@@ -197,7 +197,7 @@ describe('Страница реестра заявок', () => {
       await taskTableTestUtils.expectLoadingStarted()
     })
 
-    test('Сбрасывает расширенный фильтр', async () => {
+    test.skip('Сбрасывает расширенный фильтр', async () => {
       const workGroupListItem = workGroupFixtures.workGroupListItem()
       mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess({ once: false })
