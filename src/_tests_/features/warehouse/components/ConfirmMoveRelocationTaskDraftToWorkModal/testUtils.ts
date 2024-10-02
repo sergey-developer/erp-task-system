@@ -18,7 +18,7 @@ const clickConfirmButton = async (user: UserEvent) => user.click(getConfirmButto
 const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
 const clickCancelButton = async (user: UserEvent) => user.click(getCancelButton())
 
-export const ConfirmMoveRelocationTaskDraftToWorkModalTestUtils = {
+export const confirmMoveRelocationTaskDraftToWorkModalTestUtils = {
   getContainer,
   findContainer,
 
