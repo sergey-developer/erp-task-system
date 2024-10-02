@@ -37,6 +37,7 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
 import { cancelRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/CancelRelocationTaskModal/testUtils'
 import { confirmExecutionRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/ConfirmExecutionRelocationTaskModal/testUtils'
+import { confirmMoveRelocationTaskDraftToWorkModalTestUtils } from '_tests_/features/warehouse/components/ConfirmMoveRelocationTaskDraftToWorkModal/testUtils'
 import { executeRelocationTaskModalTestUtils } from '_tests_/features/warehouse/components/ExecuteRelocationTaskModal/testUtils'
 import { relocationEquipmentTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentTable/testUtils'
 import {
@@ -86,6 +87,7 @@ import {
   mockGetTaskCountersSuccess,
   mockGetTasksSuccess,
   mockGetTaskSuccess,
+  mockMoveRelocationTaskDraftToWorkSuccess,
   mockReturnRelocationTaskToReworkBadRequestError,
   mockReturnRelocationTaskToReworkForbiddenError,
   mockReturnRelocationTaskToReworkNotFoundError,
@@ -2860,6 +2862,187 @@ describe('Информация о заявке о перемещении', () =>
       const page = await createDocumentsPackagePageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
+    })
+  })
+
+  describe('Перевести черновик в работу', () => {
+    test(`Пункт меню отображается если заявка в статусе ${RelocationTaskStatusEnum.Draft}, создатель заявки текущий пользователь и есть права ${UserPermissionsEnum.RelocationTasksUpdate}`, async () => {
+      const currentUser = userFixtures.user({
+        permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+      })
+      const relocationTask = warehouseFixtures.relocationTask({
+        id: props.relocationTaskId,
+        status: RelocationTaskStatusEnum.Draft,
+        createdBy: currentUser,
+      })
+      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        },
+      )
+
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      const item = relocationTaskDetailsTestUtils.getMoveDraftToWorkMenuItem()
+      expect(item).toBeInTheDocument()
+      expect(item).toBeEnabled()
+    })
+
+    describe('Пункт меню не отображается', () => {
+      test(`Если заявка в статусе ${RelocationTaskStatusEnum.Draft}, создатель заявки текущий пользователь но нет прав ${UserPermissionsEnum.RelocationTasksUpdate}`, async () => {
+        const currentUser = userFixtures.user({ permissions: [] })
+        const relocationTask = warehouseFixtures.relocationTask({
+          id: props.relocationTaskId,
+          status: RelocationTaskStatusEnum.Draft,
+          createdBy: currentUser,
+        })
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
+            }),
+          },
+        )
+
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.queryMoveDraftToWorkMenuItem()
+        expect(item).not.toBeInTheDocument()
+      })
+
+      test(`Если заявка в статусе ${RelocationTaskStatusEnum.Draft}, есть права ${UserPermissionsEnum.RelocationTasksUpdate}, но создатель заявки не текущий пользователь`, async () => {
+        const currentUser = userFixtures.user({
+          permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+        })
+        const relocationTask = warehouseFixtures.relocationTask({
+          id: props.relocationTaskId,
+          status: RelocationTaskStatusEnum.Draft,
+        })
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
+            }),
+          },
+        )
+
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.queryMoveDraftToWorkMenuItem()
+        expect(item).not.toBeInTheDocument()
+      })
+
+      test(`Если есть права ${UserPermissionsEnum.RelocationTasksUpdate}, создатель заявки текущий пользователь но заявка не в статусе ${RelocationTaskStatusEnum.Draft}`, async () => {
+        const currentUser = userFixtures.user({
+          permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+        })
+        const relocationTask = warehouseFixtures.relocationTask({
+          id: props.relocationTaskId,
+          status: RelocationTaskStatusEnum.New,
+          createdBy: currentUser,
+        })
+        mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+
+        mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+        const { user } = render(
+          <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+          {
+            store: getStoreWithAuth(currentUser, undefined, undefined, {
+              queries: { ...getUserMeQueryMock(currentUser) },
+            }),
+          },
+        )
+
+        await relocationTaskDetailsTestUtils.openMenu(user)
+        const item = relocationTaskDetailsTestUtils.queryMoveDraftToWorkMenuItem()
+        expect(item).not.toBeInTheDocument()
+      })
+    })
+
+    test('При клике открывается модалка подтверждения перевода заявки в работу', async () => {
+      const currentUser = userFixtures.user({
+        permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+      })
+      const relocationTask = warehouseFixtures.relocationTask({
+        id: props.relocationTaskId,
+        status: RelocationTaskStatusEnum.Draft,
+        createdBy: currentUser,
+      })
+      mockGetRelocationTaskSuccess(props.relocationTaskId, { body: relocationTask })
+
+      mockGetRelocationEquipmentListSuccess(props.relocationTaskId)
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        },
+      )
+
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      await relocationTaskDetailsTestUtils.clickMoveDraftToWorkMenuItem(user)
+      const modal = await confirmMoveRelocationTaskDraftToWorkModalTestUtils.findContainer()
+      expect(modal).toBeInTheDocument()
+    })
+
+    test('После успешного подтверждения закрывается модалка, вызывается функция перезапроса заявок на перемещение и меняется статус заявки', async () => {
+      const currentUser = userFixtures.user({
+        permissions: [UserPermissionsEnum.RelocationTasksUpdate],
+      })
+      const relocationTask = warehouseFixtures.relocationTask({
+        id: props.relocationTaskId,
+        status: RelocationTaskStatusEnum.Draft,
+        createdBy: currentUser,
+      })
+      mockGetRelocationTaskSuccess(relocationTask.id, { body: relocationTask })
+      mockGetRelocationEquipmentListSuccess(relocationTask.id)
+
+      const updatedRelocationTask = warehouseFixtures.relocationTask({
+        status: RelocationTaskStatusEnum.New,
+      })
+      mockMoveRelocationTaskDraftToWorkSuccess(
+        { relocationTaskId: relocationTask.id },
+        { body: updatedRelocationTask },
+      )
+
+      const { user } = render(
+        <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
+        {
+          store: getStoreWithAuth(currentUser, undefined, undefined, {
+            queries: { ...getUserMeQueryMock(currentUser) },
+          }),
+        },
+      )
+
+      await relocationTaskDetailsTestUtils.openMenu(user)
+      await relocationTaskDetailsTestUtils.clickMoveDraftToWorkMenuItem(user)
+      const modal = await confirmMoveRelocationTaskDraftToWorkModalTestUtils.findContainer()
+      await confirmMoveRelocationTaskDraftToWorkModalTestUtils.clickConfirmButton(user)
+
+      await waitFor(() => expect(modal).not.toBeInTheDocument())
+      expect(props.refetchRelocationTasks).toBeCalledTimes(1)
+      const status = relocationTaskDetailsTestUtils.getBlockInfo(
+        'status',
+        relocationTaskStatusDict[updatedRelocationTask.status],
+      )
+      expect(status).toBeInTheDocument()
     })
   })
 

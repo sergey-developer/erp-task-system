@@ -5,12 +5,13 @@ import { RelocationTaskDetailsProps } from 'modules/warehouse/components/Relocat
 import { RelocationTaskModel } from 'modules/warehouse/models/index'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
-import { fakeId } from '_tests_/utils/index'
+import { fakeId } from '_tests_/utils'
 
 export const props: RelocationTaskDetailsProps = {
   open: true,
   relocationTaskId: fakeId(),
   onClose: jest.fn(),
+  refetchRelocationTasks: jest.fn(),
 }
 
 export const canExecuteRelocationTaskProps: {
@@ -23,4 +24,5 @@ export const canExecuteRelocationTaskProps: {
 
 export enum TestIdsEnum {
   RelocationTaskDetails = 'relocation-task-details',
+  RelocationTaskDetailsLoading = 'relocation-task-details-loading',
 }

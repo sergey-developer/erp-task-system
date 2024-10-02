@@ -70,8 +70,11 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
     >
   >({ ...initialRelocationTasksParams, inventorization: inventorization.id })
 
-  const { currentData: relocationTasks, isFetching: relocationTasksIsFetching } =
-    useGetRelocationTasks(getRelocationTasksParams)
+  const {
+    currentData: relocationTasks,
+    isFetching: relocationTasksIsFetching,
+    refetch: refetchRelocationTasks,
+  } = useGetRelocationTasks(getRelocationTasksParams)
 
   const onTablePagination = useCallback(
     (pagination: Parameters<ExecuteInventorizationRelocationTaskTableProps['onChange']>[0]) => {
@@ -150,6 +153,7 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
             onClose={onCloseRelocationTask}
             relocationTaskId={relocationTaskId}
             inventorization={inventorization}
+            refetchRelocationTasks={refetchRelocationTasks}
           />
         </React.Suspense>
       )}
