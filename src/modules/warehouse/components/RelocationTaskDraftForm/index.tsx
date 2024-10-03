@@ -18,7 +18,6 @@ import TimePicker from 'components/TimePicker'
 import { filesFormItemProps } from 'shared/constants/form'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
-import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 
 import {
@@ -66,8 +65,9 @@ const RelocationTaskDraftForm = <FormFields extends BaseRelocationTaskFormFields
   onChangeRelocateTo,
 }: RelocationTaskFormProps<FormFields>) => {
   const form = Form.useFormInstance<FormFields>()
-  const executorsFormValue: MaybeUndefined<IdType[]> = Form.useWatch('executors', form)
-  const controllersFormValue: MaybeUndefined<IdType[]> = Form.useWatch('controllers', form)
+  const executorsFormValue = Form.useWatch('executors', form)
+  // const controllersFormValue: MaybeUndefined<IdType[]> = Form.useWatch('controllers', form)
+  const controllerFormValue = Form.useWatch('controller', form)
 
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(type)
   const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
@@ -96,13 +96,13 @@ const RelocationTaskDraftForm = <FormFields extends BaseRelocationTaskFormFields
     form.setFieldValue('executors', usersIds)
   }
 
-  const onChangeControllers: SelectProps<IdType[], UserGroupOption>['onChange'] = async (
-    _,
-    option,
+  const onChangeControllers: SelectProps<IdType>['onChange'] = async (
+    value,
+    // option,
   ) => {
-    if (!Array.isArray(option)) return
-    const usersIds = await collectUsersIds(option)
-    form.setFieldValue('controllers', usersIds)
+    // if (!Array.isArray(option)) return
+    // const usersIds = await collectUsersIds(option)
+    form.setFieldValue('controller', value)
   }
 
   return (
@@ -213,11 +213,11 @@ const RelocationTaskDraftForm = <FormFields extends BaseRelocationTaskFormFields
         <Form.Item
           data-testid='controller-form-item'
           label='Контролер'
-          name='controllers'
+          name='controller'
           rules={controllerIsRequired ? onlyRequiredRules : undefined}
         >
-          <Select<IdType[], UserGroupOption>
-            mode='multiple'
+          <Select<IdType>
+            // mode='multiple'
             dropdownRender={(menu) => <div data-testid='controller-select-dropdown'>{menu}</div>}
             loading={controllersIsLoading}
             disabled={isLoading || controllersIsLoading}
@@ -227,7 +227,7 @@ const RelocationTaskDraftForm = <FormFields extends BaseRelocationTaskFormFields
             showSearch
             filterOption={filterOptionBy('label')}
             onChange={onChangeControllers}
-            value={controllersFormValue}
+            value={controllerFormValue}
           />
         </Form.Item>
       </Col>

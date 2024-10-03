@@ -255,11 +255,12 @@ const CreateRelocationTaskPage: FC = () => {
 
   const { currentData: controllers = [], isFetching: controllersIsFetching } = useGetUsers({
     isManager: false,
-    permissions: [UserPermissionsEnum.ControlRelocationTask],
+    // permissions: [UserPermissionsEnum.ControlRelocationTask],
   })
 
   const { currentData: executorsUsersGroups = [], isFetching: executorsUsersGroupsIsFetching } =
-    useGetUsersGroups({ category: UserGroupCategoryEnum.ExecuteRelocation })
+    useGetUsersGroups()
+  // useGetUsersGroups({ category: UserGroupCategoryEnum.ExecuteRelocation })
 
   const { currentData: controllersUsersGroups = [], isFetching: controllersUsersGroupsIsFetching } =
     useGetUsersGroups({ category: UserGroupCategoryEnum.ControlRelocation })
@@ -355,7 +356,7 @@ const CreateRelocationTaskPage: FC = () => {
   const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
     {
       ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
-      ...(!!selectedRelocateTo?.value && { warehouses: [selectedRelocateTo.value] })
+      ...(!!selectedRelocateTo?.value && { warehouses: [selectedRelocateTo.value] }),
     },
     { skip: !selectedOwnerId && !selectedRelocateTo?.value },
   )

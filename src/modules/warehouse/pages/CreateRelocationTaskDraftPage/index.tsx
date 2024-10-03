@@ -166,11 +166,12 @@ const CreateRelocationTaskDraftPage: FC = () => {
 
   const { currentData: controllers = [], isFetching: controllersIsFetching } = useGetUsers({
     isManager: false,
-    permissions: [UserPermissionsEnum.ControlRelocationTask],
+    // permissions: [UserPermissionsEnum.ControlRelocationTask],
   })
 
   const { currentData: executorsUsersGroups = [], isFetching: executorsUsersGroupsIsFetching } =
-    useGetUsersGroups({ category: UserGroupCategoryEnum.ExecuteRelocation })
+    useGetUsersGroups()
+  // useGetUsersGroups({ category: UserGroupCategoryEnum.ExecuteRelocation })
 
   const { currentData: controllersUsersGroups = [], isFetching: controllersUsersGroupsIsFetching } =
     useGetUsersGroups({ category: UserGroupCategoryEnum.ControlRelocation })

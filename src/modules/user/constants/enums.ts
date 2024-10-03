@@ -1,7 +1,7 @@
 import { TaskActionsPermissionsEnum } from 'modules/task/constants/task'
 
 export enum UserPermissionsEnum {
-  ControlRelocationTask = 'CONTROL_RELOCATION_TASK',
+  // ControlRelocationTask = 'CONTROL_RELOCATION_TASK',
 
   WarehouseReportsRead = 'WAREHOUSE_REPORTS_READ',
 
@@ -110,7 +110,7 @@ export enum UserPermissionsEnum {
 
 export enum UserGroupCategoryEnum {
   ControlRelocation = 'CONTROL_RELOCATION',
-  ExecuteRelocation = 'EXECUTE_RELOCATION',
+  // ExecuteRelocation = 'EXECUTE_RELOCATION',
 }
 
 export type UserActionsPermissions = TaskActionsPermissionsEnum
