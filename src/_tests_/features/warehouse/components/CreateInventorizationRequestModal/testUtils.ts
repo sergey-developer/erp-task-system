@@ -156,8 +156,9 @@ const expectWarehouseLoadingStarted = () =>
 const expectWarehouseLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getWarehouseFormItem())
 
-const clickSubmitButton = async (user: UserEvent) =>
-  user.click(buttonTestUtils.getButtonIn(getContainer(), CREATE_TEXT))
+// submit button
+const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), new RegExp(CREATE_TEXT))
+const clickSubmitButton = async (user: UserEvent) => user.click(getSubmitButton())
 
 export const createInventorizationRequestModalTestUtils = {
   getContainer,

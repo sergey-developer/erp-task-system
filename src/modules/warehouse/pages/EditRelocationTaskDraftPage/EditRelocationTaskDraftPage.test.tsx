@@ -1,5 +1,4 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { within } from '@testing-library/react'
 import * as reactRouterDom from 'react-router-dom'
 
 import { CommonRouteEnum } from 'configs/routes'
@@ -8,12 +7,12 @@ import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import ExecuteInventorizationPage from 'modules/warehouse/pages/ExecuteInventorizationPage'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'modules/warehouse/utils/relocationTask'
 
-import { CANCEL_TEXT } from 'shared/constants/common'
 import { makeString } from 'shared/utils/string'
 
 import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentDraftEditableTable/testUtils'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
 import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
+import { editRelocationTaskDraftPageTestUtils as testUtils } from '_tests_/features/warehouse/pages/EditRelocationTaskDraftPage/testUtils'
 import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
@@ -34,7 +33,6 @@ import {
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
-  buttonTestUtils,
   getStoreWithAuth,
   notificationTestUtils,
   render,
@@ -42,33 +40,7 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import CreateRelocationTaskDraftPage from './index'
-
-const getContainer = () => screen.getByTestId('create-relocation-task-draft-page')
-
-// submit button
-const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), 'Создать заявку')
-const clickSubmitButton = async (user: UserEvent) => {
-  const button = getSubmitButton()
-  await user.click(button)
-}
-
-// cancel button
-const getCancelButton = () => buttonTestUtils.getButtonIn(getContainer(), CANCEL_TEXT)
-const clickCancelButton = async (user: UserEvent) => {
-  const button = getCancelButton()
-  await user.click(button)
-}
-
-export const testUtils = {
-  getContainer,
-
-  getSubmitButton,
-  clickSubmitButton,
-
-  getCancelButton,
-  clickCancelButton,
-}
+import EditRelocationTaskDraftPage from './index'
 
 jest.mock('react-router-dom', () => ({
   __esModule: true,
@@ -98,7 +70,7 @@ describe('Страница создания черновика заявки на
         inventorizationId: locationStateMock.inventorization.id,
       })
 
-      render(<CreateRelocationTaskDraftPage />, {
+      render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -132,7 +104,7 @@ describe('Страница создания черновика заявки на
         inventorizationId: locationStateMock.inventorization.id,
       })
 
-      const { user } = render(<CreateRelocationTaskDraftPage />, {
+      const { user } = render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -179,7 +151,7 @@ describe('Страница создания черновика заявки на
         inventorizationId: locationStateMock.inventorization.id,
       })
 
-      const { user } = render(<CreateRelocationTaskDraftPage />, {
+      const { user } = render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -219,13 +191,13 @@ describe('Страница создания черновика заявки на
         inventorizationId: locationStateMock.inventorization.id,
       })
 
-      render(<CreateRelocationTaskDraftPage />, {
+      render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
-      const title = within(getContainer()).getByText('Перечень оборудования')
+      const title = within(testUtils.getContainer()).getByText('Перечень оборудования')
       const table = relocationEquipmentDraftEditableTableTestUtils.getContainer()
 
       expect(title).toBeInTheDocument()
@@ -259,7 +231,7 @@ describe('Страница создания черновика заявки на
       [
         {
           path: CommonRouteEnum.Root,
-          element: <CreateRelocationTaskDraftPage />,
+          element: <EditRelocationTaskDraftPage />,
         },
         {
           path: WarehouseRouteEnum.ExecuteInventorization,
@@ -327,7 +299,7 @@ describe('Страница создания черновика заявки на
       [
         {
           path: CommonRouteEnum.Root,
-          element: <CreateRelocationTaskDraftPage />,
+          element: <EditRelocationTaskDraftPage />,
         },
         {
           path: WarehouseRouteEnum.ExecuteInventorization,

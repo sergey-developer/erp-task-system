@@ -59,6 +59,11 @@ const queryMoveDraftToWorkMenuItem = () =>
 const clickMoveDraftToWorkMenuItem = async (user: UserEvent) =>
   menuTestUtils.clickMenuItem('Перевести черновик в работу', user)
 
+// change draft menu item
+const getChangeDraftMenuItem = () => menuTestUtils.getMenuItem('Изменить черновик')
+const clickChangeDraftMenuItem = (user: UserEvent) =>
+  menuTestUtils.clickMenuItem('Изменить черновик', user)
+
 // stretch details button
 const getStretchDetailsButton = () => buttonTestUtils.getButtonIn(getContainer(), 'double-right')
 const clickStretchDetailsButton = async (user: UserEvent) => {
@@ -134,6 +139,9 @@ export const relocationTaskDetailsTestUtils = {
 
   getExecuteTaskMenuItem,
   clickExecuteTaskMenuItem,
+
+  getChangeDraftMenuItem,
+  clickChangeDraftMenuItem,
 
   getCancelTaskMenuItem,
   clickCancelTaskMenuItem,

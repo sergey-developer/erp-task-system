@@ -9,9 +9,9 @@ export type GetUsersQueryArgs = Partial<{
   isManager: boolean
   allHierarchySubordinates: boolean
   warehouses: IdType[]
+  permissions: UserPermissionsEnum[]
   readTasksWorkGroup: MaybeApiNone<IdType>
   resolveTasksWorkGroup: MaybeApiNone<IdType>
-  permissions: UserPermissionsEnum[]
 }>
 
 export type GetUsersSuccessResponse = UsersModel
