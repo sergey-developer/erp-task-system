@@ -80,7 +80,7 @@ describe('Страница создания черновика заявки на
       expect(form).toBeInTheDocument()
     })
 
-    test('Контроллером нельзя выбрать исполнителя и текущего пользователя', async () => {
+    test('Контроллером нельзя выбрать текущего пользователя', async () => {
       const locationStateMock = makeCreateRelocationTaskDraftPageLocationState({
         inventorization: warehouseFixtures.inventorization(),
       })
@@ -115,16 +115,16 @@ describe('Страница создания черновика заявки на
       await relocationTaskFormTestUtils.openExecutorSelect(user)
       await relocationTaskFormTestUtils.setExecutor(user, executorUser.fullName)
       await relocationTaskFormTestUtils.openControllerSelect(user)
-      const executorOption = relocationTaskFormTestUtils.queryControllerOption(
-        executorUser.fullName,
-      )
+      // const executorOption = relocationTaskFormTestUtils.queryControllerOption(
+      //   executorUser.fullName,
+      // )
       const currentUserOption = relocationTaskFormTestUtils.queryControllerOption(
         currentUser.fullName,
       )
       const otherUserOption = relocationTaskFormTestUtils.getControllerOption(otherUser.fullName)
 
       expect(otherUserOption).toBeInTheDocument()
-      expect(executorOption).not.toBeInTheDocument()
+      // expect(executorOption).not.toBeInTheDocument()
       expect(currentUserOption).not.toBeInTheDocument()
     })
 

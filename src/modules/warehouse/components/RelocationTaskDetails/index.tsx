@@ -251,7 +251,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
   const creatorIsCurrentUser = useIdBelongAuthUser(relocationTask?.createdBy?.id)
   const currentUserInExecutors = useIdBelongAuthUser(relocationTask?.executors)
   const completedByIsCurrentUser = useIdBelongAuthUser(relocationTask?.completedBy?.id)
-  const controllerIsCurrentUser = useIdBelongAuthUser(relocationTask?.controllers)
+  const controllerIsCurrentUser = useIdBelongAuthUser(relocationTask?.controller?.id)
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const onUpdateExternalRelocation =
@@ -567,9 +567,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
                   <ReadonlyField
                     data-testid='controller'
                     label='Контролер:'
-                    value={valueOr(relocationTask.controllers, (controllers) => (
-                      <Space>{controllers.map((c) => c.fullName)}</Space>
-                    ))}
+                    value={valueOr(relocationTask.controller?.fullName)}
                   />
 
                   <ReadonlyField

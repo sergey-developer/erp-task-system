@@ -3,6 +3,7 @@ import { Button, Col, Form, Modal, Row, Typography, UploadProps } from 'antd'
 import concat from 'lodash/concat'
 import isNumber from 'lodash/isNumber'
 import moment from 'moment-timezone'
+import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -196,11 +197,12 @@ const EditRelocationTaskDraftPage: FC = () => {
 
   const { currentData: controllers = [], isFetching: controllersIsFetching } = useGetUsers({
     isManager: false,
-    permissions: [UserPermissionsEnum.ControlRelocationTask],
+    // permissions: [UserPermissionsEnum.ControlRelocationTask],
   })
 
   const { currentData: executorsUsersGroups = [], isFetching: executorsUsersGroupsIsFetching } =
-    useGetUsersGroups({ category: UserGroupCategoryEnum.ExecuteRelocation })
+    useGetUsersGroups()
+  // useGetUsersGroups({ category: UserGroupCategoryEnum.ExecuteRelocation })
 
   const { currentData: controllersUsersGroups = [], isFetching: controllersUsersGroupsIsFetching } =
     useGetUsersGroups({ category: UserGroupCategoryEnum.ControlRelocation })
@@ -439,7 +441,8 @@ const EditRelocationTaskDraftPage: FC = () => {
         deadlineAtDate: moment(relocationTask.deadlineAt),
         deadlineAtTime: moment(relocationTask.deadlineAt),
         executors: mapIds(relocationTask.executors),
-        controllers: relocationTask.controllers ? mapIds(relocationTask.controllers) : undefined,
+        // controllers: relocationTask.controllers ? mapIds(relocationTask.controllers) : undefined,
+        controller: relocationTask.controller?.id,
         comment: relocationTask.comment || undefined,
       })
     }
@@ -533,9 +536,18 @@ const EditRelocationTaskDraftPage: FC = () => {
     return makeUserGroupOptions(executors, executorsUsersGroups)
   }, [executors, executorsUsersGroups])
 
-  const controllersOptions: UserGroupOptionGroup[] = useMemo(() => {
-    return authUser ? makeUserGroupOptions(controllers, controllersUsersGroups, [authUser.id]) : []
-  }, [authUser, controllers, controllersUsersGroups])
+  // const controllersOptions: UserGroupOptionGroup[] = useMemo(() => {
+  //   return authUser ? makeUserGroupOptions(controllers, controllersUsersGroups, [authUser.id]) : []
+  // }, [authUser, controllers, controllersUsersGroups])
+
+  const controllersOptions: DefaultOptionType[] = useMemo(() => {
+    return authUser
+      ? controllers.reduce<DefaultOptionType[]>((acc, contr) => {
+          if (contr.id !== authUser.id) acc.push({ label: contr.fullName, value: contr.id })
+          return acc
+        }, [])
+      : controllers.map((c) => ({ label: c.fullName, value: c.id }))
+  }, [authUser, controllers])
 
   return (
     <>
