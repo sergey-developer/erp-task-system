@@ -19,4 +19,10 @@ export const props: ChangeInfrastructureOrderFormTableProps = {
 
 export enum TestIdsEnum {
   ChangeInfrastructureOrderFormTableContainer = 'change-infrastructure-order-form-table-container',
+  NameFormItem = 'name-form-item',
+  BudgetTypeFormItem = 'budget-type-form-item',
+  LaborCostsFormItem = 'labor-costs-form-item',
+  AmountFormItem = 'amount-form-item',
+  CostFormItem = 'cost-form-item',
+  PriceFormItem = 'price-form-item',
 }

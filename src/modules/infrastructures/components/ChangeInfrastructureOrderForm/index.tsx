@@ -147,42 +147,44 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
   )
 
   return (
-    <Space $block direction='vertical' size='middle'>
-      <Flex vertical>
-        <ReadonlyField
-          rowProps={{ gutter: 8 }}
-          leftColProps={{ span: undefined }}
-          rightColProps={{ span: undefined }}
-          label='Тариф:'
-          value={urgencyRateType.title}
+    <div data-testid='change-infrastructure-order-form-container'>
+      <Space $block direction='vertical' size='middle'>
+        <Flex vertical>
+          <ReadonlyField
+            rowProps={{ gutter: 8 }}
+            leftColProps={{ span: undefined }}
+            rightColProps={{ span: undefined }}
+            label='Тариф:'
+            value={urgencyRateType.title}
+          />
+        </Flex>
+
+        <Upload
+          listType='picture'
+          multiple
+          disabled={isDeleting}
+          customRequest={canUploadFile ? onUploadFile : undefined}
+          onRemove={canDeleteFile ? onDeleteFile : undefined}
+          defaultFileList={defaultFiles}
+          itemRender={renderUploadedFile({ canDelete: !isDeleting, showDelete: canDeleteFile })}
+        >
+          {/*{canUploadFile && <UploadButton label='Добавить файлы' />}*/}
+        </Upload>
+
+        <ChangeInfrastructureOrderFormTable
+          name={[id, 'works']}
+          editableKeys={editableTableRowKeys}
+          onChange={setEditableTableRowKeys}
+          infrastructureWorkTypes={infrastructureWorkTypes}
+          managerIsCurrentUser={managerIsCurrentUser}
+          onChangeWorkType={onChangeWorkType}
+          infrastructureOrderFormWorkTypeCostIsFetching={
+            infrastructureOrderFormWorkTypeCostIsFetching
+          }
+          onChangeAmount={onChangeAmount}
         />
-      </Flex>
-
-      <Upload
-        listType='picture'
-        multiple
-        disabled={isDeleting}
-        customRequest={canUploadFile ? onUploadFile : undefined}
-        onRemove={canDeleteFile ? onDeleteFile : undefined}
-        defaultFileList={defaultFiles}
-        itemRender={renderUploadedFile({ canDelete: !isDeleting, showDelete: canDeleteFile })}
-      >
-        {/*{canUploadFile && <UploadButton label='Добавить файлы' />}*/}
-      </Upload>
-
-      <ChangeInfrastructureOrderFormTable
-        name={[id, 'works']}
-        editableKeys={editableTableRowKeys}
-        onChange={setEditableTableRowKeys}
-        infrastructureWorkTypes={infrastructureWorkTypes}
-        managerIsCurrentUser={managerIsCurrentUser}
-        onChangeWorkType={onChangeWorkType}
-        infrastructureOrderFormWorkTypeCostIsFetching={
-          infrastructureOrderFormWorkTypeCostIsFetching
-        }
-        onChangeAmount={onChangeAmount}
-      />
-    </Space>
+      </Space>
+    </div>
   )
 }
 

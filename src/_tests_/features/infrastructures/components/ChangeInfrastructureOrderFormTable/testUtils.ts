@@ -7,6 +7,8 @@ import { TestIdsEnum } from './constants'
 
 const getContainer = () =>
   screen.getByTestId(TestIdsEnum.ChangeInfrastructureOrderFormTableContainer)
+const findContainer = () =>
+  screen.findByTestId(TestIdsEnum.ChangeInfrastructureOrderFormTableContainer)
 
 const getRowByRole = () => tableTestUtils.getOneRowByRole(getContainer())
 
@@ -15,7 +17,7 @@ const getAddEquipmentButton = () => buttonTestUtils.getButtonIn(getContainer(), 
 const clickAddOrderFormWorksButton = async (user: UserEvent) => user.click(getAddEquipmentButton())
 
 // work type field
-const getWorkTypeFormItem = (row: HTMLElement) => within(row).getByTestId('name-form-item')
+const getWorkTypeFormItem = (row: HTMLElement) => within(row).getByTestId(TestIdsEnum.NameFormItem)
 
 const getWorkTypeSelect = (row: HTMLElement) => selectTestUtils.getSelect(getWorkTypeFormItem(row))
 
@@ -25,19 +27,21 @@ const openWorkTypeSelect = async (user: UserEvent, row: HTMLElement) =>
   selectTestUtils.openSelect(user, getWorkTypeFormItem(row))
 
 // budget field
-const getBudgetTypeFormItem = (row: HTMLElement) => within(row).getByTestId('budget-type-form-item')
+const getBudgetTypeFormItem = (row: HTMLElement) =>
+  within(row).getByTestId(TestIdsEnum.BudgetTypeFormItem)
 
 const getBudgetTypeField = (row: HTMLElement) =>
   within(getBudgetTypeFormItem(row)).getByRole('textbox')
 
 // labor costs field
-const getLaborCostsFormItem = (row: HTMLElement) => within(row).getByTestId('labor-costs-form-item')
+const getLaborCostsFormItem = (row: HTMLElement) =>
+  within(row).getByTestId(TestIdsEnum.LaborCostsFormItem)
 
 const getLaborCostsField = (row: HTMLElement) =>
   within(getLaborCostsFormItem(row)).getByRole('spinbutton')
 
 // amount field
-const getAmountFormItem = (row: HTMLElement) => within(row).getByTestId('amount-form-item')
+const getAmountFormItem = (row: HTMLElement) => within(row).getByTestId(TestIdsEnum.AmountFormItem)
 
 const getAmountInput = (row: HTMLElement) => within(getAmountFormItem(row)).getByRole('spinbutton')
 
@@ -48,17 +52,18 @@ const setAmount = async (user: UserEvent, row: HTMLElement, value: number) => {
 }
 
 // cost field
-const getCostFormItem = (row: HTMLElement) => within(row).getByTestId('cost-form-item')
+const getCostFormItem = (row: HTMLElement) => within(row).getByTestId(TestIdsEnum.CostFormItem)
 
 const getCostField = (row: HTMLElement) => within(getCostFormItem(row)).getByRole('spinbutton')
 
 // price field
-const getPriceFormItem = (row: HTMLElement) => within(row).getByTestId('price-form-item')
+const getPriceFormItem = (row: HTMLElement) => within(row).getByTestId(TestIdsEnum.PriceFormItem)
 
 const getPriceField = (row: HTMLElement) => within(getPriceFormItem(row)).getByRole('spinbutton')
 
 export const changeInfrastructureOrderFormTableTestUtils = {
   getContainer,
+  findContainer,
 
   getRowByRole,
 
