@@ -439,7 +439,8 @@ const EditRelocationTaskDraftPage: FC = () => {
         deadlineAtDate: moment(relocationTask.deadlineAt),
         deadlineAtTime: moment(relocationTask.deadlineAt),
         executors: mapIds(relocationTask.executors),
-        controllers: relocationTask.controllers ? mapIds(relocationTask.controllers) : undefined,
+        // controllers: relocationTask.controllers ? mapIds(relocationTask.controllers) : undefined,
+        controller: relocationTask.controller?.id,
         comment: relocationTask.comment || undefined,
       })
     }

@@ -760,10 +760,8 @@ const EditRelocationTaskPage: FC = () => {
     if (relocationTask && authUser) {
       setSelectedType(relocationTask.type)
 
-      const controllerFromExecutors = relocationTask.controllers
-        ? relocationTask.executors?.find((e) =>
-            relocationTask.controllers!.find((c) => c.id === e.id),
-          )
+      const controllerFromExecutors = relocationTask.controller
+        ? relocationTask.executors?.find((e) => e.id === relocationTask.controller?.id)
         : undefined
 
       form.setFieldsValue({
@@ -775,13 +773,18 @@ const EditRelocationTaskPage: FC = () => {
           : relocationTask.executors?.length
           ? mapIds(relocationTask.executors)
           : undefined,
-        controllers: controllerFromExecutors
+        // controllers: controllerFromExecutors
+        //   ? undefined
+        //   : relocationTask.controllers?.find((c) => c.id === authUser.id)
+        //     ? undefined
+        //     : relocationTask.controllers
+        //       ? mapIds(relocationTask.controllers)
+        //       : undefined,
+        controller: controllerFromExecutors
           ? undefined
-          : relocationTask.controllers?.find((c) => c.id === authUser.id)
+          : relocationTask.controller?.id === authUser.id
           ? undefined
-          : relocationTask.controllers
-          ? mapIds(relocationTask.controllers)
-          : undefined,
+          : relocationTask.controller?.id,
         comment: relocationTask?.comment || undefined,
       })
     }

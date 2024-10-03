@@ -316,7 +316,7 @@ describe('Информация о заявке о перемещении', () =>
       const label = relocationTaskDetailsTestUtils.getBlockInfo('controller', /Контролер/)
       const value = relocationTaskDetailsTestUtils.getBlockInfo(
         'controller',
-        relocationTask.controllers![0].fullName,
+        relocationTask.controller!.fullName,
       )
 
       expect(label).toBeInTheDocument()
@@ -1823,7 +1823,7 @@ describe('Информация о заявке о перемещении', () =>
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
         {
-          store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+          store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
             },
@@ -1854,7 +1854,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: { ...getUserMeQueryMock(userFixtures.user()) },
             }),
           },
@@ -1910,7 +1910,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -1943,7 +1943,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -1988,7 +1988,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -2034,7 +2034,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -2075,7 +2075,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -2116,7 +2116,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -2617,7 +2617,7 @@ describe('Информация о заявке о перемещении', () =>
       const { user } = render(
         <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
         {
-          store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+          store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock({ permissions: [UserPermissionsEnum.RelocationTasksUpdate] }),
             },
@@ -2648,7 +2648,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: { ...getUserMeQueryMock(userFixtures.user()) },
             }),
           },
@@ -2704,7 +2704,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -2741,7 +2741,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -2787,7 +2787,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -2826,7 +2826,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -2865,7 +2865,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
@@ -2900,7 +2900,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = render(
           <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           {
-            store: getStoreWithAuth(relocationTask.controllers![0], undefined, undefined, {
+            store: getStoreWithAuth(relocationTask.controller!, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock({
                   permissions: [UserPermissionsEnum.RelocationTasksUpdate],
