@@ -11,9 +11,10 @@ import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/utils'
 
 export const inventorization = (
-  props?: Pick<InventorizationModel, 'status'>,
+  props?: Partial<Pick<InventorizationModel, 'status' | 'executor'>>,
 ): InventorizationModel => ({
   status: props?.status || InventorizationStatusEnum.New,
+  executor: props?.executor || pick(userFixtures.user(), 'id', 'fullName'),
 
   id: fakeId(),
   warehouses: [
@@ -23,7 +24,6 @@ export const inventorization = (
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.user(), 'id', 'fullName'),
   type: InventorizationTypeEnum.Internal,
-  executor: pick(userFixtures.user(), 'id', 'fullName'),
   deadlineAt: fakeDateString(),
   completedAt: fakeDateString(),
   nomenclatures: [pick(warehouseFixtures.nomenclature(), 'id', 'title', 'group')],

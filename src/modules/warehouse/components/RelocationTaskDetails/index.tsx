@@ -38,7 +38,6 @@ import {
   externalRelocationStatusDict,
   externalRelocationStatusOptions,
   relocationTaskStatusDict,
-  RelocationTaskStatusEnum,
   relocationTaskTypeDict,
   returnRelocationTaskToReworkMessages,
 } from 'modules/warehouse/constants/relocationTask'
@@ -92,7 +91,6 @@ import { downloadFile, extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { InventorizationStatusEnum, InventorizationTypeEnum } from '../../constants/inventorization'
 import EditableField from './EditableField'
 import ReadonlyField from './ReadonlyField'
 import { RelocationTaskDetailsProps } from './types'
@@ -124,16 +122,7 @@ const showUploadListConfig: UploadProps['showUploadList'] = { showRemoveIcon: fa
 
 const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
   relocationTaskId,
-  inventorization = {
-    id: 1,
-    type: InventorizationTypeEnum.Internal,
-    status: InventorizationStatusEnum.New,
-    deadlineAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    warehouses: [{ id: 1, title: 'warehouse-title-1' }],
-    executor: { id: 1, fullName: 'executor-fullName' },
-    createdBy: { id: 1, fullName: 'executor-fullName' },
-  },
+  inventorization,
   ...props
 }) => {
   const navigate = useNavigate()
@@ -373,8 +362,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
       disabled: !(
         permissions.relocationTasksUpdate &&
         permissions.inventorizationUpdate &&
-        inventorizationExecutorIsCurrentUser &&
-        relocationTask?.status === RelocationTaskStatusEnum.Draft
+        inventorizationExecutorIsCurrentUser
       ),
       onClick:
         relocationTask && inventorization
