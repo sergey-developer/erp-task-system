@@ -204,6 +204,7 @@ const clickCommonPhotosButton = async (user: UserEvent) => {
 
 const expectCommonPhotosLoadingStarted = () =>
   buttonTestUtils.expectLoadingStarted(getCommonPhotosButton())
+
 const expectCommonPhotosLoadingFinished = () =>
   buttonTestUtils.expectLoadingFinished(getCommonPhotosButton())
 
@@ -3092,6 +3093,21 @@ describe('Информация о заявке о перемещении', () =>
       const page = await createDocumentsPackagePageTestUtils.getContainer()
 
       expect(page).toBeInTheDocument()
+    })
+  })
+
+  describe('Изменить черновик', () => {
+    test('Пункт меню отображается если заявка черновик', async () => {
+      mockGetRelocationTaskSuccess({ relocationTaskId: props.relocationTaskId })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: props.relocationTaskId })
+
+      const { user } = render(<RelocationTaskDetails {...props} />, {
+        store: getStoreWithAuth(undefined, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        }),
+      })
+
+      await testUtils.openMenu(user)
     })
   })
 
