@@ -11,13 +11,14 @@ import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 const TaskDetails = React.lazy(() => import('modules/task/components/TaskDetails'))
 
 const TaskListMapPage: FC = () => {
-  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<number>>(null)
+  const [selectedTaskId, setSelectedTaskId] = useState<MaybeNull<IdType>>(null)
 
   const [coords, setCoords] = useState<MaybeNull<Coordinate>>(null)
 

@@ -12,6 +12,6 @@ export const dateRules = (required: boolean): Rule[] => [
 export const timeRules = (required: boolean): Rule[] => [
   ({ getFieldValue }) => ({
     type: 'date',
-    validator: timeValidator({ dateGetter: getFieldValue, dateFieldName: 'date', required }),
+    validator: timeValidator({ dateGetter: getFieldValue, dateFieldPath: 'date', required }),
   }),
 ]

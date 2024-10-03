@@ -20,7 +20,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 
 import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { useGetLocations } from 'shared/hooks/catalogs/location'
+import { useGetLocationsCatalog } from 'shared/hooks/catalogs/locations'
 import { base64ToBytes } from 'shared/utils/common'
 import { downloadFile } from 'shared/utils/file'
 
@@ -67,7 +67,7 @@ const EquipmentPageLayout: FC = () => {
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean(false)
   const [filterValues, setFilterValues] = useState<EquipmentsFilterFormFields>({})
 
-  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocations(
+  const { currentData: locations = [], isFetching: locationsIsFetching } = useGetLocationsCatalog(
     { ordering: 'title' },
     { skip: !filterOpened },
   )

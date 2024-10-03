@@ -1,6 +1,3 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import {
   inventorizationStatusDict,
   InventorizationStatusEnum,
@@ -8,122 +5,18 @@ import {
   InventorizationTypeEnum,
 } from 'modules/warehouse/constants/inventorization'
 
-import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
+import { props } from '_tests_/features/warehouse/components/InventorizationsFilter/constants'
+import { inventorizationsFilterTestUtils } from '_tests_/features/warehouse/components/InventorizationsFilter/testUtils'
+import { render } from '_tests_/utils'
 
 import InventorizationsFilter from './index'
-import { InventorizationsFilterProps } from './types'
-
-const props: Readonly<InventorizationsFilterProps> = {
-  open: true,
-
-  values: {},
-  initialValues: {},
-
-  onClose: jest.fn(),
-  onApply: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('inventorizations-filter')
-const queryContainer = () => screen.queryByTestId('inventorizations-filter')
-const findContainer = (): Promise<HTMLElement> => screen.findByTestId('inventorizations-filter')
-
-// status block
-const getStatusBlock = (): HTMLElement => within(getContainer()).getByTestId('status-block')
-const getStatusSelectInput = () => selectTestUtils.getSelect(getStatusBlock())
-const openStatusSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getStatusBlock())
-const setStatus = selectTestUtils.clickSelectOption
-
-const unSetStatus = async (user: UserEvent, title: string) => {
-  const status = getSelectedStatus(title)
-  // eslint-disable-next-line testing-library/no-node-access
-  const closeIcon = status.querySelector('.ant-select-selection-item-remove')
-  if (closeIcon) await user.click(closeIcon)
-}
-
-const getSelectedStatus = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getStatusBlock(), title)
-
-const querySelectedStatus = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getStatusBlock(), title)
-
-// type block
-const getTypeBlock = (): HTMLElement => within(getContainer()).getByTestId('type-block')
-const getTypeSelectInput = () => selectTestUtils.getSelect(getTypeBlock())
-const openTypeSelect = (user: UserEvent) => selectTestUtils.openSelect(user, getTypeBlock())
-const setType = selectTestUtils.clickSelectOption
-
-const getSelectedType = (title: string) =>
-  selectTestUtils.getSelectedOptionByTitle(getTypeBlock(), title)
-
-const querySelectedType = (title: string) =>
-  selectTestUtils.querySelectedOptionByTitle(getTypeBlock(), title)
-
-// reset button
-const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сбросить все/)
-
-const clickResetButtonIn = async (user: UserEvent, container: HTMLElement) => {
-  const button = buttonTestUtils.getButtonIn(container, /сбросить/i)
-  await user.click(button)
-}
-
-const clickResetAllButton = async (user: UserEvent) => {
-  const button = getResetAllButton()
-  await user.click(button)
-}
-
-// close button
-const getCloseButton = () => buttonTestUtils.getButtonIn(getContainer(), /close/i)
-
-const clickCloseButton = async (user: UserEvent) => {
-  const button = getCloseButton()
-  await user.click(button)
-}
-
-// apply button
-const getApplyButton = () => buttonTestUtils.getButtonIn(getContainer(), /Применить/)
-
-const clickApplyButton = async (user: UserEvent) => {
-  const button = getApplyButton()
-  await user.click(button)
-}
-
-export const testUtils = {
-  getContainer,
-  queryContainer,
-  findContainer,
-
-  getStatusBlock,
-  getStatusSelectInput,
-  openStatusSelect,
-  setStatus,
-  unSetStatus,
-  getSelectedStatus,
-  querySelectedStatus,
-
-  getTypeBlock,
-  getTypeSelectInput,
-  openTypeSelect,
-  setType,
-  getSelectedType,
-  querySelectedType,
-
-  getResetAllButton,
-  clickResetButtonIn,
-  clickResetAllButton,
-
-  getCloseButton,
-  clickCloseButton,
-
-  getApplyButton,
-  clickApplyButton,
-}
 
 describe('Фильтр списка заявок на перемещение оборудования', () => {
   describe('Статус', () => {
     test('Отображается', () => {
       render(<InventorizationsFilter {...props} />)
 
-      const input = testUtils.getStatusSelectInput()
+      const input = inventorizationsFilterTestUtils.getStatusSelectInput()
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -132,17 +25,20 @@ describe('Фильтр списка заявок на перемещение о�
     test('Можно выбрать несколько вариантов', async () => {
       const { user } = render(<InventorizationsFilter {...props} />)
 
-      await testUtils.openStatusSelect(user)
-      await testUtils.setStatus(user, inventorizationStatusDict[InventorizationStatusEnum.New])
-      await testUtils.setStatus(
+      await inventorizationsFilterTestUtils.openStatusSelect(user)
+      await inventorizationsFilterTestUtils.setStatus(
+        user,
+        inventorizationStatusDict[InventorizationStatusEnum.New],
+      )
+      await inventorizationsFilterTestUtils.setStatus(
         user,
         inventorizationStatusDict[InventorizationStatusEnum.Completed],
       )
 
-      const status1 = testUtils.getSelectedStatus(
+      const status1 = inventorizationsFilterTestUtils.getSelectedStatus(
         inventorizationStatusDict[InventorizationStatusEnum.New],
       )
-      const status2 = testUtils.getSelectedStatus(
+      const status2 = inventorizationsFilterTestUtils.getSelectedStatus(
         inventorizationStatusDict[InventorizationStatusEnum.Completed],
       )
 
@@ -158,7 +54,7 @@ describe('Фильтр списка заявок на перемещение о�
         />,
       )
 
-      const status = testUtils.getSelectedStatus(
+      const status = inventorizationsFilterTestUtils.getSelectedStatus(
         inventorizationStatusDict[InventorizationStatusEnum.New],
       )
 
@@ -173,15 +69,21 @@ describe('Фильтр списка заявок на перемещение о�
         />,
       )
 
-      await testUtils.openStatusSelect(user)
-      await testUtils.setStatus(user, inventorizationStatusDict[InventorizationStatusEnum.Canceled])
+      await inventorizationsFilterTestUtils.openStatusSelect(user)
+      await inventorizationsFilterTestUtils.setStatus(
+        user,
+        inventorizationStatusDict[InventorizationStatusEnum.Canceled],
+      )
 
-      await testUtils.clickResetButtonIn(user, testUtils.getStatusBlock())
+      await inventorizationsFilterTestUtils.clickResetButtonIn(
+        user,
+        inventorizationsFilterTestUtils.getStatusBlock(),
+      )
 
-      const status1 = testUtils.getSelectedStatus(
+      const status1 = inventorizationsFilterTestUtils.getSelectedStatus(
         inventorizationStatusDict[InventorizationStatusEnum.New],
       )
-      const status2 = testUtils.querySelectedStatus(
+      const status2 = inventorizationsFilterTestUtils.querySelectedStatus(
         inventorizationStatusDict[InventorizationStatusEnum.Canceled],
       )
 
@@ -198,10 +100,10 @@ describe('Фильтр списка заявок на перемещение о�
         />,
       )
 
-      const status1 = testUtils.getSelectedStatus(
+      const status1 = inventorizationsFilterTestUtils.getSelectedStatus(
         inventorizationStatusDict[InventorizationStatusEnum.Completed],
       )
-      const status2 = testUtils.querySelectedStatus(
+      const status2 = inventorizationsFilterTestUtils.querySelectedStatus(
         inventorizationStatusDict[InventorizationStatusEnum.New],
       )
 
@@ -214,7 +116,7 @@ describe('Фильтр списка заявок на перемещение о�
     test('Отображается', () => {
       render(<InventorizationsFilter {...props} />)
 
-      const input = testUtils.getTypeSelectInput()
+      const input = inventorizationsFilterTestUtils.getTypeSelectInput()
 
       expect(input).toBeInTheDocument()
       expect(input).toBeEnabled()
@@ -223,14 +125,20 @@ describe('Фильтр списка заявок на перемещение о�
     test('Можно выбрать несколько вариантов', async () => {
       const { user } = render(<InventorizationsFilter {...props} />)
 
-      await testUtils.openTypeSelect(user)
-      await testUtils.setType(user, inventorizationTypeDict[InventorizationTypeEnum.Internal])
-      await testUtils.setType(user, inventorizationTypeDict[InventorizationTypeEnum.External])
-
-      const type1 = testUtils.getSelectedType(
+      await inventorizationsFilterTestUtils.openTypeSelect(user)
+      await inventorizationsFilterTestUtils.setType(
+        user,
         inventorizationTypeDict[InventorizationTypeEnum.Internal],
       )
-      const type2 = testUtils.getSelectedType(
+      await inventorizationsFilterTestUtils.setType(
+        user,
+        inventorizationTypeDict[InventorizationTypeEnum.External],
+      )
+
+      const type1 = inventorizationsFilterTestUtils.getSelectedType(
+        inventorizationTypeDict[InventorizationTypeEnum.Internal],
+      )
+      const type2 = inventorizationsFilterTestUtils.getSelectedType(
         inventorizationTypeDict[InventorizationTypeEnum.External],
       )
 
@@ -246,7 +154,7 @@ describe('Фильтр списка заявок на перемещение о�
         />,
       )
 
-      const type = testUtils.getSelectedType(
+      const type = inventorizationsFilterTestUtils.getSelectedType(
         inventorizationTypeDict[InventorizationTypeEnum.Internal],
       )
 
@@ -261,15 +169,21 @@ describe('Фильтр списка заявок на перемещение о�
         />,
       )
 
-      await testUtils.openTypeSelect(user)
-      await testUtils.setType(user, inventorizationTypeDict[InventorizationTypeEnum.External])
+      await inventorizationsFilterTestUtils.openTypeSelect(user)
+      await inventorizationsFilterTestUtils.setType(
+        user,
+        inventorizationTypeDict[InventorizationTypeEnum.External],
+      )
 
-      await testUtils.clickResetButtonIn(user, testUtils.getTypeBlock())
+      await inventorizationsFilterTestUtils.clickResetButtonIn(
+        user,
+        inventorizationsFilterTestUtils.getTypeBlock(),
+      )
 
-      const type1 = testUtils.getSelectedType(
+      const type1 = inventorizationsFilterTestUtils.getSelectedType(
         inventorizationTypeDict[InventorizationTypeEnum.Internal],
       )
-      const type2 = testUtils.querySelectedType(
+      const type2 = inventorizationsFilterTestUtils.querySelectedType(
         inventorizationTypeDict[InventorizationTypeEnum.External],
       )
 
@@ -286,10 +200,10 @@ describe('Фильтр списка заявок на перемещение о�
         />,
       )
 
-      const type1 = testUtils.getSelectedType(
+      const type1 = inventorizationsFilterTestUtils.getSelectedType(
         inventorizationTypeDict[InventorizationTypeEnum.External],
       )
-      const type2 = testUtils.querySelectedType(
+      const type2 = inventorizationsFilterTestUtils.querySelectedType(
         inventorizationTypeDict[InventorizationTypeEnum.Internal],
       )
 
@@ -302,7 +216,7 @@ describe('Фильтр списка заявок на перемещение о�
     test('Отображается', () => {
       render(<InventorizationsFilter {...props} />)
 
-      const button = testUtils.getApplyButton()
+      const button = inventorizationsFilterTestUtils.getApplyButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -311,7 +225,7 @@ describe('Фильтр списка заявок на перемещение о�
     test('Обработчик вызывается', async () => {
       const { user } = render(<InventorizationsFilter {...props} />)
 
-      await testUtils.clickApplyButton(user)
+      await inventorizationsFilterTestUtils.clickApplyButton(user)
 
       expect(props.onApply).toBeCalledTimes(1)
       expect(props.onApply).toBeCalledWith(expect.anything())
@@ -322,7 +236,7 @@ describe('Фильтр списка заявок на перемещение о�
     test('Отображается', () => {
       render(<InventorizationsFilter {...props} />)
 
-      const button = testUtils.getResetAllButton()
+      const button = inventorizationsFilterTestUtils.getResetAllButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -343,18 +257,18 @@ describe('Фильтр списка заявок на перемещение о�
         />,
       )
 
-      await testUtils.clickResetAllButton(user)
+      await inventorizationsFilterTestUtils.clickResetAllButton(user)
 
-      const status1 = testUtils.getSelectedStatus(
+      const status1 = inventorizationsFilterTestUtils.getSelectedStatus(
         inventorizationStatusDict[InventorizationStatusEnum.New],
       )
-      const status2 = testUtils.querySelectedStatus(
+      const status2 = inventorizationsFilterTestUtils.querySelectedStatus(
         inventorizationStatusDict[InventorizationStatusEnum.Completed],
       )
-      const type1 = testUtils.getSelectedType(
+      const type1 = inventorizationsFilterTestUtils.getSelectedType(
         inventorizationTypeDict[InventorizationTypeEnum.Internal],
       )
-      const type2 = testUtils.querySelectedType(
+      const type2 = inventorizationsFilterTestUtils.querySelectedType(
         inventorizationTypeDict[InventorizationTypeEnum.External],
       )
 
@@ -369,7 +283,7 @@ describe('Фильтр списка заявок на перемещение о�
     test('Отображается', () => {
       render(<InventorizationsFilter {...props} />)
 
-      const button = testUtils.getCloseButton()
+      const button = inventorizationsFilterTestUtils.getCloseButton()
 
       expect(button).toBeInTheDocument()
       expect(button).toBeEnabled()
@@ -377,7 +291,7 @@ describe('Фильтр списка заявок на перемещение о�
 
     test('Обработчик вызывается', async () => {
       const { user } = render(<InventorizationsFilter {...props} />)
-      await testUtils.clickCloseButton(user)
+      await inventorizationsFilterTestUtils.clickCloseButton(user)
       expect(props.onClose).toBeCalledTimes(1)
     })
   })

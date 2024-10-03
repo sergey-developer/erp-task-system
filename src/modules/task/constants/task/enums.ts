@@ -1,10 +1,10 @@
-export enum FastFilterEnum {
-  All = 'ALL',
+export enum TasksFastFilterEnum {
+  AllLines = 'ALL_LINES',
+  FirstLine = 'FIRST_LINE',
+  SecondLine = 'SECOND_LINE',
   Free = 'FREE',
   Mine = 'MINE',
   Overdue = 'OVERDUE',
-  FirstLine = 'FIRST_LINE',
-  SecondLine = 'SECOND_LINE',
   LessOneHour = 'LESS_1_HOUR',
   LessThreeHours = 'LESS_3_HOURS',
   Returned = 'RETURNED',
@@ -86,5 +86,9 @@ export enum TaskActionsPermissionsEnum {
   CanReclassificationRequestsCreate = 'CAN_RECLASSIFICATION_REQUESTS_CREATE',
   CanSuspendRequestsCreate = 'CAN_SUSPEND_REQUESTS_CREATE',
   CanExecute = 'CAN_EXECUTE',
+  CanResolve = 'CAN_RESOLVE',
+  CanAssignee = 'CAN_ASSIGNEE',
+  CanSelfAssignee = 'CAN_SELF_ASSIGNEE',
   CanSubtasksCreate = 'CAN_SUBTASKS_CREATE',
+  CanPutOnSecondLine = 'CAN_PUT_ON_SECOND_LINE',
 }

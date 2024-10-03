@@ -1,26 +1,34 @@
-import { BaseTaskModel } from 'modules/task/models'
+import { FastFilterByLinesType, FastFilterType } from 'modules/task/components/FastFilters/types'
+import { TaskModel } from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 
 import { StringMap } from 'shared/types/utils'
 
 import {
-  FastFilterEnum,
   TaskDetailsTabsEnum,
   TaskExtendedStatusEnum,
+  TasksFastFilterEnum,
   TaskStatusEnum,
+  TaskTypeEnum,
 } from './enums'
 
-export const fastFilterNamesDict: StringMap<FastFilterEnum> = {
-  [FastFilterEnum.All]: 'Все',
-  [FastFilterEnum.Mine]: 'Мои',
-  [FastFilterEnum.Overdue]: 'Просроченные',
-  [FastFilterEnum.Free]: 'Свободные',
-  [FastFilterEnum.FirstLine]: 'Первая линия',
-  [FastFilterEnum.SecondLine]: 'Вторая линия',
-  [FastFilterEnum.LessOneHour]: 'Менее 1 часа',
-  [FastFilterEnum.LessThreeHours]: 'Менее 3-х часов',
-  [FastFilterEnum.Returned]: 'На доработку',
-  [FastFilterEnum.ReclassificationDenied]: 'Отказ в переклассификации',
+export const fastFilterNamesDict: StringMap<
+  Exclude<FastFilterType, TasksFastFilterEnum.FirstLine | TasksFastFilterEnum.SecondLine>
+> = {
+  [TasksFastFilterEnum.AllLines]: 'Все',
+  [TasksFastFilterEnum.Mine]: 'Мои',
+  [TasksFastFilterEnum.Overdue]: 'Просроченные',
+  [TasksFastFilterEnum.Free]: 'Свободные',
+  [TasksFastFilterEnum.LessOneHour]: 'Менее 1 часа',
+  [TasksFastFilterEnum.LessThreeHours]: 'Менее 3-х часов',
+  [TasksFastFilterEnum.Returned]: 'На доработку',
+  [TasksFastFilterEnum.ReclassificationDenied]: 'Отказ в переклассификации',
+}
+
+export const fastFilterByLinesNamesDict: StringMap<FastFilterByLinesType> = {
+  [TasksFastFilterEnum.AllLines]: 'Все',
+  [TasksFastFilterEnum.FirstLine]: 'Первая линия',
+  [TasksFastFilterEnum.SecondLine]: 'Вторая линия',
 }
 
 export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
@@ -29,6 +37,13 @@ export const taskStatusDict: Readonly<StringMap<TaskStatusEnum>> = {
   [TaskStatusEnum.Awaiting]: 'В ожидании',
   [TaskStatusEnum.Completed]: 'Выполнена',
   [TaskStatusEnum.Closed]: 'Закрыта',
+}
+
+export const taskTypeDict: Readonly<StringMap<TaskTypeEnum>> = {
+  [TaskTypeEnum.Request]: 'ЗНО',
+  [TaskTypeEnum.RequestTask]: 'Задание на ЗНО',
+  [TaskTypeEnum.Incident]: 'Инцидент',
+  [TaskTypeEnum.IncidentTask]: 'Задание на инцидент',
 }
 
 export const taskExtendedStatusDict: Readonly<Partial<StringMap<TaskExtendedStatusEnum>>> = {
@@ -47,21 +62,21 @@ export const tasksFiltersDict: Readonly<StringMap<keyof TasksFiltersStorageType>
   supportGroups: 'Группы поддержки',
 }
 
-export const taskImpactMap: Map<BaseTaskModel['initialImpact'], string> = new Map([
+export const taskImpactMap: Map<TaskModel['initialImpact'], string> = new Map([
   [1, '1-всеохватывающее/широкое'],
   [2, '2-значительное/большое'],
   [3, '3-умеренное/ограниченное'],
   [4, '4-малое/локализованное'],
 ])
 
-export const taskSeverityMap: Map<BaseTaskModel['severity'], string> = new Map([
+export const taskSeverityMap: Map<TaskModel['severity'], string> = new Map([
   [1, '1-критическая'],
   [2, '2-высокая'],
   [3, '3-средняя'],
   [4, '4-низкая'],
 ])
 
-export const taskPriorityMap: Map<BaseTaskModel['priorityCode'], string> = new Map([
+export const taskPriorityMap: Map<TaskModel['priorityCode'], string> = new Map([
   [1, '1-критический'],
   [2, '2-высокий'],
   [3, '3-средний'],

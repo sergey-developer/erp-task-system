@@ -1,5 +1,5 @@
 import { useBoolean, useLocalStorageState, usePrevious, useSetState } from 'ahooks'
-import { Button, Col, Input, Row, Space } from 'antd'
+import { Button, Col, Flex, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
@@ -9,8 +9,21 @@ import React, { FC, useCallback, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { useGetSupportGroupList } from 'modules/supportGroup/hooks'
+import { firstLineOptionValue } from 'modules/task/components/CreateTaskModal'
+import {
+  CreateTaskFormFields,
+  CreateTaskModalProps,
+} from 'modules/task/components/CreateTaskModal/types'
 import FastFilters from 'modules/task/components/FastFilters'
-import { fastFiltersConfig } from 'modules/task/components/FastFilters/config'
+import {
+  fastFilterByLinesOptions,
+  fastFilterOptions,
+} from 'modules/task/components/FastFilters/options'
+import {
+  FastFilterByLinesType,
+  FastFiltersProps,
+  FastFilterType,
+} from 'modules/task/components/FastFilters/types'
 import TaskTable from 'modules/task/components/TaskTable'
 import {
   SortableField,
@@ -24,16 +37,22 @@ import TasksFiltersStorage, {
 } from 'modules/task/components/TasksFiltersStorage'
 import UpdateTasksButton from 'modules/task/components/UpdateTasksButton'
 import {
-  FastFilterEnum,
   FilterTypeEnum,
   TaskDetailsTabsEnum,
+  TasksFastFilterEnum,
   TaskStorageKeysEnum,
   TasksUpdateVariantsEnum,
   tasksUpdateVariantsIntervals,
 } from 'modules/task/constants/task'
-import { useGetTasks } from 'modules/task/hooks/task'
+import { useCreateTask, useGetTasks } from 'modules/task/hooks/task'
 import { useGetTaskCounters } from 'modules/task/hooks/taskCounters'
-import { FastFilterQueries, GetTasksQueryArgs, TasksFilterQueries } from 'modules/task/models'
+import {
+  FastFilterQueries,
+  GetTaskCountersQueryArgs,
+  GetTasksQueryArgs,
+  TaskCountersModel,
+  TasksFilterQueries,
+} from 'modules/task/models'
 import { TasksFiltersStorageType } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { parseTasksFiltersStorage } from 'modules/task/services/taskLocalStorageService/utils'
 import { taskDetailsTabExist } from 'modules/task/utils/task'
@@ -46,19 +65,27 @@ import {
 } from 'modules/user/hooks'
 import { checkUserStatusOffline } from 'modules/user/utils'
 import { useGetCustomerList } from 'modules/warehouse/hooks/customer'
+import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 import { useGetWorkGroups } from 'modules/workGroup/hooks/useGetWorkGroups'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
+import { LocationTypeEnum } from 'shared/constants/catalogs'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
+import { useGetLocationsCatalog } from 'shared/hooks/catalogs/locations'
+import { useGetWorkGroupsCatalog } from 'shared/hooks/catalogs/workGroups'
 import { useGetMacroregions } from 'shared/hooks/macroregion'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { useDrawerHeightByTable } from 'shared/hooks/useDrawerHeightByTable'
+import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { MaybeUndefined } from 'shared/types/utils'
+import { mergeDateTime } from 'shared/utils/date'
+import { extractOriginFiles } from 'shared/utils/file'
+import { getFieldsErrors } from 'shared/utils/form'
 import {
   calculatePaginationParams,
   extractPaginationParams,
@@ -75,9 +102,16 @@ import {
 
 const TaskDetails = React.lazy(() => import('modules/task/components/TaskDetails'))
 const TasksFilter = React.lazy(() => import('modules/task/components/TasksFilter'))
+const CreateTaskModal = React.lazy(() => import('modules/task/components/CreateTaskModal'))
 
 const { Search } = Input
 const initialTasksFilterValues = getInitialTasksFilterValues()
+const initialFastFilter = TasksFastFilterEnum.AllLines
+const initialFastFilterByLines = TasksFastFilterEnum.AllLines
+
+const getFastFilterByLinesQueryValue = (
+  value: FastFilterByLinesType,
+): GetTaskCountersQueryArgs['line'] => (value === TasksFastFilterEnum.AllLines ? undefined : value)
 
 const TasksPage: FC = () => {
   const permissions = useUserPermissions([
@@ -86,7 +120,14 @@ const TasksPage: FC = () => {
     UserPermissionsEnum.FirstLineTasksRead,
     UserPermissionsEnum.SecondLineTasksRead,
     UserPermissionsEnum.WorkGroupTasksRead,
+    UserPermissionsEnum.InternalTasksCreate,
+    UserPermissionsEnum.ClassificationOfWorkTypes,
   ])
+
+  const isShowFastFilterByLines = !!(
+    permissions.firstLineTasksRead &&
+    (permissions.secondLineTasksRead || permissions.workGroupTasksRead)
+  )
 
   const { tableRef, drawerHeight } = useDrawerHeightByTable()
 
@@ -97,6 +138,27 @@ const TasksPage: FC = () => {
     ? (searchParams.get('tab') as TaskDetailsTabsEnum)
     : undefined
 
+  // create task
+  const [selectedTaskType, setSelectedTaskType] = useState<CreateTaskFormFields['type']>()
+  const [selectedTaskWorkGroup, setSelectedTaskWorkGroup] =
+    useState<CreateTaskFormFields['workGroup']>()
+
+  const [createTaskModalOpened, { setTrue: openCreateTaskModal, setFalse: closeCreateTaskModal }] =
+    useBoolean(false)
+
+  const debouncedOpenCreateTaskModal = useDebounceFn(openCreateTaskModal)
+
+  const onCloseCreateTaskModal = useCallback(() => {
+    closeCreateTaskModal()
+    setSelectedTaskType(undefined)
+    setSelectedTaskWorkGroup(undefined)
+  }, [closeCreateTaskModal])
+
+  const debouncedOnCloseCreateTaskModal = useDebounceFn(onCloseCreateTaskModal, [
+    onCloseCreateTaskModal,
+  ])
+  // create task
+
   const [autoUpdateEnabled, { toggle: toggleAutoUpdateEnabled }] = useBoolean(false)
 
   const [selectedTaskId, setSelectedTaskId] = useState<MaybeUndefined<IdType>>(viewTaskId)
@@ -104,11 +166,14 @@ const TasksPage: FC = () => {
 
   const [activeTab, setActiveTab] = useState<MaybeUndefined<TaskDetailsTabsEnum>>(currentTab)
 
-  const initialFastFilter = FastFilterEnum.All
-  const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterEnum>>(initialFastFilter)
+  const [fastFilter, setFastFilter] = useState<MaybeUndefined<FastFilterType>>(initialFastFilter)
 
-  const [tasksFilterOpened, { toggle: toggleOpenTasksFilter }] = useBoolean(false)
-  const debouncedToggleOpenTasksFilter = useDebounceFn(toggleOpenTasksFilter)
+  const [fastFilterByLines, setFastFilterByLines] =
+    useState<MaybeUndefined<FastFilterByLinesType>>(initialFastFilterByLines)
+
+  const [tasksFilterOpened, { toggle: toggleTasksFilter }] = useBoolean(false)
+
+  const debouncedToggleTasksFilter = useDebounceFn(toggleTasksFilter)
 
   const [tasksFiltersStorage, setTasksFiltersStorage] = useLocalStorageState<
     MaybeUndefined<TasksFiltersStorageType>
@@ -130,9 +195,9 @@ const TasksPage: FC = () => {
   })
 
   const [getTasksQueryArgs, setGetTasksQueryArgs] = useSetState<GetTasksQueryArgs>(() => ({
-    filter: initialFastFilter,
     ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
     ...tasksFiltersStorage,
+    filters: [initialFastFilter],
     sort: getSort('olaNextBreachTime', SortOrderEnum.Ascend),
   }))
 
@@ -142,14 +207,14 @@ const TasksPage: FC = () => {
   const prevAppliedFilterType = usePrevious<typeof appliedFilterType>(appliedFilterType)
 
   // todo: refactor to avoid setting undefined
-  const triggerFilterChange = useCallback(
+  const triggerGetTasks = useCallback(
     (filterQueryParams: TasksFilterQueries | FastFilterQueries | FilterParams) => {
       setGetTasksQueryArgs((prevState) => ({
         ...prevState,
         offset: 0,
         completeAtFrom: undefined,
         completeAtTo: undefined,
-        filter: undefined,
+        filters: undefined,
         status: undefined,
         isOverdue: undefined,
         isAssigned: undefined,
@@ -165,6 +230,11 @@ const TasksPage: FC = () => {
     [setGetTasksQueryArgs],
   )
 
+  const closeTask = useCallback(() => {
+    setSelectedTaskId(undefined)
+    setActiveTab(undefined)
+  }, [])
+
   const onChangeUserStatus = useCallback<UseOnChangeUserStatusFn>(
     (status) => {
       if (checkUserStatusOffline(status)) {
@@ -178,20 +248,25 @@ const TasksPage: FC = () => {
         setTasksFilterValues(initialSupportGroupFilters)
         setSelectedCustomers(initialSupportGroupFilters.customers)
         setSelectedMacroregions(initialSupportGroupFilters.macroregions)
-        triggerFilterChange(initialSupportGroupFilters)
+        triggerGetTasks(initialSupportGroupFilters)
       }
     },
-    [setTasksFilterValues, setTasksFiltersStorage, triggerFilterChange],
+    [setTasksFilterValues, setTasksFiltersStorage, triggerGetTasks],
   )
 
   useOnChangeUserStatus(onChangeUserStatus)
+
+  const [createTaskMutation, { isLoading: createTaskIsLoading }] = useCreateTask()
+
+  const [getTaskCountersQueryArgs, setGetTaskCountersQueryArgs] =
+    useSetState<GetTaskCountersQueryArgs>(tasksFiltersStorage || {})
 
   const {
     data: taskCounters,
     isError: isGetTaskCountersError,
     isFetching: taskCountersIsFetching,
     refetch: refetchTaskCounters,
-  } = useGetTaskCounters(tasksFiltersStorage, {
+  } = useGetTaskCounters(getTaskCountersQueryArgs, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
@@ -200,21 +275,52 @@ const TasksPage: FC = () => {
   const {
     currentData: originalTasks,
     isFetching: tasksIsFetching,
-    refetch: refetchTaskList,
+    refetch: refetchTasks,
   } = useGetTasks(getTasksQueryArgs, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
   })
 
-  const { currentData: userList = [], isFetching: userListIsFetching } = useGetUsers(
-    { isManager: true },
-    { skip: !tasksFilterOpened },
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
+    { taskType: selectedTaskType! },
+    { skip: !(selectedTaskType && createTaskModalOpened) },
   )
 
-  const { currentData: customerList = [], isFetching: customerListIsFetching } = useGetCustomerList(
+  const { currentData: locationsCatalog = [], isFetching: locationsCatalogIsFetching } =
+    useGetLocationsCatalog(
+      { locationTypes: [LocationTypeEnum.Shop] },
+      { skip: !createTaskModalOpened },
+    )
+
+  const { currentData: workGroupsCatalog = [], isFetching: workGroupsCatalogIsFetching } =
+    useGetWorkGroupsCatalog(undefined, { skip: !createTaskModalOpened })
+
+  const { currentData: tasksFilterUsers = [], isFetching: tasksFilterUsersIsFetching } =
+    useGetUsers({ isManager: true }, { skip: !tasksFilterOpened })
+
+  const { currentData: createTaskModalUsers = [], isFetching: createTaskModalUsersIsFetching } =
+    useGetUsers(undefined, { skip: !createTaskModalOpened })
+
+  const { currentData: observers = [], isFetching: observersIsFetching } = useGetUsers(
+    {
+      readTasksWorkGroup:
+        selectedTaskWorkGroup === firstLineOptionValue ? 'None' : selectedTaskWorkGroup!,
+    },
+    { skip: !(createTaskModalOpened && selectedTaskWorkGroup) },
+  )
+
+  const { currentData: executors = [], isFetching: executorsIsFetching } = useGetUsers(
+    {
+      resolveTasksWorkGroup:
+        selectedTaskWorkGroup === firstLineOptionValue ? 'None' : selectedTaskWorkGroup!,
+    },
+    { skip: !(createTaskModalOpened && selectedTaskWorkGroup) },
+  )
+
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList(
     undefined,
-    { skip: !tasksFilterOpened },
+    { skip: !tasksFilterOpened && !createTaskModalOpened },
   )
 
   const { currentData: supportGroupList = [], isFetching: supportGroupListIsFetching } =
@@ -238,54 +344,120 @@ const TasksPage: FC = () => {
       : !tasksFilterOpened,
   })
 
+  const onCreateTask = useCallback<CreateTaskModalProps['onSubmit']>(
+    async ({ attachments, olaNextBreachDate, olaNextBreachTime, workGroup, ...values }, form) => {
+      try {
+        const newTask = await createTaskMutation({
+          ...values,
+          workGroup: workGroup === firstLineOptionValue ? undefined : workGroup,
+          olaNextBreachTime: mergeDateTime(olaNextBreachDate, olaNextBreachTime).toISOString(),
+          attachments: attachments?.length ? extractOriginFiles(attachments) : undefined,
+        }).unwrap()
+
+        setSelectedTaskId(newTask.id)
+        onCloseCreateTaskModal()
+      } catch (error) {
+        if (isErrorResponse(error) && isBadRequestError(error)) {
+          form.setFields(getFieldsErrors(error.data))
+        }
+      }
+    },
+    [createTaskMutation, onCloseCreateTaskModal],
+  )
+
   const onApplyFilter: TasksFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     setTasksFilterValues(values)
-    triggerFilterChange(mapFilterToQueryArgs(values))
+    triggerGetTasks(mapFilterToQueryArgs(values))
     setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
     setFastFilter(undefined)
-    toggleOpenTasksFilter()
+    setFastFilterByLines(undefined)
+    toggleTasksFilter()
     closeTask()
   }
 
-  const resetExtendedFilterToInitialValues = () => {
+  const resetExtendedFilterToInitialValues = useCallback(() => {
     setTasksFilterValues(initialTasksFilterValues)
     setSelectedCustomers(initialTasksFilterValues.customers)
     setSelectedMacroregions(initialTasksFilterValues.macroregions)
-  }
+  }, [setTasksFilterValues])
 
-  const onFastFilterChange = (value: FastFilterEnum) => {
+  const onBaseFastFilterChange = useCallback(() => {
     setAppliedFilterType(FilterTypeEnum.Fast)
-    setFastFilter(value)
     resetExtendedFilterToInitialValues()
     setSearchValue(undefined)
-    triggerFilterChange({ filter: value })
     closeTask()
-  }
+  }, [closeTask, resetExtendedFilterToInitialValues])
 
-  const onSearch = useDebounceFn<NonNullable<SearchProps['onSearch']>>(
+  const getFastFilterQueryValue = useCallback(
+    (
+      fastFilter?: FastFilterType,
+      fastFilterByLines?: FastFilterByLinesType,
+    ): TasksFastFilterEnum[] => {
+      const filter = fastFilter ? [fastFilter] : []
+      const filterByLines = fastFilterByLines
+        ? [isShowFastFilterByLines ? fastFilterByLines : TasksFastFilterEnum.AllLines]
+        : []
+
+      return fastFilter === TasksFastFilterEnum.AllLines
+        ? filterByLines
+        : [...filter, ...filterByLines]
+    },
+    [isShowFastFilterByLines],
+  )
+
+  const onFastFilterChange = useCallback<
+    FastFiltersProps<FastFilterType, TaskCountersModel>['onChange']
+  >(
     (value) => {
-      if (value) {
-        setAppliedFilterType(FilterTypeEnum.Search)
-        triggerFilterChange({ search: value })
-      } else {
-        if (!prevAppliedFilterType) return
+      onBaseFastFilterChange()
+      setFastFilter(value)
+      triggerGetTasks({ filters: getFastFilterQueryValue(value, fastFilterByLines) })
+    },
+    [fastFilterByLines, getFastFilterQueryValue, onBaseFastFilterChange, triggerGetTasks],
+  )
 
-        setAppliedFilterType(prevAppliedFilterType)
+  const onFastFilterByLinesChange = useCallback<
+    FastFiltersProps<FastFilterByLinesType, TaskCountersModel>['onChange']
+  >(
+    (value) => {
+      onBaseFastFilterChange()
+      setFastFilterByLines(value)
+      triggerGetTasks({ filters: getFastFilterQueryValue(fastFilter, value) })
+      setGetTaskCountersQueryArgs({ line: getFastFilterByLinesQueryValue(value) })
+    },
+    [
+      fastFilter,
+      getFastFilterQueryValue,
+      onBaseFastFilterChange,
+      setGetTaskCountersQueryArgs,
+      triggerGetTasks,
+    ],
+  )
 
-        const prevFilter = isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)
-          ? mapFilterToQueryArgs(tasksFilterValues)
-          : isEqual(prevAppliedFilterType, FilterTypeEnum.Fast)
-          ? { filter: fastFilter }
-          : {}
+  const onSearch: NonNullable<SearchProps['onSearch']> = (value) => {
+    if (value) {
+      setAppliedFilterType(FilterTypeEnum.Search)
+      triggerGetTasks({ search: value })
+    } else {
+      if (!prevAppliedFilterType) return
 
-        triggerFilterChange(prevFilter)
+      setAppliedFilterType(prevAppliedFilterType)
+
+      if (isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)) {
+        triggerGetTasks(mapFilterToQueryArgs(tasksFilterValues))
       }
 
-      closeTask()
-    },
-    [prevAppliedFilterType, tasksFilterValues, fastFilter],
-  )
+      if (isEqual(prevAppliedFilterType, FilterTypeEnum.Fast)) {
+        triggerGetTasks({ filters: getFastFilterQueryValue(fastFilter, fastFilterByLines) })
+        setGetTaskCountersQueryArgs({
+          line: fastFilterByLines ? getFastFilterByLinesQueryValue(fastFilterByLines) : undefined,
+        })
+      }
+    }
+
+    closeTask()
+  }
 
   const onChangeSearch: NonNullable<SearchProps['onChange']> = (event) => {
     const value = event.target.value
@@ -301,11 +473,6 @@ const TasksPage: FC = () => {
     }),
     [selectedTaskId],
   )
-
-  const closeTask = useCallback(() => {
-    setSelectedTaskId(undefined)
-    setActiveTab(undefined)
-  }, [])
 
   const onTableSort = useCallback(
     (sorter: Parameters<TaskTableProps['onChange']>[2]) => {
@@ -335,9 +502,9 @@ const TasksPage: FC = () => {
     [onTablePagination, onTableSort],
   )
 
-  const onRefetchTaskList = useDebounceFn(() => {
+  const onRefetchTasks = useDebounceFn(() => {
     closeTask()
-    refetchTaskList()
+    refetchTasks()
     refetchTaskCounters()
   })
 
@@ -348,7 +515,7 @@ const TasksPage: FC = () => {
     setTasksFilterValues({ [filter.name]: undefined })
     if (filter.name === 'customers') setSelectedCustomers([])
     if (filter.name === 'macroregions') setSelectedMacroregions([])
-    triggerFilterChange({ [filter.name]: undefined })
+    triggerGetTasks({ [filter.name]: undefined })
   }
 
   const tasks = useMemo(() => {
@@ -364,9 +531,9 @@ const TasksPage: FC = () => {
 
   return (
     <>
-      <Row data-testid='task-list-page' gutter={[0, 40]}>
+      <Row data-testid='tasks-page' gutter={[0, 40]}>
         <Col span={24}>
-          <Row className='task-list-page-header' justify='space-between' gutter={[0, 20]}>
+          <Row className='tasks-page-header' justify='space-between' gutter={[0, 20]}>
             <Col xxl={16} xl={14}>
               <Row gutter={[16, 16]}>
                 <Col span={17}>
@@ -381,23 +548,38 @@ const TasksPage: FC = () => {
                     )}
 
                     <Col>
-                      <FastFilters
-                        config={fastFiltersConfig}
-                        counters={taskCounters}
-                        selectedFilter={getTasksQueryArgs.filter}
-                        onChange={onFastFilterChange}
-                        isShowCounters={!isGetTaskCountersError}
-                        disabled={tasksIsFetching}
-                        isLoading={taskCountersIsFetching}
-                        permissions={permissions}
-                      />
+                      <Flex vertical gap='small'>
+                        {isShowFastFilterByLines && (
+                          <FastFilters<FastFilterByLinesType, TaskCountersModel>
+                            data-testid='fast-filter-by-lines'
+                            options={fastFilterByLinesOptions}
+                            value={fastFilterByLines}
+                            onChange={onFastFilterByLinesChange}
+                            counters={taskCounters}
+                            countersVisible={!isGetTaskCountersError}
+                            disabled={tasksIsFetching}
+                            loading={taskCountersIsFetching}
+                          />
+                        )}
+
+                        <FastFilters<FastFilterType, TaskCountersModel>
+                          data-testid='fast-filter'
+                          options={fastFilterOptions}
+                          value={fastFilter}
+                          onChange={onFastFilterChange}
+                          counters={taskCounters}
+                          countersVisible={!isGetTaskCountersError}
+                          disabled={tasksIsFetching}
+                          loading={taskCountersIsFetching}
+                        />
+                      </Flex>
                     </Col>
                   </Row>
                 </Col>
 
                 <Col xl={5} xxl={3}>
                   <FilterButton
-                    onClick={debouncedToggleOpenTasksFilter}
+                    onClick={debouncedToggleTasksFilter}
                     disabled={tasksIsFetching || searchFilterApplied}
                   />
                 </Col>
@@ -420,12 +602,14 @@ const TasksPage: FC = () => {
                 <Col>
                   <Space align='end' size='middle'>
                     <UpdateTasksButton
-                      onClick={onRefetchTaskList}
+                      onClick={onRefetchTasks}
                       disabled={tasksIsFetching || taskCountersIsFetching}
                       onAutoUpdate={toggleAutoUpdateEnabled}
                     />
 
-                    <Button>Создать заявку</Button>
+                    {permissions.internalTasksCreate && (
+                      <Button onClick={debouncedOpenCreateTaskModal}>Создать заявку</Button>
+                    )}
                   </Space>
                 </Col>
               </Row>
@@ -447,7 +631,9 @@ const TasksPage: FC = () => {
       </Row>
 
       {!!selectedTaskId && (
-        <React.Suspense fallback={<ModalFallback open onCancel={closeTask} />}>
+        <React.Suspense
+          fallback={<ModalFallback tip='Загрузка карточки заявки' open onCancel={closeTask} />}
+        >
           <TaskDetails
             taskId={selectedTaskId}
             activeTab={activeTab}
@@ -460,26 +646,70 @@ const TasksPage: FC = () => {
       )}
 
       {tasksFilterOpened && (
-        <React.Suspense fallback={<ModalFallback open onCancel={debouncedToggleOpenTasksFilter} />}>
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              tip='Загрузка компонента фильтров заявок'
+              open
+              onCancel={debouncedToggleTasksFilter}
+            />
+          }
+        >
           <TasksFilter
             open={tasksFilterOpened}
             permissions={permissions}
             formValues={tasksFilterValues}
             initialFormValues={initialTasksFilterValues}
-            customers={customerList}
-            customersIsLoading={customerListIsFetching}
+            customers={customers}
+            customersIsLoading={customersIsFetching}
             onChangeCustomers={setSelectedCustomers}
             macroregions={macroregions}
             macroregionsIsLoading={macroregionsIsFetching}
             onChangeMacroregions={setSelectedMacroregions}
             supportGroups={supportGroupList}
             supportGroupsIsLoading={supportGroupListIsFetching}
-            users={userList}
-            usersIsLoading={userListIsFetching}
+            users={tasksFilterUsers}
+            usersIsLoading={tasksFilterUsersIsFetching}
             workGroups={workGroups}
             workGroupsIsLoading={workGroupsIsFetching}
-            onClose={debouncedToggleOpenTasksFilter}
+            onClose={debouncedToggleTasksFilter}
             onSubmit={onApplyFilter}
+          />
+        </React.Suspense>
+      )}
+
+      {createTaskModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback
+              tip='Загрузка модалки создания заявки'
+              open
+              onCancel={debouncedOnCloseCreateTaskModal}
+            />
+          }
+        >
+          <CreateTaskModal
+            open={createTaskModalOpened}
+            onCancel={debouncedOnCloseCreateTaskModal}
+            onSubmit={onCreateTask}
+            confirmLoading={createTaskIsLoading}
+            permissions={permissions}
+            workGroups={workGroupsCatalog}
+            workGroupsIsLoading={workGroupsCatalogIsFetching}
+            onChangeType={setSelectedTaskType}
+            onChangeWorkGroup={setSelectedTaskWorkGroup}
+            users={createTaskModalUsers}
+            usersIsLoading={createTaskModalUsersIsFetching}
+            executors={executors}
+            executorsIsLoading={executorsIsFetching}
+            observers={observers}
+            observersIsLoading={observersIsFetching}
+            workTypes={workTypes}
+            workTypesIsLoading={workTypesIsFetching}
+            customers={customers}
+            customersIsLoading={customersIsFetching}
+            locations={locationsCatalog}
+            locationsIsLoading={locationsCatalogIsFetching}
           />
         </React.Suspense>
       )}

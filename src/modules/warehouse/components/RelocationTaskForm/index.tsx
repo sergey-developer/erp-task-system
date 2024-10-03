@@ -1,9 +1,8 @@
 import { Col, Form, Input, Row, Select, SelectProps, Typography, Upload } from 'antd'
 import React, { useMemo } from 'react'
 
-import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
-
 import { renderUploadedFile } from 'modules/attachment/utils'
+import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
@@ -180,11 +179,7 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
                 dependencies={['deadlineAtDate']}
                 rules={deadlineAtTimeRules}
               >
-                <TimePicker
-                  disabled={isLoading || disabledFields?.includes('deadlineAtTime')}
-                  format={TIME_PICKER_FORMAT}
-                  placeholder='Время'
-                />
+                <TimePicker disabled={isLoading || disabledFields?.includes('deadlineAtTime')} />
               </Form.Item>
             </Col>
           </Row>

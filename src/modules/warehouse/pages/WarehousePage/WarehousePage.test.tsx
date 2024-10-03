@@ -1,9 +1,8 @@
-import { screen, within } from '@testing-library/react'
-
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import { getWarehouseErrMsg } from 'modules/warehouse/constants/warehouse'
 import { getWarehousePageLink } from 'modules/warehouse/utils/warehouse'
 
+import { warehousePageTestUtils } from '_tests_/features/warehouse/pages/WarehousePage/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetWarehouseNotFoundError,
@@ -16,24 +15,9 @@ import {
   notificationTestUtils,
   renderWithRouter,
   setupApiTests,
-  spinnerTestUtils,
 } from '_tests_/utils'
 
 import WarehousePage from './index'
-
-const getContainer = () => screen.getByTestId('warehouse-page')
-const getChildByText = (value: string) => within(getContainer()).getByText(value)
-
-const expectLoadingStarted = spinnerTestUtils.expectLoadingStarted('warehouse-loading')
-const expectLoadingFinished = spinnerTestUtils.expectLoadingFinished('warehouse-loading')
-
-export const testUtils = {
-  getContainer,
-  getChildByText,
-
-  expectLoadingStarted,
-  expectLoadingFinished,
-}
 
 setupApiTests()
 notificationTestUtils.setupNotifications()
@@ -55,9 +39,9 @@ describe('Страница склада', () => {
           { initialEntries: [getWarehousePageLink(warehouse.id)] },
         )
 
-        await testUtils.expectLoadingFinished()
-        const label = testUtils.getChildByText('Наименование объекта')
-        const value = testUtils.getChildByText(warehouse.title)
+        await warehousePageTestUtils.expectLoadingFinished()
+        const label = warehousePageTestUtils.getChildByText('Наименование объекта')
+        const value = warehousePageTestUtils.getChildByText(warehouse.title)
 
         expect(label).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -79,9 +63,9 @@ describe('Страница склада', () => {
           { initialEntries: [getWarehousePageLink(warehouse.id)] },
         )
 
-        await testUtils.expectLoadingFinished()
-        const label = testUtils.getChildByText('Родительский склад')
-        const value = testUtils.getChildByText(warehouse.parent!.title)
+        await warehousePageTestUtils.expectLoadingFinished()
+        const label = warehousePageTestUtils.getChildByText('Родительский склад')
+        const value = warehousePageTestUtils.getChildByText(warehouse.parent!.title)
 
         expect(label).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -103,9 +87,9 @@ describe('Страница склада', () => {
           { initialEntries: [getWarehousePageLink(warehouse.id)] },
         )
 
-        await testUtils.expectLoadingFinished()
-        const label = testUtils.getChildByText('Юридическое лицо')
-        const value = testUtils.getChildByText(warehouse.legalEntity.title)
+        await warehousePageTestUtils.expectLoadingFinished()
+        const label = warehousePageTestUtils.getChildByText('Юридическое лицо')
+        const value = warehousePageTestUtils.getChildByText(warehouse.legalEntity.title)
 
         expect(label).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -127,9 +111,9 @@ describe('Страница склада', () => {
           { initialEntries: [getWarehousePageLink(warehouse.id)] },
         )
 
-        await testUtils.expectLoadingFinished()
-        const label = testUtils.getChildByText('Адрес')
-        const value = testUtils.getChildByText(warehouse.address)
+        await warehousePageTestUtils.expectLoadingFinished()
+        const label = warehousePageTestUtils.getChildByText('Адрес')
+        const value = warehousePageTestUtils.getChildByText(warehouse.address)
 
         expect(label).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -151,12 +135,12 @@ describe('Страница склада', () => {
           { initialEntries: [getWarehousePageLink(warehouse.id)] },
         )
 
-        await testUtils.expectLoadingFinished()
-        const label = testUtils.getChildByText('Макрорегионы')
+        await warehousePageTestUtils.expectLoadingFinished()
+        const label = warehousePageTestUtils.getChildByText('Макрорегионы')
 
         expect(label).toBeInTheDocument()
         warehouse.macroregions!.forEach((m) => {
-          const value = testUtils.getChildByText(m.title)
+          const value = warehousePageTestUtils.getChildByText(m.title)
           expect(value).toBeInTheDocument()
         })
       })
@@ -177,9 +161,9 @@ describe('Страница склада', () => {
           { initialEntries: [getWarehousePageLink(warehouse.id)] },
         )
 
-        await testUtils.expectLoadingFinished()
-        const label = testUtils.getChildByText('Договор')
-        const value = testUtils.getChildByText(warehouse.contract!)
+        await warehousePageTestUtils.expectLoadingFinished()
+        const label = warehousePageTestUtils.getChildByText('Договор')
+        const value = warehousePageTestUtils.getChildByText(warehouse.contract!)
 
         expect(label).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -201,9 +185,9 @@ describe('Страница склада', () => {
           { initialEntries: [getWarehousePageLink(warehouse.id)] },
         )
 
-        await testUtils.expectLoadingFinished()
-        const label = testUtils.getChildByText('Прочие данные')
-        const value = testUtils.getChildByText(warehouse.notes!)
+        await warehousePageTestUtils.expectLoadingFinished()
+        const label = warehousePageTestUtils.getChildByText('Прочие данные')
+        const value = warehousePageTestUtils.getChildByText(warehouse.notes!)
 
         expect(label).toBeInTheDocument()
         expect(value).toBeInTheDocument()
@@ -229,7 +213,7 @@ describe('Страница склада', () => {
         { initialEntries: [getWarehousePageLink(warehouseId)] },
       )
 
-      await testUtils.expectLoadingFinished()
+      await warehousePageTestUtils.expectLoadingFinished()
 
       const notification = await notificationTestUtils.findNotification(errorMessage)
       expect(notification).toBeInTheDocument()
@@ -249,7 +233,7 @@ describe('Страница склада', () => {
         { initialEntries: [getWarehousePageLink(warehouseId)] },
       )
 
-      await testUtils.expectLoadingFinished()
+      await warehousePageTestUtils.expectLoadingFinished()
 
       const notification = await notificationTestUtils.findNotification(getWarehouseErrMsg)
       expect(notification).toBeInTheDocument()

@@ -1,63 +1,24 @@
-import { screen, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { within } from '@testing-library/react'
 
 import { relocationTaskStatusDict } from 'modules/warehouse/constants/relocationTask'
 
-import { IdType } from 'shared/types/common'
-import { NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import {
+  equipmentRelocationHistoryItem,
+  props,
+} from '_tests_/features/warehouse/components/EquipmentRelocationHistoryModal/constants'
+import { equipmentRelocationHistoryModalTestUtils } from '_tests_/features/warehouse/components/EquipmentRelocationHistoryModal/testUtils'
 import { render, tableTestUtils } from '_tests_/utils'
 
 import EquipmentRelocationHistoryModal from './index'
-import { EquipmentRelocationHistoryModalProps } from './types'
-
-const equipmentRelocationHistoryItem = warehouseFixtures.equipmentRelocationHistoryItem()
-
-const props: EquipmentRelocationHistoryModalProps = {
-  open: true,
-  loading: false,
-  dataSource: [equipmentRelocationHistoryItem],
-  onCancel: jest.fn(),
-  onRow: jest.fn(),
-}
-
-const getContainer = () => screen.getByTestId('equipment-relocation-history-modal')
-const findContainer = () => screen.findByTestId('equipment-relocation-history-modal')
-
-const getTable = () => within(getContainer()).getByTestId('equipment-relocation-history-table')
-const getRow = (id: IdType) => tableTestUtils.getRowById(getTable(), id)
-const clickRow = async (user: UserEvent, id: IdType) =>
-  tableTestUtils.clickRowById(getTable(), user, id)
-
-const getColTitle = (text: string) => within(getTable()).getByText(text)
-
-const getColValue = (id: IdType, value: NumberOrString): HTMLElement =>
-  within(getRow(id)).getByText(value)
-
-// loading
-const expectLoadingStarted = () => tableTestUtils.expectLoadingStarted(getTable())
-const expectLoadingFinished = () => tableTestUtils.expectLoadingFinished(getTable())
-
-export const testUtils = {
-  getContainer,
-  findContainer,
-
-  getTable,
-  getRow,
-  clickRow,
-  getColTitle,
-  getColValue,
-
-  expectLoadingStarted,
-  expectLoadingFinished,
-}
 
 describe('Модалка истории заявок на перемещение', () => {
   test('Заголовок отображается', () => {
     render(<EquipmentRelocationHistoryModal {...props} />)
-    const title = within(getContainer()).getByText('История заявок на перемещение')
+    const title = within(equipmentRelocationHistoryModalTestUtils.getContainer()).getByText(
+      'История заявок на перемещение',
+    )
     expect(title).toBeInTheDocument()
   })
 
@@ -65,11 +26,11 @@ describe('Модалка истории заявок на перемещение
     test('Отображается корректно', () => {
       render(<EquipmentRelocationHistoryModal {...props} />)
 
-      const table = testUtils.getTable()
+      const table = equipmentRelocationHistoryModalTestUtils.getTable()
       tableTestUtils.expectPaginationEnabledIn(table)
 
       props.dataSource.forEach((item) => {
-        const row = testUtils.getRow(item.id)
+        const row = equipmentRelocationHistoryModalTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
     })
@@ -77,8 +38,11 @@ describe('Модалка истории заявок на перемещение
     test('Номер заявки отображается', () => {
       render(<EquipmentRelocationHistoryModal {...props} />)
 
-      const title = testUtils.getColTitle('№ заявки')
-      const value = testUtils.getColValue(props.dataSource[0].id, props.dataSource[0].id)
+      const title = equipmentRelocationHistoryModalTestUtils.getColTitle('№ заявки')
+      const value = equipmentRelocationHistoryModalTestUtils.getColValue(
+        props.dataSource[0].id,
+        props.dataSource[0].id,
+      )
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -87,8 +51,8 @@ describe('Модалка истории заявок на перемещение
     test('Инициировано отображается корректно', () => {
       render(<EquipmentRelocationHistoryModal {...props} />)
 
-      const title = testUtils.getColTitle('Инициировано')
-      const value = testUtils.getColValue(
+      const title = equipmentRelocationHistoryModalTestUtils.getColTitle('Инициировано')
+      const value = equipmentRelocationHistoryModalTestUtils.getColValue(
         props.dataSource[0].id,
         formatDate(props.dataSource[0].createdAt),
       )
@@ -100,8 +64,8 @@ describe('Модалка истории заявок на перемещение
     test('Дата перемещения отображается корректно', () => {
       render(<EquipmentRelocationHistoryModal {...props} />)
 
-      const title = testUtils.getColTitle('Дата перемещения')
-      const value = testUtils.getColValue(
+      const title = equipmentRelocationHistoryModalTestUtils.getColTitle('Дата перемещения')
+      const value = equipmentRelocationHistoryModalTestUtils.getColValue(
         props.dataSource[0].id,
         formatDate(props.dataSource[0].completedAt),
       )
@@ -113,8 +77,11 @@ describe('Модалка истории заявок на перемещение
     test('Объект выбытия отображается корректно', () => {
       render(<EquipmentRelocationHistoryModal {...props} />)
 
-      const title = testUtils.getColTitle('Объект выбытия')
-      const value = testUtils.getColValue(props.dataSource[0].id, props.dataSource[0].relocateFrom)
+      const title = equipmentRelocationHistoryModalTestUtils.getColTitle('Объект выбытия')
+      const value = equipmentRelocationHistoryModalTestUtils.getColValue(
+        props.dataSource[0].id,
+        props.dataSource[0].relocateFrom,
+      )
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -123,8 +90,11 @@ describe('Модалка истории заявок на перемещение
     test('Объект прибытия отображается корректно', () => {
       render(<EquipmentRelocationHistoryModal {...props} />)
 
-      const title = testUtils.getColTitle('Объект прибытия')
-      const value = testUtils.getColValue(props.dataSource[0].id, props.dataSource[0].relocateTo)
+      const title = equipmentRelocationHistoryModalTestUtils.getColTitle('Объект прибытия')
+      const value = equipmentRelocationHistoryModalTestUtils.getColValue(
+        props.dataSource[0].id,
+        props.dataSource[0].relocateTo,
+      )
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -133,8 +103,11 @@ describe('Модалка истории заявок на перемещение
     test('Инициатор отображается корректно', () => {
       render(<EquipmentRelocationHistoryModal {...props} />)
 
-      const title = testUtils.getColTitle('Инициатор')
-      const value = testUtils.getColValue(props.dataSource[0].id, props.dataSource[0].createdBy)
+      const title = equipmentRelocationHistoryModalTestUtils.getColTitle('Инициатор')
+      const value = equipmentRelocationHistoryModalTestUtils.getColValue(
+        props.dataSource[0].id,
+        props.dataSource[0].createdBy,
+      )
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -143,8 +116,8 @@ describe('Модалка истории заявок на перемещение
     test('Статус отображается корректно', () => {
       render(<EquipmentRelocationHistoryModal {...props} />)
 
-      const title = testUtils.getColTitle('Статус')
-      const value = testUtils.getColValue(
+      const title = equipmentRelocationHistoryModalTestUtils.getColTitle('Статус')
+      const value = equipmentRelocationHistoryModalTestUtils.getColValue(
         props.dataSource[0].id,
         relocationTaskStatusDict[props.dataSource[0].status],
       )
@@ -156,8 +129,8 @@ describe('Модалка истории заявок на перемещение
     test('Вложения отображается', () => {
       render(<EquipmentRelocationHistoryModal {...props} />)
 
-      const title = testUtils.getColTitle('Вложения')
-      const row = testUtils.getRow(equipmentRelocationHistoryItem.id)
+      const title = equipmentRelocationHistoryModalTestUtils.getColTitle('Вложения')
+      const row = equipmentRelocationHistoryModalTestUtils.getRow(equipmentRelocationHistoryItem.id)
       const value = within(row).getByTestId('attachments')
 
       expect(title).toBeInTheDocument()
@@ -167,8 +140,10 @@ describe('Модалка истории заявок на перемещение
     test('Номер перемещения на портале заказчика отображается', () => {
       render(<EquipmentRelocationHistoryModal {...props} />)
 
-      const title = testUtils.getColTitle('Номер перемещения на портале заказчика')
-      const value = testUtils.getColValue(
+      const title = equipmentRelocationHistoryModalTestUtils.getColTitle(
+        'Номер перемещения на портале заказчика',
+      )
+      const value = equipmentRelocationHistoryModalTestUtils.getColValue(
         equipmentRelocationHistoryItem.id,
         equipmentRelocationHistoryItem.externalRelocation!.number!,
       )
@@ -180,7 +155,7 @@ describe('Модалка истории заявок на перемещение
     test('При клике на строку вызывается обработчик', async () => {
       const { user } = render(<EquipmentRelocationHistoryModal {...props} />)
 
-      await testUtils.clickRow(user, props.dataSource[0].id)
+      await equipmentRelocationHistoryModalTestUtils.clickRow(user, props.dataSource[0].id)
 
       expect(props.onRow).toBeCalled()
       expect(props.onRow).toBeCalledWith(
