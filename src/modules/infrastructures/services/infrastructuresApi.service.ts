@@ -3,8 +3,12 @@ import {
   InfrastructuresApiTagEnum,
 } from 'modules/infrastructures/constants'
 import {
+  CreateInfrastructureOrderFormWorksMutationArgs,
+  CreateInfrastructureOrderFormWorksSuccessResponse,
   DeleteInfrastructureOrdersFormsWorkMutationArgs,
   DeleteInfrastructureOrdersFormsWorkSuccessResponse,
+  GetInfrastructureOrderFormWorkTypeCostQueryArgs,
+  GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureOrdersFormsSuccessResponse,
   GetInfrastructureQueryArgs,
@@ -56,6 +60,28 @@ const infrastructuresApiService = baseApiService
         }),
       }),
 
+      getInfrastructureOrderFormWorkTypeCost: build.query<
+        GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
+        GetInfrastructureOrderFormWorkTypeCostQueryArgs
+      >({
+        query: (params) => ({
+          url: InfrastructuresApiEnum.GetInfrastructureOrderFormWorkTypeCost,
+          method: HttpMethodEnum.Get,
+          params,
+        }),
+      }),
+
+      createInfrastructureOrderFormWorks: build.mutation<
+        CreateInfrastructureOrderFormWorksSuccessResponse,
+        CreateInfrastructureOrderFormWorksMutationArgs
+      >({
+        query: (data) => ({
+          url: InfrastructuresApiEnum.CreateInfrastructureOrderFormWorks,
+          method: HttpMethodEnum.Post,
+          data: data,
+        }),
+      }),
+
       deleteInfrastructureOrdersFormsWork: build.mutation<
         DeleteInfrastructureOrdersFormsWorkSuccessResponse,
         DeleteInfrastructureOrdersFormsWorkMutationArgs
@@ -74,5 +100,8 @@ export const {
   useUpdateInfrastructureMutation,
   useGetInfrastructureOrdersFormsQuery,
 
+  useLazyGetInfrastructureOrderFormWorkTypeCostQuery,
+
+  useCreateInfrastructureOrderFormWorksMutation,
   useDeleteInfrastructureOrdersFormsWorkMutation,
 } = infrastructuresApiService

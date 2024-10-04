@@ -1,9 +1,12 @@
 import { useBoolean } from 'ahooks'
 import { Flex, Form, Upload, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
+import { NamePath } from 'rc-field-form/es/interface'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 
 import { attachmentsToFiles, renderUploadedFile } from 'modules/attachment/utils'
+import { useCreateInfrastructureOrderFormWorks } from 'modules/infrastructures/hooks/useCreateInfrastructureOrderFormWorks'
+import { useLazyGetInfrastructureOrderFormWorkTypeCost } from 'modules/infrastructures/hooks/useLazyGetInfrastructureOrderFormWorkTypeCost'
 import { deleteInfrastructureOrdersFormsWorkErrMsg } from 'modules/infrastructures/constants'
 import { useDeleteInfrastructureOrdersFormsWork } from 'modules/infrastructures/hooks/useDeleteInfrastructureOrdersFormsWork'
 import { InfrastructureOrderFormListItemModel } from 'modules/infrastructures/models'
@@ -14,12 +17,14 @@ import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { InfrastructureWorkTypesCatalogModel } from 'shared/models/catalogs/infrastructureWorkTypes'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { FileResponse } from 'shared/types/file'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import ChangeInfrastructureOrderFormTable from '../ChangeInfrastructureOrderFormTable'
 import {
   ActiveChangeInfrastructureOrderFormTableRow,
+  ChangeInfrastructureOrderFormTableProps,
   ChangeInfrastructureOrderFormTableRow,
 } from '../ChangeInfrastructureOrderFormTable/types'
 import { ChangeInfrastructureOrdersFormsTabFormFields } from '../ChangeInfrastructureOrdersFormsTab/types'
@@ -79,6 +84,73 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
       setEditableTableRowKeys(editableTableRowKeys)
     }
   }, [form, id, works])
+
+  const [
+    getInfrastructureOrderFormWorkTypeCost,
+    { isFetching: infrastructureOrderFormWorkTypeCostIsFetching },
+  ] = useLazyGetInfrastructureOrderFormWorkTypeCost()
+
+  const [createInfrastructureOrderFormWorksMutation] = useCreateInfrastructureOrderFormWorks()
+
+  const onChangeWorkType: ChangeInfrastructureOrderFormTableProps['onChangeWorkType'] =
+    useDebounceFn(
+      async (activeRow, value) => {
+        const currentWorks = form.getFieldValue([id, 'works']) || []
+        const infrastructureWorkPath: NamePath = [id, 'works', String(activeRow.rowIndex)]
+        const currentInfrastructureWork = currentWorks[activeRow.rowIndex]
+
+        try {
+          const infrastructureOrderFormWorkTypeCost = await getInfrastructureOrderFormWorkTypeCost({
+            orderForm: id,
+            workType: value,
+          }).unwrap()
+
+          form.setFieldValue(infrastructureWorkPath, {
+            ...currentInfrastructureWork,
+            type: infrastructureOrderFormWorkTypeCost.type,
+            laborCosts: infrastructureOrderFormWorkTypeCost.type.laborCosts,
+            cost: infrastructureOrderFormWorkTypeCost.cost,
+          })
+        } catch (error) {
+          if (isErrorResponse(error)) {
+            form.setFieldValue(infrastructureWorkPath, { rowId: currentInfrastructureWork.rowId })
+          }
+        }
+      },
+      [id, form, getInfrastructureOrderFormWorkTypeCost],
+      500,
+    )
+
+  const onChangeAmount: ChangeInfrastructureOrderFormTableProps['onChangeAmount'] = useDebounceFn(
+    async (record, value, activeRow) => {
+      if (!record.type || !value) {
+        return
+      }
+
+      const currentWorks = form.getFieldValue([id, 'works']) || []
+      const infrastructureWorkPath: NamePath = [id, 'works', String(activeRow.rowIndex)]
+      const currentInfrastructureWork = currentWorks[activeRow.rowIndex]
+
+      try {
+        const createdOrderFormWork = await createInfrastructureOrderFormWorksMutation({
+          amount: value,
+          infrastructureWorkType: record.type.id,
+          orderForm: id,
+        }).unwrap()
+
+        form.setFieldValue(infrastructureWorkPath, {
+          ...currentInfrastructureWork,
+          ...createdOrderFormWork,
+        })
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          form.setFieldValue(infrastructureWorkPath, { rowId: currentInfrastructureWork.rowId })
+        }
+      }
+    },
+    [id, form, createInfrastructureOrderFormWorksMutation],
+    500,
+  )
 
   const [
     deleteInfrastructureOrdersFormsWorkMutation,
@@ -173,6 +245,11 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
           onChange={setEditableTableRowKeys}
           infrastructureWorkTypes={infrastructureWorkTypes}
           managerIsCurrentUser={managerIsCurrentUser}
+          onChangeWorkType={onChangeWorkType}
+          infrastructureOrderFormWorkTypeCostIsFetching={
+            infrastructureOrderFormWorkTypeCostIsFetching
+          }
+          onChangeAmount={onChangeAmount}
           onClickDeleteInfrastructureWorkType={handleOpenConfirmDeleteInfrastructureWorkTypeModal}
         />
 

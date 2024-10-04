@@ -72,8 +72,8 @@ describe('Страница отчета действия сотрудников'
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      mockGetRelocationTaskSuccess(reportListItem.relocationTask.id)
-      mockGetRelocationEquipmentListSuccess(reportListItem.relocationTask.id)
+      mockGetRelocationTaskSuccess({ relocationTaskId: reportListItem.relocationTask.id })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: reportListItem.relocationTask.id })
 
       const { user } = render(<EmployeesActionsReportPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {

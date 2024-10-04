@@ -12,9 +12,19 @@ export const props: ChangeInfrastructureOrderFormTableProps = {
 
   managerIsCurrentUser: true,
 
+  onChangeWorkType: jest.fn(),
+  infrastructureOrderFormWorkTypeCostIsFetching: false,
+  onChangeAmount: jest.fn(),
+
   onClickDeleteInfrastructureWorkType: jest.fn(),
 }
 
 export enum TestIdsEnum {
   ChangeInfrastructureOrderFormTableContainer = 'change-infrastructure-order-form-table-container',
+  NameFormItem = 'name-form-item',
+  BudgetTypeFormItem = 'budget-type-form-item',
+  LaborCostsFormItem = 'labor-costs-form-item',
+  AmountFormItem = 'amount-form-item',
+  CostFormItem = 'cost-form-item',
+  PriceFormItem = 'price-form-item',
 }

@@ -5,7 +5,8 @@ import { Key } from 'react'
 import { InfrastructureWorkModel } from 'modules/infrastructures/models'
 
 import { InfrastructureWorkTypesCatalogModel } from 'shared/models/catalogs/infrastructureWorkTypes'
-import { SetNonNullable } from 'shared/types/utils'
+import { IdType } from 'shared/types/common'
+import { Nullable, SetNonNullable } from 'shared/types/utils'
 
 export type ChangeInfrastructureOrderFormTableRow = Partial<
   Pick<InfrastructureWorkModel, 'id' | 'type' | 'laborCosts' | 'amount' | 'cost' | 'price'>
@@ -29,7 +30,20 @@ export type ChangeInfrastructureOrderFormTableProps = SetNonNullable<
 
     managerIsCurrentUser: boolean
     infrastructureWorkTypes?: InfrastructureWorkTypesCatalogModel
-    onClickDeleteInfrastructureWorkType: (
+
+    onChangeWorkType: (
+      activeRow: ActiveChangeInfrastructureOrderFormTableRow,
+      value: IdType,
+    ) => Promise<void>
+    infrastructureOrderFormWorkTypeCostIsFetching: boolean
+
+    onChangeAmount: (
+      record: ChangeInfrastructureOrderFormTableRow,
+      value: Nullable<number>,
+      activeRow: ActiveChangeInfrastructureOrderFormTableRow,
+    ) => Promise<void>
+
+  onClickDeleteInfrastructureWorkType: (
       activeRow: ActiveChangeInfrastructureOrderFormTableRow,
     ) => void
   }
