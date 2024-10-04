@@ -8,6 +8,8 @@ import {
   GetInfrastructureQueryArgs,
   GetInfrastructureSuccessResponse,
   UpdateInfrastructureMutationArgs,
+  UpdateInfrastructureStatusMutationArgs,
+  UpdateInfrastructureStatusSuccessResponse,
   UpdateInfrastructureSuccessResponse,
 } from 'modules/infrastructures/models'
 import {
@@ -41,6 +43,16 @@ const infrastructuresApiService = baseApiService
           data,
         }),
       }),
+      updateInfrastructureStatus: build.mutation<
+        UpdateInfrastructureStatusSuccessResponse,
+        UpdateInfrastructureStatusMutationArgs
+      >({
+        query: (data) => ({
+          url: InfrastructuresApiEnum.UpdateInfrastructureStatus,
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+      }),
 
       getInfrastructureOrdersForms: build.query<
         GetInfrastructureOrdersFormsSuccessResponse,
@@ -59,5 +71,6 @@ const infrastructuresApiService = baseApiService
 export const {
   useGetInfrastructureQuery,
   useUpdateInfrastructureMutation,
+  useUpdateInfrastructureStatusMutation,
   useGetInfrastructureOrdersFormsQuery,
 } = infrastructuresApiService

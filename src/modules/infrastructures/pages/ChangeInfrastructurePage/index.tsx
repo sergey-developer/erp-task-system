@@ -1,14 +1,23 @@
-import { Button, Col, Flex, Row, Tabs, Typography } from 'antd'
+import { Button, Col, Flex, Row, Select, Tabs, Typography } from 'antd'
 import React, { FC } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { useAuthUser } from 'modules/auth/hooks'
 import ChangeInfrastructureOrdersFormsTab from 'modules/infrastructures/components/ChangeInfrastructureOrdersFormsTab'
-import { infrastructureStatusDict } from 'modules/infrastructures/constants'
-import { useGetInfrastructure, useUpdateInfrastructure } from 'modules/infrastructures/hooks'
+import {
+  infrastructureStatusDict,
+  InfrastructureStatusEnum,
+  infrastructureStatusOptions,
+} from 'modules/infrastructures/constants'
+import {
+  useGetInfrastructure,
+  useUpdateInfrastructure,
+  useUpdateInfrastructureStatus,
+} from 'modules/infrastructures/hooks'
 import TaskAssignee from 'modules/task/components/TaskAssignee'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
+import EditableField from 'modules/warehouse/components/RelocationTaskDetails/EditableField'
 import ReadonlyField from 'modules/warehouse/components/RelocationTaskDetails/ReadonlyField'
 
 import GoBackButton from 'components/Buttons/GoBackButton'
@@ -43,11 +52,30 @@ const ChangeInfrastructurePage: FC = () => {
 
   const onUpdateInfrastructure = async () => {
     if (!authUser || !infrastructureId) {
-      console.error('Required data not supplied:', { infrastructureId, authUser })
+      console.error('Update infrastructure. Required data not supplied:', {
+        infrastructureId,
+        authUser,
+      })
       return
     }
 
     await updateInfrastructureMutation({ infrastructureId, manager: authUser.id })
+  }
+
+  const [
+    updateInfrastructureStatusMutation,
+    { isLoading: updateInfrastructureStatusIsLoading, data: updateInfrastructureStatusResponse },
+  ] = useUpdateInfrastructureStatus()
+
+  const onUpdateInfrastructureStatus = async (status: InfrastructureStatusEnum) => {
+    if (!authUser || !infrastructureId) {
+      console.error('Update infrastructure status. Required data not supplied:', {
+        infrastructureId,
+      })
+      return
+    }
+
+    await updateInfrastructureStatusMutation({ infrastructureProject: infrastructureId, status })
   }
 
   return (
@@ -121,18 +149,67 @@ const ChangeInfrastructurePage: FC = () => {
                       )}
                     </Flex>
 
-                    <ReadonlyField
+                    <EditableField
                       data-testid='status'
                       rowProps={{ align: 'top' }}
                       label='Статус'
-                      value={valueOr(infrastructure.status, (value) => (
-                        <Flex vertical gap='small'>
-                          <Text>{infrastructureStatusDict[value.status]}</Text>
+                      value={
+                        updateInfrastructureStatusResponse?.status || infrastructure.status?.status
+                      }
+                      forceDisplayValue
+                      displayValue={
+                        updateInfrastructureStatusResponse?.status || infrastructure.status
+                          ? (editButton) => (
+                              <Space direction='vertical' size={0}>
+                                <Space>
+                                  <Text>
+                                    {updateInfrastructureStatusResponse?.status
+                                      ? infrastructureStatusDict[
+                                          updateInfrastructureStatusResponse.status
+                                        ]
+                                      : infrastructure.status
+                                      ? infrastructureStatusDict[infrastructure.status.status]
+                                      : null}
+                                  </Text>
 
-                          <Text type='secondary'>Установлен: {formatDate(value.createdAt)}</Text>
-                        </Flex>
-                      ))}
+                                  {editButton}
+                                </Space>
+
+                                {infrastructure.status && (
+                                  <Text type='secondary'>
+                                    Установлен: {formatDate(infrastructure.status.createdAt)}
+                                  </Text>
+                                )}
+                              </Space>
+                            )
+                          : null
+                      }
+                      renderEditable={({ value, onChange }) => (
+                        <Select
+                          allowClear
+                          popupMatchSelectWidth={200}
+                          value={value}
+                          onChange={(value) => onChange(value)}
+                          options={infrastructureStatusOptions}
+                        />
+                      )}
+                      editButtonHidden={infrastructure.manager?.id !== authUser?.id}
+                      onSave={onUpdateInfrastructureStatus}
+                      isLoading={updateInfrastructureStatusIsLoading}
                     />
+
+                    {/*<ReadonlyField*/}
+                    {/*  data-testid='status'*/}
+                    {/*  rowProps={{ align: 'top' }}*/}
+                    {/*  label='Статус'*/}
+                    {/*  value={valueOr(infrastructure.status, (value) => (*/}
+                    {/*    <Flex vertical gap='small'>*/}
+                    {/*      <Text>{infrastructureStatusDict[value.status]}</Text>*/}
+
+                    {/*      <Text type='secondary'>Установлен: {formatDate(value.createdAt)}</Text>*/}
+                    {/*    </Flex>*/}
+                    {/*  ))}*/}
+                    {/*/>*/}
                   </Space>
                 </Col>
 
