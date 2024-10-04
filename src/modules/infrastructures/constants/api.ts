@@ -3,6 +3,8 @@ export enum InfrastructuresApiEnum {
   UpdateInfrastructure = '/infrastructures/:id',
 
   GetInfrastructureOrdersForms = '/infrastructures/orders/',
+  GetInfrastructureOrderFormWorkTypeCost = '/infrastructures/orders/works/types/cost/',
+  CreateInfrastructureOrderFormWorks = '/infrastructures/orders/works/',
 
   GetInfrastructureStatusHistory = '/infrastructures/statuses/',
   UpdateInfrastructureStatus = '/infrastructures/statuses/',

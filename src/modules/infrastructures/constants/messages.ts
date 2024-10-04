@@ -13,3 +13,9 @@ export const updateInfrastructureStatusErrMsg = 'Ошибка изменения
 
 export const getInfrastructureStatusHistoryErrMsg =
   'Ошибка получения истории статусов изменений инфраструктуры'
+
+export const createInfrastructureOrderFormWorksErrMsg =
+  'Ошибка добавления работ по изменению инфраструктуры в бланк-заказ'
+
+export const getInfrastructureOrderFormWorkTypeCostErrMsg =
+  'Ошибка получения детальной информации по виду работ для определенного изменения инфраструктуры'

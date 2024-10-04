@@ -1,8 +1,11 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { Form } from 'antd'
-import { FC } from 'react'
+import random from 'lodash/random'
+import { FC, useMemo } from 'react'
 
 import { env } from 'configs/env'
+
+import { makeInfrastructureWorkTypesSelectOptions } from 'modules/infrastructures/utils/infrastructureWorkType/infrastructureWorkTypesSelectOptions'
 
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -14,13 +17,31 @@ import {
   ChangeInfrastructureOrderFormTableRow,
 } from './types'
 
+
 const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableProps> = ({
-  editableKeys,
   name,
 
+  editableKeys,
+  onChange,
+
+  infrastructureWorkTypes,
+
   managerIsCurrentUser,
+
+  onChangeWorkType,
+  infrastructureOrderFormWorkTypeCostIsFetching,
+
+  onChangeAmount,
 }) => {
   const form = Form.useFormInstance<ChangeInfrastructureOrdersFormsTabFormFields>()
+
+  const infrastructureWorkTypesOptions = useMemo(
+    () =>
+      infrastructureWorkTypes
+        ? makeInfrastructureWorkTypesSelectOptions(infrastructureWorkTypes)
+        : [],
+    [infrastructureWorkTypes],
+  )
 
   const columns: ProColumns<ChangeInfrastructureOrderFormTableRow>[] = [
     {
@@ -35,21 +56,26 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
         allowClear: false,
         loading: false,
         disabled: !managerIsCurrentUser,
-        options: [{ label: config.entity.type?.title, value: config.entity.type?.id }],
         showSearch: true,
         filterOption: filterOptionBy('label'),
+        options: infrastructureWorkTypesOptions,
+        onChange: (value: IdType) => onChangeWorkType({ rowIndex: config.rowIndex }, value),
       }),
     },
     {
       dataIndex: ['type', 'budgetType'],
       title: 'Бюджет',
       fieldProps: { disabled: true, placeholder: null },
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'budget-type-form-item' },
     },
     {
       dataIndex: 'laborCosts',
       title: 'Количество нч/шт',
       valueType: 'digit',
       fieldProps: { disabled: true, placeholder: null },
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'labor-costs-form-item' },
     },
     {
       dataIndex: 'amount',
@@ -60,20 +86,37 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
           (config.rowKey as unknown as string[]).concat(['type', 'id']),
         )
 
-        return { disabled: !managerIsCurrentUser || !name, placeholder: null, min: 0 }
+        const amount: ChangeInfrastructureOrderFormTableRow['amount'] = form?.getFieldValue(
+          (config.rowKey as unknown as string[]).concat('amount'),
+        )
+
+        return {
+          disabled: !managerIsCurrentUser || !name || infrastructureOrderFormWorkTypeCostIsFetching,
+          placeholder: null,
+          min: 0,
+          onBlur: async () => {
+            await onChangeAmount(config.entity, amount, { rowIndex: config.rowIndex })
+          },
+        }
       },
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'amount-form-item' },
     },
     {
       dataIndex: 'cost',
       title: 'Цена, руб',
       valueType: 'digit',
       fieldProps: { disabled: true, placeholder: null },
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'cost-form-item' },
     },
     {
       dataIndex: 'price',
       title: 'Стоимость, руб',
       valueType: 'digit',
       fieldProps: { disabled: true, placeholder: null },
+      // @ts-ignore
+      formItemProps: { 'data-testid': 'price-form-item' },
     },
   ]
 
@@ -86,11 +129,19 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
         rowKey='rowId'
         name={name}
         columns={columns}
-        recordCreatorProps={false}
+        recordCreatorProps={{
+          record: () => ({
+            rowId: random(1, 9999999),
+          }),
+          creatorButtonText: 'Добавить работы',
+          disabled: !managerIsCurrentUser || infrastructureOrderFormWorkTypeCostIsFetching,
+        }}
         editable={{
           type: 'multiple',
           form,
           editableKeys,
+          onChange: onChange,
+          onValuesChange: (record, recordList) => form.setFieldValue(name, recordList),
         }}
       />
     </div>

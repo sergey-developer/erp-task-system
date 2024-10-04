@@ -7,6 +7,10 @@ import {
 import {
   CreateInfrastructureOrderFormAttachmentMutationArgs,
   CreateInfrastructureOrderFormAttachmentSuccessResponse,
+  CreateInfrastructureOrderFormWorksMutationArgs,
+  CreateInfrastructureOrderFormWorksSuccessResponse,
+  GetInfrastructureOrderFormWorkTypeCostQueryArgs,
+  GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureOrdersFormsSuccessResponse,
   GetInfrastructureQueryArgs,
@@ -21,7 +25,7 @@ import {
 import {
   makeGetInfrastructureUrl,
   makeUpdateInfrastructureUrl,
-} from 'modules/infrastructures/utils/apiUrls'
+} from 'modules/infrastructures/utils/infrastructure/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
@@ -97,6 +101,28 @@ const infrastructuresApiService = baseApiService
           }
         },
       }),
+
+      getInfrastructureOrderFormWorkTypeCost: build.query<
+        GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
+        GetInfrastructureOrderFormWorkTypeCostQueryArgs
+      >({
+        query: (params) => ({
+          url: InfrastructuresApiEnum.GetInfrastructureOrderFormWorkTypeCost,
+          method: HttpMethodEnum.Get,
+          params,
+        }),
+      }),
+
+      createInfrastructureOrderFormWorks: build.mutation<
+        CreateInfrastructureOrderFormWorksSuccessResponse,
+        CreateInfrastructureOrderFormWorksMutationArgs
+      >({
+        query: (data) => ({
+          url: InfrastructuresApiEnum.CreateInfrastructureOrderFormWorks,
+          method: HttpMethodEnum.Post,
+          data: data,
+        }),
+      }),
     }),
     overrideExisting: false,
   })
@@ -107,5 +133,10 @@ export const {
   useUpdateInfrastructureStatusMutation,
   useGetInfrastructureStatusHistoryQuery,
   useGetInfrastructureOrdersFormsQuery,
+
   useCreateInfrastructureOrderFormAttachmentMutation,
+
+  useLazyGetInfrastructureOrderFormWorkTypeCostQuery,
+
+  useCreateInfrastructureOrderFormWorksMutation,
 } = infrastructuresApiService

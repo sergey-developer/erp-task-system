@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthUser } from 'modules/auth/hooks'
 import { useUpdateInfrastructure } from 'modules/infrastructures/hooks'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
-import { makeChangeInfrastructurePageLink } from 'modules/infrastructures/utils/pagesLinks'
+import { makeChangeInfrastructurePageLink } from 'modules/infrastructures/utils/infrastructure/pagesLinks'
 import { useCancelReclassificationRequest } from 'modules/reclassificationRequest/hooks'
 import {
   CreateInternalTaskFormFields,
