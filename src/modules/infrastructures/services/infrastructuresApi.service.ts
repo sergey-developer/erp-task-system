@@ -3,6 +3,7 @@ import {
   InfrastructuresApiTagEnum,
 } from 'modules/infrastructures/constants'
 import {
+  DeleteInfrastructureOrdersFormsWorkMutationArgs,
   DeleteInfrastructureOrdersFormsWorkSuccessResponse,
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureOrdersFormsSuccessResponse,
@@ -11,7 +12,6 @@ import {
   UpdateInfrastructureMutationArgs,
   UpdateInfrastructureSuccessResponse,
 } from 'modules/infrastructures/models'
-import { DeleteInfrastructureOrdersFormsWorkMutationArgs } from 'modules/infrastructures/models/deleteInfrastructureOrdersFormsWork.model'
 import {
   makeDeleteInfrastructureOrdersFormsWorkUrl,
   makeGetInfrastructureUrl,
