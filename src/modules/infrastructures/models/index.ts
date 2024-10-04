@@ -13,3 +13,4 @@ export * from './infrastructureWorkType.model'
 export * from './getInfrastructureOrderFormWorkTypeCost.model'
 
 export * from './createInfrastructureOrderFormWorks.model'
+export * from './deleteInfrastructureOrdersFormsWork.model'

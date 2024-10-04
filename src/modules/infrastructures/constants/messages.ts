@@ -11,3 +11,6 @@ export const createInfrastructureOrderFormWorksErrMsg =
 
 export const getInfrastructureOrderFormWorkTypeCostErrMsg =
   'Ошибка получения детальной информации по виду работ для определенного изменения инфраструктуры'
+
+export const deleteInfrastructureOrdersFormsWorkErrMsg =
+  'Ошибка удаления работ по изменению инфраструктуры'

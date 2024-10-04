@@ -1,5 +1,8 @@
 import { InfrastructuresApiEnum } from 'modules/infrastructures/constants'
-import { InfrastructureRequestArgs } from 'modules/infrastructures/types'
+import {
+  InfrastructureRequestArgs,
+  InfrastructureWorkRequestArgs,
+} from 'modules/infrastructures/types'
 
 import { generateApiPath } from 'shared/utils/api'
 
@@ -10,3 +13,10 @@ export const makeUpdateInfrastructureUrl = ({
   infrastructureId,
 }: InfrastructureRequestArgs): string =>
   generateApiPath(InfrastructuresApiEnum.UpdateInfrastructure, { id: String(infrastructureId) })
+
+export const makeDeleteInfrastructureOrdersFormsWorkUrl = ({
+  infrastructureWorkId,
+}: InfrastructureWorkRequestArgs): string =>
+  generateApiPath(InfrastructuresApiEnum.DeleteInfrastructureOrdersFormsWork, {
+    id: String(infrastructureWorkId),
+  })

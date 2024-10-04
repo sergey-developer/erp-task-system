@@ -14,7 +14,10 @@ export type ChangeInfrastructureOrderFormTableRow = Partial<
   rowId: number
 }
 
-export type ActiveChangeInfrastructureOrderFormTableRow = {
+export type ActiveChangeInfrastructureOrderFormTableRow = Pick<
+  ChangeInfrastructureOrderFormTableRow,
+  'id'
+> & {
   rowIndex: number
 }
 
@@ -39,4 +42,8 @@ export type ChangeInfrastructureOrderFormTableProps = SetNonNullable<
       value: Nullable<number>,
       activeRow: ActiveChangeInfrastructureOrderFormTableRow,
     ) => Promise<void>
+
+  onClickDeleteInfrastructureWorkType: (
+      activeRow: ActiveChangeInfrastructureOrderFormTableRow,
+    ) => void
   }
