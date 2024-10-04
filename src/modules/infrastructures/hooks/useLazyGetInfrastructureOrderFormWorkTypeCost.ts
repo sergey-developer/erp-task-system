@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
+import { getInfrastructureOrderFormWorkTypeCostErrMsg } from 'modules/infrastructures/constants'
 import {
   GetInfrastructureOrderFormWorkTypeCostQueryArgs,
   GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
@@ -15,6 +16,7 @@ import {
   isNotFoundError,
 } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
 
 type UseGetInfrastructureOrderFormWorkTypeCostResult = CustomUseLazyQueryHookResult<
   GetInfrastructureOrderFormWorkTypeCostQueryArgs,
@@ -30,7 +32,7 @@ export const useLazyGetInfrastructureOrderFormWorkTypeCost =
         if (isNotFoundError(state.error) || isForbiddenError(state.error)) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification('')
+          showErrorNotification(getInfrastructureOrderFormWorkTypeCostErrMsg)
         }
       }
     }, [state.error])

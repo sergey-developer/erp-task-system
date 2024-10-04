@@ -8,3 +8,6 @@ export const getInfrastructureOrdersFormsErrMsg =
 
 export const createInfrastructureOrderFormWorksErrMsg =
   'Ошибка добавления работ по изменению инфраструктуры в бланк-заказ'
+
+export const getInfrastructureOrderFormWorkTypeCostErrMsg =
+  'Ошибка получения детальной информации по виду работ для определенного изменения инфраструктуры'

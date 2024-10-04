@@ -29,7 +29,7 @@ export type ChangeInfrastructureOrderFormTableProps = SetNonNullable<
     infrastructureWorkTypes?: InfrastructureWorkTypesCatalogModel
 
     onChangeWorkType: (
-      record: ChangeInfrastructureOrderFormTableRow,
+      activeRow: ActiveChangeInfrastructureOrderFormTableRow,
       value: IdType,
     ) => Promise<void>
     infrastructureOrderFormWorkTypeCostIsFetching: boolean
@@ -37,5 +37,6 @@ export type ChangeInfrastructureOrderFormTableProps = SetNonNullable<
     onChangeAmount: (
       record: ChangeInfrastructureOrderFormTableRow,
       value: Nullable<number>,
+      activeRow: ActiveChangeInfrastructureOrderFormTableRow,
     ) => Promise<void>
   }

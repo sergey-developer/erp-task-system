@@ -13,9 +13,8 @@ import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { InfrastructureWorkTypesCatalogModel } from 'shared/models/catalogs/infrastructureWorkTypes'
-import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { FileResponse } from 'shared/types/file'
-import { getFieldsErrors } from 'shared/utils/form'
 
 import ChangeInfrastructureOrderFormTable from '../ChangeInfrastructureOrderFormTable'
 import {
@@ -23,6 +22,7 @@ import {
   ChangeInfrastructureOrderFormTableRow,
 } from '../ChangeInfrastructureOrderFormTable/types'
 import { ChangeInfrastructureOrdersFormsTabFormFields } from '../ChangeInfrastructureOrdersFormsTab/types'
+
 
 export type ChangeInfrastructureOrderFormProps = {
   data: InfrastructureOrderFormListItemModel
@@ -80,14 +80,10 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
 
   const onChangeWorkType: ChangeInfrastructureOrderFormTableProps['onChangeWorkType'] =
     useDebounceFn(
-      async (record, value) => {
+      async (activeRow, value) => {
         const currentWorks = form.getFieldValue([id, 'works']) || []
-        const index = currentWorks.findIndex(
-          (work: ChangeInfrastructureOrderFormTableRow) => work.rowId === record.rowId,
-        )
-
-        const infrastructureWorkPath: NamePath = [id, 'works', String(index)]
-        const currentInfrastructureWork = currentWorks[index]
+        const infrastructureWorkPath: NamePath = [id, 'works', String(activeRow.rowIndex)]
+        const currentInfrastructureWork = currentWorks[activeRow.rowIndex]
 
         try {
           const infrastructureOrderFormWorkTypeCost = await getInfrastructureOrderFormWorkTypeCost({
@@ -107,23 +103,19 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
           }
         }
       },
-      [id],
+      [id, form, getInfrastructureOrderFormWorkTypeCost],
       500,
     )
 
   const onChangeAmount: ChangeInfrastructureOrderFormTableProps['onChangeAmount'] = useDebounceFn(
-    async (record, value) => {
+    async (record, value, activeRow) => {
       if (!record.type || !value) {
         return
       }
 
       const currentWorks = form.getFieldValue([id, 'works']) || []
-      const index = currentWorks.findIndex(
-        (work: ChangeInfrastructureOrderFormTableRow) => work.rowId === record.rowId,
-      )
-
-      const infrastructureWorkPath: NamePath = [id, 'works', String(index)]
-      const currentInfrastructureWork = currentWorks[index]
+      const infrastructureWorkPath: NamePath = [id, 'works', String(activeRow.rowIndex)]
+      const currentInfrastructureWork = currentWorks[activeRow.rowIndex]
 
       try {
         const createdOrderFormWork = await createInfrastructureOrderFormWorksMutation({
@@ -137,12 +129,12 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
           ...createdOrderFormWork,
         })
       } catch (error) {
-        if (isErrorResponse(error) && isBadRequestError(error)) {
-          form.setFields(getFieldsErrors(error.data))
+        if (isErrorResponse(error)) {
+          form.setFieldValue(infrastructureWorkPath, { rowId: currentInfrastructureWork.rowId })
         }
       }
     },
-    [id],
+    [id, form, createInfrastructureOrderFormWorksMutation],
     500,
   )
 

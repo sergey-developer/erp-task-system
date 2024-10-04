@@ -17,6 +17,7 @@ import {
   ChangeInfrastructureOrderFormTableRow,
 } from './types'
 
+
 const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableProps> = ({
   name,
 
@@ -58,7 +59,7 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
         showSearch: true,
         filterOption: filterOptionBy('label'),
         options: infrastructureWorkTypesOptions,
-        onChange: (value: IdType) => onChangeWorkType(config.entity, value),
+        onChange: (value: IdType) => onChangeWorkType({ rowIndex: config.rowIndex }, value),
       }),
     },
     {
@@ -94,7 +95,7 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
           placeholder: null,
           min: 0,
           onBlur: async () => {
-            await onChangeAmount(config.entity, amount)
+            await onChangeAmount(config.entity, amount, { rowIndex: config.rowIndex })
           },
         }
       },
