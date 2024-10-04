@@ -1,7 +1,11 @@
 import { Button, SelectProps } from 'antd'
 import { useCallback, useMemo } from 'react'
 
-type UseSelectAllProps = SelectProps & { showSelectAll?: boolean }
+import { SetNonNullable } from '../types/utils'
+
+type UseSelectAllProps = SetNonNullable<SelectProps, 'options' | 'value' | 'onChange'> & {
+  showSelectAll?: boolean
+}
 
 export const useSelectAll = ({
   showSelectAll = true,
@@ -9,15 +13,25 @@ export const useSelectAll = ({
   value,
   onChange,
 }: UseSelectAllProps) => {
+  const optionsValues = useMemo(
+    () =>
+      options.reduce<(string | number)[]>((acc, option) => {
+        if (option.options) {
+          return [...acc, ...option.options.map((opt: { value: any }) => opt.value)]
+        } else if (option.value) {
+          acc.push(option.value)
+        }
+        return acc
+      }, []),
+    [options],
+  )
+
   const handleSelectAll = useCallback(() => {
-    onChange?.(
-      options.map((option) => option.value),
-      options,
-    )
-  }, [onChange, options])
+    onChange(optionsValues, options)
+  }, [onChange, options, optionsValues])
 
   const handleUnselectAll = useCallback(() => {
-    onChange?.([], [])
+    onChange([], [])
   }, [onChange])
 
   const extendedOptions = useMemo(() => {
@@ -26,7 +40,7 @@ export const useSelectAll = ({
     return [
       {
         label:
-          value?.length !== options?.length ? (
+          value?.length !== optionsValues?.length ? (
             <Button type='link' onClick={handleSelectAll}>
               Выбрать все
             </Button>
@@ -38,7 +52,14 @@ export const useSelectAll = ({
       },
       ...options,
     ]
-  }, [handleSelectAll, handleUnselectAll, options, showSelectAll, value?.length])
+  }, [
+    handleSelectAll,
+    handleUnselectAll,
+    options,
+    optionsValues?.length,
+    showSelectAll,
+    value?.length,
+  ])
 
   return {
     options: extendedOptions,

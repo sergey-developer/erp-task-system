@@ -1,6 +1,6 @@
 import { Col, Form, InputNumber, Radio, Row, Select, SelectProps } from 'antd'
 import isEmpty from 'lodash/isEmpty'
-import React, { FC, useEffect, useMemo } from 'react'
+import React, { FC, useCallback, useEffect, useMemo } from 'react'
 
 import { equipmentConditionOptions } from 'modules/warehouse/constants/equipment'
 
@@ -42,9 +42,10 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
     form,
   )
 
-  const onChangeLocations: SelectProps['onChange'] = (
-    value: EquipmentsFilterFormFields['locations'],
-  ) => form.setFieldValue('locations', value)
+  const onChangeLocations = useCallback<NonNullable<SelectProps['onChange']>>(
+    (value: EquipmentsFilterFormFields['locations']) => form.setFieldValue('locations', value),
+    [form],
+  )
 
   const locationOptions = useMemo(
     () => locations.map((w) => ({ label: w.title, value: w.id })),

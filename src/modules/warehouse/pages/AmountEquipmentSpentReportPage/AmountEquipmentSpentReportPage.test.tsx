@@ -125,8 +125,8 @@ describe('Страница отчета количества потраченн�
       const locationListItem = catalogsFixtures.locationCatalogListItem()
       mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
-      mockGetRelocationTaskSuccess(reportListItem.relocationTask.id)
-      mockGetRelocationEquipmentListSuccess(reportListItem.relocationTask.id)
+      mockGetRelocationTaskSuccess({ relocationTaskId: reportListItem.relocationTask.id })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: reportListItem.relocationTask.id })
 
       const { user } = render(<AmountEquipmentSpentReportPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {

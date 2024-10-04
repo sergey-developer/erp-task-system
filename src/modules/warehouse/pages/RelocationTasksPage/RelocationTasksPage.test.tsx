@@ -295,8 +295,8 @@ describe('Страница списка заявок на перемещение
       mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
       })
-      mockGetRelocationTaskSuccess(relocationTaskListItem.id)
-      mockGetRelocationEquipmentListSuccess(relocationTaskListItem.id)
+      mockGetRelocationTaskSuccess({ relocationTaskId: relocationTaskListItem.id })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTaskListItem.id })
 
       const { user } = render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -316,8 +316,8 @@ describe('Страница списка заявок на перемещение
       mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
       })
-      mockGetRelocationTaskSuccess(relocationTaskListItem.id)
-      mockGetRelocationEquipmentListSuccess(relocationTaskListItem.id)
+      mockGetRelocationTaskSuccess({ relocationTaskId: relocationTaskListItem.id })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTaskListItem.id })
 
       const { user } = render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
