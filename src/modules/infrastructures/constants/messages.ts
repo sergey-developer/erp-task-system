@@ -7,3 +7,6 @@ export const getInfrastructureOrdersFormsErrMsg =
   'Ошибка получения бланк-заказов по изменению инфраструктуры'
 
 export const updateInfrastructureStatusErrMsg = 'Ошибка изменения статуса инфраструктуры'
+
+export const getInfrastructureStatusHistoryErrMsg =
+  'Ошибка получения истории статусов изменений инфраструктуры'

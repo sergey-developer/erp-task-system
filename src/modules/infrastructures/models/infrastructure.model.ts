@@ -3,7 +3,7 @@ import { UserModel, UserPositionModel } from 'modules/user/models'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-import { InfrastructureStatusHistoryModel } from './infrastructureStatusHistory.model'
+import { InfrastructureStatusHistoryItemModel } from './infrastructureStatusHistory.model'
 
 export type InfrastructureModel = {
   id: IdType
@@ -16,5 +16,5 @@ export type InfrastructureModel = {
       position: MaybeNull<UserPositionModel['title']>
     }
   >
-  status: MaybeNull<InfrastructureStatusHistoryModel>
+  status: MaybeNull<InfrastructureStatusHistoryItemModel>
 }

@@ -25,6 +25,7 @@ export { default as MailIcon } from './MailIcon'
 export { default as FileTextIcon } from './FileTextIcon'
 export { default as DoubleRightArrowIcon } from './DoubleRightArrowIcon'
 export { default as PlusIcon } from './PlusIcon'
+export { default as SearchIcon } from './SearchIcon'
 
 export { default as ExclamationCircleIcon } from './ExclamationCircleIcon'
 export { default as CheckCircleIcon } from './CheckCircleIcon'

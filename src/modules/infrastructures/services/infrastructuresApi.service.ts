@@ -6,6 +6,8 @@ import {
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureOrdersFormsSuccessResponse,
   GetInfrastructureQueryArgs,
+  GetInfrastructureStatusHistoryQueryArgs,
+  GetInfrastructureStatusHistorySuccessResponse,
   GetInfrastructureSuccessResponse,
   UpdateInfrastructureMutationArgs,
   UpdateInfrastructureStatusMutationArgs,
@@ -53,6 +55,16 @@ const infrastructuresApiService = baseApiService
           data,
         }),
       }),
+      getInfrastructureStatusHistory: build.query<
+        GetInfrastructureStatusHistorySuccessResponse,
+        GetInfrastructureStatusHistoryQueryArgs
+      >({
+        query: (params) => ({
+          url: InfrastructuresApiEnum.GetInfrastructureStatusHistory,
+          method: HttpMethodEnum.Get,
+          params,
+        }),
+      }),
 
       getInfrastructureOrdersForms: build.query<
         GetInfrastructureOrdersFormsSuccessResponse,
@@ -72,5 +84,6 @@ export const {
   useGetInfrastructureQuery,
   useUpdateInfrastructureMutation,
   useUpdateInfrastructureStatusMutation,
+  useGetInfrastructureStatusHistoryQuery,
   useGetInfrastructureOrdersFormsQuery,
 } = infrastructuresApiService
