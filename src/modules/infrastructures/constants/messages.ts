@@ -8,3 +8,5 @@ export const getInfrastructureOrdersFormsErrMsg =
 
 export const createInfrastructureOrdersFormAttachmentErrMsg =
   'Ошибка создания вложения к бланк-заказу'
+
+export const updateInfrastructureStatusErrMsg = 'Ошибка изменения статуса инфраструктуры'
