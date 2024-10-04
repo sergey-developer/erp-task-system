@@ -51,14 +51,11 @@ describe('Таблица добавления работ к бланк-зака�
     test('Неактивна, если текущий пользователь не назначен менеджером по сопровождению', () => {
       render(
         <Form>
-          <ChangeInfrastructureOrderFormTable {...{ ...props, managerIsCurrentUser: false }} />
+          <ChangeInfrastructureOrderFormTable {...props} managerIsCurrentUser={false} />
         </Form>,
       )
 
-      const button = buttonTestUtils.getButtonIn(
-        changeInfrastructureOrderFormTableTestUtils.getContainer(),
-        /Добавить работы/,
-      )
+      const button = changeInfrastructureOrderFormTableTestUtils.getAddOrderFormWorksButton()
 
       expect(button).toBeDisabled()
     })
@@ -266,5 +263,27 @@ describe('Таблица добавления работ к бланк-зака�
 
     expect(field).toBeInTheDocument()
     expect(field).toBeDisabled()
+  })
+
+  describe('Кнопка удаления работ', () => {
+    test('При нажатии вызывается обработчик', async () => {
+      const { user } = render(
+        <Form>
+          <ChangeInfrastructureOrderFormTable {...props} />
+        </Form>,
+      )
+
+      await changeInfrastructureOrderFormTableTestUtils.clickAddOrderFormWorksButton(user)
+
+      const row = changeInfrastructureOrderFormTableTestUtils.getRowByRole()
+
+      await changeInfrastructureOrderFormTableTestUtils.clickDeleteOrderFormWorksButton(user, row)
+
+      expect(props.onClickDeleteInfrastructureWorkType).toBeCalledTimes(1)
+      expect(props.onClickDeleteInfrastructureWorkType).toBeCalledWith({
+        id: undefined,
+        rowIndex: 0,
+      })
+    })
   })
 })

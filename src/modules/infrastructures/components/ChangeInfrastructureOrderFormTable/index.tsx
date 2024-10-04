@@ -1,11 +1,13 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
-import { Form } from 'antd'
+import { Button, Form } from 'antd'
 import random from 'lodash/random'
-import { FC, useMemo } from 'react'
+import React, { FC, useMemo } from 'react'
 
 import { env } from 'configs/env'
 
 import { makeInfrastructureWorkTypesSelectOptions } from 'modules/infrastructures/utils/infrastructureWorkType/infrastructureWorkTypesSelectOptions'
+
+import { DeleteIcon } from 'components/Icons'
 
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -32,6 +34,8 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
   infrastructureOrderFormWorkTypeCostIsFetching,
 
   onChangeAmount,
+
+  onClickDeleteInfrastructureWorkType,
 }) => {
   const form = Form.useFormInstance<ChangeInfrastructureOrdersFormsTabFormFields>()
 
@@ -118,12 +122,32 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
       // @ts-ignore
       formItemProps: { 'data-testid': 'price-form-item' },
     },
+    {
+      key: 'delete',
+      width: 50,
+      renderFormItem: (schema, config) => {
+        return (
+          config.record && (
+            <Button
+              type='text'
+              disabled={!managerIsCurrentUser}
+              icon={<DeleteIcon $cursor='pointer' $color='fireOpal' />}
+              onClick={() => {
+                onClickDeleteInfrastructureWorkType({
+                  rowIndex: schema.index!,
+                  id: config.record!.id,
+                })
+              }}
+            />
+          )
+        )
+      },
+    },
   ]
 
   return (
     <div data-testid='change-infrastructure-order-form-table-container'>
       <EditableProTable<ChangeInfrastructureOrderFormTableRow>
-        data-testid='change-infrastructure-order-form-table'
         ghost
         virtual={!env.isTest}
         rowKey='rowId'
