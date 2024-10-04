@@ -58,6 +58,7 @@ const ExecuteInventorizationPage: FC = () => {
     useCompleteInventorization()
 
   const onReturnToInventorizationDetails = () => {
+    console.log({ inventorizationId })
     navigate(getInventorizationsPageLink({ inventorizationId }))
   }
 

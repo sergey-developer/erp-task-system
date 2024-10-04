@@ -11,7 +11,7 @@ import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
 import { attachmentsToFiles } from 'modules/attachment/utils'
 import { useAuthUser } from 'modules/auth/hooks'
-import { UserGroupCategoryEnum, UserPermissionsEnum } from 'modules/user/constants'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'modules/user/hooks'
 import RelocationEquipmentDraftEditableTable from 'modules/warehouse/components/RelocationEquipmentDraftEditableTable'
 import {
@@ -204,8 +204,8 @@ const EditRelocationTaskDraftPage: FC = () => {
     useGetUsersGroups()
   // useGetUsersGroups({ category: UserGroupCategoryEnum.ExecuteRelocation })
 
-  const { currentData: controllersUsersGroups = [], isFetching: controllersUsersGroupsIsFetching } =
-    useGetUsersGroups({ category: UserGroupCategoryEnum.ControlRelocation })
+  // const { currentData: controllersUsersGroups = [], isFetching: controllersUsersGroupsIsFetching } =
+  //   useGetUsersGroups({ category: UserGroupCategoryEnum.ControlRelocation })
 
   const {
     currentData: inventorizationEquipmentsResponse,
@@ -352,7 +352,7 @@ const EditRelocationTaskDraftPage: FC = () => {
             currency: equipment.currency?.id,
             quantity: isConsumable
               ? isNumber(equipment.quantity.diff)
-                ? equipment.quantity.diff
+                ? Math.abs(equipment.quantity.diff)
                 : undefined
               : 1,
             category: equipment.category,
@@ -570,7 +570,8 @@ const EditRelocationTaskDraftPage: FC = () => {
               executorsOptions={executorsOptions}
               executorsIsLoading={executorsIsFetching || executorsUsersGroupsIsFetching}
               controllersOptions={controllersOptions}
-              controllersIsLoading={controllersIsFetching || controllersUsersGroupsIsFetching}
+              // controllersIsLoading={controllersIsFetching || controllersUsersGroupsIsFetching}
+              controllersIsLoading={controllersIsFetching}
               controllerIsRequired={controllerIsRequired}
               type={selectedType}
               onChangeType={onChangeType}
