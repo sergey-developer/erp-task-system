@@ -38,8 +38,8 @@ const ExecuteInventorizationRelocationsTab = React.lazy(
 const { Text } = Typography
 
 const ExecuteInventorizationPage: FC = () => {
-  const params = useParams<'id'>()
-  const inventorizationId = Number(params.id!)
+  const params = useParams<'inventorizationId'>()
+  const inventorizationId = Number(params.inventorizationId!)
 
   const navigate = useNavigate()
 
@@ -57,6 +57,7 @@ const ExecuteInventorizationPage: FC = () => {
     useCompleteInventorization()
 
   const onReturnToInventorizationDetails = () => {
+    console.log({ inventorizationId })
     navigate(getInventorizationsPageLink({ inventorizationId }))
   }
 

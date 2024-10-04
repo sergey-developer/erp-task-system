@@ -320,7 +320,7 @@ const CreateRelocationTaskDraftPage: FC = () => {
         currency: equipment.currency?.id,
         quantity: isConsumable
           ? isNumber(equipment.quantity.diff)
-            ? equipment.quantity.diff
+            ? Math.abs(equipment.quantity.diff)
             : undefined
           : 1,
         category: equipment.category,
