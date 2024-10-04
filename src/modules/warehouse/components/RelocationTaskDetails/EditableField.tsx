@@ -9,8 +9,11 @@ import Spinner from 'components/Spinner'
 
 import ReadonlyField, { ReadonlyFieldProps } from './ReadonlyField'
 
+type RenderEditButton = (extra?: ReactNode) => ReactNode
+type DisplayValueFn = (renderEditButton: RenderEditButton) => ReactNode
+
 export type EditableFieldProps = Omit<ReadonlyFieldProps, 'displayValue'> & {
-  displayValue?: ReactNode | ((editButton?: ReactNode) => ReactNode)
+  displayValue?: ReactNode | DisplayValueFn
   editButtonHidden?: boolean
   editButtonDisabled?: boolean
   renderEditable: ({
@@ -61,15 +64,20 @@ const EditableField: FC<EditableFieldProps> = ({
     onEdit && onEdit()
   }
 
-  const editButton = editButtonHidden ? null : (
-    <Button
-      block
-      type='text'
-      disabled={editButtonDisabled}
-      icon={<EditIcon $size='large' $cursor='pointer' $color='bleuDeFrance' />}
-      onClick={onClickEdit}
-    />
-  )
+  const renderEditButton: RenderEditButton = (extra) =>
+    editButtonHidden ? null : (
+      <Space>
+        <Button
+          block
+          type='text'
+          disabled={editButtonDisabled}
+          icon={<EditIcon $size='large' $cursor='pointer' $color='bleuDeFrance' />}
+          onClick={onClickEdit}
+        />
+
+        {extra}
+      </Space>
+    )
 
   return (
     <ReadonlyField
@@ -94,12 +102,12 @@ const EditableField: FC<EditableFieldProps> = ({
         ) : (
           <Space align='center'>
             {typeof displayValue === 'function'
-              ? displayValue(editButton)
+              ? displayValue(renderEditButton)
               : typeof displayValue === 'undefined'
               ? value
               : displayValue}
 
-            {typeof displayValue !== 'function' && editButton}
+            {typeof displayValue !== 'function' && renderEditButton()}
           </Space>
         )
       }

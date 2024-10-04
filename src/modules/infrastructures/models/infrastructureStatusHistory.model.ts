@@ -2,8 +2,13 @@ import { InfrastructureStatusEnum } from 'modules/infrastructures/constants/enum
 
 import { IdType } from 'shared/types/common'
 
-export type InfrastructureStatusHistoryModel = {
+import { UserModel } from '../../user/models'
+
+export type InfrastructureStatusHistoryItemModel = {
   id: IdType
   status: InfrastructureStatusEnum
   createdAt: string
+  createdBy: Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>
 }
+
+export type InfrastructureStatusHistoryModel = InfrastructureStatusHistoryItemModel[]

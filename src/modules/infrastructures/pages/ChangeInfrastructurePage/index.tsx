@@ -1,3 +1,4 @@
+import { useBoolean } from 'ahooks'
 import { Button, Col, Flex, Row, Select, Tabs, Typography } from 'antd'
 import React, { FC } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
@@ -11,6 +12,7 @@ import {
 } from 'modules/infrastructures/constants'
 import {
   useGetInfrastructure,
+  useGetInfrastructureStatusHistory,
   useUpdateInfrastructure,
   useUpdateInfrastructureStatus,
 } from 'modules/infrastructures/hooks'
@@ -21,15 +23,22 @@ import EditableField from 'modules/warehouse/components/RelocationTaskDetails/Ed
 import ReadonlyField from 'modules/warehouse/components/RelocationTaskDetails/ReadonlyField'
 
 import GoBackButton from 'components/Buttons/GoBackButton'
+import { SearchIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
+import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { extractLocationState, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { changeInfrastructurePageTabNames, ChangeInfrastructurePageTabsEnum } from './constants'
 import { ChangeInfrastructurePageLocationState } from './types'
+
+const InfrastructureStatusHistoryModal = React.lazy(
+  () => import('modules/infrastructures/components/InfrastructureStatusHistoryModal'),
+)
 
 const { Title, Text } = Typography
 
@@ -62,6 +71,26 @@ const ChangeInfrastructurePage: FC = () => {
     await updateInfrastructureMutation({ infrastructureId, manager: authUser.id })
   }
 
+  // infrastructure status history
+  const [
+    infrastructureStatusHistoryModalOpened,
+    { toggle: toggleInfrastructureStatusHistoryModal },
+  ] = useBoolean(false)
+
+  const debouncedToggleInfrastructureStatusHistoryModal = useDebounceFn(
+    toggleInfrastructureStatusHistoryModal,
+  )
+
+  const {
+    data: infrastructureStatusHistory = [],
+    isFetching: infrastructureStatusHistoryIsFetching,
+  } = useGetInfrastructureStatusHistory(
+    { infrastructureProject: infrastructureId! },
+    { skip: !infrastructureId || !infrastructureStatusHistoryModalOpened },
+  )
+  // infrastructure status history
+
+  // update infrastructure status
   const [
     updateInfrastructureStatusMutation,
     { isLoading: updateInfrastructureStatusIsLoading, data: updateInfrastructureStatusResponse },
@@ -77,6 +106,7 @@ const ChangeInfrastructurePage: FC = () => {
 
     await updateInfrastructureStatusMutation({ infrastructureProject: infrastructureId, status })
   }
+  // update infrastructure status
 
   return (
     <div data-testid='change-infrastructure-page'>
@@ -157,33 +187,44 @@ const ChangeInfrastructurePage: FC = () => {
                         updateInfrastructureStatusResponse?.status || infrastructure.status?.status
                       }
                       forceDisplayValue
-                      displayValue={
-                        updateInfrastructureStatusResponse?.status || infrastructure.status
-                          ? (editButton) => (
-                              <Space direction='vertical' size={0}>
-                                <Space>
-                                  <Text>
-                                    {updateInfrastructureStatusResponse?.status
-                                      ? infrastructureStatusDict[
-                                          updateInfrastructureStatusResponse.status
-                                        ]
-                                      : infrastructure.status
-                                      ? infrastructureStatusDict[infrastructure.status.status]
-                                      : null}
-                                  </Text>
+                      displayValue={(renderEditButton) => (
+                        <Space direction='vertical' size={0}>
+                          <Space>
+                            {(updateInfrastructureStatusResponse?.status ||
+                              infrastructure.status) && (
+                              <Text>
+                                {updateInfrastructureStatusResponse?.status
+                                  ? infrastructureStatusDict[
+                                      updateInfrastructureStatusResponse.status
+                                    ]
+                                  : infrastructure.status
+                                  ? infrastructureStatusDict[infrastructure.status.status]
+                                  : null}
+                              </Text>
+                            )}
 
-                                  {editButton}
-                                </Space>
+                            {renderEditButton(
+                              <SearchIcon
+                                onClick={debouncedToggleInfrastructureStatusHistoryModal}
+                                $color='bleuDeFrance'
+                                $size='large'
+                                $cursor='pointer'
+                              />,
+                            )}
+                          </Space>
 
-                                {infrastructure.status && (
-                                  <Text type='secondary'>
-                                    Установлен: {formatDate(infrastructure.status.createdAt)}
-                                  </Text>
-                                )}
-                              </Space>
-                            )
-                          : null
-                      }
+                          {(updateInfrastructureStatusResponse || infrastructure.status) && (
+                            <Text type='secondary'>
+                              Установлен:{' '}
+                              {infrastructure.status
+                                ? formatDate(infrastructure.status.createdAt)
+                                : updateInfrastructureStatusResponse
+                                ? formatDate(updateInfrastructureStatusResponse.changedAt)
+                                : null}
+                            </Text>
+                          )}
+                        </Space>
+                      )}
                       renderEditable={({ value, onChange }) => (
                         <Select
                           allowClear
@@ -197,19 +238,6 @@ const ChangeInfrastructurePage: FC = () => {
                       onSave={onUpdateInfrastructureStatus}
                       isLoading={updateInfrastructureStatusIsLoading}
                     />
-
-                    {/*<ReadonlyField*/}
-                    {/*  data-testid='status'*/}
-                    {/*  rowProps={{ align: 'top' }}*/}
-                    {/*  label='Статус'*/}
-                    {/*  value={valueOr(infrastructure.status, (value) => (*/}
-                    {/*    <Flex vertical gap='small'>*/}
-                    {/*      <Text>{infrastructureStatusDict[value.status]}</Text>*/}
-
-                    {/*      <Text type='secondary'>Установлен: {formatDate(value.createdAt)}</Text>*/}
-                    {/*    </Flex>*/}
-                    {/*  ))}*/}
-                    {/*/>*/}
                   </Space>
                 </Col>
 
@@ -244,6 +272,22 @@ const ChangeInfrastructurePage: FC = () => {
           </Space>
         )}
       </LoadingArea>
+
+      {infrastructureStatusHistoryModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback open onCancel={debouncedToggleInfrastructureStatusHistoryModal} />
+          }
+        >
+          <InfrastructureStatusHistoryModal
+            open={infrastructureStatusHistoryModalOpened}
+            onCancel={debouncedToggleInfrastructureStatusHistoryModal}
+            onOk={debouncedToggleInfrastructureStatusHistoryModal}
+            isLoading={infrastructureStatusHistoryIsFetching}
+            data={infrastructureStatusHistory}
+          />
+        </React.Suspense>
+      )}
     </div>
   )
 }
