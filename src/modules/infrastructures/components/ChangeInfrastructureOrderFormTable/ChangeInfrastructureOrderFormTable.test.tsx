@@ -117,7 +117,7 @@ describe('Таблица добавления работ к бланк-зака�
 
       expect(props.onChangeWorkType).toBeCalledTimes(1)
       expect(props.onChangeWorkType).toBeCalledWith(
-        expect.anything(),
+        { rowIndex: 0 },
         infrastructureWorkTypeListItem.id,
       )
     })
@@ -232,7 +232,7 @@ describe('Таблица добавления работ к бланк-зака�
 
       expect(input).toHaveDisplayValue(String(value))
       expect(props.onChangeAmount).toBeCalledTimes(1)
-      expect(props.onChangeAmount).toBeCalledWith(expect.anything(), value)
+      expect(props.onChangeAmount).toBeCalledWith(expect.anything(), value, { rowIndex: 0 })
     })
   })
 
