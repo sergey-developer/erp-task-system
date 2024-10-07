@@ -1,21 +1,32 @@
 import { Flex, Form, Upload, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
+import { NamePath } from 'rc-field-form/es/interface'
 import React, { FC, Key, useEffect, useState } from 'react'
 
 import { attachmentsToFiles, renderUploadedFile } from 'modules/attachment/utils'
+import { useCreateInfrastructureOrderFormWorks } from 'modules/infrastructures/hooks/useCreateInfrastructureOrderFormWorks'
+import { useLazyGetInfrastructureOrderFormWorkTypeCost } from 'modules/infrastructures/hooks/useLazyGetInfrastructureOrderFormWorkTypeCost'
 import { InfrastructureOrderFormListItemModel } from 'modules/infrastructures/models'
 import ReadonlyField from 'modules/warehouse/components/RelocationTaskDetails/ReadonlyField'
 
 import Space from 'components/Space'
 
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { InfrastructureWorkTypesCatalogModel } from 'shared/models/catalogs/infrastructureWorkTypes'
+import { isErrorResponse } from 'shared/services/baseApi'
 import { FileResponse } from 'shared/types/file'
 
 import ChangeInfrastructureOrderFormTable from '../ChangeInfrastructureOrderFormTable'
-import { ChangeInfrastructureOrderFormTableRow } from '../ChangeInfrastructureOrderFormTable/types'
+import {
+  ChangeInfrastructureOrderFormTableProps,
+  ChangeInfrastructureOrderFormTableRow,
+} from '../ChangeInfrastructureOrderFormTable/types'
 import { ChangeInfrastructureOrdersFormsTabFormFields } from '../ChangeInfrastructureOrdersFormsTab/types'
+
 
 export type ChangeInfrastructureOrderFormProps = {
   data: InfrastructureOrderFormListItemModel
+  infrastructureWorkTypes: InfrastructureWorkTypesCatalogModel
   managerIsCurrentUser: boolean
 
   canUploadFile: boolean
@@ -28,6 +39,7 @@ export type ChangeInfrastructureOrderFormProps = {
 
 const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
   data,
+  infrastructureWorkTypes,
   managerIsCurrentUser,
 
   canUploadFile,
@@ -59,36 +71,112 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
     }
   }, [form, id, works])
 
+  const [
+    getInfrastructureOrderFormWorkTypeCost,
+    { isFetching: infrastructureOrderFormWorkTypeCostIsFetching },
+  ] = useLazyGetInfrastructureOrderFormWorkTypeCost()
+
+  const [createInfrastructureOrderFormWorksMutation] = useCreateInfrastructureOrderFormWorks()
+
+  const onChangeWorkType: ChangeInfrastructureOrderFormTableProps['onChangeWorkType'] =
+    useDebounceFn(
+      async (activeRow, value) => {
+        const currentWorks = form.getFieldValue([id, 'works']) || []
+        const infrastructureWorkPath: NamePath = [id, 'works', String(activeRow.rowIndex)]
+        const currentInfrastructureWork = currentWorks[activeRow.rowIndex]
+
+        try {
+          const infrastructureOrderFormWorkTypeCost = await getInfrastructureOrderFormWorkTypeCost({
+            orderForm: id,
+            workType: value,
+          }).unwrap()
+
+          form.setFieldValue(infrastructureWorkPath, {
+            ...currentInfrastructureWork,
+            type: infrastructureOrderFormWorkTypeCost.type,
+            laborCosts: infrastructureOrderFormWorkTypeCost.type.laborCosts,
+            cost: infrastructureOrderFormWorkTypeCost.cost,
+          })
+        } catch (error) {
+          if (isErrorResponse(error)) {
+            form.setFieldValue(infrastructureWorkPath, { rowId: currentInfrastructureWork.rowId })
+          }
+        }
+      },
+      [id, form, getInfrastructureOrderFormWorkTypeCost],
+      500,
+    )
+
+  const onChangeAmount: ChangeInfrastructureOrderFormTableProps['onChangeAmount'] = useDebounceFn(
+    async (record, value, activeRow) => {
+      if (!record.type || !value) {
+        return
+      }
+
+      const currentWorks = form.getFieldValue([id, 'works']) || []
+      const infrastructureWorkPath: NamePath = [id, 'works', String(activeRow.rowIndex)]
+      const currentInfrastructureWork = currentWorks[activeRow.rowIndex]
+
+      try {
+        const createdOrderFormWork = await createInfrastructureOrderFormWorksMutation({
+          amount: value,
+          infrastructureWorkType: record.type.id,
+          orderForm: id,
+        }).unwrap()
+
+        form.setFieldValue(infrastructureWorkPath, {
+          ...currentInfrastructureWork,
+          ...createdOrderFormWork,
+        })
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          form.setFieldValue(infrastructureWorkPath, { rowId: currentInfrastructureWork.rowId })
+        }
+      }
+    },
+    [id, form, createInfrastructureOrderFormWorksMutation],
+    500,
+  )
+
   return (
-    <Space $block direction='vertical' size='middle'>
-      <Flex vertical>
-        <ReadonlyField
-          rowProps={{ gutter: 8 }}
-          leftColProps={{ span: undefined }}
-          rightColProps={{ span: undefined }}
-          label='Тариф:'
-          value={urgencyRateType.title}
+    <div data-testid='change-infrastructure-order-form-container'>
+      <Space $block direction='vertical' size='middle'>
+        <Flex vertical>
+          <ReadonlyField
+            rowProps={{ gutter: 8 }}
+            leftColProps={{ span: undefined }}
+            rightColProps={{ span: undefined }}
+            label='Тариф:'
+            value={urgencyRateType.title}
+          />
+        </Flex>
+
+        <Upload
+          listType='picture'
+          multiple
+          disabled={isDeleting}
+          customRequest={canUploadFile ? onUploadFile : undefined}
+          onRemove={canDeleteFile ? onDeleteFile : undefined}
+          defaultFileList={defaultFiles}
+          itemRender={renderUploadedFile({ canDelete: !isDeleting, showDelete: canDeleteFile })}
+        >
+          {/*{canUploadFile && <UploadButton label='Добавить файлы' />}*/}
+        </Upload>
+
+        <ChangeInfrastructureOrderFormTable
+          name={[id, 'works']}
+          editableKeys={editableTableRowKeys}
+          onChange={setEditableTableRowKeys}
+          infrastructureWorkTypes={infrastructureWorkTypes}
+          managerIsCurrentUser={managerIsCurrentUser}
+          onChangeWorkType={onChangeWorkType}
+          infrastructureOrderFormWorkTypeCostIsFetching={
+            infrastructureOrderFormWorkTypeCostIsFetching
+          }
+          onChangeAmount={onChangeAmount}
         />
-      </Flex>
-
-      <Upload
-        listType='picture'
-        multiple
-        disabled={isDeleting}
-        customRequest={canUploadFile ? onUploadFile : undefined}
-        onRemove={canDeleteFile ? onDeleteFile : undefined}
-        defaultFileList={defaultFiles}
-        itemRender={renderUploadedFile({ canDelete: !isDeleting, showDelete: canDeleteFile })}
-      >
-        {/*{canUploadFile && <UploadButton label='Добавить файлы' />}*/}
-      </Upload>
-
-      <ChangeInfrastructureOrderFormTable
-        name={[id, 'works']}
-        editableKeys={editableTableRowKeys}
-        managerIsCurrentUser={managerIsCurrentUser}
-      />
-    </Space>
+      </Space>
+    </div>
   )
 }
 
