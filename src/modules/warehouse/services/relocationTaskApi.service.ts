@@ -35,6 +35,8 @@ import {
   GetRelocationTaskSuccessResponse,
   GetRelocationTaskWaybillM15QueryArgs,
   GetRelocationTaskWaybillM15SuccessResponse,
+  MoveRelocationTaskDraftToWorkMutationArgs,
+  MoveRelocationTaskDraftToWorkSuccessResponse,
   ReturnRelocationTaskToReworkMutationArgs,
   ReturnRelocationTaskToReworkSuccessResponse,
   UpdateExternalRelocationMutationArgs,
@@ -55,6 +57,7 @@ import {
   getRelocationTaskCompletionDocumentsUrl,
   getRelocationTaskUrl,
   getRelocationTaskWaybillM15Url,
+  makeMoveRelocationTaskDraftToWorkApiUrl,
   returnRelocationTaskToReworkUrl,
   updateExternalRelocationUrl,
   updateRelocationTaskUrl,
@@ -241,7 +244,7 @@ const relocationTaskApiService = baseApiService
         }),
       }),
 
-      getRelocationTasks: build.query<
+      [RelocationTaskApiTriggerEnum.GetRelocationTasks]: build.query<
         GetRelocationTasksTransformedSuccessResponse,
         GetRelocationTasksQueryArgs
       >({
@@ -304,6 +307,31 @@ const relocationTaskApiService = baseApiService
           method: HttpMethodEnum.Post,
         }),
       }),
+
+      moveRelocationTaskDraftToWork: build.mutation<
+        MoveRelocationTaskDraftToWorkSuccessResponse,
+        MoveRelocationTaskDraftToWorkMutationArgs
+      >({
+        query: ({ relocationTaskId }) => ({
+          url: makeMoveRelocationTaskDraftToWorkApiUrl({ relocationTaskId }),
+          method: HttpMethodEnum.Post,
+        }),
+        onQueryStarted: async ({ relocationTaskId }, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled
+
+            dispatch(
+              baseApiService.util.updateQueryData(
+                RelocationTaskApiTriggerEnum.GetRelocationTask as never,
+                { relocationTaskId } as never,
+                (task: GetRelocationTaskSuccessResponse) => {
+                  Object.assign(task, { status: data.status })
+                },
+              ),
+            )
+          } catch {}
+        },
+      }),
     }),
   })
 
@@ -331,4 +359,6 @@ export const {
 
   useGetRelocationEquipmentListQuery,
   useGetRelocationEquipmentBalanceListQuery,
+
+  useMoveRelocationTaskDraftToWorkMutation,
 } = relocationTaskApiService

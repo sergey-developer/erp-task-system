@@ -26,3 +26,5 @@ export * from './getRelocationEquipmentList.model'
 
 export * from './relocationEquipmentBalanceList.model'
 export * from './getRelocationEquipmentBalanceList.model'
+
+export * from './moveRelocationTaskDraftToWork.model'

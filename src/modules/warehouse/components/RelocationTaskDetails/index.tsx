@@ -49,6 +49,7 @@ import {
   useGetRelocationTask,
   useGetRelocationTaskAttachments,
   useLazyGetRelocationTaskWaybillM15,
+  useMoveRelocationTaskDraftToWork,
   useRelocationTaskStatus,
   useUpdateExternalRelocation,
 } from 'modules/warehouse/hooks/relocationTask'
@@ -113,12 +114,20 @@ const ConfirmExecutionRelocationTaskModal = React.lazy(
   () => import('modules/warehouse/components/ConfirmExecutionRelocationTaskModal'),
 )
 
+const ConfirmMoveRelocationTaskDraftToWorkModal = React.lazy(
+  () => import('modules/warehouse/components/ConfirmMoveRelocationTaskDraftToWorkModal'),
+)
+
 const { Text } = Typography
 
 const dropdownTrigger: DropdownProps['trigger'] = ['click']
 const showUploadListConfig: UploadProps['showUploadList'] = { showRemoveIcon: false }
 
-const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskId, ...props }) => {
+const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
+  relocationTaskId,
+  refetchRelocationTasks,
+  ...props
+}) => {
   const navigate = useNavigate()
 
   const permissions = useUserPermissions([
@@ -139,6 +148,30 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
 
   const [confirmExecutionModalOpened, { toggle: toggleOpenConfirmExecutionModal }] = useBoolean()
   const debouncedToggleOpenConfirmExecutionModal = useDebounceFn(toggleOpenConfirmExecutionModal)
+
+  // move relocation task draft to work
+  const [confirmMoveDraftToWorkModalOpened, { toggle: toggleOpenConfirmMoveDraftToWorkModal }] =
+    useBoolean()
+
+  const debouncedToggleOpenConfirmMoveDraftToWorkModal = useDebounceFn(
+    toggleOpenConfirmMoveDraftToWorkModal,
+  )
+
+  const [
+    moveRelocationTaskDraftToWorkMutation,
+    { isLoading: moveRelocationTaskDraftToWorkIsLoading },
+  ] = useMoveRelocationTaskDraftToWork()
+
+  const onMoveRelocationTaskDraftToWork = async () => {
+    try {
+      await moveRelocationTaskDraftToWorkMutation({ relocationTaskId: relocationTaskId }).unwrap()
+      toggleOpenConfirmMoveDraftToWorkModal()
+      refetchRelocationTasks && refetchRelocationTasks()
+    } catch (error) {
+      console.error('Move relocation task draft to work error: ', { error, relocationTaskId })
+    }
+  }
+  // move relocation task draft to work
 
   const [activeEquipmentRow, setActiveEquipmentRow] = useState<RelocationEquipmentTableItem>()
   const [
@@ -339,81 +372,93 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
   )
 
   const menuProps: MenuProps = {
-    items: [
-      {
-        key: 1,
-        label: (
-          <Space>
-            {getWaybillM15IsFetching && <Spinner />}
-            <Text>Сформировать накладную М-15</Text>
-          </Space>
-        ),
-        disabled: !permissions.relocationTasksRead,
-        onClick: handleGetWaybillM15,
-      },
-      {
-        key: 2,
-        label: 'Изменить заявку',
-        disabled:
-          !permissions.relocationTasksUpdate ||
-          !creatorIsCurrentUser ||
-          relocationTaskStatus.isCanceled ||
-          relocationTaskStatus.isClosed ||
-          relocationTaskStatus.isCompleted,
-        onClick: () => navigate(getEditRelocationTaskPageLink(relocationTaskId)),
-      },
-      {
-        key: 3,
-        label: 'Выполнить заявку',
-        disabled:
-          !permissions.relocationTasksUpdate ||
-          (!currentUserInExecutors && !completedByIsCurrentUser) ||
-          relocationTaskStatus.isCanceled ||
-          relocationTaskStatus.isClosed ||
-          relocationTaskStatus.isCompleted,
-        onClick: debouncedToggleOpenExecuteTaskModal,
-      },
-      {
-        key: 4,
-        label: 'Вернуть на доработку',
-        disabled:
-          !permissions.relocationTasksUpdate ||
-          !controllerIsCurrentUser ||
-          !relocationTaskStatus.isCompleted,
-        onClick: debouncedToggleOpenReturnToReworkModal,
-      },
-      {
-        key: 5,
-        label: 'Отменить заявку',
-        disabled:
-          !permissions.relocationTasksUpdate ||
-          !creatorIsCurrentUser ||
-          relocationTaskStatus.isCanceled ||
-          relocationTaskStatus.isClosed ||
-          relocationTaskStatus.isCompleted,
-        onClick: debouncedToggleOpenCancelTaskModal,
-      },
-      {
-        key: 6,
-        label: 'Подтвердить выполнение',
-        disabled:
-          !permissions.relocationTasksUpdate ||
-          !controllerIsCurrentUser ||
-          !relocationTaskStatus.isCompleted,
-        onClick: debouncedToggleOpenConfirmExecutionModal,
-      },
-      {
-        key: 7,
-        label: 'Сформировать пакет документов',
-        onClick: () =>
-          navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
-            state: {
-              relocationTask: { id: relocationTaskId },
-              from: getRelocationTasksPageLink({ viewRelocationTask: relocationTaskId }),
-            },
-          }),
-      },
-    ],
+    items: relocationTaskStatus.isDraft
+      ? [
+          ...(permissions.relocationTasksUpdate && creatorIsCurrentUser
+            ? [
+                {
+                  key: 'Перевести черновик в работу',
+                  label: 'Перевести черновик в работу',
+                  onClick: debouncedToggleOpenConfirmMoveDraftToWorkModal,
+                },
+              ]
+            : []),
+        ]
+      : [
+          {
+            key: 'Сформировать накладную М-15',
+            label: (
+              <Space>
+                {getWaybillM15IsFetching && <Spinner />}
+                <Text>Сформировать накладную М-15</Text>
+              </Space>
+            ),
+            disabled: !permissions.relocationTasksRead,
+            onClick: handleGetWaybillM15,
+          },
+          {
+            key: 'Изменить заявку',
+            label: 'Изменить заявку',
+            disabled:
+              !permissions.relocationTasksUpdate ||
+              !creatorIsCurrentUser ||
+              relocationTaskStatus.isCanceled ||
+              relocationTaskStatus.isClosed ||
+              relocationTaskStatus.isCompleted,
+            onClick: () => navigate(getEditRelocationTaskPageLink(relocationTaskId)),
+          },
+          {
+            key: 'Выполнить заявку',
+            label: 'Выполнить заявку',
+            disabled:
+              !permissions.relocationTasksUpdate ||
+              (!currentUserInExecutors && !completedByIsCurrentUser) ||
+              relocationTaskStatus.isCanceled ||
+              relocationTaskStatus.isClosed ||
+              relocationTaskStatus.isCompleted,
+            onClick: debouncedToggleOpenExecuteTaskModal,
+          },
+          {
+            key: 'Вернуть на доработку',
+            label: 'Вернуть на доработку',
+            disabled:
+              !permissions.relocationTasksUpdate ||
+              !controllerIsCurrentUser ||
+              !relocationTaskStatus.isCompleted,
+            onClick: debouncedToggleOpenReturnToReworkModal,
+          },
+          {
+            key: 'Отменить заявку',
+            label: 'Отменить заявку',
+            disabled:
+              !permissions.relocationTasksUpdate ||
+              !creatorIsCurrentUser ||
+              relocationTaskStatus.isCanceled ||
+              relocationTaskStatus.isClosed ||
+              relocationTaskStatus.isCompleted,
+            onClick: debouncedToggleOpenCancelTaskModal,
+          },
+          {
+            key: 'Подтвердить выполнение',
+            label: 'Подтвердить выполнение',
+            disabled:
+              !permissions.relocationTasksUpdate ||
+              !controllerIsCurrentUser ||
+              !relocationTaskStatus.isCompleted,
+            onClick: debouncedToggleOpenConfirmExecutionModal,
+          },
+          {
+            key: 'Сформировать пакет документов',
+            label: 'Сформировать пакет документов',
+            onClick: () =>
+              navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
+                state: {
+                  relocationTask: { id: relocationTaskId },
+                  from: getRelocationTasksPageLink({ viewRelocationTask: relocationTaskId }),
+                },
+              }),
+          },
+        ],
   }
 
   return (
@@ -717,6 +762,21 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({ relocationTaskI
             isLoading={closeTaskIsLoading}
             onCancel={debouncedToggleOpenConfirmExecutionModal}
             onConfirm={handleCloseTask}
+          />
+        </React.Suspense>
+      )}
+
+      {confirmMoveDraftToWorkModalOpened && (
+        <React.Suspense
+          fallback={
+            <ModalFallback open onCancel={debouncedToggleOpenConfirmMoveDraftToWorkModal} />
+          }
+        >
+          <ConfirmMoveRelocationTaskDraftToWorkModal
+            open={confirmMoveDraftToWorkModalOpened}
+            isLoading={moveRelocationTaskDraftToWorkIsLoading}
+            onCancel={debouncedToggleOpenConfirmMoveDraftToWorkModal}
+            onConfirm={onMoveRelocationTaskDraftToWork}
           />
         </React.Suspense>
       )}
