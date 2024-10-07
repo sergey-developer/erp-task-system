@@ -271,8 +271,8 @@ describe('Вкладка списка заявок на перемещение',
         body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
         once: false,
       })
-      mockGetRelocationTaskSuccess(relocationTaskListItem.id)
-      mockGetRelocationEquipmentListSuccess(relocationTaskListItem.id)
+      mockGetRelocationTaskSuccess({ relocationTaskId: relocationTaskListItem.id })
+      mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTaskListItem.id })
 
       const { user } = renderWithRouter(
         [

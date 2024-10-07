@@ -1,10 +1,10 @@
-export enum FastFilterEnum {
-  All = 'ALL',
+export enum TasksFastFilterEnum {
+  AllLines = 'ALL_LINES',
+  FirstLine = 'FIRST_LINE',
+  SecondLine = 'SECOND_LINE',
   Free = 'FREE',
   Mine = 'MINE',
   Overdue = 'OVERDUE',
-  FirstLine = 'FIRST_LINE',
-  SecondLine = 'SECOND_LINE',
   LessOneHour = 'LESS_1_HOUR',
   LessThreeHours = 'LESS_3_HOURS',
   Returned = 'RETURNED',

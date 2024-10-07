@@ -1,23 +1,20 @@
-import { fastFiltersConfig } from 'modules/task/components/FastFilters/config'
+import { FastFilterOptionType } from 'modules/task/components/FastFilters/options'
 import { FastFiltersProps } from 'modules/task/components/FastFilters/types'
 
-import taskFixtures from '_tests_/fixtures/task/index'
+import { fakeWord } from '_tests_/utils'
 
-export const filterCheckedClass = 'ant-tag-checkable-checked'
-export const filterDisabledClass = 'ant-tag-checkable--disabled'
-
-export const props: Readonly<FastFiltersProps> = {
-  config: fastFiltersConfig.filter((c) => !c.canShow),
-  permissions: {},
-  counters: taskFixtures.taskCounters(),
-  isShowCounters: true,
-  disabled: false,
-  isLoading: false,
-  selectedFilter: null,
-  onChange: jest.fn(),
+export const option: FastFilterOptionType<string> = {
+  label: fakeWord(),
+  value: fakeWord(),
+  counterKey: 'allLines',
 }
 
-export enum TestIdsEnum {
-  FastFilterList = 'fast-filter-list',
-  FastFilterListItem = 'fast-filter-list-item',
+export const props: Readonly<FastFiltersProps<string, Record<string, number>>> = {
+  options: [option],
+  counters: { [option.counterKey]: 1 },
+  countersVisible: true,
+  disabled: false,
+  loading: false,
+  value: undefined,
+  onChange: jest.fn(),
 }
