@@ -294,8 +294,8 @@ describe('Страница создания черновика заявки на
     const relocationTask = warehouseFixtures.relocationTask()
     mockCreateRelocationTaskSuccess({ body: relocationTask })
 
-    mockGetRelocationTaskSuccess(relocationTask.id)
-    mockGetRelocationEquipmentListSuccess(relocationTask.id)
+    mockGetRelocationTaskSuccess({ relocationTaskId: relocationTask.id })
+    mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTask.id })
 
     const { user } = renderWithRouter(
       [

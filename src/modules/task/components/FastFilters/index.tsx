@@ -1,49 +1,41 @@
 import { Space } from 'antd'
-import { camelize } from 'humps'
-import isEqual from 'lodash/isEqual'
-import React, { FC, useMemo } from 'react'
+import React, { useMemo } from 'react'
 
-import { TaskCountersKeys } from 'modules/task/models'
-
-import FilterTag from './FastFilterListItem'
+import FastFilterOption from './FastFilterOption'
 import { FastFilterItem, FastFiltersProps } from './types'
 
-const FastFilters: FC<FastFiltersProps> = ({
-  config,
-  counters: initialCounters,
-  isShowCounters,
-  isLoading,
+const FastFilters = <Value extends string, Counters extends Record<string, number>>({
+  options: initialOptions,
+  value,
   onChange,
-  selectedFilter,
+
+  counters: initialCounters,
+  countersVisible,
+
   disabled,
-  permissions,
-}) => {
-  const filters: FastFilterItem[] = useMemo(() => {
-    const counters = (initialCounters || {}) as NonNullable<typeof initialCounters>
+  loading,
 
-    return config.reduce<FastFilterItem[]>((acc, { filter, canShow, text }) => {
-      const taskCounterKey = camelize(filter.toLowerCase()) as TaskCountersKeys
-      const taskCounterValue = isShowCounters ? counters[taskCounterKey] : null
-      const result = { text, value: filter, amount: taskCounterValue }
-
-      if (!canShow) acc.push(result)
-      else if (canShow(permissions)) acc.push(result)
-
-      return acc
-    }, [])
-  }, [config, initialCounters, isShowCounters, permissions])
+  ...props
+}: FastFiltersProps<Value, Counters>) => {
+  const options: FastFilterItem<Value>[] = useMemo(() => {
+    const counters = initialCounters || ({} as Counters)
+    return initialOptions.map((option) => {
+      const counterValue = countersVisible ? counters[option.counterKey] : undefined
+      return { label: option.label, value: option.value, counter: counterValue }
+    })
+  }, [countersVisible, initialCounters, initialOptions])
 
   return (
-    <Space data-testid='fast-filter-list' wrap>
-      {filters.map(({ amount, text, value }) => (
-        <FilterTag
-          key={value}
-          checked={isEqual(selectedFilter, value)}
-          onChange={() => onChange(value)}
-          value={value}
-          text={text}
-          amount={amount}
-          loading={isLoading}
+    <Space {...props} wrap>
+      {options.map((option) => (
+        <FastFilterOption
+          key={option.value}
+          checked={value === option.value}
+          onChange={() => onChange(option.value)}
+          value={option.value}
+          label={option.label}
+          counter={option.counter}
+          loading={loading}
           disabled={disabled}
         />
       ))}

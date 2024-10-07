@@ -39,8 +39,10 @@ const clickRowById = async (container: HTMLElement, user: UserEvent, id: NumberO
  * @param container Таблица
  * @param name Название колонки
  */
-const getHeadCell = (container: HTMLElement, name: string) =>
-  within(getHeadRowByRole(container)).getByRole('columnheader', { name })
+const getHeadCell = (container: HTMLElement, name: string) => {
+  const el = within(container).getByText(name)
+  return el.parentElement?.parentElement
+}
 
 const expectRowsRendered = <T extends { id: IdType }>(
   container: HTMLElement,
