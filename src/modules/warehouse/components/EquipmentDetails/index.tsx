@@ -100,6 +100,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   ])
 
   const [selectedOwnerId, setSelectedOwnerId] = useState<IdType>()
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState<IdType>()
 
   const [selectedNomenclatureId, setSelectedNomenclatureId] = useState<IdType>()
   const [
@@ -143,6 +144,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     closeEditEquipmentModal()
     setSelectedNomenclatureId(undefined)
     setSelectedOwnerId(undefined)
+    setSelectedWarehouseId(undefined)
     resetUserChangedNomenclature()
     setSelectedCategory(undefined)
   }, [closeEditEquipmentModal])
@@ -237,8 +239,11 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   )
 
   const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
-    { customers: [selectedOwnerId!] },
-    { skip: !selectedOwnerId },
+    {
+      ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
+      ...(!!selectedWarehouseId && { warehouses: [selectedWarehouseId] })
+    },
+    { skip: !editEquipmentModalOpened || (!selectedOwnerId && !selectedWarehouseId) },
   )
 
   const [
@@ -275,8 +280,19 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     }
   }, [editEquipmentModalOpened, equipment?.nomenclature.id])
 
-  const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
-    useLazyGetCustomerList()
+  const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] = useLazyGetCustomerList()
+
+  useEffect(() => {
+    if (equipment?.owner?.id && editEquipmentModalOpened) {
+      setSelectedOwnerId(equipment.owner.id)
+    }
+  }, [editEquipmentModalOpened, equipment?.owner?.id])
+
+  useEffect(() => {
+    if (equipment?.warehouse?.id && editEquipmentModalOpened) {
+      setSelectedWarehouseId(equipment.warehouse.id)
+    }
+  }, [editEquipmentModalOpened, equipment?.warehouse?.id])
 
   useEffect(() => {
     if (

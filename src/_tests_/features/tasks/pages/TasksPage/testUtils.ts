@@ -2,12 +2,11 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { updateTasksButtonTestUtils } from '_tests_/features/tasks/components/UpdateTasksButton/testUtils'
+import { TestIdsEnum } from '_tests_/features/tasks/pages/TasksPage/constants'
 import { buttonTestUtils } from '_tests_/utils/index'
 
-import { TestIdsEnum } from '_tests_/features/tasks/pages/TasksPage/constants'
-
-const getContainer = () => screen.getByTestId(TestIdsEnum.TaskListPage)
-const findContainer = () => screen.findByTestId(TestIdsEnum.TaskListPage)
+const getContainer = () => screen.getByTestId(TestIdsEnum.TasksPage)
+const findContainer = () => screen.findByTestId(TestIdsEnum.TasksPage)
 
 // search input
 const getSearchInput = () => within(getContainer()).getByPlaceholderText('Искать заявку по номеру')
@@ -38,6 +37,11 @@ const getCreateTaskButton = () => buttonTestUtils.getButtonIn(getContainer(), /�
 const getTasksFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)
 const clickTasksFilterButton = async (user: UserEvent) => user.click(getTasksFilterButton())
 
+// fast filters
+const getFastFilter = () => within(getContainer()).getByTestId('fast-filter')
+const getFastFilterByLines = () => within(getContainer()).getByTestId('fast-filter-by-lines')
+const queryFastFilterByLines = () => within(getContainer()).queryByTestId('fast-filter-by-lines')
+
 export const tasksPageTestUtils = {
   getContainer,
   findContainer,
@@ -57,4 +61,8 @@ export const tasksPageTestUtils = {
 
   getTasksFilterButton,
   clickTasksFilterButton,
+
+  getFastFilter,
+  getFastFilterByLines,
+  queryFastFilterByLines,
 }

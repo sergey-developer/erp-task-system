@@ -95,8 +95,10 @@ describe('Страница отчета истории операций по н�
       const locationListItem = catalogsFixtures.locationCatalogListItem()
       mockGetLocationsCatalogSuccess({ body: [locationListItem] })
 
-      mockGetRelocationTaskSuccess(reportListItem.lastRelocationTask.id)
-      mockGetRelocationEquipmentListSuccess(reportListItem.lastRelocationTask.id)
+      mockGetRelocationTaskSuccess({ relocationTaskId: reportListItem.lastRelocationTask.id })
+      mockGetRelocationEquipmentListSuccess({
+        relocationTaskId: reportListItem.lastRelocationTask.id,
+      })
 
       const { user } = render(<HistoryNomenclatureOperationsReportPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {

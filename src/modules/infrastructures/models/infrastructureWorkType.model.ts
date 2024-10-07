@@ -6,4 +6,5 @@ export type InfrastructureWorkTypeModel = {
   id: IdType
   title: string
   budgetType: BudgetTypeEnum
+  laborCosts: number
 }
