@@ -3,7 +3,8 @@ export enum InfrastructuresApiEnum {
   UpdateInfrastructure = '/infrastructures/:id',
   GetInfrastructureOrdersForms = '/infrastructures/orders/',
   GetInfrastructureOrderFormWorkTypeCost = '/infrastructures/orders/works/types/cost/',
-  CreateInfrastructureOrderFormWorks = '/infrastructures/orders/works/',
+  CreateInfrastructureOrderFormWork = '/infrastructures/orders/works/',
+  UpdateInfrastructureOrderFormWork = '/infrastructures/orders/works/:workId',
 }
 
 export enum InfrastructuresApiTagEnum {

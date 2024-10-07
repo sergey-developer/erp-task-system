@@ -12,6 +12,7 @@ export type ChangeInfrastructureOrderFormTableRow = Partial<
   Pick<InfrastructureWorkModel, 'id' | 'type' | 'laborCosts' | 'amount' | 'cost' | 'price'>
 > & {
   rowId: number
+  isNew: boolean
 }
 
 export type ActiveChangeInfrastructureOrderFormTableRow = {
@@ -27,10 +28,13 @@ export type ChangeInfrastructureOrderFormTableProps = SetNonNullable<
 
     managerIsCurrentUser: boolean
     infrastructureWorkTypes?: InfrastructureWorkTypesCatalogModel
+    createWorkIsLoading: boolean
+    updateWorkIsLoading: boolean
 
     onChangeWorkType: (
-      activeRow: ActiveChangeInfrastructureOrderFormTableRow,
+      record: ChangeInfrastructureOrderFormTableRow,
       value: IdType,
+      activeRow: ActiveChangeInfrastructureOrderFormTableRow,
     ) => Promise<void>
     infrastructureOrderFormWorkTypeCostIsFetching: boolean
 

@@ -17,7 +17,6 @@ import {
   ChangeInfrastructureOrderFormTableRow,
 } from './types'
 
-
 const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableProps> = ({
   name,
 
@@ -25,6 +24,8 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
   onChange,
 
   infrastructureWorkTypes,
+  createWorkIsLoading,
+  updateWorkIsLoading,
 
   managerIsCurrentUser,
 
@@ -55,11 +56,16 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
       fieldProps: (form, config) => ({
         allowClear: false,
         loading: false,
-        disabled: !managerIsCurrentUser,
+        disabled:
+          !managerIsCurrentUser ||
+          infrastructureOrderFormWorkTypeCostIsFetching ||
+          createWorkIsLoading ||
+          updateWorkIsLoading,
         showSearch: true,
         filterOption: filterOptionBy('label'),
         options: infrastructureWorkTypesOptions,
-        onChange: (value: IdType) => onChangeWorkType({ rowIndex: config.rowIndex }, value),
+        onChange: (value: IdType) =>
+          onChangeWorkType(config.entity, value, { rowIndex: config.rowIndex }),
       }),
     },
     {
@@ -91,7 +97,12 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
         )
 
         return {
-          disabled: !managerIsCurrentUser || !name || infrastructureOrderFormWorkTypeCostIsFetching,
+          disabled:
+            !managerIsCurrentUser ||
+            !name ||
+            infrastructureOrderFormWorkTypeCostIsFetching ||
+            createWorkIsLoading ||
+            updateWorkIsLoading,
           placeholder: null,
           min: 0,
           onBlur: async () => {
@@ -130,9 +141,7 @@ const ChangeInfrastructureOrderFormTable: FC<ChangeInfrastructureOrderFormTableP
         name={name}
         columns={columns}
         recordCreatorProps={{
-          record: () => ({
-            rowId: random(1, 9999999),
-          }),
+          record: () => ({ rowId: random(1, 9999999), isNew: true }),
           creatorButtonText: 'Добавить работы',
           disabled: !managerIsCurrentUser || infrastructureOrderFormWorkTypeCostIsFetching,
         }}
