@@ -13,7 +13,6 @@ const infrastructuresFixtures = {
   ...infrastructureWorkTypeCost,
   ...infrastructureOrdersForms,
   ...infrastructureStatusHistory,
-  ...urgencyRateType,
 } as const
 
 export default infrastructuresFixtures

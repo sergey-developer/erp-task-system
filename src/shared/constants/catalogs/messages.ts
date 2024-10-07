@@ -9,6 +9,8 @@ export const getFaChangeTypesCatalogErrMsg =
 
 export const getResolutionClassificationsCatalogErrMsg =
   'Ошибка получения списка классификаций решения уровня 1'
+export const getUrgencyRateTypesErrMsg =
+  'Ошибка получения списка тарифов срочности для работ по изменению инфраструктуры'
 
 export const getWorkGroupsCatalogErrMsg = 'Ошибка получения каталога рабочих групп'
 export const getInfrastructureWorkTypesErrMsg =
