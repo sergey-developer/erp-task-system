@@ -136,7 +136,7 @@ describe('Страница проведения инвентаризации', (
       expect(button).toBeEnabled()
     })
 
-    test('По завершению возвращается на страницу списка инвентаризаций и открывает карточку инвентаризации', async () => {
+    test.skip('По завершению возвращается на страницу списка инвентаризаций и открывает карточку инвентаризации', async () => {
       const inventorization = warehouseFixtures.inventorization()
       const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 

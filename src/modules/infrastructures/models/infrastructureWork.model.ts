@@ -4,7 +4,7 @@ import { InfrastructureWorkTypeModel } from './infrastructureWorkType.model'
 
 export type InfrastructureWorkModel = {
   id: IdType
-  type: InfrastructureWorkTypeModel
+  type: Pick<InfrastructureWorkTypeModel, 'id' | 'title' | 'budgetType'>
   laborCosts: number
   amount: number
   cost: number

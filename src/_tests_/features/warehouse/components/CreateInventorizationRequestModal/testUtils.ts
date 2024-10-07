@@ -1,9 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils, fakeWord, selectTestUtils } from '_tests_/utils/index'
+import { SAVE_TEXT } from 'shared/constants/common'
 
 import { TestIdsEnum } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/constants'
+import { buttonTestUtils, fakeWord, selectTestUtils } from '_tests_/utils/index'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CreateInventorizationRequestModal)
 
@@ -154,6 +155,10 @@ const expectWarehouseLoadingStarted = () =>
 const expectWarehouseLoadingFinished = () =>
   selectTestUtils.expectLoadingFinished(getWarehouseFormItem())
 
+// submit button
+const getSubmitButton = () => buttonTestUtils.getButtonIn(getContainer(), new RegExp(SAVE_TEXT))
+const clickSubmitButton = async (user: UserEvent) => user.click(getSubmitButton())
+
 export const createInventorizationRequestModalTestUtils = {
   getContainer,
 
@@ -172,6 +177,7 @@ export const createInventorizationRequestModalTestUtils = {
   queryUploadedAttachment,
   clickDeleteAttachmentButton,
 
+  getNomenclatureFormItem,
   getNomenclatureSelectInput,
   setNomenclature,
   getSelectedNomenclature,
@@ -202,4 +208,6 @@ export const createInventorizationRequestModalTestUtils = {
   getSelectedExecutor,
   expectExecutorLoadingStarted,
   expectExecutorLoadingFinished,
+
+  clickSubmitButton,
 }

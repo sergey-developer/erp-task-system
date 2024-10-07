@@ -11,3 +11,5 @@ export const getResolutionClassificationsCatalogErrMsg =
   'Ошибка получения списка классификаций решения уровня 1'
 
 export const getWorkGroupsCatalogErrMsg = 'Ошибка получения каталога рабочих групп'
+export const getInfrastructureWorkTypesErrMsg =
+  'Ошибка получения каталога видов работ по изменению инфраструктуры'
