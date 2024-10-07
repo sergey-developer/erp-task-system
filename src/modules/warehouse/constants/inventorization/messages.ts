@@ -8,6 +8,9 @@ export const completeInventorizationErrMsg = 'Ошибка выполнения 
 export const getInventorizationEquipmentsErrMsg =
   'Ошибка получения списка оборудования для инвентаризации'
 
+export const getInventorizationEquipmentsXlsxErrMsg =
+  'Ошибка скачивания файла списка оборудования для инвентаризации'
+
 export const getInventorizationEquipmentErrMsg = 'Ошибка получения оборудования для инвентаризации'
 
 export const createInventorizationEquipmentErrMsg =
@@ -15,3 +18,12 @@ export const createInventorizationEquipmentErrMsg =
 
 export const updateInventorizationEquipmentErrMsg =
   'Ошибка сохранения оборудования при проведении сверки'
+
+export const getInventorizationEquipmentsTemplateErrMsg =
+  'Ошибка формирования шаблона для проведения сверки оборудования из файла'
+
+export const checkInventorizationEquipmentsTemplateErrMsg =
+  'Ошибка загрузки оборудования из файла для сверки'
+
+export const checkInventorizationEquipmentsErrMsg =
+  'Ошибка сверки оборудования, загруженного из файла'

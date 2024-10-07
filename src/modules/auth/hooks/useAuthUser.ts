@@ -1,14 +1,12 @@
 import { useMemo } from 'react'
 
 import { authUserSelector } from 'modules/auth/selectors'
-import { AuthenticatedUser } from 'modules/auth/types'
+import { UserModel } from 'modules/user/models'
 
 import { useSelector } from 'shared/hooks/useSelector'
 import { MaybeNull } from 'shared/types/utils'
 
-export type UseAuthUserResult = MaybeNull<{
-  id: AuthenticatedUser['userId']
-}>
+export type UseAuthUserResult = MaybeNull<Pick<UserModel, 'id'>>
 
 /** Возвращает авторизованного пользователя */
 export const useAuthUser = (): UseAuthUserResult => {

@@ -4,7 +4,7 @@ import { Key } from 'react'
 import { EquipmentsCatalogModel } from 'modules/warehouse/models'
 import { RelocationTaskEquipment } from 'modules/warehouse/types'
 
-import { CurrencyListModel } from 'shared/models/currency'
+import { CurrenciesModel } from 'shared/models/currency'
 
 export type RelocationEquipmentRow = Partial<RelocationTaskEquipment> & {
   rowId: number
@@ -20,7 +20,7 @@ export type RelocationEquipmentEditableTableProps = {
   setEditableKeys?: (keys: Key[]) => void
   isLoading: boolean
 
-  currencies: CurrencyListModel
+  currencies: CurrenciesModel
   currenciesIsLoading: boolean
 
   relocationEquipmentsIsLoading?: boolean

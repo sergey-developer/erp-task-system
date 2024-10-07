@@ -7,6 +7,8 @@ export const APP_NAME = 'Obermeister-ITSM'
 export const DEFAULT_DEBOUNCE_VALUE = 150
 export const DEFAULT_MODAL_WIDTH = 615
 
+export const DEFAULT_FILE_NAME = 'Скачанный файл'
+
 export const CANCEL_TEXT = 'Отменить'
 export const CREATE_TEXT = 'Создать'
 export const SAVE_TEXT = 'Сохранить'

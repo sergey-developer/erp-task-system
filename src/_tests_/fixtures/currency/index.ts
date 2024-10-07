@@ -1,9 +1,7 @@
-import * as currency from './currency'
-import * as currencyList from './currencyList'
+import * as currencies from './currencies'
 
 const currencyFixtures = {
-  ...currency,
-  ...currencyList,
+  ...currencies,
 } as const
 
 export default currencyFixtures
