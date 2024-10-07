@@ -3,7 +3,6 @@ import * as infrastructureOrdersForms from './infrastructureOrdersForms'
 import * as infrastructureStatusHistory from './infrastructureStatusHistory'
 import * as infrastructureWork from './infrastructureWork'
 import * as infrastructureWorkType from './infrastructureWorkType'
-import * as urgencyRateType from './urgencyRateType'
 
 const infrastructuresFixtures = {
   ...infrastructure,
@@ -11,7 +10,6 @@ const infrastructuresFixtures = {
   ...infrastructureWorkType,
   ...infrastructureOrdersForms,
   ...infrastructureStatusHistory,
-  ...urgencyRateType,
 } as const
 
 export default infrastructuresFixtures

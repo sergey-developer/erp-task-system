@@ -18,6 +18,10 @@ import {
   GetTimeZoneListSuccessResponse,
 } from 'shared/models/catalogs/timeZone'
 import {
+  GetUrgencyRateTypesQueryArgs,
+  GetUrgencyRateTypesSuccessResponse,
+} from 'shared/models/catalogs/urgencyRateTypes'
+import {
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,
 } from 'shared/models/catalogs/userStatus'
@@ -75,6 +79,15 @@ export const catalogsApiService = baseApiService.injectEndpoints({
         params,
       }),
     }),
+    getUrgencyRateTypes: build.query<
+      GetUrgencyRateTypesSuccessResponse,
+      GetUrgencyRateTypesQueryArgs
+    >({
+      query: () => ({
+        url: CatalogsApiEnum.GetUrgencyRateTypes,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
   }),
 })
 
@@ -91,6 +104,8 @@ export const {
   useGetFaChangeTypesQuery,
 
   useGetResolutionClassificationsQuery,
+
+  useGetUrgencyRateTypesQuery,
 
   endpoints,
 } = catalogsApiService
