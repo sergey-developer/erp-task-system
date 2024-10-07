@@ -4,7 +4,9 @@ import * as reactRouterDom from 'react-router-dom'
 import {
   InfrastructuresRoutesEnum,
   infrastructureStatusDict,
+  InfrastructureStatusEnum,
 } from 'modules/infrastructures/constants'
+import { UpdateInfrastructureStatusSuccessResponse } from 'modules/infrastructures/models'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import TasksPage from 'modules/task/pages/TasksPage'
 import { UserPermissionsEnum } from 'modules/user/constants'
@@ -36,10 +38,18 @@ import {
   mockGetTasksSuccess,
   mockGetTaskSuccess,
   mockGetUserActionsSuccess,
+  mockUpdateInfrastructureStatusSuccess,
   mockUpdateInfrastructureSuccess,
 } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { fakeId, getStoreWithAuth, render, renderWithRouter, setupApiTests } from '_tests_/utils'
+import {
+  fakeDateString,
+  fakeId,
+  getStoreWithAuth,
+  render,
+  renderWithRouter,
+  setupApiTests,
+} from '_tests_/utils'
 
 import ChangeInfrastructurePage from './index'
 import { getChangeInfrastructurePageLocationState } from './utils'
@@ -305,7 +315,53 @@ describe('Страница изменения инфраструктуры за�
       expect(createdAt).toBeInTheDocument()
     })
 
-    test('Модалка просмотра истории изменения статусов открывается и закрывается', async () => {
+    test('После изменения статуса он отображается в карточке вместе с датой изменения', async () => {
+      jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
+
+      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      jest
+        .spyOn(reactRouterDom, 'useLocation')
+        .mockReturnValue(fakeUseLocationResult({ state: locationState }))
+
+      const currentUser = userFixtures.user()
+
+      const infrastructure = infrastructuresFixtures.infrastructure({
+        manager: { ...currentUser, position: null },
+      })
+      mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
+      mockGetInfrastructureOrdersFormsSuccess({ body: [] })
+
+      const updateInfrastructureStatusSuccessResponse: UpdateInfrastructureStatusSuccessResponse = {
+        id: fakeId(),
+        status: InfrastructureStatusEnum.Suspended,
+        changedAt: fakeDateString(),
+      }
+      mockUpdateInfrastructureStatusSuccess({ body: updateInfrastructureStatusSuccessResponse })
+
+      const { user } = render(<ChangeInfrastructurePage />, {
+        store: getStoreWithAuth(currentUser, undefined, undefined, {
+          queries: { ...getUserMeQueryMock(currentUser) },
+        }),
+      })
+
+      await testUtils.expectLoadingFinished()
+      await testUtils.clickEditStatusHistory(user)
+      await testUtils.openStatusSelect(user)
+      await testUtils.setStatus(user, InfrastructureStatusEnum.Suspended)
+      await testUtils.clickSaveStatus(user)
+      const statusBlock = testUtils.getStatusBlock()
+      const updatedStatusLabel = await within(statusBlock).findByText(
+        infrastructureStatusDict[updateInfrastructureStatusSuccessResponse.status],
+      )
+      const updatedCreatedAt = await within(statusBlock).findByText(
+        `Установлен: ${formatDate(updateInfrastructureStatusSuccessResponse.changedAt)}`,
+      )
+
+      expect(updatedStatusLabel).toBeInTheDocument()
+      expect(updatedCreatedAt).toBeInTheDocument()
+    })
+
+    test('Модалка просмотра истории изменения статуса открывается и закрывается', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
       const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
