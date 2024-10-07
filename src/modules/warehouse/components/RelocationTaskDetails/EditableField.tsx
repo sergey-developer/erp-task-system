@@ -64,9 +64,9 @@ const EditableField: FC<EditableFieldProps> = ({
     onEdit && onEdit()
   }
 
-  const renderEditButton: RenderEditButton = (extra) =>
-    editButtonHidden ? null : (
-      <Space>
+  const renderEditButton: RenderEditButton = (extra) => (
+    <Space>
+      {!editButtonHidden && (
         <Button
           block
           type='text'
@@ -74,10 +74,11 @@ const EditableField: FC<EditableFieldProps> = ({
           icon={<EditIcon $size='large' $cursor='pointer' $color='bleuDeFrance' />}
           onClick={onClickEdit}
         />
+      )}
 
-        {extra}
-      </Space>
-    )
+      {extra}
+    </Space>
+  )
 
   return (
     <ReadonlyField
