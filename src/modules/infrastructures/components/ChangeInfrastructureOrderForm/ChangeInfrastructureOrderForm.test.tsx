@@ -8,8 +8,10 @@ import { changeInfrastructureOrderFormTestUtils } from '_tests_/features/infrast
 import { changeInfrastructureOrderFormTableTestUtils } from '_tests_/features/infrastructures/components/ChangeInfrastructureOrderFormTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
-import { mockCreateInfrastructureOrderFormWorksSuccess } from '_tests_/mocks/api/infrastructures/createInfrastructureOrderFormWorks.mock'
-import { mockGetInfrastructureOrderFormWorkTypeCostSuccess } from '_tests_/mocks/api/infrastructures/getInfrastructureOrderFormWorkTypeCost.mock'
+import {
+  mockCreateInfrastructureOrderFormWorkSuccess,
+  mockGetInfrastructureOrderFormWorkTypeCostSuccess,
+} from '_tests_/mocks/api/infrastructures'
 import { fakeInteger, render } from '_tests_/utils'
 import {
   confirmDeleteInfrastructureWorkTypeModalTestUtils
@@ -99,7 +101,7 @@ describe('Форма добавления работ к бланк-заказу'
         const infrastructureWorkTypeCost = infrastructuresFixtures.infrastructureWorkTypeCost()
         mockGetInfrastructureOrderFormWorkTypeCostSuccess({ body: infrastructureWorkTypeCost })
         const infrastructureWork = infrastructuresFixtures.infrastructureWork()
-        mockCreateInfrastructureOrderFormWorksSuccess({ body: infrastructureWork })
+        mockCreateInfrastructureOrderFormWorkSuccess({ body: infrastructureWork })
 
         const { user } = render(
           <Form>

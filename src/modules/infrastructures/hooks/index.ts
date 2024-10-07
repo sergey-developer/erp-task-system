@@ -4,4 +4,7 @@ export * from './useUpdateInfrastructureStatus'
 export * from './useGetInfrastructureStatusHistory'
 
 export * from './useGetInfrastructureOrdersForms'
+export * from './useLazyGetInfrastructureOrderFormWorkTypeCost'
+export * from './useCreateInfrastructureOrderFormWork'
+export * from './useUpdateInfrastructureOrderFormWork'
 export * from './useCreateInfrastructureOrderForm'

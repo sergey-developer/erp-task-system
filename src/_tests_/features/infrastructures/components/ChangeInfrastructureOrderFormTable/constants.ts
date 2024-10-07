@@ -10,6 +10,9 @@ export const props: ChangeInfrastructureOrderFormTableProps = {
 
   infrastructureWorkTypes: [],
 
+  createWorkIsLoading: false,
+  updateWorkIsLoading: false,
+
   managerIsCurrentUser: true,
 
   onChangeWorkType: jest.fn(),

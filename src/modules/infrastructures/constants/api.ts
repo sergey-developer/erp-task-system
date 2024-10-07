@@ -5,7 +5,8 @@ export enum InfrastructuresApiEnum {
   GetInfrastructureOrdersForms = '/infrastructures/orders/',
   CreateInfrastructureOrderForm = '/infrastructures/orders/',
   GetInfrastructureOrderFormWorkTypeCost = '/infrastructures/orders/works/types/cost/',
-  CreateInfrastructureOrderFormWorks = '/infrastructures/orders/works/',
+  CreateInfrastructureOrderFormWork = '/infrastructures/orders/works/',
+  UpdateInfrastructureOrderFormWork = '/infrastructures/orders/works/:workId',
   DeleteInfrastructureOrdersFormsWork = '/infrastructures/orders/works/:id',
 
   GetInfrastructureStatusHistory = '/infrastructures/statuses/',
