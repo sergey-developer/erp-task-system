@@ -1,7 +1,12 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils, iconTestUtils, spinnerTestUtils } from '_tests_/utils'
+import { buttonTestUtils, iconTestUtils, selectTestUtils, spinnerTestUtils } from '_tests_/utils'
+
+import {
+  infrastructureStatusDict,
+  InfrastructureStatusEnum,
+} from '../../../../../modules/infrastructures/constants'
 
 const getContainer = () => screen.getByTestId('change-infrastructure-page')
 
@@ -28,6 +33,19 @@ const assigneeOnMeLoadingFinished = () =>
 
 // status
 const getStatusBlock = () => within(getContainer()).getByTestId('status')
+
+const clickEditStatusHistory = async (user: UserEvent) =>
+  user.click(buttonTestUtils.getButtonIn(getStatusBlock(), 'edit'))
+
+const openStatusSelect = async (user: UserEvent) =>
+  selectTestUtils.openSelect(user, getStatusBlock())
+
+const setStatus = async (user: UserEvent, status: InfrastructureStatusEnum) =>
+  selectTestUtils.clickSelectOption(user, infrastructureStatusDict[status])
+
+const clickSaveStatus = async (user: UserEvent) =>
+  user.click(buttonTestUtils.getButtonIn(getStatusBlock(), 'check'))
+
 const openStatusHistoryModal = async (user: UserEvent) =>
   user.click(iconTestUtils.getIconByNameIn(getStatusBlock(), 'search'))
 
@@ -47,7 +65,11 @@ export const changeInfrastructurePageTestUtils = {
   assigneeOnMeLoadingFinished,
 
   getStatusBlock,
+  openStatusSelect,
+  setStatus,
+  clickSaveStatus,
   openStatusHistoryModal,
+  clickEditStatusHistory,
 
   getGoBackButton,
   clickGoBackButton,
