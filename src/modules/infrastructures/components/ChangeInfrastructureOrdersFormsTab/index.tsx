@@ -11,6 +11,7 @@ import { InfrastructureModel } from 'modules/infrastructures/models'
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'
 
+import { useGetInfrastructureWorkTypes } from 'shared/hooks/catalogs/infrastructureWorkTypes'
 import { IdType } from 'shared/types/common'
 
 import ChangeInfrastructureOrderForm from '../ChangeInfrastructureOrderForm'
@@ -34,6 +35,11 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
     isFetching: infrastructureOrdersFormsIsFetching,
   } = useGetInfrastructureOrdersForms({ infrastructureProject: infrastructureId })
 
+  const {
+    currentData: infrastructureWorkTypes = [],
+    isFetching: infrastructureWorkTypesIsFetching,
+  } = useGetInfrastructureWorkTypes(undefined, { skip: !managerIsCurrentUser })
+
   const [createAttachment] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
@@ -52,6 +58,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
         children: (
           <ChangeInfrastructureOrderForm
             data={orderForm}
+            infrastructureWorkTypes={infrastructureWorkTypes}
             managerIsCurrentUser={managerIsCurrentUser}
             canUploadFile={managerIsCurrentUser}
             onUploadFile={onUploadFile}
@@ -65,6 +72,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
       deleteAttachment,
       deleteAttachmentIsLoading,
       infrastructureOrdersForms,
+      infrastructureWorkTypes,
       managerIsCurrentUser,
       onUploadFile,
     ],
@@ -83,7 +91,9 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
       data-testid='change-infrastructure-order-form-tab'
     >
       <Form form={form}>
-        <LoadingArea isLoading={infrastructureOrdersFormsIsFetching}>
+        <LoadingArea
+          isLoading={infrastructureOrdersFormsIsFetching || infrastructureWorkTypesIsFetching}
+        >
           {!!infrastructureOrdersForms.length ? (
             <Collapse
               ghost
