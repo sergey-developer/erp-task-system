@@ -65,6 +65,7 @@ import { useLazyGetLocationsCatalog } from 'shared/hooks/catalogs/locations'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
 import { mapIds } from 'shared/utils/array/mapIds'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { extractLocationState } from 'shared/utils/common'
@@ -223,7 +224,36 @@ const EditRelocationTaskDraftPage: FC = () => {
     { skip: !inventorization?.id },
   )
 
-  const inventorizationEquipments = extractPaginationResults(inventorizationEquipmentsResponse)
+  const inventorizationEquipments: RelocationEquipmentDraftEditableTableProps['equipments'] =
+    useMemo(
+      () => [
+        ...extractPaginationResults(inventorizationEquipmentsResponse),
+        ...relocationEquipments.map((eqp) => ({
+          relocationEquipment: eqp,
+          // главное поле - relocationEquipment из него будут подставляться значения в таблицу при выборе оборудования
+          // остальные поля не важны, они заполняются т.к. они обязательные
+          id: eqp.id,
+          equipment: {
+            id: eqp.id,
+            title: eqp.title,
+            category: eqp.category,
+            serialNumber: eqp.serialNumber!,
+            inventoryNumber: '',
+          },
+          isLocationFactUndefined: false,
+          locationPlan: null,
+          locationFact: null,
+          quantity: {
+            fact: null,
+            plan: 0,
+            diff: checkEquipmentCategoryIsConsumable(eqp.category.code) ? eqp.quantity : 1,
+          },
+          isFilled: false,
+          hasDiff: null,
+        })),
+      ],
+      [inventorizationEquipmentsResponse, relocationEquipments],
+    )
 
   const [
     getRelocateFromLocations,
@@ -336,34 +366,55 @@ const EditRelocationTaskDraftPage: FC = () => {
       async (value, option, path) => {
         form.setFieldValue([...path, 'equipment'], option.equipment)
         const currentEquipment = form.getFieldValue(path)
+        let newEquipment: MaybeUndefined<InventorizationEquipmentTableRow>
 
-        try {
-          const equipment = await getEquipment({ equipmentId: value }).unwrap()
-          const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
-          const newEquipment: InventorizationEquipmentTableRow = {
+        if (option.relocationEquipment) {
+          newEquipment = {
             ...currentEquipment,
-            serialNumber: equipment.serialNumber || undefined,
+            serialNumber: option.relocationEquipment.serialNumber,
             condition: typeIsWriteOff
               ? EquipmentConditionEnum.WrittenOff
               : typeIsReturnWrittenOff
               ? EquipmentConditionEnum.Working
-              : equipment.condition,
-            price: isNumber(equipment.price) ? equipment.price : undefined,
-            currency: equipment.currency?.id,
-            quantity: isConsumable
-              ? isNumber(equipment.quantity.diff)
-                ? Math.abs(equipment.quantity.diff)
-                : undefined
+              : option.relocationEquipment.condition,
+            price: isNumber(option.relocationEquipment.price)
+              ? option.relocationEquipment.price
+              : undefined,
+            currency: option.relocationEquipment.currency?.id,
+            quantity: checkEquipmentCategoryIsConsumable(option.relocationEquipment.category.code)
+              ? option.relocationEquipment.quantity
               : 1,
-            category: equipment.category,
+            category: option.relocationEquipment.category,
           }
-
-          form.setFieldValue(path, newEquipment)
-        } catch (error) {
-          if (isErrorResponse(error) && isForbiddenError(error)) {
-            form.setFieldValue(path, { rowId: currentEquipment.rowId })
+        } else {
+          try {
+            const equipment = await getEquipment({ equipmentId: value }).unwrap()
+            const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
+            newEquipment = {
+              ...currentEquipment,
+              serialNumber: equipment.serialNumber || undefined,
+              condition: typeIsWriteOff
+                ? EquipmentConditionEnum.WrittenOff
+                : typeIsReturnWrittenOff
+                ? EquipmentConditionEnum.Working
+                : equipment.condition,
+              price: isNumber(equipment.price) ? equipment.price : undefined,
+              currency: equipment.currency?.id,
+              quantity: isConsumable
+                ? isNumber(equipment.quantity.diff)
+                  ? Math.abs(equipment.quantity.diff)
+                  : undefined
+                : 1,
+              category: equipment.category,
+            }
+          } catch (error) {
+            if (isErrorResponse(error) && isForbiddenError(error)) {
+              form.setFieldValue(path, { rowId: currentEquipment.rowId })
+            }
           }
         }
+
+        form.setFieldValue(path, newEquipment)
       },
       [form, getEquipment, typeIsReturnWrittenOff, typeIsWriteOff],
     )
