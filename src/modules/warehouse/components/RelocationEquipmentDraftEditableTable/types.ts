@@ -3,7 +3,7 @@ import { Key } from 'react'
 
 import {
   InventorizationEquipmentListItemModel,
-  InventorizationEquipmentsModel,
+  RelocationEquipmentListItemModel,
 } from 'modules/warehouse/models'
 import { RelocationTaskInventorizationEquipment } from 'modules/warehouse/types'
 
@@ -31,12 +31,17 @@ export type RelocationEquipmentDraftEditableTableProps = {
   currencies: CurrenciesModel
   currenciesIsLoading: boolean
 
-  equipments: InventorizationEquipmentsModel
+  equipments: (InventorizationEquipmentListItemModel & {
+    relocationEquipment?: RelocationEquipmentListItemModel
+  })[]
   equipmentsIsLoading: boolean
   equipmentIsLoading: boolean
   onChangeEquipment: (
     value: InventorizationEquipmentListItemModel['id'],
-    option: { equipment: InventorizationEquipmentListItemModel['equipment'] },
+    option: {
+      equipment: InventorizationEquipmentListItemModel['equipment']
+      relocationEquipment?: RelocationEquipmentListItemModel
+    },
     path: NamePath,
   ) => Promise<void>
 
