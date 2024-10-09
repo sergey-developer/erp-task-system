@@ -87,7 +87,7 @@ describe('Таблица сверки оборудования', () => {
       const title = reviseEquipmentTableTestUtils.getColTitle('Серийный номер')
       const input = within(
         reviseEquipmentTableTestUtils.getRow(inventorizationEquipmentListItem.id),
-      ).getByDisplayValue(inventorizationEquipmentListItem.equipment.serialNumber)
+      ).getByDisplayValue(inventorizationEquipmentListItem.equipment.serialNumber!)
 
       expect(title).toBeInTheDocument()
       expect(input).toBeInTheDocument()
@@ -102,7 +102,7 @@ describe('Таблица сверки оборудования', () => {
       const title = reviseEquipmentTableTestUtils.getColTitle('Инвентарный номер')
       const input = within(
         reviseEquipmentTableTestUtils.getRow(inventorizationEquipmentListItem.id),
-      ).getByDisplayValue(inventorizationEquipmentListItem.equipment.inventoryNumber)
+      ).getByDisplayValue(inventorizationEquipmentListItem.equipment.inventoryNumber!)
 
       expect(title).toBeInTheDocument()
       expect(input).toBeInTheDocument()

@@ -552,6 +552,7 @@ const EditRelocationTaskDraftPage: FC = () => {
         equipments.push({
           rowId: eqp.id,
           id: eqp.id,
+          equipment: { ...eqp, inventoryNumber: null },
           relocationEquipmentId: eqp.relocationEquipmentId,
           serialNumber: eqp?.serialNumber || undefined,
           condition: typeIsWriteOff
