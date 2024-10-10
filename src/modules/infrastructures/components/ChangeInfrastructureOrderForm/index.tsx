@@ -31,6 +31,7 @@ import {
   ChangeInfrastructureOrderFormTableRow,
 } from '../ChangeInfrastructureOrderFormTable/types'
 import { ChangeInfrastructureOrdersFormsTabFormFields } from '../ChangeInfrastructureOrdersFormsTab/types'
+import UploadButton from 'components/Buttons/UploadButton'
 
 const ConfirmDeleteInfrastructureWorkTypeModal = React.lazy(
   () => import('modules/infrastructures/components/ConfirmDeleteInfrastructureWorkTypeModal'),
@@ -303,7 +304,7 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
           defaultFileList={defaultFiles}
           itemRender={renderUploadedFile({ canDelete: !isDeleting, showDelete: canDeleteFile })}
         >
-          {/*{canUploadFile && <UploadButton label='Добавить файлы' />}*/}
+          {canUploadFile && <UploadButton label='Добавить файлы' />}
         </Upload>
 
         <ChangeInfrastructureOrderFormTable
