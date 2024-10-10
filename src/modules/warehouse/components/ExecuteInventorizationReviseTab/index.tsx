@@ -221,6 +221,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     { isLoading: checkInventorizationEquipmentsTemplateIsLoading },
   ] = useCheckInventorizationEquipmentsTemplate()
 
+  // check inventorization equipments template
   const onCheckByExcel: NonNullable<UploadProps['onChange']> = async ({ file }) => {
     try {
       const equipments = await checkInventorizationEquipmentsTemplateMutation({
@@ -234,7 +235,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       openCheckInventorizationEquipmentsModal()
     } catch (error) {
       if (isErrorResponse(error)) {
-        if (isBadRequestError(error)) {
+        if (isBadRequestError(error) && !error.data?.detail) {
           notification.error({
             message: 'Ошибка проверки сверяемого оборудования из Excel',
             description: (
@@ -250,7 +251,6 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       }
     }
   }
-  // check inventorization equipments template
 
   // check inventorization equipments
   const [
