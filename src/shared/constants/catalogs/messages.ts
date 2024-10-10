@@ -10,6 +10,15 @@ export const getFaChangeTypesCatalogErrMsg =
 export const getResolutionClassificationsCatalogErrMsg =
   'Ошибка получения списка классификаций решения уровня 1'
 
+
+export const getUserStatusesErrMsg = 'Ошибка получения статусов пользователя'
+export const getLocationsErrMsg = 'Ошибка получения списка меcтонахождений'
+export const getFaChangeTypesErrMsg = 'Ошибка получения списка типов замены фискальных накопителей'
+export const getUrgencyRateTypesErrMsg =
+  'Ошибка получения списка тарифов срочности для работ по изменению инфраструктуры'
+export const getResolutionClassificationsErrMsg =
+  'Ошибка получения списка классификаций решения уровня 1'
+
 export const getWorkGroupsCatalogErrMsg = 'Ошибка получения каталога рабочих групп'
 export const getInfrastructureWorkTypesErrMsg =
   'Ошибка получения каталога видов работ по изменению инфраструктуры'

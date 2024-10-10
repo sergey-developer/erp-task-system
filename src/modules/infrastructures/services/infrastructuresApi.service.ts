@@ -1,3 +1,5 @@
+import { decamelize } from 'humps'
+
 import {
   InfrastructuresApiEnum,
   InfrastructuresApiTagEnum,
@@ -9,6 +11,10 @@ import {
   DeleteInfrastructureOrdersFormsWorkSuccessResponse,
   GetInfrastructureOrderFormWorkTypeCostQueryArgs,
   GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
+  CreateInfrastructureOrderFormAttachmentMutationArgs,
+  CreateInfrastructureOrderFormAttachmentSuccessResponse,
+  CreateInfrastructureOrderFormMutationArgs,
+  CreateInfrastructureOrderFormSuccessResponse,
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureOrdersFormsSuccessResponse,
   GetInfrastructureQueryArgs,
@@ -26,7 +32,12 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
 
 const infrastructuresApiService = baseApiService
-  .enhanceEndpoints({ addTagTypes: [InfrastructuresApiTagEnum.Infrastructure] })
+  .enhanceEndpoints({
+    addTagTypes: [
+      InfrastructuresApiTagEnum.Infrastructure,
+      InfrastructuresApiTagEnum.InfrastructureOrdersForms,
+    ],
+  })
   .injectEndpoints({
     endpoints: (build) => ({
       getInfrastructure: build.query<GetInfrastructureSuccessResponse, GetInfrastructureQueryArgs>({
@@ -53,11 +64,42 @@ const infrastructuresApiService = baseApiService
         GetInfrastructureOrdersFormsSuccessResponse,
         GetInfrastructureOrdersFormsQueryArgs
       >({
+        providesTags: (result, error) =>
+          error ? [] : [InfrastructuresApiTagEnum.InfrastructureOrdersForms],
         query: (params) => ({
           url: InfrastructuresApiEnum.GetInfrastructureOrdersForms,
           method: HttpMethodEnum.Get,
           params,
         }),
+      }),
+      createInfrastructureOrderForm: build.mutation<
+        CreateInfrastructureOrderFormSuccessResponse,
+        CreateInfrastructureOrderFormMutationArgs
+      >({
+        invalidatesTags: (result, error) =>
+          error ? [] : [InfrastructuresApiTagEnum.InfrastructureOrdersForms],
+        query: (data) => ({
+          url: InfrastructuresApiEnum.CreateInfrastructureOrderForm,
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+      }),
+
+      createInfrastructureOrderFormAttachment: build.mutation<
+        CreateInfrastructureOrderFormAttachmentSuccessResponse,
+        CreateInfrastructureOrderFormAttachmentMutationArgs
+      >({
+        query: ({ orderFormId, file }) => {
+          const formData = new FormData()
+          formData.append(decamelize('orderForm'), String(orderFormId))
+          formData.append('file', file)
+
+          return {
+            url: InfrastructuresApiEnum.CreateInfrastructureOrdersFormAttachment,
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
       }),
 
       getInfrastructureOrderFormWorkTypeCost: build.query<
@@ -98,7 +140,9 @@ const infrastructuresApiService = baseApiService
 export const {
   useGetInfrastructureQuery,
   useUpdateInfrastructureMutation,
+  useCreateInfrastructureOrderFormMutation,
   useGetInfrastructureOrdersFormsQuery,
+  useCreateInfrastructureOrderFormAttachmentMutation,
 
   useLazyGetInfrastructureOrderFormWorkTypeCostQuery,
 
