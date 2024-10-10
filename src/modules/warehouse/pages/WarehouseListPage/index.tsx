@@ -8,9 +8,9 @@ import {
 } from 'modules/warehouse/components/WarehouseListFilter/types'
 import WarehouseTable from 'modules/warehouse/components/WarehouseTable'
 import {
+  getSort,
   SortableField,
   sortableFieldToSortValues,
-  getSort,
 } from 'modules/warehouse/components/WarehouseTable/sort'
 import { WarehouseTableProps } from 'modules/warehouse/components/WarehouseTable/types'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
@@ -29,7 +29,7 @@ const WarehouseListPage: FC = () => {
 
   const [filterFormValues, setFilterFormValues] = useState<WarehouseListFilterFormFields>()
 
-  const { isFetching: warehouseListIsFetching, currentData: warehouseList = [] } =
+  const { isFetching: warehousesIsFetching, currentData: warehouses = [] } =
     useGetWarehouseList(queryArgs)
 
   const handleApplyFilter = useCallback<WarehouseListFilterProps['onApply']>(
@@ -68,8 +68,8 @@ const WarehouseListPage: FC = () => {
       <FilterButton onClick={debouncedToggleFilterOpened} />
 
       <WarehouseTable
-        dataSource={warehouseList}
-        loading={warehouseListIsFetching}
+        dataSource={warehouses}
+        loading={warehousesIsFetching}
         onChange={handleChangeTable}
         sort={queryArgs?.ordering}
       />

@@ -1,3 +1,4 @@
+import { Flex } from 'antd'
 import { FC, useMemo } from 'react'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
@@ -17,13 +18,13 @@ const HistoryNomenclatureOperationsReportTable: FC<
   )
 
   return (
-    <div data-testid='history-nomenclature-operations-report-table'>
+    <Flex data-testid='history-nomenclature-operations-report-table'>
       <ParentSizedTable<HistoryNomenclatureOperationsReportTableItem>
         {...props}
         rowKey='id'
         columns={columns}
       />
-    </div>
+    </Flex>
   )
 }
 

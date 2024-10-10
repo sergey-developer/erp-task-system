@@ -58,3 +58,10 @@ export const updateExternalRelocationUrl = (relocationTaskId: IdType): string =>
       relocationTaskId: String(relocationTaskId),
     }),
   )
+
+export const makeMoveRelocationTaskDraftToWorkApiUrl = ({
+  relocationTaskId,
+}: RelocationTaskRequestArgs): string =>
+  generateApiPath(RelocationTaskApiEnum.MoveRelocationTaskDraftToWork, {
+    id: String(relocationTaskId),
+  })

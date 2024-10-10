@@ -1,4 +1,4 @@
-import { FormInstance, UploadProps } from 'antd'
+import { FormInstance, SelectProps, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
@@ -7,6 +7,7 @@ import {
   CustomerListModel,
   EquipmentCategoriesModel,
   EquipmentCategoryListItemModel,
+  NomenclatureListItemModel,
   NomenclatureListModel,
   NomenclatureModel,
   WarehouseListModel,
@@ -15,7 +16,7 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CurrencyListModel } from 'shared/models/currency'
+import { CurrenciesModel } from 'shared/models/currency'
 import { MacroregionsModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
@@ -53,7 +54,7 @@ export type EquipmentFormModalProps = Required<
 
     onSubmit: (
       values: EquipmentFormFields,
-      setFields: FormInstance<EquipmentFormFields>['setFields'],
+      form: FormInstance<EquipmentFormFields>,
     ) => Promise<void> | void
 
     onUploadImage: NonNullable<UploadProps['customRequest']>
@@ -69,7 +70,7 @@ export type EquipmentFormModalProps = Required<
     warehouses?: WarehouseListModel
     warehousesIsLoading?: boolean
 
-    currencies: CurrencyListModel
+    currencies: CurrenciesModel
     currenciesIsLoading: boolean
 
     owners: CustomerListModel
@@ -87,7 +88,7 @@ export type EquipmentFormModalProps = Required<
 
     nomenclatures: NomenclatureListModel
     nomenclaturesIsLoading: boolean
-    onChangeNomenclature: (id: IdType) => void
+    onChangeNomenclature: NonNullable<SelectProps<IdType, NomenclatureListItemModel>['onChange']>
 
     values?: Partial<Pick<EquipmentFormFields, 'title' | 'images'>>
     initialValues?: Partial<EquipmentFormFields>

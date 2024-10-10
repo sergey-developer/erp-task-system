@@ -18,6 +18,8 @@ export const props: ChangeInfrastructureOrderFormTableProps = {
   onChangeWorkType: jest.fn(),
   infrastructureOrderFormWorkTypeCostIsFetching: false,
   onChangeAmount: jest.fn(),
+
+  onClickDeleteInfrastructureWorkType: jest.fn(),
 }
 
 export enum TestIdsEnum {

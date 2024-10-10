@@ -13,8 +13,16 @@ const findContainer = () =>
 const getRowByRole = () => tableTestUtils.getOneRowByRole(getContainer())
 
 // add order form works button
-const getAddEquipmentButton = () => buttonTestUtils.getButtonIn(getContainer(), /Добавить работы/)
-const clickAddOrderFormWorksButton = async (user: UserEvent) => user.click(getAddEquipmentButton())
+const getAddOrderFormWorksButton = () =>
+  buttonTestUtils.getButtonIn(getContainer(), /Добавить работы/)
+const clickAddOrderFormWorksButton = async (user: UserEvent) => user.click(getAddOrderFormWorksButton())
+
+// delete order form works button
+const getDeleteOrderFormWorksButton = (row: HTMLElement) =>
+  buttonTestUtils.getButtonIn(row, 'delete')
+
+const clickDeleteOrderFormWorksButton = async (user: UserEvent, row: HTMLElement) =>
+  user.click(getDeleteOrderFormWorksButton(row))
 
 // work type field
 const getWorkTypeFormItem = (row: HTMLElement) => within(row).getByTestId(TestIdsEnum.NameFormItem)
@@ -67,7 +75,11 @@ export const changeInfrastructureOrderFormTableTestUtils = {
 
   getRowByRole,
 
+  getAddOrderFormWorksButton,
   clickAddOrderFormWorksButton,
+
+  getDeleteOrderFormWorksButton,
+  clickDeleteOrderFormWorksButton,
 
   getWorkTypeSelect,
   setWorkType,

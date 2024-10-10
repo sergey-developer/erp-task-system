@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Flex, Table } from 'antd'
 import { FC, useMemo } from 'react'
 
 import { columns } from './columns'
@@ -12,14 +12,14 @@ const DiscrepanciesEquipmentTable: FC<DiscrepanciesEquipmentTableProps> = ({ sor
   )
 
   return (
-    <div data-testid='discrepancies-equipment-table'>
+    <Flex data-testid='discrepancies-equipment-table'>
       <Table<DiscrepanciesEquipmentTableItem>
         {...props}
         rowKey='id'
         columns={sortedColumns}
         showSorterTooltip={false}
       />
-    </div>
+    </Flex>
   )
 }
 

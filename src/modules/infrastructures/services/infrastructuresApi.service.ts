@@ -5,6 +5,8 @@ import {
 import {
   CreateInfrastructureOrderFormWorkMutationArgs,
   CreateInfrastructureOrderFormWorkSuccessResponse,
+  DeleteInfrastructureOrdersFormsWorkMutationArgs,
+  DeleteInfrastructureOrdersFormsWorkSuccessResponse,
   GetInfrastructureOrderFormWorkTypeCostQueryArgs,
   GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
   GetInfrastructureOrdersFormsQueryArgs,
@@ -17,6 +19,7 @@ import {
   UpdateInfrastructureSuccessResponse,
 } from 'modules/infrastructures/models'
 import {
+  makeDeleteInfrastructureOrdersFormsWorkUrl,
   makeGetInfrastructureUrl,
   makeUpdateInfrastructureUrl,
 } from 'modules/infrastructures/utils/infrastructure/apiUrls'
@@ -92,6 +95,16 @@ const infrastructuresApiService = baseApiService
           data: data,
         }),
       }),
+
+      deleteInfrastructureOrdersFormsWork: build.mutation<
+        DeleteInfrastructureOrdersFormsWorkSuccessResponse,
+        DeleteInfrastructureOrdersFormsWorkMutationArgs
+      >({
+        query: ({ infrastructureWorkId }) => ({
+          url: makeDeleteInfrastructureOrdersFormsWorkUrl({ infrastructureWorkId }),
+          method: HttpMethodEnum.Delete,
+        }),
+      }),
     }),
     overrideExisting: false,
   })
@@ -105,4 +118,5 @@ export const {
 
   useCreateInfrastructureOrderFormWorkMutation,
   useUpdateInfrastructureOrderFormWorkMutation,
+  useDeleteInfrastructureOrdersFormsWorkMutation,
 } = infrastructuresApiService

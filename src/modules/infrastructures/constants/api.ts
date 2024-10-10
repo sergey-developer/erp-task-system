@@ -5,6 +5,7 @@ export enum InfrastructuresApiEnum {
   GetInfrastructureOrderFormWorkTypeCost = '/infrastructures/orders/works/types/cost/',
   CreateInfrastructureOrderFormWork = '/infrastructures/orders/works/',
   UpdateInfrastructureOrderFormWork = '/infrastructures/orders/works/:workId',
+  DeleteInfrastructureOrdersFormsWork = '/infrastructures/orders/works/:id',
 }
 
 export enum InfrastructuresApiTagEnum {

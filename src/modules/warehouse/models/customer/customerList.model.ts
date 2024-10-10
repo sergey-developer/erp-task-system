@@ -1,5 +1,8 @@
-import { CustomerModel } from 'modules/warehouse/models'
+import { IdType } from 'shared/types/common'
 
-export type CustomerListItemModel = Pick<CustomerModel, 'id' | 'title'>
+export type CustomerListItemModel = {
+  id: IdType
+  title: string
+}
 
 export type CustomerListModel = CustomerListItemModel[]
