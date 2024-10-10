@@ -5,12 +5,12 @@ import React, { FC } from 'react'
 import { EquipmentNomenclatureListItemModel } from 'modules/warehouse/models'
 
 import DatePicker from 'components/DatePicker'
-import QuestionCircleIconStyled from 'components/Icons/QuestionCircleIcon'
+import { QuestionCircleIcon } from 'components/Icons'
 
 import { UPDATE_TEXT } from 'shared/constants/common'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
-import { LocationListItemModel } from 'shared/models/catalogs/location'
+import { LocationCatalogListItemModel } from 'shared/models/catalogs/locations'
 import { filterOptionBy } from 'shared/utils/common'
 
 import { AmountEquipmentSpentReportFormFields, AmountEquipmentSpentReportFormProps } from './types'
@@ -66,7 +66,7 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
         rules={relocateToFormValue ? undefined : onlyRequiredRules}
         dependencies={['relocateTo']}
       >
-        <Select<LocationListItemModel['id'], LocationListItemModel>
+        <Select<LocationCatalogListItemModel['id'], LocationCatalogListItemModel>
           data-testid='relocate-from-select'
           fieldNames={idAndTitleSelectFieldNames}
           disabled={locationsIsLoading}
@@ -88,7 +88,7 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
         rules={relocateFromFormValue ? undefined : onlyRequiredRules}
         dependencies={['relocateFrom']}
       >
-        <Select<LocationListItemModel['id'], LocationListItemModel>
+        <Select<LocationCatalogListItemModel['id'], LocationCatalogListItemModel>
           data-testid='relocate-to-select'
           fieldNames={idAndTitleSelectFieldNames}
           disabled={locationsIsLoading}
@@ -116,7 +116,7 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
             placement='right'
             content={<Text>Фильтрует список операций по дате создания заявки</Text>}
           >
-            <QuestionCircleIconStyled />
+            <QuestionCircleIcon />
           </Popover>
         </Flex>
       </Form.Item>

@@ -1,9 +1,8 @@
 import { TaskApiEnum } from 'modules/task/constants/task'
+import { TaskRequestArgs } from 'modules/task/types'
 
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
-
-import { TaskRequestArgs } from '../../types'
 
 export const getTaskUrl = (taskId: IdType): string =>
   generateApiPath(TaskApiEnum.GetTask, { id: String(taskId) })

@@ -1,21 +1,37 @@
 import { SelectProps } from 'antd'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 
 import {
   externalRelocationStatusDict,
   relocationTaskStatusDict,
   relocationTaskTypeDict,
 } from './dict'
-import { RelocationTaskTypeEnum } from './enums'
+import { RelocationTaskStatusEnum, RelocationTaskTypeEnum } from './enums'
 
-export const relocationTaskStatusOptions: SelectProps['options'] = Object.keys(
-  relocationTaskStatusDict,
-).map((key) => ({
-  label: relocationTaskStatusDict[key as keyof typeof relocationTaskStatusDict],
-  value: key,
-}))
+export const relocationTaskStatusOptions: SelectProps['options'] = [
+  {
+    label: relocationTaskStatusDict[RelocationTaskStatusEnum.New],
+    value: RelocationTaskStatusEnum.New,
+  },
+  {
+    label: relocationTaskStatusDict[RelocationTaskStatusEnum.Completed],
+    value: RelocationTaskStatusEnum.Completed,
+  },
+  {
+    label: relocationTaskStatusDict[RelocationTaskStatusEnum.Returned],
+    value: RelocationTaskStatusEnum.Returned,
+  },
+  {
+    label: relocationTaskStatusDict[RelocationTaskStatusEnum.Closed],
+    value: RelocationTaskStatusEnum.Closed,
+  },
+  {
+    label: relocationTaskStatusDict[RelocationTaskStatusEnum.Canceled],
+    value: RelocationTaskStatusEnum.Canceled,
+  },
+]
 
 // relocation task type options
 export type RelocationTaskTypeOption = DefaultOptionType & {

@@ -16,7 +16,7 @@ export const relocationEquipmentListItem = (): RelocationEquipmentListItemModel 
   quantity: fakeInteger(),
   condition: EquipmentConditionEnum.Working,
   serialNumber: fakeWord(),
-  currency: currencyFixtures.currency(),
+  currency: currencyFixtures.currencyListItem(),
   price: fakeInteger(),
   category: pick(warehouseFixtures.equipmentCategory(), 'id', 'title', 'code'),
 })

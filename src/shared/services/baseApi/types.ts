@@ -24,6 +24,8 @@ export type ErrorResponse<T extends object = {}> = {
   status: HttpCodeEnum
 }
 
+export type TableRowsApiErrors = { [k: number]: string[] }
+
 /**
   Дополнительно в BaseQueryFn можно передать тип для поля error, но тип в хуках для этого поля
  будет такой: MyCustomErrorType | SerialisedError. Решения как убрать тип SerialisedError

@@ -19,6 +19,7 @@ import { InfrastructureModel } from 'modules/infrastructures/models'
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 
+import { useGetInfrastructureWorkTypes } from 'shared/hooks/catalogs/infrastructureWorkTypes'
 import { useGetUrgencyRateTypes } from 'shared/hooks/catalogs/urgencyRateTypes'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/services/baseApi'
@@ -65,8 +66,14 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
     { isLoading: createInfrastructureOrderFormIsLoading },
   ] = useCreateInfrastructureOrderForm()
 
+  const {
+    currentData: infrastructureWorkTypes = [],
+    isFetching: infrastructureWorkTypesIsFetching,
+  } = useGetInfrastructureWorkTypes(undefined, { skip: !managerIsCurrentUser })
+
   const [createInfrastructureOrderFormAttachment] = useCreateInfrastructureOrderFormAttachment()
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
+
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
   const createOrderFormFile = useCallback<NonNullable<UploadProps['customRequest']>>(
@@ -116,6 +123,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
         children: (
           <ChangeInfrastructureOrderForm
             data={orderForm}
+            infrastructureWorkTypes={infrastructureWorkTypes}
             managerIsCurrentUser={managerIsCurrentUser}
             canUploadFile={managerIsCurrentUser}
             onUploadFile={onUploadInfrastructureOrderFormFile(orderForm.id)}
@@ -129,6 +137,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
       deleteAttachment,
       deleteAttachmentIsLoading,
       infrastructureOrdersForms,
+      infrastructureWorkTypes,
       managerIsCurrentUser,
       onUploadInfrastructureOrderFormFile,
     ],
@@ -151,7 +160,9 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
       )}
 
       <Form form={form}>
-        <LoadingArea isLoading={infrastructureOrdersFormsIsFetching}>
+        <LoadingArea
+          isLoading={infrastructureOrdersFormsIsFetching || infrastructureWorkTypesIsFetching}
+        >
           {!!infrastructureOrdersForms.length ? (
             <Collapse
               ghost

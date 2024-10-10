@@ -12,12 +12,12 @@ import { useLazyGetEquipmentsXlsxQuery } from 'modules/warehouse/services/equipm
 import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetEquipmentsXlsxResult = CustomUseLazyQueryHookResult<
+type UseLazyGetEquipmentsXlsxResult = CustomUseLazyQueryHookResult<
   GetEquipmentsXlsxQueryArgs,
   GetEquipmentsXlsxSuccessResponse
 >
 
-export const useLazyGetEquipmentsXlsx = (): UseGetEquipmentsXlsxResult => {
+export const useLazyGetEquipmentsXlsx = (): UseLazyGetEquipmentsXlsxResult => {
   const [trigger, state] = useLazyGetEquipmentsXlsxQuery()
 
   useEffect(() => {

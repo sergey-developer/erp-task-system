@@ -1,235 +1,278 @@
-import { screen, waitFor, within } from '@testing-library/react'
-import { UserEvent } from '@testing-library/user-event/setup/setup'
+import { waitFor, within } from '@testing-library/react'
 
-import { TaskStatusEnum } from 'modules/task/constants/task'
-
-import taskFixtures from '_tests_/fixtures/task'
+import { props } from '_tests_/features/tasks/components/TaskDetails/AdditionalInfo/constants'
+import { additionalInfoTestUtils } from '_tests_/features/tasks/components/TaskDetails/AdditionalInfo/testUtils'
 import {
   buttonTestUtils,
   fakeAddress,
   fakeEmail,
+  fakeLatitude,
+  fakeLongitude,
   fakeWord,
-  iconTestUtils,
   render,
 } from '_tests_/utils'
 
-import AdditionalInfo, { AdditionalInfoProps } from './index'
+import AdditionalInfo from './index'
 
-const props: Readonly<
-  AdditionalInfoProps & {
-    onExpand: jest.MockedFn<AdditionalInfoProps['onExpand']>
-  }
-> = {
-  permissions: {},
-  expanded: true,
-  onExpand: jest.fn(),
-  severity: fakeWord(),
-  priority: fakeWord(),
-  impact: fakeWord(),
-  productClassifier1: fakeWord(),
-  productClassifier2: fakeWord(),
-  productClassifier3: fakeWord(),
-  status: TaskStatusEnum.New,
-  workGroup: taskFixtures.workGroup(),
-  address: null,
-  longitude: null,
-  latitude: null,
-  weight: null,
-  email: null,
-  sapId: null,
-  company: null,
-  contactType: null,
-  workType: null,
-  supportGroup: undefined,
-  toggleEditWorkType: jest.fn(),
-  onSaveWorkType: jest.fn(),
-  saveWorkTypeIsLoading: false,
-  workTypes: [],
-  workTypesIsLoading: false,
-}
-
-const getContainer = () => screen.getByTestId('task-details-additional-info')
-const queryContainer = () => screen.queryByTestId('task-details-additional-info')
-const getChildByText = (text: string) => within(getContainer()).getByText(text)
-
-const getAdditionalInfoContent = () => within(getContainer()).getByTestId('additional-info-content')
-
-const queryAdditionalInfoContent = () =>
-  within(getContainer()).queryByTestId('additional-info-content')
-
-const getExpandButton = () =>
-  buttonTestUtils.getButtonIn(getContainer(), /дополнительная информация/i)
-
-const clickExpandButton = async (user: UserEvent) => {
-  const button = getExpandButton()
-  await user.click(button)
-  return button
-}
-
-const getAddress = () => within(getAdditionalInfoContent()).getByTestId('additional-info-address')
-
-const getAddressIcon = () => iconTestUtils.getIconByNameIn(getAddress(), 'environment')
-
-export const testUtils = {
-  getContainer,
-  queryContainer,
-  getChildByText,
-
-  getAdditionalInfoContent,
-  queryAdditionalInfoContent,
-
-  getExpandButton,
-  clickExpandButton,
-
-  getAddress,
-  getAddressIcon,
-}
+afterEach(() => {
+  props.onExpand.mockReset()
+})
 
 describe('Блок дополнительной информации', () => {
   describe('Может быть по умолчанию', () => {
     test('Открыт', () => {
       render(<AdditionalInfo {...props} />)
-      expect(testUtils.getAdditionalInfoContent()).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getAdditionalInfoContent()).toBeInTheDocument()
     })
 
     test('Скрыт', () => {
       render(<AdditionalInfo {...props} expanded={false} />)
-      expect(testUtils.queryAdditionalInfoContent()).not.toBeInTheDocument()
+      expect(additionalInfoTestUtils.queryAdditionalInfoContent()).not.toBeInTheDocument()
     })
   })
 
-  describe('Если нажать кнопку "Дополнительная информация"', () => {
-    afterEach(() => {
-      props.onExpand.mockReset()
-    })
+  test('При клике на кнопку "Дополнительная информация" вызывается обработчик', async () => {
+    const { user } = render(<AdditionalInfo {...props} />)
 
-    test('callback "onExpand" вызывается', async () => {
-      const { user } = render(<AdditionalInfo {...props} />)
+    await additionalInfoTestUtils.clickExpandButton(user)
 
-      await testUtils.clickExpandButton(user)
-
-      await waitFor(() => {
-        expect(props.onExpand).toBeCalledTimes(1)
-      })
+    await waitFor(() => {
+      expect(props.onExpand).toBeCalledTimes(1)
     })
   })
 
-  test('Обязательные поля отображаются', () => {
-    render(<AdditionalInfo {...props} />)
-
-    expect(testUtils.getChildByText(props.priority)).toBeInTheDocument()
-    expect(testUtils.getChildByText(props.severity)).toBeInTheDocument()
-    expect(testUtils.getChildByText(props.impact)).toBeInTheDocument()
-    expect(testUtils.getChildByText(props.productClassifier1)).toBeInTheDocument()
-    expect(testUtils.getChildByText(props.productClassifier2)).toBeInTheDocument()
-    expect(testUtils.getChildByText(props.productClassifier3)).toBeInTheDocument()
-  })
-
-  test('Группа поддержки отображается если присутствует', () => {
-    const supportGroup = fakeWord()
-    render(<AdditionalInfo {...props} supportGroup={supportGroup} />)
-
-    expect(testUtils.getChildByText('Наименование группы поддержки Х5')).toBeInTheDocument()
-
-    expect(testUtils.getChildByText(supportGroup)).toBeInTheDocument()
-  })
-
-  describe('Блок "Приоритет заявки"', () => {
-    test('Заголовок отображается', () => {
+  describe('Родительская заявка', () => {
+    test('Отображается если есть', () => {
       render(<AdditionalInfo {...props} />)
-      expect(testUtils.getChildByText('Приоритет заявки')).toBeInTheDocument()
+      const label = additionalInfoTestUtils.getChildByText('Родительская заявка')
+      const button = buttonTestUtils.getButtonIn(
+        additionalInfoTestUtils.getContainer(),
+        props.parentTask!.recordId,
+      )
+      expect(label).toBeInTheDocument()
+      expect(button).toBeInTheDocument()
     })
 
-    test('Вес отображается если присутствует', () => {
+    test('При клике вызывается обработчик', async () => {
+      const { user } = render(<AdditionalInfo {...props} />)
+      const button = buttonTestUtils.getButtonIn(
+        additionalInfoTestUtils.getContainer(),
+        props.parentTask!.recordId,
+      )
+      await user.click(button)
+      expect(props.openParentTask).toBeCalledTimes(1)
+    })
+
+    test('Не отображается если нету', () => {
+      render(<AdditionalInfo {...props} parentTask={null} />)
+      expect(
+        additionalInfoTestUtils.queryChildByText('Родительская заявка'),
+      ).not.toBeInTheDocument()
+    })
+  })
+
+  describe('Группа поддержки', () => {
+    test('Отображается если есть', () => {
+      const supportGroup = fakeWord()
+      render(<AdditionalInfo {...props} supportGroup={supportGroup} />)
+      expect(
+        additionalInfoTestUtils.getChildByText('Наименование группы поддержки Х5'),
+      ).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(supportGroup)).toBeInTheDocument()
+    })
+
+    test('Не отображается если нету', () => {
+      render(<AdditionalInfo {...props} supportGroup={undefined} />)
+      expect(
+        additionalInfoTestUtils.queryChildByText('Наименование группы поддержки Х5'),
+      ).not.toBeInTheDocument()
+    })
+  })
+
+  describe('Категория заявки', () => {
+    test('Уровень 1 отображается если есть', () => {
+      const productClassifier1 = fakeWord()
+      render(<AdditionalInfo {...props} productClassifier1={productClassifier1} />)
+      expect(additionalInfoTestUtils.getChildByText('Категория заявки')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText('Уровень 1')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(productClassifier1)).toBeInTheDocument()
+    })
+
+    test('Уровень 1 не отображается если нету', () => {
+      render(<AdditionalInfo {...props} productClassifier1={null} />)
+      expect(additionalInfoTestUtils.queryChildByText('Уровень 1')).not.toBeInTheDocument()
+    })
+
+    test('Уровень 2 отображается если есть', () => {
+      const productClassifier2 = fakeWord()
+      render(<AdditionalInfo {...props} productClassifier2={productClassifier2} />)
+      expect(additionalInfoTestUtils.getChildByText('Категория заявки')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText('Уровень 2')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(productClassifier2)).toBeInTheDocument()
+    })
+
+    test('Уровень 2 не отображается если нету', () => {
+      render(<AdditionalInfo {...props} productClassifier2={null} />)
+      expect(additionalInfoTestUtils.queryChildByText('Уровень 2')).not.toBeInTheDocument()
+    })
+
+    test('Уровень 3 отображается если есть', () => {
+      const productClassifier3 = fakeWord()
+      render(<AdditionalInfo {...props} productClassifier3={productClassifier3} />)
+      expect(additionalInfoTestUtils.getChildByText('Категория заявки')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText('Уровень 3')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(productClassifier3)).toBeInTheDocument()
+    })
+
+    test('Уровень 3 не отображается если нету', () => {
+      render(<AdditionalInfo {...props} productClassifier3={null} />)
+      expect(additionalInfoTestUtils.queryChildByText('Уровень 3')).not.toBeInTheDocument()
+    })
+  })
+
+  describe('Приоритет заявки', () => {
+    test('Отображается если есть', () => {
       const weight = 1
       render(<AdditionalInfo {...props} weight={weight} />)
+      expect(additionalInfoTestUtils.getChildByText('Приоритет заявки')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText('Вес:')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(String(weight))).toBeInTheDocument()
+    })
 
-      expect(testUtils.getChildByText('Вес:')).toBeInTheDocument()
-      expect(testUtils.getChildByText(String(weight))).toBeInTheDocument()
+    test('Не отображается если нету', () => {
+      render(<AdditionalInfo {...props} weight={null} />)
+      expect(additionalInfoTestUtils.queryChildByText('Приоритет заявки')).not.toBeInTheDocument()
+      expect(additionalInfoTestUtils.queryChildByText('Вес:')).not.toBeInTheDocument()
     })
   })
 
-  test('Email отображается если присутствует', () => {
-    const email = fakeEmail()
-    render(<AdditionalInfo {...props} email={email} />)
+  describe('Влияние', () => {
+    test('Отображается если есть', () => {
+      const impact = fakeWord()
+      render(<AdditionalInfo {...props} impact={impact} />)
+      expect(additionalInfoTestUtils.getChildByText('Влияние')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(impact)).toBeInTheDocument()
+    })
 
-    expect(testUtils.getChildByText('Email')).toBeInTheDocument()
-    expect(testUtils.getChildByText(email)).toBeInTheDocument()
+    test('Не отображается если нету', () => {
+      render(<AdditionalInfo {...props} impact={undefined} />)
+      expect(additionalInfoTestUtils.queryChildByText('Влияние')).not.toBeInTheDocument()
+    })
   })
 
-  test('SAP ID отображается если присутствует', () => {
-    const sapId = fakeWord()
-    render(<AdditionalInfo {...props} sapId={sapId} />)
+  describe('Срочность', () => {
+    test('Отображается если есть', () => {
+      const severity = fakeWord()
+      render(<AdditionalInfo {...props} severity={severity} />)
+      expect(additionalInfoTestUtils.getChildByText('Срочность')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(severity)).toBeInTheDocument()
+    })
 
-    expect(testUtils.getChildByText('SAP ID')).toBeInTheDocument()
-    expect(testUtils.getChildByText(sapId)).toBeInTheDocument()
+    test('Не отображается если нету', () => {
+      render(<AdditionalInfo {...props} severity={undefined} />)
+      expect(additionalInfoTestUtils.queryChildByText('Срочность')).not.toBeInTheDocument()
+    })
   })
 
-  test('Компания отображается если присутствует', () => {
-    const company = fakeWord()
-    render(<AdditionalInfo {...props} company={company} />)
+  describe('Приоритет', () => {
+    test('Отображается если есть', () => {
+      const priority = fakeWord()
+      render(<AdditionalInfo {...props} priority={priority} />)
+      expect(additionalInfoTestUtils.getChildByText('Приоритет')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(priority)).toBeInTheDocument()
+    })
 
-    expect(testUtils.getChildByText('Компания')).toBeInTheDocument()
-    expect(testUtils.getChildByText(company)).toBeInTheDocument()
+    test('Не отображается если нету', () => {
+      render(<AdditionalInfo {...props} priority={undefined} />)
+      expect(additionalInfoTestUtils.queryChildByText('Приоритет')).not.toBeInTheDocument()
+    })
   })
 
-  test('Формат магазина отображается если присутствует', () => {
-    const contactType = fakeWord()
-    render(<AdditionalInfo {...props} contactType={contactType} />)
+  describe('Email', () => {
+    test('Отображается если есть', () => {
+      const email = fakeEmail()
+      render(<AdditionalInfo {...props} email={email} />)
+      expect(additionalInfoTestUtils.getChildByText('Email')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(email)).toBeInTheDocument()
+    })
 
-    expect(testUtils.getChildByText('Формат магазина')).toBeInTheDocument()
-    expect(testUtils.getChildByText(contactType)).toBeInTheDocument()
+    test('Не отображается если нету', () => {
+      render(<AdditionalInfo {...props} email={null} />)
+      expect(additionalInfoTestUtils.queryChildByText('Email')).not.toBeInTheDocument()
+    })
+  })
+
+  describe('SAP ID', () => {
+    test('Отображается если есть', () => {
+      const sapId = fakeWord()
+      render(<AdditionalInfo {...props} sapId={sapId} />)
+      expect(additionalInfoTestUtils.getChildByText('SAP ID')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(sapId)).toBeInTheDocument()
+    })
+
+    test('Не отображается если нету', () => {
+      render(<AdditionalInfo {...props} sapId={null} />)
+      expect(additionalInfoTestUtils.queryChildByText('SAP ID')).not.toBeInTheDocument()
+    })
+  })
+
+  describe('Компания', () => {
+    test('Отображается если есть родительская заявка', () => {
+      const company = fakeWord()
+      render(<AdditionalInfo {...props} company={company} />)
+      expect(additionalInfoTestUtils.getChildByText('Компания')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(company)).toBeInTheDocument()
+    })
+
+    test('Не отображается если нет родительской заявки', () => {
+      const company = fakeWord()
+      render(<AdditionalInfo {...props} company={company} parentTask={null} />)
+      expect(additionalInfoTestUtils.queryChildByText('Компания')).not.toBeInTheDocument()
+      expect(additionalInfoTestUtils.queryChildByText(company)).not.toBeInTheDocument()
+    })
+  })
+
+  describe('Формат магазина', () => {
+    test('Отображается если есть', () => {
+      const contactType = fakeWord()
+      render(<AdditionalInfo {...props} contactType={contactType} />)
+      expect(additionalInfoTestUtils.getChildByText('Формат магазина')).toBeInTheDocument()
+      expect(additionalInfoTestUtils.getChildByText(contactType)).toBeInTheDocument()
+    })
+
+    test('Не отображается если нету', () => {
+      render(<AdditionalInfo {...props} contactType={null} />)
+      expect(additionalInfoTestUtils.queryChildByText('Формат магазина')).not.toBeInTheDocument()
+    })
   })
 
   describe('Поле "Адрес"', () => {
-    describe('Если присутствует', () => {
-      test('Является корректной ссылкой', () => {
-        const addressValue = fakeAddress()
-        render(<AdditionalInfo {...props} address={addressValue} />)
+    test('Отображается если есть', () => {
+      const addressValue = fakeAddress()
+      render(
+        <AdditionalInfo
+          {...props}
+          address={addressValue}
+          latitude={String(fakeLatitude())}
+          longitude={String(fakeLongitude())}
+        />,
+      )
 
-        const address = testUtils.getAddress()
-
-        const link = within(address).getByRole('link', {
-          name: addressValue,
-        })
-
-        expect(link).toBeInTheDocument()
-        expect(link).toHaveAttribute('href')
-        expect(link).toHaveAttribute('target', '_blank')
+      const address = additionalInfoTestUtils.getAddress()
+      const icon = additionalInfoTestUtils.getAddressIcon()
+      const link = within(address).getByRole('link', {
+        name: addressValue,
       })
 
-      test('Иконка отображается', () => {
-        render(<AdditionalInfo {...props} address={fakeAddress()} />)
-
-        const icon = testUtils.getAddressIcon()
-        expect(icon).toBeInTheDocument()
-      })
+      expect(icon).toBeInTheDocument()
+      expect(link).toBeInTheDocument()
+      expect(link).toHaveAttribute('href')
+      expect(link).toHaveAttribute('target', '_blank')
     })
 
-    describe('Если отсутствует', () => {
-      test('Вместо него отображается соответствующий текст', () => {
-        render(<AdditionalInfo {...props} />)
-
-        const address = testUtils.getAddress()
-        expect(within(address).getByText('Не определено')).toBeInTheDocument()
-      })
-
-      test('Не является ссылкой', () => {
-        render(<AdditionalInfo {...props} />)
-
-        const address = testUtils.getAddress()
-
-        const link = within(address).queryByRole('link', {
-          name: 'Не определено',
-        })
-
-        expect(link).not.toBeInTheDocument()
-      })
-
-      test('Иконка отображается', () => {
-        render(<AdditionalInfo {...props} />)
-        expect(testUtils.getAddressIcon()).toBeInTheDocument()
-      })
+    test('Не отображается если нету', () => {
+      render(<AdditionalInfo {...props} address={null} />)
+      expect(additionalInfoTestUtils.queryAddress()).not.toBeInTheDocument()
     })
   })
 })

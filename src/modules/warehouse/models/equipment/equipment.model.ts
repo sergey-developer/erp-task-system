@@ -9,8 +9,8 @@ import {
   WorkTypeListItemModel,
 } from 'modules/warehouse/models'
 
-import { LocationModel } from 'shared/models/catalogs/location'
-import { CurrencyModel } from 'shared/models/currency'
+import { LocationCatalogListItemModel } from 'shared/models/catalogs/locations'
+import { CurrencyListItemModel } from 'shared/models/currency'
 import { MacroregionListItemModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -31,13 +31,13 @@ export type EquipmentModel = {
   purpose: Pick<WorkTypeListItemModel, 'id' | 'title'>
   amount: number
 
-  location: MaybeNull<Pick<LocationModel, 'id' | 'title'>>
+  location: MaybeNull<Pick<LocationCatalogListItemModel, 'id' | 'title'>>
   warehouse: MaybeNull<Pick<WarehouseModel, 'id' | 'title'>>
   inventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>
   quantity: MaybeNull<number>
   price: MaybeNull<number>
-  currency: MaybeNull<Pick<CurrencyModel, 'id' | 'title'>>
+  currency: MaybeNull<Pick<CurrencyListItemModel, 'id' | 'title'>>
   usageCounter: MaybeNull<number>
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
   macroregion: MaybeNull<Pick<MacroregionListItemModel, 'id' | 'title'>>

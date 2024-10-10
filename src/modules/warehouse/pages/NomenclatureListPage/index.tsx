@@ -19,7 +19,7 @@ import {
   updateNomenclatureGroupMessages,
 } from 'modules/warehouse/constants/nomenclatureGroup'
 import { useGetMeasurementUnitList } from 'modules/warehouse/hooks/measurementUnit'
-import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetNomenclature, useGetNomenclatures } from 'modules/warehouse/hooks/nomenclature'
 import { useGetNomenclatureGroupList } from 'modules/warehouse/hooks/nomenclatureGroup'
 import {
   GetNomenclatureGroupListQueryArgs,
@@ -161,8 +161,8 @@ const NomenclatureListPage: FC = () => {
     }
   }, [handleCloseEditNomenclatureModal, isGetNomenclatureError])
 
-  const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
-    useGetNomenclatureList(nomenclatureListParams)
+  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } =
+    useGetNomenclatures(nomenclatureListParams)
 
   const { currentData: measurementUnitList = [], isFetching: measurementUnitListIsFetching } =
     useGetMeasurementUnitList(undefined, {
@@ -371,7 +371,7 @@ const NomenclatureListPage: FC = () => {
           <Search
             placeholder='Поиск номенклатуры'
             allowClear
-            disabled={nomenclatureListIsFetching || nomenclatureGroupListIsFetching}
+            disabled={nomenclaturesIsFetching || nomenclatureGroupListIsFetching}
             onSearch={handleChangeSearch}
           />
 
@@ -393,11 +393,7 @@ const NomenclatureListPage: FC = () => {
               tip='Загрузка групп...'
             >
               <Space $block direction='vertical'>
-                <Button
-                  block
-                  onClick={onClickAllNomenclature}
-                  disabled={nomenclatureListIsFetching}
-                >
+                <Button block onClick={onClickAllNomenclature} disabled={nomenclaturesIsFetching}>
                   Вся номенклатура
                 </Button>
 
@@ -418,9 +414,9 @@ const NomenclatureListPage: FC = () => {
 
           <Col span={19}>
             <NomenclatureTable
-              dataSource={extractPaginationResults(nomenclatureList)}
-              pagination={extractPaginationParams(nomenclatureList)}
-              loading={nomenclatureListIsFetching}
+              dataSource={extractPaginationResults(nomenclatures)}
+              pagination={extractPaginationParams(nomenclatures)}
+              loading={nomenclaturesIsFetching}
               onChange={handleChangeTable}
               onClickName={debouncedHandleOpenEditNomenclatureModal}
             />

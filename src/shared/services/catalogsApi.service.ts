@@ -4,7 +4,14 @@ import {
   GetFaChangeTypesQueryArgs,
   GetFaChangeTypesSuccessResponse,
 } from 'shared/models/catalogs/faChangeTypes'
-import { GetLocationsQueryArgs, GetLocationsSuccessResponse } from 'shared/models/catalogs/location'
+import {
+  GetInfrastructureWorkTypesQueryArgs,
+  GetInfrastructureWorkTypesSuccessResponse,
+} from 'shared/models/catalogs/infrastructureWorkTypes'
+import {
+  GetLocationsCatalogQueryArgs,
+  GetLocationsCatalogSuccessResponse,
+} from 'shared/models/catalogs/locations'
 import {
   GetResolutionClassificationsQueryArgs,
   GetResolutionClassificationsSuccessResponse,
@@ -25,6 +32,10 @@ import {
   GetUserStatusListQueryArgs,
   GetUserStatusListSuccessResponse,
 } from 'shared/models/catalogs/userStatus'
+import {
+  GetWorkGroupsCatalogQueryArgs,
+  GetWorkGroupsCatalogSuccessResponse,
+} from 'shared/models/catalogs/workGroups'
 import { MaybeUndefined } from 'shared/types/utils'
 
 import { baseApiService } from './baseApi'
@@ -53,13 +64,18 @@ export const catalogsApiService = baseApiService.injectEndpoints({
         method: HttpMethodEnum.Get,
       }),
     }),
-    getLocations: build.query<GetLocationsSuccessResponse, MaybeUndefined<GetLocationsQueryArgs>>({
+
+    getLocationsCatalog: build.query<
+      GetLocationsCatalogSuccessResponse,
+      MaybeUndefined<GetLocationsCatalogQueryArgs>
+    >({
       query: (params) => ({
         url: CatalogsApiEnum.GetLocations,
         method: HttpMethodEnum.Get,
         params,
       }),
     }),
+
     getFaChangeTypes: build.query<
       GetFaChangeTypesSuccessResponse,
       MaybeUndefined<GetFaChangeTypesQueryArgs>
@@ -77,6 +93,24 @@ export const catalogsApiService = baseApiService.injectEndpoints({
         url: CatalogsApiEnum.GetResolutionClassifications,
         method: HttpMethodEnum.Get,
         params,
+      }),
+    }),
+    getWorkGroupsCatalog: build.query<
+      GetWorkGroupsCatalogSuccessResponse,
+      GetWorkGroupsCatalogQueryArgs
+    >({
+      query: () => ({
+        url: CatalogsApiEnum.GetWorkGroups,
+        method: HttpMethodEnum.Get,
+      }),
+    }),
+    getInfrastructureWorkTypes: build.query<
+      GetInfrastructureWorkTypesSuccessResponse,
+      GetInfrastructureWorkTypesQueryArgs
+    >({
+      query: () => ({
+        url: CatalogsApiEnum.GetInfrastructureWorkTypes,
+        method: HttpMethodEnum.Get,
       }),
     }),
     getUrgencyRateTypes: build.query<
@@ -98,12 +132,16 @@ export const {
 
   useGetUserStatusListQuery,
 
-  useGetLocationsQuery,
-  useLazyGetLocationsQuery,
+  useGetLocationsCatalogQuery,
+  useLazyGetLocationsCatalogQuery,
 
   useGetFaChangeTypesQuery,
 
   useGetResolutionClassificationsQuery,
+
+  useGetWorkGroupsCatalogQuery,
+
+  useGetInfrastructureWorkTypesQuery,
 
   useGetUrgencyRateTypesQuery,
 

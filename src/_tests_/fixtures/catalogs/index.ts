@@ -1,5 +1,6 @@
 import * as faChangeType from './faChangeType'
-import * as location from './location'
+import * as infrastructureWorkTypes from './infrastructureWorkTypes'
+import * as locations from './locations'
 import * as resolutionClassifications from './resolutionClassifications'
 import * as subTaskTemplate from './subTaskTemplate'
 import * as timeZone from './timeZone'
@@ -11,8 +12,9 @@ const catalogsFixtures = {
   ...subTaskTemplate,
   ...timeZone,
   ...userStatus,
-  ...location,
+  ...locations,
   ...resolutionClassifications,
+  ...infrastructureWorkTypes,
   ...urgencyRateTypes,
 } as const
 

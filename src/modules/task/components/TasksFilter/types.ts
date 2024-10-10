@@ -8,7 +8,7 @@ import {
 } from 'modules/task/constants/task'
 import { SearchFields } from 'modules/task/models'
 import { UsersModel } from 'modules/user/models'
-import { MatchedUserPermissions } from 'modules/user/utils'
+import { MatchedUserPermissions } from 'modules/user/types'
 import { CustomerListModel } from 'modules/warehouse/models'
 import { WorkGroupListModel } from 'modules/workGroup/models'
 

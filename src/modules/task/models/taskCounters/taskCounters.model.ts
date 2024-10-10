@@ -1,6 +1,6 @@
-// todo: исп-ть утилиту для типов Camelize вместе с FastFilterEnum когда она будет доступна
 export type TaskCountersModel = {
-  all: number
+  allLines: number
+  allInLine: number
   free: number
   mine: number
   overdue: number

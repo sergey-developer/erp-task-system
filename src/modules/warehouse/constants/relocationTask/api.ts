@@ -12,6 +12,7 @@ export enum RelocationTaskApiEnum {
   CreateRelocationTaskITSM = '/relocation-tasks/itsm/',
   CreateRelocationTask = '/relocation-tasks/',
   UpdateRelocationTask = '/relocation-tasks/:id',
+  MoveRelocationTaskDraftToWork = '/relocation-tasks/:id/start',
 
   GetRelocationTasks = '/relocation-tasks/',
 
@@ -28,4 +29,5 @@ export enum RelocationTaskApiTagEnum {
 
 export enum RelocationTaskApiTriggerEnum {
   GetRelocationTask = 'getRelocationTask',
+  GetRelocationTasks = 'getRelocationTasks',
 }
