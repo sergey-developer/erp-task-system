@@ -115,10 +115,11 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
       currentInfrastructureWork: ChangeInfrastructureOrderFormTableRow
       infrastructureWorkPath: NamePath
     }) => {
-      if (!record.type) return
+      if (!record.type || !record.id) return
 
       try {
         const updatedOrderFormWork = await updateInfrastructureOrderFormWorkMutation({
+          infrastructureWorkId: record.id,
           amount,
           infrastructureWorkType: record.type.id,
         }).unwrap()
@@ -192,9 +193,9 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
           }).unwrap()
 
           const updates: ChangeInfrastructureOrderFormTableRow = {
-            isNew: false,
             ...currentInfrastructureWork,
             ...createdOrderFormWork,
+            isNew: false,
           }
 
           form.setFieldValue(infrastructureWorkPath, updates)
