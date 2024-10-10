@@ -346,7 +346,8 @@ const EditRelocationTaskDraftPage: FC = () => {
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
         executors: values.executors,
-        controllers: values.controllers,
+        // controllers: values.controllers,
+        controller: values.controller,
         comment: values.comment,
       }).unwrap()
 
