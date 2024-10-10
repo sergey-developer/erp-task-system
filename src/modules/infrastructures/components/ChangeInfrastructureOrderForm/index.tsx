@@ -21,6 +21,7 @@ import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { InfrastructureWorkTypesCatalogModel } from 'shared/models/catalogs/infrastructureWorkTypes'
+import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -106,11 +107,13 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
   const updateOrderFormWork = useCallback(
     async ({
       record,
+      infrastructureWorkType,
       amount,
       currentInfrastructureWork,
       infrastructureWorkPath,
     }: {
       record: ChangeInfrastructureOrderFormTableRow
+      infrastructureWorkType: IdType
       amount: number
       currentInfrastructureWork: ChangeInfrastructureOrderFormTableRow
       infrastructureWorkPath: NamePath
@@ -121,7 +124,7 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
         const updatedOrderFormWork = await updateInfrastructureOrderFormWorkMutation({
           infrastructureWorkId: record.id,
           amount,
-          infrastructureWorkType: record.type.id,
+          infrastructureWorkType,
         }).unwrap()
 
         const updates: ChangeInfrastructureOrderFormTableRow = {
@@ -167,6 +170,7 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
         await updateOrderFormWork({
           record,
           amount: currentInfrastructureWork.amount,
+          infrastructureWorkType: currentInfrastructureWork.type.id,
           currentInfrastructureWork,
           infrastructureWorkPath,
         })
@@ -206,6 +210,7 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
         await updateOrderFormWork({
           record,
           amount: currentInfrastructureWork.amount,
+          infrastructureWorkType: currentInfrastructureWork.type.id,
           currentInfrastructureWork,
           infrastructureWorkPath,
         })
