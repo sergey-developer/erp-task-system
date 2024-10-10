@@ -12,8 +12,11 @@ export const createInfrastructureOrderFormErrMsg =
 export const createInfrastructureOrdersFormAttachmentErrMsg =
   'Ошибка создания вложения к бланк-заказу'
 
-export const createInfrastructureOrderFormWorksErrMsg =
+export const createInfrastructureOrderFormWorkErrMsg =
   'Ошибка добавления работ по изменению инфраструктуры в бланк-заказ'
+
+export const updateInfrastructureOrderFormWorkErrMsg =
+  'Ошибка редактирования работ по изменению инфраструктуры'
 
 export const getInfrastructureOrderFormWorkTypeCostErrMsg =
   'Ошибка получения детальной информации по виду работ для определенного изменения инфраструктуры'

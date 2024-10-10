@@ -5,8 +5,8 @@ import {
   InfrastructuresApiTagEnum,
 } from 'modules/infrastructures/constants'
 import {
-  CreateInfrastructureOrderFormWorksMutationArgs,
-  CreateInfrastructureOrderFormWorksSuccessResponse,
+  CreateInfrastructureOrderFormWorkMutationArgs,
+  CreateInfrastructureOrderFormWorkSuccessResponse,
   DeleteInfrastructureOrdersFormsWorkMutationArgs,
   DeleteInfrastructureOrdersFormsWorkSuccessResponse,
   GetInfrastructureOrderFormWorkTypeCostQueryArgs,
@@ -20,6 +20,8 @@ import {
   GetInfrastructureQueryArgs,
   GetInfrastructureSuccessResponse,
   UpdateInfrastructureMutationArgs,
+  UpdateInfrastructureOrderFormWorkMutationArgs,
+  UpdateInfrastructureOrderFormWorkSuccessResponse,
   UpdateInfrastructureSuccessResponse,
 } from 'modules/infrastructures/models'
 import {
@@ -30,6 +32,8 @@ import {
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApiService } from 'shared/services/baseApi'
+
+import { makeUpdateInfrastructureOrderFormWorkApiUrl } from '../utils/infrastructureOrderFormWork/apiUrls'
 
 const infrastructuresApiService = baseApiService
   .enhanceEndpoints({
@@ -113,13 +117,23 @@ const infrastructuresApiService = baseApiService
         }),
       }),
 
-      createInfrastructureOrderFormWorks: build.mutation<
-        CreateInfrastructureOrderFormWorksSuccessResponse,
-        CreateInfrastructureOrderFormWorksMutationArgs
+      createInfrastructureOrderFormWork: build.mutation<
+        CreateInfrastructureOrderFormWorkSuccessResponse,
+        CreateInfrastructureOrderFormWorkMutationArgs
       >({
         query: (data) => ({
-          url: InfrastructuresApiEnum.CreateInfrastructureOrderFormWorks,
+          url: InfrastructuresApiEnum.CreateInfrastructureOrderFormWork,
           method: HttpMethodEnum.Post,
+          data: data,
+        }),
+      }),
+      updateInfrastructureOrderFormWork: build.mutation<
+        UpdateInfrastructureOrderFormWorkSuccessResponse,
+        UpdateInfrastructureOrderFormWorkMutationArgs
+      >({
+        query: ({ infrastructureWorkId, ...data }) => ({
+          url: makeUpdateInfrastructureOrderFormWorkApiUrl(infrastructureWorkId),
+          method: HttpMethodEnum.Put,
           data: data,
         }),
       }),
@@ -146,6 +160,7 @@ export const {
 
   useLazyGetInfrastructureOrderFormWorkTypeCostQuery,
 
-  useCreateInfrastructureOrderFormWorksMutation,
+  useCreateInfrastructureOrderFormWorkMutation,
+  useUpdateInfrastructureOrderFormWorkMutation,
   useDeleteInfrastructureOrdersFormsWorkMutation,
 } = infrastructuresApiService

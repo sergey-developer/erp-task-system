@@ -2,10 +2,10 @@ import { InfrastructureWorkModel } from 'modules/infrastructures/models/infrastr
 
 import { IdType } from 'shared/types/common'
 
-export type CreateInfrastructureOrderFormWorksMutationArgs = {
+export type CreateInfrastructureOrderFormWorkMutationArgs = {
   amount: number
   infrastructureWorkType: IdType
   orderForm: IdType
 }
 
-export type CreateInfrastructureOrderFormWorksSuccessResponse = InfrastructureWorkModel
+export type CreateInfrastructureOrderFormWorkSuccessResponse = InfrastructureWorkModel
