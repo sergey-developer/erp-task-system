@@ -86,8 +86,8 @@ const infrastructuresApiService = baseApiService
         UpdateInfrastructureOrderFormWorkSuccessResponse,
         UpdateInfrastructureOrderFormWorkMutationArgs
       >({
-        query: (data) => ({
-          url: makeUpdateInfrastructureOrderFormWorkApiUrl(data.infrastructureWorkType),
+        query: ({ infrastructureWorkId, ...data }) => ({
+          url: makeUpdateInfrastructureOrderFormWorkApiUrl(infrastructureWorkId),
           method: HttpMethodEnum.Put,
           data: data,
         }),
