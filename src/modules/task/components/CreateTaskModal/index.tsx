@@ -182,7 +182,7 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
                   fieldNames={idAndNameSelectFieldNames}
                   allowClear
                   showSearch
-                  filterOption={filterOptionBy('label')}
+                  filterOption={filterOptionBy('name')}
                   onChange={onChangeWorkGroup}
                 />
               </Form.Item>
