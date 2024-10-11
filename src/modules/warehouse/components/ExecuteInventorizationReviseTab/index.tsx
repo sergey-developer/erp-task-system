@@ -149,6 +149,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     currentData: paginatedInventorizationEquipments,
     isFetching: inventorizationEquipmentsIsFetching,
     refetch: refetchGetInventorizationEquipments,
+    fulfilledTimeStamp: getInventorizationEquipmentsFulfilledTimeStamp,
   } = useGetInventorizationEquipments(getInventorizationEquipmentsArgs)
   // get inventorization equipments
 
@@ -814,6 +815,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         <ReviseInventorizationEquipmentTable
           pagination={extractPaginationParams(paginatedInventorizationEquipments)}
           dataSource={extractPaginationResults(paginatedInventorizationEquipments)}
+          fulfilledTimeStamp={getInventorizationEquipmentsFulfilledTimeStamp}
           loading={inventorizationEquipmentsIsFetching}
           locations={locations}
           locationsIsLoading={locationsIsFetching}

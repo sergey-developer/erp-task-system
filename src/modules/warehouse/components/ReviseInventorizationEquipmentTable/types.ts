@@ -22,6 +22,8 @@ export type ReviseInventorizationEquipmentTableProps = SetNonNullable<
   EditableProTableProps<ReviseInventorizationEquipmentTableItem, any>,
   'pagination' | 'dataSource' | 'onTableChange' | 'loading'
 > & {
+  fulfilledTimeStamp?: number
+
   locations: LocationsCatalogModel
   locationsIsLoading: boolean
 

@@ -27,6 +27,8 @@ type GetColumnsArgs = Pick<
   locationOptions: DefaultOptionType[]
 }
 
+export const tableName = 'ReviseInventorizationEquipmentTable'
+
 export const getColumns = ({
   locationOptions,
   locationsIsLoading,
@@ -35,44 +37,33 @@ export const getColumns = ({
 }: GetColumnsArgs): ProColumns<ReviseInventorizationEquipmentTableItem>[] => {
   return [
     {
-      key: 'title',
-      dataIndex: 'equipment',
+      dataIndex: ['equipment', 'title'],
       title: 'Наименование',
       fieldProps: { disabled: true, placeholder: '-' },
-      renderText: (dom, entity) => entity.equipment.title,
     },
     {
-      key: 'serialNumber',
-      dataIndex: 'equipment',
+      dataIndex: ['equipment', 'serialNumber'],
       title: 'Серийный номер',
       fieldProps: { disabled: true, placeholder: '-' },
-      renderText: (dom, entity) => entity.equipment.serialNumber,
     },
     {
-      key: 'inventoryNumber',
-      dataIndex: 'equipment',
+      dataIndex: ['equipment', 'inventoryNumber'],
       title: 'Инвентарный номер',
       fieldProps: { disabled: true, placeholder: '-' },
-      renderText: (dom, entity) => entity.equipment.inventoryNumber,
     },
     {
-      key: 'locationPlan',
-      dataIndex: 'locationPlan',
+      dataIndex: ['locationPlan', 'title'],
       title: 'Плановое местонахождение',
       fieldProps: { disabled: true, placeholder: '-' },
-      renderText: (dom, entity) => entity.locationPlan?.title,
     },
     {
-      key: 'quantityPlan',
-      dataIndex: 'quantity',
+      dataIndex: ['quantity', 'plan'],
       title: 'Количество',
       valueType: 'digit',
       fieldProps: { disabled: true, placeholder: '-' },
-      renderText: (dom, entity) => entity.quantity.plan,
     },
     {
-      key: 'quantityFact',
-      dataIndex: 'quantity',
+      dataIndex: ['quantity', 'fact'],
       title: 'Наличие',
       valueType: 'digit',
 
@@ -81,15 +72,13 @@ export const getColumns = ({
 
       fieldProps: (form, config) => {
         const quantityFact: ReviseInventorizationEquipmentTableItem['quantity']['fact'] =
-          form.getFieldValue((config.rowKey as unknown as string[]).concat('quantityFact'))
+          form.getFieldValue((config.rowKey as unknown as string[]).concat('fact'))
 
         const quantityPlan: ReviseInventorizationEquipmentTableItem['quantity']['plan'] =
-          form.getFieldValue((config.rowKey as unknown as string[]).concat('quantityPlan'))
+          form.getFieldValue((config.rowKey as unknown as string[]).concat('plan'))
 
-        const locationFact:
-          | ReviseInventorizationEquipmentTableItem['locationFact']
-          | NonNullable<ReviseInventorizationEquipmentTableItem['locationFact']>['id'] =
-          form.getFieldValue((config.rowKey as unknown as string[]).concat('locationFact'))
+        const locationFact: ReviseInventorizationEquipmentTableItem['locationFact'] =
+          form.getFieldValue([tableName, config.rowIndex, 'locationFact'])
 
         return {
           min: 0,
@@ -108,10 +97,8 @@ export const getColumns = ({
           defaultValue: null,
         }
       },
-      renderText: (dom, entity) => entity.quantity.fact,
     },
     {
-      key: 'locationFact',
       dataIndex: 'locationFact',
       title: 'Фактическое местонахождение',
       valueType: 'select',
@@ -121,23 +108,20 @@ export const getColumns = ({
 
       fieldProps: (form, config) => {
         const quantityFact: ReviseInventorizationEquipmentTableItem['quantity']['fact'] =
-          form.getFieldValue((config.rowKey as unknown as string[]).concat('quantityFact'))
+          form.getFieldValue((config.rowKey as unknown as string[]).concat(['quantity', 'fact']))
 
         const quantityPlan: ReviseInventorizationEquipmentTableItem['quantity']['plan'] =
-          form.getFieldValue((config.rowKey as unknown as string[]).concat('quantityPlan'))
+          form.getFieldValue((config.rowKey as unknown as string[]).concat(['quantity', 'plan']))
 
         const equipmentCategoryIsConsumable = checkEquipmentCategoryIsConsumable(
-          config.entity.equipment.category.code,
+          form.getFieldValue([tableName, config.rowIndex, 'equipment', 'category', 'code']),
         )
 
-        const locationFact:
-          | ReviseInventorizationEquipmentTableItem['locationFact']
-          | NonNullable<ReviseInventorizationEquipmentTableItem['locationFact']>['id'] =
-          form.getFieldValue((config.rowKey as unknown as string[]).concat('locationFact')) ||
-          config.entity.locationFact
+        const locationFact: ReviseInventorizationEquipmentTableItem['locationFact'] =
+          form.getFieldValue([tableName, config.rowIndex, 'locationFact'])
 
         const locationPlan: ReviseInventorizationEquipmentTableItem['locationPlan'] =
-          config.entity.locationPlan
+          form.getFieldValue([tableName, config.rowIndex, 'locationPlan'])
 
         return {
           loading: locationsIsLoading,
@@ -146,7 +130,13 @@ export const getColumns = ({
           allowClear: false,
           showSearch: true,
           filterOption: filterOptionBy('label'),
-          onChange: (value: IdType) => onChangeLocationFact(config.entity, value, quantityFact),
+          onChange: async (value: IdType, option: any) => {
+            form.setFieldValue([tableName, config.rowIndex, 'locationFact'], {
+              title: option.label,
+              id: option.value,
+            })
+            await onChangeLocationFact(config.entity, value, quantityFact)
+          },
           disabled:
             locationsIsLoading ||
             !(

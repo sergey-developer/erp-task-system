@@ -343,7 +343,7 @@ const CreateRelocationTaskPage: FC = () => {
   const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
     {
       ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
-      ...(!!selectedRelocateTo?.value && { warehouses: [selectedRelocateTo.value] })
+      ...(!!selectedRelocateTo?.value && { warehouses: [selectedRelocateTo.value] }),
     },
     { skip: !selectedOwnerId && !selectedRelocateTo?.value },
   )
@@ -582,7 +582,7 @@ const CreateRelocationTaskPage: FC = () => {
             form.setFields(getFieldsErrors(error.data))
           }
         } else {
-          console.log('createEquipment error: ', error)
+          console.error('createEquipment error: ', error)
         }
       }
     },

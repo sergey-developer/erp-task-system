@@ -1,10 +1,12 @@
 import { EditableProTable } from '@ant-design/pro-components'
+import { Form } from 'antd'
+import { useForm } from 'antd/es/form/Form'
 import { DefaultOptionType } from 'rc-select/lib/Select'
-import { FC, useMemo } from 'react'
+import { FC, useEffect, useMemo } from 'react'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
 
-import { getColumns } from './columns'
+import { getColumns, tableName } from './columns'
 import { TableWrapperStyled } from './styles'
 import {
   ReviseInventorizationEquipmentTableItem,
@@ -13,6 +15,7 @@ import {
 
 const ReviseInventorizationEquipmentTable: FC<ReviseInventorizationEquipmentTableProps> = ({
   dataSource,
+  fulfilledTimeStamp,
 
   locations,
   locationsIsLoading,
@@ -22,7 +25,15 @@ const ReviseInventorizationEquipmentTable: FC<ReviseInventorizationEquipmentTabl
 
   ...props
 }) => {
+  const [form] = useForm()
+
   const editableKeys = useMemo(() => dataSource.map((item) => item.id), [dataSource])
+
+  useEffect(() => {
+    if (dataSource.length && fulfilledTimeStamp) {
+      form.setFieldValue(tableName, dataSource)
+    }
+  }, [dataSource, form, fulfilledTimeStamp])
 
   const locationOptions = useMemo<DefaultOptionType[]>(
     () => [undefinedSelectOption, ...locations.map((loc) => ({ label: loc.title, value: loc.id }))],
@@ -41,17 +52,21 @@ const ReviseInventorizationEquipmentTable: FC<ReviseInventorizationEquipmentTabl
   )
 
   return (
-    <TableWrapperStyled data-testid='revise-inventorization-equipment-table'>
-      <EditableProTable<ReviseInventorizationEquipmentTableItem>
-        rowKey='id'
-        columns={columns}
-        ghost
-        value={dataSource}
-        recordCreatorProps={false}
-        editable={{ type: 'multiple', editableKeys }}
-        {...props}
-      />
-    </TableWrapperStyled>
+    <Form form={form}>
+      <TableWrapperStyled data-testid='revise-inventorization-equipment-table'>
+        <EditableProTable<ReviseInventorizationEquipmentTableItem>
+          name={tableName}
+          rowKey='id'
+          columns={columns}
+          ghost
+          // @ts-ignore
+          form={form}
+          recordCreatorProps={false}
+          editable={{ type: 'multiple', editableKeys }}
+          {...props}
+        />
+      </TableWrapperStyled>
+    </Form>
   )
 }
 
