@@ -5,14 +5,14 @@ import {
   InfrastructuresApiTagEnum,
 } from 'modules/infrastructures/constants'
 import {
-  CreateInfrastructureOrderFormAttachmentMutationArgs,
-  CreateInfrastructureOrderFormAttachmentSuccessResponse,
-  DeleteInfrastructureOrdersFormsWorkMutationArgs,
-  DeleteInfrastructureOrdersFormsWorkSuccessResponse,
   CreateInfrastructureOrderFormWorkMutationArgs,
   CreateInfrastructureOrderFormWorkSuccessResponse,
+  DeleteInfrastructureOrdersFormsWorkMutationArgs,
+  DeleteInfrastructureOrdersFormsWorkSuccessResponse,
   GetInfrastructureOrderFormWorkTypeCostQueryArgs,
   GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
+  CreateInfrastructureOrderFormAttachmentMutationArgs,
+  CreateInfrastructureOrderFormAttachmentSuccessResponse,
   CreateInfrastructureOrderFormMutationArgs,
   CreateInfrastructureOrderFormSuccessResponse,
   GetInfrastructureOrdersFormsQueryArgs,
