@@ -594,7 +594,7 @@ const CreateRelocationTaskPage: FC = () => {
             form.setFields(getFieldsErrors(error.data))
           }
         } else {
-          console.log('createEquipment error: ', error)
+          console.error('createEquipment error: ', error)
         }
       }
     },
