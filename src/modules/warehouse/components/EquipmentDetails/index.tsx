@@ -14,13 +14,15 @@ import {
 import { GetTechnicalExaminationPdfTransformedSuccessResponse } from 'modules/technicalExaminations/types'
 import { UserPermissionsEnum } from 'modules/user/constants'
 import { useUserPermissions } from 'modules/user/hooks'
+import { CreateEquipmentTechnicalExaminationModalProps } from 'modules/warehouse/components/CreateEquipmentTechnicalExaminationModal/types'
 import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
+import { getEquipmentFormInitialValues } from 'modules/warehouse/components/EquipmentFormModal/utils'
 import { EquipmentRelocationHistoryModalProps } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/types'
 import {
   equipmentConditionDict,
   EquipmentConditionEnum,
 } from 'modules/warehouse/constants/equipment'
-import { defaultGetNomenclatureListParams } from 'modules/warehouse/constants/nomenclature'
+import { defaultGetNomenclaturesParams } from 'modules/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
 import { useLazyGetCustomerList } from 'modules/warehouse/hooks/customer'
 import {
@@ -31,7 +33,7 @@ import {
   useGetEquipmentRelocationHistory,
   useUpdateEquipment,
 } from 'modules/warehouse/hooks/equipment'
-import { useGetNomenclature, useGetNomenclatureList } from 'modules/warehouse/hooks/nomenclature'
+import { useGetNomenclature, useGetNomenclatures } from 'modules/warehouse/hooks/nomenclature'
 import { useGetWarehouseList } from 'modules/warehouse/hooks/warehouse'
 import { useGetWorkTypes } from 'modules/warehouse/hooks/workType'
 import {
@@ -62,9 +64,8 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 import { makeString } from 'shared/utils/string'
 
-import { CreateEquipmentTechnicalExaminationModalProps } from '../CreateEquipmentTechnicalExaminationModal/types'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
-import { getEquipmentFormInitialValues, getHiddenFieldsByCategory } from './utils'
+import { getHiddenFieldsByCategory } from './utils'
 
 const AttachmentListModal = React.lazy(
   () => import('modules/attachment/components/AttachmentListModal'),
@@ -187,10 +188,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     equipmentId,
   })
 
-  const { currentData: warehouseList = [], isFetching: warehouseListIsFetching } =
-    useGetWarehouseList({ ordering: 'title' }, { skip: !editEquipmentModalOpened })
+  const { currentData: warehouses = [], isFetching: warehousesIsFetching } = useGetWarehouseList(
+    { ordering: 'title' },
+    { skip: !editEquipmentModalOpened },
+  )
 
-  const { currentData: equipmentCategoryList = [], isFetching: equipmentCategoryListIsFetching } =
+  const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
     useGetEquipmentCategories(undefined, { skip: !editEquipmentModalOpened })
 
   const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList(
@@ -198,18 +201,17 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     { skip: !editEquipmentModalOpened },
   )
 
-  const { currentData: workTypeList = [], isFetching: workTypeListIsFetching } = useGetWorkTypes(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
     undefined,
     { skip: !editEquipmentModalOpened },
   )
 
-  const { currentData: nomenclatureList, isFetching: nomenclatureListIsFetching } =
-    useGetNomenclatureList(
-      categoryIsConsumable
-        ? { ...defaultGetNomenclatureListParams, equipmentHasSerialNumber: false }
-        : defaultGetNomenclatureListParams,
-      { skip: !editEquipmentModalOpened || !selectedCategory },
-    )
+  const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } = useGetNomenclatures(
+    categoryIsConsumable
+      ? { ...defaultGetNomenclaturesParams, equipmentHasSerialNumber: false }
+      : defaultGetNomenclaturesParams,
+    { skip: !editEquipmentModalOpened || !selectedCategory },
+  )
 
   const { currentData: nomenclature, isFetching: nomenclatureIsFetching } = useGetNomenclature(
     selectedNomenclatureId!,
@@ -278,6 +280,8 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     }
   }, [editEquipmentModalOpened, equipment?.nomenclature.id])
 
+  const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] = useLazyGetCustomerList()
+
   useEffect(() => {
     if (equipment?.owner?.id && editEquipmentModalOpened) {
       setSelectedOwnerId(equipment.owner.id)
@@ -290,9 +294,6 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     }
   }, [editEquipmentModalOpened, equipment?.warehouse?.id])
 
-  const [getCustomerList, { data: customerList = [], isFetching: customerListIsFetching }] =
-    useLazyGetCustomerList()
-
   useEffect(() => {
     if (
       editEquipmentModalOpened &&
@@ -300,12 +301,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
       !categoryIsConsumable &&
       !!selectedNomenclatureId
     ) {
-      getCustomerList()
+      getCustomers()
     }
   }, [
     editEquipmentModalOpened,
     categoryIsConsumable,
-    getCustomerList,
+    getCustomers,
     selectedCategory,
     selectedNomenclatureId,
   ])
@@ -349,7 +350,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   )
 
   const onEditEquipment: EquipmentFormModalProps['onSubmit'] = useCallback(
-    async ({ images, ...values }, setFields) => {
+    async ({ images, ...values }, form) => {
       try {
         await updateEquipmentMutation({
           ...values,
@@ -361,7 +362,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         refetchEquipmentAttachmentList()
       } catch (error) {
         if (isErrorResponse(error) && isBadRequestError(error)) {
-          setFields(getFieldsErrors(error.data))
+          form.setFields(getFieldsErrors(error.data))
         }
       }
     },
@@ -796,25 +797,25 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             isLoading={updateEquipmentIsLoading}
             initialValues={getEquipmentFormInitialValues(equipment)}
             values={equipmentFormValues}
-            categories={equipmentCategoryList}
-            categoriesIsLoading={equipmentCategoryListIsFetching}
+            categories={equipmentCategories}
+            categoriesIsLoading={equipmentCategoriesIsFetching}
             category={selectedCategory}
             onChangeCategory={onChangeCategory}
-            warehouses={warehouseList}
-            warehousesIsLoading={warehouseListIsFetching}
+            warehouses={warehouses}
+            warehousesIsLoading={warehousesIsFetching}
             currencies={currencies}
             currenciesIsLoading={currenciesIsFetching}
-            owners={customerList}
-            ownersIsLoading={customerListIsFetching}
+            owners={customers}
+            ownersIsLoading={customersIsFetching}
             onChangeOwner={setSelectedOwnerId}
             macroregions={macroregions}
             macroregionsIsLoading={macroregionsIsFetching}
-            workTypes={workTypeList}
-            workTypesIsLoading={workTypeListIsFetching}
+            workTypes={workTypes}
+            workTypesIsLoading={workTypesIsFetching}
             nomenclature={nomenclature}
             nomenclatureIsLoading={nomenclatureIsFetching}
-            nomenclatures={extractPaginationResults(nomenclatureList)}
-            nomenclaturesIsLoading={nomenclatureListIsFetching}
+            nomenclatures={extractPaginationResults(nomenclatures)}
+            nomenclaturesIsLoading={nomenclaturesIsFetching}
             onChangeNomenclature={onChangeNomenclature}
             onCancel={onCloseEditEquipmentModal}
             onSubmit={onEditEquipment}

@@ -6,8 +6,8 @@ import { render } from '_tests_/utils'
 
 import ConfirmExecutionRelocationTaskModal from './index'
 
-describe('Модалка отмены заявки на перемещение', () => {
-  test('Модалка отображается корректно', () => {
+describe('Модалка подтверждения выполнения заявки на перемещение', () => {
+  test('Заголовок и описание отображается', () => {
     render(<ConfirmExecutionRelocationTaskModal {...props} />)
 
     const container = confirmExecutionRelocationTaskModalTestUtils.getContainer()
@@ -21,7 +21,7 @@ describe('Модалка отмены заявки на перемещение',
   })
 
   describe('Кнопка подтверждения', () => {
-    test('Отображается корректно', () => {
+    test('Отображается и активна', () => {
       render(<ConfirmExecutionRelocationTaskModal {...props} />)
 
       const button = confirmExecutionRelocationTaskModalTestUtils.getConfirmButton()
@@ -38,7 +38,7 @@ describe('Модалка отмены заявки на перемещение',
   })
 
   describe('Кнопка отмены', () => {
-    test('Отображается корректно', () => {
+    test('Отображается и активна', () => {
       render(<ConfirmExecutionRelocationTaskModal {...props} />)
 
       const button = confirmExecutionRelocationTaskModalTestUtils.getCancelButton()

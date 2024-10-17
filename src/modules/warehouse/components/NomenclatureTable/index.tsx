@@ -1,4 +1,4 @@
-import { Table, TableProps } from 'antd'
+import { Flex, Table, TableProps } from 'antd'
 import { FC, useMemo } from 'react'
 
 import { getColumns } from './columns'
@@ -10,14 +10,14 @@ const NomenclatureTable: FC<NomenclatureTableProps> = ({ onClickName, ...props }
   const columns = useMemo(() => getColumns({ onClickName }), [onClickName])
 
   return (
-    <div data-testid='nomenclature-table'>
+    <Flex data-testid='nomenclature-table'>
       <Table<NomenclatureTableItem>
         {...props}
         rowKey='id'
         columns={columns}
         scroll={scrollConfig}
       />
-    </div>
+    </Flex>
   )
 }
 

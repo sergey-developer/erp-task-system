@@ -17,3 +17,5 @@ export * from './useCreateRelocationTaskCompletionDocuments'
 
 export * from './useGetRelocationEquipmentList'
 export * from './useGetRelocationEquipmentBalanceList'
+
+export * from './useMoveRelocationTaskDraftToWork'

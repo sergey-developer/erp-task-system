@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Flex, Table } from 'antd'
 import { FC, useMemo } from 'react'
 
 import { getColumns } from './columns'
@@ -8,9 +8,9 @@ const CallingReasonsTable: FC<CallingReasonsTableProps> = ({ onDelete, disabled,
   const columns = useMemo(() => getColumns({ onDelete, disabled }), [disabled, onDelete])
 
   return (
-    <div data-testid='calling-reasons-table'>
+    <Flex data-testid='calling-reasons-table'>
       <Table<CallingReasonsTableItem> {...props} rowKey='id' columns={columns} pagination={false} />
-    </div>
+    </Flex>
   )
 }
 

@@ -1,4 +1,9 @@
 import { AxiosResponseHeaders } from 'axios'
 
-export const extractFileNameFromHeaders = (headers: AxiosResponseHeaders): string =>
-  decodeURIComponent(headers['content-disposition']?.split('filename=')[1] || 'filename')
+import { DEFAULT_FILE_NAME } from 'shared/constants/common'
+
+export const extractFileNameFromHeaders = (
+  headers: AxiosResponseHeaders,
+  defaultFilename: string = DEFAULT_FILE_NAME,
+): string =>
+  decodeURIComponent(headers['content-disposition']?.split('filename=')[1] || defaultFilename)

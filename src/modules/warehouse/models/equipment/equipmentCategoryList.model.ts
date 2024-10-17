@@ -1,4 +1,12 @@
-import { EquipmentCategoryModel } from 'modules/warehouse/models'
+import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
 
-export type EquipmentCategoryListItemModel = Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>
+import { IdType } from 'shared/types/common'
+import { MaybeNull } from 'shared/types/utils'
+
+export type EquipmentCategoryListItemModel = {
+  id: IdType
+  title: string
+  code: MaybeNull<EquipmentCategoryEnum>
+}
+
 export type EquipmentCategoriesModel = EquipmentCategoryListItemModel[]

@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Flex, Table } from 'antd'
 import React, { FC, useMemo } from 'react'
 
 import { getColumns } from './columns'
@@ -16,14 +16,14 @@ const DocumentsPackageRelocationEquipmentTable: FC<
   )
 
   return (
-    <div data-testid='documents-package-relocation-equipment-table'>
+    <Flex data-testid='documents-package-relocation-equipment-table'>
       <Table<DocumentsPackageRelocationEquipmentTableItem>
         {...props}
         rowKey='id'
         pagination={false}
         columns={columns}
       />
-    </div>
+    </Flex>
   )
 }
 

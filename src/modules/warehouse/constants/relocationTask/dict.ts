@@ -11,6 +11,7 @@ export const relocationTaskStatusDict: Record<RelocationTaskStatusEnum, string> 
   [RelocationTaskStatusEnum.Returned]: 'Возвращено на доработку',
   [RelocationTaskStatusEnum.Closed]: 'Закрытая',
   [RelocationTaskStatusEnum.Canceled]: 'Отмененная',
+  [RelocationTaskStatusEnum.Draft]: 'Черновик',
 }
 
 export const relocationTaskTypeDict: Record<RelocationTaskTypeEnum, string> = {

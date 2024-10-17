@@ -2,9 +2,8 @@ import isUndefined from 'lodash/isUndefined'
 
 import { InfrastructureOrderFormListItemModel } from 'modules/infrastructures/models'
 
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { fakeId, fakeWord } from '_tests_/utils'
-
-import { urgencyRateType } from './urgencyRateType'
 
 export const infrastructureOrderFormListItemModel = (
   props?: Partial<Pick<InfrastructureOrderFormListItemModel, 'works'>>,
@@ -13,6 +12,6 @@ export const infrastructureOrderFormListItemModel = (
 
   id: fakeId(),
   number: fakeWord(),
-  urgencyRateType: urgencyRateType(),
+  urgencyRateType: catalogsFixtures.urgencyRateTypeListItem(),
   attachments: [],
 })
