@@ -14,7 +14,7 @@ import { getPathByLocation } from 'shared/utils/url'
 
 type ProtectedRouteProps<LocationState> = {
   component: ReactElement
-  permitted?: (user: UserModel, locationState: LocationState) => boolean
+  permitted?: (currentUser: UserModel, locationState: LocationState) => boolean
   onlyGuest?: boolean
   redirectPath?: string
 }

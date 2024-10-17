@@ -8,6 +8,7 @@ import { userHasPermissions } from 'modules/user/utils'
 import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
 import {
   CreateRelocationTaskDraftPageLocationState,
+  EditRelocationTaskDraftPageLocationState,
   ExecuteInventorizationPageLocationState,
 } from 'modules/warehouse/types'
 import {
@@ -19,6 +20,8 @@ import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
 import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
 
 import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
+
+import { RelocationTaskStatusEnum } from './constants/relocationTask'
 
 const WarehouseCatalogListPage = React.lazy(
   () => import('modules/warehouse/pages/WarehouseCatalogListPage'),
@@ -54,6 +57,10 @@ const CreateRelocationTaskPage = React.lazy(
 
 const CreateRelocationTaskDraftPage = React.lazy(
   () => import('modules/warehouse/pages/CreateRelocationTaskDraftPage'),
+)
+
+const EditRelocationTaskDraftPage = React.lazy(
+  () => import('modules/warehouse/pages/EditRelocationTaskDraftPage'),
 )
 
 const CreateRelocationTaskSimplifiedPage = React.lazy(
@@ -147,8 +154,8 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<NomenclatureListPage />}
-                  permitted={(user) =>
-                    userHasPermissions(user, [UserPermissionsEnum.NomenclaturesRead])
+                  permitted={(currentUser) =>
+                    userHasPermissions(currentUser, [UserPermissionsEnum.NomenclaturesRead])
                   }
                 />
               ),
@@ -172,7 +179,9 @@ export const route: Readonly<RouteObject> = {
           element: (
             <ProtectedRoute
               component={<EquipmentPageLayout />}
-              permitted={(user) => userHasPermissions(user, [UserPermissionsEnum.EquipmentsRead])}
+              permitted={(currentUser) =>
+                userHasPermissions(currentUser, [UserPermissionsEnum.EquipmentsRead])
+              }
             />
           ),
           handle: {
@@ -212,8 +221,8 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<RelocationTasksPage />}
-                  permitted={(user) =>
-                    userHasPermissions(user, [UserPermissionsEnum.RelocationTasksRead])
+                  permitted={(currentUser) =>
+                    userHasPermissions(currentUser, [UserPermissionsEnum.RelocationTasksRead])
                   }
                 />
               ),
@@ -223,8 +232,8 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<CreateRelocationTaskPage />}
-                  permitted={(user) =>
-                    userHasPermissions(user, [UserPermissionsEnum.RelocationTasksCreate])
+                  permitted={(currentUser) =>
+                    userHasPermissions(currentUser, [UserPermissionsEnum.RelocationTasksCreate])
                   }
                 />
               ),
@@ -242,8 +251,8 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<CreateRelocationTaskSimplifiedPage />}
-                  permitted={(user, locationState) =>
-                    userHasPermissions(user, [UserPermissionsEnum.RelocationTasksCreate]) &&
+                  permitted={(currentUser, locationState) =>
+                    userHasPermissions(currentUser, [UserPermissionsEnum.RelocationTasksCreate]) &&
                     get(locationState, 'task.assignee')
                   }
                 />
@@ -262,8 +271,8 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<EditRelocationTaskPage />}
-                  permitted={(user) =>
-                    userHasPermissions(user, [UserPermissionsEnum.RelocationTasksUpdate])
+                  permitted={(currentUser) =>
+                    userHasPermissions(currentUser, [UserPermissionsEnum.RelocationTasksUpdate])
                   }
                 />
               ),
@@ -291,8 +300,8 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute
                   component={<InventorizationsPage />}
-                  permitted={(user) =>
-                    userHasPermissions(user, [UserPermissionsEnum.InventorizationRead])
+                  permitted={(currentUser) =>
+                    userHasPermissions(currentUser, [UserPermissionsEnum.InventorizationRead])
                   }
                 />
               ),
@@ -303,10 +312,10 @@ export const route: Readonly<RouteObject> = {
                 // todo: сделать в других местах также где используется locationState
                 <ProtectedRoute<ExecuteInventorizationPageLocationState>
                   component={<ExecuteInventorizationPage />}
-                  permitted={(user, locationState) =>
-                    userHasPermissions(user, [UserPermissionsEnum.InventorizationUpdate]) &&
+                  permitted={(currentUser, locationState) =>
+                    userHasPermissions(currentUser, [UserPermissionsEnum.InventorizationUpdate]) &&
                     !!locationState &&
-                    locationState.inventorization?.executor.id === user.id &&
+                    locationState.inventorization?.executor.id === currentUser.id &&
                     (checkInventorizationStatusIsNew(locationState.inventorization?.status) ||
                       checkInventorizationStatusIsInProgress(locationState.inventorization?.status))
                   }
@@ -323,10 +332,10 @@ export const route: Readonly<RouteObject> = {
               element: (
                 <ProtectedRoute<CreateRelocationTaskDraftPageLocationState>
                   component={<CreateRelocationTaskDraftPage />}
-                  permitted={(user, locationState) =>
-                    userHasPermissions(user, [UserPermissionsEnum.InventorizationUpdate]) &&
+                  permitted={(currentUser, locationState) =>
+                    userHasPermissions(currentUser, [UserPermissionsEnum.InventorizationUpdate]) &&
                     !!locationState &&
-                    locationState.inventorization.executor.id === user.id &&
+                    locationState.inventorization.executor.id === currentUser.id &&
                     (checkInventorizationStatusIsNew(locationState.inventorization.status) ||
                       checkInventorizationStatusIsInProgress(locationState.inventorization.status))
                   }
@@ -335,6 +344,31 @@ export const route: Readonly<RouteObject> = {
               handle: {
                 crumb: ({ match }: BreadCrumbData) => (
                   <Breadcrumb link={match.pathname} text='Создать черновик заявки на перемещение' />
+                ),
+              },
+            },
+            {
+              path: WarehouseRouteEnum.EditRelocationTaskDraft,
+              element: (
+                <ProtectedRoute<EditRelocationTaskDraftPageLocationState>
+                  component={<EditRelocationTaskDraftPage />}
+                  permitted={(currentUser, locationState) =>
+                    userHasPermissions(currentUser, [
+                      UserPermissionsEnum.InventorizationUpdate,
+                      UserPermissionsEnum.RelocationTasksUpdate,
+                    ]) &&
+                    !!locationState &&
+                    locationState.inventorization.executor.id === currentUser.id &&
+                    locationState.relocationTask.status === RelocationTaskStatusEnum.Draft
+                  }
+                />
+              ),
+              handle: {
+                crumb: ({ match }: BreadCrumbData) => (
+                  <Breadcrumb
+                    link={match.pathname}
+                    text='Изменить черновик заявки на перемещение'
+                  />
                 ),
               },
             },

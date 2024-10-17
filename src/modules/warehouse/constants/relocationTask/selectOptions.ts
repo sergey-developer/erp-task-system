@@ -35,7 +35,7 @@ export const relocationTaskStatusOptions: SelectProps['options'] = [
 
 // relocation task type options
 export type RelocationTaskTypeOption = DefaultOptionType & {
-  hasPermissions?: (permissions: MatchedUserPermissions) => boolean
+  shouldDisable?: (permissions: MatchedUserPermissions) => boolean
 }
 
 export const relocationTaskTypeOptions: RelocationTaskTypeOption[] = [
@@ -66,7 +66,7 @@ export const relocationTaskTypeOptions: RelocationTaskTypeOption[] = [
   {
     label: relocationTaskTypeDict[RelocationTaskTypeEnum.EnteringBalances],
     value: RelocationTaskTypeEnum.EnteringBalances,
-    hasPermissions: (permissions) => !!permissions.enteringBalances,
+    shouldDisable: (permissions) => !permissions.enteringBalances,
   },
 ]
 

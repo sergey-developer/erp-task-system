@@ -3,7 +3,7 @@ import { Key } from 'react'
 
 import {
   InventorizationEquipmentListItemModel,
-  InventorizationEquipmentsModel,
+  RelocationEquipmentListItemModel,
 } from 'modules/warehouse/models'
 import { RelocationTaskInventorizationEquipment } from 'modules/warehouse/types'
 
@@ -13,7 +13,10 @@ export type InventorizationEquipmentTableRow = Partial<RelocationTaskInventoriza
   rowId: number
 }
 
-export type ActiveEquipmentTableRow = {
+export type ActiveEquipmentTableRow = Pick<
+  RelocationTaskInventorizationEquipment,
+  'relocationEquipmentId'
+> & {
   rowIndex: number
 }
 
@@ -23,15 +26,22 @@ export type RelocationEquipmentDraftEditableTableProps = {
   setEditableKeys?: (keys: Key[]) => void
   isLoading: boolean
 
+  relocationEquipmentsIsLoading?: boolean
+
   currencies: CurrenciesModel
   currenciesIsLoading: boolean
 
-  equipments: InventorizationEquipmentsModel
+  equipments: (InventorizationEquipmentListItemModel & {
+    relocationEquipment?: RelocationEquipmentListItemModel
+  })[]
   equipmentsIsLoading: boolean
   equipmentIsLoading: boolean
   onChangeEquipment: (
     value: InventorizationEquipmentListItemModel['id'],
-    option: { equipment: InventorizationEquipmentListItemModel['equipment'] },
+    option: {
+      equipment: InventorizationEquipmentListItemModel['equipment']
+      relocationEquipment?: RelocationEquipmentListItemModel
+    },
     path: NamePath,
   ) => Promise<void>
 

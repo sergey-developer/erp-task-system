@@ -1,8 +1,9 @@
 import { Col, Form, Input, Row, Select, SelectProps, Typography, Upload } from 'antd'
 import React, { useMemo } from 'react'
 
+import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
+
 import { renderUploadedFile } from 'modules/attachment/utils'
-import { RelocationTaskFormFields } from 'modules/warehouse/types'
 import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
@@ -17,7 +18,6 @@ import TimePicker from 'components/TimePicker'
 import { filesFormItemProps } from 'shared/constants/form'
 import { onlyNotEmptyStringRules, onlyRequiredRules } from 'shared/constants/validation'
 import { IdType } from 'shared/types/common'
-import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 
 import {
@@ -33,7 +33,7 @@ import { deadlineAtDateRules, deadlineAtTimeRules } from './validation'
 const { TextArea } = Input
 const { Text } = Typography
 
-const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
+const RelocationTaskDraftForm = <FormFields extends BaseRelocationTaskFormFields>({
   permissions,
   isLoading,
 
@@ -65,8 +65,9 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
   onChangeRelocateTo,
 }: RelocationTaskFormProps<FormFields>) => {
   const form = Form.useFormInstance<FormFields>()
-  const executorsFormValue: MaybeUndefined<IdType[]> = Form.useWatch('executors', form)
-  const controllersFormValue: MaybeUndefined<IdType> = Form.useWatch('controller', form)
+  const executorsFormValue = Form.useWatch('executors', form)
+  // const controllersFormValue: MaybeUndefined<IdType[]> = Form.useWatch('controllers', form)
+  const controllerFormValue = Form.useWatch('controller', form)
 
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(type)
   const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(type)
@@ -95,13 +96,13 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
     form.setFieldValue('executors', usersIds)
   }
 
-  const onChangeControllers: SelectProps<IdType, UserGroupOption>['onChange'] = async (
-    _,
-    option,
+  const onChangeControllers: SelectProps<IdType>['onChange'] = async (
+    value,
+    // option,
   ) => {
-    if (!Array.isArray(option)) return
-    const usersIds = await collectUsersIds(option)
-    form.setFieldValue('controllers', usersIds)
+    // if (!Array.isArray(option)) return
+    // const usersIds = await collectUsersIds(option)
+    form.setFieldValue('controller', value)
   }
 
   return (
@@ -179,7 +180,11 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
                 dependencies={['deadlineAtDate']}
                 rules={deadlineAtTimeRules}
               >
-                <TimePicker disabled={isLoading || disabledFields?.includes('deadlineAtTime')} />
+                <TimePicker
+                  disabled={isLoading || disabledFields?.includes('deadlineAtTime')}
+                  format={TIME_PICKER_FORMAT}
+                  placeholder='Время'
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -211,7 +216,8 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
           name='controller'
           rules={controllerIsRequired ? onlyRequiredRules : undefined}
         >
-          <Select<IdType, UserGroupOption>
+          <Select<IdType>
+            // mode='multiple'
             dropdownRender={(menu) => <div data-testid='controller-select-dropdown'>{menu}</div>}
             loading={controllersIsLoading}
             disabled={isLoading || controllersIsLoading}
@@ -221,7 +227,7 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
             showSearch
             filterOption={filterOptionBy('label')}
             onChange={onChangeControllers}
-            value={controllersFormValue}
+            value={controllerFormValue}
           />
         </Form.Item>
       </Col>
@@ -266,4 +272,4 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
   )
 }
 
-export default RelocationTaskForm
+export default RelocationTaskDraftForm

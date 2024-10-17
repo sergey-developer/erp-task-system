@@ -1,6 +1,7 @@
 import { IdType } from 'shared/types/common'
 import { MaybeApiNone } from 'shared/types/utils'
 
+import { UserPermissionsEnum } from '../constants'
 import { UsersModel } from './users.model'
 
 export type GetUsersQueryArgs = Partial<{
@@ -8,6 +9,7 @@ export type GetUsersQueryArgs = Partial<{
   isManager: boolean
   allHierarchySubordinates: boolean
   warehouses: IdType[]
+  permissions: UserPermissionsEnum[]
   readTasksWorkGroup: MaybeApiNone<IdType>
   resolveTasksWorkGroup: MaybeApiNone<IdType>
 }>

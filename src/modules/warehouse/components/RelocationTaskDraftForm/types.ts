@@ -1,5 +1,6 @@
 import { UploadProps } from 'antd'
 import { Moment } from 'moment-timezone'
+import { DefaultOptionType } from 'rc-select/lib/Select'
 import { ReactNode } from 'react'
 
 import { MatchedUserPermissions } from 'modules/user/types'
@@ -48,7 +49,7 @@ export type RelocationTaskFormProps<
   executorsOptions: UserGroupOptionGroup[]
   executorsIsLoading: boolean
 
-  controllersOptions: UserGroupOptionGroup[]
+  controllersOptions: DefaultOptionType[]
   controllersIsLoading: boolean
 
   controllerIsRequired: boolean

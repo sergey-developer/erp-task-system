@@ -1,14 +1,17 @@
 import { useBoolean, useMount, usePrevious } from 'ahooks'
 import { Button, Col, Form, Modal, Row, Typography, UploadProps } from 'antd'
+import concat from 'lodash/concat'
 import isNumber from 'lodash/isNumber'
 import moment from 'moment-timezone'
+import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { AttachmentTypeEnum } from 'modules/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'modules/attachment/hooks'
+import { attachmentsToFiles } from 'modules/attachment/utils'
 import { useAuthUser } from 'modules/auth/hooks'
-import { UserGroupCategoryEnum, UserPermissionsEnum } from 'modules/user/constants'
+import { UserPermissionsEnum } from 'modules/user/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'modules/user/hooks'
 import RelocationEquipmentDraftEditableTable from 'modules/warehouse/components/RelocationEquipmentDraftEditableTable'
 import {
@@ -16,31 +19,32 @@ import {
   InventorizationEquipmentTableRow,
   RelocationEquipmentDraftEditableTableProps,
 } from 'modules/warehouse/components/RelocationEquipmentDraftEditableTable/types'
-import RelocationTaskForm from 'modules/warehouse/components/RelocationTaskForm'
+import RelocationTaskDraftForm from 'modules/warehouse/components/RelocationTaskDraftForm'
 import {
   LocationOption,
   RelocationTaskFormProps,
   UserGroupOptionGroup,
-} from 'modules/warehouse/components/RelocationTaskForm/types'
-import { makeUserGroupOptions } from 'modules/warehouse/components/RelocationTaskForm/utils'
+} from 'modules/warehouse/components/RelocationTaskDraftForm/types'
+import { makeUserGroupOptions } from 'modules/warehouse/components/RelocationTaskDraftForm/utils'
 import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask'
 import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
 import {
   useGetInventorizationEquipments,
   useLazyGetInventorizationEquipment,
 } from 'modules/warehouse/hooks/inventorization'
-import { useCreateRelocationTask } from 'modules/warehouse/hooks/relocationTask'
+import { useGetRelocationEquipmentAttachmentList } from 'modules/warehouse/hooks/relocationEquipment'
+import {
+  useGetRelocationEquipmentList,
+  useUpdateRelocationTask,
+} from 'modules/warehouse/hooks/relocationTask'
 import { useGetWarehouse } from 'modules/warehouse/hooks/warehouse'
 import {
   getRelocateFromLocationsParams,
   getRelocateToLocationsParams,
 } from 'modules/warehouse/pages/CreateRelocationTaskPage/utils'
 import { ExecuteInventorizationPageTabsEnum } from 'modules/warehouse/pages/ExecuteInventorizationPage/constants'
-import {
-  CreateRelocationTaskDraftPageLocationState,
-  RelocationTaskDraftFormFields,
-} from 'modules/warehouse/types'
+import { RelocationTaskDraftFormFields } from 'modules/warehouse/types'
+import { EditRelocationTaskDraftPageLocationState } from 'modules/warehouse/types/relocationTask'
 import { checkEquipmentCategoryIsConsumable } from 'modules/warehouse/utils/equipment'
 import {
   getExecuteInventorizationPageLink,
@@ -56,11 +60,13 @@ import {
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { CANCEL_TEXT } from 'shared/constants/common'
+import { CANCEL_TEXT, SAVE_TEXT } from 'shared/constants/common'
 import { useLazyGetLocationsCatalog } from 'shared/hooks/catalogs/locations'
 import { useGetCurrencyList } from 'shared/hooks/currency'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/services/baseApi'
+import { MaybeUndefined } from 'shared/types/utils'
+import { mapIds } from 'shared/utils/array/mapIds'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { extractLocationState } from 'shared/utils/common'
 import { mergeDateTime } from 'shared/utils/date'
@@ -76,32 +82,31 @@ const { Text } = Typography
 
 const equipmentTableNamePath = 'equipments'
 
-const deadlineAtDate = moment().add(24, 'hours')
-
 const relocationTaskFormDisabledFields: RelocationTaskFormProps['disabledFields'] = [
   'deadlineAtDate',
   'deadlineAtTime',
 ]
 
-const initialValues: Pick<
-  RelocationTaskDraftFormFields,
-  'equipments' | 'type' | 'deadlineAtDate' | 'deadlineAtTime'
-> = {
-  type: RelocationTaskTypeEnum.Relocation,
+const initialValues: Pick<RelocationTaskDraftFormFields, 'equipments'> = {
   [equipmentTableNamePath]: [],
-  deadlineAtDate,
-  deadlineAtTime: deadlineAtDate.clone(),
 }
 
-const CreateRelocationTaskDraftPage: FC = () => {
+const EditRelocationTaskDraftPage: FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const locationState = extractLocationState<CreateRelocationTaskDraftPageLocationState>(location)
+  const locationState = extractLocationState<EditRelocationTaskDraftPageLocationState>(location)
 
   useMount(() => {
-    if (!locationState?.inventorization)
+    if (!locationState?.inventorization) {
       console.error('Inventorization was not provided through location state')
+    }
+
+    if (!locationState?.relocationTask)
+      console.error('Relocation task was not provided through location state')
   })
+
+  const relocationTask = locationState?.relocationTask
+  const inventorization = locationState?.inventorization
 
   const authUser = useAuthUser()
   const permissions = useUserPermissions([UserPermissionsEnum.EnteringBalances])
@@ -134,11 +139,10 @@ const CreateRelocationTaskDraftPage: FC = () => {
 
   const [editableTableRowKeys, setEditableTableRowKeys] = useState<Key[]>([])
 
-  const [selectedType, setSelectedType] = useState<RelocationTaskDraftFormFields['type']>(
-    RelocationTaskTypeEnum.Relocation,
-  )
+  const [selectedType, setSelectedType] = useState<RelocationTaskDraftFormFields['type']>()
   const typeIsWriteOff = checkRelocationTaskTypeIsWriteOff(selectedType)
   const typeIsReturnWrittenOff = checkRelocationTaskTypeIsReturnWrittenOff(selectedType)
+  const typeIsEnteringBalances = checkRelocationTaskTypeIsEnteringBalances(selectedType)
 
   const [selectedRelocateTo, setSelectedRelocateTo] = useState<LocationOption>()
   const [selectedRelocateFrom, setSelectedRelocateFrom] = useState<LocationOption>()
@@ -160,6 +164,34 @@ const CreateRelocationTaskDraftPage: FC = () => {
         !checkLocationTypeIsWarehouse(selectedRelocateFrom.type),
     })
 
+  const { currentData: relocationEquipments = [], isFetching: relocationEquipmentsIsFetching } =
+    useGetRelocationEquipmentList(
+      { relocationTaskId: relocationTask?.id! },
+      { skip: !relocationTask?.id },
+    )
+
+  const activeEquipmentIsRelocationEquipment =
+    createRelocationEquipmentImagesModalOpened && activeEquipmentRow && relocationEquipments.length
+      ? Boolean(
+          relocationEquipments.find(
+            (eqp) => eqp.relocationEquipmentId === activeEquipmentRow.relocationEquipmentId,
+          ),
+        )
+      : false
+
+  const {
+    currentData: relocationEquipmentAttachments = [],
+    isFetching: relocationEquipmentAttachmentListIsFetching,
+  } = useGetRelocationEquipmentAttachmentList(
+    { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
+    {
+      skip:
+        !activeEquipmentRow?.relocationEquipmentId ||
+        !activeEquipmentIsRelocationEquipment ||
+        !createRelocationEquipmentImagesModalOpened,
+    },
+  )
+
   const { currentData: executors = [], isFetching: executorsIsFetching } = useGetUsers({
     isManager: false,
   })
@@ -173,15 +205,15 @@ const CreateRelocationTaskDraftPage: FC = () => {
     useGetUsersGroups()
   // useGetUsersGroups({ category: UserGroupCategoryEnum.ExecuteRelocation })
 
-  const { currentData: controllersUsersGroups = [], isFetching: controllersUsersGroupsIsFetching } =
-    useGetUsersGroups({ category: UserGroupCategoryEnum.ControlRelocation })
+  // const { currentData: controllersUsersGroups = [], isFetching: controllersUsersGroupsIsFetching } =
+  //   useGetUsersGroups({ category: UserGroupCategoryEnum.ControlRelocation })
 
   const {
     currentData: inventorizationEquipmentsResponse,
     isFetching: inventorizationEquipmentsIsFetching,
   } = useGetInventorizationEquipments(
     {
-      inventorizationId: locationState?.inventorization?.id!,
+      inventorizationId: inventorization?.id!,
       locationPlan: selectedRelocateFrom?.value,
       locationFact: selectedRelocateTo?.value,
       ordering: 'title',
@@ -189,10 +221,39 @@ const CreateRelocationTaskDraftPage: FC = () => {
       hasDiff: true,
       hasRelocationTask: false,
     },
-    { skip: !locationState?.inventorization?.id },
+    { skip: !inventorization?.id },
   )
 
-  const inventorizationEquipments = extractPaginationResults(inventorizationEquipmentsResponse)
+  const inventorizationEquipments: RelocationEquipmentDraftEditableTableProps['equipments'] =
+    useMemo(
+      () => [
+        ...extractPaginationResults(inventorizationEquipmentsResponse),
+        ...relocationEquipments.map((eqp) => ({
+          relocationEquipment: eqp,
+          // главное поле - relocationEquipment из него будут подставляться значения в таблицу при выборе оборудования
+          // остальные поля не важны, они заполняются т.к. они обязательные
+          id: eqp.id,
+          equipment: {
+            id: eqp.id,
+            title: eqp.title,
+            category: eqp.category,
+            serialNumber: eqp.serialNumber!,
+            inventoryNumber: '',
+          },
+          isLocationFactUndefined: false,
+          locationPlan: null,
+          locationFact: null,
+          quantity: {
+            fact: null,
+            plan: 0,
+            diff: checkEquipmentCategoryIsConsumable(eqp.category.code) ? eqp.quantity : 1,
+          },
+          isFilled: false,
+          hasDiff: null,
+        })),
+      ],
+      [inventorizationEquipmentsResponse, relocationEquipments],
+    )
 
   const [
     getRelocateFromLocations,
@@ -206,20 +267,22 @@ const CreateRelocationTaskDraftPage: FC = () => {
 
   /* сделано через lazy т.к. по каким-то причинам запрос не отправляется снова если один из параметров не изменился */
   useEffect(() => {
-    getRelocateFromLocations({
-      inventorization: locationState?.inventorization?.id,
-      ...getRelocateFromLocationsParams(selectedType),
-    })
-  }, [getRelocateFromLocations, locationState?.inventorization?.id, selectedType])
+    if (selectedType) {
+      getRelocateFromLocations({
+        inventorization: inventorization?.id,
+        ...getRelocateFromLocationsParams(selectedType),
+      })
+    }
+  }, [getRelocateFromLocations, inventorization?.id, selectedType])
 
   useEffect(() => {
-    if (!typeIsWriteOff) {
+    if (selectedType && !typeIsWriteOff) {
       getRelocateToLocations({
-        inventorization: locationState?.inventorization?.id,
+        inventorization: inventorization?.id,
         ...getRelocateToLocationsParams(selectedType),
       })
     }
-  }, [getRelocateToLocations, locationState?.inventorization?.id, selectedType, typeIsWriteOff])
+  }, [getRelocateToLocations, inventorization?.id, selectedType, typeIsWriteOff])
 
   const getEquipmentsFormValue = useCallback(
     (): InventorizationEquipmentTableRow[] => form.getFieldValue(equipmentTableNamePath) || [],
@@ -236,7 +299,7 @@ const CreateRelocationTaskDraftPage: FC = () => {
   const [createAttachment] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()
 
-  const [createTaskMutation, { isLoading: createTaskIsLoading }] = useCreateRelocationTask()
+  const [updateTaskMutation, { isLoading: updateTaskIsLoading }] = useUpdateRelocationTask()
 
   const createRelocationEquipmentImage: NonNullable<UploadProps['customRequest']> = async (
     options,
@@ -247,31 +310,32 @@ const CreateRelocationTaskDraftPage: FC = () => {
   const goToExecuteInventorizationPage = (
     params?: Pick<GetExecuteInventorizationPageLinkParams, 'relocationTaskDraftId'>,
   ) => {
-    if (!locationState?.inventorization) return
+    if (!inventorization) return
 
     navigate(
       getExecuteInventorizationPageLink({
-        inventorizationId: locationState.inventorization.id,
+        inventorizationId: inventorization.id,
         tab: ExecuteInventorizationPageTabsEnum.Relocations,
         ...params,
       }),
-      { state: makeExecuteInventorizationPageLocationState(locationState.inventorization) },
+      { state: makeExecuteInventorizationPageLocationState(inventorization) },
     )
   }
 
   const onCancel = () => goToExecuteInventorizationPage()
 
-  const createTaskDraft = async (values: RelocationTaskDraftFormFields) => {
-    if (!locationState?.inventorization?.id) return
+  const editTaskDraft = async (values: RelocationTaskDraftFormFields) => {
+    if (!inventorization?.id || !relocationTask?.id) return
 
     try {
-      const createdTask = await createTaskMutation({
-        inventorization: locationState.inventorization.id,
+      const updatedTask = await updateTaskMutation({
+        relocationTaskId: relocationTask.id,
+        inventorization: inventorization.id,
         type: values.type,
         deadlineAt: mergeDateTime(values.deadlineAtDate, values.deadlineAtTime).toISOString(),
         equipments: values.equipments.map((eqp) => ({
           id: eqp.equipment.id,
-          quantity: eqp.quantity,
+          quantity: eqp.quantity!,
           condition: eqp.condition,
           currency: eqp.currency,
           price: eqp.price,
@@ -282,11 +346,12 @@ const CreateRelocationTaskDraftPage: FC = () => {
         relocateToId: values.relocateTo,
         relocateFromId: values.relocateFrom,
         executors: values.executors,
+        // controllers: values.controllers,
         controller: values.controller,
         comment: values.comment,
       }).unwrap()
 
-      goToExecuteInventorizationPage({ relocationTaskDraftId: createdTask.id })
+      goToExecuteInventorizationPage({ relocationTaskDraftId: updatedTask.id })
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error)) {
         form.setFields(getFieldsErrors(error.data))
@@ -297,42 +362,63 @@ const CreateRelocationTaskDraftPage: FC = () => {
   }
 
   // todo: заменить pickEquipment на такую функцию в других местах
-  const onChangeEquipment: RelocationEquipmentDraftEditableTableProps['onChangeEquipment'] = async (
-    value,
-    option,
-    path,
-  ) => {
-    form.setFieldValue([...path, 'equipment'], option.equipment)
-    const currentEquipment = form.getFieldValue(path)
+  const onChangeEquipment: RelocationEquipmentDraftEditableTableProps['onChangeEquipment'] =
+    useCallback(
+      async (value, option, path) => {
+        form.setFieldValue([...path, 'equipment'], option.equipment)
+        const currentEquipment = form.getFieldValue(path)
+        let newEquipment: MaybeUndefined<InventorizationEquipmentTableRow>
 
-    try {
-      const equipment = await getEquipment({ equipmentId: value }).unwrap()
-      const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
-      const newEquipment: InventorizationEquipmentTableRow = {
-        ...currentEquipment,
-        serialNumber: equipment.serialNumber || undefined,
-        condition: typeIsWriteOff
-          ? EquipmentConditionEnum.WrittenOff
-          : typeIsReturnWrittenOff
-          ? EquipmentConditionEnum.Working
-          : equipment.condition,
-        price: isNumber(equipment.price) ? equipment.price : undefined,
-        currency: equipment.currency?.id,
-        quantity: isConsumable
-          ? isNumber(equipment.quantity.diff)
-            ? Math.abs(equipment.quantity.diff)
-            : undefined
-          : 1,
-        category: equipment.category,
-      }
+        if (option.relocationEquipment) {
+          newEquipment = {
+            ...currentEquipment,
+            serialNumber: option.relocationEquipment.serialNumber,
+            condition: typeIsWriteOff
+              ? EquipmentConditionEnum.WrittenOff
+              : typeIsReturnWrittenOff
+              ? EquipmentConditionEnum.Working
+              : option.relocationEquipment.condition,
+            price: isNumber(option.relocationEquipment.price)
+              ? option.relocationEquipment.price
+              : undefined,
+            currency: option.relocationEquipment.currency?.id,
+            quantity: checkEquipmentCategoryIsConsumable(option.relocationEquipment.category.code)
+              ? option.relocationEquipment.quantity
+              : 1,
+            category: option.relocationEquipment.category,
+          }
+        } else {
+          try {
+            const equipment = await getEquipment({ equipmentId: value }).unwrap()
+            const isConsumable = checkEquipmentCategoryIsConsumable(equipment.category.code)
+            newEquipment = {
+              ...currentEquipment,
+              serialNumber: equipment.serialNumber || undefined,
+              condition: typeIsWriteOff
+                ? EquipmentConditionEnum.WrittenOff
+                : typeIsReturnWrittenOff
+                ? EquipmentConditionEnum.Working
+                : equipment.condition,
+              price: isNumber(equipment.price) ? equipment.price : undefined,
+              currency: equipment.currency?.id,
+              quantity: isConsumable
+                ? isNumber(equipment.quantity.diff)
+                  ? Math.abs(equipment.quantity.diff)
+                  : undefined
+                : 1,
+              category: equipment.category,
+            }
+          } catch (error) {
+            if (isErrorResponse(error) && isForbiddenError(error)) {
+              form.setFieldValue(path, { rowId: currentEquipment.rowId })
+            }
+          }
+        }
 
-      form.setFieldValue(path, newEquipment)
-    } catch (error) {
-      if (isErrorResponse(error) && isForbiddenError(error)) {
-        form.setFieldValue(path, { rowId: currentEquipment.rowId })
-      }
-    }
-  }
+        form.setFieldValue(path, newEquipment)
+      },
+      [form, getEquipment, typeIsReturnWrittenOff, typeIsWriteOff],
+    )
 
   const onChangeRelocateFrom = useCallback<RelocationTaskFormProps['onChangeRelocateFrom']>(
     (value, option) => {
@@ -397,19 +483,95 @@ const CreateRelocationTaskDraftPage: FC = () => {
     ],
   )
 
-  /* Установка значений формы */
+  /* Установка значений формы из заявки */
   useEffect(() => {
-    if (locationState?.inventorization.deadlineAt) {
+    if (relocationTask) {
+      setSelectedType(relocationTask.type)
+
       form.setFieldsValue({
-        deadlineAtDate: moment(locationState.inventorization.deadlineAt),
-        deadlineAtTime: moment(locationState.inventorization.deadlineAt),
+        type: relocationTask.type,
+        deadlineAtDate: moment(relocationTask.deadlineAt),
+        deadlineAtTime: moment(relocationTask.deadlineAt),
+        executors: mapIds(relocationTask.executors),
+        // controllers: relocationTask.controllers ? mapIds(relocationTask.controllers) : undefined,
+        controller: relocationTask.controller?.id,
+        comment: relocationTask.comment || undefined,
       })
     }
+  }, [form, relocationTask])
 
-    if (authUser && executors.length) form.setFieldValue('executors', [authUser.id])
+  /* Установка значения состояния объекта прибытия */
+  useEffect(() => {
+    if (relocationTask && relocateToLocations.length) {
+      if (typeIsWriteOff) return
 
-    form.setFieldValue('comment', 'На основании инвентаризации')
-  }, [form, authUser, executors.length, locationState?.inventorization.deadlineAt])
+      const relocateToListItem = relocateToLocations.find(
+        (l) => l.id === relocationTask.relocateTo?.id,
+      )
+
+      if (relocateToListItem) {
+        setSelectedRelocateTo({
+          label: relocateToListItem.title,
+          type: relocateToListItem.type,
+          value: relocateToListItem.id,
+        })
+        form.setFieldValue('relocateTo', relocateToListItem.id)
+      }
+    }
+  }, [form, relocateToLocations, relocationTask, typeIsWriteOff])
+
+  /* Установка значения состояния объекта выбытия */
+  useEffect(() => {
+    if (relocationTask && relocateFromLocations.length) {
+      if (typeIsEnteringBalances) return
+
+      const relocateFromListItem = relocateFromLocations.find(
+        (l) => l.id === relocationTask.relocateFrom?.id,
+      )
+
+      if (relocateFromListItem) {
+        setSelectedRelocateFrom({
+          label: relocateFromListItem.title,
+          type: relocateFromListItem.type,
+          value: relocateFromListItem.id,
+        })
+        form.setFieldValue('relocateFrom', relocateFromListItem.id)
+      }
+    }
+  }, [form, relocateFromLocations, relocationTask, typeIsEnteringBalances])
+
+  /* Установка значений перечня оборудования */
+  useEffect(() => {
+    if (relocationTask && relocationEquipments.length) {
+      const equipments: InventorizationEquipmentTableRow[] = []
+      const editableTableRowKeys: Key[] = []
+
+      relocationEquipments.forEach((eqp) => {
+        editableTableRowKeys.push(eqp.id)
+        const isConsumable = checkEquipmentCategoryIsConsumable(eqp.category.code)
+
+        equipments.push({
+          rowId: eqp.id,
+          id: eqp.id,
+          equipment: { ...eqp, inventoryNumber: null },
+          relocationEquipmentId: eqp.relocationEquipmentId,
+          serialNumber: eqp?.serialNumber || undefined,
+          condition: typeIsWriteOff
+            ? EquipmentConditionEnum.WrittenOff
+            : typeIsReturnWrittenOff
+            ? EquipmentConditionEnum.Working
+            : eqp.condition,
+          price: eqp?.price ?? undefined,
+          currency: eqp?.currency?.id || undefined,
+          quantity: isConsumable ? eqp.quantity : 1,
+          category: eqp.category,
+        })
+      })
+
+      form.setFieldValue(equipmentTableNamePath, equipments)
+      setEditableTableRowKeys(editableTableRowKeys)
+    }
+  }, [form, relocationEquipments, relocationTask, typeIsReturnWrittenOff, typeIsWriteOff])
 
   const isRelocationFromMainToMsi =
     relocateFromWarehouse?.type === WarehouseTypeEnum.Main &&
@@ -427,24 +589,33 @@ const CreateRelocationTaskDraftPage: FC = () => {
     return makeUserGroupOptions(executors, executorsUsersGroups)
   }, [executors, executorsUsersGroups])
 
-  const controllersOptions: UserGroupOptionGroup[] = useMemo(() => {
-    return authUser ? makeUserGroupOptions(controllers, controllersUsersGroups, [authUser.id]) : []
-  }, [authUser, controllers, controllersUsersGroups])
+  // const controllersOptions: UserGroupOptionGroup[] = useMemo(() => {
+  //   return authUser ? makeUserGroupOptions(controllers, controllersUsersGroups, [authUser.id]) : []
+  // }, [authUser, controllers, controllersUsersGroups])
+
+  const controllersOptions: DefaultOptionType[] = useMemo(() => {
+    return authUser
+      ? controllers.reduce<DefaultOptionType[]>((acc, contr) => {
+          if (contr.id !== authUser.id) acc.push({ label: contr.fullName, value: contr.id })
+          return acc
+        }, [])
+      : controllers.map((c) => ({ label: c.fullName, value: c.id }))
+  }, [authUser, controllers])
 
   return (
     <>
       <Form<RelocationTaskDraftFormFields>
-        data-testid='create-relocation-task-draft-page'
+        data-testid='edit-relocation-task-draft-page'
         form={form}
         layout='vertical'
-        onFinish={createTaskDraft}
+        onFinish={editTaskDraft}
         initialValues={initialValues}
       >
         <Row gutter={[40, 40]}>
           <Col span={24}>
-            <RelocationTaskForm
+            <RelocationTaskDraftForm
               permissions={permissions}
-              isLoading={createTaskIsLoading}
+              isLoading={updateTaskIsLoading}
               relocateFromLocations={relocateFromLocations}
               relocateFromLocationsIsLoading={relocateFromLocationsIsFetching}
               relocateToLocations={relocateToLocations}
@@ -452,7 +623,8 @@ const CreateRelocationTaskDraftPage: FC = () => {
               executorsOptions={executorsOptions}
               executorsIsLoading={executorsIsFetching || executorsUsersGroupsIsFetching}
               controllersOptions={controllersOptions}
-              controllersIsLoading={controllersIsFetching || controllersUsersGroupsIsFetching}
+              // controllersIsLoading={controllersIsFetching || controllersUsersGroupsIsFetching}
+              controllersIsLoading={controllersIsFetching}
               controllerIsRequired={controllerIsRequired}
               type={selectedType}
               onChangeType={onChangeType}
@@ -471,13 +643,14 @@ const CreateRelocationTaskDraftPage: FC = () => {
                 name={equipmentTableNamePath}
                 editableKeys={editableTableRowKeys}
                 setEditableKeys={setEditableTableRowKeys}
-                isLoading={createTaskIsLoading}
+                isLoading={updateTaskIsLoading}
                 onChangeEquipment={onChangeEquipment}
                 equipmentIsLoading={equipmentIsFetching}
                 currencies={currencies}
                 currenciesIsLoading={currenciesIsFetching}
                 equipments={inventorizationEquipments}
                 equipmentsIsLoading={inventorizationEquipmentsIsFetching}
+                relocationEquipmentsIsLoading={relocationEquipmentsIsFetching}
                 onClickCreateImage={onOpenCreateRelocationEquipmentImagesModal}
               />
             </Space>
@@ -493,10 +666,10 @@ const CreateRelocationTaskDraftPage: FC = () => {
                 <Button
                   type='primary'
                   htmlType='submit'
-                  loading={createTaskIsLoading}
+                  loading={updateTaskIsLoading}
                   disabled={relocateFromWarehouseIsFetching || relocateToWarehouseIsFetching}
                 >
-                  Создать заявку
+                  {SAVE_TEXT}
                 </Button>
               </Col>
             </Row>
@@ -538,10 +711,18 @@ const CreateRelocationTaskDraftPage: FC = () => {
             open={createRelocationEquipmentImagesModalOpened}
             title='Добавить изображения оборудования'
             onCancel={onCloseCreateRelocationEquipmentImagesModal}
+            isLoading={relocationEquipmentAttachmentListIsFetching}
             onCreate={createRelocationEquipmentImage}
             onDelete={deleteAttachment}
             isDeleting={deleteAttachmentIsLoading}
-            defaultFileList={form.getFieldValue(equipmentImagesFormPath)}
+            defaultFileList={
+              equipmentImagesFormPath
+                ? concat(
+                    form.getFieldValue(equipmentImagesFormPath) || [],
+                    attachmentsToFiles(relocationEquipmentAttachments),
+                  )
+                : undefined
+            }
           />
         </React.Suspense>
       )}
@@ -549,4 +730,4 @@ const CreateRelocationTaskDraftPage: FC = () => {
   )
 }
 
-export default CreateRelocationTaskDraftPage
+export default EditRelocationTaskDraftPage

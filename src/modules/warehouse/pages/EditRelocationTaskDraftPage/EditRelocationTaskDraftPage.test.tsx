@@ -12,7 +12,7 @@ import { makeString } from 'shared/utils/string'
 import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentDraftEditableTable/testUtils'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
 import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
-import { createRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskDraftPage/testUtils'
+import { editRelocationTaskDraftPageTestUtils as testUtils } from '_tests_/features/warehouse/pages/EditRelocationTaskDraftPage/testUtils'
 import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
@@ -40,7 +40,7 @@ import {
   setupApiTests,
 } from '_tests_/utils'
 
-import CreateRelocationTaskDraftPage from './index'
+import EditRelocationTaskDraftPage from './index'
 
 jest.mock('react-router-dom', () => ({
   __esModule: true,
@@ -70,7 +70,7 @@ describe('Страница создания черновика заявки на
         inventorizationId: locationStateMock.inventorization.id,
       })
 
-      render(<CreateRelocationTaskDraftPage />, {
+      render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -80,7 +80,7 @@ describe('Страница создания черновика заявки на
       expect(form).toBeInTheDocument()
     })
 
-    test('Контроллером нельзя выбрать исполнителя и текущего пользователя', async () => {
+    test('Контроллером нельзя выбрать текущего пользователя', async () => {
       const locationStateMock = makeCreateRelocationTaskDraftPageLocationState({
         inventorization: warehouseFixtures.inventorization(),
       })
@@ -104,7 +104,7 @@ describe('Страница создания черновика заявки на
         inventorizationId: locationStateMock.inventorization.id,
       })
 
-      const { user } = render(<CreateRelocationTaskDraftPage />, {
+      const { user } = render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -115,16 +115,16 @@ describe('Страница создания черновика заявки на
       await relocationTaskFormTestUtils.openExecutorSelect(user)
       await relocationTaskFormTestUtils.setExecutor(user, executorUser.fullName)
       await relocationTaskFormTestUtils.openControllerSelect(user)
-      const executorOption = relocationTaskFormTestUtils.queryControllerOption(
-        executorUser.fullName,
-      )
+      // const executorOption = relocationTaskFormTestUtils.queryControllerOption(
+      //   executorUser.fullName,
+      // )
       const currentUserOption = relocationTaskFormTestUtils.queryControllerOption(
         currentUser.fullName,
       )
       const otherUserOption = relocationTaskFormTestUtils.getControllerOption(otherUser.fullName)
 
       expect(otherUserOption).toBeInTheDocument()
-      expect(executorOption).not.toBeInTheDocument()
+      // expect(executorOption).not.toBeInTheDocument()
       expect(currentUserOption).not.toBeInTheDocument()
     })
 
@@ -151,7 +151,7 @@ describe('Страница создания черновика заявки на
         inventorizationId: locationStateMock.inventorization.id,
       })
 
-      const { user } = render(<CreateRelocationTaskDraftPage />, {
+      const { user } = render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
@@ -191,15 +191,13 @@ describe('Страница создания черновика заявки на
         inventorizationId: locationStateMock.inventorization.id,
       })
 
-      render(<CreateRelocationTaskDraftPage />, {
+      render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
         }),
       })
 
-      const title = within(createRelocationTaskDraftPageTestUtils.getContainer()).getByText(
-        'Перечень оборудования',
-      )
+      const title = within(testUtils.getContainer()).getByText('Перечень оборудования')
       const table = relocationEquipmentDraftEditableTableTestUtils.getContainer()
 
       expect(title).toBeInTheDocument()
@@ -233,7 +231,7 @@ describe('Страница создания черновика заявки на
       [
         {
           path: CommonRouteEnum.Root,
-          element: <CreateRelocationTaskDraftPage />,
+          element: <EditRelocationTaskDraftPage />,
         },
         {
           path: WarehouseRouteEnum.ExecuteInventorization,
@@ -248,12 +246,12 @@ describe('Страница создания черновика заявки на
       },
     )
 
-    await createRelocationTaskDraftPageTestUtils.clickCancelButton(user)
+    await testUtils.clickCancelButton(user)
     const page = executeInventorizationPageTestUtils.getContainer()
     expect(page).toBeInTheDocument()
   })
 
-  test.skip('При успешном создании возвращается на страницу выполнения инвентаризации во вкладку перемещений и открывает карточку', async () => {
+  test('При успешном создании возвращается на страницу выполнения инвентаризации во вкладку перемещений и открывает карточку', async () => {
     const locationStateMock = makeCreateRelocationTaskDraftPageLocationState({
       inventorization: warehouseFixtures.inventorization(),
     })
@@ -301,7 +299,7 @@ describe('Страница создания черновика заявки на
       [
         {
           path: CommonRouteEnum.Root,
-          element: <CreateRelocationTaskDraftPage />,
+          element: <EditRelocationTaskDraftPage />,
         },
         {
           path: WarehouseRouteEnum.ExecuteInventorization,
@@ -335,7 +333,7 @@ describe('Страница создания черновика заявки на
         inventorizationEquipmentListItem.equipment.inventoryNumber,
       ),
     )
-    await createRelocationTaskDraftPageTestUtils.clickSubmitButton(user)
+    await testUtils.clickSubmitButton(user)
 
     const page = await executeInventorizationPageTestUtils.findContainer()
     expect(page).toBeInTheDocument()
