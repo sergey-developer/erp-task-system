@@ -315,9 +315,9 @@ export const route: Readonly<RouteObject> = {
                   permitted={(currentUser, locationState) =>
                     userHasPermissions(currentUser, [UserPermissionsEnum.InventorizationUpdate]) &&
                     !!locationState &&
-                    locationState.inventorization.executor.id === currentUser.id &&
-                    (checkInventorizationStatusIsNew(locationState.inventorization.status) ||
-                      checkInventorizationStatusIsInProgress(locationState.inventorization.status))
+                    locationState.inventorization?.executor.id === currentUser.id &&
+                    (checkInventorizationStatusIsNew(locationState.inventorization?.status) ||
+                      checkInventorizationStatusIsInProgress(locationState.inventorization?.status))
                   }
                 />
               ),

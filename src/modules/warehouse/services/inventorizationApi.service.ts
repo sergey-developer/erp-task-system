@@ -5,6 +5,10 @@ import {
   InventorizationApiTagEnum,
 } from 'modules/warehouse/constants/inventorization'
 import {
+  CheckInventorizationEquipmentsMutationArgs,
+  CheckInventorizationEquipmentsSuccessResponse,
+  CheckInventorizationEquipmentsTemplateMutationArgs,
+  CheckInventorizationEquipmentsTemplateSuccessResponse,
   CompleteInventorizationMutationArgs,
   CompleteInventorizationSuccessResponse,
   CreateInventorizationEquipmentMutationArgs,
@@ -14,7 +18,11 @@ import {
   GetInventorizationEquipmentQueryArgs,
   GetInventorizationEquipmentsQueryArgs,
   GetInventorizationEquipmentsSuccessResponse,
+  GetInventorizationEquipmentsTemplateQueryArgs,
+  GetInventorizationEquipmentsTemplateSuccessResponse,
   GetInventorizationEquipmentSuccessResponse,
+  GetInventorizationEquipmentsXlsxQueryArgs,
+  GetInventorizationEquipmentsXlsxSuccessResponse,
   GetInventorizationQueryArgs,
   GetInventorizationsQueryArgs,
   GetInventorizationsSuccessResponse,
@@ -23,7 +31,9 @@ import {
   UpdateInventorizationEquipmentSuccessResponse,
 } from 'modules/warehouse/models'
 import {
+  GetInventorizationEquipmentsTemplateTransformedSuccessResponse,
   GetInventorizationEquipmentsTransformedSuccessResponse,
+  GetInventorizationEquipmentsXlsxTransformedSuccessResponse,
   GetInventorizationsTransformedSuccessResponse,
 } from 'modules/warehouse/types'
 import {
@@ -36,6 +46,7 @@ import {
 } from 'modules/warehouse/utils/inventorization'
 
 import { HttpMethodEnum } from 'shared/constants/http'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { baseApiService } from 'shared/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
@@ -107,6 +118,21 @@ const inventorizationApiService = baseApiService
         transformResponse: (response: GetInventorizationEquipmentsSuccessResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
+      getInventorizationEquipmentsXlsx: build.query<
+        GetInventorizationEquipmentsXlsxTransformedSuccessResponse,
+        GetInventorizationEquipmentsXlsxQueryArgs
+      >({
+        query: ({ inventorizationId, ...params }) => ({
+          url: makeGetInventorizationEquipmentsUrl({ inventorizationId }),
+          method: HttpMethodEnum.Get,
+          headers: { Accept: MimetypeEnum.Xlsx },
+          params,
+        }),
+        transformResponse: (value: GetInventorizationEquipmentsXlsxSuccessResponse, meta) => ({
+          value,
+          meta,
+        }),
+      }),
       getInventorizationEquipment: build.query<
         GetInventorizationEquipmentSuccessResponse,
         GetInventorizationEquipmentQueryArgs
@@ -163,6 +189,45 @@ const inventorizationApiService = baseApiService
           } catch {}
         },
       }),
+      getInventorizationEquipmentsTemplate: build.query<
+        GetInventorizationEquipmentsTemplateTransformedSuccessResponse,
+        GetInventorizationEquipmentsTemplateQueryArgs
+      >({
+        query: () => ({
+          url: InventorizationApiEnum.GetInventorizationEquipmentsTemplate,
+          method: HttpMethodEnum.Get,
+        }),
+        transformResponse: (value: GetInventorizationEquipmentsTemplateSuccessResponse, meta) => ({
+          value,
+          meta,
+        }),
+      }),
+      checkInventorizationEquipmentsTemplate: build.mutation<
+        CheckInventorizationEquipmentsTemplateSuccessResponse,
+        CheckInventorizationEquipmentsTemplateMutationArgs
+      >({
+        query: ({ file, inventorization }) => {
+          const formData = new FormData()
+          formData.append('file', file)
+          formData.append('inventorization', String(inventorization))
+
+          return {
+            url: InventorizationApiEnum.CheckInventorizationEquipmentsTemplate,
+            method: HttpMethodEnum.Post,
+            data: formData,
+          }
+        },
+      }),
+      checkInventorizationEquipments: build.mutation<
+        CheckInventorizationEquipmentsSuccessResponse,
+        CheckInventorizationEquipmentsMutationArgs
+      >({
+        query: (data) => ({
+          url: InventorizationApiEnum.CheckInventorizationEquipments,
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+      }),
     }),
   })
 
@@ -174,6 +239,10 @@ export const {
   useGetInventorizationEquipmentQuery,
   useLazyGetInventorizationEquipmentQuery,
   useGetInventorizationEquipmentsQuery,
+  useLazyGetInventorizationEquipmentsXlsxQuery,
+  useLazyGetInventorizationEquipmentsTemplateQuery,
+  useCheckInventorizationEquipmentsTemplateMutation,
+  useCheckInventorizationEquipmentsMutation,
   useCreateInventorizationEquipmentMutation,
   useUpdateInventorizationEquipmentMutation,
 } = inventorizationApiService

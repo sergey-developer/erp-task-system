@@ -15,7 +15,9 @@ import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/utils'
 import { relocationTaskAttachment } from './relocationTaskAttachment'
 
 export const relocationTask = (
-  props?: Partial<Pick<RelocationTaskModel, 'id' | 'status' | 'completedBy' | 'executors'>>,
+  props?: Partial<
+    Pick<RelocationTaskModel, 'id' | 'status' | 'completedBy' | 'executors' | 'createdBy'>
+  >,
 ): RelocationTaskModel => ({
   id: props?.id || fakeId(),
   status: props?.status || RelocationTaskStatusEnum.New,
@@ -25,6 +27,7 @@ export const relocationTask = (
   executors: isUndefined(props?.executors)
     ? [pick(userFixtures.user(), 'id', 'fullName')]
     : props!.executors,
+  createdBy: props?.createdBy ? props!.createdBy : pick(userFixtures.user(), 'id', 'fullName'),
 
   type: RelocationTaskTypeEnum.Relocation,
   deadlineAt: fakeDateString(),

@@ -7,7 +7,7 @@ import {
 } from 'modules/warehouse/models'
 import { RelocationTaskInventorizationEquipment } from 'modules/warehouse/types'
 
-import { CurrencyListModel } from 'shared/models/currency'
+import { CurrenciesModel } from 'shared/models/currency'
 
 export type InventorizationEquipmentTableRow = Partial<RelocationTaskInventorizationEquipment> & {
   rowId: number
@@ -28,7 +28,7 @@ export type RelocationEquipmentDraftEditableTableProps = {
 
   relocationEquipmentsIsLoading?: boolean
 
-  currencies: CurrencyListModel
+  currencies: CurrenciesModel
   currenciesIsLoading: boolean
 
   equipments: (InventorizationEquipmentListItemModel & {

@@ -49,6 +49,7 @@ const ExecuteInventorizationPage: FC = () => {
 
   const location = useLocation()
   const locationState = extractLocationState<ExecuteInventorizationPageLocationState>(location)
+  const inventorization = locationState?.inventorization
 
   const [getInventorizationReport, { isFetching: getInventorizationReportIsFetching }] =
     useLazyGetInventorizationReport()
@@ -78,7 +79,7 @@ const ExecuteInventorizationPage: FC = () => {
 
   return (
     <Flex data-testid='execute-inventorization-page' vertical gap='large'>
-      {locationState?.inventorization ? (
+      {inventorization ? (
         <>
           <Row gutter={16}>
             <Col span={6}>
@@ -88,7 +89,7 @@ const ExecuteInventorizationPage: FC = () => {
                     <Text type='secondary'>Тип:</Text>
                   </Col>
 
-                  <Col span={15}>{inventorizationTypeDict[locationState.inventorization.type]}</Col>
+                  <Col span={15}>{inventorizationTypeDict[inventorization.type]}</Col>
                 </Row>
 
                 <Row>
@@ -96,9 +97,7 @@ const ExecuteInventorizationPage: FC = () => {
                     <Text type='secondary'>Статус:</Text>
                   </Col>
 
-                  <Col span={15}>
-                    {inventorizationStatusDict[locationState.inventorization.status]}
-                  </Col>
+                  <Col span={15}>{inventorizationStatusDict[inventorization.status]}</Col>
                 </Row>
 
                 <Row>
@@ -106,7 +105,7 @@ const ExecuteInventorizationPage: FC = () => {
                     <Text type='secondary'>Срок выполнения:</Text>
                   </Col>
 
-                  <Col span={15}>{formatDate(locationState.inventorization.deadlineAt)}</Col>
+                  <Col span={15}>{formatDate(inventorization.deadlineAt)}</Col>
                 </Row>
               </Flex>
             </Col>
@@ -118,7 +117,7 @@ const ExecuteInventorizationPage: FC = () => {
                     <Text type='secondary'>Создано:</Text>
                   </Col>
 
-                  <Col span={18}>{formatDate(locationState.inventorization.createdAt)}</Col>
+                  <Col span={18}>{formatDate(inventorization.createdAt)}</Col>
                 </Row>
 
                 <Row>
@@ -126,7 +125,7 @@ const ExecuteInventorizationPage: FC = () => {
                     <Text type='secondary'>Исполнитель:</Text>
                   </Col>
 
-                  <Col span={18}>{locationState.inventorization.executor.fullName}</Col>
+                  <Col span={18}>{inventorization.executor.fullName}</Col>
                 </Row>
 
                 <Row>
@@ -134,7 +133,7 @@ const ExecuteInventorizationPage: FC = () => {
                     <Text type='secondary'>Автор:</Text>
                   </Col>
 
-                  <Col span={18}>{locationState.inventorization.createdBy.fullName}</Col>
+                  <Col span={18}>{inventorization.createdBy.fullName}</Col>
                 </Row>
               </Flex>
             </Col>
@@ -147,7 +146,7 @@ const ExecuteInventorizationPage: FC = () => {
                   </Col>
 
                   <Col span={18}>
-                    {mapInventorizationWarehousesTitles(locationState.inventorization.warehouses)}
+                    {mapInventorizationWarehousesTitles(inventorization.warehouses)}
                   </Col>
                 </Row>
               </Flex>
@@ -181,11 +180,7 @@ const ExecuteInventorizationPage: FC = () => {
                 key: ExecuteInventorizationPageTabsEnum.Revise,
                 label:
                   executeInventorizationPageTabNames[ExecuteInventorizationPageTabsEnum.Revise],
-                children: (
-                  <ExecuteInventorizationReviseTab
-                    inventorization={locationState.inventorization}
-                  />
-                ),
+                children: <ExecuteInventorizationReviseTab inventorization={inventorization} />,
               },
               {
                 key: ExecuteInventorizationPageTabsEnum.Discrepancies,
@@ -195,9 +190,7 @@ const ExecuteInventorizationPage: FC = () => {
                   ],
                 children: (
                   <React.Suspense fallback={<Spinner tip='Загрузка вкладки расхождений' />}>
-                    <ExecuteInventorizationDiscrepanciesTab
-                      inventorization={locationState.inventorization}
-                    />
+                    <ExecuteInventorizationDiscrepanciesTab inventorization={inventorization} />
                   </React.Suspense>
                 ),
               },
@@ -210,7 +203,7 @@ const ExecuteInventorizationPage: FC = () => {
                 children: (
                   <React.Suspense fallback={<Spinner tip='Загрузка вкладки перемещений' />}>
                     <ExecuteInventorizationRelocationsTab
-                      inventorization={locationState.inventorization}
+                      inventorization={inventorization}
                       defaultRelocationTaskId={relocationTaskDraftId}
                     />
                   </React.Suspense>

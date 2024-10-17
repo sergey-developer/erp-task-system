@@ -1,3 +1,3 @@
 export enum InfrastructuresRoutesEnum {
-  DesktopChangeInfrastructure = '/home/desktop/infrastructures/:id',
+  DesktopChangeInfrastructure = '/home/desktop/infrastructures/:id/edit',
 }

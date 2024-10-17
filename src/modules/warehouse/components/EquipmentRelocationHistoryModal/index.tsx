@@ -1,3 +1,4 @@
+import { Flex } from 'antd'
 import { FC } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
@@ -22,7 +23,7 @@ const EquipmentRelocationHistoryModal: FC<EquipmentRelocationHistoryModalProps> 
       onCancel={onCancel}
       title='История заявок на перемещение'
     >
-      <div data-testid='equipment-relocation-history-table'>
+      <Flex data-testid='equipment-relocation-history-table'>
         <ParentSizedTable<EquipmentRelocationHistoryTableItem>
           loading={loading}
           dataSource={dataSource}
@@ -30,7 +31,7 @@ const EquipmentRelocationHistoryModal: FC<EquipmentRelocationHistoryModalProps> 
           columns={columns}
           onRow={onRow}
         />
-      </div>
+      </Flex>
     </BaseModal>
   )
 }

@@ -48,8 +48,16 @@ const clickConfirmExecutionMenuItem = (user: UserEvent) =>
 // create documents package menu item
 const getCreateDocumentsPackageMenuItem = () =>
   menuTestUtils.getMenuItem('Сформировать пакет документов')
+
 const clickCreateDocumentsPackageMenuItem = (user: UserEvent) =>
   menuTestUtils.clickMenuItem('Сформировать пакет документов', user)
+
+// move draft to work button
+const getMoveDraftToWorkMenuItem = () => menuTestUtils.getMenuItem('Перевести черновик в работу')
+const queryMoveDraftToWorkMenuItem = () =>
+  menuTestUtils.queryMenuItem('Перевести черновик в работу')
+const clickMoveDraftToWorkMenuItem = async (user: UserEvent) =>
+  menuTestUtils.clickMenuItem('Перевести черновик в работу', user)
 
 // change draft menu item
 const getChangeDraftMenuItem = () => menuTestUtils.getMenuItem('Изменить черновик')
@@ -93,16 +101,17 @@ const clickCommonPhotosButton = async (user: UserEvent) => {
 
 const expectCommonPhotosLoadingStarted = () =>
   buttonTestUtils.expectLoadingStarted(getCommonPhotosButton())
+
 const expectCommonPhotosLoadingFinished = () =>
   buttonTestUtils.expectLoadingFinished(getCommonPhotosButton())
 
 // loading
 const expectRelocationTaskLoadingStarted = spinnerTestUtils.expectLoadingStarted(
-  'relocation-task-details-loading',
+  TestIdsEnum.RelocationTaskDetailsLoading,
 )
 
 const expectRelocationTaskLoadingFinished = spinnerTestUtils.expectLoadingFinished(
-  'relocation-task-details-loading',
+  TestIdsEnum.RelocationTaskDetailsLoading,
 )
 
 const expectRelocationEquipmentListLoadingFinished =
@@ -142,6 +151,10 @@ export const relocationTaskDetailsTestUtils = {
 
   getCreateDocumentsPackageMenuItem,
   clickCreateDocumentsPackageMenuItem,
+
+  getMoveDraftToWorkMenuItem,
+  queryMoveDraftToWorkMenuItem,
+  clickMoveDraftToWorkMenuItem,
 
   getCreateDocumentsButton,
   setDocument,

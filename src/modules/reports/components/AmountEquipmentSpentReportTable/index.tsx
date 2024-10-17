@@ -1,3 +1,4 @@
+import { Flex } from 'antd'
 import { FC, useMemo } from 'react'
 
 import { ParentSizedTable } from 'components/Tables/ParentSizedTable'
@@ -16,13 +17,13 @@ const AmountEquipmentSpentReportTable: FC<AmountEquipmentSpentReportTableProps> 
   )
 
   return (
-    <div data-testid='amount-equipment-spent-report-table'>
+    <Flex data-testid='amount-equipment-spent-report-table'>
       <ParentSizedTable<AmountEquipmentSpentReportTableItem>
         {...props}
         rowKey='id'
         columns={columns}
       />
-    </div>
+    </Flex>
   )
 }
 
