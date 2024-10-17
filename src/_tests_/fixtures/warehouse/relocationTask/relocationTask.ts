@@ -32,7 +32,6 @@ export const relocationTask = (
   type: RelocationTaskTypeEnum.Relocation,
   deadlineAt: fakeDateString(),
   createdAt: fakeDateString(),
-  createdBy: pick(userFixtures.user(), 'id', 'fullName'),
   // controllers: [pick(userFixtures.user(), 'id', 'fullName', 'phone')],
   controller: pick(userFixtures.user(), 'id', 'fullName', 'phone'),
   relocateFrom: { id: fakeId(), title: fakeWord() },
