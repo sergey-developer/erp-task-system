@@ -23,3 +23,8 @@ export const getInfrastructureOrderFormWorkTypeCostErrMsg =
 
 export const deleteInfrastructureOrdersFormsWorkErrMsg =
   'Ошибка удаления работ по изменению инфраструктуры'
+
+export const updateInfrastructureStatusErrMsg = 'Ошибка изменения статуса инфраструктуры'
+
+export const getInfrastructureStatusHistoryErrMsg =
+  'Ошибка получения истории статусов изменений инфраструктуры'

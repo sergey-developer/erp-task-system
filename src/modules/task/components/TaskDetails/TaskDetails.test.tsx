@@ -3,7 +3,6 @@ import * as reactRouterDom from 'react-router-dom'
 
 import { InfrastructuresRoutesEnum } from 'modules/infrastructures/constants/routes'
 import ChangeInfrastructurePage from 'modules/infrastructures/pages/ChangeInfrastructurePage'
-import { testUtils as changeInfrastructurePageTestUtils } from 'modules/infrastructures/pages/ChangeInfrastructurePage/ChangeInfrastructurePage.test'
 import { getChangeInfrastructurePageLocationState } from 'modules/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { TasksRoutesEnum } from 'modules/task/constants/routes'
 import {
@@ -24,6 +23,7 @@ import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/enum'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 
+import { changeInfrastructurePageTestUtils } from '_tests_/features/infrastructure/pages/ChangeInfrastructurePage/testUtils'
 import { confirmCancelReclassificationRequestModalTestUtils } from '_tests_/features/tasks/components/ConfirmCancelReclassificationRequestModal/testUtils'
 import { confirmExecuteTaskReclassificationTasksModalTestUtils } from '_tests_/features/tasks/components/ConfirmExecuteTaskReclassificationTasksModal/testUtils'
 import { confirmExecuteTaskRegistrationFNModalTestUtils } from '_tests_/features/tasks/components/ConfirmExecuteTaskRegistrationFNModal/testUtils'

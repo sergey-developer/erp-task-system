@@ -18,10 +18,14 @@ import {
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureOrdersFormsSuccessResponse,
   GetInfrastructureQueryArgs,
+  GetInfrastructureStatusHistoryQueryArgs,
+  GetInfrastructureStatusHistorySuccessResponse,
   GetInfrastructureSuccessResponse,
   UpdateInfrastructureMutationArgs,
   UpdateInfrastructureOrderFormWorkMutationArgs,
   UpdateInfrastructureOrderFormWorkSuccessResponse,
+  UpdateInfrastructureStatusMutationArgs,
+  UpdateInfrastructureStatusSuccessResponse,
   UpdateInfrastructureSuccessResponse,
 } from 'modules/infrastructures/models'
 import {
@@ -61,6 +65,26 @@ const infrastructuresApiService = baseApiService
           url: makeUpdateInfrastructureUrl({ infrastructureId }),
           method: HttpMethodEnum.Patch,
           data,
+        }),
+      }),
+      updateInfrastructureStatus: build.mutation<
+        UpdateInfrastructureStatusSuccessResponse,
+        UpdateInfrastructureStatusMutationArgs
+      >({
+        query: (data) => ({
+          url: InfrastructuresApiEnum.UpdateInfrastructureStatus,
+          method: HttpMethodEnum.Post,
+          data,
+        }),
+      }),
+      getInfrastructureStatusHistory: build.query<
+        GetInfrastructureStatusHistorySuccessResponse,
+        GetInfrastructureStatusHistoryQueryArgs
+      >({
+        query: (params) => ({
+          url: InfrastructuresApiEnum.GetInfrastructureStatusHistory,
+          method: HttpMethodEnum.Get,
+          params,
         }),
       }),
 
@@ -154,8 +178,10 @@ const infrastructuresApiService = baseApiService
 export const {
   useGetInfrastructureQuery,
   useUpdateInfrastructureMutation,
+
   useCreateInfrastructureOrderFormMutation,
   useGetInfrastructureOrdersFormsQuery,
+
   useCreateInfrastructureOrderFormAttachmentMutation,
 
   useLazyGetInfrastructureOrderFormWorkTypeCostQuery,
@@ -163,4 +189,7 @@ export const {
   useCreateInfrastructureOrderFormWorkMutation,
   useUpdateInfrastructureOrderFormWorkMutation,
   useDeleteInfrastructureOrdersFormsWorkMutation,
+
+  useUpdateInfrastructureStatusMutation,
+  useGetInfrastructureStatusHistoryQuery,
 } = infrastructuresApiService
