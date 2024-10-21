@@ -383,7 +383,10 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     { isFetching: getInventorizationEquipmentsTemplateIsFetching },
   ] = useLazyGetInventorizationEquipmentsTemplate()
 
-  const [updateInventorizationEquipmentMutation] = useUpdateInventorizationEquipment()
+  const [
+    updateInventorizationEquipmentMutation,
+    { isLoading: updateInventorizationEquipmentIsLoading },
+  ] = useUpdateInventorizationEquipment()
 
   const [createEquipmentMutation, { isLoading: createEquipmentIsLoading }] = useCreateEquipment()
 
@@ -540,8 +543,9 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         await updateInventorizationEquipmentMutation({
           inventorizationEquipmentId: record.id,
           quantityFact: valueIsNumber ? value : null,
-          locationFact: locationFact === undefinedSelectOption.value ? null : locationFact,
-          isLocationFactUndefined: locationFact === undefinedSelectOption.value,
+          locationFact: locationFact.id === undefinedSelectOption.value ? null : locationFact.id,
+          isLocationFactUndefined: locationFact.id === undefinedSelectOption.value,
+          locationFactOption: locationFact,
           getInventorizationEquipmentsArgs,
         })
       },
@@ -554,9 +558,10 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       async (record, value, quantityFact) => {
         await updateInventorizationEquipmentMutation({
           inventorizationEquipmentId: record.id,
-          locationFact: value === undefinedSelectOption.value ? null : value,
-          isLocationFactUndefined: value === undefinedSelectOption.value,
+          locationFact: value.id === undefinedSelectOption.value ? null : value.id,
+          isLocationFactUndefined: value.id === undefinedSelectOption.value,
           quantityFact,
+          locationFactOption: value,
           getInventorizationEquipmentsArgs,
         })
       },
@@ -821,7 +826,9 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
           locationsIsLoading={locationsIsFetching}
           onTableChange={onChangeTable}
           onChangeQuantityFact={onChangeQuantityFact}
+          changeQuantityFactIsLoading={updateInventorizationEquipmentIsLoading}
           onChangeLocationFact={onChangeLocationFact}
+          changeLocationFactIsLoading={updateInventorizationEquipmentIsLoading}
         />
       </Flex>
 
