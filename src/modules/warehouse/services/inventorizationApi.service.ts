@@ -158,13 +158,24 @@ const inventorizationApiService = baseApiService
         UpdateInventorizationEquipmentSuccessResponse,
         UpdateInventorizationEquipmentMutationArgs
       >({
-        query: ({ inventorizationEquipmentId, getInventorizationEquipmentsArgs, ...data }) => ({
+        query: ({
+          inventorizationEquipmentId,
+          getInventorizationEquipmentsArgs,
+          locationFactOption,
+          ...data
+        }) => ({
           url: makeUpdateInventorizationEquipmentUrl({ inventorizationEquipmentId }),
           method: HttpMethodEnum.Put,
           data,
         }),
         onQueryStarted: async (
-          { inventorizationEquipmentId, getInventorizationEquipmentsArgs },
+          {
+            inventorizationEquipmentId,
+            locationFactOption,
+            quantityFact,
+            isLocationFactUndefined,
+            getInventorizationEquipmentsArgs,
+          },
           { dispatch, queryFulfilled },
         ) => {
           try {
@@ -180,6 +191,9 @@ const inventorizationApiService = baseApiService
                   )
 
                   if (inventorizationEquipment) {
+                    inventorizationEquipment.locationFact = locationFactOption
+                    inventorizationEquipment.isLocationFactUndefined = isLocationFactUndefined
+                    inventorizationEquipment.quantity.fact = quantityFact
                     inventorizationEquipment.isFilled = !!updateResult.isFilled
                     inventorizationEquipment.hasDiff = !!updateResult.hasDiff
                   }

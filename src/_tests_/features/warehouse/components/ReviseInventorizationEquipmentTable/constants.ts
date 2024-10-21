@@ -15,7 +15,12 @@ export const props: ReviseInventorizationEquipmentTableProps = {
   onTableChange: jest.fn(),
 
   onChangeQuantityFact: jest.fn(),
+  changeQuantityFactIsLoading: false,
+
   onChangeLocationFact: jest.fn(),
+  changeLocationFactIsLoading: false,
+
+  fulfilledTimeStamp: undefined,
 }
 
 export enum TestIdsEnum {

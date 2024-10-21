@@ -22,7 +22,11 @@ import {
 
 type GetColumnsArgs = Pick<
   ReviseInventorizationEquipmentTableProps,
-  'locationsIsLoading' | 'onChangeQuantityFact' | 'onChangeLocationFact'
+  | 'locationsIsLoading'
+  | 'onChangeQuantityFact'
+  | 'changeQuantityFactIsLoading'
+  | 'onChangeLocationFact'
+  | 'changeLocationFactIsLoading'
 > & {
   locationOptions: DefaultOptionType[]
 }
@@ -32,8 +36,12 @@ export const tableName = 'ReviseInventorizationEquipmentTable'
 export const getColumns = ({
   locationOptions,
   locationsIsLoading,
+
   onChangeQuantityFact,
+  changeQuantityFactIsLoading,
+
   onChangeLocationFact,
+  changeLocationFactIsLoading,
 }: GetColumnsArgs): ProColumns<ReviseInventorizationEquipmentTableItem>[] => {
   return [
     {
@@ -77,7 +85,7 @@ export const getColumns = ({
         const quantityPlan: ReviseInventorizationEquipmentTableItem['quantity']['plan'] =
           form.getFieldValue((config.rowKey as unknown as string[]).concat('plan'))
 
-        const locationFact: ReviseInventorizationEquipmentTableItem['locationFact'] =
+        const locationFact: NonNullable<ReviseInventorizationEquipmentTableItem['locationFact']> =
           form.getFieldValue([tableName, config.rowIndex, 'locationFact'])
 
         return {
@@ -87,12 +95,10 @@ export const getColumns = ({
               ? { style: { borderColor: theme.colors.green } }
               : { status: 'error' }
             : {}),
+          disabled: changeQuantityFactIsLoading,
           onBlur: async () => {
-            await onChangeQuantityFact(
-              config.entity,
-              quantityFact,
-              isObject(locationFact) ? locationFact.id : locationFact,
-            )
+            form.setFieldValue([tableName, config.rowIndex, 'quantity', 'fact'], quantityFact)
+            await onChangeQuantityFact(config.entity, quantityFact, locationFact)
           },
           defaultValue: null,
         }
@@ -131,13 +137,12 @@ export const getColumns = ({
           showSearch: true,
           filterOption: filterOptionBy('label'),
           onChange: async (value: IdType, option: any) => {
-            form.setFieldValue([tableName, config.rowIndex, 'locationFact'], {
-              title: option.label,
-              id: option.value,
-            })
-            await onChangeLocationFact(config.entity, value, quantityFact)
+            const newValue = { title: option.label, id: option.value }
+            form.setFieldValue([tableName, config.rowIndex, 'locationFact'], newValue)
+            await onChangeLocationFact(config.entity, newValue, quantityFact)
           },
           disabled:
+            changeLocationFactIsLoading ||
             locationsIsLoading ||
             !(
               isNumber(quantityFact) &&
