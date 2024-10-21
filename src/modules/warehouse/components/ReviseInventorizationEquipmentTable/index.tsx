@@ -1,8 +1,11 @@
 import { EditableProTable } from '@ant-design/pro-components'
+import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Form } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, useEffect, useMemo } from 'react'
+
+import { env } from 'configs/env'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
 
@@ -21,7 +24,10 @@ const ReviseInventorizationEquipmentTable: FC<ReviseInventorizationEquipmentTabl
   locationsIsLoading,
 
   onChangeQuantityFact,
+  changeQuantityFactIsLoading,
+
   onChangeLocationFact,
+  changeLocationFactIsLoading,
 
   ...props
 }) => {
@@ -40,15 +46,31 @@ const ReviseInventorizationEquipmentTable: FC<ReviseInventorizationEquipmentTabl
     [locations],
   )
 
+  const editableProps: EditableProTableProps<
+    ReviseInventorizationEquipmentTableItem,
+    any
+  >['editable'] = useMemo(() => ({ type: 'multiple', editableKeys }), [editableKeys])
+
   const columns = useMemo(
     () =>
       getColumns({
         locationOptions,
         locationsIsLoading,
+
         onChangeQuantityFact,
+        changeQuantityFactIsLoading,
+
         onChangeLocationFact,
+        changeLocationFactIsLoading,
       }),
-    [locationOptions, locationsIsLoading, onChangeLocationFact, onChangeQuantityFact],
+    [
+      changeLocationFactIsLoading,
+      changeQuantityFactIsLoading,
+      locationOptions,
+      locationsIsLoading,
+      onChangeLocationFact,
+      onChangeQuantityFact,
+    ],
   )
 
   return (
@@ -59,10 +81,11 @@ const ReviseInventorizationEquipmentTable: FC<ReviseInventorizationEquipmentTabl
           rowKey='id'
           columns={columns}
           ghost
+          virtual={!env.isTest}
           // @ts-ignore
           form={form}
           recordCreatorProps={false}
-          editable={{ type: 'multiple', editableKeys }}
+          editable={editableProps}
           {...props}
         />
       </TableWrapperStyled>
