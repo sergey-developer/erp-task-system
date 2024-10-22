@@ -29,7 +29,7 @@ export type ReviseInventorizationEquipmentTableProps = SetNonNullable<
   onChangeQuantityFact: (
     record: ReviseInventorizationEquipmentTableItem,
     value: Nullable<number>,
-    locationFact: NonNullable<ReviseInventorizationEquipmentTableItem['locationFact']>,
+    locationFact: ReviseInventorizationEquipmentTableItem['locationFact'],
   ) => Promise<void>
   changeQuantityFactIsLoading: boolean
 

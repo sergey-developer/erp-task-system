@@ -543,8 +543,12 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
         await updateInventorizationEquipmentMutation({
           inventorizationEquipmentId: record.id,
           quantityFact: valueIsNumber ? value : null,
-          locationFact: locationFact.id === undefinedSelectOption.value ? null : locationFact.id,
-          isLocationFactUndefined: locationFact.id === undefinedSelectOption.value,
+          locationFact: locationFact
+            ? locationFact.id === undefinedSelectOption.value
+              ? null
+              : locationFact.id
+            : null,
+          isLocationFactUndefined: locationFact?.id === undefinedSelectOption.value,
           locationFactOption: locationFact,
           getInventorizationEquipmentsArgs,
         })
