@@ -13,8 +13,8 @@ export type CreateTaskMutationArgs = {
   assignee?: IdType
   isPrivate?: boolean
   attachments?: FileToSend[]
-  coExecutors?: IdType
-  observers?: IdType
+  coExecutors?: IdType[]
+  observers?: IdType[]
   workType?: IdType
   customer?: IdType
   contactType?: string

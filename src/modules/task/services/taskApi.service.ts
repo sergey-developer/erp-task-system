@@ -197,8 +197,17 @@ const taskApiService = baseApiService
           if (assignee) formData.append('assignee', String(assignee))
           if (isBoolean(isPrivate)) formData.append(decamelize('isPrivate'), String(isPrivate))
           if (attachments?.length) attachments.forEach((att) => formData.append('attachments', att))
-          if (coExecutors) formData.append(decamelize('coExecutors'), String(coExecutors))
-          if (observers) formData.append('observers', String(observers))
+
+          if (coExecutors?.length) {
+            coExecutors.forEach((executor) =>
+              formData.append(decamelize('coExecutors'), String(executor)),
+            )
+          }
+
+          if (observers?.length) {
+            observers.forEach((observer) => formData.append('observers', String(observer)))
+          }
+
           if (workType) formData.append(decamelize('workType'), String(workType))
           if (customer) formData.append('customer', String(customer))
           if (contactType) formData.append(decamelize('contactType'), contactType)
