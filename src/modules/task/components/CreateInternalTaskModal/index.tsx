@@ -208,6 +208,7 @@ const CreateInternalTaskModal: FC<CreateInternalTaskModalProps> = ({
 
         <Form.Item data-testid='co-executors-form-item' label='Соисполнители' name='coExecutors'>
           <Select
+            mode='multiple'
             placeholder='Выберите из списка'
             loading={workGroupFormValue ? executorsIsLoading : usersIsLoading}
             options={workGroupFormValue ? executors : users}
@@ -224,6 +225,7 @@ const CreateInternalTaskModal: FC<CreateInternalTaskModalProps> = ({
 
         <Form.Item data-testid='observers-form-item' label='Наблюдатели' name='observers'>
           <Select
+            mode='multiple'
             placeholder='Выберите из списка'
             loading={workGroupFormValue ? observersIsLoading : usersIsLoading}
             options={workGroupFormValue ? observers : users}

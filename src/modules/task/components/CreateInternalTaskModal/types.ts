@@ -53,7 +53,7 @@ export type CreateInternalTaskFormFields = {
   assignee?: IdType
   isPrivate?: boolean
   attachments?: UploadFile[]
-  coExecutors?: IdType
-  observers?: IdType
+  coExecutors?: IdType[]
+  observers?: IdType[]
   workType?: IdType
 }
