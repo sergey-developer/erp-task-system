@@ -1,4 +1,4 @@
-import { TaskListProps } from 'modules/task/components/TaskList/types'
+import { TaskListProps } from 'features/task/components/TaskList/types'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 

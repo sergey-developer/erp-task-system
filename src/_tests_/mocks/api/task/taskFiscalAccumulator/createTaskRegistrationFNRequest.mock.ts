@@ -1,5 +1,5 @@
-import { CreateTaskRegistrationFNRequestSuccessResponse } from 'modules/task/models'
-import { createTaskRegistrationFNRequestUrl } from 'modules/task/utils/task'
+import { CreateTaskRegistrationFNRequestSuccessResponse } from 'features/task/models'
+import { createTaskRegistrationFNRequestUrl } from 'features/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

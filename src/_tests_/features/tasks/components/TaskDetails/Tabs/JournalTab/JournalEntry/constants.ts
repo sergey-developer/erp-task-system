@@ -1,11 +1,11 @@
-import { JournalEntryProps } from 'modules/task/components/TaskDetails/Tabs/JournalTab/JournalEntry'
+import { JournalEntryProps } from 'features/task/components/TaskDetails/Tabs/JournalTab/JournalEntry'
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
-} from 'modules/task/constants/taskJournal/index'
+} from 'features/task/constants/taskJournal/index'
 
 import taskFixtures from '_tests_/fixtures/task/index'
-import { fakeDateString, fakeId, fakeWord } from '_tests_/utils/index'
+import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
 export const props: Readonly<JournalEntryProps> = {
   id: fakeId(),

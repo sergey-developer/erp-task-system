@@ -1,5 +1,5 @@
-import { GetMeasurementUnitListSuccessResponse } from 'modules/warehouse/models'
-import { MeasurementUnitApiEnum } from 'modules/warehouse/services/measurementUnitApiService'
+import { GetMeasurementUnitListSuccessResponse } from 'features/warehouse/models'
+import { MeasurementUnitApiEnum } from 'features/warehouse/services/measurementUnitApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

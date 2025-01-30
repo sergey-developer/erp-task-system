@@ -1,8 +1,8 @@
-import { GetRelocationEquipmentAttachmentListSuccessResponse } from 'modules/warehouse/models/relocationEquipment'
-import { getRelocationEquipmentAttachmentListUrl } from 'modules/warehouse/utils/relocationEquipment'
+import { GetRelocationEquipmentAttachmentListSuccessResponse } from 'features/warehouse/models/relocationEquipment'
+import { getRelocationEquipmentAttachmentListUrl } from 'features/warehouse/utils/relocationEquipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

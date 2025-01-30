@@ -1,14 +1,14 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { testUtils as logoutButtonTestUtils } from 'modules/auth/components/LogoutButton/LogoutButton.test'
-import { testUtils as loginPageTestUtils } from 'modules/auth/pages/LoginPage/LoginPage.test'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { updateUserStatusMessages, UserPermissionsEnum } from 'modules/user/constants'
+import { testUtils as logoutButtonTestUtils } from 'features/auth/components/LogoutButton/LogoutButton.test'
+import { testUtils as loginPageTestUtils } from 'features/auth/pages/LoginPage/LoginPage.test'
+import { taskLocalStorageService } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
+import { updateUserStatusMessages, UserPermissionsEnum } from 'features/user/constants'
 
 import { testUtils as homeLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
-import { UserStatusCodeEnum } from 'shared/constants/catalogs'
+import { UserStatusCodeEnum } from 'shared/catalogs/constants'
 import { MaybeNull } from 'shared/types/utils'
 
 import App from 'app/App'

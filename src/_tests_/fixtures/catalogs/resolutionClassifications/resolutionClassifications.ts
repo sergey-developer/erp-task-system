@@ -1,4 +1,4 @@
-import { ResolutionClassificationListItemModel } from 'shared/models/catalogs/resolutionClassifications'
+import { ResolutionClassificationListItemModel } from 'shared/catalogs/models/resolutionClassifications'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

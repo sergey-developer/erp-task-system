@@ -1,9 +1,8 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils } from '_tests_/utils/index'
-
 import { TestIdsEnum } from '_tests_/features/tasks/components/ConfirmCancelReclassificationRequestModal/constants'
+import { buttonTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.ConfirmCancelReclassificationRequestModal)
 const findContainer = () =>

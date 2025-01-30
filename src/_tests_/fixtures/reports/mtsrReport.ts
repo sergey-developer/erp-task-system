@@ -1,4 +1,4 @@
-import { BaseMtsrReportItemModel } from 'modules/reports/types'
+import { BaseMtsrReportItemModel } from 'features/reports/types'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 

@@ -1,4 +1,4 @@
-import { CustomerModel } from 'modules/warehouse/models'
+import { CustomerModel } from 'features/warehouse/models'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

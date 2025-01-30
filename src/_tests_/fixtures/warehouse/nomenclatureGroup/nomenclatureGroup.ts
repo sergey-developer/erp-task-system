@@ -1,4 +1,4 @@
-import { NomenclatureGroupModel } from 'modules/warehouse/models'
+import { NomenclatureGroupModel } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

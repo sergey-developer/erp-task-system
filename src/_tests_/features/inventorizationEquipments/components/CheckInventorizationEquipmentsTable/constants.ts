@@ -1,4 +1,4 @@
-import { CheckInventorizationEquipmentsTableProps } from 'modules/warehouse/components/CheckInventorizationEquipmentsTable/types'
+import { CheckInventorizationEquipmentsTableProps } from 'features/warehouse/components/CheckInventorizationEquipmentsTable/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 

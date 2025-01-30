@@ -1,8 +1,8 @@
 import pick from 'lodash/pick'
 
-import { UserPermissionsEnum } from 'modules/user/constants/index'
-import { RelocationTaskDetailsProps } from 'modules/warehouse/components/RelocationTaskDetails/types'
-import { RelocationTaskModel } from 'modules/warehouse/models/index'
+import { UserPermissionsEnum } from 'features/user/constants/index'
+import { RelocationTaskDetailsProps } from 'features/warehouse/components/RelocationTaskDetails/types'
+import { RelocationTaskModel } from 'features/warehouse/models/index'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 import { fakeId } from '_tests_/utils'

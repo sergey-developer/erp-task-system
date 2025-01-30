@@ -1,5 +1,5 @@
-import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
-import { EquipmentCategoryModel } from 'modules/warehouse/models'
+import { EquipmentCategoryEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentCategoryModel } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

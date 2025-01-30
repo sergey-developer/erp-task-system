@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { TaskCommentModel } from 'modules/task/models'
+import { TaskCommentModel } from 'features/task/models'
 
 import commonFixtures from '_tests_/fixtures/common'
 import taskFixtures from '_tests_/fixtures/task'

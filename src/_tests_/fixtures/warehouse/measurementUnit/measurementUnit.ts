@@ -1,4 +1,4 @@
-import { MeasurementUnitModel } from 'modules/warehouse/models'
+import { MeasurementUnitModel } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

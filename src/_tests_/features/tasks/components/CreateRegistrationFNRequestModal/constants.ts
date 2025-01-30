@@ -1,4 +1,4 @@
-import { CreateRegistrationFNRequestModalProps } from 'modules/task/components/CreateRegistrationFNRequestModal/types'
+import { CreateRegistrationFNRequestModalProps } from 'features/task/components/CreateRegistrationFNRequestModal/types'
 
 export const props: CreateRegistrationFNRequestModalProps = {
   open: true,

@@ -1,5 +1,5 @@
-import { TaskApiEnum } from 'modules/task/constants/task'
-import { GetTasksSuccessResponse } from 'modules/task/models'
+import { TaskApiEnum } from 'features/task/constants/task'
+import { GetTasksSuccessResponse } from 'features/task/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

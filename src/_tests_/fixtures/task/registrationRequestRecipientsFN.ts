@@ -1,4 +1,4 @@
-import { TaskRegistrationRequestRecipientsFNModel } from 'modules/task/models'
+import { TaskRegistrationRequestRecipientsFNModel } from 'features/task/models'
 
 import { fakeName } from '_tests_/utils'
 

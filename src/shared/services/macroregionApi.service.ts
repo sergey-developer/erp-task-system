@@ -1,7 +1,7 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MacroregionApiEnum } from 'shared/constants/macroregion'
 import { GetMacroregionsQueryArgs, GetMacroregionsSuccessResponse } from 'shared/models/macroregion'
-import { baseApiService } from 'shared/services/baseApi'
+import { baseApiService } from 'shared/api/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
 const macroregionApiService = baseApiService.injectEndpoints({

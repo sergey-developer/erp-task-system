@@ -1,8 +1,8 @@
-import { CancelRelocationTaskSuccessResponse } from 'modules/warehouse/models'
-import { cancelRelocationTaskUrl } from 'modules/warehouse/utils/relocationTask'
+import { CancelRelocationTaskSuccessResponse } from 'features/warehouse/models'
+import { cancelRelocationTaskUrl } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

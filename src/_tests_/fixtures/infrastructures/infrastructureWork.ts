@@ -1,4 +1,4 @@
-import { InfrastructureWorkModel } from 'modules/infrastructures/models'
+import { InfrastructureWorkModel } from 'features/infrastructures/models'
 
 import { fakeId, fakeInteger } from '_tests_/utils'
 

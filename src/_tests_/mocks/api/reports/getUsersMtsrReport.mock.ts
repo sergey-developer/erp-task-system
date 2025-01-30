@@ -1,8 +1,8 @@
-import { ReportsApiEnum } from 'modules/reports/constants'
-import { GetUsersMtsrReportSuccessResponse } from 'modules/reports/models'
+import { ReportsApiEnum } from 'features/reports/constants'
+import { GetUsersMtsrReportSuccessResponse } from 'features/reports/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 
 import {
   getForbiddenErrorMockFn,

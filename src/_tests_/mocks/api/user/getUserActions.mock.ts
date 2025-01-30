@@ -1,5 +1,5 @@
-import { GetUserActionsSuccessResponse } from 'modules/user/models'
-import { getUserActionsUrl } from 'modules/user/utils'
+import { GetUserActionsSuccessResponse } from 'features/user/models'
+import { getUserActionsUrl } from 'features/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

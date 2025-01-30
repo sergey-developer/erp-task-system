@@ -1,4 +1,4 @@
-import { ConfirmDeleteInfrastructureWorkTypeModalProps } from 'modules/infrastructures/components/ConfirmDeleteInfrastructureWorkTypeModal'
+import { ConfirmDeleteInfrastructureWorkTypeModalProps } from 'features/infrastructures/components/ConfirmDeleteInfrastructureWorkTypeModal'
 
 export const props: ConfirmDeleteInfrastructureWorkTypeModalProps = {
   open: true,

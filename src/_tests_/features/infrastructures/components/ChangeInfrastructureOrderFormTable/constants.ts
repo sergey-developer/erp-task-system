@@ -1,4 +1,4 @@
-import { ChangeInfrastructureOrderFormTableProps } from 'modules/infrastructures/components/ChangeInfrastructureOrderFormTable/types'
+import { ChangeInfrastructureOrderFormTableProps } from 'features/infrastructures/components/ChangeInfrastructureOrderFormTable/types'
 
 import { fakeWord } from '_tests_/utils'
 

@@ -1,5 +1,5 @@
-import { CreateTaskAttachmentSuccessResponse } from 'modules/task/models'
-import { createTaskAttachmentUrl } from 'modules/task/utils/task'
+import { CreateTaskAttachmentSuccessResponse } from 'features/task/models'
+import { createTaskAttachmentUrl } from 'features/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

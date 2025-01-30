@@ -1,7 +1,7 @@
-import { TaskReclassificationRequestProps } from 'modules/task/components/TaskReclassificationRequest/index'
+import { TaskReclassificationRequestProps } from 'features/task/components/TaskReclassificationRequest/index'
 
 import userFixtures from '_tests_/fixtures/user/index'
-import { fakeDateString, fakeWord } from '_tests_/utils/index'
+import { fakeDateString, fakeWord } from '_tests_/utils'
 
 export const props: Readonly<TaskReclassificationRequestProps> = {
   user: userFixtures.baseUser(),

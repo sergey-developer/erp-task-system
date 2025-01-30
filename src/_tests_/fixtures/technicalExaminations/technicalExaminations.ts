@@ -1,7 +1,7 @@
 import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
-import { TechnicalExaminationListItemModel } from 'modules/technicalExaminations/models'
+import { TechnicalExaminationListItemModel } from 'features/technicalExaminations/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import { fakeDateString, fakeId, fakeInteger, fakeWord } from '_tests_/utils'

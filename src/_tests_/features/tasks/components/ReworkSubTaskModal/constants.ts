@@ -1,4 +1,4 @@
-import { ReworkSubTaskModalProps } from 'modules/task/components/ReworkSubTaskModal/types'
+import { ReworkSubTaskModalProps } from 'features/task/components/ReworkSubTaskModal/types'
 
 export const props: Readonly<ReworkSubTaskModalProps> = {
   isLoading: false,

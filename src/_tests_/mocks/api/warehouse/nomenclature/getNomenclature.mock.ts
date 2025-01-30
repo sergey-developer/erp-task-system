@@ -1,5 +1,5 @@
-import { GetNomenclatureSuccessResponse } from 'modules/warehouse/models'
-import { getNomenclatureUrl } from 'modules/warehouse/utils/nomenclature'
+import { GetNomenclatureSuccessResponse } from 'features/warehouse/models'
+import { getNomenclatureUrl } from 'features/warehouse/utils/nomenclature'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

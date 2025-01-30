@@ -1,4 +1,4 @@
-import { LocationTypeEnum } from 'shared/constants/catalogs'
+import { LocationTypeEnum } from 'shared/catalogs/constants'
 
 export const checkLocationTypeIsWarehouse = (type: LocationTypeEnum): boolean =>
   type === LocationTypeEnum.Warehouse

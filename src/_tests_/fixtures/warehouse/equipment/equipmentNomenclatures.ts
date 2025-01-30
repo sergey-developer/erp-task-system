@@ -3,7 +3,7 @@ import times from 'lodash/times'
 import {
   EquipmentNomenclatureListItemModel,
   EquipmentNomenclaturesModel,
-} from 'modules/warehouse/models'
+} from 'features/warehouse/models'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 

@@ -1,4 +1,4 @@
-import { ReviseInventorizationEquipmentTableProps } from 'modules/warehouse/components/ReviseInventorizationEquipmentTable/types'
+import { ReviseInventorizationEquipmentTableProps } from 'features/warehouse/components/ReviseInventorizationEquipmentTable/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

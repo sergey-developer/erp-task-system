@@ -1,6 +1,6 @@
 import pick from 'lodash/pick'
 
-import { ExecuteInventorizationRelocationsTabProps } from 'modules/warehouse/components/ExecuteInventorizationRelocationsTab/index'
+import { ExecuteInventorizationRelocationsTabProps } from 'features/warehouse/components/ExecuteInventorizationRelocationsTab/index'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

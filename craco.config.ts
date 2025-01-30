@@ -19,7 +19,7 @@ module.exports = {
       assets: resolvePath('src/assets'),
       lib: resolvePath('src/lib'),
       configs: resolvePath('src/configs'),
-      modules: resolvePath('src/modules'),
+      modules: resolvePath('src/features'),
       components: resolvePath('src/components'),
       state: resolvePath('src/state'),
       shared: resolvePath('src/shared'),

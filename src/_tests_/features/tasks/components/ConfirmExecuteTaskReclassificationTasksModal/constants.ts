@@ -1,6 +1,6 @@
-import { ConfirmExecuteTaskReclassificationTasksModalProps } from 'modules/task/components/ConfirmExecuteTaskReclassificationTasksModal/index'
+import { ConfirmExecuteTaskReclassificationTasksModalProps } from 'features/task/components/ConfirmExecuteTaskReclassificationTasksModal/index'
 
-import { fakeIdStr } from '_tests_/utils/index'
+import { fakeIdStr } from '_tests_/utils'
 
 export const props: Readonly<ConfirmExecuteTaskReclassificationTasksModalProps> = {
   open: true,

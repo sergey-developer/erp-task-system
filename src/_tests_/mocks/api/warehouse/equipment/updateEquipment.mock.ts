@@ -1,5 +1,5 @@
-import { UpdateEquipmentSuccessResponse } from 'modules/warehouse/models'
-import { updateEquipmentUrl } from 'modules/warehouse/utils/equipment'
+import { UpdateEquipmentSuccessResponse } from 'features/warehouse/models'
+import { updateEquipmentUrl } from 'features/warehouse/utils/equipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

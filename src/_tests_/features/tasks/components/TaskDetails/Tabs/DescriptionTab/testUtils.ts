@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
-import { buttonTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils } from '_tests_/utils'
 
 import { TestIdsEnum } from './constants'
 

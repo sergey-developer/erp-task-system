@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 
-import { buttonTestUtils, spinnerTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils, spinnerTestUtils } from '_tests_/utils'
 
 import { TestIdsEnum } from './constants'
 

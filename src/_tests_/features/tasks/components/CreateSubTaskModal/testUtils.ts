@@ -1,11 +1,9 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
-import { CreateSubTaskFormFields } from 'modules/task/components/CreateSubTaskModal/types'
-
-import { buttonTestUtils, selectTestUtils } from '_tests_/utils/index'
+import { CreateSubTaskFormFields } from 'features/task/components/CreateSubTaskModal/types'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/CreateSubTaskModal/constants'
+import { buttonTestUtils, selectTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CreateSubTaskModal)
 const findContainer = () => screen.findByTestId(TestIdsEnum.CreateSubTaskModal)

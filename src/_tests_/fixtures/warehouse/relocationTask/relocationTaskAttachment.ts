@@ -1,4 +1,4 @@
-import { RelocationTaskAttachmentModel } from 'modules/warehouse/models'
+import { RelocationTaskAttachmentModel } from 'features/warehouse/models'
 
 import { fakeDateString, fakeId, fakeInteger, fakeName, fakeUrl, fakeWord } from '_tests_/utils'
 

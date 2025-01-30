@@ -5,8 +5,8 @@ import {
   ExternalRelocationStatusEnum,
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
-} from 'modules/warehouse/constants/relocationTask'
-import { RelocationTaskModel } from 'modules/warehouse/models'
+} from 'features/warehouse/constants/relocationTask'
+import { RelocationTaskModel } from 'features/warehouse/models'
 
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'

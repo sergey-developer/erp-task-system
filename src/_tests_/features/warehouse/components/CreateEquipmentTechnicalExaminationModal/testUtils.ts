@@ -3,9 +3,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
 
-import { buttonTestUtils, radioButtonTestUtils } from '_tests_/utils/index'
-
 import { TestIdsEnum } from '_tests_/features/warehouse/components/CreateEquipmentTechnicalExaminationModal/constants'
+import { buttonTestUtils, radioButtonTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CreateEquipmentTechnicalExaminationModal)
 const findContainer = () =>

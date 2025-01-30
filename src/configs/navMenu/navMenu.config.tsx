@@ -1,9 +1,9 @@
 import { CommonRouteEnum } from 'configs/routes'
 
-import { ReportsRoutesEnum } from 'modules/reports/constants'
-import { TasksRoutesEnum } from 'modules/task/constants/routes'
-import { UserPermissionsEnum } from 'modules/user/constants'
-import { WarehouseRouteEnum } from 'modules/warehouse/constants/routes'
+import { ReportsRoutesEnum } from 'features/reports/constants'
+import { TasksRoutesEnum } from 'features/task/constants/routes'
+import { UserPermissionsEnum } from 'features/user/constants'
+import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 
 import { FileTextIcon, ReadIcon, UnorderedListIcon } from 'components/Icons'
 

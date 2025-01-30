@@ -1,6 +1,6 @@
 import isUndefined from 'lodash/isUndefined'
 
-import { TaskModel } from 'modules/task/models'
+import { TaskModel } from 'features/task/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

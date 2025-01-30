@@ -1,4 +1,4 @@
-import { SupportGroupModel } from 'modules/supportGroup/models'
+import { SupportGroupModel } from 'features/supportGroup/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

@@ -1,4 +1,4 @@
-import { EquipmentFilterProps } from 'modules/warehouse/components/EquipmentFilter/types'
+import { EquipmentFilterProps } from 'features/warehouse/components/EquipmentFilter/types'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs/index'
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'

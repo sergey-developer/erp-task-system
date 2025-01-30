@@ -1,6 +1,6 @@
-import { NomenclatureGroupFormModalProps } from 'modules/warehouse/components/NomenclatureGroupFormModal/types'
+import { NomenclatureGroupFormModalProps } from 'features/warehouse/components/NomenclatureGroupFormModal/types'
 
-import { fakeWord } from '_tests_/utils/index'
+import { fakeWord } from '_tests_/utils'
 
 export const props: Readonly<NomenclatureGroupFormModalProps> = {
   open: true,

@@ -1,6 +1,6 @@
-import { CatalogsApiEnum } from 'shared/constants/catalogs'
+import { CatalogsApiEnum } from 'shared/catalogs/constants'
+import { GetUserStatusListSuccessResponse } from 'shared/catalogs/models/userStatuses'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { GetUserStatusListSuccessResponse } from 'shared/models/catalogs/userStatus'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'

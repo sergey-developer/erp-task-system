@@ -1,4 +1,4 @@
-import { EquipmentNomenclatureTableProps } from 'modules/warehouse/components/EquipmentNomenclatureTable/types'
+import { EquipmentNomenclatureTableProps } from 'features/warehouse/components/EquipmentNomenclatureTable/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

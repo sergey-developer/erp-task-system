@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { UsersGroupListItemModel, UsersGroupsModel } from 'modules/user/models'
+import { UsersGroupListItemModel, UsersGroupsModel } from 'features/user/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

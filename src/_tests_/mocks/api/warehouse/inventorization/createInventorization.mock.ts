@@ -1,5 +1,5 @@
-import { InventorizationApiEnum } from 'modules/warehouse/constants/inventorization'
-import { CreateInventorizationSuccessResponse } from 'modules/warehouse/models'
+import { InventorizationApiEnum } from 'features/warehouse/constants/inventorization'
+import { CreateInventorizationSuccessResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

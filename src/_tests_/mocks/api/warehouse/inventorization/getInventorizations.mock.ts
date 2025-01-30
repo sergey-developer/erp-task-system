@@ -1,8 +1,8 @@
-import { InventorizationApiEnum } from 'modules/warehouse/constants/inventorization'
-import { GetInventorizationsSuccessResponse } from 'modules/warehouse/models'
+import { InventorizationApiEnum } from 'features/warehouse/constants/inventorization'
+import { GetInventorizationsSuccessResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 
 import {
   getForbiddenErrorMockFn,

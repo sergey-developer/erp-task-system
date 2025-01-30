@@ -1,5 +1,5 @@
-import { SupportGroupApiEnum } from 'modules/supportGroup/constants'
-import { GetSupportGroupListSuccessResponse } from 'modules/supportGroup/models'
+import { SupportGroupApiEnum } from 'features/supportGroup/constants'
+import { GetSupportGroupListSuccessResponse } from 'features/supportGroup/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

@@ -1,4 +1,4 @@
-import { NomenclatureTableProps } from 'modules/warehouse/components/NomenclatureTable/types'
+import { NomenclatureTableProps } from 'features/warehouse/components/NomenclatureTable/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

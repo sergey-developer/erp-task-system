@@ -5,7 +5,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import { TestIdsEnum } from '_tests_/features/warehouse/components/RelocationEquipmentEditableTable/constants'
-import { tableTestUtils } from '_tests_/utils/index'
+import { tableTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.RelocationEquipmentEditableTableContainer)
 

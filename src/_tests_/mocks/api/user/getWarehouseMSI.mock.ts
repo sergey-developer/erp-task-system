@@ -1,8 +1,8 @@
-import { GetWarehouseMSISuccessResponse } from 'modules/user/models'
-import { getWarehouseMSIUrl } from 'modules/user/utils'
+import { GetWarehouseMSISuccessResponse } from 'features/user/models'
+import { getWarehouseMSIUrl } from 'features/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

@@ -1,8 +1,8 @@
-import { GetEquipmentRelocationHistorySuccessResponse } from 'modules/warehouse/models'
-import { getEquipmentRelocationHistoryUrl } from 'modules/warehouse/utils/equipment'
+import { GetEquipmentRelocationHistorySuccessResponse } from 'features/warehouse/models'
+import { getEquipmentRelocationHistoryUrl } from 'features/warehouse/utils/equipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

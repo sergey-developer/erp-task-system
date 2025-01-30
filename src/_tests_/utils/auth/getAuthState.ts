@@ -1,4 +1,4 @@
-import { AuthenticatedUser, AuthSliceState } from 'modules/auth/types'
+import { AuthenticatedUser, AuthSliceState } from 'features/auth/types'
 
 import authFixtures from '_tests_/fixtures/auth'
 

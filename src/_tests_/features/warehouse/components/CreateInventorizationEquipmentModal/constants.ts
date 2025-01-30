@@ -1,4 +1,4 @@
-import { CreateInventorizationEquipmentModalProps } from 'modules/warehouse/components/CreateInventorizationEquipmentModal/types'
+import { CreateInventorizationEquipmentModalProps } from 'features/warehouse/components/CreateInventorizationEquipmentModal/types'
 
 export const props: CreateInventorizationEquipmentModalProps = {
   open: true,

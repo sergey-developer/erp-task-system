@@ -1,4 +1,4 @@
-import { RelocationEquipmentEditableTableProps } from 'modules/warehouse/components/RelocationEquipmentEditableTable/types'
+import { RelocationEquipmentEditableTableProps } from 'features/warehouse/components/RelocationEquipmentEditableTable/types'
 
 export const props: RelocationEquipmentEditableTableProps = {
   name: 'equipments',

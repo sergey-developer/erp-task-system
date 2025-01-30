@@ -3,9 +3,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { NumberOrString } from 'shared/types/utils'
 
-import { buttonTestUtils, menuTestUtils, spinnerTestUtils } from '_tests_/utils/index'
-
 import { TestIdsEnum } from '_tests_/features/warehouse/components/EquipmentDetails/constants'
+import { buttonTestUtils, menuTestUtils, spinnerTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.EquipmentDetails)
 const findContainer = (): Promise<HTMLElement> => screen.findByTestId(TestIdsEnum.EquipmentDetails)

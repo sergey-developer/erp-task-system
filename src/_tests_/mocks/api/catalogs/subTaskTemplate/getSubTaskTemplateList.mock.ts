@@ -1,6 +1,6 @@
-import { CatalogsApiEnum } from 'shared/constants/catalogs'
+import { CatalogsApiEnum } from 'shared/catalogs/constants'
+import { GetSubTaskTemplateListSuccessResponse } from 'shared/catalogs/models/subTaskTemplates'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { GetSubTaskTemplateListSuccessResponse } from 'shared/models/catalogs/subTaskTemplate'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'

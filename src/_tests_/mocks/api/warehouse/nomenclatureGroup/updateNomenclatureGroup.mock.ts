@@ -1,5 +1,5 @@
-import { UpdateNomenclatureGroupSuccessResponse } from 'modules/warehouse/models'
-import { updateNomenclatureGroupUrl } from 'modules/warehouse/utils/nomenclatureGroup'
+import { UpdateNomenclatureGroupSuccessResponse } from 'features/warehouse/models'
+import { updateNomenclatureGroupUrl } from 'features/warehouse/utils/nomenclatureGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

@@ -1,4 +1,4 @@
-import { TaskWorkGroupModel } from 'modules/task/models'
+import { TaskWorkGroupModel } from 'features/task/models'
 
 import { fakeEmail, fakeId, fakePhone, fakeWord } from '_tests_/utils'
 

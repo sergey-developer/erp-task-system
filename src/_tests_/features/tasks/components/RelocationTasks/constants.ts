@@ -1,4 +1,4 @@
-import { RelocationTasksProps } from 'modules/task/components/RelocationTasks/types'
+import { RelocationTasksProps } from 'features/task/components/RelocationTasks/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

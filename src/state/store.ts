@@ -2,7 +2,7 @@ import { configureStore, PreloadedState } from '@reduxjs/toolkit'
 
 import { env } from 'configs/env'
 
-import { baseApiService } from 'shared/services/baseApi'
+import { baseApiService } from 'shared/api/services/baseApi'
 
 import { rootReducer } from './rootReducer'
 

@@ -4,7 +4,7 @@ import {
   WorkGroupListItemModel,
   WorkGroupListModel,
   WorkGroupTypeEnum,
-} from 'modules/workGroup/models'
+} from 'features/workGroup/models'
 
 import { IdType } from 'shared/types/common'
 import { ArrayFirst } from 'shared/types/utils'

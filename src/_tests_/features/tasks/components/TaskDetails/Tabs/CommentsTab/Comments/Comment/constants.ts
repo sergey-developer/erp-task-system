@@ -1,7 +1,7 @@
-import { CommentProps } from 'modules/task/components/TaskDetails/Tabs/CommentsTab/Comments/Comment/index'
+import { CommentProps } from 'features/task/components/TaskDetails/Tabs/CommentsTab/Comments/Comment/index'
 
 import taskFixtures from '_tests_/fixtures/task/index'
-import { fakeWord } from '_tests_/utils/index'
+import { fakeWord } from '_tests_/utils'
 
 export const props: Readonly<CommentProps> = {
   text: fakeWord(),

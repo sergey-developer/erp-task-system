@@ -1,6 +1,6 @@
 import { JSXElementConstructor } from 'react'
 
-import { UserPermissionsEnum } from 'modules/user/constants'
+import { UserPermissionsEnum } from 'features/user/constants'
 
 export type NavMenuItem = {
   text: string

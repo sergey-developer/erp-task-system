@@ -1,4 +1,4 @@
-import { InfrastructureWorkTypesCatalogListItemModel } from 'shared/models/catalogs/infrastructureWorkTypes'
+import { InfrastructureWorkTypesCatalogListItemModel } from 'shared/catalogs/models/infrastructureWorkTypes'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

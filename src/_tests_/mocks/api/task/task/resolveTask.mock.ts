@@ -1,5 +1,5 @@
-import { ResolveTaskSuccessResponse } from 'modules/task/models'
-import { resolveTaskUrl } from 'modules/task/utils/task'
+import { ResolveTaskSuccessResponse } from 'features/task/models'
+import { resolveTaskUrl } from 'features/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

@@ -5,8 +5,8 @@ import {
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants/task'
-import { TaskModel, TaskResponseTimeModel } from 'modules/task/models'
+} from 'features/task/constants/task'
+import { TaskModel, TaskResponseTimeModel } from 'features/task/models'
 
 import { SystemEnum } from 'shared/constants/enums'
 

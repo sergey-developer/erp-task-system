@@ -1,11 +1,11 @@
-import { AuthApiEnum } from 'modules/auth/constants'
+import { AuthApiEnum } from 'features/auth/constants'
 import {
   UpdatePasswordBadRequestErrorResponse,
   UpdatePasswordSuccessResponse,
-} from 'modules/auth/models'
+} from 'features/auth/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 
 import {
   getBadRequestErrorMockFn,

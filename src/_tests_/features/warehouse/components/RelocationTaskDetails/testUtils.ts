@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { relocationEquipmentTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentTable/testUtils'
 import { TestIdsEnum } from '_tests_/features/warehouse/components/RelocationTaskDetails/constants'
-import { buttonTestUtils, menuTestUtils, spinnerTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils, menuTestUtils, spinnerTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.RelocationTaskDetails)
 const findContainer = () => screen.findByTestId(TestIdsEnum.RelocationTaskDetails)

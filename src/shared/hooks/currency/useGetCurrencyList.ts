@@ -4,7 +4,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getCurrencyListMessages } from 'shared/constants/currency'
 import { GetCurrencyListQueryArgs, GetCurrencyListSuccessResponse } from 'shared/models/currency'
-import { isErrorResponse } from 'shared/services/baseApi'
+import { isErrorResponse } from 'shared/api/services/baseApi'
 import { useGetCurrencyListQuery } from 'shared/services/currencyApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 

@@ -1,4 +1,4 @@
-import { CancelRelocationTaskModalProps } from 'modules/warehouse/components/CancelRelocationTaskModal/index'
+import { CancelRelocationTaskModalProps } from 'features/warehouse/components/CancelRelocationTaskModal/index'
 
 export const props: CancelRelocationTaskModalProps = {
   open: true,

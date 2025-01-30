@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { TestIdsEnum } from '_tests_/features/warehouse/components/InventorizationDetails/constants'
-import { buttonTestUtils, spinnerTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils, spinnerTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.InventorizationDetails)
 const findContainer = () => screen.findByTestId(TestIdsEnum.InventorizationDetails)

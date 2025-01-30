@@ -6,7 +6,7 @@ import { buttonTestUtils, iconTestUtils, selectTestUtils, spinnerTestUtils } fro
 import {
   infrastructureStatusDict,
   InfrastructureStatusEnum,
-} from '../../../../../modules/infrastructures/constants'
+} from '../../../../../features/infrastructures/constants'
 
 const getContainer = () => screen.getByTestId('change-infrastructure-page')
 

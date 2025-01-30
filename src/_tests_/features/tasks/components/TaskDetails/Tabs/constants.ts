@@ -1,14 +1,14 @@
-import { TabsProps } from 'modules/task/components/TaskDetails/Tabs/index'
+import { TabsProps } from 'features/task/components/TaskDetails/Tabs/index'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants/task/index'
+} from 'features/task/constants/task/index'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 import userFixtures from '_tests_/fixtures/user/index'
-import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/utils/index'
+import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/utils'
 
 export const props: Readonly<TabsProps> = {
   task: {

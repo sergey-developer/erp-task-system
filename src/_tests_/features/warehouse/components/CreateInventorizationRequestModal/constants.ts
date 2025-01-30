@@ -1,4 +1,4 @@
-import { CreateInventorizationRequestModalProps } from 'modules/warehouse/components/CreateInventorizationRequestModal/types'
+import { CreateInventorizationRequestModalProps } from 'features/warehouse/components/CreateInventorizationRequestModal/types'
 
 export const props: CreateInventorizationRequestModalProps = {
   open: true,

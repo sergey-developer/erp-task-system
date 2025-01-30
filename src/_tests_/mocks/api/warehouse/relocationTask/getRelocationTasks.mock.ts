@@ -1,8 +1,8 @@
-import { RelocationTaskApiEnum } from 'modules/warehouse/constants/relocationTask'
-import { GetRelocationTasksSuccessResponse } from 'modules/warehouse/models'
+import { RelocationTaskApiEnum } from 'features/warehouse/constants/relocationTask'
+import { GetRelocationTasksSuccessResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 
 import {
   getForbiddenErrorMockFn,

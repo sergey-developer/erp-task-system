@@ -1,6 +1,6 @@
-import { GetInventorizationReportSuccessResponse } from 'modules/reports/models'
-import { makeGetInventorizationReportUrl } from 'modules/reports/utils'
-import { InventorizationRequestArgs } from 'modules/warehouse/types'
+import { GetInventorizationReportSuccessResponse } from 'features/reports/models'
+import { makeGetInventorizationReportUrl } from 'features/reports/utils'
+import { InventorizationRequestArgs } from 'features/warehouse/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

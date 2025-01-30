@@ -1,6 +1,6 @@
-import { InventorizationDetailsProps } from 'modules/warehouse/components/InventorizationDetails/index'
+import { InventorizationDetailsProps } from 'features/warehouse/components/InventorizationDetails/index'
 
-import { fakeId } from '_tests_/utils/index'
+import { fakeId } from '_tests_/utils'
 
 export const props: InventorizationDetailsProps = {
   open: true,

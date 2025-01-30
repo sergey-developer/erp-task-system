@@ -1,7 +1,7 @@
 import pick from 'lodash/pick'
 
-import { WarehouseTypeEnum } from 'modules/warehouse/constants/warehouse'
-import { WarehouseModel } from 'modules/warehouse/models'
+import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
+import { WarehouseModel } from 'features/warehouse/models'
 
 import macroregionFixtures from '_tests_/fixtures/macroregion'
 import { fakeId, fakeWord } from '_tests_/utils'

@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { CREATE_TEXT } from 'shared/constants/common'
 
 import { TestIdsEnum } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/constants'
-import { buttonTestUtils, fakeWord, selectTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils, fakeWord, selectTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CreateInventorizationRequestModal)
 

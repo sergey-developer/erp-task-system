@@ -4,7 +4,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getSystemSettingsErrMsg } from 'shared/constants/system/messages'
 import { GetSystemSettingsQueryArgs, GetSystemSettingsSuccessResponse } from 'shared/models/system'
-import { isErrorResponse } from 'shared/services/baseApi'
+import { isErrorResponse } from 'shared/api/services/baseApi'
 import { useGetSystemSettingsQuery } from 'shared/services/systemApi.service'
 import { showErrorNotification } from 'shared/utils/notifications'
 

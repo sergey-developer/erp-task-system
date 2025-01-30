@@ -1,5 +1,5 @@
-import { SuspendRequestStatusEnum } from 'modules/task/constants/taskSuspendRequest'
-import { SuspendRequestModel } from 'modules/task/models'
+import { SuspendRequestStatusEnum } from 'features/task/constants/taskSuspendRequest'
+import { SuspendRequestModel } from 'features/task/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'

@@ -1,13 +1,13 @@
 import {
   EquipmentByFileTableRow,
   EquipmentsByFileTableProps,
-} from 'modules/warehouse/components/EquipmentsByFileTable/types'
+} from 'features/warehouse/components/EquipmentsByFileTable/types'
 import {
   EquipmentCategoryEnum,
   EquipmentConditionEnum,
-} from 'modules/warehouse/constants/equipment/index'
+} from 'features/warehouse/constants/equipment/index'
 
-import { fakeId, fakeInteger, fakeWord } from '_tests_/utils/index'
+import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
 export const tableRow: EquipmentByFileTableRow = {
   rowId: fakeId(),

@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { CANCEL_TEXT } from 'shared/constants/common'
 
-import { buttonTestUtils, selectTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils, selectTestUtils } from '_tests_/utils'
 
 import { TestIdsEnum } from './constants'
 

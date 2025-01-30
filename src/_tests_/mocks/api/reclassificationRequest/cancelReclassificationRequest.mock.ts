@@ -1,5 +1,5 @@
-import { CancelReclassificationRequestSuccessResponse } from 'modules/reclassificationRequest/models'
-import { cancelReclassificationRequestUrl } from 'modules/reclassificationRequest/utils/apiUrls'
+import { CancelReclassificationRequestSuccessResponse } from 'features/reclassificationRequest/models'
+import { cancelReclassificationRequestUrl } from 'features/reclassificationRequest/utils/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

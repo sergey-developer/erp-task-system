@@ -1,4 +1,4 @@
-import { TaskAttachmentModel } from 'modules/task/models'
+import { TaskAttachmentModel } from 'features/task/models'
 
 import { fakeId, fakeIdStr, fakeInteger, fakeUrl, fakeWord } from '_tests_/utils'
 

@@ -5,8 +5,8 @@ import times from 'lodash/times'
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
-} from 'modules/warehouse/constants/relocationTask'
-import { RelocationTaskListItemModel } from 'modules/warehouse/models'
+} from 'features/warehouse/constants/relocationTask'
+import { RelocationTaskListItemModel } from 'features/warehouse/models'
 
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'

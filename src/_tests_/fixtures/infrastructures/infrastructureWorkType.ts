@@ -1,5 +1,5 @@
-import { BudgetTypeEnum } from 'modules/infrastructures/constants'
-import { InfrastructureWorkTypeModel } from 'modules/infrastructures/models'
+import { BudgetTypeEnum } from 'features/infrastructures/constants'
+import { InfrastructureWorkTypeModel } from 'features/infrastructures/models'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 

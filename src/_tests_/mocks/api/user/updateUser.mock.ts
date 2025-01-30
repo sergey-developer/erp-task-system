@@ -1,5 +1,5 @@
-import { UpdateUserSuccessResponse } from 'modules/user/models'
-import { updateUserUrl } from 'modules/user/utils'
+import { UpdateUserSuccessResponse } from 'features/user/models'
+import { updateUserUrl } from 'features/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

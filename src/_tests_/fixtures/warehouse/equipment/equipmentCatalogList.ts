@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { EquipmentCatalogListItemModel, EquipmentsCatalogModel } from 'modules/warehouse/models'
+import { EquipmentCatalogListItemModel, EquipmentsCatalogModel } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

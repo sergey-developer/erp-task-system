@@ -1,6 +1,6 @@
-import { GetInfrastructureSuccessResponse } from 'modules/infrastructures/models'
-import { InfrastructureRequestArgs } from 'modules/infrastructures/types'
-import { makeGetInfrastructureUrl } from 'modules/infrastructures/utils/infrastructure/apiUrls'
+import { GetInfrastructureSuccessResponse } from 'features/infrastructures/models'
+import { InfrastructureRequestArgs } from 'features/infrastructures/types'
+import { makeGetInfrastructureUrl } from 'features/infrastructures/utils/infrastructure/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

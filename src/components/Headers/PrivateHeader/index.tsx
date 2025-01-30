@@ -7,22 +7,22 @@ import { Link, useMatches } from 'react-router-dom'
 import { navMenuConfig } from 'configs/navMenu'
 import { mapNavMenuConfig } from 'configs/navMenu/utils'
 
-import LogoutButton from 'modules/auth/components/LogoutButton'
-import { MonitoringRouteEnum } from 'modules/monitoring/constants'
-import { taskLocalStorageService } from 'modules/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'modules/user/constants'
+import LogoutButton from 'features/auth/components/LogoutButton'
+import { MonitoringRouteEnum } from 'features/monitoring/constants'
+import { taskLocalStorageService } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
+import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'features/user/constants'
 import {
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
   useUserMeCodeState,
   useUserMeState,
-} from 'modules/user/hooks'
-import { UserModel } from 'modules/user/models'
+} from 'features/user/hooks'
+import { UserModel } from 'features/user/models'
 import {
   useUpdateUserStatusMutation,
   useUpdateUserTimeZoneMutation,
-} from 'modules/user/services/userApi.service'
-import { checkUserStatusOffline } from 'modules/user/utils'
+} from 'features/user/services/userApi.service'
+import { checkUserStatusOffline } from 'features/user/utils'
 
 import DetailedUserAvatar from 'components/Avatars/DetailedUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -31,15 +31,15 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
-import { useTimeZoneListState } from 'shared/hooks/catalogs/timeZone'
-import { useUserStatusListState } from 'shared/hooks/catalogs/userStatus'
+import { useTimeZoneListState } from 'shared/catalogs/hooks/timeZone'
+import { useUserStatusListState } from 'shared/catalogs/hooks/userStatus'
 import {
   getErrorDetail,
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
   isUnauthorizedError,
-} from 'shared/services/baseApi'
+} from 'shared/api/services/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { timeZoneDropdownStyles } from './styles'

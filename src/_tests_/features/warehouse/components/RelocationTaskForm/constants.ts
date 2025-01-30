@@ -1,5 +1,5 @@
-import { RelocationTaskFormProps } from 'modules/warehouse/components/RelocationTaskForm/types'
-import { RelocationTaskTypeEnum } from 'modules/warehouse/constants/relocationTask/index'
+import { RelocationTaskFormProps } from 'features/warehouse/components/RelocationTaskForm/types'
+import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask/index'
 
 export const props: RelocationTaskFormProps = {
   isLoading: false,

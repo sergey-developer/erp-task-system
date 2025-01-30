@@ -1,5 +1,5 @@
-import { GetTaskReclassificationRequestSuccessResponse } from 'modules/task/models'
-import { getTaskReclassificationRequestUrl } from 'modules/task/utils/taskReclassificationRequest'
+import { GetTaskReclassificationRequestSuccessResponse } from 'features/task/models'
+import { getTaskReclassificationRequestUrl } from 'features/task/utils/taskReclassificationRequest'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

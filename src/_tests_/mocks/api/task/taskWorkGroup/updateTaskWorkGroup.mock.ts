@@ -1,5 +1,5 @@
-import { UpdateTaskWorkGroupSuccessResponse } from 'modules/task/models'
-import { updateTaskWorkGroupUrl } from 'modules/task/utils/taskWorkGroup'
+import { UpdateTaskWorkGroupSuccessResponse } from 'features/task/models'
+import { updateTaskWorkGroupUrl } from 'features/task/utils/taskWorkGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

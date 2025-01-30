@@ -1,5 +1,5 @@
-import { WorkTypeApiEnum } from 'modules/warehouse/constants/workType'
-import { GetWorkTypesSuccessResponse } from 'modules/warehouse/models'
+import { WorkTypeApiEnum } from 'features/warehouse/constants/workType'
+import { GetWorkTypesSuccessResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

@@ -1,5 +1,5 @@
-import { GetCustomerListSuccessResponse } from 'modules/warehouse/models'
-import { CustomerApiEnum } from 'modules/warehouse/services/customerApiService'
+import { GetCustomerListSuccessResponse } from 'features/warehouse/models'
+import { CustomerApiEnum } from 'features/warehouse/services/customerApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

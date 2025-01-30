@@ -1,0 +1,15 @@
+import { useUpdateEffect } from 'ahooks'
+
+import { UserStatusModel } from 'shared/catalogs/models/userStatuses'
+
+import { useUserMeState } from './useUserMeState'
+
+export type UseOnChangeUserStatusFn = (status: UserStatusModel) => any
+
+export const useOnChangeUserStatus = (fn: UseOnChangeUserStatusFn) => {
+  const { data } = useUserMeState()
+
+  useUpdateEffect(() => {
+    if (data) fn(data.status)
+  }, [fn, data?.status])
+}

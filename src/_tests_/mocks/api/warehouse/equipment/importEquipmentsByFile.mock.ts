@@ -1,11 +1,11 @@
-import { EquipmentApiEnum } from 'modules/warehouse/constants/equipment'
+import { EquipmentApiEnum } from 'features/warehouse/constants/equipment'
 import {
   CreateEquipmentBadRequestErrorResponse,
   ImportEquipmentsByFileSuccessResponse,
-} from 'modules/warehouse/models'
+} from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 
 import {
   getBadRequestErrorMockFn,

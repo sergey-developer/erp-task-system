@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { taskDetailsTabNameDict, TaskDetailsTabsEnum } from 'modules/task/constants/task/index'
+import { taskDetailsTabNameDict, TaskDetailsTabsEnum } from 'features/task/constants/task/index'
 
 import { TestIdsEnum } from './constants'
 

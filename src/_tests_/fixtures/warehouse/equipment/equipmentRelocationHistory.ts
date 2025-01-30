@@ -1,11 +1,11 @@
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 
-import { RelocationTaskStatusEnum } from 'modules/warehouse/constants/relocationTask'
+import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
 import {
   EquipmentRelocationHistoryItemModel,
   EquipmentRelocationHistoryModel,
-} from 'modules/warehouse/models'
+} from 'features/warehouse/models'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'

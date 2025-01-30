@@ -1,8 +1,8 @@
-import { DeleteTaskSuspendRequestSuccessResponse } from 'modules/task/models'
-import { deleteTaskSuspendRequestUrl } from 'modules/task/utils/taskSuspendRequest'
+import { DeleteTaskSuspendRequestSuccessResponse } from 'features/task/models'
+import { deleteTaskSuspendRequestUrl } from 'features/task/utils/taskSuspendRequest'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

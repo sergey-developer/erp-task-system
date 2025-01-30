@@ -1,8 +1,8 @@
-import { ReworkSubTaskSuccessResponse } from 'modules/task/models'
-import { reworkSubTaskUrl } from 'modules/task/utils/subTask'
+import { ReworkSubTaskSuccessResponse } from 'features/task/models'
+import { reworkSubTaskUrl } from 'features/task/utils/subTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

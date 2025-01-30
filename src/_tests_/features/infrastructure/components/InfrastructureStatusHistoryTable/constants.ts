@@ -1,8 +1,8 @@
 import {
   InfrastructureStatusHistoryTableItem,
   InfrastructureStatusHistoryTableProps,
-} from 'modules/infrastructures/components/InfrastructureStatusHistoryTable/types'
-import { InfrastructureStatusEnum } from 'modules/infrastructures/constants'
+} from 'features/infrastructures/components/InfrastructureStatusHistoryTable/types'
+import { InfrastructureStatusEnum } from 'features/infrastructures/constants'
 
 import userFixtures from '_tests_/fixtures/user'
 import { fakeDateString, fakeId } from '_tests_/utils'

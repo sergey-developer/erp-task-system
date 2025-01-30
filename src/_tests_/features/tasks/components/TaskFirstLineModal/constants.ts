@@ -1,6 +1,6 @@
-import { TaskFirstLineModalProps } from 'modules/task/components/TaskFirstLineModal/types'
+import { TaskFirstLineModalProps } from 'features/task/components/TaskFirstLineModal/types'
 
-import { fakeIdStr } from '_tests_/utils/index'
+import { fakeIdStr } from '_tests_/utils'
 
 export const props: Readonly<TaskFirstLineModalProps> = {
   recordId: fakeIdStr(),

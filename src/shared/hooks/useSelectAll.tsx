@@ -1,7 +1,7 @@
 import { Button, SelectProps } from 'antd'
 import { useCallback, useMemo } from 'react'
 
-import { SetNonNullable } from '../types/utils'
+import { SetNonNullable } from '../../types/utils'
 
 type UseSelectAllProps = SetNonNullable<SelectProps, 'options' | 'value' | 'onChange'> & {
   showSelectAll?: boolean

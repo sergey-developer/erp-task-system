@@ -1,5 +1,5 @@
-import { UserStatusCodeEnum } from 'shared/constants/catalogs'
-import { UserStatusListItemModel } from 'shared/models/catalogs/userStatus'
+import { UserStatusCodeEnum } from 'shared/catalogs/constants'
+import { UserStatusListItemModel } from 'shared/catalogs/models/userStatuses'
 
 import { fakeColor, fakeId, fakeWord } from '_tests_/utils'
 

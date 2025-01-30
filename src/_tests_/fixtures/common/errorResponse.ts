@@ -1,5 +1,5 @@
 import { HttpCodeEnum } from 'shared/constants/http'
-import { ErrorResponse } from 'shared/services/baseApi'
+import { ErrorResponse } from 'shared/api/services/baseApi'
 
 export const errorResponse = <Errors extends object = {}>(
   props: Pick<ErrorResponse, 'status'> &

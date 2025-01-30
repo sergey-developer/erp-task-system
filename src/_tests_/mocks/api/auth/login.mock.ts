@@ -1,5 +1,5 @@
-import { AuthApiEnum } from 'modules/auth/constants'
-import { LoginSuccessResponse } from 'modules/auth/models'
+import { AuthApiEnum } from 'features/auth/constants'
+import { LoginSuccessResponse } from 'features/auth/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

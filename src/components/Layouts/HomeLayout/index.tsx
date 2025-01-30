@@ -3,17 +3,17 @@ import moment from 'moment-timezone'
 import React, { FC, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import { useIsLoggedIn } from 'modules/auth/hooks'
-import { useGetUserMe } from 'modules/user/hooks'
-import { useGetUserMeCodeQuery } from 'modules/user/services/userApi.service'
+import { useIsLoggedIn } from 'features/auth/hooks'
+import { useGetUserMe } from 'features/user/hooks'
+import { useGetUserMeCodeQuery } from 'features/user/services/userApi.service'
 
 import PrivateHeader from 'components/Headers/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
 import Spinner from 'components/Spinner'
 
-import { useGetTimeZoneList } from 'shared/hooks/catalogs/timeZone'
-import { useGetUserStatusList } from 'shared/hooks/catalogs/userStatus'
-import { useGetSystemInfo, useGetSystemSettings } from 'shared/hooks/system'
+import { useGetTimeZoneList } from 'shared/catalogs/hooks/timeZone'
+import { useGetUserStatusList } from 'shared/catalogs/hooks/userStatus'
+import { useGetSystemInfo, useGetSystemSettings } from 'shared/catalogs/hooks/system'
 
 import { ContentStyled, FooterStyled } from './styles'
 

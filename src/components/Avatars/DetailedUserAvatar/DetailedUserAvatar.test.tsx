@@ -4,10 +4,10 @@ import pick from 'lodash/pick'
 
 import { CommonRouteEnum } from 'configs/routes'
 
-import { AuthRouteEnum } from 'modules/auth/constants/routes'
-import ChangePasswordPage from 'modules/auth/pages/ChangePasswordPage'
-import { testUtils as changePasswordPageTestUtils } from 'modules/auth/pages/ChangePasswordPage/ChangePasswordPage.test'
-import { getFullUserName } from 'modules/user/utils'
+import { AuthRouteEnum } from 'features/auth/constants/routes'
+import ChangePasswordPage from 'features/auth/pages/ChangePasswordPage'
+import { testUtils as changePasswordPageTestUtils } from 'features/auth/pages/ChangePasswordPage/ChangePasswordPage.test'
+import { getFullUserName } from 'features/user/utils'
 
 import userFixtures from '_tests_/fixtures/user'
 import {

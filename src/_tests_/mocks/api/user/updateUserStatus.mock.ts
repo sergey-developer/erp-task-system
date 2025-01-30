@@ -1,8 +1,8 @@
-import { UpdateUserStatusSuccessResponse } from 'modules/user/models'
-import { updateUserStatusUrl } from 'modules/user/utils'
+import { UpdateUserStatusSuccessResponse } from 'features/user/models'
+import { updateUserStatusUrl } from 'features/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

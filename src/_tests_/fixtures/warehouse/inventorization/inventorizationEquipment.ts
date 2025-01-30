@@ -1,5 +1,5 @@
-import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { InventorizationEquipmentModel } from 'modules/warehouse/models'
+import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { InventorizationEquipmentModel } from 'features/warehouse/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import currencyFixtures from '_tests_/fixtures/currency'

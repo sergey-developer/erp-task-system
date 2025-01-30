@@ -1,8 +1,8 @@
-import { GetWarehouseSuccessResponse } from 'modules/warehouse/models'
-import { getWarehouseUrl } from 'modules/warehouse/utils/warehouse'
+import { GetWarehouseSuccessResponse } from 'features/warehouse/models'
+import { getWarehouseUrl } from 'features/warehouse/utils/warehouse'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

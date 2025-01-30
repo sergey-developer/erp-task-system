@@ -3,8 +3,8 @@ import pick from 'lodash/pick'
 import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
-} from 'modules/warehouse/constants/inventorization'
-import { InventorizationModel } from 'modules/warehouse/models'
+} from 'features/warehouse/constants/inventorization'
+import { InventorizationModel } from 'features/warehouse/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

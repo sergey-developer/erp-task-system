@@ -5,7 +5,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import { TestIdsEnum } from '_tests_/features/warehouse/components/ReviseInventorizationEquipmentTable/constants'
-import { selectTestUtils, tableTestUtils } from '_tests_/utils/index'
+import { selectTestUtils, tableTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.ReviseEquipmentTable)
 

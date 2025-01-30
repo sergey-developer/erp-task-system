@@ -1,5 +1,5 @@
-import { RelocationTaskApiEnum } from 'modules/warehouse/constants/relocationTask'
-import { CreateRelocationTaskSuccessResponse } from 'modules/warehouse/models'
+import { RelocationTaskApiEnum } from 'features/warehouse/constants/relocationTask'
+import { CreateRelocationTaskSuccessResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

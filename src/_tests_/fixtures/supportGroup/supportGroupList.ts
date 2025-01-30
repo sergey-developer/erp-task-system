@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { SupportGroupListItemModel, SupportGroupListModel } from 'modules/supportGroup/models'
+import { SupportGroupListItemModel, SupportGroupListModel } from 'features/supportGroup/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

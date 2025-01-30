@@ -1,5 +1,5 @@
-import { TechnicalExaminationsApiEnum } from 'modules/technicalExaminations/constants'
-import { GetTechnicalExaminationsSuccessResponse } from 'modules/technicalExaminations/models'
+import { TechnicalExaminationsApiEnum } from 'features/technicalExaminations/constants'
+import { GetTechnicalExaminationsSuccessResponse } from 'features/technicalExaminations/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

@@ -1,4 +1,4 @@
-import { InfrastructureStatusHistoryModalProps } from 'modules/infrastructures/components/InfrastructureStatusHistoryModal'
+import { InfrastructureStatusHistoryModalProps } from 'features/infrastructures/components/InfrastructureStatusHistoryModal'
 
 export const props: Readonly<InfrastructureStatusHistoryModalProps> = {
   isLoading: false,

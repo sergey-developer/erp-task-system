@@ -5,7 +5,7 @@ import times from 'lodash/times'
 import {
   InventorizationEquipmentListItemModel,
   InventorizationEquipmentsModel,
-} from 'modules/warehouse/models'
+} from 'features/warehouse/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

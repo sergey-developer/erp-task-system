@@ -1,6 +1,6 @@
-import { JournalTabProps } from 'modules/task/components/TaskDetails/Tabs/JournalTab/index'
+import { JournalTabProps } from 'features/task/components/TaskDetails/Tabs/JournalTab/index'
 
-import { fakeId } from '_tests_/utils/index'
+import { fakeId } from '_tests_/utils'
 
 export const props: Readonly<JournalTabProps> = {
   taskId: fakeId(),

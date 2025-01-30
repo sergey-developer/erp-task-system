@@ -3,7 +3,7 @@ import { screen, within } from '@testing-library/react'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import { TestIdsEnum } from '_tests_/features/warehouse/components/EquipmentsByFileTable/constants'
-import { tableTestUtils } from '_tests_/utils/index'
+import { tableTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.EquipmentsByFileTable)
 const getRow = (id: number) => tableTestUtils.getRowById(getContainer(), id)

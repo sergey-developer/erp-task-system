@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { MaybeNull } from 'shared/types/utils'
 
 import { TestIdsEnum } from '_tests_/features/warehouse/components/NomenclatureGroupFormModal/constants'
-import { buttonTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.NomenclatureGroupFormModal)
 

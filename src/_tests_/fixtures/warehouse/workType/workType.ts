@@ -1,6 +1,6 @@
 import isUndefined from 'lodash/isUndefined'
 
-import { WorkTypeModel } from 'modules/warehouse/models'
+import { WorkTypeModel } from 'features/warehouse/models'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

@@ -4,7 +4,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getMacroregionsErrMsg } from 'shared/constants/macroregion'
 import { GetMacroregionsQueryArgs, GetMacroregionsSuccessResponse } from 'shared/models/macroregion'
-import { isErrorResponse } from 'shared/services/baseApi'
+import { isErrorResponse } from 'shared/api/services/baseApi'
 import { useGetMacroregionsQuery } from 'shared/services/macroregionApi.service'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'

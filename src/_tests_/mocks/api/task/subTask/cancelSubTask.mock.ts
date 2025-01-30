@@ -1,11 +1,11 @@
 import {
   CancelSubTaskBadRequestErrorResponse,
   CancelSubTaskSuccessResponse,
-} from 'modules/task/models'
-import { cancelSubTaskUrl } from 'modules/task/utils/subTask'
+} from 'features/task/models'
+import { cancelSubTaskUrl } from 'features/task/utils/subTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

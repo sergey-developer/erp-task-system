@@ -3,9 +3,9 @@ import pick from 'lodash/pick'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
-import { AuthRouteEnum } from 'modules/auth/constants/routes'
-import { UserModel } from 'modules/user/models'
-import { getFullUserName, getUserAbbr } from 'modules/user/utils'
+import { AuthRouteEnum } from 'features/auth/constants/routes'
+import { UserModel } from 'features/user/models'
+import { getFullUserName, getUserAbbr } from 'features/user/utils'
 
 import { valueOr } from 'shared/utils/common'
 

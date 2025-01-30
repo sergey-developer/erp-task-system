@@ -1,8 +1,8 @@
-import { AttachmentApiEnum } from 'modules/attachment/constants'
-import { CreateAttachmentSuccessResponse } from 'modules/attachment/models'
+import { AttachmentApiEnum } from 'features/attachment/constants'
+import { CreateAttachmentSuccessResponse } from 'features/attachment/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 
 import {
   getBadRequestErrorMockFn,

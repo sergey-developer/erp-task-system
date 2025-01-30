@@ -1,4 +1,4 @@
-import { TaskCountersModel } from 'modules/task/models'
+import { TaskCountersModel } from 'features/task/models'
 
 import { fakeInteger } from '_tests_/utils'
 

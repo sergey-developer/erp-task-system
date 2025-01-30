@@ -1,14 +1,12 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import {
   reclassificationReasonDict,
   ReclassificationReasonEnum,
-} from 'modules/task/constants/taskReclassificationRequest/index'
-
-import { buttonTestUtils, radioButtonTestUtils } from '_tests_/utils/index'
+} from 'features/task/constants/taskReclassificationRequest/index'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/RequestTaskReclassificationModal/constants'
+import { buttonTestUtils, radioButtonTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.RequestTaskReclassificationModal)
 const queryContainer = () => screen.queryByTestId(TestIdsEnum.RequestTaskReclassificationModal)

@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/SubTaskList/SubTask/constants'
-import { buttonTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.SubTaskListItem)
 

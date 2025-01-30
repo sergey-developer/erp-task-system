@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { TimeZoneListItemModel, TimeZoneListModel } from 'shared/models/catalogs/timeZone'
+import { TimeZoneListItemModel, TimeZoneListModel } from 'shared/catalogs/models/timeZones'
 
 import { fakeWord } from '_tests_/utils'
 

@@ -1,14 +1,13 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
-import { TaskJournalSourceEnum } from 'modules/task/constants/taskJournal/index'
+import { TaskJournalSourceEnum } from 'features/task/constants/taskJournal/index'
 
 import {
   buttonTestUtils,
   radioButtonTestUtils,
   selectTestUtils,
   spinnerTestUtils,
-} from '_tests_/utils/index'
+} from '_tests_/utils'
 
 import { TestIdsEnum } from './constants'
 

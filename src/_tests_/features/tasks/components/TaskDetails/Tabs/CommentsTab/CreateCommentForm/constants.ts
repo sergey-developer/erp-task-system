@@ -1,4 +1,4 @@
-import { CreateCommentFormProps } from 'modules/task/components/TaskDetails/Tabs/CommentsTab/CreateCommentForm/types'
+import { CreateCommentFormProps } from 'features/task/components/TaskDetails/Tabs/CommentsTab/CreateCommentForm/types'
 
 export const props: Readonly<CreateCommentFormProps> = {
   isLoading: false,

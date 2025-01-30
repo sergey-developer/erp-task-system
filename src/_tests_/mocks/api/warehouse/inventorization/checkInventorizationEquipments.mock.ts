@@ -1,8 +1,8 @@
-import { InventorizationApiEnum } from 'modules/warehouse/constants/inventorization'
+import { InventorizationApiEnum } from 'features/warehouse/constants/inventorization'
 import {
   CheckInventorizationEquipmentsBadRequestErrorResponse,
   CheckInventorizationEquipmentsSuccessResponse,
-} from 'modules/warehouse/models'
+} from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

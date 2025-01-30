@@ -1,6 +1,6 @@
-import { GetInventorizationSuccessResponse } from 'modules/warehouse/models'
-import { InventorizationRequestArgs } from 'modules/warehouse/types'
-import { makeGetInventorizationUrl } from 'modules/warehouse/utils/inventorization'
+import { GetInventorizationSuccessResponse } from 'features/warehouse/models'
+import { InventorizationRequestArgs } from 'features/warehouse/types'
+import { makeGetInventorizationUrl } from 'features/warehouse/utils/inventorization'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

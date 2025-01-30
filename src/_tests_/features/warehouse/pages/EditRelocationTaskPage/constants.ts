@@ -1,4 +1,4 @@
-import { fakeId } from '_tests_/utils/index'
+import { fakeId } from '_tests_/utils'
 
 export const relocationTaskId = fakeId()
 

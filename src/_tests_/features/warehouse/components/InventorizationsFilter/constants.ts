@@ -1,4 +1,4 @@
-import { InventorizationsFilterProps } from 'modules/warehouse/components/InventorizationsFilter/types'
+import { InventorizationsFilterProps } from 'features/warehouse/components/InventorizationsFilter/types'
 
 export const props: Readonly<InventorizationsFilterProps> = {
   open: true,

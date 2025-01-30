@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { RelocationEquipmentAttachmentListItemModel } from 'modules/warehouse/models/relocationEquipment'
+import { RelocationEquipmentAttachmentListItemModel } from 'features/warehouse/models/relocationEquipment'
 
 import { fakeId, fakeUrl, fakeWord } from '_tests_/utils'
 

@@ -1,13 +1,13 @@
-import { WorkGroupBlockProps } from 'modules/task/components/TaskDetails/WorkGroupBlock/index'
+import { WorkGroupBlockProps } from 'features/task/components/TaskDetails/WorkGroupBlock/index'
 import {
   TaskActionsPermissionsEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'modules/task/constants/task/index'
+} from 'features/task/constants/task/index'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 import userFixtures from '_tests_/fixtures/user/index'
-import { fakeId, fakeIdStr } from '_tests_/utils/index'
+import { fakeId, fakeIdStr } from '_tests_/utils'
 
 export const props: Readonly<WorkGroupBlockProps> = {
   id: fakeId(),

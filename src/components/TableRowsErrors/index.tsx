@@ -1,7 +1,7 @@
 import { Divider, Space, Typography } from 'antd'
 import React, { FC } from 'react'
 
-import { TableRowsApiErrors } from 'shared/services/baseApi'
+import { TableRowsApiErrors } from 'shared/api/services/baseApi'
 import { WithTestIdType } from 'shared/types/common'
 import { checkLastItem } from 'shared/utils/common'
 

@@ -4,7 +4,7 @@ import times from 'lodash/times'
 import {
   EmployeesActionsReportListItemModel,
   EmployeesActionsReportModel,
-} from 'modules/reports/models'
+} from 'features/reports/models'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 

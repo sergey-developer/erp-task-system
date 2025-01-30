@@ -1,4 +1,4 @@
-import { WarehouseListFilterProps } from 'modules/warehouse/components/WarehouseListFilter/types'
+import { WarehouseListFilterProps } from 'features/warehouse/components/WarehouseListFilter/types'
 
 export const props: Readonly<WarehouseListFilterProps> = {
   visible: true,

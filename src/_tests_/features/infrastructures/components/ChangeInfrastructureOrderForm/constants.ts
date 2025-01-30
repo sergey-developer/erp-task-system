@@ -1,4 +1,4 @@
-import { ChangeInfrastructureOrderFormProps } from 'modules/infrastructures/components/ChangeInfrastructureOrderForm'
+import { ChangeInfrastructureOrderFormProps } from 'features/infrastructures/components/ChangeInfrastructureOrderForm'
 
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 

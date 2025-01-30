@@ -1,9 +1,9 @@
-import { GetRelocationTaskSuccessResponse } from 'modules/warehouse/models'
-import { RelocationTaskRequestArgs } from 'modules/warehouse/types'
-import { getRelocationTaskUrl } from 'modules/warehouse/utils/relocationTask'
+import { GetRelocationTaskSuccessResponse } from 'features/warehouse/models'
+import { RelocationTaskRequestArgs } from 'features/warehouse/types'
+import { getRelocationTaskUrl } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 
 import {
   getForbiddenErrorMockFn,

@@ -1,7 +1,7 @@
 import times from 'lodash/times'
 
-import { EquipmentCategoryEnum } from 'modules/warehouse/constants/equipment'
-import { EquipmentCategoryListItemModel, EquipmentCategoriesModel } from 'modules/warehouse/models'
+import { EquipmentCategoryEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentCategoryListItemModel, EquipmentCategoriesModel } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

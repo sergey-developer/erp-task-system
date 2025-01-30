@@ -5,8 +5,8 @@ import {
   searchFieldDict,
   taskAssignedDict,
   taskOverdueDict,
-} from 'modules/task/components/TasksFilter/constants'
-import { taskExtendedStatusDict } from 'modules/task/constants/task/index'
+} from 'features/task/components/TasksFilter/constants'
+import { taskExtendedStatusDict } from 'features/task/constants/task/index'
 
 import {
   buttonTestUtils,

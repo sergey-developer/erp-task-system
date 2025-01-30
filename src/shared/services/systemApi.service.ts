@@ -7,7 +7,7 @@ import {
   GetSystemSettingsSuccessResponse,
 } from 'shared/models/system'
 
-import { baseApiService } from './baseApi'
+import { baseApiService } from '../api/services/baseApi'
 
 export const systemApiService = baseApiService.injectEndpoints({
   endpoints: (build) => ({

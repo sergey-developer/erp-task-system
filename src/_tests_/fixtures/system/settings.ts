@@ -1,4 +1,4 @@
-import { SuspendReasonEnum } from 'modules/task/constants/taskSuspendRequest'
+import { SuspendReasonEnum } from 'features/task/constants/taskSuspendRequest'
 
 import { SystemSettingsModel } from 'shared/models/system'
 

@@ -1,12 +1,11 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import {
   executeInventorizationPageTabNames,
   ExecuteInventorizationPageTabsEnum,
-} from 'modules/warehouse/pages/ExecuteInventorizationPage/constants'
+} from 'features/warehouse/pages/ExecuteInventorizationPage/constants'
 
-import { buttonTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils } from '_tests_/utils'
 
 import { TestIdsEnum } from './constants'
 

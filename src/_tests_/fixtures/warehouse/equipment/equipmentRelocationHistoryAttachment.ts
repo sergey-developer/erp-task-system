@@ -1,6 +1,6 @@
 import pick from 'lodash/pick'
 
-import { EquipmentRelocationHistoryAttachmentModel } from 'modules/warehouse/models'
+import { EquipmentRelocationHistoryAttachmentModel } from 'features/warehouse/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/utils'

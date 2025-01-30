@@ -1,5 +1,5 @@
-import { TasksFilterProps } from 'modules/task/components/TasksFilter/types'
-import { getInitialTasksFilterValues } from 'modules/task/pages/TasksPage/utils'
+import { TasksFilterProps } from 'features/task/components/TasksFilter/types'
+import { getInitialTasksFilterValues } from 'features/task/pages/TasksPage/utils'
 
 export const props: Readonly<TasksFilterProps> = {
   open: true,

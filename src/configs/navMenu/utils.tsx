@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { UserPermissionsEnum } from 'modules/user/constants'
+import { UserPermissionsEnum } from 'features/user/constants'
 
 import { NavMenuProps } from 'components/NavMenu'
 

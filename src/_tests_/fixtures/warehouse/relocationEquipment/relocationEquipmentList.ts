@@ -1,8 +1,8 @@
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 
-import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { RelocationEquipmentListItemModel } from 'modules/warehouse/models'
+import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { RelocationEquipmentListItemModel } from 'features/warehouse/models'
 
 import currencyFixtures from '_tests_/fixtures/currency'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

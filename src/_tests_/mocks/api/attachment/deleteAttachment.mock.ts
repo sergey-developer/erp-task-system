@@ -1,8 +1,8 @@
-import { DeleteAttachmentSuccessResponse } from 'modules/attachment/models'
-import { deleteAttachmentUrl } from 'modules/attachment/utils'
+import { DeleteAttachmentSuccessResponse } from 'features/attachment/models'
+import { deleteAttachmentUrl } from 'features/attachment/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

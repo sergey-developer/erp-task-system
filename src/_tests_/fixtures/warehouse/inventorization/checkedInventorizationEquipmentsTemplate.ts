@@ -2,11 +2,11 @@ import isBoolean from 'lodash/isBoolean'
 import isUndefined from 'lodash/isUndefined'
 import times from 'lodash/times'
 
-import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import {
   CheckedInventorizationEquipmentsTemplateListItemModel,
   CheckedInventorizationEquipmentsTemplateModel,
-} from 'modules/warehouse/models'
+} from 'features/warehouse/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import currencyFixtures from '_tests_/fixtures/currency'

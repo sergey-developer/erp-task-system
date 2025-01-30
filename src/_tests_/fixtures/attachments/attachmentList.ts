@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { AttachmentListItemModel } from 'modules/attachment/models'
+import { AttachmentListItemModel } from 'features/attachment/models'
 
 import { fakeId, fakeUrl, fakeWord } from '_tests_/utils'
 

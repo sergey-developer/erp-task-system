@@ -1,8 +1,8 @@
-import { NomenclatureFormModalProps } from 'modules/warehouse/components/NomenclatureFormModal/types'
+import { NomenclatureFormModalProps } from 'features/warehouse/components/NomenclatureFormModal/types'
 
 import countryFixtures from '_tests_/fixtures/country/index'
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
-import { fakeWord } from '_tests_/utils/index'
+import { fakeWord } from '_tests_/utils'
 
 export const props: Readonly<NomenclatureFormModalProps> = {
   open: true,

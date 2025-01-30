@@ -1,4 +1,4 @@
-import { EquipmentRelocationHistoryModalProps } from 'modules/warehouse/components/EquipmentRelocationHistoryModal/types'
+import { EquipmentRelocationHistoryModalProps } from 'features/warehouse/components/EquipmentRelocationHistoryModal/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

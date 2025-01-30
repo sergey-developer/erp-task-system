@@ -3,9 +3,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { ADD_TEXT, CANCEL_TEXT } from 'shared/constants/common'
 
-import { buttonTestUtils, selectTestUtils } from '_tests_/utils/index'
-
 import { TestIdsEnum } from '_tests_/features/warehouse/components/CreateInventorizationEquipmentModal/constants'
+import { buttonTestUtils, selectTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CreateInventorizationEquipmentModal)
 const findContainer = () => screen.findByTestId(TestIdsEnum.CreateInventorizationEquipmentModal)

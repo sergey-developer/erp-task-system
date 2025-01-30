@@ -1,11 +1,11 @@
 import {
   CreateNomenclatureGroupBadRequestErrorResponse,
   CreateNomenclatureGroupSuccessResponse,
-} from 'modules/warehouse/models'
-import { NomenclatureGroupApiEnum } from 'modules/warehouse/constants/nomenclatureGroup'
+} from 'features/warehouse/models'
+import { NomenclatureGroupApiEnum } from 'features/warehouse/constants/nomenclatureGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 
 import {
   getBadRequestErrorMockFn,

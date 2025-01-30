@@ -4,8 +4,8 @@ import times from 'lodash/times'
 import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
-} from 'modules/warehouse/constants/inventorization'
-import { InventorizationListItemModel } from 'modules/warehouse/models'
+} from 'features/warehouse/constants/inventorization'
+import { InventorizationListItemModel } from 'features/warehouse/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

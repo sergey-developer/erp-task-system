@@ -11,7 +11,7 @@ import {
   radioButtonTestUtils,
   selectTestUtils,
   spinnerTestUtils,
-} from '_tests_/utils/index'
+} from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.EquipmentFormModal)
 const findContainer = (): Promise<HTMLElement> =>

@@ -1,5 +1,5 @@
-import { GetRelocationTaskCompletionDocumentsSuccessResponse } from 'modules/warehouse/models'
-import { getRelocationTaskCompletionDocumentsUrl } from 'modules/warehouse/utils/relocationTask'
+import { GetRelocationTaskCompletionDocumentsSuccessResponse } from 'features/warehouse/models'
+import { getRelocationTaskCompletionDocumentsUrl } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

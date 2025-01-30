@@ -1,7 +1,7 @@
 import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
-import { InfrastructureModel } from 'modules/infrastructures/models'
+import { InfrastructureModel } from 'features/infrastructures/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import { fakeId, fakeWord } from '_tests_/utils'

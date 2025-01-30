@@ -1,6 +1,6 @@
-import { MoveRelocationTaskDraftToWorkSuccessResponse } from 'modules/warehouse/models'
-import { RelocationTaskRequestArgs } from 'modules/warehouse/types'
-import { makeMoveRelocationTaskDraftToWorkApiUrl } from 'modules/warehouse/utils/relocationTask'
+import { MoveRelocationTaskDraftToWorkSuccessResponse } from 'features/warehouse/models'
+import { RelocationTaskRequestArgs } from 'features/warehouse/types'
+import { makeMoveRelocationTaskDraftToWorkApiUrl } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

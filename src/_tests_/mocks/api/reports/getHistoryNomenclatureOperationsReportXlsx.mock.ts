@@ -1,5 +1,5 @@
-import { GetAmountEquipmentSpentReportXlsxSuccessResponse } from 'modules/reports/models'
-import { getHistoryNomenclatureOperationsReportUrl } from 'modules/reports/utils'
+import { GetAmountEquipmentSpentReportXlsxSuccessResponse } from 'features/reports/models'
+import { getHistoryNomenclatureOperationsReportUrl } from 'features/reports/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

@@ -1,4 +1,4 @@
-import { WorkTypeListItemModel } from 'modules/warehouse/models'
+import { WorkTypeListItemModel } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

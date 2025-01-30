@@ -1,5 +1,5 @@
-import { ReportsApiEnum } from 'modules/reports/constants'
-import { GetFiscalAccumulatorTasksReportSuccessResponse } from 'modules/reports/models'
+import { ReportsApiEnum } from 'features/reports/constants'
+import { GetFiscalAccumulatorTasksReportSuccessResponse } from 'features/reports/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

@@ -5,8 +5,8 @@ import times from 'lodash/times'
 import {
   HistoryNomenclatureOperationsReportListItemModel,
   HistoryNomenclatureOperationsReportModel,
-} from 'modules/reports/models'
-import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
+} from 'features/reports/models'
+import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 
 import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/utils'
 

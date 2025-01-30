@@ -1,11 +1,11 @@
-import { TaskDetailsProps } from 'modules/task/components/TaskDetails/index'
-import { TaskModel } from 'modules/task/models/index'
-import { UserPermissionsEnum } from 'modules/user/constants/index'
-import { WorkTypeActionsEnum } from 'modules/warehouse/constants/workType/index'
+import { TaskDetailsProps } from 'features/task/components/TaskDetails/index'
+import { TaskModel } from 'features/task/models/index'
+import { UserPermissionsEnum } from 'features/user/constants/index'
+import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType/index'
 
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures/index'
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
-import { fakeId } from '_tests_/utils/index'
+import { fakeId } from '_tests_/utils'
 
 export const props: TaskDetailsProps = {
   taskId: fakeId(),

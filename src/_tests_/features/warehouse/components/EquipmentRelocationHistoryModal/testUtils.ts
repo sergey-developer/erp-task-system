@@ -5,7 +5,7 @@ import { IdType } from 'shared/types/common'
 import { NumberOrString } from 'shared/types/utils'
 
 import { TestIdsEnum } from '_tests_/features/warehouse/components/EquipmentRelocationHistoryModal/constants'
-import { tableTestUtils } from '_tests_/utils/index'
+import { tableTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.EquipmentRelocationHistoryModal)
 const findContainer = () => screen.findByTestId(TestIdsEnum.EquipmentRelocationHistoryModal)

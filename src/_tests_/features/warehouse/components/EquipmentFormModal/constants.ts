@@ -1,7 +1,7 @@
-import { EquipmentFormModalProps } from 'modules/warehouse/components/EquipmentFormModal/types'
+import { EquipmentFormModalProps } from 'features/warehouse/components/EquipmentFormModal/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
-import { fakeWord } from '_tests_/utils/index'
+import { fakeWord } from '_tests_/utils'
 
 export const props: Readonly<EquipmentFormModalProps> = {
   open: true,

@@ -1,4 +1,4 @@
-import { TaskAssigneeProps } from 'modules/task/components/TaskAssignee/index'
+import { TaskAssigneeProps } from 'features/task/components/TaskAssignee/index'
 
 import userFixtures from '_tests_/fixtures/user/index'
 

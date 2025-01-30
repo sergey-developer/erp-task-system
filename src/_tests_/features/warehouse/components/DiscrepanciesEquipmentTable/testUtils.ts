@@ -4,9 +4,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import { tableTestUtils } from '_tests_/utils/index'
-
 import { TestIdsEnum } from '_tests_/features/warehouse/components/DiscrepanciesEquipmentTable/constants'
+import { tableTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.DiscrepanciesEquipmentTable)
 

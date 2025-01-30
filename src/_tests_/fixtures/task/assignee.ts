@@ -1,4 +1,4 @@
-import { TaskAssigneeModel } from 'modules/task/models'
+import { TaskAssigneeModel } from 'features/task/models'
 
 import { fakeEmail, fakeId, fakePhone, fakeUrl, fakeWord } from '_tests_/utils'
 

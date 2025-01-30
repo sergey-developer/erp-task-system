@@ -1,8 +1,8 @@
-import { GetEquipmentAttachmentListSuccessResponse } from 'modules/warehouse/models'
-import { getEquipmentAttachmentListUrl } from 'modules/warehouse/utils/equipment'
+import { GetEquipmentAttachmentListSuccessResponse } from 'features/warehouse/models'
+import { getEquipmentAttachmentListUrl } from 'features/warehouse/utils/equipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/services/baseApi'
+import { ErrorData } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

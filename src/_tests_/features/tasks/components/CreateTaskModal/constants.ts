@@ -1,4 +1,4 @@
-import { CreateTaskModalProps } from 'modules/task/components/CreateTaskModal/types'
+import { CreateTaskModalProps } from 'features/task/components/CreateTaskModal/types'
 
 export const props: Readonly<CreateTaskModalProps> = {
   open: true,

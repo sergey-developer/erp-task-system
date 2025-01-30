@@ -1,4 +1,4 @@
-import { CreateEquipmentTechnicalExaminationModalProps } from 'modules/warehouse/components/CreateEquipmentTechnicalExaminationModal/types'
+import { CreateEquipmentTechnicalExaminationModalProps } from 'features/warehouse/components/CreateEquipmentTechnicalExaminationModal/types'
 
 export const props: CreateEquipmentTechnicalExaminationModalProps = {
   open: true,

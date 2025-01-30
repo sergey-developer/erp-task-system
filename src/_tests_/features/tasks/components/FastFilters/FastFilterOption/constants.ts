@@ -1,6 +1,6 @@
-import { FastFilterOptionProps } from 'modules/task/components/FastFilters/FastFilterOption'
+import { FastFilterOptionProps } from 'features/task/components/FastFilters/FastFilterOption'
 
-import { fakeWord } from '_tests_/utils/index'
+import { fakeWord } from '_tests_/utils'
 
 export const filterCheckedClass = 'ant-tag-checkable-checked'
 export const filterDisabledClass = 'ant-tag-checkable--disabled'

@@ -1,5 +1,5 @@
-import { NomenclatureApiEnum } from 'modules/warehouse/constants/nomenclature'
-import { CreateNomenclatureSuccessResponse } from 'modules/warehouse/models'
+import { NomenclatureApiEnum } from 'features/warehouse/constants/nomenclature'
+import { CreateNomenclatureSuccessResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

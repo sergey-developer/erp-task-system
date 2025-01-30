@@ -3,9 +3,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { SEND_TEXT } from 'shared/constants/common'
 
-import { buttonTestUtils, fakeWord, selectTestUtils } from '_tests_/utils/index'
-
 import { TestIdsEnum } from '_tests_/features/tasks/components/CreateRegistrationFNRequestModal/constants'
+import { buttonTestUtils, fakeWord, selectTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CreateRegistrationFNRequestModal)
 const findContainer = () => screen.findByTestId(TestIdsEnum.CreateRegistrationFNRequestModal)

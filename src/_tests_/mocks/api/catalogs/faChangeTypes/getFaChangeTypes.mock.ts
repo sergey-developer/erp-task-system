@@ -1,6 +1,6 @@
-import { CatalogsApiEnum } from 'shared/constants/catalogs'
+import { CatalogsApiEnum } from 'shared/catalogs/constants'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { GetFaChangeTypesSuccessResponse } from 'shared/models/catalogs/faChangeTypes'
+import { GetFaChangeTypesSuccessResponse } from 'shared/catalogs/models/faChangeTypes'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'

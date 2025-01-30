@@ -5,7 +5,7 @@ import { MaybeNull } from 'shared/types/utils'
 
 import { addModeProps } from '_tests_/features/warehouse/components/NomenclatureFormModal/constants'
 import { TestIdsEnum } from '_tests_/features/warehouse/components/NomenclatureFormModal/constants'
-import { buttonTestUtils, checkboxTestUtils, selectTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils, checkboxTestUtils, selectTestUtils } from '_tests_/utils'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.NomenclatureFormModal)
 const findContainer = (): Promise<HTMLElement> =>

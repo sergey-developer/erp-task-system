@@ -1,4 +1,4 @@
-import { SubTaskTemplateModel } from 'shared/models/catalogs/subTaskTemplate'
+import { SubTaskTemplateModel } from 'shared/catalogs/models/subTaskTemplates'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

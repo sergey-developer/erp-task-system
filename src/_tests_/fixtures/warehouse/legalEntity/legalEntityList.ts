@@ -1,4 +1,4 @@
-import { LegalEntityListItemModel } from 'modules/warehouse/models'
+import { LegalEntityListItemModel } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

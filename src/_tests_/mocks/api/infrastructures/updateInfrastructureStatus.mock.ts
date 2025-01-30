@@ -1,5 +1,5 @@
-import { InfrastructuresApiEnum } from 'modules/infrastructures/constants'
-import { UpdateInfrastructureStatusSuccessResponse } from 'modules/infrastructures/models'
+import { InfrastructuresApiEnum } from 'features/infrastructures/constants'
+import { UpdateInfrastructureStatusSuccessResponse } from 'features/infrastructures/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

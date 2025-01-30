@@ -1,8 +1,8 @@
 import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
-import { EquipmentConditionEnum } from 'modules/warehouse/constants/equipment'
-import { EquipmentModel } from 'modules/warehouse/models'
+import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentModel } from 'features/warehouse/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import currencyFixtures from '_tests_/fixtures/currency'

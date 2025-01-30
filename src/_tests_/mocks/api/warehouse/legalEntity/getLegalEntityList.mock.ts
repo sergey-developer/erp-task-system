@@ -1,5 +1,5 @@
-import { GetLegalEntityListSuccessResponse } from 'modules/warehouse/models'
-import { LegalEntityApiEnum } from 'modules/warehouse/services/legalEntityApiService'
+import { GetLegalEntityListSuccessResponse } from 'features/warehouse/models'
+import { LegalEntityApiEnum } from 'features/warehouse/services/legalEntityApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

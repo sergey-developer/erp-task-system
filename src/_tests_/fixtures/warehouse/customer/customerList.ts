@@ -3,7 +3,7 @@ import times from 'lodash/times'
 import {
   CustomerListItemModel,
   CustomerListModel,
-} from 'modules/warehouse/models'
+} from 'features/warehouse/models'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

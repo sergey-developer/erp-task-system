@@ -1,6 +1,6 @@
 import { UploadFile } from 'antd/es/upload'
 
-import { UserModel } from 'modules/user/models'
+import { UserModel } from 'features/user/models'
 
 import { IdType } from './common'
 

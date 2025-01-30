@@ -1,6 +1,6 @@
 import isUndefined from 'lodash/isUndefined'
 
-import { InfrastructureOrderFormListItemModel } from 'modules/infrastructures/models'
+import { InfrastructureOrderFormListItemModel } from 'features/infrastructures/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { fakeId, fakeWord } from '_tests_/utils'

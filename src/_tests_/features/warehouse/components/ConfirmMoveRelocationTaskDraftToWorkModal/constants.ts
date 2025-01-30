@@ -1,4 +1,4 @@
-import { ConfirmMoveRelocationTaskDraftToWorkModalProps } from 'modules/warehouse/components/ConfirmMoveRelocationTaskDraftToWorkModal'
+import { ConfirmMoveRelocationTaskDraftToWorkModalProps } from 'features/warehouse/components/ConfirmMoveRelocationTaskDraftToWorkModal'
 
 export const props: ConfirmMoveRelocationTaskDraftToWorkModalProps = {
   open: true,

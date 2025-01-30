@@ -1,6 +1,6 @@
-import { CommentsTabProps } from 'modules/task/components/TaskDetails/Tabs/CommentsTab/index'
+import { CommentsTabProps } from 'features/task/components/TaskDetails/Tabs/CommentsTab/index'
 
-import { fakeId, fakeWord } from '_tests_/utils/index'
+import { fakeId, fakeWord } from '_tests_/utils'
 
 export const props: Readonly<CommentsTabProps> = {
   title: fakeWord(),

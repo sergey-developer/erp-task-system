@@ -1,4 +1,4 @@
-import { InfrastructureOrderFormWorkTypeCostModel } from 'modules/infrastructures/models/infrastructureOrderFormWorkTypeCost.model'
+import { InfrastructureOrderFormWorkTypeCostModel } from 'features/infrastructures/models/infrastructureOrderFormWorkTypeCost.model'
 
 import { fakeInteger } from '_tests_/utils'
 

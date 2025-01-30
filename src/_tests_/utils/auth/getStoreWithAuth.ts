@@ -1,4 +1,4 @@
-import { UserModel } from 'modules/user/models'
+import { UserModel } from 'features/user/models'
 
 import { setupStore } from 'state/store'
 

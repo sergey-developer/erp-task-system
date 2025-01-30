@@ -1,4 +1,4 @@
-import { UserModel } from 'modules/user/models'
+import { UserModel } from 'features/user/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { fakeEmail, fakeId, fakeInteger, fakePhone, fakeUrl, fakeWord } from '_tests_/utils'

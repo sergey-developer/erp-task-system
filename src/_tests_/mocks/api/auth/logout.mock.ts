@@ -1,4 +1,4 @@
-import { AuthApiEnum } from 'modules/auth/constants'
+import { AuthApiEnum } from 'features/auth/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

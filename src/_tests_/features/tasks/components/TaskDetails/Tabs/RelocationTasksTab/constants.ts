@@ -1,4 +1,4 @@
-import { RelocationTasksTabProps } from 'modules/task/components/TaskDetails/Tabs/RelocationTasksTab/types'
+import { RelocationTasksTabProps } from 'features/task/components/TaskDetails/Tabs/RelocationTasksTab/types'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 
