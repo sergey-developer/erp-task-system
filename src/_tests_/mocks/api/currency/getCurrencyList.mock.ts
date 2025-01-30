@@ -1,6 +1,6 @@
+import { GetCurrencyListSuccessResponse } from 'shared/catalogs/models/currencies'
 import { CurrencyApiEnum } from 'shared/constants/currency'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { GetCurrencyListSuccessResponse } from 'shared/models/currency'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'

@@ -14,11 +14,6 @@ import {
   UploadProps,
 } from 'antd'
 import { SearchProps } from 'antd/es/input'
-import isNumber from 'lodash/isNumber'
-import omit from 'lodash/omit'
-import stubFalse from 'lodash/stubFalse'
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
-
 import { AttachmentTypeEnum } from 'features/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachment/hooks'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
@@ -66,18 +61,22 @@ import {
   checkInventorizationStatusIsInProgress,
   checkInventorizationStatusIsNew,
 } from 'features/warehouse/utils/inventorization'
+import isNumber from 'lodash/isNumber'
+import omit from 'lodash/omit'
+import stubFalse from 'lodash/stubFalse'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { DownIcon } from 'components/Icons'
 import ModalFallback from 'components/Modals/ModalFallback'
 import TableRowsErrors from 'components/TableRowsErrors'
 
-import { MimetypeEnum } from 'shared/constants/mimetype'
-import { undefinedSelectOption } from 'shared/constants/selectField'
+import { isBadRequestError, isErrorResponse, TableRowsApiErrors } from 'shared/api/services/baseApi'
+import { useGetCurrencyList } from 'shared/catalogs/hooks/currencies'
 import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
-import { useGetCurrencyList } from 'shared/catalogs/hooks/currency'
 import { useGetMacroregions } from 'shared/catalogs/hooks/macroregion'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse, TableRowsApiErrors } from 'shared/api/services/baseApi'
+import { MimetypeEnum } from 'shared/constants/mimetype'
+import { undefinedSelectOption } from 'shared/constants/selectField'
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 import { base64ToBytes } from 'shared/utils/common'

@@ -13,4 +13,7 @@ export enum CatalogsApiEnum {
 
   // Скоро будет /catalogs/countries/
   GetCountries = '/countries/',
+
+  // Скоро будет /catalogs/currencies/
+  GetCurrencies = '/currencies/',
 }

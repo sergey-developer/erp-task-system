@@ -1,5 +1,4 @@
 import { FormInstance, SelectProps } from 'antd'
-
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import {
   CustomerListModel,
@@ -13,8 +12,8 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { CurrenciesModel } from 'shared/catalogs/models/currencies'
 import { LocationsCatalogModel } from 'shared/catalogs/models/locations'
-import { CurrenciesModel } from 'shared/models/currency'
 import { MacroregionsModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 

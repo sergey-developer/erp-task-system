@@ -1,10 +1,9 @@
+import { EquipmentsCatalogModel } from 'features/warehouse/models'
+import { RelocationTaskEquipment } from 'features/warehouse/types'
 import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
 
-import { EquipmentsCatalogModel } from 'features/warehouse/models'
-import { RelocationTaskEquipment } from 'features/warehouse/types'
-
-import { CurrenciesModel } from 'shared/models/currency'
+import { CurrenciesModel } from 'shared/catalogs/models/currencies'
 
 export type RelocationEquipmentRow = Partial<RelocationTaskEquipment> & {
   rowId: number

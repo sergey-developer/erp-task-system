@@ -1,3 +1,5 @@
+import { ApiRequestMessages } from '../../types/messages'
+
 export const getTimeZonesCatalogErrMsg = 'Ошибка получения временных зон'
 
 export const getSubTaskTemplatesCatalogErrMsg = 'Не удалось получить шаблоны заданий'
@@ -21,3 +23,7 @@ export const getInfrastructureWorkTypesErrMsg =
   'Ошибка получения каталога видов работ по изменению инфраструктуры'
 
 export const getCountryCatalogErrMsg = 'Ошибка получения списка стран производителей'
+
+export const getCurrencyListMessages: ApiRequestMessages<'commonError'> = {
+  commonError: 'Ошибка получения списка валют',
+}

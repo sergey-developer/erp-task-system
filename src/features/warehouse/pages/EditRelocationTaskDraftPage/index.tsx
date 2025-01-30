@@ -1,12 +1,5 @@
 import { useBoolean, useMount, usePrevious } from 'ahooks'
 import { Button, Col, Form, Modal, Row, Typography, UploadProps } from 'antd'
-import concat from 'lodash/concat'
-import isNumber from 'lodash/isNumber'
-import moment from 'moment-timezone'
-import { DefaultOptionType } from 'rc-select/lib/Select'
-import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-
 import { AttachmentTypeEnum } from 'features/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachment/hooks'
 import { attachmentsToFiles } from 'features/attachment/utils'
@@ -56,15 +49,21 @@ import {
   checkRelocationTaskTypeIsReturnWrittenOff,
   checkRelocationTaskTypeIsWriteOff,
 } from 'features/warehouse/utils/relocationTask'
+import concat from 'lodash/concat'
+import isNumber from 'lodash/isNumber'
+import moment from 'moment-timezone'
+import { DefaultOptionType } from 'rc-select/lib/Select'
+import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { CANCEL_TEXT, SAVE_TEXT } from 'shared/constants/common'
-import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
-import { useGetCurrencyList } from 'shared/catalogs/hooks/currency'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { useGetCurrencyList } from 'shared/catalogs/hooks/currencies'
+import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
+import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { CANCEL_TEXT, SAVE_TEXT } from 'shared/constants/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { mapIds } from 'shared/utils/array/mapIds'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'

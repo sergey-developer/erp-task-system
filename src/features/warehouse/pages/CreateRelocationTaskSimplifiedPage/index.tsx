@@ -11,14 +11,6 @@ import {
   Upload,
   UploadProps,
 } from 'antd'
-import get from 'lodash/get'
-import isBoolean from 'lodash/isBoolean'
-import isNumber from 'lodash/isNumber'
-import stubFalse from 'lodash/stubFalse'
-import { NamePath } from 'rc-field-form/es/interface'
-import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-
 import { AttachmentTypeEnum } from 'features/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachment/hooks'
 import { renderUploadedFile } from 'features/attachment/utils'
@@ -53,6 +45,13 @@ import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'features/warehouse/models'
 import { SimplifiedRelocationTaskFormFields } from 'features/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
+import get from 'lodash/get'
+import isBoolean from 'lodash/isBoolean'
+import isNumber from 'lodash/isNumber'
+import stubFalse from 'lodash/stubFalse'
+import { NamePath } from 'rc-field-form/es/interface'
+import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -60,14 +59,14 @@ import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
+import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { useGetCurrencyList } from 'shared/catalogs/hooks/currencies'
+import { useGetMacroregions } from 'shared/catalogs/hooks/macroregion'
+import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { CANCEL_TEXT, CREATE_TEXT, SAVE_TEXT } from 'shared/constants/common'
 import { filesFormItemProps } from 'shared/constants/form'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
-import { useGetCurrencyList } from 'shared/catalogs/hooks/currency'
-import { useGetMacroregions } from 'shared/catalogs/hooks/macroregion'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -309,7 +308,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
     {
       ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
-      ...(!!warehouseMSI?.id && { warehouses: [warehouseMSI.id] })
+      ...(!!warehouseMSI?.id && { warehouses: [warehouseMSI.id] }),
     },
     { skip: !selectedOwnerId && !warehouseMSI?.id },
   )

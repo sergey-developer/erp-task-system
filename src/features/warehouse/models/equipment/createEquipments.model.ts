@@ -6,9 +6,9 @@ import {
   WorkTypeListItemModel,
 } from 'features/warehouse/models'
 
-import { CurrencyListItemModel } from 'shared/models/currency'
-import { MacroregionListItemModel } from 'shared/models/macroregion'
 import { FieldsErrors } from 'shared/api/services/baseApi'
+import { CurrencyListItemModel } from 'shared/catalogs/models/currencies'
+import { MacroregionListItemModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 

@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { CurrenciesModel, CurrencyListItemModel } from 'shared/models/currency'
+import { CurrenciesModel, CurrencyListItemModel } from 'shared/catalogs/models/currencies'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

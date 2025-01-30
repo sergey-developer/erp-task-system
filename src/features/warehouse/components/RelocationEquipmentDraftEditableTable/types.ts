@@ -1,13 +1,12 @@
-import { NamePath } from 'rc-field-form/es/interface'
-import { Key } from 'react'
-
 import {
   InventorizationEquipmentListItemModel,
   RelocationEquipmentListItemModel,
 } from 'features/warehouse/models'
 import { RelocationTaskInventorizationEquipment } from 'features/warehouse/types'
+import { NamePath } from 'rc-field-form/es/interface'
+import { Key } from 'react'
 
-import { CurrenciesModel } from 'shared/models/currency'
+import { CurrenciesModel } from 'shared/catalogs/models/currencies'
 
 export type InventorizationEquipmentTableRow = Partial<RelocationTaskInventorizationEquipment> & {
   rowId: number

@@ -1,8 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Dropdown, Image, MenuProps, Row, Typography, UploadProps } from 'antd'
-import debounce from 'lodash/debounce'
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
-
 import AttachmentImages from 'features/attachment/components/AttachmentImages'
 import { AttachmentTypeEnum } from 'features/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachment/hooks'
@@ -41,19 +38,21 @@ import {
   EquipmentCategoryListItemModel,
 } from 'features/warehouse/models'
 import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
+import debounce from 'lodash/debounce'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { MenuIcon } from 'components/Icons'
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { useGetCurrencyList } from 'shared/catalogs/hooks/currencies'
+import { useGetMacroregions } from 'shared/catalogs/hooks/macroregion'
+import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { DEFAULT_DEBOUNCE_VALUE, SAVE_TEXT } from 'shared/constants/common'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { useGetCurrencyList } from 'shared/catalogs/hooks/currency'
-import { useGetMacroregions } from 'shared/catalogs/hooks/macroregion'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { base64ToBytes, getYesNoWord, printImage, valueOr } from 'shared/utils/common'
@@ -241,7 +240,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
     {
       ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
-      ...(!!selectedWarehouseId && { warehouses: [selectedWarehouseId] })
+      ...(!!selectedWarehouseId && { warehouses: [selectedWarehouseId] }),
     },
     { skip: !editEquipmentModalOpened || (!selectedOwnerId && !selectedWarehouseId) },
   )

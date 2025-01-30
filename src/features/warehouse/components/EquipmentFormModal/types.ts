@@ -1,6 +1,5 @@
 import { FormInstance, SelectProps, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import {
   CreateEquipmentsBadRequestErrorResponse,
@@ -16,7 +15,7 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CurrenciesModel } from 'shared/models/currency'
+import { CurrenciesModel } from 'shared/catalogs/models/currencies'
 import { MacroregionsModel } from 'shared/models/macroregion'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'

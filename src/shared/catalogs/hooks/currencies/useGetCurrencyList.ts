@@ -2,10 +2,13 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getCurrencyListMessages } from 'shared/constants/currency'
-import { GetCurrencyListQueryArgs, GetCurrencyListSuccessResponse } from 'shared/models/currency'
 import { isErrorResponse } from 'shared/api/services/baseApi'
-import { useGetCurrencyListQuery } from 'shared/services/currencyApi.service'
+import { useGetCurrenciesQuery } from 'shared/catalogs/api/endpoints/currenciesCatalog'
+import {
+  GetCurrencyListQueryArgs,
+  GetCurrencyListSuccessResponse,
+} from 'shared/catalogs/models/currencies'
+import { getCurrencyListMessages } from 'shared/constants/currency'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetCurrencyListResult = CustomUseQueryHookResult<
@@ -22,7 +25,7 @@ export const useGetCurrencyList = (
   args?: GetCurrencyListQueryArgs,
   options?: UseGetCurrencyListOptions,
 ): UseGetCurrencyListResult => {
-  const state = useGetCurrencyListQuery(args, options)
+  const state = useGetCurrenciesQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
