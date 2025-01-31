@@ -8,9 +8,9 @@ import {
 import { deleteAttachmentUrl } from 'features/attachment/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
+import { baseApi } from 'shared/api/baseApi'
 
-const attachmentApiService = baseApiService.injectEndpoints({
+const attachmentApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createAttachment: build.mutation<CreateAttachmentSuccessResponse, CreateAttachmentMutationArgs>(
       {

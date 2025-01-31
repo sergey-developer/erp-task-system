@@ -2,7 +2,7 @@ import { EquipmentApiEnum } from 'features/warehouse/constants/equipment'
 import { GetEquipmentNomenclaturesSuccessResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 
 import {
   getForbiddenErrorMockFn,

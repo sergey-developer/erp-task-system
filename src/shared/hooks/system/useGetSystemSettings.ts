@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
+import { isErrorResponse } from 'shared/api/baseApi'
 import { getSystemSettingsErrMsg } from 'shared/constants/system/messages'
 import { GetSystemSettingsQueryArgs, GetSystemSettingsSuccessResponse } from 'shared/models/system'
-import { isErrorResponse } from 'shared/api/services/baseApi'
-import { useGetSystemSettingsQuery } from 'shared/services/systemApi.service'
+import { useGetSystemSettingsQuery } from 'shared/services/systemApi.endpoints'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetSystemSettingsResult = CustomUseQueryHookResult<

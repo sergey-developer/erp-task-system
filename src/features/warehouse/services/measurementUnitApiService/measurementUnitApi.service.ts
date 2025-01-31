@@ -4,10 +4,10 @@ import {
 } from 'features/warehouse/models'
 import { MeasurementUnitApiEnum } from 'features/warehouse/services/measurementUnitApiService'
 
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
 
-const measurementUnitApiService = baseApiService.injectEndpoints({
+const measurementUnitApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getMeasurementUnitList: build.query<
       GetMeasurementUnitListSuccessResponse,

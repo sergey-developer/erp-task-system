@@ -1,11 +1,10 @@
 import { FormInstance, ModalProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-
 import { TaskModel } from 'features/task/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { ResolutionClassificationsModel } from 'shared/catalogs/models/resolutionClassifications'
+import { ResolutionClassificationsCatalogModel } from 'shared/catalogs/api/dto/resolutionClassifications'
 import { IdType } from 'shared/types/common'
 import { SetNonNullable } from 'shared/types/utils'
 
@@ -22,7 +21,7 @@ export type ExecuteTaskModalProps = SetNonNullable<BaseModalProps, 'open'> &
   Pick<TaskModel, 'type' | 'recordId' | 'supportGroup'> & {
     isLoading: boolean
 
-    resolutionClassifications: ResolutionClassificationsModel
+    resolutionClassifications: ResolutionClassificationsCatalogModel
     resolutionClassificationsIsLoading: boolean
 
     onSubmit: (

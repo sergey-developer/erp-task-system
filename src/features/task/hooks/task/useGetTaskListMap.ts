@@ -6,7 +6,7 @@ import { getTaskListMapErrMsg } from 'features/task/constants/task'
 import { GetTaskListMapQueryArgs, GetTaskListMapSuccessResponse } from 'features/task/models'
 import { useGetTaskListMapQuery } from 'features/task/services/taskApi.service'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
+import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskListMapResult = CustomUseQueryHookResult<

@@ -90,7 +90,7 @@ import {
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
-} from 'shared/api/services/baseApi'
+} from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 import { base64ToBytes, isFalse, isTrue, valueOr } from 'shared/utils/common'

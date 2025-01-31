@@ -5,10 +5,10 @@ import {
 } from 'features/reports/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
+import { baseApi } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
-const fiscalAccumulatorApiService = baseApiService.injectEndpoints({
+const fiscalAccumulatorApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getFiscalAccumulatorTasksReport: build.query<
       GetFiscalAccumulatorTasksReportSuccessResponse,

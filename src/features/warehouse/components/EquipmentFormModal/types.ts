@@ -15,8 +15,8 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CurrenciesModel } from 'shared/catalogs/models/currencies'
-import { MacroregionsModel } from 'shared/models/macroregion'
+import { CurrenciesCatalogModel } from 'shared/catalogs/api/dto/currencies'
+import { MacroregionsCatalogModel } from 'shared/catalogs/api/dto/macroregions'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { ArrayFirst } from 'shared/types/utils'
@@ -69,14 +69,14 @@ export type EquipmentFormModalProps = Required<
     warehouses?: WarehouseListModel
     warehousesIsLoading?: boolean
 
-    currencies: CurrenciesModel
+    currencies: CurrenciesCatalogModel
     currenciesIsLoading: boolean
 
     owners: CustomerListModel
     ownersIsLoading: boolean
     onChangeOwner: (id: IdType) => void
 
-    macroregions: MacroregionsModel
+    macroregions: MacroregionsCatalogModel
     macroregionsIsLoading: boolean
 
     workTypes: WorkTypesModel

@@ -9,7 +9,7 @@ import {
 } from 'features/warehouse/models'
 import { useCheckInventorizationEquipmentsTemplateMutation } from 'features/warehouse/services/inventorizationApi.service'
 
-import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCheckInventorizationEquipmentsTemplateResult = CustomUseMutationResult<

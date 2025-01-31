@@ -1,11 +1,11 @@
 import { WorkTypeApiEnum } from 'features/warehouse/constants/workType'
 import { GetWorkTypesQueryArgs, GetWorkTypesSuccessResponse } from 'features/warehouse/models'
 
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
-const workTypeApiService = baseApiService.injectEndpoints({
+const workTypeApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getWorkTypes: build.query<GetWorkTypesSuccessResponse, MaybeUndefined<GetWorkTypesQueryArgs>>({
       query: (params) => ({

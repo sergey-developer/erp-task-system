@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
-import { useGetInfrastructureWorkTypesCatalogQuery } from 'shared/catalogs/api/endpoints/infrastructureWorkTypesCatalog'
-import { getInfrastructureWorkTypesErrMsg } from 'shared/catalogs/constants'
+import { isErrorResponse } from 'shared/api/baseApi'
 import {
   GetInfrastructureWorkTypesQueryArgs,
   GetInfrastructureWorkTypesSuccessResponse,
-} from 'shared/catalogs/models/infrastructureWorkTypes'
+} from 'shared/catalogs/api/dto/infrastructureWorkTypes'
+import { useGetInfrastructureWorkTypesCatalogQuery } from 'shared/catalogs/api/endpoints/infrastructureWorkTypesCatalog.endpoints'
+import { getInfrastructureWorkTypesErrMsg } from 'shared/catalogs/constants'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetInfrastructureWorkTypesResult = CustomUseQueryHookResult<

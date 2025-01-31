@@ -5,7 +5,7 @@ import {
 import { NomenclatureGroupApiEnum } from 'features/warehouse/constants/nomenclatureGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 
 import {
   getBadRequestErrorMockFn,

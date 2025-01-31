@@ -1,26 +1,25 @@
 import { useBoolean } from 'ahooks'
 import { Flex, Form, Upload, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-import { NamePath } from 'rc-field-form/es/interface'
-import React, { FC, Key, useCallback, useEffect, useState } from 'react'
-
 import { attachmentsToFiles, renderUploadedFile } from 'features/attachment/utils'
+import { deleteInfrastructureOrdersFormsWorkErrMsg } from 'features/infrastructures/constants'
 import {
   useCreateInfrastructureOrderFormWork,
   useUpdateInfrastructureOrderFormWork,
 } from 'features/infrastructures/hooks'
-import { useLazyGetInfrastructureOrderFormWorkTypeCost } from 'features/infrastructures/hooks/useLazyGetInfrastructureOrderFormWorkTypeCost'
-import { deleteInfrastructureOrdersFormsWorkErrMsg } from 'features/infrastructures/constants'
 import { useDeleteInfrastructureOrdersFormsWork } from 'features/infrastructures/hooks/useDeleteInfrastructureOrdersFormsWork'
+import { useLazyGetInfrastructureOrderFormWorkTypeCost } from 'features/infrastructures/hooks/useLazyGetInfrastructureOrderFormWorkTypeCost'
 import { InfrastructureOrderFormListItemModel } from 'features/infrastructures/models'
 import ReadonlyField from 'features/warehouse/components/RelocationTaskDetails/ReadonlyField'
+import { NamePath } from 'rc-field-form/es/interface'
+import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { InfrastructureWorkTypesCatalogModel } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
-import { InfrastructureWorkTypesCatalogModel } from 'shared/catalogs/models/infrastructureWorkTypes'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { showErrorNotification } from 'shared/utils/notifications'

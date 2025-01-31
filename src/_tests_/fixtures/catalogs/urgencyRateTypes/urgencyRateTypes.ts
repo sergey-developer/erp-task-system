@@ -1,4 +1,4 @@
-import { UrgencyRateTypeListItemModel } from 'shared/catalogs/models/urgencyRateTypes'
+import { UrgencyRateTypeListItemModel } from 'shared/catalogs/api/dto/urgencyRateTypes'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

@@ -8,7 +8,7 @@ import {
 } from 'features/monitoring/models'
 import { useGetTaskMonitoringQuery } from 'features/monitoring/services/monitoringApi.service'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
+import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskMonitoringResult = CustomUseQueryHookResult<

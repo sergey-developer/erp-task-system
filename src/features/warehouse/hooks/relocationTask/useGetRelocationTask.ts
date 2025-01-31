@@ -9,7 +9,7 @@ import {
 } from 'features/warehouse/models'
 import { useGetRelocationTaskQuery } from 'features/warehouse/services/relocationTaskApi.service'
 
-import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/services/baseApi'
+import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetRelocationTaskResult = CustomUseQueryHookResult<

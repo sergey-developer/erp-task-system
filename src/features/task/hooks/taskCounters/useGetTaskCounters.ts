@@ -6,7 +6,7 @@ import { getTaskCountersErrMsg } from 'features/task/constants/taskCounters'
 import { GetTaskCountersQueryArgs, GetTaskCountersSuccessResponse } from 'features/task/models'
 import { useGetTaskCountersQuery } from 'features/task/services/taskApi.service'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
+import { isErrorResponse } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

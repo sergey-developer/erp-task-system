@@ -9,7 +9,7 @@ import {
 } from 'features/warehouse/models'
 import { useGetEquipmentCategoriesQuery } from 'features/warehouse/services/equipmentApi.service'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
+import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetEquipmentCategoriesResult = CustomUseQueryHookResult<

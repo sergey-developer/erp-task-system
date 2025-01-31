@@ -7,7 +7,7 @@ import { GetTechnicalExaminationPdfQueryArgs } from 'features/technicalExaminati
 import { useLazyGetTechnicalExaminationPdfQuery } from 'features/technicalExaminations/services/technicalExaminationsApi.service'
 import { GetTechnicalExaminationPdfTransformedSuccessResponse } from 'features/technicalExaminations/types'
 
-import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTechnicalExaminationPdfResult = CustomUseLazyQueryHookResult<

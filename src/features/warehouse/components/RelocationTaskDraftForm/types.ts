@@ -1,15 +1,14 @@
 import { UploadProps } from 'antd'
+import { MatchedUserPermissions } from 'features/user/types'
+import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask'
 import { Moment } from 'moment-timezone'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { ReactNode } from 'react'
 
-import { MatchedUserPermissions } from 'features/user/types'
-import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask'
-
 import {
   LocationCatalogListItemModel,
   LocationsCatalogModel,
-} from 'shared/catalogs/models/locations'
+} from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { MaybeNull } from 'shared/types/utils'

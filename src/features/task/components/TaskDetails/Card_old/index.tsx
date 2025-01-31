@@ -38,7 +38,7 @@ import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/api/services/baseApi'
+import { isBadRequestError, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { AnyFn, EmptyFn, MaybeNull } from 'shared/types/utils'
 import { base64ToBytes } from 'shared/utils/common'
 import { formatDate, mergeDateTime } from 'shared/utils/date'

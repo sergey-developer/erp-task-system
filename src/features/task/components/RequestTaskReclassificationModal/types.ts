@@ -4,7 +4,7 @@ import { CreateTaskReclassificationRequestMutationArgs, TaskModel } from 'featur
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { FieldsErrors } from 'shared/api/services/baseApi'
+import { FieldsErrors } from 'shared/api/baseApi'
 
 type FormFields = Omit<CreateTaskReclassificationRequestMutationArgs, 'taskId'>
 

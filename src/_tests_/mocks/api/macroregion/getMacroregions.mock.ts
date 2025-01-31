@@ -1,6 +1,6 @@
+import { GetMacroregionsSuccessResponse } from 'shared/catalogs/api/dto/macroregions'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MacroregionApiEnum } from 'shared/constants/macroregion'
-import { GetMacroregionsSuccessResponse } from 'shared/models/macroregion'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'

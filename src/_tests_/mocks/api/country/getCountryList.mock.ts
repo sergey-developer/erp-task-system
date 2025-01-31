@@ -1,5 +1,5 @@
+import { GetCountryListSuccessResponse } from 'shared/catalogs/api/dto/countries'
 import { CatalogsApiEnum } from 'shared/catalogs/constants'
-import { GetCountryListSuccessResponse } from 'shared/catalogs/models/countries'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'

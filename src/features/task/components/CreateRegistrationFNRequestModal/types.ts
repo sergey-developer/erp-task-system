@@ -3,7 +3,7 @@ import { UploadFile } from 'antd/es/upload'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { FaChangeTypesModel } from 'shared/catalogs/models/faChangeTypes'
+import { FaChangeTypesCatalogModel } from 'shared/catalogs/api/dto/faChangeTypes'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 
@@ -12,7 +12,7 @@ export type CreateRegistrationFNRequestModalProps = Required<
 > & {
   values: Partial<Pick<CreateRegistrationFNRequestFormFields, 'changeType'>>
 
-  changeTypes: FaChangeTypesModel
+  changeTypes: FaChangeTypesCatalogModel
   changeTypesIsLoading: boolean
 
   email: string[]

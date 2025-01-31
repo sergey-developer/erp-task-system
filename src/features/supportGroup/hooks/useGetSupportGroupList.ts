@@ -9,7 +9,7 @@ import {
 } from 'features/supportGroup/models'
 import { useGetSupportGroupListQuery } from 'features/supportGroup/services/supportGroupApi.service'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
+import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetSupportGroupListResult = CustomUseQueryHookResult<

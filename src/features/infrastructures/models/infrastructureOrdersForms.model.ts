@@ -1,4 +1,4 @@
-import { UrgencyRateTypeListItemModel } from 'shared/catalogs/models/urgencyRateTypes'
+import { UrgencyRateTypeListItemModel } from 'shared/catalogs/api/dto/urgencyRateTypes'
 import { IdType } from 'shared/types/common'
 
 import { InfrastructureOrderFormAttachmentModel } from './infrastructureOrderFormAttachment.model'

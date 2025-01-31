@@ -1,14 +1,13 @@
-import { Moment } from 'moment-timezone'
-
 import { UsersModel } from 'features/user/models'
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
 } from 'features/warehouse/constants/relocationTask'
+import { Moment } from 'moment-timezone'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { LocationsCatalogModel } from 'shared/catalogs/models/locations'
+import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
 
 export type RelocationTasksFilterFormFields = Partial<{

@@ -1,11 +1,11 @@
 import { GetCustomerListQueryArgs, GetCustomerListSuccessResponse } from 'features/warehouse/models'
 
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
 
 import { CustomerApiEnum } from './constants'
 
-const customerApiService = baseApiService.injectEndpoints({
+const customerApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getCustomerList: build.query<GetCustomerListSuccessResponse, GetCustomerListQueryArgs>({
       query: () => ({

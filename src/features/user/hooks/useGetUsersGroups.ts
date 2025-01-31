@@ -6,7 +6,7 @@ import { getUsersGroupsErrMsg } from 'features/user/constants'
 import { GetUsersGroupsQueryArgs, GetUsersGroupsSuccessResponse } from 'features/user/models'
 import { useGetUsersGroupsQuery } from 'features/user/services/userApi.service'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
+import { isErrorResponse } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

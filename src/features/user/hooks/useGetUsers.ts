@@ -6,7 +6,7 @@ import { getUsersErrMsg } from 'features/user/constants'
 import { GetUsersQueryArgs, GetUsersSuccessResponse } from 'features/user/models'
 import { useGetUsersQuery } from 'features/user/services/userApi.service'
 
-import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

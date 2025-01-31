@@ -2,7 +2,7 @@ import { GetHistoryNomenclatureOperationsReportSuccessResponse } from 'features/
 import { getHistoryNomenclatureOperationsReportUrl } from 'features/reports/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

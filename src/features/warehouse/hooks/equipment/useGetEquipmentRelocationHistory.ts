@@ -9,7 +9,7 @@ import {
 } from 'features/warehouse/models'
 import { useGetEquipmentRelocationHistoryQuery } from 'features/warehouse/services/equipmentApi.service'
 
-import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/services/baseApi'
+import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetEquipmentRelocationHistoryResult = CustomUseQueryHookResult<

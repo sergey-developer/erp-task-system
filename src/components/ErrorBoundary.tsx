@@ -4,7 +4,7 @@ import { isRouteErrorResponse, Link, useRouteError } from 'react-router-dom'
 
 import { CommonRouteEnum } from 'configs/routes'
 
-import { isNotFoundError } from 'shared/api/services/baseApi'
+import { isNotFoundError } from 'shared/api/baseApi'
 
 const { Title } = Typography
 

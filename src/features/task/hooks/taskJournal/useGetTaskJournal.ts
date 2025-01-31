@@ -6,7 +6,7 @@ import { getTaskJournalErrMsg } from 'features/task/constants/taskJournal'
 import { GetTaskJournalQueryArgs, GetTaskJournalSuccessResponse } from 'features/task/models'
 import { useGetTaskJournalQuery } from 'features/task/services/taskApi.service'
 
-import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskJournalResult = CustomUseQueryHookResult<

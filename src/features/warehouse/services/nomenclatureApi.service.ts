@@ -1,5 +1,3 @@
-import { getPaginatedList } from 'lib/antd/utils'
-
 import {
   NomenclatureApiEnum,
   NomenclatureApiTagEnum,
@@ -18,10 +16,12 @@ import {
 import { GetNomenclatureListTransformedSuccessResponse } from 'features/warehouse/types'
 import { getNomenclatureUrl, updateNomenclatureUrl } from 'features/warehouse/utils/nomenclature'
 
-import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
+import { getPaginatedList } from 'lib/antd/utils'
 
-const nomenclatureApiService = baseApiService
+import { baseApi } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
+
+const nomenclatureApiService = baseApi
   .enhanceEndpoints({
     addTagTypes: [NomenclatureApiTagEnum.Nomenclatures],
   })

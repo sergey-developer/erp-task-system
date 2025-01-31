@@ -1,5 +1,3 @@
-import { getPaginatedList } from 'lib/antd/utils'
-
 import { RelocationEquipmentApiTagEnum } from 'features/warehouse/constants/relocationEquipment'
 import {
   RelocationTaskApiEnum,
@@ -63,10 +61,12 @@ import {
   updateRelocationTaskUrl,
 } from 'features/warehouse/utils/relocationTask'
 
-import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
+import { getPaginatedList } from 'lib/antd/utils'
 
-const relocationTaskApiService = baseApiService
+import { baseApi } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
+
+const relocationTaskApiService = baseApi
   .enhanceEndpoints({
     addTagTypes: [
       RelocationTaskApiTagEnum.RelocationEquipmentList,
@@ -162,7 +162,7 @@ const relocationTaskApiService = baseApiService
             const { data } = await queryFulfilled
 
             dispatch(
-              baseApiService.util.updateQueryData(
+              baseApi.util.updateQueryData(
                 RelocationTaskApiTriggerEnum.GetRelocationTask as never,
                 { relocationTaskId } as never,
                 (task: GetRelocationTaskSuccessResponse) => {
@@ -196,7 +196,7 @@ const relocationTaskApiService = baseApiService
             const { data } = await queryFulfilled
 
             dispatch(
-              baseApiService.util.updateQueryData(
+              baseApi.util.updateQueryData(
                 RelocationTaskApiTriggerEnum.GetRelocationTask as never,
                 { relocationTaskId } as never,
                 (task: GetRelocationTaskSuccessResponse) => {
@@ -321,7 +321,7 @@ const relocationTaskApiService = baseApiService
             const { data } = await queryFulfilled
 
             dispatch(
-              baseApiService.util.updateQueryData(
+              baseApi.util.updateQueryData(
                 RelocationTaskApiTriggerEnum.GetRelocationTask as never,
                 { relocationTaskId } as never,
                 (task: GetRelocationTaskSuccessResponse) => {

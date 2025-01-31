@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
-import { useGetUrgencyRateTypesCatalogQuery } from 'shared/catalogs/api/endpoints/urgencyRateTypesCatalog'
-import { getUrgencyRateTypesErrMsg } from 'shared/catalogs/constants'
+import { isErrorResponse } from 'shared/api/baseApi'
 import {
   GetUrgencyRateTypesQueryArgs,
   GetUrgencyRateTypesSuccessResponse,
-} from 'shared/catalogs/models/urgencyRateTypes'
+} from 'shared/catalogs/api/dto/urgencyRateTypes'
+import { useGetUrgencyRateTypesCatalogQuery } from 'shared/catalogs/api/endpoints/urgencyRateTypesCatalog.endpoints'
+import { getUrgencyRateTypesErrMsg } from 'shared/catalogs/constants'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

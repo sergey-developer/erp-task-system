@@ -17,7 +17,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { getTextWithCounter } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
 

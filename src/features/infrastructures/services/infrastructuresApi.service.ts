@@ -35,11 +35,11 @@ import {
 } from 'features/infrastructures/utils/infrastructure/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
+import { baseApi } from 'shared/api/baseApi'
 
 import { makeUpdateInfrastructureOrderFormWorkApiUrl } from '../utils/infrastructureOrderFormWork/apiUrls'
 
-const infrastructuresApiService = baseApiService
+const infrastructuresApiService = baseApi
   .enhanceEndpoints({
     addTagTypes: [
       InfrastructuresApiTagEnum.Infrastructure,

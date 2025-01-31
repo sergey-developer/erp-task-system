@@ -59,7 +59,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { useGetCurrencyList } from 'shared/catalogs/hooks/currencies'
 import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'

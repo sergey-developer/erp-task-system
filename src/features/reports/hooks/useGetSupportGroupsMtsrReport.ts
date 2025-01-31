@@ -9,7 +9,7 @@ import {
 } from 'features/reports/models'
 import { useGetSupportGroupsMtsrReportQuery } from 'features/reports/services/reportsApi.service'
 
-import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetSupportGroupsMtsrReportResult = CustomUseQueryHookResult<

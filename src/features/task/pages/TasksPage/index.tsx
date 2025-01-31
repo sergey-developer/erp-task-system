@@ -1,13 +1,6 @@
 import { useBoolean, useLocalStorageState, usePrevious, useSetState } from 'ahooks'
 import { Button, Col, Flex, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
-import debounce from 'lodash/debounce'
-import isArray from 'lodash/isArray'
-import isEqual from 'lodash/isEqual'
-import pick from 'lodash/pick'
-import React, { FC, useCallback, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-
 import { useGetSupportGroupList } from 'features/supportGroup/hooks'
 import { firstLineOptionValue } from 'features/task/components/CreateTaskModal'
 import {
@@ -66,20 +59,25 @@ import {
 import { checkUserStatusOffline } from 'features/user/utils'
 import { useGetCustomerList } from 'features/warehouse/hooks/customer'
 import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
-import { useGetWorkGroups } from 'features/workGroup/hooks/useGetWorkGroups'
+import debounce from 'lodash/debounce'
+import isArray from 'lodash/isArray'
+import isEqual from 'lodash/isEqual'
+import pick from 'lodash/pick'
+import React, { FC, useCallback, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
+import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { LocationTypeEnum } from 'shared/catalogs/constants'
-import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
-import { SortOrderEnum } from 'shared/constants/sort'
 import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
-import { useGetWorkGroupsCatalog } from 'shared/catalogs/hooks/workGroups'
-import { useGetMacroregions } from 'shared/catalogs/hooks/macroregion'
+import { useGetMacroregions } from 'shared/catalogs/hooks/macroregions'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { useDrawerHeightByTable } from 'shared/catalogs/hooks/useDrawerHeightByTable'
-import { isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { useGetWorkGroupsCatalog } from 'shared/catalogs/hooks/workGroups'
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
+import { SortOrderEnum } from 'shared/constants/sort'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -92,6 +90,7 @@ import {
   extractPaginationResults,
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
+import { useGetWorkGroups } from 'shared/workGroups/hooks/useGetWorkGroups'
 
 import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
 import {

@@ -1,5 +1,3 @@
-import { Moment } from 'moment-timezone'
-
 import { SupportGroupListModel } from 'features/supportGroup/models'
 import {
   TaskAssignedEnum,
@@ -10,12 +8,13 @@ import { SearchFields } from 'features/task/models'
 import { UsersModel } from 'features/user/models'
 import { MatchedUserPermissions } from 'features/user/types'
 import { CustomerListModel } from 'features/warehouse/models'
-import { WorkGroupListModel } from 'features/workGroup/models'
+import { Moment } from 'moment-timezone'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { MacroregionsModel } from 'shared/models/macroregion'
+import { MacroregionsCatalogModel } from 'shared/catalogs/api/dto/macroregions'
 import { IdType } from 'shared/types/common'
+import { WorkGroupsModel } from 'shared/workGroups/api/models'
 
 export type TasksFilterSupportGroupFormFields = Partial<{
   customers: IdType[]
@@ -46,7 +45,7 @@ export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClos
   customersIsLoading: boolean
   onChangeCustomers: (value: IdType[]) => void
 
-  macroregions: MacroregionsModel
+  macroregions: MacroregionsCatalogModel
   macroregionsIsLoading: boolean
   onChangeMacroregions: (value: IdType[]) => void
 
@@ -56,7 +55,7 @@ export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClos
   users: UsersModel
   usersIsLoading: boolean
 
-  workGroups: WorkGroupListModel
+  workGroups: WorkGroupsModel
   workGroupsIsLoading: boolean
 
   onSubmit: (values: TasksFilterFormFields) => void

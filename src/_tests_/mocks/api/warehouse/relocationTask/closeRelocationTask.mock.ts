@@ -2,7 +2,7 @@ import { CloseRelocationTaskSuccessResponse } from 'features/warehouse/models'
 import { closeRelocationTaskUrl } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

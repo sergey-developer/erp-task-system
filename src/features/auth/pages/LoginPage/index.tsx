@@ -13,7 +13,7 @@ import Space from 'components/Space'
 
 import { APP_NAME } from 'shared/constants/common'
 import { useDispatch } from 'shared/catalogs/hooks/useDispatch'
-import { isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 
 import { PageTitleStyled } from './styles'

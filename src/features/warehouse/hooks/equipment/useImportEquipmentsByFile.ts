@@ -7,7 +7,7 @@ import { ImportEquipmentsByFileMutationArgs } from 'features/warehouse/models'
 import { useImportEquipmentsByFileMutation } from 'features/warehouse/services/equipmentApi.service'
 import { ImportEquipmentsByFileTransformedSuccessResponse } from 'features/warehouse/types'
 
-import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseImportEquipmentsByFileResult = CustomUseMutationResult<

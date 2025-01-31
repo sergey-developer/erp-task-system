@@ -6,8 +6,8 @@ import {
   WorkTypeListItemModel,
 } from 'features/warehouse/models'
 
-import { CurrencyListItemModel } from 'shared/catalogs/models/currencies'
-import { MacroregionListItemModel } from 'shared/models/macroregion'
+import { CurrencyListItemModel } from 'shared/catalogs/api/dto/currencies'
+import { MacroregionListItemModel } from 'shared/catalogs/api/dto/macroregions'
 import { MaybeNull } from 'shared/types/utils'
 
 export type ImportedEquipmentByFileModel = {

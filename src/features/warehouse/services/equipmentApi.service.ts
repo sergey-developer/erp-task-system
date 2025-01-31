@@ -1,7 +1,3 @@
-import random from 'lodash/random'
-
-import { getPaginatedList } from 'lib/antd/utils'
-
 import { EquipmentApiEnum, EquipmentApiTagEnum } from 'features/warehouse/constants/equipment'
 import {
   CreateEquipmentMutationArgs,
@@ -45,13 +41,16 @@ import {
   getEquipmentUrl,
   updateEquipmentUrl,
 } from 'features/warehouse/utils/equipment'
+import random from 'lodash/random'
 
+import { getPaginatedList } from 'lib/antd/utils'
+
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { baseApiService } from 'shared/api/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
-const equipmentApiService = baseApiService
+const equipmentApiService = baseApi
   .enhanceEndpoints({
     addTagTypes: [
       EquipmentApiTagEnum.Equipments,

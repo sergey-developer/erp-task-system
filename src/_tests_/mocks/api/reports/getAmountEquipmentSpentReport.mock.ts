@@ -2,7 +2,7 @@ import { ReportsApiEnum } from 'features/reports/constants'
 import { GetAmountEquipmentSpentReportSuccessResponse } from 'features/reports/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 
 import {
   getForbiddenErrorMockFn,

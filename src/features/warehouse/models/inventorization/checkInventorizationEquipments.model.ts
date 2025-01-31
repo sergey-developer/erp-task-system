@@ -1,6 +1,6 @@
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 
-import { TableRowsApiErrors } from 'shared/api/services/baseApi'
+import { TableRowsApiErrors } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 

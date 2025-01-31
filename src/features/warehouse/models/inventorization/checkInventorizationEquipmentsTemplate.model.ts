@@ -1,4 +1,4 @@
-import { TableRowsApiErrors } from 'shared/api/services/baseApi'
+import { TableRowsApiErrors } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 import { UploadFileRequestArgs } from 'shared/types/file'
 

@@ -9,7 +9,7 @@ import { TasksRoutesEnum } from 'features/task/constants/routes'
 import { BaseCard } from 'components/Card/BaseCard'
 
 import { SAVE_TEXT } from 'shared/constants/common'
-import { isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showSuccessNotification } from 'shared/utils/notifications'
 

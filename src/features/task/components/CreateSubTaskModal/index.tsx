@@ -15,7 +15,7 @@ import {
   validationSizes,
 } from 'shared/constants/validation'
 import { useGetSubTaskTemplateList } from 'shared/catalogs/hooks/subTaskTemplate'
-import { isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { filterOptionBy } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
 

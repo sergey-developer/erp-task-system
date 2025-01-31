@@ -5,7 +5,7 @@ import {
 import { SuspendRequestModel } from 'features/task/models'
 import { TaskRequestArgs } from 'features/task/types'
 
-import { FieldsErrors } from 'shared/api/services/baseApi'
+import { FieldsErrors } from 'shared/api/baseApi'
 
 export type CreateTaskSuspendRequestMutationArgs = TaskRequestArgs & {
   comment: string

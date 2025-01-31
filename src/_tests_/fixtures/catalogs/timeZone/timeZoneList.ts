@@ -1,6 +1,6 @@
 import times from 'lodash/times'
 
-import { TimeZoneListItemModel, TimeZoneListModel } from 'shared/catalogs/models/timeZones'
+import { TimeZoneListItemModel, TimeZonesCatalogModel } from 'shared/catalogs/api/dto/timeZones'
 
 import { fakeWord } from '_tests_/utils'
 
@@ -10,5 +10,5 @@ export const timeZoneListItem = (): TimeZoneListItemModel => ({
   value: fakeWord(),
 })
 
-export const timeZoneList = (length: number = 1): TimeZoneListModel =>
+export const timeZoneList = (length: number = 1): TimeZonesCatalogModel =>
   times(length, () => timeZoneListItem())

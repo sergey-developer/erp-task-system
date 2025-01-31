@@ -36,7 +36,7 @@ import Spinner from 'components/Spinner'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
-import { isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined, Nullable } from 'shared/types/utils'
 import { base64ToBytes } from 'shared/utils/common'

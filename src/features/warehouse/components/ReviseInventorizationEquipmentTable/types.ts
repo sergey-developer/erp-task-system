@@ -1,8 +1,7 @@
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
-
 import { InventorizationEquipmentListItemModel } from 'features/warehouse/models'
 
-import { LocationsCatalogModel } from 'shared/catalogs/models/locations'
+import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
 import { Nullable, SetNonNullable } from 'shared/types/utils'
 
 export type ReviseInventorizationEquipmentTableItem = Pick<

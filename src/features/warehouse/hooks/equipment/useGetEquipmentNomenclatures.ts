@@ -7,7 +7,7 @@ import { GetEquipmentNomenclaturesQueryArgs } from 'features/warehouse/models'
 import { useGetEquipmentNomenclaturesQuery } from 'features/warehouse/services/equipmentApi.service'
 import { GetEquipmentNomenclaturesTransformedSuccessResponse } from 'features/warehouse/types'
 
-import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

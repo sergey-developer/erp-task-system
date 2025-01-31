@@ -1,15 +1,14 @@
 import { FormInstance } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-import { Moment } from 'moment-timezone'
-
 import { TaskModel } from 'features/task/models'
 import { UsersModel } from 'features/user/models'
 import { MatchedUserPermissions } from 'features/user/types'
 import { WorkTypesModel } from 'features/warehouse/models'
+import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { WorkGroupsCatalogModel } from 'shared/catalogs/models/workGroups'
+import { WorkGroupsCatalogDTO } from 'shared/catalogs/api/dto/workGroups'
 import { IdType } from 'shared/types/common'
 import { SetNonNullable } from 'shared/types/utils'
 
@@ -27,7 +26,7 @@ export type CreateInternalTaskModalProps = SetNonNullable<
 
     onChangeWorkGroup: (value: IdType) => void
 
-    workGroups: WorkGroupsCatalogModel
+    workGroups: WorkGroupsCatalogDTO
     workGroupsIsLoading: boolean
 
     workTypes: WorkTypesModel

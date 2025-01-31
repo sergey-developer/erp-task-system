@@ -9,11 +9,11 @@ import {
 import { GetTechnicalExaminationPdfTransformedSuccessResponse } from 'features/technicalExaminations/types'
 import { makeGetTechnicalExaminationUrl } from 'features/technicalExaminations/utils'
 
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { baseApiService } from 'shared/api/services/baseApi'
 
-const technicalExaminationsApiService = baseApiService.injectEndpoints({
+const technicalExaminationsApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getTechnicalExaminations: build.query<
       GetTechnicalExaminationsSuccessResponse,

@@ -1,4 +1,4 @@
-import { GetCurrencyListSuccessResponse } from 'shared/catalogs/models/currencies'
+import { GetCurrencyListSuccessResponse } from 'shared/catalogs/api/dto/currencies'
 import { CurrencyApiEnum } from 'shared/constants/currency'
 import { HttpMethodEnum } from 'shared/constants/http'
 

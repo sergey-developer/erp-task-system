@@ -1,5 +1,5 @@
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
+import { baseApi } from 'shared/api/baseApi'
 
 import {
   CancelReclassificationRequestMutationArgs,
@@ -7,7 +7,7 @@ import {
 } from '../models'
 import { cancelReclassificationRequestUrl } from '../utils/apiUrls'
 
-const reclassificationRequestApiService = baseApiService.injectEndpoints({
+const reclassificationRequestApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     cancelReclassificationRequest: build.mutation<
       CancelReclassificationRequestSuccessResponse,

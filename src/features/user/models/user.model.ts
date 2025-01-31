@@ -1,6 +1,6 @@
 import { UserPermissionsEnum } from 'features/user/constants'
 
-import { UserStatusModel } from 'shared/catalogs/models/userStatuses'
+import { UserStatusModel } from 'shared/catalogs/api/dto/userStatuses'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 

@@ -2,7 +2,7 @@ import { TakeTaskSuccessResponse } from 'features/task/models'
 import { takeTaskUrl } from 'features/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

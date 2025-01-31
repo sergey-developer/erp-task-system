@@ -9,7 +9,7 @@ import { useUserPermissions } from 'features/user/hooks'
 
 import LoadingArea from 'components/LoadingArea'
 
-import { isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { extractOriginFiles } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 

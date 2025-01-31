@@ -2,7 +2,7 @@ import { configureStore, PreloadedState } from '@reduxjs/toolkit'
 
 import { env } from 'configs/env'
 
-import { baseApiService } from 'shared/api/services/baseApi'
+import { baseApi } from 'shared/api/baseApi'
 
 import { rootReducer } from './rootReducer'
 
@@ -17,8 +17,7 @@ export const setupStore = ({ preloadedState }: SetupStoreSettings = {}) => {
   return configureStore({
     reducer: rootReducer,
     preloadedState,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(baseApiService.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
     devTools: env.isDevelopment,
   })
 }

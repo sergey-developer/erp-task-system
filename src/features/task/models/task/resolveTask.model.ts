@@ -1,6 +1,6 @@
 import { TaskRequestArgs } from 'features/task/types'
 
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 

@@ -6,7 +6,7 @@ import { getTaskCommentsErrMsg } from 'features/task/constants/taskComment'
 import { GetTaskCommentListQueryArgs, GetTaskCommentListSuccessResponse } from 'features/task/models'
 import { useGetTaskCommentListQuery } from 'features/task/services/taskApi.service'
 
-import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskCommentListResult = CustomUseQueryHookResult<

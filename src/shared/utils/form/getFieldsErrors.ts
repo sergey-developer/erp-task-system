@@ -1,6 +1,6 @@
 import { FieldData as BaseFieldData } from 'rc-field-form/es/interface'
 
-import { FieldsErrors } from 'shared/api/services/baseApi'
+import { FieldsErrors } from 'shared/api/baseApi'
 
 type FieldData = Pick<BaseFieldData, 'name' | 'errors'>
 

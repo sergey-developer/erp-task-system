@@ -16,7 +16,7 @@ import {
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
-} from 'shared/api/services/baseApi'
+} from 'shared/api/baseApi'
 import { FileToSend } from 'shared/types/file'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'

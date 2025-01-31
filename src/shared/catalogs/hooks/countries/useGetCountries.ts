@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
-import { useGetCountriesCatalogQuery } from 'shared/catalogs/api/endpoints/countriesCatalog'
-import { getCountryCatalogErrMsg } from 'shared/catalogs/constants/messages'
+import { isErrorResponse } from 'shared/api/baseApi'
+import { getCountryCatalogErrMsg } from 'shared/catalogs/api/constants/errorMessages'
 import {
   GetCountryListQueryArgs,
   GetCountryListSuccessResponse,
-} from 'shared/catalogs/models/countries'
+} from 'shared/catalogs/api/dto/countries'
+import { useGetCountriesCatalogQuery } from 'shared/catalogs/api/endpoints/countriesCatalog.endpoints'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetCountryListResult = CustomUseQueryHookResult<

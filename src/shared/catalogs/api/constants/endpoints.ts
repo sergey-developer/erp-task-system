@@ -16,4 +16,7 @@ export enum CatalogsApiEnum {
 
   // Скоро будет /catalogs/currencies/
   GetCurrencies = '/currencies/',
+
+  // Скоро будет /catalogs/macroregions/
+  GetMacroregions = '/macroregions/',
 }

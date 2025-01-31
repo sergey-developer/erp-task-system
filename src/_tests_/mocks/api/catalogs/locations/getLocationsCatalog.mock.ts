@@ -1,6 +1,6 @@
+import { GetLocationsCatalogSuccessResponse } from 'shared/catalogs/api/dto/locations'
 import { CatalogsApiEnum } from 'shared/catalogs/constants'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { GetLocationsCatalogSuccessResponse } from 'shared/catalogs/models/locations'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'

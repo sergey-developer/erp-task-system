@@ -9,7 +9,7 @@ import {
 } from 'features/infrastructures/models'
 import { useGetInfrastructureOrdersFormsQuery } from 'features/infrastructures/services/infrastructuresApi.service'
 
-import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetInfrastructureOrdersFormsResult = CustomUseQueryHookResult<

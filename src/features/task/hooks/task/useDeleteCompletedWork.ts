@@ -9,7 +9,7 @@ import {
 } from 'features/task/models'
 import { useDeleteCompletedWorkMutation } from 'features/task/services/taskApi.service'
 
-import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseDeleteCompletedWorkResult = CustomUseMutationResult<

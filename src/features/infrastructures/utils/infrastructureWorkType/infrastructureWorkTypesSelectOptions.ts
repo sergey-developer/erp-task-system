@@ -1,6 +1,6 @@
 import { SelectProps } from 'antd'
 
-import { InfrastructureWorkTypesCatalogModel } from 'shared/catalogs/models/infrastructureWorkTypes'
+import { InfrastructureWorkTypesCatalogModel } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
 
 export const makeInfrastructureWorkTypesSelectOptions = (
   data: InfrastructureWorkTypesCatalogModel,

@@ -1,7 +1,7 @@
 import { FormInstance } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 
-import { FieldsErrors } from 'shared/api/services/baseApi'
+import { FieldsErrors } from 'shared/api/baseApi'
 
 export type CreateCommentFormFields = {
   comment: string

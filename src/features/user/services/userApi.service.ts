@@ -26,11 +26,11 @@ import {
   updateUserUrl,
 } from 'features/user/utils'
 
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
-const userApiService = baseApiService.injectEndpoints({
+const userApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getUsers: build.query<GetUsersSuccessResponse, MaybeUndefined<GetUsersQueryArgs>>({
       query: (params) => ({
@@ -55,7 +55,7 @@ const userApiService = baseApiService.injectEndpoints({
           const { data: updatedUser } = await queryFulfilled
 
           dispatch(
-            baseApiService.util.updateQueryData(
+            baseApi.util.updateQueryData(
               'getUserMe' as never,
               undefined as never,
               (user: UserModel) => {
@@ -78,7 +78,7 @@ const userApiService = baseApiService.injectEndpoints({
             const { data } = await queryFulfilled
 
             dispatch(
-              baseApiService.util.updateQueryData(
+              baseApi.util.updateQueryData(
                 'getUserMe' as never,
                 undefined as never,
                 (user: UserModel) => {

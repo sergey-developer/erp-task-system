@@ -3,7 +3,7 @@ import { RelocationTaskEquipment } from 'features/warehouse/types'
 import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
 
-import { CurrenciesModel } from 'shared/catalogs/models/currencies'
+import { CurrenciesCatalogModel } from 'shared/catalogs/api/dto/currencies'
 
 export type RelocationEquipmentRow = Partial<RelocationTaskEquipment> & {
   rowId: number
@@ -19,7 +19,7 @@ export type RelocationEquipmentEditableTableProps = {
   setEditableKeys?: (keys: Key[]) => void
   isLoading: boolean
 
-  currencies: CurrenciesModel
+  currencies: CurrenciesCatalogModel
   currenciesIsLoading: boolean
 
   relocationEquipmentsIsLoading?: boolean

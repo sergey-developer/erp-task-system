@@ -4,7 +4,7 @@ import React, { FC, useMemo } from 'react'
 
 import { env } from 'configs/env'
 
-import { ValidationErrors } from 'shared/api/services/baseApi'
+import { ValidationErrors } from 'shared/api/baseApi'
 
 import { getColumns } from './columns'
 import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from './types'

@@ -1,13 +1,12 @@
 import times from 'lodash/times'
 
-import {
-  WorkGroupListItemModel,
-  WorkGroupListModel,
-  WorkGroupTypeEnum,
-} from 'features/workGroup/models'
-
 import { IdType } from 'shared/types/common'
 import { ArrayFirst } from 'shared/types/utils'
+import {
+  WorkGroupListItemModel,
+  WorkGroupsModel,
+  WorkGroupTypeEnum,
+} from 'shared/workGroups/api/models'
 
 import { fakeId, fakeInteger, fakeName, fakeWord } from '_tests_/utils'
 
@@ -56,5 +55,5 @@ export const workGroupListItem = (
   name: fakeName(),
 })
 
-export const workGroupList = (length: number = 1): WorkGroupListModel =>
+export const workGroupList = (length: number = 1): WorkGroupsModel =>
   times(length, () => workGroupListItem())

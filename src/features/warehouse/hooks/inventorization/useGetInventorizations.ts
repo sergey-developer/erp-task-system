@@ -7,7 +7,7 @@ import { GetInventorizationsQueryArgs } from 'features/warehouse/models/inventor
 import { useGetInventorizationsQuery } from 'features/warehouse/services/inventorizationApi.service'
 import { GetInventorizationsTransformedSuccessResponse } from 'features/warehouse/types'
 
-import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

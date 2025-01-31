@@ -9,7 +9,7 @@ import {
 } from 'features/reports/models'
 import { useGetUsersMtsrReportQuery } from 'features/reports/services/reportsApi.service'
 
-import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetUsersMtsrReportResult = CustomUseQueryHookResult<

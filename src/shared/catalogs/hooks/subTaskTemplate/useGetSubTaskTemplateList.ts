@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
-import { useGetSubTaskTemplatesCatalogQuery } from 'shared/catalogs/api/endpoints/subTaskTemplatesCatalog'
-import { getSubTaskTemplatesCatalogErrMsg } from 'shared/catalogs/constants'
+import { isErrorResponse } from 'shared/api/baseApi'
 import {
   GetSubTaskTemplateListQueryArgs,
   GetSubTaskTemplateListSuccessResponse,
-} from 'shared/catalogs/models/subTaskTemplates'
+} from 'shared/catalogs/api/dto/subTaskTemplates'
+import { useGetSubTaskTemplatesCatalogQuery } from 'shared/catalogs/api/endpoints/subTaskTemplatesCatalog.endpoints'
+import { getSubTaskTemplatesCatalogErrMsg } from 'shared/catalogs/constants'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetSubTaskTemplateListResult = CustomUseQueryHookResult<

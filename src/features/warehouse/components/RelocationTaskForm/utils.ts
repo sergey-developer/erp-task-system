@@ -1,9 +1,8 @@
+import { UsersGroupsModel, UsersModel } from 'features/user/models'
 import sortBy from 'lodash/sortBy'
 
-import { UsersGroupsModel, UsersModel } from 'features/user/models'
-
+import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
 import { locationTypeDict } from 'shared/catalogs/constants'
-import { LocationsCatalogModel } from 'shared/catalogs/models/locations'
 import { IdType } from 'shared/types/common'
 
 import {

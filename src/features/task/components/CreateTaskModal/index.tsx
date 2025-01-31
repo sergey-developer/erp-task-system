@@ -14,10 +14,9 @@ import {
   Upload,
 } from 'antd'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
+import { TaskTypeEnum } from 'features/task/constants/task'
 import stubFalse from 'lodash/stubFalse'
 import React, { FC } from 'react'
-
-import { TaskTypeEnum } from 'features/task/constants/task'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import DatePicker from 'components/DatePicker'
@@ -25,6 +24,7 @@ import Expandable from 'components/Expandable'
 import BaseModal from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
+import { LocationCatalogListItemModel } from 'shared/catalogs/api/dto/locations'
 import { filesFormItemProps } from 'shared/constants/form'
 import {
   idAndFullNameSelectFieldNames,
@@ -32,7 +32,6 @@ import {
   idAndTitleSelectFieldNames,
 } from 'shared/constants/selectField'
 import { onlyRequiredRules, requiredStringRules } from 'shared/constants/validation'
-import { LocationCatalogListItemModel } from 'shared/catalogs/models/locations'
 import { filterOptionBy } from 'shared/utils/common'
 
 import { formItemNoMarginBottom, overlayInnerStyle } from './styles'

@@ -6,7 +6,7 @@ import { getCustomersErrMsg } from 'features/warehouse/constants/customer'
 import { GetCustomerListQueryArgs, GetCustomerListSuccessResponse } from 'features/warehouse/models'
 import { useGetCustomerListQuery } from 'features/warehouse/services/customerApiService'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
+import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetCustomerListResult = CustomUseQueryHookResult<

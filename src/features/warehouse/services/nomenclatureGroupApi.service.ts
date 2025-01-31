@@ -13,10 +13,10 @@ import {
 } from 'features/warehouse/models'
 import { updateNomenclatureGroupUrl } from 'features/warehouse/utils/nomenclatureGroup'
 
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
 
-const nomenclatureGroupApiService = baseApiService.injectEndpoints({
+const nomenclatureGroupApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     [NomenclatureGroupApiTriggerEnum.GetNomenclatureGroupList]: build.query<
       GetNomenclatureGroupListSuccessResponse,
@@ -42,7 +42,7 @@ const nomenclatureGroupApiService = baseApiService.injectEndpoints({
           const { data: newGroup } = await queryFulfilled
 
           dispatch(
-            baseApiService.util.updateQueryData(
+            baseApi.util.updateQueryData(
               NomenclatureGroupApiTriggerEnum.GetNomenclatureGroupList as never,
               getListParams as never,
               (groupList: NomenclatureGroupListModel) => {
@@ -67,7 +67,7 @@ const nomenclatureGroupApiService = baseApiService.injectEndpoints({
           const { data: updatedGroup } = await queryFulfilled
 
           dispatch(
-            baseApiService.util.updateQueryData(
+            baseApi.util.updateQueryData(
               NomenclatureGroupApiTriggerEnum.GetNomenclatureGroupList as never,
               getListParams as never,
               (groupList: NomenclatureGroupListModel) => {

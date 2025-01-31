@@ -1,7 +1,6 @@
-import { WorkGroupApiEnum } from 'features/workGroup/constants'
-import { GetWorkGroupsSuccessResponse } from 'features/workGroup/models'
-
 import { HttpMethodEnum } from 'shared/constants/http'
+import { WorkGroupApiEnum } from 'shared/workGroups/api/constants'
+import { GetWorkGroupsSuccessResponse } from 'shared/workGroups/api/models'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'

@@ -7,7 +7,7 @@ import { GetEquipmentListQueryArgs } from 'features/warehouse/models'
 import { useGetEquipmentListQuery } from 'features/warehouse/services/equipmentApi.service'
 import { GetEquipmentListTransformedSuccessResponse } from 'features/warehouse/types'
 
-import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetEquipmentListResult = CustomUseQueryHookResult<

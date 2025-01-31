@@ -7,7 +7,7 @@ import { GetNomenclatureListQueryArgs } from 'features/warehouse/models'
 import { useGetNomenclatureListQuery } from 'features/warehouse/services/nomenclatureApi.service'
 import { GetNomenclatureListTransformedSuccessResponse } from 'features/warehouse/types'
 
-import { isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetNomenclatureListResult = CustomUseQueryHookResult<

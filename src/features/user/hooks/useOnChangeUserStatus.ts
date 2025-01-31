@@ -1,6 +1,6 @@
 import { useUpdateEffect } from 'ahooks'
 
-import { UserStatusModel } from 'shared/catalogs/models/userStatuses'
+import { UserStatusModel } from 'shared/catalogs/api/dto/userStatuses'
 
 import { useUserMeState } from './useUserMeState'
 

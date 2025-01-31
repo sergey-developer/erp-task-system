@@ -2,7 +2,7 @@ import { GetWarehouseSuccessResponse } from 'features/warehouse/models'
 import { getWarehouseUrl } from 'features/warehouse/utils/warehouse'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

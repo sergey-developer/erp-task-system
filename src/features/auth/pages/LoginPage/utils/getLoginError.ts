@@ -2,7 +2,7 @@ import { LOGIN_BAD_REQUEST_ERROR_MSG, LOGIN_WRONG_DATA_ERROR_MSG } from 'feature
 
 import { commonApiMessages } from 'shared/constants/common'
 import { HttpCodeEnum } from 'shared/constants/http'
-import { isErrorResponse } from 'shared/api/services/baseApi'
+import { isErrorResponse } from 'shared/api/baseApi'
 import { MaybeNull } from 'shared/types/utils'
 
 export const getLoginError = (error: unknown): MaybeNull<string> => {

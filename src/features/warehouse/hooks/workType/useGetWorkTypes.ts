@@ -6,7 +6,7 @@ import { getWorkTypesErrMsg } from 'features/warehouse/constants/workType'
 import { GetWorkTypesQueryArgs, GetWorkTypesSuccessResponse } from 'features/warehouse/models'
 import { useGetWorkTypesQuery } from 'features/warehouse/services/workTypeApi.service'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
+import { isErrorResponse } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

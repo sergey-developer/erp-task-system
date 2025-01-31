@@ -1,5 +1,5 @@
+import { GetUserStatusListSuccessResponse } from 'shared/catalogs/api/dto/userStatuses'
 import { CatalogsApiEnum } from 'shared/catalogs/constants'
-import { GetUserStatusListSuccessResponse } from 'shared/catalogs/models/userStatuses'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'

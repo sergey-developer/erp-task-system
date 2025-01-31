@@ -1,5 +1,3 @@
-import { getPaginatedList } from 'lib/antd/utils'
-
 import {
   InventorizationApiEnum,
   InventorizationApiTagEnum,
@@ -45,12 +43,14 @@ import {
   makeUpdateInventorizationEquipmentUrl,
 } from 'features/warehouse/utils/inventorization'
 
+import { getPaginatedList } from 'lib/antd/utils'
+
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { baseApiService } from 'shared/api/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
-const inventorizationApiService = baseApiService
+const inventorizationApiService = baseApi
   .enhanceEndpoints({
     addTagTypes: [
       InventorizationApiTagEnum.Inventorizations,
@@ -182,7 +182,7 @@ const inventorizationApiService = baseApiService
             const { data: updateResult } = await queryFulfilled
 
             dispatch(
-              baseApiService.util.updateQueryData(
+              baseApi.util.updateQueryData(
                 'getInventorizationEquipments' as never,
                 getInventorizationEquipmentsArgs as never,
                 (data: GetInventorizationEquipmentsTransformedSuccessResponse) => {

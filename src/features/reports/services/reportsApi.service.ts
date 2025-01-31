@@ -1,5 +1,3 @@
-import { getPaginatedList } from 'lib/antd/utils'
-
 import { ReportsApiEnum } from 'features/reports/constants'
 import {
   GetAmountEquipmentSpentReportQueryArgs,
@@ -39,11 +37,13 @@ import {
   makeGetInventorizationReportUrl,
 } from 'features/reports/utils'
 
+import { getPaginatedList } from 'lib/antd/utils'
+
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { baseApiService } from 'shared/api/services/baseApi'
 
-const reportsApiService = baseApiService.injectEndpoints({
+const reportsApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getEmployeesActionsReport: build.query<
       GetEmployeesActionsReportTransformedSuccessResponse,

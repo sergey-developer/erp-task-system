@@ -1,10 +1,9 @@
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { RowEditableConfig } from '@ant-design/pro-utils/es/useEditableArray'
+import { InfrastructureWorkModel } from 'features/infrastructures/models'
 import { Key } from 'react'
 
-import { InfrastructureWorkModel } from 'features/infrastructures/models'
-
-import { InfrastructureWorkTypesCatalogModel } from 'shared/catalogs/models/infrastructureWorkTypes'
+import { InfrastructureWorkTypesCatalogModel } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
 import { IdType } from 'shared/types/common'
 import { Nullable, SetNonNullable } from 'shared/types/utils'
 
@@ -47,7 +46,7 @@ export type ChangeInfrastructureOrderFormTableProps = SetNonNullable<
       activeRow: ActiveChangeInfrastructureOrderFormTableRow,
     ) => Promise<void>
 
-  onClickDeleteInfrastructureWorkType: (
+    onClickDeleteInfrastructureWorkType: (
       activeRow: ActiveChangeInfrastructureOrderFormTableRow,
     ) => void
   }

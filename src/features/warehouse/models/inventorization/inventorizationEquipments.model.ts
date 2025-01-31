@@ -1,6 +1,6 @@
 import { EquipmentModel } from 'features/warehouse/models'
 
-import { LocationCatalogListItemModel } from 'shared/catalogs/models/locations'
+import { LocationCatalogListItemModel } from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 

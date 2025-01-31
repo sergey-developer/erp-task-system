@@ -1,7 +1,7 @@
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { EquipmentCategoryModel } from 'features/warehouse/models'
 
-import { CurrencyListItemModel } from 'shared/catalogs/models/currencies'
+import { CurrencyListItemModel } from 'shared/catalogs/api/dto/currencies'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 

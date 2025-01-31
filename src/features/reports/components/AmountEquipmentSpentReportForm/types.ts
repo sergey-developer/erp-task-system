@@ -1,8 +1,7 @@
+import { EquipmentNomenclaturesModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
-import { EquipmentNomenclaturesModel } from 'features/warehouse/models'
-
-import { LocationsCatalogModel } from 'shared/catalogs/models/locations'
+import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
 
 export type AmountEquipmentSpentReportFormProps = {

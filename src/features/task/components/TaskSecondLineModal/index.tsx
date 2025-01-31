@@ -1,17 +1,16 @@
 import { Checkbox, Form, Input, Select, Space, Typography } from 'antd'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
+import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
-
-import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
-import { useGetWorkGroups } from 'features/workGroup/hooks'
-import { WorkGroupTypeEnum } from 'features/workGroup/models'
 
 import BaseModal from 'components/Modals/BaseModal'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { filterOptionBy } from 'shared/utils/common'
+import { WorkGroupTypeEnum } from 'shared/workGroups/api/models'
+import { useGetWorkGroups } from 'shared/workGroups/hooks'
 
 import { WorkGroupFormItem } from './styles'
 import { TaskSecondLineFormFields, TaskSecondLineModalProps } from './types'

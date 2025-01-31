@@ -16,7 +16,7 @@ import {
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
-} from 'shared/api/services/baseApi'
+} from 'shared/api/baseApi'
 import { FileResponse } from 'shared/types/file'
 import { showErrorNotification } from 'shared/utils/notifications'
 

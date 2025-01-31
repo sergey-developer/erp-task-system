@@ -1,16 +1,15 @@
 import { FormInstance } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-import { Moment } from 'moment-timezone'
-
 import { TaskTypeEnum } from 'features/task/constants/task'
 import { UsersModel } from 'features/user/models'
 import { MatchedUserPermissions } from 'features/user/types'
 import { CustomerListModel, WorkTypesModel } from 'features/warehouse/models'
+import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { LocationsCatalogModel } from 'shared/catalogs/models/locations'
-import { WorkGroupsCatalogModel } from 'shared/catalogs/models/workGroups'
+import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
+import { WorkGroupsCatalogDTO } from 'shared/catalogs/api/dto/workGroups'
 import { IdType } from 'shared/types/common'
 import { SetNonNullable } from 'shared/types/utils'
 
@@ -29,7 +28,7 @@ export type CreateTaskModalProps = SetNonNullable<
 
   onChangeWorkGroup: (value: IdType) => void
 
-  workGroups: WorkGroupsCatalogModel
+  workGroups: WorkGroupsCatalogDTO
   workGroupsIsLoading: boolean
 
   workTypes: WorkTypesModel

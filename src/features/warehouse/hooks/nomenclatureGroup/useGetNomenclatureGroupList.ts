@@ -9,7 +9,7 @@ import {
 } from 'features/warehouse/models'
 import { useGetNomenclatureGroupListQuery } from 'features/warehouse/services/nomenclatureGroupApi.service'
 
-import { isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetNomenclatureGroupListResult = CustomUseQueryHookResult<

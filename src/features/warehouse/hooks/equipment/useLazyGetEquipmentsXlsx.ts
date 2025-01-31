@@ -9,7 +9,7 @@ import {
 } from 'features/warehouse/models'
 import { useLazyGetEquipmentsXlsxQuery } from 'features/warehouse/services/equipmentApi.service'
 
-import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseLazyGetEquipmentsXlsxResult = CustomUseLazyQueryHookResult<

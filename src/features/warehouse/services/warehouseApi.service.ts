@@ -7,10 +7,10 @@ import {
 } from 'features/warehouse/models'
 import { getWarehouseUrl } from 'features/warehouse/utils/warehouse'
 
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
 
-const warehouseApiService = baseApiService.injectEndpoints({
+const warehouseApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getWarehouseList: build.query<GetWarehouseListSuccessResponse, GetWarehouseListQueryArgs>({
       query: (params) => ({

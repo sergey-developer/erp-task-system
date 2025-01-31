@@ -1,8 +1,3 @@
-import { decamelize } from 'humps'
-import isBoolean from 'lodash/isBoolean'
-
-import { getPaginatedList } from 'lib/antd/utils'
-
 import {
   TaskApiEnum,
   TaskApiTagEnum,
@@ -112,12 +107,16 @@ import {
 } from 'features/task/utils/taskSuspendRequest'
 import { deleteTaskWorkGroupUrl, updateTaskWorkGroupUrl } from 'features/task/utils/taskWorkGroup'
 import { UsersApiTagEnum } from 'features/user/constants'
+import { decamelize } from 'humps'
+import isBoolean from 'lodash/isBoolean'
 
+import { getPaginatedList } from 'lib/antd/utils'
+
+import { baseApi, ErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService, ErrorResponse, isNotFoundError } from 'shared/api/services/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 
-const taskApiService = baseApiService
+const taskApiService = baseApi
   .enhanceEndpoints({ addTagTypes: [TaskApiTagEnum.TaskCounters] })
   .injectEndpoints({
     endpoints: (build) => ({
@@ -306,7 +305,7 @@ const taskApiService = baseApiService
             const { data: newComment } = await queryFulfilled
 
             dispatch(
-              baseApiService.util.updateQueryData(
+              baseApi.util.updateQueryData(
                 TaskApiTriggerEnum.GetTaskCommentList as never,
                 { taskId } as never,
                 (commentList: GetTaskCommentListSuccessResponse) => {
@@ -667,7 +666,7 @@ const taskApiService = baseApiService
             const { data: newSubTask } = await queryFulfilled
 
             dispatch(
-              baseApiService.util.updateQueryData(
+              baseApi.util.updateQueryData(
                 TaskApiTriggerEnum.GetSubTaskList as never,
                 { taskId } as never,
                 (subTaskList: SubTaskModel[]) => {

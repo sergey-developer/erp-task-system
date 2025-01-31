@@ -1,5 +1,5 @@
+import { GetSubTaskTemplateListSuccessResponse } from 'shared/catalogs/api/dto/subTaskTemplates'
 import { CatalogsApiEnum } from 'shared/catalogs/constants'
-import { GetSubTaskTemplateListSuccessResponse } from 'shared/catalogs/models/subTaskTemplates'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'

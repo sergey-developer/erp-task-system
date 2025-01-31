@@ -1,4 +1,4 @@
-import { CountryModel } from 'shared/catalogs/models/countries'
+import { CountryModel } from 'shared/catalogs/api/dto/countries'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

@@ -2,7 +2,7 @@ import { GetEquipmentAttachmentListSuccessResponse } from 'features/warehouse/mo
 import { getEquipmentAttachmentListUrl } from 'features/warehouse/utils/equipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

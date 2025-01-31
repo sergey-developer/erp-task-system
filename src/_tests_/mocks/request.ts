@@ -2,7 +2,7 @@ import curry from 'lodash/curry'
 import { rest } from 'msw'
 
 import { HttpCodeEnum, HttpMethodEnum } from 'shared/constants/http'
-import { makeAbsoluteApiUrl } from 'shared/api/services/baseApi'
+import { makeAbsoluteApiUrl } from 'shared/api/baseApi'
 import { EmptyFn } from 'shared/types/utils'
 
 import {

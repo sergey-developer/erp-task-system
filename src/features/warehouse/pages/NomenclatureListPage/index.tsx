@@ -44,7 +44,7 @@ import {
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
-} from 'shared/api/services/baseApi'
+} from 'shared/api/baseApi'
 import { useGetCountries } from 'shared/catalogs/hooks/countries'
 import { SAVE_TEXT } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'

@@ -2,7 +2,7 @@ import { CreateTaskSuspendRequestSuccessResponse } from 'features/task/models'
 import { createTaskSuspendRequestUrl } from 'features/task/utils/taskSuspendRequest'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 
 import {

@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { isErrorResponse } from 'shared/api/services/baseApi'
-import { useGetFaChangeTypesCatalogQuery } from 'shared/catalogs/api/endpoints/faChangeTypesCatalog'
-import { getFaChangeTypesCatalogErrMsg } from 'shared/catalogs/constants'
+import { isErrorResponse } from 'shared/api/baseApi'
 import {
   GetFaChangeTypesQueryArgs,
   GetFaChangeTypesSuccessResponse,
-} from 'shared/catalogs/models/faChangeTypes'
+} from 'shared/catalogs/api/dto/faChangeTypes'
+import { useGetFaChangeTypesCatalogQuery } from 'shared/catalogs/api/endpoints/faChangeTypesCatalog.endpoints'
+import { getFaChangeTypesCatalogErrMsg } from 'shared/catalogs/constants'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

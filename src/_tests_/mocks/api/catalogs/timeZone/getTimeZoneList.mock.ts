@@ -1,5 +1,5 @@
+import { GetTimeZoneListSuccessResponse } from 'shared/catalogs/api/dto/timeZones'
 import { CatalogsApiEnum } from 'shared/catalogs/constants'
-import { GetTimeZoneListSuccessResponse } from 'shared/catalogs/models/timeZones'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'

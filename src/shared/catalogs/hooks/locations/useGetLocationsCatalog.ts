@@ -8,13 +8,13 @@ import {
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
-} from 'shared/api/services/baseApi'
-import { useGetLocationsCatalogQuery } from 'shared/catalogs/api/endpoints/locationsCatalog'
-import { getLocationsCatalogErrMsg } from 'shared/catalogs/constants'
+} from 'shared/api/baseApi'
 import {
   GetLocationsCatalogQueryArgs,
   GetLocationsCatalogSuccessResponse,
-} from 'shared/catalogs/models/locations'
+} from 'shared/catalogs/api/dto/locations'
+import { useGetLocationsCatalogQuery } from 'shared/catalogs/api/endpoints/locationsCatalog.endpoints'
+import { getLocationsCatalogErrMsg } from 'shared/catalogs/constants'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

@@ -1,9 +1,5 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Col, Row } from 'antd'
-import debounce from 'lodash/debounce'
-import pick from 'lodash/pick'
-import React, { FC, useCallback, useState } from 'react'
-
 import {
   FiscalAccumulatorTasksReportFilterFormFields,
   FiscalAccumulatorTasksReportFilterProps,
@@ -28,13 +24,16 @@ import {
 import { TasksFiltersStorageType } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { parseTasksFiltersStorage } from 'features/task/services/taskLocalStorageService/utils'
 import { useGetCustomerList } from 'features/warehouse/hooks/customer'
+import debounce from 'lodash/debounce'
+import pick from 'lodash/pick'
+import React, { FC, useCallback, useState } from 'react'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
-import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
-import { useGetMacroregions } from 'shared/catalogs/hooks/macroregion'
+import { useGetMacroregions } from 'shared/catalogs/hooks/macroregions'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 

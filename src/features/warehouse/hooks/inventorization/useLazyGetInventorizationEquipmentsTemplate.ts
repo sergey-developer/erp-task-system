@@ -7,7 +7,7 @@ import { GetInventorizationEquipmentsTemplateQueryArgs } from 'features/warehous
 import { useLazyGetInventorizationEquipmentsTemplateQuery } from 'features/warehouse/services/inventorizationApi.service'
 import { GetInventorizationEquipmentsTemplateTransformedSuccessResponse } from 'features/warehouse/types'
 
-import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseLazyGetInventorizationEquipmentsTemplateResult = CustomUseLazyQueryHookResult<

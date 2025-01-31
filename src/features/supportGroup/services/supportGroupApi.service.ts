@@ -4,10 +4,10 @@ import {
   GetSupportGroupListSuccessResponse,
 } from 'features/supportGroup/models'
 
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
 
-const supportGroupApiService = baseApiService.injectEndpoints({
+const supportGroupApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getSupportGroupList: build.query<
       GetSupportGroupListSuccessResponse,

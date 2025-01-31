@@ -3,7 +3,7 @@ import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 import { getRelocationEquipmentListUrl } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 
 import {
   getForbiddenErrorMockFn,

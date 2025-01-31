@@ -85,7 +85,7 @@ import {
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
-} from 'shared/api/services/baseApi'
+} from 'shared/api/baseApi'
 import { base64ToBytes, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { downloadFile, extractOriginFiles } from 'shared/utils/file'

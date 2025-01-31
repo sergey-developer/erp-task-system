@@ -9,9 +9,9 @@ import {
   WorkTypeListItemModel,
 } from 'features/warehouse/models'
 
-import { CurrencyListItemModel } from 'shared/catalogs/models/currencies'
-import { LocationCatalogListItemModel } from 'shared/catalogs/models/locations'
-import { MacroregionListItemModel } from 'shared/models/macroregion'
+import { CurrencyListItemModel } from 'shared/catalogs/api/dto/currencies'
+import { LocationCatalogListItemModel } from 'shared/catalogs/api/dto/locations'
+import { MacroregionListItemModel } from 'shared/catalogs/api/dto/macroregions'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 

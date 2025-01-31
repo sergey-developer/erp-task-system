@@ -1,6 +1,6 @@
 import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
 
-import { MacroregionListItemModel } from 'shared/models/macroregion'
+import { MacroregionListItemModel } from 'shared/catalogs/api/dto/macroregions'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 

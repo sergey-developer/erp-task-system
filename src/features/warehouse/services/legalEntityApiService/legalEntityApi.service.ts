@@ -3,12 +3,12 @@ import {
   GetLegalEntityListSuccessResponse,
 } from 'features/warehouse/models'
 
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
 
 import { LegalEntityApiEnum } from './constants'
 
-const legalEntityApiService = baseApiService.injectEndpoints({
+const legalEntityApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getLegalEntityList: build.query<GetLegalEntityListSuccessResponse, GetLegalEntityListQueryArgs>(
       {

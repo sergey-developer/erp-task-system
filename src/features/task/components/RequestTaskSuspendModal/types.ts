@@ -9,7 +9,7 @@ import {
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { SystemSettingsModel } from 'shared/models/system'
-import { FieldsErrors } from 'shared/api/services/baseApi'
+import { FieldsErrors } from 'shared/api/baseApi'
 
 export type RequestTaskSuspendModalProps = Required<Pick<BaseModalProps, 'open'>> & {
   recordId: string

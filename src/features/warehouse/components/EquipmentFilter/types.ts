@@ -1,9 +1,8 @@
-import { Moment } from 'moment-timezone'
-
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { CustomerListModel, EquipmentCategoriesModel } from 'features/warehouse/models'
+import { Moment } from 'moment-timezone'
 
-import { LocationsCatalogModel } from 'shared/catalogs/models/locations'
+import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
 import { EmptyFn } from 'shared/types/utils'
 
 export type EquipmentsFilterFormFields = Partial<{

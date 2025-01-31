@@ -10,7 +10,7 @@ import {
 import { useLazyGetEquipmentListTemplateQuery } from 'features/warehouse/services/equipmentApi.service'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { isErrorResponse } from 'shared/api/services/baseApi'
+import { isErrorResponse } from 'shared/api/baseApi'
 import { base64ToBytes } from 'shared/utils/common'
 import { downloadFile } from 'shared/utils/file'
 import { showErrorNotification } from 'shared/utils/notifications'

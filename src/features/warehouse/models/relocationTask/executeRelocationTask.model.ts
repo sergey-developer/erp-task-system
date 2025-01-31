@@ -1,6 +1,6 @@
 import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 
-import { FieldsErrors } from 'shared/api/services/baseApi'
+import { FieldsErrors } from 'shared/api/baseApi'
 import { FileToSend } from 'shared/types/file'
 
 export type ExecuteRelocationTaskMutationArgs = RelocationTaskRequestArgs & {

@@ -9,7 +9,7 @@ import {
 } from 'features/reports/models'
 import { useGetFiscalAccumulatorTasksReportQuery } from 'features/reports/services/fiscalAccumulatorApi.service'
 
-import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

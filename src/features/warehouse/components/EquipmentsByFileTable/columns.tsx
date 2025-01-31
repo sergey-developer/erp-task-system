@@ -8,7 +8,7 @@ import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equ
 
 import { EditIcon } from 'components/Icons'
 
-import { ValidationErrors } from 'shared/api/services/baseApi'
+import { ValidationErrors } from 'shared/api/baseApi'
 import { ArrayFirst, MaybeUndefined } from 'shared/types/utils'
 import { getYesNoWord } from 'shared/utils/common'
 

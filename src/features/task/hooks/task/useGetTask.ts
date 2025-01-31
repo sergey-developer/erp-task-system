@@ -12,7 +12,7 @@ import {
   isErrorResponse,
   isNotFoundError,
   isServerRangeError,
-} from 'shared/api/services/baseApi'
+} from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskResult = CustomUseQueryHookResult<GetTaskQueryArgs, GetTaskSuccessResponse>

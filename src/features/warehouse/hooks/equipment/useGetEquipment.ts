@@ -6,7 +6,7 @@ import { getEquipmentMessages } from 'features/warehouse/constants/equipment'
 import { GetEquipmentQueryArgs, GetEquipmentSuccessResponse } from 'features/warehouse/models'
 import { useGetEquipmentQuery } from 'features/warehouse/services/equipmentApi.service'
 
-import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/services/baseApi'
+import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetEquipmentResult = CustomUseQueryHookResult<

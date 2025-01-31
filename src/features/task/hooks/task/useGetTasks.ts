@@ -7,7 +7,7 @@ import { GetTasksQueryArgs } from 'features/task/models'
 import { useGetTasksQuery } from 'features/task/services/taskApi.service'
 import { GetTasksTransformedSuccessResponse } from 'features/task/types'
 
-import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
+import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTasksResult = CustomUseQueryHookResult<

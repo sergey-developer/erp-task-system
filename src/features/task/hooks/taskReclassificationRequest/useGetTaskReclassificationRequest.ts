@@ -14,7 +14,7 @@ import {
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
-} from 'shared/api/services/baseApi'
+} from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskReclassificationRequestResult = CustomUseQueryHookResult<

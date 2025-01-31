@@ -13,10 +13,10 @@ import {
   getRelocationEquipmentTechnicalExaminationUrl,
 } from 'features/warehouse/utils/relocationEquipment'
 
+import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { baseApiService } from 'shared/api/services/baseApi'
 
-const relocationEquipmentApiService = baseApiService.injectEndpoints({
+const relocationEquipmentApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getRelocationEquipmentAttachmentList: build.query<
       GetRelocationEquipmentAttachmentListSuccessResponse,

@@ -12,9 +12,9 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CurrenciesModel } from 'shared/catalogs/models/currencies'
-import { LocationsCatalogModel } from 'shared/catalogs/models/locations'
-import { MacroregionsModel } from 'shared/models/macroregion'
+import { CurrenciesCatalogModel } from 'shared/catalogs/api/dto/currencies'
+import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
+import { MacroregionsCatalogModel } from 'shared/catalogs/api/dto/macroregions'
 import { IdType } from 'shared/types/common'
 
 export type CheckEquipmentFormFields = {
@@ -58,14 +58,14 @@ export type CheckEquipmentFormModalProps = Required<
     locations: LocationsCatalogModel
     locationsIsLoading: boolean
 
-    currencies: CurrenciesModel
+    currencies: CurrenciesCatalogModel
     currenciesIsLoading: boolean
 
     owners: CustomerListModel
     ownersIsLoading: boolean
     onChangeOwner: (id: IdType) => void
 
-    macroregions: MacroregionsModel
+    macroregions: MacroregionsCatalogModel
     macroregionsIsLoading: boolean
 
     workTypes: WorkTypesModel

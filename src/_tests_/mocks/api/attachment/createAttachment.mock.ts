@@ -2,7 +2,7 @@ import { AttachmentApiEnum } from 'features/attachment/constants'
 import { CreateAttachmentSuccessResponse } from 'features/attachment/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
-import { ErrorData } from 'shared/api/services/baseApi'
+import { ErrorData } from 'shared/api/baseApi'
 
 import {
   getBadRequestErrorMockFn,

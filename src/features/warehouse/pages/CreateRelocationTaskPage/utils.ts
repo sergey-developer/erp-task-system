@@ -1,6 +1,3 @@
-import isBoolean from 'lodash/isBoolean'
-import isNumber from 'lodash/isNumber'
-
 import { EquipmentFormModalProps } from 'features/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'features/warehouse/components/EquipmentsByFileTable/types'
 import { LocationOption } from 'features/warehouse/components/RelocationTaskForm/types'
@@ -12,9 +9,11 @@ import {
   checkRelocationTaskTypeIsCustomer,
   checkRelocationTaskTypeIsWarranty,
 } from 'features/warehouse/utils/relocationTask'
+import isBoolean from 'lodash/isBoolean'
+import isNumber from 'lodash/isNumber'
 
+import { GetLocationsCatalogQueryArgs } from 'shared/catalogs/api/dto/locations'
 import { LocationTypeEnum } from 'shared/catalogs/constants'
-import { GetLocationsCatalogQueryArgs } from 'shared/catalogs/models/locations'
 import { MaybeUndefined } from 'shared/types/utils'
 import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 

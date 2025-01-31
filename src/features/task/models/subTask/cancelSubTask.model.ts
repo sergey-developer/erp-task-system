@@ -1,7 +1,7 @@
 import { CancelSubTaskFormFields } from 'features/task/components/CancelSubTaskModal/types'
 import { SubTaskRequestArgs, TaskRequestArgs } from 'features/task/types'
 
-import { FieldsErrors } from 'shared/api/services/baseApi'
+import { FieldsErrors } from 'shared/api/baseApi'
 
 export type CancelSubTaskMutationArgs = TaskRequestArgs &
   SubTaskRequestArgs & {

@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/services/baseApi'
-import { useGetResolutionClassificationsCatalogQuery } from 'shared/catalogs/api/endpoints/resolutionClassificationsCatalog'
-import { getResolutionClassificationsCatalogErrMsg } from 'shared/catalogs/constants'
+import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import {
   GetResolutionClassificationsQueryArgs,
   GetResolutionClassificationsSuccessResponse,
-} from 'shared/catalogs/models/resolutionClassifications'
+} from 'shared/catalogs/api/dto/resolutionClassifications'
+import { useGetResolutionClassificationsCatalogQuery } from 'shared/catalogs/api/endpoints/resolutionClassificationsCatalog.endpoints'
+import { getResolutionClassificationsCatalogErrMsg } from 'shared/catalogs/constants'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetResolutionClassificationsResult = CustomUseQueryHookResult<

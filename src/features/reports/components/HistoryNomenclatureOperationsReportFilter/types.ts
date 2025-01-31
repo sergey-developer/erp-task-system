@@ -3,7 +3,7 @@ import { CustomerListModel } from 'features/warehouse/models'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { LocationsCatalogModel } from 'shared/catalogs/models/locations'
+import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
 
 export type HistoryNomenclatureOperationsReportFilterFormFields = Partial<{

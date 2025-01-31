@@ -9,7 +9,7 @@ import {
 } from 'features/warehouse/models/relocationEquipment'
 import { useGetRelocationEquipmentTechnicalExaminationQuery } from 'features/warehouse/services/relocationEquipmentApi.service'
 
-import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/services/baseApi'
+import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetRelocationEquipmentTechnicalExaminationResult = CustomUseQueryHookResult<
