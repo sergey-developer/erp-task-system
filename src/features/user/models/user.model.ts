@@ -1,6 +1,6 @@
 import { UserPermissionsEnum } from 'features/user/constants'
 
-import { UserStatusModel } from 'shared/catalogs/api/dto/userStatuses'
+import { UserStatusDTO } from 'shared/catalogs/api/dto/userStatuses'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -22,7 +22,7 @@ export type UserModel = BaseUserModel & {
   email: string
   timezone: string
   isStaff: boolean
-  status: UserStatusModel
+  status: UserStatusDTO
   permissions: UserPermissionsEnum[]
   phone: string
 

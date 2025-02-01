@@ -72,7 +72,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { LocationTypeEnum } from 'shared/catalogs/constants'
 import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
-import { useGetMacroregions } from 'shared/catalogs/hooks/macroregions'
+import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { useDrawerHeightByTable } from 'shared/catalogs/hooks/useDrawerHeightByTable'
 import { useGetWorkGroupsCatalog } from 'shared/catalogs/hooks/workGroups'
@@ -332,10 +332,8 @@ const TasksPage: FC = () => {
       { skip: !tasksFilterOpened },
     )
 
-  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
-    { customers: selectedCustomers },
-    { skip: !tasksFilterOpened },
-  )
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } =
+    useGetMacroregionsCatalog({ customers: selectedCustomers }, { skip: !tasksFilterOpened })
 
   const { data: workGroups = [], isFetching: workGroupsIsFetching } = useGetWorkGroups(undefined, {
     skip: tasksFilterOpened

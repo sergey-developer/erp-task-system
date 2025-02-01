@@ -47,8 +47,8 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
-import { useGetCurrencyList } from 'shared/catalogs/hooks/currencies'
-import { useGetMacroregions } from 'shared/catalogs/hooks/macroregions'
+import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
+import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { DEFAULT_DEBOUNCE_VALUE, SAVE_TEXT } from 'shared/constants/common'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
@@ -195,10 +195,8 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
     useGetEquipmentCategories(undefined, { skip: !editEquipmentModalOpened })
 
-  const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList(
-    undefined,
-    { skip: !editEquipmentModalOpened },
-  )
+  const { currentData: currencies = [], isFetching: currenciesIsFetching } =
+    useGetCurrenciesCatalog(undefined, { skip: !editEquipmentModalOpened })
 
   const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
     undefined,
@@ -237,13 +235,14 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     },
   )
 
-  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
-    {
-      ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
-      ...(!!selectedWarehouseId && { warehouses: [selectedWarehouseId] }),
-    },
-    { skip: !editEquipmentModalOpened || (!selectedOwnerId && !selectedWarehouseId) },
-  )
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } =
+    useGetMacroregionsCatalog(
+      {
+        ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
+        ...(!!selectedWarehouseId && { warehouses: [selectedWarehouseId] }),
+      },
+      { skip: !editEquipmentModalOpened || (!selectedOwnerId && !selectedWarehouseId) },
+    )
 
   const [
     getTechnicalExaminationPdf,

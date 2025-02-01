@@ -60,7 +60,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
-import { useGetCurrencyList } from 'shared/catalogs/hooks/currencies'
+import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { CANCEL_TEXT, SAVE_TEXT } from 'shared/constants/common'
@@ -288,10 +288,8 @@ const EditRelocationTaskDraftPage: FC = () => {
     [form],
   )
 
-  const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList(
-    undefined,
-    { skip: !getEquipmentsFormValue().length },
-  )
+  const { currentData: currencies = [], isFetching: currenciesIsFetching } =
+    useGetCurrenciesCatalog(undefined, { skip: !getEquipmentsFormValue().length })
 
   const [getEquipment, { isFetching: equipmentIsFetching }] = useLazyGetInventorizationEquipment()
 

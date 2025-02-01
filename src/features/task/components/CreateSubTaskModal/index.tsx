@@ -1,21 +1,20 @@
 import { Form, Input, Select, Typography } from 'antd'
-import { Rule } from 'rc-field-form/es/interface'
-import React, { FC, useState } from 'react'
-
 import { useGetSupportGroupList } from 'features/supportGroup/hooks'
 import { SupportGroupListItemModel } from 'features/supportGroup/models'
 import { useCreateSubTask } from 'features/task/hooks/subTask'
+import { Rule } from 'rc-field-form/es/interface'
+import React, { FC, useState } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
+import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
+import { useGetSubTaskTemplatesCatalog } from 'shared/catalogs/hooks/subTaskTemplates'
 import { idAndNameSelectFieldNames, idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import {
   onlyRequiredRules,
   requiredStringRules,
   validationSizes,
 } from 'shared/constants/validation'
-import { useGetSubTaskTemplateList } from 'shared/catalogs/hooks/subTaskTemplate'
-import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { filterOptionBy } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
 
@@ -42,7 +41,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
   const initialFormValues = { title: task.title, description: task.description }
 
   const { currentData: templateList, isFetching: templateListIsFetching } =
-    useGetSubTaskTemplateList(
+    useGetSubTaskTemplatesCatalog(
       { type: task.type, supportGroup: selectedSupportGroup },
       { skip: !selectedSupportGroup },
     )

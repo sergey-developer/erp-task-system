@@ -1,3 +1,3 @@
-export enum WorkGroupApiEnum {
+export enum WorkGroupsEndpointsEnum {
   GetWorkGroups = '/work-groups/',
 }

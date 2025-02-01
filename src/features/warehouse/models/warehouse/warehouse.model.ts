@@ -1,6 +1,6 @@
 import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
 
-import { MacroregionListItemModel } from 'shared/catalogs/api/dto/macroregions'
+import { MacroregionCatalogItemDTO } from 'shared/catalogs/api/dto/macroregions'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -19,5 +19,5 @@ export type WarehouseModel = {
   }>
   contract: MaybeNull<string>
   notes: MaybeNull<string>
-  macroregions: MaybeNull<Pick<MacroregionListItemModel, 'id' | 'title'>[]>
+  macroregions: MaybeNull<Pick<MacroregionCatalogItemDTO, 'id' | 'title'>[]>
 }

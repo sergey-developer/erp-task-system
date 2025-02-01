@@ -1,2 +1,2 @@
-export * from './locationsCatalog.model'
-export * from './getLocationsCatalog.model'
+export * from './locationsCatalog.dto'
+export * from './getLocationsCatalog.dto'

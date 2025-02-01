@@ -1,6 +1,6 @@
 import { SuspendReasonEnum } from 'features/task/constants/taskSuspendRequest'
 
-import { SystemSettingsModel } from 'shared/models/system'
+import { SystemSettingsModel } from 'shared/system/api/dto'
 
 import { fakeInteger } from '_tests_/utils'
 

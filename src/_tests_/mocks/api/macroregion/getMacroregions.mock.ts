@@ -1,4 +1,4 @@
-import { GetMacroregionsSuccessResponse } from 'shared/catalogs/api/dto/macroregions'
+import { GetMacroregionsCatalogSuccessResponse } from 'shared/catalogs/api/dto/macroregions'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MacroregionApiEnum } from 'shared/constants/macroregion'
 
@@ -9,5 +9,5 @@ const getMacroregionsMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, MacroregionApiEnum.GetMacroregions)
 
 export const mockGetMacroregionsSuccess = (
-  options?: Partial<ResponseResolverOptions<GetMacroregionsSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetMacroregionsCatalogSuccessResponse>>,
 ) => getSuccessMockFn(getMacroregionsMockFn(), options)()

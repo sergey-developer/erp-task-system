@@ -2,7 +2,7 @@ import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { CustomerListModel, EquipmentCategoriesModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
-import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
+import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
 import { EmptyFn } from 'shared/types/utils'
 
 export type EquipmentsFilterFormFields = Partial<{
@@ -25,7 +25,7 @@ export type EquipmentFilterProps = {
   values?: EquipmentsFilterFormFields
   initialValues: EquipmentsFilterFormFields
 
-  locations: LocationsCatalogModel
+  locations: LocationsCatalogDTO
   locationsIsLoading: boolean
 
   categories: EquipmentCategoriesModel

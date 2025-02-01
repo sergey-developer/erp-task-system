@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 
 import Breadcrumbs from 'components/Breadcrumbs'
 
-import { useBreadcrumbsMatches } from 'shared/catalogs/hooks/useBreadcrumbsMatches'
+import { useBreadcrumbsMatches } from 'shared/hooks/useBreadcrumbsMatches'
 
 const BreadcrumbsLayout: FC = () => {
   const matches = useBreadcrumbsMatches()

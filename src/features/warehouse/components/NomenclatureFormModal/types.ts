@@ -7,7 +7,7 @@ import {
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CountriesCatalogModel } from 'shared/catalogs/api/dto/countries'
+import { CountriesCatalogDTO } from 'shared/catalogs/api/dto/countries'
 import { MaybeNull } from 'shared/types/utils'
 
 export type NomenclatureFormFields = {
@@ -32,7 +32,7 @@ export type NomenclatureFormModalProps = Required<Pick<BaseModalProps, 'open' | 
   groups: NomenclatureGroupListModel
   groupsIsLoading: boolean
 
-  countries: CountriesCatalogModel
+  countries: CountriesCatalogDTO
   countriesIsLoading: boolean
 
   measurementUnits: MeasurementUnitListModel

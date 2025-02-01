@@ -5,16 +5,13 @@ import { Moment } from 'moment-timezone'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { ReactNode } from 'react'
 
-import {
-  LocationCatalogListItemModel,
-  LocationsCatalogModel,
-} from 'shared/catalogs/api/dto/locations'
+import { LocationCatalogItemDTO, LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { MaybeNull } from 'shared/types/utils'
 
 export type LocationOption = {
-  type: LocationCatalogListItemModel['type']
+  type: LocationCatalogItemDTO['type']
   label: ReactNode
   value: IdType
 }
@@ -62,9 +59,9 @@ export type RelocationTaskFormProps<
   imageIsDeleting?: boolean
   imagesIsLoading?: boolean
 
-  relocateFromLocations: LocationsCatalogModel
+  relocateFromLocations: LocationsCatalogDTO
   relocateFromLocationsIsLoading: boolean
-  relocateToLocations: LocationsCatalogModel
+  relocateToLocations: LocationsCatalogDTO
   relocateToLocationsIsLoading: boolean
 
   type?: RelocationTaskTypeEnum

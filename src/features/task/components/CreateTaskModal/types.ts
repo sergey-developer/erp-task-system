@@ -8,7 +8,7 @@ import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
+import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
 import { WorkGroupsCatalogDTO } from 'shared/catalogs/api/dto/workGroups'
 import { IdType } from 'shared/types/common'
 import { SetNonNullable } from 'shared/types/utils'
@@ -46,7 +46,7 @@ export type CreateTaskModalProps = SetNonNullable<
   customers: CustomerListModel
   customersIsLoading: boolean
 
-  locations: LocationsCatalogModel
+  locations: LocationsCatalogDTO
   locationsIsLoading: boolean
 }
 

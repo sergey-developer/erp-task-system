@@ -24,7 +24,7 @@ import Expandable from 'components/Expandable'
 import BaseModal from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
-import { LocationCatalogListItemModel } from 'shared/catalogs/api/dto/locations'
+import { LocationCatalogItemDTO } from 'shared/catalogs/api/dto/locations'
 import { filesFormItemProps } from 'shared/constants/form'
 import {
   idAndFullNameSelectFieldNames,
@@ -105,8 +105,8 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
   }
 
   const onChangeSapId: SelectProps<
-    LocationCatalogListItemModel['id'],
-    LocationCatalogListItemModel
+    LocationCatalogItemDTO['id'],
+    LocationCatalogItemDTO
   >['onChange'] = (value, option) => {
     if (!Array.isArray(option) && option.address) form.setFieldValue('address', option.address)
   }
@@ -333,7 +333,7 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
           </Form.Item>
 
           <Form.Item data-testid='sap-id-form-item' label='SAP ID объекта' name='shopId'>
-            <Select<LocationCatalogListItemModel['id'], LocationCatalogListItemModel>
+            <Select<LocationCatalogItemDTO['id'], LocationCatalogItemDTO>
               placeholder='Выберите из списка'
               loading={locationsIsLoading}
               options={locations}

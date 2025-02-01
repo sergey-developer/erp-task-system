@@ -1,7 +1,7 @@
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { InventorizationEquipmentListItemModel } from 'features/warehouse/models'
 
-import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
+import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
 import { Nullable, SetNonNullable } from 'shared/types/utils'
 
 export type ReviseInventorizationEquipmentTableItem = Pick<
@@ -22,7 +22,7 @@ export type ReviseInventorizationEquipmentTableProps = SetNonNullable<
 > & {
   fulfilledTimeStamp?: number
 
-  locations: LocationsCatalogModel
+  locations: LocationsCatalogDTO
   locationsIsLoading: boolean
 
   onChangeQuantityFact: (

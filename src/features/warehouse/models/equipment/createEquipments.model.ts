@@ -7,8 +7,8 @@ import {
 } from 'features/warehouse/models'
 
 import { FieldsErrors } from 'shared/api/baseApi'
-import { CurrencyListItemModel } from 'shared/catalogs/api/dto/currencies'
-import { MacroregionListItemModel } from 'shared/catalogs/api/dto/macroregions'
+import { CurrencyCatalogItemDTO } from 'shared/catalogs/api/dto/currencies'
+import { MacroregionCatalogItemDTO } from 'shared/catalogs/api/dto/macroregions'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -27,10 +27,10 @@ export type CreatedEquipmentListItemModel = {
 
   qrCode: MaybeNull<string>
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
-  macroregion: MaybeNull<Pick<MacroregionListItemModel, 'id' | 'title'>>
+  macroregion: MaybeNull<Pick<MacroregionCatalogItemDTO, 'id' | 'title'>>
   comment: MaybeNull<string>
   usageCounter: MaybeNull<number>
-  currency: MaybeNull<Pick<CurrencyListItemModel, 'id' | 'title'>>
+  currency: MaybeNull<Pick<CurrencyCatalogItemDTO, 'id' | 'title'>>
   price: MaybeNull<number>
   serialNumber: MaybeNull<string>
   inventoryNumber: MaybeNull<string>

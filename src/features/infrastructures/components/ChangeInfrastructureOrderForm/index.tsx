@@ -18,7 +18,7 @@ import UploadButton from 'components/Buttons/UploadButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { InfrastructureWorkTypesCatalogModel } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
+import { InfrastructureWorkTypesCatalogDTO } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
@@ -38,7 +38,7 @@ const ConfirmDeleteInfrastructureWorkTypeModal = React.lazy(
 
 export type ChangeInfrastructureOrderFormProps = {
   data: InfrastructureOrderFormListItemModel
-  infrastructureWorkTypes: InfrastructureWorkTypesCatalogModel
+  infrastructureWorkTypes: InfrastructureWorkTypesCatalogDTO
   managerIsCurrentUser: boolean
 
   canUploadFile: boolean

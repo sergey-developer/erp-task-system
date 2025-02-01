@@ -71,9 +71,9 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
-import { useGetCurrencyList } from 'shared/catalogs/hooks/currencies'
+import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
-import { useGetMacroregions } from 'shared/catalogs/hooks/macroregions'
+import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { SAVE_TEXT } from 'shared/constants/common'
 import { IdType } from 'shared/types/common'
@@ -316,7 +316,8 @@ const EditRelocationTaskPage: FC = () => {
     }
   }, [getRelocateToLocations, selectedType, typeIsWriteOff])
 
-  const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList()
+  const { currentData: currencies = [], isFetching: currenciesIsFetching } =
+    useGetCurrenciesCatalog()
 
   const { currentData: relocationEquipmentBalanceList = [] } = useGetRelocationEquipmentBalanceList(
     { relocationTaskId: relocationTaskId! },
@@ -386,10 +387,8 @@ const EditRelocationTaskPage: FC = () => {
     editEquipmentByFileModalOpened,
   ])
 
-  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
-    { customers: [selectedOwnerId!] },
-    { skip: !selectedOwnerId },
-  )
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } =
+    useGetMacroregionsCatalog({ customers: [selectedOwnerId!] }, { skip: !selectedOwnerId })
 
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()

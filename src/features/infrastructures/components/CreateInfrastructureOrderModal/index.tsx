@@ -5,7 +5,7 @@ import React, { FC, useMemo } from 'react'
 import UploadButton from 'components/Buttons/UploadButton'
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { UrgencyRateTypeListItemModel } from 'shared/catalogs/api/dto/urgencyRateTypes'
+import { UrgencyRateTypeCatalogItemDTO } from 'shared/catalogs/api/dto/urgencyRateTypes'
 import { CREATE_TEXT } from 'shared/constants/common'
 import { filesFormItemProps } from 'shared/constants/form'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
@@ -55,7 +55,7 @@ const CreateInfrastructureOrderFormModal: FC<CreateInfrastructureOrderModalProps
           label='Тариф'
           rules={onlyRequiredRules}
         >
-          <Select<UrgencyRateTypeListItemModel['id'], UrgencyRateTypeListItemModel>
+          <Select<UrgencyRateTypeCatalogItemDTO['id'], UrgencyRateTypeCatalogItemDTO>
             fieldNames={idAndTitleSelectFieldNames}
             disabled={urgencyRateTypesIsLoading || isLoading}
             loading={urgencyRateTypesIsLoading}

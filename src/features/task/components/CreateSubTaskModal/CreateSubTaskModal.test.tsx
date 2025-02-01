@@ -1,9 +1,8 @@
 import { waitFor } from '@testing-library/react'
-
 import { getSupportGroupListMessages } from 'features/supportGroup/constants'
 import { createSubTaskErrMsg } from 'features/task/constants/task'
 
-import { getSubTaskTemplatesCatalogErrMsg } from 'shared/catalogs/constants'
+import { getSubTaskTemplatesCatalogErrMsg } from 'shared/catalogs/api/constants/errorMessages'
 import { validationMessages } from 'shared/constants/validation'
 
 import { onCancel, props } from '_tests_/features/tasks/components/CreateSubTaskModal/constants'

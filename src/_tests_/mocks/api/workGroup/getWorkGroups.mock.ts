@@ -1,12 +1,12 @@
 import { HttpMethodEnum } from 'shared/constants/http'
-import { WorkGroupApiEnum } from 'shared/workGroups/api/constants'
-import { GetWorkGroupsSuccessResponse } from 'shared/workGroups/api/models'
+import { WorkGroupsEndpointsEnum } from 'shared/workGroups/api/constants'
+import { GetWorkGroupsSuccessResponse } from 'shared/workGroups/api/dto'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getWorkGroupsMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, WorkGroupApiEnum.GetWorkGroups)
+  getRequestMockFn(HttpMethodEnum.Get, WorkGroupsEndpointsEnum.GetWorkGroups)
 
 export const mockGetWorkGroupsSuccess = (
   options?: Partial<ResponseResolverOptions<GetWorkGroupsSuccessResponse>>,

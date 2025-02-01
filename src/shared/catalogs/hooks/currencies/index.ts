@@ -1,1 +1,1 @@
-export * from './useGetCurrencyList'
+export * from './useGetCurrenciesCatalog'

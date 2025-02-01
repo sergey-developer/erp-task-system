@@ -1,5 +1,4 @@
 import { waitFor, within } from '@testing-library/react'
-
 import { UserPermissionsEnum } from 'features/user/constants'
 import {
   getEquipmentListTemplateErrMsg,

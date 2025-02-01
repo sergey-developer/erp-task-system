@@ -1,19 +1,19 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogsApiEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
-  GetResolutionClassificationsQueryArgs,
-  GetResolutionClassificationsSuccessResponse,
+  GetResolutionClassificationsCatalogQueryArgs,
+  GetResolutionClassificationsCatalogSuccessResponse,
 } from 'shared/catalogs/api/dto/resolutionClassifications'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const resolutionClassificationsCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getResolutionClassificationsCatalog: build.query<
-      GetResolutionClassificationsSuccessResponse,
-      GetResolutionClassificationsQueryArgs
+      GetResolutionClassificationsCatalogSuccessResponse,
+      GetResolutionClassificationsCatalogQueryArgs
     >({
       query: (params) => ({
-        url: CatalogsApiEnum.GetResolutionClassifications,
+        url: CatalogEndpointsEnum.GetResolutionClassifications,
         method: HttpMethodEnum.Get,
         params,
       }),

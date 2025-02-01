@@ -7,7 +7,7 @@ import { Moment } from 'moment-timezone'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
+import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
 
 export type RelocationTasksFilterFormFields = Partial<{
@@ -29,7 +29,7 @@ export type RelocationTasksFilterProps = Pick<DrawerFilterProps, 'open' | 'onClo
   users: UsersModel
   usersIsLoading: boolean
 
-  locations: LocationsCatalogModel
+  locations: LocationsCatalogDTO
   locationsIsLoading: boolean
 
   onApply: (values: RelocationTasksFilterFormFields) => void

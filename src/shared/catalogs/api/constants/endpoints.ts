@@ -1,4 +1,4 @@
-export enum CatalogsApiEnum {
+export enum CatalogEndpointsEnum {
   GetTimeZones = '/catalogs/time-zones/',
   GetSubTaskTemplates = '/catalogs/templates/',
   GetUserStatuses = '/catalogs/statuses/',

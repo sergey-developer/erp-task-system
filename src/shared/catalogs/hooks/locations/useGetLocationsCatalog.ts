@@ -9,12 +9,12 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/api/baseApi'
+import { getLocationsCatalogErrMsg } from 'shared/catalogs/api/constants/errorMessages'
 import {
   GetLocationsCatalogQueryArgs,
   GetLocationsCatalogSuccessResponse,
 } from 'shared/catalogs/api/dto/locations'
 import { useGetLocationsCatalogQuery } from 'shared/catalogs/api/endpoints/locationsCatalog.endpoints'
-import { getLocationsCatalogErrMsg } from 'shared/catalogs/constants'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

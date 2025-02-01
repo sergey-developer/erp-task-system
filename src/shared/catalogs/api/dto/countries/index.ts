@@ -1,2 +1,2 @@
-export * from './countriesCatalog.model'
-export * from './getCountriesCatalog.model'
+export * from './countriesCatalog.dto'
+export * from './getCountriesCatalog.dto'

@@ -1,1 +1,1 @@
-export * from './useGetMacroregions'
+export * from './useGetMacroregionsCatalog'

@@ -1,13 +1,13 @@
-import { GetFaChangeTypesSuccessResponse } from 'shared/catalogs/api/dto/faChangeTypes'
-import { CatalogsApiEnum } from 'shared/catalogs/constants'
+import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
+import { GetFaChangeTypesCatalogSuccessResponse } from 'shared/catalogs/api/dto/faChangeTypes'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getFaChangeTypesMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, CatalogsApiEnum.GetFaChangeTypes)
+  getRequestMockFn(HttpMethodEnum.Get, CatalogEndpointsEnum.GetFaChangeTypes)
 
 export const mockGetFaChangeTypesSuccess = (
-  options?: Partial<ResponseResolverOptions<GetFaChangeTypesSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetFaChangeTypesCatalogSuccessResponse>>,
 ) => getSuccessMockFn(getFaChangeTypesMockFn(), options)()

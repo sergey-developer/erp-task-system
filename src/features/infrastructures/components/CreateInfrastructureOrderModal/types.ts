@@ -3,7 +3,7 @@ import { UploadFile } from 'antd/es/upload'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { UrgencyRateTypesCatalogModel } from 'shared/catalogs/api/dto/urgencyRateTypes'
+import { UrgencyRateTypesCatalogDTO } from 'shared/catalogs/api/dto/urgencyRateTypes'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 
@@ -19,7 +19,7 @@ export type CreateInfrastructureOrderModalProps = Pick<BaseModalProps, 'open' | 
     form: FormInstance<CreateInfrastructureOrderFormFields>,
   ) => Promise<void>
 
-  urgencyRateTypes: UrgencyRateTypesCatalogModel
+  urgencyRateTypes: UrgencyRateTypesCatalogDTO
   urgencyRateTypesIsLoading: boolean
 
   onUploadFile: NonNullable<UploadProps['customRequest']>

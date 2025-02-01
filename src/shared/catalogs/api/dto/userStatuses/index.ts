@@ -1,4 +1,4 @@
-export * from './userStatus.model'
+export * from './userStatus.dto'
 
-export * from './userStatusesCatalog.model'
-export * from './getUserStatusesCatalog.model'
+export * from './userStatusesCatalog.dto'
+export * from './getUserStatusesCatalog.dto'

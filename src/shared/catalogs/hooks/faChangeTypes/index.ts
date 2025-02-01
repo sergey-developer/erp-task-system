@@ -1,1 +1,1 @@
-export * from './useGetFaChangeTypes'
+export * from './useGetFaChangeTypesCatalog'

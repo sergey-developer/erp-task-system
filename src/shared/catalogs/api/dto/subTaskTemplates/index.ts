@@ -1,2 +1,2 @@
-export * from './subTaskTemplatesCatalog.model'
-export * from './getSubTaskTemplatesCatalog.model'
+export * from './subTaskTemplatesCatalog.dto'
+export * from './getSubTaskTemplatesCatalog.dto'

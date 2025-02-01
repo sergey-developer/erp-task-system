@@ -1,9 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { Button, Collapse, Form, Typography, UploadProps } from 'antd'
-import { CollapseProps } from 'rc-collapse/es/interface'
-import { UploadRequestOption } from 'rc-upload/es/interface'
-import React, { FC, lazy, useCallback, useMemo } from 'react'
-
 import { AttachmentTypeEnum } from 'features/attachment/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachment/hooks'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
@@ -15,14 +11,17 @@ import {
 } from 'features/infrastructures/hooks'
 import { useCreateInfrastructureOrderFormAttachment } from 'features/infrastructures/hooks/useCreateInfrastructureOrderFormAttachment'
 import { InfrastructureModel } from 'features/infrastructures/models'
+import { CollapseProps } from 'rc-collapse/es/interface'
+import { UploadRequestOption } from 'rc-upload/es/interface'
+import React, { FC, lazy, useCallback, useMemo } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 
-import { useGetInfrastructureWorkTypes } from 'shared/catalogs/hooks/infrastructureWorkTypes'
-import { useGetUrgencyRateTypes } from 'shared/catalogs/hooks/urgencyRateTypes'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
+import { useGetInfrastructureWorkTypesCatalog } from 'shared/catalogs/hooks/infrastructureWorkTypes'
+import { useGetUrgencyRateTypesCatalog } from 'shared/catalogs/hooks/urgencyRateTypes'
+import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -53,7 +52,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
   const debouncedToggleCreateOrderModal = useDebounceFn(toggleCreateOrderModal)
 
   const { data: urgencyRateTypes = [], isFetching: urgencyRateTypesIsFetching } =
-    useGetUrgencyRateTypes(undefined, { skip: !createOrderModalOpened })
+    useGetUrgencyRateTypesCatalog(undefined, { skip: !createOrderModalOpened })
   // create order form
 
   const {
@@ -69,7 +68,7 @@ const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabP
   const {
     currentData: infrastructureWorkTypes = [],
     isFetching: infrastructureWorkTypesIsFetching,
-  } = useGetInfrastructureWorkTypes(undefined, { skip: !managerIsCurrentUser })
+  } = useGetInfrastructureWorkTypesCatalog(undefined, { skip: !managerIsCurrentUser })
 
   const [createInfrastructureOrderFormAttachment] = useCreateInfrastructureOrderFormAttachment()
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()

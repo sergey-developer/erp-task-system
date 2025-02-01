@@ -1,5 +1,5 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogsApiEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetWorkGroupsCatalogQueryArgs,
   GetWorkGroupsCatalogSuccessResponse,
@@ -13,7 +13,7 @@ const workGroupsCatalogEndpoints = baseApi.injectEndpoints({
       GetWorkGroupsCatalogQueryArgs
     >({
       query: () => ({
-        url: CatalogsApiEnum.GetWorkGroups,
+        url: CatalogEndpointsEnum.GetWorkGroups,
         method: HttpMethodEnum.Get,
       }),
     }),

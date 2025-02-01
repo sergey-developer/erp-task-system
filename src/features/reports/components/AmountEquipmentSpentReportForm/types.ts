@@ -1,14 +1,14 @@
 import { EquipmentNomenclaturesModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
-import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
+import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
 
 export type AmountEquipmentSpentReportFormProps = {
   nomenclatures: EquipmentNomenclaturesModel
   nomenclaturesIsLoading: boolean
 
-  locations: LocationsCatalogModel
+  locations: LocationsCatalogDTO
   locationsIsLoading: boolean
 
   onSubmit: (values: AmountEquipmentSpentReportFormFields) => void

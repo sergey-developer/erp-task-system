@@ -1,4 +1,4 @@
-import { GetCurrencyListSuccessResponse } from 'shared/catalogs/api/dto/currencies'
+import { GetCurrenciesCatalogSuccessResponse } from 'shared/catalogs/api/dto/currencies'
 import { CurrencyApiEnum } from 'shared/constants/currency'
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -9,7 +9,7 @@ const getCurrencyListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, CurrencyApiEnum.GetCurrencyList)
 
 export const mockGetCurrencyListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetCurrencyListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetCurrenciesCatalogSuccessResponse>>,
 ) => getSuccessMockFn(getCurrencyListMockFn(), options)()
 
 export const mockGetCurrencyListServerError = (options?: Partial<ResponseResolverOptions>) =>

@@ -3,7 +3,7 @@ import { CustomerListModel } from 'features/warehouse/models'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
+import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
 
 export type HistoryNomenclatureOperationsReportFilterFormFields = Partial<{
@@ -19,7 +19,7 @@ export type HistoryNomenclatureOperationsReportFilterProps = Pick<
   values?: HistoryNomenclatureOperationsReportFilterFormFields
   initialValues: HistoryNomenclatureOperationsReportFilterFormFields
 
-  locations: LocationsCatalogModel
+  locations: LocationsCatalogDTO
   locationsIsLoading: boolean
 
   owners: CustomerListModel

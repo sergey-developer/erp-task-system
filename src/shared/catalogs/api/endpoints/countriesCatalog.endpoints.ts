@@ -1,16 +1,19 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogsApiEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
-  GetCountryListQueryArgs,
-  GetCountryListSuccessResponse,
+  GetCountriesCatalogQueryArgs,
+  GetCountriesCatalogSuccessResponse,
 } from 'shared/catalogs/api/dto/countries'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const countriesCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getCountriesCatalog: build.query<GetCountryListSuccessResponse, GetCountryListQueryArgs>({
+    getCountriesCatalog: build.query<
+      GetCountriesCatalogSuccessResponse,
+      GetCountriesCatalogQueryArgs
+    >({
       query: () => ({
-        url: CatalogsApiEnum.GetCountries,
+        url: CatalogEndpointsEnum.GetCountries,
         method: HttpMethodEnum.Get,
       }),
     }),

@@ -1,9 +1,8 @@
 import { waitFor } from '@testing-library/react'
-
+import { testUtils as homeLayoutTestUtils } from 'features/layout/components/HomeLayout/HomeLayout.test'
 import { updateUserTimeZoneMessages } from 'features/user/constants'
 
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
-import { testUtils as homeLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
 import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'

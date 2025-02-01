@@ -4,7 +4,7 @@ import { TaskModel } from 'features/task/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { ResolutionClassificationsCatalogModel } from 'shared/catalogs/api/dto/resolutionClassifications'
+import { ResolutionClassificationsCatalogDTO } from 'shared/catalogs/api/dto/resolutionClassifications'
 import { IdType } from 'shared/types/common'
 import { SetNonNullable } from 'shared/types/utils'
 
@@ -21,7 +21,7 @@ export type ExecuteTaskModalProps = SetNonNullable<BaseModalProps, 'open'> &
   Pick<TaskModel, 'type' | 'recordId' | 'supportGroup'> & {
     isLoading: boolean
 
-    resolutionClassifications: ResolutionClassificationsCatalogModel
+    resolutionClassifications: ResolutionClassificationsCatalogDTO
     resolutionClassificationsIsLoading: boolean
 
     onSubmit: (

@@ -1,2 +1,2 @@
-export * from './resolutionClassificationsCatalog.model'
-export * from './getResolutionClassificationsCatalog.model'
+export * from './resolutionClassificationsCatalog.dto'
+export * from './getResolutionClassificationsCatalog.dto'

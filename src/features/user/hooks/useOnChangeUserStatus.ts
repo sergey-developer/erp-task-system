@@ -1,10 +1,10 @@
 import { useUpdateEffect } from 'ahooks'
 
-import { UserStatusModel } from 'shared/catalogs/api/dto/userStatuses'
+import { UserStatusDTO } from 'shared/catalogs/api/dto/userStatuses'
 
 import { useUserMeState } from './useUserMeState'
 
-export type UseOnChangeUserStatusFn = (status: UserStatusModel) => any
+export type UseOnChangeUserStatusFn = (status: UserStatusDTO) => any
 
 export const useOnChangeUserStatus = (fn: UseOnChangeUserStatusFn) => {
   const { data } = useUserMeState()

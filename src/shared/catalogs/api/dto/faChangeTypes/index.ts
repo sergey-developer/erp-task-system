@@ -1,2 +1,2 @@
-export * from './faChangeTypesCatalog.model'
-export * from './getFaChangeTypesCatalog.model'
+export * from './faChangeTypesCatalog.dto'
+export * from './getFaChangeTypesCatalog.dto'

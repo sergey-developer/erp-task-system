@@ -9,9 +9,9 @@ import {
   WorkTypeListItemModel,
 } from 'features/warehouse/models'
 
-import { CurrencyListItemModel } from 'shared/catalogs/api/dto/currencies'
-import { LocationCatalogListItemModel } from 'shared/catalogs/api/dto/locations'
-import { MacroregionListItemModel } from 'shared/catalogs/api/dto/macroregions'
+import { CurrencyCatalogItemDTO } from 'shared/catalogs/api/dto/currencies'
+import { LocationCatalogItemDTO } from 'shared/catalogs/api/dto/locations'
+import { MacroregionCatalogItemDTO } from 'shared/catalogs/api/dto/macroregions'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -31,16 +31,16 @@ export type EquipmentModel = {
   purpose: Pick<WorkTypeListItemModel, 'id' | 'title'>
   amount: number
 
-  location: MaybeNull<Pick<LocationCatalogListItemModel, 'id' | 'title'>>
+  location: MaybeNull<Pick<LocationCatalogItemDTO, 'id' | 'title'>>
   warehouse: MaybeNull<Pick<WarehouseModel, 'id' | 'title'>>
   inventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>
   quantity: MaybeNull<number>
   price: MaybeNull<number>
-  currency: MaybeNull<Pick<CurrencyListItemModel, 'id' | 'title'>>
+  currency: MaybeNull<Pick<CurrencyCatalogItemDTO, 'id' | 'title'>>
   usageCounter: MaybeNull<number>
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
-  macroregion: MaybeNull<Pick<MacroregionListItemModel, 'id' | 'title'>>
+  macroregion: MaybeNull<Pick<MacroregionCatalogItemDTO, 'id' | 'title'>>
   comment: MaybeNull<string>
   qrCode: MaybeNull<string>
 }

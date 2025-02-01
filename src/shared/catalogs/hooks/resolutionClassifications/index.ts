@@ -1,1 +1,1 @@
-export * from './useGetResolutionClassifications'
+export * from './useGetResolutionClassificationsCatalog'

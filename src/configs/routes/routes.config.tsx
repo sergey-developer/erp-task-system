@@ -1,16 +1,15 @@
-import React from 'react'
-import { Navigate, RouteObject } from 'react-router-dom'
-
 import { route as authRoute } from 'features/auth/routes.config'
 import { infrastructuresRoute } from 'features/infrastructures/routes.config'
+import HomeLayout from 'features/layout/components/HomeLayout'
 import { route as monitoringRoute } from 'features/monitoring/routes.config'
 import { route as reportsRoute } from 'features/reports/routes.config'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import { route as tasksRoute } from 'features/task/routes.config'
 import { route as warehousesRoute } from 'features/warehouse/routes.config'
+import React from 'react'
+import { Navigate, RouteObject } from 'react-router-dom'
 
 import ErrorBoundary from 'components/ErrorBoundary'
-import HomeLayout from 'components/Layouts/HomeLayout'
 
 import { CommonRouteEnum } from './constants'
 

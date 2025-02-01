@@ -1,1 +1,1 @@
-export * from './useGetInfrastructureWorkTypes'
+export * from './useGetInfrastructureWorkTypesCatalog'

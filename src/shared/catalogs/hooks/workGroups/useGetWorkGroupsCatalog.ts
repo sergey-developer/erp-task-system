@@ -3,12 +3,12 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
+import { getWorkGroupsCatalogErrMsg } from 'shared/catalogs/api/constants/errorMessages'
 import {
   GetWorkGroupsCatalogQueryArgs,
   GetWorkGroupsCatalogSuccessResponse,
 } from 'shared/catalogs/api/dto/workGroups'
 import { useGetWorkGroupsCatalogQuery } from 'shared/catalogs/api/endpoints/workGroupsCatalog.endpoints'
-import { getWorkGroupsCatalogErrMsg } from 'shared/catalogs/constants'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 

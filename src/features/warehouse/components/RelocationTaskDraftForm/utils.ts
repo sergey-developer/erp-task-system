@@ -1,7 +1,7 @@
 import { UsersGroupsModel, UsersModel } from 'features/user/models'
 import sortBy from 'lodash/sortBy'
 
-import { LocationsCatalogModel } from 'shared/catalogs/api/dto/locations'
+import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
 import { locationTypeDict } from 'shared/catalogs/constants'
 import { IdType } from 'shared/types/common'
 
@@ -13,7 +13,7 @@ import {
   UserOption,
 } from './types'
 
-export const makeLocationOptions = (data: LocationsCatalogModel): LocationOptionGroup[] =>
+export const makeLocationOptions = (data: LocationsCatalogDTO): LocationOptionGroup[] =>
   data
     .reduce<LocationOptionGroup[]>((acc, loc) => {
       const optionGroup = acc.find((item) => item.type === loc.type)

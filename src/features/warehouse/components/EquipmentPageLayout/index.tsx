@@ -1,10 +1,6 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
-import omit from 'lodash/omit'
-import React, { FC, useMemo, useState } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-
 import { EquipmentsFilterFormFields } from 'features/warehouse/components/EquipmentFilter/types'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import { useGetCustomerList } from 'features/warehouse/hooks/customer'
@@ -14,13 +10,16 @@ import {
 } from 'features/warehouse/hooks/equipment'
 import { GetEquipmentsXlsxQueryArgs } from 'features/warehouse/models'
 import { equipmentsFilterToParams } from 'features/warehouse/utils/equipment'
+import omit from 'lodash/omit'
+import React, { FC, useMemo, useState } from 'react'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
 import { LocationTypeEnum } from 'shared/catalogs/constants'
-import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { base64ToBytes } from 'shared/utils/common'
 import { downloadFile } from 'shared/utils/file'
 

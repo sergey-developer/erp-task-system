@@ -9,7 +9,7 @@ import BaseModal from 'components/Modals/BaseModal'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { filterOptionBy } from 'shared/utils/common'
-import { WorkGroupTypeEnum } from 'shared/workGroups/api/models'
+import { WorkGroupTypeEnum } from 'shared/workGroups/api/dto'
 import { useGetWorkGroups } from 'shared/workGroups/hooks'
 
 import { WorkGroupFormItem } from './styles'

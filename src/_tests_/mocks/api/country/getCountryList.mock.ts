@@ -1,15 +1,15 @@
-import { GetCountryListSuccessResponse } from 'shared/catalogs/api/dto/countries'
-import { CatalogsApiEnum } from 'shared/catalogs/constants'
+import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
+import { GetCountriesCatalogSuccessResponse } from 'shared/catalogs/api/dto/countries'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getCountryListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, CatalogsApiEnum.GetCountryCatalog)
+  getRequestMockFn(HttpMethodEnum.Get, CatalogEndpointsEnum.GetCountryCatalog)
 
 export const mockGetCountryListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetCountryListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetCountriesCatalogSuccessResponse>>,
 ) => getSuccessMockFn(getCountryListMockFn(), options)()
 
 export const mockGetCountryListServerError = (options?: Partial<ResponseResolverOptions>) =>

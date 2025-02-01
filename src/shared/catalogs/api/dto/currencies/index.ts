@@ -1,2 +1,2 @@
-export * from './currenciesCatalog.model'
-export * from './getCurrenciesCatalog.model'
+export * from './currenciesCatalog.dto'
+export * from './getCurrenciesCatalog.dto'

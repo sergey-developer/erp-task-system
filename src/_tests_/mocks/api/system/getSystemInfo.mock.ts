@@ -1,6 +1,6 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { SystemApiEnum } from 'shared/constants/system'
-import { GetSystemInfoSuccessResponse } from 'shared/models/system'
+import { GetSystemInfoSuccessResponse } from 'shared/system/api/dto'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'

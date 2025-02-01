@@ -6,7 +6,7 @@ import React, { FC } from 'react'
 import DatePicker from 'components/DatePicker'
 import { QuestionCircleIcon } from 'components/Icons'
 
-import { LocationCatalogListItemModel } from 'shared/catalogs/api/dto/locations'
+import { LocationCatalogItemDTO } from 'shared/catalogs/api/dto/locations'
 import { UPDATE_TEXT } from 'shared/constants/common'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
@@ -65,7 +65,7 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
         rules={relocateToFormValue ? undefined : onlyRequiredRules}
         dependencies={['relocateTo']}
       >
-        <Select<LocationCatalogListItemModel['id'], LocationCatalogListItemModel>
+        <Select<LocationCatalogItemDTO['id'], LocationCatalogItemDTO>
           data-testid='relocate-from-select'
           fieldNames={idAndTitleSelectFieldNames}
           disabled={locationsIsLoading}
@@ -87,7 +87,7 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
         rules={relocateFromFormValue ? undefined : onlyRequiredRules}
         dependencies={['relocateFrom']}
       >
-        <Select<LocationCatalogListItemModel['id'], LocationCatalogListItemModel>
+        <Select<LocationCatalogItemDTO['id'], LocationCatalogItemDTO>
           data-testid='relocate-to-select'
           fieldNames={idAndTitleSelectFieldNames}
           disabled={locationsIsLoading}

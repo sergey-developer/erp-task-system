@@ -1,1 +1,1 @@
-export * from './useGetCountries'
+export * from './useGetCountriesCatalog'

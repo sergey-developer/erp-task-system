@@ -1,1 +1,1 @@
-export * from './useGetUrgencyRateTypes'
+export * from './useGetUrgencyRateTypesCatalog'

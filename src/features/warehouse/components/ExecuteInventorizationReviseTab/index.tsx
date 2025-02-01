@@ -71,9 +71,9 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import TableRowsErrors from 'components/TableRowsErrors'
 
 import { isBadRequestError, isErrorResponse, TableRowsApiErrors } from 'shared/api/baseApi'
-import { useGetCurrencyList } from 'shared/catalogs/hooks/currencies'
+import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
-import { useGetMacroregions } from 'shared/catalogs/hooks/macroregions'
+import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { undefinedSelectOption } from 'shared/constants/selectField'
@@ -424,10 +424,10 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     },
   )
 
-  const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList(
-    undefined,
-    { skip: !createEquipmentModalOpened && !editCheckedInventorizationEquipmentModalOpened },
-  )
+  const { currentData: currencies = [], isFetching: currenciesIsFetching } =
+    useGetCurrenciesCatalog(undefined, {
+      skip: !createEquipmentModalOpened && !editCheckedInventorizationEquipmentModalOpened,
+    })
 
   const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
     useLazyGetCustomerList()
@@ -450,10 +450,8 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     editCheckedInventorizationEquipmentModalOpened,
   ])
 
-  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
-    { customers: [selectedOwnerId!] },
-    { skip: !selectedOwnerId },
-  )
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } =
+    useGetMacroregionsCatalog({ customers: [selectedOwnerId!] }, { skip: !selectedOwnerId })
 
   const {
     currentData: equipmentCategories = [],

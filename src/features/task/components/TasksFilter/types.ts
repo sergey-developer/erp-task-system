@@ -12,9 +12,9 @@ import { Moment } from 'moment-timezone'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { MacroregionsCatalogModel } from 'shared/catalogs/api/dto/macroregions'
+import { MacroregionsCatalogDTO } from 'shared/catalogs/api/dto/macroregions'
 import { IdType } from 'shared/types/common'
-import { WorkGroupsModel } from 'shared/workGroups/api/models'
+import { WorkGroupsDTO } from 'shared/workGroups/api/dto'
 
 export type TasksFilterSupportGroupFormFields = Partial<{
   customers: IdType[]
@@ -45,7 +45,7 @@ export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClos
   customersIsLoading: boolean
   onChangeCustomers: (value: IdType[]) => void
 
-  macroregions: MacroregionsCatalogModel
+  macroregions: MacroregionsCatalogDTO
   macroregionsIsLoading: boolean
   onChangeMacroregions: (value: IdType[]) => void
 
@@ -55,7 +55,7 @@ export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClos
   users: UsersModel
   usersIsLoading: boolean
 
-  workGroups: WorkGroupsModel
+  workGroups: WorkGroupsDTO
   workGroupsIsLoading: boolean
 
   onSubmit: (values: TasksFilterFormFields) => void

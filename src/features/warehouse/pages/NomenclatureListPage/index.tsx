@@ -45,7 +45,7 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/api/baseApi'
-import { useGetCountries } from 'shared/catalogs/hooks/countries'
+import { useGetCountriesCatalog } from 'shared/catalogs/hooks/countries'
 import { SAVE_TEXT } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { getFieldsErrors } from 'shared/utils/form'
@@ -168,10 +168,10 @@ const NomenclatureListPage: FC = () => {
       skip: !createNomenclatureModalOpened && !editNomenclatureModalOpened,
     })
 
-  const { currentData: countryList = [], isFetching: countryListIsFetching } = useGetCountries(
-    undefined,
-    { skip: !createNomenclatureModalOpened && !editNomenclatureModalOpened },
-  )
+  const { currentData: countryList = [], isFetching: countryListIsFetching } =
+    useGetCountriesCatalog(undefined, {
+      skip: !createNomenclatureModalOpened && !editNomenclatureModalOpened,
+    })
 
   const groupListMenuItems: MenuProps['items'] = useMemo(() => {
     const handleClickEdit = (group: NomenclatureGroupListItemModel) => (event: MouseEvent) => {

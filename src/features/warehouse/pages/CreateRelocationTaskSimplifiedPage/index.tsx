@@ -60,8 +60,8 @@ import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
-import { useGetCurrencyList } from 'shared/catalogs/hooks/currencies'
-import { useGetMacroregions } from 'shared/catalogs/hooks/macroregions'
+import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
+import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { CANCEL_TEXT, CREATE_TEXT, SAVE_TEXT } from 'shared/constants/common'
 import { filesFormItemProps } from 'shared/constants/form'
@@ -235,10 +235,10 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     isManager: false,
   })
 
-  const { currentData: currencies = [], isFetching: currenciesIsFetching } = useGetCurrencyList(
-    undefined,
-    { skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened },
-  )
+  const { currentData: currencies = [], isFetching: currenciesIsFetching } =
+    useGetCurrenciesCatalog(undefined, {
+      skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened,
+    })
 
   const {
     currentData: equipmentCatalogsFromWarehouse = [],
@@ -305,13 +305,14 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     editEquipmentByFileModalOpened,
   ])
 
-  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } = useGetMacroregions(
-    {
-      ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
-      ...(!!warehouseMSI?.id && { warehouses: [warehouseMSI.id] }),
-    },
-    { skip: !selectedOwnerId && !warehouseMSI?.id },
-  )
+  const { currentData: macroregions = [], isFetching: macroregionsIsFetching } =
+    useGetMacroregionsCatalog(
+      {
+        ...(!!selectedOwnerId && { customers: [selectedOwnerId] }),
+        ...(!!warehouseMSI?.id && { warehouses: [warehouseMSI.id] }),
+      },
+      { skip: !selectedOwnerId && !warehouseMSI?.id },
+    )
 
   const [createAttachment, { isLoading: createAttachmentIsLoading }] = useCreateAttachment()
   const [deleteAttachment, { isLoading: deleteAttachmentIsLoading }] = useDeleteAttachment()

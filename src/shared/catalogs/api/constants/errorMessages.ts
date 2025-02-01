@@ -13,15 +13,15 @@ export const getResolutionClassificationsCatalogErrMsg =
 export const getUserStatusesErrMsg = 'Ошибка получения статусов пользователя'
 export const getLocationsErrMsg = 'Ошибка получения списка меcтонахождений'
 export const getFaChangeTypesErrMsg = 'Ошибка получения списка типов замены фискальных накопителей'
-export const getUrgencyRateTypesErrMsg =
+export const getUrgencyRateTypesCatalogErrMsg =
   'Ошибка получения списка тарифов срочности для работ по изменению инфраструктуры'
 
 export const getWorkGroupsCatalogErrMsg = 'Ошибка получения каталога рабочих групп'
-export const getInfrastructureWorkTypesErrMsg =
+export const getInfrastructureWorkTypesCatalogErrMsg =
   'Ошибка получения каталога видов работ по изменению инфраструктуры'
 
-export const getCountryCatalogErrMsg = 'Ошибка получения списка стран производителей'
+export const getCountriesCatalogErrMsg = 'Ошибка получения списка стран производителей'
 
-export const getCurrenciesErrMsg = 'Ошибка получения списка валют'
+export const getCurrenciesCatalogErrMsg = 'Ошибка получения списка валют'
 
-export const getMacroregionsErrMsg = 'Ошибка получения списка макрорегионов'
+export const getMacroregionsCatalogErrMsg = 'Ошибка получения списка макрорегионов'

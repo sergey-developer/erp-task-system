@@ -1,12 +1,4 @@
 import { Badge, Col, Layout, Row, Select, Space, Typography } from 'antd'
-import moment from 'moment-timezone'
-import { DefaultOptionType } from 'rc-select/lib/Select'
-import React, { FC, useCallback, useMemo } from 'react'
-import { Link, useMatches } from 'react-router-dom'
-
-import { navMenuConfig } from 'configs/navMenu'
-import { mapNavMenuConfig } from 'configs/navMenu/utils'
-
 import LogoutButton from 'features/auth/components/LogoutButton'
 import { MonitoringRouteEnum } from 'features/monitoring/constants'
 import { taskLocalStorageService } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
@@ -23,6 +15,13 @@ import {
   useUpdateUserTimeZoneMutation,
 } from 'features/user/services/userApi.service'
 import { checkUserStatusOffline } from 'features/user/utils'
+import moment from 'moment-timezone'
+import { DefaultOptionType } from 'rc-select/lib/Select'
+import React, { FC, useCallback, useMemo } from 'react'
+import { Link, useMatches } from 'react-router-dom'
+
+import { navMenuConfig } from 'configs/navMenu'
+import { mapNavMenuConfig } from 'configs/navMenu/utils'
 
 import DetailedUserAvatar from 'components/Avatars/DetailedUserAvatar'
 import UserAvatar from 'components/Avatars/UserAvatar'
@@ -31,8 +30,6 @@ import Logo from 'components/Logo'
 import NavMenu, { NavMenuProps } from 'components/NavMenu'
 import NotificationCounter from 'components/NotificationCounter'
 
-import { useTimeZoneListState } from 'shared/catalogs/hooks/timeZone'
-import { useUserStatusListState } from 'shared/catalogs/hooks/userStatus'
 import {
   getErrorDetail,
   isBadRequestError,
@@ -40,6 +37,8 @@ import {
   isNotFoundError,
   isUnauthorizedError,
 } from 'shared/api/baseApi'
+import { useTimeZonesCatalogState } from 'shared/catalogs/hooks/timeZones'
+import { useUserStatusesCatalogState } from 'shared/catalogs/hooks/userStatuses'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { timeZoneDropdownStyles } from './styles'
@@ -53,10 +52,10 @@ const PrivateHeader: FC = () => {
   const { data: userMeCode } = useUserMeCodeState()
   const { data: userMe } = useUserMeState()
 
-  const { data: timeZoneList, isFetching: timeZoneListIsFetching } = useTimeZoneListState()
+  const { data: timeZoneList, isFetching: timeZoneListIsFetching } = useTimeZonesCatalogState()
 
   const { data: userStatusList = [], isFetching: userStatusListIsFetching } =
-    useUserStatusListState()
+    useUserStatusesCatalogState()
 
   const [updateUserTimeZoneMutation, { isLoading: updateUserTimeZoneIsLoading }] =
     useUpdateUserTimeZoneMutation()

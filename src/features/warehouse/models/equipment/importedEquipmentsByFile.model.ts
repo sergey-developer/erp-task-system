@@ -6,8 +6,8 @@ import {
   WorkTypeListItemModel,
 } from 'features/warehouse/models'
 
-import { CurrencyListItemModel } from 'shared/catalogs/api/dto/currencies'
-import { MacroregionListItemModel } from 'shared/catalogs/api/dto/macroregions'
+import { CurrencyCatalogItemDTO } from 'shared/catalogs/api/dto/currencies'
+import { MacroregionCatalogItemDTO } from 'shared/catalogs/api/dto/macroregions'
 import { MaybeNull } from 'shared/types/utils'
 
 export type ImportedEquipmentByFileModel = {
@@ -23,9 +23,9 @@ export type ImportedEquipmentByFileModel = {
   isWarranty: MaybeNull<boolean>
   isRepaired: MaybeNull<boolean>
   category: MaybeNull<Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>>
-  currency: MaybeNull<Pick<CurrencyListItemModel, 'id' | 'title'>>
+  currency: MaybeNull<Pick<CurrencyCatalogItemDTO, 'id' | 'title'>>
   owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
-  macroregion: MaybeNull<Pick<MacroregionListItemModel, 'id' | 'title'>>
+  macroregion: MaybeNull<Pick<MacroregionCatalogItemDTO, 'id' | 'title'>>
   purpose: MaybeNull<Pick<WorkTypeListItemModel, 'id' | 'title'>>
   nomenclature: MaybeNull<
     Pick<NomenclatureModel, 'id' | 'title' | 'equipmentHasSerialNumber'> & {

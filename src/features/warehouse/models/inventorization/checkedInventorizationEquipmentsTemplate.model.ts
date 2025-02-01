@@ -6,8 +6,8 @@ import {
   WorkTypeListItemModel,
 } from 'features/warehouse/models'
 
-import { CurrencyListItemModel } from 'shared/catalogs/api/dto/currencies'
-import { MacroregionListItemModel } from 'shared/catalogs/api/dto/macroregions'
+import { CurrencyCatalogItemDTO } from 'shared/catalogs/api/dto/currencies'
+import { MacroregionCatalogItemDTO } from 'shared/catalogs/api/dto/macroregions'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -19,14 +19,14 @@ export type CheckedInventorizationEquipmentsTemplateListItemModel = {
   nomenclature?: Pick<NomenclatureModel, 'id' | 'title' | 'vendorCode'>
   condition?: EquipmentConditionEnum
   price?: number
-  currency?: Pick<CurrencyListItemModel, 'id' | 'title'>
+  currency?: Pick<CurrencyCatalogItemDTO, 'id' | 'title'>
   category?: Pick<EquipmentCategoryListItemModel, 'id' | 'title' | 'code'>
   isNew?: boolean
   isWarranty?: boolean
   isRepaired?: boolean
   usageCounter?: number
   owner?: Pick<CustomerListItemModel, 'id' | 'title'>
-  macroregion?: Pick<MacroregionListItemModel, 'id' | 'title'>
+  macroregion?: Pick<MacroregionCatalogItemDTO, 'id' | 'title'>
   purpose?: Pick<WorkTypeListItemModel, 'id' | 'title'>
   comment?: string
   quantityFact?: number

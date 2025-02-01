@@ -1,2 +1,2 @@
-export * from './urgencyRateTypesCatalog.model'
-export * from './getUrgencyRateTypesCatalog.model'
+export * from './urgencyRateTypesCatalog.dto'
+export * from './getUrgencyRateTypesCatalog.dto'

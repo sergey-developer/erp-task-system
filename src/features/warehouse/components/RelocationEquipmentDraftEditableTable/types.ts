@@ -6,7 +6,7 @@ import { RelocationTaskInventorizationEquipment } from 'features/warehouse/types
 import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
 
-import { CurrenciesCatalogModel } from 'shared/catalogs/api/dto/currencies'
+import { CurrenciesCatalogDTO } from 'shared/catalogs/api/dto/currencies'
 
 export type InventorizationEquipmentTableRow = Partial<RelocationTaskInventorizationEquipment> & {
   rowId: number
@@ -27,7 +27,7 @@ export type RelocationEquipmentDraftEditableTableProps = {
 
   relocationEquipmentsIsLoading?: boolean
 
-  currencies: CurrenciesCatalogModel
+  currencies: CurrenciesCatalogDTO
   currenciesIsLoading: boolean
 
   equipments: (InventorizationEquipmentListItemModel & {

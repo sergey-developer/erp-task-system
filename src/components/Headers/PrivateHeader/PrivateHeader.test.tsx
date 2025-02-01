@@ -1,12 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import { testUtils as logoutButtonTestUtils } from 'features/auth/components/LogoutButton/LogoutButton.test'
 import { testUtils as loginPageTestUtils } from 'features/auth/pages/LoginPage/LoginPage.test'
+import { testUtils as homeLayoutTestUtils } from 'features/layout/components/HomeLayout/HomeLayout.test'
 import { taskLocalStorageService } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { updateUserStatusMessages, UserPermissionsEnum } from 'features/user/constants'
-
-import { testUtils as homeLayoutTestUtils } from 'components/Layouts/HomeLayout/HomeLayout.test'
 
 import { UserStatusCodeEnum } from 'shared/catalogs/constants'
 import { MaybeNull } from 'shared/types/utils'

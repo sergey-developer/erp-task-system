@@ -1,2 +1,2 @@
-export * from './infrastructureWorkTypesCatalog.model'
-export * from './getInfrastructureWorkTypesCatalog.model'
+export * from './infrastructureWorkTypesCatalog.dto'
+export * from './getInfrastructureWorkTypesCatalog.dto'

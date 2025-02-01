@@ -1,8 +1,8 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogsApiEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
-  GetMacroregionsQueryArgs,
-  GetMacroregionsSuccessResponse,
+  GetMacroregionsCatalogQueryArgs,
+  GetMacroregionsCatalogSuccessResponse,
 } from 'shared/catalogs/api/dto/macroregions'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -10,11 +10,11 @@ import { MaybeUndefined } from 'shared/types/utils'
 const macroregionsCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getMacroregionsCatalog: build.query<
-      GetMacroregionsSuccessResponse,
-      MaybeUndefined<GetMacroregionsQueryArgs>
+      GetMacroregionsCatalogSuccessResponse,
+      MaybeUndefined<GetMacroregionsCatalogQueryArgs>
     >({
       query: (params) => ({
-        url: CatalogsApiEnum.GetMacroregions,
+        url: CatalogEndpointsEnum.GetMacroregions,
         method: HttpMethodEnum.Get,
         params,
       }),

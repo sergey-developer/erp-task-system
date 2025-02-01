@@ -1,19 +1,19 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogsApiEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
-  GetInfrastructureWorkTypesQueryArgs,
-  GetInfrastructureWorkTypesSuccessResponse,
+  GetInfrastructureWorkTypesCatalogQueryArgs,
+  GetInfrastructureWorkTypesCatalogSuccessResponse,
 } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const infrastructureWorkTypesCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getInfrastructureWorkTypesCatalog: build.query<
-      GetInfrastructureWorkTypesSuccessResponse,
-      GetInfrastructureWorkTypesQueryArgs
+      GetInfrastructureWorkTypesCatalogSuccessResponse,
+      GetInfrastructureWorkTypesCatalogQueryArgs
     >({
       query: () => ({
-        url: CatalogsApiEnum.GetInfrastructureWorkTypes,
+        url: CatalogEndpointsEnum.GetInfrastructureWorkTypes,
         method: HttpMethodEnum.Get,
       }),
     }),

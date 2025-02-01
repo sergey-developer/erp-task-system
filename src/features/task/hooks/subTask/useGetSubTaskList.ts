@@ -1,10 +1,9 @@
-import { useEffect } from 'react'
-
-import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
 import { getSubTasksErrMsg } from 'features/task/constants/task'
 import { GetSubTaskListQueryArgs, GetSubTaskListSuccessResponse } from 'features/task/models'
 import { useGetSubTaskListQuery } from 'features/task/services/taskApi.service'
+import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import {
   getErrorDetail,
@@ -20,14 +19,14 @@ type UseGetSubTaskListResult = CustomUseQueryHookResult<
   GetSubTaskListSuccessResponse
 >
 
-type UseGetCountryListOptions = CustomUseQueryOptions<
+type UseGetSubTaskListOptions = CustomUseQueryOptions<
   GetSubTaskListQueryArgs,
   GetSubTaskListSuccessResponse
 >
 
 export const useGetSubTaskList = (
   args: GetSubTaskListQueryArgs,
-  options?: UseGetCountryListOptions,
+  options?: UseGetSubTaskListOptions,
 ): UseGetSubTaskListResult => {
   const state = useGetSubTaskListQuery(args, options)
 

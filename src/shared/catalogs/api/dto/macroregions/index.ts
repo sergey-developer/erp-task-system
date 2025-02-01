@@ -1,2 +1,2 @@
-export * from './macroregionsCatalog.model'
-export * from './getMacroregionsCatalog.model'
+export * from './macroregionsCatalog.dto'
+export * from './getMacroregionsCatalog.dto'

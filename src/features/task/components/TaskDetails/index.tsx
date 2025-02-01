@@ -1,9 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { App, Button, Col, Divider, Drawer, Flex, FormInstance, Row, Typography } from 'antd'
-import debounce from 'lodash/debounce'
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-
 import { useAuthUser } from 'features/auth/hooks'
 import { useUpdateInfrastructure } from 'features/infrastructures/hooks'
 import { getChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/utils'
@@ -71,6 +67,9 @@ import { UserPermissionsEnum } from 'features/user/constants'
 import { useGetUserActions, useGetUsers, useUserPermissions } from 'features/user/hooks'
 import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType/enum'
 import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
+import debounce from 'lodash/debounce'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import Label from 'components/Label'
 import LoadingArea from 'components/LoadingArea'
@@ -78,19 +77,19 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
-import { DEFAULT_DEBOUNCE_VALUE, NO_ASSIGNEE_TEXT } from 'shared/constants/common'
-import { MimetypeEnum } from 'shared/constants/mimetype'
-import { useGetFaChangeTypes } from 'shared/catalogs/hooks/faChangeTypes'
-import { useGetResolutionClassifications } from 'shared/catalogs/hooks/resolutionClassifications'
-import { useGetWorkGroupsCatalog } from 'shared/catalogs/hooks/workGroups'
-import { useSystemSettingsState } from 'shared/catalogs/hooks/system'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import {
   getErrorDetail,
   isBadRequestError,
   isErrorResponse,
   isNotFoundError,
 } from 'shared/api/baseApi'
+import { useGetFaChangeTypesCatalog } from 'shared/catalogs/hooks/faChangeTypes'
+import { useGetResolutionClassificationsCatalog } from 'shared/catalogs/hooks/resolutionClassifications'
+import { useGetWorkGroupsCatalog } from 'shared/catalogs/hooks/workGroups'
+import { DEFAULT_DEBOUNCE_VALUE, NO_ASSIGNEE_TEXT } from 'shared/constants/common'
+import { MimetypeEnum } from 'shared/constants/mimetype'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { useSystemSettingsState } from 'shared/system/hooks'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 import { base64ToBytes, isFalse, isTrue, valueOr } from 'shared/utils/common'
@@ -355,10 +354,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   )
   // create registration FN request modal
 
-  const { data: faChangeTypes = [], isFetching: faChangeTypesIsFetching } = useGetFaChangeTypes(
-    undefined,
-    { skip: !createRegistrationFNRequestModalOpened },
-  )
+  const { data: faChangeTypes = [], isFetching: faChangeTypesIsFetching } =
+    useGetFaChangeTypesCatalog(undefined, { skip: !createRegistrationFNRequestModalOpened })
 
   const {
     data: taskRegistrationRequestRecipients,
@@ -510,7 +507,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
   const {
     currentData: resolutionClassifications = [],
     isFetching: resolutionClassificationsIsFetching,
-  } = useGetResolutionClassifications(
+  } = useGetResolutionClassificationsCatalog(
     { supportGroup: task?.supportGroup?.id! },
     {
       skip:

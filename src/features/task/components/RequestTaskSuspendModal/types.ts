@@ -1,15 +1,14 @@
 import { FormInstance, ModalProps } from 'antd'
-import { Moment } from 'moment-timezone'
-
 import {
   ExternalResponsibleCompanyEnum,
   SuspendReasonEnum,
 } from 'features/task/constants/taskSuspendRequest'
+import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { SystemSettingsModel } from 'shared/models/system'
 import { FieldsErrors } from 'shared/api/baseApi'
+import { SystemSettingsModel } from 'shared/system/api/dto'
 
 export type RequestTaskSuspendModalProps = Required<Pick<BaseModalProps, 'open'>> & {
   recordId: string
