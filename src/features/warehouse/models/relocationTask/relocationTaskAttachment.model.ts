@@ -1,7 +1,7 @@
-import { AttachmentModel } from 'features/attachment/models'
+import { AttachmentDetailDTO } from 'features/attachments/api/dto'
 
 export type RelocationTaskAttachmentModel = Pick<
-  AttachmentModel,
+  AttachmentDetailDTO,
   'id' | 'name' | 'size' | 'url'
 > & {
   createdAt: string

@@ -11,9 +11,9 @@ import {
   Upload,
   UploadProps,
 } from 'antd'
-import { AttachmentTypeEnum } from 'features/attachment/constants'
-import { useCreateAttachment, useDeleteAttachment } from 'features/attachment/hooks'
-import { renderUploadedFile } from 'features/attachment/utils'
+import { AttachmentTypeEnum } from 'features/attachments/api/constants'
+import { renderUploadedFile } from 'features/attachments/helpers'
+import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
 import { getTaskCompleteAtDate } from 'features/task/components/TaskDetails/MainDetails/utils'
 import { TaskModel } from 'features/task/models'
@@ -82,7 +82,7 @@ const CreateEquipmentsByFileModal = React.lazy(
 )
 
 const CreateAttachmentListModal = React.lazy(
-  () => import('features/attachment/components/CreateAttachmentListModal'),
+  () => import('features/attachments/components/CreateAttachmentListModal'),
 )
 
 const EquipmentFormModal = React.lazy(

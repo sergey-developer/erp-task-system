@@ -1,6 +1,5 @@
+import { testUtils as attachmentsTestUtils } from 'features/attachments/components/Attachments/Attachments.test'
 import React from 'react'
-
-import { testUtils as attachmentsTestUtils } from 'features/attachment/components/Attachments/Attachments.test'
 
 import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/JournalTab/JournalEntry/constants'
 import { journalEntryTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/JournalTab/JournalEntry/testUtils'

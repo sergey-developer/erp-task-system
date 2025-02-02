@@ -1,5 +1,5 @@
 import { Form, Select, Upload } from 'antd'
-import { renderUploadedFile } from 'features/attachment/utils'
+import { renderUploadedFile } from 'features/attachments/helpers'
 import React, { FC, useMemo } from 'react'
 
 import UploadButton from 'components/Buttons/UploadButton'

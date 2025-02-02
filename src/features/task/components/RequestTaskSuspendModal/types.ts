@@ -8,7 +8,7 @@ import { Moment } from 'moment-timezone'
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { FieldsErrors } from 'shared/api/baseApi'
-import { SystemSettingsModel } from 'shared/system/api/dto'
+import { SystemSettingsDTO } from 'shared/system/api/dto/systemSettings'
 
 export type RequestTaskSuspendModalProps = Required<Pick<BaseModalProps, 'open'>> & {
   recordId: string
@@ -19,7 +19,7 @@ export type RequestTaskSuspendModalProps = Required<Pick<BaseModalProps, 'open'>
   onCancel: NonNullable<ModalProps['onCancel']>
   isLoading: boolean
 
-  systemSettings?: SystemSettingsModel
+  systemSettings?: SystemSettingsDTO
   systemSettingsIsLoading?: boolean
 }
 

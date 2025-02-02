@@ -15,11 +15,7 @@ import {
   Upload,
   UploadProps,
 } from 'antd'
-import isUndefined from 'lodash/isUndefined'
-import React, { FC, useCallback, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-
-import Attachments from 'features/attachment/components/Attachments'
+import Attachments from 'features/attachments/components/Attachments'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
 import { getTasksPageLink } from 'features/task/utils/task'
 import { UserPermissionsEnum } from 'features/user/constants'
@@ -68,6 +64,9 @@ import {
   makeEditRelocationTaskPageLink,
   makeRelocationTasksPageLink,
 } from 'features/warehouse/utils/relocationTask'
+import isUndefined from 'lodash/isUndefined'
+import React, { FC, useCallback, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import { DoubleRightArrowIcon, MenuIcon } from 'components/Icons'
@@ -76,16 +75,16 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
-import { HEADER_HEIGHT } from 'shared/constants/common'
-import { DATE_FORMAT } from 'shared/constants/dateTime'
-import { MimetypeEnum } from 'shared/constants/mimetype'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import {
   isBadRequestError,
   isErrorResponse,
   isForbiddenError,
   isNotFoundError,
 } from 'shared/api/baseApi'
+import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { HEADER_HEIGHT } from 'shared/constants/common'
+import { DATE_FORMAT } from 'shared/constants/dateTime'
+import { MimetypeEnum } from 'shared/constants/mimetype'
 import { base64ToBytes, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { downloadFile, extractOriginFiles } from 'shared/utils/file'
@@ -97,7 +96,7 @@ import ReadonlyField from './ReadonlyField'
 import { RelocationTaskDetailsProps } from './types'
 
 const AttachmentListModal = React.lazy(
-  () => import('features/attachment/components/AttachmentListModal'),
+  () => import('features/attachments/components/AttachmentListModal'),
 )
 
 const CancelRelocationTaskModal = React.lazy(

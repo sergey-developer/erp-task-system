@@ -1,8 +1,5 @@
 import { Button, Card, Col, Drawer, DrawerProps, Flex, Row, Typography } from 'antd'
-import React, { FC } from 'react'
-import { useNavigate } from 'react-router-dom'
-
-import Attachments from 'features/attachment/components/Attachments'
+import Attachments from 'features/attachments/components/Attachments'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
 import { UserPermissionsEnum } from 'features/user/constants'
 import { useUserPermissions } from 'features/user/hooks'
@@ -19,6 +16,8 @@ import {
   makeExecuteInventorizationPageLocationState,
   mapInventorizationWarehousesTitles,
 } from 'features/warehouse/utils/inventorization'
+import React, { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import LoadingArea from 'components/LoadingArea'
 

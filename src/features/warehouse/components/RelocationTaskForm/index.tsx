@@ -1,12 +1,11 @@
 import { Col, Form, Input, Row, Select, SelectProps, Typography, Upload } from 'antd'
-import React, { useMemo } from 'react'
-
-import { renderUploadedFile } from 'features/attachment/utils'
+import { renderUploadedFile } from 'features/attachments/helpers'
 import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
   getRelocationTaskTypeOptions,
 } from 'features/warehouse/utils/relocationTask'
+import React, { useMemo } from 'react'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import DatePicker from 'components/DatePicker'

@@ -14,8 +14,8 @@ import {
   UploadProps,
 } from 'antd'
 import { SearchProps } from 'antd/es/input'
-import { AttachmentTypeEnum } from 'features/attachment/constants'
-import { useCreateAttachment, useDeleteAttachment } from 'features/attachment/hooks'
+import { AttachmentTypeEnum } from 'features/attachments/api/constants'
+import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
 import { UserPermissionsEnum } from 'features/user/constants'
 import { useUserPermissions } from 'features/user/hooks'

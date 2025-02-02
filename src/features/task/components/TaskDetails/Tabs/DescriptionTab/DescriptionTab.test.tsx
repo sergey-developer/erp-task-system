@@ -1,4 +1,4 @@
-import { testUtils as attachmentsTestUtils } from 'features/attachment/components/Attachments/Attachments.test'
+import { testUtils as attachmentsTestUtils } from 'features/attachments/components/Attachments/Attachments.test'
 
 import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/DescriptionTab/constants'
 import { descriptionTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/DescriptionTab/testUtils'

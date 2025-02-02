@@ -14,8 +14,8 @@ import isNumber from 'lodash/isNumber'
 
 import { GetLocationsCatalogQueryArgs } from 'shared/catalogs/api/dto/locations'
 import { LocationTypeEnum } from 'shared/catalogs/constants'
+import { checkLocationTypeIsWarehouse } from 'shared/catalogs/helpers/locations/checkLocationType'
 import { MaybeUndefined } from 'shared/types/utils'
-import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 
 const getConditionsByType = (
   type: RelocationTaskTypeEnum,

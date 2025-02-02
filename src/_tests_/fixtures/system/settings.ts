@@ -1,10 +1,10 @@
 import { SuspendReasonEnum } from 'features/task/constants/taskSuspendRequest'
 
-import { SystemSettingsModel } from 'shared/system/api/dto'
+import { SystemSettingsDTO } from 'shared/system/api/dto/systemSettings'
 
 import { fakeInteger } from '_tests_/utils'
 
-export const settings = (): SystemSettingsModel => ({
+export const settings = (): SystemSettingsDTO => ({
   suspendReasons: {
     [SuspendReasonEnum.AwaitingInformation]: {
       editable: true,

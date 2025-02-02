@@ -1,7 +1,3 @@
-import get from 'lodash/get'
-import React from 'react'
-import { Navigate, RouteObject } from 'react-router-dom'
-
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
 import { UserPermissionsEnum } from 'features/user/constants'
 import { userHasPermissions } from 'features/user/utils'
@@ -15,11 +11,14 @@ import {
   checkInventorizationStatusIsInProgress,
   checkInventorizationStatusIsNew,
 } from 'features/warehouse/utils/inventorization'
+import get from 'lodash/get'
+import React from 'react'
+import { Navigate, RouteObject } from 'react-router-dom'
 
 import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
 import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
 
-import { BreadCrumbData } from 'shared/catalogs/hooks/useBreadcrumbsMatches'
+import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
 
 import { RelocationTaskStatusEnum } from './constants/relocationTask'
 

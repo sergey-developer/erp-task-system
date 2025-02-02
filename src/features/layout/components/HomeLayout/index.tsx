@@ -12,7 +12,8 @@ import Spinner from 'components/Spinner'
 
 import { useGetTimeZonesCatalog } from 'shared/catalogs/hooks/timeZones'
 import { useGetUserStatusesCatalog } from 'shared/catalogs/hooks/userStatuses'
-import { useGetSystemInfo, useGetSystemSettings } from 'shared/system/hooks'
+import { useGetSystemInfo } from 'shared/system/hooks/systemInfo'
+import { useGetSystemSettings } from 'shared/system/hooks/systemSettings'
 
 import { ContentStyled, FooterStyled } from './styles'
 

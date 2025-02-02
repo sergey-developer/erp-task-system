@@ -5,10 +5,9 @@ import {
 } from 'features/warehouse/constants/relocationTask'
 import { RelocationTaskListItemModel } from 'features/warehouse/models'
 
-import { PaginationResponse } from 'shared/models/pagination.model'
+import { PaginationParams, PaginationResponse } from 'shared/dto/api/pagination.dto'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
-import { PaginationParams } from 'shared/types/pagination'
 import { ExtendSortKey, SortParams } from 'shared/types/sort'
 
 export type GetRelocationTasksSortKey =

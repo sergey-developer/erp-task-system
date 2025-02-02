@@ -1,8 +1,8 @@
-import { DeleteAttachmentSuccessResponse } from 'features/attachment/models'
-import { deleteAttachmentUrl } from 'features/attachment/utils'
+import { DeleteAttachmentSuccessResponse } from 'features/attachments/api/dto'
+import { makeDeleteAttachmentEndpoint } from 'features/attachments/api/helpers'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {
@@ -16,7 +16,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const deleteAttachmentMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Delete, deleteAttachmentUrl(id))
+  getRequestMockFn(HttpMethodEnum.Delete, makeDeleteAttachmentEndpoint(id))
 
 export const mockDeleteAttachmentSuccess = (
   id: IdType,

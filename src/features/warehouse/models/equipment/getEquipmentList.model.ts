@@ -1,10 +1,9 @@
 import { EquipmentsFilterParams } from 'features/warehouse/types'
 
 import { LocationTypeEnum } from 'shared/catalogs/constants'
-import { PaginationResponse } from 'shared/models/pagination.model'
+import { PaginationParams, PaginationResponse } from 'shared/dto/api/pagination.dto'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
-import { PaginationParams } from 'shared/types/pagination'
 import { ExtendSortKey } from 'shared/types/sort'
 
 import { EquipmentListItemModel } from './equipmentList.model'

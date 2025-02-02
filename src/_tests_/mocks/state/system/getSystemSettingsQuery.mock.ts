@@ -1,5 +1,5 @@
-import { SystemSettingsModel } from 'shared/system/api/dto'
+import { SystemSettingsDTO } from 'shared/system/api/dto/systemSettings'
 
-export const getSystemSettingsQueryMock = (data: Partial<SystemSettingsModel>) => ({
+export const getSystemSettingsQueryMock = (data: Partial<SystemSettingsDTO>) => ({
   'getSystemSettings(undefined)': { data },
 })

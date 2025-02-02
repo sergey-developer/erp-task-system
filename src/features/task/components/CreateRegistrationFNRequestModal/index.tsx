@@ -1,7 +1,6 @@
 import { Flex, Form, Select, Space, Typography, Upload } from 'antd'
+import { renderUploadedFile } from 'features/attachments/helpers'
 import React, { FC, useEffect, useMemo } from 'react'
-
-import { renderUploadedFile } from 'features/attachment/utils'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import Label from 'components/Label'

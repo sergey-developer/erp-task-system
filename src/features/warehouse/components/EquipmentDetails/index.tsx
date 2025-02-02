@@ -1,9 +1,9 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Drawer, Dropdown, Image, MenuProps, Row, Typography, UploadProps } from 'antd'
-import AttachmentImages from 'features/attachment/components/AttachmentImages'
-import { AttachmentTypeEnum } from 'features/attachment/constants'
-import { useCreateAttachment, useDeleteAttachment } from 'features/attachment/hooks'
-import { attachmentsToFiles } from 'features/attachment/utils'
+import { AttachmentTypeEnum } from 'features/attachments/api/constants'
+import AttachmentImages from 'features/attachments/components/AttachmentImages'
+import { attachmentsToFiles } from 'features/attachments/helpers'
+import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import {
   useGetTechnicalExaminations,
   useLazyGetTechnicalExaminationPdf,
@@ -67,7 +67,7 @@ import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getHiddenFieldsByCategory } from './utils'
 
 const AttachmentListModal = React.lazy(
-  () => import('features/attachment/components/AttachmentListModal'),
+  () => import('features/attachments/components/AttachmentListModal'),
 )
 
 const EquipmentFormModal = React.lazy(

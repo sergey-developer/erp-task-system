@@ -1,4 +1,4 @@
-import { AttachmentModel } from 'features/attachment/models'
+import { AttachmentDetailDTO } from 'features/attachments/api/dto'
 import { UserModel } from 'features/user/models'
 import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
 
@@ -8,7 +8,7 @@ import { MaybeNull } from 'shared/types/utils'
 import { ExternalRelocationModel } from '../relocationTask'
 
 export type EquipmentRelocationHistoryAttachmentModel = Pick<
-  AttachmentModel,
+  AttachmentDetailDTO,
   'id' | 'name' | 'size' | 'url'
 > & {
   createdAt: string

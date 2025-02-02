@@ -1,12 +1,12 @@
 import { TaskAttachmentListModel } from 'features/task/models'
+import { BaseUserModel } from 'features/user/models'
 
-import { CommentAuthorModel } from 'shared/models/commentAuthor.model'
 import { IdType } from 'shared/types/common'
 
 export type TaskCommentModel = {
   id: IdType
   text: string
-  author: CommentAuthorModel
+  author: Omit<BaseUserModel, 'avatar'>
   createdAt: string
   attachments: TaskAttachmentListModel
 }

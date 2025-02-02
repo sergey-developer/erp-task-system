@@ -1,6 +1,5 @@
+import { AttachmentDTO } from 'features/attachments/api/dto'
+
 import { AntdPaginatedList } from 'lib/antd/types'
 
-import { AttachmentListItemModel } from 'features/attachment/models'
-
-export type GetEquipmentAttachmentListTransformedSuccessResponse =
-  AntdPaginatedList<AttachmentListItemModel>
+export type GetEquipmentAttachmentListTransformedSuccessResponse = AntdPaginatedList<AttachmentDTO>

@@ -1,7 +1,7 @@
 import { useBoolean } from 'ahooks'
 import { Flex, Form, Upload, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-import { attachmentsToFiles, renderUploadedFile } from 'features/attachment/utils'
+import { attachmentsToFiles, renderUploadedFile } from 'features/attachments/helpers'
 import { deleteInfrastructureOrdersFormsWorkErrMsg } from 'features/infrastructures/constants'
 import {
   useCreateInfrastructureOrderFormWork,

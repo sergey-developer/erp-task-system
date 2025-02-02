@@ -1,4 +1,4 @@
-import { AttachmentListItemModel } from 'features/attachment/models'
+import { AttachmentDTO } from 'features/attachments/api/dto'
 
-export type RelocationEquipmentAttachmentListItemModel = AttachmentListItemModel
+export type RelocationEquipmentAttachmentListItemModel = AttachmentDTO
 export type RelocationEquipmentAttachmentListModel = RelocationEquipmentAttachmentListItemModel[]

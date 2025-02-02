@@ -1,9 +1,8 @@
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { BaseNomenclatureRequestArgs } from 'features/warehouse/types'
 
-import { PaginationResponse } from 'shared/models/pagination.model'
+import { PaginationParams, PaginationResponse } from 'shared/dto/api/pagination.dto'
 import { IdType } from 'shared/types/common'
-import { PaginationParams } from 'shared/types/pagination'
 
 import { HistoryNomenclatureOperationsReportListItemModel } from './historyNomenclatureOperationsReport.model'
 

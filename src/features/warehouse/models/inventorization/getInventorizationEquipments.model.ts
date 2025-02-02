@@ -1,9 +1,8 @@
 import { InventorizationRequestArgs } from 'features/warehouse/types'
 
-import { PaginationResponse } from 'shared/models/pagination.model'
+import { PaginationParams, PaginationResponse } from 'shared/dto/api/pagination.dto'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
-import { PaginationParams } from 'shared/types/pagination'
 import { ExtendSortKey, SortParams } from 'shared/types/sort'
 
 import { InventorizationEquipmentListItemModel } from './inventorizationEquipments.model'

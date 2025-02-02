@@ -1,7 +1,7 @@
 import { useBoolean, usePrevious } from 'ahooks'
 import { Button, Col, Form, FormProps, Modal, Row, Typography, Upload, UploadProps } from 'antd'
-import { AttachmentTypeEnum } from 'features/attachment/constants'
-import { useCreateAttachment, useDeleteAttachment } from 'features/attachment/hooks'
+import { AttachmentTypeEnum } from 'features/attachments/api/constants'
+import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
 import { UserGroupCategoryEnum, UserPermissionsEnum } from 'features/user/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/user/hooks'
@@ -62,6 +62,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
+import { checkLocationTypeIsWarehouse } from 'shared/catalogs/helpers/locations/checkLocationType'
 import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
@@ -69,7 +70,6 @@ import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { SAVE_TEXT } from 'shared/constants/common'
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
-import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { extractLocationState } from 'shared/utils/common'
 import { mergeDateTime } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
@@ -89,7 +89,7 @@ const CreateEquipmentsByFileModal = React.lazy(
 )
 
 const CreateAttachmentListModal = React.lazy(
-  () => import('features/attachment/components/CreateAttachmentListModal'),
+  () => import('features/attachments/components/CreateAttachmentListModal'),
 )
 
 const EquipmentFormModal = React.lazy(

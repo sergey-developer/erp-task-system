@@ -1,4 +1,4 @@
-import { AttachmentModel } from 'features/attachment/models'
+import { AttachmentDetailDTO } from 'features/attachments/api/dto'
 import { UserModel } from 'features/user/models'
 import {
   InventorizationStatusEnum,
@@ -21,5 +21,5 @@ export type InventorizationModel = {
   nomenclatures: Array<Pick<NomenclatureModel, 'id' | 'title' | 'group'>>
   completedAt: MaybeNull<string>
   description: MaybeNull<string>
-  attachments: MaybeNull<Pick<AttachmentModel, 'id' | 'name' | 'size' | 'url'>[]>
+  attachments: MaybeNull<Pick<AttachmentDetailDTO, 'id' | 'name' | 'size' | 'url'>[]>
 }

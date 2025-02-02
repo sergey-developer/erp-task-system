@@ -1,10 +1,9 @@
-import { AttachmentListItemModel } from 'features/attachment/models'
+import { AttachmentDTO } from 'features/attachments/api/dto'
 import { EquipmentRequestArgs } from 'features/warehouse/types'
 
-import { PaginationResponse } from 'shared/models/pagination.model'
-import { PaginationParams } from 'shared/types/pagination'
+import { PaginationParams, PaginationResponse } from 'shared/dto/api/pagination.dto'
 
 export type GetEquipmentAttachmentListQueryArgs = EquipmentRequestArgs &
   Pick<PaginationParams, 'limit'>
 
-export type GetEquipmentAttachmentListSuccessResponse = PaginationResponse<AttachmentListItemModel>
+export type GetEquipmentAttachmentListSuccessResponse = PaginationResponse<AttachmentDTO>

@@ -1,8 +1,8 @@
-import { AttachmentApiEnum } from 'features/attachment/constants'
-import { CreateAttachmentSuccessResponse } from 'features/attachment/models'
+import { AttachmentsEndpointsEnum } from 'features/attachments/api/constants'
+import { CreateAttachmentSuccessResponse } from 'features/attachments/api/dto'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
   getBadRequestErrorMockFn,
@@ -13,7 +13,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const createAttachmentMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Post, AttachmentApiEnum.CreateAttachment)
+  getRequestMockFn(HttpMethodEnum.Post, AttachmentsEndpointsEnum.CreateAttachment)
 
 export const mockCreateAttachmentSuccess = (
   options?: Partial<ResponseResolverOptions<CreateAttachmentSuccessResponse>>,

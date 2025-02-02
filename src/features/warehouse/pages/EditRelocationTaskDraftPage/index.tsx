@@ -1,8 +1,8 @@
 import { useBoolean, useMount, usePrevious } from 'ahooks'
 import { Button, Col, Form, Modal, Row, Typography, UploadProps } from 'antd'
-import { AttachmentTypeEnum } from 'features/attachment/constants'
-import { useCreateAttachment, useDeleteAttachment } from 'features/attachment/hooks'
-import { attachmentsToFiles } from 'features/attachment/utils'
+import { AttachmentTypeEnum } from 'features/attachments/api/constants'
+import { attachmentsToFiles } from 'features/attachments/helpers'
+import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
 import { UserPermissionsEnum } from 'features/user/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/user/hooks'
@@ -60,13 +60,13 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
+import { checkLocationTypeIsWarehouse } from 'shared/catalogs/helpers/locations/checkLocationType'
 import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
 import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { CANCEL_TEXT, SAVE_TEXT } from 'shared/constants/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { mapIds } from 'shared/utils/array/mapIds'
-import { checkLocationTypeIsWarehouse } from 'shared/utils/catalogs/location/checkLocationType'
 import { extractLocationState } from 'shared/utils/common'
 import { mergeDateTime } from 'shared/utils/date'
 import { extractIdsFromFilesResponse } from 'shared/utils/file'
@@ -74,7 +74,7 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 const CreateAttachmentsModal = React.lazy(
-  () => import('features/attachment/components/CreateAttachmentListModal'),
+  () => import('features/attachments/components/CreateAttachmentListModal'),
 )
 
 const { Text } = Typography

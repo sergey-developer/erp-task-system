@@ -1,9 +1,9 @@
-import { AttachmentModel } from 'features/attachment/models'
+import { AttachmentDetailDTO } from 'features/attachments/api/dto'
 
 import { MaybeNull } from 'shared/types/utils'
 
 export type RelocationTaskAttachmentListItemModel = Pick<
-  AttachmentModel,
+  AttachmentDetailDTO,
   'id' | 'name' | 'size' | 'url'
 > & {
   thumbnails: MaybeNull<{

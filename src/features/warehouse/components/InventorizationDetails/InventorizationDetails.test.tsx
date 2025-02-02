@@ -1,8 +1,6 @@
 import { within } from '@testing-library/react'
-import * as reactRouterDom from 'react-router-dom'
-
+import { testUtils as attachmentsTestUtils } from 'features/attachments/components/Attachments/Attachments.test'
 import { UserPermissionsEnum } from 'features/user/constants'
-import { testUtils as attachmentsTestUtils } from 'features/attachment/components/Attachments/Attachments.test'
 import {
   inventorizationStatusDict,
   InventorizationStatusEnum,
@@ -14,6 +12,7 @@ import {
   makeExecuteInventorizationPageLocationState,
   mapInventorizationWarehousesTitles,
 } from 'features/warehouse/utils/inventorization'
+import * as reactRouterDom from 'react-router-dom'
 
 import { formatDate } from 'shared/utils/date'
 

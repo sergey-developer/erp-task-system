@@ -6,10 +6,9 @@ import {
 } from 'features/task/constants/task'
 import { TaskListItemModel } from 'features/task/models'
 
-import { PaginationResponse } from 'shared/models/pagination.model'
+import { PaginationParams, PaginationResponse } from 'shared/dto/api/pagination.dto'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
-import { PaginationParams } from 'shared/types/pagination'
 import { ExtendSortKey } from 'shared/types/sort'
 
 export type GetTasksSortKey =

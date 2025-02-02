@@ -1,13 +1,15 @@
 import { within } from '@testing-library/react'
-import pick from 'lodash/pick'
-
-import { testUtils as attachmentsTestUtils } from 'features/attachment/components/Attachments/Attachments.test'
+import { testUtils as attachmentsTestUtils } from 'features/attachments/components/Attachments/Attachments.test'
 import { relocationTaskStatusDict } from 'features/warehouse/constants/relocationTask'
 import { getRelocateFromToTitle } from 'features/warehouse/utils/relocationTask'
+import pick from 'lodash/pick'
 
 import { formatDate } from 'shared/utils/date'
 
-import { props, relocationTaskListItem } from '_tests_/features/tasks/components/RelocationTasks/constants'
+import {
+  props,
+  relocationTaskListItem,
+} from '_tests_/features/tasks/components/RelocationTasks/constants'
 import { relocationTasksTestUtils } from '_tests_/features/tasks/components/RelocationTasks/testUtils'
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
 import userFixtures from '_tests_/fixtures/user'

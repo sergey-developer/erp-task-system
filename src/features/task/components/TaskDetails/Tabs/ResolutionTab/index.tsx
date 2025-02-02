@@ -1,9 +1,8 @@
 import { Space, Typography } from 'antd'
-import React, { FC } from 'react'
-
-import Attachments from 'features/attachment/components/Attachments'
+import Attachments from 'features/attachments/components/Attachments'
 import { useTaskType } from 'features/task/hooks/task'
 import { TaskModel } from 'features/task/models'
+import React, { FC } from 'react'
 
 import Label from 'components/Label'
 

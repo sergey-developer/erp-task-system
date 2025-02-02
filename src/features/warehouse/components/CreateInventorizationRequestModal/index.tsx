@@ -12,13 +12,12 @@ import {
   Typography,
   Upload,
 } from 'antd'
+import { renderUploadedFile } from 'features/attachments/helpers'
+import { inventorizationTypeOptions } from 'features/warehouse/constants/inventorization'
+import { WarehouseListItemModel } from 'features/warehouse/models'
 import sortBy from 'lodash/sortBy'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useCallback, useMemo } from 'react'
-
-import { renderUploadedFile } from 'features/attachment/utils'
-import { inventorizationTypeOptions } from 'features/warehouse/constants/inventorization'
-import { WarehouseListItemModel } from 'features/warehouse/models'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import DatePicker from 'components/DatePicker'
@@ -26,6 +25,7 @@ import { QuestionCircleIcon } from 'components/Icons'
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
+import { useSelectAll } from 'shared/catalogs/hooks/useSelectAll'
 import { CREATE_TEXT } from 'shared/constants/common'
 import { filesFormItemProps } from 'shared/constants/form'
 import {
@@ -33,7 +33,6 @@ import {
   idAndTitleSelectFieldNames,
 } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
-import { useSelectAll } from 'shared/catalogs/hooks/useSelectAll'
 import { IdType } from 'shared/types/common'
 import { filterOptionBy } from 'shared/utils/common'
 

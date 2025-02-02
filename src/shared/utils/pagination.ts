@@ -1,7 +1,7 @@
 import { TablePaginationConfig } from 'antd'
 import isNumber from 'lodash/isNumber'
 
-import { PaginationParams } from 'shared/types/pagination'
+import { PaginationParams } from 'shared/dto/api/pagination.dto'
 
 export const getInitialPaginationParams = (
   params?: PaginationParams,
