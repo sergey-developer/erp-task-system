@@ -3,7 +3,7 @@ import times from 'lodash/times'
 import {
   MacroregionCatalogItemDTO,
   MacroregionsCatalogDTO,
-} from 'shared/catalogs/api/dto/macroregions'
+} from 'shared/catalogs/macroregions/api/dto/macroregionsCatalog.dto'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

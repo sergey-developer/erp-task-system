@@ -1,5 +1,5 @@
 import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
-import { GetSubTaskTemplatesCatalogSuccessResponse } from 'shared/catalogs/api/dto/subTaskTemplates'
+import { GetSubTaskTemplatesCatalogSuccessResponse } from 'shared/catalogs/subTaskTemplates/api/schemas/getSubTaskTemplatesCatalog.schema'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'

@@ -1,4 +1,4 @@
-import { CountryCatalogItemDTO } from 'shared/catalogs/api/dto/countries'
+import { CountryCatalogItemDTO } from 'shared/catalogs/countries/api/dto/countriesCatalog.dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

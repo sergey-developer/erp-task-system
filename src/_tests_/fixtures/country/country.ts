@@ -1,8 +1,8 @@
-import { CountryModel } from 'shared/catalogs/api/dto/countries'
+import { CountryCatalogItemDTO } from 'shared/catalogs/countries/api/dto/countriesCatalog.dto'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 
-export const country = (): CountryModel => ({
+export const country = (): CountryCatalogItemDTO => ({
   id: fakeInteger(),
   title: fakeWord(),
 })

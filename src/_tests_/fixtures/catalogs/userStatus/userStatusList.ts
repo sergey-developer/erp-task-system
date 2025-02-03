@@ -1,5 +1,5 @@
-import { UserStatusCatalogItemDTO } from 'shared/catalogs/api/dto/userStatuses'
 import { UserStatusCodeEnum } from 'shared/catalogs/constants'
+import { UserStatusCatalogItemDTO } from 'shared/catalogs/userStatuses/api/dto/userStatusesCatalog.dto'
 
 import { fakeColor, fakeId, fakeWord } from '_tests_/utils'
 

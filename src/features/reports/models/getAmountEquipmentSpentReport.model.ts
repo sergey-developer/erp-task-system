@@ -1,4 +1,4 @@
-import { PaginationParams, PaginationResponse } from 'shared/dto/api/pagination.dto'
+import { PaginationParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 import { IdType } from 'shared/types/common'
 
 import { AmountEquipmentSpentReportListItemModel } from './amountEquipmentSpentReport.model'

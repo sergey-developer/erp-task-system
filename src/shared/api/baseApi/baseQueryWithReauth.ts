@@ -1,8 +1,7 @@
 import { Mutex } from 'async-mutex'
-
 import { refreshToken as refreshTokenAction } from 'features/auth/auth.slice'
 import { AuthApiEnum } from 'features/auth/constants'
-import { RefreshTokenSuccessResponse } from 'features/auth/models'
+import { RefreshTokenSuccessResponse } from 'features/auth/schemas'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
 import { RefreshTokenActionPayload } from 'features/auth/types'
 import { logoutAndClearTokens, parseJwt } from 'features/auth/utils'

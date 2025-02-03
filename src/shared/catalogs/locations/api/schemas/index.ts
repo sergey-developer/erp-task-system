@@ -1,0 +1,1 @@
+export * from './getLocationsCatalog.schema'

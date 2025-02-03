@@ -10,8 +10,8 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 import { getWorkGroupsErrMsg } from 'shared/workGroups/api/constants'
-import { GetWorkGroupsQueryArgs, GetWorkGroupsSuccessResponse } from 'shared/workGroups/api/dto'
 import { useGetWorkGroupsQuery } from 'shared/workGroups/api/endpoints/workGroups.endpoints'
+import { GetWorkGroupsQueryArgs, GetWorkGroupsSuccessResponse } from 'shared/workGroups/api/schemas'
 
 type UseGetWorkGroupsResult = CustomUseQueryHookResult<
   GetWorkGroupsQueryArgs,

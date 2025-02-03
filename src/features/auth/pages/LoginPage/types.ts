@@ -1,3 +1,3 @@
-import { LoginMutationArgs } from 'features/auth/models'
+import { LoginMutationArgs } from 'features/auth/schemas'
 
 export type LoginFormFields = LoginMutationArgs

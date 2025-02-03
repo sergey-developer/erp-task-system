@@ -2,7 +2,7 @@ import isNumber from 'lodash/isNumber'
 
 import { AntdPaginatedList } from 'lib/antd/types'
 
-import { PaginationParams, PaginationResponse } from 'shared/dto/api/pagination.dto'
+import { PaginationParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 
 export const getPaginatedList = <T>(
   response: PaginationResponse<T>,

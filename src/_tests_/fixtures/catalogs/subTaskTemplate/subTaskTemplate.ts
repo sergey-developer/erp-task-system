@@ -1,8 +1,8 @@
-import { SubTaskTemplateModel } from 'shared/catalogs/api/dto/subTaskTemplates'
+import { SubTaskTemplateCatalogItemDTO } from 'shared/catalogs/subTaskTemplates/api/dto/subTaskTemplatesCatalog.dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
-export const subTaskTemplate = (): SubTaskTemplateModel => ({
+export const subTaskTemplate = (): SubTaskTemplateCatalogItemDTO => ({
   id: fakeId(),
   title: fakeWord(),
   code: fakeWord(),

@@ -1,4 +1,4 @@
-import { ResolutionClassificationCatalogItemDTO } from 'shared/catalogs/api/dto/resolutionClassifications'
+import { ResolutionClassificationCatalogItemDTO } from 'shared/catalogs/resolutionClassifications/api/dto/resolutionClassificationsCatalog.dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

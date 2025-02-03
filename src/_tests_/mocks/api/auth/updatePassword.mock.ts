@@ -2,10 +2,10 @@ import { AuthApiEnum } from 'features/auth/constants'
 import {
   UpdatePasswordBadRequestErrorResponse,
   UpdatePasswordSuccessResponse,
-} from 'features/auth/models'
+} from 'features/auth/schemas'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
   getBadRequestErrorMockFn,

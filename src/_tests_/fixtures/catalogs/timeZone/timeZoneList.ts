@@ -1,6 +1,9 @@
 import times from 'lodash/times'
 
-import { TimeZoneCatalogItemDTO, TimeZonesCatalogDTO } from 'shared/catalogs/api/dto/timeZones'
+import {
+  TimeZoneCatalogItemDTO,
+  TimeZonesCatalogDTO,
+} from 'shared/catalogs/timeZones/api/dto/timeZonesCatalog.dto'
 
 import { fakeWord } from '_tests_/utils'
 

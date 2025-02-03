@@ -1,6 +1,9 @@
 import times from 'lodash/times'
 
-import { CurrenciesCatalogDTO, CurrencyCatalogItemDTO } from 'shared/catalogs/api/dto/currencies'
+import {
+  CurrenciesCatalogDTO,
+  CurrencyCatalogItemDTO,
+} from 'shared/catalogs/currencies/api/dto/currenciesCatalog.dto'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

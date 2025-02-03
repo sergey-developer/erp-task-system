@@ -1,5 +1,5 @@
 import { AuthApiEnum } from 'features/auth/constants'
-import { RefreshTokenSuccessResponse } from 'features/auth/models'
+import { RefreshTokenSuccessResponse } from 'features/auth/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

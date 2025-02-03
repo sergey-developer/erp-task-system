@@ -1,4 +1,4 @@
-import { LoginSuccessResponse } from 'features/auth/models'
+import { LoginSuccessResponse } from 'features/auth/schemas'
 
 import { fakeAccessToken, fakeRefreshToken } from './token'
 

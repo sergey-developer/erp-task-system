@@ -14,7 +14,7 @@ import isNumber from 'lodash/isNumber'
 
 import { GetLocationsCatalogQueryArgs } from 'shared/catalogs/api/dto/locations'
 import { LocationTypeEnum } from 'shared/catalogs/constants'
-import { checkLocationTypeIsWarehouse } from 'shared/catalogs/helpers/locations/checkLocationType'
+import { checkLocationTypeIsWarehouse } from 'shared/catalogs/locations/helpers/checkLocationType'
 import { MaybeUndefined } from 'shared/types/utils'
 
 const getConditionsByType = (

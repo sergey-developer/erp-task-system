@@ -6,10 +6,10 @@ import {
   LogoutSuccessResponse,
   UpdatePasswordMutationArgs,
   UpdatePasswordSuccessResponse,
-} from 'features/auth/models'
+} from 'features/auth/schemas'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApi } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 const authApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({

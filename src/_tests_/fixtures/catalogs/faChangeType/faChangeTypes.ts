@@ -1,6 +1,6 @@
 import isUndefined from 'lodash/isUndefined'
 
-import { FaChangeTypeCatalogItemDTO } from 'shared/catalogs/api/dto/faChangeTypes'
+import { FaChangeTypeCatalogItemDTO } from 'shared/catalogs/faChangeTypes/api/dto/faChangeTypesCatalog.dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

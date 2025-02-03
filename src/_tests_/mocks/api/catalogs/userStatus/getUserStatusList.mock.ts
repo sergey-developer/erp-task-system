@@ -1,5 +1,5 @@
 import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
-import { GetUserStatusesCatalogSuccessResponse } from 'shared/catalogs/api/dto/userStatuses'
+import { GetUserStatusesCatalogSuccessResponse } from 'shared/catalogs/userStatuses/api/schemas/getUserStatusesCatalog.schema'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'

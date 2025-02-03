@@ -1,4 +1,4 @@
-import { InfrastructureWorkTypesCatalogItemDTO } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
+import { InfrastructureWorkTypesCatalogItemDTO } from 'shared/catalogs/infrastructureWorkTypes/api/dto/infrastructureWorkTypesCatalog.dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

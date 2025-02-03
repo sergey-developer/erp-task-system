@@ -3,7 +3,7 @@ import {
   InventorizationTypeEnum,
 } from 'features/warehouse/constants/inventorization'
 
-import { PaginationParams, PaginationResponse } from 'shared/dto/api/pagination.dto'
+import { PaginationParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 import { ExtendSortKey, SortParams } from 'shared/types/sort'
 
 import { InventorizationListItemModel } from './inventorizations.model'

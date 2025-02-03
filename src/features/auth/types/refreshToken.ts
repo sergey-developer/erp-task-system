@@ -1,4 +1,4 @@
-import { RefreshTokenSuccessResponse } from '../models'
+import { RefreshTokenSuccessResponse } from '../schemas'
 import { JwtPayload } from './common'
 
 export type RefreshTokenActionPayload = RefreshTokenSuccessResponse & {

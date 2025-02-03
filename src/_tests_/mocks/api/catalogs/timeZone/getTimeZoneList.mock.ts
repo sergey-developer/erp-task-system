@@ -1,5 +1,5 @@
 import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
-import { GetTimeZonesCatalogSuccessResponse } from 'shared/catalogs/api/dto/timeZones'
+import { GetTimeZonesCatalogSuccessResponse } from 'shared/catalogs/timeZones/api/schemas/getTimeZonesCatalog.schema'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'

@@ -1,4 +1,4 @@
-import { LoginSuccessResponse } from '../models'
+import { LoginSuccessResponse } from '../schemas'
 import { JwtPayload } from './common'
 
 export type LoginActionPayload = LoginSuccessResponse & {
