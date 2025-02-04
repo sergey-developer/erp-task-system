@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { parseJwt } from '../helpers'
 import { authLocalStorageService } from '../services/authLocalStorage.service'
-import { parseJwt } from '../utils'
 import { AuthSliceState, LoginActionPayload, RefreshTokenActionPayload } from './types'
 
 export const getInitialState = (): AuthSliceState => {

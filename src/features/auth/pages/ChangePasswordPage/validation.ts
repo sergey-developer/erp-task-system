@@ -1,5 +1,5 @@
 import { incorrectPasswordErrMsg } from 'features/auth/constants'
-import { checkPasswordValid } from 'features/auth/utils'
+import { checkPasswordValid } from 'features/auth/helpers'
 import { Rule } from 'rc-field-form/es/interface'
 
 import { validationMessages } from 'shared/constants/validation'

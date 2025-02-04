@@ -1,9 +1,9 @@
 import { Button, Form, Input, Typography } from 'antd'
 import { useLoginMutation } from 'features/auth/api/endpoints/auth.endpoints'
+import { parseJwt } from 'features/auth/helpers'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
 import { login as loginAction } from 'features/auth/store/auth.slice'
-import { parseJwt } from 'features/auth/utils'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
