@@ -9,7 +9,7 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/api/baseApi'
-import { getLocationsCatalogErrMsg } from 'shared/catalogs/api/constants/errorMessages'
+import { getLocationsCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
 import { useGetLocationsCatalogQuery } from 'shared/catalogs/api/endpoints/locationsCatalog.endpoints'
 import {
   GetLocationsCatalogQueryArgs,

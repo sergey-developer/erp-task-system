@@ -96,7 +96,7 @@ const ExecuteInventorizationPage = React.lazy(
   () => import('features/warehouse/pages/ExecuteInventorizationPage'),
 )
 
-export const route: Readonly<RouteObject> = {
+export const warehousesRoutes: Readonly<RouteObject> = {
   path: WarehouseRouteEnum.ManageWarehouses,
   element: <BreadcrumbsLayout />,
   children: [

@@ -1,10 +1,9 @@
-import React from 'react'
-
-import { CommonRouteEnum } from 'configs/routes'
-
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import TaskListMapPage from 'features/task/pages/TaskListMapPage'
 import TasksPage from 'features/task/pages/TasksPage'
+import React from 'react'
+
+import { CommonRoutesEnum } from 'configs/routes'
 
 import { taskListLayoutTestUtils } from '_tests_/features/tasks/components/TaskListLayout/testUtils'
 import { testUtils as taskListMapPageTestUtils } from '_tests_/features/tasks/pages/TaskListMapPage/testUtils'
@@ -27,7 +26,7 @@ describe('TaskListLayout', () => {
     test('Отображается корректно', () => {
       renderWithRouter([
         {
-          path: CommonRouteEnum.Root,
+          path: CommonRoutesEnum.Root,
           element: <TaskListLayout />,
         },
       ])
@@ -46,7 +45,7 @@ describe('TaskListLayout', () => {
       const { user } = renderWithRouter(
         [
           {
-            path: CommonRouteEnum.Desktop,
+            path: CommonRoutesEnum.Desktop,
             element: <TaskListLayout />,
           },
           {
@@ -58,7 +57,7 @@ describe('TaskListLayout', () => {
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [CommonRouteEnum.Desktop], initialIndex: 0 },
+        { initialEntries: [CommonRoutesEnum.Desktop], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, null, null, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -77,7 +76,7 @@ describe('TaskListLayout', () => {
     test('Отображается корректно', () => {
       renderWithRouter([
         {
-          path: CommonRouteEnum.Root,
+          path: CommonRoutesEnum.Root,
           element: <TaskListLayout />,
         },
       ])
@@ -96,7 +95,7 @@ describe('TaskListLayout', () => {
       const { user } = renderWithRouter(
         [
           {
-            path: CommonRouteEnum.Desktop,
+            path: CommonRoutesEnum.Desktop,
             element: <TaskListLayout />,
           },
           {
@@ -108,7 +107,7 @@ describe('TaskListLayout', () => {
             element: <TaskListMapPage />,
           },
         ],
-        { initialEntries: [CommonRouteEnum.Desktop], initialIndex: 0 },
+        { initialEntries: [CommonRoutesEnum.Desktop], initialIndex: 0 },
       )
 
       await taskListLayoutTestUtils.clickTaskListMapButton(user)

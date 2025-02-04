@@ -1,11 +1,10 @@
 import { Divider, Popover, PopoverProps, Space, Typography } from 'antd'
+import { AuthRoutesEnum } from 'features/auth/routes/routes'
+import { UserModel } from 'features/user/models'
+import { getFullUserName, getUserAbbr } from 'features/user/utils'
 import pick from 'lodash/pick'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
-
-import { AuthRouteEnum } from 'features/auth/constants/routes'
-import { UserModel } from 'features/user/models'
-import { getFullUserName, getUserAbbr } from 'features/user/utils'
 
 import { valueOr } from 'shared/utils/common'
 
@@ -43,7 +42,7 @@ const DetailedUserAvatar: FC<DetailedUserAvatarProps> = ({
 
           <Divider />
 
-          <Link to={AuthRouteEnum.ChangePassword}>Сменить пароль</Link>
+          <Link to={AuthRoutesEnum.ChangePassword}>Сменить пароль</Link>
         </Space>
       }
     >

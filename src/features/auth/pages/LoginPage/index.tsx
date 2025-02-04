@@ -1,24 +1,23 @@
 import { Button, Form, Input, Typography } from 'antd'
+import { useLoginMutation } from 'features/auth/api/endpoints/auth.endpoints'
+import { AuthRoutesEnum } from 'features/auth/routes/routes'
+import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
+import { login as loginAction } from 'features/auth/store/auth.slice'
+import { parseJwt } from 'features/auth/utils'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
-
-import { login as loginAction } from 'features/auth/auth.slice'
-import { AuthRouteEnum } from 'features/auth/constants/routes'
-import { useLoginMutation } from 'features/auth/services/authApi.service'
-import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
-import { parseJwt } from 'features/auth/utils'
 
 import { BaseCard } from 'components/Card/BaseCard'
 import Space from 'components/Space'
 
-import { APP_NAME } from 'shared/constants/common'
-import { useDispatch } from 'shared/catalogs/hooks/useDispatch'
 import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
+import { APP_NAME } from 'shared/constants/common'
+import { useDispatch } from 'shared/hooks/useDispatch'
 import { getFieldsErrors } from 'shared/utils/form'
 
+import { getLoginError } from './helpers'
 import { PageTitleStyled } from './styles'
 import { LoginFormFields } from './types'
-import { getLoginError } from './utils'
 import { emailRules, passwordRules } from './validation'
 
 const { Text, Title } = Typography
@@ -94,7 +93,7 @@ const LoginPage: FC = () => {
                 Войти
               </Button>
 
-              <Link data-testid='btn-forgotPassword' to={AuthRouteEnum.ForgotPassword}>
+              <Link data-testid='btn-forgotPassword' to={AuthRoutesEnum.ForgotPassword}>
                 <Button type='link' block>
                   Забыли пароль?
                 </Button>

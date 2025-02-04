@@ -1,6 +1,6 @@
-import { isLoggedInSelector } from 'features/auth/selectors'
+import { isLoggedInSelector } from 'features/auth/store/selectors'
 
-import { useSelector } from 'shared/catalogs/hooks/useSelector'
+import { useSelector } from 'shared/hooks/useSelector'
 
 /**
  * Хук возвращающий значение, авторизован пользователь или нет

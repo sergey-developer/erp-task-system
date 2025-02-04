@@ -1,12 +1,11 @@
+import ProtectedRoute from 'features/auth/components/ProtectedRoute'
+import { MonitoringRouteEnum } from 'features/monitoring/constants'
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
-import ProtectedRoute from 'features/auth/components/ProtectedRoute'
-import { MonitoringRouteEnum } from 'features/monitoring/constants'
-
 const TaskMonitoringPage = React.lazy(() => import('features/monitoring/pages/TaskMonitoringPage'))
 
-export const route: Readonly<RouteObject> = {
+export const monitoringRoutes: Readonly<RouteObject> = {
   path: MonitoringRouteEnum.Monitoring,
   children: [
     {

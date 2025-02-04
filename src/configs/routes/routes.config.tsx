@@ -1,43 +1,43 @@
-import { route as authRoute } from 'features/auth/routes.config'
-import { infrastructuresRoute } from 'features/infrastructures/routes.config'
+import { authRoutes } from 'features/auth/routes/routes.config'
+import { infrastructuresRoutes } from 'features/infrastructures/routes.config'
 import HomeLayout from 'features/layout/components/HomeLayout'
-import { route as monitoringRoute } from 'features/monitoring/routes.config'
-import { route as reportsRoute } from 'features/reports/routes.config'
+import { monitoringRoutes } from 'features/monitoring/routes.config'
+import { reportsRoutes } from 'features/reports/routes.config'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
-import { route as tasksRoute } from 'features/task/routes.config'
-import { route as warehousesRoute } from 'features/warehouse/routes.config'
+import { tasksRoutes } from 'features/task/routes.config'
+import { warehousesRoutes } from 'features/warehouse/routes.config'
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
 import ErrorBoundary from 'components/ErrorBoundary'
 
-import { CommonRouteEnum } from './constants'
+import { CommonRoutesEnum } from './constants'
 
 export const routes: RouteObject[] = [
   {
-    path: CommonRouteEnum.Root,
+    path: CommonRoutesEnum.Root,
     errorElement: <ErrorBoundary />,
     children: [
       {
         index: true,
-        element: <Navigate to={CommonRouteEnum.Home} />,
+        element: <Navigate to={CommonRoutesEnum.Home} />,
       },
 
-      authRoute,
+      authRoutes,
 
       {
-        path: CommonRouteEnum.Home,
+        path: CommonRoutesEnum.Home,
         element: <HomeLayout />,
         children: [
           {
             index: true,
             element: <Navigate to={TasksRoutesEnum.DesktopTasks} />,
           },
-          tasksRoute,
-          warehousesRoute,
-          monitoringRoute,
-          reportsRoute,
-          infrastructuresRoute,
+          tasksRoutes,
+          warehousesRoutes,
+          monitoringRoutes,
+          reportsRoutes,
+          infrastructuresRoutes,
         ],
       },
     ],

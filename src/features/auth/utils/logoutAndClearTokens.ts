@@ -1,8 +1,8 @@
-import { logout as logoutAction } from 'features/auth/auth.slice'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
+import { logout as logoutAction } from 'features/auth/store/auth.slice'
 import { taskLocalStorageService } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
 
-import { AppDispatch } from 'shared/catalogs/hooks/useDispatch'
+import { AppDispatch } from 'shared/hooks/useDispatch'
 
 export const logoutAndClearTokens = (dispatch: AppDispatch) => {
   authLocalStorageService.clearTokens()

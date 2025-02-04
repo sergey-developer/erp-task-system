@@ -1,3 +1,3 @@
 export * from './endpoints'
 export * from './enums'
-export * from './errorMessages'
+export * from './messages'

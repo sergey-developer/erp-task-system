@@ -2,7 +2,7 @@ import { Flex, Layout, Typography } from 'antd'
 import { FC, ReactElement } from 'react'
 import { isRouteErrorResponse, Link, useRouteError } from 'react-router-dom'
 
-import { CommonRouteEnum } from 'configs/routes'
+import { CommonRoutesEnum } from 'configs/routes'
 
 import { isNotFoundError } from 'shared/api/baseApi'
 
@@ -14,7 +14,7 @@ const renderError = (message: string): ReactElement => {
       <Layout.Content style={{ padding: 50 }}>
         <Flex vertical align='center' gap='middle'>
           <Title level={5}>{message}</Title>
-          <Link to={CommonRouteEnum.Home}>Перейти на главную</Link>
+          <Link to={CommonRoutesEnum.Home}>Перейти на главную</Link>
         </Flex>
       </Layout.Content>
     </Layout>

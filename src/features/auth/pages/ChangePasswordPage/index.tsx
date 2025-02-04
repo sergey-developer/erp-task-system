@@ -1,15 +1,14 @@
 import { Button, Form, Input, Space, Typography } from 'antd'
+import { useUpdatePasswordMutation } from 'features/auth/api/endpoints/auth.endpoints'
+import { updatePasswordSuccessMsg } from 'features/auth/constants'
+import { TasksRoutesEnum } from 'features/task/constants/routes'
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { UPDATE_PASSWORD_SUCCESS_MSG } from 'features/auth/constants'
-import { useUpdatePasswordMutation } from 'features/auth/services/authApi.service'
-import { TasksRoutesEnum } from 'features/task/constants/routes'
-
 import { BaseCard } from 'components/Card/BaseCard'
 
-import { SAVE_TEXT } from 'shared/constants/common'
 import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
+import { SAVE_TEXT } from 'shared/constants/common'
 import { getFieldsErrors } from 'shared/utils/form'
 import { showSuccessNotification } from 'shared/utils/notifications'
 
@@ -38,7 +37,7 @@ const ChangePasswordPage: FC = () => {
       }).unwrap()
 
       navigate(TasksRoutesEnum.DesktopTasks)
-      showSuccessNotification(UPDATE_PASSWORD_SUCCESS_MSG)
+      showSuccessNotification(updatePasswordSuccessMsg)
     } catch (error) {
       if (isErrorResponse(error)) {
         if (isBadRequestError(error)) {

@@ -1,9 +1,5 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button, Flex, Space, Typography } from 'antd'
-import debounce from 'lodash/debounce'
-import React, { FC, useCallback, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-
 import ExecuteInventorizationRelocationTaskTable from 'features/warehouse/components/ExecuteInventorizationRelocationTaskTable'
 import {
   getSort,
@@ -19,11 +15,14 @@ import { useGetRelocationTasks } from 'features/warehouse/hooks/relocationTask'
 import { GetRelocationTasksQueryArgs } from 'features/warehouse/models'
 import { ExecuteInventorizationPageLocationState } from 'features/warehouse/types'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'features/warehouse/utils/relocationTask'
+import debounce from 'lodash/debounce'
+import React, { FC, useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import {
   calculatePaginationParams,

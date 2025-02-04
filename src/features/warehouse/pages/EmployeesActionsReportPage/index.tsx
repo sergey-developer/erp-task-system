@@ -1,8 +1,5 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
-import omit from 'lodash/omit'
-import React, { FC, useCallback, useState } from 'react'
-
 import { useAuthUser } from 'features/auth/hooks'
 import EmployeesActionsReportForm from 'features/reports/components/EmployeesActionsReportForm'
 import { EmployeesActionsReportFormProps } from 'features/reports/components/EmployeesActionsReportForm/types'
@@ -14,13 +11,15 @@ import {
 } from 'features/reports/hooks'
 import { GetEmployeesActionsReportQueryArgs } from 'features/reports/models'
 import { useGetUsers } from 'features/user/hooks'
+import omit from 'lodash/omit'
+import React, { FC, useCallback, useState } from 'react'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { base64ToBytes } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'

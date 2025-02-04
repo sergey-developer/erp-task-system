@@ -1,9 +1,8 @@
+import { authUserSelector } from 'features/auth/store/selectors'
+import { UserModel } from 'features/user/models'
 import { useMemo } from 'react'
 
-import { authUserSelector } from 'features/auth/selectors'
-import { UserModel } from 'features/user/models'
-
-import { useSelector } from 'shared/catalogs/hooks/useSelector'
+import { useSelector } from 'shared/hooks/useSelector'
 import { MaybeNull } from 'shared/types/utils'
 
 export type UseAuthUserResult = MaybeNull<Pick<UserModel, 'id'>>

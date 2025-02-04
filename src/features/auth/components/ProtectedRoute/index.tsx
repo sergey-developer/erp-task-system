@@ -1,12 +1,11 @@
+import { useIsLoggedIn } from 'features/auth/hooks'
+import { AuthRoutesEnum } from 'features/auth/routes/routes'
+import { useUserMeState } from 'features/user/hooks'
+import { UserModel } from 'features/user/models'
 import { ReactElement } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 
-import { CommonRouteEnum } from 'configs/routes'
-
-import { AuthRouteEnum } from 'features/auth/constants/routes'
-import { useIsLoggedIn } from 'features/auth/hooks'
-import { useUserMeState } from 'features/user/hooks'
-import { UserModel } from 'features/user/models'
+import { CommonRoutesEnum } from 'configs/routes'
 
 import { CommonLocationState } from 'shared/types/common'
 import { extractLocationState, ExtractLocationStateResult } from 'shared/utils/common'
@@ -34,7 +33,7 @@ function ProtectedRoute<LocationState>({
 
   if (onlyGuest) {
     if (isLoggedIn) {
-      const to = locationState?.from || redirectPath || CommonRouteEnum.Home
+      const to = locationState?.from || redirectPath || CommonRoutesEnum.Home
       return <Navigate to={to} replace state={navigationState} />
     } else {
       return component
@@ -44,11 +43,11 @@ function ProtectedRoute<LocationState>({
       if (!permitted || (user && permitted(user, locationState))) {
         return component
       } else {
-        const to = redirectPath || CommonRouteEnum.Home
+        const to = redirectPath || CommonRoutesEnum.Home
         return <Navigate to={to} replace state={navigationState} />
       }
     } else {
-      const to = redirectPath || AuthRouteEnum.Login
+      const to = redirectPath || AuthRoutesEnum.Login
       return <Navigate to={to} replace state={navigationState} />
     }
   }

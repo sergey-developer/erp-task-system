@@ -1,11 +1,10 @@
 import { within } from '@testing-library/react'
-import * as reactRouterDom from 'react-router-dom'
-
-import { CommonRouteEnum } from 'configs/routes'
-
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import ExecuteInventorizationPage from 'features/warehouse/pages/ExecuteInventorizationPage'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'features/warehouse/utils/relocationTask'
+import * as reactRouterDom from 'react-router-dom'
+
+import { CommonRoutesEnum } from 'configs/routes'
 
 import { makeString } from 'shared/utils/string'
 
@@ -232,7 +231,7 @@ describe('Страница создания черновика заявки на
     const { user } = renderWithRouter(
       [
         {
-          path: CommonRouteEnum.Root,
+          path: CommonRoutesEnum.Root,
           element: <CreateRelocationTaskDraftPage />,
         },
         {
@@ -240,7 +239,7 @@ describe('Страница создания черновика заявки на
           element: <ExecuteInventorizationPage />,
         },
       ],
-      { initialEntries: [CommonRouteEnum.Root], initialIndex: 0 },
+      { initialEntries: [CommonRoutesEnum.Root], initialIndex: 0 },
       {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -300,7 +299,7 @@ describe('Страница создания черновика заявки на
     const { user } = renderWithRouter(
       [
         {
-          path: CommonRouteEnum.Root,
+          path: CommonRoutesEnum.Root,
           element: <CreateRelocationTaskDraftPage />,
         },
         {
@@ -308,7 +307,7 @@ describe('Страница создания черновика заявки на
           element: <ExecuteInventorizationPage />,
         },
       ],
-      { initialEntries: [CommonRouteEnum.Root], initialIndex: 0 },
+      { initialEntries: [CommonRoutesEnum.Root], initialIndex: 0 },
       {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: { ...getUserMeQueryMock(userFixtures.user()) },

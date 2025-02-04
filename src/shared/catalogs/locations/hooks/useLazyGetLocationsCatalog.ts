@@ -8,7 +8,7 @@ import {
   isErrorResponse,
   isForbiddenError,
 } from 'shared/api/baseApi'
-import { getLocationsCatalogErrMsg } from 'shared/catalogs/api/constants/errorMessages'
+import { getLocationsCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
 import {
   GetLocationsCatalogQueryArgs,
   GetLocationsCatalogSuccessResponse,

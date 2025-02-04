@@ -32,8 +32,8 @@ import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
 import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 

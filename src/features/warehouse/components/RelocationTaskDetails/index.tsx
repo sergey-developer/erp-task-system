@@ -81,10 +81,10 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/api/baseApi'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { HEADER_HEIGHT } from 'shared/constants/common'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { base64ToBytes, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { downloadFile, extractOriginFiles } from 'shared/utils/file'

@@ -1,12 +1,11 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import {
-  INCORRECT_PASSWORD_ERROR_MSG,
-  UPDATE_PASSWORD_SUCCESS_MSG,
-  updatePasswordMessages,
-} from 'features/auth/constants'
-import { AuthRouteEnum } from 'features/auth/constants/routes'
+  incorrectPasswordErrMsg,
+  updatePasswordErrMsg,
+  updatePasswordSuccessMsg,
+} from 'features/auth/api/constants'
+import { AuthRoutesEnum } from 'features/auth/routes/routes'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 
 import { validationMessages } from 'shared/constants/validation'
@@ -133,7 +132,7 @@ describe('Страница смены пароля', () => {
       const { user } = render(<ChangePasswordPage />)
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
-      const error = testUtils.queryNewPasswordError(INCORRECT_PASSWORD_ERROR_MSG)
+      const error = testUtils.queryNewPasswordError(incorrectPasswordErrMsg)
 
       expect(error).not.toBeInTheDocument()
     })
@@ -154,7 +153,7 @@ describe('Страница смены пароля', () => {
 
         await testUtils.setNewPassword(user, fakeWord())
         await testUtils.clickSaveButton(user)
-        const error = await testUtils.findPasswordError(INCORRECT_PASSWORD_ERROR_MSG)
+        const error = await testUtils.findPasswordError(incorrectPasswordErrMsg)
 
         expect(error).toBeInTheDocument()
       })
@@ -213,7 +212,7 @@ describe('Страница смены пароля', () => {
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
         <ChangePasswordPage />,
-        AuthRouteEnum.ChangePassword,
+        AuthRoutesEnum.ChangePassword,
       )
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
@@ -221,7 +220,7 @@ describe('Страница смены пароля', () => {
       await testUtils.clickSaveButton(user)
       await testUtils.expectLoadingFinished()
 
-      const notification = await notificationTestUtils.findNotification(UPDATE_PASSWORD_SUCCESS_MSG)
+      const notification = await notificationTestUtils.findNotification(updatePasswordSuccessMsg)
 
       expect(notification).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(true)
@@ -242,7 +241,7 @@ describe('Страница смены пароля', () => {
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
         <ChangePasswordPage />,
-        AuthRouteEnum.ChangePassword,
+        AuthRoutesEnum.ChangePassword,
       )
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
@@ -251,9 +250,7 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      const successNotification = notificationTestUtils.queryNotification(
-        UPDATE_PASSWORD_SUCCESS_MSG,
-      )
+      const successNotification = notificationTestUtils.queryNotification(updatePasswordSuccessMsg)
       const commonErrorMessage = testUtils.getChildByText(badRequestErrorMessage)
       const passwordErrorMessage = await testUtils.findPasswordError(passwordFieldErrorMessage)
 
@@ -261,7 +258,7 @@ describe('Страница смены пароля', () => {
       expect(commonErrorMessage).toBeInTheDocument()
       expect(passwordErrorMessage).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
-      expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
+      expect(getCurrentRoute()).toBe(AuthRoutesEnum.ChangePassword)
     })
 
     test('Обрабатывается ошибка 404', async () => {
@@ -272,7 +269,7 @@ describe('Страница смены пароля', () => {
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
         <ChangePasswordPage />,
-        AuthRouteEnum.ChangePassword,
+        AuthRoutesEnum.ChangePassword,
       )
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
@@ -281,13 +278,13 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      const notification = notificationTestUtils.queryNotification(UPDATE_PASSWORD_SUCCESS_MSG)
+      const notification = notificationTestUtils.queryNotification(updatePasswordSuccessMsg)
       const errorText = testUtils.getChildByText(errorMessage)
 
       expect(notification).not.toBeInTheDocument()
       expect(errorText).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
-      expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
+      expect(getCurrentRoute()).toBe(AuthRoutesEnum.ChangePassword)
     })
 
     test.skip('Обрабатывается ошибка 401', async () => {
@@ -298,7 +295,7 @@ describe('Страница смены пароля', () => {
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
         <ChangePasswordPage />,
-        AuthRouteEnum.ChangePassword,
+        AuthRoutesEnum.ChangePassword,
       )
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
@@ -307,15 +304,13 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      const successNotification = notificationTestUtils.queryNotification(
-        UPDATE_PASSWORD_SUCCESS_MSG,
-      )
+      const successNotification = notificationTestUtils.queryNotification(updatePasswordSuccessMsg)
       const errorMessage = testUtils.getChildByText(unauthorizedErrorMessage)
 
       expect(successNotification).not.toBeInTheDocument()
       expect(errorMessage).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
-      expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
+      expect(getCurrentRoute()).toBe(AuthRoutesEnum.ChangePassword)
     })
 
     test.skip('Обрабатывается ошибка 500', async () => {
@@ -323,7 +318,7 @@ describe('Страница смены пароля', () => {
 
       const { user, getCurrentRoute, checkRouteChanged } = renderInRoute(
         <ChangePasswordPage />,
-        AuthRouteEnum.ChangePassword,
+        AuthRoutesEnum.ChangePassword,
       )
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
@@ -332,15 +327,13 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      const successNotification = notificationTestUtils.queryNotification(
-        UPDATE_PASSWORD_SUCCESS_MSG,
-      )
-      const errorMessage = testUtils.getChildByText(updatePasswordMessages.commonError)
+      const successNotification = notificationTestUtils.queryNotification(updatePasswordSuccessMsg)
+      const errorMessage = testUtils.getChildByText(updatePasswordErrMsg)
 
       expect(successNotification).not.toBeInTheDocument()
       expect(errorMessage).toBeInTheDocument()
       expect(checkRouteChanged()).toBe(false)
-      expect(getCurrentRoute()).toBe(AuthRouteEnum.ChangePassword)
+      expect(getCurrentRoute()).toBe(AuthRoutesEnum.ChangePassword)
     })
   })
 })

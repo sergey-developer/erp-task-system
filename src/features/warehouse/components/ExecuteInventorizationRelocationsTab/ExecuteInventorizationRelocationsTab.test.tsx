@@ -1,10 +1,9 @@
 import { waitFor, within } from '@testing-library/react'
-
-import { CommonRouteEnum } from 'configs/routes'
-
 import { testUtils as executeInventorizationRelocationTaskTableTestUtils } from 'features/warehouse/components/ExecuteInventorizationRelocationTaskTable/ExecuteInventorizationRelocationTaskTable.test'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import CreateRelocationTaskDraftPage from 'features/warehouse/pages/CreateRelocationTaskDraftPage'
+
+import { CommonRoutesEnum } from 'configs/routes'
 
 import { props } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/constants'
 import { executeInventorizationRelocationsTabTestUtils } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/testUtils'
@@ -74,7 +73,7 @@ describe('Вкладка списка заявок на перемещение �
       const { user } = renderWithRouter(
         [
           {
-            path: CommonRouteEnum.Root,
+            path: CommonRoutesEnum.Root,
             element: <ExecuteInventorizationRelocationsTab {...props} />,
           },
           {
@@ -82,7 +81,7 @@ describe('Вкладка списка заявок на перемещение �
             element: <CreateRelocationTaskDraftPage />,
           },
         ],
-        { initialIndex: 0, initialEntries: [CommonRouteEnum.Root] },
+        { initialIndex: 0, initialEntries: [CommonRoutesEnum.Root] },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },

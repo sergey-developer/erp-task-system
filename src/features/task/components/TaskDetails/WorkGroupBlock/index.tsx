@@ -1,7 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Divider, FormInstance, Popover, Row, Typography } from 'antd'
-import React, { FC } from 'react'
-
 import {
   TaskFirstLineFormFields,
   TaskFirstLineModalProps,
@@ -16,11 +14,12 @@ import { TaskModel } from 'features/task/models'
 import { UserPermissionsEnum } from 'features/user/constants'
 import { useUserPermissions } from 'features/user/hooks'
 import { UserActionsModel } from 'features/user/models'
+import React, { FC } from 'react'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { EmptyFn } from 'shared/types/utils'
 
 const TaskFirstLineModal = React.lazy(() => import('features/task/components/TaskFirstLineModal'))

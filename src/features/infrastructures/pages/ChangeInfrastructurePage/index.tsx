@@ -1,8 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Flex, Row, Select, Tabs, Typography } from 'antd'
-import React, { FC } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
-
 import { useAuthUser } from 'features/auth/hooks'
 import ChangeInfrastructureOrdersFormsTab from 'features/infrastructures/components/ChangeInfrastructureOrdersFormsTab'
 import {
@@ -21,6 +18,8 @@ import { UserPermissionsEnum } from 'features/user/constants'
 import { useUserPermissions } from 'features/user/hooks'
 import EditableField from 'features/warehouse/components/RelocationTaskDetails/EditableField'
 import ReadonlyField from 'features/warehouse/components/RelocationTaskDetails/ReadonlyField'
+import React, { FC } from 'react'
+import { useLocation, useParams } from 'react-router-dom'
 
 import GoBackButton from 'components/Buttons/GoBackButton'
 import { SearchIcon } from 'components/Icons'
@@ -29,7 +28,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { extractLocationState, valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 

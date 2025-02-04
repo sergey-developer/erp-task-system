@@ -1,38 +1,40 @@
-import React from 'react'
-import { RouteObject } from 'react-router-dom'
-
-import { CommonRouteEnum } from 'configs/routes'
-
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
 import { InfrastructuresRoutesEnum } from 'features/infrastructures/constants/routes'
 import { ChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/types'
+import { UserPermissionsEnum } from 'features/user/constants'
+import { userHasPermissions } from 'features/user/utils'
+import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType'
+import React from 'react'
+import { RouteObject } from 'react-router-dom'
+
+import { CommonRoutesEnum } from 'configs/routes'
 
 const ChangeInfrastructurePage = React.lazy(
   () => import('features/infrastructures/pages/ChangeInfrastructurePage'),
 )
 
-export const infrastructuresRoute: Readonly<RouteObject> = {
-  path: CommonRouteEnum.Desktop,
+export const infrastructuresRoutes: Readonly<RouteObject> = {
+  path: CommonRoutesEnum.Desktop,
   children: [
     {
       path: InfrastructuresRoutesEnum.DesktopChangeInfrastructure,
       element: (
         <ProtectedRoute<ChangeInfrastructurePageLocationState>
           component={<ChangeInfrastructurePage />}
-          // permitted={(user, locationState) =>
-          //   userHasPermissions(
-          //     user,
-          //     [
-          //       UserPermissionsEnum.InfrastructureProjectRead,
-          //       UserPermissionsEnum.AnyStatusInfrastructureProjectRead,
-          //     ],
-          //     false,
-          //   ) &&
-          //   !!locationState?.task.infrastructureProject &&
-          //   !!locationState?.task.workType?.actions?.includes(
-          //     WorkTypeActionsEnum.CreateInfrastructureProject,
-          //   )
-          // }
+          permitted={(user, locationState) =>
+            userHasPermissions(
+              user,
+              [
+                UserPermissionsEnum.InfrastructureProjectRead,
+                UserPermissionsEnum.AnyStatusInfrastructureProjectRead,
+              ],
+              false,
+            ) &&
+            !!locationState?.task.infrastructureProject &&
+            !!locationState?.task.workType?.actions?.includes(
+              WorkTypeActionsEnum.CreateInfrastructureProject,
+            )
+          }
         />
       ),
     },

@@ -25,7 +25,6 @@ import { QuestionCircleIcon } from 'components/Icons'
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
-import { useSelectAll } from 'shared/catalogs/hooks/useSelectAll'
 import { CREATE_TEXT } from 'shared/constants/common'
 import { filesFormItemProps } from 'shared/constants/form'
 import {
@@ -33,6 +32,7 @@ import {
   idAndTitleSelectFieldNames,
 } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
+import { useSelectAll } from 'shared/hooks/useSelectAll'
 import { IdType } from 'shared/types/common'
 import { filterOptionBy } from 'shared/utils/common'
 

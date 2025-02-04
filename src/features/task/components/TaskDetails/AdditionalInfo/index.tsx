@@ -1,12 +1,11 @@
 import { Button, Col, Flex, Row, Select, Typography } from 'antd'
-import React, { FC } from 'react'
-
 import { useTaskStatus } from 'features/task/hooks/task'
 import { TaskModel } from 'features/task/models'
 import { MatchedUserPermissions } from 'features/user/types'
 import EditableField from 'features/warehouse/components/RelocationTaskDetails/EditableField'
 import ReadonlyField from 'features/warehouse/components/RelocationTaskDetails/ReadonlyField'
 import { WorkTypesModel } from 'features/warehouse/models'
+import React, { FC } from 'react'
 
 import Expandable from 'components/Expandable'
 import { MapPointIcon } from 'components/Icons'
@@ -14,7 +13,7 @@ import Label from 'components/Label'
 import Space from 'components/Space'
 
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 import { valueOr } from 'shared/utils/common'

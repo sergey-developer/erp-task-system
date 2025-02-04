@@ -1,16 +1,15 @@
 import { useBoolean } from 'ahooks'
 import { Col, Row } from 'antd'
-import { Coordinate } from 'ol/coordinate'
-import React, { FC, useState } from 'react'
-
 import TaskList from 'features/task/components/TaskList'
 import TaskListMap from 'features/task/components/TaskListMap'
 import { useGetTaskListMap, useGetTasks } from 'features/task/hooks/task'
+import { Coordinate } from 'ol/coordinate'
+import React, { FC, useState } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 import { extractPaginationResults } from 'shared/utils/pagination'

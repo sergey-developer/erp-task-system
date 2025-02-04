@@ -1,6 +1,4 @@
 import { useBoolean, useSetState } from 'ahooks'
-import { FC, useCallback, useState } from 'react'
-
 import WarehouseListFilter from 'features/warehouse/components/WarehouseListFilter'
 import {
   WarehouseListFilterFormFields,
@@ -15,11 +13,12 @@ import {
 import { WarehouseTableProps } from 'features/warehouse/components/WarehouseTable/types'
 import { useGetWarehouseList } from 'features/warehouse/hooks/warehouse'
 import { GetWarehouseListQueryArgs } from 'features/warehouse/models'
+import { FC, useCallback, useState } from 'react'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import Space from 'components/Space'
 
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 
 const WarehouseListPage: FC = () => {
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean()

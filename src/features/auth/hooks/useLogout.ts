@@ -1,11 +1,10 @@
-import { useCallback } from 'react'
-
-import { LOGOUT_ERROR_MSG } from 'features/auth/constants'
-import { useLogoutMutation } from 'features/auth/services/authApi.service'
+import { logoutErrMsg } from 'features/auth/api/constants'
+import { useLogoutMutation } from 'features/auth/api/endpoints/auth.endpoints'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
 import { logoutAndClearTokens } from 'features/auth/utils'
+import { useCallback } from 'react'
 
-import { useDispatch } from 'shared/catalogs/hooks/useDispatch'
+import { useDispatch } from 'shared/hooks/useDispatch'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export const useLogout = () => {
@@ -23,7 +22,7 @@ export const useLogout = () => {
         throw new Error()
       }
     } catch {
-      showErrorNotification(LOGOUT_ERROR_MSG)
+      showErrorNotification(logoutErrMsg)
     }
   }, [dispatch, mutation])
 

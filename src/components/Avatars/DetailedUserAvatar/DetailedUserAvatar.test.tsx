@@ -1,13 +1,12 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import pick from 'lodash/pick'
-
-import { CommonRouteEnum } from 'configs/routes'
-
-import { AuthRouteEnum } from 'features/auth/constants/routes'
 import ChangePasswordPage from 'features/auth/pages/ChangePasswordPage'
 import { testUtils as changePasswordPageTestUtils } from 'features/auth/pages/ChangePasswordPage/ChangePasswordPage.test'
+import { AuthRoutesEnum } from 'features/auth/routes/routes'
 import { getFullUserName } from 'features/user/utils'
+import pick from 'lodash/pick'
+
+import { CommonRoutesEnum } from 'configs/routes'
 
 import userFixtures from '_tests_/fixtures/user'
 import {
@@ -95,7 +94,7 @@ describe('Детальный аватар пользователя', () => {
       const changePasswordLink = testUtils.getChangePasswordLink()
 
       expect(changePasswordLink).toBeInTheDocument()
-      expect(changePasswordLink).toHaveAttribute('href', AuthRouteEnum.ChangePassword)
+      expect(changePasswordLink).toHaveAttribute('href', AuthRoutesEnum.ChangePassword)
     })
 
     test('При нажатии переходит на страницу смены пароля', async () => {
@@ -105,10 +104,10 @@ describe('Детальный аватар пользователя', () => {
 
       const { user } = renderWithRouter(
         [
-          { path: CommonRouteEnum.Home, element: <DetailedUserAvatar {...props} /> },
-          { path: AuthRouteEnum.ChangePassword, element: <ChangePasswordPage /> },
+          { path: CommonRoutesEnum.Home, element: <DetailedUserAvatar {...props} /> },
+          { path: AuthRoutesEnum.ChangePassword, element: <ChangePasswordPage /> },
         ],
-        { initialEntries: [CommonRouteEnum.Home], initialIndex: 0 },
+        { initialEntries: [CommonRoutesEnum.Home], initialIndex: 0 },
       )
 
       await testUtils.openPopover(user)

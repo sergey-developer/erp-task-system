@@ -1,8 +1,5 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
-import omit from 'lodash/omit'
-import React, { FC, useCallback, useState } from 'react'
-
 import { HistoryNomenclatureOperationsReportFilterFormFields } from 'features/reports/components/HistoryNomenclatureOperationsReportFilter/types'
 import HistoryNomenclatureOperationsReportForm from 'features/reports/components/HistoryNomenclatureOperationsReportForm'
 import { HistoryNomenclatureOperationsReportFormProps } from 'features/reports/components/HistoryNomenclatureOperationsReportForm/types'
@@ -16,15 +13,17 @@ import {
 import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'features/reports/models'
 import { useGetCustomerList } from 'features/warehouse/hooks/customer'
 import { useGetEquipmentNomenclatures } from 'features/warehouse/hooks/equipment'
+import omit from 'lodash/omit'
+import React, { FC, useCallback, useState } from 'react'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
-import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import { base64ToBytes } from 'shared/utils/common'

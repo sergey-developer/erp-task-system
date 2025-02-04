@@ -1,10 +1,9 @@
-import React from 'react'
-import { RouteObject } from 'react-router-dom'
-
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
 import ReportsPage from 'features/reports/pages/ReportsPage'
 import { UserPermissionsEnum } from 'features/user/constants'
 import { userHasPermissions } from 'features/user/utils'
+import React from 'react'
+import { RouteObject } from 'react-router-dom'
 
 import Breadcrumb from 'components/Breadcrumbs/Breadcrumb'
 import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
@@ -17,7 +16,7 @@ const FiscalAccumulatorTasksReportPage = React.lazy(
 
 const MtsrReportPage = React.lazy(() => import('features/reports/pages/MtsrReportPage'))
 
-export const route: Readonly<RouteObject> = {
+export const reportsRoutes: Readonly<RouteObject> = {
   path: ReportsRoutesEnum.Reports,
   element: <BreadcrumbsLayout />,
   handle: { crumb: () => <Breadcrumb link={ReportsRoutesEnum.Reports} text='Отчёты' /> },

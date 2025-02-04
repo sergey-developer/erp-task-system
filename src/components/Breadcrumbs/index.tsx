@@ -2,7 +2,7 @@ import { Space } from 'antd'
 import { FC, Fragment } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-import { BreadcrumbMatch } from 'shared/catalogs/hooks/useBreadcrumbsMatches'
+import { BreadcrumbMatch } from 'shared/hooks/useBreadcrumbsMatches'
 import { checkLastItem } from 'shared/utils/common'
 
 type BreadcrumbsProps = {

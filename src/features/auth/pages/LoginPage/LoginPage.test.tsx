@@ -1,15 +1,14 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import React from 'react'
-
-import { CommonRouteEnum } from 'configs/routes'
-
+import { loginBadRequestErrMsg, loginWrongDataErrMsg } from 'features/auth/api/constants'
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
-import { LOGIN_BAD_REQUEST_ERROR_MSG, LOGIN_WRONG_DATA_ERROR_MSG } from 'features/auth/constants'
-import { AuthRouteEnum } from 'features/auth/constants/routes'
 import LoginPage from 'features/auth/pages/LoginPage'
+import { AuthRoutesEnum } from 'features/auth/routes/routes'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
 import TasksPage from 'features/task/pages/TasksPage'
+import React from 'react'
+
+import { CommonRoutesEnum } from 'configs/routes'
 
 import { setupStore } from 'state/store'
 
@@ -212,7 +211,7 @@ describe('Страница авторизации', () => {
   })
 
   test('Пользователь остаётся на странице если не заполнить поля и нажать кнопку отправки', async () => {
-    const { user, checkRouteChanged } = renderInRoute(<LoginPage />, AuthRouteEnum.Login)
+    const { user, checkRouteChanged } = renderInRoute(<LoginPage />, AuthRoutesEnum.Login)
 
     await testUtils.clickSubmitButton(user)
 
@@ -230,15 +229,15 @@ describe('Страница авторизации', () => {
       const { user } = renderWithRouter(
         [
           {
-            path: AuthRouteEnum.Login,
+            path: AuthRoutesEnum.Login,
             element: <ProtectedRoute component={<LoginPage />} onlyGuest />,
           },
           {
-            path: CommonRouteEnum.Home,
+            path: CommonRoutesEnum.Home,
             element: <ProtectedRoute component={<TasksPage />} />,
           },
         ],
-        { initialEntries: [AuthRouteEnum.Login], initialIndex: 0 },
+        { initialEntries: [AuthRoutesEnum.Login], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, null, null, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -299,7 +298,7 @@ describe('Страница авторизации', () => {
     test('Пользователь остаётся на странице авторизации', async () => {
       mockLoginBadRequestError()
 
-      const { user, checkRouteChanged } = renderInRoute(<LoginPage />, AuthRouteEnum.Login)
+      const { user, checkRouteChanged } = renderInRoute(<LoginPage />, AuthRoutesEnum.Login)
 
       await testUtils.setEmail(user, fakeEmail())
       await testUtils.setPassword(user, fakeWord())
@@ -321,7 +320,7 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      expect(testUtils.getChildByText(LOGIN_BAD_REQUEST_ERROR_MSG)).toBeInTheDocument()
+      expect(testUtils.getChildByText(loginBadRequestErrMsg)).toBeInTheDocument()
     })
 
     test('Обрабатывается ошибка 401', async () => {
@@ -336,7 +335,7 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      expect(testUtils.getChildByText(LOGIN_WRONG_DATA_ERROR_MSG)).toBeInTheDocument()
+      expect(testUtils.getChildByText(loginWrongDataErrMsg)).toBeInTheDocument()
     })
 
     test('Обрабатывается ошибка 500', async () => {

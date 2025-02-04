@@ -1,9 +1,4 @@
 import { useBoolean, useSetState } from 'ahooks'
-import debounce from 'lodash/debounce'
-import isNumber from 'lodash/isNumber'
-import React, { FC, useCallback, useEffect, useState } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
-
 import { useEquipmentPageContext } from 'features/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'features/warehouse/components/EquipmentTable'
 import {
@@ -15,11 +10,15 @@ import { EquipmentTableProps } from 'features/warehouse/components/EquipmentTabl
 import { useGetEquipmentList } from 'features/warehouse/hooks/equipment'
 import { GetEquipmentListQueryArgs } from 'features/warehouse/models'
 import { equipmentsFilterToParams } from 'features/warehouse/utils/equipment'
+import debounce from 'lodash/debounce'
+import isNumber from 'lodash/isNumber'
+import React, { FC, useCallback, useEffect, useState } from 'react'
+import { useParams, useSearchParams } from 'react-router-dom'
 
 import ModalFallback from 'components/Modals/ModalFallback'
 
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import {

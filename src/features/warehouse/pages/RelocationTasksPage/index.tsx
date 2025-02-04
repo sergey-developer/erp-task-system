@@ -1,9 +1,5 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button } from 'antd'
-import debounce from 'lodash/debounce'
-import React, { FC, useCallback, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
-
 import { useGetTask, useGetTasks } from 'features/task/hooks/task'
 import { GetTasksQueryArgs } from 'features/task/models'
 import { UserPermissionsEnum } from 'features/user/constants'
@@ -27,14 +23,17 @@ import {
   makeRelocationTasksPageLink,
   relocationTaskListFilterToParams,
 } from 'features/warehouse/utils/relocationTask'
+import debounce from 'lodash/debounce'
+import React, { FC, useCallback, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 import {

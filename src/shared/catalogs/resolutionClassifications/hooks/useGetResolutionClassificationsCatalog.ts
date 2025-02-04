@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
-import { getResolutionClassificationsCatalogErrMsg } from 'shared/catalogs/api/constants/errorMessages'
+import { getResolutionClassificationsCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
 import {
   GetResolutionClassificationsCatalogQueryArgs,
   GetResolutionClassificationsCatalogSuccessResponse,

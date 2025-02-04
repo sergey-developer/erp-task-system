@@ -1,7 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
-import React, { FC, useCallback, useState } from 'react'
-
 import { useIdBelongAuthUser } from 'features/auth/hooks'
 import { CancelSubTaskModalProps } from 'features/task/components/CancelSubTaskModal/types'
 import { ReworkSubTaskModalProps } from 'features/task/components/ReworkSubTaskModal/types'
@@ -11,13 +9,14 @@ import { useTaskExtendedStatus, useTaskStatus, useTaskType } from 'features/task
 import { SubTaskModel, TaskModel } from 'features/task/models'
 import { UserActionsModel } from 'features/user/models'
 import { MatchedUserPermissions } from 'features/user/types'
+import React, { FC, useCallback, useState } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
 import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { getTextWithCounter } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
 

@@ -28,7 +28,7 @@ import {
 } from 'features/warehouse/utils/relocationTask'
 import { split } from 'lodash'
 
-import { CommonRouteEnum } from 'configs/routes'
+import { CommonRoutesEnum } from 'configs/routes'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -3048,7 +3048,7 @@ describe('Информация о заявке о перемещении', () =>
       const { user } = renderWithRouter(
         [
           {
-            path: CommonRouteEnum.Root,
+            path: CommonRoutesEnum.Root,
             element: <RelocationTaskDetails {...props} inventorization={inventorization} />,
           },
           {
@@ -3056,7 +3056,7 @@ describe('Информация о заявке о перемещении', () =>
             element: <EditRelocationTaskDraftPage />,
           },
         ],
-        { initialEntries: [CommonRouteEnum.Root], initialIndex: 0 },
+        { initialEntries: [CommonRoutesEnum.Root], initialIndex: 0 },
         {
           store: getStoreWithAuth(currentUser, undefined, undefined, {
             queries: { ...getUserMeQueryMock(currentUser) },

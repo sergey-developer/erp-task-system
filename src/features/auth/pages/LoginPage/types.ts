@@ -1,3 +1,4 @@
-import { LoginMutationArgs } from 'features/auth/schemas'
-
-export type LoginFormFields = LoginMutationArgs
+export type LoginFormFields = {
+  email: string
+  password: string
+}

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
-import { getFaChangeTypesCatalogErrMsg } from 'shared/catalogs/api/constants/errorMessages'
+import { getFaChangeTypesCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
 import {
   GetFaChangeTypesCatalogQueryArgs,
   GetFaChangeTypesCatalogSuccessResponse,

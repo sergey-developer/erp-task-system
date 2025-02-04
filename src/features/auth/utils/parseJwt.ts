@@ -1,6 +1,5 @@
+import { JwtPayload } from 'features/auth/types'
 import { camelizeKeys } from 'humps'
-
-import { JwtPayload } from '../types'
 
 export const parseJwt = (token: string): JwtPayload => {
   try {

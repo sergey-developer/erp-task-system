@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
-import { getCurrenciesCatalogErrMsg } from 'shared/catalogs/api/constants/errorMessages'
+import { getCurrenciesCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
 import {
   GetCurrenciesCatalogQueryArgs,
   GetCurrenciesCatalogSuccessResponse,

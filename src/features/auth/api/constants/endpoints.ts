@@ -1,4 +1,4 @@
-export enum AuthApiEnum {
+export enum AuthEndpointsEnum {
   Login = '/user/auth',
   Logout = '/user/logout',
   RefreshToken = '/user/refresh',

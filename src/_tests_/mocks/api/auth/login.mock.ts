@@ -1,5 +1,5 @@
-import { AuthApiEnum } from 'features/auth/constants'
-import { LoginSuccessResponse } from 'features/auth/schemas'
+import { LoginSuccessResponse } from 'features/auth/api/schemas'
+import { AuthEndpointsEnum } from 'features/auth/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -12,7 +12,7 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const loginMockFn = () => getRequestMockFn(HttpMethodEnum.Post, AuthApiEnum.Login)
+const loginMockFn = () => getRequestMockFn(HttpMethodEnum.Post, AuthEndpointsEnum.Login)
 
 export const mockLoginSuccess = (options: Partial<ResponseResolverOptions<LoginSuccessResponse>>) =>
   getSuccessMockFn(loginMockFn(), options)()

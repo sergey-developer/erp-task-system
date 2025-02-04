@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { authLocalStorageService } from './services/authLocalStorage.service'
+import { authLocalStorageService } from '../services/authLocalStorage.service'
+import { parseJwt } from '../utils'
 import { AuthSliceState, LoginActionPayload, RefreshTokenActionPayload } from './types'
-import { parseJwt } from './utils'
 
 export const getInitialState = (): AuthSliceState => {
   const accessToken = authLocalStorageService.getAccessToken()

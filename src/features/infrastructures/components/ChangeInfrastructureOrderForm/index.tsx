@@ -19,7 +19,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { InfrastructureWorkTypesCatalogDTO } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
-import { useDebounceFn } from 'shared/catalogs/hooks/useDebounceFn'
+import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { showErrorNotification } from 'shared/utils/notifications'
