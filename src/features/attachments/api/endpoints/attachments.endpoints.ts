@@ -1,11 +1,11 @@
 import { AttachmentsEndpointsEnum } from 'features/attachments/api/constants'
+import { makeDeleteAttachmentEndpoint } from 'features/attachments/api/helpers'
 import {
   CreateAttachmentMutationArgs,
   CreateAttachmentSuccessResponse,
   DeleteAttachmentMutationArgs,
   DeleteAttachmentSuccessResponse,
-} from 'features/attachments/api/dto'
-import { makeDeleteAttachmentEndpoint } from 'features/attachments/api/helpers'
+} from 'features/attachments/api/schemas'
 
 import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

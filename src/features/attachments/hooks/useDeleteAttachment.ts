@@ -1,10 +1,10 @@
 import { UploadFile } from 'antd/es/upload'
 import { deleteAttachmentErrMsg } from 'features/attachments/api/constants'
+import { useDeleteAttachmentMutation } from 'features/attachments/api/endpoints/attachments.endpoints'
 import {
   DeleteAttachmentMutationArgs,
   DeleteAttachmentSuccessResponse,
-} from 'features/attachments/api/dto'
-import { useDeleteAttachmentMutation } from 'features/attachments/api/endpoints/attachments.endpoints'
+} from 'features/attachments/api/schemas'
 import { useCallback, useEffect } from 'react'
 
 import { CustomUseMutationState } from 'lib/rtk-query/types'
