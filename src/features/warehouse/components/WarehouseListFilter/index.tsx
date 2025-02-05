@@ -1,9 +1,8 @@
 import { Form, Input, Select } from 'antd'
-import React, { FC, useEffect } from 'react'
-
 import { getLegalEntityListMessages } from 'features/warehouse/constants/legalEntity'
-import { useGetWarehouseList } from 'features/warehouse/hooks/warehouse'
+import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
 import { useGetLegalEntityListQuery } from 'features/warehouse/services/legalEntityApiService'
+import React, { FC, useEffect } from 'react'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
@@ -21,19 +20,19 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
 }) => {
   const [form] = Form.useForm<WarehouseListFilterFormFields>()
 
-  const { isFetching: warehousesIsFetching, currentData: warehouses = [] } = useGetWarehouseList()
+  const { isFetching: warehousesIsFetching, currentData: warehouses = [] } = useGetWarehouses()
 
   const {
-    currentData: legalEntityList = [],
-    isFetching: legalEntityListIsFetching,
-    isError: isGetLegalEntityListError,
+    currentData: legalEntities = [],
+    isFetching: legalEntitiesIsFetching,
+    isError: isGetLegalEntitiesError,
   } = useGetLegalEntityListQuery()
 
   useEffect(() => {
-    if (isGetLegalEntityListError) {
+    if (isGetLegalEntitiesError) {
       showErrorNotification(getLegalEntityListMessages.commonError)
     }
-  }, [isGetLegalEntityListError])
+  }, [isGetLegalEntitiesError])
 
   useEffect(() => {
     if (formValues) {
@@ -78,8 +77,8 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
             <Select
               data-testid='legal-entity-select'
               fieldNames={idAndTitleSelectFieldNames}
-              loading={legalEntityListIsFetching}
-              options={legalEntityList}
+              loading={legalEntitiesIsFetching}
+              options={legalEntities}
               placeholder='Наименование юридического лица'
             />
           </Form.Item>

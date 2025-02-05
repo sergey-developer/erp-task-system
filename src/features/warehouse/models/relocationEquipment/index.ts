@@ -1,5 +1,5 @@
-export * from './relocationEquipmentAttachmentList.model'
-export * from './getRelocationEquipmentAttachmentList.model'
+export * from './relocationEquipmentAttachments.model'
+export * from './getRelocationEquipmentAttachments.model'
 
 export * from './relocationEquipmentTechnicalExamination.model'
 export * from './getRelocationEquipmentTechnicalExamination.model'

@@ -7,7 +7,7 @@ import {
 import { SearchFields } from 'features/task/models'
 import { UsersModel } from 'features/user/models'
 import { MatchedUserPermissions } from 'features/user/types'
-import { CustomerListModel } from 'features/warehouse/models'
+import { CustomersModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
@@ -41,7 +41,7 @@ export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClos
   formValues: TasksFilterFormFields
   initialFormValues: TasksFilterFormFields
 
-  customers: CustomerListModel
+  customers: CustomersModel
   customersIsLoading: boolean
   onChangeCustomers: (value: IdType[]) => void
 

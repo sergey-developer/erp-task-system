@@ -1,7 +1,5 @@
 import { useSetState } from 'ahooks'
 import { Col, Flex, Radio, RadioGroupProps, Row } from 'antd'
-import React, { FC, useCallback, useState } from 'react'
-
 import MtsrReportForm from 'features/reports/components/MtsrReportForm'
 import { MtsrReportFormProps } from 'features/reports/components/MtsrReportForm/types'
 import MtsrReportTable from 'features/reports/components/MtsrReportTable'
@@ -18,7 +16,8 @@ import {
   useGetWorkGroupsMtsrReport,
 } from 'features/reports/hooks'
 import { GetMtsrReportBaseQueryArgs } from 'features/reports/types'
-import { useGetCustomerList } from 'features/warehouse/hooks/customer'
+import { useGetCustomers } from 'features/warehouse/hooks/customer'
+import React, { FC, useCallback, useState } from 'react'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { IdType } from 'shared/types/common'
@@ -88,7 +87,7 @@ const MtsrReportPage: FC = () => {
       { skip: !isUsersReportLevel },
     )
 
-  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList()
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomers()
 
   const onClickUpdate = useCallback<MtsrReportFormProps['onSubmit']>(
     (values) => {

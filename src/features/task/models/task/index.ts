@@ -10,8 +10,8 @@ export * from './updateTaskDeadline.model'
 export * from './tasks.model'
 export * from './getTasks.model'
 
-export * from './taskListMap.model'
-export * from './getTaskListMap.model'
+export * from './tasksMap.model'
+export * from './getTasksMap.model'
 
 export * from './getTaskWorkPerformedAct.model'
 

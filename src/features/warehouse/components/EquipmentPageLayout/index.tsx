@@ -3,7 +3,7 @@ import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import { EquipmentsFilterFormFields } from 'features/warehouse/components/EquipmentFilter/types'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import { useGetCustomerList } from 'features/warehouse/hooks/customer'
+import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import {
   useGetEquipmentCategories,
   useLazyGetEquipmentsXlsx,
@@ -74,7 +74,7 @@ const EquipmentPageLayout: FC = () => {
   const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
     useGetEquipmentCategories(undefined, { skip: !filterOpened })
 
-  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList(
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomers(
     undefined,
     { skip: !filterOpened },
   )

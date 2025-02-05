@@ -97,30 +97,30 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Имеет верное количество вариантов', async () => {
-        const fakeSupportGroupList = [supportGroupFixtures.supportGroupListItem()]
-        mockGetSupportGroupListSuccess({ body: fakeSupportGroupList })
+        const fakeSupportGroups = [supportGroupFixtures.supportGroupListItem()]
+        mockGetSupportGroupListSuccess({ body: fakeSupportGroups })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
 
         await createSubTaskModalTestUtils.supportGroup.expectLoadingFinished()
         await createSubTaskModalTestUtils.supportGroup.openField(user)
 
-        fakeSupportGroupList.forEach((opt) => {
+        fakeSupportGroups.forEach((opt) => {
           const value = createSubTaskModalTestUtils.supportGroup.getOption(opt.name)
           expect(value).toBeInTheDocument()
         })
       })
 
       test('Не имеет значения по умолчанию', async () => {
-        const fakeSupportGroupList = [supportGroupFixtures.supportGroupListItem()]
-        mockGetSupportGroupListSuccess({ body: fakeSupportGroupList })
+        const fakeSupportGroups = [supportGroupFixtures.supportGroupListItem()]
+        mockGetSupportGroupListSuccess({ body: fakeSupportGroups })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
 
         await createSubTaskModalTestUtils.supportGroup.expectLoadingFinished()
         await createSubTaskModalTestUtils.supportGroup.openField(user)
 
-        fakeSupportGroupList.forEach((opt) => {
+        fakeSupportGroups.forEach((opt) => {
           const value = createSubTaskModalTestUtils.supportGroup.queryValue(opt.name)
           expect(value).not.toBeInTheDocument()
         })

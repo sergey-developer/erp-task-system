@@ -1,12 +1,11 @@
+import { TaskListMapItemModel, TasksMapModel } from 'features/task/models'
 import { Coordinate } from 'ol/coordinate'
 import { Geometry as OlGeometry } from 'ol/geom'
-
-import { TaskListMapItemModel, TaskListMapModel } from 'features/task/models'
 
 import { MaybeNull } from 'shared/types/utils'
 
 export type TaskListMapProps = {
-  tasks: TaskListMapModel
+  tasks: TasksMapModel
   onClickTask: (coords: MaybeNull<Coordinate>) => void
 }
 

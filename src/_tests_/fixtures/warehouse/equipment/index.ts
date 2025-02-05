@@ -1,5 +1,5 @@
 export * from './equipment'
-export * from './equipmentList'
+export * from './equipments'
 
 export * from './importedEquipmentsByFile'
 

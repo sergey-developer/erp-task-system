@@ -8,7 +8,7 @@ import {
 import {
   SuspendRequestModel,
   TaskAssigneeModel,
-  TaskAttachmentListModel,
+  TaskAttachmentsModel,
   TaskResponseTimeModel,
   TaskSupportGroupModel,
   TaskWorkGroupModel,
@@ -69,11 +69,11 @@ export type TaskModel = {
   workType: MaybeNull<Pick<WorkTypeModel, 'id' | 'title' | 'actions'>>
   isOlaNextBreachTimeChanged: MaybeNull<boolean>
   previousOlaNextBreachTime: MaybeNull<string>
-  resolution: { attachments: TaskAttachmentListModel }
+  resolution: { attachments: TaskAttachmentsModel }
   hasRelocationTasks: boolean
   previousDescription: MaybeNull<string>
   isDescriptionChanged: MaybeNull<boolean>
-  attachments: MaybeNull<TaskAttachmentListModel>
+  attachments: MaybeNull<TaskAttachmentsModel>
   suspendRequest: MaybeNull<SuspendRequestModel>
   weight: MaybeNull<number>
   company: MaybeNull<string>

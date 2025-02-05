@@ -1,3 +1,3 @@
 export * from './supportGroup.model'
-export * from './supportGroupList.model'
-export * from './getSupportGroupList.model'
+export * from './supportGroups.model'
+export * from './getSupportGroups.model'

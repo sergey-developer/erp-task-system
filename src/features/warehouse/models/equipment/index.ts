@@ -7,8 +7,8 @@ export * from './updateEquipment.model'
 export * from './importedEquipmentsByFile.model'
 export * from './importEquipmentsByFile.model'
 
-export * from './equipmentList.model'
-export * from './getEquipmentList.model'
+export * from './equipments.model'
+export * from './getEquipments.model'
 export * from './getEquipmentsXlsx.model'
 
 export * from './equipmentRelocationHistory.model'
@@ -17,15 +17,15 @@ export * from './getEquipmentRelocationHistory.model'
 export * from './equipmentsCatalog.model'
 export * from './getEquipmentsCatalog.model'
 
-export * from './getEquipmentAttachmentList.model'
+export * from './getEquipmentAttachments.model'
 
-export * from './equipmentNomenclatureList.model'
-export * from './getEquipmentNomenclatureList.model'
+export * from './equipmentNomenclatures.model'
+export * from './getEquipmentNomenclatures.model'
 
 export * from './equipmentCategory.model'
-export * from './equipmentCategoryList.model'
-export * from './getEquipmentCategoryList.model'
+export * from './equipmentCategories.model'
+export * from './getEquipmentCategories.model'
 
-export * from './getEquipmentListTemplate.model'
+export * from './getEquipmentsTemplate.model'
 
 export * from './createEquipmentTechnicalExamination.model'

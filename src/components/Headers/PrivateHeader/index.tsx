@@ -37,8 +37,8 @@ import {
   isNotFoundError,
   isUnauthorizedError,
 } from 'shared/api/baseApi'
-import { useTimeZonesCatalogState } from 'shared/catalogs/hooks/timeZones'
-import { useUserStatusesCatalogState } from 'shared/catalogs/hooks/userStatuses'
+import { useTimeZonesCatalogState } from 'shared/catalogs/timeZones/hooks'
+import { useUserStatusesCatalogState } from 'shared/catalogs/userStatuses/hooks'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { timeZoneDropdownStyles } from './styles'
@@ -52,9 +52,9 @@ const PrivateHeader: FC = () => {
   const { data: userMeCode } = useUserMeCodeState()
   const { data: userMe } = useUserMeState()
 
-  const { data: timeZoneList, isFetching: timeZoneListIsFetching } = useTimeZonesCatalogState()
+  const { data: timeZones, isFetching: timeZonesIsFetching } = useTimeZonesCatalogState()
 
-  const { data: userStatusList = [], isFetching: userStatusListIsFetching } =
+  const { data: userStatuses = [], isFetching: userStatusesIsFetching } =
     useUserStatusesCatalogState()
 
   const [updateUserTimeZoneMutation, { isLoading: updateUserTimeZoneIsLoading }] =
@@ -72,8 +72,8 @@ const PrivateHeader: FC = () => {
 
   const userStatusOptions = useMemo<DefaultOptionType[]>(
     () =>
-      userStatusList.length
-        ? userStatusList.map((status) => ({
+      userStatuses.length
+        ? userStatuses.map((status) => ({
             value: status.id,
             label: (
               <Space size={4}>
@@ -83,7 +83,7 @@ const PrivateHeader: FC = () => {
             ),
           }))
         : [],
-    [userStatusList],
+    [userStatuses],
   )
 
   const onUpdateTimeZone = async (timezone: UserModel['timezone']) => {
@@ -144,9 +144,9 @@ const PrivateHeader: FC = () => {
               data-testid='timezone-select'
               aria-label='Временная зона'
               placeholder='Выберите временную зону'
-              loading={timeZoneListIsFetching || updateUserTimeZoneIsLoading}
-              disabled={timeZoneListIsFetching || updateUserTimeZoneIsLoading}
-              options={timeZoneList}
+              loading={timeZonesIsFetching || updateUserTimeZoneIsLoading}
+              disabled={timeZonesIsFetching || updateUserTimeZoneIsLoading}
+              options={timeZones}
               value={userMe?.timezone || null}
               onChange={(value) => onUpdateTimeZone(value as string)}
               dropdownStyle={timeZoneDropdownStyles}
@@ -156,7 +156,7 @@ const PrivateHeader: FC = () => {
               data-testid='user-status-select'
               aria-label='Статус пользователя'
               options={userStatusOptions}
-              loading={userStatusListIsFetching}
+              loading={userStatusesIsFetching}
               disabled={updateUserStatusIsLoading}
               value={userMe?.status.id}
               onSelect={onUpdateUserStatus}

@@ -1,4 +1,4 @@
-import { UserStatusesCatalogDTO } from 'shared/catalogs/api/dto/userStatuses'
+import { UserStatusesCatalogDTO } from 'shared/catalogs/userStatuses/api/dto'
 
 export type GetUserStatusesCatalogQueryArgs = void
 export type GetUserStatusesCatalogSuccessResponse = UserStatusesCatalogDTO

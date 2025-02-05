@@ -1,0 +1,48 @@
+import { getSubTasksErrMsg } from 'features/task/constants/task'
+import { GetSubTaskListQueryArgs, GetSubTaskListSuccessResponse } from 'features/task/models'
+import { useGetSubTaskListQuery } from 'features/task/services/taskApi.service'
+import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
+
+import {
+  getErrorDetail,
+  isBadRequestError,
+  isErrorResponse,
+  isForbiddenError,
+  isNotFoundError,
+} from 'shared/api/baseApi'
+import { showErrorNotification } from 'shared/utils/notifications'
+
+type UseGetSubTaskListResult = CustomUseQueryHookResult<
+  GetSubTaskListQueryArgs,
+  GetSubTaskListSuccessResponse
+>
+
+type UseGetSubTaskListOptions = CustomUseQueryOptions<
+  GetSubTaskListQueryArgs,
+  GetSubTaskListSuccessResponse
+>
+
+export const useGetSubTasks = (
+  args: GetSubTaskListQueryArgs,
+  options?: UseGetSubTaskListOptions,
+): UseGetSubTaskListResult => {
+  const state = useGetSubTaskListQuery(args, options)
+
+  useEffect(() => {
+    if (isErrorResponse(state.error)) {
+      if (
+        isBadRequestError(state.error) ||
+        isForbiddenError(state.error) ||
+        isNotFoundError(state.error)
+      ) {
+        showErrorNotification(getErrorDetail(state.error))
+      } else {
+        showErrorNotification(getSubTasksErrMsg)
+      }
+    }
+  }, [state.error])
+
+  return state
+}

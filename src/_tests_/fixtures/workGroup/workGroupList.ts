@@ -51,5 +51,5 @@ export const workGroupListItem = (
   name: fakeName(),
 })
 
-export const workGroupList = (length: number = 1): WorkGroupsDTO =>
+export const workGroups = (length: number = 1): WorkGroupsDTO =>
   times(length, () => workGroupListItem())

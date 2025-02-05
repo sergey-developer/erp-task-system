@@ -26,7 +26,7 @@ import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
-import { useLazyGetCustomerList } from 'features/warehouse/hooks/customer'
+import { useLazyGetCustomers } from 'features/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useCreateEquipments,
@@ -34,13 +34,13 @@ import {
   useGetEquipmentsCatalog,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
-  useLazyGetEquipmentListTemplate,
+  useLazyGetEquipmentsTemplate,
 } from 'features/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
-import { useGetRelocationEquipmentAttachmentList } from 'features/warehouse/hooks/relocationEquipment'
+import { useGetRelocationEquipmentAttachments } from 'features/warehouse/hooks/relocationEquipment'
 import {
-  useGetRelocationEquipmentBalanceList,
-  useGetRelocationEquipmentList,
+  useGetRelocationEquipmentBalances,
+  useGetRelocationEquipments,
   useGetRelocationTask,
   useGetRelocationTaskAttachments,
   useUpdateRelocationTask,
@@ -253,7 +253,7 @@ const EditRelocationTaskPage: FC = () => {
     useGetRelocationTask({ relocationTaskId: relocationTaskId! })
 
   const { currentData: relocationEquipments = [], isFetching: relocationEquipmentsIsFetching } =
-    useGetRelocationEquipmentList({ relocationTaskId: relocationTaskId! })
+    useGetRelocationEquipments({ relocationTaskId: relocationTaskId! })
 
   const activeEquipmentIsRelocationEquipment =
     createRelocationEquipmentImagesModalOpened && activeEquipmentRow && relocationEquipments.length
@@ -267,7 +267,7 @@ const EditRelocationTaskPage: FC = () => {
   const {
     currentData: relocationEquipmentAttachments = [],
     isFetching: relocationEquipmentAttachmentListIsFetching,
-  } = useGetRelocationEquipmentAttachmentList(
+  } = useGetRelocationEquipmentAttachments(
     { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
     {
       skip:
@@ -319,9 +319,9 @@ const EditRelocationTaskPage: FC = () => {
   const { currentData: currencies = [], isFetching: currenciesIsFetching } =
     useGetCurrenciesCatalog()
 
-  const { currentData: relocationEquipmentBalanceList = [] } = useGetRelocationEquipmentBalanceList(
-    { relocationTaskId: relocationTaskId! },
-  )
+  const { currentData: relocationEquipmentBalanceList = [] } = useGetRelocationEquipmentBalances({
+    relocationTaskId: relocationTaskId!,
+  })
 
   const { currentData: equipmentsCatalog = [], isFetching: equipmentsCatalogIsFetching } =
     useGetEquipmentsCatalog(
@@ -367,7 +367,7 @@ const EditRelocationTaskPage: FC = () => {
   )
 
   const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
-    useLazyGetCustomerList()
+    useLazyGetCustomers()
 
   useEffect(() => {
     if (
@@ -404,7 +404,7 @@ const EditRelocationTaskPage: FC = () => {
   ] = useImportEquipmentsByFile()
 
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
-    useLazyGetEquipmentListTemplate()
+    useLazyGetEquipmentsTemplate()
 
   const {
     currentData: relocationTaskAttachments = [],

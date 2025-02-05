@@ -14,7 +14,7 @@ import { TaskModel } from 'features/task/models'
 import { CreateRelocationEquipmentTechnicalExaminationModalProps } from 'features/warehouse/components/CreateRelocationEquipmentTechnicalExaminationModal/types'
 import DocumentsPackageRelocationEquipmentTable from 'features/warehouse/components/DocumentsPackageRelocationEquipmentTable'
 import { DocumentsPackageRelocationEquipmentTableItem } from 'features/warehouse/components/DocumentsPackageRelocationEquipmentTable/types'
-import { useGetMeasurementUnitList } from 'features/warehouse/hooks/measurementUnit'
+import { useGetMeasurementUnits } from 'features/warehouse/hooks/measurementUnit'
 import {
   useCreateRelocationEquipmentTechnicalExamination,
   useGetRelocationEquipmentTechnicalExamination,
@@ -123,7 +123,7 @@ const CreateDocumentsPackagePage: FC = () => {
   )
 
   const { currentData: measurementUnits = [], isFetching: measurementUnitsIsFetching } =
-    useGetMeasurementUnitList(undefined, { skip: !createCompletedWorkModalOpened })
+    useGetMeasurementUnits(undefined, { skip: !createCompletedWorkModalOpened })
 
   const [createInitiationReasonMutation, { isLoading: createInitiationReasonIsLoading }] =
     useCreateInitiationReason()

@@ -1,1 +1,1 @@
-export * from './useGetSupportGroupList'
+export * from './useGetSupportGroups'

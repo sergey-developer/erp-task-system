@@ -1,5 +1,5 @@
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { CustomerListModel, EquipmentCategoriesModel } from 'features/warehouse/models'
+import { CustomersModel, EquipmentCategoriesModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
 import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
@@ -31,7 +31,7 @@ export type EquipmentFilterProps = {
   categories: EquipmentCategoriesModel
   categoriesIsLoading: boolean
 
-  owners: CustomerListModel
+  owners: CustomersModel
   ownersIsLoading: boolean
 
   onApply: (values: EquipmentsFilterFormFields) => void

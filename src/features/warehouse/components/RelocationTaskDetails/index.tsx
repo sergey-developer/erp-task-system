@@ -38,10 +38,10 @@ import {
   returnRelocationTaskToReworkMessages,
 } from 'features/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import { useGetRelocationEquipmentAttachmentList } from 'features/warehouse/hooks/relocationEquipment'
+import { useGetRelocationEquipmentAttachments } from 'features/warehouse/hooks/relocationEquipment'
 import {
   useCreateRelocationTaskAttachment,
-  useGetRelocationEquipmentList,
+  useGetRelocationEquipments,
   useGetRelocationTask,
   useGetRelocationTaskAttachments,
   useLazyGetRelocationTaskWaybillM15,
@@ -209,12 +209,12 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
     useGetRelocationTask({ relocationTaskId })
 
   const { currentData: relocationEquipments = [], isFetching: relocationEquipmentsIsFetching } =
-    useGetRelocationEquipmentList({ relocationTaskId })
+    useGetRelocationEquipments({ relocationTaskId })
 
   const {
     currentData: relocationEquipmentAttachments = [],
     isFetching: relocationEquipmentAttachmentListIsFetching,
-  } = useGetRelocationEquipmentAttachmentList(
+  } = useGetRelocationEquipmentAttachments(
     { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
     { skip: !equipmentImagesModalOpened || !activeEquipmentRow },
   )

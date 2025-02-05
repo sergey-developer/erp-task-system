@@ -42,9 +42,9 @@ describe('Таблица оборудования', () => {
   })
 
   test('Пагинация работает', async () => {
-    const equipmentList = warehouseFixtures.equipmentList(11)
+    const equipments = warehouseFixtures.equipments(11)
 
-    const { user } = render(<EquipmentTable {...props} dataSource={equipmentList} />)
+    const { user } = render(<EquipmentTable {...props} dataSource={equipments} />)
 
     const table = equipmentTableTestUtils.getContainer()
     await tableTestUtils.clickPaginationNextButtonIn(user, table)
@@ -56,7 +56,7 @@ describe('Таблица оборудования', () => {
       expect.anything(),
       expect.anything(),
     )
-    equipmentList.slice(-1).forEach((item) => {
+    equipments.slice(-1).forEach((item) => {
       const row = equipmentTableTestUtils.getRow(item.id)
       expect(row).toBeInTheDocument()
     })

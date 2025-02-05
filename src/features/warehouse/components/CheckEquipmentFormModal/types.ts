@@ -1,11 +1,11 @@
 import { FormInstance, SelectProps } from 'antd'
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import {
-  CustomerListModel,
+  CustomersModel,
   EquipmentCategoriesModel,
   EquipmentCategoryListItemModel,
   NomenclatureListItemModel,
-  NomenclatureListModel,
+  NomenclaturesModel,
   NomenclatureModel,
   WorkTypesModel,
 } from 'features/warehouse/models'
@@ -61,7 +61,7 @@ export type CheckEquipmentFormModalProps = Required<
     currencies: CurrenciesCatalogDTO
     currenciesIsLoading: boolean
 
-    owners: CustomerListModel
+    owners: CustomersModel
     ownersIsLoading: boolean
     onChangeOwner: (id: IdType) => void
 
@@ -74,7 +74,7 @@ export type CheckEquipmentFormModalProps = Required<
     nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>
     nomenclatureIsLoading: boolean
 
-    nomenclatures: NomenclatureListModel
+    nomenclatures: NomenclaturesModel
     nomenclaturesIsLoading: boolean
     onChangeNomenclature: NonNullable<SelectProps<IdType, NomenclatureListItemModel>['onChange']>
 

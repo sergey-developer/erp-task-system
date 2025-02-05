@@ -1,5 +1,5 @@
 import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'features/task/constants/taskJournal'
-import { TaskAttachmentListModel } from 'features/task/models'
+import { TaskAttachmentsModel } from 'features/task/models'
 import { BaseUserModel } from 'features/user/models'
 
 import { IdType } from 'shared/types/common'
@@ -12,7 +12,7 @@ export type TaskJournalEntryModel = {
   description: string
   sourceSystem: TaskJournalSourceEnum
 
-  attachments: MaybeNull<TaskAttachmentListModel>
+  attachments: MaybeNull<TaskAttachmentsModel>
   author: MaybeNull<Pick<BaseUserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>>
 }
 

@@ -1,5 +1,5 @@
 import { SupportGroupListModel } from 'features/supportGroup/models'
-import { CustomerListModel } from 'features/warehouse/models'
+import { CustomersModel } from 'features/warehouse/models'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
@@ -18,7 +18,7 @@ export type FiscalAccumulatorTasksReportFilterProps = Required<
   values: FiscalAccumulatorTasksReportFilterFormFields
   initialValues: FiscalAccumulatorTasksReportFilterFormFields
 
-  customers: CustomerListModel
+  customers: CustomersModel
   customersIsLoading: boolean
   onChangeCustomers: (value: IdType[]) => void
 

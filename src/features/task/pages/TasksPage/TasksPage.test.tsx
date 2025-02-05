@@ -1,7 +1,4 @@
 import { waitFor } from '@testing-library/react'
-import { camelize } from 'humps'
-import moment from 'moment-timezone'
-
 import {
   fastFilterByLinesOptions,
   fastFilterOptions,
@@ -24,6 +21,8 @@ import {
 } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { UserPermissionsEnum } from 'features/user/constants'
 import { getFullUserName } from 'features/user/utils'
+import { camelize } from 'humps'
+import moment from 'moment-timezone'
 
 import { executeTaskModalTestUtils } from '_tests_/features/tasks/components/ExecuteTaskModal/testUtils'
 import { fastFilterOptionTestUtils } from '_tests_/features/tasks/components/FastFilters/FastFilterOption/testUtils'
@@ -1451,7 +1450,7 @@ describe('Страница реестра заявок', () => {
         mockGetMacroregionsSuccess()
         mockGetSupportGroupListSuccess()
         mockGetWorkGroupsSuccess({
-          body: workGroupFixtures.workGroupList(),
+          body: workGroupFixtures.workGroups(),
         })
 
         const { user } = render(<TasksPage />, {

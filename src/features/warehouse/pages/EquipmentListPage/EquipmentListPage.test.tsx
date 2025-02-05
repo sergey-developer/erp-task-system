@@ -1,5 +1,4 @@
 import { waitFor } from '@testing-library/react'
-
 import { getEquipmentsErrMsg } from 'features/warehouse/constants/equipment'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
@@ -32,16 +31,16 @@ notificationTestUtils.setupNotifications()
 describe.skip('Страница списка оборудования', () => {
   describe('Список оборудования', () => {
     test('При успешном запросе отображается корректно', async () => {
-      const equipmentList = [warehouseFixtures.equipmentListItem()]
+      const equipments = [warehouseFixtures.equipmentListItem()]
       mockGetEquipmentListSuccess({
-        body: commonFixtures.paginatedListResponse(equipmentList),
+        body: commonFixtures.paginatedListResponse(equipments),
       })
 
       render(<EquipmentListPage />)
 
       await equipmentTableTestUtils.expectLoadingFinished()
 
-      equipmentList.forEach((item) => {
+      equipments.forEach((item) => {
         const row = equipmentTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
@@ -72,9 +71,9 @@ describe.skip('Страница списка оборудования', () => {
     })
 
     test('Пагинация работает', async () => {
-      const equipmentList = warehouseFixtures.equipmentList(11)
+      const equipments = warehouseFixtures.equipments(11)
       mockGetEquipmentListSuccess({
-        body: commonFixtures.paginatedListResponse(equipmentList),
+        body: commonFixtures.paginatedListResponse(equipments),
         once: false,
       })
 
@@ -85,7 +84,7 @@ describe.skip('Страница списка оборудования', () => {
       await equipmentTableTestUtils.expectLoadingStarted()
       await equipmentTableTestUtils.expectLoadingFinished()
 
-      equipmentList.slice(-1).forEach((item) => {
+      equipments.slice(-1).forEach((item) => {
         const row = equipmentTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
@@ -93,7 +92,7 @@ describe.skip('Страница списка оборудования', () => {
 
     test('Установлена сортировка по умолчанию', async () => {
       mockGetEquipmentListSuccess({
-        body: commonFixtures.paginatedListResponse(warehouseFixtures.equipmentList()),
+        body: commonFixtures.paginatedListResponse(warehouseFixtures.equipments()),
         once: false,
       })
 
@@ -106,9 +105,9 @@ describe.skip('Страница списка оборудования', () => {
     })
 
     test('Сортировка работает корректно', async () => {
-      const equipmentList = warehouseFixtures.equipmentList()
+      const equipments = warehouseFixtures.equipments()
       mockGetEquipmentListSuccess({
-        body: commonFixtures.paginatedListResponse(equipmentList),
+        body: commonFixtures.paginatedListResponse(equipments),
         once: false,
       })
 
@@ -121,7 +120,7 @@ describe.skip('Страница списка оборудования', () => {
       const headCell = equipmentTableTestUtils.getHeadCell('Серийный номер')
 
       expect(headCell).toHaveAttribute(ariaSortAttrName, ariaSortAttrAscValue)
-      equipmentList.forEach((item) => {
+      equipments.forEach((item) => {
         const row = equipmentTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })

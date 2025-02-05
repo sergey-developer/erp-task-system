@@ -29,7 +29,7 @@ import {
   RelocationEquipmentRow,
 } from 'features/warehouse/components/RelocationEquipmentSimplifiedEditableTable/types'
 import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
-import { useLazyGetCustomerList } from 'features/warehouse/hooks/customer'
+import { useLazyGetCustomers } from 'features/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useCreateEquipments,
@@ -37,7 +37,7 @@ import {
   useGetEquipmentsCatalog,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
-  useLazyGetEquipmentListTemplate,
+  useLazyGetEquipmentsTemplate,
 } from 'features/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useCreateRelocationTaskITSM } from 'features/warehouse/hooks/relocationTask'
@@ -285,7 +285,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   )
 
   const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
-    useLazyGetCustomerList()
+    useLazyGetCustomers()
 
   useEffect(() => {
     if (
@@ -328,7 +328,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   ] = useImportEquipmentsByFile()
 
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
-    useLazyGetEquipmentListTemplate()
+    useLazyGetEquipmentsTemplate()
 
   const onCreateEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {

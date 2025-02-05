@@ -1,5 +1,4 @@
 import { screen, within } from '@testing-library/react'
-
 import { TaskActionsPermissionsEnum, TaskStatusEnum } from 'features/task/constants/task'
 import { getFullUserName } from 'features/user/utils'
 
@@ -211,8 +210,8 @@ describe('Блок рабочей группы', () => {
 
   describe('Модалка перевода на 2-ю линию', () => {
     test('При отправке обработчик вызывается', async () => {
-      const workGroupList = workGroupFixtures.workGroupList()
-      mockGetWorkGroupsSuccess({ body: workGroupList })
+      const workGroups = workGroupFixtures.workGroups()
+      mockGetWorkGroupsSuccess({ body: workGroups })
 
       const { user } = render(
         <WorkGroupBlock
@@ -231,7 +230,7 @@ describe('Блок рабочей группы', () => {
       await taskSecondLineModalTestUtils.findContainer()
       await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
       await taskSecondLineModalTestUtils.openWorkGroupField(user)
-      await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroupList[0].name)
+      await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroups[0].name)
       await taskSecondLineModalTestUtils.clickSubmitButton(user)
 
       expect(props.transferTaskToSecondLine).toBeCalledTimes(1)

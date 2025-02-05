@@ -1,2 +1,2 @@
-export * from './useGetCustomerList'
-export * from './useLazyGetCustomerList'
+export * from './useGetCustomers'
+export * from './useLazyGetCustomers'

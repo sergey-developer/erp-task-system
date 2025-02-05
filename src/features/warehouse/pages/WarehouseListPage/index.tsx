@@ -11,7 +11,7 @@ import {
   sortableFieldToSortValues,
 } from 'features/warehouse/components/WarehouseTable/sort'
 import { WarehouseTableProps } from 'features/warehouse/components/WarehouseTable/types'
-import { useGetWarehouseList } from 'features/warehouse/hooks/warehouse'
+import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
 import { GetWarehouseListQueryArgs } from 'features/warehouse/models'
 import { FC, useCallback, useState } from 'react'
 
@@ -29,7 +29,7 @@ const WarehouseListPage: FC = () => {
   const [filterFormValues, setFilterFormValues] = useState<WarehouseListFilterFormFields>()
 
   const { isFetching: warehousesIsFetching, currentData: warehouses = [] } =
-    useGetWarehouseList(queryArgs)
+    useGetWarehouses(queryArgs)
 
   const handleApplyFilter = useCallback<WarehouseListFilterProps['onApply']>(
     (values) => {

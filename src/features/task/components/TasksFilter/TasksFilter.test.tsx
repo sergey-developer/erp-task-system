@@ -1,12 +1,11 @@
 import { screen } from '@testing-library/react'
-import moment from 'moment-timezone'
-
 import {
   TaskAssignedEnum,
   taskExtendedStatusDict,
   TaskExtendedStatusEnum,
 } from 'features/task/constants/task'
 import { UserPermissionsEnum } from 'features/user/constants'
+import moment from 'moment-timezone'
 
 import { props } from '_tests_/features/tasks/components/TasksFilter/constants'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/components/TasksFilter/testUtils'
@@ -268,8 +267,8 @@ describe('Расширенный фильтр', () => {
 
     describe('Группы поддержки', () => {
       test('Отображается корректно', async () => {
-        const supportGroupList = supportGroupFixtures.supportGroupList()
-        const { user } = render(<TasksFilter {...props} supportGroups={supportGroupList} />)
+        const supportGroups = supportGroupFixtures.supportGroups()
+        const { user } = render(<TasksFilter {...props} supportGroups={supportGroups} />)
 
         const field = tasksFilterTestUtils.getSupportGroupsSelect()
         const selectedOption = tasksFilterTestUtils.getSelectedSupportGroup()
@@ -278,7 +277,7 @@ describe('Расширенный фильтр', () => {
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
         expect(selectedOption).not.toBeInTheDocument()
-        supportGroupList.forEach((item) => {
+        supportGroups.forEach((item) => {
           const option = selectTestUtils.getSelectOption(item.name)
           expect(option).toBeInTheDocument()
         })
@@ -501,24 +500,36 @@ describe('Расширенный фильтр', () => {
       test('Кнопка "Сбросить"', async () => {
         const { user } = render(<TasksFilter {...props} />)
 
-        const { startDateValue, endDateValue } = await tasksFilterTestUtils.creationDate.setValue(user)
+        const { startDateValue, endDateValue } = await tasksFilterTestUtils.creationDate.setValue(
+          user,
+        )
 
         const container = tasksFilterTestUtils.creationDate.getContainer()
         await tasksFilterTestUtils.clickResetButtonIn(user, container)
 
-        expect(tasksFilterTestUtils.creationDate.getStartDateField()).not.toHaveDisplayValue(startDateValue)
-        expect(tasksFilterTestUtils.creationDate.getEndDateField()).not.toHaveDisplayValue(endDateValue)
+        expect(tasksFilterTestUtils.creationDate.getStartDateField()).not.toHaveDisplayValue(
+          startDateValue,
+        )
+        expect(tasksFilterTestUtils.creationDate.getEndDateField()).not.toHaveDisplayValue(
+          endDateValue,
+        )
       })
 
       test('Кнопка "Сбросить всё"', async () => {
         const { user } = render(<TasksFilter {...props} />)
 
-        const { startDateValue, endDateValue } = await tasksFilterTestUtils.creationDate.setValue(user)
+        const { startDateValue, endDateValue } = await tasksFilterTestUtils.creationDate.setValue(
+          user,
+        )
 
         await tasksFilterTestUtils.clickResetAllButton(user)
 
-        expect(tasksFilterTestUtils.creationDate.getStartDateField()).not.toHaveDisplayValue(startDateValue)
-        expect(tasksFilterTestUtils.creationDate.getEndDateField()).not.toHaveDisplayValue(endDateValue)
+        expect(tasksFilterTestUtils.creationDate.getStartDateField()).not.toHaveDisplayValue(
+          startDateValue,
+        )
+        expect(tasksFilterTestUtils.creationDate.getEndDateField()).not.toHaveDisplayValue(
+          endDateValue,
+        )
       })
     })
   })
@@ -750,24 +761,36 @@ describe('Расширенный фильтр', () => {
       test('Кнопка "Сбросить"', async () => {
         const { user } = render(<TasksFilter {...props} />)
 
-        const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(user)
+        const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(
+          user,
+        )
 
         const container = tasksFilterTestUtils.completeAt.getContainer()
         await tasksFilterTestUtils.clickResetButtonIn(user, container)
 
-        expect(tasksFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(startDateValue)
-        expect(tasksFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(endDateValue)
+        expect(tasksFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
+          startDateValue,
+        )
+        expect(tasksFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(
+          endDateValue,
+        )
       })
 
       test('Кнопка "Сбросить всё"', async () => {
         const { user } = render(<TasksFilter {...props} />)
 
-        const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(user)
+        const { startDateValue, endDateValue } = await tasksFilterTestUtils.completeAt.setValue(
+          user,
+        )
 
         await tasksFilterTestUtils.clickResetAllButton(user)
 
-        expect(tasksFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(startDateValue)
-        expect(tasksFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(endDateValue)
+        expect(tasksFilterTestUtils.completeAt.getStartDateField()).not.toHaveDisplayValue(
+          startDateValue,
+        )
+        expect(tasksFilterTestUtils.completeAt.getEndDateField()).not.toHaveDisplayValue(
+          endDateValue,
+        )
       })
     })
   })
@@ -836,7 +859,9 @@ describe('Расширенный фильтр', () => {
     test('Можно ввести ключевое слово', async () => {
       const { user } = render(<TasksFilter {...props} />)
 
-      const { keywordField, keyword } = await tasksFilterTestUtils.searchByColumn.setKeywordValue(user)
+      const { keywordField, keyword } = await tasksFilterTestUtils.searchByColumn.setKeywordValue(
+        user,
+      )
 
       expect(keywordField).toHaveDisplayValue(keyword)
     })
@@ -866,7 +891,9 @@ describe('Расширенный фильтр', () => {
 
         await tasksFilterTestUtils.clickResetButtonIn(user, container)
 
-        expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(keyword)
+        expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(
+          keyword,
+        )
         expect(
           radioButtonTestUtils.getRadioButtonIn(container, searchFieldDict.searchByName),
         ).not.toBeChecked()
@@ -886,7 +913,9 @@ describe('Расширенный фильтр', () => {
 
         await tasksFilterTestUtils.clickResetAllButton(user)
 
-        expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(keyword)
+        expect(tasksFilterTestUtils.searchByColumn.getKeywordField()).not.toHaveDisplayValue(
+          keyword,
+        )
         expect(
           radioButtonTestUtils.getRadioButtonIn(container, searchFieldDict.searchByName),
         ).not.toBeChecked()
@@ -923,7 +952,7 @@ describe('Расширенный фильтр', () => {
       render(
         <TasksFilter
           {...props}
-          workGroups={workGroupFixtures.workGroupList()}
+          workGroups={workGroupFixtures.workGroups()}
           permissions={{ selfWorkGroupsRead: true }}
         />,
       )

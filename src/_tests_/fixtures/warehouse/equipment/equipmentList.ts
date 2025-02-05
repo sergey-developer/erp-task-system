@@ -1,8 +1,7 @@
-import pick from 'lodash/pick'
-import times from 'lodash/times'
-
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { EquipmentListItemModel, EquipmentListModel } from 'features/warehouse/models'
+import pick from 'lodash/pick'
+import times from 'lodash/times'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -21,5 +20,5 @@ export const equipmentListItem = (): EquipmentListItemModel => ({
   purpose: pick(warehouseFixtures.workType(), 'id', 'title'),
 })
 
-export const equipmentList = (length: number = 1): EquipmentListModel =>
+export const equipments = (length: number = 1): EquipmentListModel =>
   times(length, () => equipmentListItem())

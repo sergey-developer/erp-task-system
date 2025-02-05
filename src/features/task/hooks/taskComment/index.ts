@@ -1,3 +1,3 @@
 export * from './useCreateTaskComment'
 
-export * from './useGetTaskCommentList'
+export * from './useGetTaskComments'

@@ -1,9 +1,9 @@
 import * as supportGroup from './supportGroup'
-import * as supportGroupList from './supportGroupList'
+import * as supportGroups from './supportGroups'
 
 const supportGroupFixtures = {
   ...supportGroup,
-  ...supportGroupList,
+  ...supportGroups,
 } as const
 
 export default supportGroupFixtures

@@ -4,7 +4,7 @@ export * from './useImportEquipmentsByFile'
 export * from './useUpdateEquipment'
 export * from './useGetEquipment'
 export * from './useLazyGetEquipment'
-export * from './useGetEquipmentList'
+export * from './useGetEquipments'
 export * from './useLazyGetEquipmentsXlsx'
 export * from './useGetEquipmentRelocationHistory'
 
@@ -13,9 +13,9 @@ export * from './useGetEquipmentNomenclatures'
 export * from './useGetEquipmentsCatalog'
 export * from './useLazyGetEquipmentCatalogs'
 
-export * from './useLazyGetEquipmentListTemplate'
+export * from './useLazyGetEquipmentsTemplate'
 
-export * from './useGetEquipmentAttachmentList'
+export * from './useGetEquipmentAttachments'
 
 export * from './useGetEquipmentCategories'
 

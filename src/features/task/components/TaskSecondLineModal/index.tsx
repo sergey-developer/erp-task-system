@@ -33,7 +33,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   const markDefaultGroupValue = Form.useWatch('markAsDefault', form)
 
   // todo: вынести в TaskDetails
-  const { data: workGroupList = [], isFetching: workGroupListIsFetching } = useGetWorkGroups({
+  const { data: workGroups = [], isFetching: workGroupsIsFetching } = useGetWorkGroups({
     taskId: id,
   })
 
@@ -43,9 +43,9 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
   )
 
   useEffect(() => {
-    if (!workGroupList.length) return
+    if (!workGroups.length) return
 
-    const workGroup = workGroupList.find(
+    const workGroup = workGroups.find(
       (workGroup) =>
         isEqual(workGroup.priority?.type, WorkGroupTypeEnum.AssociatedWithSapId) ||
         isEqual(workGroup.priority?.type, WorkGroupTypeEnum.DefaultForSupportGroup),
@@ -54,7 +54,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
     if (workGroup) {
       form.setFieldsValue({ workGroup: workGroup.id })
     }
-  }, [form, workGroupList])
+  }, [form, workGroups])
 
   const modalTitle = (
     <Text>
@@ -102,12 +102,12 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
           >
             <Select
               placeholder='Выберите рабочую группу'
-              loading={workGroupListIsFetching}
+              loading={workGroupsIsFetching}
               disabled={isLoading}
               showSearch
               filterOption={filterOptionBy('title')}
             >
-              {workGroupList.map(({ id, name, priority }) => (
+              {workGroups.map(({ id, name, priority }) => (
                 <Select.Option
                   data-testid={`select-option-${id}`}
                   key={id}

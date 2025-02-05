@@ -1,6 +1,5 @@
 import { FormInstance } from 'antd'
-
-import { MeasurementUnitListModel } from 'features/warehouse/models'
+import { MeasurementUnitsModel } from 'features/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -9,7 +8,7 @@ import { IdType } from 'shared/types/common'
 export type CreateCompletedWorkModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel' | 'confirmLoading'>
 > & {
-  measurementUnits: MeasurementUnitListModel
+  measurementUnits: MeasurementUnitsModel
   measurementUnitsIsLoading: boolean
 
   onSubmit: (

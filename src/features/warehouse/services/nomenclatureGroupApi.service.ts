@@ -7,7 +7,7 @@ import {
   CreateNomenclatureGroupSuccessResponse,
   GetNomenclatureGroupListQueryArgs,
   GetNomenclatureGroupListSuccessResponse,
-  NomenclatureGroupListModel,
+  NomenclatureGroupsModel,
   UpdateNomenclatureGroupMutationArgs,
   UpdateNomenclatureGroupSuccessResponse,
 } from 'features/warehouse/models'
@@ -45,7 +45,7 @@ const nomenclatureGroupApiService = baseApi.injectEndpoints({
             baseApi.util.updateQueryData(
               NomenclatureGroupApiTriggerEnum.GetNomenclatureGroupList as never,
               getListParams as never,
-              (groupList: NomenclatureGroupListModel) => {
+              (groupList: NomenclatureGroupsModel) => {
                 groupList.push(newGroup)
               },
             ),
@@ -70,7 +70,7 @@ const nomenclatureGroupApiService = baseApi.injectEndpoints({
             baseApi.util.updateQueryData(
               NomenclatureGroupApiTriggerEnum.GetNomenclatureGroupList as never,
               getListParams as never,
-              (groupList: NomenclatureGroupListModel) => {
+              (groupList: NomenclatureGroupsModel) => {
                 const updatableGroup = groupList.find((group) => group.id === id)
 
                 if (updatableGroup) {

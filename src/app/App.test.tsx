@@ -107,8 +107,8 @@ describe.skip('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const timeZoneList = catalogsFixtures.timeZoneList()
-        mockGetTimeZoneListSuccess({ body: timeZoneList })
+        const timeZones = catalogsFixtures.timeZones()
+        mockGetTimeZoneListSuccess({ body: timeZones })
 
         const fakeUser = userFixtures.user()
         mockGetUserMeSuccess({ body: fakeUser })
@@ -120,7 +120,7 @@ describe.skip('Private app', () => {
         await privateHeaderTestUtils.openTimeZoneSelect(user)
         const options = privateHeaderTestUtils.getAllTimeZoneOption()
 
-        expect(options).toHaveLength(timeZoneList.length)
+        expect(options).toHaveLength(timeZones.length)
       })
 
       // todo: Выяснить почему не проходит. Всё работает верно, но в тестах новое значение не приходит почему-то

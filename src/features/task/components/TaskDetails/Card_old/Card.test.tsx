@@ -565,8 +565,8 @@ test.skip('Детальная карточка заявки', () => {})
 //   describe('Перевод заявки на 2-ю линию', () => {
 //     describe(`Роль - ${UserRoleEnum.FirstLineSupport}`, () => {
 //       test('Переданные обработчики вызываются корректно и закрывается модалка', async () => {
-//         const workGroupList = workGroupFixtures.workGroupList()
-//         mockGetWorkGroupsSuccess({ body: workGroupList })
+//         const workGroups = workGroupFixtures.workGroups()
+//         mockGetWorkGroupsSuccess({ body: workGroups })
 //
 //         const { user } = render(
 //           <TaskCard
@@ -586,7 +586,7 @@ test.skip('Детальная карточка заявки', () => {})
 //         const modal = await taskSecondLineModalTestUtils.findContainer()
 //         await taskSecondLineModalTestUtils.expectWorkGroupLoadingFinished()
 //         await taskSecondLineModalTestUtils.openWorkGroupField(user)
-//         await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroupList[0].name)
+//         await taskSecondLineModalTestUtils.selectWorkGroup(user, workGroups[0].name)
 //         await taskSecondLineModalTestUtils.setComment(user, fakeWord())
 //         await taskSecondLineModalTestUtils.clickSubmitButton(user)
 //

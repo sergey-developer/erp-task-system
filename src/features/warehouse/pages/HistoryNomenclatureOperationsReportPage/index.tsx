@@ -11,7 +11,7 @@ import {
   useLazyGetHistoryNomenclatureOperationsReportXlsx,
 } from 'features/reports/hooks'
 import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'features/reports/models'
-import { useGetCustomerList } from 'features/warehouse/hooks/customer'
+import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import { useGetEquipmentNomenclatures } from 'features/warehouse/hooks/equipment'
 import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
@@ -115,7 +115,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
     { skip: !filterOpened },
   )
 
-  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList(
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomers(
     undefined,
     { skip: !filterOpened },
   )

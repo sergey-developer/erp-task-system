@@ -25,10 +25,10 @@ notificationTestUtils.setupNotifications()
 describe('Страница списка номенклатуры оборудования', () => {
   describe('Список номенклатуры оборудования', () => {
     test('При успешном запросе отображается верное количество', async () => {
-      const equipmentNomenclatureList = [warehouseFixtures.equipmentNomenclatureListItem()]
+      const equipmentNomenclatures = [warehouseFixtures.equipmentNomenclatureListItem()]
 
       mockGetEquipmentNomenclaturesSuccess({
-        body: commonFixtures.paginatedListResponse(equipmentNomenclatureList),
+        body: commonFixtures.paginatedListResponse(equipmentNomenclatures),
       })
 
       renderWithRouter(
@@ -43,7 +43,7 @@ describe('Страница списка номенклатуры оборудо�
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
 
-      equipmentNomenclatureList.forEach((item) => {
+      equipmentNomenclatures.forEach((item) => {
         const row = equipmentNomenclatureTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })
@@ -95,10 +95,10 @@ describe('Страница списка номенклатуры оборудо�
     })
 
     test.skip('Пагинация работает', async () => {
-      const equipmentNomenclatureList = warehouseFixtures.equipmentNomenclatures(11)
+      const equipmentNomenclatures = warehouseFixtures.equipmentNomenclatures(11)
 
       mockGetEquipmentNomenclaturesSuccess({
-        body: commonFixtures.paginatedListResponse(equipmentNomenclatureList),
+        body: commonFixtures.paginatedListResponse(equipmentNomenclatures),
         once: false,
       })
 
@@ -117,7 +117,7 @@ describe('Страница списка номенклатуры оборудо�
       await equipmentNomenclatureTableTestUtils.expectLoadingStarted()
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
 
-      equipmentNomenclatureList.slice(-1).forEach((item) => {
+      equipmentNomenclatures.slice(-1).forEach((item) => {
         const row = equipmentNomenclatureTableTestUtils.getRow(item.id)
         expect(row).toBeInTheDocument()
       })

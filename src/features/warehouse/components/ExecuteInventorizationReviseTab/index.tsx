@@ -32,7 +32,7 @@ import ReviseInventorizationEquipmentTable from 'features/warehouse/components/R
 import { ReviseInventorizationEquipmentTableProps } from 'features/warehouse/components/ReviseInventorizationEquipmentTable/types'
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
-import { useLazyGetCustomerList } from 'features/warehouse/hooks/customer'
+import { useLazyGetCustomers } from 'features/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useGetEquipment,
@@ -430,7 +430,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     })
 
   const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
-    useLazyGetCustomerList()
+    useLazyGetCustomers()
 
   useEffect(() => {
     if (

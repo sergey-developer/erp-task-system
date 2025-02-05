@@ -25,7 +25,7 @@ import {
   useCreateInventorization,
   useGetInventorizations,
 } from 'features/warehouse/hooks/inventorization'
-import { useGetWarehouseList } from 'features/warehouse/hooks/warehouse'
+import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
 import { GetInventorizationsQueryArgs } from 'features/warehouse/models'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
@@ -126,7 +126,7 @@ const InventorizationsPage: FC = () => {
 
   const equipmentNomenclatures = extractPaginationResults(equipmentNomenclaturesResponse)
 
-  const { currentData: warehouses = [], isFetching: warehousesIsFetching } = useGetWarehouseList(
+  const { currentData: warehouses = [], isFetching: warehousesIsFetching } = useGetWarehouses(
     undefined,
     { skip: !createInventorizationRequestModalOpened },
   )

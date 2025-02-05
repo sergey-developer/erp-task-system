@@ -21,17 +21,17 @@ import {
 } from 'features/warehouse/constants/equipment'
 import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
-import { useLazyGetCustomerList } from 'features/warehouse/hooks/customer'
+import { useLazyGetCustomers } from 'features/warehouse/hooks/customer'
 import {
   useCreateEquipmentTechnicalExamination,
   useGetEquipment,
-  useGetEquipmentAttachmentList,
+  useGetEquipmentAttachments,
   useGetEquipmentCategories,
   useGetEquipmentRelocationHistory,
   useUpdateEquipment,
 } from 'features/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
-import { useGetWarehouseList } from 'features/warehouse/hooks/warehouse'
+import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
 import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import {
   CreateEquipmentTechnicalExaminationSuccessResponse,
@@ -187,7 +187,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     equipmentId,
   })
 
-  const { currentData: warehouses = [], isFetching: warehousesIsFetching } = useGetWarehouseList(
+  const { currentData: warehouses = [], isFetching: warehousesIsFetching } = useGetWarehouses(
     { ordering: 'title' },
     { skip: !editEquipmentModalOpened },
   )
@@ -221,12 +221,12 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     currentData: equipmentAttachmentList,
     isFetching: equipmentAttachmentListIsFetching,
     refetch: refetchEquipmentAttachmentList,
-  } = useGetEquipmentAttachmentList({ equipmentId, limit: 4 })
+  } = useGetEquipmentAttachments({ equipmentId, limit: 4 })
 
   const {
     currentData: totalEquipmentAttachmentList,
     isFetching: totalEquipmentAttachmentListIsFetching,
-  } = useGetEquipmentAttachmentList(
+  } = useGetEquipmentAttachments(
     { equipmentId, limit: equipmentAttachmentList?.pagination?.total! },
     {
       skip:
@@ -291,7 +291,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   }, [editEquipmentModalOpened, equipment?.warehouse?.id])
 
   const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
-    useLazyGetCustomerList()
+    useLazyGetCustomers()
 
   useEffect(() => {
     if (

@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Col, Row } from 'antd'
 import TaskList from 'features/task/components/TaskList'
 import TaskListMap from 'features/task/components/TaskListMap'
-import { useGetTaskListMap, useGetTasks } from 'features/task/hooks/task'
+import { useGetTasksMap, useGetTasks } from 'features/task/hooks/task'
 import { Coordinate } from 'ol/coordinate'
 import React, { FC, useState } from 'react'
 
@@ -26,7 +26,7 @@ const TaskListMapPage: FC = () => {
 
   const [additionalInfoExpanded, { toggle: toggleAdditionalInfoExpanded }] = useBoolean(false)
 
-  const { currentData: taskListMap = [], isFetching: taskListMapIsFetching } = useGetTaskListMap()
+  const { currentData: taskListMap = [], isFetching: taskListMapIsFetching } = useGetTasksMap()
 
   const { currentData: taskList, isFetching: taskListIsFetching } = useGetTasks(
     { long: coords?.[0], lat: coords?.[1], limit: 1000 },

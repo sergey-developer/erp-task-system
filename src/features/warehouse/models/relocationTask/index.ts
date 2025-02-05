@@ -21,10 +21,10 @@ export * from './getRelocationTasks.model'
 
 export * from './relocationTaskAttachment.model'
 
-export * from './relocationEquipmentList.model'
-export * from './getRelocationEquipmentList.model'
+export * from './relocationEquipments.model'
+export * from './getRelocationEquipments.model'
 
-export * from './relocationEquipmentBalanceList.model'
-export * from './getRelocationEquipmentBalanceList.model'
+export * from './relocationEquipmentBalances.model'
+export * from './getRelocationEquipmentBalances.model'
 
 export * from './moveRelocationTaskDraftToWork.model'

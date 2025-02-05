@@ -1,10 +1,9 @@
 import { FormInstance, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-import { Moment } from 'moment-timezone'
-
 import { UsersModel } from 'features/user/models'
 import { InventorizationTypeEnum } from 'features/warehouse/constants/inventorization'
-import { EquipmentNomenclaturesModel, WarehouseListModel } from 'features/warehouse/models'
+import { EquipmentNomenclaturesModel, WarehousesModel } from 'features/warehouse/models'
+import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -28,7 +27,7 @@ export type CreateInventorizationRequestModalProps = Required<
   executors: UsersModel
   executorsIsLoading: boolean
 
-  warehouses: WarehouseListModel
+  warehouses: WarehousesModel
   warehousesIsLoading: boolean
   onChangeWarehouses: (value: IdType[]) => void
 

@@ -1,2 +1,2 @@
-export * from './legalEntityList.model'
-export * from './getLegalEntityList.model'
+export * from './legalEntities.model'
+export * from './getLegalEntities.model'

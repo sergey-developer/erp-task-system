@@ -1,1 +1,1 @@
-export * from './useGetNomenclatureGroupList'
+export * from './useGetNomenclatureGroups'

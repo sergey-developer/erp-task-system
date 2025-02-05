@@ -1,7 +1,7 @@
 import { FormInstance } from 'antd'
 import {
-  MeasurementUnitListModel,
-  NomenclatureGroupListModel,
+  MeasurementUnitsModel,
+  NomenclatureGroupsModel,
   NomenclatureModel,
 } from 'features/warehouse/models'
 
@@ -29,13 +29,13 @@ export type NomenclatureFormModalProps = Required<Pick<BaseModalProps, 'open' | 
   nomenclature?: NomenclatureModel
   nomenclatureIsLoading?: boolean
 
-  groups: NomenclatureGroupListModel
+  groups: NomenclatureGroupsModel
   groupsIsLoading: boolean
 
   countries: CountriesCatalogDTO
   countriesIsLoading: boolean
 
-  measurementUnits: MeasurementUnitListModel
+  measurementUnits: MeasurementUnitsModel
   measurementUnitsIsLoading: boolean
 
   onSubmit: (

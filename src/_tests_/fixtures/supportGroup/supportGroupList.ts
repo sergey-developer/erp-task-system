@@ -1,6 +1,5 @@
-import times from 'lodash/times'
-
 import { SupportGroupListItemModel, SupportGroupListModel } from 'features/supportGroup/models'
+import times from 'lodash/times'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
@@ -9,5 +8,5 @@ export const supportGroupListItem = (): SupportGroupListItemModel => ({
   name: fakeWord(),
 })
 
-export const supportGroupList = (length: number = 1): SupportGroupListModel =>
+export const supportGroups = (length: number = 1): SupportGroupListModel =>
   times(length, () => supportGroupListItem())

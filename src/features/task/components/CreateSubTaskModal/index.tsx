@@ -1,5 +1,5 @@
 import { Form, Input, Select, Typography } from 'antd'
-import { useGetSupportGroupList } from 'features/supportGroup/hooks'
+import { useGetSupportGroups } from 'features/supportGroup/hooks'
 import { SupportGroupListItemModel } from 'features/supportGroup/models'
 import { useCreateSubTask } from 'features/task/hooks/subTask'
 import { Rule } from 'rc-field-form/es/interface'
@@ -40,14 +40,14 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
 
   const initialFormValues = { title: task.title, description: task.description }
 
-  const { currentData: templateList, isFetching: templateListIsFetching } =
-    useGetSubTaskTemplatesCatalog(
-      { type: task.type, supportGroup: selectedSupportGroup },
-      { skip: !selectedSupportGroup },
-    )
+  const { currentData: templates, isFetching: templatesIsFetching } = useGetSubTaskTemplatesCatalog(
+    { type: task.type, supportGroup: selectedSupportGroup },
+    { skip: !selectedSupportGroup },
+  )
 
-  const { currentData: supportGroupList, isFetching: supportGroupListIsFetching } =
-    useGetSupportGroupList({ hasTemplate: true })
+  const { currentData: supportGroups, isFetching: supportGroupsIsFetching } = useGetSupportGroups({
+    hasTemplate: true,
+  })
 
   const [createSubTask, { isLoading: createSubTaskIsLoading }] = useCreateSubTask()
 
@@ -92,8 +92,8 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
         >
           <Select<SupportGroupListItemModel['id'], SupportGroupListItemModel>
             placeholder='Доступные группы'
-            loading={supportGroupListIsFetching}
-            options={supportGroupList}
+            loading={supportGroupsIsFetching}
+            options={supportGroups}
             disabled={createSubTaskIsLoading}
             fieldNames={idAndNameSelectFieldNames}
             onChange={setSelectedSupportGroup}
@@ -110,8 +110,8 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
         >
           <Select
             placeholder='Наименование сервиса'
-            loading={templateListIsFetching}
-            options={templateList}
+            loading={templatesIsFetching}
+            options={templates}
             disabled={createSubTaskIsLoading || !selectedSupportGroup}
             fieldNames={idAndTitleSelectFieldNames}
           />

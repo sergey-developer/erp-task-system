@@ -1,6 +1,6 @@
 import { MaybeNull } from 'shared/types/utils'
 
-import { NomenclatureListItemModel } from './nomenclatureList.model'
+import { NomenclatureListItemModel } from './nomenclatures.model'
 
 export type CreateNomenclatureMutationArgs = {
   title: string

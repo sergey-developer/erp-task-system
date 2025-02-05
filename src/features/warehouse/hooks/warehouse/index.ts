@@ -1,2 +1,2 @@
 export * from './useGetWarehouse'
-export * from './useGetWarehouseList'
+export * from './useGetWarehouses'

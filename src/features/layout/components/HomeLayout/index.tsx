@@ -10,10 +10,9 @@ import PrivateHeader from 'components/Headers/PrivateHeader'
 import LoadingArea from 'components/LoadingArea'
 import Spinner from 'components/Spinner'
 
-import { useGetTimeZonesCatalog } from 'shared/catalogs/hooks/timeZones'
-import { useGetUserStatusesCatalog } from 'shared/catalogs/hooks/userStatuses'
-import { useGetSystemInfo } from 'shared/system/hooks/systemInfo'
-import { useGetSystemSettings } from 'shared/system/hooks/systemSettings'
+import { useGetTimeZonesCatalog } from 'shared/catalogs/timeZones/hooks'
+import { useGetUserStatusesCatalog } from 'shared/catalogs/userStatuses/hooks'
+import { useGetSystemInfo, useGetSystemSettings } from 'shared/system/hooks'
 
 import { ContentStyled, FooterStyled } from './styles'
 

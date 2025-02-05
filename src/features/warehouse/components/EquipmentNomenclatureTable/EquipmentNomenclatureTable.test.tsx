@@ -45,13 +45,13 @@ describe('Таблица номенклатуры оборудования', () 
   })
 
   test('Пагинация работает', async () => {
-    const equipmentNomenclatureList = warehouseFixtures.equipmentNomenclatures(11)
+    const equipmentNomenclatures = warehouseFixtures.equipmentNomenclatures(11)
 
     const { user } = renderWithRouter(
       [
         {
           path: WarehouseRouteEnum.EquipmentNomenclatures,
-          element: <EquipmentNomenclatureTable {...props} dataSource={equipmentNomenclatureList} />,
+          element: <EquipmentNomenclatureTable {...props} dataSource={equipmentNomenclatures} />,
         },
       ],
       { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
@@ -67,7 +67,7 @@ describe('Таблица номенклатуры оборудования', () 
       expect.anything(),
       expect.anything(),
     )
-    equipmentNomenclatureList.slice(-1).forEach((item) => {
+    equipmentNomenclatures.slice(-1).forEach((item) => {
       const row = equipmentNomenclatureTableTestUtils.getRow(item.id)
       expect(row).toBeInTheDocument()
     })

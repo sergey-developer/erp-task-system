@@ -1,1 +1,1 @@
-export * from './legalEntityList'
+export * from './legalEntities'

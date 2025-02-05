@@ -25,7 +25,7 @@ import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nome
 import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
-import { useLazyGetCustomerList } from 'features/warehouse/hooks/customer'
+import { useLazyGetCustomers } from 'features/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useCreateEquipments,
@@ -33,7 +33,7 @@ import {
   useGetEquipmentsCatalog,
   useImportEquipmentsByFile,
   useLazyGetEquipment,
-  useLazyGetEquipmentListTemplate,
+  useLazyGetEquipmentsTemplate,
 } from 'features/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useCreateRelocationTask } from 'features/warehouse/hooks/relocationTask'
@@ -332,7 +332,7 @@ const CreateRelocationTaskPage: FC = () => {
   )
 
   const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
-    useLazyGetCustomerList()
+    useLazyGetCustomers()
 
   useEffect(() => {
     if (
@@ -375,7 +375,7 @@ const CreateRelocationTaskPage: FC = () => {
   ] = useImportEquipmentsByFile()
 
   const [getEquipmentListTemplate, { isFetching: getEquipmentListTemplateIsFetching }] =
-    useLazyGetEquipmentListTemplate()
+    useLazyGetEquipmentsTemplate()
 
   const createEquipmentImage = useCallback<NonNullable<UploadProps['customRequest']>>(
     async (options) => {

@@ -1,5 +1,5 @@
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { CustomerListModel } from 'features/warehouse/models'
+import { CustomersModel } from 'features/warehouse/models'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
@@ -22,7 +22,7 @@ export type HistoryNomenclatureOperationsReportFilterProps = Pick<
   locations: LocationsCatalogDTO
   locationsIsLoading: boolean
 
-  owners: CustomerListModel
+  owners: CustomersModel
   ownersIsLoading: boolean
 
   onApply: (values: HistoryNomenclatureOperationsReportFilterFormFields) => void

@@ -7,7 +7,7 @@ import {
   sortableFieldToSortValues,
 } from 'features/warehouse/components/EquipmentTable/sort'
 import { EquipmentTableProps } from 'features/warehouse/components/EquipmentTable/types'
-import { useGetEquipmentList } from 'features/warehouse/hooks/equipment'
+import { useGetEquipments } from 'features/warehouse/hooks/equipment'
 import { GetEquipmentListQueryArgs } from 'features/warehouse/models'
 import { equipmentsFilterToParams } from 'features/warehouse/utils/equipment'
 import debounce from 'lodash/debounce'
@@ -49,7 +49,7 @@ const EquipmentListPage: FC = () => {
   )
   const debouncedToggleOpenEquipmentDetails = useDebounceFn(toggleOpenEquipmentDetails)
 
-  const [equipmentListParams, setEquipmentListParams] = useSetState<GetEquipmentListQueryArgs>({
+  const [equipmentsParams, setEquipmentListParams] = useSetState<GetEquipmentListQueryArgs>({
     ...initialPaginationParams,
     ...(context?.filter && equipmentsFilterToParams(context.filter)),
     search: context?.search,
@@ -57,28 +57,28 @@ const EquipmentListPage: FC = () => {
     ordering: 'title',
   })
 
-  const { currentData: equipmentList, isFetching: equipmentListIsFetching } =
-    useGetEquipmentList(equipmentListParams)
+  const { currentData: equipments, isFetching: equipmentsIsFetching } =
+    useGetEquipments(equipmentsParams)
 
   useEffect(() => {
-    if (isNumber(equipmentListParams.nomenclature)) {
-      context?.setEquipmentsXlsxParams({ nomenclature: equipmentListParams.nomenclature })
+    if (isNumber(equipmentsParams.nomenclature)) {
+      context?.setEquipmentsXlsxParams({ nomenclature: equipmentsParams.nomenclature })
     }
 
     return () => {
       context?.setEquipmentsXlsxParams({ nomenclature: undefined })
     }
-  }, [context?.setEquipmentsXlsxParams, equipmentListParams.nomenclature])
+  }, [context?.setEquipmentsXlsxParams, equipmentsParams.nomenclature])
 
   useEffect(() => {
-    if (equipmentListParams.ordering) {
-      context?.setEquipmentsXlsxParams({ ordering: equipmentListParams.ordering })
+    if (equipmentsParams.ordering) {
+      context?.setEquipmentsXlsxParams({ ordering: equipmentsParams.ordering })
     }
 
     return () => {
       context?.setEquipmentsXlsxParams({ ordering: undefined })
     }
-  }, [context?.setEquipmentsXlsxParams, equipmentListParams.ordering])
+  }, [context?.setEquipmentsXlsxParams, equipmentsParams.ordering])
 
   const handleTablePagination = useCallback(
     (pagination: Parameters<EquipmentTableProps['onChange']>[0]) => {
@@ -122,10 +122,10 @@ const EquipmentListPage: FC = () => {
   return (
     <div data-testid='equipment-list-page'>
       <EquipmentTable
-        dataSource={extractPaginationResults(equipmentList)}
-        pagination={extractPaginationParams(equipmentList)}
-        loading={equipmentListIsFetching}
-        sort={equipmentListParams.ordering}
+        dataSource={extractPaginationResults(equipments)}
+        pagination={extractPaginationParams(equipments)}
+        loading={equipmentsIsFetching}
+        sort={equipmentsParams.ordering}
         onChange={handleChangeTable}
         onRow={handleTableRowClick}
       />

@@ -1,9 +1,5 @@
+import { WarehouseListItemModel, WarehousesModel } from 'features/warehouse/models'
 import times from 'lodash/times'
-
-import {
-  WarehouseListItemModel,
-  WarehouseListModel,
-} from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
@@ -21,5 +17,5 @@ export const warehouseListItem = (): WarehouseListItemModel => ({
   },
 })
 
-export const warehouseList = (length: number = 1): WarehouseListModel =>
+export const warehouseList = (length: number = 1): WarehousesModel =>
   times(length, () => warehouseListItem())

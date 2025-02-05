@@ -25,9 +25,9 @@ import {
   useGetInventorizationEquipments,
   useLazyGetInventorizationEquipment,
 } from 'features/warehouse/hooks/inventorization'
-import { useGetRelocationEquipmentAttachmentList } from 'features/warehouse/hooks/relocationEquipment'
+import { useGetRelocationEquipmentAttachments } from 'features/warehouse/hooks/relocationEquipment'
 import {
-  useGetRelocationEquipmentList,
+  useGetRelocationEquipments,
   useUpdateRelocationTask,
 } from 'features/warehouse/hooks/relocationTask'
 import { useGetWarehouse } from 'features/warehouse/hooks/warehouse'
@@ -164,7 +164,7 @@ const EditRelocationTaskDraftPage: FC = () => {
     })
 
   const { currentData: relocationEquipments = [], isFetching: relocationEquipmentsIsFetching } =
-    useGetRelocationEquipmentList(
+    useGetRelocationEquipments(
       { relocationTaskId: relocationTask?.id! },
       { skip: !relocationTask?.id },
     )
@@ -181,7 +181,7 @@ const EditRelocationTaskDraftPage: FC = () => {
   const {
     currentData: relocationEquipmentAttachments = [],
     isFetching: relocationEquipmentAttachmentListIsFetching,
-  } = useGetRelocationEquipmentAttachmentList(
+  } = useGetRelocationEquipmentAttachments(
     { relocationEquipmentId: activeEquipmentRow?.relocationEquipmentId! },
     {
       skip:

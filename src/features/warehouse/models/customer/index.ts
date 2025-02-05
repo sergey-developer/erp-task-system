@@ -1,4 +1,4 @@
 export * from './customer.model'
 
-export * from './customerList.model'
-export * from './getCustomerList.model'
+export * from './customers.model'
+export * from './getCustomers.model'

@@ -1,0 +1,11 @@
+import { TaskListItemModel } from 'features/task/models'
+
+export type TaskListMapItemModel = Pick<
+  TaskListItemModel,
+  'id' | 'type' | 'name' | 'title' | 'olaNextBreachTime'
+> & {
+  lat: string
+  long: string
+}
+
+export type TasksMapModel = TaskListMapItemModel[]

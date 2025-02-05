@@ -1,11 +1,10 @@
 import { useBoolean } from 'ahooks'
 import { Button, Flex, Row, Typography } from 'antd'
-import React, { FC, useCallback } from 'react'
-
-import { useCreateTaskComment, useGetTaskCommentList } from 'features/task/hooks/taskComment'
+import { useCreateTaskComment, useGetTaskComments } from 'features/task/hooks/taskComment'
 import { TaskModel } from 'features/task/models'
 import { UserPermissionsEnum } from 'features/user/constants'
 import { useUserPermissions } from 'features/user/hooks'
+import React, { FC, useCallback } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
 
@@ -28,7 +27,7 @@ export type CommentsTabProps = {
 const CommentsTab: FC<CommentsTabProps> = ({ title, taskId }) => {
   const permissions = useUserPermissions([UserPermissionsEnum.TasksCommentCreate])
 
-  const { data: comments = [], isFetching: commentsIsFetching } = useGetTaskCommentList({
+  const { data: comments = [], isFetching: commentsIsFetching } = useGetTaskComments({
     taskId,
   })
 

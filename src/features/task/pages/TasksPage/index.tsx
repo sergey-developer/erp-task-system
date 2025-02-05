@@ -1,7 +1,7 @@
 import { useBoolean, useLocalStorageState, usePrevious, useSetState } from 'ahooks'
 import { Button, Col, Flex, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
-import { useGetSupportGroupList } from 'features/supportGroup/hooks'
+import { useGetSupportGroups } from 'features/supportGroup/hooks'
 import { firstLineOptionValue } from 'features/task/components/CreateTaskModal'
 import {
   CreateTaskFormFields,
@@ -57,7 +57,7 @@ import {
   useUserPermissions,
 } from 'features/user/hooks'
 import { checkUserStatusOffline } from 'features/user/utils'
-import { useGetCustomerList } from 'features/warehouse/hooks/customer'
+import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
@@ -317,13 +317,13 @@ const TasksPage: FC = () => {
     { skip: !(createTaskModalOpened && selectedTaskWorkGroup) },
   )
 
-  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList(
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomers(
     undefined,
     { skip: !tasksFilterOpened && !createTaskModalOpened },
   )
 
-  const { currentData: supportGroupList = [], isFetching: supportGroupListIsFetching } =
-    useGetSupportGroupList(
+  const { currentData: supportGroups = [], isFetching: supportGroupsIsFetching } =
+    useGetSupportGroups(
       {
         customers: selectedCustomers,
         macroregions: selectedMacroregions,
@@ -663,8 +663,8 @@ const TasksPage: FC = () => {
             macroregions={macroregions}
             macroregionsIsLoading={macroregionsIsFetching}
             onChangeMacroregions={setSelectedMacroregions}
-            supportGroups={supportGroupList}
-            supportGroupsIsLoading={supportGroupListIsFetching}
+            supportGroups={supportGroups}
+            supportGroupsIsLoading={supportGroupsIsFetching}
             users={tasksFilterUsers}
             usersIsLoading={tasksFilterUsersIsFetching}
             workGroups={workGroups}

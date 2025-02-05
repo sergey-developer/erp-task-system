@@ -13,5 +13,5 @@ export const timeZoneListItem = (): TimeZoneCatalogItemDTO => ({
   value: fakeWord(),
 })
 
-export const timeZoneList = (length: number = 1): TimeZonesCatalogDTO =>
+export const timeZones = (length: number = 1): TimeZonesCatalogDTO =>
   times(length, () => timeZoneListItem())

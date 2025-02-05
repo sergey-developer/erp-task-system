@@ -11,7 +11,7 @@ import {
 } from 'features/reports/components/FiscalAccumulatorTasksReportTable/types'
 import { useGetFiscalAccumulatorTasksReport } from 'features/reports/hooks'
 import { GetFiscalAccumulatorTasksReportQueryArgs } from 'features/reports/models'
-import { useGetSupportGroupList } from 'features/supportGroup/hooks'
+import { useGetSupportGroups } from 'features/supportGroup/hooks'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
 } from 'features/task/components/TasksFiltersStorage'
@@ -23,7 +23,7 @@ import {
 } from 'features/task/constants/task'
 import { TasksFiltersStorageType } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { parseTasksFiltersStorage } from 'features/task/services/taskLocalStorageService/utils'
-import { useGetCustomerList } from 'features/warehouse/hooks/customer'
+import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import debounce from 'lodash/debounce'
 import pick from 'lodash/pick'
 import React, { FC, useCallback, useState } from 'react'
@@ -83,7 +83,7 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
   const [fiscalAccumulatorTasksQueryArgs, setFiscalAccumulatorTasksQueryArgs] =
     useSetState<GetFiscalAccumulatorTasksReportQueryArgs>(tasksFiltersStorage || {})
 
-  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomerList(
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomers(
     undefined,
     { skip: !filterOpened },
   )
@@ -92,7 +92,7 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
     useGetMacroregionsCatalog({ customers: selectedCustomers }, { skip: !filterOpened })
 
   const { currentData: supportGroups = [], isFetching: supportGroupsIsFetching } =
-    useGetSupportGroupList(
+    useGetSupportGroups(
       {
         customers: selectedCustomers,
         macroregions: selectedMacroregions,

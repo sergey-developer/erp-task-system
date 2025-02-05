@@ -3,7 +3,7 @@ import { UploadFile } from 'antd/es/upload'
 import { TaskTypeEnum } from 'features/task/constants/task'
 import { UsersModel } from 'features/user/models'
 import { MatchedUserPermissions } from 'features/user/types'
-import { CustomerListModel, WorkTypesModel } from 'features/warehouse/models'
+import { CustomersModel, WorkTypesModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
@@ -43,7 +43,7 @@ export type CreateTaskModalProps = SetNonNullable<
   executors: UsersModel
   executorsIsLoading: boolean
 
-  customers: CustomerListModel
+  customers: CustomersModel
   customersIsLoading: boolean
 
   locations: LocationsCatalogDTO

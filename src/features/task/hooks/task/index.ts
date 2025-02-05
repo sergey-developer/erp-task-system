@@ -20,7 +20,7 @@ export * from './useCreateCompletedWork'
 export * from './useDeleteCompletedWork'
 
 export * from './useGetTasks'
-export * from './useGetTaskListMap'
+export * from './useGetTasksMap'
 
 export * from './useGetTaskRegistrationRequestRecipientsFN'
 export * from './useCreateTaskRegistrationFNRequest'

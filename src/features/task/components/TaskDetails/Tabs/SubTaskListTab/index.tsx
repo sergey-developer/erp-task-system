@@ -4,7 +4,7 @@ import { useIdBelongAuthUser } from 'features/auth/hooks'
 import { CancelSubTaskModalProps } from 'features/task/components/CancelSubTaskModal/types'
 import { ReworkSubTaskModalProps } from 'features/task/components/ReworkSubTaskModal/types'
 import SubTaskList from 'features/task/components/SubTaskList'
-import { useCancelSubTask, useGetSubTaskList, useReworkSubTask } from 'features/task/hooks/subTask'
+import { useCancelSubTask, useGetSubTasks, useReworkSubTask } from 'features/task/hooks/subTask'
 import { useTaskExtendedStatus, useTaskStatus, useTaskType } from 'features/task/hooks/task'
 import { SubTaskModel, TaskModel } from 'features/task/models'
 import { UserActionsModel } from 'features/user/models'
@@ -49,7 +49,7 @@ const SubTaskListTab: FC<SubTaskListTabProps> = ({ task, userActions, permission
     isLoading: subTaskListIsLoading,
     currentData: subTaskList = [],
     isError: isGetSubTaskListError,
-  } = useGetSubTaskList({ taskId: task.id })
+  } = useGetSubTasks({ taskId: task.id })
 
   const [cancelSubTask, { isLoading: cancelSubTaskIsLoading }] = useCancelSubTask()
   const [reworkSubTask, { isLoading: reworkSubTaskIsLoading }] = useReworkSubTask()
