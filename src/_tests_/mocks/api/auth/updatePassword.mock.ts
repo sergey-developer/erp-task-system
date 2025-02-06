@@ -1,8 +1,8 @@
+import { AuthEndpointsEnum } from 'features/auth/api/constants'
 import {
   UpdatePasswordBadRequestErrorResponse,
   UpdatePasswordSuccessResponse,
 } from 'features/auth/api/schemas'
-import { AuthEndpointsEnum } from 'features/auth/constants'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

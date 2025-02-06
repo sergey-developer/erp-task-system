@@ -1,4 +1,4 @@
-import { AuthEndpointsEnum } from 'features/auth/constants'
+import { AuthEndpointsEnum } from 'features/auth/api/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

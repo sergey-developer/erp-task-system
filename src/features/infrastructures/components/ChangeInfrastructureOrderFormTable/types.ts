@@ -1,6 +1,6 @@
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { RowEditableConfig } from '@ant-design/pro-utils/es/useEditableArray'
-import { InfrastructureWorkModel } from 'features/infrastructures/models'
+import { InfrastructureWorkDTO } from 'features/infrastructures/api/dto'
 import { Key } from 'react'
 
 import { InfrastructureWorkTypesCatalogDTO } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
@@ -8,7 +8,7 @@ import { IdType } from 'shared/types/common'
 import { Nullable, SetNonNullable } from 'shared/types/utils'
 
 export type ChangeInfrastructureOrderFormTableRow = Partial<
-  Pick<InfrastructureWorkModel, 'id' | 'type' | 'laborCosts' | 'amount' | 'cost' | 'price'>
+  Pick<InfrastructureWorkDTO, 'id' | 'type' | 'laborCosts' | 'amount' | 'cost' | 'price'>
 > & {
   rowId: number
   isNew: boolean

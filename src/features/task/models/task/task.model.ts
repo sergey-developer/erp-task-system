@@ -1,4 +1,4 @@
-import { InfrastructureModel } from 'features/infrastructures/models'
+import { InfrastructureDTO } from 'features/infrastructures/api/dto'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -89,5 +89,5 @@ export type TaskModel = {
     isRequestApproved: MaybeNull<boolean>
   }>
   supportGroup: MaybeNull<TaskSupportGroupModel>
-  infrastructureProject: MaybeNull<InfrastructureModel>
+  infrastructureProject: MaybeNull<InfrastructureDTO>
 }

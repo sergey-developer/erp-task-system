@@ -2,6 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Flex, Form, Upload, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 import { attachmentsToFiles, renderUploadedFile } from 'features/attachments/helpers'
+import { InfrastructureOrderFormDTO } from 'features/infrastructures/api/dto'
 import { deleteInfrastructureOrdersFormsWorkErrMsg } from 'features/infrastructures/constants'
 import {
   useCreateInfrastructureOrderFormWork,
@@ -9,7 +10,6 @@ import {
 } from 'features/infrastructures/hooks'
 import { useDeleteInfrastructureOrdersFormsWork } from 'features/infrastructures/hooks/useDeleteInfrastructureOrdersFormsWork'
 import { useLazyGetInfrastructureOrderFormWorkTypeCost } from 'features/infrastructures/hooks/useLazyGetInfrastructureOrderFormWorkTypeCost'
-import { InfrastructureOrderFormListItemModel } from 'features/infrastructures/models'
 import ReadonlyField from 'features/warehouse/components/RelocationTaskDetails/ReadonlyField'
 import { NamePath } from 'rc-field-form/es/interface'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
@@ -37,7 +37,7 @@ const ConfirmDeleteInfrastructureWorkTypeModal = React.lazy(
 )
 
 export type ChangeInfrastructureOrderFormProps = {
-  data: InfrastructureOrderFormListItemModel
+  data: InfrastructureOrderFormDTO
   infrastructureWorkTypes: InfrastructureWorkTypesCatalogDTO
   managerIsCurrentUser: boolean
 

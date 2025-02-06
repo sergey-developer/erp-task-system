@@ -1,7 +1,6 @@
+import { InfrastructureDTO } from 'features/infrastructures/api/dto'
 import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
-
-import { InfrastructureModel } from 'features/infrastructures/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import { fakeId, fakeWord } from '_tests_/utils'
@@ -9,8 +8,8 @@ import { fakeId, fakeWord } from '_tests_/utils'
 import { infrastructureStatusHistory } from './infrastructureStatusHistory'
 
 export const infrastructure = (
-  props?: Partial<Pick<InfrastructureModel, 'id' | 'manager'>>,
-): InfrastructureModel => ({
+  props?: Partial<Pick<InfrastructureDTO, 'id' | 'manager'>>,
+): InfrastructureDTO => ({
   id: isUndefined(props?.id) ? fakeId() : props!.id,
   manager: isUndefined(props?.manager)
     ? {

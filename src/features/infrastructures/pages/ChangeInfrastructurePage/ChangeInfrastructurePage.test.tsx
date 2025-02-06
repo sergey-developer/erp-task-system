@@ -1,16 +1,15 @@
 import { waitFor, within } from '@testing-library/react'
-import * as reactRouterDom from 'react-router-dom'
-
+import { UpdateInfrastructureStatusSuccessResponse } from 'features/infrastructures/api/dto'
 import {
   InfrastructuresRoutesEnum,
   infrastructureStatusDict,
   InfrastructureStatusEnum,
 } from 'features/infrastructures/constants'
-import { UpdateInfrastructureStatusSuccessResponse } from 'features/infrastructures/models'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import TasksPage from 'features/task/pages/TasksPage'
 import { UserPermissionsEnum } from 'features/user/constants'
 import { getFullUserName } from 'features/user/utils'
+import * as reactRouterDom from 'react-router-dom'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { formatDate } from 'shared/utils/date'

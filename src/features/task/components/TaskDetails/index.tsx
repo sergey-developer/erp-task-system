@@ -3,7 +3,7 @@ import { App, Button, Col, Divider, Drawer, Flex, FormInstance, Row, Typography 
 import { useAuthUser } from 'features/auth/hooks'
 import { useUpdateInfrastructure } from 'features/infrastructures/hooks'
 import { getChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/utils'
-import { makeChangeInfrastructurePageLink } from 'features/infrastructures/utils/infrastructure/pagesLinks'
+import { makeChangeInfrastructureRoute } from 'features/infrastructures/routes/helpers'
 import { useCancelReclassificationRequest } from 'features/reclassificationRequest/hooks'
 import {
   CreateInternalTaskFormFields,
@@ -796,10 +796,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({
       return
     }
 
-    navigate(
-      makeChangeInfrastructurePageLink({ infrastructureId: task.infrastructureProject.id }),
-      { state: getChangeInfrastructurePageLocationState(task) },
-    )
+    navigate(makeChangeInfrastructureRoute({ infrastructureId: task.infrastructureProject.id }), {
+      state: getChangeInfrastructurePageLocationState(task),
+    })
   }
 
   const title = task && userActions && (

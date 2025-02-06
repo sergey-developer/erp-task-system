@@ -1,14 +1,13 @@
-import { FC } from 'react'
-
+import { InfrastructureStatusHistoryDTO } from 'features/infrastructures/api/dto'
 import InfrastructureStatusHistoryTable from 'features/infrastructures/components/InfrastructureStatusHistoryTable'
-import { InfrastructureStatusHistoryModel } from 'features/infrastructures/models'
+import { FC } from 'react'
 
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
 export type InfrastructureStatusHistoryModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel' | 'onOk' | 'isLoading'>
 > & {
-  data: InfrastructureStatusHistoryModel
+  data: InfrastructureStatusHistoryDTO
 }
 
 const InfrastructureStatusHistoryModal: FC<InfrastructureStatusHistoryModalProps> = ({

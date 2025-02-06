@@ -1,10 +1,10 @@
+import { InfrastructureStatusHistoryItemDTO } from 'features/infrastructures/api/dto'
 import { InfrastructureStatusEnum } from 'features/infrastructures/constants'
-import { InfrastructureStatusHistoryItemModel } from 'features/infrastructures/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import { fakeDateString, fakeId } from '_tests_/utils'
 
-export const infrastructureStatusHistory = (): InfrastructureStatusHistoryItemModel => ({
+export const infrastructureStatusHistory = (): InfrastructureStatusHistoryItemDTO => ({
   id: fakeId(),
   status: InfrastructureStatusEnum.New,
   createdAt: fakeDateString(),

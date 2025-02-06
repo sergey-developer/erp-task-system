@@ -1,14 +1,13 @@
-import { useEffect } from 'react'
-
-import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getInfrastructureStatusHistoryErrMsg } from 'features/infrastructures/constants'
 import {
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureStatusHistoryQueryArgs,
   GetInfrastructureStatusHistorySuccessResponse,
-} from 'features/infrastructures/models'
-import { useGetInfrastructureStatusHistoryQuery } from 'features/infrastructures/services/infrastructuresApi.service'
+} from 'features/infrastructures/api/dto'
+import { useGetInfrastructureStatusHistoryQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { getInfrastructureStatusHistoryErrMsg } from 'features/infrastructures/constants'
+import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import {
   getErrorDetail,

@@ -1,11 +1,10 @@
 import { TableProps } from 'antd'
-
-import { InfrastructureStatusHistoryItemModel } from 'features/infrastructures/models'
+import { InfrastructureStatusHistoryItemDTO } from 'features/infrastructures/api/dto'
 
 import { SetNonNullable } from 'shared/types/utils'
 
 export type InfrastructureStatusHistoryTableItem = Pick<
-  InfrastructureStatusHistoryItemModel,
+  InfrastructureStatusHistoryItemDTO,
   'id' | 'status' | 'createdAt' | 'createdBy'
 >
 

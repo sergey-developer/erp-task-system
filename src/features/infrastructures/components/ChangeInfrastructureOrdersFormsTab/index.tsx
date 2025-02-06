@@ -3,6 +3,7 @@ import { Button, Collapse, Form, Typography, UploadProps } from 'antd'
 import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
+import { InfrastructureDTO } from 'features/infrastructures/api/dto'
 import ChangeInfrastructureOrderForm from 'features/infrastructures/components/ChangeInfrastructureOrderForm'
 import { CreateInfrastructureOrderModalProps } from 'features/infrastructures/components/CreateInfrastructureOrderModal/types'
 import {
@@ -10,7 +11,6 @@ import {
   useGetInfrastructureOrdersForms,
 } from 'features/infrastructures/hooks'
 import { useCreateInfrastructureOrderFormAttachment } from 'features/infrastructures/hooks/useCreateInfrastructureOrderFormAttachment'
-import { InfrastructureModel } from 'features/infrastructures/models'
 import { CollapseProps } from 'rc-collapse/es/interface'
 import { UploadRequestOption } from 'rc-upload/es/interface'
 import React, { FC, lazy, useCallback, useMemo } from 'react'
@@ -37,7 +37,7 @@ const { Text } = Typography
 
 export type ChangeInfrastructureOrdersFormsTabProps = {
   infrastructureId: IdType
-} & Pick<InfrastructureModel, 'manager'>
+} & Pick<InfrastructureDTO, 'manager'>
 
 const ChangeInfrastructureOrdersFormsTab: FC<ChangeInfrastructureOrdersFormsTabProps> = ({
   infrastructureId,

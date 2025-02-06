@@ -1,13 +1,12 @@
-import { useEffect } from 'react'
-
-import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { deleteInfrastructureOrdersFormsWorkErrMsg } from 'features/infrastructures/constants'
 import {
   DeleteInfrastructureOrdersFormsWorkMutationArgs,
   DeleteInfrastructureOrdersFormsWorkSuccessResponse,
-} from 'features/infrastructures/models'
-import { useDeleteInfrastructureOrdersFormsWorkMutation } from 'features/infrastructures/services/infrastructuresApi.service'
+} from 'features/infrastructures/api/dto'
+import { useDeleteInfrastructureOrdersFormsWorkMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { deleteInfrastructureOrdersFormsWorkErrMsg } from 'features/infrastructures/constants'
+import { useEffect } from 'react'
+
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import {
   getErrorDetail,

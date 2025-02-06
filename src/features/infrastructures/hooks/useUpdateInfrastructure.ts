@@ -1,13 +1,12 @@
-import { useEffect } from 'react'
-
-import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { updateInfrastructureErrMsg } from 'features/infrastructures/constants'
 import {
   UpdateInfrastructureMutationArgs,
   UpdateInfrastructureSuccessResponse,
-} from 'features/infrastructures/models'
-import { useUpdateInfrastructureMutation } from 'features/infrastructures/services/infrastructuresApi.service'
+} from 'features/infrastructures/api/dto'
+import { useUpdateInfrastructureMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { updateInfrastructureErrMsg } from 'features/infrastructures/constants'
+import { useEffect } from 'react'
+
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import {
   getErrorDetail,

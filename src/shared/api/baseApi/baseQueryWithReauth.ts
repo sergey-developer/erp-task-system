@@ -1,6 +1,6 @@
 import { Mutex } from 'async-mutex'
+import { AuthEndpointsEnum } from 'features/auth/api/constants'
 import { RefreshTokenSuccessResponse } from 'features/auth/api/schemas'
-import { AuthEndpointsEnum } from 'features/auth/constants'
 import { logoutAndClearTokens, parseJwt } from 'features/auth/helpers'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
 import { refreshToken as refreshTokenAction } from 'features/auth/store/auth.slice'

@@ -1,13 +1,12 @@
-import { useEffect } from 'react'
-
-import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { updateInfrastructureOrderFormWorkErrMsg } from 'features/infrastructures/constants'
 import {
   UpdateInfrastructureOrderFormWorkMutationArgs,
   UpdateInfrastructureOrderFormWorkSuccessResponse,
-} from 'features/infrastructures/models'
-import { useUpdateInfrastructureOrderFormWorkMutation } from 'features/infrastructures/services/infrastructuresApi.service'
+} from 'features/infrastructures/api/dto'
+import { useUpdateInfrastructureOrderFormWorkMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { updateInfrastructureOrderFormWorkErrMsg } from 'features/infrastructures/constants'
+import { useEffect } from 'react'
+
+import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import {
   getErrorDetail,

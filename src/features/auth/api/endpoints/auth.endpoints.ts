@@ -1,3 +1,4 @@
+import { AuthEndpointsEnum } from 'features/auth/api/constants'
 import {
   LoginMutationArgs,
   LoginSuccessResponse,
@@ -6,7 +7,6 @@ import {
   UpdatePasswordMutationArgs,
   UpdatePasswordSuccessResponse,
 } from 'features/auth/api/schemas'
-import { AuthEndpointsEnum } from 'features/auth/constants'
 
 import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

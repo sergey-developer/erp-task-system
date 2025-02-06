@@ -1,13 +1,12 @@
-import { useEffect } from 'react'
-
-import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getInfrastructureOrdersFormsErrMsg } from 'features/infrastructures/constants'
 import {
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureOrdersFormsSuccessResponse,
-} from 'features/infrastructures/models'
-import { useGetInfrastructureOrdersFormsQuery } from 'features/infrastructures/services/infrastructuresApi.service'
+} from 'features/infrastructures/api/dto'
+import { useGetInfrastructureOrdersFormsQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { getInfrastructureOrdersFormsErrMsg } from 'features/infrastructures/constants'
+import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

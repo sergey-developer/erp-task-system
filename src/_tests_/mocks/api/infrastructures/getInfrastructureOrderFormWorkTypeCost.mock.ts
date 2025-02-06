@@ -1,5 +1,5 @@
-import { InfrastructuresApiEnum } from 'features/infrastructures/constants'
-import { GetInfrastructureOrderFormWorkTypeCostSuccessResponse } from 'features/infrastructures/models'
+import { GetInfrastructureOrderFormWorkTypeCostSuccessResponse } from 'features/infrastructures/api/dto'
+import { InfrastructuresEndpointsEnum } from 'features/infrastructures/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -9,7 +9,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const getInfrastructureOrderFormWorkTypeCostMockFn = () =>
   getRequestMockFn(
     HttpMethodEnum.Get,
-    InfrastructuresApiEnum.GetInfrastructureOrderFormWorkTypeCost,
+    InfrastructuresEndpointsEnum.GetInfrastructureOrderFormWorkTypeCost,
   )
 
 export const mockGetInfrastructureOrderFormWorkTypeCostSuccess = (

@@ -1,6 +1,6 @@
-import { UpdateInfrastructureSuccessResponse } from 'features/infrastructures/models'
+import { UpdateInfrastructureSuccessResponse } from 'features/infrastructures/api/dto'
+import { makeUpdateInfrastructureEndpoint } from 'features/infrastructures/helpers/infrastructure/apiUrls'
 import { InfrastructureRequestArgs } from 'features/infrastructures/types'
-import { makeUpdateInfrastructureUrl } from 'features/infrastructures/utils/infrastructure/apiUrls'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -8,7 +8,7 @@ import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const updateInfrastructureMockFn = ({ infrastructureId }: InfrastructureRequestArgs) =>
-  getRequestMockFn(HttpMethodEnum.Patch, makeUpdateInfrastructureUrl({ infrastructureId }))
+  getRequestMockFn(HttpMethodEnum.Patch, makeUpdateInfrastructureEndpoint({ infrastructureId }))
 
 export const mockUpdateInfrastructureSuccess = (
   { infrastructureId }: InfrastructureRequestArgs,

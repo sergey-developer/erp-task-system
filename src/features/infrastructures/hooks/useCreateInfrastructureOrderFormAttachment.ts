@@ -1,14 +1,13 @@
+import {
+  CreateInfrastructureOrderFormAttachmentMutationArgs,
+  CreateInfrastructureOrderFormAttachmentSuccessResponse,
+} from 'features/infrastructures/api/dto'
+import { useCreateInfrastructureOrderFormAttachmentMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { createInfrastructureOrdersFormAttachmentErrMsg } from 'features/infrastructures/constants'
 import { UploadRequestOption } from 'rc-upload/es/interface'
 import { useCallback, useEffect } from 'react'
 
 import { CustomUseMutationState } from 'lib/rtk-query/types'
-
-import { createInfrastructureOrdersFormAttachmentErrMsg } from 'features/infrastructures/constants'
-import {
-  CreateInfrastructureOrderFormAttachmentMutationArgs,
-  CreateInfrastructureOrderFormAttachmentSuccessResponse,
-} from 'features/infrastructures/models'
-import { useCreateInfrastructureOrderFormAttachmentMutation } from 'features/infrastructures/services/infrastructuresApi.service'
 
 import {
   getErrorDetail,

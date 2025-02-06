@@ -1,11 +1,10 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { Button, Form } from 'antd'
+import { makeInfrastructureWorkTypesSelectOptions } from 'features/infrastructures/helpers/infrastructureWorkTypesSelectOptions'
 import random from 'lodash/random'
 import React, { FC, useMemo } from 'react'
 
 import { env } from 'configs/env'
-
-import { makeInfrastructureWorkTypesSelectOptions } from 'features/infrastructures/utils/infrastructureWorkType/infrastructureWorkTypesSelectOptions'
 
 import { DeleteIcon } from 'components/Icons'
 

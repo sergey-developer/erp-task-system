@@ -1,5 +1,5 @@
+import { AuthEndpointsEnum } from 'features/auth/api/constants'
 import { LoginSuccessResponse } from 'features/auth/api/schemas'
-import { AuthEndpointsEnum } from 'features/auth/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
