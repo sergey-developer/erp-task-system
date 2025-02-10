@@ -6,7 +6,7 @@ import { badgeByTaskStatus, iconByTaskStatus } from 'features/task/components/Ta
 import { taskStatusDict } from 'features/task/constants/task'
 import { TaskModel } from 'features/task/models'
 import { getOlaStatusTextType } from 'features/task/utils/task'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { useUserPermissions } from 'features/user/hooks'
 import { getFullUserName } from 'features/user/utils'
 

@@ -1,8 +1,7 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
+import { getFiscalAccumulatorTasksReportErrMsg } from 'features/reports/api/constants'
 import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'features/reports/components/FiscalAccumulatorTasksReportTable/FiscalAccumulatorTasksReportTable.test'
-import { getFiscalAccumulatorTasksReportErrMsg } from 'features/reports/constants'
 import {
   taskLocalStorageService,
   TasksFiltersStorageType,

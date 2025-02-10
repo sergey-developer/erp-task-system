@@ -4,7 +4,6 @@ import { useAuthUser } from 'features/auth/hooks'
 import { useUpdateInfrastructure } from 'features/infrastructures/hooks'
 import { getChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { makeChangeInfrastructureRoute } from 'features/infrastructures/routes/helpers'
-import { useCancelReclassificationRequest } from 'features/reclassificationRequests/hooks'
 import {
   CreateInternalTaskFormFields,
   CreateInternalTaskModalProps,
@@ -63,7 +62,7 @@ import {
   TaskAssigneeModel,
 } from 'features/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'features/task/services/taskApi.service'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { useGetUserActions, useGetUsers, useUserPermissions } from 'features/user/hooks'
 import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType/enum'
 import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
@@ -89,6 +88,7 @@ import { useGetWorkGroupsCatalog } from 'shared/catalogs/hooks/workGroups'
 import { DEFAULT_DEBOUNCE_VALUE, NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { useCancelReclassificationRequest } from 'shared/reclassificationRequests/hooks'
 import { useSystemSettingsState } from 'shared/system/hooks/systemInfo'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'

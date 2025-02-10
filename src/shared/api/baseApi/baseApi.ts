@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { TaskApiTagEnum } from 'features/task/constants/task'
-import { UsersApiTagEnum } from 'features/user/constants'
+import { UsersApiTagEnum } from 'features/user/api/constants'
 import { RelocationEquipmentApiTagEnum } from 'features/warehouse/constants/relocationEquipment'
 
 import baseQueryWithReauth from './baseQueryWithReauth'

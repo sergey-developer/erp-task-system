@@ -1,7 +1,7 @@
 import { useIsLoggedIn } from 'features/auth/hooks'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
+import { UserModel } from 'features/user/api/dto'
 import { useUserMeState } from 'features/user/hooks'
-import { UserModel } from 'features/user/models'
 import { ReactElement } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 

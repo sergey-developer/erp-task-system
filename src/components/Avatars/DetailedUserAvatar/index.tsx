@@ -1,6 +1,6 @@
 import { Divider, Popover, PopoverProps, Space, Typography } from 'antd'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
-import { UserModel } from 'features/user/models'
+import { UserModel } from 'features/user/api/dto'
 import { getFullUserName, getUserAbbr } from 'features/user/utils'
 import pick from 'lodash/pick'
 import React, { FC } from 'react'

@@ -106,7 +106,7 @@ import {
   deleteTaskSuspendRequestUrl,
 } from 'features/task/utils/taskSuspendRequest'
 import { deleteTaskWorkGroupUrl, updateTaskWorkGroupUrl } from 'features/task/utils/taskWorkGroup'
-import { UsersApiTagEnum } from 'features/user/constants'
+import { UsersApiTagEnum } from 'features/user/api/constants'
 import { decamelize } from 'humps'
 import isBoolean from 'lodash/isBoolean'
 
@@ -690,7 +690,6 @@ const taskApiService = baseApi
         }),
       }),
     }),
-    overrideExisting: false,
   })
 
 export const {

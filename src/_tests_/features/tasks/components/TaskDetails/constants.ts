@@ -1,6 +1,6 @@
 import { TaskDetailsProps } from 'features/task/components/TaskDetails/index'
 import { TaskModel } from 'features/task/models/index'
-import { UserPermissionsEnum } from 'features/user/constants/index'
+import { UserPermissionsEnum } from 'features/user/api/constants/index'
 import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType/index'
 
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures/index'

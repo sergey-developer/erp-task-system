@@ -1,4 +1,4 @@
-import { BaseUserModel } from 'features/user/models'
+import { BaseUserModel } from 'features/user/api/dto'
 
 import { fakeId, fakeUrl, fakeWord } from '_tests_/utils'
 

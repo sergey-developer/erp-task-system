@@ -1,6 +1,6 @@
-import { SupportGroupModel } from 'features/supportGroup/models'
 import { TaskStatusEnum } from 'features/task/constants/task'
 
+import { SupportGroupDTO } from 'shared/supportGroups/api/dto'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -10,7 +10,7 @@ export type SubTaskModel = {
   status: TaskStatusEnum
   externalAssigneePhone: string
   createdAt: string
-  supportGroup: MaybeNull<SupportGroupModel>
+  supportGroup: MaybeNull<SupportGroupDTO>
   cancelReason: MaybeNull<string>
   returnReason: MaybeNull<string>
   recordId: MaybeNull<string>

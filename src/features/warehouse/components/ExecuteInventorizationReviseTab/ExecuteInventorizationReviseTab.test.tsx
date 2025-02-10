@@ -1,6 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,

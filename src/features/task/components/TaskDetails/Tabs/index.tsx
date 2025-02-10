@@ -1,12 +1,11 @@
 import { TabsProps as AntdTabsProps } from 'antd'
-import pick from 'lodash/pick'
-import React, { FC } from 'react'
-
 import { taskDetailsTabNameDict, TaskDetailsTabsEnum } from 'features/task/constants/task'
 import { TaskModel } from 'features/task/models'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserActionsModel } from 'features/user/api/dto'
 import { useUserPermissions } from 'features/user/hooks'
-import { UserActionsModel } from 'features/user/models'
+import pick from 'lodash/pick'
+import React, { FC } from 'react'
 
 import Spinner from 'components/Spinner'
 

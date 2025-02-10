@@ -1,8 +1,7 @@
 import { Flex, Typography } from 'antd'
-import React, { FC, ReactNode } from 'react'
-
-import { UserModel } from 'features/user/models'
+import { UserModel } from 'features/user/api/dto'
 import { getFullUserName } from 'features/user/utils'
+import React, { FC, ReactNode } from 'react'
 
 import { MaybeNull } from 'shared/types/utils'
 

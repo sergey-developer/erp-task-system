@@ -17,7 +17,7 @@ import {
   SuspendRequestStatusEnum,
 } from 'features/task/constants/taskSuspendRequest'
 import { CreateTaskSuspendRequestBadRequestErrorResponse } from 'features/task/models'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { getFullUserName } from 'features/user/utils'
 import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType/enum'
 

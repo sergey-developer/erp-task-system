@@ -1,5 +1,5 @@
+import { ReportsEndpointsEnum } from 'features/reports/api/constants'
 import { GetFiscalAccumulatorTasksReportSuccessResponse } from 'features/reports/api/dto'
-import { ReportsApiEnum } from 'features/reports/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -7,7 +7,7 @@ import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getFiscalAccumulatorTasksMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, ReportsApiEnum.GetFiscalAccumulatorTasksReport)
+  getRequestMockFn(HttpMethodEnum.Get, ReportsEndpointsEnum.GetFiscalAccumulatorTasksReport)
 
 export const mockGetFiscalAccumulatorTasksSuccess = (
   options?: Partial<ResponseResolverOptions<GetFiscalAccumulatorTasksReportSuccessResponse>>,

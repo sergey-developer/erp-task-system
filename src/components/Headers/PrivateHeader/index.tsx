@@ -2,18 +2,18 @@ import { Badge, Col, Layout, Row, Select, Space, Typography } from 'antd'
 import LogoutButton from 'features/auth/components/LogoutButton'
 import { MonitoringRoutesEnum } from 'features/monitoring/constants'
 import { taskLocalStorageService } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'features/user/constants'
+import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'features/user/api/constants'
+import { UserModel } from 'features/user/api/dto'
+import {
+  useUpdateUserStatusMutation,
+  useUpdateUserTimeZoneMutation,
+} from 'features/user/api/endpoints/users.endpoints'
 import {
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
   useUserMeCodeState,
   useUserMeState,
 } from 'features/user/hooks'
-import { UserModel } from 'features/user/models'
-import {
-  useUpdateUserStatusMutation,
-  useUpdateUserTimeZoneMutation,
-} from 'features/user/services/userApi.service'
 import { checkUserStatusOffline } from 'features/user/utils'
 import moment from 'moment-timezone'
 import { DefaultOptionType } from 'rc-select/lib/Select'
@@ -94,7 +94,7 @@ const PrivateHeader: FC = () => {
       moment.tz.setDefault(timezone)
     } catch (error) {
       if (isErrorResponse(error)) {
-        showErrorNotification(updateUserTimeZoneMessages.commonError)
+        showErrorNotification(updateUserTimeZoneMessages)
       }
     }
   }
@@ -109,7 +109,7 @@ const PrivateHeader: FC = () => {
         if (isNotFoundError(error) || isUnauthorizedError(error) || isBadRequestError(error)) {
           showErrorNotification(getErrorDetail(error))
         } else {
-          showErrorNotification(updateUserStatusMessages.commonError)
+          showErrorNotification(updateUserStatusMessages)
         }
       }
     }

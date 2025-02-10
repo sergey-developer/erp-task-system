@@ -1,4 +1,4 @@
-import { UserApiEnum } from 'features/user/constants'
+import { UserApiEnum } from 'features/user/api/constants'
 
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'

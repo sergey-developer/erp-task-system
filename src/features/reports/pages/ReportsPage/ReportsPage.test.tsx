@@ -1,13 +1,12 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import React from 'react'
-
-import { ReportsRoutesEnum } from 'features/reports/constants'
 import FiscalAccumulatorTasksReportPage from 'features/reports/pages/FiscalAccumulatorTasksReportPage'
 import { testUtils as fiscalAccumulatorTasksReportPageTestUtils } from 'features/reports/pages/FiscalAccumulatorTasksReportPage/FiscalAccumulatorTasksReportPage.test'
 import MtsrReportPage from 'features/reports/pages/MtsrReportPage'
 import { testUtils as mtsrReportPageTestUtils } from 'features/reports/pages/MtsrReportPage/MtsrReportPage.test'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { ReportsRoutesEnum } from 'features/reports/routes/routes'
+import { UserPermissionsEnum } from 'features/user/api/constants'
+import React from 'react'
 
 import userFixtures from '_tests_/fixtures/user'
 import {
@@ -95,7 +94,7 @@ describe('Страница отчётов', () => {
       const { user } = renderWithRouter(
         [
           {
-            path: ReportsRoutesEnum.Reports,
+            path: ReportsRoutesEnum.ReportsRoot,
             element: <ReportsPage />,
           },
           {
@@ -103,7 +102,7 @@ describe('Страница отчётов', () => {
             element: <FiscalAccumulatorTasksReportPage />,
           },
         ],
-        { initialEntries: [ReportsRoutesEnum.Reports], initialIndex: 0 },
+        { initialEntries: [ReportsRoutesEnum.ReportsRoot], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
@@ -160,7 +159,7 @@ describe('Страница отчётов', () => {
       const { user } = renderWithRouter(
         [
           {
-            path: ReportsRoutesEnum.Reports,
+            path: ReportsRoutesEnum.ReportsRoot,
             element: <ReportsPage />,
           },
           {
@@ -168,7 +167,7 @@ describe('Страница отчётов', () => {
             element: <MtsrReportPage />,
           },
         ],
-        { initialEntries: [ReportsRoutesEnum.Reports], initialIndex: 0 },
+        { initialEntries: [ReportsRoutesEnum.ReportsRoot], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {

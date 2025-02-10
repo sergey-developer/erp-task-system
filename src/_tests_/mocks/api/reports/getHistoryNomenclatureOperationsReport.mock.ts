@@ -1,5 +1,5 @@
 import { GetHistoryNomenclatureOperationsReportSuccessResponse } from 'features/reports/api/dto'
-import { getHistoryNomenclatureOperationsReportUrl } from 'features/reports/utils'
+import { makeHistoryNomenclatureOperationsReportEndpoint } from 'features/reports/helpers'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -14,7 +14,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getHistoryNomenclatureOperationsReportMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getHistoryNomenclatureOperationsReportUrl(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeHistoryNomenclatureOperationsReportEndpoint(id))
 
 export const mockGetHistoryNomenclatureOperationsReportSuccess = (
   id: IdType,

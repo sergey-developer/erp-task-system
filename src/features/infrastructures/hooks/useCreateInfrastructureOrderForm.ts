@@ -2,7 +2,7 @@ import {
   CreateInfrastructureOrderFormMutationArgs,
   CreateInfrastructureOrderFormSuccessResponse,
 } from 'features/infrastructures/api/dto'
-import { useCreateInfrastructureOrderFormMutation } from 'features/infrastructures/api/infrastructures.endpoints'
+import { useCreateInfrastructureOrderFormMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import { createInfrastructureOrderFormErrMsg } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 

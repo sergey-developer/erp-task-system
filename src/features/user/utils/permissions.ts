@@ -1,10 +1,9 @@
+import { UserModel } from 'features/user/api/dto'
 import { camelizeKeys } from 'humps'
-
-import { UserModel } from 'features/user/models'
 
 import { Writeable } from 'shared/types/utils'
 
-import { UserPermissionsEnum } from '../constants'
+import { UserPermissionsEnum } from '../api/constants'
 import { MatchedUserPermissions } from '../types'
 
 export const getPermissionsObj = (

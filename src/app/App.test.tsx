@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react'
 import { testUtils as homeLayoutTestUtils } from 'features/layout/components/HomeLayout/HomeLayout.test'
-import { updateUserTimeZoneMessages } from 'features/user/constants'
+import { updateUserTimeZoneMessages } from 'features/user/api/constants'
 
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
 
@@ -180,7 +180,7 @@ describe.skip('Private app', () => {
         await privateHeaderTestUtils.expectTimeZoneLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(
-          updateUserTimeZoneMessages.commonError,
+          updateUserTimeZoneMessages,
         )
 
         expect(notification).toBeInTheDocument()

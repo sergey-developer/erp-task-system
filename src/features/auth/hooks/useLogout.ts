@@ -1,5 +1,5 @@
-import { useLogoutMutation } from 'features/auth/api/auth.endpoints'
 import { logoutErrMsg } from 'features/auth/api/constants'
+import { useLogoutMutation } from 'features/auth/api/endpoints/auth.endpoints'
 import { logoutAndClearTokens } from 'features/auth/helpers'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
 import { useCallback } from 'react'

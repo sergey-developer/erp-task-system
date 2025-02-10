@@ -1,5 +1,5 @@
 import { AttachmentDetailDTO } from 'features/attachments/api/dto'
-import { UserModel } from 'features/user/models'
+import { UserModel } from 'features/user/api/dto'
 import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
 
 import { IdType } from 'shared/types/common'

@@ -1,5 +1,5 @@
-import { UserApiEnum } from 'features/user/constants'
-import { GetUserMeSuccessResponse } from 'features/user/models'
+import { UserApiEnum } from 'features/user/api/constants'
+import { GetUserMeSuccessResponse } from 'features/user/api/dto'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

@@ -1,5 +1,5 @@
 import { SuspendRequestStatusEnum } from 'features/task/constants/taskSuspendRequest'
-import { BaseUserModel } from 'features/user/models'
+import { BaseUserModel } from 'features/user/api/dto'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'

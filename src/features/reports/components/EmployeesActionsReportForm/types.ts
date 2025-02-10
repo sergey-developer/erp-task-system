@@ -1,6 +1,5 @@
+import { UsersModel } from 'features/user/api/dto'
 import { Moment } from 'moment-timezone'
-
-import { UsersModel } from 'features/user/models'
 
 import { IdType } from 'shared/types/common'
 

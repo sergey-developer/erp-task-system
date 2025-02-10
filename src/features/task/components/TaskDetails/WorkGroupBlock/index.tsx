@@ -11,9 +11,9 @@ import {
 import UserShortInfo from 'features/task/components/UserShortInfo'
 import { useTaskStatus } from 'features/task/hooks/task'
 import { TaskModel } from 'features/task/models'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserActionsModel } from 'features/user/api/dto'
 import { useUserPermissions } from 'features/user/hooks'
-import { UserActionsModel } from 'features/user/models'
 import React, { FC } from 'react'
 
 import ModalFallback from 'components/Modals/ModalFallback'

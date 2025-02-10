@@ -1,8 +1,7 @@
 import { Button, ButtonProps, Typography } from 'antd'
-import React, { FC, ReactElement } from 'react'
-
-import { BaseUserModel } from 'features/user/models'
+import { BaseUserModel } from 'features/user/api/dto'
 import { getShortUserName } from 'features/user/utils'
+import React, { FC, ReactElement } from 'react'
 
 import SeparatedText from 'components/SeparatedText'
 import Space from 'components/Space'

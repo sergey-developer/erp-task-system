@@ -1,6 +1,6 @@
 import { TaskActionsPermissionsEnum } from 'features/task/constants/task'
 import { TaskWorkGroupModel } from 'features/task/models'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { getFullUserName } from 'features/user/utils'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'

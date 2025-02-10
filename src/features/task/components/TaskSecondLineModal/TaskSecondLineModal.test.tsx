@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 
 import { validationMessages } from 'shared/constants/validation'
 import { WorkGroupTypeEnum } from 'shared/workGroups/api/dto'

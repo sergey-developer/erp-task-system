@@ -1,10 +1,9 @@
+import { getWarehouseMSIErrMsg } from 'features/user/api/constants'
+import { GetWarehouseMSIQueryArgs, GetWarehouseMSISuccessResponse } from 'features/user/api/dto'
+import { useGetWarehouseMSIQuery } from 'features/user/api/endpoints/users.endpoints'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getWarehouseMSIErrMsg } from 'features/user/constants'
-import { GetWarehouseMSIQueryArgs, GetWarehouseMSISuccessResponse } from 'features/user/models'
-import { useGetWarehouseMSIQuery } from 'features/user/services/userApi.service'
 
 import {
   getErrorDetail,

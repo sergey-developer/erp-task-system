@@ -4,7 +4,7 @@ import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { attachmentsToFiles } from 'features/attachments/helpers'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/user/hooks'
 import RelocationEquipmentDraftEditableTable from 'features/warehouse/components/RelocationEquipmentDraftEditableTable'
 import {

@@ -1,9 +1,10 @@
-import { SupportGroupListItemModel, SupportGroupListModel } from 'features/supportGroup/models'
 import times from 'lodash/times'
+
+import { SupportGroupDTO, SupportGroupListModel } from 'shared/supportGroups/api/dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
-export const supportGroupListItem = (): SupportGroupListItemModel => ({
+export const supportGroupListItem = (): SupportGroupDTO => ({
   id: fakeId(),
   name: fakeWord(),
 })

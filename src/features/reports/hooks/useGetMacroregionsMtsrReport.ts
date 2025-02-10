@@ -1,9 +1,9 @@
+import { getMacroregionsMtsrReportErrMsg } from 'features/reports/api/constants'
+import { useGetMacroregionsMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
   GetMacroregionsMtsrReportQueryArgs,
   GetMacroregionsMtsrReportSuccessResponse,
-} from 'features/reports/api/dto'
-import { getMacroregionsMtsrReportErrMsg } from 'features/reports/constants'
-import { useGetMacroregionsMtsrReportQuery } from 'features/reports/services/reportsApi.service'
+} from 'features/reports/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

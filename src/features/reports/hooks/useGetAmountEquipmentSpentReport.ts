@@ -1,7 +1,7 @@
-import { GetAmountEquipmentSpentReportQueryArgs } from 'features/reports/api/dto'
+import { getAmountEquipmentSpentReportErrMsg } from 'features/reports/api/constants'
+import { useGetAmountEquipmentSpentReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
+import { GetAmountEquipmentSpentReportQueryArgs } from 'features/reports/api/schemas'
 import { GetAmountEquipmentSpentReportTransformedSuccessResponse } from 'features/reports/api/types'
-import { getAmountEquipmentSpentReportErrMsg } from 'features/reports/constants'
-import { useGetAmountEquipmentSpentReportQuery } from 'features/reports/services/reportsApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

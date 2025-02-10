@@ -1,6 +1,6 @@
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
 import { ChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/types'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { userHasPermissions } from 'features/user/utils'
 import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType'
 import React from 'react'

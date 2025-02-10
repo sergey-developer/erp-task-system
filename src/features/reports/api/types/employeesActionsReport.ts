@@ -1,8 +1,6 @@
 import { AxiosResponse } from 'axios'
-import {
-  EmployeesActionsReportItemDTO,
-  GetEmployeesActionsReportXlsxSuccessResponse,
-} from 'features/reports/api/dto'
+import { EmployeesActionsReportItemDTO } from 'features/reports/api/dto'
+import { GetEmployeesActionsReportXlsxSuccessResponse } from 'features/reports/api/schemas'
 
 import { AntdPaginatedList } from 'lib/antd/types'
 

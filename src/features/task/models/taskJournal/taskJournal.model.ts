@@ -1,6 +1,6 @@
 import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'features/task/constants/taskJournal'
 import { TaskAttachmentsModel } from 'features/task/models'
-import { BaseUserModel } from 'features/user/models'
+import { BaseUserModel } from 'features/user/api/dto'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'

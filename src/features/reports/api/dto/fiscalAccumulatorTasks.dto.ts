@@ -1,6 +1,6 @@
-import { FiscalAccumulatorFormatEnum } from 'features/reports/constants'
+import { FiscalAccumulatorFormatEnum } from 'features/reports/api/constants'
 import { TaskCommentModel } from 'features/task/models'
-import { UserModel } from 'features/user/models'
+import { UserModel } from 'features/user/api/dto'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'

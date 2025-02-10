@@ -1,5 +1,5 @@
 import { TaskAttachmentsModel } from 'features/task/models'
-import { BaseUserModel } from 'features/user/models'
+import { BaseUserModel } from 'features/user/api/dto'
 
 import { IdType } from 'shared/types/common'
 

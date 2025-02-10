@@ -2,8 +2,8 @@ import {
   CreateAttachmentMutationArgs,
   CreateAttachmentSuccessResponse,
 } from 'features/attachments//api/schemas'
-import { useCreateAttachmentMutation } from 'features/attachments/api/attachments.endpoints'
 import { createAttachmentErrMsg } from 'features/attachments/api/constants'
+import { useCreateAttachmentMutation } from 'features/attachments/api/endpoints/attachments.endpoints'
 import { UploadRequestOption } from 'rc-upload/es/interface'
 import { useCallback, useEffect } from 'react'
 

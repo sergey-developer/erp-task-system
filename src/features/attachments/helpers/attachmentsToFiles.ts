@@ -1,6 +1,6 @@
 import { UploadFile } from 'antd/es/upload'
 import { AttachmentDetailDTO } from 'features/attachments/api/dto'
-import { UserModel } from 'features/user/models'
+import { UserModel } from 'features/user/api/dto'
 
 import { FileResponse } from 'shared/types/file'
 import { MaybeNull } from 'shared/types/utils'

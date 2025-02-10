@@ -1,6 +1,6 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Col, Row } from 'antd'
-import { GetFiscalAccumulatorTasksReportQueryArgs } from 'features/reports/api/dto'
+import { GetFiscalAccumulatorTasksReportQueryArgs } from 'features/reports/api/schemas'
 import {
   FiscalAccumulatorTasksReportFilterFormFields,
   FiscalAccumulatorTasksReportFilterProps,
@@ -11,7 +11,6 @@ import {
   FiscalAccumulatorTasksReportTableProps,
 } from 'features/reports/components/FiscalAccumulatorTasksReportTable/types'
 import { useGetFiscalAccumulatorTasksReport } from 'features/reports/hooks'
-import { useGetSupportGroups } from 'features/supportGroup/hooks'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
 } from 'features/task/components/TasksFiltersStorage'
@@ -31,9 +30,10 @@ import React, { FC, useCallback, useState } from 'react'
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
-import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
+import { useGetMacroregionsCatalog } from 'shared/catalogs/macroregions/hooks'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
+import { useGetSupportGroups } from 'shared/supportGroups/hooks'
 import { IdType } from 'shared/types/common'
 import { MaybeUndefined } from 'shared/types/utils'
 

@@ -1,12 +1,12 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
+import { ReportsStorageKeysEnum } from 'features/reports/api/constants'
 import { GetAmountEquipmentSpentReportQueryArgs } from 'features/reports/api/dto'
 import { AmountEquipmentSpentReportFilterFormFields } from 'features/reports/components/AmountEquipmentSpentReportFilter/types'
 import AmountEquipmentSpentReportForm from 'features/reports/components/AmountEquipmentSpentReportForm'
 import { AmountEquipmentSpentReportFormProps } from 'features/reports/components/AmountEquipmentSpentReportForm/types'
 import AmountEquipmentSpentReportTable from 'features/reports/components/AmountEquipmentSpentReportTable'
 import { AmountEquipmentSpentReportTableProps } from 'features/reports/components/AmountEquipmentSpentReportTable/types'
-import { ReportsStorageKeysEnum } from 'features/reports/constants'
 import {
   useGetAmountEquipmentSpentReport,
   useLazyGetAmountEquipmentSpentReportXlsx,
@@ -22,7 +22,7 @@ import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
+import { useGetLocationsCatalog } from 'shared/catalogs/locations/hooks'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'

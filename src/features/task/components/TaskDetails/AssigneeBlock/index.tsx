@@ -1,14 +1,13 @@
 import { Button, Col, Row, Typography } from 'antd'
-import isEqual from 'lodash/isEqual'
-import pick from 'lodash/pick'
-import React, { FC, useMemo, useState } from 'react'
-
 import { useAuthUser, useIdBelongAuthUser } from 'features/auth/hooks'
 import TaskAssignee from 'features/task/components/TaskAssignee'
 import { TaskAssigneeModel, TaskModel, TaskWorkGroupModel } from 'features/task/models'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserActionsModel } from 'features/user/api/dto'
 import { useUserPermissions } from 'features/user/hooks'
-import { UserActionsModel } from 'features/user/models'
+import isEqual from 'lodash/isEqual'
+import pick from 'lodash/pick'
+import React, { FC, useMemo, useState } from 'react'
 
 import Space from 'components/Space'
 

@@ -1,6 +1,6 @@
-import { ReportsRoutesEnum } from 'features/reports/constants'
+import { ReportsRoutesEnum } from 'features/reports/api/constants'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 
 import { CommonRoutesEnum } from 'configs/routes'
@@ -17,9 +17,9 @@ const navMenuConfig: NavMenuItem[] = [
     text: 'Рабочий стол',
   },
   {
-    key: ReportsRoutesEnum.Reports,
+    key: ReportsRoutesEnum.ReportsRoot,
     icon: FileTextIcon,
-    link: ReportsRoutesEnum.Reports,
+    link: ReportsRoutesEnum.ReportsRoot,
     text: 'Отчёты',
     visible: (permissions) =>
       permissions.includes(UserPermissionsEnum.FiscalAccumulatorTasksRead) ||

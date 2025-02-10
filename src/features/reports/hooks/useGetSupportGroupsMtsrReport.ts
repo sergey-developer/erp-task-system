@@ -1,9 +1,9 @@
+import { getSupportGroupsMtsrReportErrMsg } from 'features/reports/api/constants'
+import { useGetSupportGroupsMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
   GetSupportGroupsMtsrReportQueryArgs,
   GetSupportGroupsMtsrReportSuccessResponse,
-} from 'features/reports/api/dto'
-import { getSupportGroupsMtsrReportErrMsg } from 'features/reports/constants'
-import { useGetSupportGroupsMtsrReportQuery } from 'features/reports/services/reportsApi.service'
+} from 'features/reports/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

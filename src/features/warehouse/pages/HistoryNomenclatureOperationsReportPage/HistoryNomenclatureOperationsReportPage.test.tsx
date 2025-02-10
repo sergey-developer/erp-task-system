@@ -1,7 +1,7 @@
 import { testUtils as historyNomenclatureOperationsReportFilterTestUtils } from 'features/reports/components/HistoryNomenclatureOperationsReportFilter/HistoryNomenclatureOperationsReportFilter.test'
 import { testUtils as historyNomenclatureOperationsReportFormTestUtils } from 'features/reports/components/HistoryNomenclatureOperationsReportForm/HistoryNomenclatureOperationsReportForm.test'
 import { testUtils as historyNomenclatureOperationsReportTableTestUtils } from 'features/reports/components/HistoryNomenclatureOperationsReportTable/HistoryNomenclatureOperationsReportTable.test'
-import { getRelocationColValue } from 'features/reports/utils'
+import { getRelocationTaskReportTableColValue } from 'features/reports/helpers'
 import {
   equipmentConditionDict,
   EquipmentConditionEnum,
@@ -117,7 +117,7 @@ describe('Страница отчета истории операций по н�
       await historyNomenclatureOperationsReportTableTestUtils.clickColValue(
         user,
         reportListItem.id,
-        getRelocationColValue(reportListItem.lastRelocationTask),
+        getRelocationTaskReportTableColValue(reportListItem.lastRelocationTask),
       )
       const details = await relocationTaskDetailsTestUtils.findContainer()
 

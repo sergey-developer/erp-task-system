@@ -1,4 +1,4 @@
-import { BaseUserModel } from 'features/user/models'
+import { BaseUserModel } from 'features/user/api/dto'
 
 import { Nullable } from 'shared/types/utils'
 import { addDotToEnd, getFirstLetterInUpperCase, makeString } from 'shared/utils/string'

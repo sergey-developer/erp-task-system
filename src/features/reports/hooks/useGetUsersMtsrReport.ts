@@ -1,9 +1,9 @@
+import { getUsersMtsrReportErrMsg } from 'features/reports/api/constants'
+import { useGetUsersMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
   GetUsersMtsrReportQueryArgs,
   GetUsersMtsrReportSuccessResponse,
-} from 'features/reports/api/dto'
-import { getUsersMtsrReportErrMsg } from 'features/reports/constants'
-import { useGetUsersMtsrReportQuery } from 'features/reports/services/reportsApi.service'
+} from 'features/reports/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

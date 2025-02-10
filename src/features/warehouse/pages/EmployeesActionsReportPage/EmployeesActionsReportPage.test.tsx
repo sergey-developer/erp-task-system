@@ -1,6 +1,6 @@
 import { testUtils as employeesActionsReportFormTestUtils } from 'features/reports/components/EmployeesActionsReportForm/EmployeesActionsReportForm.test'
 import { testUtils as employeesActionsReportTableTestUtils } from 'features/reports/components/EmployeesActionsReportTable/EmployeesActionsReportTable.test'
-import { getRelocationColValue } from 'features/reports/utils'
+import { getRelocationTaskReportTableColValue } from 'features/reports/helpers'
 
 import { DEFAULT_FILE_NAME } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -90,7 +90,7 @@ describe('Страница отчета действия сотрудников'
       await employeesActionsReportTableTestUtils.clickColValue(
         user,
         reportListItem.id,
-        getRelocationColValue(reportListItem.relocationTask),
+        getRelocationTaskReportTableColValue(reportListItem.relocationTask),
       )
       const details = await relocationTaskDetailsTestUtils.findContainer()
 

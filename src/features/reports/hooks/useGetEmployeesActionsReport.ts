@@ -10,10 +10,10 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { GetEmployeesActionsReportQueryArgs } from '../api/dto'
+import { getEmployeesActionsReportErrMsg } from '../api/constants'
+import { useGetEmployeesActionsReportQuery } from '../api/endpoints/reports.endpoints'
+import { GetEmployeesActionsReportQueryArgs } from '../api/schemas'
 import { GetEmployeesActionsReportTransformedSuccessResponse } from '../api/types'
-import { getEmployeesActionsReportErrMsg } from '../constants'
-import { useGetEmployeesActionsReportQuery } from '../services/reportsApi.service'
 
 type UseGetEmployeesActionsReportResult = CustomUseQueryHookResult<
   GetEmployeesActionsReportQueryArgs,

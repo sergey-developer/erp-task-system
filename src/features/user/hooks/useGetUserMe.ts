@@ -1,10 +1,9 @@
+import { getUserMeErrMsg } from 'features/user/api/constants'
+import { GetUserMeQueryArgs, GetUserMeSuccessResponse } from 'features/user/api/dto'
+import { useGetUserMeQuery } from 'features/user/api/endpoints/users.endpoints'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getUserMeErrMsg } from 'features/user/constants'
-import { GetUserMeQueryArgs, GetUserMeSuccessResponse } from 'features/user/models'
-import { useGetUserMeQuery } from 'features/user/services/userApi.service'
 
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

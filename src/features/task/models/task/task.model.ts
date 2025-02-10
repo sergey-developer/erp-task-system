@@ -13,7 +13,7 @@ import {
   TaskSupportGroupModel,
   TaskWorkGroupModel,
 } from 'features/task/models'
-import { UserModel, UserPositionModel } from 'features/user/models'
+import { UserModel, UserPositionModel } from 'features/user/api/dto'
 import { WorkTypeModel } from 'features/warehouse/models'
 
 import { SystemEnum } from 'shared/constants/enums'

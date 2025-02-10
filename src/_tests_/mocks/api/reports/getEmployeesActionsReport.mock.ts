@@ -1,5 +1,5 @@
-import { GetEmployeesActionsReportSuccessResponse } from 'features/reports/api/dto'
-import { getEmployeesActionsReportUrl } from 'features/reports/utils'
+import { makeGetEmployeesActionsReportEndpoint } from 'features/reports/api/helpers'
+import { GetEmployeesActionsReportSuccessResponse } from 'features/reports/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -15,7 +15,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEmployeesActionsReportMockFn = (employeeId: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getEmployeesActionsReportUrl(employeeId))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetEmployeesActionsReportEndpoint(employeeId))
 
 export const mockGetEmployeesActionsReportSuccess = (
   employeeId: IdType,

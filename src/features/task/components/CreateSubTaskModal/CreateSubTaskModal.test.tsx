@@ -1,9 +1,9 @@
 import { waitFor } from '@testing-library/react'
-import { getSupportGroupListMessages } from 'features/supportGroup/constants'
 import { createSubTaskErrMsg } from 'features/task/constants/task'
 
 import { getSubTaskTemplatesCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
 import { validationMessages } from 'shared/constants/validation'
+import { getSupportGroupsErrMsg } from 'shared/supportGroups/api/constants'
 
 import { onCancel, props } from '_tests_/features/tasks/components/CreateSubTaskModal/constants'
 import { createSubTaskModalTestUtils } from '_tests_/features/tasks/components/CreateSubTaskModal/testUtils'
@@ -678,9 +678,7 @@ describe('Модалка создания задачи заявки', () => {
           store: getStoreWithAuth(),
         })
 
-        const notification = await notificationTestUtils.findNotification(
-          getSupportGroupListMessages.commonError,
-        )
+        const notification = await notificationTestUtils.findNotification(getSupportGroupsErrMsg)
         expect(notification).toBeInTheDocument()
       })
     })

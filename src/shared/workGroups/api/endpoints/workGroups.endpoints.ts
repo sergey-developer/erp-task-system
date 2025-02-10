@@ -13,7 +13,6 @@ const workGroupsEndpoints = baseApi.injectEndpoints({
       }),
     }),
   }),
-  overrideExisting: false,
 })
 
 export const { useGetWorkGroupsQuery } = workGroupsEndpoints

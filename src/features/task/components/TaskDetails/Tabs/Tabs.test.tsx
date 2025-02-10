@@ -1,5 +1,5 @@
 import { TaskDetailsTabsEnum } from 'features/task/constants/task'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 
 import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/constants'
 import { tabsTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/testUtils'

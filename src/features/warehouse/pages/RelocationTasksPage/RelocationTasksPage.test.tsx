@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react'
 
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import {
   getRelocationTasksErrMsg,
   relocationTaskStatusDict,

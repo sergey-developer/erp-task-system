@@ -1,5 +1,5 @@
 import { TaskActionsPermissionsEnum } from 'features/task/constants/task'
-import { UserActionsModel } from 'features/user/models'
+import { UserActionsModel } from 'features/user/api/dto'
 
 import { fakeId } from '_tests_/utils'
 

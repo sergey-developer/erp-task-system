@@ -1,6 +1,6 @@
 import { AssigneeBlockProps } from 'features/task/components/TaskDetails/AssigneeBlock/index'
 import { TaskActionsPermissionsEnum } from 'features/task/constants/task/index'
-import { UserPermissionsEnum } from 'features/user/constants/index'
+import { UserPermissionsEnum } from 'features/user/api/constants/index'
 
 import { SetNonNullable } from 'shared/types/utils'
 

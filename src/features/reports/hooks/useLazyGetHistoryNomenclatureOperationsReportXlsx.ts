@@ -1,7 +1,7 @@
-import { GetHistoryNomenclatureOperationsReportXlsxQueryArgs } from 'features/reports/api/dto'
+import { getHistoryNomenclatureOperationsReportXlsxErrMsg } from 'features/reports/api/constants'
+import { useLazyGetHistoryNomenclatureOperationsReportXlsxQuery } from 'features/reports/api/endpoints/reports.endpoints'
+import { GetHistoryNomenclatureOperationsReportXlsxQueryArgs } from 'features/reports/api/schemas'
 import { GetHistoryNomenclatureOperationsReportXlsxTransformedSuccessResponse } from 'features/reports/api/types'
-import { getHistoryNomenclatureOperationsReportXlsxErrMsg } from 'features/reports/constants'
-import { useLazyGetHistoryNomenclatureOperationsReportXlsxQuery } from 'features/reports/services/reportsApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'

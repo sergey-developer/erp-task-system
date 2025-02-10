@@ -1,7 +1,7 @@
 import { within } from '@testing-library/react'
 
 import { createTaskCommentErrMsg } from 'features/task/constants/taskComment'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 
 import { commentsTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/Comments/testUtils'
 import { createCommentFormTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/CreateCommentForm/testUtils'

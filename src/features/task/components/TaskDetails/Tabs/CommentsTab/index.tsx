@@ -2,7 +2,7 @@ import { useBoolean } from 'ahooks'
 import { Button, Flex, Row, Typography } from 'antd'
 import { useCreateTaskComment, useGetTaskComments } from 'features/task/hooks/taskComment'
 import { TaskModel } from 'features/task/models'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { useUserPermissions } from 'features/user/hooks'
 import React, { FC, useCallback } from 'react'
 

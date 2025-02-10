@@ -1,7 +1,7 @@
-import { GetAmountEquipmentSpentReportXlsxQueryArgs } from 'features/reports/api/dto'
+import { getAmountEquipmentSpentReportXlsxErrMsg } from 'features/reports/api/constants'
+import { useLazyGetAmountEquipmentSpentReportXlsxQuery } from 'features/reports/api/endpoints/reports.endpoints'
+import { GetAmountEquipmentSpentReportXlsxQueryArgs } from 'features/reports/api/schemas'
 import { GetAmountEquipmentSpentReportXlsxTransformedSuccessResponse } from 'features/reports/api/types'
-import { getAmountEquipmentSpentReportXlsxErrMsg } from 'features/reports/constants'
-import { useLazyGetAmountEquipmentSpentReportXlsxQuery } from 'features/reports/services/reportsApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'

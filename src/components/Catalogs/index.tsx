@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import MatchUserPermissions from 'features/user/components/MatchUserPermissions'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { checkEveryPermissionAllowed } from 'features/user/utils'
 
 import Catalog, { CatalogProps } from './Catalog'

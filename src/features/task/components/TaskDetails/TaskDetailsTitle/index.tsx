@@ -10,7 +10,7 @@ import {
   useTaskType,
 } from 'features/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'features/task/hooks/taskSuspendRequest'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { useUserPermissions } from 'features/user/hooks'
 
 import {

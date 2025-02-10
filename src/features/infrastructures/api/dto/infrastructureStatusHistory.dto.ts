@@ -1,5 +1,5 @@
 import { InfrastructureStatusEnum } from 'features/infrastructures/api/constants'
-import { UserModel } from 'features/user/models'
+import { UserModel } from 'features/user/api/dto'
 
 import { IdType } from 'shared/types/common'
 

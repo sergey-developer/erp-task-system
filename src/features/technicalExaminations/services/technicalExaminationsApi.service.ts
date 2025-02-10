@@ -49,7 +49,6 @@ const technicalExaminationsApiService = baseApi.injectEndpoints({
       }),
     }),
   }),
-  overrideExisting: false,
 })
 
 export const {

@@ -1,5 +1,5 @@
 import { Button, Form, Input, Space, Typography } from 'antd'
-import { useUpdatePasswordMutation } from 'features/auth/api/auth.endpoints'
+import { useUpdatePasswordMutation } from 'features/auth/api/endpoints/auth.endpoints'
 import { updatePasswordSuccessMsg } from 'features/auth/constants'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import React, { FC } from 'react'

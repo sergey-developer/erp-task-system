@@ -1,4 +1,3 @@
-import { SupportGroupModel } from 'features/supportGroup/models'
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
@@ -7,6 +6,7 @@ import {
 } from 'features/task/constants/task'
 import { TaskAssigneeModel, TaskResponseTimeModel, TaskWorkGroupModel } from 'features/task/models'
 
+import { SupportGroupDTO } from 'shared/supportGroups/api/dto'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -28,7 +28,7 @@ export type TaskListItemModel = {
   lastComment: MaybeNull<string>
   assignee: MaybeNull<TaskAssigneeModel>
   workGroup: MaybeNull<TaskWorkGroupModel>
-  supportGroup: MaybeNull<Pick<SupportGroupModel, 'id' | 'name'>>
+  supportGroup: MaybeNull<Pick<SupportGroupDTO, 'id' | 'name'>>
   olaStatus: MaybeNull<TaskOlaStatusEnum>
   responseTime: MaybeNull<Pick<TaskResponseTimeModel, 'progress' | 'timedelta' | 'value'>>
 }

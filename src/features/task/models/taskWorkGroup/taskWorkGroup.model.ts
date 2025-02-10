@@ -1,4 +1,4 @@
-import { UserModel, UserPositionModel } from 'features/user/models'
+import { UserModel, UserPositionModel } from 'features/user/api/dto'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'

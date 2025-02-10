@@ -1,7 +1,7 @@
 import { UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 import UploadedAttachment from 'features/attachments/components/UploadedAttachment'
-import { UserModel } from 'features/user/models'
+import { UserModel } from 'features/user/api/dto'
 import React from 'react'
 
 import { FileResponse } from 'shared/types/file'

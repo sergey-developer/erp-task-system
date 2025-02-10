@@ -18,7 +18,7 @@ import {
 import Attachments from 'features/attachments/components/Attachments'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
 import { getTasksPageLink } from 'features/task/utils/task'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { useUserPermissions } from 'features/user/hooks'
 import { ExecuteRelocationTaskModalProps } from 'features/warehouse/components/ExecuteRelocationTaskModal/types'
 import RelocationEquipmentTable from 'features/warehouse/components/RelocationEquipmentTable'

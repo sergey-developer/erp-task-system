@@ -1,9 +1,9 @@
+import { getFiscalAccumulatorTasksReportErrMsg } from 'features/reports/api/constants'
+import { useGetFiscalAccumulatorTasksReportQuery } from 'features/reports/api/endpoints/fiscalAccumulator.endpoints'
 import {
   GetFiscalAccumulatorTasksReportQueryArgs,
   GetFiscalAccumulatorTasksReportSuccessResponse,
-} from 'features/reports/api/dto'
-import { getFiscalAccumulatorTasksReportErrMsg } from 'features/reports/constants'
-import { useGetFiscalAccumulatorTasksReportQuery } from 'features/reports/services/fiscalAccumulatorApi.service'
+} from 'features/reports/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

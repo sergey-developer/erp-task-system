@@ -1,7 +1,7 @@
 import { FormInstance } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 import { TaskTypeEnum } from 'features/task/constants/task'
-import { UsersModel } from 'features/user/models'
+import { UsersModel } from 'features/user/api/dto'
 import { MatchedUserPermissions } from 'features/user/types'
 import { CustomersModel, WorkTypesModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'

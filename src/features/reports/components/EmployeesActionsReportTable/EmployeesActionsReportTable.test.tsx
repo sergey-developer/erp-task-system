@@ -1,7 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
-import { getRelocationColValue } from 'features/reports/utils'
+import { getRelocationTaskReportTableColValue } from 'features/reports/helpers'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
@@ -145,7 +144,7 @@ describe('Таблица отчета действий сотрудников', 
       const title = testUtils.getColTitle('Перемещение')
       const value = testUtils.getColValue(
         reportListItem.id,
-        getRelocationColValue(reportListItem.relocationTask),
+        getRelocationTaskReportTableColValue(reportListItem.relocationTask),
       )
 
       expect(title).toBeInTheDocument()
@@ -158,7 +157,7 @@ describe('Таблица отчета действий сотрудников', 
       await testUtils.clickColValue(
         user,
         reportListItem.id,
-        getRelocationColValue(reportListItem.relocationTask),
+        getRelocationTaskReportTableColValue(reportListItem.relocationTask),
       )
 
       expect(props.onClickRelocationTask).toBeCalledTimes(1)

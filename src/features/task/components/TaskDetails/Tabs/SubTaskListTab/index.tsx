@@ -7,7 +7,7 @@ import SubTaskList from 'features/task/components/SubTaskList'
 import { useCancelSubTask, useGetSubTasks, useReworkSubTask } from 'features/task/hooks/subTask'
 import { useTaskExtendedStatus, useTaskStatus, useTaskType } from 'features/task/hooks/task'
 import { SubTaskModel, TaskModel } from 'features/task/models'
-import { UserActionsModel } from 'features/user/models'
+import { UserActionsModel } from 'features/user/api/dto'
 import { MatchedUserPermissions } from 'features/user/types'
 import React, { FC, useCallback, useState } from 'react'
 

@@ -1,6 +1,4 @@
 import { Form, Input, Select, Typography } from 'antd'
-import { useGetSupportGroups } from 'features/supportGroup/hooks'
-import { SupportGroupListItemModel } from 'features/supportGroup/models'
 import { useCreateSubTask } from 'features/task/hooks/subTask'
 import { Rule } from 'rc-field-form/es/interface'
 import React, { FC, useState } from 'react'
@@ -15,6 +13,8 @@ import {
   requiredStringRules,
   validationSizes,
 } from 'shared/constants/validation'
+import { SupportGroupDTO } from 'shared/supportGroups/api/dto'
+import { useGetSupportGroups } from 'shared/supportGroups/hooks'
 import { filterOptionBy } from 'shared/utils/common'
 import { getFieldsErrors } from 'shared/utils/form'
 
@@ -29,8 +29,7 @@ const descriptionRules: Rule[] = requiredStringRules.concat([{ max: validationSi
 const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => {
   const [form] = Form.useForm<CreateSubTaskFormFields>()
 
-  const [selectedSupportGroup, setSelectedSupportGroup] =
-    useState<SupportGroupListItemModel['id']>()
+  const [selectedSupportGroup, setSelectedSupportGroup] = useState<SupportGroupDTO['id']>()
 
   const modalTitle = (
     <Text>
@@ -90,7 +89,7 @@ const CreateSubTaskModal: FC<CreateSubTaskModalProps> = ({ task, onCancel }) => 
           name='supportGroup'
           rules={onlyRequiredRules}
         >
-          <Select<SupportGroupListItemModel['id'], SupportGroupListItemModel>
+          <Select<SupportGroupDTO['id'], SupportGroupDTO>
             placeholder='Доступные группы'
             loading={supportGroupsIsFetching}
             options={supportGroups}

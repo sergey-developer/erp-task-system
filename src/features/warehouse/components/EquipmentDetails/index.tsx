@@ -9,7 +9,7 @@ import {
   useLazyGetTechnicalExaminationPdf,
 } from 'features/technicalExaminations/hooks'
 import { GetTechnicalExaminationPdfTransformedSuccessResponse } from 'features/technicalExaminations/types'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { useUserPermissions } from 'features/user/hooks'
 import { CreateEquipmentTechnicalExaminationModalProps } from 'features/warehouse/components/CreateEquipmentTechnicalExaminationModal/types'
 import { EquipmentFormModalProps } from 'features/warehouse/components/EquipmentFormModal/types'

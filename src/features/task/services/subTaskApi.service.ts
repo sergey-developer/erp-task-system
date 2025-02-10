@@ -73,7 +73,6 @@ const subTaskApiService = baseApi.injectEndpoints({
       },
     }),
   }),
-  overrideExisting: false,
 })
 
 export const { useCancelSubTaskMutation, useReworkSubTaskMutation } = subTaskApiService

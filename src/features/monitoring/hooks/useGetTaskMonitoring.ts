@@ -1,4 +1,4 @@
-import { useGetTaskMonitoringQuery } from 'features/monitoring/api/monitoring.endpoints'
+import { useGetTaskMonitoringQuery } from 'features/monitoring/api/endpoints/monitoring.endpoints'
 import {
   GetTaskMonitoringQueryArgs,
   GetTaskMonitoringSuccessResponse,

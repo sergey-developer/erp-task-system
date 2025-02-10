@@ -1,4 +1,4 @@
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { getPermissionsObj } from 'features/user/utils'
 
 import { MatchedUserPermissions } from '../types'

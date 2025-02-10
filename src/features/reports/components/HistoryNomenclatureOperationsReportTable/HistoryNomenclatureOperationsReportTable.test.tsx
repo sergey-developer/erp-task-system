@@ -1,7 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
-import { getRelocationColValue } from 'features/reports/utils'
+import { getRelocationTaskReportTableColValue } from 'features/reports/helpers'
 import { equipmentConditionDict } from 'features/warehouse/constants/equipment'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
@@ -213,7 +212,7 @@ describe('Таблица отчета истории операций по но�
       const title = testUtils.getColTitle('Последнее перемещение')
       const value = testUtils.getColValue(
         reportListItem.id,
-        getRelocationColValue(reportListItem.lastRelocationTask),
+        getRelocationTaskReportTableColValue(reportListItem.lastRelocationTask),
       )
 
       expect(title).toBeInTheDocument()
@@ -226,7 +225,7 @@ describe('Таблица отчета истории операций по но�
       await testUtils.clickColValue(
         user,
         reportListItem.id,
-        getRelocationColValue(reportListItem.lastRelocationTask),
+        getRelocationTaskReportTableColValue(reportListItem.lastRelocationTask),
       )
 
       expect(props.onClickRelocationTask).toBeCalledTimes(1)

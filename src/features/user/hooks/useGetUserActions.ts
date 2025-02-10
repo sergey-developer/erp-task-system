@@ -1,10 +1,9 @@
+import { getUserActionsErrMsg } from 'features/user/api/constants'
+import { GetUserActionsQueryArgs, GetUserActionsSuccessResponse } from 'features/user/api/dto'
+import { useGetUserActionsQuery } from 'features/user/api/endpoints/users.endpoints'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getUserActionsErrMsg } from 'features/user/constants'
-import { GetUserActionsQueryArgs, GetUserActionsSuccessResponse } from 'features/user/models'
-import { useGetUserActionsQuery } from 'features/user/services/userApi.service'
 
 import {
   getErrorDetail,

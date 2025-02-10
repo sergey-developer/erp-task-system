@@ -1,6 +1,6 @@
 import { FC, ReactElement } from 'react'
 
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { useUserPermissions } from 'features/user/hooks'
 import { MatchedUserPermissions } from 'features/user/types'
 

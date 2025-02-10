@@ -1,5 +1,5 @@
 import { TaskModel } from 'features/task/models'
-import { UserActionsModel } from 'features/user/models'
+import { UserActionsModel } from 'features/user/api/dto'
 
 import { EmptyFn } from 'shared/types/utils'
 

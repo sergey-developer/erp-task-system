@@ -1,5 +1,5 @@
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import { userHasPermissions } from 'features/user/utils'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import {

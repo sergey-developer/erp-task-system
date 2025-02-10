@@ -1,4 +1,4 @@
-import { UsersModel } from 'features/user/models'
+import { UsersModel } from 'features/user/api/dto'
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,

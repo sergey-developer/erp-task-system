@@ -1,11 +1,10 @@
-import { SupportGroupListModel } from 'features/supportGroup/models'
 import {
   TaskAssignedEnum,
   TaskExtendedStatusEnum,
   TaskOverdueEnum,
 } from 'features/task/constants/task'
 import { SearchFields } from 'features/task/models'
-import { UsersModel } from 'features/user/models'
+import { UsersModel } from 'features/user/api/dto'
 import { MatchedUserPermissions } from 'features/user/types'
 import { CustomersModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
@@ -13,6 +12,7 @@ import { Moment } from 'moment-timezone'
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
 import { MacroregionsCatalogDTO } from 'shared/catalogs/api/dto/macroregions'
+import { SupportGroupListModel } from 'shared/supportGroups/api/dto'
 import { IdType } from 'shared/types/common'
 import { WorkGroupsDTO } from 'shared/workGroups/api/dto'
 

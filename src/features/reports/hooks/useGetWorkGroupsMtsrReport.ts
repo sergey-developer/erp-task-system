@@ -1,9 +1,9 @@
+import { getWorkGroupsMtsrReportErrMsg } from 'features/reports/api/constants'
+import { useGetWorkGroupsMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
   GetWorkGroupsMtsrReportQueryArgs,
   GetWorkGroupsMtsrReportSuccessResponse,
-} from 'features/reports/api/dto'
-import { getWorkGroupsMtsrReportErrMsg } from 'features/reports/constants'
-import { useGetWorkGroupsMtsrReportQuery } from 'features/reports/services/reportsApi.service'
+} from 'features/reports/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

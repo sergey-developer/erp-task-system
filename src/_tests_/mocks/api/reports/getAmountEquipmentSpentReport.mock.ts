@@ -1,5 +1,5 @@
+import { ReportsEndpointsEnum } from 'features/reports/api/constants'
 import { GetAmountEquipmentSpentReportSuccessResponse } from 'features/reports/api/dto'
-import { ReportsApiEnum } from 'features/reports/constants'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -13,7 +13,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getAmountEquipmentSpentReportMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, ReportsApiEnum.GetAmountEquipmentSpentReport)
+  getRequestMockFn(HttpMethodEnum.Get, ReportsEndpointsEnum.GetAmountEquipmentSpentReport)
 
 export const mockGetAmountEquipmentSpentReportSuccess = (
   options?: Partial<ResponseResolverOptions<GetAmountEquipmentSpentReportSuccessResponse>>,

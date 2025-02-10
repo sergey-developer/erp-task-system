@@ -1,7 +1,7 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Input, MenuProps, Row } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
-import { UserPermissionsEnum } from 'features/user/constants/enums'
+import { UserPermissionsEnum } from 'features/user/api/constants/enums'
 import { useUserPermissions } from 'features/user/hooks'
 import { NomenclatureFormModalProps } from 'features/warehouse/components/NomenclatureFormModal/types'
 import { NomenclatureGroupFormModalProps } from 'features/warehouse/components/NomenclatureGroupFormModal/types'

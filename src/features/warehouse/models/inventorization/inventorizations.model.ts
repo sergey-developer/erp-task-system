@@ -1,4 +1,4 @@
-import { UserModel } from 'features/user/models'
+import { UserModel } from 'features/user/api/dto'
 import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,

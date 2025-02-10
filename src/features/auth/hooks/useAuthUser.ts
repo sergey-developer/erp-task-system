@@ -1,5 +1,5 @@
 import { authUserSelector } from 'features/auth/store/selectors'
-import { UserModel } from 'features/user/models'
+import { UserModel } from 'features/user/api/dto'
 import { useMemo } from 'react'
 
 import { useSelector } from 'shared/hooks/useSelector'

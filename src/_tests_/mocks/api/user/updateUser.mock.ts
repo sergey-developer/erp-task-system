@@ -1,4 +1,4 @@
-import { UpdateUserSuccessResponse } from 'features/user/models'
+import { UpdateUserSuccessResponse } from 'features/user/api/dto'
 import { updateUserUrl } from 'features/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'

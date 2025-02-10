@@ -1,4 +1,4 @@
-import { UsersGroupsModel, UsersModel } from 'features/user/models'
+import { UsersGroupsModel, UsersModel } from 'features/user/api/dto'
 import sortBy from 'lodash/sortBy'
 
 import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'

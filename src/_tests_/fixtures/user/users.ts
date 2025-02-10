@@ -1,6 +1,5 @@
+import { UserListItemModel, UsersModel } from 'features/user/api/dto'
 import times from 'lodash/times'
-
-import { UserListItemModel, UsersModel } from 'features/user/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

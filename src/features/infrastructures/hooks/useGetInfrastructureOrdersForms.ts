@@ -2,7 +2,7 @@ import {
   GetInfrastructureOrdersFormsQueryArgs,
   GetInfrastructureOrdersFormsSuccessResponse,
 } from 'features/infrastructures/api/dto'
-import { useGetInfrastructureOrdersFormsQuery } from 'features/infrastructures/api/infrastructures.endpoints'
+import { useGetInfrastructureOrdersFormsQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import { getInfrastructureOrdersFormsErrMsg } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 

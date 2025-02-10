@@ -1,4 +1,4 @@
-import { GetUserActionsSuccessResponse } from 'features/user/models'
+import { GetUserActionsSuccessResponse } from 'features/user/api/dto'
 import { getUserActionsUrl } from 'features/user/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'

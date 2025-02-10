@@ -1,5 +1,5 @@
-import { SupportGroupModel } from 'features/supportGroup/models'
+import { SupportGroupDTO } from 'shared/supportGroups/api/dto'
 
-export type TaskSupportGroupModel = Pick<SupportGroupModel, 'id' | 'name'> & {
+export type TaskSupportGroupModel = Pick<SupportGroupDTO, 'id' | 'name'> & {
   hasResolutionClassifiers: boolean
 }

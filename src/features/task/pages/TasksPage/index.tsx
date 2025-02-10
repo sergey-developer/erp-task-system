@@ -1,7 +1,6 @@
 import { useBoolean, useLocalStorageState, usePrevious, useSetState } from 'ahooks'
 import { Button, Col, Flex, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
-import { useGetSupportGroups } from 'features/supportGroup/hooks'
 import { firstLineOptionValue } from 'features/task/components/CreateTaskModal'
 import {
   CreateTaskFormFields,
@@ -49,7 +48,7 @@ import {
 import { TasksFiltersStorageType } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { parseTasksFiltersStorage } from 'features/task/services/taskLocalStorageService/utils'
 import { taskDetailsTabExist } from 'features/task/utils/task'
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 import {
   useGetUsers,
   useOnChangeUserStatus,
@@ -78,6 +77,7 @@ import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { useDrawerHeightByTable } from 'shared/hooks/useDrawerHeightByTable'
+import { useGetSupportGroups } from 'shared/supportGroups/hooks'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { MaybeUndefined } from 'shared/types/utils'

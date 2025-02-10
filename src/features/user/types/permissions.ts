@@ -1,4 +1,4 @@
-import { UserPermissionsEnum } from 'features/user/constants'
+import { UserPermissionsEnum } from 'features/user/api/constants'
 
 import { Camelize } from 'shared/types/utils'
 

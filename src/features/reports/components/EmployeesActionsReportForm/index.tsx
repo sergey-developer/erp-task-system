@@ -1,8 +1,7 @@
 import { Button, Col, Flex, Form, Popover, Row, Select, Typography } from 'antd'
 import { useForm } from 'antd/es/form/Form'
+import { UserListItemModel } from 'features/user/api/dto'
 import React, { FC } from 'react'
-
-import { UserListItemModel } from 'features/user/models'
 
 import DatePicker from 'components/DatePicker'
 import { QuestionCircleIcon } from 'components/Icons'

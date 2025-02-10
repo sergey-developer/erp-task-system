@@ -1,10 +1,9 @@
-import * as reactRouterDom from 'react-router-dom'
-
 import { getChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { testUtils as amountEquipmentSpentReportFilterTestUtils } from 'features/reports/components/AmountEquipmentSpentReportFilter/AmountEquipmentSpentReportFilter.test'
 import { testUtils as amountEquipmentSpentReportFormTestUtils } from 'features/reports/components/AmountEquipmentSpentReportForm/AmountEquipmentSpentReportForm.test'
 import { testUtils as amountEquipmentSpentReportTableTestUtils } from 'features/reports/components/AmountEquipmentSpentReportTable/AmountEquipmentSpentReportTable.test'
-import { getRelocationColValue } from 'features/reports/utils'
+import { getRelocationTaskReportTableColValue } from 'features/reports/helpers'
+import * as reactRouterDom from 'react-router-dom'
 
 import { DEFAULT_FILE_NAME } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -156,7 +155,7 @@ describe('Страница отчета количества потраченн�
       await amountEquipmentSpentReportTableTestUtils.clickColValue(
         user,
         reportListItem.id,
-        getRelocationColValue(reportListItem.relocationTask),
+        getRelocationTaskReportTableColValue(reportListItem.relocationTask),
       )
       const details = await relocationTaskDetailsTestUtils.findContainer()
 
