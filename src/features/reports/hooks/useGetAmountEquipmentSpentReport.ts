@@ -1,11 +1,10 @@
+import { GetAmountEquipmentSpentReportQueryArgs } from 'features/reports/api/dto'
+import { GetAmountEquipmentSpentReportTransformedSuccessResponse } from 'features/reports/api/types'
+import { getAmountEquipmentSpentReportErrMsg } from 'features/reports/constants'
+import { useGetAmountEquipmentSpentReportQuery } from 'features/reports/services/reportsApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getAmountEquipmentSpentReportErrMsg } from 'features/reports/constants'
-import { GetAmountEquipmentSpentReportQueryArgs } from 'features/reports/models'
-import { useGetAmountEquipmentSpentReportQuery } from 'features/reports/services/reportsApi.service'
-import { GetAmountEquipmentSpentReportTransformedSuccessResponse } from 'features/reports/types'
 
 import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

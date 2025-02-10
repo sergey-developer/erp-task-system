@@ -1,4 +1,4 @@
-import { OrderFormRequestArgs } from 'features/infrastructures/types'
+import { OrderFormRequestArgs } from 'features/infrastructures/api/types'
 
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'

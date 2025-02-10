@@ -1,6 +1,7 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import { useAuthUser } from 'features/auth/hooks'
+import { GetEmployeesActionsReportQueryArgs } from 'features/reports/api/dto'
 import EmployeesActionsReportForm from 'features/reports/components/EmployeesActionsReportForm'
 import { EmployeesActionsReportFormProps } from 'features/reports/components/EmployeesActionsReportForm/types'
 import EmployeesActionsReportTable from 'features/reports/components/EmployeesActionsReportTable'
@@ -9,7 +10,6 @@ import {
   useGetEmployeesActionsReport,
   useLazyGetEmployeesActionsReportXlsx,
 } from 'features/reports/hooks'
-import { GetEmployeesActionsReportQueryArgs } from 'features/reports/models'
 import { useGetUsers } from 'features/user/hooks'
 import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'

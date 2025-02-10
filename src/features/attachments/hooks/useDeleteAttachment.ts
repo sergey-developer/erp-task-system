@@ -1,6 +1,6 @@
 import { UploadFile } from 'antd/es/upload'
+import { useDeleteAttachmentMutation } from 'features/attachments/api/attachments.endpoints'
 import { deleteAttachmentErrMsg } from 'features/attachments/api/constants'
-import { useDeleteAttachmentMutation } from 'features/attachments/api/endpoints/attachments.endpoints'
 import {
   DeleteAttachmentMutationArgs,
   DeleteAttachmentSuccessResponse,

@@ -1,6 +1,6 @@
 import { UpdateInfrastructureSuccessResponse } from 'features/infrastructures/api/dto'
+import { InfrastructureRequestArgs } from 'features/infrastructures/api/types'
 import { makeUpdateInfrastructureEndpoint } from 'features/infrastructures/helpers/infrastructure/apiUrls'
-import { InfrastructureRequestArgs } from 'features/infrastructures/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

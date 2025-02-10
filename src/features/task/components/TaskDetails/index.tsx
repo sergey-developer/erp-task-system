@@ -4,7 +4,7 @@ import { useAuthUser } from 'features/auth/hooks'
 import { useUpdateInfrastructure } from 'features/infrastructures/hooks'
 import { getChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { makeChangeInfrastructureRoute } from 'features/infrastructures/routes/helpers'
-import { useCancelReclassificationRequest } from 'features/reclassificationRequest/hooks'
+import { useCancelReclassificationRequest } from 'features/reclassificationRequests/hooks'
 import {
   CreateInternalTaskFormFields,
   CreateInternalTaskModalProps,

@@ -2,7 +2,7 @@ import {
   GetInfrastructureOrderFormWorkTypeCostQueryArgs,
   GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
 } from 'features/infrastructures/api/dto'
-import { useLazyGetInfrastructureOrderFormWorkTypeCostQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { useLazyGetInfrastructureOrderFormWorkTypeCostQuery } from 'features/infrastructures/api/infrastructures.endpoints'
 import { getInfrastructureOrderFormWorkTypeCostErrMsg } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 

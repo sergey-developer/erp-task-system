@@ -66,8 +66,8 @@ import { makeString } from 'shared/utils/string'
 import { EquipmentDetailsProps, FieldsMaybeHidden } from './types'
 import { getHiddenFieldsByCategory } from './utils'
 
-const AttachmentListModal = React.lazy(
-  () => import('features/attachments/components/AttachmentListModal'),
+const AttachmentsModal = React.lazy(
+  () => import('features/attachments/components/AttachmentsModal'),
 )
 
 const EquipmentFormModal = React.lazy(
@@ -868,7 +868,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
             />
           }
         >
-          <AttachmentListModal
+          <AttachmentsModal
             open={imageListModalOpened}
             title='Изображения оборудования'
             data={extractPaginationResults(totalEquipmentAttachmentList)}

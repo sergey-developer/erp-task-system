@@ -1,5 +1,5 @@
 import { Button, Form, Input, Typography } from 'antd'
-import { useLoginMutation } from 'features/auth/api/endpoints/auth.endpoints'
+import { useLoginMutation } from 'features/auth/api/auth.endpoints'
 import { parseJwt } from 'features/auth/helpers'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'

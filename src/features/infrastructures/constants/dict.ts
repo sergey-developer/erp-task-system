@@ -1,4 +1,4 @@
-import { BudgetTypeEnum, InfrastructureStatusEnum } from './enums'
+import { BudgetTypeEnum, InfrastructureStatusEnum } from '../api/constants'
 
 export const infrastructureStatusDict: Record<InfrastructureStatusEnum, string> = {
   [InfrastructureStatusEnum.New]: 'Новая',

@@ -1,5 +1,6 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Col, Row } from 'antd'
+import { GetFiscalAccumulatorTasksReportQueryArgs } from 'features/reports/api/dto'
 import {
   FiscalAccumulatorTasksReportFilterFormFields,
   FiscalAccumulatorTasksReportFilterProps,
@@ -10,7 +11,6 @@ import {
   FiscalAccumulatorTasksReportTableProps,
 } from 'features/reports/components/FiscalAccumulatorTasksReportTable/types'
 import { useGetFiscalAccumulatorTasksReport } from 'features/reports/hooks'
-import { GetFiscalAccumulatorTasksReportQueryArgs } from 'features/reports/models'
 import { useGetSupportGroups } from 'features/supportGroup/hooks'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,

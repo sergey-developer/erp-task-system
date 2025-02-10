@@ -1,4 +1,3 @@
-import { ReportsApiEnum } from 'features/reports/constants'
 import {
   GetAmountEquipmentSpentReportQueryArgs,
   GetAmountEquipmentSpentReportSuccessResponse,
@@ -21,7 +20,7 @@ import {
   GetUsersMtsrReportSuccessResponse,
   GetWorkGroupsMtsrReportQueryArgs,
   GetWorkGroupsMtsrReportSuccessResponse,
-} from 'features/reports/models'
+} from 'features/reports/api/dto'
 import {
   GetAmountEquipmentSpentReportTransformedSuccessResponse,
   GetAmountEquipmentSpentReportXlsxTransformedSuccessResponse,
@@ -30,7 +29,8 @@ import {
   GetHistoryNomenclatureOperationsReportTransformedSuccessResponse,
   GetHistoryNomenclatureOperationsReportXlsxTransformedSuccessResponse,
   GetInventorizationReportTransformedSuccessResponse,
-} from 'features/reports/types'
+} from 'features/reports/api/types'
+import { ReportsApiEnum } from 'features/reports/constants'
 import {
   getEmployeesActionsReportUrl,
   getHistoryNomenclatureOperationsReportUrl,

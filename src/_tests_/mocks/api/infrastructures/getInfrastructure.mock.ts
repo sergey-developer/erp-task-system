@@ -1,6 +1,6 @@
-import { GetInfrastructureSuccessResponse } from 'features/infrastructures/api/dto'
-import { makeGetInfrastructureEndpoint } from 'features/infrastructures/helpers/infrastructure/apiUrls'
-import { InfrastructureRequestArgs } from 'features/infrastructures/types'
+import { makeGetInfrastructureEndpoint } from 'features/infrastructures/api/helpers'
+import { GetInfrastructureSuccessResponse } from 'features/infrastructures/api/schemas'
+import { InfrastructureRequestArgs } from 'features/infrastructures/api/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

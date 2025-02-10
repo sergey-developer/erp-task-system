@@ -1,13 +1,12 @@
 import { TableProps } from 'antd'
 import { TableRowSelection } from 'antd/es/table/interface'
-
-import { BaseMtsrReportItemModel, GetMtsrReportBaseSortValue } from 'features/reports/types'
+import { BaseMtsrReportItemDTO, GetMtsrReportBaseSortValue } from 'features/reports/api/types'
 
 import { TableSortProps } from 'shared/types/sort'
 import { SetNonNullable } from 'shared/types/utils'
 
 export type MtsrReportTableItem = Pick<
-  BaseMtsrReportItemModel,
+  BaseMtsrReportItemDTO,
   | 'id'
   | 'title'
   | 'averageExecutionTime'

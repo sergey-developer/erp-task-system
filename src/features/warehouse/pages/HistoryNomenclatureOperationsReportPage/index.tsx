@@ -1,5 +1,6 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
+import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'features/reports/api/dto'
 import { HistoryNomenclatureOperationsReportFilterFormFields } from 'features/reports/components/HistoryNomenclatureOperationsReportFilter/types'
 import HistoryNomenclatureOperationsReportForm from 'features/reports/components/HistoryNomenclatureOperationsReportForm'
 import { HistoryNomenclatureOperationsReportFormProps } from 'features/reports/components/HistoryNomenclatureOperationsReportForm/types'
@@ -10,7 +11,6 @@ import {
   useGetHistoryNomenclatureOperationsReport,
   useLazyGetHistoryNomenclatureOperationsReportXlsx,
 } from 'features/reports/hooks'
-import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'features/reports/models'
 import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import { useGetEquipmentNomenclatures } from 'features/warehouse/hooks/equipment'
 import omit from 'lodash/omit'

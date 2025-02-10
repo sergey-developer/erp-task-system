@@ -1,12 +1,11 @@
-import { useEffect } from 'react'
-
-import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
+import { useGetTaskMonitoringQuery } from 'features/monitoring/api/monitoring.endpoints'
 import {
   GetTaskMonitoringQueryArgs,
   GetTaskMonitoringSuccessResponse,
-} from 'features/monitoring/models'
-import { useGetTaskMonitoringQuery } from 'features/monitoring/services/monitoringApi.service'
+} from 'features/monitoring/api/schemas'
+import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

@@ -1,8 +1,8 @@
-import { GetHistoryNomenclatureOperationsReportSuccessResponse } from 'features/reports/models'
+import { GetHistoryNomenclatureOperationsReportSuccessResponse } from 'features/reports/api/dto'
 import { getHistoryNomenclatureOperationsReportUrl } from 'features/reports/utils'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {

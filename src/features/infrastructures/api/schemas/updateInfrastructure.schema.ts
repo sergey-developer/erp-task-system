@@ -1,4 +1,4 @@
-import { InfrastructureRequestArgs } from 'features/infrastructures/types'
+import { InfrastructureRequestArgs } from 'features/infrastructures/api/types'
 
 import { IdType } from 'shared/types/common'
 

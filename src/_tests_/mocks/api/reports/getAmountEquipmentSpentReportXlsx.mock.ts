@@ -1,5 +1,5 @@
+import { GetAmountEquipmentSpentReportXlsxSuccessResponse } from 'features/reports/api/dto'
 import { ReportsApiEnum } from 'features/reports/constants'
-import { GetAmountEquipmentSpentReportXlsxSuccessResponse } from 'features/reports/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

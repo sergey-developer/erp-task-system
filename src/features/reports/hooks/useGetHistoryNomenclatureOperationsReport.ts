@@ -1,11 +1,10 @@
+import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'features/reports/api/dto'
+import { GetHistoryNomenclatureOperationsReportTransformedSuccessResponse } from 'features/reports/api/types'
+import { getHistoryNomenclatureOperationsReportErrMsg } from 'features/reports/constants'
+import { useGetHistoryNomenclatureOperationsReportQuery } from 'features/reports/services/reportsApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getHistoryNomenclatureOperationsReportErrMsg } from 'features/reports/constants'
-import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'features/reports/models'
-import { useGetHistoryNomenclatureOperationsReportQuery } from 'features/reports/services/reportsApi.service'
-import { GetHistoryNomenclatureOperationsReportTransformedSuccessResponse } from 'features/reports/types'
 
 import {
   getErrorDetail,

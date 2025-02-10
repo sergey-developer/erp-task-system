@@ -1,4 +1,4 @@
-import { GetInventorizationReportSuccessResponse } from 'features/reports/models'
+import { GetInventorizationReportSuccessResponse } from 'features/reports/api/dto'
 import { makeGetInventorizationReportUrl } from 'features/reports/utils'
 import { InventorizationRequestArgs } from 'features/warehouse/types'
 

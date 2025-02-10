@@ -1,9 +1,8 @@
 import { TableProps } from 'antd'
-
-import { FiscalAccumulatorTaskListItemModel } from 'features/reports/models'
+import { FiscalAccumulatorTaskDTO } from 'features/reports/api/dto'
 
 export type FiscalAccumulatorTasksReportTableItem = Pick<
-  FiscalAccumulatorTaskListItemModel,
+  FiscalAccumulatorTaskDTO,
   | 'id'
   | 'blockingIn'
   | 'olaNextBreachTime'

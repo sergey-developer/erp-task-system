@@ -95,8 +95,8 @@ import EditableField from './EditableField'
 import ReadonlyField from './ReadonlyField'
 import { RelocationTaskDetailsProps } from './types'
 
-const AttachmentListModal = React.lazy(
-  () => import('features/attachments/components/AttachmentListModal'),
+const AttachmentsModal = React.lazy(
+  () => import('features/attachments/components/AttachmentsModal'),
 )
 
 const CancelRelocationTaskModal = React.lazy(
@@ -817,7 +817,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
             />
           }
         >
-          <AttachmentListModal
+          <AttachmentsModal
             open={equipmentImagesModalOpened}
             title='Изображения оборудования'
             data={relocationEquipmentAttachments}
@@ -837,7 +837,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
             />
           }
         >
-          <AttachmentListModal
+          <AttachmentsModal
             open={relocationTaskAttachmentsModalOpened}
             title='Общие фотографии к перемещению'
             data={relocationTaskAttachments}

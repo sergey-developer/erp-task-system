@@ -1,6 +1,5 @@
+import { FiscalAccumulatorTaskDTO } from 'features/reports/api/dto'
 import pick from 'lodash/pick'
-
-import { FiscalAccumulatorTaskListItemModel } from 'features/reports/models'
 
 import {
   fakeAddress,
@@ -15,8 +14,8 @@ import taskFixtures from '../task'
 import userFixtures from '../user'
 
 export const fiscalAccumulatorTaskListItem = (
-  props?: Partial<Pick<FiscalAccumulatorTaskListItemModel, 'faFormat'>>,
-): FiscalAccumulatorTaskListItemModel => ({
+  props?: Partial<Pick<FiscalAccumulatorTaskDTO, 'faFormat'>>,
+): FiscalAccumulatorTaskDTO => ({
   faFormat: props?.faFormat || null,
 
   id: fakeId(),

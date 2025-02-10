@@ -1,4 +1,4 @@
-import { GetAmountEquipmentSpentReportXlsxSuccessResponse } from 'features/reports/models'
+import { GetAmountEquipmentSpentReportXlsxSuccessResponse } from 'features/reports/api/dto'
 import { getHistoryNomenclatureOperationsReportUrl } from 'features/reports/utils'
 
 import { HttpMethodEnum } from 'shared/constants/http'

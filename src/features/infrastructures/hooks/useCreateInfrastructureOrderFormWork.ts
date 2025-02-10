@@ -2,7 +2,7 @@ import {
   CreateInfrastructureOrderFormWorkMutationArgs,
   CreateInfrastructureOrderFormWorkSuccessResponse,
 } from 'features/infrastructures/api/dto'
-import { useCreateInfrastructureOrderFormWorkMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { useCreateInfrastructureOrderFormWorkMutation } from 'features/infrastructures/api/infrastructures.endpoints'
 import { createInfrastructureOrderFormWorkErrMsg } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 

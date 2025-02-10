@@ -1,5 +1,5 @@
 import { InfrastructureWorkDTO } from 'features/infrastructures/api/dto/infrastructureWork.dto'
-import { InfrastructureWorkRequestArgs } from 'features/infrastructures/types'
+import { InfrastructureWorkRequestArgs } from 'features/infrastructures/api/types'
 
 import { IdType } from 'shared/types/common'
 

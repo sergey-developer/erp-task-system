@@ -1,7 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { testUtils as attachmentImagesTestUtils } from 'features/attachments/components/AttachmentImages/AttachmentImages.test'
-import { testUtils as attachmentListModalTestUtils } from 'features/attachments/components/AttachmentListModal/AttachmentListModal.test'
 import { testUtils as taskAttachmentListTestUtils } from 'features/attachments/components/Attachments/Attachments.test'
+import { testUtils as attachmentListModalTestUtils } from 'features/attachments/components/AttachmentsModal/AttachmentsModal.test'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import TasksPage from 'features/task/pages/TasksPage'
 import { getTasksPageLink } from 'features/task/utils/task'

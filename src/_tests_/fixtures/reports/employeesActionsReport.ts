@@ -1,16 +1,12 @@
+import { EmployeesActionsReportDTO, EmployeesActionsReportItemDTO } from 'features/reports/api/dto'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
-
-import {
-  EmployeesActionsReportListItemModel,
-  EmployeesActionsReportModel,
-} from 'features/reports/models'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
 import warehouseFixtures from '../warehouse'
 
-export const employeesActionsReportListItem = (): EmployeesActionsReportListItemModel => ({
+export const employeesActionsReportListItem = (): EmployeesActionsReportItemDTO => ({
   id: fakeId(),
   quantity: fakeInteger(),
   roles: [fakeWord()],
@@ -25,5 +21,5 @@ export const employeesActionsReportListItem = (): EmployeesActionsReportListItem
   ),
 })
 
-export const employeesActionsReport = (length: number = 1): EmployeesActionsReportModel =>
+export const employeesActionsReport = (length: number = 1): EmployeesActionsReportDTO =>
   times(length, () => employeesActionsReportListItem())

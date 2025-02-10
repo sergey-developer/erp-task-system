@@ -1,13 +1,12 @@
-import { useEffect } from 'react'
-
-import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getFiscalAccumulatorTasksReportErrMsg } from 'features/reports/constants'
 import {
   GetFiscalAccumulatorTasksReportQueryArgs,
   GetFiscalAccumulatorTasksReportSuccessResponse,
-} from 'features/reports/models'
+} from 'features/reports/api/dto'
+import { getFiscalAccumulatorTasksReportErrMsg } from 'features/reports/constants'
 import { useGetFiscalAccumulatorTasksReportQuery } from 'features/reports/services/fiscalAccumulatorApi.service'
+import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'

@@ -68,7 +68,7 @@ import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
 const CreateAttachmentsModal = React.lazy(
-  () => import('features/attachments/components/CreateAttachmentListModal'),
+  () => import('features/attachments/components/CreateAttachmentsModal'),
 )
 
 const { Text } = Typography

@@ -2,7 +2,7 @@ import {
   CreateInfrastructureOrderFormAttachmentMutationArgs,
   CreateInfrastructureOrderFormAttachmentSuccessResponse,
 } from 'features/infrastructures/api/dto'
-import { useCreateInfrastructureOrderFormAttachmentMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { useCreateInfrastructureOrderFormAttachmentMutation } from 'features/infrastructures/api/infrastructures.endpoints'
 import { createInfrastructureOrdersFormAttachmentErrMsg } from 'features/infrastructures/constants'
 import { UploadRequestOption } from 'rc-upload/es/interface'
 import { useCallback, useEffect } from 'react'

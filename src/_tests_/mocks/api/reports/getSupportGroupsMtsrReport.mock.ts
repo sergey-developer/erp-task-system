@@ -1,8 +1,8 @@
+import { GetSupportGroupsMtsrReportSuccessResponse } from 'features/reports/api/dto'
 import { ReportsApiEnum } from 'features/reports/constants'
-import { GetSupportGroupsMtsrReportSuccessResponse } from 'features/reports/models'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
   getForbiddenErrorMockFn,

@@ -2,7 +2,7 @@ import {
   GetInfrastructureQueryArgs,
   GetInfrastructureSuccessResponse,
 } from 'features/infrastructures/api/dto'
-import { useGetInfrastructureQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { useGetInfrastructureQuery } from 'features/infrastructures/api/infrastructures.endpoints'
 import { getInfrastructureErrMsg } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 

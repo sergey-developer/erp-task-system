@@ -1,5 +1,5 @@
+import { GetFiscalAccumulatorTasksReportSuccessResponse } from 'features/reports/api/dto'
 import { ReportsApiEnum } from 'features/reports/constants'
-import { GetFiscalAccumulatorTasksReportSuccessResponse } from 'features/reports/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

@@ -2,7 +2,7 @@ import {
   UpdateInfrastructureMutationArgs,
   UpdateInfrastructureSuccessResponse,
 } from 'features/infrastructures/api/dto'
-import { useUpdateInfrastructureMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { useUpdateInfrastructureMutation } from 'features/infrastructures/api/infrastructures.endpoints'
 import { updateInfrastructureErrMsg } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 

@@ -1,11 +1,10 @@
+import { GetInventorizationReportQueryArgs } from 'features/reports/api/dto'
+import { GetInventorizationReportTransformedSuccessResponse } from 'features/reports/api/types'
+import { getInventorizationReportErrMsg } from 'features/reports/constants'
+import { useLazyGetInventorizationReportQuery } from 'features/reports/services/reportsApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
-
-import { getInventorizationReportErrMsg } from 'features/reports/constants'
-import { GetInventorizationReportQueryArgs } from 'features/reports/models'
-import { useLazyGetInventorizationReportQuery } from 'features/reports/services/reportsApi.service'
-import { GetInventorizationReportTransformedSuccessResponse } from 'features/reports/types'
 
 import {
   getErrorDetail,

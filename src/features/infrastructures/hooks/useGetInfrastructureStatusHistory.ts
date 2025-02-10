@@ -3,7 +3,7 @@ import {
   GetInfrastructureStatusHistoryQueryArgs,
   GetInfrastructureStatusHistorySuccessResponse,
 } from 'features/infrastructures/api/dto'
-import { useGetInfrastructureStatusHistoryQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
+import { useGetInfrastructureStatusHistoryQuery } from 'features/infrastructures/api/infrastructures.endpoints'
 import { getInfrastructureStatusHistoryErrMsg } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 

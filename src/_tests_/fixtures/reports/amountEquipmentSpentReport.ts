@@ -1,16 +1,15 @@
+import {
+  AmountEquipmentSpentReportDTO,
+  AmountEquipmentSpentReportItemDTO,
+} from 'features/reports/api/dto'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
-
-import {
-  AmountEquipmentSpentReportListItemModel,
-  AmountEquipmentSpentReportModel,
-} from 'features/reports/models'
 
 import { fakeId, fakeInteger } from '_tests_/utils'
 
 import warehouseFixtures from '../warehouse'
 
-export const amountEquipmentSpentReportListItem = (): AmountEquipmentSpentReportListItemModel => ({
+export const amountEquipmentSpentReportListItem = (): AmountEquipmentSpentReportItemDTO => ({
   id: fakeId(),
   quantity: fakeInteger(),
   equipment: pick(warehouseFixtures.equipment(), 'id', 'title'),
@@ -24,5 +23,5 @@ export const amountEquipmentSpentReportListItem = (): AmountEquipmentSpentReport
   ),
 })
 
-export const amountEquipmentSpentReport = (length: number = 1): AmountEquipmentSpentReportModel =>
+export const amountEquipmentSpentReport = (length: number = 1): AmountEquipmentSpentReportDTO =>
   times(length, () => amountEquipmentSpentReportListItem())

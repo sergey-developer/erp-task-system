@@ -1,11 +1,10 @@
+import { GetEmployeesActionsReportXlsxQueryArgs } from 'features/reports/api/dto'
+import { GetEmployeesActionsReportXlsxTransformedSuccessResponse } from 'features/reports/api/types'
+import { getEmployeesActionsReportXlsxErrMsg } from 'features/reports/constants'
+import { useLazyGetEmployeesActionsReportXlsxQuery } from 'features/reports/services/reportsApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
-
-import { getEmployeesActionsReportXlsxErrMsg } from 'features/reports/constants'
-import { GetEmployeesActionsReportXlsxQueryArgs } from 'features/reports/models'
-import { useLazyGetEmployeesActionsReportXlsxQuery } from 'features/reports/services/reportsApi.service'
-import { GetEmployeesActionsReportXlsxTransformedSuccessResponse } from 'features/reports/types'
 
 import {
   getErrorDetail,

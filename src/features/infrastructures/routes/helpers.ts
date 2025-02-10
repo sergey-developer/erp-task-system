@@ -1,4 +1,4 @@
-import { InfrastructureRequestArgs } from 'features/infrastructures/types'
+import { InfrastructureRequestArgs } from 'features/infrastructures/api/types'
 import { generatePath } from 'react-router-dom'
 
 import { InfrastructuresRoutesEnum } from './routes'

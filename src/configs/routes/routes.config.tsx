@@ -1,7 +1,7 @@
 import { authRoutes } from 'features/auth/routes/routes.config'
 import { infrastructuresRoutes } from 'features/infrastructures/routes/routes.config'
 import HomeLayout from 'features/layout/components/HomeLayout'
-import { monitoringRoutes } from 'features/monitoring/routes.config'
+import { monitoringRoutes } from 'features/monitoring/routes/routes.config'
 import { reportsRoutes } from 'features/reports/routes.config'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import { tasksRoutes } from 'features/task/routes.config'

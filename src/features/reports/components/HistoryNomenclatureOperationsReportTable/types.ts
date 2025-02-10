@@ -1,11 +1,10 @@
 import { TableProps } from 'antd'
-
-import { HistoryNomenclatureOperationsReportListItemModel } from 'features/reports/models'
+import { HistoryNomenclatureOperationsReportItemDTO } from 'features/reports/api/dto'
 
 import { IdType } from 'shared/types/common'
 
 export type HistoryNomenclatureOperationsReportTableItem = Pick<
-  HistoryNomenclatureOperationsReportListItemModel,
+  HistoryNomenclatureOperationsReportItemDTO,
   | 'id'
   | 'title'
   | 'serialNumber'

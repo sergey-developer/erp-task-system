@@ -1,5 +1,6 @@
 import { useSetState } from 'ahooks'
 import { Col, Flex, Radio, RadioGroupProps, Row } from 'antd'
+import { GetMtsrReportBaseQueryArgs } from 'features/reports/api/types'
 import MtsrReportForm from 'features/reports/components/MtsrReportForm'
 import { MtsrReportFormProps } from 'features/reports/components/MtsrReportForm/types'
 import MtsrReportTable from 'features/reports/components/MtsrReportTable'
@@ -15,7 +16,6 @@ import {
   useGetUsersMtsrReport,
   useGetWorkGroupsMtsrReport,
 } from 'features/reports/hooks'
-import { GetMtsrReportBaseQueryArgs } from 'features/reports/types'
 import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import React, { FC, useCallback, useState } from 'react'
 

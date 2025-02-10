@@ -1,6 +1,6 @@
 import { Badge, Col, Layout, Row, Select, Space, Typography } from 'antd'
 import LogoutButton from 'features/auth/components/LogoutButton'
-import { MonitoringRouteEnum } from 'features/monitoring/constants'
+import { MonitoringRoutesEnum } from 'features/monitoring/constants'
 import { taskLocalStorageService } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'features/user/constants'
 import {
@@ -167,7 +167,7 @@ const PrivateHeader: FC = () => {
             <NotificationCounter />
 
             {userMe?.isStaff && (
-              <Link to={MonitoringRouteEnum.TaskMonitoring}>
+              <Link to={MonitoringRoutesEnum.TaskMonitoring}>
                 <MonitoringIcon $color='black' $size='large' $cursor='pointer' />
               </Link>
             )}

@@ -1,8 +1,8 @@
-import { BaseMtsrReportItemModel } from 'features/reports/types'
+import { BaseMtsrReportItemDTO } from 'features/reports/api/types'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
-export const getMtsrReportItem = (): BaseMtsrReportItemModel => ({
+export const getMtsrReportItem = (): BaseMtsrReportItemDTO => ({
   id: fakeId(),
   title: fakeWord(),
   overdueTasks: fakeInteger(),

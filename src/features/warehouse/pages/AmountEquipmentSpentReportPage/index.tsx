@@ -1,5 +1,6 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
+import { GetAmountEquipmentSpentReportQueryArgs } from 'features/reports/api/dto'
 import { AmountEquipmentSpentReportFilterFormFields } from 'features/reports/components/AmountEquipmentSpentReportFilter/types'
 import AmountEquipmentSpentReportForm from 'features/reports/components/AmountEquipmentSpentReportForm'
 import { AmountEquipmentSpentReportFormProps } from 'features/reports/components/AmountEquipmentSpentReportForm/types'
@@ -10,7 +11,6 @@ import {
   useGetAmountEquipmentSpentReport,
   useLazyGetAmountEquipmentSpentReportXlsx,
 } from 'features/reports/hooks'
-import { GetAmountEquipmentSpentReportQueryArgs } from 'features/reports/models'
 import {
   useGetEquipmentCategories,
   useGetEquipmentNomenclatures,

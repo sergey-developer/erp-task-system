@@ -1,13 +1,12 @@
-import { useEffect } from 'react'
-
-import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getUsersMtsrReportErrMsg } from 'features/reports/constants'
 import {
   GetUsersMtsrReportQueryArgs,
   GetUsersMtsrReportSuccessResponse,
-} from 'features/reports/models'
+} from 'features/reports/api/dto'
+import { getUsersMtsrReportErrMsg } from 'features/reports/constants'
 import { useGetUsersMtsrReportQuery } from 'features/reports/services/reportsApi.service'
+import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'

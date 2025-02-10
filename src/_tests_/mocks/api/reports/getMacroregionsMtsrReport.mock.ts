@@ -1,8 +1,8 @@
+import { GetMacroregionsMtsrReportSuccessResponse } from 'features/reports/api/dto'
 import { ReportsApiEnum } from 'features/reports/constants'
-import { GetMacroregionsMtsrReportSuccessResponse } from 'features/reports/models'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
   getForbiddenErrorMockFn,

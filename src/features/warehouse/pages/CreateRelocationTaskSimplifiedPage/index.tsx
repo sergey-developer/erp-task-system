@@ -81,8 +81,8 @@ const CreateEquipmentsByFileModal = React.lazy(
   () => import('features/warehouse/components/CreateEquipmentsByFileModal'),
 )
 
-const CreateAttachmentListModal = React.lazy(
-  () => import('features/attachments/components/CreateAttachmentListModal'),
+const CreateAttachmentsModal = React.lazy(
+  () => import('features/attachments/components/CreateAttachmentsModal'),
 )
 
 const EquipmentFormModal = React.lazy(
@@ -984,7 +984,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
             />
           }
         >
-          <CreateAttachmentListModal
+          <CreateAttachmentsModal
             form={form}
             formItemName={equipmentImagesFormPath}
             open={createRelocationEquipmentImagesModalOpened}

@@ -1,8 +1,8 @@
-import { GetEmployeesActionsReportXlsxSuccessResponse } from 'features/reports/models'
+import { GetEmployeesActionsReportXlsxSuccessResponse } from 'features/reports/api/dto'
 import { getEmployeesActionsReportUrl } from 'features/reports/utils'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {

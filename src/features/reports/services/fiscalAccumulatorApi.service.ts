@@ -1,11 +1,11 @@
-import { ReportsApiEnum } from 'features/reports/constants'
 import {
   GetFiscalAccumulatorTasksReportQueryArgs,
   GetFiscalAccumulatorTasksReportSuccessResponse,
-} from 'features/reports/models'
+} from 'features/reports/api/dto'
+import { ReportsApiEnum } from 'features/reports/constants'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { baseApi } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/types/utils'
 
 const fiscalAccumulatorApiService = baseApi.injectEndpoints({

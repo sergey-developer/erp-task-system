@@ -1,11 +1,10 @@
 import { TableProps } from 'antd'
-
-import { AmountEquipmentSpentReportListItemModel } from 'features/reports/models'
+import { AmountEquipmentSpentReportItemDTO } from 'features/reports/api/dto'
 
 import { IdType } from 'shared/types/common'
 
 export type AmountEquipmentSpentReportTableItem = Pick<
-  AmountEquipmentSpentReportListItemModel,
+  AmountEquipmentSpentReportItemDTO,
   'id' | 'equipment' | 'relocationTask' | 'quantity'
 >
 
