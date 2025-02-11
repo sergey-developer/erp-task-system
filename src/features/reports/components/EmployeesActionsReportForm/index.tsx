@@ -1,6 +1,6 @@
 import { Button, Col, Flex, Form, Popover, Row, Select, Typography } from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import { UserListItemModel } from 'features/user/api/dto'
+import { UserDTO } from 'features/users/api/dto'
 import React, { FC } from 'react'
 
 import DatePicker from 'components/DatePicker'
@@ -50,7 +50,7 @@ const EmployeesActionsReportForm: FC<EmployeesActionsReportFormProps> = ({
         labelAlign='left'
         rules={onlyRequiredRules}
       >
-        <Select<UserListItemModel['id'], UserListItemModel>
+        <Select<UserDTO['id'], UserDTO>
           data-testid='employee-select'
           fieldNames={idAndFullNameSelectFieldNames}
           disabled={usersIsLoading}

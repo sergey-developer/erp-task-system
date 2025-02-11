@@ -10,7 +10,7 @@ import {
   useGetEmployeesActionsReport,
   useLazyGetEmployeesActionsReportXlsx,
 } from 'features/reports/hooks'
-import { useGetUsers } from 'features/user/hooks'
+import { useGetUsers } from 'features/users/hooks'
 import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
 

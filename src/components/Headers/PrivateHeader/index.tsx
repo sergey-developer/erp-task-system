@@ -2,19 +2,19 @@ import { Badge, Col, Layout, Row, Select, Space, Typography } from 'antd'
 import LogoutButton from 'features/auth/components/LogoutButton'
 import { MonitoringRoutesEnum } from 'features/monitoring/constants'
 import { taskLocalStorageService } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'features/user/api/constants'
-import { UserModel } from 'features/user/api/dto'
+import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'features/users/api/constants'
+import { UserDetailDTO } from 'features/users/api/dto'
 import {
   useUpdateUserStatusMutation,
   useUpdateUserTimeZoneMutation,
-} from 'features/user/api/endpoints/users.endpoints'
+} from 'features/users/api/endpoints/users.endpoints'
+import { checkUserStatusOffline } from 'features/users/helpers'
 import {
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
   useUserMeCodeState,
   useUserMeState,
-} from 'features/user/hooks'
-import { checkUserStatusOffline } from 'features/user/utils'
+} from 'features/users/hooks'
 import moment from 'moment-timezone'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useCallback, useMemo } from 'react'
@@ -86,7 +86,7 @@ const PrivateHeader: FC = () => {
     [userStatuses],
   )
 
-  const onUpdateTimeZone = async (timezone: UserModel['timezone']) => {
+  const onUpdateTimeZone = async (timezone: UserDetailDTO['timezone']) => {
     if (!userMe) return
 
     try {

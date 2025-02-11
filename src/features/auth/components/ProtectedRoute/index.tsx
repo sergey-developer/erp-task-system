@@ -1,7 +1,7 @@
 import { useIsLoggedIn } from 'features/auth/hooks'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
-import { UserModel } from 'features/user/api/dto'
-import { useUserMeState } from 'features/user/hooks'
+import { UserDetailDTO } from 'features/users/api/dto'
+import { useUserMeState } from 'features/users/hooks'
 import { ReactElement } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 
@@ -13,7 +13,7 @@ import { getPathByLocation } from 'shared/utils/url'
 
 type ProtectedRouteProps<LocationState> = {
   component: ReactElement
-  permitted?: (currentUser: UserModel, locationState: LocationState) => boolean
+  permitted?: (currentUser: UserDetailDTO, locationState: LocationState) => boolean
   onlyGuest?: boolean
   redirectPath?: string
 }

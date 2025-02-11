@@ -1,4 +1,4 @@
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
@@ -15,8 +15,8 @@ export type InventorizationListItemModel = {
   deadlineAt: string
   createdAt: string
   warehouses: Pick<WarehouseModel, 'id' | 'title'>[]
-  executor: Pick<UserModel, 'id' | 'fullName'>
-  createdBy: Pick<UserModel, 'id' | 'fullName'>
+  executor: Pick<UserDetailDTO, 'id' | 'fullName'>
+  createdBy: Pick<UserDetailDTO, 'id' | 'fullName'>
   completedAt: MaybeNull<string>
   revisionReason: MaybeNull<string>
 }

@@ -1,7 +1,11 @@
 import { parseResponseTime } from 'features/task/components/TaskDetails/MainDetails/utils'
-import { TaskExtendedStatusEnum, taskStatusDict, TaskStatusEnum } from 'features/task/constants/task'
+import {
+  TaskExtendedStatusEnum,
+  taskStatusDict,
+  TaskStatusEnum,
+} from 'features/task/constants/task'
 import { DEFAULT_PAGE_SIZE } from 'features/task/pages/TasksPage/constants'
-import { getShortUserName } from 'features/user/utils'
+import { getShortUserName } from 'features/users/helpers'
 
 import { formatDate } from 'shared/utils/date'
 
@@ -12,7 +16,11 @@ import {
   columnWithSortingClass,
 } from '_tests_/constants/components'
 import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
-import { paginationProps, props, taskTableItem } from '_tests_/features/tasks/components/TaskTable/constants'
+import {
+  paginationProps,
+  props,
+  taskTableItem,
+} from '_tests_/features/tasks/components/TaskTable/constants'
 import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
 import taskFixtures from '_tests_/fixtures/task'
 import { render, tableTestUtils } from '_tests_/utils'

@@ -1,6 +1,6 @@
 import { Flex } from 'antd'
 import { ReportsRoutesEnum } from 'features/reports/api/constants'
-import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 import { FC } from 'react'
 
 import Catalogs, { CatalogsProps } from 'components/Catalogs'

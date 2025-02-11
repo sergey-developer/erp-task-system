@@ -1,5 +1,5 @@
-import { UpdateUserStatusSuccessResponse } from 'features/user/api/dto'
-import { updateUserStatusUrl } from 'features/user/utils'
+import { UpdateUserStatusSuccessResponse } from 'features/users/api/dto'
+import { makeUpdateUserStatusEndpoint } from 'features/users/helpers'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -16,7 +16,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const updateUserStatusMockFn = (userId: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Post, updateUserStatusUrl(userId))
+  getRequestMockFn(HttpMethodEnum.Post, makeUpdateUserStatusEndpoint(userId))
 
 export const mockUpdateUserStatusSuccess = (
   userId: IdType,

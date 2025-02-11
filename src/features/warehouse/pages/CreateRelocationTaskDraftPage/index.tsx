@@ -3,8 +3,8 @@ import { Button, Col, Form, Modal, Row, Typography, UploadProps } from 'antd'
 import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
-import { UserGroupCategoryEnum, UserPermissionsEnum } from 'features/user/api/constants'
-import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/user/hooks'
+import { UserGroupCategoryEnum, UserPermissionsEnum } from 'features/users/api/constants'
+import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/users/hooks'
 import RelocationEquipmentDraftEditableTable from 'features/warehouse/components/RelocationEquipmentDraftEditableTable'
 import {
   ActiveEquipmentTableRow,

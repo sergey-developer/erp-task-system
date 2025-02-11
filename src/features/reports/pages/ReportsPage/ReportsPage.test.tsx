@@ -5,7 +5,7 @@ import { testUtils as fiscalAccumulatorTasksReportPageTestUtils } from 'features
 import MtsrReportPage from 'features/reports/pages/MtsrReportPage'
 import { testUtils as mtsrReportPageTestUtils } from 'features/reports/pages/MtsrReportPage/MtsrReportPage.test'
 import { ReportsRoutesEnum } from 'features/reports/routes/routes'
-import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 import React from 'react'
 
 import userFixtures from '_tests_/fixtures/user'

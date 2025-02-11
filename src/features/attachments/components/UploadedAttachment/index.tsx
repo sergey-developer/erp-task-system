@@ -4,7 +4,7 @@ import {
   AttachmentListItem,
   AttachmentsProps,
 } from 'features/attachments/components/Attachments/types'
-import { getShortUserName } from 'features/user/utils'
+import { getShortUserName } from 'features/users/helpers'
 import isNumber from 'lodash/isNumber'
 import React, { FC, MouseEvent } from 'react'
 

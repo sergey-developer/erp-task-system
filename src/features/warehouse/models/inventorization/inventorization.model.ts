@@ -1,5 +1,5 @@
 import { AttachmentDetailDTO } from 'features/attachments/api/dto'
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
@@ -16,8 +16,8 @@ export type InventorizationModel = {
   deadlineAt: string
   createdAt: string
   warehouses: Pick<WarehouseListItemModel, 'id' | 'title'>[]
-  executor: Pick<UserModel, 'id' | 'fullName'>
-  createdBy: Pick<UserModel, 'id' | 'fullName'>
+  executor: Pick<UserDetailDTO, 'id' | 'fullName'>
+  createdBy: Pick<UserDetailDTO, 'id' | 'fullName'>
   nomenclatures: Array<Pick<NomenclatureModel, 'id' | 'title' | 'group'>>
   completedAt: MaybeNull<string>
   description: MaybeNull<string>

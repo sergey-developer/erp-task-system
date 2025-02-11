@@ -11,9 +11,9 @@ import {
 import UserShortInfo from 'features/task/components/UserShortInfo'
 import { useTaskStatus } from 'features/task/hooks/task'
 import { TaskModel } from 'features/task/models'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { UserActionsModel } from 'features/user/api/dto'
-import { useUserPermissions } from 'features/user/hooks'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { UserActionsDTO } from 'features/users/api/dto'
+import { useUserPermissions } from 'features/users/hooks'
 import React, { FC } from 'react'
 
 import ModalFallback from 'components/Modals/ModalFallback'
@@ -42,7 +42,7 @@ export type WorkGroupBlockProps = Pick<TaskModel, 'id' | 'type' | 'recordId' | '
   ) => Promise<void>
   transferTaskToSecondLineIsLoading: boolean
 
-  userActions: UserActionsModel
+  userActions: UserActionsDTO
 
   workGroup?: TaskModel['workGroup']
 }

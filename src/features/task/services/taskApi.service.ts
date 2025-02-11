@@ -106,7 +106,7 @@ import {
   deleteTaskSuspendRequestUrl,
 } from 'features/task/utils/taskSuspendRequest'
 import { deleteTaskWorkGroupUrl, updateTaskWorkGroupUrl } from 'features/task/utils/taskWorkGroup'
-import { UsersApiTagEnum } from 'features/user/api/constants'
+import { UsersEndpointsTagsEnum } from 'features/users/api/constants'
 import { decamelize } from 'humps'
 import isBoolean from 'lodash/isBoolean'
 
@@ -273,7 +273,11 @@ const taskApiService = baseApi
         invalidatesTags: (result, error) =>
           error
             ? []
-            : [TaskApiTagEnum.Task, TaskApiTagEnum.TaskCounters, UsersApiTagEnum.UserActions],
+            : [
+                TaskApiTagEnum.Task,
+                TaskApiTagEnum.TaskCounters,
+                UsersEndpointsTagsEnum.UserActions,
+              ],
         query: ({ taskId }) => ({
           url: takeTaskUrl(taskId),
           method: HttpMethodEnum.Post,
@@ -357,7 +361,11 @@ const taskApiService = baseApi
         invalidatesTags: (result, error) =>
           error
             ? []
-            : [TaskApiTagEnum.Task, TaskApiTagEnum.TaskCounters, UsersApiTagEnum.UserActions],
+            : [
+                TaskApiTagEnum.Task,
+                TaskApiTagEnum.TaskCounters,
+                UsersEndpointsTagsEnum.UserActions,
+              ],
         query: ({ taskId, ...data }) => ({
           url: updateTaskAssigneeUrl(taskId),
           method: HttpMethodEnum.Post,

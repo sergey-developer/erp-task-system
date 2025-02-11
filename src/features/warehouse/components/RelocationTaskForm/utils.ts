@@ -1,4 +1,4 @@
-import { UsersGroupsModel, UsersModel } from 'features/user/api/dto'
+import { UsersDTO, UsersGroupsDTO } from 'features/users/api/dto'
 import sortBy from 'lodash/sortBy'
 
 import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
@@ -32,8 +32,8 @@ export const makeLocationOptions = (data: LocationsCatalogDTO): LocationOptionGr
     .map((group) => ({ ...group, options: sortBy(group.options, 'label') }))
 
 export const makeUserGroupOptions = (
-  users: UsersModel,
-  usersGroups: UsersGroupsModel,
+  users: UsersDTO,
+  usersGroups: UsersGroupsDTO,
   usersIdsExclude?: IdType[],
 ): UserGroupOptionGroup[] => {
   const usersOptions = users.reduce<UserOption[]>((acc, user) => {

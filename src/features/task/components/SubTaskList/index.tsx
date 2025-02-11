@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 
 import { SuspendRequestStatusEnum } from 'features/task/constants/taskSuspendRequest'
 import { SubTaskModel, TaskModel } from 'features/task/models'
-import { MatchedUserPermissions } from 'features/user/types'
+import { MatchedUserPermissions } from 'features/users/types'
 
 import Space from 'components/Space'
 

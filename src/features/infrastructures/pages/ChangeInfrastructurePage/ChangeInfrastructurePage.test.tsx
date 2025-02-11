@@ -7,8 +7,8 @@ import {
 } from 'features/infrastructures/constants'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import TasksPage from 'features/task/pages/TasksPage'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { getFullUserName } from 'features/user/utils'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { getFullUserName } from 'features/users/helpers'
 import * as reactRouterDom from 'react-router-dom'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'

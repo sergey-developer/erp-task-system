@@ -1,4 +1,4 @@
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 
 import { setupStore } from 'state/store'
 
@@ -11,7 +11,7 @@ import { getAuthState } from './getAuthState'
 // todo: make passing args as object
 // todo: fix type api: any
 export const getStoreWithAuth = (
-  authUser?: Partial<Pick<UserModel, 'id'>>,
+  authUser?: Partial<Pick<UserDetailDTO, 'id'>>,
   accessToken?: Nullable<string>,
   refreshToken?: Nullable<string>,
   api?: Partial<{ queries: Record<string, any> }>,

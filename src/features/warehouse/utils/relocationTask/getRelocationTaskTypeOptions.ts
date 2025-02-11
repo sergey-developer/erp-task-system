@@ -1,6 +1,6 @@
 import { SelectProps } from 'antd'
 
-import { MatchedUserPermissions } from 'features/user/types'
+import { MatchedUserPermissions } from 'features/users/types'
 import { relocationTaskTypeOptions } from 'features/warehouse/constants/relocationTask'
 
 export const getRelocationTaskTypeOptions = (

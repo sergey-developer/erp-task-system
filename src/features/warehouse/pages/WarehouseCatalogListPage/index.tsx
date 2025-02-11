@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 
 import Catalogs, { CatalogsProps } from 'components/Catalogs'

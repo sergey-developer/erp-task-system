@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import EquipmentNomenclatureListPage from 'features/warehouse/pages/EquipmentNomenclatureListPage'
 import InventorizationsPage from 'features/warehouse/pages/InventorizationsPage'

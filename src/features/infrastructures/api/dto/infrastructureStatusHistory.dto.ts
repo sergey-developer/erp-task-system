@@ -1,5 +1,5 @@
 import { InfrastructureStatusEnum } from 'features/infrastructures/api/constants'
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 
 import { IdType } from 'shared/types/common'
 
@@ -7,7 +7,7 @@ export type InfrastructureStatusHistoryItemDTO = {
   id: IdType
   status: InfrastructureStatusEnum
   createdAt: string
-  createdBy: Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>
+  createdBy: Pick<UserDetailDTO, 'id' | 'firstName' | 'lastName' | 'middleName'>
 }
 
 export type InfrastructureStatusHistoryDTO = InfrastructureStatusHistoryItemDTO[]

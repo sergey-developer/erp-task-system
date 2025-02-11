@@ -1,9 +1,8 @@
 import { Divider, Typography } from 'antd'
+import { TaskJournalModel } from 'features/task/models'
+import { getFullUserName } from 'features/users/helpers'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
-
-import { TaskJournalModel } from 'features/task/models'
-import { getFullUserName } from 'features/user/utils'
 
 import Space from 'components/Space'
 

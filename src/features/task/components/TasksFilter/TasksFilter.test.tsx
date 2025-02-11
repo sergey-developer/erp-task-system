@@ -4,7 +4,7 @@ import {
   taskExtendedStatusDict,
   TaskExtendedStatusEnum,
 } from 'features/task/constants/task'
-import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 import moment from 'moment-timezone'
 
 import { props } from '_tests_/features/tasks/components/TasksFilter/constants'

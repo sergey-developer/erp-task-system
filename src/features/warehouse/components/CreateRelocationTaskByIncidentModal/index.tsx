@@ -1,9 +1,8 @@
 import { Col, Form, Row, Select, SelectProps, Typography } from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import { FC } from 'react'
-
 import { TaskListItemModel } from 'features/task/models'
-import { getFullUserName } from 'features/user/utils'
+import { getFullUserName } from 'features/users/helpers'
+import { FC } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
 import BaseModal from 'components/Modals/BaseModal'

@@ -19,8 +19,8 @@ import {
   taskLocalStorageService,
   TasksFiltersStorageType,
 } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { getFullUserName } from 'features/user/utils'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { getFullUserName } from 'features/users/helpers'
 import { camelize } from 'humps'
 import moment from 'moment-timezone'
 

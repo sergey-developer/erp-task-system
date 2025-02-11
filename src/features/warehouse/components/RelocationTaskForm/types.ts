@@ -1,5 +1,5 @@
 import { UploadProps } from 'antd'
-import { MatchedUserPermissions } from 'features/user/types'
+import { MatchedUserPermissions } from 'features/users/types'
 import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask'
 import { Moment } from 'moment-timezone'
 import { ReactNode } from 'react'

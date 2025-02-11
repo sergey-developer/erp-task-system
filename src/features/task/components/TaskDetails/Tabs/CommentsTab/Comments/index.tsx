@@ -1,8 +1,7 @@
 import { Typography } from 'antd'
-import React, { FC } from 'react'
-
 import { TaskCommentModel } from 'features/task/models'
-import { getShortUserName } from 'features/user/utils'
+import { getShortUserName } from 'features/users/helpers'
+import React, { FC } from 'react'
 
 import Space from 'components/Space'
 

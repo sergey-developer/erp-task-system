@@ -1,6 +1,6 @@
 import { FormInstance, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-import { UsersModel } from 'features/user/api/dto'
+import { UsersDTO } from 'features/users/api/dto'
 import { InventorizationTypeEnum } from 'features/warehouse/constants/inventorization'
 import { EquipmentNomenclaturesModel, WarehousesModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
@@ -24,7 +24,7 @@ export type CreateInventorizationRequestFormFields = {
 export type CreateInventorizationRequestModalProps = Required<
   Pick<BaseModalProps, 'open' | 'onCancel' | 'confirmLoading'>
 > & {
-  executors: UsersModel
+  executors: UsersDTO
   executorsIsLoading: boolean
 
   warehouses: WarehousesModel

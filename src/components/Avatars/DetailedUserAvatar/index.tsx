@@ -1,7 +1,7 @@
 import { Divider, Popover, PopoverProps, Space, Typography } from 'antd'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
-import { UserModel } from 'features/user/api/dto'
-import { getFullUserName, getUserAbbr } from 'features/user/utils'
+import { UserDetailDTO } from 'features/users/api/dto'
+import { getFullUserName, getUserAbbr } from 'features/users/helpers'
 import pick from 'lodash/pick'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
@@ -14,7 +14,7 @@ const { Text } = Typography
 
 export type DetailedUserAvatarProps = Pick<PopoverProps, 'placement'> & {
   profile: Pick<
-    UserModel,
+    UserDetailDTO,
     'firstName' | 'lastName' | 'middleName' | 'email' | 'position' | 'avatar'
   >
 }

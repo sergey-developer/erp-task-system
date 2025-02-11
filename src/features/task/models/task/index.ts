@@ -1,4 +1,5 @@
 export * from './task.model'
+export * from './tasksActions.dto'
 export * from './getTask.model'
 export * from './createTask.model'
 

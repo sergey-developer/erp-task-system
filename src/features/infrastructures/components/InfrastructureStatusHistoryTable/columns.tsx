@@ -1,7 +1,6 @@
 import { ColumnsType } from 'antd/es/table'
-
 import { infrastructureStatusDict } from 'features/infrastructures/constants'
-import { getFullUserName } from 'features/user/utils'
+import { getFullUserName } from 'features/users/helpers'
 
 import { formatDate } from 'shared/utils/date'
 

@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react'
 
-import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 import { createNomenclatureGroupMessages } from 'features/warehouse/constants/nomenclatureGroup'
 
 import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouse/components/NomenclatureFormModal/testUtils'

@@ -1,6 +1,6 @@
 import pick from 'lodash/pick'
 
-import { UserPermissionsEnum } from 'features/user/api/constants/index'
+import { UserPermissionsEnum } from 'features/users/api/constants/index'
 import { RelocationTaskDetailsProps } from 'features/warehouse/components/RelocationTaskDetails/types'
 import { RelocationTaskModel } from 'features/warehouse/models/index'
 

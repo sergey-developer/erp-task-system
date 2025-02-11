@@ -1,5 +1,5 @@
-import { UpdateUserSuccessResponse } from 'features/user/api/dto'
-import { updateUserUrl } from 'features/user/utils'
+import { UpdateUserSuccessResponse } from 'features/users/api/dto'
+import { makeUpdateUserEndpoint } from 'features/users/helpers'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
@@ -8,7 +8,7 @@ import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const updateUserMockFn = (userId: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Patch, updateUserUrl(userId))
+  getRequestMockFn(HttpMethodEnum.Patch, makeUpdateUserEndpoint(userId))
 
 export const mockUpdateUserSuccess = (
   userId: IdType,

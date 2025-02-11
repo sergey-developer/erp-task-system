@@ -1,4 +1,4 @@
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import {
   CustomerModel,
@@ -21,7 +21,7 @@ export type EquipmentModel = {
   nomenclature: Pick<NomenclatureModel, 'id' | 'title' | 'equipmentHasSerialNumber'>
   condition: EquipmentConditionEnum
   createdAt: string
-  createdBy: Pick<UserModel, 'id' | 'fullName'>
+  createdBy: Pick<UserDetailDTO, 'id' | 'fullName'>
   measurementUnit: Pick<MeasurementUnitModel, 'id' | 'title'>
   category: Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>
   isNew: boolean

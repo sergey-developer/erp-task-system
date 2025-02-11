@@ -1,5 +1,5 @@
 import { UploadFile } from 'antd/es/upload'
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 
 import { IdType } from './common'
 
@@ -14,6 +14,6 @@ export type FileResponse = Partial<{
   url: string
   title: string
   size: number
-  createdBy: Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>
+  createdBy: Pick<UserDetailDTO, 'firstName' | 'lastName' | 'middleName'>
   createdAt: string
 }>

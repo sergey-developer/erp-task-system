@@ -62,8 +62,8 @@ import {
   TaskAssigneeModel,
 } from 'features/task/models'
 import { useGetTaskWorkPerformedActMutation } from 'features/task/services/taskApi.service'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { useGetUserActions, useGetUsers, useUserPermissions } from 'features/user/hooks'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { useGetUserActions, useGetUsers, useUserPermissions } from 'features/users/hooks'
 import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType/enum'
 import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import debounce from 'lodash/debounce'

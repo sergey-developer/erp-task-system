@@ -2,9 +2,9 @@ import { Button, Col, Row, Typography } from 'antd'
 import { useAuthUser, useIdBelongAuthUser } from 'features/auth/hooks'
 import TaskAssignee from 'features/task/components/TaskAssignee'
 import { TaskAssigneeModel, TaskModel, TaskWorkGroupModel } from 'features/task/models'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { UserActionsModel } from 'features/user/api/dto'
-import { useUserPermissions } from 'features/user/hooks'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { UserActionsDTO } from 'features/users/api/dto'
+import { useUserPermissions } from 'features/users/hooks'
 import isEqual from 'lodash/isEqual'
 import pick from 'lodash/pick'
 import React, { FC, useMemo, useState } from 'react'
@@ -24,7 +24,7 @@ export type AssigneeBlockProps = Pick<TaskModel, 'id' | 'assignee' | 'workGroup'
   takeTask: () => Promise<void>
   takeTaskIsLoading: boolean
 
-  userActions: UserActionsModel
+  userActions: UserActionsDTO
 }
 
 const AssigneeBlock: FC<AssigneeBlockProps> = ({

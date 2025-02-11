@@ -7,8 +7,8 @@ import SubTaskList from 'features/task/components/SubTaskList'
 import { useCancelSubTask, useGetSubTasks, useReworkSubTask } from 'features/task/hooks/subTask'
 import { useTaskExtendedStatus, useTaskStatus, useTaskType } from 'features/task/hooks/task'
 import { SubTaskModel, TaskModel } from 'features/task/models'
-import { UserActionsModel } from 'features/user/api/dto'
-import { MatchedUserPermissions } from 'features/user/types'
+import { UserActionsDTO } from 'features/users/api/dto'
+import { MatchedUserPermissions } from 'features/users/types'
 import React, { FC, useCallback, useState } from 'react'
 
 import LoadingArea from 'components/LoadingArea'
@@ -40,7 +40,7 @@ export type SubTaskListTabProps = {
     | 'suspendRequest'
   >
 } & {
-  userActions: UserActionsModel
+  userActions: UserActionsDTO
   permissions: MatchedUserPermissions
 }
 

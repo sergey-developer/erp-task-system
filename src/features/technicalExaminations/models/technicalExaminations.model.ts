@@ -1,4 +1,4 @@
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -11,7 +11,7 @@ export type TechnicalExaminationListItemModel = {
   restorationAction: string
   restorationCost: number
   conclusion: MaybeNull<string>
-  createdBy: MaybeNull<Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>>
+  createdBy: MaybeNull<Pick<UserDetailDTO, 'id' | 'firstName' | 'lastName' | 'middleName'>>
 }
 
 export type TechnicalExaminationsModel = TechnicalExaminationListItemModel[]

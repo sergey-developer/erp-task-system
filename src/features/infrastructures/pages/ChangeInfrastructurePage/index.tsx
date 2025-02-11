@@ -14,8 +14,8 @@ import {
   useUpdateInfrastructureStatus,
 } from 'features/infrastructures/hooks'
 import TaskAssignee from 'features/task/components/TaskAssignee'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { useUserPermissions } from 'features/user/hooks'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { useUserPermissions } from 'features/users/hooks'
 import EditableField from 'features/warehouse/components/RelocationTaskDetails/EditableField'
 import ReadonlyField from 'features/warehouse/components/RelocationTaskDetails/ReadonlyField'
 import React, { FC } from 'react'

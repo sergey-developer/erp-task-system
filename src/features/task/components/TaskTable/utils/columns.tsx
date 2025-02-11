@@ -1,7 +1,5 @@
 import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-import React from 'react'
-
 import { parseResponseTime } from 'features/task/components/TaskDetails/MainDetails/utils'
 import {
   badgeByTaskStatus,
@@ -12,7 +10,8 @@ import TaskStatus from 'features/task/components/TaskStatus/index'
 import { TaskTableListItem } from 'features/task/components/TaskTable/types'
 import { taskStatusDict } from 'features/task/constants/task'
 import { getOlaStatusTextType } from 'features/task/utils/task'
-import { getShortUserName } from 'features/user/utils'
+import { getShortUserName } from 'features/users/helpers'
+import React from 'react'
 
 import { HYPHEN } from 'shared/constants/common'
 import { valueOr } from 'shared/utils/common'

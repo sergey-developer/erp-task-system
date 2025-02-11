@@ -1,4 +1,4 @@
-import { UsersModel } from 'features/user/api/dto'
+import { UsersDTO } from 'features/users/api/dto'
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
@@ -26,7 +26,7 @@ export type RelocationTasksFilterProps = Pick<DrawerFilterProps, 'open' | 'onClo
   values?: RelocationTasksFilterFormFields
   initialValues: RelocationTasksFilterFormFields
 
-  users: UsersModel
+  users: UsersDTO
   usersIsLoading: boolean
 
   locations: LocationsCatalogDTO

@@ -1,7 +1,5 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
-import React, { FC } from 'react'
-
 import TaskAssignee from 'features/task/components/TaskAssignee'
 import TaskStatus from 'features/task/components/TaskStatus'
 import { badgeByTaskStatus, iconByTaskStatus } from 'features/task/components/TaskStatus/constants'
@@ -10,8 +8,9 @@ import { SuspendRequestStatusEnum } from 'features/task/constants/taskSuspendReq
 import { useTaskExtendedStatus, useTaskStatus } from 'features/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'features/task/hooks/taskSuspendRequest'
 import { SubTaskModel, TaskModel } from 'features/task/models'
-import { MatchedUserPermissions } from 'features/user/types'
-import { makeUserByFullName } from 'features/user/utils'
+import { makeUserByFullName } from 'features/users/helpers'
+import { MatchedUserPermissions } from 'features/users/types'
+import React, { FC } from 'react'
 
 import Expandable from 'components/Expandable'
 import Label from 'components/Label'

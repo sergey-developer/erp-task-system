@@ -13,7 +13,7 @@ import {
   TaskSupportGroupModel,
   TaskWorkGroupModel,
 } from 'features/task/models'
-import { UserModel, UserPositionModel } from 'features/user/api/dto'
+import { UserDetailDTO, UserPositionDTO } from 'features/users/api/dto'
 import { WorkTypeModel } from 'features/warehouse/models'
 
 import { SystemEnum } from 'shared/constants/enums'
@@ -39,14 +39,14 @@ export type TaskModel = {
   productClassifier3: MaybeNull<string>
   observers: MaybeNull<
     Array<
-      Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {
-        position: MaybeNull<UserPositionModel['title']>
+      Pick<UserDetailDTO, 'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {
+        position: MaybeNull<UserPositionDTO['title']>
       }
     >
   >
   createdBy: MaybeNull<
-    Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {
-      position: MaybeNull<UserPositionModel['title']>
+    Pick<UserDetailDTO, 'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {
+      position: MaybeNull<UserPositionDTO['title']>
     }
   >
   parentTask: MaybeNull<Pick<TaskModel, 'id' | 'recordId'>>

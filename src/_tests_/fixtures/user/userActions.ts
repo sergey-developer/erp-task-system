@@ -1,9 +1,9 @@
 import { TaskActionsPermissionsEnum } from 'features/task/constants/task'
-import { UserActionsModel } from 'features/user/api/dto'
+import { UserActionsDTO } from 'features/users/api/dto'
 
 import { fakeId } from '_tests_/utils'
 
-export const taskActionsPermissions: UserActionsModel['tasks'] = {
+export const taskActionsPermissions: UserActionsDTO['tasks'] = {
   [TaskActionsPermissionsEnum.CanExecute]: [fakeId()],
   [TaskActionsPermissionsEnum.CanRead]: [fakeId()],
   [TaskActionsPermissionsEnum.CanSuspendRequestsCreate]: [fakeId()],
@@ -15,6 +15,6 @@ export const taskActionsPermissions: UserActionsModel['tasks'] = {
   [TaskActionsPermissionsEnum.CanAssignee]: [fakeId()],
 }
 
-export const userActions = (props?: Partial<UserActionsModel>): UserActionsModel => ({
+export const userActions = (props?: Partial<UserActionsDTO>): UserActionsDTO => ({
   tasks: props?.tasks ? { ...taskActionsPermissions, ...props.tasks } : taskActionsPermissions,
 })

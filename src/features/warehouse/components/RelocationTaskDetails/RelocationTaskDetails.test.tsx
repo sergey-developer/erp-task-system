@@ -5,7 +5,7 @@ import { testUtils as attachmentListModalTestUtils } from 'features/attachments/
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import TasksPage from 'features/task/pages/TasksPage'
 import { getTasksPageLink } from 'features/task/utils/task'
-import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 import { getRelocationEquipmentAttachmentListErrMsg } from 'features/warehouse/constants/relocationEquipment'
 import {
   cancelRelocationTaskMessages,

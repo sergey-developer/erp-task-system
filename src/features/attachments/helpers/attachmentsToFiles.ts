@@ -1,6 +1,6 @@
 import { UploadFile } from 'antd/es/upload'
 import { AttachmentDetailDTO } from 'features/attachments/api/dto'
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 
 import { FileResponse } from 'shared/types/file'
 import { MaybeNull } from 'shared/types/utils'
@@ -11,7 +11,7 @@ type Attachment = Pick<AttachmentDetailDTO, 'id' | 'name' | 'url'> & {
     smallThumbnail?: string
     mediumThumbnail: string
   }>
-  createdBy?: Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>
+  createdBy?: Pick<UserDetailDTO, 'firstName' | 'lastName' | 'middleName'>
   createdAt?: string
 }
 

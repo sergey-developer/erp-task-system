@@ -4,8 +4,8 @@ import {
   TaskOverdueEnum,
 } from 'features/task/constants/task'
 import { SearchFields } from 'features/task/models'
-import { UsersModel } from 'features/user/api/dto'
-import { MatchedUserPermissions } from 'features/user/types'
+import { UsersDTO } from 'features/users/api/dto'
+import { MatchedUserPermissions } from 'features/users/types'
 import { CustomersModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
@@ -52,7 +52,7 @@ export type TasksFilterProps = Required<Pick<DrawerFilterProps, 'open' | 'onClos
   supportGroups: SupportGroupListModel
   supportGroupsIsLoading: boolean
 
-  users: UsersModel
+  users: UsersDTO
   usersIsLoading: boolean
 
   workGroups: WorkGroupsDTO

@@ -1,7 +1,7 @@
 import { within } from '@testing-library/react'
 
 import { TasksRoutesEnum } from 'features/task/constants/routes'
-import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 import { getRelocationTasksErrMsg } from 'features/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import CreateDocumentsPackagePage from 'features/warehouse/pages/CreateDocumentsPackagePage'

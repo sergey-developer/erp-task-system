@@ -2,8 +2,8 @@ import { useBoolean, useSetState } from 'ahooks'
 import { Button } from 'antd'
 import { useGetTask, useGetTasks } from 'features/task/hooks/task'
 import { GetTasksQueryArgs } from 'features/task/models'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { useGetUsers, useUserPermissions } from 'features/user/hooks'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { useGetUsers, useUserPermissions } from 'features/users/hooks'
 import RelocationTaskTable from 'features/warehouse/components/RelocationTaskTable'
 import {
   getSort,

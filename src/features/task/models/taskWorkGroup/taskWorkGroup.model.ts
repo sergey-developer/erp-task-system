@@ -1,4 +1,4 @@
-import { UserModel, UserPositionModel } from 'features/user/api/dto'
+import { UserDetailDTO, UserPositionDTO } from 'features/users/api/dto'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -6,14 +6,17 @@ import { MaybeNull } from 'shared/types/utils'
 export type TaskWorkGroupModel = {
   id: IdType
   name: string
-  groupLead: Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {
-    position: MaybeNull<UserPositionModel['title']>
-  }
-  seniorEngineer: Pick<
-    UserModel,
+  groupLead: Pick<
+    UserDetailDTO,
     'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'
   > & {
-    position: MaybeNull<UserPositionModel['title']>
+    position: MaybeNull<UserPositionDTO['title']>
   }
-  members: Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>[]
+  seniorEngineer: Pick<
+    UserDetailDTO,
+    'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'
+  > & {
+    position: MaybeNull<UserPositionDTO['title']>
+  }
+  members: Pick<UserDetailDTO, 'id' | 'firstName' | 'lastName' | 'middleName'>[]
 }

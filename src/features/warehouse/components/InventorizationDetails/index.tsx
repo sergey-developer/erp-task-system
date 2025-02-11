@@ -1,8 +1,8 @@
 import { Button, Card, Col, Drawer, DrawerProps, Flex, Row, Typography } from 'antd'
 import Attachments from 'features/attachments/components/Attachments'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { useUserPermissions } from 'features/user/hooks'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { useUserPermissions } from 'features/users/hooks'
 import {
   inventorizationStatusDict,
   inventorizationTypeDict,

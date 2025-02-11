@@ -1,6 +1,4 @@
 import { waitFor, within } from '@testing-library/react'
-import * as reactRouterDom from 'react-router-dom'
-
 import { InfrastructuresRoutesEnum } from 'features/infrastructures/constants/routes'
 import ChangeInfrastructurePage from 'features/infrastructures/pages/ChangeInfrastructurePage'
 import { getChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/utils'
@@ -17,9 +15,10 @@ import {
   SuspendRequestStatusEnum,
 } from 'features/task/constants/taskSuspendRequest'
 import { CreateTaskSuspendRequestBadRequestErrorResponse } from 'features/task/models'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { getFullUserName } from 'features/user/utils'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { getFullUserName } from 'features/users/helpers'
 import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType/enum'
+import * as reactRouterDom from 'react-router-dom'
 
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 

@@ -1,11 +1,11 @@
 import { authUserSelector } from 'features/auth/store/selectors'
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 import { useMemo } from 'react'
 
 import { useSelector } from 'shared/hooks/useSelector'
 import { MaybeNull } from 'shared/types/utils'
 
-export type UseAuthUserResult = MaybeNull<Pick<UserModel, 'id'>>
+export type UseAuthUserResult = MaybeNull<Pick<UserDetailDTO, 'id'>>
 
 /** Возвращает авторизованного пользователя */
 export const useAuthUser = (): UseAuthUserResult => {

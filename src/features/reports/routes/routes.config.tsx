@@ -1,7 +1,7 @@
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
 import ReportsPage from 'features/reports/pages/ReportsPage'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { userHasPermissions } from 'features/user/utils'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { userHasPermissions } from 'features/users/helpers'
 import React from 'react'
 import { RouteObject } from 'react-router-dom'
 

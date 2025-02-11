@@ -1,9 +1,8 @@
 import { Flex, Popover, Space, Typography } from 'antd'
-import React, { FC } from 'react'
-
 import UserShortInfo from 'features/task/components/UserShortInfo'
 import { TaskAssigneeModel } from 'features/task/models'
-import { getFullUserName, getUserAbbr } from 'features/user/utils'
+import { getFullUserName, getUserAbbr } from 'features/users/helpers'
+import React, { FC } from 'react'
 
 import UserAvatar from 'components/Avatars/UserAvatar'
 

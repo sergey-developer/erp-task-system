@@ -1,6 +1,6 @@
 import { Button, ButtonProps, Typography } from 'antd'
-import { BaseUserModel } from 'features/user/api/dto'
-import { getShortUserName } from 'features/user/utils'
+import { BaseUserType } from 'features/users/api/types'
+import { getShortUserName } from 'features/users/helpers'
 import React, { FC, ReactElement } from 'react'
 
 import SeparatedText from 'components/SeparatedText'
@@ -17,7 +17,7 @@ const { Text, Title, Paragraph } = Typography
 export type TaskRequestProps = {
   title: string
   comment: string
-  user: MaybeNull<Pick<BaseUserModel, 'firstName' | 'lastName' | 'middleName'>>
+  user: MaybeNull<Pick<BaseUserType, 'firstName' | 'lastName' | 'middleName'>>
   date: string
   actions: Array<Pick<ButtonProps, 'onClick' | 'disabled' | 'loading'> & { text: string }>
   icon: ReactElement

@@ -1,5 +1,5 @@
 import { AttachmentListItem } from 'features/attachments/components/Attachments/types'
-import { getShortUserName } from 'features/user/utils'
+import { getShortUserName } from 'features/users/helpers'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MaybeNull } from 'shared/types/utils'

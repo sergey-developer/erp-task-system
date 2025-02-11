@@ -1,6 +1,5 @@
 import { within } from '@testing-library/react'
-
-import { getFullUserName } from 'features/user/utils'
+import { getFullUserName } from 'features/users/helpers'
 
 import { props } from '_tests_/features/tasks/components/TaskAssignee/constants'
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'

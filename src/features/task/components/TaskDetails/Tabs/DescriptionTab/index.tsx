@@ -1,7 +1,7 @@
 import { Popover, Typography } from 'antd'
 import Attachments from 'features/attachments/components/Attachments'
 import { TaskModel } from 'features/task/models'
-import { MatchedUserPermissions } from 'features/user/types'
+import { MatchedUserPermissions } from 'features/users/types'
 import React, { FC } from 'react'
 
 import { EditIcon } from 'components/Icons'

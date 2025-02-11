@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { TaskActionsPermissionsEnum, TaskStatusEnum } from 'features/task/constants/task'
-import { getFullUserName } from 'features/user/utils'
+import { getFullUserName } from 'features/users/helpers'
 
 import {
   activeFirstLineButtonProps,

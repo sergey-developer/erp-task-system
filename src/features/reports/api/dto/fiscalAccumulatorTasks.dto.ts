@@ -1,6 +1,6 @@
 import { FiscalAccumulatorFormatEnum } from 'features/reports/api/constants'
 import { TaskCommentModel } from 'features/task/models'
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -29,7 +29,7 @@ export type FiscalAccumulatorTaskDTO = {
   title: string
   createdAt: string
   faFormat: MaybeNull<FiscalAccumulatorFormatEnum>
-  assignee: MaybeNull<Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>>
+  assignee: MaybeNull<Pick<UserDetailDTO, 'id' | 'firstName' | 'lastName' | 'middleName'>>
   comment: MaybeNull<Pick<TaskCommentModel, 'id' | 'text'>>
 }
 

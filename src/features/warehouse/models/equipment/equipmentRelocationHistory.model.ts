@@ -1,5 +1,5 @@
 import { AttachmentDetailDTO } from 'features/attachments/api/dto'
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
 
 import { IdType } from 'shared/types/common'
@@ -12,7 +12,7 @@ export type EquipmentRelocationHistoryAttachmentModel = Pick<
   'id' | 'name' | 'size' | 'url'
 > & {
   createdAt: string
-  createdBy: Pick<UserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>
+  createdBy: Pick<UserDetailDTO, 'id' | 'firstName' | 'lastName' | 'middleName'>
 }
 
 export type EquipmentRelocationHistoryItemModel = {

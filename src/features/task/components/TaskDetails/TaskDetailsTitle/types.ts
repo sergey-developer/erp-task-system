@@ -1,5 +1,5 @@
 import { TaskModel } from 'features/task/models'
-import { UserActionsModel } from 'features/user/api/dto'
+import { UserActionsDTO } from 'features/users/api/dto'
 
 import { EmptyFn } from 'shared/types/utils'
 
@@ -15,7 +15,7 @@ export type TaskDetailsTitleProps = Pick<
   | 'suspendRequest'
   | 'system'
 > & {
-  userActions: UserActionsModel
+  userActions: UserActionsDTO
   onReloadTask: EmptyFn
   onExecuteTask: EmptyFn
   onRegisterFN: EmptyFn

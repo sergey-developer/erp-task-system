@@ -1,4 +1,4 @@
-import { getShortUserName } from 'features/user/utils'
+import { getShortUserName } from 'features/users/helpers'
 
 import { formatDate } from 'shared/utils/date'
 

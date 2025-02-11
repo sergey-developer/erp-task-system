@@ -1,7 +1,7 @@
 import { UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 import UploadedAttachment from 'features/attachments/components/UploadedAttachment'
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 import React from 'react'
 
 import { FileResponse } from 'shared/types/file'
@@ -11,7 +11,7 @@ type GetFileAttrsResult = {
   url?: string
   size?: number
   createdAt?: string
-  createdBy?: Pick<UserModel, 'firstName' | 'lastName' | 'middleName'>
+  createdBy?: Pick<UserDetailDTO, 'firstName' | 'lastName' | 'middleName'>
 }
 
 const getFileAttrs = (file: UploadFile<FileResponse>): GetFileAttrsResult => ({

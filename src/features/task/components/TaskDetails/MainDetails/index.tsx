@@ -1,14 +1,13 @@
 import { Col, Popover, Row, Typography } from 'antd'
-import React, { FC, useMemo } from 'react'
-
 import TaskStatus from 'features/task/components/TaskStatus'
 import { badgeByTaskStatus, iconByTaskStatus } from 'features/task/components/TaskStatus/constants'
 import { taskStatusDict } from 'features/task/constants/task'
 import { TaskModel } from 'features/task/models'
 import { getOlaStatusTextType } from 'features/task/utils/task'
-import { UserPermissionsEnum } from 'features/user/api/constants'
-import { useUserPermissions } from 'features/user/hooks'
-import { getFullUserName } from 'features/user/utils'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { getFullUserName } from 'features/users/helpers'
+import { useUserPermissions } from 'features/users/hooks'
+import React, { FC, useMemo } from 'react'
 
 import { FieldTimeIcon } from 'components/Icons'
 import Label from 'components/Label'

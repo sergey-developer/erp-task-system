@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import ChangePasswordPage from 'features/auth/pages/ChangePasswordPage'
 import { testUtils as changePasswordPageTestUtils } from 'features/auth/pages/ChangePasswordPage/ChangePasswordPage.test'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
-import { getFullUserName } from 'features/user/utils'
+import { getFullUserName } from 'features/users/helpers'
 import pick from 'lodash/pick'
 
 import { CommonRoutesEnum } from 'configs/routes'

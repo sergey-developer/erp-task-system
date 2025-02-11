@@ -1,10 +1,10 @@
-import { UserModel, UserPositionModel } from 'features/user/api/dto'
+import { UserDetailDTO, UserPositionDTO } from 'features/users/api/dto'
 
 import { MaybeNull } from 'shared/types/utils'
 
 export type TaskAssigneeModel = Pick<
-  UserModel,
+  UserDetailDTO,
   'id' | 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email' | 'avatar'
 > & {
-  position: MaybeNull<UserPositionModel['title']>
+  position: MaybeNull<UserPositionDTO['title']>
 }

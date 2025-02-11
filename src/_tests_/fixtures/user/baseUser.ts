@@ -1,8 +1,8 @@
-import { BaseUserModel } from 'features/user/api/dto'
+import { BaseUserType } from 'features/users/api/types'
 
 import { fakeId, fakeUrl, fakeWord } from '_tests_/utils'
 
-export const baseUser = (): BaseUserModel => ({
+export const baseUser = (): BaseUserType => ({
   id: fakeId(),
   firstName: fakeWord(),
   lastName: fakeWord(),

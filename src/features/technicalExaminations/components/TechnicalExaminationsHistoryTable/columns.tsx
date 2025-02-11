@@ -1,6 +1,5 @@
 import { ColumnsType } from 'antd/es/table'
-
-import { getFullUserName } from 'features/user/utils'
+import { getFullUserName } from 'features/users/helpers'
 
 import { getYesNoWord } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'

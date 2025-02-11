@@ -1,8 +1,8 @@
 import { FormInstance } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 import { TaskModel } from 'features/task/models'
-import { UsersModel } from 'features/user/api/dto'
-import { MatchedUserPermissions } from 'features/user/types'
+import { UsersDTO } from 'features/users/api/dto'
+import { MatchedUserPermissions } from 'features/users/types'
 import { WorkTypesModel } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
@@ -32,13 +32,13 @@ export type CreateInternalTaskModalProps = SetNonNullable<
     workTypes: WorkTypesModel
     workTypesIsLoading: boolean
 
-    users: UsersModel
+    users: UsersDTO
     usersIsLoading: boolean
 
-    observers: UsersModel
+    observers: UsersDTO
     observersIsLoading: boolean
 
-    executors: UsersModel
+    executors: UsersDTO
     executorsIsLoading: boolean
   }
 

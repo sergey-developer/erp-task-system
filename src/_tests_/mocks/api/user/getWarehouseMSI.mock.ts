@@ -1,5 +1,5 @@
-import { GetWarehouseMSISuccessResponse } from 'features/user/api/dto'
-import { getWarehouseMSIUrl } from 'features/user/utils'
+import { GetWarehouseMSISuccessResponse } from 'features/users/api/dto'
+import { makeGetWarehouseMSIEndpoint } from 'features/users/helpers'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -14,7 +14,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getWarehouseMSIMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getWarehouseMSIUrl(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetWarehouseMSIEndpoint(id))
 
 export const mockGetWarehouseMSISuccess = (
   id: IdType,

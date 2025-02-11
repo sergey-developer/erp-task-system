@@ -48,14 +48,14 @@ import {
 import { TasksFiltersStorageType } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { parseTasksFiltersStorage } from 'features/task/services/taskLocalStorageService/utils'
 import { taskDetailsTabExist } from 'features/task/utils/task'
-import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { checkUserStatusOffline } from 'features/users/helpers'
 import {
   useGetUsers,
   useOnChangeUserStatus,
   UseOnChangeUserStatusFn,
   useUserPermissions,
-} from 'features/user/hooks'
-import { checkUserStatusOffline } from 'features/user/utils'
+} from 'features/users/hooks'
 import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import debounce from 'lodash/debounce'

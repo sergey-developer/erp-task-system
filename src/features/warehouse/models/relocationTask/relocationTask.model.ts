@@ -1,5 +1,5 @@
 import { TaskModel } from 'features/task/models'
-import { UserModel } from 'features/user/api/dto'
+import { UserDetailDTO } from 'features/users/api/dto'
 import {
   ExternalRelocationStatusEnum,
   RelocationTaskStatusEnum,
@@ -23,7 +23,7 @@ export type RelocationTaskModel = {
   deadlineAt: string
   status: RelocationTaskStatusEnum
   createdAt: string
-  executors: Pick<UserModel, 'id' | 'fullName'>[]
+  executors: Pick<UserDetailDTO, 'id' | 'fullName'>[]
 
   relocateFrom: MaybeNull<{
     id: IdType
@@ -34,16 +34,16 @@ export type RelocationTaskModel = {
     title: string
   }>
   // controllers: MaybeNull<Array<Pick<UserModel, 'id' | 'fullName' | 'phone'>>>
-  controller: MaybeNull<Pick<UserModel, 'id' | 'fullName' | 'phone'>>
-  createdBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
-  completedBy: MaybeNull<Pick<UserModel, 'id' | 'fullName'>>
+  controller: MaybeNull<Pick<UserDetailDTO, 'id' | 'fullName' | 'phone'>>
+  createdBy: MaybeNull<Pick<UserDetailDTO, 'id' | 'fullName'>>
+  completedBy: MaybeNull<Pick<UserDetailDTO, 'id' | 'fullName'>>
   comment: MaybeNull<string>
   documents: MaybeNull<RelocationTaskAttachmentModel[]>
   revision: MaybeNull<{
     relocationJournalEntry: IdType
     text: string
     createdAt: string
-    user: Pick<UserModel, 'id' | 'fullName' | 'phone'>
+    user: Pick<UserDetailDTO, 'id' | 'fullName' | 'phone'>
   }>
   task: MaybeNull<Pick<TaskModel, 'id' | 'recordId'>>
   externalRelocation: MaybeNull<ExternalRelocationModel>

@@ -1,6 +1,6 @@
 import { Flex, Typography } from 'antd'
-import { UserModel } from 'features/user/api/dto'
-import { getFullUserName } from 'features/user/utils'
+import { UserDetailDTO } from 'features/users/api/dto'
+import { getFullUserName } from 'features/users/helpers'
 import React, { FC, ReactNode } from 'react'
 
 import { MaybeNull } from 'shared/types/utils'
@@ -15,7 +15,7 @@ const renderInfo = (label: string, value: any): ReactNode => (
 )
 
 type UserShortInfoProps = Partial<
-  Pick<UserModel, 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {
+  Pick<UserDetailDTO, 'firstName' | 'lastName' | 'middleName' | 'phone' | 'email'> & {
     title: string
     position: MaybeNull<string>
     skip: ['fio']

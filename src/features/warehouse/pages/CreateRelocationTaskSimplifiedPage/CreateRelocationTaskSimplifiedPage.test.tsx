@@ -1,7 +1,7 @@
 import { waitFor, within } from '@testing-library/react'
 import * as reactRouterDom from 'react-router-dom'
 
-import { UserPermissionsEnum } from 'features/user/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 import { getEquipmentListTemplateErrMsg } from 'features/warehouse/constants/equipment'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'

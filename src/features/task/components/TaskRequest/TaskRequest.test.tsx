@@ -1,4 +1,4 @@
-import { getShortUserName } from 'features/user/utils'
+import { getShortUserName } from 'features/users/helpers'
 
 import { action, props } from '_tests_/features/tasks/components/TaskRequest/constants'
 import { taskRequestTestUtils } from '_tests_/features/tasks/components/TaskRequest/testUtils'

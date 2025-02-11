@@ -4,7 +4,7 @@ import { testUtils as logoutButtonTestUtils } from 'features/auth/components/Log
 import { testUtils as loginPageTestUtils } from 'features/auth/pages/LoginPage/LoginPage.test'
 import { testUtils as homeLayoutTestUtils } from 'features/layout/components/HomeLayout/HomeLayout.test'
 import { taskLocalStorageService } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { updateUserStatusMessages, UserPermissionsEnum } from 'features/user/api/constants'
+import { updateUserStatusMessages, UserPermissionsEnum } from 'features/users/api/constants'
 
 import { UserStatusCodeEnum } from 'shared/catalogs/constants'
 import { MaybeNull } from 'shared/types/utils'

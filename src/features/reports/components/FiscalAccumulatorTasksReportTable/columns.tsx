@@ -1,7 +1,7 @@
 import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import { fiscalAccumulatorFormatColorDict } from 'features/reports/api/constants'
-import { getFullUserName } from 'features/user/utils'
+import { getFullUserName } from 'features/users/helpers'
 
 import { valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'

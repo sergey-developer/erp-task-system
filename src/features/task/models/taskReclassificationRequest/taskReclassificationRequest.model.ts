@@ -1,4 +1,4 @@
-import { BaseUserModel } from 'features/user/api/dto'
+import { BaseUserType } from 'features/users/api/types'
 
 import { IdType } from 'shared/types/common'
 
@@ -6,5 +6,5 @@ export type TaskReclassificationRequestModel = {
   id: IdType
   createdAt: string
   comment: string
-  user: Pick<BaseUserModel, 'id' | 'firstName' | 'lastName' | 'middleName'>
+  user: Pick<BaseUserType, 'id' | 'firstName' | 'lastName' | 'middleName'>
 }
