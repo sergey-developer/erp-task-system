@@ -16,9 +16,9 @@ import {
   useGetUsersMtsrReport,
   useGetWorkGroupsMtsrReport,
 } from 'features/reports/hooks'
-import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import React, { FC, useCallback, useState } from 'react'
 
+import { useGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { IdType } from 'shared/types/common'
 import { formatDate } from 'shared/utils/date'
@@ -87,7 +87,7 @@ const MtsrReportPage: FC = () => {
       { skip: !isUsersReportLevel },
     )
 
-  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomers()
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomersCatalog()
 
   const onClickUpdate = useCallback<MtsrReportFormProps['onSubmit']>(
     (values) => {

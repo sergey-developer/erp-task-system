@@ -1,9 +1,9 @@
-import { CustomerListItemModel, CustomersModel } from 'features/warehouse/models'
+import { CustomerCatalogItemDTO, CustomersModel } from 'features/warehouse/models'
 import times from 'lodash/times'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 
-export const customerListItem = (): CustomerListItemModel => ({
+export const customerListItem = (): CustomerCatalogItemDTO => ({
   id: fakeInteger(),
   title: fakeWord(),
 })

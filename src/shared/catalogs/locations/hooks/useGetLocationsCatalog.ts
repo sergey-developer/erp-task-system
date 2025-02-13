@@ -9,14 +9,12 @@ import {
   isForbiddenError,
   isNotFoundError,
 } from 'shared/api/baseApi'
-import { getLocationsCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
-import { useGetLocationsCatalogQuery } from 'shared/catalogs/api/endpoints/locationsCatalog.endpoints'
-import {
-  GetLocationsCatalogQueryArgs,
-  GetLocationsCatalogSuccessResponse,
-} from 'shared/catalogs/locations/api/schemas'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { getLocationsCatalogErrMsg } from '../api/constants'
+import { useGetLocationsCatalogQuery } from '../api/endpoints/locationsCatalog.endpoints'
+import { GetLocationsCatalogQueryArgs, GetLocationsCatalogSuccessResponse } from '../api/schemas'
 
 type UseGetLocationsCatalogResult = CustomUseQueryHookResult<
   MaybeUndefined<GetLocationsCatalogQueryArgs>,

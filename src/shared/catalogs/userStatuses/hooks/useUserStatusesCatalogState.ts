@@ -2,11 +2,11 @@ import { SkipToken } from '@reduxjs/toolkit/query'
 
 import { CustomUseQueryStateResult } from 'lib/rtk-query/types'
 
-import { endpoints } from 'shared/catalogs/userStatuses/api/endpoints/userStatusesCatalog.endpoints'
+import { endpoints } from '../api/endpoints/userStatusesCatalog.endpoints'
 import {
   GetUserStatusesCatalogQueryArgs,
   GetUserStatusesCatalogSuccessResponse,
-} from 'shared/catalogs/userStatuses/api/schemas'
+} from '../api/schemas'
 
 type UseUserStatusesCatalogStateResult = CustomUseQueryStateResult<
   GetUserStatusesCatalogQueryArgs,

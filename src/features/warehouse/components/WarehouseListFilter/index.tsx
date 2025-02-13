@@ -1,12 +1,12 @@
 import { Form, Input, Select } from 'antd'
-import { getLegalEntityListMessages } from 'features/warehouse/constants/legalEntity'
 import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
-import { useGetLegalEntityListQuery } from 'features/warehouse/services/legalEntityApiService'
 import React, { FC, useEffect } from 'react'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
+import { getLegalEntitiesCatalogErrMsg } from 'shared/catalogs/legalEntities/api/constants'
+import { useGetLegalEntitiesCatalogQuery } from 'shared/catalogs/legalEntities/api/endpoints/legalEntitiesCatalog.endpoints'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { showErrorNotification } from 'shared/utils/notifications'
 
@@ -26,11 +26,11 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
     currentData: legalEntities = [],
     isFetching: legalEntitiesIsFetching,
     isError: isGetLegalEntitiesError,
-  } = useGetLegalEntityListQuery()
+  } = useGetLegalEntitiesCatalogQuery()
 
   useEffect(() => {
     if (isGetLegalEntitiesError) {
-      showErrorNotification(getLegalEntityListMessages.commonError)
+      showErrorNotification(getLegalEntitiesCatalogErrMsg)
     }
   }, [isGetLegalEntitiesError])
 

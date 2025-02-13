@@ -1,7 +1,7 @@
 import { UserDetailDTO } from 'features/users/api/dto'
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import {
-  CustomerModel,
+  CustomerCatalogItemDTO,
   EquipmentCategoryModel,
   MeasurementUnitModel,
   NomenclatureModel,
@@ -39,7 +39,7 @@ export type EquipmentModel = {
   price: MaybeNull<number>
   currency: MaybeNull<Pick<CurrencyCatalogItemDTO, 'id' | 'title'>>
   usageCounter: MaybeNull<number>
-  owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
+  owner: MaybeNull<Pick<CustomerCatalogItemDTO, 'id' | 'title'>>
   macroregion: MaybeNull<Pick<MacroregionCatalogItemDTO, 'id' | 'title'>>
   comment: MaybeNull<string>
   qrCode: MaybeNull<string>

@@ -21,7 +21,6 @@ import {
 } from 'features/warehouse/constants/equipment'
 import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
 import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
-import { useLazyGetCustomers } from 'features/warehouse/hooks/customer'
 import {
   useCreateEquipmentTechnicalExamination,
   useGetEquipment,
@@ -47,6 +46,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
+import { useLazyGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
 import { DEFAULT_DEBOUNCE_VALUE, SAVE_TEXT } from 'shared/constants/common'
@@ -291,7 +291,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   }, [editEquipmentModalOpened, equipment?.warehouse?.id])
 
   const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
-    useLazyGetCustomers()
+    useLazyGetCustomersCatalog()
 
   useEffect(() => {
     if (

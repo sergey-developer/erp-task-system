@@ -3,13 +3,11 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
-import { getCurrenciesCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
-import {
-  GetCurrenciesCatalogQueryArgs,
-  GetCurrenciesCatalogSuccessResponse,
-} from 'shared/catalogs/api/dto/currencies'
-import { useGetCurrenciesQuery } from 'shared/catalogs/currencies/api/endpoints/currenciesCatalog.endpoints'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { getCurrenciesCatalogErrMsg } from '../api/constants'
+import { useGetCurrenciesCatalogQuery } from '../api/endpoints/currenciesCatalog.endpoints'
+import { GetCurrenciesCatalogQueryArgs, GetCurrenciesCatalogSuccessResponse } from '../api/schemas'
 
 type UseGetCurrenciesCatalogResult = CustomUseQueryHookResult<
   GetCurrenciesCatalogQueryArgs,
@@ -25,7 +23,7 @@ export const useGetCurrenciesCatalog = (
   args?: GetCurrenciesCatalogQueryArgs,
   options?: UseGetCurrenciesCatalogOptions,
 ): UseGetCurrenciesCatalogResult => {
-  const state = useGetCurrenciesQuery(args, options)
+  const state = useGetCurrenciesCatalogQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {

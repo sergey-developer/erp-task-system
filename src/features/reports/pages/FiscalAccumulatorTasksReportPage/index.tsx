@@ -22,7 +22,6 @@ import {
 } from 'features/task/constants/task'
 import { TasksFiltersStorageType } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
 import { parseTasksFiltersStorage } from 'features/task/services/taskLocalStorageService/utils'
-import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import debounce from 'lodash/debounce'
 import pick from 'lodash/pick'
 import React, { FC, useCallback, useState } from 'react'
@@ -30,6 +29,7 @@ import React, { FC, useCallback, useState } from 'react'
 import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
+import { useGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/macroregions/hooks'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -83,7 +83,7 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
   const [fiscalAccumulatorTasksQueryArgs, setFiscalAccumulatorTasksQueryArgs] =
     useSetState<GetFiscalAccumulatorTasksReportQueryArgs>(tasksFiltersStorage || {})
 
-  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomers(
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomersCatalog(
     undefined,
     { skip: !filterOpened },
   )

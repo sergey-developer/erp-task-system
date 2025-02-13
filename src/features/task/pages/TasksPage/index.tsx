@@ -56,7 +56,6 @@ import {
   UseOnChangeUserStatusFn,
   useUserPermissions,
 } from 'features/users/hooks'
-import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
@@ -69,6 +68,7 @@ import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
 import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
+import { useGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { LocationTypeEnum } from 'shared/catalogs/locations/constants'
 import { useGetLocationsCatalog } from 'shared/catalogs/locations/hooks'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/macroregions/hooks'
@@ -317,7 +317,7 @@ const TasksPage: FC = () => {
     { skip: !(createTaskModalOpened && selectedTaskWorkGroup) },
   )
 
-  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomers(
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomersCatalog(
     undefined,
     { skip: !tasksFilterOpened && !createTaskModalOpened },
   )

@@ -3,7 +3,6 @@ import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import { EquipmentsFilterFormFields } from 'features/warehouse/components/EquipmentFilter/types'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import {
   useGetEquipmentCategories,
   useLazyGetEquipmentsXlsx,
@@ -18,6 +17,7 @@ import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 
 import { LocationTypeEnum } from 'shared/catalogs/constants'
+import { useGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { base64ToBytes } from 'shared/utils/common'
@@ -74,7 +74,7 @@ const EquipmentPageLayout: FC = () => {
   const { currentData: equipmentCategories = [], isFetching: equipmentCategoriesIsFetching } =
     useGetEquipmentCategories(undefined, { skip: !filterOpened })
 
-  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomers(
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomersCatalog(
     undefined,
     { skip: !filterOpened },
   )

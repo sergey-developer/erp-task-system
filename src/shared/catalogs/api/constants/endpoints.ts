@@ -19,4 +19,10 @@ export enum CatalogEndpointsEnum {
 
   // Скоро будет /catalogs/macroregions/
   GetMacroregions = '/macroregions/',
+
+  // Скоро будет /catalogs/customers/
+  GetCustomers = '/customers/',
+
+  // Скоро будет /catalogs/legal-entities/
+  GetLegalEntities = '/legal-entities/',
 }

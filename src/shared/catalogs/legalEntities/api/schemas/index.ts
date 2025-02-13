@@ -1,0 +1,1 @@
+export * from './getLegalEntitiesCatalog.schema'

@@ -1,6 +1,6 @@
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import {
-  CustomerListItemModel,
+  CustomerCatalogItemDTO,
   EquipmentCategoryListItemModel,
   NomenclatureModel,
   WorkTypeListItemModel,
@@ -25,7 +25,7 @@ export type CheckedInventorizationEquipmentsTemplateListItemModel = {
   isWarranty?: boolean
   isRepaired?: boolean
   usageCounter?: number
-  owner?: Pick<CustomerListItemModel, 'id' | 'title'>
+  owner?: Pick<CustomerCatalogItemDTO, 'id' | 'title'>
   macroregion?: Pick<MacroregionCatalogItemDTO, 'id' | 'title'>
   purpose?: Pick<WorkTypeListItemModel, 'id' | 'title'>
   comment?: string

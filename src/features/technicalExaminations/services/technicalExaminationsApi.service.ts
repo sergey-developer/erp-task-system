@@ -1,4 +1,4 @@
-import { TechnicalExaminationsApiEnum } from 'features/technicalExaminations/constants'
+import { TechnicalExaminationsEndpointsEnum } from 'features/technicalExaminations/constants'
 import {
   GetTechnicalExaminationPdfSuccessResponse,
   GetTechnicalExaminationQueryArgs,
@@ -20,7 +20,7 @@ const technicalExaminationsApiService = baseApi.injectEndpoints({
       GetTechnicalExaminationsQueryArgs
     >({
       query: (params) => ({
-        url: TechnicalExaminationsApiEnum.GetTechnicalExaminations,
+        url: TechnicalExaminationsEndpointsEnum.GetTechnicalExaminations,
         method: HttpMethodEnum.Get,
         params,
       }),

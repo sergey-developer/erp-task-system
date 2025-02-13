@@ -1,6 +1,6 @@
 import { IdType } from 'shared/types/common'
 
-import { InfrastructureStatusEnum } from '../../constants'
+import { InfrastructureStatusEnum } from '../constants'
 
 export type UpdateInfrastructureStatusMutationArgs = {
   status: InfrastructureStatusEnum

@@ -1,10 +1,8 @@
 import { waitFor, within } from '@testing-library/react'
-import { UpdateInfrastructureStatusSuccessResponse } from 'features/infrastructures/api/dto'
-import {
-  InfrastructuresRoutesEnum,
-  infrastructureStatusDict,
-  InfrastructureStatusEnum,
-} from 'features/infrastructures/constants'
+import { InfrastructureStatusEnum } from 'features/infrastructures/api/constants'
+import { UpdateInfrastructureStatusSuccessResponse } from 'features/infrastructures/api/schemas'
+import { infrastructureStatusDict } from 'features/infrastructures/constants'
+import { InfrastructuresRoutesEnum } from 'features/infrastructures/routes/routes'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import TasksPage from 'features/task/pages/TasksPage'
 import { UserPermissionsEnum } from 'features/users/api/constants'

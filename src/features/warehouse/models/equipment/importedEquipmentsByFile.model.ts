@@ -1,6 +1,6 @@
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import {
-  CustomerModel,
+  CustomerCatalogItemDTO,
   EquipmentCategoryModel,
   NomenclatureModel,
   WorkTypeListItemModel,
@@ -24,7 +24,7 @@ export type ImportedEquipmentByFileModel = {
   isRepaired: MaybeNull<boolean>
   category: MaybeNull<Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>>
   currency: MaybeNull<Pick<CurrencyCatalogItemDTO, 'id' | 'title'>>
-  owner: MaybeNull<Pick<CustomerModel, 'id' | 'title'>>
+  owner: MaybeNull<Pick<CustomerCatalogItemDTO, 'id' | 'title'>>
   macroregion: MaybeNull<Pick<MacroregionCatalogItemDTO, 'id' | 'title'>>
   purpose: MaybeNull<Pick<WorkTypeListItemModel, 'id' | 'title'>>
   nomenclature: MaybeNull<

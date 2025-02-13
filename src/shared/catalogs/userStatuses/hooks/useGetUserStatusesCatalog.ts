@@ -3,13 +3,14 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
-import { getUserStatusesCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
+import { showErrorNotification } from 'shared/utils/notifications'
+
+import { getUserStatusesCatalogErrMsg } from '../api/constants'
+import { useGetUserStatusesCatalogQuery } from '../api/endpoints/userStatusesCatalog.endpoints'
 import {
   GetUserStatusesCatalogQueryArgs,
   GetUserStatusesCatalogSuccessResponse,
-} from 'shared/catalogs/api/dto/userStatuses'
-import { useGetUserStatusesCatalogQuery } from 'shared/catalogs/userStatuses/api/endpoints/userStatusesCatalog.endpoints'
-import { showErrorNotification } from 'shared/utils/notifications'
+} from '../api/schemas'
 
 type UseGetUserStatusesCatalogResult = CustomUseQueryHookResult<
   GetUserStatusesCatalogQueryArgs,

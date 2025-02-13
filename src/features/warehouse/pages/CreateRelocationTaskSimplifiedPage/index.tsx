@@ -29,7 +29,6 @@ import {
   RelocationEquipmentRow,
 } from 'features/warehouse/components/RelocationEquipmentSimplifiedEditableTable/types'
 import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
-import { useLazyGetCustomers } from 'features/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useCreateEquipments,
@@ -60,6 +59,7 @@ import Space from 'components/Space'
 import Spinner from 'components/Spinner'
 
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
+import { useLazyGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
 import { CANCEL_TEXT, CREATE_TEXT, SAVE_TEXT } from 'shared/constants/common'
@@ -285,7 +285,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
   )
 
   const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
-    useLazyGetCustomers()
+    useLazyGetCustomersCatalog()
 
   useEffect(() => {
     if (

@@ -3,13 +3,11 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
-import { getTimeZonesCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
-import { useGetTimeZonesCatalogQuery } from 'shared/catalogs/timeZones/api/endpoints/timeZonesCatalog.endpoints'
-import {
-  GetTimeZonesCatalogQueryArgs,
-  GetTimeZonesCatalogSuccessResponse,
-} from 'shared/catalogs/timeZones/api/schemas/getTimeZonesCatalog.schema'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { getTimeZonesCatalogErrMsg } from '../api/constants'
+import { useGetTimeZonesCatalogQuery } from '../api/endpoints/timeZonesCatalog.endpoints'
+import { GetTimeZonesCatalogQueryArgs, GetTimeZonesCatalogSuccessResponse } from '../api/schemas'
 
 type UseGetTimeZonesCatalogResult = CustomUseQueryHookResult<
   GetTimeZonesCatalogQueryArgs,

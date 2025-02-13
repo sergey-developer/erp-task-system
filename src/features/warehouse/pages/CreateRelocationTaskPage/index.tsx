@@ -25,7 +25,6 @@ import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nome
 import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
-import { useLazyGetCustomers } from 'features/warehouse/hooks/customer'
 import {
   useCreateEquipment,
   useCreateEquipments,
@@ -62,6 +61,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
+import { useLazyGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
@@ -332,7 +332,7 @@ const CreateRelocationTaskPage: FC = () => {
   )
 
   const [getCustomers, { data: customers = [], isFetching: customersIsFetching }] =
-    useLazyGetCustomers()
+    useLazyGetCustomersCatalog()
 
   useEffect(() => {
     if (

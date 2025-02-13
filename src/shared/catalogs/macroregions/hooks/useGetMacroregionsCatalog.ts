@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
-import { getMacroregionsCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
 import { useGetMacroregionsCatalogQuery } from 'shared/catalogs/macroregions/api/endpoints/macroregionsCatalog.endpoints'
 import {
   GetMacroregionsCatalogQueryArgs,
@@ -11,6 +10,8 @@ import {
 } from 'shared/catalogs/macroregions/api/schemas'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { getMacroregionsCatalogErrMsg } from '../api/constants'
 
 type UseGetMacroregionsCatalogResult = CustomUseQueryHookResult<
   MaybeUndefined<GetMacroregionsCatalogQueryArgs>,

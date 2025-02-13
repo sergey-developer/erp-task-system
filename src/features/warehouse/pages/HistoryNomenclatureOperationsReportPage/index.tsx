@@ -11,7 +11,6 @@ import {
   useGetHistoryNomenclatureOperationsReport,
   useLazyGetHistoryNomenclatureOperationsReportXlsx,
 } from 'features/reports/hooks'
-import { useGetCustomers } from 'features/warehouse/hooks/customer'
 import { useGetEquipmentNomenclatures } from 'features/warehouse/hooks/equipment'
 import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
@@ -20,6 +19,7 @@ import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
+import { useGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -115,7 +115,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
     { skip: !filterOpened },
   )
 
-  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomers(
+  const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomersCatalog(
     undefined,
     { skip: !filterOpened },
   )
