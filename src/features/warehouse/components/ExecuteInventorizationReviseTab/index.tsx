@@ -48,7 +48,6 @@ import {
   useUpdateInventorizationEquipment,
 } from 'features/warehouse/hooks/inventorization'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
-import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import {
   EquipmentCategoryListItemModel,
   GetEquipmentsCatalogQueryArgs,
@@ -74,6 +73,7 @@ import { useLazyGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
+import { useGetWorkTypesCatalog } from 'shared/catalogs/workTypes/hooks'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { undefinedSelectOption } from 'shared/constants/selectField'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -414,7 +414,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     },
   )
 
-  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypesCatalog(
     undefined,
     {
       skip:

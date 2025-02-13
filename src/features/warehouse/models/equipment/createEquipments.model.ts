@@ -3,7 +3,7 @@ import {
   CustomerCatalogItemDTO,
   EquipmentCategoryListItemModel,
   EquipmentNomenclatureListItemModel,
-  WorkTypeListItemModel,
+  WorkTypesCatalogItemDTO,
 } from 'features/warehouse/models'
 
 import { FieldsErrors } from 'shared/api/baseApi'
@@ -20,7 +20,7 @@ export type CreatedEquipmentListItemModel = {
   quantity: number
   availableQuantity: number
   category: Pick<EquipmentCategoryListItemModel, 'id' | 'title' | 'code'>
-  purpose: Pick<WorkTypeListItemModel, 'id' | 'title'>
+  purpose: Pick<WorkTypesCatalogItemDTO, 'id' | 'title'>
   isNew: boolean
   isWarranty: boolean
   isRepaired: boolean

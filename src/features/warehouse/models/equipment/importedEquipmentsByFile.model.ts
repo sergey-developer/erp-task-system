@@ -3,7 +3,7 @@ import {
   CustomerCatalogItemDTO,
   EquipmentCategoryModel,
   NomenclatureModel,
-  WorkTypeListItemModel,
+  WorkTypesCatalogItemDTO,
 } from 'features/warehouse/models'
 
 import { CurrencyCatalogItemDTO } from 'shared/catalogs/api/dto/currencies'
@@ -26,7 +26,7 @@ export type ImportedEquipmentByFileModel = {
   currency: MaybeNull<Pick<CurrencyCatalogItemDTO, 'id' | 'title'>>
   owner: MaybeNull<Pick<CustomerCatalogItemDTO, 'id' | 'title'>>
   macroregion: MaybeNull<Pick<MacroregionCatalogItemDTO, 'id' | 'title'>>
-  purpose: MaybeNull<Pick<WorkTypeListItemModel, 'id' | 'title'>>
+  purpose: MaybeNull<Pick<WorkTypesCatalogItemDTO, 'id' | 'title'>>
   nomenclature: MaybeNull<
     Pick<NomenclatureModel, 'id' | 'title' | 'equipmentHasSerialNumber'> & {
       measurementUnit: NomenclatureModel['measurementUnit']['title']

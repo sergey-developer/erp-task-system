@@ -14,7 +14,7 @@ import {
   TaskWorkGroupModel,
 } from 'features/task/models'
 import { UserDetailDTO, UserPositionDTO } from 'features/users/api/dto'
-import { WorkTypeModel } from 'features/warehouse/models'
+import { WorkTypeDetailDTO } from 'features/warehouse/models'
 
 import { SystemEnum } from 'shared/constants/enums'
 import { IdType } from 'shared/types/common'
@@ -66,7 +66,7 @@ export type TaskModel = {
   longitude: MaybeNull<string>
   parentInteractionExternalId: MaybeNull<string>
   olaEstimatedTime: number
-  workType: MaybeNull<Pick<WorkTypeModel, 'id' | 'title' | 'actions'>>
+  workType: MaybeNull<Pick<WorkTypeDetailDTO, 'id' | 'title' | 'actions'>>
   isOlaNextBreachTimeChanged: MaybeNull<boolean>
   previousOlaNextBreachTime: MaybeNull<string>
   resolution: { attachments: TaskAttachmentsModel }

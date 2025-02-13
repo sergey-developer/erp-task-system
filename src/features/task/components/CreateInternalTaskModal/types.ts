@@ -3,7 +3,7 @@ import { UploadFile } from 'antd/es/upload'
 import { TaskModel } from 'features/task/models'
 import { UsersDTO } from 'features/users/api/dto'
 import { MatchedUserPermissions } from 'features/users/types'
-import { WorkTypesModel } from 'features/warehouse/models'
+import { WorkTypesCatalogDTO } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
@@ -29,7 +29,7 @@ export type CreateInternalTaskModalProps = SetNonNullable<
     workGroups: WorkGroupsCatalogDTO
     workGroupsIsLoading: boolean
 
-    workTypes: WorkTypesModel
+    workTypes: WorkTypesCatalogDTO
     workTypesIsLoading: boolean
 
     users: UsersDTO

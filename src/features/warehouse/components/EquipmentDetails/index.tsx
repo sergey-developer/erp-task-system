@@ -31,7 +31,6 @@ import {
 } from 'features/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
-import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import {
   CreateEquipmentTechnicalExaminationSuccessResponse,
   EquipmentCategoryListItemModel,
@@ -49,6 +48,7 @@ import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { useLazyGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
+import { useGetWorkTypesCatalog } from 'shared/catalogs/workTypes/hooks'
 import { DEFAULT_DEBOUNCE_VALUE, SAVE_TEXT } from 'shared/constants/common'
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -198,7 +198,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   const { currentData: currencies = [], isFetching: currenciesIsFetching } =
     useGetCurrenciesCatalog(undefined, { skip: !editEquipmentModalOpened })
 
-  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypesCatalog(
     undefined,
     { skip: !editEquipmentModalOpened },
   )

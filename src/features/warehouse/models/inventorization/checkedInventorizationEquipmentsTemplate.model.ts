@@ -1,13 +1,10 @@
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import {
-  CustomerCatalogItemDTO,
-  EquipmentCategoryListItemModel,
-  NomenclatureModel,
-  WorkTypeListItemModel,
-} from 'features/warehouse/models'
+import { EquipmentCategoryListItemModel, NomenclatureModel } from 'features/warehouse/models'
 
-import { CurrencyCatalogItemDTO } from 'shared/catalogs/api/dto/currencies'
-import { MacroregionCatalogItemDTO } from 'shared/catalogs/api/dto/macroregions'
+import { CurrencyCatalogItemDTO } from 'shared/catalogs/currencies/api/dto'
+import { CustomerCatalogItemDTO } from 'shared/catalogs/customers/api/dto'
+import { MacroregionCatalogItemDTO } from 'shared/catalogs/macroregions/api/dto'
+import { WorkTypesCatalogItemDTO } from 'shared/catalogs/workTypes/api/dto'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
@@ -27,7 +24,7 @@ export type CheckedInventorizationEquipmentsTemplateListItemModel = {
   usageCounter?: number
   owner?: Pick<CustomerCatalogItemDTO, 'id' | 'title'>
   macroregion?: Pick<MacroregionCatalogItemDTO, 'id' | 'title'>
-  purpose?: Pick<WorkTypeListItemModel, 'id' | 'title'>
+  purpose?: Pick<WorkTypesCatalogItemDTO, 'id' | 'title'>
   comment?: string
   quantityFact?: number
   locationFact?: {

@@ -1,11 +1,11 @@
 import { Checkbox, Form, Input, Select, Space, Typography } from 'antd'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
-import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import isEqual from 'lodash/isEqual'
 import React, { FC, useEffect } from 'react'
 
 import BaseModal from 'components/Modals/BaseModal'
 
+import { useGetWorkTypesCatalog } from 'shared/catalogs/workTypes/hooks'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { filterOptionBy } from 'shared/utils/common'
@@ -37,7 +37,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
     taskId: id,
   })
 
-  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypesCatalog(
     { taskType: type },
     { skip: !permissions.classificationOfWorkTypes },
   )

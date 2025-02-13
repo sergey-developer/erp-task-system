@@ -1,10 +1,11 @@
+import { WorkTypeDetailDTO } from 'features/warehouse/models'
 import isUndefined from 'lodash/isUndefined'
-
-import { WorkTypeModel } from 'features/warehouse/models'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 
-export const workType = (props?: Partial<Pick<WorkTypeModel, 'actions'>>): WorkTypeModel => ({
+export const workType = (
+  props?: Partial<Pick<WorkTypeDetailDTO, 'actions'>>,
+): WorkTypeDetailDTO => ({
   id: fakeInteger(),
   title: fakeWord(),
 

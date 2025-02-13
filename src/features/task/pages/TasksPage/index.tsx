@@ -56,7 +56,6 @@ import {
   UseOnChangeUserStatusFn,
   useUserPermissions,
 } from 'features/users/hooks'
-import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
 import isEqual from 'lodash/isEqual'
@@ -73,6 +72,7 @@ import { LocationTypeEnum } from 'shared/catalogs/locations/constants'
 import { useGetLocationsCatalog } from 'shared/catalogs/locations/hooks'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/macroregions/hooks'
 import { useGetWorkGroupsCatalog } from 'shared/catalogs/workGroups/hooks'
+import { useGetWorkTypesCatalog } from 'shared/catalogs/workTypes/hooks'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { SortOrderEnum } from 'shared/constants/sort'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -281,7 +281,7 @@ const TasksPage: FC = () => {
       : undefined,
   })
 
-  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypesCatalog(
     { taskType: selectedTaskType! },
     { skip: !(selectedTaskType && createTaskModalOpened) },
   )

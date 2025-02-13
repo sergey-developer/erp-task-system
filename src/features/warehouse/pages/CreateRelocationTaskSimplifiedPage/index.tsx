@@ -40,7 +40,6 @@ import {
 } from 'features/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useCreateRelocationTaskITSM } from 'features/warehouse/hooks/relocationTask'
-import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import { EquipmentCategoryListItemModel } from 'features/warehouse/models'
 import { SimplifiedRelocationTaskFormFields } from 'features/warehouse/types'
 import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
@@ -62,6 +61,7 @@ import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api
 import { useLazyGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
 import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
+import { useGetWorkTypesCatalog } from 'shared/catalogs/workTypes/hooks'
 import { CANCEL_TEXT, CREATE_TEXT, SAVE_TEXT } from 'shared/constants/common'
 import { filesFormItemProps } from 'shared/constants/form'
 import { idAndFullNameSelectFieldNames } from 'shared/constants/selectField'
@@ -257,7 +257,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
       skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened,
     })
 
-  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypesCatalog(
     undefined,
     {
       skip:

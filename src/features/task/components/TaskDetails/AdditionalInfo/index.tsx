@@ -4,7 +4,7 @@ import { TaskModel } from 'features/task/models'
 import { MatchedUserPermissions } from 'features/users/types'
 import EditableField from 'features/warehouse/components/RelocationTaskDetails/EditableField'
 import ReadonlyField from 'features/warehouse/components/RelocationTaskDetails/ReadonlyField'
-import { WorkTypesModel } from 'features/warehouse/models'
+import { WorkTypesCatalogDTO } from 'features/warehouse/models'
 import React, { FC } from 'react'
 
 import Expandable from 'components/Expandable'
@@ -45,7 +45,7 @@ export type AdditionalInfoProps = Pick<
   expanded: boolean
   onExpand: EmptyFn
 
-  workTypes: WorkTypesModel
+  workTypes: WorkTypesCatalogDTO
   workTypesIsLoading: boolean
 
   toggleEditWorkType: () => void

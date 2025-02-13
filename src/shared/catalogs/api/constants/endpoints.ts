@@ -25,4 +25,10 @@ export enum CatalogEndpointsEnum {
 
   // Скоро будет /catalogs/legal-entities/
   GetLegalEntities = '/legal-entities/',
+
+  // Скоро будет /catalogs/measurement-units/
+  GetMeasurementUnits = '/measurement-units/',
+
+  // Скоро будет /catalogs/work-types/
+  GetWorkTypes = '/work-types/',
 }

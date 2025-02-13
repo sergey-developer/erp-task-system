@@ -1,4 +1,4 @@
-import { MeasurementUnitModel, NomenclatureGroupModel } from 'features/warehouse/models'
+import { MeasurementUnitsCatalogItemDTO, NomenclatureGroupModel } from 'features/warehouse/models'
 
 import { CountryModel } from 'shared/catalogs/api/dto/countries'
 import { IdType } from 'shared/types/common'
@@ -11,6 +11,6 @@ export type NomenclatureModel = {
   vendorCode: string
   equipmentHasSerialNumber: boolean
   group: NomenclatureGroupModel
-  measurementUnit: MeasurementUnitModel
+  measurementUnit: MeasurementUnitsCatalogItemDTO
   country: MaybeNull<CountryModel>
 }

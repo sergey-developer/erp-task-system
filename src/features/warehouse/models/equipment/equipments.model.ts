@@ -1,5 +1,5 @@
 import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentCategoryModel, WorkTypeListItemModel } from 'features/warehouse/models'
+import { EquipmentCategoryModel, WorkTypesCatalogItemDTO } from 'features/warehouse/models'
 
 import { LocationCatalogItemDTO } from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
@@ -11,7 +11,7 @@ export type EquipmentListItemModel = {
   condition: EquipmentConditionEnum
   quantity: number
   category: Pick<EquipmentCategoryModel, 'id' | 'title'>
-  purpose: Pick<WorkTypeListItemModel, 'id' | 'title'>
+  purpose: Pick<WorkTypesCatalogItemDTO, 'id' | 'title'>
   isCredited: boolean
 
   serialNumber: MaybeNull<string>

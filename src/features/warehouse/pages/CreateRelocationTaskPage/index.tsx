@@ -37,7 +37,6 @@ import {
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useCreateRelocationTask } from 'features/warehouse/hooks/relocationTask'
 import { useGetWarehouse } from 'features/warehouse/hooks/warehouse'
-import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import {
   CreateEquipmentsBadRequestErrorResponse,
   EquipmentCategoryListItemModel,
@@ -66,6 +65,7 @@ import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
 import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
 import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
 import { checkLocationTypeIsWarehouse } from 'shared/catalogs/locations/helpers/checkLocationType'
+import { useGetWorkTypesCatalog } from 'shared/catalogs/workTypes/hooks'
 import { SAVE_TEXT } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
@@ -304,7 +304,7 @@ const CreateRelocationTaskPage: FC = () => {
       skip: !createEquipmentModalOpened && !editEquipmentByFileModalOpened,
     })
 
-  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypesCatalog(
     undefined,
     {
       skip:

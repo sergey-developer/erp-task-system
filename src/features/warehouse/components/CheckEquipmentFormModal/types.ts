@@ -5,9 +5,9 @@ import {
   EquipmentCategoriesModel,
   EquipmentCategoryListItemModel,
   NomenclatureListItemModel,
-  NomenclaturesModel,
   NomenclatureModel,
-  WorkTypesModel,
+  NomenclaturesModel,
+  WorkTypesCatalogDTO,
 } from 'features/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
@@ -68,7 +68,7 @@ export type CheckEquipmentFormModalProps = Required<
     macroregions: MacroregionsCatalogDTO
     macroregionsIsLoading: boolean
 
-    workTypes: WorkTypesModel
+    workTypes: WorkTypesCatalogDTO
     workTypesIsLoading: boolean
 
     nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>

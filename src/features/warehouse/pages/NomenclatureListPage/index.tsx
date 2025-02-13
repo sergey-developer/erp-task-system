@@ -15,7 +15,7 @@ import {
   createNomenclatureGroupMessages,
   updateNomenclatureGroupMessages,
 } from 'features/warehouse/constants/nomenclatureGroup'
-import { useGetMeasurementUnits } from 'features/warehouse/hooks/measurementUnit'
+import { useGetMeasurementUnitsCatalog } from 'features/warehouse/hooks/measurementUnit'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useGetNomenclatureGroups } from 'features/warehouse/hooks/nomenclatureGroup'
 import {
@@ -164,7 +164,7 @@ const NomenclatureListPage: FC = () => {
     useGetNomenclatures(nomenclatureListParams)
 
   const { currentData: measurementUnitList = [], isFetching: measurementUnitListIsFetching } =
-    useGetMeasurementUnits(undefined, {
+    useGetMeasurementUnitsCatalog(undefined, {
       skip: !createNomenclatureModalOpened && !editNomenclatureModalOpened,
     })
 

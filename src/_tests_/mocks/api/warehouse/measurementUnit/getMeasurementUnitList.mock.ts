@@ -1,5 +1,5 @@
-import { GetMeasurementUnitListSuccessResponse } from 'features/warehouse/models'
-import { MeasurementUnitApiEnum } from 'features/warehouse/services/measurementUnitApiService'
+import { GetMeasurementUnitsCatalogSuccessResponse } from 'features/warehouse/models'
+import { CatalogEndpointsEnum } from 'features/warehouse/services/measurementUnitApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -7,10 +7,10 @@ import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getMeasurementUnitListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, MeasurementUnitApiEnum.GetMeasurementUnitList)
+  getRequestMockFn(HttpMethodEnum.Get, CatalogEndpointsEnum.GetMeasurementUnits)
 
 export const mockGetMeasurementUnitListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetMeasurementUnitListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetMeasurementUnitsCatalogSuccessResponse>>,
 ) => getSuccessMockFn(getMeasurementUnitListMockFn(), options)()
 
 export const mockGetMeasurementUnitListServerError = (options?: Partial<ResponseResolverOptions>) =>

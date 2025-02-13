@@ -65,7 +65,6 @@ import { useGetTaskWorkPerformedActMutation } from 'features/task/services/taskA
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUserActions, useGetUsers, useUserPermissions } from 'features/users/hooks'
 import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType/enum'
-import { useGetWorkTypes } from 'features/warehouse/hooks/workType'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -85,6 +84,7 @@ import {
 import { useGetFaChangeTypesCatalog } from 'shared/catalogs/hooks/faChangeTypes'
 import { useGetResolutionClassificationsCatalog } from 'shared/catalogs/hooks/resolutionClassifications'
 import { useGetWorkGroupsCatalog } from 'shared/catalogs/hooks/workGroups'
+import { useGetWorkTypesCatalog } from 'shared/catalogs/workTypes/hooks'
 import { DEFAULT_DEBOUNCE_VALUE, NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -367,7 +367,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
 
   const [workTypeIsEditable, { toggle: toggleWorkTypeEditable }] = useBoolean(false)
 
-  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypes(
+  const { currentData: workTypes = [], isFetching: workTypesIsFetching } = useGetWorkTypesCatalog(
     { taskType: task?.type! },
     { skip: !((workTypeIsEditable || createInternalTaskModalOpened) && !!task?.type) },
   )

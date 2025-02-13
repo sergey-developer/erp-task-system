@@ -14,7 +14,6 @@ import { TaskModel } from 'features/task/models'
 import { CreateRelocationEquipmentTechnicalExaminationModalProps } from 'features/warehouse/components/CreateRelocationEquipmentTechnicalExaminationModal/types'
 import DocumentsPackageRelocationEquipmentTable from 'features/warehouse/components/DocumentsPackageRelocationEquipmentTable'
 import { DocumentsPackageRelocationEquipmentTableItem } from 'features/warehouse/components/DocumentsPackageRelocationEquipmentTable/types'
-import { useGetMeasurementUnits } from 'features/warehouse/hooks/measurementUnit'
 import {
   useCreateRelocationEquipmentTechnicalExamination,
   useGetRelocationEquipmentTechnicalExamination,
@@ -34,6 +33,7 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Spinner from 'components/Spinner'
 
 import { isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
+import { useGetMeasurementUnitsCatalog } from 'shared/catalogs/measurementUnits/hooks'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
@@ -123,7 +123,7 @@ const CreateDocumentsPackagePage: FC = () => {
   )
 
   const { currentData: measurementUnits = [], isFetching: measurementUnitsIsFetching } =
-    useGetMeasurementUnits(undefined, { skip: !createCompletedWorkModalOpened })
+    useGetMeasurementUnitsCatalog(undefined, { skip: !createCompletedWorkModalOpened })
 
   const [createInitiationReasonMutation, { isLoading: createInitiationReasonIsLoading }] =
     useCreateInitiationReason()

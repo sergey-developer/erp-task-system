@@ -3,10 +3,10 @@ import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import {
   CustomerCatalogItemDTO,
   EquipmentCategoryModel,
-  MeasurementUnitModel,
+  MeasurementUnitsCatalogItemDTO,
   NomenclatureModel,
   WarehouseModel,
-  WorkTypeListItemModel,
+  WorkTypesCatalogItemDTO,
 } from 'features/warehouse/models'
 
 import { CurrencyCatalogItemDTO } from 'shared/catalogs/api/dto/currencies'
@@ -22,13 +22,13 @@ export type EquipmentModel = {
   condition: EquipmentConditionEnum
   createdAt: string
   createdBy: Pick<UserDetailDTO, 'id' | 'fullName'>
-  measurementUnit: Pick<MeasurementUnitModel, 'id' | 'title'>
+  measurementUnit: Pick<MeasurementUnitsCatalogItemDTO, 'id' | 'title'>
   category: Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>
   isNew: boolean
   isWarranty: boolean
   isRepaired: boolean
   isCredited: boolean
-  purpose: Pick<WorkTypeListItemModel, 'id' | 'title'>
+  purpose: Pick<WorkTypesCatalogItemDTO, 'id' | 'title'>
   amount: number
 
   location: MaybeNull<Pick<LocationCatalogItemDTO, 'id' | 'title'>>
