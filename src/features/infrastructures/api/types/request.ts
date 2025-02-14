@@ -1,13 +1,13 @@
 import { IdType } from 'shared/types/common'
 
-export type OrderFormRequestArgs = {
+export type RequestWithOrderForm = {
   orderFormId: IdType
 }
 
-export type InfrastructureWorkRequestArgs = {
+export type RequestWithInfrastructureWork = {
   infrastructureWorkId: IdType
 }
 
-export type InfrastructureRequestArgs = {
+export type RequestWithInfrastructure = {
   infrastructureId: IdType
 }

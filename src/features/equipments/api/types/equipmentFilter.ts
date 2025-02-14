@@ -1,6 +1,6 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 
-export type EquipmentsFilterParams = Partial<{
+export type EquipmentsFilterRequestParams = Partial<{
   conditions: EquipmentConditionEnum[]
   locations: number[]
   owners: number[]

@@ -1,3 +1,3 @@
 export enum TestIdsEnum {
-  EquipmentNomenclatureListPage = 'equipment-nomenclature-list-page',
+  EquipmentNomenclaturesPage = 'equipment-nomenclature-list-page',
 }

@@ -1,4 +1,4 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
@@ -44,6 +44,6 @@ export type GetRelocationTasksRequest<
   PaginationRequestParams &
   FilterParams &
   SortParams<SortValue> &
-  Partial<TaskRequestArgs & { inventorization: IdType }>
+  Partial<RequestWithTask & { inventorization: IdType }>
 
 export type GetRelocationTasksResponse = PaginationResponse<RelocationTaskListItemModel>

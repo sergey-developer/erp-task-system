@@ -1,5 +1,4 @@
 import { within } from '@testing-library/react'
-
 import { createTaskCommentErrMsg } from 'features/task/constants/taskComment'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 
@@ -255,7 +254,7 @@ describe('Вкладка списка комментариев заявки', ()
       test('Обрабатывается ошибка 400', async () => {
         mockGetTaskCommentListSuccess(props.taskId, { body: [] })
 
-        const badRequestErrorResponse = {
+        const badRequestResponse = {
           comment: [fakeWord()],
           attachments: [fakeWord()],
           detail: [fakeWord()],

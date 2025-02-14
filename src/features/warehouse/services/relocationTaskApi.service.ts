@@ -28,9 +28,9 @@ import {
   GetRelocationTaskCompletionDocumentsRequest,
   GetRelocationTaskCompletionDocumentsResponse,
   GetRelocationTaskRequest,
+  GetRelocationTaskResponse,
   GetRelocationTasksRequest,
   GetRelocationTasksResponse,
-  GetRelocationTaskResponse,
   GetRelocationTaskWaybillM15Request,
   GetRelocationTaskWaybillM15Response,
   MoveRelocationTaskDraftToWorkRequest,
@@ -105,7 +105,7 @@ const relocationTaskApiService = baseApi
             : [
                 RelocationTaskApiTagEnum.RelocationEquipmentList,
                 RelocationTaskApiTagEnum.RelocationTask,
-                RelocationEquipmentApiTagEnum.RelocationEquipmentAttachmentList,
+                RelocationEquipmentApiTagEnum.RelocationEquipmentAttachments,
               ],
         query: ({ relocationTaskId, ...payload }) => ({
           url: updateRelocationTaskUrl(relocationTaskId),
@@ -183,10 +183,7 @@ const relocationTaskApiService = baseApi
           method: HttpMethodEnum.Get,
         }),
       }),
-      closeRelocationTask: build.mutation<
-        CloseRelocationTaskResponse,
-        CloseRelocationTaskRequest
-      >({
+      closeRelocationTask: build.mutation<CloseRelocationTaskResponse, CloseRelocationTaskRequest>({
         query: ({ relocationTaskId }) => ({
           url: closeRelocationTaskUrl(relocationTaskId),
           method: HttpMethodEnum.Post,

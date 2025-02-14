@@ -1,17 +1,16 @@
-import pick from 'lodash/pick'
-import times from 'lodash/times'
-
 import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
-} from 'features/warehouse/constants/inventorization'
-import { InventorizationListItemModel } from 'features/warehouse/models'
+} from 'features/inventorizations/constants'
+import { InventorizationDTO } from 'features/warehouse/models'
+import pick from 'lodash/pick'
+import times from 'lodash/times'
 
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
-export const inventorizationListItem = (): InventorizationListItemModel => ({
+export const inventorizationListItem = (): InventorizationDTO => ({
   id: fakeId(),
   warehouses: [
     pick(warehouseFixtures.warehouse(), 'id', 'title'),

@@ -1,9 +1,5 @@
 import { getEquipmentsCatalogErrMsg } from 'features/equipments/api/constants'
-import { useLazyGetEquipmentCatalogListQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
-import {
-  GetEquipmentsCatalogRequest,
-  GetEquipmentsCatalogResponse,
-} from 'features/warehouse/models'
+import { useLazyGetEquipmentsCatalogQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
@@ -12,13 +8,15 @@ import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/ba
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { GetEquipmentsCatalogRequest, GetEquipmentsCatalogResponse } from '../api/schemas'
+
 type UseGetEquipmentCatalogListResult = CustomUseLazyQueryHookResult<
   MaybeUndefined<GetEquipmentsCatalogRequest>,
   GetEquipmentsCatalogResponse
 >
 
 export const useLazyGetEquipmentCatalogs = (): UseGetEquipmentCatalogListResult => {
-  const [trigger, state] = useLazyGetEquipmentCatalogListQuery()
+  const [trigger, state] = useLazyGetEquipmentsCatalogQuery()
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {

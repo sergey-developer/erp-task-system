@@ -1,11 +1,10 @@
+import { EquipmentNomenclaturesDTO } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
-
-import { EquipmentNomenclaturesModel } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 
 export type HistoryNomenclatureOperationsReportFormProps = {
-  nomenclatures: EquipmentNomenclaturesModel
+  nomenclatures: EquipmentNomenclaturesDTO
   nomenclaturesIsLoading: boolean
 
   onSubmit: (values: HistoryNomenclatureOperationsReportFormFields) => void

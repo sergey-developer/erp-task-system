@@ -5,7 +5,7 @@ import { buttonTestUtils, spinnerTestUtils } from '_tests_/utils'
 
 import { TestIdsEnum } from './constants'
 
-const getContainer = () => screen.getByTestId(TestIdsEnum.NomenclatureListPage)
+const getContainer = () => screen.getByTestId(TestIdsEnum.NomenclaturesPage)
 
 // search field
 const getSearchField = () => within(getContainer()).getByPlaceholderText('Поиск номенклатуры')

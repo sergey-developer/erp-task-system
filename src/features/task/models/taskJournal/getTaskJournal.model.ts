@@ -1,8 +1,8 @@
 import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'features/task/constants/taskJournal'
 import { TaskJournalModel } from 'features/task/models'
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
-export type GetTaskJournalRequest = TaskRequestArgs &
+export type GetTaskJournalRequest = RequestWithTask &
   Partial<{
     types: TaskJournalTypeEnum[]
     sourceSystems: TaskJournalSourceEnum[]

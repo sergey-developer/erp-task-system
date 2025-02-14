@@ -1,7 +1,6 @@
-import isBoolean from 'lodash/isBoolean'
-
-import { CheckInventorizationEquipmentsTableRow } from 'features/warehouse/components/CheckInventorizationEquipmentsTable/types'
 import { EquipmentCategoryEnum } from 'features/equipments/api/constants'
+import { CheckInventorizationEquipmentsTableRow } from 'features/inventorizations/components/CheckInventorizationEquipmentsTable/types'
+import isBoolean from 'lodash/isBoolean'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 

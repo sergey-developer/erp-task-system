@@ -1,4 +1,4 @@
-import { DiscrepanciesEquipmentTableProps } from 'features/warehouse/components/DiscrepanciesEquipmentTable/types'
+import { DiscrepanciesEquipmentTableProps } from 'features/inventorizations/components/DiscrepanciesEquipmentTable/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

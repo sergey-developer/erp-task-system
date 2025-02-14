@@ -1,8 +1,8 @@
-import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
 import {
   EquipmentRelocationHistoryDTO,
   EquipmentRelocationHistoryItemDTO,
-} from 'features/warehouse/models'
+} from 'features/equipments/api/dto'
+import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 

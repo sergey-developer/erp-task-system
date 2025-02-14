@@ -1,7 +1,7 @@
-import { SubTaskRequestArgs, TaskRequestArgs } from 'features/task/types'
+import { RequestWithSubTask, RequestWithTask } from 'features/task/types'
 
-export type ReworkSubTaskRequest = TaskRequestArgs &
-  SubTaskRequestArgs & {
+export type ReworkSubTaskRequest = RequestWithTask &
+  RequestWithSubTask & {
     returnReason: string
   }
 

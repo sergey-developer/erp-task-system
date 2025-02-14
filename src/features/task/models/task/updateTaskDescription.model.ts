@@ -1,6 +1,6 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
-export type UpdateTaskDescriptionRequest = TaskRequestArgs & {
+export type UpdateTaskDescriptionRequest = RequestWithTask & {
   internalDescription: string
 }
 

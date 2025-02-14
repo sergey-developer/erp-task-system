@@ -3,9 +3,9 @@ import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { IdType } from 'shared/types/common'
 
 import { EquipmentDTO } from '../dto'
-import { EquipmentRequestArgs } from '../types'
+import { RequestWithEquipment } from '../types'
 
-export type UpdateEquipmentRequest = EquipmentRequestArgs & {
+export type UpdateEquipmentRequest = RequestWithEquipment & {
   title: string
   nomenclature: IdType
   condition: EquipmentConditionEnum
@@ -28,4 +28,4 @@ export type UpdateEquipmentRequest = EquipmentRequestArgs & {
 
 export type UpdateEquipmentResponse = EquipmentDTO
 
-export type UpdateEquipmentBadRequestErrorResponse = Partial<UpdateEquipmentRequest>
+export type UpdateEquipmentBadRequestResponse = Partial<UpdateEquipmentRequest>

@@ -1,6 +1,5 @@
+import { ExecuteInventorizationDiscrepanciesProps } from 'features/inventorizations/components/ExecuteInventorizationDiscrepanciesTab/index'
 import pick from 'lodash/pick'
-
-import { ExecuteInventorizationDiscrepanciesProps } from 'features/warehouse/components/ExecuteInventorizationDiscrepanciesTab/index'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

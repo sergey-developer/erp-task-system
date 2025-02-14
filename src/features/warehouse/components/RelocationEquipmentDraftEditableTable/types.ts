@@ -1,5 +1,5 @@
 import {
-  InventorizationEquipmentListItemModel,
+  InventorizationEquipmentDTO,
   RelocationEquipmentListItemModel,
 } from 'features/warehouse/models'
 import { RelocationTaskInventorizationEquipment } from 'features/warehouse/types'
@@ -30,15 +30,15 @@ export type RelocationEquipmentDraftEditableTableProps = {
   currencies: CurrenciesCatalogDTO
   currenciesIsLoading: boolean
 
-  equipments: (InventorizationEquipmentListItemModel & {
+  equipments: (InventorizationEquipmentDTO & {
     relocationEquipment?: RelocationEquipmentListItemModel
   })[]
   equipmentsIsLoading: boolean
   equipmentIsLoading: boolean
   onChangeEquipment: (
-    value: InventorizationEquipmentListItemModel['id'],
+    value: InventorizationEquipmentDTO['id'],
     option: {
-      equipment: InventorizationEquipmentListItemModel['equipment']
+      equipment: InventorizationEquipmentDTO['equipment']
       relocationEquipment?: RelocationEquipmentListItemModel
     },
     path: NamePath,

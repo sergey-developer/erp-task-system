@@ -1,9 +1,8 @@
-import { NomenclatureGroupListItemModel } from 'features/warehouse/models'
+import { NomenclaturesGroupDTO } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
-export const nomenclatureGroupListItem =
-  (): NomenclatureGroupListItemModel => ({
-    id: fakeId(),
-    title: fakeWord(),
-  })
+export const nomenclatureGroupListItem = (): NomenclaturesGroupDTO => ({
+  id: fakeId(),
+  title: fakeWord(),
+})

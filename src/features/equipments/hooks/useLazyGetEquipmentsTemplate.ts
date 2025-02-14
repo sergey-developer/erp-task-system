@@ -1,9 +1,5 @@
-import { getEquipmentListTemplateErrMsg } from 'features/equipments/api/constants'
-import { useLazyGetEquipmentListTemplateQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
-import {
-  GetEquipmentsTemplateRequest,
-  GetEquipmentsTemplateResponse,
-} from 'features/warehouse/models'
+import { getEquipmentsTemplateErrMsg } from 'features/equipments/api/constants'
+import { useLazyGetEquipmentsTemplateQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { useCallback, useEffect } from 'react'
 
 import { CustomUseQueryStateResult } from 'lib/rtk-query/types'
@@ -14,17 +10,19 @@ import { base64ToBytes } from 'shared/utils/common'
 import { downloadFile } from 'shared/utils/file'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { GetEquipmentsTemplateRequest, GetEquipmentsTemplateResponse } from '../api/schemas'
+
 type UseLazyGetEquipmentListTemplateResult = [
   () => Promise<void>,
   CustomUseQueryStateResult<GetEquipmentsTemplateRequest, GetEquipmentsTemplateResponse>,
 ]
 
 export const useLazyGetEquipmentsTemplate = (): UseLazyGetEquipmentListTemplateResult => {
-  const [trigger, state] = useLazyGetEquipmentListTemplateQuery()
+  const [trigger, state] = useLazyGetEquipmentsTemplateQuery()
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getEquipmentListTemplateErrMsg)
+      showErrorNotification(getEquipmentsTemplateErrMsg)
     }
   }, [state.error])
 

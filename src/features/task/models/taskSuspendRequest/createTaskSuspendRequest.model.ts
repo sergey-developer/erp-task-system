@@ -3,11 +3,11 @@ import {
   SuspendReasonEnum,
 } from 'features/task/constants/taskSuspendRequest'
 import { SuspendRequestModel } from 'features/task/models'
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
 import { FieldsErrors } from 'shared/api/baseApi'
 
-export type CreateTaskSuspendRequestRequest = TaskRequestArgs & {
+export type CreateTaskSuspendRequestRequest = RequestWithTask & {
   comment: string
   suspendEndAt: string
   suspendReason: SuspendReasonEnum
@@ -17,7 +17,7 @@ export type CreateTaskSuspendRequestRequest = TaskRequestArgs & {
 
 export type CreateTaskSuspendRequestResponse = SuspendRequestModel
 
-export type CreateTaskSuspendRequestBadRequestErrorResponse = FieldsErrors<
+export type CreateTaskSuspendRequestBadRequestResponse = FieldsErrors<
   Pick<
     CreateTaskSuspendRequestRequest,
     | 'comment'

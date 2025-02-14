@@ -1,5 +1,5 @@
 import { GetInventorizationEquipmentResponse } from 'features/warehouse/models'
-import { EquipmentRequestArgs } from 'features/warehouse/types'
+import { RequestWithEquipment } from 'features/warehouse/types'
 import { makeGetInventorizationEquipmentUrl } from 'features/warehouse/utils/inventorization'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -7,10 +7,10 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const getInventorizationEquipmentMockFn = ({ equipmentId }: EquipmentRequestArgs) =>
+const getInventorizationEquipmentMockFn = ({ equipmentId }: RequestWithEquipment) =>
   getRequestMockFn(HttpMethodEnum.Get, makeGetInventorizationEquipmentUrl({ equipmentId }))
 
 export const mockGetInventorizationEquipmentSuccess = (
-  { equipmentId }: EquipmentRequestArgs,
+  { equipmentId }: RequestWithEquipment,
   options?: Partial<ResponseResolverOptions<GetInventorizationEquipmentResponse>>,
 ) => getSuccessMockFn(getInventorizationEquipmentMockFn({ equipmentId }), options)()

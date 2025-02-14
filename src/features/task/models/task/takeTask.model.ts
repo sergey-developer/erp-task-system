@@ -1,5 +1,5 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
-export type TakeTaskRequest = TaskRequestArgs
+export type TakeTaskRequest = RequestWithTask
 
 export type TakeTaskResponse = void

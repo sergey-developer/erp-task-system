@@ -1,3 +1,3 @@
 export enum TestIdsEnum {
-  EquipmentListPage = 'equipment-list-page',
+  EquipmentsPage = 'equipment-list-page',
 }

@@ -1,8 +1,8 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
 import { IdType } from 'shared/types/common'
 
-export type CreateTaskRegistrationFNRequestRequest = TaskRequestArgs & {
+export type CreateTaskRegistrationFNRequestRequest = RequestWithTask & {
   changeType: IdType
   attachments: IdType[]
 }

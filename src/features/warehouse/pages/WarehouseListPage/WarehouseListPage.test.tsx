@@ -10,7 +10,7 @@ import { renderWithRouter, setupApiTests } from '_tests_/utils'
 import WarehouseListPage from './index'
 
 setupApiTests()
-// todo: сделать тесты для сортировки как в EquipmentListPage
+// todo: сделать тесты для сортировки как в EquipmentsPage
 describe('Страница списка складов', () => {
   test('Таблица складов отображается корректно', async () => {
     const warehouseList = [warehouseFixtures.warehouseListItem()]

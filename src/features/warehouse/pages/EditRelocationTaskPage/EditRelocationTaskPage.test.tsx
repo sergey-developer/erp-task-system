@@ -1,9 +1,9 @@
 import { waitFor, within } from '@testing-library/react'
-import { UserPermissionsEnum } from 'features/users/api/constants'
 import {
-  getEquipmentListTemplateErrMsg,
+  getEquipmentsTemplateErrMsg,
   importEquipmentsByFileErrMsg,
 } from 'features/equipments/api/constants'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 import * as reactRouterDom from 'react-router-dom'
 
 import { LocationTypeEnum } from 'shared/catalogs/constants'
@@ -295,9 +295,7 @@ describe('Страница редактирования заявки на пер
       })
 
       await editRelocationTaskPageTestUtils.clickDownloadTemplateButton(user)
-      const notification = await notificationTestUtils.findNotification(
-        getEquipmentListTemplateErrMsg,
-      )
+      const notification = await notificationTestUtils.findNotification(getEquipmentsTemplateErrMsg)
 
       expect(notification).toBeInTheDocument()
     })

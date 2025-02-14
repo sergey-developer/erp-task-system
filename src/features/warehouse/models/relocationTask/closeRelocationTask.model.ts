@@ -1,5 +1,5 @@
 import { RelocationTaskModel } from 'features/warehouse/models'
-import { RelocationTaskRequestArgs } from 'features/warehouse/types'
+import { RequestWithRelocationTask } from 'features/warehouse/types'
 
-export type CloseRelocationTaskRequest = RelocationTaskRequestArgs
+export type CloseRelocationTaskRequest = RequestWithRelocationTask
 export type CloseRelocationTaskResponse = Pick<RelocationTaskModel, 'status'>

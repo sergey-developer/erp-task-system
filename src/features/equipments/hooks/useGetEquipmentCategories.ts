@@ -1,15 +1,13 @@
 import { getEquipmentCategoriesErrMsg } from 'features/equipments/api/constants'
 import { useGetEquipmentCategoriesQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
-import {
-  GetEquipmentCategoriesRequest,
-  GetEquipmentCategoriesResponse,
-} from 'features/warehouse/models'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { GetEquipmentCategoriesRequest, GetEquipmentCategoriesResponse } from '../api/schemas'
 
 type UseGetEquipmentCategoriesResult = CustomUseQueryHookResult<
   GetEquipmentCategoriesRequest,

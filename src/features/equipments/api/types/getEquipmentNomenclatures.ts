@@ -1,6 +1,5 @@
-import { EquipmentNomenclatureDTO } from 'features/warehouse/models'
+import { AntdPagination } from 'lib/antd/types'
 
-import { AntdPaginatedList } from 'lib/antd/types'
+import { EquipmentNomenclatureDTO } from '../dto'
 
-export type GetEquipmentNomenclaturesTransformedResponse =
-  AntdPaginatedList<EquipmentNomenclatureDTO>
+export type GetEquipmentNomenclaturesTransformedResponse = AntdPagination<EquipmentNomenclatureDTO>

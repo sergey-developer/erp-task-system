@@ -1,6 +1,5 @@
 import { getEquipmentErrMsg } from 'features/equipments/api/constants'
 import { useLazyGetEquipmentQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
-import { GetEquipmentRequest, GetEquipmentResponse } from 'features/warehouse/models'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
@@ -13,10 +12,9 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetEquipmentResult = CustomUseLazyQueryHookResult<
-  GetEquipmentRequest,
-  GetEquipmentResponse
->
+import { GetEquipmentRequest, GetEquipmentResponse } from '../api/schemas'
+
+type UseGetEquipmentResult = CustomUseLazyQueryHookResult<GetEquipmentRequest, GetEquipmentResponse>
 
 export const useLazyGetEquipment = (): UseGetEquipmentResult => {
   const [trigger, state] = useLazyGetEquipmentQuery()

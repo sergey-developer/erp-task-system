@@ -1,5 +1,5 @@
-import { InventorizationModel } from 'features/warehouse/models'
+import { InventorizationDetailDTO } from 'features/warehouse/models'
 
 export const mapInventorizationWarehousesTitles = (
-  warehouses: InventorizationModel['warehouses'],
+  warehouses: InventorizationDetailDTO['warehouses'],
 ): string => warehouses.map((w) => w.title).join(', ')

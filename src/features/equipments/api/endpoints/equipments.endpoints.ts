@@ -48,9 +48,9 @@ import {
   UpdateEquipmentResponse,
 } from '../schemas'
 import {
-  GetEquipmentAttachmentListTransformedResponse,
-  GetEquipmentListTransformedResponse,
+  GetEquipmentAttachmentsTransformedResponse,
   GetEquipmentNomenclaturesTransformedResponse,
+  GetEquipmentsTransformedResponse,
   ImportEquipmentsByFileTransformedResponse,
 } from '../types'
 
@@ -77,7 +77,7 @@ const equipmentsEndpoints = baseApi
           getPaginatedList(response, arg),
       }),
 
-      getEquipmentCatalogList: build.query<
+      getEquipmentsCatalog: build.query<
         GetEquipmentsCatalogResponse,
         MaybeUndefined<GetEquipmentsCatalogRequest>
       >({
@@ -90,8 +90,8 @@ const equipmentsEndpoints = baseApi
         }),
       }),
 
-      getEquipmentAttachmentList: build.query<
-        GetEquipmentAttachmentListTransformedResponse,
+      getEquipmentAttachments: build.query<
+        GetEquipmentAttachmentsTransformedResponse,
         GetEquipmentAttachmentsRequest
       >({
         query: ({ equipmentId, ...params }) => ({
@@ -103,7 +103,7 @@ const equipmentsEndpoints = baseApi
           getPaginatedList(response, arg),
       }),
 
-      getEquipmentList: build.query<GetEquipmentListTransformedResponse, GetEquipmentsRequest>({
+      getEquipments: build.query<GetEquipmentsTransformedResponse, GetEquipmentsRequest>({
         providesTags: (result, error) => (error ? [] : [EquipmentsEndpointsTagsEnum.Equipments]),
         query: (params) => ({
           url: EquipmentsEndpointsEnum.GetEquipments,
@@ -195,7 +195,7 @@ const equipmentsEndpoints = baseApi
         }),
       }),
 
-      getEquipmentListTemplate: build.query<
+      getEquipmentsTemplate: build.query<
         GetEquipmentsTemplateResponse,
         GetEquipmentsTemplateRequest
       >({
@@ -221,10 +221,10 @@ const equipmentsEndpoints = baseApi
 export const {
   useGetEquipmentNomenclaturesQuery,
 
-  useGetEquipmentCatalogListQuery,
-  useLazyGetEquipmentCatalogListQuery,
+  useGetEquipmentsCatalogQuery,
+  useLazyGetEquipmentsCatalogQuery,
 
-  useGetEquipmentAttachmentListQuery,
+  useGetEquipmentAttachmentsQuery,
 
   useGetEquipmentQuery,
   useLazyGetEquipmentQuery,
@@ -232,13 +232,13 @@ export const {
   useCreateEquipmentsMutation,
   useImportEquipmentsByFileMutation,
   useUpdateEquipmentMutation,
-  useGetEquipmentListQuery,
+  useGetEquipmentsQuery,
   useLazyGetEquipmentsXlsxQuery,
   useGetEquipmentRelocationHistoryQuery,
 
   useGetEquipmentCategoriesQuery,
 
-  useLazyGetEquipmentListTemplateQuery,
+  useLazyGetEquipmentsTemplateQuery,
 
   useCreateEquipmentTechnicalExaminationMutation,
 } = equipmentsEndpoints

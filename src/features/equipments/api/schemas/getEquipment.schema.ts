@@ -1,9 +1,9 @@
 import { IdType } from 'shared/types/common'
 
 import { EquipmentDetailDTO } from '../dto'
-import { EquipmentRequestArgs } from '../types'
+import { RequestWithEquipment } from '../types'
 
-export type GetEquipmentRequest = EquipmentRequestArgs &
+export type GetEquipmentRequest = RequestWithEquipment &
   Partial<{
     ignoreRelocationTask: IdType
   }>

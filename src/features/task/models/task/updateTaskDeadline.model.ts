@@ -1,8 +1,8 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
 import { MaybeNull } from 'shared/types/utils'
 
-export type UpdateTaskDeadlineRequest = TaskRequestArgs & {
+export type UpdateTaskDeadlineRequest = RequestWithTask & {
   internalOlaNextBreachTime: MaybeNull<string>
 }
 

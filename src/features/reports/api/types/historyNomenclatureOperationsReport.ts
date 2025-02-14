@@ -2,10 +2,10 @@ import { AxiosResponse } from 'axios'
 import { HistoryNomenclatureOperationsReportItemDTO } from 'features/reports/api/dto'
 import { GetHistoryNomenclatureOperationsReportXlsxResponse } from 'features/reports/api/schemas'
 
-import { AntdPaginatedList } from 'lib/antd/types'
+import { AntdPagination } from 'lib/antd/types'
 
 export type GetHistoryNomenclatureOperationsReportTransformedResponse =
-  AntdPaginatedList<HistoryNomenclatureOperationsReportItemDTO>
+  AntdPagination<HistoryNomenclatureOperationsReportItemDTO>
 
 export type GetHistoryNomenclatureOperationsReportXlsxTransformedResponse = {
   value: GetHistoryNomenclatureOperationsReportXlsxResponse

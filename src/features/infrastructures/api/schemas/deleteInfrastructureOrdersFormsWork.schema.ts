@@ -1,4 +1,4 @@
-import { InfrastructureWorkRequestArgs } from 'features/infrastructures/api/types'
+import { RequestWithInfrastructureWork } from 'features/infrastructures/api/types'
 
-export type DeleteInfrastructureOrdersFormsWorkRequest = InfrastructureWorkRequestArgs
+export type DeleteInfrastructureOrdersFormsWorkRequest = RequestWithInfrastructureWork
 export type DeleteInfrastructureOrdersFormsWorkResponse = void

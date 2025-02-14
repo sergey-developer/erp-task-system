@@ -61,7 +61,7 @@ export type CreateEquipmentsRequest = {
 
 export type CreateEquipmentsResponse = CreatedEquipmentsDTO
 
-export type CreateEquipmentsBadRequestErrorResponse = Partial<
+export type CreateEquipmentsBadRequestResponse = Partial<
   FieldsErrors<
     Pick<
       CreateEquipmentsRequest[number],

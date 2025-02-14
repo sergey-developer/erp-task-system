@@ -1,11 +1,10 @@
+import { InventorizationDetailDTO } from 'features/inventorizations/api/dto'
+import { ExecuteInventorizationPageLocationState } from 'features/inventorizations/types'
 import pick from 'lodash/pick'
-
-import { InventorizationModel } from 'features/warehouse/models'
-import { ExecuteInventorizationPageLocationState } from 'features/warehouse/types'
 
 export const makeExecuteInventorizationPageLocationState = (
   inventorization: Pick<
-    InventorizationModel,
+    InventorizationDetailDTO,
     'id' | 'executor' | 'status' | 'type' | 'deadlineAt' | 'createdAt' | 'createdBy' | 'warehouses'
   >,
 ): NonNullable<ExecuteInventorizationPageLocationState> => ({

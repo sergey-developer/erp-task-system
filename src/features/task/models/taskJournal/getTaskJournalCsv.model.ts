@@ -1,5 +1,5 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
-export type GetTaskJournalCsvRequest = TaskRequestArgs
+export type GetTaskJournalCsvRequest = RequestWithTask
 
 export type GetTaskJournalCsvResponse = string

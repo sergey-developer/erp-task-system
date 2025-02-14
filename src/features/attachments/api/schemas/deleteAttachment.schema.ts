@@ -1,4 +1,4 @@
-import { AttachmentRequestArgs } from 'features/attachments/api/types'
+import { RequestWithAttachment } from 'features/attachments/api/types'
 
-export type DeleteAttachmentRequest = AttachmentRequestArgs
+export type DeleteAttachmentRequest = RequestWithAttachment
 export type DeleteAttachmentResponse = void

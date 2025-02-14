@@ -1,8 +1,8 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
 import { IdType } from 'shared/types/common'
 
-export type ClassifyTaskWorkTypeRequest = TaskRequestArgs & {
+export type ClassifyTaskWorkTypeRequest = RequestWithTask & {
   workType: IdType
 }
 

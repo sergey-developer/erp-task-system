@@ -1,4 +1,4 @@
-import { InventorizationStatusEnum } from 'features/warehouse/constants/inventorization'
+import { InventorizationStatusEnum } from 'features/inventorizations/constants'
 
 export const checkInventorizationStatusIsNew = (status: InventorizationStatusEnum): boolean =>
   status === InventorizationStatusEnum.New

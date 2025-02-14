@@ -1,4 +1,4 @@
-import { EquipmentDetailsProps } from 'features/warehouse/components/EquipmentDetails/types'
+import { EquipmentDetailsProps } from 'features/equipments/components/EquipmentDetails/types'
 
 import { fakeInteger } from '_tests_/utils'
 

@@ -1,11 +1,11 @@
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
+import { ExecuteInventorizationPageLocationState } from 'features/inventorizations/types'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { userHasPermissions } from 'features/users/helpers'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import {
   CreateRelocationTaskDraftPageLocationState,
   EditRelocationTaskDraftPageLocationState,
-  ExecuteInventorizationPageLocationState,
 } from 'features/warehouse/types'
 import {
   checkInventorizationStatusIsInProgress,
@@ -30,23 +30,21 @@ const WarehouseListPage = React.lazy(() => import('features/warehouse/pages/Ware
 
 const WarehousePage = React.lazy(() => import('features/warehouse/pages/WarehousePage'))
 
-const NomenclatureListPage = React.lazy(
-  () => import('features/warehouse/pages/NomenclatureListPage'),
-)
+const NomenclaturesPage = React.lazy(() => import('features/nomenclatures/pages/NomenclaturesPage'))
 
 const ReserveCatalogListPage = React.lazy(
   () => import('features/warehouse/pages/ReserveCatalogListPage'),
 )
 
-const EquipmentNomenclatureListPage = React.lazy(
-  () => import('features/warehouse/pages/EquipmentNomenclatureListPage'),
+const EquipmentNomenclaturesPage = React.lazy(
+  () => import('features/nomenclatures/pages/EquipmentNomenclaturesPage'),
 )
 
 const EquipmentPageLayout = React.lazy(
-  () => import('features/warehouse/components/EquipmentPageLayout'),
+  () => import('features/equipments/components/EquipmentPageLayout'),
 )
 
-const EquipmentListPage = React.lazy(() => import('features/warehouse/pages/EquipmentListPage'))
+const EquipmentsPage = React.lazy(() => import('features/equipments/pages/EquipmentsPage'))
 
 const RelocationTasksPage = React.lazy(() => import('features/warehouse/pages/RelocationTasksPage'))
 
@@ -81,7 +79,7 @@ const AmountEquipmentSpentReportPage = React.lazy(
 )
 
 const HistoryNomenclatureOperationsReportPage = React.lazy(
-  () => import('features/warehouse/pages/HistoryNomenclatureOperationsReportPage'),
+  () => import('features/nomenclatures/pages/HistoryNomenclatureOperationsReportPage'),
 )
 
 const CreateDocumentsPackagePage = React.lazy(
@@ -89,11 +87,11 @@ const CreateDocumentsPackagePage = React.lazy(
 )
 
 const InventorizationsPage = React.lazy(
-  () => import('features/warehouse/pages/InventorizationsPage'),
+  () => import('features/inventorizations/pages/InventorizationsPage'),
 )
 
 const ExecuteInventorizationPage = React.lazy(
-  () => import('features/warehouse/pages/ExecuteInventorizationPage'),
+  () => import('features/inventorizations/pages/ExecuteInventorizationPage'),
 )
 
 export const warehousesRoutes: Readonly<RouteObject> = {
@@ -152,7 +150,7 @@ export const warehousesRoutes: Readonly<RouteObject> = {
               index: true,
               element: (
                 <ProtectedRoute
-                  component={<NomenclatureListPage />}
+                  component={<NomenclaturesPage />}
                   permitted={(currentUser) =>
                     userHasPermissions(currentUser, [UserPermissionsEnum.NomenclaturesRead])
                   }
@@ -191,11 +189,11 @@ export const warehousesRoutes: Readonly<RouteObject> = {
           children: [
             {
               index: true,
-              element: <EquipmentNomenclatureListPage />,
+              element: <EquipmentNomenclaturesPage />,
             },
             {
               path: WarehouseRouteEnum.Equipments,
-              element: <EquipmentListPage />,
+              element: <EquipmentsPage />,
               handle: {
                 crumb: ({ qs }: BreadCrumbData) => (
                   <Breadcrumb link={WarehouseRouteEnum.Equipments} text={qs.get('title') || ''} />

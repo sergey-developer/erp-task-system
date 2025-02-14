@@ -1,9 +1,9 @@
 import { GetRelocationTaskResponse } from 'features/warehouse/models'
-import { RelocationTaskRequestArgs } from 'features/warehouse/types'
+import { RequestWithRelocationTask } from 'features/warehouse/types'
 import { getRelocationTaskUrl } from 'features/warehouse/utils/relocationTask'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
   getForbiddenErrorMockFn,
@@ -14,25 +14,25 @@ import {
 } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const getRelocationTaskMockFn = ({ relocationTaskId }: RelocationTaskRequestArgs) =>
+const getRelocationTaskMockFn = ({ relocationTaskId }: RequestWithRelocationTask) =>
   getRequestMockFn(HttpMethodEnum.Get, getRelocationTaskUrl({ relocationTaskId }))
 
 export const mockGetRelocationTaskSuccess = (
-  { relocationTaskId }: RelocationTaskRequestArgs,
+  { relocationTaskId }: RequestWithRelocationTask,
   options?: Partial<ResponseResolverOptions<GetRelocationTaskResponse>>,
 ) => getSuccessMockFn(getRelocationTaskMockFn({ relocationTaskId }), options)()
 
 export const mockGetRelocationTaskNotFoundError = (
-  { relocationTaskId }: RelocationTaskRequestArgs,
+  { relocationTaskId }: RequestWithRelocationTask,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getNotFoundErrorMockFn(getRelocationTaskMockFn({ relocationTaskId }), options)()
 
 export const mockGetRelocationTaskForbiddenError = (
-  { relocationTaskId }: RelocationTaskRequestArgs,
+  { relocationTaskId }: RequestWithRelocationTask,
   options?: Partial<ResponseResolverOptions<ErrorData>>,
 ) => getForbiddenErrorMockFn(getRelocationTaskMockFn({ relocationTaskId }), options)()
 
 export const mockGetRelocationTaskServerError = (
-  { relocationTaskId }: RelocationTaskRequestArgs,
+  { relocationTaskId }: RequestWithRelocationTask,
   options?: Partial<ResponseResolverOptions>,
 ) => getServerErrorMockFn(getRelocationTaskMockFn({ relocationTaskId }), options)()

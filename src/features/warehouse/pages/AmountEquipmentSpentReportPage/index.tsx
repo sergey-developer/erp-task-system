@@ -36,7 +36,7 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
-const EquipmentDetails = React.lazy(() => import('features/warehouse/components/EquipmentDetails'))
+const EquipmentDetails = React.lazy(() => import('features/equipments/components/EquipmentDetails'))
 
 const RelocationTaskDetails = React.lazy(
   () => import('features/warehouse/components/RelocationTaskDetails'),

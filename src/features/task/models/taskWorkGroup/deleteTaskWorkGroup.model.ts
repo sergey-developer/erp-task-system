@@ -1,6 +1,6 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
-export type DeleteTaskWorkGroupRequest = TaskRequestArgs & {
+export type DeleteTaskWorkGroupRequest = RequestWithTask & {
   description: string
 }
 

@@ -1,5 +1,5 @@
 import { IdType } from 'shared/types/common'
 
-export type ReclassificationRequestArgs = {
+export type RequestWithReclassificationRequest = {
   reclassificationRequestId: IdType
 }

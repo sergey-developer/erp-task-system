@@ -1,3 +1,3 @@
-import { ImportedEquipmentsByFile } from '../../types/importedEquipmentsByFile'
+import { ImportedEquipmentsByFile } from '../../types'
 
 export type ImportEquipmentsByFileTransformedResponse = ImportedEquipmentsByFile

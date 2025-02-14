@@ -1,11 +1,8 @@
+import { EquipmentCategoryEnum, EquipmentConditionEnum } from 'features/equipments/api/constants'
 import {
   EquipmentByFileTableRow,
   EquipmentsByFileTableProps,
-} from 'features/warehouse/components/EquipmentsByFileTable/types'
-import {
-  EquipmentCategoryEnum,
-  EquipmentConditionEnum,
-} from 'features/equipments/api/constants'
+} from 'features/equipments/components/EquipmentsByFileTable/types'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 

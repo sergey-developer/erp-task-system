@@ -1,4 +1,4 @@
-import { EquipmentFormModalProps } from 'features/warehouse/components/EquipmentFormModal/types'
+import { EquipmentFormModalProps } from 'features/equipments/components/EquipmentFormModal/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 import { fakeWord } from '_tests_/utils'

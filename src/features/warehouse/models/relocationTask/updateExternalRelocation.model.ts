@@ -1,9 +1,9 @@
 import { ExternalRelocationStatusEnum } from 'features/warehouse/constants/relocationTask'
-import { RelocationTaskRequestArgs } from 'features/warehouse/types'
+import { RequestWithRelocationTask } from 'features/warehouse/types'
 
 import { RelocationTaskModel } from './relocationTask.model'
 
-export type UpdateExternalRelocationRequest = RelocationTaskRequestArgs &
+export type UpdateExternalRelocationRequest = RequestWithRelocationTask &
   Partial<{
     number: string
     status: ExternalRelocationStatusEnum

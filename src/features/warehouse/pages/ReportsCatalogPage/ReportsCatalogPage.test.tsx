@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import React from 'react'
 
 import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouse/pages/AmountEquipmentSpentReportPage/testUtils'
 import { employeesActionsReportPageTestUtils } from '_tests_/features/warehouse/pages/EmployeesActionsReportPage/testUtils'
@@ -12,9 +11,9 @@ import {
 } from '_tests_/mocks/api'
 import { renderWithRouter } from '_tests_/utils'
 
+import HistoryNomenclatureOperationsReportPage from '../../../nomenclatures/pages/HistoryNomenclatureOperationsReportPage'
 import AmountEquipmentSpentReportPage from '../AmountEquipmentSpentReportPage'
 import EmployeesActionsReportPage from '../EmployeesActionsReportPage'
-import HistoryNomenclatureOperationsReportPage from '../HistoryNomenclatureOperationsReportPage'
 import ReportsCatalogPage from './index'
 
 describe('Страница каталога отчетов', () => {

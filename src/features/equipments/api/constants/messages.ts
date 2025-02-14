@@ -7,7 +7,7 @@ export const getEquipmentsXlsxErrMsg = 'Ошибка выгрузки списк
 export const getEquipmentRelocationHistoryErrMsg =
   'Ошибка получения информации о перемещении оборудования'
 
-export const getEquipmentAttachmentListErrMsg = 'Ошибка получения изображений оборудования'
+export const getEquipmentAttachmentsErrMsg = 'Ошибка получения изображений оборудования'
 export const getEquipmentsCatalogErrMsg = 'Ошибка получения каталога оборудования'
 
 export const getEquipmentErrMsg = 'Ошибка получения оборудования'
@@ -17,7 +17,7 @@ export const createEquipmentsErrMsg = 'Ошибка создания списк�
 export const importEquipmentsByFileErrMsg = 'Ошибка загрузки оборудования из файла'
 export const updateEquipmentErrMsg = 'Ошибка редактирования оборудования'
 
-export const getEquipmentListTemplateErrMsg =
+export const getEquipmentsTemplateErrMsg =
   'Ошибка формирования шаблона для загрузки оборудования из файла'
 
 export const createEquipmentTechnicalExaminationErrMsg =

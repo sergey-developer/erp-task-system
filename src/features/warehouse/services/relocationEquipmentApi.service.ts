@@ -23,7 +23,7 @@ const relocationEquipmentApiService = baseApi.injectEndpoints({
       GetRelocationEquipmentAttachmentListRequest
     >({
       providesTags: (result, error) =>
-        error ? [] : [RelocationEquipmentApiTagEnum.RelocationEquipmentAttachmentList],
+        error ? [] : [RelocationEquipmentApiTagEnum.RelocationEquipmentAttachments],
       query: ({ relocationEquipmentId }) => ({
         url: getRelocationEquipmentAttachmentListUrl(relocationEquipmentId),
         method: HttpMethodEnum.Get,

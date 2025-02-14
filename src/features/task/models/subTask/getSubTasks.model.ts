@@ -1,6 +1,6 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
 import { SubTaskModel } from './subTask.model'
 
-export type GetSubTaskListRequest = TaskRequestArgs
+export type GetSubTaskListRequest = RequestWithTask
 export type GetSubTaskListResponse = SubTaskModel[]

@@ -5,7 +5,7 @@ import { FilterParams } from 'shared/types/filter'
 import { ExtendSortKey } from 'shared/types/sort'
 
 import { EquipmentDTO } from '../dto'
-import { EquipmentsFilterParams } from '../types'
+import { EquipmentsFilterRequestParams } from '../types'
 
 export type GetEquipmentsSortKey =
   | 'title'
@@ -20,7 +20,7 @@ export type GetEquipmentsSortKey =
 export type GetEquipmentsSortValue = ExtendSortKey<GetEquipmentsSortKey>
 
 export type GetEquipmentsRequest = PaginationRequestParams &
-  EquipmentsFilterParams &
+  EquipmentsFilterRequestParams &
   FilterParams &
   Partial<{
     nomenclature: IdType

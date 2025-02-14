@@ -1,8 +1,8 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
 import { InitiationReasonModel } from './initiationReason.model'
 
-export type CreateInitiationReasonRequest = TaskRequestArgs & {
+export type CreateInitiationReasonRequest = RequestWithTask & {
   title: string
   equipmentType: string
   malfunction: string

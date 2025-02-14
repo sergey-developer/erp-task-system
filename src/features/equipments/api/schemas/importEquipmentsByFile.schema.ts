@@ -1,6 +1,6 @@
-import { UploadFileRequestArgs } from 'shared/types/file'
+import { RequestWithFile } from 'shared/types/file'
 
 import { ImportedEquipmentsByFileDTO } from '../dto'
 
-export type ImportEquipmentsByFileRequest = UploadFileRequestArgs
+export type ImportEquipmentsByFileRequest = RequestWithFile
 export type ImportEquipmentsByFileResponse = ImportedEquipmentsByFileDTO

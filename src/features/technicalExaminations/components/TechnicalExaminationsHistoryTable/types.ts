@@ -1,11 +1,10 @@
 import { TableProps } from 'antd'
-
-import { TechnicalExaminationListItemModel } from 'features/technicalExaminations/models'
+import { TechnicalExaminationDTO } from 'features/technicalExaminations/api/dto'
 
 import { SetNonNullable } from 'shared/types/utils'
 
 export type TechnicalExaminationsHistoryTableItem = Pick<
-  TechnicalExaminationListItemModel,
+  TechnicalExaminationDTO,
   | 'id'
   | 'createdBy'
   | 'createdAt'

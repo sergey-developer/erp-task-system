@@ -1,8 +1,7 @@
+import { EquipmentsCatalogDTO } from 'features/warehouse/models'
+import { SimplifiedRelocationTaskEquipment } from 'features/warehouse/types/relocationTask/createSimplifiedRelocationTask'
 import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
-
-import { EquipmentsCatalogModel } from 'features/warehouse/models'
-import { SimplifiedRelocationTaskEquipment } from 'features/warehouse/types/relocationTask/createSimplifiedRelocationTask'
 
 export type RelocationEquipmentRow = Partial<SimplifiedRelocationTaskEquipment> & {
   rowId: number
@@ -24,7 +23,7 @@ export type RelocationEquipmentSimplifiedEditableTableProps = {
   equipmentIsLoading: boolean
   equipmentListIsLoading?: boolean
 
-  equipments: EquipmentsCatalogModel
+  equipments: EquipmentsCatalogDTO
   equipmentsIsLoading: boolean
 
   canCreateEquipment?: boolean

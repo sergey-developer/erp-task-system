@@ -1,11 +1,10 @@
+import {
+  InventorizationEquipmentDTO,
+  InventorizationEquipmentsDTO,
+} from 'features/inventorizations/api/dto'
 import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
-
-import {
-  InventorizationEquipmentListItemModel,
-  InventorizationEquipmentsModel,
-} from 'features/warehouse/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -14,7 +13,7 @@ import { fakeId, fakeIdStr, fakeInteger, fakeWord } from '_tests_/utils'
 export const inventorizationEquipmentListItem = (
   props?: Partial<
     Pick<
-      InventorizationEquipmentListItemModel,
+      InventorizationEquipmentDTO,
       | 'quantity'
       | 'isFilled'
       | 'hasDiff'
@@ -24,7 +23,7 @@ export const inventorizationEquipmentListItem = (
       | 'isLocationFactUndefined'
     >
   >,
-): InventorizationEquipmentListItemModel => ({
+): InventorizationEquipmentDTO => ({
   quantity: isUndefined(props?.quantity)
     ? { plan: fakeInteger(), fact: fakeInteger(), diff: fakeInteger() }
     : props!.quantity,
@@ -52,5 +51,5 @@ export const inventorizationEquipmentListItem = (
   id: fakeId(),
 })
 
-export const inventorizationEquipments = (length: number = 1): InventorizationEquipmentsModel =>
+export const inventorizationEquipments = (length: number = 1): InventorizationEquipmentsDTO =>
   times(length, () => inventorizationEquipmentListItem())

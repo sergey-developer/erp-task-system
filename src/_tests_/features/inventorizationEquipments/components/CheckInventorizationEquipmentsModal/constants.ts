@@ -1,4 +1,4 @@
-import { CheckInventorizationEquipmentsModalProps } from 'features/warehouse/components/CheckInventorizationEquipmentsModal'
+import { CheckInventorizationEquipmentsModalProps } from 'features/inventorizations/components/CheckInventorizationEquipmentsModal'
 
 export const props: CheckInventorizationEquipmentsModalProps = {
   open: true,

@@ -1,6 +1,5 @@
 import { getEquipmentErrMsg } from 'features/equipments/api/constants'
 import { useGetEquipmentQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
-import { GetEquipmentRequest, GetEquipmentResponse } from 'features/warehouse/models'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -8,15 +7,11 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetEquipmentResult = CustomUseQueryHookResult<
-  GetEquipmentRequest,
-  GetEquipmentResponse
->
+import { GetEquipmentRequest, GetEquipmentResponse } from '../api/schemas'
 
-type UseGetEquipmentOptions = CustomUseQueryOptions<
-  GetEquipmentRequest,
-  GetEquipmentResponse
->
+type UseGetEquipmentResult = CustomUseQueryHookResult<GetEquipmentRequest, GetEquipmentResponse>
+
+type UseGetEquipmentOptions = CustomUseQueryOptions<GetEquipmentRequest, GetEquipmentResponse>
 
 export const useGetEquipment = (
   args: GetEquipmentRequest,

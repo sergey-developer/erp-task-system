@@ -1,15 +1,13 @@
-import { getTechnicalExaminationsErrMsg } from 'features/technicalExaminations/constants'
-import {
-  GetTechnicalExaminationsRequest,
-  GetTechnicalExaminationsResponse,
-} from 'features/technicalExaminations/models'
-import { useGetTechnicalExaminationsQuery } from 'features/technicalExaminations/services/technicalExaminationsApi.service'
+import { getTechnicalExaminationsErrMsg } from 'features/technicalExaminations/api/constants'
+import { useGetTechnicalExaminationsQuery } from 'features/technicalExaminations/api/endpoints/technicalExaminations.endpoints'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { GetTechnicalExaminationsRequest, GetTechnicalExaminationsResponse } from '../api/schemas'
 
 type UseGetTechnicalExaminationsResult = CustomUseQueryHookResult<
   GetTechnicalExaminationsRequest,

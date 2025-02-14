@@ -1,9 +1,9 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
 import { ErrorResponse } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 
-export type UpdateTaskWorkGroupRequest = TaskRequestArgs & {
+export type UpdateTaskWorkGroupRequest = RequestWithTask & {
   workGroup: IdType
   workType?: IdType
   comment?: string
@@ -11,6 +11,6 @@ export type UpdateTaskWorkGroupRequest = TaskRequestArgs & {
 
 export type UpdateTaskWorkGroupResponse = void
 
-export type UpdateTaskWorkGroupBadRequestErrorResponse = ErrorResponse<
+export type UpdateTaskWorkGroupBadRequestResponse = ErrorResponse<
   Pick<UpdateTaskWorkGroupRequest, 'workGroup' | 'comment'>
 >

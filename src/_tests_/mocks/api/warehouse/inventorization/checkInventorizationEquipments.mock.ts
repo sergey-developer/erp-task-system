@@ -1,4 +1,4 @@
-import { InventorizationApiEnum } from 'features/warehouse/constants/inventorization'
+import { InventorizationsEndpointsEnum } from 'features/inventorizations/constants'
 import {
   CheckInventorizationEquipmentsBadRequestErrorResponse,
   CheckInventorizationEquipmentsResponse,
@@ -10,7 +10,10 @@ import { getBadRequestErrorMockFn, getRequestMockFn, getSuccessMockFn } from '_t
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const checkInventorizationEquipmentsMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Post, InventorizationApiEnum.CheckInventorizationEquipments)
+  getRequestMockFn(
+    HttpMethodEnum.Post,
+    InventorizationsEndpointsEnum.CheckInventorizationEquipments,
+  )
 
 export const mockCheckInventorizationEquipmentsSuccess = (
   options?: Partial<ResponseResolverOptions<CheckInventorizationEquipmentsResponse>>,

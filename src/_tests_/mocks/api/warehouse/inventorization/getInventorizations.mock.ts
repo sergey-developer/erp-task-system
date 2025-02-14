@@ -1,8 +1,8 @@
-import { InventorizationApiEnum } from 'features/warehouse/constants/inventorization'
+import { InventorizationsEndpointsEnum } from 'features/inventorizations/constants'
 import { GetInventorizationsResponse } from 'features/warehouse/models'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
   getForbiddenErrorMockFn,
@@ -13,7 +13,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getInventorizationsMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, InventorizationApiEnum.GetInventorizations)
+  getRequestMockFn(HttpMethodEnum.Get, InventorizationsEndpointsEnum.GetInventorizations)
 
 export const mockGetInventorizationsSuccess = (
   options?: Partial<ResponseResolverOptions<GetInventorizationsResponse>>,

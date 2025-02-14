@@ -1,9 +1,6 @@
+import { ExecuteInventorizationPageLocationState } from 'features/inventorizations/types'
+import { CreateRelocationTaskDraftPageLocationState } from 'features/warehouse/types'
 import pick from 'lodash/pick'
-
-import {
-  CreateRelocationTaskDraftPageLocationState,
-  ExecuteInventorizationPageLocationState,
-} from 'features/warehouse/types'
 
 export const makeCreateRelocationTaskDraftPageLocationState = ({
   inventorization,

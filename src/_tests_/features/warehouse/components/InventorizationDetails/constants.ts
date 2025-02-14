@@ -1,4 +1,4 @@
-import { InventorizationDetailsProps } from 'features/warehouse/components/InventorizationDetails/index'
+import { InventorizationDetailsProps } from 'features/inventorizations/components/InventorizationDetails/index'
 
 import { fakeId } from '_tests_/utils'
 

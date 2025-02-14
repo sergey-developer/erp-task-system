@@ -1,4 +1,4 @@
-import { EquipmentsCatalogModel } from 'features/warehouse/models'
+import { EquipmentsCatalogDTO } from 'features/warehouse/models'
 import { RelocationTaskEquipment } from 'features/warehouse/types'
 import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
@@ -24,7 +24,7 @@ export type RelocationEquipmentEditableTableProps = {
 
   relocationEquipmentsIsLoading?: boolean
 
-  equipments: EquipmentsCatalogModel
+  equipments: EquipmentsCatalogDTO
   equipmentsIsLoading: boolean
   equipmentIsLoading: boolean
 

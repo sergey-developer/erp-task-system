@@ -12,7 +12,7 @@ export const baseApi = createApi({
   tagTypes: [
     TaskApiTagEnum.Task,
     TaskApiTagEnum.Tasks,
-    RelocationEquipmentApiTagEnum.RelocationEquipmentAttachmentList,
+    RelocationEquipmentApiTagEnum.RelocationEquipmentAttachments,
     UsersEndpointsTagsEnum.UserActions,
   ],
   endpoints: () => ({}),

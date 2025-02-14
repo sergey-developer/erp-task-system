@@ -1,13 +1,14 @@
-import { getTechnicalExaminationPdfErrMsg } from 'features/technicalExaminations/constants'
-import { GetTechnicalExaminationPdfRequest } from 'features/technicalExaminations/models'
-import { useLazyGetTechnicalExaminationPdfQuery } from 'features/technicalExaminations/services/technicalExaminationsApi.service'
-import { GetTechnicalExaminationPdfTransformedResponse } from 'features/technicalExaminations/types'
+import { getTechnicalExaminationPdfErrMsg } from 'features/technicalExaminations/api/constants'
+import { useLazyGetTechnicalExaminationPdfQuery } from 'features/technicalExaminations/api/endpoints/technicalExaminations.endpoints'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
 import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { GetTechnicalExaminationPdfRequest } from '../api/schemas'
+import { GetTechnicalExaminationPdfTransformedResponse } from '../api/types'
 
 type UseGetTechnicalExaminationPdfResult = CustomUseLazyQueryHookResult<
   GetTechnicalExaminationPdfRequest,

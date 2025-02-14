@@ -4,6 +4,9 @@ import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { CreateEquipmentsByFileModalProps } from 'features/equipments/components/CreateEquipmentsByFileModal'
+import { EquipmentFormModalProps } from 'features/equipments/components/EquipmentFormModal/types'
+import { EquipmentByFileTableRow } from 'features/equipments/components/EquipmentsByFileTable/types'
 import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
 import {
   useCreateEquipment,
@@ -14,11 +17,10 @@ import {
   useLazyGetEquipment,
   useLazyGetEquipmentsTemplate,
 } from 'features/equipments/hooks'
+import { defaultGetNomenclaturesRequestParams } from 'features/nomenclatures/api/constants'
+import { useGetNomenclature, useGetNomenclatures } from 'features/nomenclatures/hooks'
 import { UserGroupCategoryEnum, UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/users/hooks'
-import { CreateEquipmentsByFileModalProps } from 'features/warehouse/components/CreateEquipmentsByFileModal'
-import { EquipmentFormModalProps } from 'features/warehouse/components/EquipmentFormModal/types'
-import { EquipmentByFileTableRow } from 'features/warehouse/components/EquipmentsByFileTable/types'
 import RelocationEquipmentEditableTable from 'features/warehouse/components/RelocationEquipmentEditableTable'
 import {
   ActiveEquipmentRow,
@@ -31,11 +33,9 @@ import {
   UserGroupOptionGroup,
 } from 'features/warehouse/components/RelocationTaskForm/types'
 import { makeUserGroupOptions } from 'features/warehouse/components/RelocationTaskForm/utils'
-import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
 import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
-import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useCreateRelocationTask } from 'features/warehouse/hooks/relocationTask'
 import { useGetWarehouse } from 'features/warehouse/hooks/warehouse'
 import {
@@ -85,7 +85,7 @@ import {
 } from './utils'
 
 const CreateEquipmentsByFileModal = React.lazy(
-  () => import('features/warehouse/components/CreateEquipmentsByFileModal'),
+  () => import('features/equipments/components/CreateEquipmentsByFileModal'),
 )
 
 const CreateAttachmentsModal = React.lazy(
@@ -93,7 +93,7 @@ const CreateAttachmentsModal = React.lazy(
 )
 
 const EquipmentFormModal = React.lazy(
-  () => import('features/warehouse/components/EquipmentFormModal'),
+  () => import('features/equipments/components/EquipmentFormModal'),
 )
 
 const { Text } = Typography
@@ -316,8 +316,8 @@ const CreateRelocationTaskPage: FC = () => {
 
   const { currentData: nomenclatures, isFetching: nomenclaturesIsFetching } = useGetNomenclatures(
     categoryIsConsumable
-      ? { ...defaultGetNomenclaturesParams, equipmentHasSerialNumber: false }
-      : defaultGetNomenclaturesParams,
+      ? { ...defaultGetNomenclaturesRequestParams, equipmentHasSerialNumber: false }
+      : defaultGetNomenclaturesRequestParams,
     {
       skip: (!createEquipmentModalOpened && !editEquipmentByFileModalOpened) || !selectedCategory,
     },

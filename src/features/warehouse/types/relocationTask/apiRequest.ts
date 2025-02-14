@@ -1,5 +1,5 @@
 import { IdType } from 'shared/types/common'
 
-export type RelocationTaskRequestArgs = {
+export type RequestWithRelocationTask = {
   relocationTaskId: IdType
 }

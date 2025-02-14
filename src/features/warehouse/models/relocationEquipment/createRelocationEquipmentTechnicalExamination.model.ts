@@ -1,9 +1,9 @@
-import { RelocationEquipmentRequestArgs } from 'features/warehouse/types'
+import { RequestWithRelocationEquipment } from 'features/warehouse/types'
 
 import { RelocationEquipmentTechnicalExaminationModel } from './relocationEquipmentTechnicalExamination.model'
 
 export type CreateRelocationEquipmentTechnicalExaminationRequest =
-  RelocationEquipmentRequestArgs & {
+  RequestWithRelocationEquipment & {
     malfunction: string
     hasMechanicalDamage: boolean
     restorationAction: string

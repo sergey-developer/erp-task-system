@@ -3,7 +3,7 @@ import { InfrastructuresEndpointsEnum } from 'features/infrastructures/api/const
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
 
-import { InfrastructureRequestArgs, InfrastructureWorkRequestArgs } from '../types'
+import { RequestWithInfrastructure, RequestWithInfrastructureWork } from '../types'
 
 export const makeUpdateInfrastructureOrderFormWorkEndpoint = (workId: IdType): string =>
   generateApiPath(InfrastructuresEndpointsEnum.UpdateInfrastructureOrderFormWork, {
@@ -12,19 +12,19 @@ export const makeUpdateInfrastructureOrderFormWorkEndpoint = (workId: IdType): s
 
 export const makeGetInfrastructureEndpoint = ({
   infrastructureId,
-}: InfrastructureRequestArgs): string =>
+}: RequestWithInfrastructure): string =>
   generateApiPath(InfrastructuresEndpointsEnum.GetInfrastructure, { id: String(infrastructureId) })
 
 export const makeUpdateInfrastructureEndpoint = ({
   infrastructureId,
-}: InfrastructureRequestArgs): string =>
+}: RequestWithInfrastructure): string =>
   generateApiPath(InfrastructuresEndpointsEnum.UpdateInfrastructure, {
     id: String(infrastructureId),
   })
 
 export const makeDeleteInfrastructureOrdersFormsWorkEndpoint = ({
   infrastructureWorkId,
-}: InfrastructureWorkRequestArgs): string =>
+}: RequestWithInfrastructureWork): string =>
   generateApiPath(InfrastructuresEndpointsEnum.DeleteInfrastructureOrdersFormsWork, {
     id: String(infrastructureWorkId),
   })

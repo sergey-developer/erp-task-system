@@ -45,4 +45,4 @@ export type CreateEquipmentResponse = Pick<
   availableQuantity: number
 }
 
-export type CreateEquipmentBadRequestErrorResponse = Partial<CreateEquipmentRequest>
+export type CreateEquipmentBadRequestResponse = Partial<CreateEquipmentRequest>

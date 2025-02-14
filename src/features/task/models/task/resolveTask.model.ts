@@ -1,10 +1,10 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 
-export type ResolveTaskRequest = TaskRequestArgs & {
+export type ResolveTaskRequest = RequestWithTask & {
   spentHours: number
   spentMinutes: number
   techResolution: string
@@ -15,7 +15,7 @@ export type ResolveTaskRequest = TaskRequestArgs & {
 
 export type ResolveTaskResponse = void
 
-export type ResolveTaskBadRequestErrorResponse = Omit<
+export type ResolveTaskBadRequestResponse = Omit<
   ErrorData<
     Pick<
       ResolveTaskRequest,

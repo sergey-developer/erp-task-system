@@ -1,18 +1,17 @@
-import pick from 'lodash/pick'
-
 import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
-} from 'features/warehouse/constants/inventorization'
-import { InventorizationModel } from 'features/warehouse/models'
+} from 'features/inventorizations/constants'
+import { InventorizationDetailDTO } from 'features/warehouse/models'
+import pick from 'lodash/pick'
 
 import userFixtures from '_tests_/fixtures/user'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/utils'
 
 export const inventorization = (
-  props?: Partial<Pick<InventorizationModel, 'status' | 'executor'>>,
-): InventorizationModel => ({
+  props?: Partial<Pick<InventorizationDetailDTO, 'status' | 'executor'>>,
+): InventorizationDetailDTO => ({
   status: props?.status || InventorizationStatusEnum.New,
   executor: props?.executor || pick(userFixtures.user(), 'id', 'fullName'),
 

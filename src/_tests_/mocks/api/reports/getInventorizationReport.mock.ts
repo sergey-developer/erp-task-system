@@ -1,16 +1,16 @@
 import { GetInventorizationReportResponse } from 'features/reports/api/dto'
 import { makeGetInventorizationReportEndpoint } from 'features/reports/helpers'
-import { InventorizationRequestArgs } from 'features/warehouse/types'
+import { RequestWithInventorization } from 'features/warehouse/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
-const getInventorizationReportMockFn = ({ inventorizationId }: InventorizationRequestArgs) =>
+const getInventorizationReportMockFn = ({ inventorizationId }: RequestWithInventorization) =>
   getRequestMockFn(HttpMethodEnum.Get, makeGetInventorizationReportEndpoint({ inventorizationId }))
 
 export const mockGetInventorizationReportSuccess = (
-  { inventorizationId }: InventorizationRequestArgs,
+  { inventorizationId }: RequestWithInventorization,
   options?: Partial<ResponseResolverOptions<GetInventorizationReportResponse>>,
 ) => getSuccessMockFn(getInventorizationReportMockFn({ inventorizationId }), options)()

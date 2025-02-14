@@ -1,4 +1,4 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
-export type DeleteTaskSuspendRequestRequest = TaskRequestArgs
+export type DeleteTaskSuspendRequestRequest = RequestWithTask
 export type DeleteTaskSuspendRequestResponse = void

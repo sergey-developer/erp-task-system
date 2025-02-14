@@ -4,7 +4,7 @@ import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
 
 export const getRelocationEquipmentAttachmentListUrl = (id: IdType): string =>
-  generateApiPath(RelocationEquipmentApiEnum.GetRelocationEquipmentAttachmentList, {
+  generateApiPath(RelocationEquipmentApiEnum.GetRelocationEquipmentAttachments, {
     id: String(id),
   })
 

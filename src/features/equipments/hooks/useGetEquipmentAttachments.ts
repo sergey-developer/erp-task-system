@@ -1,7 +1,5 @@
-import { getEquipmentAttachmentListErrMsg } from 'features/equipments/api/constants'
-import { useGetEquipmentAttachmentListQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
-import { GetEquipmentAttachmentsRequest } from 'features/warehouse/models'
-import { GetEquipmentAttachmentListTransformedResponse } from 'features/warehouse/types'
+import { getEquipmentAttachmentsErrMsg } from 'features/equipments/api/constants'
+import { useGetEquipmentAttachmentsQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -14,28 +12,31 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { GetEquipmentAttachmentsRequest } from '../api/schemas'
+import { GetEquipmentAttachmentsTransformedResponse } from '../api/types'
+
 type UseGetEquipmentAttachmentListResult = CustomUseQueryHookResult<
   GetEquipmentAttachmentsRequest,
-  GetEquipmentAttachmentListTransformedResponse
+  GetEquipmentAttachmentsTransformedResponse
 >
 
 type UseGetEquipmentAttachmentListOptions = CustomUseQueryOptions<
   GetEquipmentAttachmentsRequest,
-  GetEquipmentAttachmentListTransformedResponse
+  GetEquipmentAttachmentsTransformedResponse
 >
 
 export const useGetEquipmentAttachments = (
   args: GetEquipmentAttachmentsRequest,
   options?: UseGetEquipmentAttachmentListOptions,
 ): UseGetEquipmentAttachmentListResult => {
-  const state = useGetEquipmentAttachmentListQuery(args, options)
+  const state = useGetEquipmentAttachmentsQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentAttachmentListErrMsg)
+        showErrorNotification(getEquipmentAttachmentsErrMsg)
       }
     }
   }, [state.error])

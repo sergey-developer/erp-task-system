@@ -4,10 +4,10 @@ import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 
 import { EquipmentNomenclatureDTO } from '../dto'
-import { EquipmentsFilterParams } from '../types'
+import { EquipmentsFilterRequestParams } from '../types'
 
 export type GetEquipmentNomenclaturesRequest = PaginationRequestParams &
-  EquipmentsFilterParams &
+  EquipmentsFilterRequestParams &
   FilterParams &
   Partial<{
     warehouses: IdType[]

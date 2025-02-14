@@ -1,46 +1,50 @@
-import { InventorizationApiEnum } from 'features/warehouse/constants/inventorization'
+import { InventorizationsEndpointsEnum } from 'features/inventorizations/constants'
 import {
-  EquipmentRequestArgs,
-  InventorizationEquipmentRequestArgs,
-  InventorizationRequestArgs,
+  RequestWithEquipment,
+  RequestWithInventorization,
+  RequestWithInventorizationEquipment,
 } from 'features/warehouse/types'
 
 import { generateApiPath } from 'shared/utils/api'
 
 export const makeGetInventorizationUrl = ({
   inventorizationId,
-}: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
-  generateApiPath(InventorizationApiEnum.GetInventorization, { id: String(inventorizationId) })
+}: Pick<RequestWithInventorization, 'inventorizationId'>): string =>
+  generateApiPath(InventorizationsEndpointsEnum.GetInventorization, {
+    id: String(inventorizationId),
+  })
 
 export const makeCompleteInventorizationUrl = ({
   inventorizationId,
-}: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
-  generateApiPath(InventorizationApiEnum.CompleteInventorization, { id: String(inventorizationId) })
+}: Pick<RequestWithInventorization, 'inventorizationId'>): string =>
+  generateApiPath(InventorizationsEndpointsEnum.CompleteInventorization, {
+    id: String(inventorizationId),
+  })
 
 export const makeGetInventorizationEquipmentsUrl = ({
   inventorizationId,
-}: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
-  generateApiPath(InventorizationApiEnum.GetInventorizationEquipments, {
+}: Pick<RequestWithInventorization, 'inventorizationId'>): string =>
+  generateApiPath(InventorizationsEndpointsEnum.GetInventorizationEquipments, {
     inventorizationId: String(inventorizationId),
   })
 
 export const makeGetInventorizationEquipmentUrl = ({
   equipmentId,
-}: Pick<EquipmentRequestArgs, 'equipmentId'>): string =>
-  generateApiPath(InventorizationApiEnum.GetInventorizationEquipment, {
+}: Pick<RequestWithEquipment, 'equipmentId'>): string =>
+  generateApiPath(InventorizationsEndpointsEnum.GetInventorizationEquipment, {
     equipmentId: String(equipmentId),
   })
 
 export const makeCreateInventorizationEquipmentUrl = ({
   inventorizationId,
-}: Pick<InventorizationRequestArgs, 'inventorizationId'>): string =>
-  generateApiPath(InventorizationApiEnum.CreateInventorizationEquipment, {
+}: Pick<RequestWithInventorization, 'inventorizationId'>): string =>
+  generateApiPath(InventorizationsEndpointsEnum.CreateInventorizationEquipment, {
     inventorizationId: String(inventorizationId),
   })
 
 export const makeUpdateInventorizationEquipmentUrl = ({
   inventorizationEquipmentId,
-}: Pick<InventorizationEquipmentRequestArgs, 'inventorizationEquipmentId'>): string =>
-  generateApiPath(InventorizationApiEnum.UpdateInventorizationEquipment, {
+}: Pick<RequestWithInventorizationEquipment, 'inventorizationEquipmentId'>): string =>
+  generateApiPath(InventorizationsEndpointsEnum.UpdateInventorizationEquipment, {
     inventorizationEquipmentId: String(inventorizationEquipmentId),
   })

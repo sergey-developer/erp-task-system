@@ -1,4 +1,4 @@
-import { NomenclatureGroupFormModalProps } from 'features/warehouse/components/NomenclatureGroupFormModal/types'
+import { NomenclatureGroupFormModalProps } from 'features/nomenclatures/components/NomenclatureGroupFormModal/types'
 
 import { fakeWord } from '_tests_/utils'
 

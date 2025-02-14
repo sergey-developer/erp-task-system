@@ -1,9 +1,5 @@
 import { getEquipmentsCatalogErrMsg } from 'features/equipments/api/constants'
-import { useGetEquipmentCatalogListQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
-import {
-  GetEquipmentsCatalogRequest,
-  GetEquipmentsCatalogResponse,
-} from 'features/warehouse/models'
+import { useGetEquipmentsCatalogQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -11,6 +7,8 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { GetEquipmentsCatalogRequest, GetEquipmentsCatalogResponse } from '../api/schemas'
 
 type UseGetEquipmentsCatalogResult = CustomUseQueryHookResult<
   MaybeUndefined<GetEquipmentsCatalogRequest>,
@@ -26,7 +24,7 @@ export const useGetEquipmentsCatalog = (
   args?: GetEquipmentsCatalogRequest,
   options?: UseGetEquipmentsCatalogOptions,
 ): UseGetEquipmentsCatalogResult => {
-  const state = useGetEquipmentCatalogListQuery(args, options)
+  const state = useGetEquipmentsCatalogQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {

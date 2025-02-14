@@ -1,9 +1,9 @@
-import { OrderFormRequestArgs } from 'features/infrastructures/api/types'
+import { RequestWithOrderForm } from 'features/infrastructures/api/types'
 
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 
-export type CreateInfrastructureOrderFormAttachmentRequest = OrderFormRequestArgs & {
+export type CreateInfrastructureOrderFormAttachmentRequest = RequestWithOrderForm & {
   file: FileToSend
 }
 

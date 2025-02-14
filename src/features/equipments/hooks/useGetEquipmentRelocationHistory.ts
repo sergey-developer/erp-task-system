@@ -1,15 +1,16 @@
 import { getEquipmentRelocationHistoryErrMsg } from 'features/equipments/api/constants'
 import { useGetEquipmentRelocationHistoryQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
-import {
-  GetEquipmentRelocationHistoryRequest,
-  GetEquipmentRelocationHistoryResponse,
-} from 'features/warehouse/models'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import {
+  GetEquipmentRelocationHistoryRequest,
+  GetEquipmentRelocationHistoryResponse,
+} from '../api/schemas'
 
 type UseGetEquipmentRelocationHistoryResult = CustomUseQueryHookResult<
   GetEquipmentRelocationHistoryRequest,

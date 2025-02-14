@@ -1,24 +1,23 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Button, Form } from 'antd'
-import isUndefined from 'lodash/isUndefined'
-import random from 'lodash/random'
-import { DefaultOptionType } from 'rc-select/lib/Select'
-import { FC, useCallback, useMemo } from 'react'
-
-import { env } from 'configs/env'
-
 import {
   EquipmentConditionEnum,
   equipmentConditionOptions,
 } from 'features/equipments/api/constants'
-import { InventorizationEquipmentListItemModel } from 'features/warehouse/models'
+import { InventorizationEquipmentDTO } from 'features/warehouse/models'
 import { RelocationTaskDraftFormFields } from 'features/warehouse/types'
 import { makeInventorizationEquipmentsSelectOptions } from 'features/warehouse/utils/inventorization'
 import {
   checkRelocationTaskTypeIsReturnWrittenOff,
   checkRelocationTaskTypeIsWriteOff,
 } from 'features/warehouse/utils/relocationTask'
+import isUndefined from 'lodash/isUndefined'
+import random from 'lodash/random'
+import { DefaultOptionType } from 'rc-select/lib/Select'
+import { FC, useCallback, useMemo } from 'react'
+
+import { env } from 'configs/env'
 
 import { MinusCircleIcon } from 'components/Icons'
 
@@ -109,8 +108,8 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
         disabled: isLoading || equipmentsIsLoading,
         options: equipmentsOptions,
         onChange: (
-          value: InventorizationEquipmentListItemModel['id'],
-          option: { equipment: InventorizationEquipmentListItemModel['equipment'] },
+          value: InventorizationEquipmentDTO['id'],
+          option: { equipment: InventorizationEquipmentDTO['equipment'] },
         ) => onChangeEquipment(value, option, config.rowKey),
         showSearch: true,
         virtual: true,

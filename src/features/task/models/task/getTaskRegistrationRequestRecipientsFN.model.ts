@@ -1,8 +1,8 @@
-import { TaskRequestArgs } from 'features/task/types'
+import { RequestWithTask } from 'features/task/types'
 
 import { TaskRegistrationRequestRecipientsFNModel } from './taskRegistrationRequestRecipientsFN.model'
 
-export type GetTaskRegistrationRequestRecipientsFNRequest = TaskRequestArgs
+export type GetTaskRegistrationRequestRecipientsFNRequest = RequestWithTask
 
 export type GetTaskRegistrationRequestRecipientsFNResponse =
   TaskRegistrationRequestRecipientsFNModel

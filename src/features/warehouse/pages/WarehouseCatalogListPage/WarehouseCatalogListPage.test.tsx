@@ -1,9 +1,9 @@
-import React from 'react'
-
+import NomenclaturesPage from 'features/nomenclatures/pages/NomenclaturesPage'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import React from 'react'
 
-import { nomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/NomenclatureListPage/testUtils'
+import { nomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/NomenclaturesPage/testUtils'
 import { warehouseCatalogListPageTestUtils } from '_tests_/features/warehouse/pages/WarehouseCatalogListPage/testUtils'
 import { warehouseListPageTestUtils } from '_tests_/features/warehouse/pages/WarehouseListPage/testUtils'
 import userFixtures from '_tests_/fixtures/user'
@@ -15,7 +15,6 @@ import {
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { getStoreWithAuth, renderWithRouter } from '_tests_/utils'
 
-import NomenclatureListPage from '../NomenclatureListPage'
 import WarehouseListPage from '../WarehouseListPage'
 import WarehouseCatalogListPage from './index'
 
@@ -129,7 +128,7 @@ describe('Страница списка справочников складов'
           },
           {
             path: WarehouseRouteEnum.Nomenclatures,
-            element: <NomenclatureListPage />,
+            element: <NomenclaturesPage />,
           },
         ],
         { initialEntries: [WarehouseRouteEnum.WarehouseCatalogs], initialIndex: 0 },

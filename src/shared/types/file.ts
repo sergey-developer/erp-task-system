@@ -5,7 +5,7 @@ import { IdType } from './common'
 
 export type FileToSend = NonNullable<UploadFile['originFileObj']>
 
-export type UploadFileRequestArgs = {
+export type RequestWithFile = {
   file: FileToSend
 }
 

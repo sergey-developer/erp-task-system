@@ -1,4 +1,4 @@
-import { CreateEquipmentsByFileModalProps } from 'features/warehouse/components/CreateEquipmentsByFileModal/index'
+import { CreateEquipmentsByFileModalProps } from 'features/equipments/components/CreateEquipmentsByFileModal/index'
 
 export const props: CreateEquipmentsByFileModalProps = {
   open: true,

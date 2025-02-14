@@ -1,13 +1,13 @@
 import { RelocationTaskModel } from 'features/warehouse/models'
-import { RelocationTaskRequestArgs } from 'features/warehouse/types'
+import { RequestWithRelocationTask } from 'features/warehouse/types'
 
-export type ReturnRelocationTaskToReworkRequest = RelocationTaskRequestArgs & {
+export type ReturnRelocationTaskToReworkRequest = RequestWithRelocationTask & {
   reason: string
 }
 
 export type ReturnRelocationTaskToReworkResponse = Pick<RelocationTaskModel, 'status'>
 
-export type ReturnRelocationTaskToReworkBadRequestErrorResponse = Pick<
+export type ReturnRelocationTaskToReworkBadRequestResponse = Pick<
   ReturnRelocationTaskToReworkRequest,
   'reason'
 >

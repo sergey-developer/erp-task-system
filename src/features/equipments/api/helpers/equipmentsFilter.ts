@@ -1,4 +1,4 @@
-import { EquipmentsFilterFormFields } from 'features/warehouse/components/EquipmentFilter/types'
+import { EquipmentsFilterFormFields } from 'features/equipments/components/EquipmentFilter/types'
 
 import { LocationTypeEnum } from 'shared/catalogs/locations/api/constants'
 import { DATE_FILTER_FORMAT } from 'shared/constants/dateTime'
@@ -6,13 +6,13 @@ import { isFalse, isTrue } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { GetEquipmentNomenclaturesRequest } from '../schemas'
-import { EquipmentsFilterParams } from '../types'
+import { EquipmentsFilterRequestParams } from '../types'
 
 export const equipmentsFilterToRequestParams = ({
   createdAt,
   zeroQuantity,
   ...values
-}: EquipmentsFilterFormFields): EquipmentsFilterParams &
+}: EquipmentsFilterFormFields): EquipmentsFilterRequestParams &
   Pick<GetEquipmentNomenclaturesRequest, 'locationTypes'> => ({
   ...values,
   createdAtFrom: createdAt?.[0] ? formatDate(createdAt[0], DATE_FILTER_FORMAT) : undefined,

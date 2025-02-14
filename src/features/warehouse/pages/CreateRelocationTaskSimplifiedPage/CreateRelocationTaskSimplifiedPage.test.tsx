@@ -1,8 +1,7 @@
 import { waitFor, within } from '@testing-library/react'
-import * as reactRouterDom from 'react-router-dom'
-
+import { getEquipmentsTemplateErrMsg } from 'features/equipments/api/constants'
 import { UserPermissionsEnum } from 'features/users/api/constants'
-import { getEquipmentListTemplateErrMsg } from 'features/equipments/api/constants'
+import * as reactRouterDom from 'react-router-dom'
 
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
@@ -200,9 +199,7 @@ describe('Упрощенная страница создания заявки н
       })
 
       await createRelocationTaskSimplifiedPageTestUtils.clickDownloadTemplateButton(user)
-      const notification = await notificationTestUtils.findNotification(
-        getEquipmentListTemplateErrMsg,
-      )
+      const notification = await notificationTestUtils.findNotification(getEquipmentsTemplateErrMsg)
 
       expect(notification).toBeInTheDocument()
     })

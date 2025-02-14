@@ -1,6 +1,6 @@
 import { within } from '@testing-library/react'
+import ExecuteInventorizationPage from 'features/inventorizations/pages/ExecuteInventorizationPage'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import ExecuteInventorizationPage from 'features/warehouse/pages/ExecuteInventorizationPage'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'features/warehouse/utils/relocationTask'
 import * as reactRouterDom from 'react-router-dom'
 

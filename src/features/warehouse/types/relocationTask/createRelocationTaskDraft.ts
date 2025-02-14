@@ -1,11 +1,9 @@
 import { UploadFile } from 'antd/es/upload'
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { EquipmentDetailDTO } from 'features/equipments/api/dto'
+import { InventorizationEquipmentDTO } from 'features/inventorizations/api/dto'
+import { ExecuteInventorizationPageLocationState } from 'features/inventorizations/types'
 import { BaseRelocationTaskFormFields } from 'features/warehouse/components/RelocationTaskForm/types'
-import {
-  EquipmentDetailDTO,
-  InventorizationEquipmentListItemModel,
-} from 'features/warehouse/models'
-import { ExecuteInventorizationPageLocationState } from 'features/warehouse/types/inventorization'
 
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
@@ -18,7 +16,7 @@ export type CreateRelocationTaskDraftPageLocationState = Pick<
 export type RelocationTaskInventorizationEquipment = {
   rowId: number
   id: IdType
-  equipment: InventorizationEquipmentListItemModel['equipment']
+  equipment: InventorizationEquipmentDTO['equipment']
   condition: EquipmentConditionEnum
 
   quantity?: number

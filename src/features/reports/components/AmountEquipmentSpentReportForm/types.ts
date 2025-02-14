@@ -1,11 +1,11 @@
-import { EquipmentNomenclaturesModel } from 'features/warehouse/models'
+import { EquipmentNomenclaturesDTO } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
 import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
 import { IdType } from 'shared/types/common'
 
 export type AmountEquipmentSpentReportFormProps = {
-  nomenclatures: EquipmentNomenclaturesModel
+  nomenclatures: EquipmentNomenclaturesDTO
   nomenclaturesIsLoading: boolean
 
   locations: LocationsCatalogDTO

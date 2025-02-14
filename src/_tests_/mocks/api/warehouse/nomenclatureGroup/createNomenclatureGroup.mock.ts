@@ -1,11 +1,11 @@
+import { NomenclaturesGroupsEndpointsEnum } from 'features/nomenclatures/api/constants'
 import {
-  CreateNomenclatureGroupBadRequestErrorResponse,
+  CreateNomenclatureGroupBadRequestResponse,
   CreateNomenclatureGroupResponse,
 } from 'features/warehouse/models'
-import { NomenclatureGroupApiEnum } from 'features/warehouse/constants/nomenclatureGroup'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
   getBadRequestErrorMockFn,
@@ -17,14 +17,14 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const createNomenclatureGroupMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Post, NomenclatureGroupApiEnum.CreateNomenclatureGroup)
+  getRequestMockFn(HttpMethodEnum.Post, NomenclaturesGroupsEndpointsEnum.CreateNomenclatureGroup)
 
 export const mockCreateNomenclatureGroupSuccess = (
   options?: Partial<ResponseResolverOptions<CreateNomenclatureGroupResponse>>,
 ) => getSuccessMockFn(createNomenclatureGroupMockFn(), options)()
 
 export const mockCreateNomenclatureGroupBadRequestError = <
-  T extends CreateNomenclatureGroupBadRequestErrorResponse,
+  T extends CreateNomenclatureGroupBadRequestResponse,
 >(
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getBadRequestErrorMockFn(createNomenclatureGroupMockFn(), options)()

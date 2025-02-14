@@ -1,13 +1,12 @@
-import { generatePath } from 'react-router-dom'
-
 import { RelocationTaskApiEnum } from 'features/warehouse/constants/relocationTask'
-import { RelocationTaskRequestArgs } from 'features/warehouse/types'
+import { RequestWithRelocationTask } from 'features/warehouse/types'
+import { generatePath } from 'react-router-dom'
 
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
 import { appendSlashAtEnd } from 'shared/utils/string'
 
-export const getRelocationTaskUrl = ({ relocationTaskId }: RelocationTaskRequestArgs): string =>
+export const getRelocationTaskUrl = ({ relocationTaskId }: RequestWithRelocationTask): string =>
   generateApiPath(RelocationTaskApiEnum.GetRelocationTask, { id: String(relocationTaskId) })
 
 export const returnRelocationTaskToReworkUrl = (id: IdType): string =>
@@ -39,7 +38,7 @@ export const getRelocationTaskWaybillM15Url = (id: IdType): string =>
 
 export const getRelocationEquipmentListUrl = ({
   relocationTaskId,
-}: RelocationTaskRequestArgs): string =>
+}: RequestWithRelocationTask): string =>
   generateApiPath(RelocationTaskApiEnum.GetRelocationEquipmentList, {
     relocationTaskId: String(relocationTaskId),
   })
@@ -61,7 +60,7 @@ export const updateExternalRelocationUrl = (relocationTaskId: IdType): string =>
 
 export const makeMoveRelocationTaskDraftToWorkApiUrl = ({
   relocationTaskId,
-}: RelocationTaskRequestArgs): string =>
+}: RequestWithRelocationTask): string =>
   generateApiPath(RelocationTaskApiEnum.MoveRelocationTaskDraftToWork, {
     id: String(relocationTaskId),
   })

@@ -1,6 +1,5 @@
+import { ExecuteInventorizationReviseTabProps } from 'features/inventorizations/components/ExecuteInventorizationReviseTab'
 import pick from 'lodash/pick'
-
-import { ExecuteInventorizationReviseTabProps } from 'features/warehouse/components/ExecuteInventorizationReviseTab'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 

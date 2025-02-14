@@ -1,4 +1,4 @@
-import { InventorizationTableProps } from 'features/warehouse/components/InventorizationTable/types'
+import { InventorizationTableProps } from 'features/inventorizations/components/InventorizationTable/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

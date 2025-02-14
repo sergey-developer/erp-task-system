@@ -1,8 +1,6 @@
+import { ExecuteInventorizationPageLocationState } from 'features/inventorizations/types'
 import { RelocationTaskModel } from 'features/warehouse/models'
-import {
-  EditRelocationTaskDraftPageLocationState,
-  ExecuteInventorizationPageLocationState,
-} from 'features/warehouse/types'
+import { EditRelocationTaskDraftPageLocationState } from 'features/warehouse/types'
 
 type MakeEditRelocationTaskDraftPageLocationStateFnParams = Pick<
   ExecuteInventorizationPageLocationState,

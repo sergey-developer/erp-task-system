@@ -1,12 +1,11 @@
-import React from 'react'
-
+import InventorizationsPage from 'features/inventorizations/pages/InventorizationsPage'
+import EquipmentNomenclaturesPage from 'features/nomenclatures/pages/EquipmentNomenclaturesPage'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import EquipmentNomenclatureListPage from 'features/warehouse/pages/EquipmentNomenclatureListPage'
-import InventorizationsPage from 'features/warehouse/pages/InventorizationsPage'
 import RelocationTasksPage from 'features/warehouse/pages/RelocationTasksPage'
+import React from 'react'
 
-import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentNomenclatureListPage/testUtils'
+import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentNomenclaturesPage/testUtils'
 import { inventorizationsPageTestUtils } from '_tests_/features/warehouse/pages/InventorizationsPage/testUtils'
 import { relocationTasksPageTestUtils } from '_tests_/features/warehouse/pages/RelocationTasksPage/testUtils'
 import { reserveCatalogListPageTestUtils } from '_tests_/features/warehouse/pages/ReserveCatalogListPage/testUtils'
@@ -78,7 +77,7 @@ describe('Страница списка справочников запасов'
           },
           {
             path: WarehouseRouteEnum.EquipmentNomenclatures,
-            element: <EquipmentNomenclatureListPage />,
+            element: <EquipmentNomenclaturesPage />,
           },
         ],
         { initialEntries: [WarehouseRouteEnum.Reserves], initialIndex: 0 },

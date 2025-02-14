@@ -1,6 +1,6 @@
 import { UploadFile } from 'antd/es/upload'
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import { EquipmentByFileTableRow } from 'features/warehouse/components/EquipmentsByFileTable/types'
+import { EquipmentByFileTableRow } from 'features/equipments/components/EquipmentsByFileTable/types'
 import { EquipmentDetailDTO } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'

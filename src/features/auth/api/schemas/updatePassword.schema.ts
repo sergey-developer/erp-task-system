@@ -8,6 +8,6 @@ export type UpdatePasswordRequest = {
 
 export type UpdatePasswordResponse = void
 
-export type UpdatePasswordBadRequestErrorResponse = FieldsErrors<
+export type UpdatePasswordBadRequestResponse = FieldsErrors<
   Pick<ChangePasswordFormFields, 'password'>
 >
