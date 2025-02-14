@@ -9,22 +9,22 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { getUrgencyRateTypesCatalogErrMsg } from '../api/constants'
 import { useGetUrgencyRateTypesCatalogQuery } from '../api/endpoints/urgencyRateTypesCatalog.endpoints'
 import {
-  GetUrgencyRateTypesCatalogQueryArgs,
-  GetUrgencyRateTypesCatalogSuccessResponse,
+  GetUrgencyRateTypesCatalogRequest,
+  GetUrgencyRateTypesCatalogResponse,
 } from '../api/schemas'
 
 type UseGetUrgencyRateTypesCatalogResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetUrgencyRateTypesCatalogQueryArgs>,
-  GetUrgencyRateTypesCatalogSuccessResponse
+  MaybeUndefined<GetUrgencyRateTypesCatalogRequest>,
+  GetUrgencyRateTypesCatalogResponse
 >
 
 type UseGetUrgencyRateTypesCatalogOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetUrgencyRateTypesCatalogQueryArgs>,
-  GetUrgencyRateTypesCatalogSuccessResponse
+  MaybeUndefined<GetUrgencyRateTypesCatalogRequest>,
+  GetUrgencyRateTypesCatalogResponse
 >
 
 export const useGetUrgencyRateTypesCatalog = (
-  args?: GetUrgencyRateTypesCatalogQueryArgs,
+  args?: GetUrgencyRateTypesCatalogRequest,
   options?: UseGetUrgencyRateTypesCatalogOptions,
 ): UseGetUrgencyRateTypesCatalogResult => {
   const state = useGetUrgencyRateTypesCatalogQuery(args, options)

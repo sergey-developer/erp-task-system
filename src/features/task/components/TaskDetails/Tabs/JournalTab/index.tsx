@@ -2,7 +2,7 @@ import { useSetState } from 'ahooks'
 import { Button, Col, Radio, RadioGroupProps, Row, Select, SelectProps } from 'antd'
 import { TaskJournalSourceEnum } from 'features/task/constants/taskJournal'
 import { useGetTaskJournal, useLazyGetTaskJournalCsv } from 'features/task/hooks/taskJournal'
-import { GetTaskJournalQueryArgs } from 'features/task/models'
+import { GetTaskJournalRequest } from 'features/task/models'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC } from 'react'
 
@@ -25,7 +25,7 @@ export type JournalTabProps = {
 }
 
 const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
-  const [taskJournalQueryArgs, setTaskJournalQueryArgs] = useSetState<GetTaskJournalQueryArgs>({
+  const [taskJournalRequestArgs, setTaskJournalRequestArgs] = useSetState<GetTaskJournalRequest>({
     taskId,
   })
 
@@ -33,17 +33,17 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
     data: journal = [],
     isFetching: journalIsFetching,
     refetch: refetchJournal,
-  } = useGetTaskJournal(taskJournalQueryArgs)
+  } = useGetTaskJournal(taskJournalRequest)
 
   const [getJournalCsv, { isFetching: journalCsvIsFetching }] = useLazyGetTaskJournalCsv()
 
-  const onChangeType: SelectProps['onChange'] = (value: GetTaskJournalQueryArgs['types']) => {
-    setTaskJournalQueryArgs({ types: value })
+  const onChangeType: SelectProps['onChange'] = (value: GetTaskJournalRequest['types']) => {
+    setTaskJournalRequest({ types: value })
   }
 
   const selectProps = useSelectAll({
     showSelectAll: true,
-    value: taskJournalQueryArgs.types,
+    value: taskJournalRequest.types,
     onChange: onChangeType,
     options: journalTypeOptions,
   })
@@ -59,7 +59,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
   }
 
   const onChangeSourceSystem: RadioGroupProps['onChange'] = (event) => {
-    setTaskJournalQueryArgs({ sourceSystems: event.target.value })
+    setTaskJournalRequest({ sourceSystems: event.target.value })
   }
 
   return (
@@ -71,7 +71,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
               <Col>
                 <Radio.Group
                   onChange={onChangeSourceSystem}
-                  value={taskJournalQueryArgs.sourceSystems}
+                  value={taskJournalRequest.sourceSystems}
                 >
                   <Radio.Button>Все</Radio.Button>
 
@@ -89,7 +89,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
                 <Select
                   {...selectProps}
                   data-testid='type-filter-select'
-                  style={{ width: taskJournalQueryArgs.types?.length ? '100%' : 150 }}
+                  style={{ width: taskJournalRequest.types?.length ? '100%' : 150 }}
                   placeholder='Выберите тип'
                   mode='multiple'
                   filterOption={filterOptionBy('label')}

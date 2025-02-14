@@ -1,4 +1,4 @@
-import { GetMtsrReportBaseQueryArgs } from 'features/reports/api/types'
+import { GetMtsrReportBaseRequest } from 'features/reports/api/types'
 import { MtsrReportFormFields } from 'features/reports/components/MtsrReportForm/types'
 import moment from 'moment-timezone'
 
@@ -25,7 +25,7 @@ export const initialLevelObjects: Partial<Record<MtsrReportLevelEnum, IdType[]>>
   [MtsrReportLevelEnum.Users]: [],
 }
 
-export const getMtsrReportInitialQueryArgs: Omit<GetMtsrReportBaseQueryArgs, 'customers'> = {
+export const getMtsrReportInitialRequest: Omit<GetMtsrReportBaseRequest, 'customers'> = {
   dateStart: formatDate(mtsrReportFormInitialValues.period[0], DATE_FORMAT),
   dateEnd: formatDate(mtsrReportFormInitialValues.period[1], DATE_FORMAT),
   ordering: '-average_execution_time',

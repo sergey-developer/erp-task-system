@@ -4,7 +4,7 @@ import { MaybeApiNone } from 'shared/types/utils'
 import { UserPermissionsEnum } from '../constants'
 import { UsersDTO } from '../dto'
 
-export type GetUsersQueryArgs = Partial<{
+export type GetUsersRequest = Partial<{
   manager: IdType
   isManager: boolean
   allHierarchySubordinates: boolean
@@ -14,4 +14,4 @@ export type GetUsersQueryArgs = Partial<{
   resolveTasksWorkGroup: MaybeApiNone<IdType>
 }>
 
-export type GetUsersSuccessResponse = UsersDTO
+export type GetUsersResponse = UsersDTO

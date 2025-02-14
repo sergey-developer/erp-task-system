@@ -8,23 +8,20 @@ import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { getFaChangeTypesCatalogErrMsg } from '../api/constants'
-import {
-  GetFaChangeTypesCatalogQueryArgs,
-  GetFaChangeTypesCatalogSuccessResponse,
-} from '../api/schemas'
+import { GetFaChangeTypesCatalogRequest, GetFaChangeTypesCatalogResponse } from '../api/schemas'
 
 type UseGetFaChangeTypesCatalogResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetFaChangeTypesCatalogQueryArgs>,
-  GetFaChangeTypesCatalogSuccessResponse
+  MaybeUndefined<GetFaChangeTypesCatalogRequest>,
+  GetFaChangeTypesCatalogResponse
 >
 
 type UseGetFaChangeTypesCatalogOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetFaChangeTypesCatalogQueryArgs>,
-  GetFaChangeTypesCatalogSuccessResponse
+  MaybeUndefined<GetFaChangeTypesCatalogRequest>,
+  GetFaChangeTypesCatalogResponse
 >
 
 export const useGetFaChangeTypesCatalog = (
-  args?: GetFaChangeTypesCatalogQueryArgs,
+  args?: GetFaChangeTypesCatalogRequest,
   options?: UseGetFaChangeTypesCatalogOptions,
 ): UseGetFaChangeTypesCatalogResult => {
   const state = useGetFaChangeTypesCatalogQuery(args, options)

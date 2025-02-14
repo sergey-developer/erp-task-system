@@ -8,22 +8,22 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { getSubTaskTemplatesCatalogErrMsg } from '../api/constants'
 import { useGetSubTaskTemplatesCatalogQuery } from '../api/endpoints/subTaskTemplatesCatalog.endpoints'
 import {
-  GetSubTaskTemplatesCatalogQueryArgs,
-  GetSubTaskTemplatesCatalogSuccessResponse,
+  GetSubTaskTemplatesCatalogRequest,
+  GetSubTaskTemplatesCatalogResponse,
 } from '../api/schemas'
 
 type UseGetSubTaskTemplatesCatalogResult = CustomUseQueryHookResult<
-  GetSubTaskTemplatesCatalogQueryArgs,
-  GetSubTaskTemplatesCatalogSuccessResponse
+  GetSubTaskTemplatesCatalogRequest,
+  GetSubTaskTemplatesCatalogResponse
 >
 
 type UseGetSubTaskTemplatesCatalogOptions = CustomUseQueryOptions<
-  GetSubTaskTemplatesCatalogQueryArgs,
-  GetSubTaskTemplatesCatalogSuccessResponse
+  GetSubTaskTemplatesCatalogRequest,
+  GetSubTaskTemplatesCatalogResponse
 >
 
 export const useGetSubTaskTemplatesCatalog = (
-  args?: GetSubTaskTemplatesCatalogQueryArgs,
+  args?: GetSubTaskTemplatesCatalogRequest,
   opts?: UseGetSubTaskTemplatesCatalogOptions,
 ): UseGetSubTaskTemplatesCatalogResult => {
   const state = useGetSubTaskTemplatesCatalogQuery(args, opts)

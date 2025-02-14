@@ -1,5 +1,5 @@
 import { makeGetEmployeesActionsReportEndpoint } from 'features/reports/api/helpers'
-import { GetEmployeesActionsReportXlsxSuccessResponse } from 'features/reports/api/schemas'
+import { GetEmployeesActionsReportXlsxResponse } from 'features/reports/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ const getEmployeesActionsReportXlsxMockFn = (employeeId: IdType) =>
 
 export const mockGetEmployeesActionsReportXlsxSuccess = (
   employeeId: IdType,
-  options?: Partial<ResponseResolverOptions<GetEmployeesActionsReportXlsxSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetEmployeesActionsReportXlsxResponse>>,
 ) => getSuccessMockFn(getEmployeesActionsReportXlsxMockFn(employeeId), options)()
 
 export const mockGetEmployeesActionsReportXlsxForbiddenError = (

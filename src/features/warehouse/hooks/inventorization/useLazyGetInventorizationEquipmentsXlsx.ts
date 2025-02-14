@@ -1,11 +1,10 @@
+import { getInventorizationEquipmentsXlsxErrMsg } from 'features/warehouse/constants/inventorization'
+import { GetInventorizationEquipmentsXlsxRequest } from 'features/warehouse/models/inventorization'
+import { useLazyGetInventorizationEquipmentsXlsxQuery } from 'features/warehouse/services/inventorizationApi.service'
+import { GetInventorizationEquipmentsXlsxTransformedResponse } from 'features/warehouse/types'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
-
-import { getInventorizationEquipmentsXlsxErrMsg } from 'features/warehouse/constants/inventorization'
-import { GetInventorizationEquipmentsXlsxQueryArgs } from 'features/warehouse/models/inventorization'
-import { useLazyGetInventorizationEquipmentsXlsxQuery } from 'features/warehouse/services/inventorizationApi.service'
-import { GetInventorizationEquipmentsXlsxTransformedSuccessResponse } from 'features/warehouse/types'
 
 import {
   getErrorDetail,
@@ -17,8 +16,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseLazyGetInventorizationEquipmentsResult = CustomUseLazyQueryHookResult<
-  GetInventorizationEquipmentsXlsxQueryArgs,
-  GetInventorizationEquipmentsXlsxTransformedSuccessResponse
+  GetInventorizationEquipmentsXlsxRequest,
+  GetInventorizationEquipmentsXlsxTransformedResponse
 >
 
 export const useLazyGetInventorizationEquipmentsXlsx =

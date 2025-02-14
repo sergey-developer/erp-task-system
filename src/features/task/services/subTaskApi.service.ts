@@ -1,10 +1,10 @@
 import { SubTaskApiTriggerEnum } from 'features/task/constants/subTask'
 import { TaskApiTriggerEnum, TaskStatusEnum } from 'features/task/constants/task'
 import {
-  CancelSubTaskMutationArgs,
-  CancelSubTaskSuccessResponse,
-  ReworkSubTaskMutationArgs,
-  ReworkSubTaskSuccessResponse,
+  CancelSubTaskRequest,
+  CancelSubTaskResponse,
+  ReworkSubTaskRequest,
+  ReworkSubTaskResponse,
   SubTaskModel,
 } from 'features/task/models'
 import { cancelSubTaskUrl, reworkSubTaskUrl } from 'features/task/utils/subTask'
@@ -15,8 +15,8 @@ import { HttpMethodEnum } from 'shared/constants/http'
 const subTaskApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     [SubTaskApiTriggerEnum.CancelSubTask]: build.mutation<
-      CancelSubTaskSuccessResponse,
-      CancelSubTaskMutationArgs
+      CancelSubTaskResponse,
+      CancelSubTaskRequest
     >({
       query: ({ taskId, subTaskId, ...payload }) => ({
         url: cancelSubTaskUrl(subTaskId),
@@ -44,8 +44,8 @@ const subTaskApiService = baseApi.injectEndpoints({
       },
     }),
     [SubTaskApiTriggerEnum.ReworkSubTask]: build.mutation<
-      ReworkSubTaskSuccessResponse,
-      ReworkSubTaskMutationArgs
+      ReworkSubTaskResponse,
+      ReworkSubTaskRequest
     >({
       query: ({ taskId, subTaskId, ...payload }) => ({
         url: reworkSubTaskUrl(subTaskId),

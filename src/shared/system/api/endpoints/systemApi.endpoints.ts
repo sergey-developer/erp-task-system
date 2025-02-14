@@ -2,23 +2,23 @@ import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { SystemEndpointsEnum } from 'shared/system/api/constants/endpoints'
 import {
-  GetSystemInfoQueryArgs,
-  GetSystemInfoSuccessResponse,
+  GetSystemInfoRequest,
+  GetSystemInfoResponse,
 } from 'shared/system/api/dto/systemInfo'
 import {
-  GetSystemSettingsQueryArgs,
-  GetSystemSettingsSuccessResponse,
+  GetSystemSettingsRequest,
+  GetSystemSettingsResponse,
 } from 'shared/system/api/dto/systemSettings'
 
 const systemEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getSystemInfo: build.query<GetSystemInfoSuccessResponse, GetSystemInfoQueryArgs>({
+    getSystemInfo: build.query<GetSystemInfoResponse, GetSystemInfoRequest>({
       query: () => ({
         url: SystemEndpointsEnum.GetSystemInfo,
         method: HttpMethodEnum.Get,
       }),
     }),
-    getSystemSettings: build.query<GetSystemSettingsSuccessResponse, GetSystemSettingsQueryArgs>({
+    getSystemSettings: build.query<GetSystemSettingsResponse, GetSystemSettingsRequest>({
       query: () => ({
         url: SystemEndpointsEnum.GetSystemSettings,
         method: HttpMethodEnum.Get,

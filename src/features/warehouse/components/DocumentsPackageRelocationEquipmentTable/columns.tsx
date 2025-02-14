@@ -5,7 +5,7 @@ import React from 'react'
 import {
   equipmentConditionDict,
   EquipmentConditionEnum,
-} from 'features/warehouse/constants/equipment'
+} from 'features/equipments/api/constants'
 
 import {
   DocumentsPackageRelocationEquipmentTableItem,

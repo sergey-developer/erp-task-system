@@ -1,8 +1,7 @@
 import { Button, Col, Flex, Form, Popover, Row, Select, Typography } from 'antd'
 import { useForm } from 'antd/es/form/Form'
+import { EquipmentNomenclatureDTO } from 'features/warehouse/models'
 import React, { FC } from 'react'
-
-import { EquipmentNomenclatureListItemModel } from 'features/warehouse/models'
 
 import DatePicker from 'components/DatePicker'
 import { QuestionCircleIcon } from 'components/Icons'
@@ -42,7 +41,7 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
         labelAlign='left'
         rules={onlyRequiredRules}
       >
-        <Select<EquipmentNomenclatureListItemModel['id'], EquipmentNomenclatureListItemModel>
+        <Select<EquipmentNomenclatureDTO['id'], EquipmentNomenclatureDTO>
           data-testid='nomenclature-select'
           fieldNames={idAndTitleSelectFieldNames}
           disabled={nomenclaturesIsLoading}

@@ -1,4 +1,4 @@
-import { ResolveTaskSuccessResponse } from 'features/task/models'
+import { ResolveTaskResponse } from 'features/task/models'
 import { resolveTaskUrl } from 'features/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const resolveTaskMockFn = (taskId: IdType) =>
 
 export const mockResolveTaskSuccess = (
   taskId: IdType,
-  options?: Partial<ResponseResolverOptions<ResolveTaskSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<ResolveTaskResponse>>,
 ) => getSuccessMockFn(resolveTaskMockFn(taskId), options)()

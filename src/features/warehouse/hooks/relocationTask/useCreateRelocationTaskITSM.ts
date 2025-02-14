@@ -1,13 +1,12 @@
+import { createRelocationTaskITSMErrMsg } from 'features/warehouse/constants/relocationTask'
+import {
+  CreateRelocationTaskITSMRequest,
+  CreateRelocationTaskITSMResponse,
+} from 'features/warehouse/models'
+import { useCreateRelocationTaskITSMMutation } from 'features/warehouse/services/relocationTaskApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { createRelocationTaskITSMErrMsg } from 'features/warehouse/constants/relocationTask'
-import {
-  CreateRelocationTaskITSMMutationArgs,
-  CreateRelocationTaskITSMSuccessResponse,
-} from 'features/warehouse/models'
-import { useCreateRelocationTaskITSMMutation } from 'features/warehouse/services/relocationTaskApi.service'
 
 import {
   getErrorDetail,
@@ -19,8 +18,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateRelocationTaskITSMResult = CustomUseMutationResult<
-  CreateRelocationTaskITSMMutationArgs,
-  CreateRelocationTaskITSMSuccessResponse
+  CreateRelocationTaskITSMRequest,
+  CreateRelocationTaskITSMResponse
 >
 
 export const useCreateRelocationTaskITSM = (): UseCreateRelocationTaskITSMResult => {

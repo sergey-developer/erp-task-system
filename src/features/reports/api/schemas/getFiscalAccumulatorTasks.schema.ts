@@ -2,10 +2,10 @@ import { IdType } from 'shared/types/common'
 
 import { FiscalAccumulatorTasksDTO } from '../dto'
 
-export type GetFiscalAccumulatorTasksReportQueryArgs = Partial<{
+export type GetFiscalAccumulatorTasksReportRequest = Partial<{
   customers: IdType[]
   macroregions: IdType[]
   supportGroups: IdType[]
 }>
 
-export type GetFiscalAccumulatorTasksReportSuccessResponse = FiscalAccumulatorTasksDTO
+export type GetFiscalAccumulatorTasksReportResponse = FiscalAccumulatorTasksDTO

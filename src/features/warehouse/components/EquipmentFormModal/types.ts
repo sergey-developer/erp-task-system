@@ -1,11 +1,11 @@
 import { FormInstance, SelectProps, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import {
   CreateEquipmentsBadRequestErrorResponse,
   CustomersModel,
-  EquipmentCategoriesModel,
-  EquipmentCategoryListItemModel,
+  EquipmentCategoriesDTO,
+  EquipmentCategoryDTO,
   NomenclatureListItemModel,
   NomenclatureModel,
   NomenclaturesModel,
@@ -61,10 +61,10 @@ export type EquipmentFormModalProps = Required<
     onDeleteImage: NonNullable<UploadProps<FileResponse>['onRemove']>
     imageIsDeleting: boolean
 
-    categories: EquipmentCategoriesModel
+    categories: EquipmentCategoriesDTO
     categoriesIsLoading: boolean
-    category?: EquipmentCategoryListItemModel
-    onChangeCategory: (category: EquipmentCategoryListItemModel) => void
+    category?: EquipmentCategoryDTO
+    onChangeCategory: (category: EquipmentCategoryDTO) => void
 
     warehouses?: WarehousesModel
     warehousesIsLoading?: boolean

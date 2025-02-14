@@ -1,21 +1,18 @@
 import {
   NomenclatureGroupListItemModel,
-  GetNomenclatureGroupListQueryArgs,
+  GetNomenclatureGroupListRequest,
 } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 
-export type UpdateNomenclatureGroupMutationArgs = {
+export type UpdateNomenclatureGroupRequest = {
   id: IdType
   title: string
-  getListParams: GetNomenclatureGroupListQueryArgs
+  getListParams: GetNomenclatureGroupListRequest
 }
 
-export type UpdateNomenclatureGroupSuccessResponse = Pick<
-  NomenclatureGroupListItemModel,
-  'id' | 'title'
->
+export type UpdateNomenclatureGroupResponse = Pick<NomenclatureGroupListItemModel, 'id' | 'title'>
 
 export type UpdateNomenclatureGroupBadRequestErrorResponse = Partial<
-  Omit<UpdateNomenclatureGroupMutationArgs, 'getListParams' | 'id'>
+  Omit<UpdateNomenclatureGroupRequest, 'getListParams' | 'id'>
 >

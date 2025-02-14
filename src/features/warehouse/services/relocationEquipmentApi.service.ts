@@ -1,11 +1,11 @@
 import { RelocationEquipmentApiTagEnum } from 'features/warehouse/constants/relocationEquipment'
 import {
-  CreateRelocationEquipmentTechnicalExaminationMutationArgs,
-  CreateRelocationEquipmentTechnicalExaminationSuccessResponse,
-  GetRelocationEquipmentAttachmentListQueryArgs,
-  GetRelocationEquipmentAttachmentListSuccessResponse,
-  GetRelocationEquipmentTechnicalExaminationQueryArgs,
-  GetRelocationEquipmentTechnicalExaminationSuccessResponse,
+  CreateRelocationEquipmentTechnicalExaminationRequest,
+  CreateRelocationEquipmentTechnicalExaminationResponse,
+  GetRelocationEquipmentAttachmentListRequest,
+  GetRelocationEquipmentAttachmentListResponse,
+  GetRelocationEquipmentTechnicalExaminationRequest,
+  GetRelocationEquipmentTechnicalExaminationResponse,
 } from 'features/warehouse/models/relocationEquipment'
 import {
   createRelocationEquipmentTechnicalExaminationUrl,
@@ -19,8 +19,8 @@ import { HttpMethodEnum } from 'shared/constants/http'
 const relocationEquipmentApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getRelocationEquipmentAttachmentList: build.query<
-      GetRelocationEquipmentAttachmentListSuccessResponse,
-      GetRelocationEquipmentAttachmentListQueryArgs
+      GetRelocationEquipmentAttachmentListResponse,
+      GetRelocationEquipmentAttachmentListRequest
     >({
       providesTags: (result, error) =>
         error ? [] : [RelocationEquipmentApiTagEnum.RelocationEquipmentAttachmentList],
@@ -31,20 +31,20 @@ const relocationEquipmentApiService = baseApi.injectEndpoints({
     }),
 
     getRelocationEquipmentTechnicalExamination: build.query<
-      GetRelocationEquipmentTechnicalExaminationSuccessResponse,
-      GetRelocationEquipmentTechnicalExaminationQueryArgs
+      GetRelocationEquipmentTechnicalExaminationResponse,
+      GetRelocationEquipmentTechnicalExaminationRequest
     >({
       query: ({ relocationEquipmentId }) => ({
         url: getRelocationEquipmentTechnicalExaminationUrl(relocationEquipmentId),
         method: HttpMethodEnum.Get,
       }),
       transformResponse: (
-        baseQueryReturnValue: GetRelocationEquipmentTechnicalExaminationSuccessResponse,
+        baseQueryReturnValue: GetRelocationEquipmentTechnicalExaminationResponse,
       ) => baseQueryReturnValue || undefined,
     }),
     createRelocationEquipmentTechnicalExamination: build.mutation<
-      CreateRelocationEquipmentTechnicalExaminationSuccessResponse,
-      CreateRelocationEquipmentTechnicalExaminationMutationArgs
+      CreateRelocationEquipmentTechnicalExaminationResponse,
+      CreateRelocationEquipmentTechnicalExaminationRequest
     >({
       query: ({ relocationEquipmentId, ...data }) => ({
         url: createRelocationEquipmentTechnicalExaminationUrl(relocationEquipmentId),

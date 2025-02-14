@@ -1,4 +1,4 @@
-import { DeleteTaskWorkGroupSuccessResponse } from 'features/task/models'
+import { DeleteTaskWorkGroupResponse } from 'features/task/models'
 import { deleteTaskWorkGroupUrl } from 'features/task/utils/taskWorkGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const deleteTaskWorkGroupMockFn = (id: IdType) =>
 
 export const mockDeleteTaskWorkGroupSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<DeleteTaskWorkGroupSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<DeleteTaskWorkGroupResponse>>,
 ) => getSuccessMockFn(deleteTaskWorkGroupMockFn(id), options)()

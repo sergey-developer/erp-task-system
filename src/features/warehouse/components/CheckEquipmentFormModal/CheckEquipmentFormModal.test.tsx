@@ -4,7 +4,7 @@ import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
   EquipmentConditionEnum,
-} from 'features/warehouse/constants/equipment'
+} from 'features/equipments/api/constants'
 
 import { yesNoOptions } from 'shared/constants/selectField'
 import { validationMessages } from 'shared/constants/validation'

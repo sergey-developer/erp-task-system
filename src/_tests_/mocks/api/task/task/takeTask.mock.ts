@@ -1,4 +1,4 @@
-import { TakeTaskSuccessResponse } from 'features/task/models'
+import { TakeTaskResponse } from 'features/task/models'
 import { takeTaskUrl } from 'features/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -18,7 +18,7 @@ const takeTaskMockFn = (taskId: IdType) =>
 
 export const mockTakeTaskSuccess = (
   taskId: IdType,
-  options?: Partial<ResponseResolverOptions<TakeTaskSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<TakeTaskResponse>>,
 ) => getSuccessMockFn(takeTaskMockFn(taskId), options)()
 
 export const mockTakeTaskForbiddenError = (

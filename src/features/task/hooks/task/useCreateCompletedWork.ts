@@ -1,20 +1,19 @@
+import { createCompletedWorkErrMsg } from 'features/task/constants/task'
+import {
+  CreateTaskCompletedWorkRequest,
+  CreateTaskCompletedWorkResponse,
+} from 'features/task/models'
+import { useCreateCompletedWorkMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { createCompletedWorkErrMsg } from 'features/task/constants/task'
-import {
-  CreateTaskCompletedWorkMutationArgs,
-  CreateTaskCompletedWorkSuccessResponse,
-} from 'features/task/models'
-import { useCreateCompletedWorkMutation } from 'features/task/services/taskApi.service'
 
 import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateCompletedWorkResult = CustomUseMutationResult<
-  CreateTaskCompletedWorkMutationArgs,
-  CreateTaskCompletedWorkSuccessResponse
+  CreateTaskCompletedWorkRequest,
+  CreateTaskCompletedWorkResponse
 >
 
 export const useCreateCompletedWork = (): UseCreateCompletedWorkResult => {

@@ -4,7 +4,7 @@ import React, { FC, useCallback } from 'react'
 
 import { useGetInventorizationEquipments } from 'features/warehouse/hooks/inventorization'
 import {
-  GetInventorizationEquipmentsQueryArgs,
+  GetInventorizationEquipmentsRequest,
   InventorizationModel,
 } from 'features/warehouse/models'
 
@@ -33,7 +33,7 @@ const ExecuteInventorizationDiscrepanciesTab: FC<ExecuteInventorizationDiscrepan
   inventorization,
 }) => {
   const [getInventorizationEquipmentsParams, setGetInventorizationEquipmentsParams] =
-    useSetState<GetInventorizationEquipmentsQueryArgs>({
+    useSetState<GetInventorizationEquipmentsRequest>({
       inventorizationId: inventorization.id,
       isFilled: true,
       hasDiff: true,

@@ -1,6 +1,6 @@
 import { getUsersGroupsErrMsg } from 'features/users/api/constants'
 import { useGetUsersGroupsQuery } from 'features/users/api/endpoints/users.endpoints'
-import { GetUsersGroupsQueryArgs, GetUsersGroupsSuccessResponse } from 'features/users/api/schemas'
+import { GetUsersGroupsRequest, GetUsersGroupsResponse } from 'features/users/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -10,17 +10,17 @@ import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetUsersGroupsResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetUsersGroupsQueryArgs>,
-  GetUsersGroupsSuccessResponse
+  MaybeUndefined<GetUsersGroupsRequest>,
+  GetUsersGroupsResponse
 >
 
 type UseGetUsersGroupsOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetUsersGroupsQueryArgs>,
-  GetUsersGroupsSuccessResponse
+  MaybeUndefined<GetUsersGroupsRequest>,
+  GetUsersGroupsResponse
 >
 
 export const useGetUsersGroups = (
-  args?: GetUsersGroupsQueryArgs,
+  args?: GetUsersGroupsRequest,
   options?: UseGetUsersGroupsOptions,
 ): UseGetUsersGroupsResult => {
   const state = useGetUsersGroupsQuery(args, options)

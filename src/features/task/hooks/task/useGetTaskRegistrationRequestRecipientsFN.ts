@@ -4,8 +4,8 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getTaskRegistrationRequestRecipientsFNErrMsg } from 'features/task/constants/task'
 import {
-  GetTaskRegistrationRequestRecipientsFNQueryArgs,
-  GetTaskRegistrationRequestRecipientsFNSuccessResponse,
+  GetTaskRegistrationRequestRecipientsFNRequest,
+  GetTaskRegistrationRequestRecipientsFNResponse,
 } from 'features/task/models'
 import { useGetTaskRegistrationRequestRecipientsFNQuery } from 'features/task/services/taskApi.service'
 
@@ -13,17 +13,17 @@ import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/bas
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskRegistrationRequestRecipientsFNResult = CustomUseQueryHookResult<
-  GetTaskRegistrationRequestRecipientsFNQueryArgs,
-  GetTaskRegistrationRequestRecipientsFNSuccessResponse
+  GetTaskRegistrationRequestRecipientsFNRequest,
+  GetTaskRegistrationRequestRecipientsFNResponse
 >
 
 type UseGetTaskRegistrationRequestRecipientsFNOptions = CustomUseQueryOptions<
-  GetTaskRegistrationRequestRecipientsFNQueryArgs,
-  GetTaskRegistrationRequestRecipientsFNSuccessResponse
+  GetTaskRegistrationRequestRecipientsFNRequest,
+  GetTaskRegistrationRequestRecipientsFNResponse
 >
 
 export const useGetTaskRegistrationRequestRecipientsFN = (
-  args: GetTaskRegistrationRequestRecipientsFNQueryArgs,
+  args: GetTaskRegistrationRequestRecipientsFNRequest,
   options?: UseGetTaskRegistrationRequestRecipientsFNOptions,
 ): UseGetTaskRegistrationRequestRecipientsFNResult => {
   const state = useGetTaskRegistrationRequestRecipientsFNQuery(args, options)

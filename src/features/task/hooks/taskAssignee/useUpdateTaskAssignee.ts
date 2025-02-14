@@ -4,8 +4,8 @@ import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { updateTaskAssigneeErrMsg } from 'features/task/constants/taskAssignee'
 import {
-  UpdateTaskAssigneeMutationArgs,
-  UpdateTaskAssigneeSuccessResponse,
+  UpdateTaskAssigneeRequest,
+  UpdateTaskAssigneeResponse,
 } from 'features/task/models'
 import { useUpdateTaskAssigneeMutation } from 'features/task/services/taskApi.service'
 
@@ -19,8 +19,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseUpdateTaskAssigneeResult = CustomUseMutationResult<
-  UpdateTaskAssigneeMutationArgs,
-  UpdateTaskAssigneeSuccessResponse
+  UpdateTaskAssigneeRequest,
+  UpdateTaskAssigneeResponse
 >
 
 export const useUpdateTaskAssignee = (): UseUpdateTaskAssigneeResult => {

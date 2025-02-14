@@ -2,7 +2,7 @@ import { Form, Select } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
 
-import { equipmentConditionOptions } from 'features/warehouse/constants/equipment'
+import { equipmentConditionOptions } from 'features/equipments/api/constants'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'

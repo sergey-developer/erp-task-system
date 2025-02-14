@@ -7,11 +7,11 @@ import { getCustomersCatalogErrMsg } from 'shared/catalogs/customers/api/constan
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { useLazyGetCustomersCatalogQuery } from '../api/endpoints/customersCatalog.endpoints'
-import { GetCustomersCatalogQueryArgs, GetCustomersCatalogSuccessResponse } from '../api/schemas'
+import { GetCustomersCatalogRequest, GetCustomersCatalogResponse } from '../api/schemas'
 
 type UseLazyGetCustomersCatalogResult = CustomUseLazyQueryHookResult<
-  GetCustomersCatalogQueryArgs,
-  GetCustomersCatalogSuccessResponse
+  GetCustomersCatalogRequest,
+  GetCustomersCatalogResponse
 >
 
 export const useLazyGetCustomersCatalog = (): UseLazyGetCustomersCatalogResult => {

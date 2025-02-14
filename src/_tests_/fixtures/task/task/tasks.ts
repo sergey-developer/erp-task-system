@@ -6,7 +6,7 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'features/task/constants/task'
-import { GetTasksSuccessResponse, TaskListItemModel } from 'features/task/models'
+import { GetTasksResponse, TaskListItemModel } from 'features/task/models'
 
 import commonFixtures from '_tests_/fixtures/common'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
@@ -44,5 +44,5 @@ export const tasks = (length: number = 1): TaskListItemModel[] =>
   times(length, () => taskListItem())
 
 export const getTasksResponse = (
-  list: GetTasksSuccessResponse['results'],
-): GetTasksSuccessResponse => commonFixtures.paginatedListResponse(list)
+  list: GetTasksResponse['results'],
+): GetTasksResponse => commonFixtures.paginatedListResponse(list)

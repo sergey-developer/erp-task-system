@@ -1,6 +1,6 @@
 import {
   CreateNomenclatureGroupBadRequestErrorResponse,
-  CreateNomenclatureGroupSuccessResponse,
+  CreateNomenclatureGroupResponse,
 } from 'features/warehouse/models'
 import { NomenclatureGroupApiEnum } from 'features/warehouse/constants/nomenclatureGroup'
 
@@ -20,7 +20,7 @@ const createNomenclatureGroupMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, NomenclatureGroupApiEnum.CreateNomenclatureGroup)
 
 export const mockCreateNomenclatureGroupSuccess = (
-  options?: Partial<ResponseResolverOptions<CreateNomenclatureGroupSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CreateNomenclatureGroupResponse>>,
 ) => getSuccessMockFn(createNomenclatureGroupMockFn(), options)()
 
 export const mockCreateNomenclatureGroupBadRequestError = <

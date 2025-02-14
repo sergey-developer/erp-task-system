@@ -1,10 +1,10 @@
 import { useSetState } from 'ahooks'
+import { equipmentsFilterToRequestParams } from 'features/equipments/helpers'
+import { useGetEquipmentNomenclatures } from 'features/equipments/hooks'
 import EquipmentNomenclatureTable from 'features/warehouse/components/EquipmentNomenclatureTable'
 import { EquipmentNomenclatureTableProps } from 'features/warehouse/components/EquipmentNomenclatureTable/types'
 import { useEquipmentPageContext } from 'features/warehouse/components/EquipmentPageLayout/context'
-import { useGetEquipmentNomenclatures } from 'features/warehouse/hooks/equipment'
-import { GetEquipmentNomenclaturesQueryArgs } from 'features/warehouse/models'
-import { equipmentsFilterToParams } from 'features/warehouse/utils/equipment'
+import { GetEquipmentNomenclaturesRequest } from 'features/warehouse/models'
 import { FC, useCallback, useEffect } from 'react'
 
 import {
@@ -20,9 +20,9 @@ const EquipmentNomenclatureListPage: FC = () => {
   const context = useEquipmentPageContext()
 
   const [equipmentNomenclatureListParams, setEquipmentNomenclatureListParams] =
-    useSetState<GetEquipmentNomenclaturesQueryArgs>({
+    useSetState<GetEquipmentNomenclaturesRequest>({
       ...initialPaginationParams,
-      ...(context?.filter && equipmentsFilterToParams(context.filter)),
+      ...(context?.filter && equipmentsFilterToRequestParams(context.filter)),
       search: context?.search,
     })
 
@@ -36,7 +36,7 @@ const EquipmentNomenclatureListPage: FC = () => {
   useEffect(() => {
     if (context?.filter) {
       setEquipmentNomenclatureListParams({
-        ...equipmentsFilterToParams(context.filter),
+        ...equipmentsFilterToRequestParams(context.filter),
         offset: initialPaginationParams.offset,
       })
     }

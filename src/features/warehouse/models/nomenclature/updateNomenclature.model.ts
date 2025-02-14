@@ -1,9 +1,9 @@
-import { GetNomenclatureListQueryArgs, NomenclatureListItemModel } from 'features/warehouse/models'
+import { GetNomenclatureListRequest, NomenclatureListItemModel } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-export type UpdateNomenclatureMutationArgs = {
+export type UpdateNomenclatureRequest = {
   id: IdType
   title: string
   shortTitle: string
@@ -11,14 +11,14 @@ export type UpdateNomenclatureMutationArgs = {
   vendorCode: string
   measurementUnit: number
   country?: MaybeNull<number>
-  getListParams: GetNomenclatureListQueryArgs
+  getListParams: GetNomenclatureListRequest
 }
 
-export type UpdateNomenclatureSuccessResponse = Pick<
+export type UpdateNomenclatureResponse = Pick<
   NomenclatureListItemModel,
   'id' | 'title' | 'vendorCode'
 >
 
 export type UpdateNomenclatureBadRequestErrorResponse = Partial<
-  Omit<UpdateNomenclatureMutationArgs, 'getListParams' | 'id'>
+  Omit<UpdateNomenclatureRequest, 'getListParams' | 'id'>
 >

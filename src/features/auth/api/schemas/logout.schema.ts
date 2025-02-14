@@ -1,5 +1,5 @@
-export type LogoutMutationArgs = {
+export type LogoutRequest = {
   refresh: string
 }
 
-export type LogoutSuccessResponse = void
+export type LogoutResponse = void

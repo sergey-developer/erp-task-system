@@ -3,7 +3,7 @@ import { TaskTypeEnum } from 'features/task/constants/task'
 import { IdType } from 'shared/types/common'
 import { FileToSend } from 'shared/types/file'
 
-export type CreateTaskMutationArgs = {
+export type CreateTaskRequest = {
   olaNextBreachTime: string
   title: string
   description: string
@@ -24,4 +24,4 @@ export type CreateTaskMutationArgs = {
   parentTask?: IdType
 }
 
-export type CreateTaskSuccessResponse = { id: IdType }
+export type CreateTaskResponse = { id: IdType }

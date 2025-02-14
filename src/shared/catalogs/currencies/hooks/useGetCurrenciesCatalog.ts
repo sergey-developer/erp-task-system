@@ -7,20 +7,20 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { getCurrenciesCatalogErrMsg } from '../api/constants'
 import { useGetCurrenciesCatalogQuery } from '../api/endpoints/currenciesCatalog.endpoints'
-import { GetCurrenciesCatalogQueryArgs, GetCurrenciesCatalogSuccessResponse } from '../api/schemas'
+import { GetCurrenciesCatalogRequest, GetCurrenciesCatalogResponse } from '../api/schemas'
 
 type UseGetCurrenciesCatalogResult = CustomUseQueryHookResult<
-  GetCurrenciesCatalogQueryArgs,
-  GetCurrenciesCatalogSuccessResponse
+  GetCurrenciesCatalogRequest,
+  GetCurrenciesCatalogResponse
 >
 
 type UseGetCurrenciesCatalogOptions = CustomUseQueryOptions<
-  GetCurrenciesCatalogQueryArgs,
-  GetCurrenciesCatalogSuccessResponse
+  GetCurrenciesCatalogRequest,
+  GetCurrenciesCatalogResponse
 >
 
 export const useGetCurrenciesCatalog = (
-  args?: GetCurrenciesCatalogQueryArgs,
+  args?: GetCurrenciesCatalogRequest,
   options?: UseGetCurrenciesCatalogOptions,
 ): UseGetCurrenciesCatalogResult => {
   const state = useGetCurrenciesCatalogQuery(args, options)

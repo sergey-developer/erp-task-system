@@ -1,11 +1,11 @@
 import { NomenclatureListItemModel } from 'features/warehouse/models'
 
-import { PaginationParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
+import { PaginationRequestParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 import { FilterParams } from 'shared/types/filter'
 import { MaybeUndefined } from 'shared/types/utils'
 
-export type GetNomenclatureListQueryArgs = MaybeUndefined<
-  PaginationParams &
+export type GetNomenclatureListRequest = MaybeUndefined<
+  PaginationRequestParams &
     FilterParams &
     Partial<{
       group: number
@@ -13,4 +13,4 @@ export type GetNomenclatureListQueryArgs = MaybeUndefined<
     }>
 >
 
-export type GetNomenclatureListSuccessResponse = PaginationResponse<NomenclatureListItemModel>
+export type GetNomenclatureListResponse = PaginationResponse<NomenclatureListItemModel>

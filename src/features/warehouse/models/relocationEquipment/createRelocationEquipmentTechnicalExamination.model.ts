@@ -2,7 +2,7 @@ import { RelocationEquipmentRequestArgs } from 'features/warehouse/types'
 
 import { RelocationEquipmentTechnicalExaminationModel } from './relocationEquipmentTechnicalExamination.model'
 
-export type CreateRelocationEquipmentTechnicalExaminationMutationArgs =
+export type CreateRelocationEquipmentTechnicalExaminationRequest =
   RelocationEquipmentRequestArgs & {
     malfunction: string
     hasMechanicalDamage: boolean
@@ -11,5 +11,5 @@ export type CreateRelocationEquipmentTechnicalExaminationMutationArgs =
     conclusion?: string
   }
 
-export type CreateRelocationEquipmentTechnicalExaminationSuccessResponse =
+export type CreateRelocationEquipmentTechnicalExaminationResponse =
   RelocationEquipmentTechnicalExaminationModel

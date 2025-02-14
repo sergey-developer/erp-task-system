@@ -1,5 +1,5 @@
 import { TasksMapModel } from './tasksMap.model'
 
-export type GetTaskListMapQueryArgs = void
+export type GetTaskListMapRequest = void
 
-export type GetTaskListMapSuccessResponse = TasksMapModel
+export type GetTaskListMapResponse = TasksMapModel

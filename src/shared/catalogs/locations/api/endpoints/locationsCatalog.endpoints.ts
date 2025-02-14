@@ -1,8 +1,8 @@
 import { baseApi } from 'shared/api/baseApi'
 import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
-  GetLocationsCatalogQueryArgs,
-  GetLocationsCatalogSuccessResponse,
+  GetLocationsCatalogRequest,
+  GetLocationsCatalogResponse,
 } from 'shared/catalogs/locations/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -10,8 +10,8 @@ import { MaybeUndefined } from 'shared/types/utils'
 const locationsCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getLocationsCatalog: build.query<
-      GetLocationsCatalogSuccessResponse,
-      MaybeUndefined<GetLocationsCatalogQueryArgs>
+      GetLocationsCatalogResponse,
+      MaybeUndefined<GetLocationsCatalogRequest>
     >({
       query: (params) => ({
         url: CatalogEndpointsEnum.GetLocations,

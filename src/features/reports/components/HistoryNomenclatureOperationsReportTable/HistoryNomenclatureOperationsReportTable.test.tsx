@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { getRelocationTaskReportTableColValue } from 'features/reports/helpers'
-import { equipmentConditionDict } from 'features/warehouse/constants/equipment'
+import { equipmentConditionDict } from 'features/equipments/api/constants'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import { IdType } from 'shared/types/common'

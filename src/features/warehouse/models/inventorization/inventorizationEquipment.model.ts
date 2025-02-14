@@ -1,5 +1,5 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentCategoryModel } from 'features/warehouse/models'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { EquipmentCategoryDTO } from 'features/warehouse/models'
 
 import { CurrencyCatalogItemDTO } from 'shared/catalogs/api/dto/currencies'
 import { LocationCatalogItemDTO } from 'shared/catalogs/api/dto/locations'
@@ -10,7 +10,7 @@ export type InventorizationEquipmentModel = {
   id: IdType
   title: string
   condition: EquipmentConditionEnum
-  category: Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>
+  category: Pick<EquipmentCategoryDTO, 'id' | 'title' | 'code'>
   locationPlan: Pick<LocationCatalogItemDTO, 'id' | 'title'>
   quantity: {
     plan: number

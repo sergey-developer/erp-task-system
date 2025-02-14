@@ -1,9 +1,9 @@
-import { PaginationParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
+import { PaginationRequestParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 import { IdType } from 'shared/types/common'
 
 import { AmountEquipmentSpentReportItemDTO } from '../dto'
 
-export type GetAmountEquipmentSpentReportQueryArgs = PaginationParams &
+export type GetAmountEquipmentSpentReportRequest = PaginationRequestParams &
   Partial<{
     nomenclature: IdType
     relocateFrom: IdType
@@ -13,5 +13,5 @@ export type GetAmountEquipmentSpentReportQueryArgs = PaginationParams &
     categories: IdType[]
   }>
 
-export type GetAmountEquipmentSpentReportSuccessResponse =
+export type GetAmountEquipmentSpentReportResponse =
   PaginationResponse<AmountEquipmentSpentReportItemDTO>

@@ -1,5 +1,5 @@
 import { ReportsEndpointsEnum } from 'features/reports/api/constants'
-import { GetAmountEquipmentSpentReportSuccessResponse } from 'features/reports/api/dto'
+import { GetAmountEquipmentSpentReportResponse } from 'features/reports/api/dto'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -16,7 +16,7 @@ const getAmountEquipmentSpentReportMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, ReportsEndpointsEnum.GetAmountEquipmentSpentReport)
 
 export const mockGetAmountEquipmentSpentReportSuccess = (
-  options?: Partial<ResponseResolverOptions<GetAmountEquipmentSpentReportSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetAmountEquipmentSpentReportResponse>>,
 ) => getSuccessMockFn(getAmountEquipmentSpentReportMockFn(), options)()
 
 export const mockGetAmountEquipmentSpentReportForbiddenError = (

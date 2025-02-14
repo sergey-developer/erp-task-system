@@ -5,36 +5,36 @@ import {
   makeHistoryNomenclatureOperationsReportEndpoint,
 } from 'features/reports/api/helpers'
 import {
-  GetAmountEquipmentSpentReportQueryArgs,
-  GetAmountEquipmentSpentReportSuccessResponse,
-  GetAmountEquipmentSpentReportXlsxQueryArgs,
-  GetAmountEquipmentSpentReportXlsxSuccessResponse,
-  GetEmployeesActionsReportQueryArgs,
-  GetEmployeesActionsReportSuccessResponse,
-  GetEmployeesActionsReportXlsxQueryArgs,
-  GetEmployeesActionsReportXlsxSuccessResponse,
-  GetHistoryNomenclatureOperationsReportQueryArgs,
-  GetHistoryNomenclatureOperationsReportSuccessResponse,
-  GetHistoryNomenclatureOperationsReportXlsxQueryArgs,
-  GetInventorizationReportQueryArgs,
-  GetInventorizationReportSuccessResponse,
-  GetMacroregionsMtsrReportQueryArgs,
-  GetMacroregionsMtsrReportSuccessResponse,
-  GetSupportGroupsMtsrReportQueryArgs,
-  GetSupportGroupsMtsrReportSuccessResponse,
-  GetUsersMtsrReportQueryArgs,
-  GetUsersMtsrReportSuccessResponse,
-  GetWorkGroupsMtsrReportQueryArgs,
-  GetWorkGroupsMtsrReportSuccessResponse,
+  GetAmountEquipmentSpentReportRequest,
+  GetAmountEquipmentSpentReportResponse,
+  GetAmountEquipmentSpentReportXlsxRequest,
+  GetAmountEquipmentSpentReportXlsxResponse,
+  GetEmployeesActionsReportRequest,
+  GetEmployeesActionsReportResponse,
+  GetEmployeesActionsReportXlsxRequest,
+  GetEmployeesActionsReportXlsxResponse,
+  GetHistoryNomenclatureOperationsReportRequest,
+  GetHistoryNomenclatureOperationsReportResponse,
+  GetHistoryNomenclatureOperationsReportXlsxRequest,
+  GetInventorizationReportRequest,
+  GetInventorizationReportResponse,
+  GetMacroregionsMtsrReportRequest,
+  GetMacroregionsMtsrReportResponse,
+  GetSupportGroupsMtsrReportRequest,
+  GetSupportGroupsMtsrReportResponse,
+  GetUsersMtsrReportRequest,
+  GetUsersMtsrReportResponse,
+  GetWorkGroupsMtsrReportRequest,
+  GetWorkGroupsMtsrReportResponse,
 } from 'features/reports/api/schemas'
 import {
-  GetAmountEquipmentSpentReportTransformedSuccessResponse,
-  GetAmountEquipmentSpentReportXlsxTransformedSuccessResponse,
-  GetEmployeesActionsReportTransformedSuccessResponse,
-  GetEmployeesActionsReportXlsxTransformedSuccessResponse,
-  GetHistoryNomenclatureOperationsReportTransformedSuccessResponse,
-  GetHistoryNomenclatureOperationsReportXlsxTransformedSuccessResponse,
-  GetInventorizationReportTransformedSuccessResponse,
+  GetAmountEquipmentSpentReportTransformedResponse,
+  GetAmountEquipmentSpentReportXlsxTransformedResponse,
+  GetEmployeesActionsReportTransformedResponse,
+  GetEmployeesActionsReportXlsxTransformedResponse,
+  GetHistoryNomenclatureOperationsReportTransformedResponse,
+  GetHistoryNomenclatureOperationsReportXlsxTransformedResponse,
+  GetInventorizationReportTransformedResponse,
 } from 'features/reports/api/types'
 
 import { getPaginatedList } from 'lib/antd/utils'
@@ -46,20 +46,20 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 const reportsEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getEmployeesActionsReport: build.query<
-      GetEmployeesActionsReportTransformedSuccessResponse,
-      GetEmployeesActionsReportQueryArgs
+      GetEmployeesActionsReportTransformedResponse,
+      GetEmployeesActionsReportRequest
     >({
       query: ({ employeeId, ...params }) => ({
         url: makeGetEmployeesActionsReportEndpoint(employeeId),
         method: HttpMethodEnum.Get,
         params,
       }),
-      transformResponse: (response: GetEmployeesActionsReportSuccessResponse, meta, arg) =>
+      transformResponse: (response: GetEmployeesActionsReportResponse, meta, arg) =>
         getPaginatedList(response, arg),
     }),
     getEmployeesActionsReportXlsx: build.query<
-      GetEmployeesActionsReportXlsxTransformedSuccessResponse,
-      GetEmployeesActionsReportXlsxQueryArgs
+      GetEmployeesActionsReportXlsxTransformedResponse,
+      GetEmployeesActionsReportXlsxRequest
     >({
       query: ({ employeeId, ...params }) => ({
         url: makeGetEmployeesActionsReportEndpoint(employeeId),
@@ -67,27 +67,27 @@ const reportsEndpoints = baseApi.injectEndpoints({
         headers: { Accept: MimetypeEnum.Xlsx },
         params,
       }),
-      transformResponse: (value: GetEmployeesActionsReportXlsxSuccessResponse, meta) => ({
+      transformResponse: (value: GetEmployeesActionsReportXlsxResponse, meta) => ({
         value,
         meta,
       }),
     }),
 
     getAmountEquipmentSpentReport: build.query<
-      GetAmountEquipmentSpentReportTransformedSuccessResponse,
-      GetAmountEquipmentSpentReportQueryArgs
+      GetAmountEquipmentSpentReportTransformedResponse,
+      GetAmountEquipmentSpentReportRequest
     >({
       query: (params) => ({
         url: ReportsEndpointsEnum.GetAmountEquipmentSpentReport,
         method: HttpMethodEnum.Get,
         params,
       }),
-      transformResponse: (response: GetAmountEquipmentSpentReportSuccessResponse, meta, arg) =>
+      transformResponse: (response: GetAmountEquipmentSpentReportResponse, meta, arg) =>
         getPaginatedList(response, arg),
     }),
     getAmountEquipmentSpentReportXlsx: build.query<
-      GetAmountEquipmentSpentReportXlsxTransformedSuccessResponse,
-      GetAmountEquipmentSpentReportXlsxQueryArgs
+      GetAmountEquipmentSpentReportXlsxTransformedResponse,
+      GetAmountEquipmentSpentReportXlsxRequest
     >({
       query: (params) => ({
         url: ReportsEndpointsEnum.GetAmountEquipmentSpentReport,
@@ -95,15 +95,15 @@ const reportsEndpoints = baseApi.injectEndpoints({
         headers: { Accept: MimetypeEnum.Xlsx },
         params,
       }),
-      transformResponse: (value: GetAmountEquipmentSpentReportXlsxSuccessResponse, meta) => ({
+      transformResponse: (value: GetAmountEquipmentSpentReportXlsxResponse, meta) => ({
         value,
         meta,
       }),
     }),
 
     getHistoryNomenclatureOperationsReport: build.query<
-      GetHistoryNomenclatureOperationsReportTransformedSuccessResponse,
-      GetHistoryNomenclatureOperationsReportQueryArgs
+      GetHistoryNomenclatureOperationsReportTransformedResponse,
+      GetHistoryNomenclatureOperationsReportRequest
     >({
       query: ({ nomenclatureId, ...params }) => ({
         url: makeHistoryNomenclatureOperationsReportEndpoint(nomenclatureId),
@@ -111,14 +111,14 @@ const reportsEndpoints = baseApi.injectEndpoints({
         params,
       }),
       transformResponse: (
-        response: GetHistoryNomenclatureOperationsReportSuccessResponse,
+        response: GetHistoryNomenclatureOperationsReportResponse,
         meta,
         arg,
       ) => getPaginatedList(response, arg),
     }),
     getHistoryNomenclatureOperationsReportXlsx: build.query<
-      GetHistoryNomenclatureOperationsReportXlsxTransformedSuccessResponse,
-      GetHistoryNomenclatureOperationsReportXlsxQueryArgs
+      GetHistoryNomenclatureOperationsReportXlsxTransformedResponse,
+      GetHistoryNomenclatureOperationsReportXlsxRequest
     >({
       query: ({ nomenclatureId, ...params }) => ({
         url: makeHistoryNomenclatureOperationsReportEndpoint(nomenclatureId),
@@ -126,15 +126,15 @@ const reportsEndpoints = baseApi.injectEndpoints({
         headers: { Accept: MimetypeEnum.Xlsx },
         params,
       }),
-      transformResponse: (value: GetAmountEquipmentSpentReportXlsxSuccessResponse, meta) => ({
+      transformResponse: (value: GetAmountEquipmentSpentReportXlsxResponse, meta) => ({
         value,
         meta,
       }),
     }),
 
     getMacroregionsMtsrReport: build.query<
-      GetMacroregionsMtsrReportSuccessResponse,
-      GetMacroregionsMtsrReportQueryArgs
+      GetMacroregionsMtsrReportResponse,
+      GetMacroregionsMtsrReportRequest
     >({
       query: (params) => ({
         url: ReportsEndpointsEnum.GetMacroregionsMtsrReport,
@@ -143,8 +143,8 @@ const reportsEndpoints = baseApi.injectEndpoints({
       }),
     }),
     getSupportGroupsMtsrReport: build.query<
-      GetSupportGroupsMtsrReportSuccessResponse,
-      GetSupportGroupsMtsrReportQueryArgs
+      GetSupportGroupsMtsrReportResponse,
+      GetSupportGroupsMtsrReportRequest
     >({
       query: (params) => ({
         url: ReportsEndpointsEnum.GetSupportGroupsMtsrReport,
@@ -153,8 +153,8 @@ const reportsEndpoints = baseApi.injectEndpoints({
       }),
     }),
     getWorkGroupsMtsrReport: build.query<
-      GetWorkGroupsMtsrReportSuccessResponse,
-      GetWorkGroupsMtsrReportQueryArgs
+      GetWorkGroupsMtsrReportResponse,
+      GetWorkGroupsMtsrReportRequest
     >({
       query: (params) => ({
         url: ReportsEndpointsEnum.GetWorkGroupsMtsrReport,
@@ -162,7 +162,7 @@ const reportsEndpoints = baseApi.injectEndpoints({
         params,
       }),
     }),
-    getUsersMtsrReport: build.query<GetUsersMtsrReportSuccessResponse, GetUsersMtsrReportQueryArgs>(
+    getUsersMtsrReport: build.query<GetUsersMtsrReportResponse, GetUsersMtsrReportRequest>(
       {
         query: (params) => ({
           url: ReportsEndpointsEnum.GetUsersMtsrReport,
@@ -173,14 +173,14 @@ const reportsEndpoints = baseApi.injectEndpoints({
     ),
 
     getInventorizationReport: build.query<
-      GetInventorizationReportTransformedSuccessResponse,
-      GetInventorizationReportQueryArgs
+      GetInventorizationReportTransformedResponse,
+      GetInventorizationReportRequest
     >({
       query: ({ inventorizationId }) => ({
         url: makeGetInventorizationReportEndpoint({ inventorizationId }),
         method: HttpMethodEnum.Get,
       }),
-      transformResponse: (value: GetInventorizationReportSuccessResponse, meta) => ({
+      transformResponse: (value: GetInventorizationReportResponse, meta) => ({
         value,
         meta,
       }),

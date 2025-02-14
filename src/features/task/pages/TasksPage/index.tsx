@@ -40,8 +40,8 @@ import { useCreateTask, useGetTasks } from 'features/task/hooks/task'
 import { useGetTaskCounters } from 'features/task/hooks/taskCounters'
 import {
   FastFilterQueries,
-  GetTaskCountersQueryArgs,
-  GetTasksQueryArgs,
+  GetTaskCountersRequest,
+  GetTasksRequest,
   TaskCountersModel,
   TasksFilterQueries,
 } from 'features/task/models'
@@ -96,7 +96,7 @@ import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
 import {
   getInitialTasksFilterValues,
   getTasksByOlaNextBreachTime,
-  mapFilterToQueryArgs,
+  mapFilterToRequest,
 } from './utils'
 
 const TaskDetails = React.lazy(() => import('features/task/components/TaskDetails'))
@@ -110,7 +110,7 @@ const initialFastFilterByLines = TasksFastFilterEnum.AllLines
 
 const getFastFilterByLinesQueryValue = (
   value: FastFilterByLinesType,
-): GetTaskCountersQueryArgs['line'] => (value === TasksFastFilterEnum.AllLines ? undefined : value)
+): GetTaskCountersRequest['line'] => (value === TasksFastFilterEnum.AllLines ? undefined : value)
 
 const TasksPage: FC = () => {
   const { tableRef, drawerHeight } = useDrawerHeightByTable()
@@ -193,7 +193,7 @@ const TasksPage: FC = () => {
     ...tasksFiltersStorage,
   })
 
-  const [getTasksQueryArgs, setGetTasksQueryArgs] = useSetState<GetTasksQueryArgs>(() => ({
+  const [getTasksRequestArgs, setGetTasksRequestArgs] = useSetState<GetTasksRequest>(() => ({
     ...getInitialPaginationParams({ limit: DEFAULT_PAGE_SIZE }),
     ...tasksFiltersStorage,
     filters: [initialFastFilter],
@@ -208,7 +208,7 @@ const TasksPage: FC = () => {
   // todo: refactor to avoid setting undefined
   const triggerGetTasks = useCallback(
     (filterQueryParams: TasksFilterQueries | FastFilterQueries | FilterParams) => {
-      setGetTasksQueryArgs((prevState) => ({
+      setGetTasksRequest((prevState) => ({
         ...prevState,
         offset: 0,
         completeAtFrom: undefined,
@@ -226,7 +226,7 @@ const TasksPage: FC = () => {
         ...filterQueryParams,
       }))
     },
-    [setGetTasksQueryArgs],
+    [setGetTasksRequest],
   )
 
   const closeTask = useCallback(() => {
@@ -255,8 +255,8 @@ const TasksPage: FC = () => {
 
   useOnChangeUserStatus(onChangeUserStatus)
 
-  const [getTaskCountersQueryArgs, setGetTaskCountersQueryArgs] =
-    useSetState<GetTaskCountersQueryArgs>(tasksFiltersStorage || {})
+  const [getTaskCountersRequestArgs, setGetTaskCountersRequestArgs] =
+    useSetState<GetTaskCountersRequest>(tasksFiltersStorage || {})
 
   const [createTaskMutation, { isLoading: createTaskIsLoading }] = useCreateTask()
 
@@ -265,7 +265,7 @@ const TasksPage: FC = () => {
     isError: isGetTaskCountersError,
     isFetching: taskCountersIsFetching,
     refetch: refetchTaskCounters,
-  } = useGetTaskCounters(getTaskCountersQueryArgs, {
+  } = useGetTaskCounters(getTaskCountersRequest, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
@@ -275,7 +275,7 @@ const TasksPage: FC = () => {
     currentData: originalTasks,
     isFetching: tasksIsFetching,
     refetch: refetchTasks,
-  } = useGetTasks(getTasksQueryArgs, {
+  } = useGetTasks(getTasksRequest, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
@@ -344,7 +344,7 @@ const TasksPage: FC = () => {
   const onApplyFilter: TasksFilterProps['onSubmit'] = (values) => {
     setAppliedFilterType(FilterTypeEnum.Extended)
     setTasksFilterValues(values)
-    triggerGetTasks(mapFilterToQueryArgs(values))
+    triggerGetTasks(mapFilterToRequest(values))
     setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
     setFastFilter(undefined)
     setFastFilterByLines(undefined)
@@ -421,13 +421,13 @@ const TasksPage: FC = () => {
       onBaseFastFilterChange()
       setFastFilterByLines(value)
       triggerGetTasks({ filters: getFastFilterQueryValue(fastFilter, value) })
-      setGetTaskCountersQueryArgs({ line: getFastFilterByLinesQueryValue(value) })
+      setGetTaskCountersRequest({ line: getFastFilterByLinesQueryValue(value) })
     },
     [
       fastFilter,
       getFastFilterQueryValue,
       onBaseFastFilterChange,
-      setGetTaskCountersQueryArgs,
+      setGetTaskCountersRequest,
       triggerGetTasks,
     ],
   )
@@ -442,12 +442,12 @@ const TasksPage: FC = () => {
       setAppliedFilterType(prevAppliedFilterType)
 
       if (isEqual(prevAppliedFilterType, FilterTypeEnum.Extended)) {
-        triggerGetTasks(mapFilterToQueryArgs(tasksFilterValues))
+        triggerGetTasks(mapFilterToRequest(tasksFilterValues))
       }
 
       if (isEqual(prevAppliedFilterType, FilterTypeEnum.Fast)) {
         triggerGetTasks({ filters: getFastFilterQueryValue(fastFilter, fastFilterByLines) })
-        setGetTaskCountersQueryArgs({
+        setGetTaskCountersRequest({
           line: fastFilterByLines ? getFastFilterByLinesQueryValue(fastFilterByLines) : undefined,
         })
       }
@@ -476,19 +476,19 @@ const TasksPage: FC = () => {
       const { field, order } = isArray(sorter) ? sorter[0] : sorter
 
       if (field && (field as string) in sortableFieldToSortValues) {
-        setGetTasksQueryArgs({
+        setGetTasksRequest({
           sort: getSort(field as SortableField, order || SortOrderEnum.Ascend),
         })
       }
     },
-    [setGetTasksQueryArgs],
+    [setGetTasksRequest],
   )
 
   const onTablePagination = useCallback(
     (pagination: Parameters<TaskTableProps['onChange']>[0]) => {
-      setGetTasksQueryArgs(calculatePaginationParams(pagination))
+      setGetTasksRequest(calculatePaginationParams(pagination))
     },
-    [setGetTasksQueryArgs],
+    [setGetTasksRequest],
   )
 
   const onChangeTable = useCallback<TaskTableProps['onChange']>(
@@ -517,14 +517,12 @@ const TasksPage: FC = () => {
 
   const tasks = useMemo(() => {
     const extractedTasks = extractPaginationResults(originalTasks)
-    const columnKey = getTasksQueryArgs.sort
-      ? parseSort(getTasksQueryArgs.sort).columnKey
-      : undefined
+    const columnKey = getTasksRequest.sort ? parseSort(getTasksRequest.sort).columnKey : undefined
 
     return columnKey === 'olaNextBreachTime'
       ? getTasksByOlaNextBreachTime(extractedTasks)
       : extractedTasks
-  }, [originalTasks, getTasksQueryArgs.sort])
+  }, [originalTasks, getTasksRequest.sort])
 
   return (
     <>
@@ -617,7 +615,7 @@ const TasksPage: FC = () => {
         <Col span={24}>
           <TaskTable
             ref={tableRef}
-            sort={getTasksQueryArgs.sort}
+            sort={getTasksRequest.sort}
             onRow={onTableRow}
             dataSource={tasks}
             loading={tasksIsFetching}

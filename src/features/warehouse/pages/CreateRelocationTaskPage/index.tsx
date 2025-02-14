@@ -3,6 +3,17 @@ import { Button, Col, Form, FormProps, Modal, Row, Typography, Upload, UploadPro
 import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
+import {
+  useCreateEquipment,
+  useCreateEquipments,
+  useGetEquipmentCategories,
+  useGetEquipmentsCatalog,
+  useImportEquipmentsByFile,
+  useLazyGetEquipment,
+  useLazyGetEquipmentsTemplate,
+} from 'features/equipments/hooks'
 import { UserGroupCategoryEnum, UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/users/hooks'
 import { CreateEquipmentsByFileModalProps } from 'features/warehouse/components/CreateEquipmentsByFileModal'
@@ -20,29 +31,18 @@ import {
   UserGroupOptionGroup,
 } from 'features/warehouse/components/RelocationTaskForm/types'
 import { makeUserGroupOptions } from 'features/warehouse/components/RelocationTaskForm/utils'
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
 import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
-import {
-  useCreateEquipment,
-  useCreateEquipments,
-  useGetEquipmentCategories,
-  useGetEquipmentsCatalog,
-  useImportEquipmentsByFile,
-  useLazyGetEquipment,
-  useLazyGetEquipmentsTemplate,
-} from 'features/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useCreateRelocationTask } from 'features/warehouse/hooks/relocationTask'
 import { useGetWarehouse } from 'features/warehouse/hooks/warehouse'
 import {
   CreateEquipmentsBadRequestErrorResponse,
-  EquipmentCategoryListItemModel,
+  EquipmentCategoryDTO,
 } from 'features/warehouse/models'
 import { RelocationTaskFormFields } from 'features/warehouse/types'
-import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
 import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
@@ -134,7 +134,7 @@ const CreateRelocationTaskPage: FC = () => {
     { setTrue: setUserChangedNomenclature, setFalse: resetUserChangedNomenclature },
   ] = useBoolean(false)
 
-  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
+  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryDTO>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   const [createEquipmentsErrors, setCreateEquipmentsErrors] =

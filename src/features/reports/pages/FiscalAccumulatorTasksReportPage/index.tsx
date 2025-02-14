@@ -1,6 +1,6 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Col, Row } from 'antd'
-import { GetFiscalAccumulatorTasksReportQueryArgs } from 'features/reports/api/schemas'
+import { GetFiscalAccumulatorTasksReportRequest } from 'features/reports/api/schemas'
 import {
   FiscalAccumulatorTasksReportFilterFormFields,
   FiscalAccumulatorTasksReportFilterProps,
@@ -80,8 +80,8 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
     },
   )
 
-  const [fiscalAccumulatorTasksQueryArgs, setFiscalAccumulatorTasksQueryArgs] =
-    useSetState<GetFiscalAccumulatorTasksReportQueryArgs>(tasksFiltersStorage || {})
+  const [fiscalAccumulatorTasksRequestArgs, setFiscalAccumulatorTasksRequestArgs] =
+    useSetState<GetFiscalAccumulatorTasksReportRequest>(tasksFiltersStorage || {})
 
   const { currentData: customers = [], isFetching: customersIsFetching } = useGetCustomersCatalog(
     undefined,
@@ -105,7 +105,7 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
     currentData: fiscalAccumulatorTasks = [],
     isFetching: fiscalAccumulatorTasksIsFetching,
     refetch: refetchFiscalAccumulatorTasks,
-  } = useGetFiscalAccumulatorTasksReport(fiscalAccumulatorTasksQueryArgs, {
+  } = useGetFiscalAccumulatorTasksReport(fiscalAccumulatorTasksRequest, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
@@ -113,7 +113,7 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
 
   const handleApplyFilter: FiscalAccumulatorTasksReportFilterProps['onSubmit'] = (values) => {
     setFilterValues(values)
-    setFiscalAccumulatorTasksQueryArgs(values)
+    setFiscalAccumulatorTasksRequest(values)
     setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
     toggleOpenFilter()
   }
@@ -122,7 +122,7 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
     setFilterValues({ [filter.name]: undefined })
     if (filter.name === 'customers') setSelectedCustomers([])
     if (filter.name === 'macroregions') setSelectedMacroregions([])
-    setFiscalAccumulatorTasksQueryArgs({ [filter.name]: undefined })
+    setFiscalAccumulatorTasksRequest({ [filter.name]: undefined })
     setTasksFiltersStorage((prevState) => ({ ...prevState, [filter.name]: undefined }))
   }
 

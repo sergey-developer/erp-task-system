@@ -3,11 +3,11 @@ import { TaskCountersModel } from 'features/task/models'
 
 import { IdType } from 'shared/types/common'
 
-export type GetTaskCountersQueryArgs = Partial<{
+export type GetTaskCountersRequest = Partial<{
   customers: IdType[]
   macroregions: IdType[]
   supportGroups: IdType[]
   line: TasksFastFilterEnum.FirstLine | TasksFastFilterEnum.SecondLine
 }>
 
-export type GetTaskCountersSuccessResponse = TaskCountersModel
+export type GetTaskCountersResponse = TaskCountersModel

@@ -1,9 +1,8 @@
 import { TableProps } from 'antd'
-
-import { EquipmentListItemModel, GetEquipmentListSortValue } from 'features/warehouse/models'
+import { EquipmentDTO, GetEquipmentsSortValue } from 'features/warehouse/models'
 
 export type EquipmentTableItem = Pick<
-  EquipmentListItemModel,
+  EquipmentDTO,
   | 'id'
   | 'title'
   | 'serialNumber'
@@ -22,5 +21,5 @@ export type EquipmentTableProps = Required<
     'dataSource' | 'loading' | 'onChange' | 'onRow' | 'pagination'
   >
 > & {
-  sort?: GetEquipmentListSortValue
+  sort?: GetEquipmentsSortValue
 }

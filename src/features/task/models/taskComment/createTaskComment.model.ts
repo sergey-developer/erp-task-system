@@ -3,9 +3,9 @@ import { TaskRequestArgs } from 'features/task/types'
 
 import { FileToSend } from 'shared/types/file'
 
-export type CreateTaskCommentMutationArgs = TaskRequestArgs & {
+export type CreateTaskCommentRequest = TaskRequestArgs & {
   comment: string
   attachments?: FileToSend[]
 }
 
-export type CreateTaskCommentSuccessResponse = TaskCommentModel
+export type CreateTaskCommentResponse = TaskCommentModel

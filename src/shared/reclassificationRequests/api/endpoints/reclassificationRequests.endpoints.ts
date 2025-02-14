@@ -3,15 +3,15 @@ import { HttpMethodEnum } from 'shared/constants/http'
 
 import { makeCancelReclassificationRequestEndpoint } from '../helpers'
 import {
-  CancelReclassificationRequestMutationArgs,
-  CancelReclassificationRequestSuccessResponse,
+  CancelReclassificationRequestRequest,
+  CancelReclassificationRequestResponse,
 } from '../schemas'
 
 const reclassificationRequestsEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     cancelReclassificationRequest: build.mutation<
-      CancelReclassificationRequestSuccessResponse,
-      CancelReclassificationRequestMutationArgs
+      CancelReclassificationRequestResponse,
+      CancelReclassificationRequestRequest
     >({
       query: ({ reclassificationRequestId }) => ({
         url: makeCancelReclassificationRequestEndpoint(reclassificationRequestId),

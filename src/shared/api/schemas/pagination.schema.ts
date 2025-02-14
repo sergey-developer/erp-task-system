@@ -7,7 +7,7 @@ export type PaginationResponse<T> = {
   results: T[]
 }
 
-export type PaginationParams = Partial<{
+export type PaginationRequestParams = Partial<{
   limit: number
   offset: number
 }>

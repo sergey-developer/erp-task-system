@@ -1,4 +1,4 @@
-import { GetWarehouseSuccessResponse } from 'features/warehouse/models'
+import { GetWarehouseResponse } from 'features/warehouse/models'
 import { getWarehouseUrl } from 'features/warehouse/utils/warehouse'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -18,7 +18,7 @@ const getWarehouseMockFn = (warehouseId: IdType) =>
 
 export const mockGetWarehouseSuccess = (
   warehouseId: IdType,
-  options?: Partial<ResponseResolverOptions<GetWarehouseSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetWarehouseResponse>>,
 ) => getSuccessMockFn(getWarehouseMockFn(warehouseId), options)()
 
 export const mockGetWarehouseNotFoundError = (

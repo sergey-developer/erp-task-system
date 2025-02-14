@@ -1,4 +1,4 @@
 import { UserCodeDTO } from '../dto'
 
-export type GetUserMeCodeQueryArgs = void
-export type GetUserMeCodeSuccessResponse = UserCodeDTO
+export type GetUserMeCodeRequest = void
+export type GetUserMeCodeResponse = UserCodeDTO

@@ -1,4 +1,4 @@
-import { GetInfrastructureStatusHistorySuccessResponse } from 'features/infrastructures/api/dto'
+import { GetInfrastructureStatusHistoryResponse } from 'features/infrastructures/api/dto'
 import { InfrastructuresEndpointsEnum } from 'features/infrastructures/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -10,5 +10,5 @@ const getInfrastructureStatusHistoryMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, InfrastructuresEndpointsEnum.GetInfrastructureStatusHistory)
 
 export const mockGetInfrastructureStatusHistorySuccess = (
-  options?: Partial<ResponseResolverOptions<GetInfrastructureStatusHistorySuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetInfrastructureStatusHistoryResponse>>,
 ) => getSuccessMockFn(getInfrastructureStatusHistoryMockFn(), options)()

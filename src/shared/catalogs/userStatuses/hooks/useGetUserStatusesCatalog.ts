@@ -7,19 +7,16 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { getUserStatusesCatalogErrMsg } from '../api/constants'
 import { useGetUserStatusesCatalogQuery } from '../api/endpoints/userStatusesCatalog.endpoints'
-import {
-  GetUserStatusesCatalogQueryArgs,
-  GetUserStatusesCatalogSuccessResponse,
-} from '../api/schemas'
+import { GetUserStatusesCatalogRequest, GetUserStatusesCatalogResponse } from '../api/schemas'
 
 type UseGetUserStatusesCatalogResult = CustomUseQueryHookResult<
-  GetUserStatusesCatalogQueryArgs,
-  GetUserStatusesCatalogSuccessResponse
+  GetUserStatusesCatalogRequest,
+  GetUserStatusesCatalogResponse
 >
 
 type UseGetUserStatusesCatalogOptions = CustomUseQueryOptions<
-  GetUserStatusesCatalogQueryArgs,
-  GetUserStatusesCatalogSuccessResponse
+  GetUserStatusesCatalogRequest,
+  GetUserStatusesCatalogResponse
 >
 
 export const useGetUserStatusesCatalog = (

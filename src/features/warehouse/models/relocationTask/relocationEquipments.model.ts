@@ -1,5 +1,5 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentCategoryModel } from 'features/warehouse/models'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { EquipmentCategoryDTO } from 'features/warehouse/models'
 
 import { CurrencyCatalogItemDTO } from 'shared/catalogs/api/dto/currencies'
 import { IdType } from 'shared/types/common'
@@ -12,7 +12,7 @@ export type RelocationEquipmentListItemModel = {
   condition: EquipmentConditionEnum
   purpose: string
   quantity: number
-  category: Pick<EquipmentCategoryModel, 'id' | 'title' | 'code'>
+  category: Pick<EquipmentCategoryDTO, 'id' | 'title' | 'code'>
 
   price: MaybeNull<number>
   currency: MaybeNull<CurrencyCatalogItemDTO>

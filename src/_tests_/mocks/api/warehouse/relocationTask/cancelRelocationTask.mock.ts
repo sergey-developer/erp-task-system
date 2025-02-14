@@ -1,4 +1,4 @@
-import { CancelRelocationTaskSuccessResponse } from 'features/warehouse/models'
+import { CancelRelocationTaskResponse } from 'features/warehouse/models'
 import { cancelRelocationTaskUrl } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -20,7 +20,7 @@ const cancelRelocationTaskMockFn = (id: IdType) =>
 
 export const mockCancelRelocationTaskSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<CancelRelocationTaskSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CancelRelocationTaskResponse>>,
 ) => getSuccessMockFn(cancelRelocationTaskMockFn(id), options)()
 
 export const mockCancelRelocationTaskBadRequestError = (

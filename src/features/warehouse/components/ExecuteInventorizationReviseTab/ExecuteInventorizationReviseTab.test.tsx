@@ -5,7 +5,7 @@ import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
   EquipmentConditionEnum,
-} from 'features/warehouse/constants/equipment'
+} from 'features/equipments/api/constants'
 import { InventorizationStatusEnum } from 'features/warehouse/constants/inventorization'
 
 import { DEFAULT_FILE_NAME } from 'shared/constants/common'

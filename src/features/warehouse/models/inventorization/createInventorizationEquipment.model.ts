@@ -2,9 +2,9 @@ import { InventorizationRequestArgs } from 'features/warehouse/types'
 
 import { IdType } from 'shared/types/common'
 
-export type CreateInventorizationEquipmentMutationArgs = InventorizationRequestArgs & {
+export type CreateInventorizationEquipmentRequest = InventorizationRequestArgs & {
   equipment: IdType
   locationFact: IdType
 }
 
-export type CreateInventorizationEquipmentSuccessResponse = void
+export type CreateInventorizationEquipmentResponse = void

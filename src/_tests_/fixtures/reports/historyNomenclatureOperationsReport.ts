@@ -2,7 +2,7 @@ import {
   HistoryNomenclatureOperationsReportItemDTO,
   HistoryNomenclatureOperationsReportDTO,
 } from 'features/reports/api/dto'
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import isBoolean from 'lodash/isBoolean'
 import pick from 'lodash/pick'
 import times from 'lodash/times'

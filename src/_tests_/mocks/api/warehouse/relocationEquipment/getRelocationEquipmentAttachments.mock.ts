@@ -1,4 +1,4 @@
-import { GetRelocationEquipmentAttachmentListSuccessResponse } from 'features/warehouse/models/relocationEquipment'
+import { GetRelocationEquipmentAttachmentListResponse } from 'features/warehouse/models/relocationEquipment'
 import { getRelocationEquipmentAttachmentListUrl } from 'features/warehouse/utils/relocationEquipment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ const getRelocationEquipmentAttachmentsMockFn = (id: IdType) =>
 
 export const mockGetRelocationEquipmentAttachmentsSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentAttachmentListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentAttachmentListResponse>>,
 ) => getSuccessMockFn(getRelocationEquipmentAttachmentsMockFn(id), options)()
 
 export const mockGetRelocationEquipmentAttachmentsForbiddenError = (

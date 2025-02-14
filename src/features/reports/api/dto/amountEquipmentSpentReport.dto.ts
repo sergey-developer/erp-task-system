@@ -1,10 +1,10 @@
-import { EquipmentModel, RelocationTaskModel } from 'features/warehouse/models'
+import { EquipmentDetailDTO, RelocationTaskModel } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 
 export type AmountEquipmentSpentReportItemDTO = {
   id: IdType
-  equipment: Pick<EquipmentModel, 'id' | 'title'>
+  equipment: Pick<EquipmentDetailDTO, 'id' | 'title'>
   relocationTask: Pick<
     RelocationTaskModel,
     'id' | 'createdAt' | 'relocateFrom' | 'relocateTo' | 'status'

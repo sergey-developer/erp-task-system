@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import {
   equipmentConditionDict,
   EquipmentConditionEnum,
-} from 'features/warehouse/constants/equipment'
+} from 'features/equipments/api/constants'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'

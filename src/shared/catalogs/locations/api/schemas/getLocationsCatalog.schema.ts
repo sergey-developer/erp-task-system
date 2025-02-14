@@ -9,7 +9,7 @@ export type GetLocationsCatalogSortKey = 'title'
 
 export type GetLocationsCatalogSortValue = ExtendSortKey<GetLocationsCatalogSortKey>
 
-export type GetLocationsCatalogQueryArgs = Partial<{
+export type GetLocationsCatalogRequest = Partial<{
   locationTypes: LocationTypeEnum[]
   warehouseTypes: WarehouseTypeEnum[]
   ordering: GetLocationsCatalogSortValue
@@ -17,4 +17,4 @@ export type GetLocationsCatalogQueryArgs = Partial<{
   inventorization: IdType
 }>
 
-export type GetLocationsCatalogSuccessResponse = LocationsCatalogDTO
+export type GetLocationsCatalogResponse = LocationsCatalogDTO

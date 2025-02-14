@@ -1,6 +1,6 @@
 import { getUserMeErrMsg } from 'features/users/api/constants'
 import { useGetUserMeQuery } from 'features/users/api/endpoints/users.endpoints'
-import { GetUserMeQueryArgs, GetUserMeSuccessResponse } from 'features/users/api/schemas'
+import { GetUserMeRequest, GetUserMeResponse } from 'features/users/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -8,8 +8,8 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetUserMeResult = CustomUseQueryHookResult<GetUserMeQueryArgs, GetUserMeSuccessResponse>
-type UseGetUserMeOptions = CustomUseQueryOptions<GetUserMeQueryArgs, GetUserMeSuccessResponse>
+type UseGetUserMeResult = CustomUseQueryHookResult<GetUserMeRequest, GetUserMeResponse>
+type UseGetUserMeOptions = CustomUseQueryOptions<GetUserMeRequest, GetUserMeResponse>
 
 export const useGetUserMe = (options?: UseGetUserMeOptions): UseGetUserMeResult => {
   const state = useGetUserMeQuery(undefined, options)

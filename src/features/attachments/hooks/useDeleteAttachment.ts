@@ -2,8 +2,8 @@ import { UploadFile } from 'antd/es/upload'
 import { deleteAttachmentErrMsg } from 'features/attachments/api/constants'
 import { useDeleteAttachmentMutation } from 'features/attachments/api/endpoints/attachments.endpoints'
 import {
-  DeleteAttachmentMutationArgs,
-  DeleteAttachmentSuccessResponse,
+  DeleteAttachmentRequest,
+  DeleteAttachmentResponse,
 } from 'features/attachments/api/schemas'
 import { useCallback, useEffect } from 'react'
 
@@ -21,7 +21,7 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseDeleteAttachmentResult = [
   (file: UploadFile<FileResponse>) => Promise<void>,
-  CustomUseMutationState<DeleteAttachmentMutationArgs, DeleteAttachmentSuccessResponse>,
+  CustomUseMutationState<DeleteAttachmentRequest, DeleteAttachmentResponse>,
 ]
 
 export const useDeleteAttachment = (): UseDeleteAttachmentResult => {

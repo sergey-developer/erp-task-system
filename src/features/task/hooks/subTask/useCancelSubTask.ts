@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { cancelSubTaskErrMsg } from 'features/task/constants/task'
-import { CancelSubTaskMutationArgs, CancelSubTaskSuccessResponse } from 'features/task/models'
+import { CancelSubTaskRequest, CancelSubTaskResponse } from 'features/task/models'
 import { useCancelSubTaskMutation } from 'features/task/services/subTaskApi.service'
 
 import {
@@ -16,8 +16,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCancelSubTaskResult = CustomUseMutationResult<
-  CancelSubTaskMutationArgs,
-  CancelSubTaskSuccessResponse
+  CancelSubTaskRequest,
+  CancelSubTaskResponse
 >
 
 export const useCancelSubTask = (): UseCancelSubTaskResult => {

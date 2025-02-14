@@ -10,16 +10,16 @@ import {
 } from 'shared/api/baseApi'
 import { getLocationsCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
 import {
-  GetLocationsCatalogQueryArgs,
-  GetLocationsCatalogSuccessResponse,
+  GetLocationsCatalogRequest,
+  GetLocationsCatalogResponse,
 } from 'shared/catalogs/api/dto/locations'
 import { useLazyGetLocationsCatalogQuery } from 'shared/catalogs/api/endpoints/locationsCatalog.endpoints'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetLocationsCatalogResult = CustomUseLazyQueryHookResult<
-  MaybeUndefined<GetLocationsCatalogQueryArgs>,
-  GetLocationsCatalogSuccessResponse
+  MaybeUndefined<GetLocationsCatalogRequest>,
+  GetLocationsCatalogResponse
 >
 
 export const useLazyGetLocationsCatalog = (): UseGetLocationsCatalogResult => {

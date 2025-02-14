@@ -1,7 +1,7 @@
 import { getAmountEquipmentSpentReportErrMsg } from 'features/reports/api/constants'
 import { useGetAmountEquipmentSpentReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
-import { GetAmountEquipmentSpentReportQueryArgs } from 'features/reports/api/schemas'
-import { GetAmountEquipmentSpentReportTransformedSuccessResponse } from 'features/reports/api/types'
+import { GetAmountEquipmentSpentReportRequest } from 'features/reports/api/schemas'
+import { GetAmountEquipmentSpentReportTransformedResponse } from 'features/reports/api/types'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -10,17 +10,17 @@ import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/ba
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetAmountEquipmentSpentReportResult = CustomUseQueryHookResult<
-  GetAmountEquipmentSpentReportQueryArgs,
-  GetAmountEquipmentSpentReportTransformedSuccessResponse
+  GetAmountEquipmentSpentReportRequest,
+  GetAmountEquipmentSpentReportTransformedResponse
 >
 
 type UseGetAmountEquipmentSpentReportOptions = CustomUseQueryOptions<
-  GetAmountEquipmentSpentReportQueryArgs,
-  GetAmountEquipmentSpentReportTransformedSuccessResponse
+  GetAmountEquipmentSpentReportRequest,
+  GetAmountEquipmentSpentReportTransformedResponse
 >
 
 export const useGetAmountEquipmentSpentReport = (
-  args: GetAmountEquipmentSpentReportQueryArgs,
+  args: GetAmountEquipmentSpentReportRequest,
   options?: UseGetAmountEquipmentSpentReportOptions,
 ): UseGetAmountEquipmentSpentReportResult => {
   const state = useGetAmountEquipmentSpentReportQuery(args, options)

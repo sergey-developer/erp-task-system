@@ -1,4 +1,4 @@
-import { GetTaskReclassificationRequestSuccessResponse } from 'features/task/models'
+import { GetTaskReclassificationRequestResponse } from 'features/task/models'
 import { getTaskReclassificationRequestUrl } from 'features/task/utils/taskReclassificationRequest'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,7 +12,7 @@ const getTaskReclassificationRequestMockFn = (taskId: IdType) =>
 
 export const mockGetTaskReclassificationRequestSuccess = (
   taskId: IdType,
-  options?: Partial<ResponseResolverOptions<GetTaskReclassificationRequestSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetTaskReclassificationRequestResponse>>,
 ) => getSuccessMockFn(getTaskReclassificationRequestMockFn(taskId), options)()
 
 export const mockGetTaskReclassificationRequestServerError = (

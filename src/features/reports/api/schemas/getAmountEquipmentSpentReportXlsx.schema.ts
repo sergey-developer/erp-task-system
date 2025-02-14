@@ -1,10 +1,10 @@
 import { Base64Type } from 'shared/types/common'
 
-import { GetAmountEquipmentSpentReportQueryArgs } from './getAmountEquipmentSpentReport.schema'
+import { GetAmountEquipmentSpentReportRequest } from './getAmountEquipmentSpentReport.schema'
 
-export type GetAmountEquipmentSpentReportXlsxQueryArgs = Omit<
-  GetAmountEquipmentSpentReportQueryArgs,
+export type GetAmountEquipmentSpentReportXlsxRequest = Omit<
+  GetAmountEquipmentSpentReportRequest,
   'limit' | 'offset'
 >
 
-export type GetAmountEquipmentSpentReportXlsxSuccessResponse = Base64Type
+export type GetAmountEquipmentSpentReportXlsxResponse = Base64Type

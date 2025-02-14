@@ -8,22 +8,22 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { getInfrastructureWorkTypesCatalogErrMsg } from '../api/constants'
 import { useGetInfrastructureWorkTypesCatalogQuery } from '../api/endpoints/infrastructureWorkTypesCatalog.endpoints'
 import {
-  GetInfrastructureWorkTypesCatalogQueryArgs,
-  GetInfrastructureWorkTypesCatalogSuccessResponse,
+  GetInfrastructureWorkTypesCatalogRequest,
+  GetInfrastructureWorkTypesCatalogResponse,
 } from '../api/schemas'
 
 type UseGetInfrastructureWorkTypesCatalogResult = CustomUseQueryHookResult<
-  GetInfrastructureWorkTypesCatalogQueryArgs,
-  GetInfrastructureWorkTypesCatalogSuccessResponse
+  GetInfrastructureWorkTypesCatalogRequest,
+  GetInfrastructureWorkTypesCatalogResponse
 >
 
 type UseGetInfrastructureWorkTypesCatalogOptions = CustomUseQueryOptions<
-  GetInfrastructureWorkTypesCatalogQueryArgs,
-  GetInfrastructureWorkTypesCatalogSuccessResponse
+  GetInfrastructureWorkTypesCatalogRequest,
+  GetInfrastructureWorkTypesCatalogResponse
 >
 
 export const useGetInfrastructureWorkTypesCatalog = (
-  args: GetInfrastructureWorkTypesCatalogQueryArgs,
+  args: GetInfrastructureWorkTypesCatalogRequest,
   options?: UseGetInfrastructureWorkTypesCatalogOptions,
 ): UseGetInfrastructureWorkTypesCatalogResult => {
   const state = useGetInfrastructureWorkTypesCatalogQuery(args, options)

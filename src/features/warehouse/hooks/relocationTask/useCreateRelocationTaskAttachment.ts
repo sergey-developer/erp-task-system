@@ -1,14 +1,13 @@
+import { createRelocationTaskAttachmentErrMsg } from 'features/warehouse/constants/relocationTask'
+import {
+  CreateRelocationTaskAttachmentRequest,
+  CreateRelocationTaskAttachmentResponse,
+} from 'features/warehouse/models/relocationTask'
+import { useCreateRelocationTaskAttachmentMutation } from 'features/warehouse/services/relocationTaskApi.service'
 import { UploadRequestOption } from 'rc-upload/es/interface'
 import { useCallback, useEffect } from 'react'
 
 import { CustomUseMutationState } from 'lib/rtk-query/types'
-
-import { createRelocationTaskAttachmentErrMsg } from 'features/warehouse/constants/relocationTask'
-import {
-  CreateRelocationTaskAttachmentMutationArgs,
-  CreateRelocationTaskAttachmentSuccessResponse,
-} from 'features/warehouse/models/relocationTask'
-import { useCreateRelocationTaskAttachmentMutation } from 'features/warehouse/services/relocationTaskApi.service'
 
 import {
   getErrorDetail,
@@ -24,12 +23,12 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateRelocationTaskAttachmentResult = [
   (
-    args: Omit<CreateRelocationTaskAttachmentMutationArgs, 'file'>,
+    args: Omit<CreateRelocationTaskAttachmentRequest, 'file'>,
     options: UploadRequestOption,
-  ) => Promise<MaybeUndefined<CreateRelocationTaskAttachmentSuccessResponse>>,
+  ) => Promise<MaybeUndefined<CreateRelocationTaskAttachmentResponse>>,
   CustomUseMutationState<
-    CreateRelocationTaskAttachmentMutationArgs,
-    CreateRelocationTaskAttachmentSuccessResponse
+    CreateRelocationTaskAttachmentRequest,
+    CreateRelocationTaskAttachmentResponse
   >,
 ]
 

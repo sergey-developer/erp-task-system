@@ -1,4 +1,4 @@
-import { EquipmentModel } from 'features/warehouse/models'
+import { EquipmentDetailDTO } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, SetNonNullable } from 'shared/types/utils'
@@ -15,7 +15,7 @@ export type TechnicalExaminationModel = {
     id: IdType
   }>
   equipment: MaybeNull<
-    SetNonNullable<EquipmentModel, 'id' | 'title' | 'serialNumber'> &
-      Pick<EquipmentModel, 'inventoryNumber'>
+    SetNonNullable<EquipmentDetailDTO, 'id' | 'title' | 'serialNumber'> &
+      Pick<EquipmentDetailDTO, 'inventoryNumber'>
   >
 }

@@ -1,4 +1,4 @@
-import { GetInventorizationEquipmentsSuccessResponse } from 'features/warehouse/models'
+import { GetInventorizationEquipmentsResponse } from 'features/warehouse/models'
 import { InventorizationRequestArgs } from 'features/warehouse/types'
 import { makeGetInventorizationEquipmentsUrl } from 'features/warehouse/utils/inventorization'
 
@@ -14,5 +14,5 @@ const getInventorizationEquipmentsMockFn = ({
 
 export const mockGetInventorizationEquipmentsSuccess = (
   { inventorizationId }: Pick<InventorizationRequestArgs, 'inventorizationId'>,
-  options?: Partial<ResponseResolverOptions<GetInventorizationEquipmentsSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetInventorizationEquipmentsResponse>>,
 ) => getSuccessMockFn(getInventorizationEquipmentsMockFn({ inventorizationId }), options)()

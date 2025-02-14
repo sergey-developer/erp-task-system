@@ -4,6 +4,8 @@ import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { attachmentsToFiles } from 'features/attachments/helpers'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/users/hooks'
 import RelocationEquipmentDraftEditableTable from 'features/warehouse/components/RelocationEquipmentDraftEditableTable'
@@ -19,7 +21,6 @@ import {
   UserGroupOptionGroup,
 } from 'features/warehouse/components/RelocationTaskDraftForm/types'
 import { makeUserGroupOptions } from 'features/warehouse/components/RelocationTaskDraftForm/utils'
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
 import {
   useGetInventorizationEquipments,
@@ -38,7 +39,6 @@ import {
 import { ExecuteInventorizationPageTabsEnum } from 'features/warehouse/pages/ExecuteInventorizationPage/constants'
 import { RelocationTaskDraftFormFields } from 'features/warehouse/types'
 import { EditRelocationTaskDraftPageLocationState } from 'features/warehouse/types/relocationTask'
-import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
 import {
   getExecuteInventorizationPageLink,
   GetExecuteInventorizationPageLinkParams,

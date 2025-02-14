@@ -1,5 +1,5 @@
 import { TaskApiEnum } from 'features/task/constants/task'
-import { GetTasksSuccessResponse } from 'features/task/models'
+import { GetTasksResponse } from 'features/task/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -9,7 +9,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const getTasksMockFn = () => getRequestMockFn(HttpMethodEnum.Get, TaskApiEnum.GetTasks)
 
 export const mockGetTasksSuccess = (
-  options?: Partial<ResponseResolverOptions<GetTasksSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetTasksResponse>>,
 ) => getSuccessMockFn(getTasksMockFn(), options)()
 
 // todo: написать тесты на ошибочное получение списка

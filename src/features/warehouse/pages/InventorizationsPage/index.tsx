@@ -2,6 +2,7 @@ import { useBoolean, useSetState } from 'ahooks'
 import { Button, Flex, Space, UploadProps } from 'antd'
 import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
+import { useGetEquipmentNomenclatures } from 'features/equipments/hooks'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useUserPermissions } from 'features/users/hooks'
 import { CreateInventorizationRequestModalProps } from 'features/warehouse/components/CreateInventorizationRequestModal/types'
@@ -20,13 +21,12 @@ import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
 } from 'features/warehouse/constants/inventorization'
-import { useGetEquipmentNomenclatures } from 'features/warehouse/hooks/equipment'
 import {
   useCreateInventorization,
   useGetInventorizations,
 } from 'features/warehouse/hooks/inventorization'
 import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
-import { GetInventorizationsQueryArgs } from 'features/warehouse/models'
+import { GetInventorizationsRequest } from 'features/warehouse/models'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -72,8 +72,8 @@ const initialFilterValues: Pick<InventorizationsFilterFormFields, 'types' | 'sta
   ],
 }
 
-const initialGetInventorizationsQueryArgs: Partial<
-  Pick<GetInventorizationsQueryArgs, 'ordering' | 'types' | 'statuses' | 'offset' | 'limit'>
+const initialGetInventorizationsRequest: Partial<
+  Pick<GetInventorizationsRequest, 'ordering' | 'types' | 'statuses' | 'offset' | 'limit'>
 > = {
   ...getInitialPaginationParams(),
   ordering: 'deadline_at',
@@ -151,11 +151,11 @@ const InventorizationsPage: FC = () => {
   const [createInventorizationMutation, { isLoading: createInventorizationIsLoading }] =
     useCreateInventorization()
 
-  const [getInventorizationsQueryArgs, setGetInventorizationsQueryArgs] =
-    useSetState<GetInventorizationsQueryArgs>(initialGetInventorizationsQueryArgs)
+  const [getInventorizationsRequestArgs, setGetInventorizationsRequestArgs] =
+    useSetState<GetInventorizationsRequest>(initialGetInventorizationsRequest)
 
   const { currentData: inventorizations, isFetching: inventorizationsIsFetching } =
-    useGetInventorizations(getInventorizationsQueryArgs)
+    useGetInventorizations(getInventorizationsRequest)
 
   const onCreateInventorization = useCallback<CreateInventorizationRequestModalProps['onSubmit']>(
     async ({ deadlineAtDate, deadlineAtTime, attachments, ...values }, setFields) => {
@@ -184,9 +184,9 @@ const InventorizationsPage: FC = () => {
 
   const onTablePagination = useCallback(
     (pagination: Parameters<InventorizationTableProps['onChange']>[0]) => {
-      setGetInventorizationsQueryArgs(calculatePaginationParams(pagination))
+      setGetInventorizationsRequest(calculatePaginationParams(pagination))
     },
-    [setGetInventorizationsQueryArgs],
+    [setGetInventorizationsRequest],
   )
 
   const onTableSort = useCallback(
@@ -194,13 +194,13 @@ const InventorizationsPage: FC = () => {
       if (sorter) {
         const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
         if (field && (field as string) in sortableFieldToSortValues) {
-          setGetInventorizationsQueryArgs({
+          setGetInventorizationsRequest({
             ordering: order ? getSort(field as SortableField, order) : undefined,
           })
         }
       }
     },
-    [setGetInventorizationsQueryArgs],
+    [setGetInventorizationsRequest],
   )
 
   const onChangeTable = useCallback<InventorizationTableProps['onChange']>(
@@ -224,14 +224,14 @@ const InventorizationsPage: FC = () => {
   const onApplyFilter = useCallback<InventorizationsFilterProps['onApply']>(
     (values) => {
       setFilterValues(values)
-      setGetInventorizationsQueryArgs({
+      setGetInventorizationsRequest({
         types: values.types,
         statuses: values.statuses,
-        offset: initialGetInventorizationsQueryArgs.offset,
+        offset: initialGetInventorizationsRequest.offset,
       })
       toggleOpenFilter()
     },
-    [setGetInventorizationsQueryArgs, toggleOpenFilter],
+    [setGetInventorizationsRequest, toggleOpenFilter],
   )
 
   return (
@@ -252,7 +252,7 @@ const InventorizationsPage: FC = () => {
           dataSource={extractPaginationResults(inventorizations)}
           pagination={extractPaginationParams(inventorizations)}
           loading={inventorizationsIsFetching}
-          sort={getInventorizationsQueryArgs.ordering}
+          sort={getInventorizationsRequest.ordering}
           onChange={onChangeTable}
           onRow={onClickTableRow}
         />

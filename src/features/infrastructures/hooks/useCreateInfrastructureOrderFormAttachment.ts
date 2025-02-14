@@ -1,6 +1,6 @@
 import {
-  CreateInfrastructureOrderFormAttachmentMutationArgs,
-  CreateInfrastructureOrderFormAttachmentSuccessResponse,
+  CreateInfrastructureOrderFormAttachmentRequest,
+  CreateInfrastructureOrderFormAttachmentResponse,
 } from 'features/infrastructures/api/dto'
 import { useCreateInfrastructureOrderFormAttachmentMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import { createInfrastructureOrdersFormAttachmentErrMsg } from 'features/infrastructures/constants'
@@ -23,12 +23,12 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateInfrastructureOrderFormAttachmentResult = [
   (
-    args: Omit<CreateInfrastructureOrderFormAttachmentMutationArgs, 'file'>,
+    args: Omit<CreateInfrastructureOrderFormAttachmentRequest, 'file'>,
     options: UploadRequestOption,
-  ) => Promise<MaybeUndefined<CreateInfrastructureOrderFormAttachmentSuccessResponse>>,
+  ) => Promise<MaybeUndefined<CreateInfrastructureOrderFormAttachmentResponse>>,
   CustomUseMutationState<
-    CreateInfrastructureOrderFormAttachmentMutationArgs,
-    CreateInfrastructureOrderFormAttachmentSuccessResponse
+    CreateInfrastructureOrderFormAttachmentRequest,
+    CreateInfrastructureOrderFormAttachmentResponse
   >,
 ]
 

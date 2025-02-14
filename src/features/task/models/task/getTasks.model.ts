@@ -6,7 +6,7 @@ import {
 } from 'features/task/constants/task'
 import { TaskListItemModel } from 'features/task/models'
 
-import { PaginationParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
+import { PaginationRequestParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { ExtendSortKey } from 'shared/types/sort'
@@ -52,7 +52,7 @@ export type TasksFilterQueries = Partial<{
 }> &
   SearchFields
 
-export type GetTasksQueryArgs = PaginationParams &
+export type GetTasksRequest = PaginationRequestParams &
   Partial<{
     sort: GetTasksSortValue
     userId: IdType
@@ -63,4 +63,4 @@ export type GetTasksQueryArgs = PaginationParams &
   FastFilterQueries &
   FilterParams
 
-export type GetTasksSuccessResponse = PaginationResponse<TaskListItemModel>
+export type GetTasksResponse = PaginationResponse<TaskListItemModel>

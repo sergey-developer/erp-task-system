@@ -1,8 +1,8 @@
-import { GetEquipmentAttachmentListSuccessResponse } from 'features/warehouse/models'
-import { getEquipmentAttachmentListUrl } from 'features/warehouse/utils/equipment'
+import { makeGetEquipmentAttachmentsEndpoint } from 'features/equipments/helpers'
+import { GetEquipmentAttachmentsResponse } from 'features/warehouse/models'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {
@@ -15,11 +15,11 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentAttachmentListMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getEquipmentAttachmentListUrl(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetEquipmentAttachmentsEndpoint(id))
 
 export const mockGetEquipmentAttachmentListSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetEquipmentAttachmentListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetEquipmentAttachmentsResponse>>,
 ) => getSuccessMockFn(getEquipmentAttachmentListMockFn(id), options)()
 
 export const mockGetEquipmentAttachmentListForbiddenError = (

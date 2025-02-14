@@ -1,8 +1,8 @@
-import { EquipmentApiEnum } from 'features/warehouse/constants/equipment'
-import { GetEquipmentNomenclaturesSuccessResponse } from 'features/warehouse/models'
+import { EquipmentsEndpointsEnum } from 'features/equipments/api/constants'
+import { GetEquipmentNomenclaturesResponse } from 'features/warehouse/models'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
   getForbiddenErrorMockFn,
@@ -13,10 +13,10 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentNomenclaturesMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, EquipmentApiEnum.GetEquipmentNomenclatures)
+  getRequestMockFn(HttpMethodEnum.Get, EquipmentsEndpointsEnum.GetEquipmentNomenclatures)
 
 export const mockGetEquipmentNomenclaturesSuccess = (
-  options?: Partial<ResponseResolverOptions<GetEquipmentNomenclaturesSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetEquipmentNomenclaturesResponse>>,
 ) => getSuccessMockFn(getEquipmentNomenclaturesMockFn(), options)()
 
 export const mockGetEquipmentNomenclaturesForbiddenError = (

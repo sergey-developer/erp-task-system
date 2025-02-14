@@ -5,24 +5,24 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse } from 'shared/api/baseApi'
 import { getSystemSettingsErrMsg } from 'shared/system/api/constants/errorMessages'
 import {
-  GetSystemSettingsQueryArgs,
-  GetSystemSettingsSuccessResponse,
+  GetSystemSettingsRequest,
+  GetSystemSettingsResponse,
 } from 'shared/system/api/dto/systemSettings'
 import { useGetSystemSettingsQuery } from 'shared/system/api/endpoints/systemApi.endpoints'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetSystemSettingsResult = CustomUseQueryHookResult<
-  GetSystemSettingsQueryArgs,
-  GetSystemSettingsSuccessResponse
+  GetSystemSettingsRequest,
+  GetSystemSettingsResponse
 >
 
 type UseGetSystemSettingsOptions = CustomUseQueryOptions<
-  GetSystemSettingsQueryArgs,
-  GetSystemSettingsSuccessResponse
+  GetSystemSettingsRequest,
+  GetSystemSettingsResponse
 >
 
 export const useGetSystemSettings = (
-  args?: GetSystemSettingsQueryArgs,
+  args?: GetSystemSettingsRequest,
   options?: UseGetSystemSettingsOptions,
 ): UseGetSystemSettingsResult => {
   const state = useGetSystemSettingsQuery(args, options)

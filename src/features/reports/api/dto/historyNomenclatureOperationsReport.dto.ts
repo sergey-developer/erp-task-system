@@ -1,4 +1,4 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { RelocationTaskModel } from 'features/warehouse/models'
 
 import { LocationCatalogItemDTO } from 'shared/catalogs/locations/api/dto'

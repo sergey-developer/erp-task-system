@@ -2,9 +2,9 @@ import { ReclassificationReasonEnum } from 'features/task/constants/taskReclassi
 import { TaskReclassificationRequestModel } from 'features/task/models'
 import { TaskRequestArgs } from 'features/task/types'
 
-export type CreateTaskReclassificationRequestMutationArgs = TaskRequestArgs & {
+export type CreateTaskReclassificationRequestRequest = TaskRequestArgs & {
   comment: string
   reclassificationReason: ReclassificationReasonEnum
 }
 
-export type CreateTaskReclassificationRequestSuccessResponse = TaskReclassificationRequestModel
+export type CreateTaskReclassificationRequestResponse = TaskReclassificationRequestModel

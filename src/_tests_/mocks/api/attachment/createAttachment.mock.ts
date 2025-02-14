@@ -1,5 +1,5 @@
 import { AttachmentsEndpointsEnum } from 'features/attachments/api/constants'
-import { CreateAttachmentSuccessResponse } from 'features/attachments/api/dto'
+import { CreateAttachmentResponse } from 'features/attachments/api/dto'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -16,7 +16,7 @@ const createAttachmentMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, AttachmentsEndpointsEnum.CreateAttachment)
 
 export const mockCreateAttachmentSuccess = (
-  options?: Partial<ResponseResolverOptions<CreateAttachmentSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CreateAttachmentResponse>>,
 ) => getSuccessMockFn(createAttachmentMockFn(), options)()
 
 export const mockCreateAttachmentBadRequestError = (

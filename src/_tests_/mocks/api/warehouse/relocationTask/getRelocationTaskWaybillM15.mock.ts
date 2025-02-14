@@ -1,4 +1,4 @@
-import { GetRelocationTaskWaybillM15SuccessResponse } from 'features/warehouse/models'
+import { GetRelocationTaskWaybillM15Response } from 'features/warehouse/models'
 import { getRelocationTaskWaybillM15Url } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ const getRelocationTaskWaybillM15MockFn = (id: IdType) =>
 
 export const mockGetRelocationTaskWaybillM15Success = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetRelocationTaskWaybillM15SuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetRelocationTaskWaybillM15Response>>,
 ) => getSuccessMockFn(getRelocationTaskWaybillM15MockFn(id), options)()
 
 export const mockGetRelocationTaskWaybillM15NotFoundError = (

@@ -1,8 +1,8 @@
 import { getMacroregionsMtsrReportErrMsg } from 'features/reports/api/constants'
 import { useGetMacroregionsMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
-  GetMacroregionsMtsrReportQueryArgs,
-  GetMacroregionsMtsrReportSuccessResponse,
+  GetMacroregionsMtsrReportRequest,
+  GetMacroregionsMtsrReportResponse,
 } from 'features/reports/api/schemas'
 import { useEffect } from 'react'
 
@@ -12,17 +12,17 @@ import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/ba
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetMacroregionsMtsrReportResult = CustomUseQueryHookResult<
-  GetMacroregionsMtsrReportQueryArgs,
-  GetMacroregionsMtsrReportSuccessResponse
+  GetMacroregionsMtsrReportRequest,
+  GetMacroregionsMtsrReportResponse
 >
 
 type UseGetMacroregionsMtsrReportOptions = CustomUseQueryOptions<
-  GetMacroregionsMtsrReportQueryArgs,
-  GetMacroregionsMtsrReportSuccessResponse
+  GetMacroregionsMtsrReportRequest,
+  GetMacroregionsMtsrReportResponse
 >
 
 export const useGetMacroregionsMtsrReport = (
-  args: GetMacroregionsMtsrReportQueryArgs,
+  args: GetMacroregionsMtsrReportRequest,
   options?: UseGetMacroregionsMtsrReportOptions,
 ): UseGetMacroregionsMtsrReportResult => {
   const state = useGetMacroregionsMtsrReportQuery(args, options)

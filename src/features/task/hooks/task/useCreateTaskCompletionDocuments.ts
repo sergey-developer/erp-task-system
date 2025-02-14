@@ -1,13 +1,12 @@
+import { createTaskCompletionDocumentsErrMsg } from 'features/task/constants/task'
+import {
+  CreateTaskCompletionDocumentsRequest,
+  CreateTaskCompletionDocumentsResponse,
+} from 'features/task/models'
+import { useCreateTaskCompletionDocumentsMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { createTaskCompletionDocumentsErrMsg } from 'features/task/constants/task'
-import {
-  CreateTaskCompletionDocumentsMutationArgs,
-  CreateTaskCompletionDocumentsSuccessResponse,
-} from 'features/task/models'
-import { useCreateTaskCompletionDocumentsMutation } from 'features/task/services/taskApi.service'
 
 import {
   getErrorDetail,
@@ -19,8 +18,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateTaskCompletionDocumentsResult = CustomUseMutationResult<
-  CreateTaskCompletionDocumentsMutationArgs,
-  CreateTaskCompletionDocumentsSuccessResponse
+  CreateTaskCompletionDocumentsRequest,
+  CreateTaskCompletionDocumentsResponse
 >
 
 export const useCreateTaskCompletionDocuments = (): UseCreateTaskCompletionDocumentsResult => {

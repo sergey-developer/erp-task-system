@@ -5,44 +5,44 @@ import {
   RelocationTaskApiTriggerEnum,
 } from 'features/warehouse/constants/relocationTask'
 import {
-  CancelRelocationTaskMutationArgs,
-  CancelRelocationTaskSuccessResponse,
-  CloseRelocationTaskMutationArgs,
-  CloseRelocationTaskSuccessResponse,
-  CreateRelocationTaskAttachmentMutationArgs,
-  CreateRelocationTaskAttachmentSuccessResponse,
-  CreateRelocationTaskCompletionDocumentsMutationArgs,
-  CreateRelocationTaskCompletionDocumentsSuccessResponse,
-  CreateRelocationTaskITSMMutationArgs,
-  CreateRelocationTaskITSMSuccessResponse,
-  CreateRelocationTaskMutationArgs,
-  CreateRelocationTaskSuccessResponse,
-  ExecuteRelocationTaskMutationArgs,
-  ExecuteRelocationTaskSuccessResponse,
-  GetRelocationEquipmentBalanceListQueryArgs,
-  GetRelocationEquipmentBalanceListSuccessResponse,
-  GetRelocationEquipmentListQueryArgs,
-  GetRelocationEquipmentListSuccessResponse,
-  GetRelocationTaskAttachmentsQueryArgs,
-  GetRelocationTaskAttachmentsSuccessResponse,
-  GetRelocationTaskCompletionDocumentsQueryArgs,
-  GetRelocationTaskCompletionDocumentsSuccessResponse,
-  GetRelocationTaskQueryArgs,
-  GetRelocationTasksQueryArgs,
-  GetRelocationTasksSuccessResponse,
-  GetRelocationTaskSuccessResponse,
-  GetRelocationTaskWaybillM15QueryArgs,
-  GetRelocationTaskWaybillM15SuccessResponse,
-  MoveRelocationTaskDraftToWorkMutationArgs,
-  MoveRelocationTaskDraftToWorkSuccessResponse,
-  ReturnRelocationTaskToReworkMutationArgs,
-  ReturnRelocationTaskToReworkSuccessResponse,
-  UpdateExternalRelocationMutationArgs,
-  UpdateExternalRelocationSuccessResponse,
-  UpdateRelocationTaskMutationArgs,
-  UpdateRelocationTaskSuccessResponse,
+  CancelRelocationTaskRequest,
+  CancelRelocationTaskResponse,
+  CloseRelocationTaskRequest,
+  CloseRelocationTaskResponse,
+  CreateRelocationTaskAttachmentRequest,
+  CreateRelocationTaskAttachmentResponse,
+  CreateRelocationTaskCompletionDocumentsRequest,
+  CreateRelocationTaskCompletionDocumentsResponse,
+  CreateRelocationTaskITSMRequest,
+  CreateRelocationTaskITSMResponse,
+  CreateRelocationTaskRequest,
+  CreateRelocationTaskResponse,
+  ExecuteRelocationTaskRequest,
+  ExecuteRelocationTaskResponse,
+  GetRelocationEquipmentBalanceListRequest,
+  GetRelocationEquipmentBalanceListResponse,
+  GetRelocationEquipmentListRequest,
+  GetRelocationEquipmentListResponse,
+  GetRelocationTaskAttachmentsRequest,
+  GetRelocationTaskAttachmentsResponse,
+  GetRelocationTaskCompletionDocumentsRequest,
+  GetRelocationTaskCompletionDocumentsResponse,
+  GetRelocationTaskRequest,
+  GetRelocationTasksRequest,
+  GetRelocationTasksResponse,
+  GetRelocationTaskResponse,
+  GetRelocationTaskWaybillM15Request,
+  GetRelocationTaskWaybillM15Response,
+  MoveRelocationTaskDraftToWorkRequest,
+  MoveRelocationTaskDraftToWorkResponse,
+  ReturnRelocationTaskToReworkRequest,
+  ReturnRelocationTaskToReworkResponse,
+  UpdateExternalRelocationRequest,
+  UpdateExternalRelocationResponse,
+  UpdateRelocationTaskRequest,
+  UpdateRelocationTaskResponse,
 } from 'features/warehouse/models'
-import { GetRelocationTasksTransformedSuccessResponse } from 'features/warehouse/types'
+import { GetRelocationTasksTransformedResponse } from 'features/warehouse/types'
 import {
   cancelRelocationTaskUrl,
   closeRelocationTaskUrl,
@@ -76,8 +76,8 @@ const relocationTaskApiService = baseApi
   .injectEndpoints({
     endpoints: (build) => ({
       createRelocationTask: build.mutation<
-        CreateRelocationTaskSuccessResponse,
-        CreateRelocationTaskMutationArgs
+        CreateRelocationTaskResponse,
+        CreateRelocationTaskRequest
       >({
         query: (payload) => ({
           url: RelocationTaskApiEnum.CreateRelocationTask,
@@ -86,8 +86,8 @@ const relocationTaskApiService = baseApi
         }),
       }),
       createRelocationTaskITSM: build.mutation<
-        CreateRelocationTaskITSMSuccessResponse,
-        CreateRelocationTaskITSMMutationArgs
+        CreateRelocationTaskITSMResponse,
+        CreateRelocationTaskITSMRequest
       >({
         query: (payload) => ({
           url: RelocationTaskApiEnum.CreateRelocationTaskITSM,
@@ -96,8 +96,8 @@ const relocationTaskApiService = baseApi
         }),
       }),
       updateRelocationTask: build.mutation<
-        UpdateRelocationTaskSuccessResponse,
-        UpdateRelocationTaskMutationArgs
+        UpdateRelocationTaskResponse,
+        UpdateRelocationTaskRequest
       >({
         invalidatesTags: (result, error) =>
           error
@@ -114,8 +114,8 @@ const relocationTaskApiService = baseApi
         }),
       }),
       executeRelocationTask: build.mutation<
-        ExecuteRelocationTaskSuccessResponse,
-        ExecuteRelocationTaskMutationArgs
+        ExecuteRelocationTaskResponse,
+        ExecuteRelocationTaskRequest
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [RelocationTaskApiTagEnum.RelocationTask],
@@ -136,8 +136,8 @@ const relocationTaskApiService = baseApi
         },
       }),
       returnRelocationTaskToRework: build.mutation<
-        ReturnRelocationTaskToReworkSuccessResponse,
-        ReturnRelocationTaskToReworkMutationArgs
+        ReturnRelocationTaskToReworkResponse,
+        ReturnRelocationTaskToReworkRequest
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [RelocationTaskApiTagEnum.RelocationTask],
@@ -150,8 +150,8 @@ const relocationTaskApiService = baseApi
         },
       }),
       cancelRelocationTask: build.mutation<
-        CancelRelocationTaskSuccessResponse,
-        CancelRelocationTaskMutationArgs
+        CancelRelocationTaskResponse,
+        CancelRelocationTaskRequest
       >({
         query: ({ relocationTaskId }) => ({
           url: cancelRelocationTaskUrl(relocationTaskId),
@@ -165,7 +165,7 @@ const relocationTaskApiService = baseApi
               baseApi.util.updateQueryData(
                 RelocationTaskApiTriggerEnum.GetRelocationTask as never,
                 { relocationTaskId } as never,
-                (task: GetRelocationTaskSuccessResponse) => {
+                (task: GetRelocationTaskResponse) => {
                   Object.assign(task, { status: data.status })
                 },
               ),
@@ -174,8 +174,8 @@ const relocationTaskApiService = baseApi
         },
       }),
       [RelocationTaskApiTriggerEnum.GetRelocationTask]: build.query<
-        GetRelocationTaskSuccessResponse,
-        GetRelocationTaskQueryArgs
+        GetRelocationTaskResponse,
+        GetRelocationTaskRequest
       >({
         providesTags: (result, error) => (error ? [] : [RelocationTaskApiTagEnum.RelocationTask]),
         query: ({ relocationTaskId }) => ({
@@ -184,8 +184,8 @@ const relocationTaskApiService = baseApi
         }),
       }),
       closeRelocationTask: build.mutation<
-        CloseRelocationTaskSuccessResponse,
-        CloseRelocationTaskMutationArgs
+        CloseRelocationTaskResponse,
+        CloseRelocationTaskRequest
       >({
         query: ({ relocationTaskId }) => ({
           url: closeRelocationTaskUrl(relocationTaskId),
@@ -199,7 +199,7 @@ const relocationTaskApiService = baseApi
               baseApi.util.updateQueryData(
                 RelocationTaskApiTriggerEnum.GetRelocationTask as never,
                 { relocationTaskId } as never,
-                (task: GetRelocationTaskSuccessResponse) => {
+                (task: GetRelocationTaskResponse) => {
                   Object.assign(task, { status: data.status })
                 },
               ),
@@ -209,8 +209,8 @@ const relocationTaskApiService = baseApi
       }),
 
       getRelocationTaskAttachments: build.query<
-        GetRelocationTaskAttachmentsSuccessResponse,
-        GetRelocationTaskAttachmentsQueryArgs
+        GetRelocationTaskAttachmentsResponse,
+        GetRelocationTaskAttachmentsRequest
       >({
         query: ({ relocationTaskId }) => ({
           url: getRelocationTaskAttachmentsUrl(relocationTaskId),
@@ -218,8 +218,8 @@ const relocationTaskApiService = baseApi
         }),
       }),
       createRelocationTaskAttachment: build.mutation<
-        CreateRelocationTaskAttachmentSuccessResponse,
-        CreateRelocationTaskAttachmentMutationArgs
+        CreateRelocationTaskAttachmentResponse,
+        CreateRelocationTaskAttachmentRequest
       >({
         query: ({ relocationTaskId, file }) => {
           const formData = new FormData()
@@ -234,8 +234,8 @@ const relocationTaskApiService = baseApi
       }),
 
       updateExternalRelocation: build.mutation<
-        UpdateExternalRelocationSuccessResponse,
-        UpdateExternalRelocationMutationArgs
+        UpdateExternalRelocationResponse,
+        UpdateExternalRelocationRequest
       >({
         query: ({ relocationTaskId, ...data }) => ({
           url: updateExternalRelocationUrl(relocationTaskId),
@@ -245,21 +245,21 @@ const relocationTaskApiService = baseApi
       }),
 
       [RelocationTaskApiTriggerEnum.GetRelocationTasks]: build.query<
-        GetRelocationTasksTransformedSuccessResponse,
-        GetRelocationTasksQueryArgs
+        GetRelocationTasksTransformedResponse,
+        GetRelocationTasksRequest
       >({
         query: (params) => ({
           url: RelocationTaskApiEnum.GetRelocationTasks,
           method: HttpMethodEnum.Get,
           params,
         }),
-        transformResponse: (response: GetRelocationTasksSuccessResponse, meta, arg) =>
+        transformResponse: (response: GetRelocationTasksResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
 
       getRelocationEquipmentList: build.query<
-        GetRelocationEquipmentListSuccessResponse,
-        GetRelocationEquipmentListQueryArgs
+        GetRelocationEquipmentListResponse,
+        GetRelocationEquipmentListRequest
       >({
         providesTags: (result, error) =>
           error ? [] : [RelocationTaskApiTagEnum.RelocationEquipmentList],
@@ -270,8 +270,8 @@ const relocationTaskApiService = baseApi
       }),
 
       getRelocationEquipmentBalanceList: build.query<
-        GetRelocationEquipmentBalanceListSuccessResponse,
-        GetRelocationEquipmentBalanceListQueryArgs
+        GetRelocationEquipmentBalanceListResponse,
+        GetRelocationEquipmentBalanceListRequest
       >({
         query: ({ relocationTaskId }) => ({
           url: getRelocationEquipmentBalanceListUrl(relocationTaskId),
@@ -280,8 +280,8 @@ const relocationTaskApiService = baseApi
       }),
 
       getRelocationTaskWaybillM15: build.query<
-        GetRelocationTaskWaybillM15SuccessResponse,
-        GetRelocationTaskWaybillM15QueryArgs
+        GetRelocationTaskWaybillM15Response,
+        GetRelocationTaskWaybillM15Request
       >({
         query: ({ relocationTaskId }) => ({
           url: getRelocationTaskWaybillM15Url(relocationTaskId),
@@ -290,8 +290,8 @@ const relocationTaskApiService = baseApi
       }),
 
       getRelocationTaskCompletionDocuments: build.query<
-        GetRelocationTaskCompletionDocumentsSuccessResponse,
-        GetRelocationTaskCompletionDocumentsQueryArgs
+        GetRelocationTaskCompletionDocumentsResponse,
+        GetRelocationTaskCompletionDocumentsRequest
       >({
         query: ({ relocationTaskId }) => ({
           url: getRelocationTaskCompletionDocumentsUrl(relocationTaskId),
@@ -299,8 +299,8 @@ const relocationTaskApiService = baseApi
         }),
       }),
       createRelocationTaskCompletionDocuments: build.mutation<
-        CreateRelocationTaskCompletionDocumentsSuccessResponse,
-        CreateRelocationTaskCompletionDocumentsMutationArgs
+        CreateRelocationTaskCompletionDocumentsResponse,
+        CreateRelocationTaskCompletionDocumentsRequest
       >({
         query: ({ relocationTaskId }) => ({
           url: createRelocationTaskCompletionDocumentsUrl(relocationTaskId),
@@ -309,8 +309,8 @@ const relocationTaskApiService = baseApi
       }),
 
       moveRelocationTaskDraftToWork: build.mutation<
-        MoveRelocationTaskDraftToWorkSuccessResponse,
-        MoveRelocationTaskDraftToWorkMutationArgs
+        MoveRelocationTaskDraftToWorkResponse,
+        MoveRelocationTaskDraftToWorkRequest
       >({
         query: ({ relocationTaskId }) => ({
           url: makeMoveRelocationTaskDraftToWorkApiUrl({ relocationTaskId }),
@@ -324,7 +324,7 @@ const relocationTaskApiService = baseApi
               baseApi.util.updateQueryData(
                 RelocationTaskApiTriggerEnum.GetRelocationTask as never,
                 { relocationTaskId } as never,
-                (task: GetRelocationTaskSuccessResponse) => {
+                (task: GetRelocationTaskResponse) => {
                   Object.assign(task, { status: data.status })
                 },
               ),

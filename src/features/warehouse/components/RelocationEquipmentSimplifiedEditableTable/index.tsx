@@ -1,18 +1,17 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { Button, Form } from 'antd'
+import { equipmentConditionOptions } from 'features/equipments/api/constants'
+import {
+  checkEquipmentCategoryIsConsumable,
+  makeEquipmentsSelectOptions,
+} from 'features/equipments/helpers'
+import { EquipmentDetailDTO } from 'features/warehouse/models'
 import isUndefined from 'lodash/isUndefined'
 import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
 import { env } from 'configs/env'
-
-import { equipmentConditionOptions } from 'features/warehouse/constants/equipment'
-import { EquipmentModel } from 'features/warehouse/models'
-import {
-  checkEquipmentCategoryIsConsumable,
-  makeEquipmentsSelectOptions,
-} from 'features/warehouse/utils/equipment'
 
 import { SelectOptionButton } from 'components/Buttons/SelectOptionButton'
 import { MinusCircleIcon } from 'components/Icons'
@@ -136,7 +135,7 @@ const RelocationEquipmentSimplifiedEditableTable: FC<
             (config.rowKey as unknown as string[]).concat('amount'),
           )
 
-          const category: MaybeUndefined<EquipmentModel['category']> = form.getFieldValue(
+          const category: MaybeUndefined<EquipmentDetailDTO['category']> = form.getFieldValue(
             (config.rowKey as unknown as string[]).concat('category'),
           )
 

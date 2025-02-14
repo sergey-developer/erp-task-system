@@ -1,8 +1,7 @@
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { EquipmentDetailDTO } from 'features/warehouse/models'
 import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
-
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentModel } from 'features/warehouse/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import currencyFixtures from '_tests_/fixtures/currency'
@@ -14,7 +13,7 @@ import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/
 export const equipment = (
   props?: Partial<
     Pick<
-      EquipmentModel,
+      EquipmentDetailDTO,
       | 'id'
       | 'nomenclature'
       | 'category'
@@ -29,7 +28,7 @@ export const equipment = (
       | 'condition'
     >
   >,
-): EquipmentModel => ({
+): EquipmentDetailDTO => ({
   id: props?.id || fakeId(),
   nomenclature:
     props?.nomenclature ||

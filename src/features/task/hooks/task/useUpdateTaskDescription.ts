@@ -1,13 +1,12 @@
+import { updateTaskDescriptionErrMsg } from 'features/task/constants/task'
+import {
+  UpdateTaskDescriptionRequest,
+  UpdateTaskDescriptionResponse,
+} from 'features/task/models'
+import { useUpdateTaskDescriptionMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { updateTaskDescriptionErrMsg } from 'features/task/constants/task'
-import {
-  UpdateTaskDescriptionMutationArgs,
-  UpdateTaskDescriptionSuccessResponse,
-} from 'features/task/models'
-import { useUpdateTaskDescriptionMutation } from 'features/task/services/taskApi.service'
 
 import {
   getErrorDetail,
@@ -19,8 +18,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseUpdateTaskDescriptionResult = CustomUseMutationResult<
-  UpdateTaskDescriptionMutationArgs,
-  UpdateTaskDescriptionSuccessResponse
+  UpdateTaskDescriptionRequest,
+  UpdateTaskDescriptionResponse
 >
 
 export const useUpdateTaskDescription = (): UseUpdateTaskDescriptionResult => {

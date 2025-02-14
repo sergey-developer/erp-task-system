@@ -1,29 +1,28 @@
+import { getTechnicalExaminationsErrMsg } from 'features/technicalExaminations/constants'
+import {
+  GetTechnicalExaminationsRequest,
+  GetTechnicalExaminationsResponse,
+} from 'features/technicalExaminations/models'
+import { useGetTechnicalExaminationsQuery } from 'features/technicalExaminations/services/technicalExaminationsApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getTechnicalExaminationsErrMsg } from 'features/technicalExaminations/constants'
-import {
-  GetTechnicalExaminationsQueryArgs,
-  GetTechnicalExaminationsSuccessResponse,
-} from 'features/technicalExaminations/models'
-import { useGetTechnicalExaminationsQuery } from 'features/technicalExaminations/services/technicalExaminationsApi.service'
 
 import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTechnicalExaminationsResult = CustomUseQueryHookResult<
-  GetTechnicalExaminationsQueryArgs,
-  GetTechnicalExaminationsSuccessResponse
+  GetTechnicalExaminationsRequest,
+  GetTechnicalExaminationsResponse
 >
 
 type UseGetTechnicalExaminationsOptions = CustomUseQueryOptions<
-  GetTechnicalExaminationsQueryArgs,
-  GetTechnicalExaminationsSuccessResponse
+  GetTechnicalExaminationsRequest,
+  GetTechnicalExaminationsResponse
 >
 
 export const useGetTechnicalExaminations = (
-  args: GetTechnicalExaminationsQueryArgs,
+  args: GetTechnicalExaminationsRequest,
   options?: UseGetTechnicalExaminationsOptions,
 ): UseGetTechnicalExaminationsResult => {
   const state = useGetTechnicalExaminationsQuery(args, options)

@@ -1,13 +1,9 @@
+import { getInventorizationErrMsg } from 'features/warehouse/constants/inventorization'
+import { GetInventorizationRequest, GetInventorizationResponse } from 'features/warehouse/models'
+import { useGetInventorizationQuery } from 'features/warehouse/services/inventorizationApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getInventorizationErrMsg } from 'features/warehouse/constants/inventorization'
-import {
-  GetInventorizationQueryArgs,
-  GetInventorizationSuccessResponse,
-} from 'features/warehouse/models'
-import { useGetInventorizationQuery } from 'features/warehouse/services/inventorizationApi.service'
 
 import {
   getErrorDetail,
@@ -18,17 +14,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetInventorizationResult = CustomUseQueryHookResult<
-  GetInventorizationQueryArgs,
-  GetInventorizationSuccessResponse
+  GetInventorizationRequest,
+  GetInventorizationResponse
 >
 
 type UseGetInventorizationOptions = CustomUseQueryOptions<
-  GetInventorizationQueryArgs,
-  GetInventorizationSuccessResponse
+  GetInventorizationRequest,
+  GetInventorizationResponse
 >
 
 export const useGetInventorization = (
-  args: GetInventorizationQueryArgs,
+  args: GetInventorizationRequest,
   options?: UseGetInventorizationOptions,
 ): UseGetInventorizationResult => {
   const state = useGetInventorizationQuery(args, options)

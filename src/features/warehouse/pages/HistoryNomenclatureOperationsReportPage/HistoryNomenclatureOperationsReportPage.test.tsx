@@ -5,7 +5,7 @@ import { getRelocationTaskReportTableColValue } from 'features/reports/helpers'
 import {
   equipmentConditionDict,
   EquipmentConditionEnum,
-} from 'features/warehouse/constants/equipment'
+} from 'features/equipments/api/constants'
 
 import { DEFAULT_FILE_NAME } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'

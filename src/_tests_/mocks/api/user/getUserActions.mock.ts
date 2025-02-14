@@ -1,4 +1,4 @@
-import { GetUserActionsSuccessResponse } from 'features/users/api/dto'
+import { GetUserActionsResponse } from 'features/users/api/dto'
 import { makeGetUserActionsEndpoint } from 'features/users/helpers'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const getUserActionsMockFn = (userId: IdType) =>
 
 export const mockGetUserActionsSuccess = (
   userId: IdType,
-  options?: Partial<ResponseResolverOptions<GetUserActionsSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetUserActionsResponse>>,
 ) => getSuccessMockFn(getUserActionsMockFn(userId), options)()

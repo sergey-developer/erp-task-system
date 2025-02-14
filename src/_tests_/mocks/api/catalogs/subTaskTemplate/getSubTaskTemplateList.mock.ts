@@ -1,5 +1,5 @@
 import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
-import { GetSubTaskTemplatesCatalogSuccessResponse } from 'shared/catalogs/subTaskTemplates/api/schemas/getSubTaskTemplatesCatalog.schema'
+import { GetSubTaskTemplatesCatalogResponse } from 'shared/catalogs/subTaskTemplates/api/schemas/getSubTaskTemplatesCatalog.schema'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
@@ -9,7 +9,7 @@ const getSubTaskTemplateListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, CatalogEndpointsEnum.GetSubTaskTemplateList)
 
 export const mockGetSubTaskTemplateListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetSubTaskTemplatesCatalogSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetSubTaskTemplatesCatalogResponse>>,
 ) => getSuccessMockFn(getSubTaskTemplateListMockFn(), options)()
 
 export const mockGetSubTaskTemplateListServerError = (options?: Partial<ResponseResolverOptions>) =>

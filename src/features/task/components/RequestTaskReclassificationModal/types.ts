@@ -1,12 +1,12 @@
 import { FormInstance, ModalProps } from 'antd'
 
-import { CreateTaskReclassificationRequestMutationArgs, TaskModel } from 'features/task/models'
+import { CreateTaskReclassificationRequestRequest, TaskModel } from 'features/task/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { FieldsErrors } from 'shared/api/baseApi'
 
-type FormFields = Omit<CreateTaskReclassificationRequestMutationArgs, 'taskId'>
+type FormFields = Omit<CreateTaskReclassificationRequestRequest, 'taskId'>
 
 export type RequestTaskReclassificationModalProps = Required<Pick<BaseModalProps, 'open'>> &
   Pick<TaskModel, 'recordId'> & {

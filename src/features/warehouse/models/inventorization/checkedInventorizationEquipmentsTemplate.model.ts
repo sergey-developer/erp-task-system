@@ -1,5 +1,5 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentCategoryListItemModel, NomenclatureModel } from 'features/warehouse/models'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { EquipmentCategoryDTO, NomenclatureModel } from 'features/warehouse/models'
 
 import { CurrencyCatalogItemDTO } from 'shared/catalogs/currencies/api/dto'
 import { CustomerCatalogItemDTO } from 'shared/catalogs/customers/api/dto'
@@ -17,7 +17,7 @@ export type CheckedInventorizationEquipmentsTemplateListItemModel = {
   condition?: EquipmentConditionEnum
   price?: number
   currency?: Pick<CurrencyCatalogItemDTO, 'id' | 'title'>
-  category?: Pick<EquipmentCategoryListItemModel, 'id' | 'title' | 'code'>
+  category?: Pick<EquipmentCategoryDTO, 'id' | 'title' | 'code'>
   isNew?: boolean
   isWarranty?: boolean
   isRepaired?: boolean

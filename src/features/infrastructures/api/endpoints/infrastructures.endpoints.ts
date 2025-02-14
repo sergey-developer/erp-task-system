@@ -9,28 +9,28 @@ import {
   makeUpdateInfrastructureOrderFormWorkEndpoint,
 } from 'features/infrastructures/api/helpers'
 import {
-  CreateInfrastructureOrderFormAttachmentMutationArgs,
-  CreateInfrastructureOrderFormAttachmentSuccessResponse,
-  CreateInfrastructureOrderFormMutationArgs,
-  CreateInfrastructureOrderFormSuccessResponse,
-  CreateInfrastructureOrderFormWorkMutationArgs,
-  CreateInfrastructureOrderFormWorkSuccessResponse,
-  DeleteInfrastructureOrdersFormsWorkMutationArgs,
-  DeleteInfrastructureOrdersFormsWorkSuccessResponse,
-  GetInfrastructureOrderFormWorkTypeCostQueryArgs,
-  GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
-  GetInfrastructureOrdersFormsQueryArgs,
-  GetInfrastructureOrdersFormsSuccessResponse,
-  GetInfrastructureQueryArgs,
-  GetInfrastructureStatusHistoryQueryArgs,
-  GetInfrastructureStatusHistorySuccessResponse,
-  GetInfrastructureSuccessResponse,
-  UpdateInfrastructureMutationArgs,
-  UpdateInfrastructureOrderFormWorkMutationArgs,
-  UpdateInfrastructureOrderFormWorkSuccessResponse,
-  UpdateInfrastructureStatusMutationArgs,
-  UpdateInfrastructureStatusSuccessResponse,
-  UpdateInfrastructureSuccessResponse,
+  CreateInfrastructureOrderFormAttachmentRequest,
+  CreateInfrastructureOrderFormAttachmentResponse,
+  CreateInfrastructureOrderFormRequest,
+  CreateInfrastructureOrderFormResponse,
+  CreateInfrastructureOrderFormWorkRequest,
+  CreateInfrastructureOrderFormWorkResponse,
+  DeleteInfrastructureOrdersFormsWorkRequest,
+  DeleteInfrastructureOrdersFormsWorkResponse,
+  GetInfrastructureOrderFormWorkTypeCostRequest,
+  GetInfrastructureOrderFormWorkTypeCostResponse,
+  GetInfrastructureOrdersFormsRequest,
+  GetInfrastructureOrdersFormsResponse,
+  GetInfrastructureRequest,
+  GetInfrastructureStatusHistoryRequest,
+  GetInfrastructureStatusHistoryResponse,
+  GetInfrastructureResponse,
+  UpdateInfrastructureRequest,
+  UpdateInfrastructureOrderFormWorkRequest,
+  UpdateInfrastructureOrderFormWorkResponse,
+  UpdateInfrastructureStatusRequest,
+  UpdateInfrastructureStatusResponse,
+  UpdateInfrastructureResponse,
 } from 'features/infrastructures/api/schemas'
 import { decamelize } from 'humps'
 
@@ -46,7 +46,7 @@ const infrastructuresEndpoints = baseApi
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getInfrastructure: build.query<GetInfrastructureSuccessResponse, GetInfrastructureQueryArgs>({
+      getInfrastructure: build.query<GetInfrastructureResponse, GetInfrastructureRequest>({
         providesTags: (result, error) =>
           error ? [] : [InfrastructuresEndpointsTagsEnum.Infrastructure],
         query: ({ infrastructureId }) => ({
@@ -55,8 +55,8 @@ const infrastructuresEndpoints = baseApi
         }),
       }),
       updateInfrastructure: build.mutation<
-        UpdateInfrastructureSuccessResponse,
-        UpdateInfrastructureMutationArgs
+        UpdateInfrastructureResponse,
+        UpdateInfrastructureRequest
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [InfrastructuresEndpointsTagsEnum.Infrastructure],
@@ -67,8 +67,8 @@ const infrastructuresEndpoints = baseApi
         }),
       }),
       updateInfrastructureStatus: build.mutation<
-        UpdateInfrastructureStatusSuccessResponse,
-        UpdateInfrastructureStatusMutationArgs
+        UpdateInfrastructureStatusResponse,
+        UpdateInfrastructureStatusRequest
       >({
         query: (data) => ({
           url: InfrastructuresEndpointsEnum.UpdateInfrastructureStatus,
@@ -77,8 +77,8 @@ const infrastructuresEndpoints = baseApi
         }),
       }),
       getInfrastructureStatusHistory: build.query<
-        GetInfrastructureStatusHistorySuccessResponse,
-        GetInfrastructureStatusHistoryQueryArgs
+        GetInfrastructureStatusHistoryResponse,
+        GetInfrastructureStatusHistoryRequest
       >({
         query: (params) => ({
           url: InfrastructuresEndpointsEnum.GetInfrastructureStatusHistory,
@@ -88,8 +88,8 @@ const infrastructuresEndpoints = baseApi
       }),
 
       getInfrastructureOrdersForms: build.query<
-        GetInfrastructureOrdersFormsSuccessResponse,
-        GetInfrastructureOrdersFormsQueryArgs
+        GetInfrastructureOrdersFormsResponse,
+        GetInfrastructureOrdersFormsRequest
       >({
         providesTags: (result, error) =>
           error ? [] : [InfrastructuresEndpointsTagsEnum.InfrastructureOrdersForms],
@@ -100,8 +100,8 @@ const infrastructuresEndpoints = baseApi
         }),
       }),
       createInfrastructureOrderForm: build.mutation<
-        CreateInfrastructureOrderFormSuccessResponse,
-        CreateInfrastructureOrderFormMutationArgs
+        CreateInfrastructureOrderFormResponse,
+        CreateInfrastructureOrderFormRequest
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [InfrastructuresEndpointsTagsEnum.InfrastructureOrdersForms],
@@ -113,8 +113,8 @@ const infrastructuresEndpoints = baseApi
       }),
 
       createInfrastructureOrderFormAttachment: build.mutation<
-        CreateInfrastructureOrderFormAttachmentSuccessResponse,
-        CreateInfrastructureOrderFormAttachmentMutationArgs
+        CreateInfrastructureOrderFormAttachmentResponse,
+        CreateInfrastructureOrderFormAttachmentRequest
       >({
         query: ({ orderFormId, file }) => {
           const formData = new FormData()
@@ -130,8 +130,8 @@ const infrastructuresEndpoints = baseApi
       }),
 
       getInfrastructureOrderFormWorkTypeCost: build.query<
-        GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
-        GetInfrastructureOrderFormWorkTypeCostQueryArgs
+        GetInfrastructureOrderFormWorkTypeCostResponse,
+        GetInfrastructureOrderFormWorkTypeCostRequest
       >({
         query: (params) => ({
           url: InfrastructuresEndpointsEnum.GetInfrastructureOrderFormWorkTypeCost,
@@ -141,8 +141,8 @@ const infrastructuresEndpoints = baseApi
       }),
 
       createInfrastructureOrderFormWork: build.mutation<
-        CreateInfrastructureOrderFormWorkSuccessResponse,
-        CreateInfrastructureOrderFormWorkMutationArgs
+        CreateInfrastructureOrderFormWorkResponse,
+        CreateInfrastructureOrderFormWorkRequest
       >({
         query: (data) => ({
           url: InfrastructuresEndpointsEnum.CreateInfrastructureOrderFormWork,
@@ -151,8 +151,8 @@ const infrastructuresEndpoints = baseApi
         }),
       }),
       updateInfrastructureOrderFormWork: build.mutation<
-        UpdateInfrastructureOrderFormWorkSuccessResponse,
-        UpdateInfrastructureOrderFormWorkMutationArgs
+        UpdateInfrastructureOrderFormWorkResponse,
+        UpdateInfrastructureOrderFormWorkRequest
       >({
         query: ({ infrastructureWorkId, ...data }) => ({
           url: makeUpdateInfrastructureOrderFormWorkEndpoint(infrastructureWorkId),
@@ -162,8 +162,8 @@ const infrastructuresEndpoints = baseApi
       }),
 
       deleteInfrastructureOrdersFormsWork: build.mutation<
-        DeleteInfrastructureOrdersFormsWorkSuccessResponse,
-        DeleteInfrastructureOrdersFormsWorkMutationArgs
+        DeleteInfrastructureOrdersFormsWorkResponse,
+        DeleteInfrastructureOrdersFormsWorkRequest
       >({
         query: ({ infrastructureWorkId }) => ({
           url: makeDeleteInfrastructureOrdersFormsWorkEndpoint({ infrastructureWorkId }),

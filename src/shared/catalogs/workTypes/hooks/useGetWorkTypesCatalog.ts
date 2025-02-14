@@ -8,20 +8,20 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { getWorkTypesCatalogErrMsg } from '../api/constants'
 import { useGetWorkTypesCatalogQuery } from '../api/endpoints/workTypesCatalog.endpoints'
-import { GetWorkTypesCatalogQueryArgs, GetWorkTypesCatalogSuccessResponse } from '../api/schemas'
+import { GetWorkTypesCatalogRequest, GetWorkTypesCatalogResponse } from '../api/schemas'
 
 type UseGetWorkTypesCatalogResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetWorkTypesCatalogQueryArgs>,
-  GetWorkTypesCatalogSuccessResponse
+  MaybeUndefined<GetWorkTypesCatalogRequest>,
+  GetWorkTypesCatalogResponse
 >
 
 type UseGetWorkTypesCatalogOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetWorkTypesCatalogQueryArgs>,
-  GetWorkTypesCatalogSuccessResponse
+  MaybeUndefined<GetWorkTypesCatalogRequest>,
+  GetWorkTypesCatalogResponse
 >
 
 export const useGetWorkTypesCatalog = (
-  args?: GetWorkTypesCatalogQueryArgs,
+  args?: GetWorkTypesCatalogRequest,
   options?: UseGetWorkTypesCatalogOptions,
 ): UseGetWorkTypesCatalogResult => {
   const state = useGetWorkTypesCatalogQuery(args, options)

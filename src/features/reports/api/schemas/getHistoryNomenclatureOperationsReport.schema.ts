@@ -1,13 +1,13 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { BaseNomenclatureRequestArgs } from 'features/warehouse/types'
 
-import { PaginationParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
+import { PaginationRequestParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 import { IdType } from 'shared/types/common'
 
 import { HistoryNomenclatureOperationsReportItemDTO } from '../dto'
 
-export type GetHistoryNomenclatureOperationsReportQueryArgs = BaseNomenclatureRequestArgs &
-  PaginationParams &
+export type GetHistoryNomenclatureOperationsReportRequest = BaseNomenclatureRequestArgs &
+  PaginationRequestParams &
   Partial<{
     conditions: EquipmentConditionEnum[]
     locations: IdType[]
@@ -16,5 +16,5 @@ export type GetHistoryNomenclatureOperationsReportQueryArgs = BaseNomenclatureRe
     createdAtTo: string
   }>
 
-export type GetHistoryNomenclatureOperationsReportSuccessResponse =
+export type GetHistoryNomenclatureOperationsReportResponse =
   PaginationResponse<HistoryNomenclatureOperationsReportItemDTO>

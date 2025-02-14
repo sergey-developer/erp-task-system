@@ -1,5 +1,5 @@
 import { CatalogEndpointsEnum } from 'features/warehouse/constants/workType'
-import { GetWorkTypesCatalogSuccessResponse } from 'features/warehouse/models'
+import { GetWorkTypesCatalogResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -10,5 +10,5 @@ const getWorkTypesMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, CatalogEndpointsEnum.GetWorkTypes)
 
 export const mockGetWorkTypesSuccess = (
-  options?: Partial<ResponseResolverOptions<GetWorkTypesCatalogSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetWorkTypesCatalogResponse>>,
 ) => getSuccessMockFn(getWorkTypesMockFn(), options)()

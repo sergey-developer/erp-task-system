@@ -7,7 +7,7 @@ import { TaskRequestArgs } from 'features/task/types'
 
 import { FieldsErrors } from 'shared/api/baseApi'
 
-export type CreateTaskSuspendRequestMutationArgs = TaskRequestArgs & {
+export type CreateTaskSuspendRequestRequest = TaskRequestArgs & {
   comment: string
   suspendEndAt: string
   suspendReason: SuspendReasonEnum
@@ -15,11 +15,11 @@ export type CreateTaskSuspendRequestMutationArgs = TaskRequestArgs & {
   externalResponsibleCompany?: ExternalResponsibleCompanyEnum
 }
 
-export type CreateTaskSuspendRequestSuccessResponse = SuspendRequestModel
+export type CreateTaskSuspendRequestResponse = SuspendRequestModel
 
 export type CreateTaskSuspendRequestBadRequestErrorResponse = FieldsErrors<
   Pick<
-    CreateTaskSuspendRequestMutationArgs,
+    CreateTaskSuspendRequestRequest,
     | 'comment'
     | 'suspendEndAt'
     | 'suspendReason'

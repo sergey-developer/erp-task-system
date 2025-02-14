@@ -1,7 +1,7 @@
 import { getRelocationEquipmentAttachmentListErrMsg } from 'features/warehouse/constants/relocationEquipment'
 import {
-  GetRelocationEquipmentAttachmentListQueryArgs,
-  GetRelocationEquipmentAttachmentListSuccessResponse,
+  GetRelocationEquipmentAttachmentListRequest,
+  GetRelocationEquipmentAttachmentListResponse,
 } from 'features/warehouse/models/relocationEquipment'
 import { useGetRelocationEquipmentAttachmentListQuery } from 'features/warehouse/services/relocationEquipmentApi.service'
 import { useEffect } from 'react'
@@ -17,17 +17,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetRelocationEquipmentAttachmentListResult = CustomUseQueryHookResult<
-  GetRelocationEquipmentAttachmentListQueryArgs,
-  GetRelocationEquipmentAttachmentListSuccessResponse
+  GetRelocationEquipmentAttachmentListRequest,
+  GetRelocationEquipmentAttachmentListResponse
 >
 
 type UseGetRelocationEquipmentAttachmentListOptions = CustomUseQueryOptions<
-  GetRelocationEquipmentAttachmentListQueryArgs,
-  GetRelocationEquipmentAttachmentListSuccessResponse
+  GetRelocationEquipmentAttachmentListRequest,
+  GetRelocationEquipmentAttachmentListResponse
 >
 
 export const useGetRelocationEquipmentAttachments = (
-  args: GetRelocationEquipmentAttachmentListQueryArgs,
+  args: GetRelocationEquipmentAttachmentListRequest,
   options?: UseGetRelocationEquipmentAttachmentListOptions,
 ): UseGetRelocationEquipmentAttachmentListResult => {
   const state = useGetRelocationEquipmentAttachmentListQuery(args, options)

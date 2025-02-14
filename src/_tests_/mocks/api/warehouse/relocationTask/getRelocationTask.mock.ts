@@ -1,4 +1,4 @@
-import { GetRelocationTaskSuccessResponse } from 'features/warehouse/models'
+import { GetRelocationTaskResponse } from 'features/warehouse/models'
 import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 import { getRelocationTaskUrl } from 'features/warehouse/utils/relocationTask'
 
@@ -19,7 +19,7 @@ const getRelocationTaskMockFn = ({ relocationTaskId }: RelocationTaskRequestArgs
 
 export const mockGetRelocationTaskSuccess = (
   { relocationTaskId }: RelocationTaskRequestArgs,
-  options?: Partial<ResponseResolverOptions<GetRelocationTaskSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetRelocationTaskResponse>>,
 ) => getSuccessMockFn(getRelocationTaskMockFn({ relocationTaskId }), options)()
 
 export const mockGetRelocationTaskNotFoundError = (

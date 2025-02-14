@@ -3,15 +3,15 @@ import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
-  GetLegalEntitiesCatalogQueryArgs,
-  GetLegalEntitiesCatalogSuccessResponse,
+  GetLegalEntitiesCatalogRequest,
+  GetLegalEntitiesCatalogResponse,
 } from '../schemas'
 
 const legalEntitiesCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getLegalEntitiesCatalog: build.query<
-      GetLegalEntitiesCatalogSuccessResponse,
-      GetLegalEntitiesCatalogQueryArgs
+      GetLegalEntitiesCatalogResponse,
+      GetLegalEntitiesCatalogRequest
     >({
       query: () => ({
         url: CatalogEndpointsEnum.GetLegalEntities,

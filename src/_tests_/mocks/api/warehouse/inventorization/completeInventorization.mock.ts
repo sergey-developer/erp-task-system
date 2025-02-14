@@ -1,4 +1,4 @@
-import { CompleteInventorizationSuccessResponse } from 'features/warehouse/models'
+import { CompleteInventorizationResponse } from 'features/warehouse/models'
 import { InventorizationRequestArgs } from 'features/warehouse/types'
 import { makeCompleteInventorizationUrl } from 'features/warehouse/utils/inventorization'
 
@@ -14,5 +14,5 @@ const completeInventorizationMockFn = ({
 
 export const mockCompleteInventorizationSuccess = (
   { inventorizationId }: Pick<InventorizationRequestArgs, 'inventorizationId'>,
-  options?: Partial<ResponseResolverOptions<CompleteInventorizationSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CompleteInventorizationResponse>>,
 ) => getSuccessMockFn(completeInventorizationMockFn({ inventorizationId }), options)()

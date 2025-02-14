@@ -1,4 +1,4 @@
-import { CreateSubTaskSuccessResponse } from 'features/task/models'
+import { CreateSubTaskResponse } from 'features/task/models'
 import { createSubTaskUrl } from 'features/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -18,7 +18,7 @@ const createSubTaskMockFn = (id: IdType) =>
 
 export const mockCreateSubTaskSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<CreateSubTaskSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CreateSubTaskResponse>>,
 ) => getSuccessMockFn(createSubTaskMockFn(id), options)()
 
 export const mockCreateSubTaskBadRequestError = <T extends object>(

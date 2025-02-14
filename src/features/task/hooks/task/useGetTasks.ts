@@ -3,25 +3,25 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getTasksErrMsg } from 'features/task/constants/task'
-import { GetTasksQueryArgs } from 'features/task/models'
+import { GetTasksRequest } from 'features/task/models'
 import { useGetTasksQuery } from 'features/task/services/taskApi.service'
-import { GetTasksTransformedSuccessResponse } from 'features/task/types'
+import { GetTasksTransformedResponse } from 'features/task/types'
 
 import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTasksResult = CustomUseQueryHookResult<
-  GetTasksQueryArgs,
-  GetTasksTransformedSuccessResponse
+  GetTasksRequest,
+  GetTasksTransformedResponse
 >
 
 type UseGetTasksOptions = CustomUseQueryOptions<
-  GetTasksQueryArgs,
-  GetTasksTransformedSuccessResponse
+  GetTasksRequest,
+  GetTasksTransformedResponse
 >
 
 export const useGetTasks = (
-  args: GetTasksQueryArgs,
+  args: GetTasksRequest,
   options?: UseGetTasksOptions,
 ): UseGetTasksResult => {
   const state = useGetTasksQuery(args, options)

@@ -1,7 +1,8 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
+import { useGetEquipmentCategories, useGetEquipmentNomenclatures } from 'features/equipments/hooks'
 import { ReportsStorageKeysEnum } from 'features/reports/api/constants'
-import { GetAmountEquipmentSpentReportQueryArgs } from 'features/reports/api/dto'
+import { GetAmountEquipmentSpentReportRequest } from 'features/reports/api/dto'
 import { AmountEquipmentSpentReportFilterFormFields } from 'features/reports/components/AmountEquipmentSpentReportFilter/types'
 import AmountEquipmentSpentReportForm from 'features/reports/components/AmountEquipmentSpentReportForm'
 import { AmountEquipmentSpentReportFormProps } from 'features/reports/components/AmountEquipmentSpentReportForm/types'
@@ -11,10 +12,6 @@ import {
   useGetAmountEquipmentSpentReport,
   useLazyGetAmountEquipmentSpentReportXlsx,
 } from 'features/reports/hooks'
-import {
-  useGetEquipmentCategories,
-  useGetEquipmentNomenclatures,
-} from 'features/warehouse/hooks/equipment'
 import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
 
@@ -92,7 +89,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
     filtersFromStorage || {},
   )
 
-  const [reportParams, setReportParams] = useSetState<GetAmountEquipmentSpentReportQueryArgs>({
+  const [reportParams, setReportParams] = useSetState<GetAmountEquipmentSpentReportRequest>({
     ...initialPaginationParams,
     ...filterValues,
   })

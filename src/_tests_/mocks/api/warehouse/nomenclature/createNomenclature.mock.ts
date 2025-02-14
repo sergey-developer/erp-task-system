@@ -1,5 +1,5 @@
 import { NomenclatureApiEnum } from 'features/warehouse/constants/nomenclature'
-import { CreateNomenclatureSuccessResponse } from 'features/warehouse/models'
+import { CreateNomenclatureResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -10,5 +10,5 @@ const createNomenclatureMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, NomenclatureApiEnum.CreateNomenclature)
 
 export const mockCreateNomenclatureSuccess = (
-  options?: Partial<ResponseResolverOptions<CreateNomenclatureSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CreateNomenclatureResponse>>,
 ) => getSuccessMockFn(createNomenclatureMockFn(), options)()

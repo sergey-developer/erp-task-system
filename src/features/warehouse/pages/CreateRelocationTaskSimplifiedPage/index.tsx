@@ -15,6 +15,16 @@ import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { renderUploadedFile } from 'features/attachments/helpers'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
+import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
+import {
+  useCreateEquipment,
+  useCreateEquipments,
+  useGetEquipmentCategories,
+  useGetEquipmentsCatalog,
+  useImportEquipmentsByFile,
+  useLazyGetEquipment,
+  useLazyGetEquipmentsTemplate,
+} from 'features/equipments/hooks'
 import { getTaskCompleteAtDate } from 'features/task/components/TaskDetails/MainDetails/utils'
 import { TaskModel } from 'features/task/models'
 import { getOlaStatusTextType } from 'features/task/utils/task'
@@ -29,20 +39,10 @@ import {
   RelocationEquipmentRow,
 } from 'features/warehouse/components/RelocationEquipmentSimplifiedEditableTable/types'
 import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
-import {
-  useCreateEquipment,
-  useCreateEquipments,
-  useGetEquipmentCategories,
-  useGetEquipmentsCatalog,
-  useImportEquipmentsByFile,
-  useLazyGetEquipment,
-  useLazyGetEquipmentsTemplate,
-} from 'features/warehouse/hooks/equipment'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useCreateRelocationTaskITSM } from 'features/warehouse/hooks/relocationTask'
-import { EquipmentCategoryListItemModel } from 'features/warehouse/models'
+import { EquipmentCategoryDTO } from 'features/warehouse/models'
 import { SimplifiedRelocationTaskFormFields } from 'features/warehouse/types'
-import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
 import get from 'lodash/get'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
@@ -142,7 +142,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
     { setTrue: setUserChangedNomenclature, setFalse: resetUserChangedNomenclature },
   ] = useBoolean(false)
 
-  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
+  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryDTO>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   const [editableEquipmentByFile, setEditableEquipmentByFile] = useState<EquipmentByFileTableRow>()

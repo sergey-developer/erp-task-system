@@ -12,7 +12,7 @@ export type GetMtsrReportBaseSortKey =
 
 export type GetMtsrReportBaseSortValue = ExtendSortKey<GetMtsrReportBaseSortKey>
 
-export type GetMtsrReportBaseQueryArgs = Partial<{
+export type GetMtsrReportBaseRequest = Partial<{
   dateStart: string
   dateEnd: string
   customers: IdType[]

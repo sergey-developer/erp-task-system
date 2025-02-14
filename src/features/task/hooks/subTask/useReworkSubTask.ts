@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { reworkSubTaskErrMsg } from 'features/task/constants/task'
-import { ReworkSubTaskMutationArgs, ReworkSubTaskSuccessResponse } from 'features/task/models'
+import { ReworkSubTaskRequest, ReworkSubTaskResponse } from 'features/task/models'
 import { useReworkSubTaskMutation } from 'features/task/services/subTaskApi.service'
 
 import {
@@ -16,8 +16,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseReworkSubTaskResult = CustomUseMutationResult<
-  ReworkSubTaskMutationArgs,
-  ReworkSubTaskSuccessResponse
+  ReworkSubTaskRequest,
+  ReworkSubTaskResponse
 >
 
 export const useReworkSubTask = (): UseReworkSubTaskResult => {

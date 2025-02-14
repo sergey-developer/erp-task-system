@@ -19,8 +19,8 @@ import { useGetMeasurementUnitsCatalog } from 'features/warehouse/hooks/measurem
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useGetNomenclatureGroups } from 'features/warehouse/hooks/nomenclatureGroup'
 import {
-  GetNomenclatureGroupListQueryArgs,
-  GetNomenclatureListQueryArgs,
+  GetNomenclatureGroupListRequest,
+  GetNomenclatureListRequest,
   NomenclatureGroupListItemModel,
 } from 'features/warehouse/models'
 import {
@@ -79,11 +79,11 @@ const NomenclatureListPage: FC = () => {
   ])
 
   const [getNomenclatureGroupListParams, setGetNomenclatureGroupListParams] = useSetState<
-    NonNullable<GetNomenclatureGroupListQueryArgs>
+    NonNullable<GetNomenclatureGroupListRequest>
   >({})
 
   const [nomenclatureListParams, setNomenclatureListParams] = useSetState<
-    NonNullable<GetNomenclatureListQueryArgs>
+    NonNullable<GetNomenclatureListRequest>
   >(nomenclaturesInitialPaginationParams)
 
   const [hoveredGroupId, setHoveredGroupId] = useState<number>()

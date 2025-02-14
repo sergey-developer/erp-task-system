@@ -1,6 +1,6 @@
 import {
   ExecuteRelocationTaskBadRequestErrorResponse,
-  ExecuteRelocationTaskSuccessResponse,
+  ExecuteRelocationTaskResponse,
 } from 'features/warehouse/models'
 import { executeRelocationTaskUrl } from 'features/warehouse/utils/relocationTask'
 
@@ -23,7 +23,7 @@ const executeRelocationTaskMockFn = (id: IdType) =>
 
 export const mockExecuteRelocationTaskSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<ExecuteRelocationTaskSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<ExecuteRelocationTaskResponse>>,
 ) => getSuccessMockFn(executeRelocationTaskMockFn(id), options)()
 
 export const mockExecuteRelocationTaskBadRequestError = (

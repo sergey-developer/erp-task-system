@@ -1,7 +1,7 @@
 import { useGetTaskMonitoringQuery } from 'features/monitoring/api/endpoints/monitoring.endpoints'
 import {
-  GetTaskMonitoringQueryArgs,
-  GetTaskMonitoringSuccessResponse,
+  GetTaskMonitoringRequest,
+  GetTaskMonitoringResponse,
 } from 'features/monitoring/api/schemas'
 import { useEffect } from 'react'
 
@@ -11,17 +11,17 @@ import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskMonitoringResult = CustomUseQueryHookResult<
-  GetTaskMonitoringQueryArgs,
-  GetTaskMonitoringSuccessResponse
+  GetTaskMonitoringRequest,
+  GetTaskMonitoringResponse
 >
 
 type UseGetTaskMonitoringOptions = CustomUseQueryOptions<
-  GetTaskMonitoringQueryArgs,
-  GetTaskMonitoringSuccessResponse
+  GetTaskMonitoringRequest,
+  GetTaskMonitoringResponse
 >
 
 export const useGetTaskMonitoring = (
-  args: GetTaskMonitoringQueryArgs,
+  args: GetTaskMonitoringRequest,
   options?: UseGetTaskMonitoringOptions,
 ): UseGetTaskMonitoringResult => {
   const state = useGetTaskMonitoringQuery(args, options)

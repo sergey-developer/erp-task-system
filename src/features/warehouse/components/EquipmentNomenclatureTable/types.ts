@@ -1,9 +1,8 @@
 import { TableProps } from 'antd'
-
-import { EquipmentNomenclatureListItemModel } from 'features/warehouse/models'
+import { EquipmentNomenclatureDTO } from 'features/warehouse/models'
 
 export type EquipmentNomenclatureTableItem = Pick<
-  EquipmentNomenclatureListItemModel,
+  EquipmentNomenclatureDTO,
   'id' | 'title' | 'quantity'
 >
 

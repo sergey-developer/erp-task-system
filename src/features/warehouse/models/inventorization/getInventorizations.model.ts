@@ -3,7 +3,7 @@ import {
   InventorizationTypeEnum,
 } from 'features/warehouse/constants/inventorization'
 
-import { PaginationParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
+import { PaginationRequestParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 import { ExtendSortKey, SortParams } from 'shared/types/sort'
 
 import { InventorizationListItemModel } from './inventorizations.model'
@@ -23,8 +23,8 @@ export type GetInventorizationsFilter = Partial<{
   statuses: InventorizationStatusEnum[]
 }>
 
-export type GetInventorizationsQueryArgs = PaginationParams &
+export type GetInventorizationsRequest = PaginationRequestParams &
   SortParams<GetInventorizationsSortValue> &
   GetInventorizationsFilter
 
-export type GetInventorizationsSuccessResponse = PaginationResponse<InventorizationListItemModel>
+export type GetInventorizationsResponse = PaginationResponse<InventorizationListItemModel>

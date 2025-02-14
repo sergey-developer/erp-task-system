@@ -5,75 +5,75 @@ import {
   TaskExtendedStatusEnum,
 } from 'features/task/constants/task'
 import {
-  ClassifyTaskWorkTypeMutationArgs,
-  ClassifyTaskWorkTypeSuccessResponse,
-  CreateInitiationReasonMutationArgs,
-  CreateInitiationReasonSuccessResponse,
-  CreateSubTaskMutationArgs,
-  CreateSubTaskSuccessResponse,
-  CreateTaskAttachmentMutationArgs,
-  CreateTaskAttachmentSuccessResponse,
-  CreateTaskCommentMutationArgs,
-  CreateTaskCommentSuccessResponse,
-  CreateTaskCompletedWorkMutationArgs,
-  CreateTaskCompletedWorkSuccessResponse,
-  CreateTaskCompletionDocumentsMutationArgs,
-  CreateTaskCompletionDocumentsSuccessResponse,
-  CreateTaskMutationArgs,
-  CreateTaskReclassificationRequestMutationArgs,
-  CreateTaskReclassificationRequestSuccessResponse,
-  CreateTaskRegistrationFNRequestMutationArgs,
-  CreateTaskRegistrationFNRequestSuccessResponse,
-  CreateTaskSuccessResponse,
-  CreateTaskSuspendRequestMutationArgs,
-  CreateTaskSuspendRequestSuccessResponse,
-  DeleteCompletedWorkMutationArgs,
-  DeleteCompletedWorkSuccessResponse,
-  DeleteInitiationReasonMutationArgs,
-  DeleteInitiationReasonSuccessResponse,
-  DeleteTaskSuspendRequestMutationArgs,
-  DeleteTaskSuspendRequestSuccessResponse,
-  DeleteTaskWorkGroupMutationArgs,
-  DeleteTaskWorkGroupSuccessResponse,
-  GetSubTaskListQueryArgs,
-  GetSubTaskListSuccessResponse,
-  GetTaskCommentListQueryArgs,
-  GetTaskCommentListSuccessResponse,
-  GetTaskCompletionDocumentsQueryArgs,
-  GetTaskCompletionDocumentsSuccessResponse,
-  GetTaskCountersQueryArgs,
-  GetTaskCountersSuccessResponse,
-  GetTaskJournalCsvQueryArgs,
-  GetTaskJournalCsvSuccessResponse,
-  GetTaskJournalQueryArgs,
-  GetTaskJournalSuccessResponse,
-  GetTaskListMapQueryArgs,
-  GetTaskListMapSuccessResponse,
-  GetTaskQueryArgs,
-  GetTaskReclassificationRequestQueryArgs,
-  GetTaskReclassificationRequestSuccessResponse,
-  GetTaskRegistrationRequestRecipientsFNQueryArgs,
-  GetTaskRegistrationRequestRecipientsFNSuccessResponse,
-  GetTasksQueryArgs,
-  GetTasksSuccessResponse,
-  GetTaskSuccessResponse,
-  GetTaskWorkPerformedActMutationArgs,
-  GetTaskWorkPerformedActSuccessResponse,
-  ResolveTaskMutationArgs,
-  ResolveTaskSuccessResponse,
+  ClassifyTaskWorkTypeRequest,
+  ClassifyTaskWorkTypeResponse,
+  CreateInitiationReasonRequest,
+  CreateInitiationReasonResponse,
+  CreateSubTaskRequest,
+  CreateSubTaskResponse,
+  CreateTaskAttachmentRequest,
+  CreateTaskAttachmentResponse,
+  CreateTaskCommentRequest,
+  CreateTaskCommentResponse,
+  CreateTaskCompletedWorkRequest,
+  CreateTaskCompletedWorkResponse,
+  CreateTaskCompletionDocumentsRequest,
+  CreateTaskCompletionDocumentsResponse,
+  CreateTaskRequest,
+  CreateTaskReclassificationRequestRequest,
+  CreateTaskReclassificationRequestResponse,
+  CreateTaskRegistrationFNRequestRequest,
+  CreateTaskRegistrationFNRequestResponse,
+  CreateTaskResponse,
+  CreateTaskSuspendRequestRequest,
+  CreateTaskSuspendRequestResponse,
+  DeleteCompletedWorkRequest,
+  DeleteCompletedWorkResponse,
+  DeleteInitiationReasonRequest,
+  DeleteInitiationReasonResponse,
+  DeleteTaskSuspendRequestRequest,
+  DeleteTaskSuspendRequestResponse,
+  DeleteTaskWorkGroupRequest,
+  DeleteTaskWorkGroupResponse,
+  GetSubTaskListRequest,
+  GetSubTaskListResponse,
+  GetTaskCommentListRequest,
+  GetTaskCommentListResponse,
+  GetTaskCompletionDocumentsRequest,
+  GetTaskCompletionDocumentsResponse,
+  GetTaskCountersRequest,
+  GetTaskCountersResponse,
+  GetTaskJournalCsvRequest,
+  GetTaskJournalCsvResponse,
+  GetTaskJournalRequest,
+  GetTaskJournalResponse,
+  GetTaskListMapRequest,
+  GetTaskListMapResponse,
+  GetTaskRequest,
+  GetTaskReclassificationRequestRequest,
+  GetTaskReclassificationRequestResponse,
+  GetTaskRegistrationRequestRecipientsFNRequest,
+  GetTaskRegistrationRequestRecipientsFNResponse,
+  GetTasksRequest,
+  GetTasksResponse,
+  GetTaskResponse,
+  GetTaskWorkPerformedActRequest,
+  GetTaskWorkPerformedActResponse,
+  ResolveTaskRequest,
+  ResolveTaskResponse,
   SubTaskModel,
-  TakeTaskMutationArgs,
-  TakeTaskSuccessResponse,
-  UpdateTaskAssigneeMutationArgs,
-  UpdateTaskAssigneeSuccessResponse,
-  UpdateTaskDeadlineMutationArgs,
-  UpdateTaskDeadlineSuccessResponse,
-  UpdateTaskDescriptionMutationArgs,
-  UpdateTaskDescriptionSuccessResponse,
-  UpdateTaskWorkGroupMutationArgs,
-  UpdateTaskWorkGroupSuccessResponse,
+  TakeTaskRequest,
+  TakeTaskResponse,
+  UpdateTaskAssigneeRequest,
+  UpdateTaskAssigneeResponse,
+  UpdateTaskDeadlineRequest,
+  UpdateTaskDeadlineResponse,
+  UpdateTaskDescriptionRequest,
+  UpdateTaskDescriptionResponse,
+  UpdateTaskWorkGroupRequest,
+  UpdateTaskWorkGroupResponse,
 } from 'features/task/models'
-import { GetTasksTransformedSuccessResponse } from 'features/task/types'
+import { GetTasksTransformedResponse } from 'features/task/types'
 import {
   createCompletedWorkUrl,
   createInitiationReasonUrl,
@@ -121,8 +121,8 @@ const taskApiService = baseApi
   .injectEndpoints({
     endpoints: (build) => ({
       [TaskApiTriggerEnum.GetTasks]: build.query<
-        GetTasksTransformedSuccessResponse,
-        GetTasksQueryArgs
+        GetTasksTransformedResponse,
+        GetTasksRequest
       >({
         providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Tasks]),
         query: (params) => ({
@@ -130,12 +130,12 @@ const taskApiService = baseApi
           method: HttpMethodEnum.Get,
           params,
         }),
-        transformResponse: (response: GetTasksSuccessResponse, meta, arg) =>
+        transformResponse: (response: GetTasksResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
       [TaskApiTriggerEnum.GetTaskListMap]: build.query<
-        GetTaskListMapSuccessResponse,
-        GetTaskListMapQueryArgs
+        GetTaskListMapResponse,
+        GetTaskListMapRequest
       >({
         query: () => ({
           url: TaskApiEnum.GetTaskListMap,
@@ -144,8 +144,8 @@ const taskApiService = baseApi
       }),
 
       [TaskApiTriggerEnum.GetTaskCounters]: build.query<
-        GetTaskCountersSuccessResponse,
-        MaybeUndefined<GetTaskCountersQueryArgs>
+        GetTaskCountersResponse,
+        MaybeUndefined<GetTaskCountersRequest>
       >({
         providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.TaskCounters]),
         query: (params) => ({
@@ -155,7 +155,7 @@ const taskApiService = baseApi
         }),
       }),
 
-      [TaskApiTriggerEnum.GetTask]: build.query<GetTaskSuccessResponse, GetTaskQueryArgs>({
+      [TaskApiTriggerEnum.GetTask]: build.query<GetTaskResponse, GetTaskRequest>({
         providesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
         query: (taskId) => ({
           url: getTaskUrl(taskId),
@@ -163,7 +163,7 @@ const taskApiService = baseApi
         }),
       }),
 
-      createTask: build.mutation<CreateTaskSuccessResponse, CreateTaskMutationArgs>({
+      createTask: build.mutation<CreateTaskResponse, CreateTaskRequest>({
         invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Tasks]),
         query: ({
           type,
@@ -223,8 +223,8 @@ const taskApiService = baseApi
       }),
 
       [TaskApiTriggerEnum.GetWorkPerformedAct]: build.mutation<
-        GetTaskWorkPerformedActSuccessResponse,
-        GetTaskWorkPerformedActMutationArgs
+        GetTaskWorkPerformedActResponse,
+        GetTaskWorkPerformedActRequest
       >({
         query: ({ taskId, ...payload }) => ({
           url: getTaskWorkPerformedActUrl(taskId),
@@ -234,8 +234,8 @@ const taskApiService = baseApi
       }),
 
       [TaskApiTriggerEnum.ResolveTask]: build.mutation<
-        ResolveTaskSuccessResponse,
-        ResolveTaskMutationArgs
+        ResolveTaskResponse,
+        ResolveTaskRequest
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [TaskApiTagEnum.Tasks, TaskApiTagEnum.TaskCounters],
@@ -269,7 +269,7 @@ const taskApiService = baseApi
         },
       }),
 
-      [TaskApiTriggerEnum.TakeTask]: build.mutation<TakeTaskSuccessResponse, TakeTaskMutationArgs>({
+      [TaskApiTriggerEnum.TakeTask]: build.mutation<TakeTaskResponse, TakeTaskRequest>({
         invalidatesTags: (result, error) =>
           error
             ? []
@@ -285,8 +285,8 @@ const taskApiService = baseApi
       }),
 
       [TaskApiTriggerEnum.CreateTaskComment]: build.mutation<
-        CreateTaskCommentSuccessResponse,
-        CreateTaskCommentMutationArgs
+        CreateTaskCommentResponse,
+        CreateTaskCommentRequest
       >({
         query: ({ taskId, comment, attachments }) => {
           const formData = new FormData()
@@ -312,7 +312,7 @@ const taskApiService = baseApi
               baseApi.util.updateQueryData(
                 TaskApiTriggerEnum.GetTaskCommentList as never,
                 { taskId } as never,
-                (commentList: GetTaskCommentListSuccessResponse) => {
+                (commentList: GetTaskCommentListResponse) => {
                   commentList.unshift(newComment)
                 },
               ),
@@ -321,8 +321,8 @@ const taskApiService = baseApi
         },
       }),
       [TaskApiTriggerEnum.GetTaskCommentList]: build.query<
-        GetTaskCommentListSuccessResponse,
-        GetTaskCommentListQueryArgs
+        GetTaskCommentListResponse,
+        GetTaskCommentListRequest
       >({
         query: ({ taskId }) => ({
           url: getTaskCommentListUrl(taskId),
@@ -331,8 +331,8 @@ const taskApiService = baseApi
       }),
 
       updateTaskDescription: build.mutation<
-        UpdateTaskDescriptionSuccessResponse,
-        UpdateTaskDescriptionMutationArgs
+        UpdateTaskDescriptionResponse,
+        UpdateTaskDescriptionRequest
       >({
         invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
         query: ({ taskId, ...payload }) => ({
@@ -343,8 +343,8 @@ const taskApiService = baseApi
       }),
 
       updateTaskDeadline: build.mutation<
-        UpdateTaskDeadlineSuccessResponse,
-        UpdateTaskDeadlineMutationArgs
+        UpdateTaskDeadlineResponse,
+        UpdateTaskDeadlineRequest
       >({
         invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
         query: ({ taskId, ...payload }) => ({
@@ -355,8 +355,8 @@ const taskApiService = baseApi
       }),
 
       updateTaskAssignee: build.mutation<
-        UpdateTaskAssigneeSuccessResponse,
-        UpdateTaskAssigneeMutationArgs
+        UpdateTaskAssigneeResponse,
+        UpdateTaskAssigneeRequest
       >({
         invalidatesTags: (result, error) =>
           error
@@ -374,8 +374,8 @@ const taskApiService = baseApi
       }),
 
       getTaskCompletionDocuments: build.query<
-        GetTaskCompletionDocumentsSuccessResponse,
-        GetTaskCompletionDocumentsQueryArgs
+        GetTaskCompletionDocumentsResponse,
+        GetTaskCompletionDocumentsRequest
       >({
         query: ({ taskId }) => ({
           url: getTaskCompletionDocumentsUrl(taskId),
@@ -383,8 +383,8 @@ const taskApiService = baseApi
         }),
       }),
       createTaskCompletionDocuments: build.mutation<
-        CreateTaskCompletionDocumentsSuccessResponse,
-        CreateTaskCompletionDocumentsMutationArgs
+        CreateTaskCompletionDocumentsResponse,
+        CreateTaskCompletionDocumentsRequest
       >({
         query: ({ taskId }) => ({
           url: createTaskCompletionDocumentsUrl(taskId),
@@ -393,8 +393,8 @@ const taskApiService = baseApi
       }),
 
       createInitiationReason: build.mutation<
-        CreateInitiationReasonSuccessResponse,
-        CreateInitiationReasonMutationArgs
+        CreateInitiationReasonResponse,
+        CreateInitiationReasonRequest
       >({
         query: ({ taskId, ...data }) => ({
           url: createInitiationReasonUrl(taskId),
@@ -409,7 +409,7 @@ const taskApiService = baseApi
               taskApiService.util.updateQueryData(
                 'getTaskCompletionDocuments' as never,
                 { taskId } as never,
-                (docs: GetTaskCompletionDocumentsSuccessResponse) => {
+                (docs: GetTaskCompletionDocumentsResponse) => {
                   Array.isArray(docs.initiationReasons)
                     ? docs.initiationReasons.push(data)
                     : (docs.initiationReasons = [data])
@@ -420,8 +420,8 @@ const taskApiService = baseApi
         },
       }),
       deleteInitiationReason: build.mutation<
-        DeleteInitiationReasonSuccessResponse,
-        DeleteInitiationReasonMutationArgs
+        DeleteInitiationReasonResponse,
+        DeleteInitiationReasonRequest
       >({
         query: ({ id }) => ({
           url: deleteInitiationReasonUrl(id),
@@ -435,7 +435,7 @@ const taskApiService = baseApi
               taskApiService.util.updateQueryData(
                 'getTaskCompletionDocuments' as never,
                 { taskId } as never,
-                (data: GetTaskCompletionDocumentsSuccessResponse) => {
+                (data: GetTaskCompletionDocumentsResponse) => {
                   if (data.initiationReasons?.length) {
                     data.initiationReasons = data.initiationReasons.filter((r) => r.id !== id)
                   }
@@ -447,8 +447,8 @@ const taskApiService = baseApi
       }),
 
       createCompletedWork: build.mutation<
-        CreateTaskCompletedWorkSuccessResponse,
-        CreateTaskCompletedWorkMutationArgs
+        CreateTaskCompletedWorkResponse,
+        CreateTaskCompletedWorkRequest
       >({
         query: ({ taskId, ...data }) => ({
           url: createCompletedWorkUrl(taskId),
@@ -463,7 +463,7 @@ const taskApiService = baseApi
               taskApiService.util.updateQueryData(
                 'getTaskCompletionDocuments' as never,
                 { taskId } as never,
-                (docs: GetTaskCompletionDocumentsSuccessResponse) => {
+                (docs: GetTaskCompletionDocumentsResponse) => {
                   Array.isArray(docs.workList) ? docs.workList.push(data) : (docs.workList = [data])
                 },
               ),
@@ -472,8 +472,8 @@ const taskApiService = baseApi
         },
       }),
       deleteCompletedWork: build.mutation<
-        DeleteCompletedWorkSuccessResponse,
-        DeleteCompletedWorkMutationArgs
+        DeleteCompletedWorkResponse,
+        DeleteCompletedWorkRequest
       >({
         query: ({ id }) => ({
           url: deleteCompletedWorkUrl(id),
@@ -487,7 +487,7 @@ const taskApiService = baseApi
               taskApiService.util.updateQueryData(
                 'getTaskCompletionDocuments' as never,
                 { taskId } as never,
-                (data: GetTaskCompletionDocumentsSuccessResponse) => {
+                (data: GetTaskCompletionDocumentsResponse) => {
                   if (data.workList?.length) {
                     data.workList = data.workList.filter((r) => r.id !== id)
                   }
@@ -498,14 +498,14 @@ const taskApiService = baseApi
         },
       }),
 
-      getTaskJournal: build.query<GetTaskJournalSuccessResponse, GetTaskJournalQueryArgs>({
+      getTaskJournal: build.query<GetTaskJournalResponse, GetTaskJournalRequest>({
         query: ({ taskId, ...params }) => ({
           url: getTaskJournalUrl(taskId),
           method: HttpMethodEnum.Get,
           params,
         }),
       }),
-      getTaskJournalCsv: build.query<GetTaskJournalCsvSuccessResponse, GetTaskJournalCsvQueryArgs>({
+      getTaskJournalCsv: build.query<GetTaskJournalCsvResponse, GetTaskJournalCsvRequest>({
         query: ({ taskId }) => ({
           url: getTaskJournalCsvUrl(taskId),
           method: HttpMethodEnum.Get,
@@ -513,8 +513,8 @@ const taskApiService = baseApi
       }),
 
       createReclassificationRequest: build.mutation<
-        CreateTaskReclassificationRequestSuccessResponse,
-        CreateTaskReclassificationRequestMutationArgs
+        CreateTaskReclassificationRequestResponse,
+        CreateTaskReclassificationRequestRequest
       >({
         query: ({ taskId, ...payload }) => ({
           url: createTaskReclassificationRequestUrl(taskId),
@@ -529,7 +529,7 @@ const taskApiService = baseApi
               taskApiService.util.updateQueryData(
                 TaskApiTriggerEnum.GetTask as never,
                 taskId as never,
-                (task: GetTaskSuccessResponse) => {
+                (task: GetTaskResponse) => {
                   task.extendedStatus = TaskExtendedStatusEnum.InReclassification
                 },
               ),
@@ -538,8 +538,8 @@ const taskApiService = baseApi
         },
       }),
       getReclassificationRequest: build.query<
-        GetTaskReclassificationRequestSuccessResponse,
-        GetTaskReclassificationRequestQueryArgs
+        GetTaskReclassificationRequestResponse,
+        GetTaskReclassificationRequestRequest
       >({
         query: ({ taskId }) => ({
           url: getTaskReclassificationRequestUrl(taskId),
@@ -548,8 +548,8 @@ const taskApiService = baseApi
       }),
 
       createSuspendRequest: build.mutation<
-        CreateTaskSuspendRequestSuccessResponse,
-        CreateTaskSuspendRequestMutationArgs
+        CreateTaskSuspendRequestResponse,
+        CreateTaskSuspendRequestRequest
       >({
         query: ({ taskId, ...payload }) => ({
           url: createTaskSuspendRequestUrl(taskId),
@@ -564,7 +564,7 @@ const taskApiService = baseApi
               taskApiService.util.updateQueryData(
                 TaskApiTriggerEnum.GetTask as never,
                 taskId as never,
-                (task: GetTaskSuccessResponse) => {
+                (task: GetTaskResponse) => {
                   task.suspendRequest = suspendRequest
                 },
               ),
@@ -573,8 +573,8 @@ const taskApiService = baseApi
         },
       }),
       deleteSuspendRequest: build.mutation<
-        DeleteTaskSuspendRequestSuccessResponse,
-        DeleteTaskSuspendRequestMutationArgs
+        DeleteTaskSuspendRequestResponse,
+        DeleteTaskSuspendRequestRequest
       >({
         invalidatesTags: (result, error) =>
           error
@@ -589,8 +589,8 @@ const taskApiService = baseApi
       }),
 
       updateTaskWorkGroup: build.mutation<
-        UpdateTaskWorkGroupSuccessResponse,
-        UpdateTaskWorkGroupMutationArgs
+        UpdateTaskWorkGroupResponse,
+        UpdateTaskWorkGroupRequest
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [TaskApiTagEnum.Tasks, TaskApiTagEnum.TaskCounters],
@@ -601,8 +601,8 @@ const taskApiService = baseApi
         }),
       }),
       deleteTaskWorkGroup: build.mutation<
-        DeleteTaskWorkGroupSuccessResponse,
-        DeleteTaskWorkGroupMutationArgs
+        DeleteTaskWorkGroupResponse,
+        DeleteTaskWorkGroupRequest
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [TaskApiTagEnum.Tasks, TaskApiTagEnum.TaskCounters],
@@ -614,8 +614,8 @@ const taskApiService = baseApi
       }),
 
       createTaskAttachment: build.mutation<
-        CreateTaskAttachmentSuccessResponse,
-        CreateTaskAttachmentMutationArgs
+        CreateTaskAttachmentResponse,
+        CreateTaskAttachmentRequest
       >({
         query: ({ taskId, file, parentType }) => {
           const formData = new FormData()
@@ -631,8 +631,8 @@ const taskApiService = baseApi
       }),
 
       createTaskRegistrationFNRequest: build.mutation<
-        CreateTaskRegistrationFNRequestSuccessResponse,
-        CreateTaskRegistrationFNRequestMutationArgs
+        CreateTaskRegistrationFNRequestResponse,
+        CreateTaskRegistrationFNRequestRequest
       >({
         invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
         query: ({ taskId, ...data }) => ({
@@ -642,8 +642,8 @@ const taskApiService = baseApi
         }),
       }),
       getTaskRegistrationRequestRecipientsFN: build.query<
-        GetTaskRegistrationRequestRecipientsFNSuccessResponse,
-        GetTaskRegistrationRequestRecipientsFNQueryArgs
+        GetTaskRegistrationRequestRecipientsFNResponse,
+        GetTaskRegistrationRequestRecipientsFNRequest
       >({
         query: ({ taskId }) => ({
           url: getTaskRegistrationRequestRecipientsFNUrl(taskId),
@@ -652,8 +652,8 @@ const taskApiService = baseApi
       }),
 
       [TaskApiTriggerEnum.GetSubTaskList]: build.query<
-        GetSubTaskListSuccessResponse,
-        GetSubTaskListQueryArgs
+        GetSubTaskListResponse,
+        GetSubTaskListRequest
       >({
         query: ({ taskId }) => ({
           url: getSubTaskListUrl(taskId),
@@ -661,8 +661,8 @@ const taskApiService = baseApi
         }),
       }),
       [TaskApiTriggerEnum.CreateSubTask]: build.mutation<
-        CreateSubTaskSuccessResponse,
-        CreateSubTaskMutationArgs
+        CreateSubTaskResponse,
+        CreateSubTaskRequest
       >({
         query: ({ taskId, ...payload }) => ({
           url: createSubTaskUrl(taskId),
@@ -687,8 +687,8 @@ const taskApiService = baseApi
       }),
 
       classifyTaskWorkType: build.mutation<
-        ClassifyTaskWorkTypeSuccessResponse,
-        ClassifyTaskWorkTypeMutationArgs
+        ClassifyTaskWorkTypeResponse,
+        ClassifyTaskWorkTypeRequest
       >({
         invalidatesTags: (result, error) => (error ? [] : [TaskApiTagEnum.Task]),
         query: ({ taskId, ...data }) => ({

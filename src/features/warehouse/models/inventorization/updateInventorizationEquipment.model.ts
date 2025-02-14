@@ -2,18 +2,18 @@ import { InventorizationEquipmentRequestArgs } from 'features/warehouse/types'
 
 import { MaybeNull } from 'shared/types/utils'
 
-import { GetInventorizationEquipmentsQueryArgs } from './getInventorizationEquipments.model'
+import { GetInventorizationEquipmentsRequest } from './getInventorizationEquipments.model'
 import { InventorizationEquipmentListItemModel } from './inventorizationEquipments.model'
 
-export type UpdateInventorizationEquipmentMutationArgs = InventorizationEquipmentRequestArgs & {
+export type UpdateInventorizationEquipmentRequest = InventorizationEquipmentRequestArgs & {
   quantityFact: MaybeNull<number>
   locationFact: MaybeNull<number>
   locationFactOption: InventorizationEquipmentListItemModel['locationFact']
   isLocationFactUndefined: boolean
-  getInventorizationEquipmentsArgs: GetInventorizationEquipmentsQueryArgs
+  getInventorizationEquipmentsArgs: GetInventorizationEquipmentsRequest
 }
 
-export type UpdateInventorizationEquipmentSuccessResponse = Partial<{
+export type UpdateInventorizationEquipmentResponse = Partial<{
   hasDiff: boolean
   isFilled: boolean
 }>

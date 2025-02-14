@@ -2,6 +2,6 @@ import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 
 import { RelocationTaskModel } from './relocationTask.model'
 
-export type MoveRelocationTaskDraftToWorkMutationArgs = RelocationTaskRequestArgs
+export type MoveRelocationTaskDraftToWorkRequest = RelocationTaskRequestArgs
 
-export type MoveRelocationTaskDraftToWorkSuccessResponse = Pick<RelocationTaskModel, 'status'>
+export type MoveRelocationTaskDraftToWorkResponse = Pick<RelocationTaskModel, 'status'>

@@ -1,7 +1,7 @@
 import { TaskRequestArgs } from 'features/task/types'
 
-export type GetTaskWorkPerformedActMutationArgs = TaskRequestArgs & {
+export type GetTaskWorkPerformedActRequest = TaskRequestArgs & {
   techResolution: string
 }
 
-export type GetTaskWorkPerformedActSuccessResponse = string
+export type GetTaskWorkPerformedActResponse = string

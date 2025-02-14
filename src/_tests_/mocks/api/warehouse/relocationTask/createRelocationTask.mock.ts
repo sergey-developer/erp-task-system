@@ -1,5 +1,5 @@
 import { RelocationTaskApiEnum } from 'features/warehouse/constants/relocationTask'
-import { CreateRelocationTaskSuccessResponse } from 'features/warehouse/models'
+import { CreateRelocationTaskResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -10,5 +10,5 @@ const createRelocationTaskMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, RelocationTaskApiEnum.CreateRelocationTask)
 
 export const mockCreateRelocationTaskSuccess = (
-  options?: Partial<ResponseResolverOptions<CreateRelocationTaskSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CreateRelocationTaskResponse>>,
 ) => getSuccessMockFn(createRelocationTaskMockFn(), options)()

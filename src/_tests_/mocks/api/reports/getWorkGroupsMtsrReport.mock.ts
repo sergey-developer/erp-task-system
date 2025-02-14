@@ -1,5 +1,5 @@
 import { ReportsEndpointsEnum } from 'features/reports/api/constants'
-import { GetWorkGroupsMtsrReportSuccessResponse } from 'features/reports/api/schemas'
+import { GetWorkGroupsMtsrReportResponse } from 'features/reports/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -16,7 +16,7 @@ const getWorkGroupsMtsrReportMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, ReportsEndpointsEnum.GetWorkGroupsMtsrReport)
 
 export const mockGetWorkGroupsMtsrReportSuccess = (
-  options?: Partial<ResponseResolverOptions<GetWorkGroupsMtsrReportSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetWorkGroupsMtsrReportResponse>>,
 ) => getSuccessMockFn(getWorkGroupsMtsrReportMockFn(), options)()
 
 export const mockGetWorkGroupsMtsrReportForbiddenError = (

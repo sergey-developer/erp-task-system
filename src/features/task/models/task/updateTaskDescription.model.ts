@@ -1,10 +1,10 @@
 import { TaskRequestArgs } from 'features/task/types'
 
-export type UpdateTaskDescriptionMutationArgs = TaskRequestArgs & {
+export type UpdateTaskDescriptionRequest = TaskRequestArgs & {
   internalDescription: string
 }
 
-export type UpdateTaskDescriptionSuccessResponse = Pick<
-  UpdateTaskDescriptionMutationArgs,
+export type UpdateTaskDescriptionResponse = Pick<
+  UpdateTaskDescriptionRequest,
   'internalDescription'
 >

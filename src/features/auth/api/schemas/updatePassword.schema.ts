@@ -2,11 +2,11 @@ import { ChangePasswordFormFields } from 'features/auth/pages/ChangePasswordPage
 
 import { FieldsErrors } from 'shared/api/baseApi'
 
-export type UpdatePasswordMutationArgs = {
+export type UpdatePasswordRequest = {
   password: string
 }
 
-export type UpdatePasswordSuccessResponse = void
+export type UpdatePasswordResponse = void
 
 export type UpdatePasswordBadRequestErrorResponse = FieldsErrors<
   Pick<ChangePasswordFormFields, 'password'>

@@ -1,7 +1,7 @@
 import { ReportsEndpointsEnum } from 'features/reports/api/constants'
 import {
-  GetFiscalAccumulatorTasksReportQueryArgs,
-  GetFiscalAccumulatorTasksReportSuccessResponse,
+  GetFiscalAccumulatorTasksReportRequest,
+  GetFiscalAccumulatorTasksReportResponse,
 } from 'features/reports/api/schemas'
 
 import { baseApi } from 'shared/api/baseApi'
@@ -11,8 +11,8 @@ import { MaybeUndefined } from 'shared/types/utils'
 const fiscalAccumulatorEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getFiscalAccumulatorTasksReport: build.query<
-      GetFiscalAccumulatorTasksReportSuccessResponse,
-      MaybeUndefined<GetFiscalAccumulatorTasksReportQueryArgs>
+      GetFiscalAccumulatorTasksReportResponse,
+      MaybeUndefined<GetFiscalAccumulatorTasksReportRequest>
     >({
       query: (params) => ({
         url: ReportsEndpointsEnum.GetFiscalAccumulatorTasksReport,

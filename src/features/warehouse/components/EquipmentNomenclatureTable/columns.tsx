@@ -1,7 +1,6 @@
 import { ColumnsType } from 'antd/es/table'
+import { getEquipmentListPageLink } from 'features/equipments/helpers'
 import { Link } from 'react-router-dom'
-
-import { getEquipmentListPageLink } from 'features/warehouse/utils/equipment'
 
 import { EquipmentNomenclatureTableItem } from './types'
 

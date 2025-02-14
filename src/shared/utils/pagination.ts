@@ -1,11 +1,11 @@
 import { TablePaginationConfig } from 'antd'
 import isNumber from 'lodash/isNumber'
 
-import { PaginationParams } from 'shared/api/schemas/pagination.schema'
+import { PaginationRequestParams } from 'shared/api/schemas/pagination.schema'
 
 export const getInitialPaginationParams = (
-  params?: PaginationParams,
-): Required<PaginationParams> => ({
+  params?: PaginationRequestParams,
+): Required<PaginationRequestParams> => ({
   limit: params?.limit || 50,
   offset: params?.offset || 0,
 })
@@ -14,7 +14,7 @@ export const calculatePaginationParams = ({
   current,
   pageSize,
 }: Pick<TablePaginationConfig, 'current' | 'pageSize'>): Pick<
-  Required<PaginationParams>,
+  Required<PaginationRequestParams>,
   'limit' | 'offset'
 > =>
   isNumber(pageSize) && isNumber(current)

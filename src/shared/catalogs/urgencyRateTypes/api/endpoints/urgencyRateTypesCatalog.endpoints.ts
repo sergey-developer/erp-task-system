@@ -1,16 +1,16 @@
 import { baseApi } from 'shared/api/baseApi'
 import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
-  GetUrgencyRateTypesCatalogQueryArgs,
-  GetUrgencyRateTypesCatalogSuccessResponse,
+  GetUrgencyRateTypesCatalogRequest,
+  GetUrgencyRateTypesCatalogResponse,
 } from 'shared/catalogs/api/endpoints/urgencyRateTypes/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const urgencyRateTypesCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getUrgencyRateTypesCatalog: build.query<
-      GetUrgencyRateTypesCatalogSuccessResponse,
-      GetUrgencyRateTypesCatalogQueryArgs
+      GetUrgencyRateTypesCatalogResponse,
+      GetUrgencyRateTypesCatalogRequest
     >({
       query: () => ({
         url: CatalogEndpointsEnum.GetUrgencyRateTypes,

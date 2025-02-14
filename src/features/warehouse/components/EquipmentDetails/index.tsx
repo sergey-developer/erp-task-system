@@ -4,23 +4,8 @@ import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import AttachmentImages from 'features/attachments/components/AttachmentImages'
 import { attachmentsToFiles } from 'features/attachments/helpers'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
-import {
-  useGetTechnicalExaminations,
-  useLazyGetTechnicalExaminationPdf,
-} from 'features/technicalExaminations/hooks'
-import { GetTechnicalExaminationPdfTransformedSuccessResponse } from 'features/technicalExaminations/types'
-import { UserPermissionsEnum } from 'features/users/api/constants'
-import { useUserPermissions } from 'features/users/hooks'
-import { CreateEquipmentTechnicalExaminationModalProps } from 'features/warehouse/components/CreateEquipmentTechnicalExaminationModal/types'
-import { EquipmentFormModalProps } from 'features/warehouse/components/EquipmentFormModal/types'
-import { getEquipmentFormInitialValues } from 'features/warehouse/components/EquipmentFormModal/utils'
-import { EquipmentRelocationHistoryModalProps } from 'features/warehouse/components/EquipmentRelocationHistoryModal/types'
-import {
-  equipmentConditionDict,
-  EquipmentConditionEnum,
-} from 'features/warehouse/constants/equipment'
-import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
-import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
+import { equipmentConditionDict, EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
 import {
   useCreateEquipmentTechnicalExamination,
   useGetEquipment,
@@ -28,14 +13,26 @@ import {
   useGetEquipmentCategories,
   useGetEquipmentRelocationHistory,
   useUpdateEquipment,
-} from 'features/warehouse/hooks/equipment'
+} from 'features/equipments/hooks'
+import {
+  useGetTechnicalExaminations,
+  useLazyGetTechnicalExaminationPdf,
+} from 'features/technicalExaminations/hooks'
+import { GetTechnicalExaminationPdfTransformedResponse } from 'features/technicalExaminations/types'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { useUserPermissions } from 'features/users/hooks'
+import { CreateEquipmentTechnicalExaminationModalProps } from 'features/warehouse/components/CreateEquipmentTechnicalExaminationModal/types'
+import { EquipmentFormModalProps } from 'features/warehouse/components/EquipmentFormModal/types'
+import { getEquipmentFormInitialValues } from 'features/warehouse/components/EquipmentFormModal/utils'
+import { EquipmentRelocationHistoryModalProps } from 'features/warehouse/components/EquipmentRelocationHistoryModal/types'
+import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
+import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
 import {
-  CreateEquipmentTechnicalExaminationSuccessResponse,
-  EquipmentCategoryListItemModel,
+  CreateEquipmentTechnicalExaminationResponse,
+  EquipmentCategoryDTO,
 } from 'features/warehouse/models'
-import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -107,7 +104,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     { setTrue: setUserChangedNomenclature, setFalse: resetUserChangedNomenclature },
   ] = useBoolean(false)
 
-  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
+  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryDTO>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   const [relocationHistoryModalOpened, { toggle: toggleOpenRelocationHistoryModal }] =
@@ -404,7 +401,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
   )
 
   const downloadTechnicalExamination = useCallback(
-    (response: GetTechnicalExaminationPdfTransformedSuccessResponse) => {
+    (response: GetTechnicalExaminationPdfTransformedResponse) => {
       if (response?.value && response?.meta?.response) {
         const fileName = extractFileNameFromHeaders(response.meta.response.headers)
         downloadFile(base64ToBytes(response.value), MimetypeEnum.Pdf, fileName)
@@ -432,7 +429,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
   const onCreateTechnicalExamination: CreateEquipmentTechnicalExaminationModalProps['onSubmit'] =
     async (values, setFields) => {
-      let createdTechnicalExamination: MaybeUndefined<CreateEquipmentTechnicalExaminationSuccessResponse>
+      let createdTechnicalExamination: MaybeUndefined<CreateEquipmentTechnicalExaminationResponse>
 
       try {
         createdTechnicalExamination = await createTechnicalExaminationMutation({

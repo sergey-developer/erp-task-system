@@ -1,13 +1,12 @@
+import { createRelocationEquipmentTechnicalExaminationErrMsg } from 'features/warehouse/constants/relocationEquipment'
+import {
+  CreateRelocationEquipmentTechnicalExaminationRequest,
+  CreateRelocationEquipmentTechnicalExaminationResponse,
+} from 'features/warehouse/models/relocationEquipment'
+import { useCreateRelocationEquipmentTechnicalExaminationMutation } from 'features/warehouse/services/relocationEquipmentApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { createRelocationEquipmentTechnicalExaminationErrMsg } from 'features/warehouse/constants/relocationEquipment'
-import {
-  CreateRelocationEquipmentTechnicalExaminationMutationArgs,
-  CreateRelocationEquipmentTechnicalExaminationSuccessResponse,
-} from 'features/warehouse/models/relocationEquipment'
-import { useCreateRelocationEquipmentTechnicalExaminationMutation } from 'features/warehouse/services/relocationEquipmentApi.service'
 
 import {
   getErrorDetail,
@@ -18,8 +17,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateRelocationEquipmentTechnicalExaminationResult = CustomUseMutationResult<
-  CreateRelocationEquipmentTechnicalExaminationMutationArgs,
-  CreateRelocationEquipmentTechnicalExaminationSuccessResponse
+  CreateRelocationEquipmentTechnicalExaminationRequest,
+  CreateRelocationEquipmentTechnicalExaminationResponse
 >
 
 export const useCreateRelocationEquipmentTechnicalExamination =

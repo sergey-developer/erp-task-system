@@ -1,8 +1,8 @@
-import { GetEquipmentRelocationHistorySuccessResponse } from 'features/warehouse/models'
-import { getEquipmentRelocationHistoryUrl } from 'features/warehouse/utils/equipment'
+import { makeGetEquipmentRelocationHistoryEndpoint } from 'features/equipments/helpers'
+import { GetEquipmentRelocationHistoryResponse } from 'features/warehouse/models'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {
@@ -15,11 +15,11 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentRelocationHistoryMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getEquipmentRelocationHistoryUrl(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetEquipmentRelocationHistoryEndpoint(id))
 
 export const mockGetEquipmentRelocationHistorySuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetEquipmentRelocationHistorySuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetEquipmentRelocationHistoryResponse>>,
 ) => getSuccessMockFn(getEquipmentRelocationHistoryMockFn(id), options)()
 
 export const mockGetEquipmentRelocationHistoryForbiddenError = (

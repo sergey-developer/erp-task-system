@@ -1,4 +1,4 @@
-import { GetHistoryNomenclatureOperationsReportSuccessResponse } from 'features/reports/api/dto'
+import { GetHistoryNomenclatureOperationsReportResponse } from 'features/reports/api/dto'
 import { makeHistoryNomenclatureOperationsReportEndpoint } from 'features/reports/helpers'
 
 import { ErrorData } from 'shared/api/baseApi'
@@ -18,7 +18,7 @@ const getHistoryNomenclatureOperationsReportMockFn = (id: IdType) =>
 
 export const mockGetHistoryNomenclatureOperationsReportSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetHistoryNomenclatureOperationsReportSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetHistoryNomenclatureOperationsReportResponse>>,
 ) => getSuccessMockFn(getHistoryNomenclatureOperationsReportMockFn(id), options)()
 
 export const mockGetHistoryNomenclatureOperationsReportForbiddenError = (

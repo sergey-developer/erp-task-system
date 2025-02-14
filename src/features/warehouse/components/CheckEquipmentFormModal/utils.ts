@@ -1,7 +1,6 @@
+import { EquipmentDetailDTO } from 'features/warehouse/models'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
-
-import { EquipmentModel } from 'features/warehouse/models'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
 
@@ -30,7 +29,7 @@ export const getCheckEquipmentFormInitialValues = (
       | 'macroregion'
       | 'title'
     > & {
-      nomenclature: Pick<EquipmentModel['nomenclature'], 'id' | 'title'>
+      nomenclature: Pick<EquipmentDetailDTO['nomenclature'], 'id' | 'title'>
     }
   >,
 ): CheckEquipmentFormModalProps['initialValues'] =>

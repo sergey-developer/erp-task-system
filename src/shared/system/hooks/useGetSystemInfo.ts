@@ -4,25 +4,16 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { isErrorResponse } from 'shared/api/baseApi'
 import { getSystemInfoErrMsg } from 'shared/system/api/constants/errorMessages'
-import {
-  GetSystemInfoQueryArgs,
-  GetSystemInfoSuccessResponse,
-} from 'shared/system/api/dto/systemInfo'
+import { GetSystemInfoRequest, GetSystemInfoResponse } from 'shared/system/api/dto/systemInfo'
 import { useGetSystemInfoQuery } from 'shared/system/api/endpoints/systemApi.endpoints'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetSystemInfoResult = CustomUseQueryHookResult<
-  GetSystemInfoQueryArgs,
-  GetSystemInfoSuccessResponse
->
+type UseGetSystemInfoResult = CustomUseQueryHookResult<GetSystemInfoRequest, GetSystemInfoResponse>
 
-type UseGetSystemInfoOptions = CustomUseQueryOptions<
-  GetSystemInfoQueryArgs,
-  GetSystemInfoSuccessResponse
->
+type UseGetSystemInfoOptions = CustomUseQueryOptions<GetSystemInfoRequest, GetSystemInfoResponse>
 
 export const useGetSystemInfo = (
-  args?: GetSystemInfoQueryArgs,
+  args?: GetSystemInfoRequest,
   options?: UseGetSystemInfoOptions,
 ): UseGetSystemInfoResult => {
   const state = useGetSystemInfoQuery(args, options)

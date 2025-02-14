@@ -1,8 +1,8 @@
 import { getFiscalAccumulatorTasksReportErrMsg } from 'features/reports/api/constants'
 import { useGetFiscalAccumulatorTasksReportQuery } from 'features/reports/api/endpoints/fiscalAccumulator.endpoints'
 import {
-  GetFiscalAccumulatorTasksReportQueryArgs,
-  GetFiscalAccumulatorTasksReportSuccessResponse,
+  GetFiscalAccumulatorTasksReportRequest,
+  GetFiscalAccumulatorTasksReportResponse,
 } from 'features/reports/api/schemas'
 import { useEffect } from 'react'
 
@@ -13,17 +13,17 @@ import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetFiscalAccumulatorTasksResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetFiscalAccumulatorTasksReportQueryArgs>,
-  GetFiscalAccumulatorTasksReportSuccessResponse
+  MaybeUndefined<GetFiscalAccumulatorTasksReportRequest>,
+  GetFiscalAccumulatorTasksReportResponse
 >
 
 type UseGetFiscalAccumulatorTasksReportOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetFiscalAccumulatorTasksReportQueryArgs>,
-  GetFiscalAccumulatorTasksReportSuccessResponse
+  MaybeUndefined<GetFiscalAccumulatorTasksReportRequest>,
+  GetFiscalAccumulatorTasksReportResponse
 >
 
 export const useGetFiscalAccumulatorTasksReport = (
-  args?: GetFiscalAccumulatorTasksReportQueryArgs,
+  args?: GetFiscalAccumulatorTasksReportRequest,
   options?: UseGetFiscalAccumulatorTasksReportOptions,
 ): UseGetFiscalAccumulatorTasksResult => {
   const state = useGetFiscalAccumulatorTasksReportQuery(args, options)

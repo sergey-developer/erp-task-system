@@ -1,13 +1,12 @@
+import { moveRelocationTaskDraftToWorkErrMsg } from 'features/warehouse/constants/relocationTask'
+import {
+  MoveRelocationTaskDraftToWorkRequest,
+  MoveRelocationTaskDraftToWorkResponse,
+} from 'features/warehouse/models'
+import { useMoveRelocationTaskDraftToWorkMutation } from 'features/warehouse/services/relocationTaskApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { moveRelocationTaskDraftToWorkErrMsg } from 'features/warehouse/constants/relocationTask'
-import {
-  MoveRelocationTaskDraftToWorkMutationArgs,
-  MoveRelocationTaskDraftToWorkSuccessResponse,
-} from 'features/warehouse/models'
-import { useMoveRelocationTaskDraftToWorkMutation } from 'features/warehouse/services/relocationTaskApi.service'
 
 import {
   getErrorDetail,
@@ -19,8 +18,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseMoveRelocationTaskDraftToWorkResult = CustomUseMutationResult<
-  MoveRelocationTaskDraftToWorkMutationArgs,
-  MoveRelocationTaskDraftToWorkSuccessResponse
+  MoveRelocationTaskDraftToWorkRequest,
+  MoveRelocationTaskDraftToWorkResponse
 >
 
 export const useMoveRelocationTaskDraftToWork = (): UseMoveRelocationTaskDraftToWorkResult => {

@@ -1,8 +1,8 @@
 import { ResolutionClassificationsCatalogDTO } from 'shared/catalogs/api/dto/resolutionClassifications'
 import { IdType } from 'shared/types/common'
 
-export type GetResolutionClassificationsCatalogQueryArgs = {
+export type GetResolutionClassificationsCatalogRequest = {
   supportGroup: IdType
 }
 
-export type GetResolutionClassificationsCatalogSuccessResponse = ResolutionClassificationsCatalogDTO
+export type GetResolutionClassificationsCatalogResponse = ResolutionClassificationsCatalogDTO

@@ -1,4 +1,4 @@
-import { GetRelocationEquipmentListSuccessResponse } from 'features/warehouse/models'
+import { GetRelocationEquipmentListResponse } from 'features/warehouse/models'
 import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 import { getRelocationEquipmentListUrl } from 'features/warehouse/utils/relocationTask'
 
@@ -19,7 +19,7 @@ const getRelocationEquipmentListMockFn = ({ relocationTaskId }: RelocationTaskRe
 
 export const mockGetRelocationEquipmentListSuccess = (
   { relocationTaskId }: RelocationTaskRequestArgs,
-  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentListResponse>>,
 ) => getSuccessMockFn(getRelocationEquipmentListMockFn({ relocationTaskId }), options)()
 
 export const mockGetRelocationEquipmentListForbiddenError = (

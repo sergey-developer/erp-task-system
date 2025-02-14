@@ -1,8 +1,8 @@
 import { getWorkGroupsMtsrReportErrMsg } from 'features/reports/api/constants'
 import { useGetWorkGroupsMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
-  GetWorkGroupsMtsrReportQueryArgs,
-  GetWorkGroupsMtsrReportSuccessResponse,
+  GetWorkGroupsMtsrReportRequest,
+  GetWorkGroupsMtsrReportResponse,
 } from 'features/reports/api/schemas'
 import { useEffect } from 'react'
 
@@ -12,17 +12,17 @@ import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/ba
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetWorkGroupsMtsrReportResult = CustomUseQueryHookResult<
-  GetWorkGroupsMtsrReportQueryArgs,
-  GetWorkGroupsMtsrReportSuccessResponse
+  GetWorkGroupsMtsrReportRequest,
+  GetWorkGroupsMtsrReportResponse
 >
 
 type UseGetWorkGroupsMtsrReportOptions = CustomUseQueryOptions<
-  GetWorkGroupsMtsrReportQueryArgs,
-  GetWorkGroupsMtsrReportSuccessResponse
+  GetWorkGroupsMtsrReportRequest,
+  GetWorkGroupsMtsrReportResponse
 >
 
 export const useGetWorkGroupsMtsrReport = (
-  args: GetWorkGroupsMtsrReportQueryArgs,
+  args: GetWorkGroupsMtsrReportRequest,
   options?: UseGetWorkGroupsMtsrReportOptions,
 ): UseGetWorkGroupsMtsrReportResult => {
   const state = useGetWorkGroupsMtsrReportQuery(args, options)

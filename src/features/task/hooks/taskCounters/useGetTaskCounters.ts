@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getTaskCountersErrMsg } from 'features/task/constants/taskCounters'
-import { GetTaskCountersQueryArgs, GetTaskCountersSuccessResponse } from 'features/task/models'
+import { GetTaskCountersRequest, GetTaskCountersResponse } from 'features/task/models'
 import { useGetTaskCountersQuery } from 'features/task/services/taskApi.service'
 
 import { isErrorResponse } from 'shared/api/baseApi'
@@ -11,17 +11,17 @@ import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskCountersResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetTaskCountersQueryArgs>,
-  GetTaskCountersSuccessResponse
+  MaybeUndefined<GetTaskCountersRequest>,
+  GetTaskCountersResponse
 >
 
 type UseGetTaskCountersOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetTaskCountersQueryArgs>,
-  GetTaskCountersSuccessResponse
+  MaybeUndefined<GetTaskCountersRequest>,
+  GetTaskCountersResponse
 >
 
 export const useGetTaskCounters = (
-  args?: GetTaskCountersQueryArgs,
+  args?: GetTaskCountersRequest,
   options?: UseGetTaskCountersOptions,
 ): UseGetTaskCountersResult => {
   const state = useGetTaskCountersQuery(args, options)

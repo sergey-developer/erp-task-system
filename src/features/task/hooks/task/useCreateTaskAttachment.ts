@@ -1,14 +1,13 @@
+import { createTaskAttachmentErrMsg } from 'features/task/constants/task'
+import {
+  CreateTaskAttachmentRequest,
+  CreateTaskAttachmentResponse,
+} from 'features/task/models'
+import { useCreateTaskAttachmentMutation } from 'features/task/services/taskApi.service'
 import { UploadRequestOption } from 'rc-upload/es/interface'
 import { useCallback, useEffect } from 'react'
 
 import { CustomUseMutationState } from 'lib/rtk-query/types'
-
-import { createTaskAttachmentErrMsg } from 'features/task/constants/task'
-import {
-  CreateTaskAttachmentMutationArgs,
-  CreateTaskAttachmentSuccessResponse,
-} from 'features/task/models'
-import { useCreateTaskAttachmentMutation } from 'features/task/services/taskApi.service'
 
 import {
   getErrorDetail,
@@ -23,10 +22,10 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateTaskAttachmentResult = [
   (
-    args: Omit<CreateTaskAttachmentMutationArgs, 'file'>,
+    args: Omit<CreateTaskAttachmentRequest, 'file'>,
     options: UploadRequestOption,
-  ) => Promise<MaybeUndefined<CreateTaskAttachmentSuccessResponse>>,
-  CustomUseMutationState<CreateTaskAttachmentMutationArgs, CreateTaskAttachmentSuccessResponse>,
+  ) => Promise<MaybeUndefined<CreateTaskAttachmentResponse>>,
+  CustomUseMutationState<CreateTaskAttachmentRequest, CreateTaskAttachmentResponse>,
 ]
 
 export const useCreateTaskAttachment = (): UseCreateTaskAttachmentResult => {

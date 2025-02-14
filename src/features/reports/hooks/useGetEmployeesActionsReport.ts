@@ -12,21 +12,21 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { getEmployeesActionsReportErrMsg } from '../api/constants'
 import { useGetEmployeesActionsReportQuery } from '../api/endpoints/reports.endpoints'
-import { GetEmployeesActionsReportQueryArgs } from '../api/schemas'
-import { GetEmployeesActionsReportTransformedSuccessResponse } from '../api/types'
+import { GetEmployeesActionsReportRequest } from '../api/schemas'
+import { GetEmployeesActionsReportTransformedResponse } from '../api/types'
 
 type UseGetEmployeesActionsReportResult = CustomUseQueryHookResult<
-  GetEmployeesActionsReportQueryArgs,
-  GetEmployeesActionsReportTransformedSuccessResponse
+  GetEmployeesActionsReportRequest,
+  GetEmployeesActionsReportTransformedResponse
 >
 
 type UseGetEmployeesActionsReportOptions = CustomUseQueryOptions<
-  GetEmployeesActionsReportQueryArgs,
-  GetEmployeesActionsReportTransformedSuccessResponse
+  GetEmployeesActionsReportRequest,
+  GetEmployeesActionsReportTransformedResponse
 >
 
 export const useGetEmployeesActionsReport = (
-  args: GetEmployeesActionsReportQueryArgs,
+  args: GetEmployeesActionsReportRequest,
   options?: UseGetEmployeesActionsReportOptions,
 ): UseGetEmployeesActionsReportResult => {
   const state = useGetEmployeesActionsReportQuery(args, options)

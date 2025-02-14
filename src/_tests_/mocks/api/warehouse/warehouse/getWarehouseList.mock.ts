@@ -1,5 +1,5 @@
-import { WarehouseApiEnum } from 'features/warehouse/constants/warehouse'
-import { GetWarehouseListSuccessResponse } from 'features/warehouse/models'
+import { WarehousesEndpointsEnum } from 'features/warehouse/constants/warehouse'
+import { GetWarehouseListResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -7,10 +7,10 @@ import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getWarehouseListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, WarehouseApiEnum.GetWarehouseList)
+  getRequestMockFn(HttpMethodEnum.Get, WarehousesEndpointsEnum.GetWarehouseList)
 
 export const mockGetWarehouseListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetWarehouseListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetWarehouseListResponse>>,
 ) => getSuccessMockFn(getWarehouseListMockFn(), options)()
 
 export const mockGetWarehouseListServerError = (options?: Partial<ResponseResolverOptions>) =>

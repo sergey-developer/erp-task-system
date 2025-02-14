@@ -1,4 +1,4 @@
-import { getEquipmentNomenclaturesErrMsg } from 'features/warehouse/constants/equipment'
+import { getEquipmentNomenclaturesErrMsg } from 'features/equipments/api/constants'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 
 import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'

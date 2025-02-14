@@ -1,11 +1,11 @@
-import { EquipmentApiEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentsEndpointsEnum } from 'features/equipments/api/constants'
 import {
   CreateEquipmentBadRequestErrorResponse,
-  ImportEquipmentsByFileSuccessResponse,
+  ImportEquipmentsByFileResponse,
 } from 'features/warehouse/models'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
   getBadRequestErrorMockFn,
@@ -16,10 +16,10 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const importEquipmentsByFileMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Post, EquipmentApiEnum.ImportEquipmentsByFile)
+  getRequestMockFn(HttpMethodEnum.Post, EquipmentsEndpointsEnum.ImportEquipmentsByFile)
 
 export const mockImportEquipmentsByFileSuccess = (
-  options?: Partial<ResponseResolverOptions<ImportEquipmentsByFileSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<ImportEquipmentsByFileResponse>>,
 ) => getSuccessMockFn(importEquipmentsByFileMockFn(), options)()
 
 export const mockImportEquipmentsByFileBadRequestError = <

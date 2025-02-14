@@ -3,13 +3,13 @@ import {
   NomenclatureGroupApiTriggerEnum,
 } from 'features/warehouse/constants/nomenclatureGroup'
 import {
-  CreateNomenclatureGroupMutationArgs,
-  CreateNomenclatureGroupSuccessResponse,
-  GetNomenclatureGroupListQueryArgs,
-  GetNomenclatureGroupListSuccessResponse,
+  CreateNomenclatureGroupRequest,
+  CreateNomenclatureGroupResponse,
+  GetNomenclatureGroupListRequest,
+  GetNomenclatureGroupListResponse,
   NomenclatureGroupsModel,
-  UpdateNomenclatureGroupMutationArgs,
-  UpdateNomenclatureGroupSuccessResponse,
+  UpdateNomenclatureGroupRequest,
+  UpdateNomenclatureGroupResponse,
 } from 'features/warehouse/models'
 import { updateNomenclatureGroupUrl } from 'features/warehouse/utils/nomenclatureGroup'
 
@@ -19,8 +19,8 @@ import { HttpMethodEnum } from 'shared/constants/http'
 const nomenclatureGroupApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     [NomenclatureGroupApiTriggerEnum.GetNomenclatureGroupList]: build.query<
-      GetNomenclatureGroupListSuccessResponse,
-      GetNomenclatureGroupListQueryArgs
+      GetNomenclatureGroupListResponse,
+      GetNomenclatureGroupListRequest
     >({
       query: (params) => ({
         url: NomenclatureGroupApiEnum.GetNomenclatureGroupList,
@@ -29,8 +29,8 @@ const nomenclatureGroupApiService = baseApi.injectEndpoints({
       }),
     }),
     [NomenclatureGroupApiTriggerEnum.CreateNomenclatureGroup]: build.mutation<
-      CreateNomenclatureGroupSuccessResponse,
-      CreateNomenclatureGroupMutationArgs
+      CreateNomenclatureGroupResponse,
+      CreateNomenclatureGroupRequest
     >({
       query: ({ getListParams, ...payload }) => ({
         url: NomenclatureGroupApiEnum.CreateNomenclatureGroup,
@@ -54,8 +54,8 @@ const nomenclatureGroupApiService = baseApi.injectEndpoints({
       },
     }),
     [NomenclatureGroupApiTriggerEnum.UpdateNomenclatureGroup]: build.mutation<
-      UpdateNomenclatureGroupSuccessResponse,
-      UpdateNomenclatureGroupMutationArgs
+      UpdateNomenclatureGroupResponse,
+      UpdateNomenclatureGroupRequest
     >({
       query: ({ getListParams, id, ...payload }) => ({
         url: updateNomenclatureGroupUrl(id),

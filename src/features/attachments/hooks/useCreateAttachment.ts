@@ -1,6 +1,6 @@
 import {
-  CreateAttachmentMutationArgs,
-  CreateAttachmentSuccessResponse,
+  CreateAttachmentRequest,
+  CreateAttachmentResponse,
 } from 'features/attachments//api/schemas'
 import { createAttachmentErrMsg } from 'features/attachments/api/constants'
 import { useCreateAttachmentMutation } from 'features/attachments/api/endpoints/attachments.endpoints'
@@ -21,10 +21,10 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateAttachmentResult = [
   (
-    args: Omit<CreateAttachmentMutationArgs, 'file'>,
+    args: Omit<CreateAttachmentRequest, 'file'>,
     options: UploadRequestOption,
-  ) => Promise<MaybeUndefined<CreateAttachmentSuccessResponse>>,
-  CustomUseMutationState<CreateAttachmentMutationArgs, CreateAttachmentSuccessResponse>,
+  ) => Promise<MaybeUndefined<CreateAttachmentResponse>>,
+  CustomUseMutationState<CreateAttachmentRequest, CreateAttachmentResponse>,
 ]
 
 export const useCreateAttachment = (): UseCreateAttachmentResult => {

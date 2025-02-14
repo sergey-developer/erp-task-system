@@ -1,4 +1,4 @@
-import { equipmentConditionDict } from 'features/warehouse/constants/equipment'
+import { equipmentConditionDict } from 'features/equipments/api/constants'
 
 import {
   props,

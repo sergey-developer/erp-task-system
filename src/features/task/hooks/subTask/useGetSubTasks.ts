@@ -1,5 +1,5 @@
 import { getSubTasksErrMsg } from 'features/task/constants/task'
-import { GetSubTaskListQueryArgs, GetSubTaskListSuccessResponse } from 'features/task/models'
+import { GetSubTaskListRequest, GetSubTaskListResponse } from 'features/task/models'
 import { useGetSubTaskListQuery } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
@@ -15,17 +15,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetSubTaskListResult = CustomUseQueryHookResult<
-  GetSubTaskListQueryArgs,
-  GetSubTaskListSuccessResponse
+  GetSubTaskListRequest,
+  GetSubTaskListResponse
 >
 
 type UseGetSubTaskListOptions = CustomUseQueryOptions<
-  GetSubTaskListQueryArgs,
-  GetSubTaskListSuccessResponse
+  GetSubTaskListRequest,
+  GetSubTaskListResponse
 >
 
 export const useGetSubTasks = (
-  args: GetSubTaskListQueryArgs,
+  args: GetSubTaskListRequest,
   options?: UseGetSubTaskListOptions,
 ): UseGetSubTaskListResult => {
   const state = useGetSubTaskListQuery(args, options)

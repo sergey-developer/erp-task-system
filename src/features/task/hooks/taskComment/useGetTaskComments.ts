@@ -1,7 +1,7 @@
 import { getTaskCommentsErrMsg } from 'features/task/constants/taskComment'
 import {
-  GetTaskCommentListQueryArgs,
-  GetTaskCommentListSuccessResponse,
+  GetTaskCommentListRequest,
+  GetTaskCommentListResponse,
 } from 'features/task/models'
 import { useGetTaskCommentListQuery } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
@@ -12,17 +12,17 @@ import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/bas
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskCommentListResult = CustomUseQueryHookResult<
-  GetTaskCommentListQueryArgs,
-  GetTaskCommentListSuccessResponse
+  GetTaskCommentListRequest,
+  GetTaskCommentListResponse
 >
 
 type UseGetTaskCommentListOptions = CustomUseQueryOptions<
-  GetTaskCommentListQueryArgs,
-  GetTaskCommentListSuccessResponse
+  GetTaskCommentListRequest,
+  GetTaskCommentListResponse
 >
 
 export const useGetTaskComments = (
-  args: GetTaskCommentListQueryArgs,
+  args: GetTaskCommentListRequest,
   options?: UseGetTaskCommentListOptions,
 ): UseGetTaskCommentListResult => {
   const state = useGetTaskCommentListQuery(args, options)

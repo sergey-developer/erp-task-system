@@ -4,11 +4,11 @@ import { UploadFileRequestArgs } from 'shared/types/file'
 
 import { CheckedInventorizationEquipmentsTemplateModel } from './checkedInventorizationEquipmentsTemplate.model'
 
-export type CheckInventorizationEquipmentsTemplateMutationArgs = UploadFileRequestArgs & {
+export type CheckInventorizationEquipmentsTemplateRequest = UploadFileRequestArgs & {
   inventorization: IdType
 }
 
-export type CheckInventorizationEquipmentsTemplateSuccessResponse =
+export type CheckInventorizationEquipmentsTemplateResponse =
   CheckedInventorizationEquipmentsTemplateModel
 
 export type CheckInventorizationEquipmentsTemplateBadRequestErrorResponse = TableRowsApiErrors

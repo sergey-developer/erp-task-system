@@ -1,4 +1,4 @@
-import { CreateInfrastructureOrderFormWorkSuccessResponse } from 'features/infrastructures/api/dto'
+import { CreateInfrastructureOrderFormWorkResponse } from 'features/infrastructures/api/dto'
 import { InfrastructuresEndpointsEnum } from 'features/infrastructures/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -13,5 +13,5 @@ const createCreateInfrastructureOrderFormWorkMockFn = () =>
   )
 
 export const mockCreateInfrastructureOrderFormWorkSuccess = (
-  options?: Partial<ResponseResolverOptions<CreateInfrastructureOrderFormWorkSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CreateInfrastructureOrderFormWorkResponse>>,
 ) => getSuccessMockFn(createCreateInfrastructureOrderFormWorkMockFn(), options)()

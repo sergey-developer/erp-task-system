@@ -2,7 +2,7 @@ import isBoolean from 'lodash/isBoolean'
 import isUndefined from 'lodash/isUndefined'
 import times from 'lodash/times'
 
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import {
   CheckedInventorizationEquipmentsTemplateListItemModel,
   CheckedInventorizationEquipmentsTemplateModel,

@@ -1,7 +1,7 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
 import { useAuthUser } from 'features/auth/hooks'
-import { GetEmployeesActionsReportQueryArgs } from 'features/reports/api/dto'
+import { GetEmployeesActionsReportRequest } from 'features/reports/api/dto'
 import EmployeesActionsReportForm from 'features/reports/components/EmployeesActionsReportForm'
 import { EmployeesActionsReportFormProps } from 'features/reports/components/EmployeesActionsReportForm/types'
 import EmployeesActionsReportTable from 'features/reports/components/EmployeesActionsReportTable'
@@ -70,7 +70,7 @@ const EmployeesActionsReportPage: FC = () => {
 
   const authUser = useAuthUser()
 
-  const [reportParams, setReportParams] = useSetState<GetEmployeesActionsReportQueryArgs>({
+  const [reportParams, setReportParams] = useSetState<GetEmployeesActionsReportRequest>({
     ...initialPaginationParams,
     employeeId: 0,
   })

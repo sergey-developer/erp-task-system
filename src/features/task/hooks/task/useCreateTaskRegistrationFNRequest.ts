@@ -1,13 +1,12 @@
+import { createTaskRegistrationFNRequestErrMsg } from 'features/task/constants/task'
+import {
+  CreateTaskRegistrationFNRequestRequest,
+  CreateTaskRegistrationFNRequestResponse,
+} from 'features/task/models'
+import { useCreateTaskRegistrationFNRequestMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { createTaskRegistrationFNRequestErrMsg } from 'features/task/constants/task'
-import {
-  CreateTaskRegistrationFNRequestMutationArgs,
-  CreateTaskRegistrationFNRequestSuccessResponse,
-} from 'features/task/models'
-import { useCreateTaskRegistrationFNRequestMutation } from 'features/task/services/taskApi.service'
 
 import {
   getErrorDetail,
@@ -19,8 +18,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateTaskRegistrationFNRequestResult = CustomUseMutationResult<
-  CreateTaskRegistrationFNRequestMutationArgs,
-  CreateTaskRegistrationFNRequestSuccessResponse
+  CreateTaskRegistrationFNRequestRequest,
+  CreateTaskRegistrationFNRequestResponse
 >
 
 export const useCreateTaskRegistrationFNRequest = (): UseCreateTaskRegistrationFNRequestResult => {

@@ -1,5 +1,5 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentListItemModel, EquipmentListModel } from 'features/warehouse/models'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { EquipmentDTO, EquipmentListModel } from 'features/warehouse/models'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 
@@ -7,7 +7,7 @@ import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
-export const equipmentListItem = (): EquipmentListItemModel => ({
+export const equipmentListItem = (): EquipmentDTO => ({
   id: fakeId(),
   title: fakeWord(),
   serialNumber: fakeWord(),

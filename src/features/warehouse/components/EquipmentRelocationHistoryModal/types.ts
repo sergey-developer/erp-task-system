@@ -1,11 +1,10 @@
 import { TableProps } from 'antd'
-
-import { EquipmentRelocationHistoryItemModel } from 'features/warehouse/models'
+import { EquipmentRelocationHistoryItemDTO } from 'features/warehouse/models'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
 export type EquipmentRelocationHistoryTableItem = Pick<
-  EquipmentRelocationHistoryItemModel,
+  EquipmentRelocationHistoryItemDTO,
   | 'id'
   | 'createdAt'
   | 'completedAt'

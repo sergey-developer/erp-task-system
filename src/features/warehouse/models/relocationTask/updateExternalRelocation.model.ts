@@ -3,10 +3,10 @@ import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 
 import { RelocationTaskModel } from './relocationTask.model'
 
-export type UpdateExternalRelocationMutationArgs = RelocationTaskRequestArgs &
+export type UpdateExternalRelocationRequest = RelocationTaskRequestArgs &
   Partial<{
     number: string
     status: ExternalRelocationStatusEnum
   }>
 
-export type UpdateExternalRelocationSuccessResponse = RelocationTaskModel['externalRelocation']
+export type UpdateExternalRelocationResponse = RelocationTaskModel['externalRelocation']

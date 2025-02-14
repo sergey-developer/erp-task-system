@@ -2,11 +2,11 @@ import { TaskRequestArgs } from 'features/task/types'
 
 import { MaybeNull } from 'shared/types/utils'
 
-export type UpdateTaskDeadlineMutationArgs = TaskRequestArgs & {
+export type UpdateTaskDeadlineRequest = TaskRequestArgs & {
   internalOlaNextBreachTime: MaybeNull<string>
 }
 
-export type UpdateTaskDeadlineSuccessResponse = Pick<
-  UpdateTaskDeadlineMutationArgs,
+export type UpdateTaskDeadlineResponse = Pick<
+  UpdateTaskDeadlineRequest,
   'internalOlaNextBreachTime'
 >

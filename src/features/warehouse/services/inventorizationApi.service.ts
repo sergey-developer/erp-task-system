@@ -3,36 +3,36 @@ import {
   InventorizationApiTagEnum,
 } from 'features/warehouse/constants/inventorization'
 import {
-  CheckInventorizationEquipmentsMutationArgs,
-  CheckInventorizationEquipmentsSuccessResponse,
-  CheckInventorizationEquipmentsTemplateMutationArgs,
-  CheckInventorizationEquipmentsTemplateSuccessResponse,
-  CompleteInventorizationMutationArgs,
-  CompleteInventorizationSuccessResponse,
-  CreateInventorizationEquipmentMutationArgs,
-  CreateInventorizationEquipmentSuccessResponse,
-  CreateInventorizationMutationArgs,
-  CreateInventorizationSuccessResponse,
-  GetInventorizationEquipmentQueryArgs,
-  GetInventorizationEquipmentsQueryArgs,
-  GetInventorizationEquipmentsSuccessResponse,
-  GetInventorizationEquipmentsTemplateQueryArgs,
-  GetInventorizationEquipmentsTemplateSuccessResponse,
-  GetInventorizationEquipmentSuccessResponse,
-  GetInventorizationEquipmentsXlsxQueryArgs,
-  GetInventorizationEquipmentsXlsxSuccessResponse,
-  GetInventorizationQueryArgs,
-  GetInventorizationsQueryArgs,
-  GetInventorizationsSuccessResponse,
-  GetInventorizationSuccessResponse,
-  UpdateInventorizationEquipmentMutationArgs,
-  UpdateInventorizationEquipmentSuccessResponse,
+  CheckInventorizationEquipmentsRequest,
+  CheckInventorizationEquipmentsResponse,
+  CheckInventorizationEquipmentsTemplateRequest,
+  CheckInventorizationEquipmentsTemplateResponse,
+  CompleteInventorizationRequest,
+  CompleteInventorizationResponse,
+  CreateInventorizationEquipmentRequest,
+  CreateInventorizationEquipmentResponse,
+  CreateInventorizationRequest,
+  CreateInventorizationResponse,
+  GetInventorizationEquipmentRequest,
+  GetInventorizationEquipmentsRequest,
+  GetInventorizationEquipmentsResponse,
+  GetInventorizationEquipmentsTemplateRequest,
+  GetInventorizationEquipmentsTemplateResponse,
+  GetInventorizationEquipmentResponse,
+  GetInventorizationEquipmentsXlsxRequest,
+  GetInventorizationEquipmentsXlsxResponse,
+  GetInventorizationRequest,
+  GetInventorizationsRequest,
+  GetInventorizationsResponse,
+  GetInventorizationResponse,
+  UpdateInventorizationEquipmentRequest,
+  UpdateInventorizationEquipmentResponse,
 } from 'features/warehouse/models'
 import {
-  GetInventorizationEquipmentsTemplateTransformedSuccessResponse,
-  GetInventorizationEquipmentsTransformedSuccessResponse,
-  GetInventorizationEquipmentsXlsxTransformedSuccessResponse,
-  GetInventorizationsTransformedSuccessResponse,
+  GetInventorizationEquipmentsTemplateTransformedResponse,
+  GetInventorizationEquipmentsTransformedResponse,
+  GetInventorizationEquipmentsXlsxTransformedResponse,
+  GetInventorizationsTransformedResponse,
 } from 'features/warehouse/types'
 import {
   makeCompleteInventorizationUrl,
@@ -60,8 +60,8 @@ const inventorizationApiService = baseApi
   .injectEndpoints({
     endpoints: (build) => ({
       getInventorizations: build.query<
-        GetInventorizationsTransformedSuccessResponse,
-        MaybeUndefined<GetInventorizationsQueryArgs>
+        GetInventorizationsTransformedResponse,
+        MaybeUndefined<GetInventorizationsRequest>
       >({
         providesTags: (result, error) =>
           error ? [] : [InventorizationApiTagEnum.Inventorizations],
@@ -70,21 +70,18 @@ const inventorizationApiService = baseApi
           method: HttpMethodEnum.Get,
           params,
         }),
-        transformResponse: (response: GetInventorizationsSuccessResponse, meta, arg) =>
+        transformResponse: (response: GetInventorizationsResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
-      getInventorization: build.query<
-        GetInventorizationSuccessResponse,
-        GetInventorizationQueryArgs
-      >({
+      getInventorization: build.query<GetInventorizationResponse, GetInventorizationRequest>({
         query: ({ inventorizationId }) => ({
           url: makeGetInventorizationUrl({ inventorizationId }),
           method: HttpMethodEnum.Get,
         }),
       }),
       createInventorization: build.mutation<
-        CreateInventorizationSuccessResponse,
-        CreateInventorizationMutationArgs
+        CreateInventorizationResponse,
+        CreateInventorizationRequest
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [InventorizationApiTagEnum.Inventorizations],
@@ -95,8 +92,8 @@ const inventorizationApiService = baseApi
         }),
       }),
       completeInventorization: build.mutation<
-        CompleteInventorizationSuccessResponse,
-        CompleteInventorizationMutationArgs
+        CompleteInventorizationResponse,
+        CompleteInventorizationRequest
       >({
         query: ({ inventorizationId }) => ({
           url: makeCompleteInventorizationUrl({ inventorizationId }),
@@ -105,8 +102,8 @@ const inventorizationApiService = baseApi
       }),
 
       getInventorizationEquipments: build.query<
-        GetInventorizationEquipmentsTransformedSuccessResponse,
-        GetInventorizationEquipmentsQueryArgs
+        GetInventorizationEquipmentsTransformedResponse,
+        GetInventorizationEquipmentsRequest
       >({
         providesTags: (result, error) =>
           error ? [] : [InventorizationApiTagEnum.InventorizationEquipments],
@@ -115,12 +112,12 @@ const inventorizationApiService = baseApi
           method: HttpMethodEnum.Get,
           params,
         }),
-        transformResponse: (response: GetInventorizationEquipmentsSuccessResponse, meta, arg) =>
+        transformResponse: (response: GetInventorizationEquipmentsResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
       getInventorizationEquipmentsXlsx: build.query<
-        GetInventorizationEquipmentsXlsxTransformedSuccessResponse,
-        GetInventorizationEquipmentsXlsxQueryArgs
+        GetInventorizationEquipmentsXlsxTransformedResponse,
+        GetInventorizationEquipmentsXlsxRequest
       >({
         query: ({ inventorizationId, ...params }) => ({
           url: makeGetInventorizationEquipmentsUrl({ inventorizationId }),
@@ -128,14 +125,14 @@ const inventorizationApiService = baseApi
           headers: { Accept: MimetypeEnum.Xlsx },
           params,
         }),
-        transformResponse: (value: GetInventorizationEquipmentsXlsxSuccessResponse, meta) => ({
+        transformResponse: (value: GetInventorizationEquipmentsXlsxResponse, meta) => ({
           value,
           meta,
         }),
       }),
       getInventorizationEquipment: build.query<
-        GetInventorizationEquipmentSuccessResponse,
-        GetInventorizationEquipmentQueryArgs
+        GetInventorizationEquipmentResponse,
+        GetInventorizationEquipmentRequest
       >({
         query: ({ equipmentId }) => ({
           url: makeGetInventorizationEquipmentUrl({ equipmentId }),
@@ -143,8 +140,8 @@ const inventorizationApiService = baseApi
         }),
       }),
       createInventorizationEquipment: build.mutation<
-        CreateInventorizationEquipmentSuccessResponse,
-        CreateInventorizationEquipmentMutationArgs
+        CreateInventorizationEquipmentResponse,
+        CreateInventorizationEquipmentRequest
       >({
         invalidatesTags: (result, error) =>
           error ? [] : [InventorizationApiTagEnum.InventorizationEquipments],
@@ -155,8 +152,8 @@ const inventorizationApiService = baseApi
         }),
       }),
       updateInventorizationEquipment: build.mutation<
-        UpdateInventorizationEquipmentSuccessResponse,
-        UpdateInventorizationEquipmentMutationArgs
+        UpdateInventorizationEquipmentResponse,
+        UpdateInventorizationEquipmentRequest
       >({
         query: ({
           inventorizationEquipmentId,
@@ -185,7 +182,7 @@ const inventorizationApiService = baseApi
               baseApi.util.updateQueryData(
                 'getInventorizationEquipments' as never,
                 getInventorizationEquipmentsArgs as never,
-                (data: GetInventorizationEquipmentsTransformedSuccessResponse) => {
+                (data: GetInventorizationEquipmentsTransformedResponse) => {
                   const inventorizationEquipment = data.results.find(
                     (item) => item.id === inventorizationEquipmentId,
                   )
@@ -204,21 +201,21 @@ const inventorizationApiService = baseApi
         },
       }),
       getInventorizationEquipmentsTemplate: build.query<
-        GetInventorizationEquipmentsTemplateTransformedSuccessResponse,
-        GetInventorizationEquipmentsTemplateQueryArgs
+        GetInventorizationEquipmentsTemplateTransformedResponse,
+        GetInventorizationEquipmentsTemplateRequest
       >({
         query: () => ({
           url: InventorizationApiEnum.GetInventorizationEquipmentsTemplate,
           method: HttpMethodEnum.Get,
         }),
-        transformResponse: (value: GetInventorizationEquipmentsTemplateSuccessResponse, meta) => ({
+        transformResponse: (value: GetInventorizationEquipmentsTemplateResponse, meta) => ({
           value,
           meta,
         }),
       }),
       checkInventorizationEquipmentsTemplate: build.mutation<
-        CheckInventorizationEquipmentsTemplateSuccessResponse,
-        CheckInventorizationEquipmentsTemplateMutationArgs
+        CheckInventorizationEquipmentsTemplateResponse,
+        CheckInventorizationEquipmentsTemplateRequest
       >({
         query: ({ file, inventorization }) => {
           const formData = new FormData()
@@ -233,8 +230,8 @@ const inventorizationApiService = baseApi
         },
       }),
       checkInventorizationEquipments: build.mutation<
-        CheckInventorizationEquipmentsSuccessResponse,
-        CheckInventorizationEquipmentsMutationArgs
+        CheckInventorizationEquipmentsResponse,
+        CheckInventorizationEquipmentsRequest
       >({
         query: (data) => ({
           url: InventorizationApiEnum.CheckInventorizationEquipments,

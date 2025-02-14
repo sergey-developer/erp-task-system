@@ -1,4 +1,4 @@
 import { SystemSettingsDTO } from '../dto/systemSettings.dto'
 
-export type GetSystemSettingsQueryArgs = void
-export type GetSystemSettingsSuccessResponse = SystemSettingsDTO
+export type GetSystemSettingsRequest = void
+export type GetSystemSettingsResponse = SystemSettingsDTO

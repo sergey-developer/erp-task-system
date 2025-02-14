@@ -1,7 +1,7 @@
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { ImportedEquipmentByFile, ImportedEquipmentsByFile } from 'features/warehouse/types'
 
 import currencyFixtures from '_tests_/fixtures/currency'

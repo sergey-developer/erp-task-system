@@ -1,7 +1,7 @@
 import {
-  GetInfrastructureOrdersFormsQueryArgs,
-  GetInfrastructureStatusHistoryQueryArgs,
-  GetInfrastructureStatusHistorySuccessResponse,
+  GetInfrastructureOrdersFormsRequest,
+  GetInfrastructureStatusHistoryRequest,
+  GetInfrastructureStatusHistoryResponse,
 } from 'features/infrastructures/api/dto'
 import { useGetInfrastructureStatusHistoryQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import { getInfrastructureStatusHistoryErrMsg } from 'features/infrastructures/constants'
@@ -18,17 +18,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetInfrastructureStatusHistoryResult = CustomUseQueryHookResult<
-  GetInfrastructureStatusHistoryQueryArgs,
-  GetInfrastructureStatusHistorySuccessResponse
+  GetInfrastructureStatusHistoryRequest,
+  GetInfrastructureStatusHistoryResponse
 >
 
 type UseGetInfrastructureStatusHistoryOptions = CustomUseQueryOptions<
-  GetInfrastructureStatusHistoryQueryArgs,
-  GetInfrastructureStatusHistorySuccessResponse
+  GetInfrastructureStatusHistoryRequest,
+  GetInfrastructureStatusHistoryResponse
 >
 
 export const useGetInfrastructureStatusHistory = (
-  args: GetInfrastructureOrdersFormsQueryArgs,
+  args: GetInfrastructureOrdersFormsRequest,
   options?: UseGetInfrastructureStatusHistoryOptions,
 ): UseGetInfrastructureStatusHistoryResult => {
   const state = useGetInfrastructureStatusHistoryQuery(args, options)

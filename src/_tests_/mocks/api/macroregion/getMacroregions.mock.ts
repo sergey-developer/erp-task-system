@@ -1,5 +1,5 @@
 import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
-import { GetMacroregionsCatalogSuccessResponse } from 'shared/catalogs/macroregions/api/schemas/getMacroregionsCatalog.schema'
+import { GetMacroregionsCatalogResponse } from 'shared/catalogs/macroregions/api/schemas/getMacroregionsCatalog.schema'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
@@ -9,5 +9,5 @@ const getMacroregionsMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, CatalogEndpointsEnum.GetMacroregions)
 
 export const mockGetMacroregionsSuccess = (
-  options?: Partial<ResponseResolverOptions<GetMacroregionsCatalogSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetMacroregionsCatalogResponse>>,
 ) => getSuccessMockFn(getMacroregionsMockFn(), options)()

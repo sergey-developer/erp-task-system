@@ -1,10 +1,9 @@
 import { ColumnsType } from 'antd/es/table'
+import { equipmentConditionDict } from 'features/equipments/api/constants'
+import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 import { CSSProperties } from 'react'
-
-import { equipmentConditionDict } from 'features/warehouse/constants/equipment'
-import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
 
 import { EditIcon } from 'components/Icons'
 

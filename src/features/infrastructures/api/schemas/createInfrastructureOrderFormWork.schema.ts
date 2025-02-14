@@ -2,10 +2,10 @@ import { InfrastructureWorkDTO } from 'features/infrastructures/api/dto/infrastr
 
 import { IdType } from 'shared/types/common'
 
-export type CreateInfrastructureOrderFormWorkMutationArgs = {
+export type CreateInfrastructureOrderFormWorkRequest = {
   amount: number
   infrastructureWorkType: IdType
   orderForm: IdType
 }
 
-export type CreateInfrastructureOrderFormWorkSuccessResponse = InfrastructureWorkDTO
+export type CreateInfrastructureOrderFormWorkResponse = InfrastructureWorkDTO

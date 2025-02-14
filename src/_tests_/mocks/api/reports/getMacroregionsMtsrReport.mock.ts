@@ -1,5 +1,5 @@
 import { ReportsEndpointsEnum } from 'features/reports/api/constants'
-import { GetMacroregionsMtsrReportSuccessResponse } from 'features/reports/api/dto'
+import { GetMacroregionsMtsrReportResponse } from 'features/reports/api/dto'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -16,7 +16,7 @@ const getMacroregionsMtsrReportMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, ReportsEndpointsEnum.GetMacroregionsMtsrReport)
 
 export const mockGetMacroregionsMtsrReportSuccess = (
-  options?: Partial<ResponseResolverOptions<GetMacroregionsMtsrReportSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetMacroregionsMtsrReportResponse>>,
 ) => getSuccessMockFn(getMacroregionsMtsrReportMockFn(), options)()
 
 export const mockGetMacroregionsMtsrReportForbiddenError = (

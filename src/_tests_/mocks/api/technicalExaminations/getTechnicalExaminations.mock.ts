@@ -1,5 +1,5 @@
 import { TechnicalExaminationsEndpointsEnum } from 'features/technicalExaminations/constants'
-import { GetTechnicalExaminationsSuccessResponse } from 'features/technicalExaminations/models'
+import { GetTechnicalExaminationsResponse } from 'features/technicalExaminations/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -10,5 +10,5 @@ const getTechnicalExaminationsMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, TechnicalExaminationsEndpointsEnum.GetTechnicalExaminations)
 
 export const mockGetTechnicalExaminationsSuccess = (
-  options?: Partial<ResponseResolverOptions<GetTechnicalExaminationsSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetTechnicalExaminationsResponse>>,
 ) => getSuccessMockFn(getTechnicalExaminationsMockFn(), options)()

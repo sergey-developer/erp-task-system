@@ -1,11 +1,10 @@
 import { DrawerProps } from 'antd'
-
-import { EquipmentModel } from 'features/warehouse/models'
+import { EquipmentDetailDTO } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 
 export type FieldsMaybeHidden = keyof Pick<
-  EquipmentModel,
+  EquipmentDetailDTO,
   'inventoryNumber' | 'isNew' | 'isWarranty' | 'isRepaired' | 'usageCounter' | 'owner'
 >
 

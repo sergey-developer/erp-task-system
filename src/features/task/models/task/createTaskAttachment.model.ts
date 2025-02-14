@@ -4,9 +4,9 @@ import { TaskRequestArgs } from 'features/task/types'
 import { IdType } from 'shared/types/common'
 import { UploadFileRequestArgs } from 'shared/types/file'
 
-export type CreateTaskAttachmentMutationArgs = TaskRequestArgs &
+export type CreateTaskAttachmentRequest = TaskRequestArgs &
   UploadFileRequestArgs & {
     parentType: TaskAttachmentTypeEnum
   }
 
-export type CreateTaskAttachmentSuccessResponse = { id: IdType }
+export type CreateTaskAttachmentResponse = { id: IdType }

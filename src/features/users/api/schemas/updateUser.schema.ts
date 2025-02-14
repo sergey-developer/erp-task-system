@@ -2,8 +2,8 @@ import { IdType } from 'shared/types/common'
 
 import { UserDetailDTO } from '../dto'
 
-export type UpdateUserMutationArgs = {
+export type UpdateUserRequest = {
   userId: IdType
 } & UserDetailDTO
 
-export type UpdateUserSuccessResponse = UserDetailDTO
+export type UpdateUserResponse = UserDetailDTO

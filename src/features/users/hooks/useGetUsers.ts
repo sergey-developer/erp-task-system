@@ -1,6 +1,6 @@
 import { getUsersErrMsg } from 'features/users/api/constants'
 import { useGetUsersQuery } from 'features/users/api/endpoints/users.endpoints'
-import { GetUsersQueryArgs, GetUsersSuccessResponse } from 'features/users/api/schemas'
+import { GetUsersRequest, GetUsersResponse } from 'features/users/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -10,17 +10,17 @@ import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetUsersResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetUsersQueryArgs>,
-  GetUsersSuccessResponse
+  MaybeUndefined<GetUsersRequest>,
+  GetUsersResponse
 >
 
 type UseGetUsersOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetUsersQueryArgs>,
-  GetUsersSuccessResponse
+  MaybeUndefined<GetUsersRequest>,
+  GetUsersResponse
 >
 
 export const useGetUsers = (
-  args?: GetUsersQueryArgs,
+  args?: GetUsersRequest,
   options?: UseGetUsersOptions,
 ): UseGetUsersResult => {
   const state = useGetUsersQuery(args, options)

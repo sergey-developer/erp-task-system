@@ -1,13 +1,9 @@
+import { updateTaskDeadlineErrMsg } from 'features/task/constants/task'
+import { UpdateTaskDeadlineRequest, UpdateTaskDeadlineResponse } from 'features/task/models'
+import { useUpdateTaskDeadlineMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { updateTaskDeadlineErrMsg } from 'features/task/constants/task'
-import {
-  UpdateTaskDeadlineMutationArgs,
-  UpdateTaskDeadlineSuccessResponse,
-} from 'features/task/models'
-import { useUpdateTaskDeadlineMutation } from 'features/task/services/taskApi.service'
 
 import {
   getErrorDetail,
@@ -19,8 +15,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseUpdateTaskDeadlineResult = CustomUseMutationResult<
-  UpdateTaskDeadlineMutationArgs,
-  UpdateTaskDeadlineSuccessResponse
+  UpdateTaskDeadlineRequest,
+  UpdateTaskDeadlineResponse
 >
 
 export const useUpdateTaskDeadline = (): UseUpdateTaskDeadlineResult => {

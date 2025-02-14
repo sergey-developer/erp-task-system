@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 
-import { EquipmentCategoryEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentCategoryEnum } from 'features/equipments/api/constants'
 
 import {
   props,

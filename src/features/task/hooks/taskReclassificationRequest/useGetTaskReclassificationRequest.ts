@@ -4,8 +4,8 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getReclassificationRequestErrMsg } from 'features/task/constants/taskReclassificationRequest'
 import {
-  GetTaskReclassificationRequestQueryArgs,
-  GetTaskReclassificationRequestSuccessResponse,
+  GetTaskReclassificationRequestRequest,
+  GetTaskReclassificationRequestResponse,
 } from 'features/task/models'
 import { useGetReclassificationRequestQuery } from 'features/task/services/taskApi.service'
 
@@ -18,17 +18,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskReclassificationRequestResult = CustomUseQueryHookResult<
-  GetTaskReclassificationRequestQueryArgs,
-  GetTaskReclassificationRequestSuccessResponse
+  GetTaskReclassificationRequestRequest,
+  GetTaskReclassificationRequestResponse
 >
 
 type UseGetTaskReclassificationRequestOptions = CustomUseQueryOptions<
-  GetTaskReclassificationRequestQueryArgs,
-  GetTaskReclassificationRequestSuccessResponse
+  GetTaskReclassificationRequestRequest,
+  GetTaskReclassificationRequestResponse
 >
 
 export const useGetTaskReclassificationRequest = (
-  args: GetTaskReclassificationRequestQueryArgs,
+  args: GetTaskReclassificationRequestRequest,
   options?: UseGetTaskReclassificationRequestOptions,
 ): UseGetTaskReclassificationRequestResult => {
   const state = useGetReclassificationRequestQuery(args, options)

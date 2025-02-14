@@ -1,29 +1,28 @@
+import { getRelocationEquipmentTechnicalExaminationErrMsg } from 'features/warehouse/constants/relocationEquipment'
+import {
+  GetRelocationEquipmentTechnicalExaminationRequest,
+  GetRelocationEquipmentTechnicalExaminationResponse,
+} from 'features/warehouse/models/relocationEquipment'
+import { useGetRelocationEquipmentTechnicalExaminationQuery } from 'features/warehouse/services/relocationEquipmentApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getRelocationEquipmentTechnicalExaminationErrMsg } from 'features/warehouse/constants/relocationEquipment'
-import {
-  GetRelocationEquipmentTechnicalExaminationQueryArgs,
-  GetRelocationEquipmentTechnicalExaminationSuccessResponse,
-} from 'features/warehouse/models/relocationEquipment'
-import { useGetRelocationEquipmentTechnicalExaminationQuery } from 'features/warehouse/services/relocationEquipmentApi.service'
 
 import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetRelocationEquipmentTechnicalExaminationResult = CustomUseQueryHookResult<
-  GetRelocationEquipmentTechnicalExaminationQueryArgs,
-  GetRelocationEquipmentTechnicalExaminationSuccessResponse
+  GetRelocationEquipmentTechnicalExaminationRequest,
+  GetRelocationEquipmentTechnicalExaminationResponse
 >
 
 type UseGetRelocationEquipmentTechnicalExaminationOptions = CustomUseQueryOptions<
-  GetRelocationEquipmentTechnicalExaminationQueryArgs,
-  GetRelocationEquipmentTechnicalExaminationSuccessResponse
+  GetRelocationEquipmentTechnicalExaminationRequest,
+  GetRelocationEquipmentTechnicalExaminationResponse
 >
 
 export const useGetRelocationEquipmentTechnicalExamination = (
-  args: GetRelocationEquipmentTechnicalExaminationQueryArgs,
+  args: GetRelocationEquipmentTechnicalExaminationRequest,
   options?: UseGetRelocationEquipmentTechnicalExaminationOptions,
 ): UseGetRelocationEquipmentTechnicalExaminationResult => {
   const state = useGetRelocationEquipmentTechnicalExaminationQuery(args, options)

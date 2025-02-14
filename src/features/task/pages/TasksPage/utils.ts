@@ -15,12 +15,12 @@ import { formatDate } from 'shared/utils/date'
 /**
  * Преобразует объект с полями формы расширенной фильтрации в объект с
  * query параметрами расширенной фильтрации
- * @function mapFilterToQueryArgs
+ * @function mapFilterToRequest
  * @param {TasksFilterFormFields} fields - объект со значениями формы расширенной фильтрации
  * @returns {TasksFilterQueries} объект с query параметрами расширенной фильтрации
  */
 
-export const mapFilterToQueryArgs = (
+export const mapFilterToRequest = (
   fields: Partial<TasksFilterFormFields>,
 ): TasksFilterQueries => {
   const { completeAt, creationDate, searchField, searchValue, ...restFields } = fields

@@ -1,6 +1,6 @@
 import {
   CancelSubTaskBadRequestErrorResponse,
-  CancelSubTaskSuccessResponse,
+  CancelSubTaskResponse,
 } from 'features/task/models'
 import { cancelSubTaskUrl } from 'features/task/utils/subTask'
 
@@ -21,7 +21,7 @@ const cancelSubTaskMockFn = (id: IdType) =>
 
 export const mockCancelSubTaskSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<CancelSubTaskSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CancelSubTaskResponse>>,
 ) => getSuccessMockFn(cancelSubTaskMockFn(id), options)()
 
 export const mockCancelSubTaskBadRequestError = <

@@ -1,7 +1,7 @@
 import { getHistoryNomenclatureOperationsReportErrMsg } from 'features/reports/api/constants'
 import { useGetHistoryNomenclatureOperationsReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
-import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'features/reports/api/schemas'
-import { GetHistoryNomenclatureOperationsReportTransformedSuccessResponse } from 'features/reports/api/types'
+import { GetHistoryNomenclatureOperationsReportRequest } from 'features/reports/api/schemas'
+import { GetHistoryNomenclatureOperationsReportTransformedResponse } from 'features/reports/api/types'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -15,17 +15,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetHistoryNomenclatureOperationsReportResult = CustomUseQueryHookResult<
-  GetHistoryNomenclatureOperationsReportQueryArgs,
-  GetHistoryNomenclatureOperationsReportTransformedSuccessResponse
+  GetHistoryNomenclatureOperationsReportRequest,
+  GetHistoryNomenclatureOperationsReportTransformedResponse
 >
 
 type UseGetHistoryNomenclatureOperationsReportOptions = CustomUseQueryOptions<
-  GetHistoryNomenclatureOperationsReportQueryArgs,
-  GetHistoryNomenclatureOperationsReportTransformedSuccessResponse
+  GetHistoryNomenclatureOperationsReportRequest,
+  GetHistoryNomenclatureOperationsReportTransformedResponse
 >
 
 export const useGetHistoryNomenclatureOperationsReport = (
-  args: GetHistoryNomenclatureOperationsReportQueryArgs,
+  args: GetHistoryNomenclatureOperationsReportRequest,
   options?: UseGetHistoryNomenclatureOperationsReportOptions,
 ): UseGetHistoryNomenclatureOperationsReportResult => {
   const state = useGetHistoryNomenclatureOperationsReportQuery(args, options)

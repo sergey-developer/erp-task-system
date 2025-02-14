@@ -1,10 +1,9 @@
+import { getWarehouseErrMsg } from 'features/warehouse/constants/warehouse'
+import { GetWarehouseRequest, GetWarehouseResponse } from 'features/warehouse/models'
+import { useGetWarehouseQuery } from 'features/warehouse/services/warehouseApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getWarehouseErrMsg } from 'features/warehouse/constants/warehouse'
-import { GetWarehouseQueryArgs, GetWarehouseSuccessResponse } from 'features/warehouse/models'
-import { useGetWarehouseQuery } from 'features/warehouse/services/warehouseApi.service'
 
 import {
   getErrorDetail,
@@ -14,18 +13,12 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetWarehouseResult = CustomUseQueryHookResult<
-  GetWarehouseQueryArgs,
-  GetWarehouseSuccessResponse
->
+type UseGetWarehouseResult = CustomUseQueryHookResult<GetWarehouseRequest, GetWarehouseResponse>
 
-type UseGetWarehouseOptions = CustomUseQueryOptions<
-  GetWarehouseQueryArgs,
-  GetWarehouseSuccessResponse
->
+type UseGetWarehouseOptions = CustomUseQueryOptions<GetWarehouseRequest, GetWarehouseResponse>
 
 export const useGetWarehouse = (
-  args: GetWarehouseQueryArgs,
+  args: GetWarehouseRequest,
   options?: UseGetWarehouseOptions,
 ): UseGetWarehouseResult => {
   const state = useGetWarehouseQuery(args, options)

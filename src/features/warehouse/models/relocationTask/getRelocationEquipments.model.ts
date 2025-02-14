@@ -1,5 +1,5 @@
 import { RelocationEquipmentsModel } from 'features/warehouse/models'
 import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 
-export type GetRelocationEquipmentListQueryArgs = RelocationTaskRequestArgs
-export type GetRelocationEquipmentListSuccessResponse = RelocationEquipmentsModel
+export type GetRelocationEquipmentListRequest = RelocationTaskRequestArgs
+export type GetRelocationEquipmentListResponse = RelocationEquipmentsModel

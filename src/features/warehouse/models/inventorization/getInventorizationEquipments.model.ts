@@ -1,6 +1,6 @@
 import { InventorizationRequestArgs } from 'features/warehouse/types'
 
-import { PaginationParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
+import { PaginationRequestParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { ExtendSortKey, SortParams } from 'shared/types/sort'
@@ -26,8 +26,8 @@ export type GetInventorizationEquipmentsFilter = Partial<{
   locationPlan: IdType
 }>
 
-export type GetInventorizationEquipmentsQueryArgs = InventorizationRequestArgs &
-  PaginationParams &
+export type GetInventorizationEquipmentsRequest = InventorizationRequestArgs &
+  PaginationRequestParams &
   FilterParams &
   SortParams<GetInventorizationEquipmentsSortValue> &
   GetInventorizationEquipmentsFilter &
@@ -36,5 +36,5 @@ export type GetInventorizationEquipmentsQueryArgs = InventorizationRequestArgs &
     hasRelocationTask: boolean
   }>
 
-export type GetInventorizationEquipmentsSuccessResponse =
+export type GetInventorizationEquipmentsResponse =
   PaginationResponse<InventorizationEquipmentListItemModel>

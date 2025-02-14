@@ -1,4 +1,4 @@
 import { WorkGroupsCatalogDTO } from 'shared/catalogs/workGroups/api/dto'
 
-export type GetWorkGroupsCatalogQueryArgs = void
-export type GetWorkGroupsCatalogSuccessResponse = WorkGroupsCatalogDTO
+export type GetWorkGroupsCatalogRequest = void
+export type GetWorkGroupsCatalogResponse = WorkGroupsCatalogDTO

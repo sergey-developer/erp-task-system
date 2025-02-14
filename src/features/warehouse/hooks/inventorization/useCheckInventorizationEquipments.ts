@@ -1,13 +1,12 @@
+import { checkInventorizationEquipmentsErrMsg } from 'features/warehouse/constants/inventorization'
+import {
+  CheckInventorizationEquipmentsRequest,
+  CheckInventorizationEquipmentsResponse,
+} from 'features/warehouse/models'
+import { useCheckInventorizationEquipmentsMutation } from 'features/warehouse/services/inventorizationApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { checkInventorizationEquipmentsErrMsg } from 'features/warehouse/constants/inventorization'
-import {
-  CheckInventorizationEquipmentsMutationArgs,
-  CheckInventorizationEquipmentsSuccessResponse,
-} from 'features/warehouse/models'
-import { useCheckInventorizationEquipmentsMutation } from 'features/warehouse/services/inventorizationApi.service'
 
 import {
   getErrorDetail,
@@ -18,8 +17,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCheckInventorizationEquipmentsResult = CustomUseMutationResult<
-  CheckInventorizationEquipmentsMutationArgs,
-  CheckInventorizationEquipmentsSuccessResponse
+  CheckInventorizationEquipmentsRequest,
+  CheckInventorizationEquipmentsResponse
 >
 
 export const useCheckInventorizationEquipments = (): UseCheckInventorizationEquipmentsResult => {

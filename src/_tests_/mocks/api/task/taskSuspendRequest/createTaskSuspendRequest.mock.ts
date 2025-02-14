@@ -1,4 +1,4 @@
-import { CreateTaskSuspendRequestSuccessResponse } from 'features/task/models'
+import { CreateTaskSuspendRequestResponse } from 'features/task/models'
 import { createTaskSuspendRequestUrl } from 'features/task/utils/taskSuspendRequest'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ const createTaskSuspendRequestMockFn = (id: IdType) =>
 
 export const mockCreateTaskSuspendRequestSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<CreateTaskSuspendRequestSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CreateTaskSuspendRequestResponse>>,
 ) => getSuccessMockFn(createTaskSuspendRequestMockFn(id), options)()
 
 export const mockCreateTaskSuspendRequestNotFoundError = (

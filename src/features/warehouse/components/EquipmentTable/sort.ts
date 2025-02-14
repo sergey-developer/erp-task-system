@@ -1,8 +1,7 @@
 import { ColumnType } from 'antd/es/table'
 import { SortOrder } from 'antd/es/table/interface'
+import { GetEquipmentsSortKey, GetEquipmentsSortValue } from 'features/warehouse/models'
 import isEqual from 'lodash/isEqual'
-
-import { GetEquipmentListSortKey, GetEquipmentListSortValue } from 'features/warehouse/models'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 
@@ -22,7 +21,7 @@ export type SortableField = keyof Pick<
 
 export const sortableFieldToSortValues: Record<
   SortableField,
-  [GetEquipmentListSortKey, Exclude<GetEquipmentListSortValue, GetEquipmentListSortKey>]
+  [GetEquipmentsSortKey, Exclude<GetEquipmentsSortValue, GetEquipmentsSortKey>]
 > = {
   title: ['title', '-title'],
   serialNumber: ['serial_number', '-serial_number'],
@@ -44,12 +43,12 @@ export const sortValueToSortableField = Object.keys(sortableFieldToSortValues).r
 
     return acc
   },
-  {} as Record<GetEquipmentListSortValue, SortableField>,
+  {} as Record<GetEquipmentsSortValue, SortableField>,
 )
 
 export const applySort = (
   column: ColumnType<EquipmentTableItem>,
-  sort: GetEquipmentListSortValue,
+  sort: GetEquipmentsSortValue,
 ): ColumnType<EquipmentTableItem> => {
   const sorterResult = parseSort(sort)
 
@@ -61,19 +60,19 @@ export const applySort = (
   }
 }
 
-export const getSort = (field: SortableField, order: SortOrder): GetEquipmentListSortValue => {
+export const getSort = (field: SortableField, order: SortOrder): GetEquipmentsSortValue => {
   const [ascendValue, descendValue] = sortableFieldToSortValues[field]
   return order === SortOrderEnum.Descend ? descendValue : ascendValue
 }
 
 export const parseSort = (
-  value: GetEquipmentListSortValue,
+  value: GetEquipmentsSortValue,
 ): { order: SortOrder; columnKey: SortableField } => {
   const isDescend = value.startsWith('-')
   const parsedValue = isDescend ? value.slice(1) : value
 
   return {
     order: isDescend ? SortOrderEnum.Descend : SortOrderEnum.Ascend,
-    columnKey: sortValueToSortableField[parsedValue as GetEquipmentListSortValue],
+    columnKey: sortValueToSortableField[parsedValue as GetEquipmentsSortValue],
   }
 }

@@ -1,8 +1,7 @@
-import React from 'react'
-
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import EquipmentListPage from 'features/warehouse/pages/EquipmentListPage'
 import EquipmentNomenclatureListPage from 'features/warehouse/pages/EquipmentNomenclatureListPage'
+import React from 'react'
 
 import { equipmentFilterTestUtils } from '_tests_/features/warehouse/components/EquipmentFilter/testUtils'
 import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
@@ -325,7 +324,7 @@ describe('Layout номенклатуры оборудования', () => {
     //     const equipment = await equipmentTestUtils.findContainer()
     //     await equipmentTestUtils.expectLoadingFinished()
     //     const notification = await notificationTestUtils.findNotification(
-    //       getEquipmentMessages.commonError,
+    //       getEquipmentErrMsg,
     //     )
     //
     //     expect(notification).toBeInTheDocument()

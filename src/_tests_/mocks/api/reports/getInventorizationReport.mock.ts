@@ -1,4 +1,4 @@
-import { GetInventorizationReportSuccessResponse } from 'features/reports/api/dto'
+import { GetInventorizationReportResponse } from 'features/reports/api/dto'
 import { makeGetInventorizationReportEndpoint } from 'features/reports/helpers'
 import { InventorizationRequestArgs } from 'features/warehouse/types'
 
@@ -12,5 +12,5 @@ const getInventorizationReportMockFn = ({ inventorizationId }: InventorizationRe
 
 export const mockGetInventorizationReportSuccess = (
   { inventorizationId }: InventorizationRequestArgs,
-  options?: Partial<ResponseResolverOptions<GetInventorizationReportSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetInventorizationReportResponse>>,
 ) => getSuccessMockFn(getInventorizationReportMockFn({ inventorizationId }), options)()

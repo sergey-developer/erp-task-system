@@ -2,9 +2,9 @@ import { InventorizationRequestArgs } from 'features/warehouse/types'
 
 import { Base64Type } from 'shared/types/common'
 
-import { GetInventorizationEquipmentsQueryArgs } from './getInventorizationEquipments.model'
+import { GetInventorizationEquipmentsRequest } from './getInventorizationEquipments.model'
 
-export type GetInventorizationEquipmentsXlsxQueryArgs = InventorizationRequestArgs &
-  Omit<GetInventorizationEquipmentsQueryArgs, 'offset' | 'limit'>
+export type GetInventorizationEquipmentsXlsxRequest = InventorizationRequestArgs &
+  Omit<GetInventorizationEquipmentsRequest, 'offset' | 'limit'>
 
-export type GetInventorizationEquipmentsXlsxSuccessResponse = Base64Type
+export type GetInventorizationEquipmentsXlsxResponse = Base64Type

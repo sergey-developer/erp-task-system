@@ -1,4 +1,4 @@
 import { LegalEntitiesCatalogDTO } from '../dto'
 
-export type GetLegalEntitiesCatalogQueryArgs = void
-export type GetLegalEntitiesCatalogSuccessResponse = LegalEntitiesCatalogDTO
+export type GetLegalEntitiesCatalogRequest = void
+export type GetLegalEntitiesCatalogResponse = LegalEntitiesCatalogDTO

@@ -1,6 +1,6 @@
 import {
-  CreateInfrastructureOrderFormWorkMutationArgs,
-  CreateInfrastructureOrderFormWorkSuccessResponse,
+  CreateInfrastructureOrderFormWorkRequest,
+  CreateInfrastructureOrderFormWorkResponse,
 } from 'features/infrastructures/api/dto'
 import { useCreateInfrastructureOrderFormWorkMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import { createInfrastructureOrderFormWorkErrMsg } from 'features/infrastructures/constants'
@@ -18,8 +18,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateInfrastructureOrderFormWork = CustomUseMutationResult<
-  CreateInfrastructureOrderFormWorkMutationArgs,
-  CreateInfrastructureOrderFormWorkSuccessResponse
+  CreateInfrastructureOrderFormWorkRequest,
+  CreateInfrastructureOrderFormWorkResponse
 >
 
 export const useCreateInfrastructureOrderFormWork = (): UseCreateInfrastructureOrderFormWork => {

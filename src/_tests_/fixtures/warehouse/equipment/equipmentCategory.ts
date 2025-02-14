@@ -1,11 +1,11 @@
-import { EquipmentCategoryEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentCategoryModel } from 'features/warehouse/models'
+import { EquipmentCategoryEnum } from 'features/equipments/api/constants'
+import { EquipmentCategoryDTO } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
 export const equipmentCategory = (
-  props?: Partial<Pick<EquipmentCategoryModel, 'code'>>,
-): EquipmentCategoryModel => ({
+  props?: Partial<Pick<EquipmentCategoryDTO, 'code'>>,
+): EquipmentCategoryDTO => ({
   code: props?.code || EquipmentCategoryEnum.Equipment,
 
   id: fakeId(),

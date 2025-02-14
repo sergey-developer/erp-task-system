@@ -8,22 +8,22 @@ import {
   makeUpdateUserStatusEndpoint,
 } from 'features/users/api/helpers'
 import {
-  GetUserActionsQueryArgs,
-  GetUserActionsSuccessResponse,
-  GetUserMeCodeQueryArgs,
-  GetUserMeCodeSuccessResponse,
-  GetUserMeQueryArgs,
-  GetUserMeSuccessResponse,
-  GetUsersGroupsQueryArgs,
-  GetUsersGroupsSuccessResponse,
-  GetUsersQueryArgs,
-  GetUsersSuccessResponse,
-  GetWarehouseMSIQueryArgs,
-  GetWarehouseMSISuccessResponse,
-  UpdateUserStatusMutationArgs,
-  UpdateUserStatusSuccessResponse,
-  UpdateUserTimeZoneMutationArgs,
-  UpdateUserTimeZoneSuccessResponse,
+  GetUserActionsRequest,
+  GetUserActionsResponse,
+  GetUserMeCodeRequest,
+  GetUserMeCodeResponse,
+  GetUserMeRequest,
+  GetUserMeResponse,
+  GetUsersGroupsRequest,
+  GetUsersGroupsResponse,
+  GetUsersRequest,
+  GetUsersResponse,
+  GetWarehouseMSIRequest,
+  GetWarehouseMSIResponse,
+  UpdateUserStatusRequest,
+  UpdateUserStatusResponse,
+  UpdateUserTimeZoneRequest,
+  UpdateUserTimeZoneResponse,
 } from 'features/users/api/schemas'
 
 import { baseApi } from 'shared/api/baseApi'
@@ -32,7 +32,7 @@ import { MaybeUndefined } from 'shared/types/utils'
 
 const usersEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getUsers: build.query<GetUsersSuccessResponse, MaybeUndefined<GetUsersQueryArgs>>({
+    getUsers: build.query<GetUsersResponse, MaybeUndefined<GetUsersRequest>>({
       query: (params) => ({
         url: UsersEndpointsEnum.GetUsers,
         method: HttpMethodEnum.Get,
@@ -40,8 +40,8 @@ const usersEndpoints = baseApi.injectEndpoints({
       }),
     }),
     updateUserTimeZone: build.mutation<
-      UpdateUserTimeZoneSuccessResponse,
-      UpdateUserTimeZoneMutationArgs
+      UpdateUserTimeZoneResponse,
+      UpdateUserTimeZoneRequest
     >({
       invalidatesTags: (result, error) =>
         error ? [] : [TaskApiTagEnum.Tasks, TaskApiTagEnum.Task],
@@ -66,38 +66,36 @@ const usersEndpoints = baseApi.injectEndpoints({
         } catch {}
       },
     }),
-    updateUserStatus: build.mutation<UpdateUserStatusSuccessResponse, UpdateUserStatusMutationArgs>(
-      {
-        query: ({ userId, ...payload }) => ({
-          url: makeUpdateUserStatusEndpoint(userId),
-          method: HttpMethodEnum.Post,
-          data: payload,
-        }),
-        onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
-          try {
-            const { data } = await queryFulfilled
+    updateUserStatus: build.mutation<UpdateUserStatusResponse, UpdateUserStatusRequest>({
+      query: ({ userId, ...payload }) => ({
+        url: makeUpdateUserStatusEndpoint(userId),
+        method: HttpMethodEnum.Post,
+        data: payload,
+      }),
+      onQueryStarted: async (payload, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled
 
-            dispatch(
-              baseApi.util.updateQueryData(
-                'getUserMe' as never,
-                undefined as never,
-                (user: UserDetailDTO) => {
-                  Object.assign(user, { status: data })
-                },
-              ),
-            )
-          } catch {}
-        },
+          dispatch(
+            baseApi.util.updateQueryData(
+              'getUserMe' as never,
+              undefined as never,
+              (user: UserDetailDTO) => {
+                Object.assign(user, { status: data })
+              },
+            ),
+          )
+        } catch {}
       },
-    ),
+    }),
 
-    getUserMe: build.query<GetUserMeSuccessResponse, GetUserMeQueryArgs>({
+    getUserMe: build.query<GetUserMeResponse, GetUserMeRequest>({
       query: () => ({
         url: UsersEndpointsEnum.GetUserMe,
         method: HttpMethodEnum.Get,
       }),
     }),
-    getUserMeCode: build.query<GetUserMeCodeSuccessResponse, GetUserMeCodeQueryArgs>({
+    getUserMeCode: build.query<GetUserMeCodeResponse, GetUserMeCodeRequest>({
       query: () => ({
         url: UsersEndpointsEnum.GetUserMeCode,
         method: HttpMethodEnum.Get,
@@ -105,8 +103,8 @@ const usersEndpoints = baseApi.injectEndpoints({
     }),
 
     getUsersGroups: build.query<
-      GetUsersGroupsSuccessResponse,
-      MaybeUndefined<GetUsersGroupsQueryArgs>
+      GetUsersGroupsResponse,
+      MaybeUndefined<GetUsersGroupsRequest>
     >({
       query: (params) => ({
         url: UsersEndpointsEnum.GetUsersGroups,
@@ -115,13 +113,13 @@ const usersEndpoints = baseApi.injectEndpoints({
       }),
     }),
 
-    getWarehouseMSI: build.query<GetWarehouseMSISuccessResponse, GetWarehouseMSIQueryArgs>({
+    getWarehouseMSI: build.query<GetWarehouseMSIResponse, GetWarehouseMSIRequest>({
       query: ({ userId }) => ({
         url: makeGetWarehouseMSIEndpoint(userId),
         method: HttpMethodEnum.Get,
       }),
     }),
-    getUserActions: build.query<GetUserActionsSuccessResponse, GetUserActionsQueryArgs>({
+    getUserActions: build.query<GetUserActionsResponse, GetUserActionsRequest>({
       providesTags: (result, error) => (error ? [] : [UsersEndpointsTagsEnum.UserActions]),
       query: ({ userId }) => ({
         url: makeGetUserActionsEndpoint(userId),

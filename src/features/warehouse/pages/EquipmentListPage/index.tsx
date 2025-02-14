@@ -1,4 +1,6 @@
 import { useBoolean, useSetState } from 'ahooks'
+import { equipmentsFilterToRequestParams } from 'features/equipments/helpers'
+import { useGetEquipments } from 'features/equipments/hooks'
 import { useEquipmentPageContext } from 'features/warehouse/components/EquipmentPageLayout/context'
 import EquipmentTable from 'features/warehouse/components/EquipmentTable'
 import {
@@ -7,9 +9,7 @@ import {
   sortableFieldToSortValues,
 } from 'features/warehouse/components/EquipmentTable/sort'
 import { EquipmentTableProps } from 'features/warehouse/components/EquipmentTable/types'
-import { useGetEquipments } from 'features/warehouse/hooks/equipment'
-import { GetEquipmentListQueryArgs } from 'features/warehouse/models'
-import { equipmentsFilterToParams } from 'features/warehouse/utils/equipment'
+import { GetEquipmentsRequest } from 'features/warehouse/models'
 import debounce from 'lodash/debounce'
 import isNumber from 'lodash/isNumber'
 import React, { FC, useCallback, useEffect, useState } from 'react'
@@ -49,9 +49,9 @@ const EquipmentListPage: FC = () => {
   )
   const debouncedToggleOpenEquipmentDetails = useDebounceFn(toggleOpenEquipmentDetails)
 
-  const [equipmentsParams, setEquipmentListParams] = useSetState<GetEquipmentListQueryArgs>({
+  const [equipmentsParams, setEquipmentListParams] = useSetState<GetEquipmentsRequest>({
     ...initialPaginationParams,
-    ...(context?.filter && equipmentsFilterToParams(context.filter)),
+    ...(context?.filter && equipmentsFilterToRequestParams(context.filter)),
     search: context?.search,
     nomenclature: nomenclatureId,
     ordering: 'title',

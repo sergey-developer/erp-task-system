@@ -49,7 +49,7 @@ import {
   useRelocationTaskStatus,
   useUpdateExternalRelocation,
 } from 'features/warehouse/hooks/relocationTask'
-import { UpdateExternalRelocationMutationArgs } from 'features/warehouse/models'
+import { UpdateExternalRelocationRequest } from 'features/warehouse/models'
 import {
   useCancelRelocationTaskMutation,
   useCloseRelocationTaskMutation,
@@ -254,11 +254,9 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
   const relocationTaskStatus = useRelocationTaskStatus(relocationTask?.status)
 
   const onUpdateExternalRelocation =
-    (fieldName: Extract<keyof UpdateExternalRelocationMutationArgs, 'number' | 'status'>) =>
+    (fieldName: Extract<keyof UpdateExternalRelocationRequest, 'number' | 'status'>) =>
     async (
-      value:
-        | UpdateExternalRelocationMutationArgs['number']
-        | UpdateExternalRelocationMutationArgs['status'],
+      value: UpdateExternalRelocationRequest['number'] | UpdateExternalRelocationRequest['status'],
     ) => {
       await updateExternalRelocationMutation({ relocationTaskId, [fieldName]: value }).unwrap()
     }

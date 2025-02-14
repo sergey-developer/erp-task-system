@@ -1,16 +1,15 @@
-import pick from 'lodash/pick'
-import times from 'lodash/times'
-
 import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
 import {
-  EquipmentRelocationHistoryItemModel,
-  EquipmentRelocationHistoryModel,
+  EquipmentRelocationHistoryDTO,
+  EquipmentRelocationHistoryItemDTO,
 } from 'features/warehouse/models'
+import pick from 'lodash/pick'
+import times from 'lodash/times'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
-export const equipmentRelocationHistoryItem = (): EquipmentRelocationHistoryItemModel => ({
+export const equipmentRelocationHistoryItem = (): EquipmentRelocationHistoryItemDTO => ({
   id: fakeId(),
   relocateTo: fakeWord(),
   relocateFrom: fakeWord(),
@@ -22,5 +21,5 @@ export const equipmentRelocationHistoryItem = (): EquipmentRelocationHistoryItem
   documents: [warehouseFixtures.equipmentRelocationHistoryAttachment()],
 })
 
-export const equipmentRelocationHistory = (length: number = 1): EquipmentRelocationHistoryModel =>
+export const equipmentRelocationHistory = (length: number = 1): EquipmentRelocationHistoryDTO =>
   times(length, () => equipmentRelocationHistoryItem())

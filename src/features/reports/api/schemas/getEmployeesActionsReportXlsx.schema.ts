@@ -1,10 +1,10 @@
 import { Base64Type } from 'shared/types/common'
 
-import { GetEmployeesActionsReportQueryArgs } from './getEmployeesActionsReport.schema'
+import { GetEmployeesActionsReportRequest } from './getEmployeesActionsReport.schema'
 
-export type GetEmployeesActionsReportXlsxQueryArgs = Omit<
-  GetEmployeesActionsReportQueryArgs,
+export type GetEmployeesActionsReportXlsxRequest = Omit<
+  GetEmployeesActionsReportRequest,
   'limit' | 'offset'
 >
 
-export type GetEmployeesActionsReportXlsxSuccessResponse = Base64Type
+export type GetEmployeesActionsReportXlsxResponse = Base64Type

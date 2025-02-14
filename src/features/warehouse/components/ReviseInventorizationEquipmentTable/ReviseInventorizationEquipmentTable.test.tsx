@@ -1,7 +1,7 @@
 import { within } from '@testing-library/react'
 import pick from 'lodash/pick'
 
-import { EquipmentCategoryEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentCategoryEnum } from 'features/equipments/api/constants'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
 

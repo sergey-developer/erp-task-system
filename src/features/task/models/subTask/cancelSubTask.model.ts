@@ -3,11 +3,11 @@ import { SubTaskRequestArgs, TaskRequestArgs } from 'features/task/types'
 
 import { FieldsErrors } from 'shared/api/baseApi'
 
-export type CancelSubTaskMutationArgs = TaskRequestArgs &
+export type CancelSubTaskRequest = TaskRequestArgs &
   SubTaskRequestArgs & {
     cancelReason: string
   }
 
-export type CancelSubTaskSuccessResponse = void
+export type CancelSubTaskResponse = void
 
 export type CancelSubTaskBadRequestErrorResponse = FieldsErrors<CancelSubTaskFormFields>

@@ -1,7 +1,7 @@
 import { InventorizationApiEnum } from 'features/warehouse/constants/inventorization'
 import {
   CheckInventorizationEquipmentsTemplateBadRequestErrorResponse,
-  CheckInventorizationEquipmentsTemplateSuccessResponse,
+  CheckInventorizationEquipmentsTemplateResponse,
 } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -16,7 +16,7 @@ const checkInventorizationEquipmentsTemplateMockFn = () =>
   )
 
 export const mockCheckInventorizationEquipmentsTemplateSuccess = (
-  options?: Partial<ResponseResolverOptions<CheckInventorizationEquipmentsTemplateSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CheckInventorizationEquipmentsTemplateResponse>>,
 ) => getSuccessMockFn(checkInventorizationEquipmentsTemplateMockFn(), options)()
 
 export const mockCheckInventorizationEquipmentsTemplateBadRequestError = (

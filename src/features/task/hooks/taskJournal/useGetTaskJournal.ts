@@ -3,24 +3,24 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getTaskJournalErrMsg } from 'features/task/constants/taskJournal'
-import { GetTaskJournalQueryArgs, GetTaskJournalSuccessResponse } from 'features/task/models'
+import { GetTaskJournalRequest, GetTaskJournalResponse } from 'features/task/models'
 import { useGetTaskJournalQuery } from 'features/task/services/taskApi.service'
 
 import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskJournalResult = CustomUseQueryHookResult<
-  GetTaskJournalQueryArgs,
-  GetTaskJournalSuccessResponse
+  GetTaskJournalRequest,
+  GetTaskJournalResponse
 >
 
 type UseGetTaskJournalOptions = CustomUseQueryOptions<
-  GetTaskJournalQueryArgs,
-  GetTaskJournalSuccessResponse
+  GetTaskJournalRequest,
+  GetTaskJournalResponse
 >
 
 export const useGetTaskJournal = (
-  args: GetTaskJournalQueryArgs,
+  args: GetTaskJournalRequest,
   options?: UseGetTaskJournalOptions,
 ): UseGetTaskJournalResult => {
   const state = useGetTaskJournalQuery(args, options)

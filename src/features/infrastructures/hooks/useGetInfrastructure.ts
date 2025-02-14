@@ -1,6 +1,6 @@
 import {
-  GetInfrastructureQueryArgs,
-  GetInfrastructureSuccessResponse,
+  GetInfrastructureRequest,
+  GetInfrastructureResponse,
 } from 'features/infrastructures/api/dto'
 import { useGetInfrastructureQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import { getInfrastructureErrMsg } from 'features/infrastructures/constants'
@@ -17,17 +17,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetInfrastructureResult = CustomUseQueryHookResult<
-  GetInfrastructureQueryArgs,
-  GetInfrastructureSuccessResponse
+  GetInfrastructureRequest,
+  GetInfrastructureResponse
 >
 
 type UseGetInfrastructureOptions = CustomUseQueryOptions<
-  GetInfrastructureQueryArgs,
-  GetInfrastructureSuccessResponse
+  GetInfrastructureRequest,
+  GetInfrastructureResponse
 >
 
 export const useGetInfrastructure = (
-  args: GetInfrastructureQueryArgs,
+  args: GetInfrastructureRequest,
   options?: UseGetInfrastructureOptions,
 ): UseGetInfrastructureResult => {
   const state = useGetInfrastructureQuery(args, options)

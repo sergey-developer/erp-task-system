@@ -1,8 +1,8 @@
 import { getSupportGroupsMtsrReportErrMsg } from 'features/reports/api/constants'
 import { useGetSupportGroupsMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
-  GetSupportGroupsMtsrReportQueryArgs,
-  GetSupportGroupsMtsrReportSuccessResponse,
+  GetSupportGroupsMtsrReportRequest,
+  GetSupportGroupsMtsrReportResponse,
 } from 'features/reports/api/schemas'
 import { useEffect } from 'react'
 
@@ -12,17 +12,17 @@ import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/ba
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetSupportGroupsMtsrReportResult = CustomUseQueryHookResult<
-  GetSupportGroupsMtsrReportQueryArgs,
-  GetSupportGroupsMtsrReportSuccessResponse
+  GetSupportGroupsMtsrReportRequest,
+  GetSupportGroupsMtsrReportResponse
 >
 
 type UseGetSupportGroupsMtsrReportOptions = CustomUseQueryOptions<
-  GetSupportGroupsMtsrReportQueryArgs,
-  GetSupportGroupsMtsrReportSuccessResponse
+  GetSupportGroupsMtsrReportRequest,
+  GetSupportGroupsMtsrReportResponse
 >
 
 export const useGetSupportGroupsMtsrReport = (
-  args: GetSupportGroupsMtsrReportQueryArgs,
+  args: GetSupportGroupsMtsrReportRequest,
   options?: UseGetSupportGroupsMtsrReportOptions,
 ): UseGetSupportGroupsMtsrReportResult => {
   const state = useGetSupportGroupsMtsrReportQuery(args, options)

@@ -1,6 +1,6 @@
 import {
-  GetMeasurementUnitsCatalogQueryArgs,
-  GetMeasurementUnitsCatalogSuccessResponse,
+  GetMeasurementUnitsCatalogRequest,
+  GetMeasurementUnitsCatalogResponse,
 } from 'features/warehouse/models'
 import { useEffect } from 'react'
 
@@ -13,17 +13,17 @@ import { getMeasurementUnitsCatalogErrMsg } from '../api/constants'
 import { useGetMeasurementUnitsCatalogQuery } from '../api/endpoints/measurementUnitsCatalog.endpoints'
 
 type UseGetMeasurementUnitListResult = CustomUseQueryHookResult<
-  GetMeasurementUnitsCatalogQueryArgs,
-  GetMeasurementUnitsCatalogSuccessResponse
+  GetMeasurementUnitsCatalogRequest,
+  GetMeasurementUnitsCatalogResponse
 >
 
 type UseGetMeasurementUnitListOptions = CustomUseQueryOptions<
-  GetMeasurementUnitsCatalogQueryArgs,
-  GetMeasurementUnitsCatalogSuccessResponse
+  GetMeasurementUnitsCatalogRequest,
+  GetMeasurementUnitsCatalogResponse
 >
 
 export const useGetMeasurementUnitsCatalog = (
-  args?: GetMeasurementUnitsCatalogQueryArgs,
+  args?: GetMeasurementUnitsCatalogRequest,
   options?: UseGetMeasurementUnitListOptions,
 ): UseGetMeasurementUnitListResult => {
   const state = useGetMeasurementUnitsCatalogQuery(args, options)

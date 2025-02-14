@@ -1,11 +1,10 @@
 import { ProColumns } from '@ant-design/pro-components'
+import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
 import isBoolean from 'lodash/isBoolean'
 import isNil from 'lodash/isNil'
 import isNumber from 'lodash/isNumber'
 import isObject from 'lodash/isObject'
 import { DefaultOptionType } from 'rc-select/lib/Select'
-
-import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
 
 import { CheckCircleIcon, ExclamationCircleIcon } from 'components/Icons'
 

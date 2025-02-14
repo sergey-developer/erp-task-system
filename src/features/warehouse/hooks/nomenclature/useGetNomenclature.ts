@@ -3,24 +3,24 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getNomenclatureMessages } from 'features/warehouse/constants/nomenclature'
-import { GetNomenclatureQueryArgs, GetNomenclatureSuccessResponse } from 'features/warehouse/models'
+import { GetNomenclatureRequest, GetNomenclatureResponse } from 'features/warehouse/models'
 import { useGetNomenclatureQuery } from 'features/warehouse/services/nomenclatureApi.service'
 
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetNomenclatureResult = CustomUseQueryHookResult<
-  GetNomenclatureQueryArgs,
-  GetNomenclatureSuccessResponse
+  GetNomenclatureRequest,
+  GetNomenclatureResponse
 >
 
 type UseGetNomenclatureOptions = CustomUseQueryOptions<
-  GetNomenclatureQueryArgs,
-  GetNomenclatureSuccessResponse
+  GetNomenclatureRequest,
+  GetNomenclatureResponse
 >
 
 export const useGetNomenclature = (
-  args: GetNomenclatureQueryArgs,
+  args: GetNomenclatureRequest,
   options?: UseGetNomenclatureOptions,
 ): UseGetNomenclatureResult => {
   const state = useGetNomenclatureQuery(args, options)

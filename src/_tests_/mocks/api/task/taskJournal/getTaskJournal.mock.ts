@@ -1,4 +1,4 @@
-import { GetTaskJournalSuccessResponse } from 'features/task/models'
+import { GetTaskJournalResponse } from 'features/task/models'
 import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'features/task/utils/taskJournal'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -15,7 +15,7 @@ const getJournalCsvMockFn = (taskId: IdType) =>
 
 export const mockGetJournalSuccess = (
   taskId: IdType,
-  options?: Partial<ResponseResolverOptions<GetTaskJournalSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetTaskJournalResponse>>,
 ) => getSuccessMockFn(getJournalMockFn(taskId), options)()
 
 export const mockGetJournalServerError = (

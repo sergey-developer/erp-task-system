@@ -17,6 +17,14 @@ import { SearchProps } from 'antd/es/input'
 import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
+import {
+  useCreateEquipment,
+  useGetEquipment,
+  useGetEquipmentCategories,
+  useGetEquipmentsCatalog,
+} from 'features/equipments/hooks'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useUserPermissions } from 'features/users/hooks'
 import { CheckEquipmentFormModalProps } from 'features/warehouse/components/CheckEquipmentFormModal/types'
@@ -30,14 +38,7 @@ import {
 import { EquipmentFormModalProps } from 'features/warehouse/components/EquipmentFormModal/types'
 import ReviseInventorizationEquipmentTable from 'features/warehouse/components/ReviseInventorizationEquipmentTable'
 import { ReviseInventorizationEquipmentTableProps } from 'features/warehouse/components/ReviseInventorizationEquipmentTable/types'
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { defaultGetNomenclaturesParams } from 'features/warehouse/constants/nomenclature'
-import {
-  useCreateEquipment,
-  useGetEquipment,
-  useGetEquipmentCategories,
-  useGetEquipmentsCatalog,
-} from 'features/warehouse/hooks/equipment'
 import {
   useCheckInventorizationEquipments,
   useCheckInventorizationEquipmentsTemplate,
@@ -49,12 +50,11 @@ import {
 } from 'features/warehouse/hooks/inventorization'
 import { useGetNomenclature, useGetNomenclatures } from 'features/warehouse/hooks/nomenclature'
 import {
-  EquipmentCategoryListItemModel,
-  GetEquipmentsCatalogQueryArgs,
-  GetInventorizationEquipmentsQueryArgs,
+  EquipmentCategoryDTO,
+  GetEquipmentsCatalogRequest,
+  GetInventorizationEquipmentsRequest,
   InventorizationModel,
 } from 'features/warehouse/models'
-import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
 import {
   checkInventorizationStatusIsInProgress,
   checkInventorizationStatusIsNew,
@@ -134,12 +134,12 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 
   const [selectedOwnerId, setSelectedOwnerId] = useState<IdType>()
 
-  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryListItemModel>()
+  const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryDTO>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   // get inventorization equipments
   const [getInventorizationEquipmentsArgs, setGetInventorizationEquipmentsArgs] =
-    useSetState<GetInventorizationEquipmentsQueryArgs>({
+    useSetState<GetInventorizationEquipmentsRequest>({
       inventorizationId: inventorization.id,
       ...getInitialPaginationParams(),
     })
@@ -464,7 +464,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
       !editCheckedInventorizationEquipmentModalOpened,
   })
 
-  const getEquipmentCatalogQueryArgs = useMemo<GetEquipmentsCatalogQueryArgs>(
+  const getEquipmentCatalogRequest = useMemo<GetEquipmentsCatalogRequest>(
     () => ({
       categories: equipmentCategories
         .filter((c) => !checkEquipmentCategoryIsConsumable(c.code))
@@ -481,7 +481,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   // todo: Пока поправить не получилось.
   //  Отправляется лишний запрос после добавления оборудования из модалки добавления оборудования инвентаризации
   const { currentData: equipmentCatalog = [], isFetching: equipmentCatalogIsFetching } =
-    useGetEquipmentsCatalog(getEquipmentCatalogQueryArgs, {
+    useGetEquipmentsCatalog(getEquipmentCatalogRequest, {
       skip: !createInventorizationEquipmentModalOpened || !isEquipmentCategoriesFetchedSuccess,
     })
 

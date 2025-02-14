@@ -1,6 +1,6 @@
 import {
-  GetInfrastructureOrderFormWorkTypeCostQueryArgs,
-  GetInfrastructureOrderFormWorkTypeCostSuccessResponse,
+  GetInfrastructureOrderFormWorkTypeCostRequest,
+  GetInfrastructureOrderFormWorkTypeCostResponse,
 } from 'features/infrastructures/api/dto'
 import { useLazyGetInfrastructureOrderFormWorkTypeCostQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import { getInfrastructureOrderFormWorkTypeCostErrMsg } from 'features/infrastructures/constants'
@@ -17,8 +17,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetInfrastructureOrderFormWorkTypeCostResult = CustomUseLazyQueryHookResult<
-  GetInfrastructureOrderFormWorkTypeCostQueryArgs,
-  GetInfrastructureOrderFormWorkTypeCostSuccessResponse
+  GetInfrastructureOrderFormWorkTypeCostRequest,
+  GetInfrastructureOrderFormWorkTypeCostResponse
 >
 
 export const useLazyGetInfrastructureOrderFormWorkTypeCost =

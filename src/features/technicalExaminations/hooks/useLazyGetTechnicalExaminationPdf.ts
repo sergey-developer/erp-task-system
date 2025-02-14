@@ -1,18 +1,17 @@
+import { getTechnicalExaminationPdfErrMsg } from 'features/technicalExaminations/constants'
+import { GetTechnicalExaminationPdfRequest } from 'features/technicalExaminations/models'
+import { useLazyGetTechnicalExaminationPdfQuery } from 'features/technicalExaminations/services/technicalExaminationsApi.service'
+import { GetTechnicalExaminationPdfTransformedResponse } from 'features/technicalExaminations/types'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
-
-import { getTechnicalExaminationPdfErrMsg } from 'features/technicalExaminations/constants'
-import { GetTechnicalExaminationPdfQueryArgs } from 'features/technicalExaminations/models'
-import { useLazyGetTechnicalExaminationPdfQuery } from 'features/technicalExaminations/services/technicalExaminationsApi.service'
-import { GetTechnicalExaminationPdfTransformedSuccessResponse } from 'features/technicalExaminations/types'
 
 import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTechnicalExaminationPdfResult = CustomUseLazyQueryHookResult<
-  GetTechnicalExaminationPdfQueryArgs,
-  GetTechnicalExaminationPdfTransformedSuccessResponse
+  GetTechnicalExaminationPdfRequest,
+  GetTechnicalExaminationPdfTransformedResponse
 >
 
 export const useLazyGetTechnicalExaminationPdf = (): UseGetTechnicalExaminationPdfResult => {

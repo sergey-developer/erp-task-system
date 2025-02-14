@@ -6,23 +6,23 @@ import { isErrorResponse } from 'shared/api/baseApi'
 import { getSupportGroupsErrMsg } from 'shared/supportGroups/api/constants'
 import { useGetSupportGroupListQuery } from 'shared/supportGroups/api/endpoints/supportGroups.endpoints'
 import {
-  GetSupportGroupsQueryArgs,
-  GetSupportGroupsSuccessResponse,
+  GetSupportGroupsRequest,
+  GetSupportGroupsResponse,
 } from 'shared/supportGroups/api/schemas'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetSupportGroupListResult = CustomUseQueryHookResult<
-  GetSupportGroupsQueryArgs,
-  GetSupportGroupsSuccessResponse
+  GetSupportGroupsRequest,
+  GetSupportGroupsResponse
 >
 
 type UseGetSupportGroupListOptions = CustomUseQueryOptions<
-  GetSupportGroupsQueryArgs,
-  GetSupportGroupsSuccessResponse
+  GetSupportGroupsRequest,
+  GetSupportGroupsResponse
 >
 
 export const useGetSupportGroups = (
-  args?: GetSupportGroupsQueryArgs,
+  args?: GetSupportGroupsRequest,
   options?: UseGetSupportGroupListOptions,
 ): UseGetSupportGroupListResult => {
   const state = useGetSupportGroupListQuery(args, options)

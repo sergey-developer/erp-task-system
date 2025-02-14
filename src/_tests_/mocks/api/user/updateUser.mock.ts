@@ -1,4 +1,4 @@
-import { UpdateUserSuccessResponse } from 'features/users/api/dto'
+import { UpdateUserResponse } from 'features/users/api/dto'
 import { makeUpdateUserEndpoint } from 'features/users/helpers'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,7 +12,7 @@ const updateUserMockFn = (userId: IdType) =>
 
 export const mockUpdateUserSuccess = (
   userId: IdType,
-  options?: Partial<ResponseResolverOptions<UpdateUserSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<UpdateUserResponse>>,
 ) => getSuccessMockFn(updateUserMockFn(userId), options)()
 
 export const mockUpdateUserServerError = (

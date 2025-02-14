@@ -1,4 +1,4 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { InventorizationEquipmentModel } from 'features/warehouse/models'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'

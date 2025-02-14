@@ -2,5 +2,5 @@ import { TechnicalExaminationRequestArgs } from 'features/technicalExaminations/
 
 import { TechnicalExaminationModel } from './technicalExamination.model'
 
-export type GetTechnicalExaminationQueryArgs = TechnicalExaminationRequestArgs
-export type GetTechnicalExaminationSuccessResponse = TechnicalExaminationModel
+export type GetTechnicalExaminationRequest = TechnicalExaminationRequestArgs
+export type GetTechnicalExaminationResponse = TechnicalExaminationModel

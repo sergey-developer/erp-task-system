@@ -1,4 +1,4 @@
-import { EquipmentCategoriesModel } from 'features/warehouse/models'
+import { EquipmentCategoriesDTO } from 'features/warehouse/models'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
@@ -12,7 +12,7 @@ export type AmountEquipmentSpentReportFilterProps = Pick<DrawerFilterProps, 'ope
   values?: AmountEquipmentSpentReportFilterFormFields
   initialValues: AmountEquipmentSpentReportFilterFormFields
 
-  categories: EquipmentCategoriesModel
+  categories: EquipmentCategoriesDTO
   categoriesIsLoading: boolean
 
   onApply: (values: AmountEquipmentSpentReportFilterFormFields) => void

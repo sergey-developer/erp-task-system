@@ -1,5 +1,5 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { CustomersModel, EquipmentCategoriesModel } from 'features/warehouse/models'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { CustomersModel, EquipmentCategoriesDTO } from 'features/warehouse/models'
 import { Moment } from 'moment-timezone'
 
 import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
@@ -28,7 +28,7 @@ export type EquipmentFilterProps = {
   locations: LocationsCatalogDTO
   locationsIsLoading: boolean
 
-  categories: EquipmentCategoriesModel
+  categories: EquipmentCategoriesDTO
   categoriesIsLoading: boolean
 
   owners: CustomersModel

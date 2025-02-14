@@ -1,8 +1,8 @@
 import { deleteInfrastructureOrdersFormsWorkErrMsg } from 'features/infrastructures/api/constants'
 import { useDeleteInfrastructureOrdersFormsWorkMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import {
-  DeleteInfrastructureOrdersFormsWorkMutationArgs,
-  DeleteInfrastructureOrdersFormsWorkSuccessResponse,
+  DeleteInfrastructureOrdersFormsWorkRequest,
+  DeleteInfrastructureOrdersFormsWorkResponse,
 } from 'features/infrastructures/api/schemas'
 import { useEffect } from 'react'
 
@@ -18,8 +18,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseDeleteInfrastructureOrdersFormsWorkResult = CustomUseMutationResult<
-  DeleteInfrastructureOrdersFormsWorkMutationArgs,
-  DeleteInfrastructureOrdersFormsWorkSuccessResponse
+  DeleteInfrastructureOrdersFormsWorkRequest,
+  DeleteInfrastructureOrdersFormsWorkResponse
 >
 
 export const useDeleteInfrastructureOrdersFormsWork =

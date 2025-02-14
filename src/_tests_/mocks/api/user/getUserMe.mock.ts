@@ -1,5 +1,5 @@
 import { UsersEndpointsEnum } from 'features/users/api/constants'
-import { GetUserMeSuccessResponse } from 'features/users/api/dto'
+import { GetUserMeResponse } from 'features/users/api/dto'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -9,5 +9,5 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const getUserMeMockFn = () => getRequestMockFn(HttpMethodEnum.Get, UsersEndpointsEnum.GetUserMe)
 
 export const mockGetUserMeSuccess = (
-  options?: Partial<ResponseResolverOptions<GetUserMeSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetUserMeResponse>>,
 ) => getSuccessMockFn(getUserMeMockFn(), options)()

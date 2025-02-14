@@ -1,11 +1,10 @@
 import { Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd'
+import { equipmentConditionOptions } from 'features/equipments/api/constants'
+import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
+import { EquipmentCategoryDTO, NomenclatureListItemModel } from 'features/warehouse/models'
 import isArray from 'lodash/isArray'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useEffect, useMemo } from 'react'
-
-import { equipmentConditionOptions } from 'features/warehouse/constants/equipment'
-import { EquipmentCategoryListItemModel, NomenclatureListItemModel } from 'features/warehouse/models'
-import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
 
 import LoadingArea from 'components/LoadingArea'
 import BaseModal from 'components/Modals/BaseModal'
@@ -78,7 +77,7 @@ const CheckEquipmentFormModal: FC<CheckEquipmentFormModalProps> = ({
 
   const handleChangeCategory = (
     value: IdType,
-    option: EquipmentCategoryListItemModel | EquipmentCategoryListItemModel[],
+    option: EquipmentCategoryDTO | EquipmentCategoryDTO[],
   ) => {
     if (!isArray(option)) {
       onChangeCategory(option)
@@ -148,7 +147,7 @@ const CheckEquipmentFormModal: FC<CheckEquipmentFormModalProps> = ({
           name='category'
           rules={onlyRequiredRules}
         >
-          <Select<IdType, EquipmentCategoryListItemModel>
+          <Select<IdType, EquipmentCategoryDTO>
             placeholder='Выберите категорию'
             fieldNames={idAndTitleSelectFieldNames}
             options={categories}

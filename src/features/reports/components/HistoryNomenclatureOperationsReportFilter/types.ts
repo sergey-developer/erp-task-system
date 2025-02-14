@@ -1,4 +1,4 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { CustomersModel } from 'features/warehouse/models'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'

@@ -1,10 +1,10 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 
 import { TableRowsApiErrors } from 'shared/api/baseApi'
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
 
-export type CheckInventorizationEquipmentsMutationArgs = {
+export type CheckInventorizationEquipmentsRequest = {
   inventorization: IdType
   equipments: {
     row: number
@@ -30,6 +30,6 @@ export type CheckInventorizationEquipmentsMutationArgs = {
   }[]
 }
 
-export type CheckInventorizationEquipmentsSuccessResponse = void
+export type CheckInventorizationEquipmentsResponse = void
 
 export type CheckInventorizationEquipmentsBadRequestErrorResponse = TableRowsApiErrors

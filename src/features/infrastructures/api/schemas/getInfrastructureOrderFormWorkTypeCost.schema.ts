@@ -2,10 +2,9 @@ import { InfrastructureOrderFormWorkTypeCostDTO } from 'features/infrastructures
 
 import { IdType } from 'shared/types/common'
 
-export type GetInfrastructureOrderFormWorkTypeCostQueryArgs = {
+export type GetInfrastructureOrderFormWorkTypeCostRequest = {
   orderForm: IdType
   workType: IdType
 }
 
-export type GetInfrastructureOrderFormWorkTypeCostSuccessResponse =
-  InfrastructureOrderFormWorkTypeCostDTO
+export type GetInfrastructureOrderFormWorkTypeCostResponse = InfrastructureOrderFormWorkTypeCostDTO

@@ -1,4 +1,4 @@
-import { UpdateUserStatusSuccessResponse } from 'features/users/api/dto'
+import { UpdateUserStatusResponse } from 'features/users/api/dto'
 import { makeUpdateUserStatusEndpoint } from 'features/users/helpers'
 
 import { ErrorData } from 'shared/api/baseApi'
@@ -20,7 +20,7 @@ const updateUserStatusMockFn = (userId: IdType) =>
 
 export const mockUpdateUserStatusSuccess = (
   userId: IdType,
-  options?: Partial<ResponseResolverOptions<UpdateUserStatusSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<UpdateUserStatusResponse>>,
 ) => getSuccessMockFn(updateUserStatusMockFn(userId), options)()
 
 export const mockUpdateUserStatusBadRequestError = (

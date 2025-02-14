@@ -1,18 +1,15 @@
 import {
   NomenclatureGroupListItemModel,
-  GetNomenclatureGroupListQueryArgs,
+  GetNomenclatureGroupListRequest,
 } from 'features/warehouse/models'
 
-export type CreateNomenclatureGroupMutationArgs = {
+export type CreateNomenclatureGroupRequest = {
   title: string
-  getListParams: GetNomenclatureGroupListQueryArgs
+  getListParams: GetNomenclatureGroupListRequest
 }
 
-export type CreateNomenclatureGroupSuccessResponse = Pick<
-  NomenclatureGroupListItemModel,
-  'id' | 'title'
->
+export type CreateNomenclatureGroupResponse = Pick<NomenclatureGroupListItemModel, 'id' | 'title'>
 
 export type CreateNomenclatureGroupBadRequestErrorResponse = Partial<
-  Omit<CreateNomenclatureGroupMutationArgs, 'getListParams'>
+  Omit<CreateNomenclatureGroupRequest, 'getListParams'>
 >

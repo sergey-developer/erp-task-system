@@ -1,11 +1,10 @@
+import { getInventorizationEquipmentsErrMsg } from 'features/warehouse/constants/inventorization'
+import { GetInventorizationEquipmentsRequest } from 'features/warehouse/models/inventorization'
+import { useGetInventorizationEquipmentsQuery } from 'features/warehouse/services/inventorizationApi.service'
+import { GetInventorizationEquipmentsTransformedResponse } from 'features/warehouse/types'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getInventorizationEquipmentsErrMsg } from 'features/warehouse/constants/inventorization'
-import { GetInventorizationEquipmentsQueryArgs } from 'features/warehouse/models/inventorization'
-import { useGetInventorizationEquipmentsQuery } from 'features/warehouse/services/inventorizationApi.service'
-import { GetInventorizationEquipmentsTransformedSuccessResponse } from 'features/warehouse/types'
 
 import {
   getErrorDetail,
@@ -17,17 +16,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetInventorizationEquipmentsResult = CustomUseQueryHookResult<
-  GetInventorizationEquipmentsQueryArgs,
-  GetInventorizationEquipmentsTransformedSuccessResponse
+  GetInventorizationEquipmentsRequest,
+  GetInventorizationEquipmentsTransformedResponse
 >
 
 type UseGetInventorizationEquipmentsOptions = CustomUseQueryOptions<
-  GetInventorizationEquipmentsQueryArgs,
-  GetInventorizationEquipmentsTransformedSuccessResponse
+  GetInventorizationEquipmentsRequest,
+  GetInventorizationEquipmentsTransformedResponse
 >
 
 export const useGetInventorizationEquipments = (
-  args: GetInventorizationEquipmentsQueryArgs,
+  args: GetInventorizationEquipmentsRequest,
   options?: UseGetInventorizationEquipmentsOptions,
 ): UseGetInventorizationEquipmentsResult => {
   const state = useGetInventorizationEquipmentsQuery(args, options)

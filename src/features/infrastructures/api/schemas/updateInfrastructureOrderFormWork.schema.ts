@@ -3,9 +3,9 @@ import { InfrastructureWorkRequestArgs } from 'features/infrastructures/api/type
 
 import { IdType } from 'shared/types/common'
 
-export type UpdateInfrastructureOrderFormWorkMutationArgs = InfrastructureWorkRequestArgs & {
+export type UpdateInfrastructureOrderFormWorkRequest = InfrastructureWorkRequestArgs & {
   amount: number
   infrastructureWorkType: IdType
 }
 
-export type UpdateInfrastructureOrderFormWorkSuccessResponse = InfrastructureWorkDTO
+export type UpdateInfrastructureOrderFormWorkResponse = InfrastructureWorkDTO

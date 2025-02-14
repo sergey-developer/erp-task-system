@@ -1,4 +1,4 @@
-import { UpdateNomenclatureGroupSuccessResponse } from 'features/warehouse/models'
+import { UpdateNomenclatureGroupResponse } from 'features/warehouse/models'
 import { updateNomenclatureGroupUrl } from 'features/warehouse/utils/nomenclatureGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const updateNomenclatureGroupMockFn = (id: IdType) =>
 
 export const mockUpdateNomenclatureGroupSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<UpdateNomenclatureGroupSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<UpdateNomenclatureGroupResponse>>,
 ) => getSuccessMockFn(updateNomenclatureGroupMockFn(id), options)()

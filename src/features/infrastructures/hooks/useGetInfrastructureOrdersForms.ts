@@ -1,6 +1,6 @@
 import {
-  GetInfrastructureOrdersFormsQueryArgs,
-  GetInfrastructureOrdersFormsSuccessResponse,
+  GetInfrastructureOrdersFormsRequest,
+  GetInfrastructureOrdersFormsResponse,
 } from 'features/infrastructures/api/dto'
 import { useGetInfrastructureOrdersFormsQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import { getInfrastructureOrdersFormsErrMsg } from 'features/infrastructures/constants'
@@ -12,17 +12,17 @@ import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/b
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetInfrastructureOrdersFormsResult = CustomUseQueryHookResult<
-  GetInfrastructureOrdersFormsQueryArgs,
-  GetInfrastructureOrdersFormsSuccessResponse
+  GetInfrastructureOrdersFormsRequest,
+  GetInfrastructureOrdersFormsResponse
 >
 
 type UseGetInfrastructureOrdersFormsOptions = CustomUseQueryOptions<
-  GetInfrastructureOrdersFormsQueryArgs,
-  GetInfrastructureOrdersFormsSuccessResponse
+  GetInfrastructureOrdersFormsRequest,
+  GetInfrastructureOrdersFormsResponse
 >
 
 export const useGetInfrastructureOrdersForms = (
-  args: GetInfrastructureOrdersFormsQueryArgs,
+  args: GetInfrastructureOrdersFormsRequest,
   options?: UseGetInfrastructureOrdersFormsOptions,
 ): UseGetInfrastructureOrdersFormsResult => {
   const state = useGetInfrastructureOrdersFormsQuery(args, options)

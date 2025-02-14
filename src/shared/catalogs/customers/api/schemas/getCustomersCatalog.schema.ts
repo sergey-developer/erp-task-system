@@ -1,4 +1,4 @@
 import { CustomersCatalogDTO } from '../dto'
 
-export type GetCustomersCatalogQueryArgs = void
-export type GetCustomersCatalogSuccessResponse = CustomersCatalogDTO
+export type GetCustomersCatalogRequest = void
+export type GetCustomersCatalogResponse = CustomersCatalogDTO

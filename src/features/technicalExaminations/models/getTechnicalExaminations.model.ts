@@ -6,9 +6,9 @@ import { TechnicalExaminationsModel } from './technicalExaminations.model'
 export type GetTechnicalExaminationsSortKey = 'created_at'
 export type GetTechnicalExaminationsSortValue = ExtendSortKey<GetTechnicalExaminationsSortKey>
 
-export type GetTechnicalExaminationsQueryArgs = SortParams<GetTechnicalExaminationsSortValue> &
+export type GetTechnicalExaminationsRequest = SortParams<GetTechnicalExaminationsSortValue> &
   Partial<{
     equipments: IdType[]
   }>
 
-export type GetTechnicalExaminationsSuccessResponse = TechnicalExaminationsModel
+export type GetTechnicalExaminationsResponse = TechnicalExaminationsModel

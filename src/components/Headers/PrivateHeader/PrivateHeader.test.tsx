@@ -604,7 +604,7 @@ describe('Хэдер авторизованного пользователя', (
       mockGetUserStatusListSuccess()
       mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
-      mockLoginSuccess({ body: authFixtures.loginSuccessResponse })
+      mockLoginSuccess({ body: authFixtures.loginResponse })
       mockLogoutSuccess()
 
       taskLocalStorageService.setTasksFilters({ customers: [1, 2] })

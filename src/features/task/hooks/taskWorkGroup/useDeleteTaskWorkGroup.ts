@@ -4,8 +4,8 @@ import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { returnTaskToFirstLineSupportErrMsg } from 'features/task/constants/task'
 import {
-  DeleteTaskWorkGroupMutationArgs,
-  DeleteTaskWorkGroupSuccessResponse,
+  DeleteTaskWorkGroupRequest,
+  DeleteTaskWorkGroupResponse,
 } from 'features/task/models'
 import { useDeleteTaskWorkGroupMutation } from 'features/task/services/taskApi.service'
 
@@ -19,8 +19,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseDeleteTaskWorkGroupResult = CustomUseMutationResult<
-  DeleteTaskWorkGroupMutationArgs,
-  DeleteTaskWorkGroupSuccessResponse
+  DeleteTaskWorkGroupRequest,
+  DeleteTaskWorkGroupResponse
 >
 
 export const useDeleteTaskWorkGroup = (): UseDeleteTaskWorkGroupResult => {

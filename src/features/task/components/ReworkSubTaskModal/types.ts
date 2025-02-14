@@ -1,10 +1,10 @@
 import { FormInstance, ModalProps } from 'antd'
 
-import { ReworkSubTaskMutationArgs, SubTaskModel } from 'features/task/models'
+import { ReworkSubTaskRequest, SubTaskModel } from 'features/task/models'
 
 import { FieldsErrors } from 'shared/api/baseApi'
 
-type FormFields = Omit<ReworkSubTaskMutationArgs, 'taskId' | 'subTaskId'>
+type FormFields = Omit<ReworkSubTaskRequest, 'taskId' | 'subTaskId'>
 
 export type ReworkSubTaskFormFields = Required<FormFields>
 

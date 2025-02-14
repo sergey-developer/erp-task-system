@@ -1,5 +1,5 @@
 import { getTaskListMapErrMsg } from 'features/task/constants/task'
-import { GetTaskListMapQueryArgs, GetTaskListMapSuccessResponse } from 'features/task/models'
+import { GetTaskListMapRequest, GetTaskListMapResponse } from 'features/task/models'
 import { useGetTaskListMapQuery } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
@@ -9,17 +9,17 @@ import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskListMapResult = CustomUseQueryHookResult<
-  GetTaskListMapQueryArgs,
-  GetTaskListMapSuccessResponse
+  GetTaskListMapRequest,
+  GetTaskListMapResponse
 >
 
 type UseGetTaskListMapOptions = CustomUseQueryOptions<
-  GetTaskListMapQueryArgs,
-  GetTaskListMapSuccessResponse
+  GetTaskListMapRequest,
+  GetTaskListMapResponse
 >
 
 export const useGetTasksMap = (
-  args: GetTaskListMapQueryArgs,
+  args: GetTaskListMapRequest,
   options?: UseGetTaskListMapOptions,
 ): UseGetTaskListMapResult => {
   const state = useGetTaskListMapQuery(args, options)

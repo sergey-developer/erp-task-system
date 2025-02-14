@@ -1,5 +1,5 @@
-import { EquipmentApiEnum } from 'features/warehouse/constants/equipment'
-import { GetEquipmentListTemplateSuccessResponse } from 'features/warehouse/models'
+import { EquipmentsEndpointsEnum } from 'features/equipments/api/constants'
+import { GetEquipmentsTemplateResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -7,10 +7,10 @@ import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentListTemplateMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, EquipmentApiEnum.GetEquipmentListTemplate)
+  getRequestMockFn(HttpMethodEnum.Get, EquipmentsEndpointsEnum.GetEquipmentsTemplate)
 
 export const mockGetEquipmentListTemplateSuccess = (
-  options?: Partial<ResponseResolverOptions<GetEquipmentListTemplateSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetEquipmentsTemplateResponse>>,
 ) => getSuccessMockFn(getEquipmentListTemplateMockFn(), options)()
 
 export const mockGetEquipmentListTemplateServerError = (

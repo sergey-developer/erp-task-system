@@ -1,4 +1,4 @@
-import { UpdateInfrastructureSuccessResponse } from 'features/infrastructures/api/dto'
+import { UpdateInfrastructureResponse } from 'features/infrastructures/api/dto'
 import { InfrastructureRequestArgs } from 'features/infrastructures/api/types'
 import { makeUpdateInfrastructureEndpoint } from 'features/infrastructures/helpers/infrastructure/apiUrls'
 
@@ -12,5 +12,5 @@ const updateInfrastructureMockFn = ({ infrastructureId }: InfrastructureRequestA
 
 export const mockUpdateInfrastructureSuccess = (
   { infrastructureId }: InfrastructureRequestArgs,
-  options?: Partial<ResponseResolverOptions<UpdateInfrastructureSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<UpdateInfrastructureResponse>>,
 ) => getSuccessMockFn(updateInfrastructureMockFn({ infrastructureId }), options)()

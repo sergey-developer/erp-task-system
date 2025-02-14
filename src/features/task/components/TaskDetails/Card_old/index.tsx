@@ -17,10 +17,10 @@ import { useTaskStatus } from 'features/task/hooks/task'
 import { useTaskSuspendRequestStatus } from 'features/task/hooks/taskSuspendRequest'
 import {
   CreateTaskSuspendRequestBadRequestErrorResponse,
-  CreateTaskSuspendRequestMutationArgs,
-  DeleteTaskSuspendRequestMutationArgs,
-  GetTaskWorkPerformedActMutationArgs,
-  GetTaskWorkPerformedActSuccessResponse,
+  CreateTaskSuspendRequestRequest,
+  DeleteTaskSuspendRequestRequest,
+  GetTaskWorkPerformedActRequest,
+  GetTaskWorkPerformedActResponse,
   TaskAssigneeModel,
   TaskModel,
   TaskReclassificationRequestModel,
@@ -127,9 +127,9 @@ export type TaskCardProps = {
   createReclassificationRequest: AnyFn
   createReclassificationRequestIsLoading: boolean
 
-  createSuspendRequest: CustomMutationTrigger<CreateTaskSuspendRequestMutationArgs, any>
+  createSuspendRequest: CustomMutationTrigger<CreateTaskSuspendRequestRequest, any>
   createSuspendRequestIsLoading: boolean
-  cancelSuspendRequest: CustomMutationTrigger<DeleteTaskSuspendRequestMutationArgs, any>
+  cancelSuspendRequest: CustomMutationTrigger<DeleteTaskSuspendRequestRequest, any>
   cancelSuspendRequestIsLoading: boolean
 
   takeTask: AnyFn
@@ -139,8 +139,8 @@ export type TaskCardProps = {
   taskIsResolving: boolean
 
   getTaskWorkPerformedAct: CustomMutationTrigger<
-    GetTaskWorkPerformedActMutationArgs,
-    GetTaskWorkPerformedActSuccessResponse
+    GetTaskWorkPerformedActRequest,
+    GetTaskWorkPerformedActResponse
   >
   taskWorkPerformedActIsLoading: boolean
 

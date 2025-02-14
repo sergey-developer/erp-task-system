@@ -2,8 +2,8 @@ import { TaskTypeEnum } from 'features/task/constants/task'
 
 import { WorkTypesCatalogDTO } from '../dto'
 
-export type GetWorkTypesCatalogQueryArgs = Partial<{
+export type GetWorkTypesCatalogRequest = Partial<{
   taskType: TaskTypeEnum
 }>
 
-export type GetWorkTypesCatalogSuccessResponse = WorkTypesCatalogDTO
+export type GetWorkTypesCatalogResponse = WorkTypesCatalogDTO

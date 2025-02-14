@@ -1,4 +1,4 @@
 import { TimeZonesCatalogDTO } from 'shared/catalogs/timeZones/api/dto/timeZonesCatalog.dto'
 
-export type GetTimeZonesCatalogQueryArgs = void
-export type GetTimeZonesCatalogSuccessResponse = TimeZonesCatalogDTO
+export type GetTimeZonesCatalogRequest = void
+export type GetTimeZonesCatalogResponse = TimeZonesCatalogDTO

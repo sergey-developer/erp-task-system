@@ -1,14 +1,11 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
+import { equipmentsFilterToRequestParams } from 'features/equipments/helpers'
+import { useGetEquipmentCategories, useLazyGetEquipmentsXlsx } from 'features/equipments/hooks'
 import { EquipmentsFilterFormFields } from 'features/warehouse/components/EquipmentFilter/types'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import {
-  useGetEquipmentCategories,
-  useLazyGetEquipmentsXlsx,
-} from 'features/warehouse/hooks/equipment'
-import { GetEquipmentsXlsxQueryArgs } from 'features/warehouse/models'
-import { equipmentsFilterToParams } from 'features/warehouse/utils/equipment'
+import { GetEquipmentsXlsxRequest } from 'features/warehouse/models'
 import omit from 'lodash/omit'
 import React, { FC, useMemo, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -31,8 +28,8 @@ const { Search } = Input
 
 const getEquipmentsXlsxParamsByLocation = (
   location: ReturnType<typeof useLocation>,
-  params: GetEquipmentsXlsxQueryArgs,
-): GetEquipmentsXlsxQueryArgs => {
+  params: GetEquipmentsXlsxRequest,
+): GetEquipmentsXlsxRequest => {
   switch (location.pathname) {
     case WarehouseRouteEnum.Equipments:
       return params
@@ -79,7 +76,7 @@ const EquipmentPageLayout: FC = () => {
     { skip: !filterOpened },
   )
 
-  const [equipmentsXlsxParams, setEquipmentsXlsxParams] = useSetState<GetEquipmentsXlsxQueryArgs>({
+  const [equipmentsXlsxParams, setEquipmentsXlsxParams] = useSetState<GetEquipmentsXlsxRequest>({
     locationTypes: [LocationTypeEnum.Warehouse, LocationTypeEnum.ServiceCenter],
   })
 
@@ -89,7 +86,7 @@ const EquipmentPageLayout: FC = () => {
   const onApplyFilter = (values: EquipmentsFilterFormFields) => {
     setFilterValues(values)
     toggleFilterOpened()
-    setEquipmentsXlsxParams(equipmentsFilterToParams(values))
+    setEquipmentsXlsxParams(equipmentsFilterToRequestParams(values))
     navigate(WarehouseRouteEnum.EquipmentNomenclatures)
   }
 

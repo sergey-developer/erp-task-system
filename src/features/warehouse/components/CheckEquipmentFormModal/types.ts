@@ -1,9 +1,9 @@
 import { FormInstance, SelectProps } from 'antd'
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import {
   CustomersModel,
-  EquipmentCategoriesModel,
-  EquipmentCategoryListItemModel,
+  EquipmentCategoriesDTO,
+  EquipmentCategoryDTO,
   NomenclatureListItemModel,
   NomenclatureModel,
   NomenclaturesModel,
@@ -50,10 +50,10 @@ export type CheckEquipmentFormModalProps = Required<
       form: FormInstance<CheckEquipmentFormFields>,
     ) => Promise<void> | void
 
-    categories: EquipmentCategoriesModel
+    categories: EquipmentCategoriesDTO
     categoriesIsLoading: boolean
-    category?: EquipmentCategoryListItemModel
-    onChangeCategory: (category: EquipmentCategoryListItemModel) => void
+    category?: EquipmentCategoryDTO
+    onChangeCategory: (category: EquipmentCategoryDTO) => void
 
     locations: LocationsCatalogDTO
     locationsIsLoading: boolean

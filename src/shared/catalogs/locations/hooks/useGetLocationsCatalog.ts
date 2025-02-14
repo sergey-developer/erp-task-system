@@ -14,20 +14,20 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { getLocationsCatalogErrMsg } from '../api/constants'
 import { useGetLocationsCatalogQuery } from '../api/endpoints/locationsCatalog.endpoints'
-import { GetLocationsCatalogQueryArgs, GetLocationsCatalogSuccessResponse } from '../api/schemas'
+import { GetLocationsCatalogRequest, GetLocationsCatalogResponse } from '../api/schemas'
 
 type UseGetLocationsCatalogResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetLocationsCatalogQueryArgs>,
-  GetLocationsCatalogSuccessResponse
+  MaybeUndefined<GetLocationsCatalogRequest>,
+  GetLocationsCatalogResponse
 >
 
 type UseGetLocationsCatalogOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetLocationsCatalogQueryArgs>,
-  GetLocationsCatalogSuccessResponse
+  MaybeUndefined<GetLocationsCatalogRequest>,
+  GetLocationsCatalogResponse
 >
 
 export const useGetLocationsCatalog = (
-  args?: GetLocationsCatalogQueryArgs,
+  args?: GetLocationsCatalogRequest,
   options?: UseGetLocationsCatalogOptions,
 ): UseGetLocationsCatalogResult => {
   const state = useGetLocationsCatalogQuery(args, options)

@@ -1,8 +1,8 @@
 import { FormInstance, ModalProps } from 'antd'
 
-import { CancelSubTaskMutationArgs, SubTaskModel } from 'features/task/models'
+import { CancelSubTaskRequest, SubTaskModel } from 'features/task/models'
 
-export type CancelSubTaskFormFields = Omit<CancelSubTaskMutationArgs, 'taskId' | 'subTaskId'>
+export type CancelSubTaskFormFields = Omit<CancelSubTaskRequest, 'taskId' | 'subTaskId'>
 
 export type CancelSubTaskModalProps = Pick<SubTaskModel, 'recordId'> & {
   isLoading: boolean

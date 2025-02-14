@@ -1,24 +1,23 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Button, Form } from 'antd'
+import {
+  EquipmentConditionEnum,
+  equipmentConditionOptions,
+} from 'features/equipments/api/constants'
+import {
+  checkEquipmentCategoryIsConsumable,
+  makeEquipmentsSelectOptions,
+} from 'features/equipments/helpers'
+import { EquipmentDetailDTO } from 'features/warehouse/models'
+import { RelocationTaskFormFields } from 'features/warehouse/types'
+import { checkRelocationTaskTypeIsWriteOff } from 'features/warehouse/utils/relocationTask'
 import isUndefined from 'lodash/isUndefined'
 import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import { FC, ReactNode, useCallback, useMemo } from 'react'
 
 import { env } from 'configs/env'
-
-import {
-  EquipmentConditionEnum,
-  equipmentConditionOptions,
-} from 'features/warehouse/constants/equipment'
-import { EquipmentModel } from 'features/warehouse/models'
-import { RelocationTaskFormFields } from 'features/warehouse/types'
-import {
-  checkEquipmentCategoryIsConsumable,
-  makeEquipmentsSelectOptions,
-} from 'features/warehouse/utils/equipment'
-import { checkRelocationTaskTypeIsWriteOff } from 'features/warehouse/utils/relocationTask'
 
 import { SelectOptionButton } from 'components/Buttons/SelectOptionButton'
 import { MinusCircleIcon } from 'components/Icons'
@@ -190,7 +189,7 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
             (config.rowKey as unknown as string[]).concat('amount'),
           )
 
-          const category: MaybeUndefined<EquipmentModel['category']> = form.getFieldValue(
+          const category: MaybeUndefined<EquipmentDetailDTO['category']> = form.getFieldValue(
             (config.rowKey as unknown as string[]).concat('category'),
           )
 

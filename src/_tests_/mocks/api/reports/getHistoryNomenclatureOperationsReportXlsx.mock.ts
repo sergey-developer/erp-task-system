@@ -1,4 +1,4 @@
-import { GetAmountEquipmentSpentReportXlsxSuccessResponse } from 'features/reports/api/dto'
+import { GetAmountEquipmentSpentReportXlsxResponse } from 'features/reports/api/dto'
 import { makeHistoryNomenclatureOperationsReportEndpoint } from 'features/reports/helpers'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const getHistoryNomenclatureOperationsReportXlsxMockFn = (id: IdType) =>
 
 export const mockGetHistoryNomenclatureOperationsReportXlsxSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetAmountEquipmentSpentReportXlsxSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetAmountEquipmentSpentReportXlsxResponse>>,
 ) => getSuccessMockFn(getHistoryNomenclatureOperationsReportXlsxMockFn(id), options)()

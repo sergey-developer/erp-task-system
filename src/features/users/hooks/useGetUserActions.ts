@@ -1,6 +1,6 @@
 import { getUserActionsErrMsg } from 'features/users/api/constants'
 import { useGetUserActionsQuery } from 'features/users/api/endpoints/users.endpoints'
-import { GetUserActionsQueryArgs, GetUserActionsSuccessResponse } from 'features/users/api/schemas'
+import { GetUserActionsRequest, GetUserActionsResponse } from 'features/users/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -14,17 +14,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetUserActionsResult = CustomUseQueryHookResult<
-  GetUserActionsQueryArgs,
-  GetUserActionsSuccessResponse
+  GetUserActionsRequest,
+  GetUserActionsResponse
 >
 
 type UseGetUserActionsOptions = CustomUseQueryOptions<
-  GetUserActionsQueryArgs,
-  GetUserActionsSuccessResponse
+  GetUserActionsRequest,
+  GetUserActionsResponse
 >
 
 export const useGetUserActions = (
-  args: GetUserActionsQueryArgs,
+  args: GetUserActionsRequest,
   options?: UseGetUserActionsOptions,
 ): UseGetUserActionsResult => {
   const state = useGetUserActionsQuery(args, options)

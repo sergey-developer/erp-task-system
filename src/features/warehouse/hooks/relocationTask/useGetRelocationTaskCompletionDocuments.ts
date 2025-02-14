@@ -1,13 +1,12 @@
+import { getRelocationTaskCompletionDocumentsErrMsg } from 'features/warehouse/constants/relocationTask'
+import {
+  GetRelocationTaskCompletionDocumentsRequest,
+  GetRelocationTaskCompletionDocumentsResponse,
+} from 'features/warehouse/models'
+import { useGetRelocationTaskCompletionDocumentsQuery } from 'features/warehouse/services/relocationTaskApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getRelocationTaskCompletionDocumentsErrMsg } from 'features/warehouse/constants/relocationTask'
-import {
-  GetRelocationTaskCompletionDocumentsQueryArgs,
-  GetRelocationTaskCompletionDocumentsSuccessResponse,
-} from 'features/warehouse/models'
-import { useGetRelocationTaskCompletionDocumentsQuery } from 'features/warehouse/services/relocationTaskApi.service'
 
 import {
   getErrorDetail,
@@ -18,17 +17,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetRelocationTaskCompletionDocumentsResult = CustomUseQueryHookResult<
-  GetRelocationTaskCompletionDocumentsQueryArgs,
-  GetRelocationTaskCompletionDocumentsSuccessResponse
+  GetRelocationTaskCompletionDocumentsRequest,
+  GetRelocationTaskCompletionDocumentsResponse
 >
 
 type UseGetRelocationTaskCompletionDocumentsOptions = CustomUseQueryOptions<
-  GetRelocationTaskCompletionDocumentsQueryArgs,
-  GetRelocationTaskCompletionDocumentsSuccessResponse
+  GetRelocationTaskCompletionDocumentsRequest,
+  GetRelocationTaskCompletionDocumentsResponse
 >
 
 export const useGetRelocationTaskCompletionDocuments = (
-  args: GetRelocationTaskCompletionDocumentsQueryArgs,
+  args: GetRelocationTaskCompletionDocumentsRequest,
   options?: UseGetRelocationTaskCompletionDocumentsOptions,
 ): UseGetRelocationTaskCompletionDocumentsResult => {
   const state = useGetRelocationTaskCompletionDocumentsQuery(args, options)

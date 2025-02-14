@@ -2,8 +2,8 @@ import { IdType } from 'shared/types/common'
 
 import { InfrastructureStatusHistoryDTO } from '../dto/infrastructureStatusHistory.dto'
 
-export type GetInfrastructureStatusHistoryQueryArgs = {
+export type GetInfrastructureStatusHistoryRequest = {
   infrastructureProject: IdType
 }
 
-export type GetInfrastructureStatusHistorySuccessResponse = InfrastructureStatusHistoryDTO
+export type GetInfrastructureStatusHistoryResponse = InfrastructureStatusHistoryDTO

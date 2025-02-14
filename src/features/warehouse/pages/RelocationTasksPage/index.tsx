@@ -1,7 +1,7 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button } from 'antd'
 import { useGetTask, useGetTasks } from 'features/task/hooks/task'
-import { GetTasksQueryArgs } from 'features/task/models'
+import { GetTasksRequest } from 'features/task/models'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useUserPermissions } from 'features/users/hooks'
 import RelocationTaskTable from 'features/warehouse/components/RelocationTaskTable'
@@ -18,7 +18,7 @@ import {
   useGetRelocationTasks,
   useNavigateToCreateRelocationTaskSimplifiedPage,
 } from 'features/warehouse/hooks/relocationTask'
-import { GetRelocationTasksQueryArgs } from 'features/warehouse/models'
+import { GetRelocationTasksRequest } from 'features/warehouse/models'
 import {
   makeRelocationTasksPageLink,
   relocationTaskListFilterToParams,
@@ -68,7 +68,7 @@ const initialFilterValues: RelocationTasksFilterFormFields = {
 }
 
 const initialRelocationTasksParams: Pick<
-  GetRelocationTasksQueryArgs,
+  GetRelocationTasksRequest,
   'statuses' | 'ordering' | 'offset' | 'limit'
 > = {
   ...getInitialPaginationParams(),
@@ -101,7 +101,7 @@ const RelocationTasksPage: FC = () => {
   const [selectedIncidentId, setSelectedIncidentId] = useState<IdType>()
 
   const [getTasksParams, setGetTasksParams] = useSetState<
-    Pick<GetTasksQueryArgs, 'limit' | 'search' | 'sort'>
+    Pick<GetTasksRequest, 'limit' | 'search' | 'sort'>
   >({ limit: 10, sort: 'created_at' })
 
   const debouncedSetTasksParams = useDebounceFn(setGetTasksParams, [], 500)
@@ -139,7 +139,7 @@ const RelocationTasksPage: FC = () => {
   const onCloseRelocationTask = useDebounceFn(closeRelocationTask)
 
   const [getRelocationTasksParams, setGetRelocationTasksParams] =
-    useSetState<GetRelocationTasksQueryArgs>({
+    useSetState<GetRelocationTasksRequest>({
       ...initialRelocationTasksParams,
       ordering:
         (searchParams.get('ordering') as typeof initialRelocationTasksParams.ordering) ??

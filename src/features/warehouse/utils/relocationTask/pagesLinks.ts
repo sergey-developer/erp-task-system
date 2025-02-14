@@ -1,13 +1,13 @@
 import { generatePath } from 'react-router-dom'
 
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import { GetRelocationTasksQueryArgs } from 'features/warehouse/models'
+import { GetRelocationTasksRequest } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { getPathWithQs } from 'shared/utils/url'
 
 type MakeRelocationTasksPageLinkParams = Partial<
-  GetRelocationTasksQueryArgs & {
+  GetRelocationTasksRequest & {
     viewRelocationTask: IdType
   }
 >

@@ -1,7 +1,7 @@
 import { getRelocationEquipmentBalanceListMessages } from 'features/warehouse/constants/relocationTask'
 import {
-  GetRelocationEquipmentBalanceListQueryArgs,
-  GetRelocationEquipmentBalanceListSuccessResponse,
+  GetRelocationEquipmentBalanceListRequest,
+  GetRelocationEquipmentBalanceListResponse,
 } from 'features/warehouse/models'
 import { useGetRelocationEquipmentBalanceListQuery } from 'features/warehouse/services/relocationTaskApi.service'
 import { useEffect } from 'react'
@@ -12,17 +12,17 @@ import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/b
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetRelocationEquipmentBalanceListResult = CustomUseQueryHookResult<
-  GetRelocationEquipmentBalanceListQueryArgs,
-  GetRelocationEquipmentBalanceListSuccessResponse
+  GetRelocationEquipmentBalanceListRequest,
+  GetRelocationEquipmentBalanceListResponse
 >
 
 type UseGetRelocationEquipmentBalanceListOptions = CustomUseQueryOptions<
-  GetRelocationEquipmentBalanceListQueryArgs,
-  GetRelocationEquipmentBalanceListSuccessResponse
+  GetRelocationEquipmentBalanceListRequest,
+  GetRelocationEquipmentBalanceListResponse
 >
 
 export const useGetRelocationEquipmentBalances = (
-  args: GetRelocationEquipmentBalanceListQueryArgs,
+  args: GetRelocationEquipmentBalanceListRequest,
   options?: UseGetRelocationEquipmentBalanceListOptions,
 ): UseGetRelocationEquipmentBalanceListResult => {
   const state = useGetRelocationEquipmentBalanceListQuery(args, options)

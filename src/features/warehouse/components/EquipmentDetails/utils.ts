@@ -1,11 +1,9 @@
-import { EquipmentCategoryEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentCategoryModel } from 'features/warehouse/models'
+import { EquipmentCategoryEnum } from 'features/equipments/api/constants'
+import { EquipmentCategoryDTO } from 'features/warehouse/models'
 
 import { FieldsMaybeHidden } from './types'
 
-export const getHiddenFieldsByCategory = (
-  category: EquipmentCategoryModel,
-): FieldsMaybeHidden[] => {
+export const getHiddenFieldsByCategory = (category: EquipmentCategoryDTO): FieldsMaybeHidden[] => {
   if (!category.code) return []
 
   switch (category.code) {

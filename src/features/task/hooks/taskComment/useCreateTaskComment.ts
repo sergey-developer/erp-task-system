@@ -4,8 +4,8 @@ import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { createTaskCommentErrMsg } from 'features/task/constants/taskComment'
 import {
-  CreateTaskCommentMutationArgs,
-  CreateTaskCommentSuccessResponse,
+  CreateTaskCommentRequest,
+  CreateTaskCommentResponse,
 } from 'features/task/models'
 import { useCreateTaskCommentMutation } from 'features/task/services/taskApi.service'
 
@@ -19,8 +19,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateTaskCommentResult = CustomUseMutationResult<
-  CreateTaskCommentMutationArgs,
-  CreateTaskCommentSuccessResponse
+  CreateTaskCommentRequest,
+  CreateTaskCommentResponse
 >
 
 export const useCreateTaskComment = (): UseCreateTaskCommentResult => {

@@ -1,5 +1,5 @@
 import { makeDeleteAttachmentEndpoint } from 'features/attachments/api/helpers'
-import { DeleteAttachmentSuccessResponse } from 'features/attachments/api/schemas'
+import { DeleteAttachmentResponse } from 'features/attachments/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -20,7 +20,7 @@ const deleteAttachmentMockFn = (id: IdType) =>
 
 export const mockDeleteAttachmentSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<DeleteAttachmentSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<DeleteAttachmentResponse>>,
 ) => getSuccessMockFn(deleteAttachmentMockFn(id), options)()
 
 export const mockDeleteAttachmentBadRequestError = (

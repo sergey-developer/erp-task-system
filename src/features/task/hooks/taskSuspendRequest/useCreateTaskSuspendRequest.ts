@@ -4,8 +4,8 @@ import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { createSuspendRequestErrMsg } from 'features/task/constants/taskSuspendRequest'
 import {
-  CreateTaskSuspendRequestMutationArgs,
-  CreateTaskSuspendRequestSuccessResponse,
+  CreateTaskSuspendRequestRequest,
+  CreateTaskSuspendRequestResponse,
 } from 'features/task/models'
 import { useCreateSuspendRequestMutation } from 'features/task/services/taskApi.service'
 
@@ -18,8 +18,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateTaskSuspendRequestResult = CustomUseMutationResult<
-  CreateTaskSuspendRequestMutationArgs,
-  CreateTaskSuspendRequestSuccessResponse
+  CreateTaskSuspendRequestRequest,
+  CreateTaskSuspendRequestResponse
 >
 
 export const useCreateTaskSuspendRequest = (): UseCreateTaskSuspendRequestResult => {

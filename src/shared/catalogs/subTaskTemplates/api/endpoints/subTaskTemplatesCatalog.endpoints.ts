@@ -1,16 +1,16 @@
 import { baseApi } from 'shared/api/baseApi'
 import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
-  GetSubTaskTemplatesCatalogQueryArgs,
-  GetSubTaskTemplatesCatalogSuccessResponse,
+  GetSubTaskTemplatesCatalogRequest,
+  GetSubTaskTemplatesCatalogResponse,
 } from 'shared/catalogs/api/endpoints/subTaskTemplates/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const subTaskTemplatesCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getSubTaskTemplatesCatalog: build.query<
-      GetSubTaskTemplatesCatalogSuccessResponse,
-      GetSubTaskTemplatesCatalogQueryArgs
+      GetSubTaskTemplatesCatalogResponse,
+      GetSubTaskTemplatesCatalogRequest
     >({
       query: (params) => ({
         url: CatalogEndpointsEnum.GetSubTaskTemplates,

@@ -1,8 +1,8 @@
 import { ReclassificationRequestStatusEnum } from '../constants'
 import { ReclassificationRequestArgs } from '../types'
 
-export type CancelReclassificationRequestMutationArgs = ReclassificationRequestArgs
+export type CancelReclassificationRequestRequest = ReclassificationRequestArgs
 
-export type CancelReclassificationRequestSuccessResponse = {
+export type CancelReclassificationRequestResponse = {
   status: ReclassificationRequestStatusEnum
 }

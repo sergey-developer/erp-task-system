@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { takeTaskErrMsg } from 'features/task/constants/task'
-import { TakeTaskMutationArgs, TakeTaskSuccessResponse } from 'features/task/models'
+import { TakeTaskRequest, TakeTaskResponse } from 'features/task/models'
 import { useTakeTaskMutation } from 'features/task/services/taskApi.service'
 
 import {
@@ -15,7 +15,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseTakeTaskResult = CustomUseMutationResult<TakeTaskMutationArgs, TakeTaskSuccessResponse>
+type UseTakeTaskResult = CustomUseMutationResult<TakeTaskRequest, TakeTaskResponse>
 
 export const useTakeTask = (): UseTakeTaskResult => {
   const [mutation, state] = useTakeTaskMutation()

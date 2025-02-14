@@ -1,6 +1,6 @@
 import { ColumnsType } from 'antd/es/table'
 
-import { equipmentConditionDict } from 'features/warehouse/constants/equipment'
+import { equipmentConditionDict } from 'features/equipments/api/constants'
 
 import { getYesNoWord, valueOr } from 'shared/utils/common'
 

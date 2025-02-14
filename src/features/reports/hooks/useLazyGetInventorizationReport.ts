@@ -1,7 +1,7 @@
 import { getInventorizationReportErrMsg } from 'features/reports/api/constants'
 import { useLazyGetInventorizationReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
-import { GetInventorizationReportQueryArgs } from 'features/reports/api/schemas'
-import { GetInventorizationReportTransformedSuccessResponse } from 'features/reports/api/types'
+import { GetInventorizationReportRequest } from 'features/reports/api/schemas'
+import { GetInventorizationReportTransformedResponse } from 'features/reports/api/types'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
@@ -15,8 +15,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetInventorizationReportResult = CustomUseLazyQueryHookResult<
-  GetInventorizationReportQueryArgs,
-  GetInventorizationReportTransformedSuccessResponse
+  GetInventorizationReportRequest,
+  GetInventorizationReportTransformedResponse
 >
 
 export const useLazyGetInventorizationReport = (): UseGetInventorizationReportResult => {

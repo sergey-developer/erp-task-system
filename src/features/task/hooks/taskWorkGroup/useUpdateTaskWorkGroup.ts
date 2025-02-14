@@ -4,8 +4,8 @@ import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { updateTaskWorkGroupErrMsg } from 'features/task/constants/taskWorkGroup'
 import {
-  UpdateTaskWorkGroupMutationArgs,
-  UpdateTaskWorkGroupSuccessResponse,
+  UpdateTaskWorkGroupRequest,
+  UpdateTaskWorkGroupResponse,
 } from 'features/task/models'
 import { useUpdateTaskWorkGroupMutation } from 'features/task/services/taskApi.service'
 
@@ -19,8 +19,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseUpdateTaskWorkGroupResult = CustomUseMutationResult<
-  UpdateTaskWorkGroupMutationArgs,
-  UpdateTaskWorkGroupSuccessResponse
+  UpdateTaskWorkGroupRequest,
+  UpdateTaskWorkGroupResponse
 >
 
 export const useUpdateTaskWorkGroup = (): UseUpdateTaskWorkGroupResult => {

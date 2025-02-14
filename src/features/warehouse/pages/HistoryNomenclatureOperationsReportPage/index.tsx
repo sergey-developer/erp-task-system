@@ -1,7 +1,8 @@
 import { useBoolean, useLocalStorageState, useSetState } from 'ahooks'
 import { Button, Col, Row, Typography } from 'antd'
+import { useGetEquipmentNomenclatures } from 'features/equipments/hooks'
 import { ReportsStorageKeysEnum } from 'features/reports/api/constants'
-import { GetHistoryNomenclatureOperationsReportQueryArgs } from 'features/reports/api/dto'
+import { GetHistoryNomenclatureOperationsReportRequest } from 'features/reports/api/dto'
 import { HistoryNomenclatureOperationsReportFilterFormFields } from 'features/reports/components/HistoryNomenclatureOperationsReportFilter/types'
 import HistoryNomenclatureOperationsReportForm from 'features/reports/components/HistoryNomenclatureOperationsReportForm'
 import { HistoryNomenclatureOperationsReportFormProps } from 'features/reports/components/HistoryNomenclatureOperationsReportForm/types'
@@ -11,7 +12,6 @@ import {
   useGetHistoryNomenclatureOperationsReport,
   useLazyGetHistoryNomenclatureOperationsReportXlsx,
 } from 'features/reports/hooks'
-import { useGetEquipmentNomenclatures } from 'features/warehouse/hooks/equipment'
 import omit from 'lodash/omit'
 import React, { FC, useCallback, useState } from 'react'
 
@@ -96,7 +96,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
     useState<HistoryNomenclatureOperationsReportFilterFormFields>(filtersFromStorage || {})
 
   const [reportParams, setReportParams] =
-    useSetState<GetHistoryNomenclatureOperationsReportQueryArgs>({
+    useSetState<GetHistoryNomenclatureOperationsReportRequest>({
       ...initialPaginationParams,
       ...filterValues,
       nomenclatureId: 0,

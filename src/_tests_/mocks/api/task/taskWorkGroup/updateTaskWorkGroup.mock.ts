@@ -1,4 +1,4 @@
-import { UpdateTaskWorkGroupSuccessResponse } from 'features/task/models'
+import { UpdateTaskWorkGroupResponse } from 'features/task/models'
 import { updateTaskWorkGroupUrl } from 'features/task/utils/taskWorkGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const updateTaskWorkGroupMockFn = (taskId: IdType) =>
 
 export const mockUpdateTaskWorkGroupSuccess = (
   taskId: IdType,
-  options?: Partial<ResponseResolverOptions<UpdateTaskWorkGroupSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<UpdateTaskWorkGroupResponse>>,
 ) => getSuccessMockFn(updateTaskWorkGroupMockFn(taskId), options)()

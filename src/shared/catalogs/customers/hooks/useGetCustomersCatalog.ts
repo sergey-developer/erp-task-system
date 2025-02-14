@@ -7,20 +7,20 @@ import { getCustomersCatalogErrMsg } from 'shared/catalogs/customers/api/constan
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { useGetCustomersCatalogQuery } from '../api/endpoints/customersCatalog.endpoints'
-import { GetCustomersCatalogQueryArgs, GetCustomersCatalogSuccessResponse } from '../api/schemas'
+import { GetCustomersCatalogRequest, GetCustomersCatalogResponse } from '../api/schemas'
 
 type UseGetCustomersCatalogResult = CustomUseQueryHookResult<
-  GetCustomersCatalogQueryArgs,
-  GetCustomersCatalogSuccessResponse
+  GetCustomersCatalogRequest,
+  GetCustomersCatalogResponse
 >
 
 type UseGetCustomersCatalogOptions = CustomUseQueryOptions<
-  GetCustomersCatalogQueryArgs,
-  GetCustomersCatalogSuccessResponse
+  GetCustomersCatalogRequest,
+  GetCustomersCatalogResponse
 >
 
 export const useGetCustomersCatalog = (
-  args?: GetCustomersCatalogQueryArgs,
+  args?: GetCustomersCatalogRequest,
   options?: UseGetCustomersCatalogOptions,
 ): UseGetCustomersCatalogResult => {
   const state = useGetCustomersCatalogQuery(args, options)

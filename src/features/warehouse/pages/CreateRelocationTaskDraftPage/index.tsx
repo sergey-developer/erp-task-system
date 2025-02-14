@@ -3,6 +3,8 @@ import { Button, Col, Form, Modal, Row, Typography, UploadProps } from 'antd'
 import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
 import { UserGroupCategoryEnum, UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/users/hooks'
 import RelocationEquipmentDraftEditableTable from 'features/warehouse/components/RelocationEquipmentDraftEditableTable'
@@ -18,7 +20,6 @@ import {
   UserGroupOptionGroup,
 } from 'features/warehouse/components/RelocationTaskForm/types'
 import { makeUserGroupOptions } from 'features/warehouse/components/RelocationTaskForm/utils'
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
 import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask'
 import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
 import {
@@ -36,7 +37,6 @@ import {
   CreateRelocationTaskDraftPageLocationState,
   RelocationTaskDraftFormFields,
 } from 'features/warehouse/types'
-import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
 import {
   getExecuteInventorizationPageLink,
   GetExecuteInventorizationPageLinkParams,

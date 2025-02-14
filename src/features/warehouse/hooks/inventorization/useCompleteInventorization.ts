@@ -1,13 +1,12 @@
+import { completeInventorizationErrMsg } from 'features/warehouse/constants/inventorization'
+import {
+  CompleteInventorizationRequest,
+  CompleteInventorizationResponse,
+} from 'features/warehouse/models'
+import { useCompleteInventorizationMutation } from 'features/warehouse/services/inventorizationApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { completeInventorizationErrMsg } from 'features/warehouse/constants/inventorization'
-import {
-  CompleteInventorizationMutationArgs,
-  CompleteInventorizationSuccessResponse,
-} from 'features/warehouse/models'
-import { useCompleteInventorizationMutation } from 'features/warehouse/services/inventorizationApi.service'
 
 import {
   getErrorDetail,
@@ -19,8 +18,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCompleteInventorizationResult = CustomUseMutationResult<
-  CompleteInventorizationMutationArgs,
-  CompleteInventorizationSuccessResponse
+  CompleteInventorizationRequest,
+  CompleteInventorizationResponse
 >
 
 export const useCompleteInventorization = (): UseCompleteInventorizationResult => {

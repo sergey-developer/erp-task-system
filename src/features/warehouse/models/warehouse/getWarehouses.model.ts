@@ -8,7 +8,7 @@ export type GetWarehouseListSortKey = 'title' | 'legal_entity' | 'address' | 'pa
 
 export type GetWarehouseListSortValue = ExtendSortKey<GetWarehouseListSortKey>
 
-export type GetWarehouseListQueryArgs = MaybeUndefined<
+export type GetWarehouseListRequest = MaybeUndefined<
   SortParams<GetWarehouseListSortValue> &
     Partial<{
       title: string
@@ -18,4 +18,4 @@ export type GetWarehouseListQueryArgs = MaybeUndefined<
     }>
 >
 
-export type GetWarehouseListSuccessResponse = WarehousesModel
+export type GetWarehouseListResponse = WarehousesModel

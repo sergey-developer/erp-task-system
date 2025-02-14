@@ -1,9 +1,8 @@
 import { UploadFile } from 'antd/es/upload'
-
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { EquipmentByFileTableRow } from 'features/warehouse/components/EquipmentsByFileTable/types'
 import { BaseRelocationTaskFormFields } from 'features/warehouse/components/RelocationTaskForm/types'
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentModel } from 'features/warehouse/models'
+import { EquipmentDetailDTO } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
@@ -20,7 +19,7 @@ export type RelocationTaskEquipment = {
   price?: number
   currency?: IdType
   relocationEquipmentId?: IdType
-  category?: EquipmentModel['category']
+  category?: EquipmentDetailDTO['category']
   attachments?: UploadFile<FileResponse>[]
 }
 

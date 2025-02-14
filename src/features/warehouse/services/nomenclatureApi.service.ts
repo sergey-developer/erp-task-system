@@ -4,16 +4,16 @@ import {
   NomenclatureApiTriggerEnum,
 } from 'features/warehouse/constants/nomenclature'
 import {
-  CreateNomenclatureMutationArgs,
-  CreateNomenclatureSuccessResponse,
-  GetNomenclatureListQueryArgs,
-  GetNomenclatureListSuccessResponse,
-  GetNomenclatureQueryArgs,
-  GetNomenclatureSuccessResponse,
-  UpdateNomenclatureMutationArgs,
-  UpdateNomenclatureSuccessResponse,
+  CreateNomenclatureRequest,
+  CreateNomenclatureResponse,
+  GetNomenclatureListRequest,
+  GetNomenclatureListResponse,
+  GetNomenclatureRequest,
+  GetNomenclatureResponse,
+  UpdateNomenclatureRequest,
+  UpdateNomenclatureResponse,
 } from 'features/warehouse/models'
-import { GetNomenclatureListTransformedSuccessResponse } from 'features/warehouse/types'
+import { GetNomenclatureListTransformedResponse } from 'features/warehouse/types'
 import { getNomenclatureUrl, updateNomenclatureUrl } from 'features/warehouse/utils/nomenclature'
 
 import { getPaginatedList } from 'lib/antd/utils'
@@ -28,8 +28,8 @@ const nomenclatureApiService = baseApi
   .injectEndpoints({
     endpoints: (build) => ({
       [NomenclatureApiTriggerEnum.GetNomenclatureList]: build.query<
-        GetNomenclatureListTransformedSuccessResponse,
-        GetNomenclatureListQueryArgs
+        GetNomenclatureListTransformedResponse,
+        GetNomenclatureListRequest
       >({
         providesTags: (result, error) => (error ? [] : [NomenclatureApiTagEnum.Nomenclatures]),
         query: (params) => ({
@@ -37,12 +37,12 @@ const nomenclatureApiService = baseApi
           method: HttpMethodEnum.Get,
           params,
         }),
-        transformResponse: (response: GetNomenclatureListSuccessResponse, meta, arg) =>
+        transformResponse: (response: GetNomenclatureListResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
       [NomenclatureApiTriggerEnum.GetNomenclature]: build.query<
-        GetNomenclatureSuccessResponse,
-        GetNomenclatureQueryArgs
+        GetNomenclatureResponse,
+        GetNomenclatureRequest
       >({
         query: (id) => ({
           url: getNomenclatureUrl(id),
@@ -50,8 +50,8 @@ const nomenclatureApiService = baseApi
         }),
       }),
       [NomenclatureApiTriggerEnum.CreateNomenclature]: build.mutation<
-        CreateNomenclatureSuccessResponse,
-        CreateNomenclatureMutationArgs
+        CreateNomenclatureResponse,
+        CreateNomenclatureRequest
       >({
         invalidatesTags: (result, error) => (error ? [] : [NomenclatureApiTagEnum.Nomenclatures]),
         query: (payload) => ({
@@ -61,8 +61,8 @@ const nomenclatureApiService = baseApi
         }),
       }),
       [NomenclatureApiTriggerEnum.UpdateNomenclature]: build.mutation<
-        UpdateNomenclatureSuccessResponse,
-        UpdateNomenclatureMutationArgs
+        UpdateNomenclatureResponse,
+        UpdateNomenclatureRequest
       >({
         invalidatesTags: (result, error) => (error ? [] : [NomenclatureApiTagEnum.Nomenclatures]),
         query: ({ getListParams, id, ...payload }) => ({

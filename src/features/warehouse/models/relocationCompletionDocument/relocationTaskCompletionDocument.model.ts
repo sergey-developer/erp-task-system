@@ -1,5 +1,5 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentModel } from 'features/warehouse/models'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { EquipmentDetailDTO } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -17,6 +17,6 @@ export type RelocationTaskCompletionDocumentModel = {
   relocationEquipments: {
     id: IdType
     condition: EquipmentConditionEnum
-    equipment: Pick<EquipmentModel, 'id' | 'title' | 'serialNumber' | 'inventoryNumber'>
+    equipment: Pick<EquipmentDetailDTO, 'id' | 'title' | 'serialNumber' | 'inventoryNumber'>
   }[]
 }

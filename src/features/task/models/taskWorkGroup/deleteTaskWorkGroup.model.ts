@@ -1,7 +1,7 @@
 import { TaskRequestArgs } from 'features/task/types'
 
-export type DeleteTaskWorkGroupMutationArgs = TaskRequestArgs & {
+export type DeleteTaskWorkGroupRequest = TaskRequestArgs & {
   description: string
 }
 
-export type DeleteTaskWorkGroupSuccessResponse = void
+export type DeleteTaskWorkGroupResponse = void

@@ -1,18 +1,17 @@
+import { EquipmentCategoryEnum } from 'features/equipments/api/constants'
+import { EquipmentCategoriesDTO, EquipmentCategoryDTO } from 'features/warehouse/models'
 import times from 'lodash/times'
-
-import { EquipmentCategoryEnum } from 'features/warehouse/constants/equipment'
-import { EquipmentCategoryListItemModel, EquipmentCategoriesModel } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
 export const equipmentCategoryListItem = (
-  props?: Partial<Pick<EquipmentCategoryListItemModel, 'code'>>,
-): EquipmentCategoryListItemModel => ({
+  props?: Partial<Pick<EquipmentCategoryDTO, 'code'>>,
+): EquipmentCategoryDTO => ({
   code: props?.code || EquipmentCategoryEnum.Equipment,
 
   id: fakeId(),
   title: fakeWord(),
 })
 
-export const equipmentCategoryList = (length: number = 1): EquipmentCategoriesModel =>
+export const equipmentCategoryList = (length: number = 1): EquipmentCategoriesDTO =>
   times(length, () => equipmentCategoryListItem())

@@ -1,13 +1,9 @@
+import { classifyTaskWorkTypeErrMsg } from 'features/task/constants/task'
+import { ClassifyTaskWorkTypeRequest, ClassifyTaskWorkTypeResponse } from 'features/task/models'
+import { useClassifyTaskWorkTypeMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
-
-import { classifyTaskWorkTypeErrMsg } from 'features/task/constants/task'
-import {
-  ClassifyTaskWorkTypeMutationArgs,
-  ClassifyTaskWorkTypeSuccessResponse,
-} from 'features/task/models'
-import { useClassifyTaskWorkTypeMutation } from 'features/task/services/taskApi.service'
 
 import {
   getErrorDetail,
@@ -19,8 +15,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseClassifyTaskWorkTypeResult = CustomUseMutationResult<
-  ClassifyTaskWorkTypeMutationArgs,
-  ClassifyTaskWorkTypeSuccessResponse
+  ClassifyTaskWorkTypeRequest,
+  ClassifyTaskWorkTypeResponse
 >
 
 export const useClassifyTaskWorkType = (): UseClassifyTaskWorkTypeResult => {

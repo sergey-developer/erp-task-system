@@ -4,8 +4,8 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getTaskCompletionDocumentsErrMsg } from 'features/task/constants/task'
 import {
-  GetTaskCompletionDocumentsQueryArgs,
-  GetTaskCompletionDocumentsSuccessResponse,
+  GetTaskCompletionDocumentsRequest,
+  GetTaskCompletionDocumentsResponse,
 } from 'features/task/models'
 import { useGetTaskCompletionDocumentsQuery } from 'features/task/services/taskApi.service'
 
@@ -18,17 +18,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetTaskCompletionDocumentsResult = CustomUseQueryHookResult<
-  GetTaskCompletionDocumentsQueryArgs,
-  GetTaskCompletionDocumentsSuccessResponse
+  GetTaskCompletionDocumentsRequest,
+  GetTaskCompletionDocumentsResponse
 >
 
 type UseGetTaskCompletionDocumentsOptions = CustomUseQueryOptions<
-  GetTaskCompletionDocumentsQueryArgs,
-  GetTaskCompletionDocumentsSuccessResponse
+  GetTaskCompletionDocumentsRequest,
+  GetTaskCompletionDocumentsResponse
 >
 
 export const useGetTaskCompletionDocuments = (
-  args: GetTaskCompletionDocumentsQueryArgs,
+  args: GetTaskCompletionDocumentsRequest,
   options?: UseGetTaskCompletionDocumentsOptions,
 ): UseGetTaskCompletionDocumentsResult => {
   const state = useGetTaskCompletionDocumentsQuery(args, options)

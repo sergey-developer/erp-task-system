@@ -1,5 +1,5 @@
 import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
-import { GetCountriesCatalogSuccessResponse } from 'shared/catalogs/api/schemas'
+import { GetCountriesCatalogResponse } from 'shared/catalogs/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
@@ -9,7 +9,7 @@ const getCountryListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, CatalogEndpointsEnum.GetCountryCatalog)
 
 export const mockGetCountryListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetCountriesCatalogSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetCountriesCatalogResponse>>,
 ) => getSuccessMockFn(getCountryListMockFn(), options)()
 
 export const mockGetCountryListServerError = (options?: Partial<ResponseResolverOptions>) =>

@@ -1,8 +1,8 @@
 import { SubTaskRequestArgs, TaskRequestArgs } from 'features/task/types'
 
-export type ReworkSubTaskMutationArgs = TaskRequestArgs &
+export type ReworkSubTaskRequest = TaskRequestArgs &
   SubTaskRequestArgs & {
     returnReason: string
   }
 
-export type ReworkSubTaskSuccessResponse = void
+export type ReworkSubTaskResponse = void

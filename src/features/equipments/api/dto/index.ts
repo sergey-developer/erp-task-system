@@ -1,0 +1,7 @@
+export * from './equipment.dto'
+export * from './equipments.dto'
+export * from './equipmentRelocationHistory.dto'
+export * from './equipmentsCatalog.dto'
+export * from './equipmentNomenclatures.dto'
+export * from './equipmentCategories.dto'
+export * from './importedEquipmentsByFile.dto'

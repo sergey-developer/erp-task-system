@@ -1,4 +1,4 @@
-import { MoveRelocationTaskDraftToWorkSuccessResponse } from 'features/warehouse/models'
+import { MoveRelocationTaskDraftToWorkResponse } from 'features/warehouse/models'
 import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 import { makeMoveRelocationTaskDraftToWorkApiUrl } from 'features/warehouse/utils/relocationTask'
 
@@ -15,5 +15,5 @@ const moveRelocationTaskDraftToWorkMockFn = ({ relocationTaskId }: RelocationTas
 
 export const mockMoveRelocationTaskDraftToWorkSuccess = (
   { relocationTaskId }: RelocationTaskRequestArgs,
-  options?: Partial<ResponseResolverOptions<MoveRelocationTaskDraftToWorkSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<MoveRelocationTaskDraftToWorkResponse>>,
 ) => getSuccessMockFn(moveRelocationTaskDraftToWorkMockFn({ relocationTaskId }), options)()

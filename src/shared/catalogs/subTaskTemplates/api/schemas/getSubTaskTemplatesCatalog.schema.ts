@@ -4,11 +4,11 @@ import { SubTaskTemplatesCatalogDTO } from 'shared/catalogs/api/dto/subTaskTempl
 import { SupportGroupDTO } from 'shared/supportGroups/api/dto'
 import { MaybeUndefined } from 'shared/types/utils'
 
-export type GetSubTaskTemplatesCatalogQueryArgs = MaybeUndefined<
+export type GetSubTaskTemplatesCatalogRequest = MaybeUndefined<
   Partial<{
     type: TaskModel['type']
     supportGroup: SupportGroupDTO['id']
   }>
 >
 
-export type GetSubTaskTemplatesCatalogSuccessResponse = SubTaskTemplatesCatalogDTO
+export type GetSubTaskTemplatesCatalogResponse = SubTaskTemplatesCatalogDTO

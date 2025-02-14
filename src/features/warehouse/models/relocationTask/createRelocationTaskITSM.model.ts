@@ -1,8 +1,8 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 
 import { IdType } from 'shared/types/common'
 
-export type CreateRelocationTaskITSMMutationArgs = {
+export type CreateRelocationTaskITSMRequest = {
   taskId: IdType
 
   controller?: IdType
@@ -23,4 +23,4 @@ export type CreateRelocationTaskITSMMutationArgs = {
   }[]
 }
 
-export type CreateRelocationTaskITSMSuccessResponse = void
+export type CreateRelocationTaskITSMResponse = void

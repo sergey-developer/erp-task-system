@@ -1,6 +1,6 @@
-import { AntdPaginatedList } from 'lib/antd/types'
-
 import { RelocationEquipmentListItemModel } from 'features/warehouse/models'
 
-export type GetRelocationEquipmentListTransformedSuccessResponse =
+import { AntdPaginatedList } from 'lib/antd/types'
+
+export type GetRelocationEquipmentListTransformedResponse =
   AntdPaginatedList<RelocationEquipmentListItemModel>

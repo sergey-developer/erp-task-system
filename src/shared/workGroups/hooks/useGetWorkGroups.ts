@@ -11,20 +11,14 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 import { getWorkGroupsErrMsg } from 'shared/workGroups/api/constants'
 import { useGetWorkGroupsQuery } from 'shared/workGroups/api/endpoints/workGroups.endpoints'
-import { GetWorkGroupsQueryArgs, GetWorkGroupsSuccessResponse } from 'shared/workGroups/api/schemas'
+import { GetWorkGroupsRequest, GetWorkGroupsResponse } from 'shared/workGroups/api/schemas'
 
-type UseGetWorkGroupsResult = CustomUseQueryHookResult<
-  GetWorkGroupsQueryArgs,
-  GetWorkGroupsSuccessResponse
->
+type UseGetWorkGroupsResult = CustomUseQueryHookResult<GetWorkGroupsRequest, GetWorkGroupsResponse>
 
-type UseGetWorkGroupsOptions = CustomUseQueryOptions<
-  GetWorkGroupsQueryArgs,
-  GetWorkGroupsSuccessResponse
->
+type UseGetWorkGroupsOptions = CustomUseQueryOptions<GetWorkGroupsRequest, GetWorkGroupsResponse>
 
 export const useGetWorkGroups = (
-  args?: GetWorkGroupsQueryArgs,
+  args?: GetWorkGroupsRequest,
   options?: UseGetWorkGroupsOptions,
 ): UseGetWorkGroupsResult => {
   const state = useGetWorkGroupsQuery(args, options)

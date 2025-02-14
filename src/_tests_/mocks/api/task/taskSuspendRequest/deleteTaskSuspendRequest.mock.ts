@@ -1,4 +1,4 @@
-import { DeleteTaskSuspendRequestSuccessResponse } from 'features/task/models'
+import { DeleteTaskSuspendRequestResponse } from 'features/task/models'
 import { deleteTaskSuspendRequestUrl } from 'features/task/utils/taskSuspendRequest'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ const deleteTaskSuspendRequestMockFn = (id: IdType) =>
 
 export const mockDeleteTaskSuspendRequestSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<DeleteTaskSuspendRequestSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<DeleteTaskSuspendRequestResponse>>,
 ) => getSuccessMockFn(deleteTaskSuspendRequestMockFn(id), options)()
 
 export const mockDeleteTaskSuspendRequestNotFoundError = (

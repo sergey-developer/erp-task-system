@@ -1,27 +1,26 @@
+import { getRelocationTasksErrMsg } from 'features/warehouse/constants/relocationTask'
+import { GetRelocationTasksRequest } from 'features/warehouse/models'
+import { useGetRelocationTasksQuery } from 'features/warehouse/services/relocationTaskApi.service'
+import { GetRelocationTasksTransformedResponse } from 'features/warehouse/types'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getRelocationTasksErrMsg } from 'features/warehouse/constants/relocationTask'
-import { GetRelocationTasksQueryArgs } from 'features/warehouse/models'
-import { useGetRelocationTasksQuery } from 'features/warehouse/services/relocationTaskApi.service'
-import { GetRelocationTasksTransformedSuccessResponse } from 'features/warehouse/types'
 
 import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 export type UseGetRelocationTasksResult = CustomUseQueryHookResult<
-  GetRelocationTasksQueryArgs,
-  GetRelocationTasksTransformedSuccessResponse
+  GetRelocationTasksRequest,
+  GetRelocationTasksTransformedResponse
 >
 
 type UseGetRelocationTasksOptions = CustomUseQueryOptions<
-  GetRelocationTasksQueryArgs,
-  GetRelocationTasksTransformedSuccessResponse
+  GetRelocationTasksRequest,
+  GetRelocationTasksTransformedResponse
 >
 
 export const useGetRelocationTasks = (
-  args: GetRelocationTasksQueryArgs,
+  args: GetRelocationTasksRequest,
   options?: UseGetRelocationTasksOptions,
 ): UseGetRelocationTasksResult => {
   const state = useGetRelocationTasksQuery(args, options)

@@ -11,7 +11,7 @@ import { env } from 'configs/env'
 import {
   EquipmentConditionEnum,
   equipmentConditionOptions,
-} from 'features/warehouse/constants/equipment'
+} from 'features/equipments/api/constants'
 import { InventorizationEquipmentListItemModel } from 'features/warehouse/models'
 import { RelocationTaskDraftFormFields } from 'features/warehouse/types'
 import { makeInventorizationEquipmentsSelectOptions } from 'features/warehouse/utils/inventorization'

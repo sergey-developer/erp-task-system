@@ -2,5 +2,5 @@ import { InventorizationRequestArgs } from 'features/warehouse/types'
 
 import { Base64Type } from 'shared/types/common'
 
-export type GetInventorizationReportQueryArgs = InventorizationRequestArgs
-export type GetInventorizationReportSuccessResponse = Base64Type
+export type GetInventorizationReportRequest = InventorizationRequestArgs
+export type GetInventorizationReportResponse = Base64Type

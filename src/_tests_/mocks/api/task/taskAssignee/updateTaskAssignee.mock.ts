@@ -1,4 +1,4 @@
-import { UpdateTaskAssigneeSuccessResponse } from 'features/task/models'
+import { UpdateTaskAssigneeResponse } from 'features/task/models'
 import { updateTaskAssigneeUrl } from 'features/task/utils/taskAssignee'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,7 +12,7 @@ const updateTaskAssigneeMockFn = (taskId: IdType) =>
 
 export const mockUpdateTaskAssigneeSuccess = (
   taskId: IdType,
-  options?: Partial<ResponseResolverOptions<UpdateTaskAssigneeSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<UpdateTaskAssigneeResponse>>,
 ) => getSuccessMockFn(updateTaskAssigneeMockFn(taskId), options)()
 
 export const mockUpdateTaskAssigneeServerError = (

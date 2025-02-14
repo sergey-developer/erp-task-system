@@ -4,8 +4,8 @@ import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
 import { getRelocationTaskWaybillM15ErrMsg } from 'features/warehouse/constants/relocationTask'
 import {
-  GetRelocationTaskWaybillM15QueryArgs,
-  GetRelocationTaskWaybillM15SuccessResponse,
+  GetRelocationTaskWaybillM15Request,
+  GetRelocationTaskWaybillM15Response,
 } from 'features/warehouse/models'
 import { useLazyGetRelocationTaskWaybillM15Query } from 'features/warehouse/services/relocationTaskApi.service'
 
@@ -13,8 +13,8 @@ import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/b
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseLazyGetRelocationTaskWaybillM15Result = CustomUseLazyQueryHookResult<
-  GetRelocationTaskWaybillM15QueryArgs,
-  GetRelocationTaskWaybillM15SuccessResponse
+  GetRelocationTaskWaybillM15Request,
+  GetRelocationTaskWaybillM15Response
 >
 
 export const useLazyGetRelocationTaskWaybillM15 = (): UseLazyGetRelocationTaskWaybillM15Result => {

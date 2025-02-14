@@ -5,7 +5,7 @@ import {
 } from 'features/warehouse/constants/relocationTask'
 import { RelocationTaskListItemModel } from 'features/warehouse/models'
 
-import { PaginationParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
+import { PaginationRequestParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'
 import { ExtendSortKey, SortParams } from 'shared/types/sort'
@@ -38,12 +38,12 @@ export type GetRelocationTasksFilter = Partial<{
   createdAtTo: string
 }>
 
-export type GetRelocationTasksQueryArgs<
+export type GetRelocationTasksRequest<
   SortValue extends GetRelocationTasksSortValue = GetRelocationTasksSortValue,
 > = GetRelocationTasksFilter &
-  PaginationParams &
+  PaginationRequestParams &
   FilterParams &
   SortParams<SortValue> &
   Partial<TaskRequestArgs & { inventorization: IdType }>
 
-export type GetRelocationTasksSuccessResponse = PaginationResponse<RelocationTaskListItemModel>
+export type GetRelocationTasksResponse = PaginationResponse<RelocationTaskListItemModel>

@@ -1,8 +1,8 @@
-import { EquipmentApiEnum } from 'features/warehouse/constants/equipment'
-import { GetEquipmentListSuccessResponse } from 'features/warehouse/models'
+import { EquipmentsEndpointsEnum } from 'features/equipments/api/constants'
+import { GetEquipmentListResponse } from 'features/warehouse/models'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
   getForbiddenErrorMockFn,
@@ -13,10 +13,10 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, EquipmentApiEnum.GetEquipmentList)
+  getRequestMockFn(HttpMethodEnum.Get, EquipmentsEndpointsEnum.GetEquipments)
 
 export const mockGetEquipmentListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetEquipmentListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetEquipmentListResponse>>,
 ) => getSuccessMockFn(getEquipmentListMockFn(), options)()
 
 export const mockGetEquipmentListForbiddenError = (

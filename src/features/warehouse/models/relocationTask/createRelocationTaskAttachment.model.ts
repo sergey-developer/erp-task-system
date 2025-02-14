@@ -3,7 +3,7 @@ import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 import { IdType } from 'shared/types/common'
 import { UploadFileRequestArgs } from 'shared/types/file'
 
-export type CreateRelocationTaskAttachmentMutationArgs = RelocationTaskRequestArgs &
+export type CreateRelocationTaskAttachmentRequest = RelocationTaskRequestArgs &
   UploadFileRequestArgs
 
-export type CreateRelocationTaskAttachmentSuccessResponse = { id: IdType }
+export type CreateRelocationTaskAttachmentResponse = { id: IdType }

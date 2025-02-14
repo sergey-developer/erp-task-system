@@ -1,10 +1,10 @@
 import { Base64Type } from 'shared/types/common'
 
-import { GetHistoryNomenclatureOperationsReportQueryArgs } from './getHistoryNomenclatureOperationsReport.schema'
+import { GetHistoryNomenclatureOperationsReportRequest } from './getHistoryNomenclatureOperationsReport.schema'
 
-export type GetHistoryNomenclatureOperationsReportXlsxQueryArgs = Omit<
-  GetHistoryNomenclatureOperationsReportQueryArgs,
+export type GetHistoryNomenclatureOperationsReportXlsxRequest = Omit<
+  GetHistoryNomenclatureOperationsReportRequest,
   'limit' | 'offset'
 >
 
-export type GetHistoryNomenclatureOperationsReportXlsxSuccessResponse = Base64Type
+export type GetHistoryNomenclatureOperationsReportXlsxResponse = Base64Type

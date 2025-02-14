@@ -1,4 +1,4 @@
-import { GetTaskCommentListSuccessResponse } from 'features/task/models'
+import { GetTaskCommentListResponse } from 'features/task/models'
 import { getTaskCommentListUrl } from 'features/task/utils/taskComment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const getTaskCommentListMockFn = (id: IdType) =>
 
 export const mockGetTaskCommentListSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetTaskCommentListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetTaskCommentListResponse>>,
 ) => getSuccessMockFn(getTaskCommentListMockFn(id), options)()

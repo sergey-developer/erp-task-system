@@ -1,4 +1,4 @@
-import { GetWarehouseMSISuccessResponse } from 'features/users/api/dto'
+import { GetWarehouseMSIResponse } from 'features/users/api/dto'
 import { makeGetWarehouseMSIEndpoint } from 'features/users/helpers'
 
 import { ErrorData } from 'shared/api/baseApi'
@@ -18,7 +18,7 @@ const getWarehouseMSIMockFn = (id: IdType) =>
 
 export const mockGetWarehouseMSISuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetWarehouseMSISuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetWarehouseMSIResponse>>,
 ) => getSuccessMockFn(getWarehouseMSIMockFn(id), options)()
 
 export const mockGetWarehouseMSINotFoundError = (

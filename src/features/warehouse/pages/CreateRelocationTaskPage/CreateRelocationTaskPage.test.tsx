@@ -3,7 +3,7 @@ import { UserPermissionsEnum } from 'features/users/api/constants'
 import {
   getEquipmentListTemplateErrMsg,
   importEquipmentsByFileErrMsg,
-} from 'features/warehouse/constants/equipment'
+} from 'features/equipments/api/constants'
 
 import { LocationTypeEnum } from 'shared/catalogs/constants'
 import { MimetypeEnum } from 'shared/constants/mimetype'

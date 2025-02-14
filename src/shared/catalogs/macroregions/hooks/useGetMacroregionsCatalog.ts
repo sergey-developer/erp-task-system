@@ -5,8 +5,8 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse } from 'shared/api/baseApi'
 import { useGetMacroregionsCatalogQuery } from 'shared/catalogs/macroregions/api/endpoints/macroregionsCatalog.endpoints'
 import {
-  GetMacroregionsCatalogQueryArgs,
-  GetMacroregionsCatalogSuccessResponse,
+  GetMacroregionsCatalogRequest,
+  GetMacroregionsCatalogResponse,
 } from 'shared/catalogs/macroregions/api/schemas'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -14,17 +14,17 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { getMacroregionsCatalogErrMsg } from '../api/constants'
 
 type UseGetMacroregionsCatalogResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetMacroregionsCatalogQueryArgs>,
-  GetMacroregionsCatalogSuccessResponse
+  MaybeUndefined<GetMacroregionsCatalogRequest>,
+  GetMacroregionsCatalogResponse
 >
 
 type UseGetMacroregionsCatalogOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetMacroregionsCatalogQueryArgs>,
-  GetMacroregionsCatalogSuccessResponse
+  MaybeUndefined<GetMacroregionsCatalogRequest>,
+  GetMacroregionsCatalogResponse
 >
 
 export const useGetMacroregionsCatalog = (
-  args?: GetMacroregionsCatalogQueryArgs,
+  args?: GetMacroregionsCatalogRequest,
   options?: UseGetMacroregionsCatalogOptions,
 ): UseGetMacroregionsCatalogResult => {
   const state = useGetMacroregionsCatalogQuery(args, options)

@@ -1,13 +1,12 @@
+import { getRelocationTaskAttachmentsErrMsg } from 'features/warehouse/constants/relocationTask'
+import {
+  GetRelocationTaskAttachmentsRequest,
+  GetRelocationTaskAttachmentsResponse,
+} from 'features/warehouse/models'
+import { useGetRelocationTaskAttachmentsQuery } from 'features/warehouse/services/relocationTaskApi.service'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getRelocationTaskAttachmentsErrMsg } from 'features/warehouse/constants/relocationTask'
-import {
-  GetRelocationTaskAttachmentsQueryArgs,
-  GetRelocationTaskAttachmentsSuccessResponse,
-} from 'features/warehouse/models'
-import { useGetRelocationTaskAttachmentsQuery } from 'features/warehouse/services/relocationTaskApi.service'
 
 import {
   getErrorDetail,
@@ -18,17 +17,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetRelocationTaskAttachmentsResult = CustomUseQueryHookResult<
-  GetRelocationTaskAttachmentsQueryArgs,
-  GetRelocationTaskAttachmentsSuccessResponse
+  GetRelocationTaskAttachmentsRequest,
+  GetRelocationTaskAttachmentsResponse
 >
 
 type UseGetRelocationTaskAttachmentsOptions = CustomUseQueryOptions<
-  GetRelocationTaskAttachmentsQueryArgs,
-  GetRelocationTaskAttachmentsSuccessResponse
+  GetRelocationTaskAttachmentsRequest,
+  GetRelocationTaskAttachmentsResponse
 >
 
 export const useGetRelocationTaskAttachments = (
-  args: GetRelocationTaskAttachmentsQueryArgs,
+  args: GetRelocationTaskAttachmentsRequest,
   options?: UseGetRelocationTaskAttachmentsOptions,
 ): UseGetRelocationTaskAttachmentsResult => {
   const state = useGetRelocationTaskAttachmentsQuery(args, options)

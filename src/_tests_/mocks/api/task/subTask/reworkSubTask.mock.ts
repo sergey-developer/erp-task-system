@@ -1,4 +1,4 @@
-import { ReworkSubTaskSuccessResponse } from 'features/task/models'
+import { ReworkSubTaskResponse } from 'features/task/models'
 import { reworkSubTaskUrl } from 'features/task/utils/subTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -18,7 +18,7 @@ const reworkSubTaskMockFn = (id: IdType) =>
 
 export const mockReworkSubTaskSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<ReworkSubTaskSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<ReworkSubTaskResponse>>,
 ) => getSuccessMockFn(reworkSubTaskMockFn(id), options)()
 
 export const mockReworkSubTaskBadRequestError = <T extends object>(

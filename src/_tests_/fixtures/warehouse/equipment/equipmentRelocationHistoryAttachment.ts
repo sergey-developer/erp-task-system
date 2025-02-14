@@ -1,12 +1,11 @@
+import { EquipmentRelocationHistoryAttachmentDTO } from 'features/warehouse/models'
 import pick from 'lodash/pick'
-
-import { EquipmentRelocationHistoryAttachmentModel } from 'features/warehouse/models'
 
 import userFixtures from '_tests_/fixtures/user'
 import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/utils'
 
 export const equipmentRelocationHistoryAttachment =
-  (): EquipmentRelocationHistoryAttachmentModel => ({
+  (): EquipmentRelocationHistoryAttachmentDTO => ({
     id: fakeId(),
     url: fakeUrl(),
     name: fakeWord(),

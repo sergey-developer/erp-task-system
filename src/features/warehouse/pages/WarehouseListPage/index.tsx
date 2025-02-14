@@ -12,7 +12,7 @@ import {
 } from 'features/warehouse/components/WarehouseTable/sort'
 import { WarehouseTableProps } from 'features/warehouse/components/WarehouseTable/types'
 import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
-import { GetWarehouseListQueryArgs } from 'features/warehouse/models'
+import { GetWarehouseListRequest } from 'features/warehouse/models'
 import { FC, useCallback, useState } from 'react'
 
 import FilterButton from 'components/Buttons/FilterButton'
@@ -24,20 +24,20 @@ const WarehouseListPage: FC = () => {
   const [filterOpened, { toggle: toggleFilterOpened }] = useBoolean()
   const debouncedToggleFilterOpened = useDebounceFn(toggleFilterOpened)
 
-  const [queryArgs, setQueryArgs] = useSetState<NonNullable<GetWarehouseListQueryArgs>>({})
+  const [requestArgs, setRequestArgs] = useSetState<NonNullable<GetWarehouseListRequest>>({})
 
   const [filterFormValues, setFilterFormValues] = useState<WarehouseListFilterFormFields>()
 
   const { isFetching: warehousesIsFetching, currentData: warehouses = [] } =
-    useGetWarehouses(queryArgs)
+    useGetWarehouses(requestArgs)
 
   const handleApplyFilter = useCallback<WarehouseListFilterProps['onApply']>(
     (values) => {
       toggleFilterOpened()
       setFilterFormValues(values)
-      setQueryArgs(values)
+      setRequestArgs(values)
     },
-    [setQueryArgs, toggleFilterOpened],
+    [setRequestArgs, toggleFilterOpened],
   )
 
   const handleTableSort = useCallback(
@@ -46,13 +46,13 @@ const WarehouseListPage: FC = () => {
         const { columnKey, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
         if (columnKey && (columnKey as string) in sortableFieldToSortValues) {
-          setQueryArgs({
+          setRequestArgs({
             ordering: order ? getSort(columnKey as SortableField, order) : undefined,
           })
         }
       }
     },
-    [setQueryArgs],
+    [setRequestArgs],
   )
 
   const handleChangeTable = useCallback<WarehouseTableProps['onChange']>(
@@ -70,7 +70,7 @@ const WarehouseListPage: FC = () => {
         dataSource={warehouses}
         loading={warehousesIsFetching}
         onChange={handleChangeTable}
-        sort={queryArgs?.ordering}
+        sort={requestArgs?.ordering}
       />
 
       {filterOpened && (

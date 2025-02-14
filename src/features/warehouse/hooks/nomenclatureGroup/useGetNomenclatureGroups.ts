@@ -1,7 +1,7 @@
 import { getNomenclatureGroupListMessages } from 'features/warehouse/constants/nomenclatureGroup'
 import {
-  GetNomenclatureGroupListQueryArgs,
-  GetNomenclatureGroupListSuccessResponse,
+  GetNomenclatureGroupListRequest,
+  GetNomenclatureGroupListResponse,
 } from 'features/warehouse/models'
 import { useGetNomenclatureGroupListQuery } from 'features/warehouse/services/nomenclatureGroupApi.service'
 import { useEffect } from 'react'
@@ -12,17 +12,17 @@ import { isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetNomenclatureGroupListResult = CustomUseQueryHookResult<
-  GetNomenclatureGroupListQueryArgs,
-  GetNomenclatureGroupListSuccessResponse
+  GetNomenclatureGroupListRequest,
+  GetNomenclatureGroupListResponse
 >
 
 type UseGetNomenclatureGroupListOptions = CustomUseQueryOptions<
-  GetNomenclatureGroupListQueryArgs,
-  GetNomenclatureGroupListSuccessResponse
+  GetNomenclatureGroupListRequest,
+  GetNomenclatureGroupListResponse
 >
 
 export const useGetNomenclatureGroups = (
-  args?: GetNomenclatureGroupListQueryArgs,
+  args?: GetNomenclatureGroupListRequest,
   options?: UseGetNomenclatureGroupListOptions,
 ): UseGetNomenclatureGroupListResult => {
   const state = useGetNomenclatureGroupListQuery(args, options)

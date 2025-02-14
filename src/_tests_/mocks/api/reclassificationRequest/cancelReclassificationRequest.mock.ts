@@ -1,6 +1,6 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { makeCancelReclassificationRequestEndpoint } from 'shared/reclassificationRequests/api/helpers'
-import { CancelReclassificationRequestSuccessResponse } from 'shared/reclassificationRequests/api/schemas'
+import { CancelReclassificationRequestResponse } from 'shared/reclassificationRequests/api/schemas'
 import { IdType } from 'shared/types/common'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
@@ -14,5 +14,5 @@ const cancelReclassificationRequestMockFn = (reclassificationRequestId: IdType) 
 
 export const mockCancelReclassificationRequestSuccess = (
   reclassificationRequestId: IdType,
-  options?: Partial<ResponseResolverOptions<CancelReclassificationRequestSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CancelReclassificationRequestResponse>>,
 ) => getSuccessMockFn(cancelReclassificationRequestMockFn(reclassificationRequestId), options)()

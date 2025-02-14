@@ -1,10 +1,9 @@
+import { EquipmentsCatalogItemDTO, EquipmentsCatalogModel } from 'features/warehouse/models'
 import times from 'lodash/times'
-
-import { EquipmentCatalogListItemModel, EquipmentsCatalogModel } from 'features/warehouse/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
-export const equipmentCatalogListItem = (): EquipmentCatalogListItemModel => ({
+export const equipmentCatalogListItem = (): EquipmentsCatalogItemDTO => ({
   id: fakeId(),
   title: fakeWord(),
   serialNumber: fakeWord(),

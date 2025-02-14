@@ -2,5 +2,5 @@ import { TechnicalExaminationRequestArgs } from 'features/technicalExaminations/
 
 import { Base64Type } from 'shared/types/common'
 
-export type GetTechnicalExaminationPdfQueryArgs = TechnicalExaminationRequestArgs
-export type GetTechnicalExaminationPdfSuccessResponse = Base64Type
+export type GetTechnicalExaminationPdfRequest = TechnicalExaminationRequestArgs
+export type GetTechnicalExaminationPdfResponse = Base64Type

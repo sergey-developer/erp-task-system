@@ -1,7 +1,7 @@
 import {
   equipmentConditionDict,
   EquipmentConditionEnum,
-} from 'features/warehouse/constants/equipment'
+} from 'features/equipments/api/constants'
 
 import { yesNoOptions } from 'shared/constants/selectField'
 import { getBooleanOptions } from 'shared/utils/selectField'

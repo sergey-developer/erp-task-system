@@ -1,4 +1,4 @@
-import { GetTaskRegistrationRequestRecipientsFNSuccessResponse } from 'features/task/models'
+import { GetTaskRegistrationRequestRecipientsFNResponse } from 'features/task/models'
 import { getTaskRegistrationRequestRecipientsFNUrl } from 'features/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const getTaskRegistrationRequestRecipientsFNMockFn = (taskId: IdType) =>
 
 export const mockGetTaskRegistrationRequestRecipientsFNSuccess = (
   taskId: IdType,
-  options?: Partial<ResponseResolverOptions<GetTaskRegistrationRequestRecipientsFNSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetTaskRegistrationRequestRecipientsFNResponse>>,
 ) => getSuccessMockFn(getTaskRegistrationRequestRecipientsFNMockFn(taskId), options)()

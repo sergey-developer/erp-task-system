@@ -1,7 +1,7 @@
 import { AuthEndpointsEnum } from 'features/auth/api/constants'
 import {
   UpdatePasswordBadRequestErrorResponse,
-  UpdatePasswordSuccessResponse,
+  UpdatePasswordResponse,
 } from 'features/auth/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
@@ -21,7 +21,7 @@ const updatePasswordMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, AuthEndpointsEnum.UpdatePassword)
 
 export const mockUpdatePasswordSuccess = (
-  options?: Partial<ResponseResolverOptions<UpdatePasswordSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<UpdatePasswordResponse>>,
 ) => getSuccessMockFn(updatePasswordMockFn(), options)()
 
 export const mockUpdatePasswordBadRequestError = <

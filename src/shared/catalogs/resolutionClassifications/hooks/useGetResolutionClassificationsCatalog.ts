@@ -8,22 +8,22 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { getResolutionClassificationsCatalogErrMsg } from '../api/constants'
 import { useGetResolutionClassificationsCatalogQuery } from '../api/endpoints/resolutionClassificationsCatalog.endpoints'
 import {
-  GetResolutionClassificationsCatalogQueryArgs,
-  GetResolutionClassificationsCatalogSuccessResponse,
+  GetResolutionClassificationsCatalogRequest,
+  GetResolutionClassificationsCatalogResponse,
 } from '../api/schemas'
 
 type UseGetResolutionClassificationsCatalogResult = CustomUseQueryHookResult<
-  GetResolutionClassificationsCatalogQueryArgs,
-  GetResolutionClassificationsCatalogSuccessResponse
+  GetResolutionClassificationsCatalogRequest,
+  GetResolutionClassificationsCatalogResponse
 >
 
 type UseGetResolutionClassificationsCatalogOptions = CustomUseQueryOptions<
-  GetResolutionClassificationsCatalogQueryArgs,
-  GetResolutionClassificationsCatalogSuccessResponse
+  GetResolutionClassificationsCatalogRequest,
+  GetResolutionClassificationsCatalogResponse
 >
 
 export const useGetResolutionClassificationsCatalog = (
-  args: GetResolutionClassificationsCatalogQueryArgs,
+  args: GetResolutionClassificationsCatalogRequest,
   options?: UseGetResolutionClassificationsCatalogOptions,
 ): UseGetResolutionClassificationsCatalogResult => {
   const state = useGetResolutionClassificationsCatalogQuery(args, options)

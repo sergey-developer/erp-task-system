@@ -1,10 +1,10 @@
 import { EquipmentFormModalProps } from 'features/warehouse/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'features/warehouse/components/EquipmentsByFileTable/types'
 import { LocationOption } from 'features/warehouse/components/RelocationTaskForm/types'
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask'
 import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
-import { GetEquipmentsCatalogQueryArgs } from 'features/warehouse/models'
+import { GetEquipmentsCatalogRequest } from 'features/warehouse/models'
 import {
   checkRelocationTaskTypeIsCustomer,
   checkRelocationTaskTypeIsWarranty,
@@ -12,7 +12,7 @@ import {
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 
-import { GetLocationsCatalogQueryArgs } from 'shared/catalogs/api/dto/locations'
+import { GetLocationsCatalogRequest } from 'shared/catalogs/api/dto/locations'
 import { LocationTypeEnum } from 'shared/catalogs/constants'
 import { checkLocationTypeIsWarehouse } from 'shared/catalogs/locations/helpers/checkLocationType'
 import { MaybeUndefined } from 'shared/types/utils'
@@ -105,7 +105,7 @@ const getRelocateToWarehouseTypes = (
 
 export const getEquipmentsCatalogParams = (
   type: RelocationTaskTypeEnum,
-): Pick<GetEquipmentsCatalogQueryArgs, 'conditions' | 'isWarranty' | 'isCredited'> => ({
+): Pick<GetEquipmentsCatalogRequest, 'conditions' | 'isWarranty' | 'isCredited'> => ({
   conditions: getConditionsByType(type),
   isWarranty: checkRelocationTaskTypeIsWarranty(type) ? true : undefined,
   isCredited: checkRelocationTaskTypeIsCustomer(type) ? false : undefined,
@@ -113,14 +113,14 @@ export const getEquipmentsCatalogParams = (
 
 export const getRelocateFromLocationsParams = (
   type: RelocationTaskTypeEnum,
-): Pick<GetLocationsCatalogQueryArgs, 'locationTypes' | 'warehouseTypes'> => ({
+): Pick<GetLocationsCatalogRequest, 'locationTypes' | 'warehouseTypes'> => ({
   locationTypes: getRelocateFromLocationTypes(type),
   warehouseTypes: getRelocateFromWarehouseTypes(type),
 })
 
 export const getRelocateToLocationsParams = (
   type: RelocationTaskTypeEnum,
-): Pick<GetLocationsCatalogQueryArgs, 'locationTypes' | 'warehouseTypes'> => ({
+): Pick<GetLocationsCatalogRequest, 'locationTypes' | 'warehouseTypes'> => ({
   locationTypes: getRelocateToLocationTypes(type),
   warehouseTypes: getRelocateToWarehouseTypes(type),
 })

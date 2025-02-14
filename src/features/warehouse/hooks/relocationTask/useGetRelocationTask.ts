@@ -4,8 +4,8 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { getRelocationTaskMessages } from 'features/warehouse/constants/relocationTask'
 import {
-  GetRelocationTaskQueryArgs,
-  GetRelocationTaskSuccessResponse,
+  GetRelocationTaskRequest,
+  GetRelocationTaskResponse,
 } from 'features/warehouse/models'
 import { useGetRelocationTaskQuery } from 'features/warehouse/services/relocationTaskApi.service'
 
@@ -13,17 +13,17 @@ import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/b
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetRelocationTaskResult = CustomUseQueryHookResult<
-  GetRelocationTaskQueryArgs,
-  GetRelocationTaskSuccessResponse
+  GetRelocationTaskRequest,
+  GetRelocationTaskResponse
 >
 
 type UseGetRelocationTaskOptions = CustomUseQueryOptions<
-  GetRelocationTaskQueryArgs,
-  GetRelocationTaskSuccessResponse
+  GetRelocationTaskRequest,
+  GetRelocationTaskResponse
 >
 
 export const useGetRelocationTask = (
-  args: GetRelocationTaskQueryArgs,
+  args: GetRelocationTaskRequest,
   options?: UseGetRelocationTaskOptions,
 ): UseGetRelocationTaskResult => {
   const state = useGetRelocationTaskQuery(args, options)

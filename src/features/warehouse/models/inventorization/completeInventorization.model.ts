@@ -4,9 +4,9 @@ import { SetNonNullable } from 'shared/types/utils'
 
 import { InventorizationModel } from './inventorization.model'
 
-export type CompleteInventorizationMutationArgs = InventorizationRequestArgs
+export type CompleteInventorizationRequest = InventorizationRequestArgs
 
-export type CompleteInventorizationSuccessResponse = SetNonNullable<
+export type CompleteInventorizationResponse = SetNonNullable<
   InventorizationModel,
   'status' | 'completedAt'
 >

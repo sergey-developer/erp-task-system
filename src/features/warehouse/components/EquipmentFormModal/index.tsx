@@ -1,15 +1,14 @@
 import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
-import isArray from 'lodash/isArray'
-import isEmpty from 'lodash/isEmpty'
-import React, { FC, useEffect, useMemo } from 'react'
-
-import { equipmentConditionOptions } from 'features/warehouse/constants/equipment'
+import { equipmentConditionOptions } from 'features/equipments/api/constants'
+import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
 import {
-  EquipmentCategoryListItemModel,
+  EquipmentCategoryDTO,
   NomenclatureListItemModel,
   WarehouseListItemModel,
 } from 'features/warehouse/models'
-import { checkEquipmentCategoryIsConsumable } from 'features/warehouse/utils/equipment'
+import isArray from 'lodash/isArray'
+import isEmpty from 'lodash/isEmpty'
+import React, { FC, useEffect, useMemo } from 'react'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import LoadingArea from 'components/LoadingArea'
@@ -97,7 +96,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
   const handleChangeCategory = (
     value: IdType,
-    option: EquipmentCategoryListItemModel | EquipmentCategoryListItemModel[],
+    option: EquipmentCategoryDTO | EquipmentCategoryDTO[],
   ) => {
     if (!isArray(option)) {
       onChangeCategory(option)
@@ -162,7 +161,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
           name='category'
           rules={onlyRequiredRules}
         >
-          <Select<IdType, EquipmentCategoryListItemModel>
+          <Select<IdType, EquipmentCategoryDTO>
             placeholder='Выберите категорию'
             fieldNames={idAndTitleSelectFieldNames}
             options={categories}

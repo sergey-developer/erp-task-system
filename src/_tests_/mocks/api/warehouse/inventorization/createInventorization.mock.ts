@@ -1,5 +1,5 @@
 import { InventorizationApiEnum } from 'features/warehouse/constants/inventorization'
-import { CreateInventorizationSuccessResponse } from 'features/warehouse/models'
+import { CreateInventorizationResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -10,5 +10,5 @@ const createInventorizationMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, InventorizationApiEnum.CreateInventorization)
 
 export const mockCreateInventorizationSuccess = (
-  options?: Partial<ResponseResolverOptions<CreateInventorizationSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CreateInventorizationResponse>>,
 ) => getSuccessMockFn(createInventorizationMockFn(), options)()

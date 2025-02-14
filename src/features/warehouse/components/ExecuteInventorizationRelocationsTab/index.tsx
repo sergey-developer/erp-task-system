@@ -12,7 +12,7 @@ import {
 } from 'features/warehouse/components/ExecuteInventorizationRelocationTaskTable/types'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import { useGetRelocationTasks } from 'features/warehouse/hooks/relocationTask'
-import { GetRelocationTasksQueryArgs } from 'features/warehouse/models'
+import { GetRelocationTasksRequest } from 'features/warehouse/models'
 import { ExecuteInventorizationPageLocationState } from 'features/warehouse/types'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'features/warehouse/utils/relocationTask'
 import debounce from 'lodash/debounce'
@@ -38,7 +38,7 @@ const RelocationTaskDetails = React.lazy(
 const { Title } = Typography
 
 const initialRelocationTasksParams: Pick<
-  GetRelocationTasksQueryArgs<ExecuteInventorizationRelocationTaskTableSortValue>,
+  GetRelocationTasksRequest<ExecuteInventorizationRelocationTaskTableSortValue>,
   'ordering' | 'offset' | 'limit'
 > = {
   ...getInitialPaginationParams(),
@@ -64,7 +64,7 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
 
   const [getRelocationTasksParams, setGetRelocationTasksParams] = useSetState<
     Pick<
-      GetRelocationTasksQueryArgs<ExecuteInventorizationRelocationTaskTableSortValue>,
+      GetRelocationTasksRequest<ExecuteInventorizationRelocationTaskTableSortValue>,
       'ordering' | 'offset' | 'limit' | 'inventorization'
     >
   >({ ...initialRelocationTasksParams, inventorization: inventorization.id })

@@ -4,8 +4,8 @@ import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { createReclassificationRequestErrMsg } from 'features/task/constants/taskReclassificationRequest'
 import {
-  CreateTaskReclassificationRequestMutationArgs,
-  CreateTaskReclassificationRequestSuccessResponse,
+  CreateTaskReclassificationRequestRequest,
+  CreateTaskReclassificationRequestResponse,
 } from 'features/task/models'
 import { useCreateReclassificationRequestMutation } from 'features/task/services/taskApi.service'
 
@@ -19,8 +19,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseCreateTaskReclassificationRequestResult = CustomUseMutationResult<
-  CreateTaskReclassificationRequestMutationArgs,
-  CreateTaskReclassificationRequestSuccessResponse
+  CreateTaskReclassificationRequestRequest,
+  CreateTaskReclassificationRequestResponse
 >
 
 export const useCreateTaskReclassificationRequest =

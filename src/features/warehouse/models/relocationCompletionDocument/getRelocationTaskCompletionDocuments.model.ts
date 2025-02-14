@@ -2,7 +2,6 @@ import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 
 import { RelocationTaskCompletionDocumentModel } from './relocationTaskCompletionDocument.model'
 
-export type GetRelocationTaskCompletionDocumentsQueryArgs = RelocationTaskRequestArgs
+export type GetRelocationTaskCompletionDocumentsRequest = RelocationTaskRequestArgs
 
-export type GetRelocationTaskCompletionDocumentsSuccessResponse =
-  RelocationTaskCompletionDocumentModel
+export type GetRelocationTaskCompletionDocumentsResponse = RelocationTaskCompletionDocumentModel

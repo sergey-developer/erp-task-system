@@ -1,8 +1,8 @@
 import { getUsersMtsrReportErrMsg } from 'features/reports/api/constants'
 import { useGetUsersMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
-  GetUsersMtsrReportQueryArgs,
-  GetUsersMtsrReportSuccessResponse,
+  GetUsersMtsrReportRequest,
+  GetUsersMtsrReportResponse,
 } from 'features/reports/api/schemas'
 import { useEffect } from 'react'
 
@@ -12,17 +12,17 @@ import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/ba
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetUsersMtsrReportResult = CustomUseQueryHookResult<
-  GetUsersMtsrReportQueryArgs,
-  GetUsersMtsrReportSuccessResponse
+  GetUsersMtsrReportRequest,
+  GetUsersMtsrReportResponse
 >
 
 type UseGetUsersMtsrReportOptions = CustomUseQueryOptions<
-  GetUsersMtsrReportQueryArgs,
-  GetUsersMtsrReportSuccessResponse
+  GetUsersMtsrReportRequest,
+  GetUsersMtsrReportResponse
 >
 
 export const useGetUsersMtsrReport = (
-  args: GetUsersMtsrReportQueryArgs,
+  args: GetUsersMtsrReportRequest,
   options?: UseGetUsersMtsrReportOptions,
 ): UseGetUsersMtsrReportResult => {
   const state = useGetUsersMtsrReportQuery(args, options)

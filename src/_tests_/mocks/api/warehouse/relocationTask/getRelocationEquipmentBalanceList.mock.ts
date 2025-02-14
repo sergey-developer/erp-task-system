@@ -1,4 +1,4 @@
-import { GetRelocationEquipmentBalanceListSuccessResponse } from 'features/warehouse/models'
+import { GetRelocationEquipmentBalanceListResponse } from 'features/warehouse/models'
 import { getRelocationEquipmentBalanceListUrl } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ const getRelocationEquipmentBalanceListMockFn = (id: IdType) =>
 
 export const mockGetRelocationEquipmentBalanceListSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentBalanceListSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentBalanceListResponse>>,
 ) => getSuccessMockFn(getRelocationEquipmentBalanceListMockFn(id), options)()
 
 export const mockGetRelocationEquipmentBalanceListForbiddenError = (

@@ -1,9 +1,9 @@
 import { MacroregionsCatalogDTO } from 'shared/catalogs/macroregions/api/dto'
 import { IdType } from 'shared/types/common'
 
-export type GetMacroregionsCatalogQueryArgs = Partial<{
+export type GetMacroregionsCatalogRequest = Partial<{
   customers: IdType[]
   warehouses: IdType[]
 }>
 
-export type GetMacroregionsCatalogSuccessResponse = MacroregionsCatalogDTO
+export type GetMacroregionsCatalogResponse = MacroregionsCatalogDTO

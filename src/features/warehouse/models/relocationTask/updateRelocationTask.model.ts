@@ -1,4 +1,4 @@
-import { EquipmentConditionEnum } from 'features/warehouse/constants/equipment'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { RelocationTaskTypeEnum } from 'features/warehouse/constants/relocationTask'
 import { RelocationTaskRequestArgs } from 'features/warehouse/types'
 
@@ -6,7 +6,7 @@ import { IdType } from 'shared/types/common'
 
 import { RelocationTaskModel } from './relocationTask.model'
 
-export type UpdateRelocationTaskMutationArgs = RelocationTaskRequestArgs & {
+export type UpdateRelocationTaskRequest = RelocationTaskRequestArgs & {
   type: RelocationTaskTypeEnum
   deadlineAt: string
   executors: IdType[]
@@ -29,4 +29,4 @@ export type UpdateRelocationTaskMutationArgs = RelocationTaskRequestArgs & {
   images?: IdType[]
 }
 
-export type UpdateRelocationTaskSuccessResponse = RelocationTaskModel
+export type UpdateRelocationTaskResponse = RelocationTaskModel

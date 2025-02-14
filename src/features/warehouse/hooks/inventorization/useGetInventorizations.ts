@@ -1,28 +1,27 @@
+import { getInventorizationsErrMsg } from 'features/warehouse/constants/inventorization'
+import { GetInventorizationsRequest } from 'features/warehouse/models/inventorization'
+import { useGetInventorizationsQuery } from 'features/warehouse/services/inventorizationApi.service'
+import { GetInventorizationsTransformedResponse } from 'features/warehouse/types'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getInventorizationsErrMsg } from 'features/warehouse/constants/inventorization'
-import { GetInventorizationsQueryArgs } from 'features/warehouse/models/inventorization'
-import { useGetInventorizationsQuery } from 'features/warehouse/services/inventorizationApi.service'
-import { GetInventorizationsTransformedSuccessResponse } from 'features/warehouse/types'
 
 import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetInventorizationsResult = CustomUseQueryHookResult<
-  MaybeUndefined<GetInventorizationsQueryArgs>,
-  GetInventorizationsTransformedSuccessResponse
+  MaybeUndefined<GetInventorizationsRequest>,
+  GetInventorizationsTransformedResponse
 >
 
 type UseGetInventorizationsOptions = CustomUseQueryOptions<
-  MaybeUndefined<GetInventorizationsQueryArgs>,
-  GetInventorizationsTransformedSuccessResponse
+  MaybeUndefined<GetInventorizationsRequest>,
+  GetInventorizationsTransformedResponse
 >
 
 export const useGetInventorizations = (
-  args?: GetInventorizationsQueryArgs,
+  args?: GetInventorizationsRequest,
   options?: UseGetInventorizationsOptions,
 ): UseGetInventorizationsResult => {
   const state = useGetInventorizationsQuery(args, options)

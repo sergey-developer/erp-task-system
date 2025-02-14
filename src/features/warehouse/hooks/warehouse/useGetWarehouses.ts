@@ -1,7 +1,7 @@
 import { getWarehouseListErrMsg } from 'features/warehouse/constants/warehouse'
 import {
-  GetWarehouseListQueryArgs,
-  GetWarehouseListSuccessResponse,
+  GetWarehouseListRequest,
+  GetWarehouseListResponse,
 } from 'features/warehouse/models'
 import { useGetWarehouseListQuery } from 'features/warehouse/services/warehouseApi.service'
 import { useEffect } from 'react'
@@ -12,17 +12,17 @@ import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetWarehouseListResult = CustomUseQueryHookResult<
-  GetWarehouseListQueryArgs,
-  GetWarehouseListSuccessResponse
+  GetWarehouseListRequest,
+  GetWarehouseListResponse
 >
 
 type UseGetWarehouseListOptions = CustomUseQueryOptions<
-  GetWarehouseListQueryArgs,
-  GetWarehouseListSuccessResponse
+  GetWarehouseListRequest,
+  GetWarehouseListResponse
 >
 
 export const useGetWarehouses = (
-  args?: GetWarehouseListQueryArgs,
+  args?: GetWarehouseListRequest,
   options?: UseGetWarehouseListOptions,
 ): UseGetWarehouseListResult => {
   const state = useGetWarehouseListQuery(args, options)

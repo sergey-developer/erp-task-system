@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
-import { GetInventorizationReportSuccessResponse } from 'features/reports/api/schemas'
+import { GetInventorizationReportResponse } from 'features/reports/api/schemas'
 
-export type GetInventorizationReportTransformedSuccessResponse = {
-  value: GetInventorizationReportSuccessResponse
+export type GetInventorizationReportTransformedResponse = {
+  value: GetInventorizationReportResponse
   meta?: { response?: AxiosResponse }
 }

@@ -1,16 +1,16 @@
 import { baseApi } from 'shared/api/baseApi'
 import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants'
 import {
-  GetCustomersCatalogQueryArgs,
-  GetCustomersCatalogSuccessResponse,
+  GetCustomersCatalogRequest,
+  GetCustomersCatalogResponse,
 } from 'shared/catalogs/customers/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const customersCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getCustomersCatalog: build.query<
-      GetCustomersCatalogSuccessResponse,
-      GetCustomersCatalogQueryArgs
+      GetCustomersCatalogResponse,
+      GetCustomersCatalogRequest
     >({
       query: () => ({
         url: CatalogEndpointsEnum.GetCustomers,

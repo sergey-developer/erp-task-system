@@ -1,16 +1,16 @@
 import { within } from '@testing-library/react'
 import { testUtils as attachmentImagesTestUtils } from 'features/attachments/components/AttachmentImages/AttachmentImages.test'
 import { testUtils as attachmentListModalTestUtils } from 'features/attachments/components/AttachmentsModal/AttachmentsModal.test'
-import { testUtils as technicalExaminationsHistoryModalTestUtils } from 'features/technicalExaminations/components/TechnicalExaminationsHistoryModal/TechnicalExaminationsHistoryModal.test'
-import { UserPermissionsEnum } from 'features/users/api/constants'
 import {
   EquipmentCategoryEnum,
   equipmentConditionDict,
   EquipmentConditionEnum,
   getEquipmentAttachmentListErrMsg,
-  getEquipmentMessages,
-  getEquipmentRelocationHistoryMessages,
-} from 'features/warehouse/constants/equipment'
+  getEquipmentErrMsg,
+  getEquipmentRelocationHistoryErrMsg,
+} from 'features/equipments/api/constants'
+import { testUtils as technicalExaminationsHistoryModalTestUtils } from 'features/technicalExaminations/components/TechnicalExaminationsHistoryModal/TechnicalExaminationsHistoryModal.test'
+import { UserPermissionsEnum } from 'features/users/api/constants'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'
 import * as commonUtils from 'shared/utils/common'
@@ -931,9 +931,7 @@ describe('Информация об оборудовании', () => {
       })
 
       await equipmentDetailsTestUtils.expectLoadingFinished()
-      const notification = await notificationTestUtils.findNotification(
-        getEquipmentMessages.commonError,
-      )
+      const notification = await notificationTestUtils.findNotification(getEquipmentErrMsg)
 
       expect(notification).toBeInTheDocument()
     })
@@ -1166,7 +1164,7 @@ describe('Информация об оборудовании', () => {
         await equipmentRelocationHistoryModalTestUtils.findContainer()
 
         const notification = await notificationTestUtils.findNotification(
-          getEquipmentRelocationHistoryMessages.commonError,
+          getEquipmentRelocationHistoryErrMsg,
         )
         expect(notification).toBeInTheDocument()
       })

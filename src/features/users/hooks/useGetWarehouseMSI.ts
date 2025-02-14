@@ -1,8 +1,8 @@
 import { getWarehouseMSIErrMsg } from 'features/users/api/constants'
 import { useGetWarehouseMSIQuery } from 'features/users/api/endpoints/users.endpoints'
 import {
-  GetWarehouseMSIQueryArgs,
-  GetWarehouseMSISuccessResponse,
+  GetWarehouseMSIRequest,
+  GetWarehouseMSIResponse,
 } from 'features/users/api/schemas'
 import { useEffect } from 'react'
 
@@ -17,17 +17,17 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetWarehouseMSIResult = CustomUseQueryHookResult<
-  GetWarehouseMSIQueryArgs,
-  GetWarehouseMSISuccessResponse
+  GetWarehouseMSIRequest,
+  GetWarehouseMSIResponse
 >
 
 type UseGetWarehouseMSIOptions = CustomUseQueryOptions<
-  GetWarehouseMSIQueryArgs,
-  GetWarehouseMSISuccessResponse
+  GetWarehouseMSIRequest,
+  GetWarehouseMSIResponse
 >
 
 export const useGetWarehouseMSI = (
-  args: GetWarehouseMSIQueryArgs,
+  args: GetWarehouseMSIRequest,
   options?: UseGetWarehouseMSIOptions,
 ): UseGetWarehouseMSIResult => {
   const state = useGetWarehouseMSIQuery(args, options)

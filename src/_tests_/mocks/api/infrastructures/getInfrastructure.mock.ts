@@ -1,5 +1,5 @@
 import { makeGetInfrastructureEndpoint } from 'features/infrastructures/api/helpers'
-import { GetInfrastructureSuccessResponse } from 'features/infrastructures/api/schemas'
+import { GetInfrastructureResponse } from 'features/infrastructures/api/schemas'
 import { InfrastructureRequestArgs } from 'features/infrastructures/api/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const getInfrastructureMockFn = ({ infrastructureId }: InfrastructureRequestArgs
 
 export const mockGetInfrastructureSuccess = (
   { infrastructureId }: InfrastructureRequestArgs,
-  options?: Partial<ResponseResolverOptions<GetInfrastructureSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetInfrastructureResponse>>,
 ) => getSuccessMockFn(getInfrastructureMockFn({ infrastructureId }), options)()

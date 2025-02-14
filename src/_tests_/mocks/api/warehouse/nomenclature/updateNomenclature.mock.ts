@@ -1,4 +1,4 @@
-import { UpdateNomenclatureSuccessResponse } from 'features/warehouse/models'
+import { UpdateNomenclatureResponse } from 'features/warehouse/models'
 import { updateNomenclatureUrl } from 'features/warehouse/utils/nomenclature'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const updateNomenclatureMockFn = (id: IdType) =>
 
 export const mockUpdateNomenclatureSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<UpdateNomenclatureSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<UpdateNomenclatureResponse>>,
 ) => getSuccessMockFn(updateNomenclatureMockFn(id), options)()

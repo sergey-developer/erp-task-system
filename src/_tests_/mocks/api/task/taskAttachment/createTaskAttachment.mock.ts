@@ -1,4 +1,4 @@
-import { CreateTaskAttachmentSuccessResponse } from 'features/task/models'
+import { CreateTaskAttachmentResponse } from 'features/task/models'
 import { createTaskAttachmentUrl } from 'features/task/utils/task'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,5 +12,5 @@ const createTaskAttachmentMockFn = (taskId: IdType) =>
 
 export const mockCreateTaskAttachmentSuccess = (
   taskId: IdType,
-  options?: Partial<ResponseResolverOptions<CreateTaskAttachmentSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<CreateTaskAttachmentResponse>>,
 ) => getSuccessMockFn(createTaskAttachmentMockFn(taskId), options)()

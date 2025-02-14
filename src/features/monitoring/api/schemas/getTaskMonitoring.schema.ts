@@ -1,4 +1,4 @@
 import { TaskMonitoringDTO } from '../dto'
 
-export type GetTaskMonitoringQueryArgs = string
-export type GetTaskMonitoringSuccessResponse = TaskMonitoringDTO[]
+export type GetTaskMonitoringRequest = string
+export type GetTaskMonitoringResponse = TaskMonitoringDTO[]

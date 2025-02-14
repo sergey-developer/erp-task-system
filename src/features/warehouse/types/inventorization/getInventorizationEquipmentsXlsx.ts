@@ -1,8 +1,7 @@
 import { AxiosResponse } from 'axios'
+import { GetInventorizationEquipmentsXlsxResponse } from 'features/warehouse/models'
 
-import { GetInventorizationEquipmentsXlsxSuccessResponse } from 'features/warehouse/models'
-
-export type GetInventorizationEquipmentsXlsxTransformedSuccessResponse = {
-  value: GetInventorizationEquipmentsXlsxSuccessResponse
+export type GetInventorizationEquipmentsXlsxTransformedResponse = {
+  value: GetInventorizationEquipmentsXlsxResponse
   meta?: { response?: AxiosResponse }
 }

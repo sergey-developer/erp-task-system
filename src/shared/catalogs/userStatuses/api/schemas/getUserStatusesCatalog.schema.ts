@@ -1,4 +1,4 @@
 import { UserStatusesCatalogDTO } from 'shared/catalogs/userStatuses/api/dto'
 
-export type GetUserStatusesCatalogQueryArgs = void
-export type GetUserStatusesCatalogSuccessResponse = UserStatusesCatalogDTO
+export type GetUserStatusesCatalogRequest = void
+export type GetUserStatusesCatalogResponse = UserStatusesCatalogDTO

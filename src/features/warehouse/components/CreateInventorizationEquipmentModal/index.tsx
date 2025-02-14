@@ -1,10 +1,9 @@
 import { useBoolean } from 'ahooks'
 import { Form, Select } from 'antd'
+import { makeEquipmentsSelectOptions } from 'features/equipments/helpers'
+import { EquipmentsCatalogItemDTO } from 'features/warehouse/models'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useMemo, useState } from 'react'
-
-import { EquipmentCatalogListItemModel } from 'features/warehouse/models'
-import { makeEquipmentsSelectOptions } from 'features/warehouse/utils/equipment'
 
 import { SelectOptionButton } from 'components/Buttons/SelectOptionButton'
 import BaseModal from 'components/Modals/BaseModal'
@@ -81,7 +80,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
           label='Оборудование'
           rules={onlyRequiredRules}
         >
-          <Select<EquipmentCatalogListItemModel['id']>
+          <Select<EquipmentsCatalogItemDTO['id']>
             open={equipmentSelectOpened}
             onDropdownVisibleChange={setEquipmentSelectOpened}
             dropdownRender={(menu) => (

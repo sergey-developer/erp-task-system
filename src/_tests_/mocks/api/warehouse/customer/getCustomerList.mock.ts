@@ -1,4 +1,4 @@
-import { GetCustomersCatalogSuccessResponse } from 'features/warehouse/models'
+import { GetCustomersCatalogResponse } from 'features/warehouse/models'
 import { CustomerApiEnum } from 'features/warehouse/services/customerApiService'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -10,7 +10,7 @@ const getCustomerListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, CustomerApiEnum.GetCustomerList)
 
 export const mockGetCustomerListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetCustomersCatalogSuccessResponse>>,
+  options?: Partial<ResponseResolverOptions<GetCustomersCatalogResponse>>,
 ) => getSuccessMockFn(getCustomerListMockFn(), options)()
 
 export const mockGetCustomerListServerError = (options?: Partial<ResponseResolverOptions>) =>

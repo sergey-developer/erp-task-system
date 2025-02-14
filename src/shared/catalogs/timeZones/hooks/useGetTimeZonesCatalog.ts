@@ -7,16 +7,16 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { getTimeZonesCatalogErrMsg } from '../api/constants'
 import { useGetTimeZonesCatalogQuery } from '../api/endpoints/timeZonesCatalog.endpoints'
-import { GetTimeZonesCatalogQueryArgs, GetTimeZonesCatalogSuccessResponse } from '../api/schemas'
+import { GetTimeZonesCatalogRequest, GetTimeZonesCatalogResponse } from '../api/schemas'
 
 type UseGetTimeZonesCatalogResult = CustomUseQueryHookResult<
-  GetTimeZonesCatalogQueryArgs,
-  GetTimeZonesCatalogSuccessResponse
+  GetTimeZonesCatalogRequest,
+  GetTimeZonesCatalogResponse
 >
 
 type UseGetTimeZonesCatalogOptions = CustomUseQueryOptions<
-  GetTimeZonesCatalogQueryArgs,
-  GetTimeZonesCatalogSuccessResponse
+  GetTimeZonesCatalogRequest,
+  GetTimeZonesCatalogResponse
 >
 
 export const useGetTimeZonesCatalog = (

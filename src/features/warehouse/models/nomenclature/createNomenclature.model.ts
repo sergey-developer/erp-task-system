@@ -2,7 +2,7 @@ import { MaybeNull } from 'shared/types/utils'
 
 import { NomenclatureListItemModel } from './nomenclatures.model'
 
-export type CreateNomenclatureMutationArgs = {
+export type CreateNomenclatureRequest = {
   title: string
   shortTitle: string
   group: number
@@ -12,9 +12,9 @@ export type CreateNomenclatureMutationArgs = {
   country?: MaybeNull<number>
 }
 
-export type CreateNomenclatureSuccessResponse = Pick<
+export type CreateNomenclatureResponse = Pick<
   NomenclatureListItemModel,
   'id' | 'title' | 'vendorCode'
 >
 
-export type CreateNomenclatureBadRequestErrorResponse = Partial<CreateNomenclatureMutationArgs>
+export type CreateNomenclatureBadRequestErrorResponse = Partial<CreateNomenclatureRequest>

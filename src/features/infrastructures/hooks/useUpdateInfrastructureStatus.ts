@@ -1,6 +1,6 @@
 import {
-  UpdateInfrastructureStatusMutationArgs,
-  UpdateInfrastructureStatusSuccessResponse,
+  UpdateInfrastructureStatusRequest,
+  UpdateInfrastructureStatusResponse,
 } from 'features/infrastructures/api/dto'
 import { useUpdateInfrastructureStatusMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import { updateInfrastructureStatusErrMsg } from 'features/infrastructures/constants'
@@ -17,8 +17,8 @@ import {
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseUpdateInfrastructureStatusResult = CustomUseMutationResult<
-  UpdateInfrastructureStatusMutationArgs,
-  UpdateInfrastructureStatusSuccessResponse
+  UpdateInfrastructureStatusRequest,
+  UpdateInfrastructureStatusResponse
 >
 
 export const useUpdateInfrastructureStatus = (): UseUpdateInfrastructureStatusResult => {

@@ -14,13 +14,13 @@ import { showErrorNotification } from 'shared/utils/notifications'
 import { cancelReclassificationRequestErrMsg } from '../api/constants'
 import { useCancelReclassificationRequestMutation } from '../api/endpoints/reclassificationRequests.endpoints'
 import {
-  CancelReclassificationRequestMutationArgs,
-  CancelReclassificationRequestSuccessResponse,
+  CancelReclassificationRequestRequest,
+  CancelReclassificationRequestResponse,
 } from '../api/schemas'
 
 type UseCancelReclassificationRequestResult = CustomUseMutationResult<
-  CancelReclassificationRequestMutationArgs,
-  CancelReclassificationRequestSuccessResponse
+  CancelReclassificationRequestRequest,
+  CancelReclassificationRequestResponse
 >
 
 export const useCancelReclassificationRequest = (): UseCancelReclassificationRequestResult => {

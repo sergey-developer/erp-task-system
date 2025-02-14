@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react'
-import { getEquipmentsErrMsg } from 'features/warehouse/constants/equipment'
+import { getEquipmentsErrMsg } from 'features/equipments/api/constants'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/components/EquipmentDetails/testUtils'

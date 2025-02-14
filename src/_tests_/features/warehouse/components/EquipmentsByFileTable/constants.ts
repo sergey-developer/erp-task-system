@@ -5,7 +5,7 @@ import {
 import {
   EquipmentCategoryEnum,
   EquipmentConditionEnum,
-} from 'features/warehouse/constants/equipment/index'
+} from 'features/equipments/api/constants'
 
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 

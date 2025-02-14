@@ -3,7 +3,7 @@ import { MaybeUndefined } from 'shared/types/utils'
 
 import { SupportGroupsDTO } from '../dto'
 
-export type GetSupportGroupsQueryArgs = MaybeUndefined<
+export type GetSupportGroupsRequest = MaybeUndefined<
   Partial<{
     hasTemplate: boolean
     assignedToUser: boolean
@@ -12,4 +12,4 @@ export type GetSupportGroupsQueryArgs = MaybeUndefined<
   }>
 >
 
-export type GetSupportGroupsSuccessResponse = SupportGroupsDTO
+export type GetSupportGroupsResponse = SupportGroupsDTO
