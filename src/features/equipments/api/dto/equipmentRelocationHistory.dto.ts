@@ -1,7 +1,7 @@
 import { AttachmentDetailDTO } from 'features/attachments/api/dto'
+import { RelocationTaskStatusEnum } from 'features/relocationTasks/api/constants'
+import { ExternalRelocationDetailDTO } from 'features/relocationTasks/api/dto'
 import { UserDetailDTO } from 'features/users/api/dto'
-import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
-import { ExternalRelocationModel } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -24,7 +24,7 @@ export type EquipmentRelocationHistoryItemDTO = {
 
   completedAt: MaybeNull<string>
   documents: MaybeNull<EquipmentRelocationHistoryAttachmentDTO[]>
-  externalRelocation: MaybeNull<Pick<ExternalRelocationModel, 'number'>>
+  externalRelocation: MaybeNull<Pick<ExternalRelocationDetailDTO, 'number'>>
 }
 
 export type EquipmentRelocationHistoryDTO = EquipmentRelocationHistoryItemDTO[]

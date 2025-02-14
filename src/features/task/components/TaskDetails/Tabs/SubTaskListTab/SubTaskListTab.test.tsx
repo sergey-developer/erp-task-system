@@ -2,7 +2,7 @@ import { waitForElementToBeRemoved } from '@testing-library/react'
 
 import { ReworkSubTaskFormErrors } from 'features/task/components/ReworkSubTaskModal/types'
 import {
-  getSubTasksErrMsg,
+  getSubTasksErrorMessage,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
@@ -346,7 +346,7 @@ describe('Вкладка списка заданий заявки', () => {
 
         await subTaskListTabTestUtils.expectLoadingFinished()
 
-        expect(await notificationTestUtils.findNotification(getSubTasksErrMsg)).toBeInTheDocument()
+        expect(await notificationTestUtils.findNotification(getSubTasksErrorMessage)).toBeInTheDocument()
       })
     })
   })

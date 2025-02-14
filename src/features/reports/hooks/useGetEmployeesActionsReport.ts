@@ -10,7 +10,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getEmployeesActionsReportErrMsg } from '../api/constants'
+import { getEmployeesActionsReportErrorMessage } from '../api/constants'
 import { useGetEmployeesActionsReportQuery } from '../api/endpoints/reports.endpoints'
 import { GetEmployeesActionsReportRequest } from '../api/schemas'
 import { GetEmployeesActionsReportTransformedResponse } from '../api/types'
@@ -36,7 +36,7 @@ export const useGetEmployeesActionsReport = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEmployeesActionsReportErrMsg)
+        showErrorNotification(getEmployeesActionsReportErrorMessage)
       }
     }
   }, [state.error])

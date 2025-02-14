@@ -1,5 +1,5 @@
 import { EquipmentDetailDTO } from 'features/equipments/api/dto'
-import { RelocationEquipmentListItemModel } from 'features/warehouse/models'
+import { RelocationEquipmentDTO } from 'features/warehouse/models'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, SetNonNullable } from 'shared/types/utils'
@@ -12,7 +12,7 @@ export type TechnicalExaminationDetailDTO = {
   restorationCost: number
 
   conclusion: MaybeNull<string>
-  relocationEquipment: MaybeNull<Pick<RelocationEquipmentListItemModel, 'id'>>
+  relocationEquipment: MaybeNull<Pick<RelocationEquipmentDTO, 'id'>>
   equipment: MaybeNull<
     SetNonNullable<EquipmentDetailDTO, 'id' | 'title' | 'serialNumber'> &
       Pick<EquipmentDetailDTO, 'inventoryNumber'>

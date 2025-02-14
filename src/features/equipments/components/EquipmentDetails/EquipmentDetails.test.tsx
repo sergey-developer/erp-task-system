@@ -4,9 +4,9 @@ import { testUtils as attachmentListModalTestUtils } from 'features/attachments/
 import {
   EquipmentCategoryEnum,
   EquipmentConditionEnum,
-  getEquipmentAttachmentsErrMsg,
-  getEquipmentErrMsg,
-  getEquipmentRelocationHistoryErrMsg,
+  getEquipmentAttachmentsErrorMessage,
+  getEquipmentErrorMessage,
+  getEquipmentRelocationHistoryErrorMessage,
 } from 'features/equipments/api/constants'
 import { testUtils as technicalExaminationsHistoryModalTestUtils } from 'features/technicalExaminations/components/TechnicalExaminationsHistoryModal/TechnicalExaminationsHistoryModal.test'
 import { UserPermissionsEnum } from 'features/users/api/constants'
@@ -753,7 +753,7 @@ describe('Информация об оборудовании', () => {
           await equipmentDetailsTestUtils.expectLoadingFinished()
 
           const notification = await notificationTestUtils.findNotification(
-            getEquipmentAttachmentsErrMsg,
+            getEquipmentAttachmentsErrorMessage,
           )
           expect(notification).toBeInTheDocument()
         })
@@ -931,7 +931,7 @@ describe('Информация об оборудовании', () => {
       })
 
       await equipmentDetailsTestUtils.expectLoadingFinished()
-      const notification = await notificationTestUtils.findNotification(getEquipmentErrMsg)
+      const notification = await notificationTestUtils.findNotification(getEquipmentErrorMessage)
 
       expect(notification).toBeInTheDocument()
     })
@@ -1164,7 +1164,7 @@ describe('Информация об оборудовании', () => {
         await equipmentRelocationHistoryModalTestUtils.findContainer()
 
         const notification = await notificationTestUtils.findNotification(
-          getEquipmentRelocationHistoryErrMsg,
+          getEquipmentRelocationHistoryErrorMessage,
         )
         expect(notification).toBeInTheDocument()
       })

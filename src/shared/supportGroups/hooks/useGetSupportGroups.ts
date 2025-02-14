@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
-import { getSupportGroupsErrMsg } from 'shared/supportGroups/api/constants'
+import { getSupportGroupsErrorMessage } from 'shared/supportGroups/api/constants'
 import { useGetSupportGroupListQuery } from 'shared/supportGroups/api/endpoints/supportGroups.endpoints'
 import {
   GetSupportGroupsRequest,
@@ -29,7 +29,7 @@ export const useGetSupportGroups = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getSupportGroupsErrMsg)
+      showErrorNotification(getSupportGroupsErrorMessage)
     }
   }, [state.error])
 

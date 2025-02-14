@@ -1,11 +1,10 @@
 import { TableProps } from 'antd'
-
-import { RelocationTaskCompletionDocumentModel } from 'features/warehouse/models'
+import { RelocationTaskCompletionDocumentDTO } from 'features/warehouse/models'
 
 import { ArrayFirst } from 'shared/types/utils'
 
 export type DocumentsPackageRelocationEquipmentTableItem = ArrayFirst<
-  RelocationTaskCompletionDocumentModel['relocationEquipments']
+  RelocationTaskCompletionDocumentDTO['relocationEquipments']
 >
 
 export type DocumentsPackageRelocationEquipmentTableProps = Pick<

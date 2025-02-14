@@ -1,4 +1,4 @@
-import { ReturnRelocationTaskToReworkModalProps } from 'features/warehouse/components/ReturnRelocationTaskToReworkModal/types'
+import { ReturnRelocationTaskToReworkModalProps } from 'features/relocationTasks/components/ReturnRelocationTaskToReworkModal/types'
 
 export const props: Readonly<ReturnRelocationTaskToReworkModalProps> = {
   open: true,

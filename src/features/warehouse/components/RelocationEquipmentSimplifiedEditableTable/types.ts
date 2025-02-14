@@ -1,5 +1,5 @@
+import { SimplifiedRelocationTaskEquipment } from 'features/relocationTasks/types/createSimplifiedRelocationTask'
 import { EquipmentsCatalogDTO } from 'features/warehouse/models'
-import { SimplifiedRelocationTaskEquipment } from 'features/warehouse/types/relocationTask/createSimplifiedRelocationTask'
 import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
 

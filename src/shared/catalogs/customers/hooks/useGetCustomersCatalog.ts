@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
-import { getCustomersCatalogErrMsg } from 'shared/catalogs/customers/api/constants'
+import { getCustomersCatalogErrorMessage } from 'shared/catalogs/customers/api/constants'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { useGetCustomersCatalogQuery } from '../api/endpoints/customersCatalog.endpoints'
@@ -27,7 +27,7 @@ export const useGetCustomersCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getCustomersCatalogErrMsg)
+      showErrorNotification(getCustomersCatalogErrorMessage)
     }
   }, [state.error])
 

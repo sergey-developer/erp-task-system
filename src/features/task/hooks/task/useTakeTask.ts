@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { takeTaskErrMsg } from 'features/task/constants/task'
+import { takeTaskErrorMessage } from 'features/task/constants/task'
 import { TakeTaskRequest, TakeTaskResponse } from 'features/task/models'
 import { useTakeTaskMutation } from 'features/task/services/taskApi.service'
 
@@ -29,7 +29,7 @@ export const useTakeTask = (): UseTakeTaskResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(takeTaskErrMsg)
+        showErrorNotification(takeTaskErrorMessage)
       }
     }
   }, [state.error])

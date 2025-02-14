@@ -1,5 +1,5 @@
+import { makeGetNomenclatureEndpoint } from 'features/nomenclatures/api/helpers'
 import { GetNomenclatureResponse } from 'features/warehouse/models'
-import { getNomenclatureUrl } from 'features/warehouse/utils/nomenclature'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
@@ -14,7 +14,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getNomenclatureMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getNomenclatureUrl(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetNomenclatureEndpoint(id))
 
 export const mockGetNomenclatureSuccess = (
   id: IdType,

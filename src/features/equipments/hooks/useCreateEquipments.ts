@@ -1,4 +1,4 @@
-import { createEquipmentsErrMsg } from 'features/equipments/api/constants'
+import { createEquipmentsErrorMessage } from 'features/equipments/api/constants'
 import { useCreateEquipmentsMutation } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { CreateEquipmentsRequest, CreateEquipmentsResponse } from 'features/warehouse/models'
 import { useEffect } from 'react'
@@ -26,7 +26,7 @@ export const useCreateEquipments = (): UseCreateEquipmentsResult => {
       if (isBadRequestError(state.error) || isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createEquipmentsErrMsg)
+        showErrorNotification(createEquipmentsErrorMessage)
       }
     }
   }, [state.error])

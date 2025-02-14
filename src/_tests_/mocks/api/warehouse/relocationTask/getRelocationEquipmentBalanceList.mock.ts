@@ -1,8 +1,8 @@
+import { getRelocationEquipmentBalanceListUrl } from 'features/relocationTasks/api/helpers'
 import { GetRelocationEquipmentBalanceListResponse } from 'features/warehouse/models'
-import { getRelocationEquipmentBalanceListUrl } from 'features/warehouse/utils/relocationTask'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {

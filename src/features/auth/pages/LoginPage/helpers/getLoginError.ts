@@ -1,4 +1,4 @@
-import { loginBadRequestErrMsg, loginWrongDataErrMsg } from 'features/auth/api/constants'
+import { loginBadRequestErrorMessage, loginWrongDataErrorMessage } from 'features/auth/api/constants'
 
 import { isErrorResponse } from 'shared/api/baseApi'
 import { commonApiMessages } from 'shared/constants/common'
@@ -10,9 +10,9 @@ export const getLoginError = (error: unknown): MaybeNull<string> => {
 
   switch (error.status) {
     case HttpCodeEnum.BadRequest:
-      return loginBadRequestErrMsg
+      return loginBadRequestErrorMessage
     case HttpCodeEnum.Unauthorized:
-      return loginWrongDataErrMsg
+      return loginWrongDataErrorMessage
     default:
       return commonApiMessages.unknownError
   }

@@ -1,4 +1,4 @@
-import { createTaskCompletionDocumentsErrMsg } from 'features/task/constants/task'
+import { createTaskCompletionDocumentsErrorMessage } from 'features/task/constants/task'
 import {
   CreateTaskCompletionDocumentsRequest,
   CreateTaskCompletionDocumentsResponse,
@@ -34,7 +34,7 @@ export const useCreateTaskCompletionDocuments = (): UseCreateTaskCompletionDocum
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createTaskCompletionDocumentsErrMsg)
+        showErrorNotification(createTaskCompletionDocumentsErrorMessage)
       }
     }
   }, [state.error])

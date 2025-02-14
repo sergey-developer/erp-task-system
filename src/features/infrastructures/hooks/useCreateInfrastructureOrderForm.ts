@@ -3,7 +3,7 @@ import {
   CreateInfrastructureOrderFormResponse,
 } from 'features/infrastructures/api/dto'
 import { useCreateInfrastructureOrderFormMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { createInfrastructureOrderFormErrMsg } from 'features/infrastructures/constants'
+import { createInfrastructureOrderFormErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
@@ -29,7 +29,7 @@ export const useCreateInfrastructureOrderForm = (): UseCreateInfrastructureOrder
       if (isBadRequestError(state.error) || isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createInfrastructureOrderFormErrMsg)
+        showErrorNotification(createInfrastructureOrderFormErrorMessage)
       }
     }
   }, [state.error])

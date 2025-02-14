@@ -1,4 +1,4 @@
-import { getEquipmentErrMsg } from 'features/equipments/api/constants'
+import { getEquipmentErrorMessage } from 'features/equipments/api/constants'
 import { useLazyGetEquipmentQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { useEffect } from 'react'
 
@@ -24,7 +24,7 @@ export const useLazyGetEquipment = (): UseGetEquipmentResult => {
       if (isNotFoundError(state.error) || isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentErrMsg)
+        showErrorNotification(getEquipmentErrorMessage)
       }
     }
   }, [state.error])

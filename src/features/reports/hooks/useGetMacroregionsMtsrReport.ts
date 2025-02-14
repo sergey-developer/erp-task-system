@@ -1,4 +1,4 @@
-import { getMacroregionsMtsrReportErrMsg } from 'features/reports/api/constants'
+import { getMacroregionsMtsrReportErrorMessage } from 'features/reports/api/constants'
 import { useGetMacroregionsMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
   GetMacroregionsMtsrReportRequest,
@@ -32,7 +32,7 @@ export const useGetMacroregionsMtsrReport = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getMacroregionsMtsrReportErrMsg)
+        showErrorNotification(getMacroregionsMtsrReportErrorMessage)
       }
     }
   }, [state.error])

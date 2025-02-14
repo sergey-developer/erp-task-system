@@ -1,4 +1,4 @@
-import { getUserActionsErrMsg } from 'features/users/api/constants'
+import { getUserActionsErrorMessage } from 'features/users/api/constants'
 import { useGetUserActionsQuery } from 'features/users/api/endpoints/users.endpoints'
 import { GetUserActionsRequest, GetUserActionsResponse } from 'features/users/api/schemas'
 import { useEffect } from 'react'
@@ -18,10 +18,7 @@ type UseGetUserActionsResult = CustomUseQueryHookResult<
   GetUserActionsResponse
 >
 
-type UseGetUserActionsOptions = CustomUseQueryOptions<
-  GetUserActionsRequest,
-  GetUserActionsResponse
->
+type UseGetUserActionsOptions = CustomUseQueryOptions<GetUserActionsRequest, GetUserActionsResponse>
 
 export const useGetUserActions = (
   args: GetUserActionsRequest,
@@ -34,7 +31,7 @@ export const useGetUserActions = (
       if (isForbiddenError(state.error) || isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getUserActionsErrMsg)
+        showErrorNotification(getUserActionsErrorMessage)
       }
     }
   }, [state.error])

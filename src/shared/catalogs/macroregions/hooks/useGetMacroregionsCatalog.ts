@@ -11,7 +11,7 @@ import {
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getMacroregionsCatalogErrMsg } from '../api/constants'
+import { getMacroregionsCatalogErrorMessage } from '../api/constants'
 
 type UseGetMacroregionsCatalogResult = CustomUseQueryHookResult<
   MaybeUndefined<GetMacroregionsCatalogRequest>,
@@ -31,7 +31,7 @@ export const useGetMacroregionsCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getMacroregionsCatalogErrMsg)
+      showErrorNotification(getMacroregionsCatalogErrorMessage)
     }
   }, [state.error])
 

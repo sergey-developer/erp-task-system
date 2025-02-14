@@ -1,5 +1,5 @@
 import { UploadFile } from 'antd/es/upload'
-import { deleteAttachmentErrMsg } from 'features/attachments/api/constants'
+import { deleteAttachmentErrorMessage } from 'features/attachments/api/constants'
 import { useDeleteAttachmentMutation } from 'features/attachments/api/endpoints/attachments.endpoints'
 import {
   DeleteAttachmentRequest,
@@ -36,7 +36,7 @@ export const useDeleteAttachment = (): UseDeleteAttachmentResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(deleteAttachmentErrMsg)
+        showErrorNotification(deleteAttachmentErrorMessage)
       }
     }
   }, [state.error])

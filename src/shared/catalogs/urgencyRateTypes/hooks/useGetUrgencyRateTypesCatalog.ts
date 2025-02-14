@@ -6,7 +6,7 @@ import { isErrorResponse } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getUrgencyRateTypesCatalogErrMsg } from '../api/constants'
+import { getUrgencyRateTypesCatalogErrorMessage } from '../api/constants'
 import { useGetUrgencyRateTypesCatalogQuery } from '../api/endpoints/urgencyRateTypesCatalog.endpoints'
 import {
   GetUrgencyRateTypesCatalogRequest,
@@ -31,7 +31,7 @@ export const useGetUrgencyRateTypesCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getUrgencyRateTypesCatalogErrMsg)
+      showErrorNotification(getUrgencyRateTypesCatalogErrorMessage)
     }
   }, [state.error])
 

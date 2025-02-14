@@ -4,7 +4,7 @@ import {
   GetInfrastructureStatusHistoryResponse,
 } from 'features/infrastructures/api/dto'
 import { useGetInfrastructureStatusHistoryQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { getInfrastructureStatusHistoryErrMsg } from 'features/infrastructures/constants'
+import { getInfrastructureStatusHistoryErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -38,7 +38,7 @@ export const useGetInfrastructureStatusHistory = (
       if (isBadRequestError(state.error) || isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getInfrastructureStatusHistoryErrMsg)
+        showErrorNotification(getInfrastructureStatusHistoryErrorMessage)
       }
     }
   }, [state.error])

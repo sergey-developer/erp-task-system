@@ -1,12 +1,11 @@
 import { within } from '@testing-library/react'
-
+import { getRelocationTasksErrorMessage } from 'features/relocationTasks/constants'
+import CreateRelocationTaskSimplifiedPage from 'features/relocationTasks/pages/CreateRelocationTaskSimplifiedPage'
+import RelocationTasksPage from 'features/relocationTasks/pages/RelocationTasksPage'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import { UserPermissionsEnum } from 'features/users/api/constants'
-import { getRelocationTasksErrMsg } from 'features/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 import CreateDocumentsPackagePage from 'features/warehouse/pages/CreateDocumentsPackagePage'
-import CreateRelocationTaskSimplifiedPage from 'features/warehouse/pages/CreateRelocationTaskSimplifiedPage'
-import RelocationTasksPage from 'features/warehouse/pages/RelocationTasksPage'
 
 import { relocationTasksTestUtils } from '_tests_/features/tasks/components/RelocationTasks/testUtils'
 import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/RelocationTasksTab/constants'
@@ -259,7 +258,9 @@ describe('Вкладка списка заявок на перемещение',
         })
 
         await relocationTasksTabTestUtils.expectLoadingFinished()
-        const notification = await notificationTestUtils.findNotification(getRelocationTasksErrMsg)
+        const notification = await notificationTestUtils.findNotification(
+          getRelocationTasksErrorMessage,
+        )
 
         expect(notification).toBeInTheDocument()
       })

@@ -1,4 +1,4 @@
-export enum InfrastructuresEndpointsEnum {
+export enum InfrastructuresApiPathsEnum {
   GetInfrastructure = '/infrastructures/:id',
   UpdateInfrastructure = '/infrastructures/:id',
 

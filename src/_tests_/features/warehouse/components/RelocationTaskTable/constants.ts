@@ -1,4 +1,4 @@
-import { RelocationTaskTableProps } from 'features/warehouse/components/RelocationTaskTable/types'
+import { RelocationTaskTableProps } from 'features/relocationTasks/components/RelocationTaskTable/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

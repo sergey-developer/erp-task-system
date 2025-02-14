@@ -10,10 +10,10 @@ import {
   ExecuteInventorizationRelocationTaskTableProps,
   ExecuteInventorizationRelocationTaskTableSortValue,
 } from 'features/inventorizations/components/ExecuteInventorizationRelocationTaskTable/types'
+import { makeCreateRelocationTaskDraftPageLocationState } from 'features/relocationTasks/api/helpers'
+import { useGetRelocationTasks } from 'features/relocationTasks/hooks'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import { useGetRelocationTasks } from 'features/warehouse/hooks/relocationTask'
 import { GetRelocationTasksRequest } from 'features/warehouse/models'
-import { makeCreateRelocationTaskDraftPageLocationState } from 'features/warehouse/utils/relocationTask'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -33,12 +33,12 @@ import {
 import { ExecuteInventorizationPageLocationState } from '../../types'
 
 const RelocationTaskDetails = React.lazy(
-  () => import('features/warehouse/components/RelocationTaskDetails'),
+  () => import('features/relocationTasks/components/RelocationTaskDetails'),
 )
 
 const { Title } = Typography
 
-const initialRelocationTasksParams: Pick<
+const initialGetRelocationTasksRequestArgs: Pick<
   GetRelocationTasksRequest<ExecuteInventorizationRelocationTaskTableSortValue>,
   'ordering' | 'offset' | 'limit'
 > = {
@@ -63,24 +63,24 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
   const [relocationTaskOpened, { setTrue: openRelocationTask, setFalse: closeRelocationTask }] =
     useBoolean(!!relocationTaskId)
 
-  const [getRelocationTasksParams, setGetRelocationTasksParams] = useSetState<
+  const [getRelocationTasksRequestArgs, setGetRelocationTasksRequestArgs] = useSetState<
     Pick<
       GetRelocationTasksRequest<ExecuteInventorizationRelocationTaskTableSortValue>,
       'ordering' | 'offset' | 'limit' | 'inventorization'
     >
-  >({ ...initialRelocationTasksParams, inventorization: inventorization.id })
+  >({ ...initialGetRelocationTasksRequestArgs, inventorization: inventorization.id })
 
   const {
     currentData: relocationTasks,
     isFetching: relocationTasksIsFetching,
     refetch: refetchRelocationTasks,
-  } = useGetRelocationTasks(getRelocationTasksParams)
+  } = useGetRelocationTasks(getRelocationTasksRequestArgs)
 
   const onTablePagination = useCallback(
     (pagination: Parameters<ExecuteInventorizationRelocationTaskTableProps['onChange']>[0]) => {
-      setGetRelocationTasksParams(calculatePaginationParams(pagination))
+      setGetRelocationTasksRequestArgs(calculatePaginationParams(pagination))
     },
-    [setGetRelocationTasksParams],
+    [setGetRelocationTasksRequestArgs],
   )
 
   const onTableSort = useCallback(
@@ -88,13 +88,13 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
       if (sorter) {
         const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
         if (field && (field as string) in sortableFieldToSortValues) {
-          setGetRelocationTasksParams({
+          setGetRelocationTasksRequestArgs({
             ordering: order ? getSort(field as SortableField, order) : undefined,
           })
         }
       }
     },
-    [setGetRelocationTasksParams],
+    [setGetRelocationTasksRequestArgs],
   )
 
   const onChangeTable = useCallback<ExecuteInventorizationRelocationTaskTableProps['onChange']>(
@@ -138,7 +138,7 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
           dataSource={extractPaginationResults(relocationTasks)}
           pagination={extractPaginationParams(relocationTasks)}
           loading={relocationTasksIsFetching}
-          sort={getRelocationTasksParams.ordering}
+          sort={getRelocationTasksRequestArgs.ordering}
           onChange={onChangeTable}
           onRow={onTableRowClick}
         />

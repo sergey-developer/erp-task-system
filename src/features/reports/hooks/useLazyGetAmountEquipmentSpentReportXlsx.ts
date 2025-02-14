@@ -1,4 +1,4 @@
-import { getAmountEquipmentSpentReportXlsxErrMsg } from 'features/reports/api/constants'
+import { getAmountEquipmentSpentReportXlsxErrorMessage } from 'features/reports/api/constants'
 import { useLazyGetAmountEquipmentSpentReportXlsxQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import { GetAmountEquipmentSpentReportXlsxRequest } from 'features/reports/api/schemas'
 import { GetAmountEquipmentSpentReportXlsxTransformedResponse } from 'features/reports/api/types'
@@ -28,7 +28,7 @@ export const useLazyGetAmountEquipmentSpentReportXlsx =
         if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(getAmountEquipmentSpentReportXlsxErrMsg)
+          showErrorNotification(getAmountEquipmentSpentReportXlsxErrorMessage)
         }
       }
     }, [state.error])

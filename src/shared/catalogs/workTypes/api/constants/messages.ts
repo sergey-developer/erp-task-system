@@ -1,1 +1,1 @@
-export const getWorkTypesCatalogErrMsg = 'Ошибка получения списка типов работ'
+export const getWorkTypesCatalogErrorMessage = 'Ошибка получения списка типов работ'

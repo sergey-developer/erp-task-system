@@ -1,16 +1,14 @@
-import {
-  NomenclaturesEndpointsEnum,
-  NomenclaturesEndpointsNamesEnum,
-  NomenclaturesEndpointsTagsEnum,
-} from 'features/nomenclatures/api/constants'
-import { GetNomenclaturesTransformedResponse } from 'features/warehouse/types'
-import { getNomenclatureUrl, updateNomenclatureUrl } from 'features/warehouse/utils/nomenclature'
-
 import { getPaginatedList } from 'lib/antd/utils'
 
 import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
 
+import {
+  NomenclaturesApiPathsEnum,
+  NomenclaturesEndpointsNamesEnum,
+  NomenclaturesEndpointsTagsEnum,
+} from '../constants'
+import { makeGetNomenclatureApiPath, makeUpdateNomenclatureApiPath } from '../helpers'
 import {
   CreateNomenclatureRequest,
   CreateNomenclatureResponse,
@@ -21,6 +19,7 @@ import {
   UpdateNomenclatureRequest,
   UpdateNomenclatureResponse,
 } from '../schemas'
+import { GetNomenclaturesTransformedResponse } from '../types'
 
 const nomenclaturesEndpoints = baseApi
   .enhanceEndpoints({
@@ -35,7 +34,7 @@ const nomenclaturesEndpoints = baseApi
         providesTags: (result, error) =>
           error ? [] : [NomenclaturesEndpointsTagsEnum.Nomenclatures],
         query: (params) => ({
-          url: NomenclaturesEndpointsEnum.GetNomenclatures,
+          url: NomenclaturesApiPathsEnum.GetNomenclatures,
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -47,7 +46,7 @@ const nomenclaturesEndpoints = baseApi
         GetNomenclatureRequest
       >({
         query: (id) => ({
-          url: getNomenclatureUrl(id),
+          url: makeGetNomenclatureApiPath(id),
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -58,7 +57,7 @@ const nomenclaturesEndpoints = baseApi
         invalidatesTags: (result, error) =>
           error ? [] : [NomenclaturesEndpointsTagsEnum.Nomenclatures],
         query: (payload) => ({
-          url: NomenclaturesEndpointsEnum.CreateNomenclature,
+          url: NomenclaturesApiPathsEnum.CreateNomenclature,
           method: HttpMethodEnum.Post,
           data: payload,
         }),
@@ -70,7 +69,7 @@ const nomenclaturesEndpoints = baseApi
         invalidatesTags: (result, error) =>
           error ? [] : [NomenclaturesEndpointsTagsEnum.Nomenclatures],
         query: ({ getListParams, id, ...payload }) => ({
-          url: updateNomenclatureUrl(id),
+          url: makeUpdateNomenclatureApiPath(id),
           method: HttpMethodEnum.Patch,
           data: payload,
         }),

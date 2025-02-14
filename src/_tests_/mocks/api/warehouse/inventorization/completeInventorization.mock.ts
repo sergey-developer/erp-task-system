@@ -1,6 +1,6 @@
+import { makeCompleteInventorizationUrl } from 'features/inventorizations/api/helpers'
 import { CompleteInventorizationResponse } from 'features/warehouse/models'
 import { RequestWithInventorization } from 'features/warehouse/types'
-import { makeCompleteInventorizationUrl } from 'features/warehouse/utils/inventorization'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

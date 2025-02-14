@@ -1,4 +1,4 @@
-import { getUsersMtsrReportErrMsg } from 'features/reports/api/constants'
+import { getUsersMtsrReportErrorMessage } from 'features/reports/api/constants'
 import { useGetUsersMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
   GetUsersMtsrReportRequest,
@@ -32,7 +32,7 @@ export const useGetUsersMtsrReport = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getUsersMtsrReportErrMsg)
+        showErrorNotification(getUsersMtsrReportErrorMessage)
       }
     }
   }, [state.error])

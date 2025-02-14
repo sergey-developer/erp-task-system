@@ -1,6 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { loginBadRequestErrMsg, loginWrongDataErrMsg } from 'features/auth/api/constants'
+import { loginBadRequestErrorMessage, loginWrongDataErrorMessage } from 'features/auth/api/constants'
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
 import LoginPage from 'features/auth/pages/LoginPage'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
@@ -320,7 +320,7 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      expect(testUtils.getChildByText(loginBadRequestErrMsg)).toBeInTheDocument()
+      expect(testUtils.getChildByText(loginBadRequestErrorMessage)).toBeInTheDocument()
     })
 
     test('Обрабатывается ошибка 401', async () => {
@@ -335,7 +335,7 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      expect(testUtils.getChildByText(loginWrongDataErrMsg)).toBeInTheDocument()
+      expect(testUtils.getChildByText(loginWrongDataErrorMessage)).toBeInTheDocument()
     })
 
     test('Обрабатывается ошибка 500', async () => {

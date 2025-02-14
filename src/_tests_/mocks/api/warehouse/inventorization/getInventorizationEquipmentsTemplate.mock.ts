@@ -1,4 +1,4 @@
-import { InventorizationsEndpointsEnum } from 'features/inventorizations/constants'
+import { InventorizationsApiPathsEnum } from 'features/inventorizations/constants'
 import { GetInventorizationEquipmentsTemplateResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -9,7 +9,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const getInventorizationEquipmentsTemplateMockFn = () =>
   getRequestMockFn(
     HttpMethodEnum.Get,
-    InventorizationsEndpointsEnum.GetInventorizationEquipmentsTemplate,
+    InventorizationsApiPathsEnum.GetInventorizationEquipmentsTemplate,
   )
 
 export const mockGetInventorizationEquipmentsTemplateSuccess = (

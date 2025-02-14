@@ -1,11 +1,10 @@
 import { UploadProps } from 'antd'
-
-import { RelocationTaskListItemModel } from 'features/warehouse/models'
+import { RelocationTaskDTO } from 'features/warehouse/models'
 
 export type RelocationTasksProps = {
-  data: RelocationTaskListItemModel[]
-  onClick: (id: RelocationTaskListItemModel['id']) => void
+  data: RelocationTaskDTO[]
+  onClick: (id: RelocationTaskDTO['id']) => void
   onCreateAttachment: (
-    id: RelocationTaskListItemModel['id'],
+    id: RelocationTaskDTO['id'],
   ) => (options: Parameters<NonNullable<UploadProps['customRequest']>>[0]) => Promise<void>
 }

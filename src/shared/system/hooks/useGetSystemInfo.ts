@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
-import { getSystemInfoErrMsg } from 'shared/system/api/constants/errorMessages'
+import { getSystemInfoErrorMessage } from 'shared/system/api/constants/errorMessages'
 import { GetSystemInfoRequest, GetSystemInfoResponse } from 'shared/system/api/dto/systemInfo'
 import { useGetSystemInfoQuery } from 'shared/system/api/endpoints/systemApi.endpoints'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -20,7 +20,7 @@ export const useGetSystemInfo = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getSystemInfoErrMsg)
+      showErrorNotification(getSystemInfoErrorMessage)
     }
   }, [state.error])
 

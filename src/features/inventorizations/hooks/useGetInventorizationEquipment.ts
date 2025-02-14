@@ -15,7 +15,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getInventorizationEquipmentErrMsg } from '../api/constants'
+import { getInventorizationEquipmentErrorMessage } from '../api/constants'
 
 type UseGetInventorizationEquipmentResult = CustomUseQueryHookResult<
   GetInventorizationEquipmentRequest,
@@ -38,7 +38,7 @@ export const useGetInventorizationEquipment = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getInventorizationEquipmentErrMsg)
+        showErrorNotification(getInventorizationEquipmentErrorMessage)
       }
     }
   }, [state.error])

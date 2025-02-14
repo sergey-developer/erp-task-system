@@ -1,4 +1,4 @@
-import { ConfirmExecutionRelocationTaskModalProps } from 'features/warehouse/components/ConfirmExecutionRelocationTaskModal/index'
+import { ConfirmExecutionRelocationTaskModalProps } from 'features/relocationTasks/components/ConfirmExecutionRelocationTaskModal/index'
 
 export const props: ConfirmExecutionRelocationTaskModalProps = {
   open: true,

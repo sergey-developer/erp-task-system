@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { createSubTaskErrMsg } from 'features/task/constants/task'
+import { createSubTaskErrorMessage } from 'features/task/constants/task'
 import { CreateSubTaskRequest, CreateSubTaskResponse } from 'features/task/models'
 import { useCreateSubTaskMutation } from 'features/task/services/taskApi.service'
 
@@ -32,7 +32,7 @@ export const useCreateSubTask = (): UseCreateSubTaskResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createSubTaskErrMsg)
+        showErrorNotification(createSubTaskErrorMessage)
       }
     }
   }, [state.error])

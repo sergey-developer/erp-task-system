@@ -3,7 +3,7 @@ import {
   GetInfrastructureResponse,
 } from 'features/infrastructures/api/dto'
 import { useGetInfrastructureQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { getInfrastructureErrMsg } from 'features/infrastructures/constants'
+import { getInfrastructureErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -37,7 +37,7 @@ export const useGetInfrastructure = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getInfrastructureErrMsg)
+        showErrorNotification(getInfrastructureErrorMessage)
       }
     }
   }, [state.error])

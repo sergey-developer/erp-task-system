@@ -1,4 +1,4 @@
-export enum ReportsEndpointsEnum {
+export enum ReportsApiPathsEnum {
   GetEmployeesActionsReport = '/reports/employees/:id/relocation-equipments',
 
   GetAmountEquipmentSpentReport = '/reports/relocation-tasks/equipments/',

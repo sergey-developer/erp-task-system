@@ -1,5 +1,5 @@
+import { createRelocationTaskAttachmentUrl } from 'features/relocationTasks/api/helpers'
 import { CancelRelocationTaskResponse } from 'features/warehouse/models'
-import { createRelocationTaskAttachmentUrl } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

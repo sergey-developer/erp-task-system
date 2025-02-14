@@ -1,11 +1,10 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import pick from 'lodash/pick'
-
 import {
   relocationTaskStatusDict,
   relocationTaskTypeDict,
-} from 'features/warehouse/constants/relocationTask'
+} from 'features/relocationTasks/constants'
+import pick from 'lodash/pick'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'

@@ -11,7 +11,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getInventorizationErrMsg } from '../api/constants'
+import { getInventorizationErrorMessage } from '../api/constants'
 import { GetInventorizationRequest, GetInventorizationResponse } from '../api/schemas'
 
 type UseGetInventorizationResult = CustomUseQueryHookResult<
@@ -35,7 +35,7 @@ export const useGetInventorization = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getInventorizationErrMsg)
+        showErrorNotification(getInventorizationErrorMessage)
       }
     }
   }, [state.error])

@@ -4,12 +4,12 @@ import {
   inventorizationStatusDict,
   inventorizationTypeDict,
 } from 'features/inventorizations/constants'
+import {
+  makeInventorizationsPageLink,
+  mapInventorizationWarehousesTitles,
+} from 'features/inventorizations/helpers'
 import { useCompleteInventorization } from 'features/inventorizations/hooks'
 import { useLazyGetInventorizationReport } from 'features/reports/hooks'
-import {
-  getInventorizationsPageLink,
-  mapInventorizationWarehousesTitles,
-} from 'features/warehouse/utils/inventorization'
 import React, { FC } from 'react'
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
@@ -57,7 +57,7 @@ const ExecuteInventorizationPage: FC = () => {
     useCompleteInventorization()
 
   const onReturnToInventorizationDetails = () => {
-    navigate(getInventorizationsPageLink({ inventorizationId }))
+    navigate(makeInventorizationsPageLink({ inventorizationId }))
   }
 
   const onCompleteInventorization = async () => {

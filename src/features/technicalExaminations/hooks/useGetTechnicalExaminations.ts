@@ -1,4 +1,4 @@
-import { getTechnicalExaminationsErrMsg } from 'features/technicalExaminations/api/constants'
+import { getTechnicalExaminationsErrorMessage } from 'features/technicalExaminations/api/constants'
 import { useGetTechnicalExaminationsQuery } from 'features/technicalExaminations/api/endpoints/technicalExaminations.endpoints'
 import { useEffect } from 'react'
 
@@ -30,7 +30,7 @@ export const useGetTechnicalExaminations = (
       if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getTechnicalExaminationsErrMsg)
+        showErrorNotification(getTechnicalExaminationsErrorMessage)
       }
     }
   }, [state.error])

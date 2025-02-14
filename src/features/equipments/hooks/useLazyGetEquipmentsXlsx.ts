@@ -1,4 +1,4 @@
-import { getEquipmentsXlsxErrMsg } from 'features/equipments/api/constants'
+import { getEquipmentsXlsxErrorMessage } from 'features/equipments/api/constants'
 import { useLazyGetEquipmentsXlsxQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import {
   GetEquipmentsXlsxRequest,
@@ -24,7 +24,7 @@ export const useLazyGetEquipmentsXlsx = (): UseLazyGetEquipmentsXlsxResult => {
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentsXlsxErrMsg)
+        showErrorNotification(getEquipmentsXlsxErrorMessage)
       }
     }
   }, [state.error])

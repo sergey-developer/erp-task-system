@@ -1,4 +1,4 @@
-export enum UsersEndpointsEnum {
+export enum UsersApiPathsEnum {
   GetUsers = '/users/',
   UpdateUser = '/users/:id',
   GetUserMe = '/users/me/',

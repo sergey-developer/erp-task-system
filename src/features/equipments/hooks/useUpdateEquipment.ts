@@ -1,4 +1,4 @@
-import { updateEquipmentErrMsg } from 'features/equipments/api/constants'
+import { updateEquipmentErrorMessage } from 'features/equipments/api/constants'
 import { useUpdateEquipmentMutation } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { UpdateEquipmentRequest, UpdateEquipmentResponse } from 'features/warehouse/models'
 import { useEffect } from 'react'
@@ -31,7 +31,7 @@ export const useUpdateEquipment = (): UseUpdateEquipmentResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(updateEquipmentErrMsg)
+        showErrorNotification(updateEquipmentErrorMessage)
       }
     }
   }, [state.error])

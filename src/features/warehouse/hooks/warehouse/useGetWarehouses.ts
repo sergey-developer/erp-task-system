@@ -1,4 +1,4 @@
-import { getWarehouseListErrMsg } from 'features/warehouse/constants/warehouse'
+import { getWarehouseListErrorMessage } from 'features/warehouse/constants/warehouse'
 import {
   GetWarehouseListRequest,
   GetWarehouseListResponse,
@@ -29,7 +29,7 @@ export const useGetWarehouses = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getWarehouseListErrMsg)
+      showErrorNotification(getWarehouseListErrorMessage)
     }
   }, [state.error])
 

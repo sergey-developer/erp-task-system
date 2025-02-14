@@ -1,4 +1,4 @@
-import { updatePasswordErrMsg } from 'features/auth/api/constants'
+import { updatePasswordErrorMessage } from 'features/auth/api/constants'
 
 import {
   isBadRequestError,
@@ -17,5 +17,5 @@ export const getUpdatePasswordErrors = (error: unknown): MaybeNull<string[]> => 
     }
   }
 
-  return [updatePasswordErrMsg]
+  return [updatePasswordErrorMessage]
 }

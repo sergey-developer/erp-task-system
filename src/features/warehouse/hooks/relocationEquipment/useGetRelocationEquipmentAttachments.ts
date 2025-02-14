@@ -1,4 +1,4 @@
-import { getRelocationEquipmentAttachmentListErrMsg } from 'features/warehouse/constants/relocationEquipment'
+import { getRelocationEquipmentAttachmentListErrorMessage } from 'features/warehouse/constants/relocationEquipment'
 import {
   GetRelocationEquipmentAttachmentListRequest,
   GetRelocationEquipmentAttachmentListResponse,
@@ -37,7 +37,7 @@ export const useGetRelocationEquipmentAttachments = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getRelocationEquipmentAttachmentListErrMsg)
+        showErrorNotification(getRelocationEquipmentAttachmentListErrorMessage)
       }
     }
   }, [state.error])

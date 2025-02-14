@@ -1,6 +1,7 @@
-export const getTechnicalExaminationsErrMsg = 'Ошибка получения истории технической экспертизы'
+export const getTechnicalExaminationsErrorMessage =
+  'Ошибка получения истории технической экспертизы'
 
-export const getTechnicalExaminationErrMsg = 'Ошибка получения технической экспертизы'
+export const getTechnicalExaminationErrorMessage = 'Ошибка получения технической экспертизы'
 
-export const getTechnicalExaminationPdfErrMsg =
+export const getTechnicalExaminationPdfErrorMessage =
   'Ошибка получения технической экспертизы в формате PDF'

@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react'
-import { createNomenclatureGroupErrMsg } from 'features/nomenclatures/api/constants'
+import { createNomenclatureGroupErrorMessage } from 'features/nomenclatures/api/constants'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 
 import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouse/components/NomenclatureFormModal/testUtils'
@@ -285,7 +285,7 @@ describe('Страница списка номенклатур', () => {
         await nomenclatureGroupFormModalTestUtils.expectLoadingFinished()
 
         const notification = await notificationTestUtils.findNotification(
-          createNomenclatureGroupErrMsg,
+          createNomenclatureGroupErrorMessage,
         )
         expect(notification).toBeInTheDocument()
       })

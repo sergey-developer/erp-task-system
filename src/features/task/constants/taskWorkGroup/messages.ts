@@ -1,1 +1,1 @@
-export const updateTaskWorkGroupErrMsg = 'Возникла ошибка при назначении рабочей группы'
+export const updateTaskWorkGroupErrorMessage = 'Возникла ошибка при назначении рабочей группы'

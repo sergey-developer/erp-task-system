@@ -1,4 +1,4 @@
-import { NomenclaturesGroupsEndpointsEnum } from 'features/nomenclatures/api/constants'
+import { NomenclaturesGroupsApiPathsEnum } from 'features/nomenclatures/api/constants'
 import {
   CreateNomenclatureGroupBadRequestResponse,
   CreateNomenclatureGroupResponse,
@@ -17,7 +17,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const createNomenclatureGroupMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Post, NomenclaturesGroupsEndpointsEnum.CreateNomenclatureGroup)
+  getRequestMockFn(HttpMethodEnum.Post, NomenclaturesGroupsApiPathsEnum.CreateNomenclatureGroup)
 
 export const mockCreateNomenclatureGroupSuccess = (
   options?: Partial<ResponseResolverOptions<CreateNomenclatureGroupResponse>>,

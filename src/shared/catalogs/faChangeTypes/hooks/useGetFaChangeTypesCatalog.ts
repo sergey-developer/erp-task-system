@@ -7,7 +7,7 @@ import { useGetFaChangeTypesCatalogQuery } from 'shared/catalogs/faChangeTypes/a
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getFaChangeTypesCatalogErrMsg } from '../api/constants'
+import { getFaChangeTypesCatalogErrorMessage } from '../api/constants'
 import { GetFaChangeTypesCatalogRequest, GetFaChangeTypesCatalogResponse } from '../api/schemas'
 
 type UseGetFaChangeTypesCatalogResult = CustomUseQueryHookResult<
@@ -28,7 +28,7 @@ export const useGetFaChangeTypesCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getFaChangeTypesCatalogErrMsg)
+      showErrorNotification(getFaChangeTypesCatalogErrorMessage)
     }
   }, [state.error])
 

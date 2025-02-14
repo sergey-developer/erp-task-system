@@ -1,5 +1,5 @@
 import {
-  EquipmentsEndpointsEnum,
+  EquipmentsApiPathsEnum,
   EquipmentsEndpointsTagsEnum,
 } from 'features/equipments/api/constants'
 import random from 'lodash/random'
@@ -69,7 +69,7 @@ const equipmentsEndpoints = baseApi
         MaybeUndefined<GetEquipmentNomenclaturesRequest>
       >({
         query: (params) => ({
-          url: EquipmentsEndpointsEnum.GetEquipmentNomenclatures,
+          url: EquipmentsApiPathsEnum.GetEquipmentNomenclatures,
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -84,7 +84,7 @@ const equipmentsEndpoints = baseApi
         providesTags: (result, error) =>
           error ? [] : [EquipmentsEndpointsTagsEnum.EquipmentsCatalog],
         query: (params) => ({
-          url: EquipmentsEndpointsEnum.GetEquipmentsCatalog,
+          url: EquipmentsApiPathsEnum.GetEquipmentsCatalog,
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -106,7 +106,7 @@ const equipmentsEndpoints = baseApi
       getEquipments: build.query<GetEquipmentsTransformedResponse, GetEquipmentsRequest>({
         providesTags: (result, error) => (error ? [] : [EquipmentsEndpointsTagsEnum.Equipments]),
         query: (params) => ({
-          url: EquipmentsEndpointsEnum.GetEquipments,
+          url: EquipmentsApiPathsEnum.GetEquipments,
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -115,7 +115,7 @@ const equipmentsEndpoints = baseApi
       }),
       getEquipmentsXlsx: build.query<GetEquipmentsXlsxResponse, GetEquipmentsXlsxRequest>({
         query: (params) => ({
-          url: EquipmentsEndpointsEnum.GetEquipments,
+          url: EquipmentsApiPathsEnum.GetEquipments,
           method: HttpMethodEnum.Get,
           headers: { Accept: MimetypeEnum.Xlsx },
           params,
@@ -142,7 +142,7 @@ const equipmentsEndpoints = baseApi
         invalidatesTags: (result, error) =>
           error ? [] : [EquipmentsEndpointsTagsEnum.EquipmentsCatalog],
         query: (payload) => ({
-          url: EquipmentsEndpointsEnum.CreateEquipment,
+          url: EquipmentsApiPathsEnum.CreateEquipment,
           method: HttpMethodEnum.Post,
           data: payload,
         }),
@@ -151,7 +151,7 @@ const equipmentsEndpoints = baseApi
         invalidatesTags: (result, error) =>
           error ? [] : [EquipmentsEndpointsTagsEnum.EquipmentsCatalog],
         query: (payload) => ({
-          url: EquipmentsEndpointsEnum.CreateEquipments,
+          url: EquipmentsApiPathsEnum.CreateEquipments,
           method: HttpMethodEnum.Post,
           data: payload,
         }),
@@ -165,7 +165,7 @@ const equipmentsEndpoints = baseApi
           formData.append('file', payload.file)
 
           return {
-            url: EquipmentsEndpointsEnum.ImportEquipmentsByFile,
+            url: EquipmentsApiPathsEnum.ImportEquipmentsByFile,
             method: HttpMethodEnum.Post,
             data: formData,
           }
@@ -190,7 +190,7 @@ const equipmentsEndpoints = baseApi
         GetEquipmentCategoriesRequest
       >({
         query: () => ({
-          url: EquipmentsEndpointsEnum.GetEquipmentCategories,
+          url: EquipmentsApiPathsEnum.GetEquipmentCategories,
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -200,7 +200,7 @@ const equipmentsEndpoints = baseApi
         GetEquipmentsTemplateRequest
       >({
         query: () => ({
-          url: EquipmentsEndpointsEnum.GetEquipmentsTemplate,
+          url: EquipmentsApiPathsEnum.GetEquipmentsTemplate,
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -210,7 +210,7 @@ const equipmentsEndpoints = baseApi
         CreateEquipmentTechnicalExaminationRequest
       >({
         query: (data) => ({
-          url: EquipmentsEndpointsEnum.CreateEquipmentTechnicalExamination,
+          url: EquipmentsApiPathsEnum.CreateEquipmentTechnicalExamination,
           method: HttpMethodEnum.Post,
           data,
         }),

@@ -1,7 +1,7 @@
 import { within } from '@testing-library/react'
 import { testUtils as attachmentsTestUtils } from 'features/attachments/components/Attachments/Attachments.test'
-import { relocationTaskStatusDict } from 'features/warehouse/constants/relocationTask'
-import { getRelocateFromToTitle } from 'features/warehouse/utils/relocationTask'
+import { getRelocateFromToTitle } from 'features/relocationTasks/api/helpers'
+import { relocationTaskStatusDict } from 'features/relocationTasks/constants'
 import pick from 'lodash/pick'
 
 import { formatDate } from 'shared/utils/date'

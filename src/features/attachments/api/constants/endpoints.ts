@@ -1,4 +1,4 @@
-export enum AttachmentsEndpointsEnum {
+export enum AttachmentsApiPathsEnum {
   CreateAttachment = '/attachments/',
   DeleteAttachment = '/attachments/:id',
 }

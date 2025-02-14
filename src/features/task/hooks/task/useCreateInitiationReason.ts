@@ -1,8 +1,5 @@
-import { createInitiationReasonErrMsg } from 'features/task/constants/task'
-import {
-  CreateInitiationReasonRequest,
-  CreateInitiationReasonResponse,
-} from 'features/task/models'
+import { createInitiationReasonErrorMessage } from 'features/task/constants/task'
+import { CreateInitiationReasonRequest, CreateInitiationReasonResponse } from 'features/task/models'
 import { useCreateInitiationReasonMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
@@ -24,7 +21,7 @@ export const useCreateInitiationReason = (): UseCreateInitiationReasonResult => 
       if (isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createInitiationReasonErrMsg)
+        showErrorNotification(createInitiationReasonErrorMessage)
       }
     }
   }, [state.error])

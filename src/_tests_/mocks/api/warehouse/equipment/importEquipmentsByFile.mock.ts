@@ -1,4 +1,4 @@
-import { EquipmentsEndpointsEnum } from 'features/equipments/api/constants'
+import { EquipmentsApiPathsEnum } from 'features/equipments/api/constants'
 import {
   CreateEquipmentBadRequestErrorResponse,
   ImportEquipmentsByFileResponse,
@@ -16,7 +16,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const importEquipmentsByFileMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Post, EquipmentsEndpointsEnum.ImportEquipmentsByFile)
+  getRequestMockFn(HttpMethodEnum.Post, EquipmentsApiPathsEnum.ImportEquipmentsByFile)
 
 export const mockImportEquipmentsByFileSuccess = (
   options?: Partial<ResponseResolverOptions<ImportEquipmentsByFileResponse>>,

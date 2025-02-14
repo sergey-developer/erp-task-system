@@ -14,7 +14,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getInventorizationEquipmentsXlsxErrMsg } from '../api/constants'
+import { getInventorizationEquipmentsXlsxErrorMessage } from '../api/constants'
 
 type UseLazyGetInventorizationEquipmentsResult = CustomUseLazyQueryHookResult<
   GetInventorizationEquipmentsXlsxRequest,
@@ -34,7 +34,7 @@ export const useLazyGetInventorizationEquipmentsXlsx =
         ) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(getInventorizationEquipmentsXlsxErrMsg)
+          showErrorNotification(getInventorizationEquipmentsXlsxErrorMessage)
         }
       }
     }, [state.error])

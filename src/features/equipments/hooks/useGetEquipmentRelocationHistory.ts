@@ -1,4 +1,4 @@
-import { getEquipmentRelocationHistoryErrMsg } from 'features/equipments/api/constants'
+import { getEquipmentRelocationHistoryErrorMessage } from 'features/equipments/api/constants'
 import { useGetEquipmentRelocationHistoryQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { useEffect } from 'react'
 
@@ -35,7 +35,7 @@ export const useGetEquipmentRelocationHistory = (
       } else if (isNotFoundError(state.error) && state.error.data.detail) {
         showErrorNotification(state.error.data.detail)
       } else {
-        showErrorNotification(getEquipmentRelocationHistoryErrMsg)
+        showErrorNotification(getEquipmentRelocationHistoryErrorMessage)
       }
     }
   }, [state.error])

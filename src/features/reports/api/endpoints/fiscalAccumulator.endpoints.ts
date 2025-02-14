@@ -1,4 +1,4 @@
-import { ReportsEndpointsEnum } from 'features/reports/api/constants'
+import { ReportsApiPathsEnum } from 'features/reports/api/constants'
 import {
   GetFiscalAccumulatorTasksReportRequest,
   GetFiscalAccumulatorTasksReportResponse,
@@ -15,7 +15,7 @@ const fiscalAccumulatorEndpoints = baseApi.injectEndpoints({
       MaybeUndefined<GetFiscalAccumulatorTasksReportRequest>
     >({
       query: (params) => ({
-        url: ReportsEndpointsEnum.GetFiscalAccumulatorTasksReport,
+        url: ReportsApiPathsEnum.GetFiscalAccumulatorTasksReport,
         method: HttpMethodEnum.Get,
         params,
       }),

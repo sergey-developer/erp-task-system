@@ -1,4 +1,4 @@
-import { ReportsEndpointsEnum } from 'features/reports/api/constants'
+import { ReportsApiPathsEnum } from 'features/reports/api/constants'
 import {
   makeGetEmployeesActionsReportEndpoint,
   makeGetInventorizationReportEndpoint,
@@ -78,7 +78,7 @@ const reportsEndpoints = baseApi.injectEndpoints({
       GetAmountEquipmentSpentReportRequest
     >({
       query: (params) => ({
-        url: ReportsEndpointsEnum.GetAmountEquipmentSpentReport,
+        url: ReportsApiPathsEnum.GetAmountEquipmentSpentReport,
         method: HttpMethodEnum.Get,
         params,
       }),
@@ -90,7 +90,7 @@ const reportsEndpoints = baseApi.injectEndpoints({
       GetAmountEquipmentSpentReportXlsxRequest
     >({
       query: (params) => ({
-        url: ReportsEndpointsEnum.GetAmountEquipmentSpentReport,
+        url: ReportsApiPathsEnum.GetAmountEquipmentSpentReport,
         method: HttpMethodEnum.Get,
         headers: { Accept: MimetypeEnum.Xlsx },
         params,
@@ -110,11 +110,8 @@ const reportsEndpoints = baseApi.injectEndpoints({
         method: HttpMethodEnum.Get,
         params,
       }),
-      transformResponse: (
-        response: GetHistoryNomenclatureOperationsReportResponse,
-        meta,
-        arg,
-      ) => getPaginatedList(response, arg),
+      transformResponse: (response: GetHistoryNomenclatureOperationsReportResponse, meta, arg) =>
+        getPaginatedList(response, arg),
     }),
     getHistoryNomenclatureOperationsReportXlsx: build.query<
       GetHistoryNomenclatureOperationsReportXlsxTransformedResponse,
@@ -137,7 +134,7 @@ const reportsEndpoints = baseApi.injectEndpoints({
       GetMacroregionsMtsrReportRequest
     >({
       query: (params) => ({
-        url: ReportsEndpointsEnum.GetMacroregionsMtsrReport,
+        url: ReportsApiPathsEnum.GetMacroregionsMtsrReport,
         method: HttpMethodEnum.Get,
         params,
       }),
@@ -147,7 +144,7 @@ const reportsEndpoints = baseApi.injectEndpoints({
       GetSupportGroupsMtsrReportRequest
     >({
       query: (params) => ({
-        url: ReportsEndpointsEnum.GetSupportGroupsMtsrReport,
+        url: ReportsApiPathsEnum.GetSupportGroupsMtsrReport,
         method: HttpMethodEnum.Get,
         params,
       }),
@@ -157,20 +154,18 @@ const reportsEndpoints = baseApi.injectEndpoints({
       GetWorkGroupsMtsrReportRequest
     >({
       query: (params) => ({
-        url: ReportsEndpointsEnum.GetWorkGroupsMtsrReport,
+        url: ReportsApiPathsEnum.GetWorkGroupsMtsrReport,
         method: HttpMethodEnum.Get,
         params,
       }),
     }),
-    getUsersMtsrReport: build.query<GetUsersMtsrReportResponse, GetUsersMtsrReportRequest>(
-      {
-        query: (params) => ({
-          url: ReportsEndpointsEnum.GetUsersMtsrReport,
-          method: HttpMethodEnum.Get,
-          params,
-        }),
-      },
-    ),
+    getUsersMtsrReport: build.query<GetUsersMtsrReportResponse, GetUsersMtsrReportRequest>({
+      query: (params) => ({
+        url: ReportsApiPathsEnum.GetUsersMtsrReport,
+        method: HttpMethodEnum.Get,
+        params,
+      }),
+    }),
 
     getInventorizationReport: build.query<
       GetInventorizationReportTransformedResponse,

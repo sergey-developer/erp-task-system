@@ -1,8 +1,8 @@
 import { screen, within } from '@testing-library/react'
 
 import {
-  getTaskJournalCsvErrMsg,
-  getTaskJournalErrMsg,
+  getTaskJournalCsvErrorMessage,
+  getTaskJournalErrorMessage,
   TaskJournalSourceEnum,
 } from 'features/task/constants/taskJournal'
 
@@ -204,7 +204,7 @@ describe('Вкладка журнала задачи', () => {
 
         expect(downloadFileSpy).not.toBeCalled()
 
-        const notification = await notificationTestUtils.findNotification(getTaskJournalCsvErrMsg)
+        const notification = await notificationTestUtils.findNotification(getTaskJournalCsvErrorMessage)
         expect(notification).toBeInTheDocument()
       })
     })
@@ -294,7 +294,7 @@ describe('Вкладка журнала задачи', () => {
         await journalTabTestUtils.expectJournalLoadingStarted()
         await journalTabTestUtils.expectJournalLoadingFinished()
 
-        const notification = await notificationTestUtils.findNotification(getTaskJournalErrMsg)
+        const notification = await notificationTestUtils.findNotification(getTaskJournalErrorMessage)
         expect(notification).toBeInTheDocument()
       })
 

@@ -1,5 +1,5 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetInfrastructureWorkTypesCatalogRequest,
   GetInfrastructureWorkTypesCatalogResponse,
@@ -13,7 +13,7 @@ const infrastructureWorkTypesCatalogEndpoints = baseApi.injectEndpoints({
       GetInfrastructureWorkTypesCatalogRequest
     >({
       query: () => ({
-        url: CatalogEndpointsEnum.GetInfrastructureWorkTypes,
+        url: CatalogApiPathsEnum.GetInfrastructureWorkTypes,
         method: HttpMethodEnum.Get,
       }),
     }),

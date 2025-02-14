@@ -1,10 +1,9 @@
 import { TableProps } from 'antd'
+import { RelocationEquipmentDTO } from 'features/warehouse/models'
 import { MouseEvent } from 'react'
 
-import { RelocationEquipmentListItemModel } from 'features/warehouse/models'
-
 export type RelocationEquipmentTableItem = Pick<
-  RelocationEquipmentListItemModel,
+  RelocationEquipmentDTO,
   | 'id'
   | 'relocationEquipmentId'
   | 'title'

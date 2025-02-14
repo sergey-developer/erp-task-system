@@ -1,8 +1,5 @@
-import { updateTaskDescriptionErrMsg } from 'features/task/constants/task'
-import {
-  UpdateTaskDescriptionRequest,
-  UpdateTaskDescriptionResponse,
-} from 'features/task/models'
+import { updateTaskDescriptionErrorMessage } from 'features/task/constants/task'
+import { UpdateTaskDescriptionRequest, UpdateTaskDescriptionResponse } from 'features/task/models'
 import { useUpdateTaskDescriptionMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
@@ -34,7 +31,7 @@ export const useUpdateTaskDescription = (): UseUpdateTaskDescriptionResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(updateTaskDescriptionErrMsg)
+        showErrorNotification(updateTaskDescriptionErrorMessage)
       }
     }
   }, [state.error])

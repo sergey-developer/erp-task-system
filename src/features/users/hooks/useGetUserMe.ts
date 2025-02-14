@@ -1,4 +1,4 @@
-import { getUserMeErrMsg } from 'features/users/api/constants'
+import { getUserMeErrorMessage } from 'features/users/api/constants'
 import { useGetUserMeQuery } from 'features/users/api/endpoints/users.endpoints'
 import { GetUserMeRequest, GetUserMeResponse } from 'features/users/api/schemas'
 import { useEffect } from 'react'
@@ -16,7 +16,7 @@ export const useGetUserMe = (options?: UseGetUserMeOptions): UseGetUserMeResult 
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getUserMeErrMsg)
+      showErrorNotification(getUserMeErrorMessage)
     }
   }, [state.error])
 

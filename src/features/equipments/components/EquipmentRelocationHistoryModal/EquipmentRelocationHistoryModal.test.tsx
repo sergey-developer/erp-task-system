@@ -1,6 +1,5 @@
 import { within } from '@testing-library/react'
-
-import { relocationTaskStatusDict } from 'features/warehouse/constants/relocationTask'
+import { relocationTaskStatusDict } from 'features/relocationTasks/constants'
 
 import { formatDate } from 'shared/utils/date'
 

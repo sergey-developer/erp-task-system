@@ -1,4 +1,4 @@
-import { getEquipmentCategoriesErrMsg } from 'features/equipments/api/constants'
+import { getEquipmentCategoriesErrorMessage } from 'features/equipments/api/constants'
 import { useGetEquipmentCategoriesQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { useEffect } from 'react'
 
@@ -27,7 +27,7 @@ export const useGetEquipmentCategories = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getEquipmentCategoriesErrMsg)
+      showErrorNotification(getEquipmentCategoriesErrorMessage)
     }
   }, [state.error])
 

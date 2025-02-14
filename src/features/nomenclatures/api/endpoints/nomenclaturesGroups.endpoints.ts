@@ -1,13 +1,12 @@
-import { updateNomenclatureGroupUrl } from 'features/warehouse/utils/nomenclatureGroup'
-
 import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import {
-  NomenclaturesGroupsEndpointsEnum,
+  NomenclaturesGroupsApiPathsEnum,
   NomenclaturesGroupsEndpointsNamesEnum,
 } from '../constants'
 import { NomenclaturesGroupsDTO } from '../dto'
+import { makeUpdateNomenclatureGroupApiPath } from '../helpers'
 import {
   CreateNomenclatureGroupRequest,
   CreateNomenclatureGroupResponse,
@@ -24,7 +23,7 @@ const nomenclaturesGroupsEndpoints = baseApi.injectEndpoints({
       GetNomenclaturesGroupsRequest
     >({
       query: (params) => ({
-        url: NomenclaturesGroupsEndpointsEnum.GetNomenclaturesGroups,
+        url: NomenclaturesGroupsApiPathsEnum.GetNomenclaturesGroups,
         method: HttpMethodEnum.Get,
         params,
       }),
@@ -34,7 +33,7 @@ const nomenclaturesGroupsEndpoints = baseApi.injectEndpoints({
       CreateNomenclatureGroupRequest
     >({
       query: ({ getListParams, ...payload }) => ({
-        url: NomenclaturesGroupsEndpointsEnum.CreateNomenclatureGroup,
+        url: NomenclaturesGroupsApiPathsEnum.CreateNomenclatureGroup,
         method: HttpMethodEnum.Post,
         data: payload,
       }),
@@ -59,7 +58,7 @@ const nomenclaturesGroupsEndpoints = baseApi.injectEndpoints({
       UpdateNomenclatureGroupRequest
     >({
       query: ({ getListParams, id, ...payload }) => ({
-        url: updateNomenclatureGroupUrl(id),
+        url: makeUpdateNomenclatureGroupApiPath(id),
         method: HttpMethodEnum.Patch,
         data: payload,
       }),

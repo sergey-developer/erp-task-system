@@ -1,4 +1,4 @@
-import { getEquipmentNomenclaturesErrMsg } from 'features/equipments/api/constants'
+import { getEquipmentNomenclaturesErrorMessage } from 'features/equipments/api/constants'
 import { useGetEquipmentNomenclaturesQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { GetEquipmentNomenclaturesRequest } from 'features/warehouse/models'
 import { GetEquipmentNomenclaturesTransformedResponse } from 'features/warehouse/types'
@@ -31,7 +31,7 @@ export const useGetEquipmentNomenclatures = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentNomenclaturesErrMsg)
+        showErrorNotification(getEquipmentNomenclaturesErrorMessage)
       }
     }
   }, [state.error])

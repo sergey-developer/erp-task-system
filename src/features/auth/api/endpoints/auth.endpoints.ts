@@ -1,4 +1,4 @@
-import { AuthEndpointsEnum } from 'features/auth/api/constants'
+import { AuthApiPathsEnum } from 'features/auth/api/constants'
 import {
   LoginRequest,
   LoginResponse,
@@ -15,21 +15,21 @@ const authEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation<LoginResponse, LoginRequest>({
       query: (payload) => ({
-        url: AuthEndpointsEnum.Login,
+        url: AuthApiPathsEnum.Login,
         method: HttpMethodEnum.Post,
         data: payload,
       }),
     }),
     logout: build.mutation<LogoutResponse, LogoutRequest>({
       query: (payload) => ({
-        url: AuthEndpointsEnum.Logout,
+        url: AuthApiPathsEnum.Logout,
         method: HttpMethodEnum.Post,
         data: payload,
       }),
     }),
     updatePassword: build.mutation<UpdatePasswordResponse, UpdatePasswordRequest>({
       query: (payload) => ({
-        url: AuthEndpointsEnum.UpdatePassword,
+        url: AuthApiPathsEnum.UpdatePassword,
         method: HttpMethodEnum.Post,
         data: payload,
       }),

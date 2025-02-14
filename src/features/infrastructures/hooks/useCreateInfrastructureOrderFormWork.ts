@@ -3,7 +3,7 @@ import {
   CreateInfrastructureOrderFormWorkResponse,
 } from 'features/infrastructures/api/dto'
 import { useCreateInfrastructureOrderFormWorkMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { createInfrastructureOrderFormWorkErrMsg } from 'features/infrastructures/constants'
+import { createInfrastructureOrderFormWorkErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
@@ -34,7 +34,7 @@ export const useCreateInfrastructureOrderFormWork = (): UseCreateInfrastructureO
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createInfrastructureOrderFormWorkErrMsg)
+        showErrorNotification(createInfrastructureOrderFormWorkErrorMessage)
       }
     }
   }, [state.error])

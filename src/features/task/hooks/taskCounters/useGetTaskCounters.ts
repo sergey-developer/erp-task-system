@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getTaskCountersErrMsg } from 'features/task/constants/taskCounters'
+import { getTaskCountersErrorMessage } from 'features/task/constants/taskCounters'
 import { GetTaskCountersRequest, GetTaskCountersResponse } from 'features/task/models'
 import { useGetTaskCountersQuery } from 'features/task/services/taskApi.service'
 
@@ -28,7 +28,7 @@ export const useGetTaskCounters = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getTaskCountersErrMsg)
+      showErrorNotification(getTaskCountersErrorMessage)
     }
   }, [state.error])
 

@@ -13,11 +13,11 @@ import {
   useUpdateInfrastructure,
   useUpdateInfrastructureStatus,
 } from 'features/infrastructures/hooks'
+import EditableField from 'features/relocationTasks/components/RelocationTaskDetails/EditableField'
+import ReadonlyField from 'features/relocationTasks/components/RelocationTaskDetails/ReadonlyField'
 import TaskAssignee from 'features/task/components/TaskAssignee'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useUserPermissions } from 'features/users/hooks'
-import EditableField from 'features/warehouse/components/RelocationTaskDetails/EditableField'
-import ReadonlyField from 'features/warehouse/components/RelocationTaskDetails/ReadonlyField'
 import React, { FC } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 

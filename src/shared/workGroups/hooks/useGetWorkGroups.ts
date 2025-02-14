@@ -9,7 +9,7 @@ import {
   isForbiddenError,
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
-import { getWorkGroupsErrMsg } from 'shared/workGroups/api/constants'
+import { getWorkGroupsErrorMessage } from 'shared/workGroups/api/constants'
 import { useGetWorkGroupsQuery } from 'shared/workGroups/api/endpoints/workGroups.endpoints'
 import { GetWorkGroupsRequest, GetWorkGroupsResponse } from 'shared/workGroups/api/schemas'
 
@@ -28,7 +28,7 @@ export const useGetWorkGroups = (
       if (isBadRequestError(state.error) || isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getWorkGroupsErrMsg)
+        showErrorNotification(getWorkGroupsErrorMessage)
       }
     }
   }, [state.error])

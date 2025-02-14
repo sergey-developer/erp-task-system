@@ -324,7 +324,7 @@ describe('Layout номенклатуры оборудования', () => {
     //     const equipment = await equipmentTestUtils.findContainer()
     //     await equipmentTestUtils.expectLoadingFinished()
     //     const notification = await notificationTestUtils.findNotification(
-    //       getEquipmentErrMsg,
+    //       getEquipmentErrorMessage,
     //     )
     //
     //     expect(notification).toBeInTheDocument()

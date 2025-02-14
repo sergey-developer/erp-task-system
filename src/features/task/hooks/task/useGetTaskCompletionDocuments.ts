@@ -1,13 +1,12 @@
-import { useEffect } from 'react'
-
-import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getTaskCompletionDocumentsErrMsg } from 'features/task/constants/task'
+import { getTaskCompletionDocumentsErrorMessage } from 'features/task/constants/task'
 import {
   GetTaskCompletionDocumentsRequest,
   GetTaskCompletionDocumentsResponse,
 } from 'features/task/models'
 import { useGetTaskCompletionDocumentsQuery } from 'features/task/services/taskApi.service'
+import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import {
   getErrorDetail,
@@ -38,7 +37,7 @@ export const useGetTaskCompletionDocuments = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getTaskCompletionDocumentsErrMsg)
+        showErrorNotification(getTaskCompletionDocumentsErrorMessage)
       }
     }
   }, [state.error])

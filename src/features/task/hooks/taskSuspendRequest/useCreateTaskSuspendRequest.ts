@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { createSuspendRequestErrMsg } from 'features/task/constants/taskSuspendRequest'
+import { createSuspendRequestErrorMessage } from 'features/task/constants/taskSuspendRequest'
 import {
   CreateTaskSuspendRequestRequest,
   CreateTaskSuspendRequestResponse,
@@ -30,7 +30,7 @@ export const useCreateTaskSuspendRequest = (): UseCreateTaskSuspendRequestResult
       if (isNotFoundError(state.error) || isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createSuspendRequestErrMsg)
+        showErrorNotification(createSuspendRequestErrorMessage)
       }
     }
   }, [state.error])

@@ -1,5 +1,5 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetFaChangeTypesCatalogRequest,
   GetFaChangeTypesCatalogResponse,
@@ -14,7 +14,7 @@ const faChangeTypesCatalogEndpoints = baseApi.injectEndpoints({
       MaybeUndefined<GetFaChangeTypesCatalogRequest>
     >({
       query: () => ({
-        url: CatalogEndpointsEnum.GetFaChangeTypes,
+        url: CatalogApiPathsEnum.GetFaChangeTypes,
         method: HttpMethodEnum.Get,
       }),
     }),

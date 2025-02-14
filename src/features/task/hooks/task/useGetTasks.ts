@@ -1,24 +1,17 @@
+import { getTasksErrorMessage } from 'features/task/constants/task'
+import { GetTasksRequest } from 'features/task/models'
+import { useGetTasksQuery } from 'features/task/services/taskApi.service'
+import { GetTasksTransformedResponse } from 'features/task/types'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getTasksErrMsg } from 'features/task/constants/task'
-import { GetTasksRequest } from 'features/task/models'
-import { useGetTasksQuery } from 'features/task/services/taskApi.service'
-import { GetTasksTransformedResponse } from 'features/task/types'
-
 import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-type UseGetTasksResult = CustomUseQueryHookResult<
-  GetTasksRequest,
-  GetTasksTransformedResponse
->
+type UseGetTasksResult = CustomUseQueryHookResult<GetTasksRequest, GetTasksTransformedResponse>
 
-type UseGetTasksOptions = CustomUseQueryOptions<
-  GetTasksRequest,
-  GetTasksTransformedResponse
->
+type UseGetTasksOptions = CustomUseQueryOptions<GetTasksRequest, GetTasksTransformedResponse>
 
 export const useGetTasks = (
   args: GetTasksRequest,
@@ -31,7 +24,7 @@ export const useGetTasks = (
       if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getTasksErrMsg)
+        showErrorNotification(getTasksErrorMessage)
       }
     }
   }, [state.error])

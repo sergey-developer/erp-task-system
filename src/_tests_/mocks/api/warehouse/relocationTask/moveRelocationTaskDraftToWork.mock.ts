@@ -1,6 +1,6 @@
+import { makeMoveRelocationTaskDraftToWorkApiUrl } from 'features/relocationTasks/api/helpers'
 import { MoveRelocationTaskDraftToWorkResponse } from 'features/warehouse/models'
 import { RequestWithRelocationTask } from 'features/warehouse/types'
-import { makeMoveRelocationTaskDraftToWorkApiUrl } from 'features/warehouse/utils/relocationTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

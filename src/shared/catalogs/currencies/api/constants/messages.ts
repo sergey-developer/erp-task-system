@@ -1,1 +1,1 @@
-export const getCurrenciesCatalogErrMsg = 'Ошибка получения списка валют'
+export const getCurrenciesCatalogErrorMessage = 'Ошибка получения списка валют'

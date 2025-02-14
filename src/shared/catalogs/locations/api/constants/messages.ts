@@ -1,1 +1,1 @@
-export const getLocationsCatalogErrMsg = 'Ошибка получения списка меcтонахождений'
+export const getLocationsCatalogErrorMessage = 'Ошибка получения списка меcтонахождений'

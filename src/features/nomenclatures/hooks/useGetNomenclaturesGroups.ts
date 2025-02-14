@@ -1,8 +1,3 @@
-import { useGetNomenclaturesGroupsQuery } from 'features/nomenclatures/api/endpoints/nomenclaturesGroups.endpoints'
-import {
-  GetNomenclaturesGroupsRequest,
-  GetNomenclaturesGroupsResponse,
-} from 'features/warehouse/models'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -10,7 +5,9 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getNomenclaturesGroupsErrMsg } from '../api/constants'
+import { getNomenclaturesGroupsErrorMessage } from '../api/constants'
+import { useGetNomenclaturesGroupsQuery } from '../api/endpoints/nomenclaturesGroups.endpoints'
+import { GetNomenclaturesGroupsRequest, GetNomenclaturesGroupsResponse } from '../api/schemas'
 
 type UseGetNomenclaturesGroupsResult = CustomUseQueryHookResult<
   GetNomenclaturesGroupsRequest,
@@ -33,7 +30,7 @@ export const useGetNomenclaturesGroups = (
       if (isForbiddenError(state.error) && state.error.data.detail) {
         showErrorNotification(state.error.data.detail)
       } else {
-        showErrorNotification(getNomenclaturesGroupsErrMsg)
+        showErrorNotification(getNomenclaturesGroupsErrorMessage)
       }
     }
   }, [state.error])

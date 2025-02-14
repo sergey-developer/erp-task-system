@@ -1,5 +1,5 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetTimeZonesCatalogRequest,
   GetTimeZonesCatalogResponse,
@@ -10,7 +10,7 @@ const timeZonesCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getTimeZonesCatalog: build.query<GetTimeZonesCatalogResponse, GetTimeZonesCatalogRequest>({
       query: () => ({
-        url: CatalogEndpointsEnum.GetTimeZones,
+        url: CatalogApiPathsEnum.GetTimeZones,
         method: HttpMethodEnum.Get,
       }),
     }),

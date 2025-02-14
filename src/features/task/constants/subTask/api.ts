@@ -1,4 +1,4 @@
-export enum SubTaskApiEnum {
+export enum SubTaskApiPathsEnum {
   CancelSubTask = '/subtasks/:id/cancel',
   ReworkSubTask = '/subtasks/:id/rework',
 }

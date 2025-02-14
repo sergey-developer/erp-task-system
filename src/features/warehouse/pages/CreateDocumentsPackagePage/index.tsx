@@ -1,5 +1,9 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Flex, Row, Space, Typography } from 'antd'
+import {
+  useCreateRelocationTaskCompletionDocuments,
+  useGetRelocationTaskCompletionDocuments,
+} from 'features/relocationTasks/hooks'
 import { CreateCallingReasonModalProps } from 'features/task/components/CreateCallingReasonModal/types'
 import { CreateCompletedWorkModalProps } from 'features/task/components/CreateCompletedWorkModal/types'
 import {
@@ -18,12 +22,6 @@ import {
   useCreateRelocationEquipmentTechnicalExamination,
   useGetRelocationEquipmentTechnicalExamination,
 } from 'features/warehouse/hooks/relocationEquipment'
-import {
-  useCreateRelocationTaskCompletionDocuments,
-  useGetRelocationTaskCompletionDocuments,
-} from 'features/warehouse/hooks/relocationTask'
-import { RelocationTaskModel } from 'features/warehouse/models'
-import { getRelocateFromToTitle } from 'features/warehouse/utils/relocationTask'
 import get from 'lodash/get'
 import React, { FC, useCallback, useState } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -41,6 +39,9 @@ import { MaybeUndefined, Nullable } from 'shared/types/utils'
 import { base64ToBytes } from 'shared/utils/common'
 import { downloadFile } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
+
+import { RelocationTaskDetailDTO } from '../../../relocationTasks/api/dto'
+import { getRelocateFromToTitle } from '../../../relocationTasks/helpers'
 
 const CallingReasonsTable = React.lazy(
   () => import('features/warehouse/components/CallingReasonsTable'),
@@ -65,7 +66,7 @@ const { Title } = Typography
 const CreateDocumentsPackagePage: FC = () => {
   const location = useLocation()
   const task: Nullable<Pick<TaskModel, 'id' | 'recordId'>> = get(location, 'state.task')
-  const relocationTask: Nullable<Pick<RelocationTaskModel, 'id'>> = get(
+  const relocationTask: Nullable<Pick<RelocationTaskDetailDTO, 'id'>> = get(
     location,
     'state.relocationTask',
   )

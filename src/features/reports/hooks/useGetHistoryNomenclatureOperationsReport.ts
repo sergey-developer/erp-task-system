@@ -1,4 +1,4 @@
-import { getHistoryNomenclatureOperationsReportErrMsg } from 'features/reports/api/constants'
+import { getHistoryNomenclatureOperationsReportErrorMessage } from 'features/reports/api/constants'
 import { useGetHistoryNomenclatureOperationsReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import { GetHistoryNomenclatureOperationsReportRequest } from 'features/reports/api/schemas'
 import { GetHistoryNomenclatureOperationsReportTransformedResponse } from 'features/reports/api/types'
@@ -35,7 +35,7 @@ export const useGetHistoryNomenclatureOperationsReport = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getHistoryNomenclatureOperationsReportErrMsg)
+        showErrorNotification(getHistoryNomenclatureOperationsReportErrorMessage)
       }
     }
   }, [state.error])

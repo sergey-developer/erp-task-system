@@ -1,42 +1,44 @@
 import { ApiRequestMessages } from 'shared/types/messages'
 
-export const createTaskErrMsg = 'Ошибка создания заявки itsm'
-export const getTaskErrMsg = 'Ошибка получения заявки'
-export const getTasksErrMsg = 'Ошибка получения списка заявок'
-export const getTaskListMapErrMsg = 'Ошибка получения списка заявок для карты'
-export const updateTaskDescriptionErrMsg = 'Ошибка изменения описания заявки'
-export const updateTaskDeadlineErrMsg = 'Ошибка изменения срока выполнения заявки'
+export const createTaskErrorMessage = 'Ошибка создания заявки itsm'
+export const getTaskErrorMessage = 'Ошибка получения заявки'
+export const getTasksErrorMessage = 'Ошибка получения списка заявок'
+export const getTaskListMapErrorMessage = 'Ошибка получения списка заявок для карты'
+export const updateTaskDescriptionErrorMessage = 'Ошибка изменения описания заявки'
+export const updateTaskDeadlineErrorMessage = 'Ошибка изменения срока выполнения заявки'
 
-export const createTaskAttachmentErrMsg = 'Ошибка загрузки вложения заявки'
+export const createTaskAttachmentErrorMessage = 'Ошибка загрузки вложения заявки'
 
-export const getTaskCompletionDocumentsErrMsg =
+export const getTaskCompletionDocumentsErrorMessage =
   'Ошибка получения данных о причинах вызова, выполненных работах, потраченном времени и связанных перемещениях оборудования по заявке itsm'
 
-export const createTaskCompletionDocumentsErrMsg = 'Ошибка формирования акта о выполненных работах'
+export const createTaskCompletionDocumentsErrorMessage =
+  'Ошибка формирования акта о выполненных работах'
 
-export const createInitiationReasonErrMsg = 'Ошибка создания причины вызова'
-export const deleteInitiationReasonErrMsg = 'Ошибка удаления причины вызова'
+export const createInitiationReasonErrorMessage = 'Ошибка создания причины вызова'
+export const deleteInitiationReasonErrorMessage = 'Ошибка удаления причины вызова'
 
-export const createCompletedWorkErrMsg = 'Ошибка создания проведенных работ'
-export const deleteCompletedWorkErrMsg = 'Ошибка удаления проведенных работ'
+export const createCompletedWorkErrorMessage = 'Ошибка создания проведенных работ'
+export const deleteCompletedWorkErrorMessage = 'Ошибка удаления проведенных работ'
 
 export const getTaskWorkPerformedActMessages: ApiRequestMessages<'commonError'> = {
   commonError: 'Ошибка формирования акта выполненных работ',
 }
 
-export const takeTaskErrMsg = 'Ошибка взятия заявки в работу'
-export const resolveTaskErrMsg = 'Ошибка выполнения заявки'
-export const returnTaskToFirstLineSupportErrMsg = 'Ошибка возврата заявки на первую линию поддержки'
+export const takeTaskErrorMessage = 'Ошибка взятия заявки в работу'
+export const resolveTaskErrorMessage = 'Ошибка выполнения заявки'
+export const returnTaskToFirstLineSupportErrorMessage =
+  'Ошибка возврата заявки на первую линию поддержки'
 
-export const createTaskRegistrationFNRequestErrMsg =
+export const createTaskRegistrationFNRequestErrorMessage =
   'Ошибка создания запроса на регистрацию фискального накопителя'
 
-export const getTaskRegistrationRequestRecipientsFNErrMsg =
+export const getTaskRegistrationRequestRecipientsFNErrorMessage =
   'Ошибка получения списков получателей запроса на регистрацию ФН'
 
-export const getSubTasksErrMsg = 'Не удалось получить список заданий'
-export const createSubTaskErrMsg = 'Не удалось создать задание'
-export const cancelSubTaskErrMsg = 'Не удалось отменить задание'
-export const reworkSubTaskErrMsg = 'Не удалось вернуть задание на доработку'
+export const getSubTasksErrorMessage = 'Не удалось получить список заданий'
+export const createSubTaskErrorMessage = 'Не удалось создать задание'
+export const cancelSubTaskErrorMessage = 'Не удалось отменить задание'
+export const reworkSubTaskErrorMessage = 'Не удалось вернуть задание на доработку'
 
-export const classifyTaskWorkTypeErrMsg = 'Ошибка классификации типа работ по заявке'
+export const classifyTaskWorkTypeErrorMessage = 'Ошибка классификации типа работ по заявке'

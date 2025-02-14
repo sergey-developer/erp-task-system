@@ -1,12 +1,10 @@
-import {
-  InventorizationEquipmentDTO,
-  RelocationEquipmentListItemModel,
-} from 'features/warehouse/models'
+import { InventorizationEquipmentDTO } from 'features/inventorizations/api/dto'
+import { RelocationEquipmentDTO } from 'features/warehouse/models'
 import { RelocationTaskInventorizationEquipment } from 'features/warehouse/types'
 import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
 
-import { CurrenciesCatalogDTO } from 'shared/catalogs/api/dto/currencies'
+import { CurrenciesCatalogDTO } from 'shared/catalogs/currencies/api/dto'
 
 export type InventorizationEquipmentTableRow = Partial<RelocationTaskInventorizationEquipment> & {
   rowId: number
@@ -31,7 +29,7 @@ export type RelocationEquipmentDraftEditableTableProps = {
   currenciesIsLoading: boolean
 
   equipments: (InventorizationEquipmentDTO & {
-    relocationEquipment?: RelocationEquipmentListItemModel
+    relocationEquipment?: RelocationEquipmentDTO
   })[]
   equipmentsIsLoading: boolean
   equipmentIsLoading: boolean
@@ -39,7 +37,7 @@ export type RelocationEquipmentDraftEditableTableProps = {
     value: InventorizationEquipmentDTO['id'],
     option: {
       equipment: InventorizationEquipmentDTO['equipment']
-      relocationEquipment?: RelocationEquipmentListItemModel
+      relocationEquipment?: RelocationEquipmentDTO
     },
     path: NamePath,
   ) => Promise<void>

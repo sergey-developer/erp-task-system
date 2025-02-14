@@ -8,7 +8,7 @@ import {
   isErrorResponse,
   isForbiddenError,
 } from 'shared/api/baseApi'
-import { getLocationsCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
+import { getLocationsCatalogErrorMessage } from 'shared/catalogs/api/constants/messages'
 import {
   GetLocationsCatalogRequest,
   GetLocationsCatalogResponse,
@@ -30,7 +30,7 @@ export const useLazyGetLocationsCatalog = (): UseGetLocationsCatalogResult => {
       if (isForbiddenError(state.error) || isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getLocationsCatalogErrMsg)
+        showErrorNotification(getLocationsCatalogErrorMessage)
       }
     }
   }, [state.error])

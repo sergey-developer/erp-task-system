@@ -5,7 +5,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getInfrastructureWorkTypesCatalogErrMsg } from '../api/constants'
+import { getInfrastructureWorkTypesCatalogErrorMessage } from '../api/constants'
 import { useGetInfrastructureWorkTypesCatalogQuery } from '../api/endpoints/infrastructureWorkTypesCatalog.endpoints'
 import {
   GetInfrastructureWorkTypesCatalogRequest,
@@ -30,7 +30,7 @@ export const useGetInfrastructureWorkTypesCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getInfrastructureWorkTypesCatalogErrMsg)
+      showErrorNotification(getInfrastructureWorkTypesCatalogErrorMessage)
     }
   }, [state.error])
 

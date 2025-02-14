@@ -1,5 +1,5 @@
 import { within } from '@testing-library/react'
-import { createTaskCommentErrMsg } from 'features/task/constants/taskComment'
+import { createTaskCommentErrorMessage } from 'features/task/constants/taskComment'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 
 import { commentsTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/Comments/testUtils'
@@ -364,7 +364,7 @@ describe('Вкладка списка комментариев заявки', ()
         await createCommentFormTestUtils.expectLoadingStarted()
         await createCommentFormTestUtils.expectLoadingFinished()
 
-        const error = await notificationTestUtils.findNotification(createTaskCommentErrMsg)
+        const error = await notificationTestUtils.findNotification(createTaskCommentErrorMessage)
         expect(error).toBeInTheDocument()
       })
     })

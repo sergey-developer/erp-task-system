@@ -1,11 +1,11 @@
+import { executeRelocationTaskUrl } from 'features/relocationTasks/api/helpers'
 import {
   ExecuteRelocationTaskBadRequestErrorResponse,
   ExecuteRelocationTaskResponse,
 } from 'features/warehouse/models'
-import { executeRelocationTaskUrl } from 'features/warehouse/utils/relocationTask'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {

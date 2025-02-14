@@ -1,13 +1,14 @@
-import { getNomenclaturesErrMsg } from 'features/nomenclatures/api/constants'
-import { useGetNomenclaturesQuery } from 'features/nomenclatures/api/endpoints/nomenclatures.endpoints'
-import { GetNomenclaturesRequest } from 'features/warehouse/models'
-import { GetNomenclaturesTransformedResponse } from 'features/warehouse/types'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { getNomenclaturesErrorMessage } from '../api/constants'
+import { useGetNomenclaturesQuery } from '../api/endpoints/nomenclatures.endpoints'
+import { GetNomenclaturesRequest } from '../api/schemas'
+import { GetNomenclaturesTransformedResponse } from '../api/types'
 
 type UseGetNomenclaturesResult = CustomUseQueryHookResult<
   GetNomenclaturesRequest,
@@ -30,7 +31,7 @@ export const useGetNomenclatures = (
       if (isForbiddenError(state.error) && state.error.data.detail) {
         showErrorNotification(state.error.data.detail)
       } else {
-        showErrorNotification(getNomenclaturesErrMsg)
+        showErrorNotification(getNomenclaturesErrorMessage)
       }
     }
   }, [state.error])

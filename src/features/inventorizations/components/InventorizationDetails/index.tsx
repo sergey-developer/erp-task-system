@@ -8,13 +8,6 @@ import {
 import { useGetInventorization } from 'features/inventorizations/hooks'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useUserPermissions } from 'features/users/hooks'
-import {
-  checkInventorizationStatusIsInProgress,
-  checkInventorizationStatusIsNew,
-  getExecuteInventorizationPageLink,
-  makeExecuteInventorizationPageLocationState,
-  mapInventorizationWarehousesTitles,
-} from 'features/warehouse/utils/inventorization'
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -24,6 +17,13 @@ import { valueOr } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import { RequestWithInventorization } from '../../api/types'
+import {
+  checkInventorizationStatusIsInProgress,
+  checkInventorizationStatusIsNew,
+  makeExecuteInventorizationPageLink,
+  makeExecuteInventorizationPageLocationState,
+  mapInventorizationWarehousesTitles,
+} from '../../helpers'
 import { cardBodyStyles } from './styles'
 import { groupNomenclatures } from './utils'
 
@@ -50,7 +50,7 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
   const executorIsCurrentUser = useIdBelongAuthUser(inventorization?.executor.id)
 
   const onClickExecuteInventorization = () =>
-    navigate(getExecuteInventorizationPageLink({ inventorizationId }), {
+    navigate(makeExecuteInventorizationPageLink({ inventorizationId }), {
       state: makeExecuteInventorizationPageLocationState(inventorization!),
     })
 

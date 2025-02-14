@@ -1,5 +1,5 @@
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import { getWarehouseErrMsg } from 'features/warehouse/constants/warehouse'
+import { getWarehouseErrorMessage } from 'features/warehouse/constants/warehouse'
 import { getWarehousePageLink } from 'features/warehouse/utils/warehouse'
 
 import { warehousePageTestUtils } from '_tests_/features/warehouse/pages/WarehousePage/testUtils'
@@ -235,7 +235,7 @@ describe('Страница склада', () => {
 
       await warehousePageTestUtils.expectLoadingFinished()
 
-      const notification = await notificationTestUtils.findNotification(getWarehouseErrMsg)
+      const notification = await notificationTestUtils.findNotification(getWarehouseErrorMessage)
       expect(notification).toBeInTheDocument()
     })
   })

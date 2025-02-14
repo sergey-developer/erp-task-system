@@ -1,6 +1,6 @@
 import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
-import { SystemEndpointsEnum } from 'shared/system/api/constants/endpoints'
+import { SystemApiPathsEnum } from 'shared/system/api/constants/endpoints'
 import {
   GetSystemInfoRequest,
   GetSystemInfoResponse,
@@ -14,13 +14,13 @@ const systemEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getSystemInfo: build.query<GetSystemInfoResponse, GetSystemInfoRequest>({
       query: () => ({
-        url: SystemEndpointsEnum.GetSystemInfo,
+        url: SystemApiPathsEnum.GetSystemInfo,
         method: HttpMethodEnum.Get,
       }),
     }),
     getSystemSettings: build.query<GetSystemSettingsResponse, GetSystemSettingsRequest>({
       query: () => ({
-        url: SystemEndpointsEnum.GetSystemSettings,
+        url: SystemApiPathsEnum.GetSystemSettings,
         method: HttpMethodEnum.Get,
       }),
     }),

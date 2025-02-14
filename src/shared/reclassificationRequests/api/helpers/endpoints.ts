@@ -1,9 +1,9 @@
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
 
-import { ReclassificationRequestsEndpointsEnum } from '../constants'
+import { ReclassificationRequestsApiPathsEnum } from '../constants'
 
-export const makeCancelReclassificationRequestEndpoint = (id: IdType): string =>
-  generateApiPath(ReclassificationRequestsEndpointsEnum.CancelReclassificationRequest, {
+export const makeCancelReclassificationRequestApiPath = (id: IdType): string =>
+  generateApiPath(ReclassificationRequestsApiPathsEnum.CancelReclassificationRequest, {
     id: String(id),
   })

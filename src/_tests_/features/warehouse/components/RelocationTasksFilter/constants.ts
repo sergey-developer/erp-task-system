@@ -1,4 +1,4 @@
-import { RelocationTasksFilterProps } from 'features/warehouse/components/RelocationTasksFilter/types'
+import { RelocationTasksFilterProps } from 'features/relocationTasks/components/RelocationTasksFilter/types'
 
 export const props: Readonly<RelocationTasksFilterProps> = {
   open: true,

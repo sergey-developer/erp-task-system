@@ -1,1 +1,1 @@
-export const getUserStatusesCatalogErrMsg = 'Ошибка получения статусов пользователя'
+export const getUserStatusesCatalogErrorMessage = 'Ошибка получения статусов пользователя'

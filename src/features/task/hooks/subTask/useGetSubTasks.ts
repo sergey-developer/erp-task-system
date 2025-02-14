@@ -1,4 +1,4 @@
-import { getSubTasksErrMsg } from 'features/task/constants/task'
+import { getSubTasksErrorMessage } from 'features/task/constants/task'
 import { GetSubTaskListRequest, GetSubTaskListResponse } from 'features/task/models'
 import { useGetSubTaskListQuery } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
@@ -39,7 +39,7 @@ export const useGetSubTasks = (
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getSubTasksErrMsg)
+        showErrorNotification(getSubTasksErrorMessage)
       }
     }
   }, [state.error])

@@ -1,4 +1,4 @@
-import { createTaskErrMsg } from 'features/task/constants/task'
+import { createTaskErrorMessage } from 'features/task/constants/task'
 import { CreateTaskRequest, CreateTaskResponse } from 'features/task/models'
 import { useCreateTaskMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
@@ -23,7 +23,7 @@ export const useCreateTask = (): UseCreateTaskResult => {
       if (isBadRequestError(state.error) || isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createTaskErrMsg)
+        showErrorNotification(createTaskErrorMessage)
       }
     }
   }, [state.error])

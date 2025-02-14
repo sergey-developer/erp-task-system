@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { resolveTaskErrMsg } from 'features/task/constants/task'
+import { resolveTaskErrorMessage } from 'features/task/constants/task'
 import { ResolveTaskRequest, ResolveTaskResponse } from 'features/task/models'
 import { useResolveTaskMutation } from 'features/task/services/taskApi.service'
 
@@ -32,7 +32,7 @@ export const useResolveTask = (): UseResolveTaskResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(resolveTaskErrMsg)
+        showErrorNotification(resolveTaskErrorMessage)
       }
     }
   }, [state.error])

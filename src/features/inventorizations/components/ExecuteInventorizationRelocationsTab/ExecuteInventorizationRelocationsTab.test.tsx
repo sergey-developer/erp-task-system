@@ -1,7 +1,7 @@
 import { waitFor, within } from '@testing-library/react'
 import { testUtils as executeInventorizationRelocationTaskTableTestUtils } from 'features/inventorizations/components/ExecuteInventorizationRelocationTaskTable/ExecuteInventorizationRelocationTaskTable.test'
+import CreateRelocationTaskDraftPage from 'features/relocationTasks/pages/CreateRelocationTaskDraftPage'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import CreateRelocationTaskDraftPage from 'features/warehouse/pages/CreateRelocationTaskDraftPage'
 
 import { CommonRoutesEnum } from 'configs/routes'
 

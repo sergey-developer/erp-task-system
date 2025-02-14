@@ -1,13 +1,12 @@
-import { useEffect } from 'react'
-
-import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
-
-import { getTaskRegistrationRequestRecipientsFNErrMsg } from 'features/task/constants/task'
+import { getTaskRegistrationRequestRecipientsFNErrorMessage } from 'features/task/constants/task'
 import {
   GetTaskRegistrationRequestRecipientsFNRequest,
   GetTaskRegistrationRequestRecipientsFNResponse,
 } from 'features/task/models'
 import { useGetTaskRegistrationRequestRecipientsFNQuery } from 'features/task/services/taskApi.service'
+import { useEffect } from 'react'
+
+import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
 import { getErrorDetail, isErrorResponse, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -33,7 +32,7 @@ export const useGetTaskRegistrationRequestRecipientsFN = (
       if (isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getTaskRegistrationRequestRecipientsFNErrMsg)
+        showErrorNotification(getTaskRegistrationRequestRecipientsFNErrorMessage)
       }
     }
   }, [state.error])

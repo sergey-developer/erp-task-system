@@ -2,10 +2,10 @@ import { useBoolean, useSetState } from 'ahooks'
 import { Button, Col, Input, MenuProps, Row } from 'antd'
 import { SearchProps } from 'antd/lib/input/Search'
 import {
-  createNomenclatureErrMsg,
-  createNomenclatureGroupErrMsg,
-  updateNomenclatureErrMsg,
-  updateNomenclatureGroupErrMsg,
+  createNomenclatureErrorMessage,
+  createNomenclatureGroupErrorMessage,
+  updateNomenclatureErrorMessage,
+  updateNomenclatureGroupErrorMessage,
 } from 'features/nomenclatures/api/constants'
 import {
   useCreateNomenclatureMutation,
@@ -26,11 +26,6 @@ import {
 } from 'features/nomenclatures/hooks'
 import { UserPermissionsEnum } from 'features/users/api/constants/enums'
 import { useUserPermissions } from 'features/users/hooks'
-import {
-  GetNomenclaturesGroupsRequest,
-  GetNomenclaturesRequest,
-  NomenclaturesGroupDTO,
-} from 'features/warehouse/models'
 import sortBy from 'lodash/sortBy'
 import React, { FC, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -58,6 +53,8 @@ import {
   getInitialPaginationParams,
 } from 'shared/utils/pagination'
 
+import { NomenclaturesGroupDTO } from '../../api/dto'
+import { GetNomenclaturesGroupsRequest, GetNomenclaturesRequest } from '../../api/schemas'
 import { GroupListMenuStyled } from './styles'
 
 const NomenclatureGroupFormModal = React.lazy(
@@ -232,7 +229,7 @@ const NomenclaturesPage: FC = () => {
           } else if (isForbiddenError(error) && error.data.detail) {
             showErrorNotification(error.data.detail)
           } else {
-            showErrorNotification(createNomenclatureGroupErrMsg)
+            showErrorNotification(createNomenclatureGroupErrorMessage)
           }
         }
       }
@@ -271,7 +268,7 @@ const NomenclaturesPage: FC = () => {
         } else if (isNotFoundError(error) && error.data.detail) {
           showErrorNotification(error.data.detail)
         } else {
-          showErrorNotification(updateNomenclatureGroupErrMsg)
+          showErrorNotification(updateNomenclatureGroupErrorMessage)
         }
       }
     }
@@ -293,7 +290,7 @@ const NomenclaturesPage: FC = () => {
           } else if (isForbiddenError(error) && error.data.detail) {
             showErrorNotification(error.data.detail)
           } else {
-            showErrorNotification(createNomenclatureErrMsg)
+            showErrorNotification(createNomenclatureErrorMessage)
           }
         }
       }
@@ -328,7 +325,7 @@ const NomenclaturesPage: FC = () => {
         } else if (isNotFoundError(error) && error.data.detail) {
           showErrorNotification(error.data.detail)
         } else {
-          showErrorNotification(updateNomenclatureErrMsg)
+          showErrorNotification(updateNomenclatureErrorMessage)
         }
       }
     }

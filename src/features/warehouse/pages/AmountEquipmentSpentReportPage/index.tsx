@@ -39,7 +39,7 @@ import {
 const EquipmentDetails = React.lazy(() => import('features/equipments/components/EquipmentDetails'))
 
 const RelocationTaskDetails = React.lazy(
-  () => import('features/warehouse/components/RelocationTaskDetails'),
+  () => import('features/relocationTasks/components/RelocationTaskDetails'),
 )
 
 const AmountEquipmentSpentReportFilter = React.lazy(

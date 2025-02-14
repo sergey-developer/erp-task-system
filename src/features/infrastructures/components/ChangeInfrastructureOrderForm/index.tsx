@@ -3,14 +3,14 @@ import { Flex, Form, Upload, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 import { attachmentsToFiles, renderUploadedFile } from 'features/attachments/helpers'
 import { InfrastructureOrderFormDTO } from 'features/infrastructures/api/dto'
-import { deleteInfrastructureOrdersFormsWorkErrMsg } from 'features/infrastructures/constants'
+import { deleteInfrastructureOrdersFormsWorkErrorMessage } from 'features/infrastructures/constants'
 import {
   useCreateInfrastructureOrderFormWork,
   useUpdateInfrastructureOrderFormWork,
 } from 'features/infrastructures/hooks'
 import { useDeleteInfrastructureOrdersFormsWork } from 'features/infrastructures/hooks/useDeleteInfrastructureOrdersFormsWork'
 import { useLazyGetInfrastructureOrderFormWorkTypeCost } from 'features/infrastructures/hooks/useLazyGetInfrastructureOrderFormWorkTypeCost'
-import ReadonlyField from 'features/warehouse/components/RelocationTaskDetails/ReadonlyField'
+import ReadonlyField from 'features/relocationTasks/components/RelocationTaskDetails/ReadonlyField'
 import { NamePath } from 'rc-field-form/es/interface'
 import React, { FC, Key, useCallback, useEffect, useState } from 'react'
 
@@ -267,7 +267,7 @@ const ChangeInfrastructureOrderForm: FC<ChangeInfrastructureOrderFormProps> = ({
         ),
       )
     } catch (error) {
-      showErrorNotification(deleteInfrastructureOrdersFormsWorkErrMsg)
+      showErrorNotification(deleteInfrastructureOrdersFormsWorkErrorMessage)
       console.error('Ошибка удаления работ по изменению инфраструктуры: ', error)
     }
 

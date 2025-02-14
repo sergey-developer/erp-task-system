@@ -5,7 +5,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getCountriesCatalogErrMsg } from '../api/constants'
+import { getCountriesCatalogErrorMessage } from '../api/constants'
 import { useGetCountriesCatalogQuery } from '../api/endpoints/countriesCatalog.endpoints'
 import { GetCountriesCatalogRequest, GetCountriesCatalogResponse } from '../api/schemas'
 
@@ -27,7 +27,7 @@ export const useGetCountriesCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getCountriesCatalogErrMsg)
+      showErrorNotification(getCountriesCatalogErrorMessage)
     }
   }, [state.error])
 

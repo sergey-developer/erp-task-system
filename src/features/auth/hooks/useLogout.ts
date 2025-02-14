@@ -1,4 +1,4 @@
-import { logoutErrMsg } from 'features/auth/api/constants'
+import { logoutErrorMessage } from 'features/auth/api/constants'
 import { useLogoutMutation } from 'features/auth/api/endpoints/auth.endpoints'
 import { logoutAndClearTokens } from 'features/auth/helpers'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
@@ -22,7 +22,7 @@ export const useLogout = () => {
         throw new Error()
       }
     } catch {
-      showErrorNotification(logoutErrMsg)
+      showErrorNotification(logoutErrorMessage)
     }
   }, [dispatch, mutation])
 

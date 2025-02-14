@@ -1,1 +1,1 @@
-export const getSubTaskTemplatesCatalogErrMsg = 'Не удалось получить шаблоны заданий'
+export const getSubTaskTemplatesCatalogErrorMessage = 'Не удалось получить шаблоны заданий'

@@ -1,4 +1,4 @@
-import { ExecuteRelocationTaskModalProps } from 'features/warehouse/components/ExecuteRelocationTaskModal/types'
+import { ExecuteRelocationTaskModalProps } from 'features/relocationTasks/components/ExecuteRelocationTaskModal/types'
 
 export const props: Readonly<ExecuteRelocationTaskModalProps> = {
   open: true,

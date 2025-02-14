@@ -5,7 +5,7 @@ import React, { FC, useEffect } from 'react'
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'
 
-import { getLegalEntitiesCatalogErrMsg } from 'shared/catalogs/legalEntities/api/constants'
+import { getLegalEntitiesCatalogErrorMessage } from 'shared/catalogs/legalEntities/api/constants'
 import { useGetLegalEntitiesCatalogQuery } from 'shared/catalogs/legalEntities/api/endpoints/legalEntitiesCatalog.endpoints'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { showErrorNotification } from 'shared/utils/notifications'
@@ -30,7 +30,7 @@ const WarehouseListFilter: FC<WarehouseListFilterProps> = ({
 
   useEffect(() => {
     if (isGetLegalEntitiesError) {
-      showErrorNotification(getLegalEntitiesCatalogErrMsg)
+      showErrorNotification(getLegalEntitiesCatalogErrorMessage)
     }
   }, [isGetLegalEntitiesError])
 

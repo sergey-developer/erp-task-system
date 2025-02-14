@@ -6,7 +6,7 @@ import { CustomUseMutationResult } from 'lib/rtk-query/types'
 import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { checkInventorizationEquipmentsTemplateErrMsg } from '../api/constants'
+import { checkInventorizationEquipmentsTemplateErrorMessage } from '../api/constants'
 import {
   CheckInventorizationEquipmentsTemplateRequest,
   CheckInventorizationEquipmentsTemplateResponse,
@@ -26,7 +26,7 @@ export const useCheckInventorizationEquipmentsTemplate =
         if (isBadRequestError(state.error)) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(checkInventorizationEquipmentsTemplateErrMsg)
+          showErrorNotification(checkInventorizationEquipmentsTemplateErrorMessage)
         }
       }
     }, [state.error])

@@ -1,2 +1,2 @@
-export const getSystemInfoErrMsg = 'Ошибка получения информации о системе'
-export const getSystemSettingsErrMsg = 'Ошибка получения системных настроек'
+export const getSystemInfoErrorMessage = 'Ошибка получения информации о системе'
+export const getSystemSettingsErrorMessage = 'Ошибка получения системных настроек'

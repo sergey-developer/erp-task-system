@@ -30,6 +30,10 @@ import {
   useGetEquipmentCategories,
   useGetEquipmentsCatalog,
 } from 'features/equipments/hooks'
+import {
+  checkInventorizationStatusIsInProgress,
+  checkInventorizationStatusIsNew,
+} from 'features/inventorizations/api/helpers'
 import { CheckInventorizationEquipmentsModalProps } from 'features/inventorizations/components/CheckInventorizationEquipmentsModal'
 import { CheckInventorizationEquipmentsTableRow } from 'features/inventorizations/components/CheckInventorizationEquipmentsTable/types'
 import {
@@ -51,10 +55,6 @@ import { defaultGetNomenclaturesRequestParams } from 'features/nomenclatures/api
 import { useGetNomenclature, useGetNomenclatures } from 'features/nomenclatures/hooks'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useUserPermissions } from 'features/users/hooks'
-import {
-  checkInventorizationStatusIsInProgress,
-  checkInventorizationStatusIsNew,
-} from 'features/warehouse/utils/inventorization'
 import isNumber from 'lodash/isNumber'
 import omit from 'lodash/omit'
 import stubFalse from 'lodash/stubFalse'

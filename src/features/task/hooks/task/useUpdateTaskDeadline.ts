@@ -1,4 +1,4 @@
-import { updateTaskDeadlineErrMsg } from 'features/task/constants/task'
+import { updateTaskDeadlineErrorMessage } from 'features/task/constants/task'
 import { UpdateTaskDeadlineRequest, UpdateTaskDeadlineResponse } from 'features/task/models'
 import { useUpdateTaskDeadlineMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
@@ -31,7 +31,7 @@ export const useUpdateTaskDeadline = (): UseUpdateTaskDeadlineResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(updateTaskDeadlineErrMsg)
+        showErrorNotification(updateTaskDeadlineErrorMessage)
       }
     }
   }, [state.error])

@@ -1,6 +1,0 @@
-export * from './common'
-export * from './apiUrls'
-export * from './pagesLinks'
-export * from './checkStatus'
-export * from './executeInventorization'
-export * from './inventorizationEquipmentsSelectOptions'

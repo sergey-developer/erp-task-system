@@ -3,7 +3,7 @@ import {
   CreateInfrastructureOrderFormAttachmentResponse,
 } from 'features/infrastructures/api/dto'
 import { useCreateInfrastructureOrderFormAttachmentMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { createInfrastructureOrdersFormAttachmentErrMsg } from 'features/infrastructures/constants'
+import { createInfrastructureOrdersFormAttachmentErrorMessage } from 'features/infrastructures/constants'
 import { UploadRequestOption } from 'rc-upload/es/interface'
 import { useCallback, useEffect } from 'react'
 
@@ -45,7 +45,7 @@ export const useCreateInfrastructureOrderFormAttachment =
         ) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(createInfrastructureOrdersFormAttachmentErrMsg)
+          showErrorNotification(createInfrastructureOrdersFormAttachmentErrorMessage)
         }
       }
     }, [state.error])

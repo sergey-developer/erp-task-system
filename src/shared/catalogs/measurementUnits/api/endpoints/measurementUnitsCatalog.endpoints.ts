@@ -4,7 +4,7 @@ import {
 } from 'features/warehouse/models'
 
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants'
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const measurementUnitsCatalogEndpoints = baseApi.injectEndpoints({
@@ -14,7 +14,7 @@ const measurementUnitsCatalogEndpoints = baseApi.injectEndpoints({
       GetMeasurementUnitsCatalogRequest
     >({
       query: () => ({
-        url: CatalogEndpointsEnum.GetMeasurementUnits,
+        url: CatalogApiPathsEnum.GetMeasurementUnits,
         method: HttpMethodEnum.Get,
       }),
     }),

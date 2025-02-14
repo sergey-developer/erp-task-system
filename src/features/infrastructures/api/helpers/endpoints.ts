@@ -1,30 +1,30 @@
-import { InfrastructuresEndpointsEnum } from 'features/infrastructures/api/constants'
+import { InfrastructuresApiPathsEnum } from 'features/infrastructures/api/constants'
 
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
 
 import { RequestWithInfrastructure, RequestWithInfrastructureWork } from '../types'
 
-export const makeUpdateInfrastructureOrderFormWorkEndpoint = (workId: IdType): string =>
-  generateApiPath(InfrastructuresEndpointsEnum.UpdateInfrastructureOrderFormWork, {
+export const makeUpdateInfrastructureOrderFormWorkApiPath = (workId: IdType): string =>
+  generateApiPath(InfrastructuresApiPathsEnum.UpdateInfrastructureOrderFormWork, {
     workId: String(workId),
   })
 
-export const makeGetInfrastructureEndpoint = ({
+export const makeGetInfrastructureApiPath = ({
   infrastructureId,
 }: RequestWithInfrastructure): string =>
-  generateApiPath(InfrastructuresEndpointsEnum.GetInfrastructure, { id: String(infrastructureId) })
+  generateApiPath(InfrastructuresApiPathsEnum.GetInfrastructure, { id: String(infrastructureId) })
 
-export const makeUpdateInfrastructureEndpoint = ({
+export const makeUpdateInfrastructureApiPath = ({
   infrastructureId,
 }: RequestWithInfrastructure): string =>
-  generateApiPath(InfrastructuresEndpointsEnum.UpdateInfrastructure, {
+  generateApiPath(InfrastructuresApiPathsEnum.UpdateInfrastructure, {
     id: String(infrastructureId),
   })
 
-export const makeDeleteInfrastructureOrdersFormsWorkEndpoint = ({
+export const makeDeleteInfrastructureOrdersFormsWorkApiPath = ({
   infrastructureWorkId,
 }: RequestWithInfrastructureWork): string =>
-  generateApiPath(InfrastructuresEndpointsEnum.DeleteInfrastructureOrdersFormsWork, {
+  generateApiPath(InfrastructuresApiPathsEnum.DeleteInfrastructureOrdersFormsWork, {
     id: String(infrastructureWorkId),
   })

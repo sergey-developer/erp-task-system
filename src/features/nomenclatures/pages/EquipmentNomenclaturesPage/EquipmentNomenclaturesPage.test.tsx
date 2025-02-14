@@ -1,4 +1,4 @@
-import { getEquipmentNomenclaturesErrMsg } from 'features/equipments/api/constants'
+import { getEquipmentNomenclaturesErrorMessage } from 'features/equipments/api/constants'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 
 import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
@@ -87,7 +87,7 @@ describe('Страница списка номенклатуры оборудо�
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
         const notification = await notificationTestUtils.findNotification(
-          getEquipmentNomenclaturesErrMsg,
+          getEquipmentNomenclaturesErrorMessage,
         )
 
         expect(notification).toBeInTheDocument()

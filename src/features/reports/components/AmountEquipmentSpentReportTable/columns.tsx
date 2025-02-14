@@ -1,7 +1,6 @@
 import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-
-import { relocationTaskStatusDict } from 'features/warehouse/constants/relocationTask'
+import { relocationTaskStatusDict } from 'features/relocationTasks/constants'
 
 import { formatDate } from 'shared/utils/date'
 

@@ -1,4 +1,4 @@
-import { getTechnicalExaminationPdfErrMsg } from 'features/technicalExaminations/api/constants'
+import { getTechnicalExaminationPdfErrorMessage } from 'features/technicalExaminations/api/constants'
 import { useLazyGetTechnicalExaminationPdfQuery } from 'features/technicalExaminations/api/endpoints/technicalExaminations.endpoints'
 import { useEffect } from 'react'
 
@@ -23,7 +23,7 @@ export const useLazyGetTechnicalExaminationPdf = (): UseGetTechnicalExaminationP
       if (isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getTechnicalExaminationPdfErrMsg)
+        showErrorNotification(getTechnicalExaminationPdfErrorMessage)
       }
     }
   }, [state.error])

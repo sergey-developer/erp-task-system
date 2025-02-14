@@ -1,2 +1,2 @@
-export const getFaChangeTypesCatalogErrMsg =
+export const getFaChangeTypesCatalogErrorMessage =
   'Ошибка получения списка типов замены фискальных накопителей'

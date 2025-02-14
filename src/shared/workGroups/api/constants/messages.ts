@@ -1,1 +1,1 @@
-export const getWorkGroupsErrMsg = 'Ошибка при получении списка рабочих групп'
+export const getWorkGroupsErrorMessage = 'Ошибка при получении списка рабочих групп'

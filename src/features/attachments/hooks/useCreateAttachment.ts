@@ -2,7 +2,7 @@ import {
   CreateAttachmentRequest,
   CreateAttachmentResponse,
 } from 'features/attachments//api/schemas'
-import { createAttachmentErrMsg } from 'features/attachments/api/constants'
+import { createAttachmentErrorMessage } from 'features/attachments/api/constants'
 import { useCreateAttachmentMutation } from 'features/attachments/api/endpoints/attachments.endpoints'
 import { UploadRequestOption } from 'rc-upload/es/interface'
 import { useCallback, useEffect } from 'react'
@@ -35,7 +35,7 @@ export const useCreateAttachment = (): UseCreateAttachmentResult => {
       if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createAttachmentErrMsg)
+        showErrorNotification(createAttachmentErrorMessage)
       }
     }
   }, [state.error])

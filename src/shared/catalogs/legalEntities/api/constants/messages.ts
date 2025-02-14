@@ -1,1 +1,1 @@
-export const getLegalEntitiesCatalogErrMsg = 'Ошибка получения списка юридических лиц'
+export const getLegalEntitiesCatalogErrorMessage = 'Ошибка получения списка юридических лиц'

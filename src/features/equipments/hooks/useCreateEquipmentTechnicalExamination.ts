@@ -1,4 +1,4 @@
-import { createEquipmentTechnicalExaminationErrMsg } from 'features/equipments/api/constants'
+import { createEquipmentTechnicalExaminationErrorMessage } from 'features/equipments/api/constants'
 import { useCreateEquipmentTechnicalExaminationMutation } from 'features/equipments/api/endpoints/equipments.endpoints'
 import {
   CreateEquipmentTechnicalExaminationRequest,
@@ -30,7 +30,7 @@ export const useCreateEquipmentTechnicalExamination =
         if (isBadRequestError(state.error) || isForbiddenError(state.error)) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(createEquipmentTechnicalExaminationErrMsg)
+          showErrorNotification(createEquipmentTechnicalExaminationErrorMessage)
         }
       }
     }, [state.error])

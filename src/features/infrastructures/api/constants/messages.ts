@@ -1,30 +1,30 @@
-export const getInfrastructureErrMsg = 'Ошибка получения данных по изменениям инфраструктуры'
+export const getInfrastructureErrorMessage = 'Ошибка получения данных по изменениям инфраструктуры'
 
-export const updateInfrastructureErrMsg =
+export const updateInfrastructureErrorMessage =
   'Ошибка редактирования проекта по изменению инфраструктуры'
 
-export const getInfrastructureOrdersFormsErrMsg =
+export const getInfrastructureOrdersFormsErrorMessage =
   'Ошибка получения бланк-заказов по изменению инфраструктуры'
 
-export const createInfrastructureOrderFormErrMsg =
+export const createInfrastructureOrderFormErrorMessage =
   'Ошибка создания бланк-заказа для изменения инфраструктуры'
 
-export const createInfrastructureOrdersFormAttachmentErrMsg =
+export const createInfrastructureOrdersFormAttachmentErrorMessage =
   'Ошибка создания вложения к бланк-заказу'
 
-export const updateInfrastructureStatusErrMsg = 'Ошибка изменения статуса инфраструктуры'
+export const updateInfrastructureStatusErrorMessage = 'Ошибка изменения статуса инфраструктуры'
 
-export const getInfrastructureStatusHistoryErrMsg =
+export const getInfrastructureStatusHistoryErrorMessage =
   'Ошибка получения истории статусов изменений инфраструктуры'
 
-export const createInfrastructureOrderFormWorkErrMsg =
+export const createInfrastructureOrderFormWorkErrorMessage =
   'Ошибка добавления работ по изменению инфраструктуры в бланк-заказ'
 
-export const updateInfrastructureOrderFormWorkErrMsg =
+export const updateInfrastructureOrderFormWorkErrorMessage =
   'Ошибка редактирования работ по изменению инфраструктуры'
 
-export const getInfrastructureOrderFormWorkTypeCostErrMsg =
+export const getInfrastructureOrderFormWorkTypeCostErrorMessage =
   'Ошибка получения детальной информации по виду работ для определенного изменения инфраструктуры'
 
-export const deleteInfrastructureOrdersFormsWorkErrMsg =
+export const deleteInfrastructureOrdersFormsWorkErrorMessage =
   'Ошибка удаления работ по изменению инфраструктуры'

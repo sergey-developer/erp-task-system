@@ -1,4 +1,4 @@
-export enum TaskApiEnum {
+export enum TaskApiPathsEnum {
   GetTask = '/tasks/:id',
   ResolveTask = '/tasks/:id/resolution',
   TakeTask = '/tasks/:id/execution',

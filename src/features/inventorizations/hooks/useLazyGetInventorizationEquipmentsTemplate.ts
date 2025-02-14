@@ -6,7 +6,7 @@ import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getInventorizationEquipmentsTemplateErrMsg } from '../api/constants'
+import { getInventorizationEquipmentsTemplateErrorMessage } from '../api/constants'
 import { GetInventorizationEquipmentsTemplateRequest } from '../api/schemas'
 import { GetInventorizationEquipmentsTemplateTransformedResponse } from '../api/types'
 
@@ -24,7 +24,7 @@ export const useLazyGetInventorizationEquipmentsTemplate =
         if (isForbiddenError(state.error)) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(getInventorizationEquipmentsTemplateErrMsg)
+          showErrorNotification(getInventorizationEquipmentsTemplateErrorMessage)
         }
       }
     }, [state.error])

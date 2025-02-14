@@ -1,4 +1,4 @@
-import { TechnicalExaminationsEndpointsEnum } from 'features/technicalExaminations/api/constants'
+import { TechnicalExaminationsApiPathsEnum } from 'features/technicalExaminations/api/constants'
 import { makeGetTechnicalExaminationEndpoint } from 'features/technicalExaminations/api/helpers'
 import { GetTechnicalExaminationPdfTransformedResponse } from 'features/technicalExaminations/api/types'
 
@@ -21,7 +21,7 @@ const technicalExaminationsEndpoints = baseApi.injectEndpoints({
       GetTechnicalExaminationsRequest
     >({
       query: (params) => ({
-        url: TechnicalExaminationsEndpointsEnum.GetTechnicalExaminations,
+        url: TechnicalExaminationsApiPathsEnum.GetTechnicalExaminations,
         method: HttpMethodEnum.Get,
         params,
       }),

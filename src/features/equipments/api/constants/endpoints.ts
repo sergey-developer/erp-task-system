@@ -1,4 +1,4 @@
-export enum EquipmentsEndpointsEnum {
+export enum EquipmentsApiPathsEnum {
   GetEquipment = '/equipments/:id',
   UpdateEquipment = '/equipments/:id',
   GetEquipmentAttachments = '/equipments/:id/attachments',

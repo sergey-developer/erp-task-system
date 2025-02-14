@@ -1,4 +1,4 @@
-import { getFiscalAccumulatorTasksReportErrMsg } from 'features/reports/api/constants'
+import { getFiscalAccumulatorTasksReportErrorMessage } from 'features/reports/api/constants'
 import { useGetFiscalAccumulatorTasksReportQuery } from 'features/reports/api/endpoints/fiscalAccumulator.endpoints'
 import {
   GetFiscalAccumulatorTasksReportRequest,
@@ -33,7 +33,7 @@ export const useGetFiscalAccumulatorTasksReport = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getFiscalAccumulatorTasksReportErrMsg)
+        showErrorNotification(getFiscalAccumulatorTasksReportErrorMessage)
       }
     }
   }, [state.error])

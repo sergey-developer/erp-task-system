@@ -1,4 +1,4 @@
-import { getUsersGroupsErrMsg } from 'features/users/api/constants'
+import { getUsersGroupsErrorMessage } from 'features/users/api/constants'
 import { useGetUsersGroupsQuery } from 'features/users/api/endpoints/users.endpoints'
 import { GetUsersGroupsRequest, GetUsersGroupsResponse } from 'features/users/api/schemas'
 import { useEffect } from 'react'
@@ -27,7 +27,7 @@ export const useGetUsersGroups = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getUsersGroupsErrMsg)
+      showErrorNotification(getUsersGroupsErrorMessage)
     }
   }, [state.error])
 

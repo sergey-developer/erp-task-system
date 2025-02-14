@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
 
 import { isErrorResponse } from 'shared/api/baseApi'
-import { getCustomersCatalogErrMsg } from 'shared/catalogs/customers/api/constants'
+import { getCustomersCatalogErrorMessage } from 'shared/catalogs/customers/api/constants'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 import { useLazyGetCustomersCatalogQuery } from '../api/endpoints/customersCatalog.endpoints'
@@ -19,7 +19,7 @@ export const useLazyGetCustomersCatalog = (): UseLazyGetCustomersCatalogResult =
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getCustomersCatalogErrMsg)
+      showErrorNotification(getCustomersCatalogErrorMessage)
     }
   }, [state.error])
 

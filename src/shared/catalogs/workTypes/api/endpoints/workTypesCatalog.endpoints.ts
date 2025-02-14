@@ -1,5 +1,5 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants'
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/types/utils'
 
@@ -12,7 +12,7 @@ const workTypesCatalogEndpoints = baseApi.injectEndpoints({
       MaybeUndefined<GetWorkTypesCatalogRequest>
     >({
       query: (params) => ({
-        url: CatalogEndpointsEnum.GetWorkTypes,
+        url: CatalogApiPathsEnum.GetWorkTypes,
         method: HttpMethodEnum.Get,
         params,
       }),

@@ -1,12 +1,11 @@
 import { TableProps } from 'antd'
-
-import { GetRelocationTasksSortKey, RelocationTaskListItemModel } from 'features/warehouse/models'
+import { GetRelocationTasksSortKey, RelocationTaskDTO } from 'features/warehouse/models'
 
 import { ExtendSortKey, TableSortProps } from 'shared/types/sort'
 import { SetNonNullable } from 'shared/types/utils'
 
 export type ExecuteInventorizationRelocationTaskTableItem = Pick<
-  RelocationTaskListItemModel,
+  RelocationTaskDTO,
   'id' | 'type' | 'relocateFrom' | 'relocateTo' | 'status'
 >
 

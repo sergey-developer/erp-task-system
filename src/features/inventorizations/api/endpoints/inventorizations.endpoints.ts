@@ -1,12 +1,3 @@
-import {
-  makeCompleteInventorizationUrl,
-  makeCreateInventorizationEquipmentUrl,
-  makeGetInventorizationEquipmentsUrl,
-  makeGetInventorizationEquipmentUrl,
-  makeGetInventorizationUrl,
-  makeUpdateInventorizationEquipmentUrl,
-} from 'features/warehouse/utils/inventorization'
-
 import { getPaginatedList } from 'lib/antd/utils'
 
 import { baseApi } from 'shared/api/baseApi'
@@ -14,7 +5,15 @@ import { HttpMethodEnum } from 'shared/constants/http'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { MaybeUndefined } from 'shared/types/utils'
 
-import { InventorizationsEndpointsEnum, InventorizationsEndpointsTagsEnum } from '../constants'
+import { InventorizationsApiPathsEnum, InventorizationsEndpointsTagsEnum } from '../constants'
+import {
+  makeCompleteInventorizationApiPath,
+  makeCreateInventorizationEquipmentApiPath,
+  makeGetInventorizationApiPath,
+  makeGetInventorizationEquipmentApiPath,
+  makeGetInventorizationEquipmentsApiPath,
+  makeUpdateInventorizationEquipmentApiPath,
+} from '../helpers'
 import {
   CheckInventorizationEquipmentsRequest,
   CheckInventorizationEquipmentsResponse,
@@ -64,7 +63,7 @@ const inventorizationsEndpoints = baseApi
         providesTags: (result, error) =>
           error ? [] : [InventorizationsEndpointsTagsEnum.Inventorizations],
         query: (params) => ({
-          url: InventorizationsEndpointsEnum.GetInventorizations,
+          url: InventorizationsApiPathsEnum.GetInventorizations,
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -73,7 +72,7 @@ const inventorizationsEndpoints = baseApi
       }),
       getInventorization: build.query<GetInventorizationResponse, GetInventorizationRequest>({
         query: ({ inventorizationId }) => ({
-          url: makeGetInventorizationUrl({ inventorizationId }),
+          url: makeGetInventorizationApiPath({ inventorizationId }),
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -84,7 +83,7 @@ const inventorizationsEndpoints = baseApi
         invalidatesTags: (result, error) =>
           error ? [] : [InventorizationsEndpointsTagsEnum.Inventorizations],
         query: (data) => ({
-          url: InventorizationsEndpointsEnum.CreateInventorization,
+          url: InventorizationsApiPathsEnum.CreateInventorization,
           method: HttpMethodEnum.Post,
           data,
         }),
@@ -94,7 +93,7 @@ const inventorizationsEndpoints = baseApi
         CompleteInventorizationRequest
       >({
         query: ({ inventorizationId }) => ({
-          url: makeCompleteInventorizationUrl({ inventorizationId }),
+          url: makeCompleteInventorizationApiPath({ inventorizationId }),
           method: HttpMethodEnum.Post,
         }),
       }),
@@ -106,7 +105,7 @@ const inventorizationsEndpoints = baseApi
         providesTags: (result, error) =>
           error ? [] : [InventorizationsEndpointsTagsEnum.InventorizationEquipments],
         query: ({ inventorizationId, ...params }) => ({
-          url: makeGetInventorizationEquipmentsUrl({ inventorizationId }),
+          url: makeGetInventorizationEquipmentsApiPath({ inventorizationId }),
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -118,7 +117,7 @@ const inventorizationsEndpoints = baseApi
         GetInventorizationEquipmentsXlsxRequest
       >({
         query: ({ inventorizationId, ...params }) => ({
-          url: makeGetInventorizationEquipmentsUrl({ inventorizationId }),
+          url: makeGetInventorizationEquipmentsApiPath({ inventorizationId }),
           method: HttpMethodEnum.Get,
           headers: { Accept: MimetypeEnum.Xlsx },
           params,
@@ -133,7 +132,7 @@ const inventorizationsEndpoints = baseApi
         GetInventorizationEquipmentRequest
       >({
         query: ({ equipmentId }) => ({
-          url: makeGetInventorizationEquipmentUrl({ equipmentId }),
+          url: makeGetInventorizationEquipmentApiPath({ equipmentId }),
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -144,7 +143,7 @@ const inventorizationsEndpoints = baseApi
         invalidatesTags: (result, error) =>
           error ? [] : [InventorizationsEndpointsTagsEnum.InventorizationEquipments],
         query: ({ inventorizationId, ...data }) => ({
-          url: makeCreateInventorizationEquipmentUrl({ inventorizationId }),
+          url: makeCreateInventorizationEquipmentApiPath({ inventorizationId }),
           method: HttpMethodEnum.Post,
           data,
         }),
@@ -159,7 +158,7 @@ const inventorizationsEndpoints = baseApi
           locationFactOption,
           ...data
         }) => ({
-          url: makeUpdateInventorizationEquipmentUrl({ inventorizationEquipmentId }),
+          url: makeUpdateInventorizationEquipmentApiPath({ inventorizationEquipmentId }),
           method: HttpMethodEnum.Put,
           data,
         }),
@@ -203,7 +202,7 @@ const inventorizationsEndpoints = baseApi
         GetInventorizationEquipmentsTemplateRequest
       >({
         query: () => ({
-          url: InventorizationsEndpointsEnum.GetInventorizationEquipmentsTemplate,
+          url: InventorizationsApiPathsEnum.GetInventorizationEquipmentsTemplate,
           method: HttpMethodEnum.Get,
         }),
         transformResponse: (value: GetInventorizationEquipmentsTemplateResponse, meta) => ({
@@ -221,7 +220,7 @@ const inventorizationsEndpoints = baseApi
           formData.append('inventorization', String(inventorization))
 
           return {
-            url: InventorizationsEndpointsEnum.CheckInventorizationEquipmentsTemplate,
+            url: InventorizationsApiPathsEnum.CheckInventorizationEquipmentsTemplate,
             method: HttpMethodEnum.Post,
             data: formData,
           }
@@ -232,7 +231,7 @@ const inventorizationsEndpoints = baseApi
         CheckInventorizationEquipmentsRequest
       >({
         query: (data) => ({
-          url: InventorizationsEndpointsEnum.CheckInventorizationEquipments,
+          url: InventorizationsApiPathsEnum.CheckInventorizationEquipments,
           method: HttpMethodEnum.Post,
           data,
         }),

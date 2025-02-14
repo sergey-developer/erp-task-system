@@ -1,10 +1,10 @@
-import { relocationTaskStatusDict } from 'features/warehouse/constants/relocationTask'
-import { RelocationTaskModel } from 'features/warehouse/models'
+import { relocationTaskStatusDict } from 'features/relocationTasks/constants'
+import { RelocationTaskDetailDTO } from 'features/warehouse/models'
 
 import { formatDate } from 'shared/utils/date'
 
 export const getRelocationTaskReportTableColValue = (
-  relocationTask: Pick<RelocationTaskModel, 'id' | 'createdAt' | 'status'>,
+  relocationTask: Pick<RelocationTaskDetailDTO, 'id' | 'createdAt' | 'status'>,
 ) =>
   `№${relocationTask.id} от ${formatDate(relocationTask.createdAt)} (${
     relocationTaskStatusDict[relocationTask.status]

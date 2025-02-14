@@ -1,4 +1,4 @@
-import { incorrectPasswordErrMsg } from 'features/auth/constants'
+import { incorrectPasswordErrorMessage } from 'features/auth/constants'
 import { checkPasswordValid } from 'features/auth/helpers'
 import { Rule } from 'rc-field-form/es/interface'
 
@@ -11,7 +11,7 @@ export const passwordRules: Rule[] = [
         if (checkPasswordValid(value)) {
           return Promise.resolve()
         } else {
-          return Promise.reject(incorrectPasswordErrMsg)
+          return Promise.reject(incorrectPasswordErrorMessage)
         }
       } else {
         return Promise.reject(validationMessages.required)

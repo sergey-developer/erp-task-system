@@ -1,4 +1,4 @@
-import { getAmountEquipmentSpentReportErrMsg } from 'features/reports/api/constants'
+import { getAmountEquipmentSpentReportErrorMessage } from 'features/reports/api/constants'
 import { useGetAmountEquipmentSpentReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import { GetAmountEquipmentSpentReportRequest } from 'features/reports/api/schemas'
 import { GetAmountEquipmentSpentReportTransformedResponse } from 'features/reports/api/types'
@@ -30,7 +30,7 @@ export const useGetAmountEquipmentSpentReport = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getAmountEquipmentSpentReportErrMsg)
+        showErrorNotification(getAmountEquipmentSpentReportErrorMessage)
       }
     }
   }, [state.error])

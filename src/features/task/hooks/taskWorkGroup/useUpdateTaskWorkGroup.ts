@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { updateTaskWorkGroupErrMsg } from 'features/task/constants/taskWorkGroup'
+import { updateTaskWorkGroupErrorMessage } from 'features/task/constants/taskWorkGroup'
 import {
   UpdateTaskWorkGroupRequest,
   UpdateTaskWorkGroupResponse,
@@ -35,7 +35,7 @@ export const useUpdateTaskWorkGroup = (): UseUpdateTaskWorkGroupResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(updateTaskWorkGroupErrMsg)
+        showErrorNotification(updateTaskWorkGroupErrorMessage)
       }
     }
   }, [state.error])

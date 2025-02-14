@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { getFiscalAccumulatorTasksReportErrMsg } from 'features/reports/api/constants'
+import { getFiscalAccumulatorTasksReportErrorMessage } from 'features/reports/api/constants'
 import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'features/reports/components/FiscalAccumulatorTasksReportTable/FiscalAccumulatorTasksReportTable.test'
 import {
   taskLocalStorageService,
@@ -76,7 +76,7 @@ describe('Страница заявок фискальных накопител�
       await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
 
       const notification = await notificationTestUtils.findNotification(
-        getFiscalAccumulatorTasksReportErrMsg,
+        getFiscalAccumulatorTasksReportErrorMessage,
       )
 
       expect(notification).toBeInTheDocument()

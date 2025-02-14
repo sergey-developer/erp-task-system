@@ -1,11 +1,11 @@
-import { TechnicalExaminationsEndpointsEnum } from 'features/technicalExaminations/api/constants'
+import { TechnicalExaminationsApiPathsEnum } from 'features/technicalExaminations/api/constants'
 import { RequestWithTechnicalExamination } from 'features/technicalExaminations/api/types'
 
 import { generateApiPath } from 'shared/utils/api'
 
-export const makeGetTechnicalExaminationEndpoint = ({
+export const makeGetTechnicalExaminationApiPath = ({
   technicalExaminationId,
 }: RequestWithTechnicalExamination): string =>
-  generateApiPath(TechnicalExaminationsEndpointsEnum.GetTechnicalExamination, {
+  generateApiPath(TechnicalExaminationsApiPathsEnum.GetTechnicalExamination, {
     id: String(technicalExaminationId),
   })

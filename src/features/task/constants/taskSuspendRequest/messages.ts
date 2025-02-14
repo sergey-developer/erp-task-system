@@ -1,2 +1,2 @@
-export const createSuspendRequestErrMsg = 'Ошибка перевода заявку в ожидание'
-export const deleteSuspendRequestErrMsg = 'Ошибка удаления заявки в ожидании'
+export const createSuspendRequestErrorMessage = 'Ошибка перевода заявку в ожидание'
+export const deleteSuspendRequestErrorMessage = 'Ошибка удаления заявки в ожидании'

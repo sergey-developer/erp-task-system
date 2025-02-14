@@ -14,7 +14,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getInventorizationEquipmentsErrMsg } from '../api/constants'
+import { getInventorizationEquipmentsErrorMessage } from '../api/constants'
 
 type UseGetInventorizationEquipmentsResult = CustomUseQueryHookResult<
   GetInventorizationEquipmentsRequest,
@@ -41,7 +41,7 @@ export const useGetInventorizationEquipments = (
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getInventorizationEquipmentsErrMsg)
+        showErrorNotification(getInventorizationEquipmentsErrorMessage)
       }
     }
   }, [state.error])

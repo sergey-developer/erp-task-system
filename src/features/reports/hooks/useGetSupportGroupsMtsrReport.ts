@@ -1,4 +1,4 @@
-import { getSupportGroupsMtsrReportErrMsg } from 'features/reports/api/constants'
+import { getSupportGroupsMtsrReportErrorMessage } from 'features/reports/api/constants'
 import { useGetSupportGroupsMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
   GetSupportGroupsMtsrReportRequest,
@@ -32,7 +32,7 @@ export const useGetSupportGroupsMtsrReport = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getSupportGroupsMtsrReportErrMsg)
+        showErrorNotification(getSupportGroupsMtsrReportErrorMessage)
       }
     }
   }, [state.error])

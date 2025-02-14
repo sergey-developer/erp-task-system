@@ -1,2 +1,2 @@
-export const getWarehouseListErrMsg = 'Ошибка получения списка складов'
-export const getWarehouseErrMsg = 'Ошибка получения склада'
+export const getWarehouseListErrorMessage = 'Ошибка получения списка складов'
+export const getWarehouseErrorMessage = 'Ошибка получения склада'

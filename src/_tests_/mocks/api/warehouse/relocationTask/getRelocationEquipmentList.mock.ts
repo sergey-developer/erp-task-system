@@ -1,6 +1,6 @@
+import { getRelocationEquipmentListUrl } from 'features/relocationTasks/api/helpers'
 import { GetRelocationEquipmentListResponse } from 'features/warehouse/models'
 import { RequestWithRelocationTask } from 'features/warehouse/types'
-import { getRelocationEquipmentListUrl } from 'features/warehouse/utils/relocationTask'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

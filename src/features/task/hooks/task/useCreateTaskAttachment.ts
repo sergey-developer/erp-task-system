@@ -1,8 +1,5 @@
-import { createTaskAttachmentErrMsg } from 'features/task/constants/task'
-import {
-  CreateTaskAttachmentRequest,
-  CreateTaskAttachmentResponse,
-} from 'features/task/models'
+import { createTaskAttachmentErrorMessage } from 'features/task/constants/task'
+import { CreateTaskAttachmentRequest, CreateTaskAttachmentResponse } from 'features/task/models'
 import { useCreateTaskAttachmentMutation } from 'features/task/services/taskApi.service'
 import { UploadRequestOption } from 'rc-upload/es/interface'
 import { useCallback, useEffect } from 'react'
@@ -36,7 +33,7 @@ export const useCreateTaskAttachment = (): UseCreateTaskAttachmentResult => {
       if (isBadRequestError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createTaskAttachmentErrMsg)
+        showErrorNotification(createTaskAttachmentErrorMessage)
       }
     }
   }, [state.error])

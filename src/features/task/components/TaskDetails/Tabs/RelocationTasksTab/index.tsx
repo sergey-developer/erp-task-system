@@ -1,23 +1,22 @@
 import { Button, Col, Row, Typography } from 'antd'
-import pick from 'lodash/pick'
-import React, { FC, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
-
 import { useIdBelongAuthUser } from 'features/auth/hooks'
+import { makeRelocationTasksPageLink } from 'features/relocationTasks/api/helpers'
+import { RelocationTaskStatusEnum } from 'features/relocationTasks/constants'
+import {
+  useCreateRelocationTaskAttachment,
+  useGetRelocationTasks,
+  useNavigateToCreateRelocationTaskSimplifiedPage,
+} from 'features/relocationTasks/hooks'
 import RelocationTasks from 'features/task/components/RelocationTasks'
 import { RelocationTasksProps } from 'features/task/components/RelocationTasks/types'
 import { TaskDetailsTabsEnum } from 'features/task/constants/task'
 import { getTasksPageLink } from 'features/task/utils/task'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useUserPermissions } from 'features/users/hooks'
-import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import {
-  useCreateRelocationTaskAttachment,
-  useGetRelocationTasks,
-  useNavigateToCreateRelocationTaskSimplifiedPage,
-} from 'features/warehouse/hooks/relocationTask'
-import { makeRelocationTasksPageLink } from 'features/warehouse/utils/relocationTask'
+import pick from 'lodash/pick'
+import React, { FC, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import LoadingArea from 'components/LoadingArea'
 import Space from 'components/Space'

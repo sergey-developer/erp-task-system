@@ -6,7 +6,7 @@ import { isErrorResponse } from 'shared/api/baseApi'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getWorkGroupsCatalogErrMsg } from '../api/constants'
+import { getWorkGroupsCatalogErrorMessage } from '../api/constants'
 import { useGetWorkGroupsCatalogQuery } from '../api/endpoints/workGroupsCatalog.endpoints'
 import { GetWorkGroupsCatalogRequest, GetWorkGroupsCatalogResponse } from '../api/schemas'
 
@@ -28,7 +28,7 @@ export const useGetWorkGroupsCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getWorkGroupsCatalogErrMsg)
+      showErrorNotification(getWorkGroupsCatalogErrorMessage)
     }
   }, [state.error])
 

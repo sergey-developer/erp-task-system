@@ -1,5 +1,5 @@
 import { CreateInfrastructureOrderFormWorkResponse } from 'features/infrastructures/api/dto'
-import { InfrastructuresEndpointsEnum } from 'features/infrastructures/constants'
+import { InfrastructuresApiPathsEnum } from 'features/infrastructures/constants'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -9,7 +9,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const createCreateInfrastructureOrderFormWorkMockFn = () =>
   getRequestMockFn(
     HttpMethodEnum.Post,
-    InfrastructuresEndpointsEnum.CreateInfrastructureOrderFormWork,
+    InfrastructuresApiPathsEnum.CreateInfrastructureOrderFormWork,
   )
 
 export const mockCreateInfrastructureOrderFormWorkSuccess = (

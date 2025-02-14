@@ -1,4 +1,4 @@
-import { getHistoryNomenclatureOperationsReportXlsxErrMsg } from 'features/reports/api/constants'
+import { getHistoryNomenclatureOperationsReportXlsxErrorMessage } from 'features/reports/api/constants'
 import { useLazyGetHistoryNomenclatureOperationsReportXlsxQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import { GetHistoryNomenclatureOperationsReportXlsxRequest } from 'features/reports/api/schemas'
 import { GetHistoryNomenclatureOperationsReportXlsxTransformedResponse } from 'features/reports/api/types'
@@ -28,7 +28,7 @@ export const useLazyGetHistoryNomenclatureOperationsReportXlsx =
         if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(getHistoryNomenclatureOperationsReportXlsxErrMsg)
+          showErrorNotification(getHistoryNomenclatureOperationsReportXlsxErrorMessage)
         }
       }
     }, [state.error])

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { deleteSuspendRequestErrMsg } from 'features/task/constants/taskSuspendRequest'
+import { deleteSuspendRequestErrorMessage } from 'features/task/constants/taskSuspendRequest'
 import {
   DeleteTaskSuspendRequestRequest,
   DeleteTaskSuspendRequestResponse,
@@ -35,7 +35,7 @@ export const useDeleteTaskSuspendRequest = (): UseDeleteTaskSuspendRequest => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(deleteSuspendRequestErrMsg)
+        showErrorNotification(deleteSuspendRequestErrorMessage)
       }
     }
   }, [state.error])

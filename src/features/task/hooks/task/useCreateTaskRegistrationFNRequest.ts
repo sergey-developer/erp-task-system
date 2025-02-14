@@ -1,4 +1,4 @@
-import { createTaskRegistrationFNRequestErrMsg } from 'features/task/constants/task'
+import { createTaskRegistrationFNRequestErrorMessage } from 'features/task/constants/task'
 import {
   CreateTaskRegistrationFNRequestRequest,
   CreateTaskRegistrationFNRequestResponse,
@@ -34,7 +34,7 @@ export const useCreateTaskRegistrationFNRequest = (): UseCreateTaskRegistrationF
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createTaskRegistrationFNRequestErrMsg)
+        showErrorNotification(createTaskRegistrationFNRequestErrorMessage)
       }
     }
   }, [state.error])

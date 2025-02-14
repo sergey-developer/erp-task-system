@@ -1,2 +1,2 @@
-export const createAttachmentErrMsg = 'Ошибка создания вложения'
-export const deleteAttachmentErrMsg = 'Ошибка удаления вложения'
+export const createAttachmentErrorMessage = 'Ошибка создания вложения'
+export const deleteAttachmentErrorMessage = 'Ошибка удаления вложения'

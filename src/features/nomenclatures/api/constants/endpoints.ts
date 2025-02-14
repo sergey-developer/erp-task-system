@@ -1,5 +1,5 @@
 // nomenclatures
-export enum NomenclaturesEndpointsEnum {
+export enum NomenclaturesApiPathsEnum {
   GetNomenclatures = '/nomenclatures/',
   GetNomenclature = '/nomenclatures/:id',
   CreateNomenclature = '/nomenclatures/',
@@ -18,7 +18,7 @@ export enum NomenclaturesEndpointsTagsEnum {
 }
 
 // nomenclatures groups
-export enum NomenclaturesGroupsEndpointsEnum {
+export enum NomenclaturesGroupsApiPathsEnum {
   GetNomenclaturesGroups = '/nomenclature-groups/',
   CreateNomenclatureGroup = '/nomenclature-groups/',
   UpdateNomenclatureGroup = '/nomenclature-groups/:id',

@@ -32,7 +32,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await taskCardTestUtils.expectLoadingStarted()
 //           await taskCardTestUtils.expectLoadingFinished()
 //
-//           const notification = await notificationTestUtils.findNotification(getWorkGroupsErrMsg)
+//           const notification = await notificationTestUtils.findNotification(getWorkGroupsErrorMessage)
 //
 //           expect(notification).toBeInTheDocument()
 //         })
@@ -57,7 +57,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await taskCardTestUtils.expectLoadingStarted()
 //           await taskCardTestUtils.expectLoadingFinished()
 //
-//           const notification = await notificationTestUtils.findNotification(getWorkGroupsErrMsg)
+//           const notification = await notificationTestUtils.findNotification(getWorkGroupsErrorMessage)
 //           expect(notification).toBeInTheDocument()
 //         })
 //       })
@@ -81,7 +81,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await taskCardTestUtils.expectLoadingStarted()
 //           await taskCardTestUtils.expectLoadingFinished()
 //
-//           const notification = await notificationTestUtils.findNotification(getWorkGroupsErrMsg)
+//           const notification = await notificationTestUtils.findNotification(getWorkGroupsErrorMessage)
 //           expect(notification).toBeInTheDocument()
 //         })
 //       })
@@ -249,7 +249,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 //
 //             const notification = await notificationTestUtils.findNotification(
-//               createReclassificationRequestErrMsg,
+//               createReclassificationRequestErrorMessage,
 //             )
 //             expect(notification).toBeInTheDocument()
 //           })
@@ -515,7 +515,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 //
 //             const notification = await notificationTestUtils.findNotification(
-//               createReclassificationRequestErrMsg,
+//               createReclassificationRequestErrorMessage,
 //             )
 //             expect(notification).toBeInTheDocument()
 //           })
@@ -693,7 +693,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await taskReclassificationModalTestUtils.clickSubmitButton(user)
 //
 //             const notification = await notificationTestUtils.findNotification(
-//               createReclassificationRequestErrMsg,
+//               createReclassificationRequestErrorMessage,
 //             )
 //             expect(notification).toBeInTheDocument()
 //           })
@@ -834,7 +834,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await executeTaskModalTestUtils.setAttachment(user)
 //           await executeTaskModalTestUtils.clickSubmitButton(user)
 //
-//           const notification = await notificationTestUtils.findNotification(resolveTaskErrMsg)
+//           const notification = await notificationTestUtils.findNotification(resolveTaskErrorMessage)
 //           expect(notification).toBeInTheDocument()
 //         })
 //       })
@@ -971,7 +971,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await executeTaskModalTestUtils.setAttachment(user)
 //           await executeTaskModalTestUtils.clickSubmitButton(user)
 //
-//           const notification = await notificationTestUtils.findNotification(resolveTaskErrMsg)
+//           const notification = await notificationTestUtils.findNotification(resolveTaskErrorMessage)
 //           expect(notification).toBeInTheDocument()
 //         })
 //       })
@@ -1108,7 +1108,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await executeTaskModalTestUtils.setAttachment(user)
 //           await executeTaskModalTestUtils.clickSubmitButton(user)
 //
-//           const notification = await notificationTestUtils.findNotification(resolveTaskErrMsg)
+//           const notification = await notificationTestUtils.findNotification(resolveTaskErrorMessage)
 //           expect(notification).toBeInTheDocument()
 //         })
 //       })
@@ -1245,7 +1245,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await executeTaskModalTestUtils.setAttachment(user)
 //           await executeTaskModalTestUtils.clickSubmitButton(user)
 //
-//           const notification = await notificationTestUtils.findNotification(resolveTaskErrMsg)
+//           const notification = await notificationTestUtils.findNotification(resolveTaskErrorMessage)
 //           expect(notification).toBeInTheDocument()
 //         })
 //       })
@@ -1361,7 +1361,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await taskCardTestUtils.expectLoadingStarted()
 //           await taskCardTestUtils.expectLoadingFinished()
 //
-//           expect(await notificationTestUtils.findNotification(getTaskErrMsg)).toBeInTheDocument()
+//           expect(await notificationTestUtils.findNotification(getTaskErrorMessage)).toBeInTheDocument()
 //         })
 //       })
 //
@@ -1498,7 +1498,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await taskCardTestUtils.expectLoadingStarted()
 //           await taskCardTestUtils.expectLoadingFinished()
 //
-//           expect(await notificationTestUtils.findNotification(getTaskErrMsg)).toBeInTheDocument()
+//           expect(await notificationTestUtils.findNotification(getTaskErrorMessage)).toBeInTheDocument()
 //         })
 //       })
 //
@@ -1635,7 +1635,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await taskCardTestUtils.expectLoadingStarted()
 //           await taskCardTestUtils.expectLoadingFinished()
 //
-//           expect(await notificationTestUtils.findNotification(getTaskErrMsg)).toBeInTheDocument()
+//           expect(await notificationTestUtils.findNotification(getTaskErrorMessage)).toBeInTheDocument()
 //         })
 //       })
 //
@@ -1771,7 +1771,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await taskCardTestUtils.expectLoadingStarted()
 //           await taskCardTestUtils.expectLoadingFinished()
 //
-//           expect(await notificationTestUtils.findNotification(getTaskErrMsg)).toBeInTheDocument()
+//           expect(await notificationTestUtils.findNotification(getTaskErrorMessage)).toBeInTheDocument()
 //         })
 //       })
 //
@@ -1934,7 +1934,7 @@ test.skip('Контейнер детальной карточки заявки',
 //         await taskCardTestUtils.expectLoadingFinished()
 //
 //         expect(
-//           notificationTestUtils.queryNotification(updateTaskAssigneeErrMsg),
+//           notificationTestUtils.queryNotification(updateTaskAssigneeErrorMessage),
 //         ).not.toBeInTheDocument()
 //       })
 //     })
@@ -1975,7 +1975,7 @@ test.skip('Контейнер детальной карточки заявки',
 //
 //         taskCardTestUtils.expectLoadingNotStarted()
 //         expect(
-//           await notificationTestUtils.findNotification(updateTaskAssigneeErrMsg),
+//           await notificationTestUtils.findNotification(updateTaskAssigneeErrorMessage),
 //         ).toBeInTheDocument()
 //       })
 //     })
@@ -2009,7 +2009,7 @@ test.skip('Контейнер детальной карточки заявки',
 //         await taskCardTestUtils.expectLoadingFinished()
 //
 //         expect(
-//           notificationTestUtils.queryNotification(updateTaskAssigneeErrMsg),
+//           notificationTestUtils.queryNotification(updateTaskAssigneeErrorMessage),
 //         ).not.toBeInTheDocument()
 //       })
 //     })
@@ -2039,7 +2039,7 @@ test.skip('Контейнер детальной карточки заявки',
 //
 //         taskCardTestUtils.expectLoadingNotStarted()
 //         expect(
-//           await notificationTestUtils.findNotification(updateTaskAssigneeErrMsg),
+//           await notificationTestUtils.findNotification(updateTaskAssigneeErrorMessage),
 //         ).toBeInTheDocument()
 //       })
 //     })
@@ -2981,7 +2981,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           ).toBeInTheDocument()
 //
 //           expect(
-//             await notificationTestUtils.findNotification(updateTaskWorkGroupErrMsg),
+//             await notificationTestUtils.findNotification(updateTaskWorkGroupErrorMessage),
 //           ).toBeInTheDocument()
 //         })
 //
@@ -3016,7 +3016,7 @@ test.skip('Контейнер детальной карточки заявки',
 //           await taskSecondLineModalTestUtils.clickSubmitButton(user)
 //
 //           expect(
-//             await notificationTestUtils.findNotification(updateTaskWorkGroupErrMsg),
+//             await notificationTestUtils.findNotification(updateTaskWorkGroupErrorMessage),
 //           ).toBeInTheDocument()
 //         })
 //
@@ -3132,7 +3132,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 //
 //             expect(
-//               await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(createSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //           })
 //
@@ -3178,7 +3178,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 //
 //             expect(
-//               await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(createSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //
 //             expect(
@@ -3328,7 +3328,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 //
 //             expect(
-//               await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(createSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //           })
 //
@@ -3374,7 +3374,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 //
 //             expect(
-//               await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(createSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //
 //             expect(
@@ -3524,7 +3524,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 //
 //             expect(
-//               await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(createSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //           })
 //
@@ -3570,7 +3570,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 //
 //             expect(
-//               await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(createSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //
 //             expect(
@@ -3720,7 +3720,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 //
 //             expect(
-//               await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(createSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //           })
 //
@@ -3768,7 +3768,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 //
 //             expect(
-//               await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(createSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //
 //             expect(
@@ -3908,7 +3908,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await taskCardTestUtils.expectLoadingFinished()
 //
 //             expect(
-//               await notificationTestUtils.findNotification(deleteSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(deleteSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //           })
 //
@@ -4036,7 +4036,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await taskCardTestUtils.expectLoadingFinished()
 //
 //             expect(
-//               await notificationTestUtils.findNotification(deleteSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(deleteSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //           })
 //
@@ -4164,7 +4164,7 @@ test.skip('Контейнер детальной карточки заявки',
 //             await taskCardTestUtils.expectLoadingFinished()
 //
 //             expect(
-//               await notificationTestUtils.findNotification(deleteSuspendRequestErrMsg),
+//               await notificationTestUtils.findNotification(deleteSuspendRequestErrorMessage),
 //             ).toBeInTheDocument()
 //           })
 //

@@ -1,1 +1,1 @@
-export const getCustomersCatalogErrMsg = 'Ошибка получения списка клиентов'
+export const getCustomersCatalogErrorMessage = 'Ошибка получения списка клиентов'

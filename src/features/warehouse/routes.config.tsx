@@ -1,4 +1,8 @@
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
+import {
+  checkInventorizationStatusIsInProgress,
+  checkInventorizationStatusIsNew,
+} from 'features/inventorizations/api/helpers'
 import { ExecuteInventorizationPageLocationState } from 'features/inventorizations/types'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { userHasPermissions } from 'features/users/helpers'
@@ -7,10 +11,6 @@ import {
   CreateRelocationTaskDraftPageLocationState,
   EditRelocationTaskDraftPageLocationState,
 } from 'features/warehouse/types'
-import {
-  checkInventorizationStatusIsInProgress,
-  checkInventorizationStatusIsNew,
-} from 'features/warehouse/utils/inventorization'
 import get from 'lodash/get'
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
@@ -20,7 +20,7 @@ import BreadcrumbsLayout from 'components/Layouts/BreadcrumbsLayout '
 
 import { BreadCrumbData } from 'shared/hooks/useBreadcrumbsMatches'
 
-import { RelocationTaskStatusEnum } from './constants/relocationTask'
+import { RelocationTaskStatusEnum } from '../relocationTasks/constants'
 
 const WarehouseCatalogListPage = React.lazy(
   () => import('features/warehouse/pages/WarehouseCatalogListPage'),
@@ -46,26 +46,28 @@ const EquipmentPageLayout = React.lazy(
 
 const EquipmentsPage = React.lazy(() => import('features/equipments/pages/EquipmentsPage'))
 
-const RelocationTasksPage = React.lazy(() => import('features/warehouse/pages/RelocationTasksPage'))
+const RelocationTasksPage = React.lazy(
+  () => import('features/relocationTasks/pages/RelocationTasksPage'),
+)
 
 const CreateRelocationTaskPage = React.lazy(
-  () => import('features/warehouse/pages/CreateRelocationTaskPage'),
+  () => import('features/relocationTasks/pages/CreateRelocationTaskPage'),
 )
 
 const CreateRelocationTaskDraftPage = React.lazy(
-  () => import('features/warehouse/pages/CreateRelocationTaskDraftPage'),
+  () => import('features/relocationTasks/pages/CreateRelocationTaskDraftPage'),
 )
 
 const EditRelocationTaskDraftPage = React.lazy(
-  () => import('features/warehouse/pages/EditRelocationTaskDraftPage'),
+  () => import('features/relocationTasks/pages/EditRelocationTaskDraftPage'),
 )
 
 const CreateRelocationTaskSimplifiedPage = React.lazy(
-  () => import('features/warehouse/pages/CreateRelocationTaskSimplifiedPage'),
+  () => import('features/relocationTasks/pages/CreateRelocationTaskSimplifiedPage'),
 )
 
 const EditRelocationTaskPage = React.lazy(
-  () => import('features/warehouse/pages/EditRelocationTaskPage'),
+  () => import('features/relocationTasks/pages/EditRelocationTaskPage'),
 )
 
 const ReportsCatalogPage = React.lazy(() => import('features/warehouse/pages/ReportsCatalogPage'))

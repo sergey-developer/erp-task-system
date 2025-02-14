@@ -1,8 +1,7 @@
-import pick from 'lodash/pick'
-
+import { RelocationTaskDetailsProps } from 'features/relocationTasks/components/RelocationTaskDetails/types'
 import { UserPermissionsEnum } from 'features/users/api/constants/index'
-import { RelocationTaskDetailsProps } from 'features/warehouse/components/RelocationTaskDetails/types'
-import { RelocationTaskModel } from 'features/warehouse/models/index'
+import { RelocationTaskDetailDTO } from 'features/warehouse/models/index'
+import pick from 'lodash/pick'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 import { fakeId } from '_tests_/utils'
@@ -16,7 +15,7 @@ export const props: RelocationTaskDetailsProps = {
 
 export const canExecuteRelocationTaskProps: {
   permissions: [UserPermissionsEnum.RelocationTasksUpdate]
-  relocationTask: Pick<RelocationTaskModel, 'status' | 'executors' | 'completedBy'>
+  relocationTask: Pick<RelocationTaskDetailDTO, 'status' | 'executors' | 'completedBy'>
 } = {
   relocationTask: pick(warehouseFixtures.relocationTask(), 'status', 'executors', 'completedBy'),
   permissions: [UserPermissionsEnum.RelocationTasksUpdate],

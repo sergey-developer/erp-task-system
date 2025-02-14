@@ -1,5 +1,5 @@
 import { TaskApiTagEnum } from 'features/task/constants/task'
-import { UsersEndpointsEnum, UsersEndpointsTagsEnum } from 'features/users/api/constants'
+import { UsersApiPathsEnum, UsersEndpointsTagsEnum } from 'features/users/api/constants'
 import { UserDetailDTO } from 'features/users/api/dto'
 import {
   makeGetUserActionsEndpoint,
@@ -34,7 +34,7 @@ const usersEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getUsers: build.query<GetUsersResponse, MaybeUndefined<GetUsersRequest>>({
       query: (params) => ({
-        url: UsersEndpointsEnum.GetUsers,
+        url: UsersApiPathsEnum.GetUsers,
         method: HttpMethodEnum.Get,
         params,
       }),
@@ -91,13 +91,13 @@ const usersEndpoints = baseApi.injectEndpoints({
 
     getUserMe: build.query<GetUserMeResponse, GetUserMeRequest>({
       query: () => ({
-        url: UsersEndpointsEnum.GetUserMe,
+        url: UsersApiPathsEnum.GetUserMe,
         method: HttpMethodEnum.Get,
       }),
     }),
     getUserMeCode: build.query<GetUserMeCodeResponse, GetUserMeCodeRequest>({
       query: () => ({
-        url: UsersEndpointsEnum.GetUserMeCode,
+        url: UsersApiPathsEnum.GetUserMeCode,
         method: HttpMethodEnum.Get,
       }),
     }),
@@ -107,7 +107,7 @@ const usersEndpoints = baseApi.injectEndpoints({
       MaybeUndefined<GetUsersGroupsRequest>
     >({
       query: (params) => ({
-        url: UsersEndpointsEnum.GetUsersGroups,
+        url: UsersApiPathsEnum.GetUsersGroups,
         method: HttpMethodEnum.Get,
         params,
       }),

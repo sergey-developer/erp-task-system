@@ -1,9 +1,9 @@
 import { Button, Col, Flex, Row, Select, Typography } from 'antd'
+import EditableField from 'features/relocationTasks/components/RelocationTaskDetails/EditableField'
+import ReadonlyField from 'features/relocationTasks/components/RelocationTaskDetails/ReadonlyField'
 import { useTaskStatus } from 'features/task/hooks/task'
 import { TaskModel } from 'features/task/models'
 import { MatchedUserPermissions } from 'features/users/types'
-import EditableField from 'features/warehouse/components/RelocationTaskDetails/EditableField'
-import ReadonlyField from 'features/warehouse/components/RelocationTaskDetails/ReadonlyField'
 import { WorkTypesCatalogDTO } from 'features/warehouse/models'
 import React, { FC } from 'react'
 

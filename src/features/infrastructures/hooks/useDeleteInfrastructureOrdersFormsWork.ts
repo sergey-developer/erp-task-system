@@ -1,4 +1,4 @@
-import { deleteInfrastructureOrdersFormsWorkErrMsg } from 'features/infrastructures/api/constants'
+import { deleteInfrastructureOrdersFormsWorkErrorMessage } from 'features/infrastructures/api/constants'
 import { useDeleteInfrastructureOrdersFormsWorkMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import {
   DeleteInfrastructureOrdersFormsWorkRequest,
@@ -35,7 +35,7 @@ export const useDeleteInfrastructureOrdersFormsWork =
         ) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(deleteInfrastructureOrdersFormsWorkErrMsg)
+          showErrorNotification(deleteInfrastructureOrdersFormsWorkErrorMessage)
         }
       }
     }, [state.error])

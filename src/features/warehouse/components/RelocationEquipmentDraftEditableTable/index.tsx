@@ -1,17 +1,13 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { EditableProTableProps } from '@ant-design/pro-table/es/components/EditableTable'
 import { Button, Form } from 'antd'
-import {
-  EquipmentConditionEnum,
-  equipmentConditionOptions,
-} from 'features/equipments/api/constants'
-import { InventorizationEquipmentDTO } from 'features/warehouse/models'
-import { RelocationTaskDraftFormFields } from 'features/warehouse/types'
-import { makeInventorizationEquipmentsSelectOptions } from 'features/warehouse/utils/inventorization'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { makeInventorizationEquipmentsSelectOptions } from 'features/inventorizations/helpers'
 import {
   checkRelocationTaskTypeIsReturnWrittenOff,
   checkRelocationTaskTypeIsWriteOff,
-} from 'features/warehouse/utils/relocationTask'
+} from 'features/relocationTasks/api/helpers'
+import { RelocationTaskDraftFormFields } from 'features/warehouse/types'
 import isUndefined from 'lodash/isUndefined'
 import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'
@@ -25,6 +21,8 @@ import { onlyRequiredRules } from 'shared/constants/validation'
 import { MaybeUndefined } from 'shared/types/utils'
 import { filterOptionBy } from 'shared/utils/common'
 
+import { equipmentConditionOptions } from '../../../equipments/constants'
+import { InventorizationEquipmentDTO } from '../../../inventorizations/api/dto'
 import {
   InventorizationEquipmentTableRow,
   RelocationEquipmentDraftEditableTableProps,

@@ -19,6 +19,7 @@ import {
 } from 'features/equipments/hooks'
 import { defaultGetNomenclaturesRequestParams } from 'features/nomenclatures/api/constants'
 import { useGetNomenclature, useGetNomenclatures } from 'features/nomenclatures/hooks'
+import { RelocationTaskStatusEnum } from 'features/relocationTasks/constants'
 import { GetTechnicalExaminationPdfTransformedResponse } from 'features/technicalExaminations/api/types'
 import {
   useGetTechnicalExaminations,
@@ -26,7 +27,6 @@ import {
 } from 'features/technicalExaminations/hooks'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useUserPermissions } from 'features/users/hooks'
-import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
 import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
@@ -75,7 +75,7 @@ const EquipmentRelocationHistoryModal = React.lazy(
 )
 
 const RelocationTaskDetails = React.lazy(
-  () => import('features/warehouse/components/RelocationTaskDetails'),
+  () => import('features/relocationTasks/components/RelocationTaskDetails'),
 )
 
 const TechnicalExaminationsHistoryModal = React.lazy(

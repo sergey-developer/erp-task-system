@@ -3,7 +3,7 @@ import {
   UpdateInfrastructureStatusResponse,
 } from 'features/infrastructures/api/dto'
 import { useUpdateInfrastructureStatusMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { updateInfrastructureStatusErrMsg } from 'features/infrastructures/constants'
+import { updateInfrastructureStatusErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
@@ -29,7 +29,7 @@ export const useUpdateInfrastructureStatus = (): UseUpdateInfrastructureStatusRe
       if (isBadRequestError(state.error) || isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(updateInfrastructureStatusErrMsg)
+        showErrorNotification(updateInfrastructureStatusErrorMessage)
       }
     }
   }, [state.error])

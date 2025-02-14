@@ -1,5 +1,5 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetResolutionClassificationsCatalogRequest,
   GetResolutionClassificationsCatalogResponse,
@@ -13,7 +13,7 @@ const resolutionClassificationsCatalogEndpoints = baseApi.injectEndpoints({
       GetResolutionClassificationsCatalogRequest
     >({
       query: (params) => ({
-        url: CatalogEndpointsEnum.GetResolutionClassifications,
+        url: CatalogApiPathsEnum.GetResolutionClassifications,
         method: HttpMethodEnum.Get,
         params,
       }),

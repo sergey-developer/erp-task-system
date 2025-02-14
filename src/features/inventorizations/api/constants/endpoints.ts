@@ -1,4 +1,4 @@
-export enum InventorizationsEndpointsEnum {
+export enum InventorizationsApiPathsEnum {
   GetInventorizations = '/inventorizations/',
   GetInventorization = '/inventorizations/:id',
   CreateInventorization = '/inventorizations/',

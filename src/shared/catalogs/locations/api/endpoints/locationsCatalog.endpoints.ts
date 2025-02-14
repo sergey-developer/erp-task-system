@@ -1,5 +1,5 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetLocationsCatalogRequest,
   GetLocationsCatalogResponse,
@@ -14,7 +14,7 @@ const locationsCatalogEndpoints = baseApi.injectEndpoints({
       MaybeUndefined<GetLocationsCatalogRequest>
     >({
       query: (params) => ({
-        url: CatalogEndpointsEnum.GetLocations,
+        url: CatalogApiPathsEnum.GetLocations,
         method: HttpMethodEnum.Get,
         params,
       }),

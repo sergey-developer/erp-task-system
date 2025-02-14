@@ -1,6 +1,6 @@
+import { makeGetInventorizationApiPath } from 'features/inventorizations/api/helpers'
 import { GetInventorizationResponse } from 'features/warehouse/models'
 import { RequestWithInventorization } from 'features/warehouse/types'
-import { makeGetInventorizationUrl } from 'features/warehouse/utils/inventorization'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -10,7 +10,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const getInventorizationMockFn = ({
   inventorizationId,
 }: Pick<RequestWithInventorization, 'inventorizationId'>) =>
-  getRequestMockFn(HttpMethodEnum.Get, makeGetInventorizationUrl({ inventorizationId }))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetInventorizationApiPath({ inventorizationId }))
 
 export const mockGetInventorizationSuccess = (
   { inventorizationId }: Pick<RequestWithInventorization, 'inventorizationId'>,

@@ -1,9 +1,8 @@
 import { ColumnsType } from 'antd/es/table'
-
 import {
   relocationTaskStatusDict,
   relocationTaskTypeDict,
-} from 'features/warehouse/constants/relocationTask'
+} from 'features/relocationTasks/constants'
 
 import { valueOr } from 'shared/utils/common'
 

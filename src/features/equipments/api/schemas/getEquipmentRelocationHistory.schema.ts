@@ -1,4 +1,4 @@
-import { RelocationTaskStatusEnum } from 'features/warehouse/constants/relocationTask'
+import { RelocationTaskStatusEnum } from 'features/relocationTasks/constants'
 
 import { EquipmentRelocationHistoryDTO } from '../dto'
 import { RequestWithEquipment } from '../types'

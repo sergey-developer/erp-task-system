@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { updateTaskAssigneeErrMsg } from 'features/task/constants/taskAssignee'
+import { updateTaskAssigneeErrorMessage } from 'features/task/constants/taskAssignee'
 import {
   UpdateTaskAssigneeRequest,
   UpdateTaskAssigneeResponse,
@@ -35,7 +35,7 @@ export const useUpdateTaskAssignee = (): UseUpdateTaskAssigneeResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(updateTaskAssigneeErrMsg)
+        showErrorNotification(updateTaskAssigneeErrorMessage)
       }
     }
   }, [state.error])

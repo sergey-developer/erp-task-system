@@ -1,1 +1,1 @@
-export const getTimeZonesCatalogErrMsg = 'Ошибка получения временных зон'
+export const getTimeZonesCatalogErrorMessage = 'Ошибка получения временных зон'

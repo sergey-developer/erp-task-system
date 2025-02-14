@@ -1,1 +1,1 @@
-export const updateTaskAssigneeErrMsg = 'Ошибка назначения заявки на исполнителя'
+export const updateTaskAssigneeErrorMessage = 'Ошибка назначения заявки на исполнителя'

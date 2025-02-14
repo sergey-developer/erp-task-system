@@ -1,8 +1,8 @@
-import { RelocationTaskAttachmentModel } from 'features/warehouse/models'
+import { RelocationTaskAttachmentDetailDTO } from 'features/warehouse/models'
 
 import { fakeDateString, fakeId, fakeInteger, fakeName, fakeUrl, fakeWord } from '_tests_/utils'
 
-export const relocationTaskAttachment = (): RelocationTaskAttachmentModel => ({
+export const relocationTaskAttachment = (): RelocationTaskAttachmentDetailDTO => ({
   id: fakeId(),
   url: fakeUrl(),
   name: fakeWord(),

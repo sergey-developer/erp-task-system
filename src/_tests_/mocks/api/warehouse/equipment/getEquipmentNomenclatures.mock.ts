@@ -1,4 +1,4 @@
-import { EquipmentsEndpointsEnum } from 'features/equipments/api/constants'
+import { EquipmentsApiPathsEnum } from 'features/equipments/api/constants'
 import { GetEquipmentNomenclaturesResponse } from 'features/warehouse/models'
 
 import { ErrorData } from 'shared/api/baseApi'
@@ -13,7 +13,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentNomenclaturesMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, EquipmentsEndpointsEnum.GetEquipmentNomenclatures)
+  getRequestMockFn(HttpMethodEnum.Get, EquipmentsApiPathsEnum.GetEquipmentNomenclatures)
 
 export const mockGetEquipmentNomenclaturesSuccess = (
   options?: Partial<ResponseResolverOptions<GetEquipmentNomenclaturesResponse>>,

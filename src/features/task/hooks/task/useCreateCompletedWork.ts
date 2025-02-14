@@ -1,4 +1,4 @@
-import { createCompletedWorkErrMsg } from 'features/task/constants/task'
+import { createCompletedWorkErrorMessage } from 'features/task/constants/task'
 import {
   CreateTaskCompletedWorkRequest,
   CreateTaskCompletedWorkResponse,
@@ -24,7 +24,7 @@ export const useCreateCompletedWork = (): UseCreateCompletedWorkResult => {
       if (isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createCompletedWorkErrMsg)
+        showErrorNotification(createCompletedWorkErrorMessage)
       }
     }
   }, [state.error])

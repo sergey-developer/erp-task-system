@@ -1,20 +1,19 @@
-import isUndefined from 'lodash/isUndefined'
-import pick from 'lodash/pick'
-import times from 'lodash/times'
-
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
-} from 'features/warehouse/constants/relocationTask'
-import { RelocationTaskListItemModel } from 'features/warehouse/models'
+} from 'features/relocationTasks/constants'
+import { RelocationTaskDTO } from 'features/warehouse/models'
+import isUndefined from 'lodash/isUndefined'
+import pick from 'lodash/pick'
+import times from 'lodash/times'
 
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
 export const relocationTaskListItem = (
-  props?: Partial<Pick<RelocationTaskListItemModel, 'completedBy' | 'executors'>>,
-): RelocationTaskListItemModel => ({
+  props?: Partial<Pick<RelocationTaskDTO, 'completedBy' | 'executors'>>,
+): RelocationTaskDTO => ({
   completedBy: isUndefined(props?.completedBy)
     ? pick(userFixtures.user(), 'id', 'fullName', 'phone')
     : props!.completedBy,

@@ -1,29 +1,30 @@
-export const getInventorizationErrMsg =
+export const getInventorizationErrorMessage =
   'Ошибка получения детальной информации о поручении на инвентаризацию'
 
-export const getInventorizationsErrMsg = 'Ошибка получения списка поручений на инвентаризацию'
-export const createInventorizationErrMsg = 'Ошибка создания поручения на инвентаризацию'
-export const completeInventorizationErrMsg = 'Ошибка выполнения поручения на инвентаризацию'
+export const getInventorizationsErrorMessage = 'Ошибка получения списка поручений на инвентаризацию'
+export const createInventorizationErrorMessage = 'Ошибка создания поручения на инвентаризацию'
+export const completeInventorizationErrorMessage = 'Ошибка выполнения поручения на инвентаризацию'
 
-export const getInventorizationEquipmentsErrMsg =
+export const getInventorizationEquipmentsErrorMessage =
   'Ошибка получения списка оборудования для инвентаризации'
 
-export const getInventorizationEquipmentsXlsxErrMsg =
+export const getInventorizationEquipmentsXlsxErrorMessage =
   'Ошибка скачивания файла списка оборудования для инвентаризации'
 
-export const getInventorizationEquipmentErrMsg = 'Ошибка получения оборудования для инвентаризации'
+export const getInventorizationEquipmentErrorMessage =
+  'Ошибка получения оборудования для инвентаризации'
 
-export const createInventorizationEquipmentErrMsg =
+export const createInventorizationEquipmentErrorMessage =
   'Ошибка добавления оборудования при проведении сверки'
 
-export const updateInventorizationEquipmentErrMsg =
+export const updateInventorizationEquipmentErrorMessage =
   'Ошибка сохранения оборудования при проведении сверки'
 
-export const getInventorizationEquipmentsTemplateErrMsg =
+export const getInventorizationEquipmentsTemplateErrorMessage =
   'Ошибка формирования шаблона для проведения сверки оборудования из файла'
 
-export const checkInventorizationEquipmentsTemplateErrMsg =
+export const checkInventorizationEquipmentsTemplateErrorMessage =
   'Ошибка загрузки оборудования из файла для сверки'
 
-export const checkInventorizationEquipmentsErrMsg =
+export const checkInventorizationEquipmentsErrorMessage =
   'Ошибка сверки оборудования, загруженного из файла'

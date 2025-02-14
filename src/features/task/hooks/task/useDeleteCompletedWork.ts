@@ -1,8 +1,5 @@
-import { deleteCompletedWorkErrMsg } from 'features/task/constants/task'
-import {
-  DeleteCompletedWorkRequest,
-  DeleteCompletedWorkResponse,
-} from 'features/task/models'
+import { deleteCompletedWorkErrorMessage } from 'features/task/constants/task'
+import { DeleteCompletedWorkRequest, DeleteCompletedWorkResponse } from 'features/task/models'
 import { useDeleteCompletedWorkMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
@@ -24,7 +21,7 @@ export const useDeleteCompletedWork = (): UseDeleteCompletedWorkResult => {
       if (isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(deleteCompletedWorkErrMsg)
+        showErrorNotification(deleteCompletedWorkErrorMessage)
       }
     }
   }, [state.error])

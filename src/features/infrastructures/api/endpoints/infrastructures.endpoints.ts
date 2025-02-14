@@ -1,5 +1,5 @@
 import {
-  InfrastructuresEndpointsEnum,
+  InfrastructuresApiPathsEnum,
   InfrastructuresEndpointsTagsEnum,
 } from 'features/infrastructures/api/constants'
 import {
@@ -71,7 +71,7 @@ const infrastructuresEndpoints = baseApi
         UpdateInfrastructureStatusRequest
       >({
         query: (data) => ({
-          url: InfrastructuresEndpointsEnum.UpdateInfrastructureStatus,
+          url: InfrastructuresApiPathsEnum.UpdateInfrastructureStatus,
           method: HttpMethodEnum.Post,
           data,
         }),
@@ -81,7 +81,7 @@ const infrastructuresEndpoints = baseApi
         GetInfrastructureStatusHistoryRequest
       >({
         query: (params) => ({
-          url: InfrastructuresEndpointsEnum.GetInfrastructureStatusHistory,
+          url: InfrastructuresApiPathsEnum.GetInfrastructureStatusHistory,
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -94,7 +94,7 @@ const infrastructuresEndpoints = baseApi
         providesTags: (result, error) =>
           error ? [] : [InfrastructuresEndpointsTagsEnum.InfrastructureOrdersForms],
         query: (params) => ({
-          url: InfrastructuresEndpointsEnum.GetInfrastructureOrdersForms,
+          url: InfrastructuresApiPathsEnum.GetInfrastructureOrdersForms,
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -106,7 +106,7 @@ const infrastructuresEndpoints = baseApi
         invalidatesTags: (result, error) =>
           error ? [] : [InfrastructuresEndpointsTagsEnum.InfrastructureOrdersForms],
         query: (data) => ({
-          url: InfrastructuresEndpointsEnum.CreateInfrastructureOrderForm,
+          url: InfrastructuresApiPathsEnum.CreateInfrastructureOrderForm,
           method: HttpMethodEnum.Post,
           data,
         }),
@@ -122,7 +122,7 @@ const infrastructuresEndpoints = baseApi
           formData.append('file', file)
 
           return {
-            url: InfrastructuresEndpointsEnum.CreateInfrastructureOrdersFormAttachment,
+            url: InfrastructuresApiPathsEnum.CreateInfrastructureOrdersFormAttachment,
             method: HttpMethodEnum.Post,
             data: formData,
           }
@@ -134,7 +134,7 @@ const infrastructuresEndpoints = baseApi
         GetInfrastructureOrderFormWorkTypeCostRequest
       >({
         query: (params) => ({
-          url: InfrastructuresEndpointsEnum.GetInfrastructureOrderFormWorkTypeCost,
+          url: InfrastructuresApiPathsEnum.GetInfrastructureOrderFormWorkTypeCost,
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -145,7 +145,7 @@ const infrastructuresEndpoints = baseApi
         CreateInfrastructureOrderFormWorkRequest
       >({
         query: (data) => ({
-          url: InfrastructuresEndpointsEnum.CreateInfrastructureOrderFormWork,
+          url: InfrastructuresApiPathsEnum.CreateInfrastructureOrderFormWork,
           method: HttpMethodEnum.Post,
           data: data,
         }),

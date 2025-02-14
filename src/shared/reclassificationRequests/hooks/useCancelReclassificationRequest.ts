@@ -11,7 +11,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { cancelReclassificationRequestErrMsg } from '../api/constants'
+import { cancelReclassificationRequestErrorMessage } from '../api/constants'
 import { useCancelReclassificationRequestMutation } from '../api/endpoints/reclassificationRequests.endpoints'
 import {
   CancelReclassificationRequestRequest,
@@ -35,7 +35,7 @@ export const useCancelReclassificationRequest = (): UseCancelReclassificationReq
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(cancelReclassificationRequestErrMsg)
+        showErrorNotification(cancelReclassificationRequestErrorMessage)
       }
     }
   }, [state.error])

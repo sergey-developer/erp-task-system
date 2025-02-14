@@ -16,7 +16,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { createInventorizationEquipmentErrMsg } from '../api/constants'
+import { createInventorizationEquipmentErrorMessage } from '../api/constants'
 
 type UseCreateInventorizationEquipmentResult = CustomUseMutationResult<
   CreateInventorizationEquipmentRequest,
@@ -35,7 +35,7 @@ export const useCreateInventorizationEquipment = (): UseCreateInventorizationEqu
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createInventorizationEquipmentErrMsg)
+        showErrorNotification(createInventorizationEquipmentErrorMessage)
       }
     }
   }, [state.error])

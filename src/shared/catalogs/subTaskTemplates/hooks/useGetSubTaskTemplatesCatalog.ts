@@ -5,7 +5,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getSubTaskTemplatesCatalogErrMsg } from '../api/constants'
+import { getSubTaskTemplatesCatalogErrorMessage } from '../api/constants'
 import { useGetSubTaskTemplatesCatalogQuery } from '../api/endpoints/subTaskTemplatesCatalog.endpoints'
 import {
   GetSubTaskTemplatesCatalogRequest,
@@ -30,7 +30,7 @@ export const useGetSubTaskTemplatesCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getSubTaskTemplatesCatalogErrMsg)
+      showErrorNotification(getSubTaskTemplatesCatalogErrorMessage)
     }
   }, [state.error])
 

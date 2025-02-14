@@ -1,4 +1,4 @@
-import { getEquipmentsErrMsg } from 'features/equipments/api/constants'
+import { getEquipmentsErrorMessage } from 'features/equipments/api/constants'
 import { useGetEquipmentsQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { useEffect } from 'react'
 
@@ -23,7 +23,7 @@ export const useGetEquipments = (args: GetEquipmentsRequest): UseGetEquipmentLis
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentsErrMsg)
+        showErrorNotification(getEquipmentsErrorMessage)
       }
     }
   }, [state.error])

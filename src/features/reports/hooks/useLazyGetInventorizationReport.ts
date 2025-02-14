@@ -1,4 +1,4 @@
-import { getInventorizationReportErrMsg } from 'features/reports/api/constants'
+import { getInventorizationReportErrorMessage } from 'features/reports/api/constants'
 import { useLazyGetInventorizationReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import { GetInventorizationReportRequest } from 'features/reports/api/schemas'
 import { GetInventorizationReportTransformedResponse } from 'features/reports/api/types'
@@ -27,7 +27,7 @@ export const useLazyGetInventorizationReport = (): UseGetInventorizationReportRe
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getInventorizationReportErrMsg)
+        showErrorNotification(getInventorizationReportErrorMessage)
       }
     }
   }, [state.error])

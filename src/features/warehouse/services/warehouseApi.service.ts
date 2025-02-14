@@ -1,4 +1,4 @@
-import { WarehousesEndpointsEnum } from 'features/warehouse/constants/warehouse'
+import { WarehousesApiPathsEnum } from 'features/warehouse/constants/warehouse'
 import {
   GetWarehouseListRequest,
   GetWarehouseListResponse,
@@ -14,7 +14,7 @@ const warehouseApiService = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getWarehouseList: build.query<GetWarehouseListResponse, GetWarehouseListRequest>({
       query: (params) => ({
-        url: WarehousesEndpointsEnum.GetWarehouseList,
+        url: WarehousesApiPathsEnum.GetWarehouseList,
         method: HttpMethodEnum.Get,
         params,
       }),

@@ -1,4 +1,4 @@
-import { getEmployeesActionsReportXlsxErrMsg } from 'features/reports/api/constants'
+import { getEmployeesActionsReportXlsxErrorMessage } from 'features/reports/api/constants'
 import { useLazyGetEmployeesActionsReportXlsxQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import { GetEmployeesActionsReportXlsxRequest } from 'features/reports/api/schemas'
 import { GetEmployeesActionsReportXlsxTransformedResponse } from 'features/reports/api/types'
@@ -27,7 +27,7 @@ export const useLazyGetEmployeesActionsReportXlsx = (): UseGetEmployeesActionsRe
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEmployeesActionsReportXlsxErrMsg)
+        showErrorNotification(getEmployeesActionsReportXlsxErrorMessage)
       }
     }
   }, [state.error])

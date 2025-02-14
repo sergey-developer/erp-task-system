@@ -1,6 +1,6 @@
 import { ColumnsType } from 'antd/es/table'
 import Attachments from 'features/attachments/components/Attachments'
-import { relocationTaskStatusDict } from 'features/warehouse/constants/relocationTask'
+import { relocationTaskStatusDict } from 'features/relocationTasks/constants'
 
 import { formatDate } from 'shared/utils/date'
 

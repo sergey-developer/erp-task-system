@@ -1,4 +1,4 @@
-import { getWorkGroupsMtsrReportErrMsg } from 'features/reports/api/constants'
+import { getWorkGroupsMtsrReportErrorMessage } from 'features/reports/api/constants'
 import { useGetWorkGroupsMtsrReportQuery } from 'features/reports/api/endpoints/reports.endpoints'
 import {
   GetWorkGroupsMtsrReportRequest,
@@ -32,7 +32,7 @@ export const useGetWorkGroupsMtsrReport = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getWorkGroupsMtsrReportErrMsg)
+        showErrorNotification(getWorkGroupsMtsrReportErrorMessage)
       }
     }
   }, [state.error])

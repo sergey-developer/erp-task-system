@@ -1,9 +1,6 @@
-import { getWarehouseMSIErrMsg } from 'features/users/api/constants'
+import { getWarehouseMSIErrorMessage } from 'features/users/api/constants'
 import { useGetWarehouseMSIQuery } from 'features/users/api/endpoints/users.endpoints'
-import {
-  GetWarehouseMSIRequest,
-  GetWarehouseMSIResponse,
-} from 'features/users/api/schemas'
+import { GetWarehouseMSIRequest, GetWarehouseMSIResponse } from 'features/users/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -37,7 +34,7 @@ export const useGetWarehouseMSI = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getWarehouseMSIErrMsg)
+        showErrorNotification(getWarehouseMSIErrorMessage)
       }
     }
   }, [state.error])

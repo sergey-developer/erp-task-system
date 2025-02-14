@@ -1,1 +1,1 @@
-export const getMeasurementUnitsCatalogErrMsg = 'Ошибка получения списка единиц измерения'
+export const getMeasurementUnitsCatalogErrorMessage = 'Ошибка получения списка единиц измерения'

@@ -1,2 +1,1 @@
-export const getCountriesCatalogErrMsg = 'Ошибка получения списка стран производителей'
-
+export const getCountriesCatalogErrorMessage = 'Ошибка получения списка стран производителей'

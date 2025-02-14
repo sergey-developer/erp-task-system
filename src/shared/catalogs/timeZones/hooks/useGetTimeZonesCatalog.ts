@@ -5,7 +5,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getTimeZonesCatalogErrMsg } from '../api/constants'
+import { getTimeZonesCatalogErrorMessage } from '../api/constants'
 import { useGetTimeZonesCatalogQuery } from '../api/endpoints/timeZonesCatalog.endpoints'
 import { GetTimeZonesCatalogRequest, GetTimeZonesCatalogResponse } from '../api/schemas'
 
@@ -26,7 +26,7 @@ export const useGetTimeZonesCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getTimeZonesCatalogErrMsg)
+      showErrorNotification(getTimeZonesCatalogErrorMessage)
     }
   }, [state.error])
 

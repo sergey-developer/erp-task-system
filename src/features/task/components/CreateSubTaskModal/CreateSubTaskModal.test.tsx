@@ -1,9 +1,9 @@
 import { waitFor } from '@testing-library/react'
-import { createSubTaskErrMsg } from 'features/task/constants/task'
+import { createSubTaskErrorMessage } from 'features/task/constants/task'
 
-import { getSubTaskTemplatesCatalogErrMsg } from 'shared/catalogs/api/constants/messages'
+import { getSubTaskTemplatesCatalogErrorMessage } from 'shared/catalogs/api/constants/messages'
 import { validationMessages } from 'shared/constants/validation'
-import { getSupportGroupsErrMsg } from 'shared/supportGroups/api/constants'
+import { getSupportGroupsErrorMessage } from 'shared/supportGroups/api/constants'
 
 import { onCancel, props } from '_tests_/features/tasks/components/CreateSubTaskModal/constants'
 import { createSubTaskModalTestUtils } from '_tests_/features/tasks/components/CreateSubTaskModal/testUtils'
@@ -639,7 +639,7 @@ describe('Модалка создания задачи заявки', () => {
         })
         await createSubTaskModalTestUtils.clickSubmitButton(user)
 
-        const notification = await notificationTestUtils.findNotification(createSubTaskErrMsg)
+        const notification = await notificationTestUtils.findNotification(createSubTaskErrorMessage)
         expect(notification).toBeInTheDocument()
       })
     })
@@ -662,7 +662,7 @@ describe('Модалка создания задачи заявки', () => {
         await createSubTaskModalTestUtils.supportGroup.setValue(user, fakeSupportGroupListItem.name)
 
         const notification = await notificationTestUtils.findNotification(
-          getSubTaskTemplatesCatalogErrMsg,
+          getSubTaskTemplatesCatalogErrorMessage,
         )
         expect(notification).toBeInTheDocument()
       })
@@ -678,7 +678,7 @@ describe('Модалка создания задачи заявки', () => {
           store: getStoreWithAuth(),
         })
 
-        const notification = await notificationTestUtils.findNotification(getSupportGroupsErrMsg)
+        const notification = await notificationTestUtils.findNotification(getSupportGroupsErrorMessage)
         expect(notification).toBeInTheDocument()
       })
     })

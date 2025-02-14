@@ -16,7 +16,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { completeInventorizationErrMsg } from '../api/constants'
+import { completeInventorizationErrorMessage } from '../api/constants'
 
 type UseCompleteInventorizationResult = CustomUseMutationResult<
   CompleteInventorizationRequest,
@@ -35,7 +35,7 @@ export const useCompleteInventorization = (): UseCompleteInventorizationResult =
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(completeInventorizationErrMsg)
+        showErrorNotification(completeInventorizationErrorMessage)
       }
     }
   }, [state.error])

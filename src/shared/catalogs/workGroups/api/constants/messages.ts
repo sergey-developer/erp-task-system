@@ -1,1 +1,1 @@
-export const getWorkGroupsCatalogErrMsg = 'Ошибка получения каталога рабочих групп'
+export const getWorkGroupsCatalogErrorMessage = 'Ошибка получения каталога рабочих групп'

@@ -1,10 +1,10 @@
 import { Col, Divider, Row, Typography, Upload, UploadProps } from 'antd'
 import Attachments from 'features/attachments/components/Attachments'
 import { renderUploadedReadonlyFile } from 'features/attachments/helpers'
+import { getRelocateFromToTitle } from 'features/relocationTasks/api/helpers'
+import { relocationTaskStatusDict } from 'features/relocationTasks/constants'
 import TaskAssignee from 'features/task/components/TaskAssignee'
 import { makeUserByFullName } from 'features/users/helpers'
-import { relocationTaskStatusDict } from 'features/warehouse/constants/relocationTask'
-import { getRelocateFromToTitle } from 'features/warehouse/utils/relocationTask'
 import React, { FC } from 'react'
 
 import UploadButton from 'components/Buttons/UploadButton'

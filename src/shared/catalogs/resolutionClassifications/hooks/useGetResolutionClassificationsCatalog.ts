@@ -5,7 +5,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getResolutionClassificationsCatalogErrMsg } from '../api/constants'
+import { getResolutionClassificationsCatalogErrorMessage } from '../api/constants'
 import { useGetResolutionClassificationsCatalogQuery } from '../api/endpoints/resolutionClassificationsCatalog.endpoints'
 import {
   GetResolutionClassificationsCatalogRequest,
@@ -33,7 +33,7 @@ export const useGetResolutionClassificationsCatalog = (
       if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getResolutionClassificationsCatalogErrMsg)
+        showErrorNotification(getResolutionClassificationsCatalogErrorMessage)
       }
     }
   }, [state.error])

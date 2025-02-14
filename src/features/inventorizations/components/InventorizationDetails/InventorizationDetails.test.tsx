@@ -1,6 +1,10 @@
 import { within } from '@testing-library/react'
 import { testUtils as attachmentsTestUtils } from 'features/attachments/components/Attachments/Attachments.test'
 import {
+  makeExecuteInventorizationPageLocationState,
+  mapInventorizationWarehousesTitles,
+} from 'features/inventorizations/api/helpers'
+import {
   inventorizationStatusDict,
   InventorizationStatusEnum,
   inventorizationTypeDict,
@@ -8,10 +12,6 @@ import {
 import ExecuteInventorizationPage from 'features/inventorizations/pages/ExecuteInventorizationPage'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import {
-  makeExecuteInventorizationPageLocationState,
-  mapInventorizationWarehousesTitles,
-} from 'features/warehouse/utils/inventorization'
 import * as reactRouterDom from 'react-router-dom'
 
 import { formatDate } from 'shared/utils/date'

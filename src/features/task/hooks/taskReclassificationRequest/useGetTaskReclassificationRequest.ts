@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
 
-import { getReclassificationRequestErrMsg } from 'features/task/constants/taskReclassificationRequest'
+import { getReclassificationRequestErrorMessage } from 'features/task/constants/taskReclassificationRequest'
 import {
   GetTaskReclassificationRequestRequest,
   GetTaskReclassificationRequestResponse,
@@ -38,7 +38,7 @@ export const useGetTaskReclassificationRequest = (
       if (isBadRequestError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getReclassificationRequestErrMsg)
+        showErrorNotification(getReclassificationRequestErrorMessage)
       }
     }
   }, [state.error])

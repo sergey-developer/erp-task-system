@@ -1,20 +1,20 @@
-import { ReportsEndpointsEnum } from 'features/reports/api/constants'
+import { ReportsApiPathsEnum } from 'features/reports/api/constants'
 import { RequestWithInventorization } from 'features/warehouse/types'
 
 import { IdType } from 'shared/types/common'
 import { generateApiPath } from 'shared/utils/api'
 
-export const makeGetEmployeesActionsReportEndpoint = (employeeId: IdType): string =>
-  generateApiPath(ReportsEndpointsEnum.GetEmployeesActionsReport, { id: String(employeeId) })
+export const makeGetEmployeesActionsReportApiPath = (employeeId: IdType): string =>
+  generateApiPath(ReportsApiPathsEnum.GetEmployeesActionsReport, { id: String(employeeId) })
 
-export const makeHistoryNomenclatureOperationsReportEndpoint = (nomenclatureId: IdType): string =>
-  generateApiPath(ReportsEndpointsEnum.GetHistoryNomenclatureOperationsReport, {
+export const makeHistoryNomenclatureOperationsReportApiPath = (nomenclatureId: IdType): string =>
+  generateApiPath(ReportsApiPathsEnum.GetHistoryNomenclatureOperationsReport, {
     id: String(nomenclatureId),
   })
 
-export const makeGetInventorizationReportEndpoint = ({
+export const makeGetInventorizationReportApiPath = ({
   inventorizationId,
 }: RequestWithInventorization): string =>
-  generateApiPath(ReportsEndpointsEnum.GetInventorizationReport, {
+  generateApiPath(ReportsApiPathsEnum.GetInventorizationReport, {
     inventorizationId: String(inventorizationId),
   })

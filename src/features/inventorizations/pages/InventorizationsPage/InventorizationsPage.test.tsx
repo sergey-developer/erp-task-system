@@ -1,5 +1,5 @@
 import {
-  getInventorizationsErrMsg,
+  getInventorizationsErrorMessage,
   inventorizationStatusDict,
   InventorizationStatusEnum,
   inventorizationTypeDict,
@@ -84,7 +84,9 @@ describe('Страница списка инвентаризаций', () => {
         })
 
         await inventorizationTableTestUtils.expectLoadingFinished()
-        const notification = await notificationTestUtils.findNotification(getInventorizationsErrMsg)
+        const notification = await notificationTestUtils.findNotification(
+          getInventorizationsErrorMessage,
+        )
 
         expect(notification).toBeInTheDocument()
       })

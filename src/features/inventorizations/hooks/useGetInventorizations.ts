@@ -9,7 +9,7 @@ import { getErrorDetail, isErrorResponse, isForbiddenError } from 'shared/api/ba
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getInventorizationsErrMsg } from '../api/constants'
+import { getInventorizationsErrorMessage } from '../api/constants'
 
 type UseGetInventorizationsResult = CustomUseQueryHookResult<
   MaybeUndefined<GetInventorizationsRequest>,
@@ -32,7 +32,7 @@ export const useGetInventorizations = (
       if (isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getInventorizationsErrMsg)
+        showErrorNotification(getInventorizationsErrorMessage)
       }
     }
   }, [state.error])

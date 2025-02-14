@@ -1,5 +1,5 @@
 import { baseApi } from 'shared/api/baseApi'
-import { CatalogEndpointsEnum } from 'shared/catalogs/api/constants/endpoints'
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetUserStatusesCatalogRequest,
   GetUserStatusesCatalogResponse,
@@ -13,7 +13,7 @@ const userStatusesCatalogEndpoints = baseApi.injectEndpoints({
       GetUserStatusesCatalogRequest
     >({
       query: () => ({
-        url: CatalogEndpointsEnum.GetUserStatuses,
+        url: CatalogApiPathsEnum.GetUserStatuses,
         method: HttpMethodEnum.Get,
       }),
     }),

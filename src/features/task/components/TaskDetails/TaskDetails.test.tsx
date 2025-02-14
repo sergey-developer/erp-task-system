@@ -4,13 +4,13 @@ import ChangeInfrastructurePage from 'features/infrastructures/pages/ChangeInfra
 import { getChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { TasksRoutesEnum } from 'features/task/constants/routes'
 import {
-  takeTaskErrMsg,
+  takeTaskErrorMessage,
   TaskActionsPermissionsEnum,
   TaskExtendedStatusEnum,
 } from 'features/task/constants/task'
 import {
-  createSuspendRequestErrMsg,
-  deleteSuspendRequestErrMsg,
+  createSuspendRequestErrorMessage,
+  deleteSuspendRequestErrorMessage,
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
 } from 'features/task/constants/taskSuspendRequest'
@@ -579,7 +579,7 @@ describe('Карточка заявки', () => {
           await requestTaskSuspendModalTestUtils.clickSubmitButton(user)
 
           expect(
-            await notificationTestUtils.findNotification(createSuspendRequestErrMsg),
+            await notificationTestUtils.findNotification(createSuspendRequestErrorMessage),
           ).toBeInTheDocument()
         })
       })
@@ -749,7 +749,7 @@ describe('Карточка заявки', () => {
           await taskSuspendRequestTestUtils.clickCancelButton(user)
 
           const notification = await notificationTestUtils.findNotification(
-            deleteSuspendRequestErrMsg,
+            deleteSuspendRequestErrorMessage,
           )
           expect(notification).toBeInTheDocument()
         })
@@ -834,7 +834,7 @@ describe('Карточка заявки', () => {
           await taskSuspendRequestTestUtils.findContainer()
           await taskSuspendRequestTestUtils.clickReturnToWorkButton(user)
 
-          expect(await notificationTestUtils.findNotification(takeTaskErrMsg)).toBeInTheDocument()
+          expect(await notificationTestUtils.findNotification(takeTaskErrorMessage)).toBeInTheDocument()
         })
       })
     })

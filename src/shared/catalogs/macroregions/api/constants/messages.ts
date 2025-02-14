@@ -1,1 +1,1 @@
-export const getMacroregionsCatalogErrMsg = 'Ошибка получения списка макрорегионов'
+export const getMacroregionsCatalogErrorMessage = 'Ошибка получения списка макрорегионов'

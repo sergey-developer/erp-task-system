@@ -12,7 +12,7 @@ import {
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getLocationsCatalogErrMsg } from '../api/constants'
+import { getLocationsCatalogErrorMessage } from '../api/constants'
 import { useGetLocationsCatalogQuery } from '../api/endpoints/locationsCatalog.endpoints'
 import { GetLocationsCatalogRequest, GetLocationsCatalogResponse } from '../api/schemas'
 
@@ -41,7 +41,7 @@ export const useGetLocationsCatalog = (
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getLocationsCatalogErrMsg)
+        showErrorNotification(getLocationsCatalogErrorMessage)
       }
     }
   }, [state.error])

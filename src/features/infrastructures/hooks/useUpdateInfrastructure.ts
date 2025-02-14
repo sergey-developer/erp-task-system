@@ -3,7 +3,7 @@ import {
   UpdateInfrastructureResponse,
 } from 'features/infrastructures/api/dto'
 import { useUpdateInfrastructureMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { updateInfrastructureErrMsg } from 'features/infrastructures/constants'
+import { updateInfrastructureErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
@@ -34,7 +34,7 @@ export const useUpdateInfrastructure = (): UseUpdateInfrastructureResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(updateInfrastructureErrMsg)
+        showErrorNotification(updateInfrastructureErrorMessage)
       }
     }
   }, [state.error])

@@ -3,7 +3,7 @@ import {
   GetInfrastructureOrdersFormsResponse,
 } from 'features/infrastructures/api/dto'
 import { useGetInfrastructureOrdersFormsQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { getInfrastructureOrdersFormsErrMsg } from 'features/infrastructures/constants'
+import { getInfrastructureOrdersFormsErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -32,7 +32,7 @@ export const useGetInfrastructureOrdersForms = (
       if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getInfrastructureOrdersFormsErrMsg)
+        showErrorNotification(getInfrastructureOrdersFormsErrorMessage)
       }
     }
   }, [state.error])

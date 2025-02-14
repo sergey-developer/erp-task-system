@@ -9,7 +9,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getMeasurementUnitsCatalogErrMsg } from '../api/constants'
+import { getMeasurementUnitsCatalogErrorMessage } from '../api/constants'
 import { useGetMeasurementUnitsCatalogQuery } from '../api/endpoints/measurementUnitsCatalog.endpoints'
 
 type UseGetMeasurementUnitListResult = CustomUseQueryHookResult<
@@ -30,7 +30,7 @@ export const useGetMeasurementUnitsCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getMeasurementUnitsCatalogErrMsg)
+      showErrorNotification(getMeasurementUnitsCatalogErrorMessage)
     }
   }, [state.error])
 

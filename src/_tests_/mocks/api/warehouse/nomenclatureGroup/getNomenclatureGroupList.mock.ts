@@ -1,4 +1,4 @@
-import { NomenclaturesGroupsEndpointsEnum } from 'features/warehouse/constants/nomenclatureGroup'
+import { NomenclaturesGroupsApiPathsEnum } from 'features/warehouse/constants/nomenclatureGroup'
 import { GetNomenclaturesGroupsResponse } from 'features/warehouse/models'
 
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -12,7 +12,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getNomenclatureGroupListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, NomenclaturesGroupsEndpointsEnum.GetNomenclaturesGroups)
+  getRequestMockFn(HttpMethodEnum.Get, NomenclaturesGroupsApiPathsEnum.GetNomenclaturesGroups)
 
 export const mockGetNomenclatureGroupListSuccess = (
   options?: Partial<ResponseResolverOptions<GetNomenclaturesGroupsResponse>>,

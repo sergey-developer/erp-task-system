@@ -1,4 +1,4 @@
-import { getTaskCommentsErrMsg } from 'features/task/constants/taskComment'
+import { getTaskCommentsErrorMessage } from 'features/task/constants/taskComment'
 import {
   GetTaskCommentListRequest,
   GetTaskCommentListResponse,
@@ -32,7 +32,7 @@ export const useGetTaskComments = (
       if (isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getTaskCommentsErrMsg)
+        showErrorNotification(getTaskCommentsErrorMessage)
       }
     }
   }, [args.taskId, state.error])

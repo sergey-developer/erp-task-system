@@ -1,8 +1,8 @@
-export const getRelocationEquipmentAttachmentListErrMsg =
+export const getRelocationEquipmentAttachmentListErrorMessage =
   'Ошибка получения изображений с перемещения оборудования'
 
-export const getRelocationEquipmentTechnicalExaminationErrMsg =
+export const getRelocationEquipmentTechnicalExaminationErrorMessage =
   'Ошибка получения технической экспертизы при перемещении оборудования'
 
-export const createRelocationEquipmentTechnicalExaminationErrMsg =
+export const createRelocationEquipmentTechnicalExaminationErrorMessage =
   'Ошибка создания технической экспертизы при перемещении оборудования'

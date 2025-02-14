@@ -1,4 +1,4 @@
-import { getEquipmentAttachmentsErrMsg } from 'features/equipments/api/constants'
+import { getEquipmentAttachmentsErrorMessage } from 'features/equipments/api/constants'
 import { useGetEquipmentAttachmentsQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { useEffect } from 'react'
 
@@ -36,7 +36,7 @@ export const useGetEquipmentAttachments = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getEquipmentAttachmentsErrMsg)
+        showErrorNotification(getEquipmentAttachmentsErrorMessage)
       }
     }
   }, [state.error])

@@ -1,8 +1,5 @@
-import { deleteInitiationReasonErrMsg } from 'features/task/constants/task'
-import {
-  DeleteInitiationReasonRequest,
-  DeleteInitiationReasonResponse,
-} from 'features/task/models'
+import { deleteInitiationReasonErrorMessage } from 'features/task/constants/task'
+import { DeleteInitiationReasonRequest, DeleteInitiationReasonResponse } from 'features/task/models'
 import { useDeleteInitiationReasonMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
 
@@ -24,7 +21,7 @@ export const useDeleteInitiationReason = (): UseDeleteInitiationReasonResult => 
       if (isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(deleteInitiationReasonErrMsg)
+        showErrorNotification(deleteInitiationReasonErrorMessage)
       }
     }
   }, [state.error])

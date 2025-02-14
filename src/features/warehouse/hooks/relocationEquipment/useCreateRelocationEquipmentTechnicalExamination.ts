@@ -1,4 +1,4 @@
-import { createRelocationEquipmentTechnicalExaminationErrMsg } from 'features/warehouse/constants/relocationEquipment'
+import { createRelocationEquipmentTechnicalExaminationErrorMessage } from 'features/warehouse/constants/relocationEquipment'
 import {
   CreateRelocationEquipmentTechnicalExaminationRequest,
   CreateRelocationEquipmentTechnicalExaminationResponse,
@@ -30,7 +30,7 @@ export const useCreateRelocationEquipmentTechnicalExamination =
         if (isBadRequestError(state.error) || isNotFoundError(state.error)) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(createRelocationEquipmentTechnicalExaminationErrMsg)
+          showErrorNotification(createRelocationEquipmentTechnicalExaminationErrorMessage)
         }
       }
     }, [state.error])

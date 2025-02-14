@@ -1,4 +1,4 @@
-import { classifyTaskWorkTypeErrMsg } from 'features/task/constants/task'
+import { classifyTaskWorkTypeErrorMessage } from 'features/task/constants/task'
 import { ClassifyTaskWorkTypeRequest, ClassifyTaskWorkTypeResponse } from 'features/task/models'
 import { useClassifyTaskWorkTypeMutation } from 'features/task/services/taskApi.service'
 import { useEffect } from 'react'
@@ -31,7 +31,7 @@ export const useClassifyTaskWorkType = (): UseClassifyTaskWorkTypeResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(classifyTaskWorkTypeErrMsg)
+        showErrorNotification(classifyTaskWorkTypeErrorMessage)
       }
     }
   }, [state.error])

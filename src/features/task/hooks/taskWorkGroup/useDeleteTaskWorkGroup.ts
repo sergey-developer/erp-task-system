@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { returnTaskToFirstLineSupportErrMsg } from 'features/task/constants/task'
+import { returnTaskToFirstLineSupportErrorMessage } from 'features/task/constants/task'
 import {
   DeleteTaskWorkGroupRequest,
   DeleteTaskWorkGroupResponse,
@@ -35,7 +35,7 @@ export const useDeleteTaskWorkGroup = (): UseDeleteTaskWorkGroupResult => {
       ) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(returnTaskToFirstLineSupportErrMsg)
+        showErrorNotification(returnTaskToFirstLineSupportErrorMessage)
       }
     }
   }, [state.error])

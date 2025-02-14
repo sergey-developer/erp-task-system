@@ -5,7 +5,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getUserStatusesCatalogErrMsg } from '../api/constants'
+import { getUserStatusesCatalogErrorMessage } from '../api/constants'
 import { useGetUserStatusesCatalogQuery } from '../api/endpoints/userStatusesCatalog.endpoints'
 import { GetUserStatusesCatalogRequest, GetUserStatusesCatalogResponse } from '../api/schemas'
 
@@ -26,7 +26,7 @@ export const useGetUserStatusesCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getUserStatusesCatalogErrMsg)
+      showErrorNotification(getUserStatusesCatalogErrorMessage)
     }
   }, [state.error])
 

@@ -9,9 +9,9 @@ import {
   checkEquipmentCategoryIsConsumable,
   makeEquipmentsSelectOptions,
 } from 'features/equipments/helpers'
+import { checkRelocationTaskTypeIsWriteOff } from 'features/relocationTasks/api/helpers'
 import { EquipmentDetailDTO } from 'features/warehouse/models'
 import { RelocationTaskFormFields } from 'features/warehouse/types'
-import { checkRelocationTaskTypeIsWriteOff } from 'features/warehouse/utils/relocationTask'
 import isUndefined from 'lodash/isUndefined'
 import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'

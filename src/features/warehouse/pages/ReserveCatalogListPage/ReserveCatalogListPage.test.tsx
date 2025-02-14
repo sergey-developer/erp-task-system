@@ -1,8 +1,8 @@
 import InventorizationsPage from 'features/inventorizations/pages/InventorizationsPage'
 import EquipmentNomenclaturesPage from 'features/nomenclatures/pages/EquipmentNomenclaturesPage'
+import RelocationTasksPage from 'features/relocationTasks/pages/RelocationTasksPage'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import RelocationTasksPage from 'features/warehouse/pages/RelocationTasksPage'
 import React from 'react'
 
 import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentNomenclaturesPage/testUtils'

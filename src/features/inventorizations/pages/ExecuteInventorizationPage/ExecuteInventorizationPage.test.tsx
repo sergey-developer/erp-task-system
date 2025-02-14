@@ -1,14 +1,14 @@
 import { within } from '@testing-library/react'
 import {
+  makeExecuteInventorizationPageLocationState,
+  mapInventorizationWarehousesTitles,
+} from 'features/inventorizations/api/helpers'
+import {
   inventorizationStatusDict,
   inventorizationTypeDict,
 } from 'features/inventorizations/constants'
 import InventorizationsPage from 'features/inventorizations/pages/InventorizationsPage'
 import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import {
-  makeExecuteInventorizationPageLocationState,
-  mapInventorizationWarehousesTitles,
-} from 'features/warehouse/utils/inventorization'
 import * as reactRouterDom from 'react-router-dom'
 
 import { DEFAULT_FILE_NAME } from 'shared/constants/common'

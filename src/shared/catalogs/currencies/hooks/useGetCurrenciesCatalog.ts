@@ -5,7 +5,7 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { getCurrenciesCatalogErrMsg } from '../api/constants'
+import { getCurrenciesCatalogErrorMessage } from '../api/constants'
 import { useGetCurrenciesCatalogQuery } from '../api/endpoints/currenciesCatalog.endpoints'
 import { GetCurrenciesCatalogRequest, GetCurrenciesCatalogResponse } from '../api/schemas'
 
@@ -27,7 +27,7 @@ export const useGetCurrenciesCatalog = (
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getCurrenciesCatalogErrMsg)
+      showErrorNotification(getCurrenciesCatalogErrorMessage)
     }
   }, [state.error])
 

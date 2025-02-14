@@ -1,14 +1,13 @@
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { RelocationEquipmentDTO } from 'features/warehouse/models'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
-
-import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import { RelocationEquipmentListItemModel } from 'features/warehouse/models'
 
 import currencyFixtures from '_tests_/fixtures/currency'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
-export const relocationEquipmentListItem = (): RelocationEquipmentListItemModel => ({
+export const relocationEquipmentListItem = (): RelocationEquipmentDTO => ({
   id: fakeId(),
   relocationEquipmentId: fakeId(),
   title: fakeWord(),

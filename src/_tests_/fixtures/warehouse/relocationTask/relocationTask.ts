@@ -1,12 +1,11 @@
-import isUndefined from 'lodash/isUndefined'
-import pick from 'lodash/pick'
-
 import {
   ExternalRelocationStatusEnum,
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
-} from 'features/warehouse/constants/relocationTask'
-import { RelocationTaskModel } from 'features/warehouse/models'
+} from 'features/relocationTasks/constants'
+import { RelocationTaskDetailDTO } from 'features/warehouse/models'
+import isUndefined from 'lodash/isUndefined'
+import pick from 'lodash/pick'
 
 import taskFixtures from '_tests_/fixtures/task'
 import userFixtures from '_tests_/fixtures/user'
@@ -16,9 +15,9 @@ import { relocationTaskAttachment } from './relocationTaskAttachment'
 
 export const relocationTask = (
   props?: Partial<
-    Pick<RelocationTaskModel, 'id' | 'status' | 'completedBy' | 'executors' | 'createdBy'>
+    Pick<RelocationTaskDetailDTO, 'id' | 'status' | 'completedBy' | 'executors' | 'createdBy'>
   >,
-): RelocationTaskModel => ({
+): RelocationTaskDetailDTO => ({
   id: props?.id || fakeId(),
   status: props?.status || RelocationTaskStatusEnum.New,
   completedBy: isUndefined(props?.completedBy)

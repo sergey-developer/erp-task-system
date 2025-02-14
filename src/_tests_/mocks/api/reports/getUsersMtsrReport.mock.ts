@@ -1,4 +1,4 @@
-import { ReportsEndpointsEnum } from 'features/reports/api/constants'
+import { ReportsApiPathsEnum } from 'features/reports/api/constants'
 import { GetUsersMtsrReportResponse } from 'features/reports/api/dto'
 
 import { ErrorData } from 'shared/api/baseApi'
@@ -13,7 +13,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getUsersMtsrReportMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, ReportsEndpointsEnum.GetUsersMtsrReport)
+  getRequestMockFn(HttpMethodEnum.Get, ReportsApiPathsEnum.GetUsersMtsrReport)
 
 export const mockGetUsersMtsrReportSuccess = (
   options?: Partial<ResponseResolverOptions<GetUsersMtsrReportResponse>>,

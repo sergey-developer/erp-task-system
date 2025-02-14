@@ -1,4 +1,4 @@
-import { getEquipmentsTemplateErrMsg } from 'features/equipments/api/constants'
+import { getEquipmentsTemplateErrorMessage } from 'features/equipments/api/constants'
 import { useLazyGetEquipmentsTemplateQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { useCallback, useEffect } from 'react'
 
@@ -22,7 +22,7 @@ export const useLazyGetEquipmentsTemplate = (): UseLazyGetEquipmentListTemplateR
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {
-      showErrorNotification(getEquipmentsTemplateErrMsg)
+      showErrorNotification(getEquipmentsTemplateErrorMessage)
     }
   }, [state.error])
 

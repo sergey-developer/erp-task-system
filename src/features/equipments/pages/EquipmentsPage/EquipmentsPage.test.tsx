@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react'
-import { getEquipmentsErrMsg } from 'features/equipments/api/constants'
+import { getEquipmentsErrorMessage } from 'features/equipments/api/constants'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/components/EquipmentDetails/testUtils'
@@ -64,7 +64,7 @@ describe.skip('Страница списка оборудования', () => {
         render(<EquipmentsPage />)
 
         await equipmentTableTestUtils.expectLoadingFinished()
-        const notification = await notificationTestUtils.findNotification(getEquipmentsErrMsg)
+        const notification = await notificationTestUtils.findNotification(getEquipmentsErrorMessage)
 
         expect(notification).toBeInTheDocument()
       })

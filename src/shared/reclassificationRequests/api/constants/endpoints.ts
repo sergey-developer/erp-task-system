@@ -1,3 +1,3 @@
-export enum ReclassificationRequestsEndpointsEnum {
+export enum ReclassificationRequestsApiPathsEnum {
   CancelReclassificationRequest = '/reclassification-requests/:id/cancel/',
 }

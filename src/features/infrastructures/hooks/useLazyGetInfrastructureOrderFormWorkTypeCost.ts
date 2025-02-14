@@ -3,7 +3,7 @@ import {
   GetInfrastructureOrderFormWorkTypeCostResponse,
 } from 'features/infrastructures/api/dto'
 import { useLazyGetInfrastructureOrderFormWorkTypeCostQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { getInfrastructureOrderFormWorkTypeCostErrMsg } from 'features/infrastructures/constants'
+import { getInfrastructureOrderFormWorkTypeCostErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'
@@ -30,7 +30,7 @@ export const useLazyGetInfrastructureOrderFormWorkTypeCost =
         if (isNotFoundError(state.error) || isForbiddenError(state.error)) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(getInfrastructureOrderFormWorkTypeCostErrMsg)
+          showErrorNotification(getInfrastructureOrderFormWorkTypeCostErrorMessage)
         }
       }
     }, [state.error])

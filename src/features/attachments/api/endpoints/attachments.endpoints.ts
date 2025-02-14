@@ -1,4 +1,4 @@
-import { AttachmentsEndpointsEnum } from 'features/attachments/api/constants'
+import { AttachmentsApiPathsEnum } from 'features/attachments/api/constants'
 import {
   CreateAttachmentRequest,
   CreateAttachmentResponse,
@@ -20,7 +20,7 @@ const attachmentsEndpoints = baseApi.injectEndpoints({
         formData.append('type', type)
 
         return {
-          url: AttachmentsEndpointsEnum.CreateAttachment,
+          url: AttachmentsApiPathsEnum.CreateAttachment,
           method: HttpMethodEnum.Post,
           data: formData,
         }

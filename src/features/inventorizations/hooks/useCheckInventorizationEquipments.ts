@@ -15,7 +15,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { checkInventorizationEquipmentsErrMsg } from '../api/constants'
+import { checkInventorizationEquipmentsErrorMessage } from '../api/constants'
 
 type UseCheckInventorizationEquipmentsResult = CustomUseMutationResult<
   CheckInventorizationEquipmentsRequest,
@@ -30,7 +30,7 @@ export const useCheckInventorizationEquipments = (): UseCheckInventorizationEqui
       if (isNotFoundError(state.error) || isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(checkInventorizationEquipmentsErrMsg)
+        showErrorNotification(checkInventorizationEquipmentsErrorMessage)
       }
     }
   }, [state.error])

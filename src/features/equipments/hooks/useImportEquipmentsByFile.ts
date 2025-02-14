@@ -1,4 +1,4 @@
-import { importEquipmentsByFileErrMsg } from 'features/equipments/api/constants'
+import { importEquipmentsByFileErrorMessage } from 'features/equipments/api/constants'
 import { useImportEquipmentsByFileMutation } from 'features/equipments/api/endpoints/equipments.endpoints'
 import { ImportEquipmentsByFileRequest } from 'features/warehouse/models'
 import { ImportEquipmentsByFileTransformedResponse } from 'features/warehouse/types'
@@ -22,7 +22,7 @@ export const useImportEquipmentsByFile = (): UseImportEquipmentsByFileResult => 
       if (isBadRequestError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(importEquipmentsByFileErrMsg)
+        showErrorNotification(importEquipmentsByFileErrorMessage)
       }
     }
   }, [state.error])

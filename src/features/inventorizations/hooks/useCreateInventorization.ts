@@ -15,7 +15,7 @@ import {
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
-import { createInventorizationErrMsg } from '../api/constants'
+import { createInventorizationErrorMessage } from '../api/constants'
 
 type UseCreateInventorizationResult = CustomUseMutationResult<
   CreateInventorizationRequest,
@@ -30,7 +30,7 @@ export const useCreateInventorization = (): UseCreateInventorizationResult => {
       if (isBadRequestError(state.error) || isForbiddenError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(createInventorizationErrMsg)
+        showErrorNotification(createInventorizationErrorMessage)
       }
     }
   }, [state.error])

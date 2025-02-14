@@ -1,4 +1,4 @@
-import { getWarehouseErrMsg } from 'features/warehouse/constants/warehouse'
+import { getWarehouseErrorMessage } from 'features/warehouse/constants/warehouse'
 import { GetWarehouseRequest, GetWarehouseResponse } from 'features/warehouse/models'
 import { useGetWarehouseQuery } from 'features/warehouse/services/warehouseApi.service'
 import { useEffect } from 'react'
@@ -28,7 +28,7 @@ export const useGetWarehouse = (
       if (isForbiddenError(state.error) || isNotFoundError(state.error)) {
         showErrorNotification(getErrorDetail(state.error))
       } else {
-        showErrorNotification(getWarehouseErrMsg)
+        showErrorNotification(getWarehouseErrorMessage)
       }
     }
   }, [state.error])

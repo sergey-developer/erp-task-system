@@ -1,8 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 import {
-  incorrectPasswordErrMsg,
-  updatePasswordErrMsg,
+  incorrectPasswordErrorMessage,
+  updatePasswordErrorMessage,
   updatePasswordSuccessMsg,
 } from 'features/auth/api/constants'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
@@ -132,7 +132,7 @@ describe('Страница смены пароля', () => {
       const { user } = render(<ChangePasswordPage />)
 
       await testUtils.setNewPassword(user, CORRECT_PASSWORD)
-      const error = testUtils.queryNewPasswordError(incorrectPasswordErrMsg)
+      const error = testUtils.queryNewPasswordError(incorrectPasswordErrorMessage)
 
       expect(error).not.toBeInTheDocument()
     })
@@ -153,7 +153,7 @@ describe('Страница смены пароля', () => {
 
         await testUtils.setNewPassword(user, fakeWord())
         await testUtils.clickSaveButton(user)
-        const error = await testUtils.findPasswordError(incorrectPasswordErrMsg)
+        const error = await testUtils.findPasswordError(incorrectPasswordErrorMessage)
 
         expect(error).toBeInTheDocument()
       })
@@ -328,7 +328,7 @@ describe('Страница смены пароля', () => {
       await testUtils.expectLoadingFinished()
 
       const successNotification = notificationTestUtils.queryNotification(updatePasswordSuccessMsg)
-      const errorMessage = testUtils.getChildByText(updatePasswordErrMsg)
+      const errorMessage = testUtils.getChildByText(updatePasswordErrorMessage)
 
       expect(successNotification).not.toBeInTheDocument()
       expect(errorMessage).toBeInTheDocument()

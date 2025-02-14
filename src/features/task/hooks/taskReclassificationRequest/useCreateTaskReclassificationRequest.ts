@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
-import { createReclassificationRequestErrMsg } from 'features/task/constants/taskReclassificationRequest'
+import { createReclassificationRequestErrorMessage } from 'features/task/constants/taskReclassificationRequest'
 import {
   CreateTaskReclassificationRequestRequest,
   CreateTaskReclassificationRequestResponse,
@@ -36,7 +36,7 @@ export const useCreateTaskReclassificationRequest =
         ) {
           showErrorNotification(getErrorDetail(state.error))
         } else {
-          showErrorNotification(createReclassificationRequestErrMsg)
+          showErrorNotification(createReclassificationRequestErrorMessage)
         }
       }
     }, [state.error])
