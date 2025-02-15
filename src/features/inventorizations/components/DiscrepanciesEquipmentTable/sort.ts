@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual'
 import {
   GetInventorizationEquipmentsSortKey,
   GetInventorizationEquipmentsSortValue,
-} from 'features/warehouse/models'
+} from 'features/warehouses/api/dto'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 

@@ -1,10 +1,3 @@
-import {
-  GetInfrastructureOrdersFormsRequest,
-  GetInfrastructureStatusHistoryRequest,
-  GetInfrastructureStatusHistoryResponse,
-} from 'features/infrastructures/api/dto'
-import { useGetInfrastructureStatusHistoryQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { getInfrastructureStatusHistoryErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -16,6 +9,14 @@ import {
   isForbiddenError,
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { getInfrastructureStatusHistoryErrorMessage } from '../api/constants'
+import { useGetInfrastructureStatusHistoryQuery } from '../api/endpoints/infrastructures.endpoints'
+import {
+  GetInfrastructureOrdersFormsRequest,
+  GetInfrastructureStatusHistoryRequest,
+  GetInfrastructureStatusHistoryResponse,
+} from '../api/schemas'
 
 type UseGetInfrastructureStatusHistoryResult = CustomUseQueryHookResult<
   GetInfrastructureStatusHistoryRequest,

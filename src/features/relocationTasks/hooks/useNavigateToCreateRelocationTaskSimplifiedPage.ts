@@ -1,15 +1,14 @@
+import { TaskDetailDTO } from 'features/tasks/api/dto'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import pick from 'lodash/pick'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-
-import { TaskModel } from 'features/task/models'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 
 import { EmptyFn } from 'shared/types/utils'
 
 type UseNavigateToCreateRelocationTaskSimplifiedPageParams = {
   task?: Pick<
-    TaskModel,
+    TaskDetailDTO,
     'id' | 'recordId' | 'olaStatus' | 'olaNextBreachTime' | 'olaEstimatedTime' | 'shop' | 'assignee'
   >
   from?: string
@@ -23,7 +22,7 @@ export const useNavigateToCreateRelocationTaskSimplifiedPage = ({
 
   return useCallback(
     () =>
-      navigate(WarehouseRouteEnum.CreateRelocationTaskSimplified, {
+      navigate(WarehousesRoutesEnum.CreateRelocationTaskSimplified, {
         state: {
           task: pick(
             task,

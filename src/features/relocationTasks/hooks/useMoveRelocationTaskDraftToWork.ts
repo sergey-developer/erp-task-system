@@ -1,9 +1,9 @@
+import { moveRelocationTaskDraftToWorkErrorMessage } from 'features/relocationTasks/api/constants'
 import { useMoveRelocationTaskDraftToWorkMutation } from 'features/relocationTasks/api/endpoints/relocationTasks.endpoints'
-import { moveRelocationTaskDraftToWorkErrorMessage } from 'features/relocationTasks/constants'
 import {
   MoveRelocationTaskDraftToWorkRequest,
   MoveRelocationTaskDraftToWorkResponse,
-} from 'features/warehouse/models'
+} from 'features/relocationTasks/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'

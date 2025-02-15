@@ -1,6 +1,6 @@
 import { updateEquipmentErrorMessage } from 'features/equipments/api/constants'
 import { useUpdateEquipmentMutation } from 'features/equipments/api/endpoints/equipments.endpoints'
-import { UpdateEquipmentRequest, UpdateEquipmentResponse } from 'features/warehouse/models'
+import { UpdateEquipmentRequest, UpdateEquipmentResponse } from 'features/equipments/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'

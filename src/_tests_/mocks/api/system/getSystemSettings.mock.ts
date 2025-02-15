@@ -1,6 +1,6 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { SystemApiPathsEnum } from 'shared/system/api/constants/endpoints'
-import { GetSystemSettingsResponse } from 'shared/system/api/dto/systemSettings'
+import { GetSystemSettingsResponse } from 'shared/system/api/schemas'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'

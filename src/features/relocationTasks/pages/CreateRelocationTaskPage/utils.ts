@@ -7,8 +7,8 @@ import {
 } from 'features/relocationTasks/api/helpers'
 import { LocationOption } from 'features/relocationTasks/components/RelocationTaskForm/types'
 import { RelocationTaskTypeEnum } from 'features/relocationTasks/constants'
-import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
-import { GetEquipmentsCatalogRequest } from 'features/warehouse/models'
+import { WarehouseTypeEnum } from 'features/warehouses/api/constants'
+import { GetEquipmentsCatalogRequest } from 'features/warehouses/api/dto'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 

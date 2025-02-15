@@ -1,6 +1,6 @@
 import { getRelocationEquipmentListUrl } from 'features/relocationTasks/api/helpers'
-import { GetRelocationEquipmentListResponse } from 'features/warehouse/models'
-import { RequestWithRelocationTask } from 'features/warehouse/types'
+import { GetRelocationEquipmentsResponse } from 'features/warehouses/api/dto'
+import { RequestWithRelocationTask } from 'features/warehouses/types'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ const getRelocationEquipmentListMockFn = ({ relocationTaskId }: RequestWithReloc
 
 export const mockGetRelocationEquipmentListSuccess = (
   { relocationTaskId }: RequestWithRelocationTask,
-  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentListResponse>>,
+  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentsResponse>>,
 ) => getSuccessMockFn(getRelocationEquipmentListMockFn({ relocationTaskId }), options)()
 
 export const mockGetRelocationEquipmentListForbiddenError = (

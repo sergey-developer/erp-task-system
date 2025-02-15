@@ -1,7 +1,3 @@
-import {
-  GetMeasurementUnitsCatalogRequest,
-  GetMeasurementUnitsCatalogResponse,
-} from 'features/warehouse/models'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -11,6 +7,10 @@ import { showErrorNotification } from 'shared/utils/notifications'
 
 import { getMeasurementUnitsCatalogErrorMessage } from '../api/constants'
 import { useGetMeasurementUnitsCatalogQuery } from '../api/endpoints/measurementUnitsCatalog.endpoints'
+import {
+  GetMeasurementUnitsCatalogRequest,
+  GetMeasurementUnitsCatalogResponse,
+} from '../api/schemas'
 
 type UseGetMeasurementUnitListResult = CustomUseQueryHookResult<
   GetMeasurementUnitsCatalogRequest,

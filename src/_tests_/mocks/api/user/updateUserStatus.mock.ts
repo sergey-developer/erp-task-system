@@ -16,7 +16,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const updateUserStatusMockFn = (userId: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Post, makeUpdateUserStatusEndpoint(userId))
+  getRequestMockFn(HttpMethodEnum.Post, makeUpdateUserStatusApiPath(userId))
 
 export const mockUpdateUserStatusSuccess = (
   userId: IdType,

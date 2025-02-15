@@ -14,7 +14,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getWarehouseMSIMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, makeGetWarehouseMSIEndpoint(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetWarehouseMSIApiPath(id))
 
 export const mockGetWarehouseMSISuccess = (
   id: IdType,

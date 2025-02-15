@@ -1,6 +1,6 @@
-import { makeGetInventorizationEquipmentsUrl } from 'features/inventorizations/api/helpers'
-import { GetInventorizationEquipmentsResponse } from 'features/warehouse/models'
-import { RequestWithInventorization } from 'features/warehouse/types'
+import { makeGetInventorizationEquipmentsApiPath } from 'features/inventorizations/api/helpers'
+import { GetInventorizationEquipmentsResponse } from 'features/inventorizations/api/schemas'
+import { RequestWithInventorization } from 'features/inventorizations/api/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -10,7 +10,10 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const getInventorizationEquipmentsMockFn = ({
   inventorizationId,
 }: Pick<RequestWithInventorization, 'inventorizationId'>) =>
-  getRequestMockFn(HttpMethodEnum.Get, makeGetInventorizationEquipmentsUrl({ inventorizationId }))
+  getRequestMockFn(
+    HttpMethodEnum.Get,
+    makeGetInventorizationEquipmentsApiPath({ inventorizationId }),
+  )
 
 export const mockGetInventorizationEquipmentsSuccess = (
   { inventorizationId }: Pick<RequestWithInventorization, 'inventorizationId'>,

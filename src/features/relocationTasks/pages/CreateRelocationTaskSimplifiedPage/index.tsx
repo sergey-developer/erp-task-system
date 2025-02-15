@@ -30,19 +30,19 @@ import {
 } from 'features/equipments/hooks'
 import { defaultGetNomenclaturesRequestParams } from 'features/nomenclatures/api/constants'
 import { useGetNomenclature, useGetNomenclatures } from 'features/nomenclatures/hooks'
-import { useCreateRelocationTaskITSM } from 'features/relocationTasks/hooks'
-import { getTaskCompleteAtDate } from 'features/task/components/TaskDetails/MainDetails/utils'
-import { TaskModel } from 'features/task/models'
-import { getOlaStatusTextType } from 'features/task/utils/task'
-import { UserPermissionsEnum } from 'features/users/api/constants'
-import { useGetUsers, useGetWarehouseMSI, useUserPermissions } from 'features/users/hooks'
-import RelocationEquipmentSimplifiedEditableTable from 'features/warehouse/components/RelocationEquipmentSimplifiedEditableTable'
+import RelocationEquipmentSimplifiedEditableTable from 'features/relocationEquipments/components/RelocationEquipmentSimplifiedEditableTable'
 import {
   ActiveEquipmentRow,
   RelocationEquipmentRow,
-} from 'features/warehouse/components/RelocationEquipmentSimplifiedEditableTable/types'
-import { EquipmentCategoryDTO } from 'features/warehouse/models'
-import { SimplifiedRelocationTaskFormFields } from 'features/warehouse/types'
+} from 'features/relocationEquipments/components/RelocationEquipmentSimplifiedEditableTable/types'
+import { useCreateRelocationTaskITSM } from 'features/relocationTasks/hooks'
+import { getTaskCompleteAtDate } from 'features/tasks/components/TaskDetails/MainDetails/utils'
+import { getOlaStatusTextType } from 'features/tasks/helpers'
+import { TaskDetailDTO } from 'features/tasks/api/dto'
+import { UserPermissionsEnum } from 'features/users/api/constants'
+import { useGetUsers, useGetWarehouseMSI, useUserPermissions } from 'features/users/hooks'
+import { EquipmentCategoryDTO } from 'features/warehouses/api/dto'
+import { SimplifiedRelocationTaskFormFields } from 'features/warehouses/types'
 import get from 'lodash/get'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
@@ -107,7 +107,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
 
   const task: MaybeUndefined<
     Pick<
-      TaskModel,
+      TaskDetailDTO,
       | 'id'
       | 'recordId'
       | 'shop'

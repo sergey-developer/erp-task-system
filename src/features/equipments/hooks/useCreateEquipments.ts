@@ -1,6 +1,6 @@
 import { createEquipmentsErrorMessage } from 'features/equipments/api/constants'
 import { useCreateEquipmentsMutation } from 'features/equipments/api/endpoints/equipments.endpoints'
-import { CreateEquipmentsRequest, CreateEquipmentsResponse } from 'features/warehouse/models'
+import { CreateEquipmentsRequest, CreateEquipmentsResponse } from 'features/equipments/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'

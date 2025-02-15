@@ -1,5 +1,5 @@
 import { DrawerProps } from 'antd'
-import { EquipmentDetailDTO } from 'features/warehouse/models'
+import { EquipmentDetailDTO } from 'features/warehouses/api/dto'
 
 import { IdType } from 'shared/types/common'
 

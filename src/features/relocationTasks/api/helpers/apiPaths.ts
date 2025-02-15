@@ -43,15 +43,15 @@ export const makeCreateRelocationTaskAttachmentApiPath = (id: IdType): string =>
 export const makeGetRelocationTaskWaybillM15ApiPath = (id: IdType): string =>
   generateApiPath(RelocationTasksApiPathsEnum.GetRelocationTaskWaybillM15, { id: String(id) })
 
-export const makeGetRelocationEquipmentListApiPath = ({
+export const makeGetRelocationEquipmentsApiPath = ({
   relocationTaskId,
 }: RequestWithRelocationTask): string =>
-  generateApiPath(RelocationTasksApiPathsEnum.GetRelocationEquipmentList, {
+  generateApiPath(RelocationTasksApiPathsEnum.GetRelocationEquipments, {
     relocationTaskId: String(relocationTaskId),
   })
 
-export const makeGetRelocationEquipmentBalanceListApiPath = (relocationTaskId: IdType): string =>
-  generateApiPath(RelocationTasksApiPathsEnum.GetRelocationEquipmentBalanceList, {
+export const makeGetRelocationEquipmentBalancesApiPath = (relocationTaskId: IdType): string =>
+  generateApiPath(RelocationTasksApiPathsEnum.GetRelocationEquipmentBalances, {
     relocationTaskId: String(relocationTaskId),
   })
 

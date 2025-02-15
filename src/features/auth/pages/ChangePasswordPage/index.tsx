@@ -1,7 +1,7 @@
 import { Button, Form, Input, Space, Typography } from 'antd'
 import { useUpdatePasswordMutation } from 'features/auth/api/endpoints/auth.endpoints'
 import { updatePasswordSuccessMsg } from 'features/auth/constants'
-import { TasksRoutesEnum } from 'features/task/constants/routes'
+import { TasksRoutesEnum } from 'features/tasks/routes/routes'
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 

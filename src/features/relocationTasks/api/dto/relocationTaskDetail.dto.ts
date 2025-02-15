@@ -1,4 +1,4 @@
-import { TaskModel } from 'features/task/models'
+import { TaskDetailDTO } from 'features/tasks/api/dto'
 import { UserDetailDTO } from 'features/users/api/dto'
 
 import { IdType } from 'shared/types/common'
@@ -36,6 +36,6 @@ export type RelocationTaskDetailDTO = {
     createdAt: string
     user: Pick<UserDetailDTO, 'id' | 'fullName' | 'phone'>
   }>
-  task: MaybeNull<Pick<TaskModel, 'id' | 'recordId'>>
+  task: MaybeNull<Pick<TaskDetailDTO, 'id' | 'recordId'>>
   externalRelocation: MaybeNull<ExternalRelocationDetailDTO>
 }

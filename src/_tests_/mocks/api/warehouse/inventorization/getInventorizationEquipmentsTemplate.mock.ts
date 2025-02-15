@@ -1,5 +1,5 @@
 import { InventorizationsApiPathsEnum } from 'features/inventorizations/constants'
-import { GetInventorizationEquipmentsTemplateResponse } from 'features/warehouse/models'
+import { GetInventorizationEquipmentsTemplateResponse } from 'features/warehouses/api/dto'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

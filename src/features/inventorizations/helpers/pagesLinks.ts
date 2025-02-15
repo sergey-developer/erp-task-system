@@ -1,5 +1,5 @@
 import { ExecuteInventorizationPageTabsEnum } from 'features/inventorizations/pages/ExecuteInventorizationPage/constants'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import { generatePath } from 'react-router-dom'
 
 import { IdType } from 'shared/types/common'
@@ -13,7 +13,7 @@ type MakeInventorizationsPageLinkParams = Partial<
 >
 
 export const makeInventorizationsPageLink = (params: MakeInventorizationsPageLinkParams): string =>
-  getPathWithQs<MakeInventorizationsPageLinkParams>(WarehouseRouteEnum.Inventorizations, params)
+  getPathWithQs<MakeInventorizationsPageLinkParams>(WarehousesRoutesEnum.Inventorizations, params)
 
 export type MakeExecuteInventorizationPageLinkParams = Pick<
   RequestWithInventorization,
@@ -29,7 +29,7 @@ export const makeExecuteInventorizationPageLink = ({
   ...params
 }: MakeExecuteInventorizationPageLinkParams): string =>
   getPathWithQs<Omit<MakeExecuteInventorizationPageLinkParams, 'inventorizationId'>>(
-    generatePath(WarehouseRouteEnum.ExecuteInventorization, {
+    generatePath(WarehousesRoutesEnum.ExecuteInventorization, {
       inventorizationId: String(inventorizationId),
     }),
     params,

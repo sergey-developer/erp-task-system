@@ -1,4 +1,4 @@
-import { CustomersModel } from 'features/warehouse/models'
+import { CustomersModel } from 'features/warehouses/api/dto'
 import { Moment } from 'moment-timezone'
 
 import { IdType } from 'shared/types/common'

@@ -1,4 +1,4 @@
-import { ConfirmExecuteTaskRegistrationFNModalProps } from 'features/task/components/ConfirmExecuteTaskRegistrationFNModal/index'
+import { ConfirmExecuteTaskRegistrationFNModalProps } from 'features/tasks/components/ConfirmExecuteTaskRegistrationFNModal/index'
 
 export const props: Readonly<ConfirmExecuteTaskRegistrationFNModalProps> = {
   open: true,

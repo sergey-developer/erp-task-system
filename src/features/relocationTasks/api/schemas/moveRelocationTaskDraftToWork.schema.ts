@@ -1,4 +1,4 @@
-import { RequestWithRelocationTask } from 'features/warehouse/types'
+import { RequestWithRelocationTask } from 'features/warehouses/types'
 
 import { RelocationTaskDetailDTO } from '../dto'
 

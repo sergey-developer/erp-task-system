@@ -1,4 +1,4 @@
-import { RelocationEquipmentTableProps } from 'features/warehouse/components/RelocationEquipmentTable/types'
+import { RelocationEquipmentTableProps } from 'features/relocationEquipments/components/RelocationEquipmentTable/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

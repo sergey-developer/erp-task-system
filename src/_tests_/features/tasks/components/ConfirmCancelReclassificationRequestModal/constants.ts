@@ -1,4 +1,4 @@
-import { ConfirmCancelReclassificationRequestModalProps } from 'features/task/components/ConfirmCancelReclassificationRequestModal/index'
+import { ConfirmCancelReclassificationRequestModalProps } from 'features/tasks/components/ConfirmCancelReclassificationRequestModal/index'
 
 export const props: ConfirmCancelReclassificationRequestModalProps = {
   open: true,

@@ -1,5 +1,5 @@
 import { relocationTaskStatusDict } from 'features/relocationTasks/constants'
-import { RelocationTaskDetailDTO } from 'features/warehouse/models'
+import { RelocationTaskDetailDTO } from 'features/warehouses/api/dto'
 
 import { formatDate } from 'shared/utils/date'
 

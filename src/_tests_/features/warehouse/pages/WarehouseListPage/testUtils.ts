@@ -5,7 +5,7 @@ import { buttonTestUtils } from '_tests_/utils'
 
 import { TestIdsEnum } from './constants'
 
-const getContainer = () => screen.getByTestId(TestIdsEnum.WarehouseListPage)
+const getContainer = () => screen.getByTestId(TestIdsEnum.WarehousesPage)
 
 // filter button
 const getFilterButton = () => buttonTestUtils.getButtonIn(getContainer(), /filter/)

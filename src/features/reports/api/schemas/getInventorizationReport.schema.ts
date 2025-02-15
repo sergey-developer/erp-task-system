@@ -1,4 +1,4 @@
-import { RequestWithInventorization } from 'features/warehouse/types'
+import { RequestWithInventorization } from 'features/warehouses/types'
 
 import { Base64Type } from 'shared/types/common'
 

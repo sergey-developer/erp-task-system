@@ -1,6 +1,5 @@
 import { getEquipmentListPageLink } from 'features/equipments/helpers'
 import EquipmentsPage from 'features/equipments/pages/EquipmentsPage'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 
 import {
   equipmentNomenclatureListItem,
@@ -26,11 +25,11 @@ describe('Таблица номенклатуры оборудования', () 
     renderWithRouter(
       [
         {
-          path: WarehouseRouteEnum.EquipmentNomenclatures,
+          path: WarehousesRoutesEnum.EquipmentNomenclatures,
           element: <EquipmentNomenclatureTable {...props} />,
         },
       ],
-      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
+      { initialEntries: [WarehousesRoutesEnum.EquipmentNomenclatures] },
     )
 
     const table = equipmentNomenclatureTableTestUtils.getContainer()
@@ -50,11 +49,11 @@ describe('Таблица номенклатуры оборудования', () 
     const { user } = renderWithRouter(
       [
         {
-          path: WarehouseRouteEnum.EquipmentNomenclatures,
+          path: WarehousesRoutesEnum.EquipmentNomenclatures,
           element: <EquipmentNomenclatureTable {...props} dataSource={equipmentNomenclatures} />,
         },
       ],
-      { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
+      { initialEntries: [WarehousesRoutesEnum.EquipmentNomenclatures] },
     )
 
     const table = equipmentNomenclatureTableTestUtils.getContainer()
@@ -78,11 +77,11 @@ describe('Таблица номенклатуры оборудования', () 
       renderWithRouter(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatures,
+            path: WarehousesRoutesEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclatureTable {...props} />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
+        { initialEntries: [WarehousesRoutesEnum.EquipmentNomenclatures] },
       )
 
       const title = equipmentNomenclatureTableTestUtils.getColTitle('Наименование')
@@ -108,15 +107,15 @@ describe('Таблица номенклатуры оборудования', () 
       const { user } = renderWithRouter(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatures,
+            path: WarehousesRoutesEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclatureTable {...props} />,
           },
           {
-            path: WarehouseRouteEnum.Equipments,
+            path: WarehousesRoutesEnum.Equipments,
             element: <EquipmentsPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
+        { initialEntries: [WarehousesRoutesEnum.EquipmentNomenclatures] },
       )
 
       await equipmentNomenclatureTableTestUtils.clickTitleLink(
@@ -135,11 +134,11 @@ describe('Таблица номенклатуры оборудования', () 
       renderWithRouter(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatures,
+            path: WarehousesRoutesEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclatureTable {...props} />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
+        { initialEntries: [WarehousesRoutesEnum.EquipmentNomenclatures] },
       )
 
       const title = equipmentNomenclatureTableTestUtils.getColTitle('Количество оборудования')

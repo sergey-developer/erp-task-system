@@ -1,5 +1,5 @@
-import { MainDetailsProps } from 'features/task/components/TaskDetails/MainDetails/index'
-import { TaskOlaStatusEnum, TaskStatusEnum } from 'features/task/constants/task/index'
+import { MainDetailsProps } from 'features/tasks/components/TaskDetails/MainDetails/index'
+import { TaskOlaStatusEnum, TaskStatusEnum } from 'features/tasks/constants/task/index'
 
 import { fakeDateString, fakeIdStr, fakeWord } from '_tests_/utils'
 

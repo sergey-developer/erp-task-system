@@ -1,4 +1,4 @@
-import { CancelSubTaskModalProps } from 'features/task/components/CancelSubTaskModal/types'
+import { CancelSubTaskModalProps } from 'features/tasks/components/CancelSubTaskModal/types'
 
 export const props: Readonly<CancelSubTaskModalProps> = {
   isLoading: false,

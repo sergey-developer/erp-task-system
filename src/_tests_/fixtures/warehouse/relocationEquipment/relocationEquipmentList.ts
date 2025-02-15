@@ -1,5 +1,5 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import { RelocationEquipmentDTO } from 'features/warehouse/models'
+import { RelocationEquipmentDTO } from 'features/relocationTasks/api/dto'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 

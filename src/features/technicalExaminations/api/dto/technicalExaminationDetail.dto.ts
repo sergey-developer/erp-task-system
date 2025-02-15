@@ -1,5 +1,5 @@
 import { EquipmentDetailDTO } from 'features/equipments/api/dto'
-import { RelocationEquipmentDTO } from 'features/warehouse/models'
+import { RelocationEquipmentDTO } from 'features/relocationTasks/api/dto'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull, SetNonNullable } from 'shared/types/utils'

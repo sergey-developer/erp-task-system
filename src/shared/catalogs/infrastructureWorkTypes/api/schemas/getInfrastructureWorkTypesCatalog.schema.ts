@@ -1,4 +1,4 @@
-import { InfrastructureWorkTypesCatalogDTO } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
+import { InfrastructureWorkTypesCatalogDTO } from 'shared/catalogs/infrastructureWorkTypes/api/dto'
 
 export type GetInfrastructureWorkTypesCatalogRequest = void
 export type GetInfrastructureWorkTypesCatalogResponse = InfrastructureWorkTypesCatalogDTO

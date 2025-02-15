@@ -1,4 +1,4 @@
-import { RequestWithTask } from 'features/task/types'
+import { RequestWithTask } from 'features/tasks/api/types'
 
 import { MaybeUndefined } from 'shared/types/utils'
 import { WorkGroupsDTO } from 'shared/workGroups/api/dto'

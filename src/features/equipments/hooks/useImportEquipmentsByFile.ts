@@ -1,13 +1,14 @@
-import { importEquipmentsByFileErrorMessage } from 'features/equipments/api/constants'
-import { useImportEquipmentsByFileMutation } from 'features/equipments/api/endpoints/equipments.endpoints'
-import { ImportEquipmentsByFileRequest } from 'features/warehouse/models'
-import { ImportEquipmentsByFileTransformedResponse } from 'features/warehouse/types'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
 
 import { getErrorDetail, isBadRequestError, isErrorResponse } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { importEquipmentsByFileErrorMessage } from '../api/constants'
+import { useImportEquipmentsByFileMutation } from '../api/endpoints/equipments.endpoints'
+import { ImportEquipmentsByFileRequest } from '../api/schemas'
+import { ImportEquipmentsByFileTransformedResponse } from '../api/types'
 
 type UseImportEquipmentsByFileResult = CustomUseMutationResult<
   ImportEquipmentsByFileRequest,

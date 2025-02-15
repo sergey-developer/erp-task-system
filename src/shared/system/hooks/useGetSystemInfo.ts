@@ -4,8 +4,8 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 
 import { isErrorResponse } from 'shared/api/baseApi'
 import { getSystemInfoErrorMessage } from 'shared/system/api/constants/errorMessages'
-import { GetSystemInfoRequest, GetSystemInfoResponse } from 'shared/system/api/dto/systemInfo'
 import { useGetSystemInfoQuery } from 'shared/system/api/endpoints/systemApi.endpoints'
+import { GetSystemInfoRequest, GetSystemInfoResponse } from 'shared/system/api/schemas'
 import { showErrorNotification } from 'shared/utils/notifications'
 
 type UseGetSystemInfoResult = CustomUseQueryHookResult<GetSystemInfoRequest, GetSystemInfoResponse>

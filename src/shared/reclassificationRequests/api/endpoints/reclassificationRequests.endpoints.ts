@@ -1,7 +1,7 @@
 import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { makeCancelReclassificationRequestEndpoint } from '../helpers'
+import { makeCancelReclassificationRequestApiPath } from '../helpers'
 import {
   CancelReclassificationRequestRequest,
   CancelReclassificationRequestResponse,
@@ -14,7 +14,7 @@ const reclassificationRequestsEndpoints = baseApi.injectEndpoints({
       CancelReclassificationRequestRequest
     >({
       query: ({ reclassificationRequestId }) => ({
-        url: makeCancelReclassificationRequestEndpoint(reclassificationRequestId),
+        url: makeCancelReclassificationRequestApiPath(reclassificationRequestId),
         method: HttpMethodEnum.Post,
       }),
     }),

@@ -1,5 +1,6 @@
 import { TableProps } from 'antd'
-import { GetRelocationTasksSortValue, RelocationTaskDTO } from 'features/warehouse/models'
+import { RelocationTaskDTO } from 'features/relocationTasks/api/dto'
+import { GetRelocationTasksSortValue } from 'features/relocationTasks/api/schemas'
 
 import { TableSortProps } from 'shared/types/sort'
 

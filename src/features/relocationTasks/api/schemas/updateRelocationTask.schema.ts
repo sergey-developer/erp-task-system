@@ -1,5 +1,5 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import { RequestWithRelocationTask } from 'features/warehouse/types'
+import { RequestWithRelocationTask } from 'features/warehouses/types'
 
 import { IdType } from 'shared/types/common'
 

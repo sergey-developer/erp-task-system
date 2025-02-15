@@ -2,7 +2,7 @@ import { useGetInventorizationEquipmentQuery } from 'features/inventorizations/a
 import {
   GetInventorizationEquipmentRequest,
   GetInventorizationEquipmentResponse,
-} from 'features/warehouse/models'
+} from 'features/inventorizations/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

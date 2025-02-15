@@ -1,5 +1,5 @@
 import { EquipmentCategoryEnum } from 'features/equipments/api/constants'
-import { EquipmentCategoryDTO } from 'features/warehouse/models'
+import { EquipmentCategoryDTO } from 'features/equipments/api/dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

@@ -2,11 +2,12 @@ import ProtectedRoute from 'features/auth/components/ProtectedRoute'
 import { ChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/types'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { userHasPermissions } from 'features/users/helpers'
-import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType'
 import React from 'react'
 import { RouteObject } from 'react-router-dom'
 
 import { CommonRoutesEnum } from 'configs/routes'
+
+import { WorkTypeActionsEnum } from 'shared/catalogs/workTypes/api/constants'
 
 import { InfrastructuresRoutesEnum } from './routes'
 

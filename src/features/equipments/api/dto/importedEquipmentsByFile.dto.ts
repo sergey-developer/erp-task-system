@@ -1,5 +1,5 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import { NomenclatureModel } from 'features/warehouse/models'
+import { NomenclatureDetailDTO } from 'features/warehouses/api/dto'
 
 import { CurrencyCatalogItemDTO } from 'shared/catalogs/currencies/api/dto'
 import { CustomerCatalogItemDTO } from 'shared/catalogs/customers/api/dto'
@@ -27,8 +27,8 @@ export type ImportedEquipmentByFileDTO = {
   macroregion: MaybeNull<Pick<MacroregionCatalogItemDTO, 'id' | 'title'>>
   purpose: MaybeNull<Pick<WorkTypesCatalogItemDTO, 'id' | 'title'>>
   nomenclature: MaybeNull<
-    Pick<NomenclatureModel, 'id' | 'title' | 'equipmentHasSerialNumber'> & {
-      measurementUnit: NomenclatureModel['measurementUnit']['title']
+    Pick<NomenclatureDetailDTO, 'id' | 'title' | 'equipmentHasSerialNumber'> & {
+      measurementUnit: NomenclatureDetailDTO['measurementUnit']['title']
     }
   >
 }

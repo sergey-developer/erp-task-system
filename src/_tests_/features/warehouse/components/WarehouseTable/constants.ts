@@ -1,4 +1,4 @@
-import { WarehouseTableProps } from 'features/warehouse/components/WarehouseTable/types'
+import { WarehouseTableProps } from 'features/warehouses/components/WarehouseTable/types'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 

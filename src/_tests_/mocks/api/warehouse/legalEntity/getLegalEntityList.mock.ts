@@ -1,17 +1,13 @@
-import { GetLegalEntitiesCatalogResponse } from 'features/warehouse/models'
-import { LegalEntityApiEnum } from 'features/warehouse/services/legalEntityApiService'
-
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants'
+import { GetLegalEntitiesCatalogResponse } from 'shared/catalogs/legalEntities/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getLegalEntityListMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, LegalEntityApiEnum.GetLegalEntityList)
+  getRequestMockFn(HttpMethodEnum.Get, CatalogApiPathsEnum.GetLegalEntities)
 
 export const mockGetLegalEntityListSuccess = (
   options?: Partial<ResponseResolverOptions<GetLegalEntitiesCatalogResponse>>,
 ) => getSuccessMockFn(getLegalEntityListMockFn(), options)()
-
-export const mockGetLegalEntityListServerError = (options?: Partial<ResponseResolverOptions>) =>
-  getServerErrorMockFn(getLegalEntityListMockFn(), options)()

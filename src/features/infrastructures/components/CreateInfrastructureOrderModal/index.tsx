@@ -5,7 +5,7 @@ import React, { FC, useMemo } from 'react'
 import UploadButton from 'components/Buttons/UploadButton'
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { UrgencyRateTypeCatalogItemDTO } from 'shared/catalogs/api/dto/urgencyRateTypes'
+import { UrgencyRateTypeCatalogItemDTO } from 'shared/catalogs/urgencyRateTypes/api/dto'
 import { CREATE_TEXT } from 'shared/constants/common'
 import { filesFormItemProps } from 'shared/constants/form'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'

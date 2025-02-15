@@ -1,5 +1,5 @@
-import { DeleteTaskWorkGroupResponse } from 'features/task/models'
-import { deleteTaskWorkGroupUrl } from 'features/task/utils/taskWorkGroup'
+import { DeleteTaskWorkGroupResponse } from 'features/tasks/api/schemas'
+import { deleteTaskWorkGroupUrl } from 'features/tasks/utils/taskWorkGroup'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

@@ -1,8 +1,8 @@
-import { TakeTaskResponse } from 'features/task/models'
-import { takeTaskUrl } from 'features/task/utils/task'
+import { takeTaskUrl } from 'features/tasks/helpers'
+import { TakeTaskResponse } from 'features/tasks/api/schemas'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {

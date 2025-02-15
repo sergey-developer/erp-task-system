@@ -3,7 +3,7 @@ import { useLazyGetEquipmentsXlsxQuery } from 'features/equipments/api/endpoints
 import {
   GetEquipmentsXlsxRequest,
   GetEquipmentsXlsxResponse,
-} from 'features/warehouse/models'
+} from 'features/equipments/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'

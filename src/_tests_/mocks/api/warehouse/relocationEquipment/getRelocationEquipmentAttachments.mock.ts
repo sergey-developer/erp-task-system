@@ -1,8 +1,8 @@
-import { GetRelocationEquipmentAttachmentListResponse } from 'features/warehouse/models/relocationEquipment'
-import { getRelocationEquipmentAttachmentListUrl } from 'features/warehouse/utils/relocationEquipment'
+import { GetRelocationEquipmentAttachmentsResponse } from 'features/relocationEquipments/api/schemas'
+import { getRelocationEquipmentAttachmentListUrl } from 'features/warehouses/helpers/relocationEquipment'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {
@@ -19,7 +19,7 @@ const getRelocationEquipmentAttachmentsMockFn = (id: IdType) =>
 
 export const mockGetRelocationEquipmentAttachmentsSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentAttachmentListResponse>>,
+  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentAttachmentsResponse>>,
 ) => getSuccessMockFn(getRelocationEquipmentAttachmentsMockFn(id), options)()
 
 export const mockGetRelocationEquipmentAttachmentsForbiddenError = (

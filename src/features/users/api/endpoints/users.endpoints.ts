@@ -1,11 +1,11 @@
-import { TaskApiTagEnum } from 'features/task/constants/task'
+import { TasksEndpointsTagsEnum } from 'features/tasks/api/constants'
 import { UsersApiPathsEnum, UsersEndpointsTagsEnum } from 'features/users/api/constants'
 import { UserDetailDTO } from 'features/users/api/dto'
 import {
-  makeGetUserActionsEndpoint,
-  makeGetWarehouseMSIEndpoint,
-  makeUpdateUserEndpoint,
-  makeUpdateUserStatusEndpoint,
+  makeGetUserActionsApiPath,
+  makeGetWarehouseMSIApiPath,
+  makeUpdateUserApiPath,
+  makeUpdateUserStatusApiPath,
 } from 'features/users/api/helpers'
 import {
   GetUserActionsRequest,
@@ -39,14 +39,11 @@ const usersEndpoints = baseApi.injectEndpoints({
         params,
       }),
     }),
-    updateUserTimeZone: build.mutation<
-      UpdateUserTimeZoneResponse,
-      UpdateUserTimeZoneRequest
-    >({
+    updateUserTimeZone: build.mutation<UpdateUserTimeZoneResponse, UpdateUserTimeZoneRequest>({
       invalidatesTags: (result, error) =>
-        error ? [] : [TaskApiTagEnum.Tasks, TaskApiTagEnum.Task],
+        error ? [] : [TasksEndpointsTagsEnum.Tasks, TasksEndpointsTagsEnum.Task],
       query: ({ userId, ...payload }) => ({
-        url: makeUpdateUserEndpoint(userId),
+        url: makeUpdateUserApiPath(userId),
         method: HttpMethodEnum.Patch,
         data: payload,
       }),
@@ -68,7 +65,7 @@ const usersEndpoints = baseApi.injectEndpoints({
     }),
     updateUserStatus: build.mutation<UpdateUserStatusResponse, UpdateUserStatusRequest>({
       query: ({ userId, ...payload }) => ({
-        url: makeUpdateUserStatusEndpoint(userId),
+        url: makeUpdateUserStatusApiPath(userId),
         method: HttpMethodEnum.Post,
         data: payload,
       }),
@@ -102,10 +99,7 @@ const usersEndpoints = baseApi.injectEndpoints({
       }),
     }),
 
-    getUsersGroups: build.query<
-      GetUsersGroupsResponse,
-      MaybeUndefined<GetUsersGroupsRequest>
-    >({
+    getUsersGroups: build.query<GetUsersGroupsResponse, MaybeUndefined<GetUsersGroupsRequest>>({
       query: (params) => ({
         url: UsersApiPathsEnum.GetUsersGroups,
         method: HttpMethodEnum.Get,
@@ -115,14 +109,14 @@ const usersEndpoints = baseApi.injectEndpoints({
 
     getWarehouseMSI: build.query<GetWarehouseMSIResponse, GetWarehouseMSIRequest>({
       query: ({ userId }) => ({
-        url: makeGetWarehouseMSIEndpoint(userId),
+        url: makeGetWarehouseMSIApiPath(userId),
         method: HttpMethodEnum.Get,
       }),
     }),
     getUserActions: build.query<GetUserActionsResponse, GetUserActionsRequest>({
       providesTags: (result, error) => (error ? [] : [UsersEndpointsTagsEnum.UserActions]),
       query: ({ userId }) => ({
-        url: makeGetUserActionsEndpoint(userId),
+        url: makeGetUserActionsApiPath(userId),
         method: HttpMethodEnum.Get,
       }),
     }),

@@ -3,7 +3,7 @@ import { getRelocationTaskAttachmentsErrorMessage } from 'features/relocationTas
 import {
   GetRelocationTaskAttachmentsRequest,
   GetRelocationTaskAttachmentsResponse,
-} from 'features/warehouse/models'
+} from 'features/warehouses/api/dto'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

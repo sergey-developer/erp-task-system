@@ -1,9 +1,9 @@
+import { createInfrastructureOrdersFormAttachmentErrorMessage } from 'features/infrastructures/api/constants'
+import { useCreateInfrastructureOrderFormAttachmentMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import {
   CreateInfrastructureOrderFormAttachmentRequest,
   CreateInfrastructureOrderFormAttachmentResponse,
-} from 'features/infrastructures/api/dto'
-import { useCreateInfrastructureOrderFormAttachmentMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { createInfrastructureOrdersFormAttachmentErrorMessage } from 'features/infrastructures/constants'
+} from 'features/infrastructures/api/schemas'
 import { UploadRequestOption } from 'rc-upload/es/interface'
 import { useCallback, useEffect } from 'react'
 

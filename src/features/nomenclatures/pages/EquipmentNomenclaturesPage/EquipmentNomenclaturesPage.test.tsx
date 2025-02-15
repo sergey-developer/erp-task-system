@@ -1,5 +1,5 @@
 import { getEquipmentNomenclaturesErrorMessage } from 'features/equipments/api/constants'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
@@ -34,11 +34,11 @@ describe('Страница списка номенклатуры оборудо�
       renderWithRouter(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatures,
+            path: WarehousesRoutesEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclaturesPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
+        { initialEntries: [WarehousesRoutesEnum.EquipmentNomenclatures] },
       )
 
       await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -59,11 +59,11 @@ describe('Страница списка номенклатуры оборудо�
         renderWithRouter(
           [
             {
-              path: WarehouseRouteEnum.EquipmentNomenclatures,
+              path: WarehousesRoutesEnum.EquipmentNomenclatures,
               element: <EquipmentNomenclaturesPage />,
             },
           ],
-          { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
+          { initialEntries: [WarehousesRoutesEnum.EquipmentNomenclatures] },
         )
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -78,11 +78,11 @@ describe('Страница списка номенклатуры оборудо�
         renderWithRouter(
           [
             {
-              path: WarehouseRouteEnum.EquipmentNomenclatures,
+              path: WarehousesRoutesEnum.EquipmentNomenclatures,
               element: <EquipmentNomenclaturesPage />,
             },
           ],
-          { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
+          { initialEntries: [WarehousesRoutesEnum.EquipmentNomenclatures] },
         )
 
         await equipmentNomenclatureTableTestUtils.expectLoadingFinished()
@@ -105,11 +105,11 @@ describe('Страница списка номенклатуры оборудо�
       const { user } = renderWithRouter(
         [
           {
-            path: WarehouseRouteEnum.EquipmentNomenclatures,
+            path: WarehousesRoutesEnum.EquipmentNomenclatures,
             element: <EquipmentNomenclaturesPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.EquipmentNomenclatures] },
+        { initialEntries: [WarehousesRoutesEnum.EquipmentNomenclatures] },
       )
 
       const table = await equipmentNomenclatureTableTestUtils.expectLoadingFinished()

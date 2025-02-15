@@ -1,11 +1,8 @@
-import {
-  GetMeasurementUnitsCatalogRequest,
-  GetMeasurementUnitsCatalogResponse,
-} from 'features/warehouse/models'
-
 import { baseApi } from 'shared/api/baseApi'
 import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants'
 import { HttpMethodEnum } from 'shared/constants/http'
+
+import { GetMeasurementUnitsCatalogRequest, GetMeasurementUnitsCatalogResponse } from '../schemas'
 
 const measurementUnitsCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({

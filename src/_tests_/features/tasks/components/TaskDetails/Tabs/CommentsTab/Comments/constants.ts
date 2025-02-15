@@ -1,4 +1,4 @@
-import { CommentsProps } from 'features/task/components/TaskDetails/Tabs/CommentsTab/Comments/index'
+import { CommentsProps } from 'features/tasks/components/TaskDetails/Tabs/CommentsTab/Comments/index'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 

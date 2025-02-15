@@ -1,9 +1,6 @@
 import { FormInstance } from 'antd'
-import {
-  EquipmentDetailDTO,
-  EquipmentsCatalogDTO,
-  WarehouseListItemModel,
-} from 'features/warehouse/models'
+import { EquipmentDetailDTO, EquipmentsCatalogDTO } from 'features/equipments/api/dto'
+import { WarehouseDTO } from 'features/warehouses/api/dto'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -26,7 +23,7 @@ export type CreateInventorizationEquipmentModalProps = SetNonNullable<
   equipmentIsLoading: boolean
   onClickCreateEquipment: (form: FormInstance<CreateInventorizationEquipmentFormFields>) => EmptyFn
 
-  warehouses: Pick<WarehouseListItemModel, 'id' | 'title'>[]
+  warehouses: Pick<WarehouseDTO, 'id' | 'title'>[]
 
   isLoading: boolean
   onSubmit: (

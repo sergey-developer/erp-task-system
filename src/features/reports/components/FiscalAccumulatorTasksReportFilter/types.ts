@@ -1,4 +1,4 @@
-import { CustomersModel } from 'features/warehouse/models'
+import { CustomersModel } from 'features/warehouses/api/dto'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 

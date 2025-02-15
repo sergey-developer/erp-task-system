@@ -17,6 +17,12 @@ import {
 } from 'antd'
 import Attachments from 'features/attachments/components/Attachments'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
+import RelocationEquipmentTable from 'features/relocationEquipments/components/RelocationEquipmentTable'
+import {
+  RelocationEquipmentTableItem,
+  RelocationEquipmentTableProps,
+} from 'features/relocationEquipments/components/RelocationEquipmentTable/types'
+import { useGetRelocationEquipmentAttachments } from 'features/relocationEquipments/hooks'
 import {
   useCancelRelocationTaskMutation,
   useCloseRelocationTaskMutation,
@@ -41,16 +47,10 @@ import {
   useRelocationTaskStatus,
   useUpdateExternalRelocation,
 } from 'features/relocationTasks/hooks'
-import { getTasksPageLink } from 'features/task/utils/task'
+import { makeGetTasksPageLink } from 'features/tasks/helpers'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useUserPermissions } from 'features/users/hooks'
-import RelocationEquipmentTable from 'features/warehouse/components/RelocationEquipmentTable'
-import {
-  RelocationEquipmentTableItem,
-  RelocationEquipmentTableProps,
-} from 'features/warehouse/components/RelocationEquipmentTable/types'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import { useGetRelocationEquipmentAttachments } from 'features/warehouse/hooks/relocationEquipment'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import isUndefined from 'lodash/isUndefined'
 import React, { FC, useCallback, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -474,7 +474,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
       key: 'Сформировать пакет документов',
       label: 'Сформировать пакет документов',
       onClick: () =>
-        navigate(WarehouseRouteEnum.CreateDocumentsPackage, {
+        navigate(WarehousesRoutesEnum.CreateDocumentsPackage, {
           state: {
             relocationTask: { id: relocationTaskId },
             from: makeRelocationTasksPageLink({ viewRelocationTask: relocationTaskId }),
@@ -663,7 +663,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
                     value={relocationTask.task}
                     displayValue={
                       relocationTask.task && (
-                        <Link to={getTasksPageLink({ viewTask: relocationTask.task.id })}>
+                        <Link to={makeGetTasksPageLink({ viewTask: relocationTask.task.id })}>
                           {relocationTask.task.recordId}
                         </Link>
                       )

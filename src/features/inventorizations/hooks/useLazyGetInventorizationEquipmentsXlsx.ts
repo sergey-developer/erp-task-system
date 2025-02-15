@@ -1,6 +1,6 @@
-import { GetInventorizationEquipmentsXlsxRequest } from 'features/inventorizations/api/dto'
 import { useLazyGetInventorizationEquipmentsXlsxQuery } from 'features/inventorizations/api/endpoints/inventorizations.endpoints'
-import { GetInventorizationEquipmentsXlsxTransformedResponse } from 'features/warehouse/types'
+import { GetInventorizationEquipmentsXlsxRequest } from 'features/inventorizations/api/schemas'
+import { GetInventorizationEquipmentsXlsxTransformedResponse } from 'features/inventorizations/api/types'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'

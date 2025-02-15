@@ -1,8 +1,10 @@
 import {
-  relocationTaskStatusDict,
   RelocationTaskStatusEnum,
-  relocationTaskTypeDict,
   RelocationTaskTypeEnum,
+} from 'features/relocationTasks/api/constants'
+import {
+  relocationTaskStatusDict,
+  relocationTaskTypeDict,
 } from 'features/relocationTasks/constants'
 
 import { props } from '_tests_/features/warehouse/components/RelocationTasksFilter/constants'

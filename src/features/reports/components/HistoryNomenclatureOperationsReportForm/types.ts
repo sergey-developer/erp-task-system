@@ -1,4 +1,4 @@
-import { EquipmentNomenclaturesDTO } from 'features/warehouse/models'
+import { EquipmentNomenclaturesDTO } from 'features/warehouses/api/dto'
 import { Moment } from 'moment-timezone'
 
 import { IdType } from 'shared/types/common'

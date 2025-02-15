@@ -3,7 +3,7 @@ import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetFaChangeTypesCatalogRequest,
   GetFaChangeTypesCatalogResponse,
-} from 'shared/catalogs/api/endpoints/faChangeTypes/schemas'
+} from 'shared/catalogs/faChangeTypes/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/types/utils'
 

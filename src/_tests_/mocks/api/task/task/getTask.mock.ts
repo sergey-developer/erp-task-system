@@ -1,5 +1,5 @@
-import { GetTaskResponse } from 'features/task/models'
-import { getTaskUrl } from 'features/task/utils/task'
+import { getTaskUrl } from 'features/tasks/helpers'
+import { GetTaskResponse } from 'features/tasks/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

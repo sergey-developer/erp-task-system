@@ -1,8 +1,8 @@
-import { CreateSubTaskResponse } from 'features/task/models'
-import { createSubTaskUrl } from 'features/task/utils/task'
+import { createSubTaskUrl } from 'features/tasks/helpers'
+import { CreateSubTaskResponse } from 'features/tasks/api/schemas'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {

@@ -3,7 +3,7 @@ import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetCountriesCatalogRequest,
   GetCountriesCatalogResponse,
-} from 'shared/catalogs/api/schemas'
+} from 'shared/catalogs/countries/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const countriesCatalogEndpoints = baseApi.injectEndpoints({

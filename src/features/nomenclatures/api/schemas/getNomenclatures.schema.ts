@@ -13,4 +13,4 @@ export type GetNomenclaturesRequest = MaybeUndefined<
     }>
 >
 
-export type GetNomenclatureListResponse = PaginationResponse<NomenclatureDTO>
+export type GetNomenclaturesResponse = PaginationResponse<NomenclatureDTO>

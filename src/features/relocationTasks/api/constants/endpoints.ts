@@ -16,8 +16,8 @@ export enum RelocationTasksApiPathsEnum {
   GetRelocationTaskCompletionDocuments = '/relocation-tasks/:id/completion-documents',
   MoveRelocationTaskDraftToWork = '/relocation-tasks/:id/start',
 
-  GetRelocationEquipmentList = '/relocation-tasks/:relocationTaskId/equipments',
-  GetRelocationEquipmentBalanceList = '/relocation-tasks/:relocationTaskId/equipments/balance',
+  GetRelocationEquipments = '/relocation-tasks/:relocationTaskId/equipments',
+  GetRelocationEquipmentBalances = '/relocation-tasks/:relocationTaskId/equipments/balance',
 
   UpdateExternalRelocation = '/relocation-tasks/:relocationTaskId/external-relocation',
 

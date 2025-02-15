@@ -1,5 +1,6 @@
-import { WorkTypeDetailDTO } from 'features/warehouse/models'
 import isUndefined from 'lodash/isUndefined'
+
+import { WorkTypeDetailDTO } from 'shared/catalogs/workTypes/api/dto'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

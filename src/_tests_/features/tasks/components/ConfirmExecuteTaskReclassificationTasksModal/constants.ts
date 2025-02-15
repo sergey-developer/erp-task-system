@@ -1,4 +1,4 @@
-import { ConfirmExecuteTaskReclassificationTasksModalProps } from 'features/task/components/ConfirmExecuteTaskReclassificationTasksModal/index'
+import { ConfirmExecuteTaskReclassificationTasksModalProps } from 'features/tasks/components/ConfirmExecuteTaskReclassificationTasksModal/index'
 
 import { fakeIdStr } from '_tests_/utils'
 

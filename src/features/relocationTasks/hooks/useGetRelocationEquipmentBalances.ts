@@ -1,9 +1,3 @@
-import { useGetRelocationEquipmentBalanceListQuery } from 'features/relocationTasks/api/endpoints/relocationTasks.endpoints'
-import { getRelocationEquipmentBalancesErrorMessage } from 'features/relocationTasks/constants'
-import {
-  GetRelocationEquipmentBalanceListRequest,
-  GetRelocationEquipmentBalanceListResponse,
-} from 'features/warehouse/models'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -11,21 +5,28 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { getRelocationEquipmentBalancesErrorMessage } from '../api/constants'
+import { useGetRelocationEquipmentBalancesQuery } from '../api/endpoints/relocationTasks.endpoints'
+import {
+  GetRelocationEquipmentBalancesRequest,
+  GetRelocationEquipmentBalancesResponse,
+} from '../api/schemas'
+
 type UseGetRelocationEquipmentBalanceListResult = CustomUseQueryHookResult<
-  GetRelocationEquipmentBalanceListRequest,
-  GetRelocationEquipmentBalanceListResponse
+  GetRelocationEquipmentBalancesRequest,
+  GetRelocationEquipmentBalancesResponse
 >
 
 type UseGetRelocationEquipmentBalanceListOptions = CustomUseQueryOptions<
-  GetRelocationEquipmentBalanceListRequest,
-  GetRelocationEquipmentBalanceListResponse
+  GetRelocationEquipmentBalancesRequest,
+  GetRelocationEquipmentBalancesResponse
 >
 
 export const useGetRelocationEquipmentBalances = (
-  args: GetRelocationEquipmentBalanceListRequest,
+  args: GetRelocationEquipmentBalancesRequest,
   options?: UseGetRelocationEquipmentBalanceListOptions,
 ): UseGetRelocationEquipmentBalanceListResult => {
-  const state = useGetRelocationEquipmentBalanceListQuery(args, options)
+  const state = useGetRelocationEquipmentBalancesQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {

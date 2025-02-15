@@ -1,9 +1,9 @@
-import { WorkGroupBlockProps } from 'features/task/components/TaskDetails/WorkGroupBlock/index'
+import { WorkGroupBlockProps } from 'features/tasks/components/TaskDetails/WorkGroupBlock/index'
 import {
   TaskActionsPermissionsEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'features/task/constants/task/index'
+} from 'features/tasks/constants/task/index'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 import userFixtures from '_tests_/fixtures/user/index'

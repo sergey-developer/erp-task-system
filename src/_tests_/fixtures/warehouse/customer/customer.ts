@@ -1,4 +1,4 @@
-import { CustomerCatalogItemDTO } from 'features/warehouse/models'
+import { CustomerCatalogItemDTO } from 'shared/catalogs/customers/api/dto'
 
 import { fakeInteger, fakeWord } from '_tests_/utils'
 

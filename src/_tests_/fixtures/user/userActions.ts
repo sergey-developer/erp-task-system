@@ -1,4 +1,4 @@
-import { TaskActionsPermissionsEnum } from 'features/task/constants/task'
+import { TaskActionsPermissionsEnum } from 'features/tasks/api/constants'
 import { UserActionsDTO } from 'features/users/api/dto'
 
 import { fakeId } from '_tests_/utils'

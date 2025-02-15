@@ -1,7 +1,7 @@
 import { waitFor, within } from '@testing-library/react'
 import { testUtils as executeInventorizationRelocationTaskTableTestUtils } from 'features/inventorizations/components/ExecuteInventorizationRelocationTaskTable/ExecuteInventorizationRelocationTaskTable.test'
 import CreateRelocationTaskDraftPage from 'features/relocationTasks/pages/CreateRelocationTaskDraftPage'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import { CommonRoutesEnum } from 'configs/routes'
 
@@ -77,7 +77,7 @@ describe('Вкладка списка заявок на перемещение �
             element: <ExecuteInventorizationRelocationsTab {...props} />,
           },
           {
-            path: WarehouseRouteEnum.CreateRelocationTaskDraft,
+            path: WarehousesRoutesEnum.CreateRelocationTaskDraft,
             element: <CreateRelocationTaskDraftPage />,
           },
         ],

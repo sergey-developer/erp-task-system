@@ -1,9 +1,3 @@
-import {
-  UpdateInfrastructureOrderFormWorkRequest,
-  UpdateInfrastructureOrderFormWorkResponse,
-} from 'features/infrastructures/api/dto'
-import { useUpdateInfrastructureOrderFormWorkMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { updateInfrastructureOrderFormWorkErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
@@ -16,6 +10,13 @@ import {
   isNotFoundError,
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { updateInfrastructureOrderFormWorkErrorMessage } from '../api/constants'
+import { useUpdateInfrastructureOrderFormWorkMutation } from '../api/endpoints/infrastructures.endpoints'
+import {
+  UpdateInfrastructureOrderFormWorkRequest,
+  UpdateInfrastructureOrderFormWorkResponse,
+} from '../api/schemas'
 
 type UseUpdateInfrastructureOrderFormWork = CustomUseMutationResult<
   UpdateInfrastructureOrderFormWorkRequest,

@@ -1,8 +1,9 @@
-import { RelocationTaskStatusEnum } from 'features/relocationTasks/constants'
 import isEqual from 'lodash/isEqual'
 import { useMemo } from 'react'
 
 import { BooleanKey, BooleanMap, MaybeUndefined } from 'shared/types/utils'
+
+import { RelocationTaskStatusEnum } from '../api/constants'
 
 export const useRelocationTaskStatus = (
   status: MaybeUndefined<RelocationTaskStatusEnum>,

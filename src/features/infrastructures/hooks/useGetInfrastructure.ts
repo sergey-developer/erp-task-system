@@ -1,9 +1,3 @@
-import {
-  GetInfrastructureRequest,
-  GetInfrastructureResponse,
-} from 'features/infrastructures/api/dto'
-import { useGetInfrastructureQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { getInfrastructureErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -15,6 +9,10 @@ import {
   isNotFoundError,
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { getInfrastructureErrorMessage } from '../api/constants'
+import { useGetInfrastructureQuery } from '../api/endpoints/infrastructures.endpoints'
+import { GetInfrastructureRequest, GetInfrastructureResponse } from '../api/schemas'
 
 type UseGetInfrastructureResult = CustomUseQueryHookResult<
   GetInfrastructureRequest,

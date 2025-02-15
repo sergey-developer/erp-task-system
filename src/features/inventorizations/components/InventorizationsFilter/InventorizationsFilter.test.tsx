@@ -1,8 +1,10 @@
 import {
-  inventorizationStatusDict,
   InventorizationStatusEnum,
-  inventorizationTypeDict,
   InventorizationTypeEnum,
+} from 'features/inventorizations/api/constants'
+import {
+  inventorizationStatusDict,
+  inventorizationTypeDict,
 } from 'features/inventorizations/constants'
 
 import { props } from '_tests_/features/warehouse/components/InventorizationsFilter/constants'

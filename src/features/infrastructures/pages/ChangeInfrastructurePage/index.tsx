@@ -1,10 +1,10 @@
 import { useBoolean } from 'ahooks'
 import { Button, Col, Flex, Row, Select, Tabs, Typography } from 'antd'
 import { useAuthUser } from 'features/auth/hooks'
+import { InfrastructureStatusEnum } from 'features/infrastructures/api/constants'
 import ChangeInfrastructureOrdersFormsTab from 'features/infrastructures/components/ChangeInfrastructureOrdersFormsTab'
 import {
   infrastructureStatusDict,
-  InfrastructureStatusEnum,
   infrastructureStatusOptions,
 } from 'features/infrastructures/constants'
 import {
@@ -15,7 +15,7 @@ import {
 } from 'features/infrastructures/hooks'
 import EditableField from 'features/relocationTasks/components/RelocationTaskDetails/EditableField'
 import ReadonlyField from 'features/relocationTasks/components/RelocationTaskDetails/ReadonlyField'
-import TaskAssignee from 'features/task/components/TaskAssignee'
+import TaskAssignee from 'features/tasks/components/TaskAssignee'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useUserPermissions } from 'features/users/hooks'
 import React, { FC } from 'react'

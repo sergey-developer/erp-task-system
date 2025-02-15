@@ -1,12 +1,11 @@
+import { TaskDetailDTO } from 'features/tasks/api/dto'
 import isUndefined from 'lodash/isUndefined'
-
-import { TaskModel } from 'features/task/models'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 
 export const supportGroup = (
-  props?: Partial<Pick<NonNullable<TaskModel['supportGroup']>, 'hasResolutionClassifiers'>>,
-): TaskModel['supportGroup'] => ({
+  props?: Partial<Pick<NonNullable<TaskDetailDTO['supportGroup']>, 'hasResolutionClassifiers'>>,
+): TaskDetailDTO['supportGroup'] => ({
   hasResolutionClassifiers: isUndefined(props?.hasResolutionClassifiers)
     ? false
     : props!.hasResolutionClassifiers,

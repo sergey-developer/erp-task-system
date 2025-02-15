@@ -1,8 +1,6 @@
 import { screen } from '@testing-library/react'
-import {
-  inventorizationTypeDict,
-  InventorizationTypeEnum,
-} from 'features/inventorizations/constants'
+import { InventorizationTypeEnum } from 'features/inventorizations/api/constants'
+import { inventorizationTypeDict } from 'features/inventorizations/constants'
 
 import { validationMessages } from 'shared/constants/validation'
 

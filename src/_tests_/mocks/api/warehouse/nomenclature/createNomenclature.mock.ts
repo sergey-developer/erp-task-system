@@ -1,5 +1,5 @@
 import { NomenclaturesApiPathsEnum } from 'features/nomenclatures/api/constants'
-import { CreateNomenclatureResponse } from 'features/warehouse/models'
+import { CreateNomenclatureResponse } from 'features/nomenclatures/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

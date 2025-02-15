@@ -1,5 +1,5 @@
-import { closeRelocationTaskUrl } from 'features/relocationTasks/api/helpers'
-import { CloseRelocationTaskResponse } from 'features/warehouse/models'
+import { makeCloseRelocationTaskApiPath } from 'features/relocationTasks/api/helpers'
+import { CloseRelocationTaskResponse } from 'features/relocationTasks/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -16,7 +16,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const closeRelocationTaskMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Post, closeRelocationTaskUrl(id))
+  getRequestMockFn(HttpMethodEnum.Post, makeCloseRelocationTaskApiPath(id))
 
 export const mockCloseRelocationTaskSuccess = (
   id: IdType,

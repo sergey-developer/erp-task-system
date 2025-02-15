@@ -1,6 +1,5 @@
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import { generatePath } from 'react-router-dom'
-
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 
 import { IdType } from 'shared/types/common'
 import { getPathWithQs } from 'shared/utils/url'
@@ -16,6 +15,6 @@ export const getEquipmentListPageLink = ({
   ...params
 }: GetEquipmentListPageLinkParams): string =>
   getPathWithQs<Omit<GetEquipmentListPageLinkParams, 'id'>>(
-    generatePath(WarehouseRouteEnum.Equipments, { id: String(id) }),
+    generatePath(WarehousesRoutesEnum.Equipments, { id: String(id) }),
     params,
   )

@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { TaskSuspendRequestProps } from 'features/task/components/TaskSuspendRequest/index'
+import { TaskSuspendRequestProps } from 'features/tasks/components/TaskSuspendRequest/index'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/TaskSuspendRequest/constants'
 import { buttonTestUtils, iconTestUtils } from '_tests_/utils'

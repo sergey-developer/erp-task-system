@@ -1,10 +1,5 @@
 import { ReportsApiPathsEnum } from 'features/reports/api/constants'
 import {
-  makeGetEmployeesActionsReportEndpoint,
-  makeGetInventorizationReportEndpoint,
-  makeHistoryNomenclatureOperationsReportEndpoint,
-} from 'features/reports/api/helpers'
-import {
   GetAmountEquipmentSpentReportRequest,
   GetAmountEquipmentSpentReportResponse,
   GetAmountEquipmentSpentReportXlsxRequest,
@@ -43,6 +38,12 @@ import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 
+import {
+  makeGetEmployeesActionsReportApiPath,
+  makeGetInventorizationReportApiPath,
+  makeHistoryNomenclatureOperationsReportApiPath,
+} from '../helpers'
+
 const reportsEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getEmployeesActionsReport: build.query<
@@ -50,7 +51,7 @@ const reportsEndpoints = baseApi.injectEndpoints({
       GetEmployeesActionsReportRequest
     >({
       query: ({ employeeId, ...params }) => ({
-        url: makeGetEmployeesActionsReportEndpoint(employeeId),
+        url: makeGetEmployeesActionsReportApiPath(employeeId),
         method: HttpMethodEnum.Get,
         params,
       }),
@@ -62,7 +63,7 @@ const reportsEndpoints = baseApi.injectEndpoints({
       GetEmployeesActionsReportXlsxRequest
     >({
       query: ({ employeeId, ...params }) => ({
-        url: makeGetEmployeesActionsReportEndpoint(employeeId),
+        url: makeGetEmployeesActionsReportApiPath(employeeId),
         method: HttpMethodEnum.Get,
         headers: { Accept: MimetypeEnum.Xlsx },
         params,
@@ -106,7 +107,7 @@ const reportsEndpoints = baseApi.injectEndpoints({
       GetHistoryNomenclatureOperationsReportRequest
     >({
       query: ({ nomenclatureId, ...params }) => ({
-        url: makeHistoryNomenclatureOperationsReportEndpoint(nomenclatureId),
+        url: makeHistoryNomenclatureOperationsReportApiPath(nomenclatureId),
         method: HttpMethodEnum.Get,
         params,
       }),
@@ -118,7 +119,7 @@ const reportsEndpoints = baseApi.injectEndpoints({
       GetHistoryNomenclatureOperationsReportXlsxRequest
     >({
       query: ({ nomenclatureId, ...params }) => ({
-        url: makeHistoryNomenclatureOperationsReportEndpoint(nomenclatureId),
+        url: makeHistoryNomenclatureOperationsReportApiPath(nomenclatureId),
         method: HttpMethodEnum.Get,
         headers: { Accept: MimetypeEnum.Xlsx },
         params,
@@ -172,7 +173,7 @@ const reportsEndpoints = baseApi.injectEndpoints({
       GetInventorizationReportRequest
     >({
       query: ({ inventorizationId }) => ({
-        url: makeGetInventorizationReportEndpoint({ inventorizationId }),
+        url: makeGetInventorizationReportApiPath({ inventorizationId }),
         method: HttpMethodEnum.Get,
       }),
       transformResponse: (value: GetInventorizationReportResponse, meta) => ({

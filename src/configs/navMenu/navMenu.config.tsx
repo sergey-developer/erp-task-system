@@ -1,7 +1,6 @@
 import { ReportsRoutesEnum } from 'features/reports/api/constants'
-import { TasksRoutesEnum } from 'features/task/constants/routes'
+import { TasksRoutesEnum } from 'features/tasks/routes/routes'
 import { UserPermissionsEnum } from 'features/users/api/constants'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
 
 import { CommonRoutesEnum } from 'configs/routes'
 
@@ -26,24 +25,24 @@ const navMenuConfig: NavMenuItem[] = [
       permissions.includes(UserPermissionsEnum.ReportMainIndicatorsRead),
   },
   {
-    key: WarehouseRouteEnum.ManageWarehouses,
+    key: WarehousesRoutesEnum.ManageWarehouses,
     icon: ReadIcon,
     text: 'Управление складами',
     children: [
       {
-        key: WarehouseRouteEnum.WarehouseCatalogs,
+        key: WarehousesRoutesEnum.WarehousesCatalog,
         text: 'Справочники',
-        link: WarehouseRouteEnum.WarehouseCatalogs,
+        link: WarehousesRoutesEnum.WarehousesCatalog,
       },
       {
-        key: WarehouseRouteEnum.Reserves,
+        key: WarehousesRoutesEnum.Reserves,
         text: 'Управление запасами',
-        link: WarehouseRouteEnum.Reserves,
+        link: WarehousesRoutesEnum.Reserves,
       },
       {
-        key: WarehouseRouteEnum.Reports,
+        key: WarehousesRoutesEnum.Reports,
         text: 'Отчёты',
-        link: WarehouseRouteEnum.Reports,
+        link: WarehousesRoutesEnum.Reports,
         disabled: (permissions: UserPermissionsEnum[]) =>
           !permissions.includes(UserPermissionsEnum.WarehouseReportsRead),
       },

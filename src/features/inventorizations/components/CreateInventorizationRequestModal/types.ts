@@ -2,7 +2,7 @@ import { FormInstance, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 import { EquipmentNomenclaturesDTO } from 'features/equipments/api/dto'
 import { UsersDTO } from 'features/users/api/dto'
-import { WarehousesModel } from 'features/warehouse/models'
+import { WarehousesDTO } from 'features/warehouses/api/dto'
 import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
@@ -29,7 +29,7 @@ export type CreateInventorizationRequestModalProps = Required<
   executors: UsersDTO
   executorsIsLoading: boolean
 
-  warehouses: WarehousesModel
+  warehouses: WarehousesDTO
   warehousesIsLoading: boolean
   onChangeWarehouses: (value: IdType[]) => void
 

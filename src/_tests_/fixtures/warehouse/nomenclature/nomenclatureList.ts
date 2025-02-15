@@ -1,4 +1,4 @@
-import { NomenclatureDTO } from 'features/warehouse/models'
+import { NomenclatureDTO } from 'features/nomenclatures/api/dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

@@ -2,7 +2,7 @@ import { EquipmentsApiPathsEnum } from 'features/equipments/api/constants'
 import {
   CreateEquipmentBadRequestErrorResponse,
   ImportEquipmentsByFileResponse,
-} from 'features/warehouse/models'
+} from 'features/equipments/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

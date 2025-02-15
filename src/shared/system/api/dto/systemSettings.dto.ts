@@ -1,4 +1,4 @@
-import { SuspendReasonEnum } from 'features/task/constants/taskSuspendRequest'
+import { SuspendReasonEnum } from 'features/tasks/api/constants'
 
 type SuspendReasonSystemSettingsDTO = {
   limit: number

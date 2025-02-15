@@ -1,5 +1,5 @@
-import { GetTaskRegistrationRequestRecipientsFNResponse } from 'features/task/models'
-import { getTaskRegistrationRequestRecipientsFNUrl } from 'features/task/utils/task'
+import { getTaskRegistrationRequestRecipientsFNUrl } from 'features/tasks/helpers'
+import { GetTaskRegistrationRequestRecipientsFNResponse } from 'features/tasks/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

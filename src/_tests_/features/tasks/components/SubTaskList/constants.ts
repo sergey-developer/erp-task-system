@@ -1,6 +1,6 @@
-import { SubTaskListProps } from 'features/task/components/SubTaskList/index'
-import { TaskExtendedStatusEnum, TaskStatusEnum } from 'features/task/constants/task/index'
-import { SuspendRequestStatusEnum } from 'features/task/constants/taskSuspendRequest/index'
+import { SubTaskListProps } from 'features/tasks/components/SubTaskList/index'
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'features/tasks/constants/task/index'
+import { SuspendRequestStatusEnum } from 'features/tasks/constants/taskSuspendRequest/index'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 

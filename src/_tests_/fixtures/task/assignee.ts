@@ -1,8 +1,8 @@
-import { TaskAssigneeModel } from 'features/task/models'
+import { TaskAssigneeDTO } from 'features/tasks/api/dto'
 
 import { fakeEmail, fakeId, fakePhone, fakeUrl, fakeWord } from '_tests_/utils'
 
-export const assignee = (): TaskAssigneeModel => ({
+export const assignee = (): TaskAssigneeDTO => ({
   id: fakeId(),
   firstName: fakeWord(),
   lastName: fakeWord(),

@@ -1,6 +1,6 @@
 import { makeGetInventorizationApiPath } from 'features/inventorizations/api/helpers'
-import { GetInventorizationResponse } from 'features/warehouse/models'
-import { RequestWithInventorization } from 'features/warehouse/types'
+import { GetInventorizationResponse } from 'features/inventorizations/api/schemas'
+import { RequestWithInventorization } from 'features/inventorizations/api/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

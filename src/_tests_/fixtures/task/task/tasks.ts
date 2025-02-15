@@ -1,12 +1,11 @@
-import times from 'lodash/times'
-
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'features/task/constants/task'
-import { GetTasksResponse, TaskListItemModel } from 'features/task/models'
+} from 'features/tasks/api/constants'
+import { GetTasksResponse, TaskDTO } from 'features/tasks/api/dto'
+import times from 'lodash/times'
 
 import commonFixtures from '_tests_/fixtures/common'
 import supportGroupFixtures from '_tests_/fixtures/supportGroup'
@@ -15,12 +14,9 @@ import { fakeDateString, fakeId, fakeIdStr, fakeInteger, fakeWord } from '_tests
 
 export const taskListItem = (
   props?: Partial<
-    Pick<
-      TaskListItemModel,
-      'status' | 'extendedStatus' | 'olaStatus' | 'type' | 'olaNextBreachTime'
-    >
+    Pick<TaskDTO, 'status' | 'extendedStatus' | 'olaStatus' | 'type' | 'olaNextBreachTime'>
   >,
-): TaskListItemModel => ({
+): TaskDTO => ({
   status: props?.status || TaskStatusEnum.New,
   extendedStatus: props?.extendedStatus || TaskExtendedStatusEnum.New,
   olaStatus: props?.olaStatus || TaskOlaStatusEnum.NotExpired,
@@ -40,9 +36,7 @@ export const taskListItem = (
   subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },
 })
 
-export const tasks = (length: number = 1): TaskListItemModel[] =>
-  times(length, () => taskListItem())
+export const tasks = (length: number = 1): TaskDTO[] => times(length, () => taskListItem())
 
-export const getTasksResponse = (
-  list: GetTasksResponse['results'],
-): GetTasksResponse => commonFixtures.paginatedListResponse(list)
+export const getTasksResponse = (list: GetTasksResponse['results']): GetTasksResponse =>
+  commonFixtures.paginatedListResponse(list)

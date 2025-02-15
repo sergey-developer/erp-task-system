@@ -1,10 +1,10 @@
-import { SubTaskListTabProps } from 'features/task/components/TaskDetails/Tabs/SubTaskListTab/index'
+import { SubTaskListTabProps } from 'features/tasks/components/TaskDetails/Tabs/SubTaskListTab/index'
 import {
   TaskActionsPermissionsEnum,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'features/task/constants/task/index'
+} from 'features/tasks/constants/task/index'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 import userFixtures from '_tests_/fixtures/user/index'

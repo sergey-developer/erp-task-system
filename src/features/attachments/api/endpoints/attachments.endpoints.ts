@@ -9,8 +9,6 @@ import {
 import { baseApi } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { makeDeleteAttachmentEndpoint } from '../helpers/endpoints'
-
 const attachmentsEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createAttachment: build.mutation<CreateAttachmentResponse, CreateAttachmentRequest>({
@@ -28,7 +26,7 @@ const attachmentsEndpoints = baseApi.injectEndpoints({
     }),
     deleteAttachment: build.mutation<DeleteAttachmentResponse, DeleteAttachmentRequest>({
       query: ({ attachmentId }) => ({
-        url: makeDeleteAttachmentEndpoint(attachmentId),
+        url: makeDeleteAttachmentApiPath(attachmentId),
         method: HttpMethodEnum.Delete,
       }),
     }),

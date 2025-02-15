@@ -1,12 +1,11 @@
-import isUndefined from 'lodash/isUndefined'
-
 import {
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'features/task/constants/task'
-import { TaskModel, TaskResponseTimeModel } from 'features/task/models'
+} from 'features/tasks/api/constants'
+import { TaskDetailDTO, TaskResponseTimeDTO } from 'features/tasks/api/dto'
+import isUndefined from 'lodash/isUndefined'
 
 import { SystemEnum } from 'shared/constants/enums'
 
@@ -23,7 +22,7 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-export const taskResponseTime = (): TaskResponseTimeModel => {
+export const taskResponseTime = (): TaskResponseTimeDTO => {
   return {
     value: fakeDateString(),
     timedelta: 7200000, // 2h in milliseconds
@@ -34,7 +33,7 @@ export const taskResponseTime = (): TaskResponseTimeModel => {
 export const task = (
   props?: Partial<
     Pick<
-      TaskModel,
+      TaskDetailDTO,
       | 'id'
       | 'type'
       | 'status'
@@ -55,8 +54,8 @@ export const task = (
       | 'createdBy'
     >
   >,
-): Omit<TaskModel, 'responseTime'> & {
-  responseTime: TaskResponseTimeModel
+): Omit<TaskDetailDTO, 'responseTime'> & {
+  responseTime: TaskResponseTimeDTO
 } => ({
   id: props?.id || fakeId(),
   system: props?.system || SystemEnum.ITSM,
@@ -105,15 +104,15 @@ export const task = (
   initialImpact: fakeInteger({
     min: 1,
     max: 4,
-  }) as TaskModel['initialImpact'],
+  }) as TaskDetailDTO['initialImpact'],
   severity: fakeInteger({
     min: 1,
     max: 4,
-  }) as TaskModel['severity'],
+  }) as TaskDetailDTO['severity'],
   priorityCode: fakeInteger({
     min: 1,
     max: 4,
-  }) as TaskModel['priorityCode'],
+  }) as TaskDetailDTO['priorityCode'],
   contactService: fakeWord(),
   createdAt: fakeDateString(),
   productClassifier1: fakeWord(),

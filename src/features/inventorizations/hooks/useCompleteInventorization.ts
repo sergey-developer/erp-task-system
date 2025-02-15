@@ -2,7 +2,7 @@ import { useCompleteInventorizationMutation } from 'features/inventorizations/ap
 import {
   CompleteInventorizationRequest,
   CompleteInventorizationResponse,
-} from 'features/warehouse/models'
+} from 'features/inventorizations/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'

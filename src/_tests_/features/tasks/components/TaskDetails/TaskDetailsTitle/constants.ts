@@ -1,11 +1,11 @@
-import { TaskDetailsTitleProps } from 'features/task/components/TaskDetails/TaskDetailsTitle/types'
+import { TaskDetailsTitleProps } from 'features/tasks/components/TaskDetails/TaskDetailsTitle/types'
 import {
   TaskActionsPermissionsEnum,
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'features/task/constants/task/index'
+} from 'features/tasks/constants/task/index'
 
 import { SystemEnum } from 'shared/constants/enums'
 

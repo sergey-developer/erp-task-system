@@ -1,9 +1,3 @@
-import { useGetRelocationEquipmentListQuery } from 'features/relocationTasks/api/endpoints/relocationTasks.endpoints'
-import { getRelocationEquipmentsErrorMessage } from 'features/relocationTasks/constants'
-import {
-  GetRelocationEquipmentListRequest,
-  GetRelocationEquipmentListResponse,
-} from 'features/warehouse/models'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'
@@ -11,21 +5,25 @@ import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/t
 import { isErrorResponse, isForbiddenError, isNotFoundError } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
 
+import { getRelocationEquipmentsErrorMessage } from '../api/constants'
+import { useGetRelocationEquipmentsQuery } from '../api/endpoints/relocationTasks.endpoints'
+import { GetRelocationEquipmentsRequest, GetRelocationEquipmentsResponse } from '../api/schemas'
+
 type UseGetRelocationEquipmentListResult = CustomUseQueryHookResult<
-  GetRelocationEquipmentListRequest,
-  GetRelocationEquipmentListResponse
+  GetRelocationEquipmentsRequest,
+  GetRelocationEquipmentsResponse
 >
 
 type UseGetRelocationEquipmentListOptions = CustomUseQueryOptions<
-  GetRelocationEquipmentListRequest,
-  GetRelocationEquipmentListResponse
+  GetRelocationEquipmentsRequest,
+  GetRelocationEquipmentsResponse
 >
 
 export const useGetRelocationEquipments = (
-  args: GetRelocationEquipmentListRequest,
+  args: GetRelocationEquipmentsRequest,
   options?: UseGetRelocationEquipmentListOptions,
 ): UseGetRelocationEquipmentListResult => {
-  const state = useGetRelocationEquipmentListQuery(args, options)
+  const state = useGetRelocationEquipmentsQuery(args, options)
 
   useEffect(() => {
     if (isErrorResponse(state.error)) {

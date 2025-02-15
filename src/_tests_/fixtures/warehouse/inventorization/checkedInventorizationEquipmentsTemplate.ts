@@ -2,7 +2,7 @@ import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import {
   CheckedInventorizationEquipmentsTemplateItemDTO,
   CheckedInventorizationEquipmentsTemplateModel,
-} from 'features/warehouse/models'
+} from 'features/warehouses/api/dto'
 import isBoolean from 'lodash/isBoolean'
 import isUndefined from 'lodash/isUndefined'
 import times from 'lodash/times'

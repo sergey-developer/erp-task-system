@@ -14,7 +14,7 @@ import {
 } from 'antd'
 import { renderUploadedFile } from 'features/attachments/helpers'
 import { inventorizationTypeOptions } from 'features/inventorizations/constants'
-import { WarehouseListItemModel } from 'features/warehouse/models'
+import { WarehouseDTO } from 'features/warehouses/api/dto'
 import sortBy from 'lodash/sortBy'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useCallback, useMemo } from 'react'
@@ -182,7 +182,7 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
           label='Склады'
           rules={onlyRequiredRules}
         >
-          <Select<IdType[], WarehouseListItemModel>
+          <Select<IdType[], WarehouseDTO>
             mode='multiple'
             placeholder='Выберите склад'
             options={warehouses}

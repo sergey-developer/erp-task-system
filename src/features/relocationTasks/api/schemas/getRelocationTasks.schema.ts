@@ -1,4 +1,4 @@
-import { RequestWithTask } from 'features/task/types'
+import { RequestWithTask } from 'features/tasks/api/types'
 
 import { PaginationRequestParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
 import { IdType } from 'shared/types/common'

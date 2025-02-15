@@ -1,5 +1,5 @@
-import { TaskApiEnum } from 'features/task/constants/task'
-import { GetTaskCountersResponse } from 'features/task/models'
+import { TasksApiPathsEnum } from 'features/tasks/api/constants'
+import { GetTaskCountersResponse } from 'features/tasks/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -7,7 +7,7 @@ import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getTaskCountersMockFn = () =>
-  getRequestMockFn(HttpMethodEnum.Get, TaskApiEnum.GetTaskCounters)
+  getRequestMockFn(HttpMethodEnum.Get, TasksApiPathsEnum.GetTaskCounters)
 
 export const mockGetTaskCountersSuccess = (
   options?: Partial<ResponseResolverOptions<GetTaskCountersResponse>>,

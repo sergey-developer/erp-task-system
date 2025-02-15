@@ -1,10 +1,10 @@
-import { TaskCommentModel } from 'features/task/models'
+import { TaskCommentDTO } from 'features/tasks/api/dto'
 import times from 'lodash/times'
 
 import taskFixtures from '_tests_/fixtures/task'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
 
-export const comment = (): TaskCommentModel => ({
+export const comment = (): TaskCommentDTO => ({
   id: fakeId(),
   text: fakeWord(),
   createdAt: fakeDateString(),
@@ -17,5 +17,4 @@ export const comment = (): TaskCommentModel => ({
   attachments: [taskFixtures.attachment()],
 })
 
-export const commentList = (length: number = 1): TaskCommentModel[] =>
-  times(length, () => comment())
+export const commentList = (length: number = 1): TaskCommentDTO[] => times(length, () => comment())

@@ -1,9 +1,3 @@
-import {
-  UpdateInfrastructureStatusRequest,
-  UpdateInfrastructureStatusResponse,
-} from 'features/infrastructures/api/dto'
-import { useUpdateInfrastructureStatusMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { updateInfrastructureStatusErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
@@ -15,6 +9,13 @@ import {
   isForbiddenError,
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { updateInfrastructureStatusErrorMessage } from '../api/constants'
+import { useUpdateInfrastructureStatusMutation } from '../api/endpoints/infrastructures.endpoints'
+import {
+  UpdateInfrastructureStatusRequest,
+  UpdateInfrastructureStatusResponse,
+} from '../api/schemas'
 
 type UseUpdateInfrastructureStatusResult = CustomUseMutationResult<
   UpdateInfrastructureStatusRequest,

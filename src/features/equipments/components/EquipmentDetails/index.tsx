@@ -27,7 +27,7 @@ import {
 } from 'features/technicalExaminations/hooks'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useUserPermissions } from 'features/users/hooks'
-import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
+import { useGetWarehouses } from 'features/warehouses/hooks'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 

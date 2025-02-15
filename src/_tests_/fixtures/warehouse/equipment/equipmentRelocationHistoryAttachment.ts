@@ -1,4 +1,4 @@
-import { EquipmentRelocationHistoryAttachmentDTO } from 'features/warehouse/models'
+import { EquipmentRelocationHistoryAttachmentDTO } from 'features/warehouses/api/dto'
 import pick from 'lodash/pick'
 
 import userFixtures from '_tests_/fixtures/user'

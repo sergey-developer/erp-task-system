@@ -1,5 +1,5 @@
-import { makeGetEquipmentAttachmentsEndpoint } from 'features/equipments/helpers'
-import { GetEquipmentAttachmentsResponse } from 'features/warehouse/models'
+import { makeGetEquipmentAttachmentsApiPath } from 'features/equipments/api/helpers'
+import { GetEquipmentAttachmentsResponse } from 'features/equipments/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -15,7 +15,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentAttachmentListMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, makeGetEquipmentAttachmentsEndpoint(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetEquipmentAttachmentsApiPath(id))
 
 export const mockGetEquipmentAttachmentListSuccess = (
   id: IdType,

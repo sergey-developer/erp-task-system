@@ -1,7 +1,7 @@
 import { Popover } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
-import { overlayInnerStyle } from 'features/task/components/CreateTaskModal/styles'
+import { overlayInnerStyle } from 'features/tasks/components/CreateTaskModal/styles'
 
 import { CheckCircleIcon, EditTwoToneIcon, ExclamationCircleIcon } from 'components/Icons'
 

@@ -1,5 +1,5 @@
 import { getRelocationEquipmentBalanceListUrl } from 'features/relocationTasks/api/helpers'
-import { GetRelocationEquipmentBalanceListResponse } from 'features/warehouse/models'
+import { GetRelocationEquipmentBalancesResponse } from 'features/warehouses/api/dto'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ const getRelocationEquipmentBalanceListMockFn = (id: IdType) =>
 
 export const mockGetRelocationEquipmentBalanceListSuccess = (
   id: IdType,
-  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentBalanceListResponse>>,
+  options?: Partial<ResponseResolverOptions<GetRelocationEquipmentBalancesResponse>>,
 ) => getSuccessMockFn(getRelocationEquipmentBalanceListMockFn(id), options)()
 
 export const mockGetRelocationEquipmentBalanceListForbiddenError = (

@@ -16,11 +16,11 @@ import {
   useGetRelocationTasks,
   useNavigateToCreateRelocationTaskSimplifiedPage,
 } from 'features/relocationTasks/hooks'
-import { useGetTask, useGetTasks } from 'features/task/hooks/task'
-import { GetTasksRequest } from 'features/task/models'
+import { useGetTask, useGetTasks } from 'features/tasks/hooks'
+import { GetTasksRequest } from 'features/tasks/api/schemas'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useUserPermissions } from 'features/users/hooks'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
@@ -241,7 +241,7 @@ const RelocationTasksPage: FC = () => {
           {/*/>*/}
 
           {permissions.relocationTasksCreate && (
-            <Link to={WarehouseRouteEnum.CreateRelocationTask}>
+            <Link to={WarehousesRoutesEnum.CreateRelocationTask}>
               <Button>Создать заявку</Button>
             </Link>
           )}

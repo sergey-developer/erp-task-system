@@ -1,4 +1,4 @@
-import { TaskTypeEnum } from 'features/task/constants/task'
+import { TaskTypeEnum } from 'features/tasks/api/constants'
 
 import { WorkTypesCatalogDTO } from '../dto'
 

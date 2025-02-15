@@ -1,4 +1,4 @@
-import { RelocationEquipmentDraftEditableTableProps } from 'features/warehouse/components/RelocationEquipmentDraftEditableTable/types'
+import { RelocationEquipmentDraftEditableTableProps } from 'features/relocationEquipments/components/RelocationEquipmentDraftEditableTable/types'
 
 import { makeString } from 'shared/utils/string'
 

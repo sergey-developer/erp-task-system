@@ -1,5 +1,5 @@
-import { TaskModel } from 'features/task/models'
+import { TaskDetailDTO } from 'features/tasks/api/dto'
 
 export type ChangeInfrastructurePageLocationState = {
-  task: Pick<TaskModel, 'infrastructureProject' | 'workType' | 'recordId' | 'id' | 'assignee'>
+  task: Pick<TaskDetailDTO, 'infrastructureProject' | 'workType' | 'recordId' | 'id' | 'assignee'>
 }

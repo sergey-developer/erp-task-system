@@ -1,8 +1,8 @@
 import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
-} from 'features/inventorizations/constants'
-import { InventorizationDetailDTO } from 'features/warehouse/models'
+} from 'features/inventorizations/api/constants'
+import { InventorizationDetailDTO } from 'features/inventorizations/api/dto'
 import pick from 'lodash/pick'
 
 import userFixtures from '_tests_/fixtures/user'

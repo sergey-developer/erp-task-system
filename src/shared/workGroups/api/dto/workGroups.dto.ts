@@ -1,6 +1,7 @@
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
-import { WorkGroupTypeEnum } from 'shared/workGroups/constants'
+
+import { WorkGroupTypeEnum } from '../constants'
 
 type WorkGroupMemberDTO = {
   id: IdType

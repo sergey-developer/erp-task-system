@@ -1,13 +1,12 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { TestIdsEnum } from '_tests_/features/warehouse/components/WarehouseListFilter/constants'
+import { TestIdsEnum } from '_tests_/features/warehouse/components/WarehousesFilter/constants'
 import { buttonTestUtils, selectTestUtils } from '_tests_/utils'
 
-const getContainer = () => screen.getByTestId(TestIdsEnum.WarehouseListFilter)
+const getContainer = () => screen.getByTestId(TestIdsEnum.WarehousesFilter)
 
-const findContainer = (): Promise<HTMLElement> =>
-  screen.findByTestId(TestIdsEnum.WarehouseListFilter)
+const findContainer = (): Promise<HTMLElement> => screen.findByTestId(TestIdsEnum.WarehousesFilter)
 
 // reset button
 const getResetAllButton = () => buttonTestUtils.getButtonIn(getContainer(), /Сбросить все/)

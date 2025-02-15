@@ -2,7 +2,7 @@ import { InventorizationsApiPathsEnum } from 'features/inventorizations/constant
 import {
   CheckInventorizationEquipmentsBadRequestErrorResponse,
   CheckInventorizationEquipmentsResponse,
-} from 'features/warehouse/models'
+} from 'features/warehouses/api/dto'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

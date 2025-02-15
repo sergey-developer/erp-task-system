@@ -1,9 +1,9 @@
+import { createInfrastructureOrderFormWorkErrorMessage } from 'features/infrastructures/api/constants'
+import { useCreateInfrastructureOrderFormWorkMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import {
   CreateInfrastructureOrderFormWorkRequest,
   CreateInfrastructureOrderFormWorkResponse,
-} from 'features/infrastructures/api/dto'
-import { useCreateInfrastructureOrderFormWorkMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { createInfrastructureOrderFormWorkErrorMessage } from 'features/infrastructures/constants'
+} from 'features/infrastructures/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'

@@ -1,6 +1,6 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { EquipmentCategoryDTO } from 'features/equipments/api/dto'
-import { NomenclatureModel } from 'features/warehouse/models'
+import { NomenclatureDetailDTO } from 'features/nomenclatures/api/dto'
 
 import { CurrencyCatalogItemDTO } from 'shared/catalogs/currencies/api/dto'
 import { CustomerCatalogItemDTO } from 'shared/catalogs/customers/api/dto'
@@ -14,7 +14,7 @@ export type CheckedInventorizationEquipmentsTemplateItemDTO = {
   title?: string
   serialNumber?: string
   inventoryNumber?: string
-  nomenclature?: Pick<NomenclatureModel, 'id' | 'title' | 'vendorCode'>
+  nomenclature?: Pick<NomenclatureDetailDTO, 'id' | 'title' | 'vendorCode'>
   condition?: EquipmentConditionEnum
   price?: number
   currency?: Pick<CurrencyCatalogItemDTO, 'id' | 'title'>

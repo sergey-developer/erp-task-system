@@ -1,8 +1,8 @@
 import { TableProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 
-import { CreateEquipmentsBadRequestErrorResponse } from 'features/warehouse/models'
-import { ImportedEquipmentByFile } from 'features/warehouse/types'
+import { CreateEquipmentsBadRequestErrorResponse } from 'features/warehouses/api/dto'
+import { ImportedEquipmentByFile } from 'features/warehouses/types'
 
 import { FileResponse } from 'shared/types/file'
 

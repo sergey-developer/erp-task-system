@@ -7,7 +7,7 @@ import {
   RelocationTaskTypeEnum,
 } from 'features/relocationTasks/constants'
 import { UserPermissionsEnum } from 'features/users/api/constants'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
@@ -353,7 +353,7 @@ describe('Страница списка заявок на перемещение
         const link = relocationTasksPageTestUtils.getCreateTaskLink()
 
         expect(link).toBeInTheDocument()
-        expect(link).toHaveAttribute('href', WarehouseRouteEnum.CreateRelocationTask)
+        expect(link).toHaveAttribute('href', WarehousesRoutesEnum.CreateRelocationTask)
       })
 
       test('Не отображается если нет прав', () => {
@@ -378,15 +378,15 @@ describe('Страница списка заявок на перемещение
         const { user } = renderWithRouter(
           [
             {
-              path: WarehouseRouteEnum.RelocationTasks,
+              path: WarehousesRoutesEnum.RelocationTasks,
               element: <RelocationTasksPage />,
             },
             {
-              path: WarehouseRouteEnum.CreateRelocationTask,
+              path: WarehousesRoutesEnum.CreateRelocationTask,
               element: <CreateRelocationTaskPage />,
             },
           ],
-          { initialEntries: [WarehouseRouteEnum.RelocationTasks], initialIndex: 0 },
+          { initialEntries: [WarehousesRoutesEnum.RelocationTasks], initialIndex: 0 },
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {

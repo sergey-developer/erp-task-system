@@ -1,7 +1,7 @@
 import { TablePaginationConfig } from 'antd'
 
-import { TaskTableProps } from 'features/task/components/TaskTable/types'
-import { DEFAULT_PAGE_SIZE } from 'features/task/pages/TasksPage/constants'
+import { TaskTableProps } from 'features/tasks/components/TaskTable/types'
+import { DEFAULT_PAGE_SIZE } from 'features/tasks/pages/TasksPage/constants'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 

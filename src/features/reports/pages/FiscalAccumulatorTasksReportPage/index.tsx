@@ -13,15 +13,12 @@ import {
 import { useGetFiscalAccumulatorTasksReport } from 'features/reports/hooks'
 import TasksFiltersStorage, {
   TasksFilterStorageItem,
-} from 'features/task/components/TasksFiltersStorage'
-import UpdateTasksButton from 'features/task/components/UpdateTasksButton'
-import {
-  TaskStorageKeysEnum,
-  TasksUpdateVariantsEnum,
-  tasksUpdateVariantsIntervals,
-} from 'features/task/constants/task'
-import { TasksFiltersStorageType } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
-import { parseTasksFiltersStorage } from 'features/task/services/taskLocalStorageService/utils'
+} from 'features/tasks/components/TasksFiltersStorage'
+import UpdateTasksButton from 'features/tasks/components/UpdateTasksButton'
+import { TasksUpdateVariantsEnum, tasksUpdateVariantsIntervals } from 'features/tasks/constants'
+import { TaskStorageKeysEnum } from 'features/tasks/services/taskLocalStorageService/constants'
+import { TasksFiltersStorageType } from 'features/tasks/services/taskLocalStorageService/taskLocalStorage.service'
+import { parseTasksFiltersStorage } from 'features/tasks/services/taskLocalStorageService/helpers'
 import debounce from 'lodash/debounce'
 import pick from 'lodash/pick'
 import React, { FC, useCallback, useState } from 'react'
@@ -41,7 +38,7 @@ const FiscalAccumulatorTasksReportFilter = React.lazy(
   () => import('features/reports/components/FiscalAccumulatorTasksReportFilter'),
 )
 
-const TaskDetails = React.lazy(() => import('features/task/components/TaskDetails'))
+const TaskDetails = React.lazy(() => import('features/tasks/components/TaskDetails'))
 
 const initialFilterValues: Readonly<FiscalAccumulatorTasksReportFilterFormFields> = {
   customers: [],
@@ -105,7 +102,7 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
     currentData: fiscalAccumulatorTasks = [],
     isFetching: fiscalAccumulatorTasksIsFetching,
     refetch: refetchFiscalAccumulatorTasks,
-  } = useGetFiscalAccumulatorTasksReport(fiscalAccumulatorTasksRequest, {
+  } = useGetFiscalAccumulatorTasksReport(fiscalAccumulatorTasksRequestArgs, {
     pollingInterval: autoUpdateEnabled
       ? tasksUpdateVariantsIntervals[TasksUpdateVariantsEnum.AutoUpdate1M]
       : undefined,
@@ -113,7 +110,7 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
 
   const handleApplyFilter: FiscalAccumulatorTasksReportFilterProps['onSubmit'] = (values) => {
     setFilterValues(values)
-    setFiscalAccumulatorTasksRequest(values)
+    setFiscalAccumulatorTasksRequestArgs(values)
     setTasksFiltersStorage(pick(values, 'customers', 'macroregions', 'supportGroups'))
     toggleOpenFilter()
   }
@@ -122,7 +119,7 @@ const FiscalAccumulatorTasksReportPage: FC = () => {
     setFilterValues({ [filter.name]: undefined })
     if (filter.name === 'customers') setSelectedCustomers([])
     if (filter.name === 'macroregions') setSelectedMacroregions([])
-    setFiscalAccumulatorTasksRequest({ [filter.name]: undefined })
+    setFiscalAccumulatorTasksRequestArgs({ [filter.name]: undefined })
     setTasksFiltersStorage((prevState) => ({ ...prevState, [filter.name]: undefined }))
   }
 

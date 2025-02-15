@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { CreateSubTaskFormFields } from 'features/task/components/CreateSubTaskModal/types'
+import { CreateSubTaskFormFields } from 'features/tasks/components/CreateSubTaskModal/types'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/CreateSubTaskModal/constants'
 import { buttonTestUtils, selectTestUtils } from '_tests_/utils'

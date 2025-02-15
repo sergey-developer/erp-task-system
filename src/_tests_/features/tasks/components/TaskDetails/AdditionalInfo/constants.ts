@@ -1,5 +1,5 @@
-import { AdditionalInfoProps } from 'features/task/components/TaskDetails/AdditionalInfo/index'
-import { TaskStatusEnum } from 'features/task/constants/task/index'
+import { AdditionalInfoProps } from 'features/tasks/components/TaskDetails/AdditionalInfo/index'
+import { TaskStatusEnum } from 'features/tasks/constants/task/index'
 import pick from 'lodash/pick'
 
 import taskFixtures from '_tests_/fixtures/task/index'

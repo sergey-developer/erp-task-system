@@ -3,7 +3,7 @@ import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetInfrastructureWorkTypesCatalogRequest,
   GetInfrastructureWorkTypesCatalogResponse,
-} from 'shared/catalogs/api/endpoints/infrastructureWorkTypes/schemas'
+} from 'shared/catalogs/infrastructureWorkTypes/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const infrastructureWorkTypesCatalogEndpoints = baseApi.injectEndpoints({

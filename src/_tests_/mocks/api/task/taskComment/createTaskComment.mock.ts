@@ -1,5 +1,5 @@
-import { CreateTaskCommentResponse } from 'features/task/models'
-import { createTaskCommentUrl } from 'features/task/utils/taskComment'
+import { CreateTaskCommentResponse } from 'features/tasks/api/schemas'
+import { createTaskCommentUrl } from 'features/tasks/utils/taskComment'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'

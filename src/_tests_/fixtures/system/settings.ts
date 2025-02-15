@@ -1,6 +1,6 @@
-import { SuspendReasonEnum } from 'features/task/constants/taskSuspendRequest'
+import { SuspendReasonEnum } from 'features/tasks/constants/taskSuspendRequest'
 
-import { SystemSettingsDTO } from 'shared/system/api/dto/systemSettings'
+import { SystemSettingsDTO } from 'shared/system/api/dto'
 
 import { fakeInteger } from '_tests_/utils'
 

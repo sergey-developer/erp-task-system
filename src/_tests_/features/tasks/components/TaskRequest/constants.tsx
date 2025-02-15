@@ -1,4 +1,4 @@
-import { TaskRequestProps } from 'features/task/components/TaskRequest/index'
+import { TaskRequestProps } from 'features/tasks/components/TaskRequest/index'
 
 import { PauseCircleIcon } from 'components/Icons/index'
 

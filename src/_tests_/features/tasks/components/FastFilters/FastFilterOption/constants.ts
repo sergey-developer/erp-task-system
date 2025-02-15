@@ -1,4 +1,4 @@
-import { FastFilterOptionProps } from 'features/task/components/FastFilters/FastFilterOption'
+import { FastFilterOptionProps } from 'features/tasks/components/FastFilters/FastFilterOption'
 
 import { fakeWord } from '_tests_/utils'
 

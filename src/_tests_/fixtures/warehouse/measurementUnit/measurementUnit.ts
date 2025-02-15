@@ -1,4 +1,4 @@
-import { MeasurementUnitsCatalogItemDTO } from 'features/warehouse/models'
+import { MeasurementUnitsCatalogItemDTO } from 'shared/catalogs/measurementUnits/api/dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

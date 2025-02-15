@@ -12,7 +12,7 @@ import { makeGetNomenclatureApiPath, makeUpdateNomenclatureApiPath } from '../he
 import {
   CreateNomenclatureRequest,
   CreateNomenclatureResponse,
-  GetNomenclatureListResponse,
+  GetNomenclaturesResponse,
   GetNomenclatureRequest,
   GetNomenclatureResponse,
   GetNomenclaturesRequest,
@@ -38,7 +38,7 @@ const nomenclaturesEndpoints = baseApi
           method: HttpMethodEnum.Get,
           params,
         }),
-        transformResponse: (response: GetNomenclatureListResponse, meta, arg) =>
+        transformResponse: (response: GetNomenclaturesResponse, meta, arg) =>
           getPaginatedList(response, arg),
       }),
       [NomenclaturesEndpointsNamesEnum.GetNomenclature]: build.query<

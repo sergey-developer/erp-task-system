@@ -1,5 +1,5 @@
-import { GetTaskJournalResponse } from 'features/task/models'
-import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'features/task/utils/taskJournal'
+import { GetTaskJournalResponse } from 'features/tasks/api/schemas'
+import { getTaskJournalCsvUrl, getTaskJournalUrl } from 'features/tasks/utils/taskJournal'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

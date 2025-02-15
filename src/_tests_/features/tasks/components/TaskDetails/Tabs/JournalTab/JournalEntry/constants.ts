@@ -1,8 +1,8 @@
-import { JournalEntryProps } from 'features/task/components/TaskDetails/Tabs/JournalTab/JournalEntry'
+import { JournalEntryProps } from 'features/tasks/components/TaskDetails/Tabs/JournalTab/JournalEntry'
 import {
   TaskJournalSourceEnum,
   TaskJournalTypeEnum,
-} from 'features/task/constants/taskJournal/index'
+} from 'features/tasks/constants/taskJournal/index'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'

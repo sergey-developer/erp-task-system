@@ -1,5 +1,5 @@
-import { InventorizationsApiPathsEnum } from 'features/inventorizations/constants'
-import { GetInventorizationsResponse } from 'features/warehouse/models'
+import { InventorizationsApiPathsEnum } from 'features/inventorizations/api/constants'
+import { GetInventorizationsResponse } from 'features/inventorizations/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

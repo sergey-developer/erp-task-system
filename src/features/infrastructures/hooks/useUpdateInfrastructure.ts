@@ -1,9 +1,3 @@
-import {
-  UpdateInfrastructureRequest,
-  UpdateInfrastructureResponse,
-} from 'features/infrastructures/api/dto'
-import { useUpdateInfrastructureMutation } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { updateInfrastructureErrorMessage } from 'features/infrastructures/constants'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'
@@ -16,6 +10,10 @@ import {
   isNotFoundError,
 } from 'shared/api/baseApi'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { updateInfrastructureErrorMessage } from '../api/constants'
+import { useUpdateInfrastructureMutation } from '../api/endpoints/infrastructures.endpoints'
+import { UpdateInfrastructureRequest, UpdateInfrastructureResponse } from '../api/schemas'
 
 type UseUpdateInfrastructureResult = CustomUseMutationResult<
   UpdateInfrastructureRequest,

@@ -6,12 +6,12 @@ import {
   CustomersModel,
   EquipmentCategoriesDTO,
   EquipmentCategoryDTO,
+  NomenclatureDetailDTO,
   NomenclatureDTO,
-  NomenclatureModel,
   NomenclaturesModel,
-  WarehousesModel,
+  WarehousesDTO,
   WorkTypesCatalogDTO,
-} from 'features/warehouse/models'
+} from 'features/warehouses/api/dto'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -66,7 +66,7 @@ export type EquipmentFormModalProps = Required<
     category?: EquipmentCategoryDTO
     onChangeCategory: (category: EquipmentCategoryDTO) => void
 
-    warehouses?: WarehousesModel
+    warehouses?: WarehousesDTO
     warehousesIsLoading?: boolean
 
     currencies: CurrenciesCatalogDTO
@@ -82,7 +82,10 @@ export type EquipmentFormModalProps = Required<
     workTypes: WorkTypesCatalogDTO
     workTypesIsLoading: boolean
 
-    nomenclature?: Pick<NomenclatureModel, 'title' | 'measurementUnit' | 'equipmentHasSerialNumber'>
+    nomenclature?: Pick<
+      NomenclatureDetailDTO,
+      'title' | 'measurementUnit' | 'equipmentHasSerialNumber'
+    >
     nomenclatureIsLoading: boolean
 
     nomenclatures: NomenclaturesModel

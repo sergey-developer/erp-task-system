@@ -1,6 +1,6 @@
-import { RequestWithRelocationTask } from 'features/warehouse/types'
+import { RequestWithRelocationTask } from 'features/warehouses/types'
 
 import { RelocationEquipmentBalancesDTO } from '../dto'
 
-export type GetRelocationEquipmentBalanceListRequest = RequestWithRelocationTask
-export type GetRelocationEquipmentBalanceListResponse = RelocationEquipmentBalancesDTO
+export type GetRelocationEquipmentBalancesRequest = RequestWithRelocationTask
+export type GetRelocationEquipmentBalancesResponse = RelocationEquipmentBalancesDTO

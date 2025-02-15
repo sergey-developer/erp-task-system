@@ -2,7 +2,7 @@ import { TableProps } from 'antd'
 import {
   GetInventorizationEquipmentsSortValue,
   InventorizationEquipmentDTO,
-} from 'features/warehouse/models'
+} from 'features/warehouses/api/dto'
 
 import { TableSortProps } from 'shared/types/sort'
 import { SetNonNullable } from 'shared/types/utils'

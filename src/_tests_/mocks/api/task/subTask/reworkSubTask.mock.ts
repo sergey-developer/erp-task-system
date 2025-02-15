@@ -1,5 +1,5 @@
-import { ReworkSubTaskResponse } from 'features/task/models'
-import { reworkSubTaskUrl } from 'features/task/utils/subTask'
+import { ReworkSubTaskResponse } from 'features/tasks/api/schemas'
+import { reworkSubTaskUrl } from 'features/tasks/utils/subTask'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'

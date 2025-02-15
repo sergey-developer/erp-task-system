@@ -2,7 +2,7 @@ import { useGetRelocationTaskCompletionDocumentsQuery } from 'features/relocatio
 import {
   GetRelocationTaskCompletionDocumentsRequest,
   GetRelocationTaskCompletionDocumentsResponse,
-} from 'features/warehouse/models'
+} from 'features/relocationTasks/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

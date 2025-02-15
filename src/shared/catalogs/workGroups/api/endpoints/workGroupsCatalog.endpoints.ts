@@ -1,10 +1,8 @@
 import { baseApi } from 'shared/api/baseApi'
 import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
-import {
-  GetWorkGroupsCatalogRequest,
-  GetWorkGroupsCatalogResponse,
-} from 'shared/catalogs/api/endpoints/workGroups/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
+
+import { GetWorkGroupsCatalogRequest, GetWorkGroupsCatalogResponse } from '../schemas'
 
 const workGroupsCatalogEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({

@@ -1,4 +1,4 @@
-import { UserTasksActionsDTO } from 'features/task/models'
+import { UserTasksActionsDTO } from 'features/tasks/api/dto'
 
 export type UserActionsDTO = {
   tasks: UserTasksActionsDTO

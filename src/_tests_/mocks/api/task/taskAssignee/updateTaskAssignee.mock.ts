@@ -1,5 +1,5 @@
-import { UpdateTaskAssigneeResponse } from 'features/task/models'
-import { updateTaskAssigneeUrl } from 'features/task/utils/taskAssignee'
+import { UpdateTaskAssigneeResponse } from 'features/tasks/api/schemas'
+import { updateTaskAssigneeUrl } from 'features/tasks/utils/taskAssignee'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

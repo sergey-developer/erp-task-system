@@ -1,8 +1,8 @@
-import { TaskCountersModel } from 'features/task/models'
+import { TaskCountersDTO } from 'features/tasks/api/dto'
 
 import { fakeInteger } from '_tests_/utils'
 
-export const taskCounters = (): TaskCountersModel => ({
+export const taskCounters = (): TaskCountersDTO => ({
   allLines: fakeInteger({ min: 1, max: 100 }),
   allInLine: fakeInteger({ min: 1, max: 100 }),
   free: fakeInteger({ min: 1, max: 100 }),

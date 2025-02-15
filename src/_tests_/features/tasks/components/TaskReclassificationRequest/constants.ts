@@ -1,4 +1,4 @@
-import { TaskReclassificationRequestProps } from 'features/task/components/TaskReclassificationRequest/index'
+import { TaskReclassificationRequestProps } from 'features/tasks/components/TaskReclassificationRequest/index'
 
 import userFixtures from '_tests_/fixtures/user/index'
 import { fakeDateString, fakeWord } from '_tests_/utils'

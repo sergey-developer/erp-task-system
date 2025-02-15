@@ -1,9 +1,9 @@
+import { getRelocationTaskWaybillM15ErrorMessage } from 'features/relocationTasks/api/constants'
 import { useLazyGetRelocationTaskWaybillM15Query } from 'features/relocationTasks/api/endpoints/relocationTasks.endpoints'
-import { getRelocationTaskWaybillM15ErrorMessage } from 'features/relocationTasks/constants'
 import {
   GetRelocationTaskWaybillM15Request,
   GetRelocationTaskWaybillM15Response,
-} from 'features/warehouse/models'
+} from 'features/relocationTasks/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseLazyQueryHookResult } from 'lib/rtk-query/types'

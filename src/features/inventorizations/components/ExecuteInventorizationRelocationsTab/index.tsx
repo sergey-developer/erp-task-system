@@ -12,8 +12,8 @@ import {
 } from 'features/inventorizations/components/ExecuteInventorizationRelocationTaskTable/types'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'features/relocationTasks/api/helpers'
 import { useGetRelocationTasks } from 'features/relocationTasks/hooks'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import { GetRelocationTasksRequest } from 'features/warehouse/models'
+import { GetRelocationTasksRequest } from 'features/warehouses/api/dto'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -121,7 +121,7 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
   }, [closeRelocationTask])
 
   const onClickExecuteInventorization = () =>
-    navigate(WarehouseRouteEnum.CreateRelocationTaskDraft, {
+    navigate(WarehousesRoutesEnum.CreateRelocationTaskDraft, {
       state: makeCreateRelocationTaskDraftPageLocationState({ inventorization }),
     })
 

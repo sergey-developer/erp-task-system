@@ -1,8 +1,8 @@
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
-} from 'features/relocationTasks/constants'
-import { RelocationTaskDTO } from 'features/warehouse/models'
+} from 'features/relocationTasks/api/constants'
+import { RelocationTaskDTO } from 'features/relocationTasks/api/dto'
 import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 import times from 'lodash/times'

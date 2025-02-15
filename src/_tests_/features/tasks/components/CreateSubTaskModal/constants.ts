@@ -1,4 +1,4 @@
-import { CreateSubTaskModalProps } from 'features/task/components/CreateSubTaskModal/types'
+import { CreateSubTaskModalProps } from 'features/tasks/components/CreateSubTaskModal/types'
 
 import taskFixtures from '_tests_/fixtures/task/index'
 

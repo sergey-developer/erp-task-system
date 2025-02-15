@@ -1,4 +1,4 @@
-import { JournalTabProps } from 'features/task/components/TaskDetails/Tabs/JournalTab/index'
+import { JournalTabProps } from 'features/tasks/components/TaskDetails/Tabs/JournalTab/index'
 
 import { fakeId } from '_tests_/utils'
 

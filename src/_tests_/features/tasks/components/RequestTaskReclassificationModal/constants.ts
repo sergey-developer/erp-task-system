@@ -1,5 +1,5 @@
-import { RequestTaskReclassificationModalProps } from 'features/task/components/RequestTaskReclassificationModal/types'
-import { ReclassificationReasonEnum } from 'features/task/constants/taskReclassificationRequest/index'
+import { RequestTaskReclassificationModalProps } from 'features/tasks/components/RequestTaskReclassificationModal/types'
+import { ReclassificationReasonEnum } from 'features/tasks/constants/taskReclassificationRequest/index'
 
 import { fakeIdStr } from '_tests_/utils'
 

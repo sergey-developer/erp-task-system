@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { TasksFiltersStorageType } from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
+import { TasksFiltersStorageType } from 'features/tasks/services/taskLocalStorageService/taskLocalStorage.service'
 
 import { iconTestUtils } from '_tests_/utils/index'
 

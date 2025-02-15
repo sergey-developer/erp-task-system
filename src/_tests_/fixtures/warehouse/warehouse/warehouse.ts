@@ -1,14 +1,13 @@
+import { WarehouseTypeEnum } from 'features/warehouses/api/constants'
+import { WarehouseDetailDTO } from 'features/warehouses/api/dto'
 import pick from 'lodash/pick'
-
-import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
-import { WarehouseModel } from 'features/warehouse/models'
 
 import macroregionFixtures from '_tests_/fixtures/macroregion'
 import { fakeId, fakeWord } from '_tests_/utils'
 
 export const warehouse = (
-  props?: Partial<Pick<WarehouseModel, 'id' | 'type'>>,
-): WarehouseModel => ({
+  props?: Partial<Pick<WarehouseDetailDTO, 'id' | 'type'>>,
+): WarehouseDetailDTO => ({
   id: props?.id || fakeId(),
   type: props?.type || WarehouseTypeEnum.Main,
 

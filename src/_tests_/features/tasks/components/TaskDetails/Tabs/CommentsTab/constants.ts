@@ -1,4 +1,4 @@
-import { CommentsTabProps } from 'features/task/components/TaskDetails/Tabs/CommentsTab/index'
+import { CommentsTabProps } from 'features/tasks/components/TaskDetails/Tabs/CommentsTab/index'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

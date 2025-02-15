@@ -1,5 +1,5 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import { CustomersModel, EquipmentCategoriesDTO } from 'features/warehouse/models'
+import { CustomersModel, EquipmentCategoriesDTO } from 'features/warehouses/api/dto'
 import { Moment } from 'moment-timezone'
 
 import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'

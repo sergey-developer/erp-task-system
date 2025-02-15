@@ -1,6 +1,6 @@
 import { RelocationTaskDetailsProps } from 'features/relocationTasks/components/RelocationTaskDetails/types'
 import { UserPermissionsEnum } from 'features/users/api/constants/index'
-import { RelocationTaskDetailDTO } from 'features/warehouse/models/index'
+import { RelocationTaskDetailDTO } from 'features/warehouses/api/dto/index'
 import pick from 'lodash/pick'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'

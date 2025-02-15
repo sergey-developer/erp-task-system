@@ -1,7 +1,7 @@
 import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
-} from 'features/inventorizations/constants'
+} from 'features/inventorizations/api/constants'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 

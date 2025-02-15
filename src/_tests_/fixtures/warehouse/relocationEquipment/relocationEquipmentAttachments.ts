@@ -1,10 +1,9 @@
+import { RelocationEquipmentAttachmentDTO } from 'features/relocationEquipments/api/schemas'
 import times from 'lodash/times'
-
-import { RelocationEquipmentAttachmentListItemModel } from 'features/warehouse/models/relocationEquipment'
 
 import { fakeId, fakeUrl, fakeWord } from '_tests_/utils'
 
-export const relocationEquipmentAttachment = (): RelocationEquipmentAttachmentListItemModel => ({
+export const relocationEquipmentAttachment = (): RelocationEquipmentAttachmentDTO => ({
   id: fakeId(),
   url: fakeUrl(),
   name: fakeWord(),

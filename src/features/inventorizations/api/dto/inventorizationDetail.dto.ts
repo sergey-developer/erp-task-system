@@ -1,6 +1,7 @@
 import { AttachmentDetailDTO } from 'features/attachments/api/dto'
+import { NomenclatureDetailDTO } from 'features/nomenclatures/api/dto'
 import { UserDetailDTO } from 'features/users/api/dto'
-import { NomenclatureModel, WarehouseListItemModel } from 'features/warehouse/models'
+import { WarehouseDTO } from 'features/warehouses/api/dto'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -13,10 +14,10 @@ export type InventorizationDetailDTO = {
   status: InventorizationStatusEnum
   deadlineAt: string
   createdAt: string
-  warehouses: Pick<WarehouseListItemModel, 'id' | 'title'>[]
+  warehouses: Pick<WarehouseDTO, 'id' | 'title'>[]
   executor: Pick<UserDetailDTO, 'id' | 'fullName'>
   createdBy: Pick<UserDetailDTO, 'id' | 'fullName'>
-  nomenclatures: Array<Pick<NomenclatureModel, 'id' | 'title' | 'group'>>
+  nomenclatures: Array<Pick<NomenclatureDetailDTO, 'id' | 'title' | 'group'>>
   completedAt: MaybeNull<string>
   description: MaybeNull<string>
   attachments: MaybeNull<Pick<AttachmentDetailDTO, 'id' | 'name' | 'size' | 'url'>[]>

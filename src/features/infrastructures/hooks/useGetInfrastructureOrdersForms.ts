@@ -1,9 +1,9 @@
+import { getInfrastructureOrdersFormsErrorMessage } from 'features/infrastructures/api/constants'
+import { useGetInfrastructureOrdersFormsQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
 import {
   GetInfrastructureOrdersFormsRequest,
   GetInfrastructureOrdersFormsResponse,
-} from 'features/infrastructures/api/dto'
-import { useGetInfrastructureOrdersFormsQuery } from 'features/infrastructures/api/endpoints/infrastructures.endpoints'
-import { getInfrastructureOrdersFormsErrorMessage } from 'features/infrastructures/constants'
+} from 'features/infrastructures/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

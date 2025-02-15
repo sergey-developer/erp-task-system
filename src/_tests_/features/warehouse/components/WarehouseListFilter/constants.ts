@@ -1,6 +1,6 @@
-import { WarehouseListFilterProps } from 'features/warehouse/components/WarehouseListFilter/types'
+import { WarehousesFilterProps } from 'features/warehouses/components/WarehousesFilter/types'
 
-export const props: Readonly<WarehouseListFilterProps> = {
+export const props: Readonly<WarehousesFilterProps> = {
   visible: true,
   formValues: {},
   onApply: jest.fn(),
@@ -8,7 +8,7 @@ export const props: Readonly<WarehouseListFilterProps> = {
 }
 
 export enum TestIdsEnum {
-  WarehouseListFilter = 'warehouse-list-filter',
+  WarehousesFilter = 'warehouse-list-filter',
   TitleFilter = 'title-filter',
   LegalEntityFilter = 'legal-entity-filter',
   LegalEntitySelect = 'legal-entity-select',

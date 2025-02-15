@@ -1,5 +1,5 @@
 import { TechnicalExaminationsApiPathsEnum } from 'features/technicalExaminations/api/constants'
-import { makeGetTechnicalExaminationEndpoint } from 'features/technicalExaminations/api/helpers'
+import { makeGetTechnicalExaminationApiPath } from 'features/technicalExaminations/api/helpers'
 import { GetTechnicalExaminationPdfTransformedResponse } from 'features/technicalExaminations/api/types'
 
 import { baseApi } from 'shared/api/baseApi'
@@ -31,7 +31,7 @@ const technicalExaminationsEndpoints = baseApi.injectEndpoints({
       GetTechnicalExaminationRequest
     >({
       query: ({ technicalExaminationId }) => ({
-        url: makeGetTechnicalExaminationEndpoint({ technicalExaminationId }),
+        url: makeGetTechnicalExaminationApiPath({ technicalExaminationId }),
         method: HttpMethodEnum.Get,
       }),
     }),
@@ -40,7 +40,7 @@ const technicalExaminationsEndpoints = baseApi.injectEndpoints({
       GetTechnicalExaminationRequest
     >({
       query: ({ technicalExaminationId }) => ({
-        url: makeGetTechnicalExaminationEndpoint({ technicalExaminationId }),
+        url: makeGetTechnicalExaminationApiPath({ technicalExaminationId }),
         method: HttpMethodEnum.Get,
         headers: { Accept: MimetypeEnum.Pdf },
       }),

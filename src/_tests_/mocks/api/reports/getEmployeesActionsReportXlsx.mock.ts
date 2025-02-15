@@ -15,7 +15,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEmployeesActionsReportXlsxMockFn = (employeeId: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, makeGetEmployeesActionsReportEndpoint(employeeId))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetEmployeesActionsReportApiPath(employeeId))
 
 export const mockGetEmployeesActionsReportXlsxSuccess = (
   employeeId: IdType,

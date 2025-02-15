@@ -12,10 +12,10 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import { MaybeUndefined } from 'shared/types/utils'
 
 import {
-  makeGetEquipmentAttachmentsEndpoint,
-  makeGetEquipmentEndpoint,
-  makeGetEquipmentRelocationHistoryEndpoint,
-  makeUpdateEquipmentEndpoint,
+  makeGetEquipmentApiPath,
+  makeGetEquipmentAttachmentsApiPath,
+  makeGetEquipmentRelocationHistoryApiPath,
+  makeUpdateEquipmentApiPath,
 } from '../helpers'
 import {
   CreateEquipmentRequest,
@@ -95,7 +95,7 @@ const equipmentsEndpoints = baseApi
         GetEquipmentAttachmentsRequest
       >({
         query: ({ equipmentId, ...params }) => ({
-          url: makeGetEquipmentAttachmentsEndpoint(equipmentId),
+          url: makeGetEquipmentAttachmentsApiPath(equipmentId),
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -126,7 +126,7 @@ const equipmentsEndpoints = baseApi
         GetEquipmentRelocationHistoryRequest
       >({
         query: ({ equipmentId, ...params }) => ({
-          url: makeGetEquipmentRelocationHistoryEndpoint(equipmentId),
+          url: makeGetEquipmentRelocationHistoryApiPath(equipmentId),
           method: HttpMethodEnum.Get,
           params,
         }),
@@ -134,7 +134,7 @@ const equipmentsEndpoints = baseApi
       getEquipment: build.query<GetEquipmentResponse, GetEquipmentRequest>({
         providesTags: (result, error) => (error ? [] : [EquipmentsEndpointsTagsEnum.Equipment]),
         query: ({ equipmentId }) => ({
-          url: makeGetEquipmentEndpoint(equipmentId),
+          url: makeGetEquipmentApiPath(equipmentId),
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -179,7 +179,7 @@ const equipmentsEndpoints = baseApi
             ? []
             : [EquipmentsEndpointsTagsEnum.Equipments, EquipmentsEndpointsTagsEnum.Equipment],
         query: ({ equipmentId, ...payload }) => ({
-          url: makeUpdateEquipmentEndpoint(equipmentId),
+          url: makeUpdateEquipmentApiPath(equipmentId),
           method: HttpMethodEnum.Put,
           data: payload,
         }),

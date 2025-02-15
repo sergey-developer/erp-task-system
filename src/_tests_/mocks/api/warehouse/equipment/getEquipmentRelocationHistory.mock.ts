@@ -1,5 +1,5 @@
-import { makeGetEquipmentRelocationHistoryEndpoint } from 'features/equipments/helpers'
-import { GetEquipmentRelocationHistoryResponse } from 'features/warehouse/models'
+import { makeGetEquipmentRelocationHistoryApiPath } from 'features/equipments/api/helpers'
+import { GetEquipmentRelocationHistoryResponse } from 'features/equipments/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -15,7 +15,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getEquipmentRelocationHistoryMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, makeGetEquipmentRelocationHistoryEndpoint(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetEquipmentRelocationHistoryApiPath(id))
 
 export const mockGetEquipmentRelocationHistorySuccess = (
   id: IdType,

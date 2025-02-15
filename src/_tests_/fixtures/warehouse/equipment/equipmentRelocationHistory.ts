@@ -2,7 +2,7 @@ import {
   EquipmentRelocationHistoryDTO,
   EquipmentRelocationHistoryItemDTO,
 } from 'features/equipments/api/dto'
-import { RelocationTaskStatusEnum } from 'features/relocationTasks/constants'
+import { RelocationTaskStatusEnum } from 'features/relocationTasks/api/constants'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 

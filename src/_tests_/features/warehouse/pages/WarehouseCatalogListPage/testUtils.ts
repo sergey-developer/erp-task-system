@@ -5,7 +5,7 @@ import { linkTestUtils } from '_tests_/utils'
 
 import { TestIdsEnum } from './constants'
 
-const getContainer = () => screen.getByTestId(TestIdsEnum.WarehouseCatalogListPage)
+const getContainer = () => screen.getByTestId(TestIdsEnum.WarehousesCatalogPage)
 const getCatalogContainer = () =>
   within(getContainer()).getByTestId(TestIdsEnum.WarehouseCatalogList)
 

@@ -19,6 +19,11 @@ import {
 } from 'features/equipments/hooks'
 import { defaultGetNomenclaturesRequestParams } from 'features/nomenclatures/api/constants'
 import { useGetNomenclature, useGetNomenclatures } from 'features/nomenclatures/hooks'
+import RelocationEquipmentEditableTable from 'features/relocationEquipments/components/RelocationEquipmentEditableTable'
+import {
+  ActiveEquipmentRow,
+  RelocationEquipmentRow,
+} from 'features/relocationEquipments/components/RelocationEquipmentEditableTable/types'
 import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
@@ -35,19 +40,13 @@ import { RelocationTaskTypeEnum } from 'features/relocationTasks/constants'
 import { useCreateRelocationTask } from 'features/relocationTasks/hooks'
 import { UserGroupCategoryEnum, UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/users/hooks'
-import RelocationEquipmentEditableTable from 'features/warehouse/components/RelocationEquipmentEditableTable'
-import {
-  ActiveEquipmentRow,
-  RelocationEquipmentRow,
-} from 'features/warehouse/components/RelocationEquipmentEditableTable/types'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
-import { useGetWarehouse } from 'features/warehouse/hooks/warehouse'
+import { WarehouseTypeEnum } from 'features/warehouses/api/constants'
 import {
   CreateEquipmentsBadRequestErrorResponse,
   EquipmentCategoryDTO,
-} from 'features/warehouse/models'
-import { RelocationTaskFormFields } from 'features/warehouse/types'
+} from 'features/warehouses/api/dto'
+import { useGetWarehouse } from 'features/warehouses/hooks'
+import { RelocationTaskFormFields } from 'features/warehouses/types'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 import stubFalse from 'lodash/stubFalse'
@@ -869,7 +868,7 @@ const CreateRelocationTaskPage: FC = () => {
             <Row justify='end' gutter={8}>
               <Col>
                 <Button>
-                  <Link to={WarehouseRouteEnum.RelocationTasks}>Отменить</Link>
+                  <Link to={WarehousesRoutesEnum.RelocationTasks}>Отменить</Link>
                 </Button>
               </Col>
 

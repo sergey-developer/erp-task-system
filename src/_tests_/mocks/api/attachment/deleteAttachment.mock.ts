@@ -16,7 +16,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const deleteAttachmentMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Delete, makeDeleteAttachmentEndpoint(id))
+  getRequestMockFn(HttpMethodEnum.Delete, makeDeleteAttachmentApiPath(id))
 
 export const mockDeleteAttachmentSuccess = (
   id: IdType,

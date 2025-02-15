@@ -5,7 +5,7 @@ import ProtectedRoute from 'features/auth/components/ProtectedRoute'
 import LoginPage from 'features/auth/pages/LoginPage'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
-import TasksPage from 'features/task/pages/TasksPage'
+import TasksPage from 'features/tasks/pages/TasksPage'
 import React from 'react'
 
 import { CommonRoutesEnum } from 'configs/routes'

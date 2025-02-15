@@ -1,4 +1,4 @@
-import { RelocationTaskAttachmentDetailDTO } from 'features/warehouse/models'
+import { RelocationTaskAttachmentDetailDTO } from 'features/relocationTasks/api/dto'
 
 import { fakeDateString, fakeId, fakeInteger, fakeName, fakeUrl, fakeWord } from '_tests_/utils'
 

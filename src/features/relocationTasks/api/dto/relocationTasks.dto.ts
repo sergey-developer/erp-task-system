@@ -1,4 +1,4 @@
-import { TaskAttachmentModel } from 'features/task/models'
+import { TaskAttachmentDTO } from 'features/tasks/api/dto'
 import { UserDetailDTO } from 'features/users/api/dto'
 
 import { IdType } from 'shared/types/common'
@@ -25,7 +25,7 @@ export type RelocationTaskDTO = {
   controller: MaybeNull<Pick<UserDetailDTO, 'id' | 'fullName'>>
   createdBy: MaybeNull<Pick<UserDetailDTO, 'id' | 'fullName'>>
   completedBy: MaybeNull<Pick<UserDetailDTO, 'id' | 'fullName' | 'phone'>>
-  documents: MaybeNull<Pick<TaskAttachmentModel, 'id' | 'name' | 'url' | 'size'>[]>
+  documents: MaybeNull<Pick<TaskAttachmentDTO, 'id' | 'name' | 'url' | 'size'>[]>
 }
 
 export type RelocationTasksDTO = RelocationTaskDTO[]

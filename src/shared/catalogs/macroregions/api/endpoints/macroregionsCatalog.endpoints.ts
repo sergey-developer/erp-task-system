@@ -3,7 +3,7 @@ import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetMacroregionsCatalogRequest,
   GetMacroregionsCatalogResponse,
-} from 'shared/catalogs/api/endpoints/macroregions/schemas'
+} from 'shared/catalogs/macroregions/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 import { MaybeUndefined } from 'shared/types/utils'
 

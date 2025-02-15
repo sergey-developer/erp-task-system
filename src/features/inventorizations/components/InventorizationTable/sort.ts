@@ -1,8 +1,10 @@
 import { ColumnType } from 'antd/es/table'
 import { SortOrder } from 'antd/es/table/interface'
+import {
+  GetInventorizationsSortKey,
+  GetInventorizationsSortValue,
+} from 'features/inventorizations/api/schemas'
 import isEqual from 'lodash/isEqual'
-
-import { GetInventorizationsSortKey, GetInventorizationsSortValue } from 'features/warehouse/models'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 

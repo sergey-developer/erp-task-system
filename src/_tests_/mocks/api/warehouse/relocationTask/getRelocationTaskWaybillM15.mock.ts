@@ -1,5 +1,5 @@
 import { getRelocationTaskWaybillM15Url } from 'features/relocationTasks/api/helpers'
-import { GetRelocationTaskWaybillM15Response } from 'features/warehouse/models'
+import { GetRelocationTaskWaybillM15Response } from 'features/warehouses/api/dto'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

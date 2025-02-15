@@ -3,7 +3,7 @@ import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetResolutionClassificationsCatalogRequest,
   GetResolutionClassificationsCatalogResponse,
-} from 'shared/catalogs/api/endpoints/resolutionClassifications/schemas'
+} from 'shared/catalogs/resolutionClassifications/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const resolutionClassificationsCatalogEndpoints = baseApi.injectEndpoints({

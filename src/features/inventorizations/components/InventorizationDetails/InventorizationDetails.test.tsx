@@ -11,7 +11,7 @@ import {
 } from 'features/inventorizations/constants'
 import ExecuteInventorizationPage from 'features/inventorizations/pages/ExecuteInventorizationPage'
 import { UserPermissionsEnum } from 'features/users/api/constants'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import * as reactRouterDom from 'react-router-dom'
 
 import { formatDate } from 'shared/utils/date'
@@ -264,15 +264,15 @@ describe('Карточка инвентаризации', () => {
       const { user } = renderWithRouter(
         [
           {
-            path: WarehouseRouteEnum.Inventorizations,
+            path: WarehousesRoutesEnum.Inventorizations,
             element: <InventorizationDetails {...props} />,
           },
           {
-            path: WarehouseRouteEnum.ExecuteInventorization,
+            path: WarehousesRoutesEnum.ExecuteInventorization,
             element: <ExecuteInventorizationPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.Inventorizations], initialIndex: 0 },
+        { initialEntries: [WarehousesRoutesEnum.Inventorizations], initialIndex: 0 },
         {
           store: getStoreWithAuth(inventorization.executor, undefined, undefined, {
             queries: {

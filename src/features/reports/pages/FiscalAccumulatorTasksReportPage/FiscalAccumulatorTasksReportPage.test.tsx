@@ -5,7 +5,7 @@ import { testUtils as fiscalAccumulatorTaskTableTestUtils } from 'features/repor
 import {
   taskLocalStorageService,
   TasksFiltersStorageType,
-} from 'features/task/services/taskLocalStorageService/taskLocalStorage.service'
+} from 'features/tasks/services/taskLocalStorageService/taskLocalStorage.service'
 
 import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
 import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/components/TasksFiltersStorage/testUtils'

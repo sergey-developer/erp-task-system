@@ -1,5 +1,5 @@
-import { CreateTaskAttachmentResponse } from 'features/task/models'
-import { createTaskAttachmentUrl } from 'features/task/utils/task'
+import { createTaskAttachmentUrl } from 'features/tasks/helpers'
+import { CreateTaskAttachmentResponse } from 'features/tasks/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

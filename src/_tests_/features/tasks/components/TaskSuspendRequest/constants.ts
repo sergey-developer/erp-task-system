@@ -1,4 +1,4 @@
-import { TaskSuspendRequestProps } from 'features/task/components/TaskSuspendRequest/index'
+import { TaskSuspendRequestProps } from 'features/tasks/components/TaskSuspendRequest/index'
 
 import userFixtures from '_tests_/fixtures/user/index'
 import { fakeDateString, fakeWord } from '_tests_/utils'

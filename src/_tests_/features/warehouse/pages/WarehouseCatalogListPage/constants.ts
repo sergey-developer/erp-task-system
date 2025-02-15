@@ -1,4 +1,4 @@
 export enum TestIdsEnum {
-  WarehouseCatalogListPage = 'warehouse-catalog-list-page',
-  WarehouseCatalogList = 'warehouse-catalog-list',
+  WarehousesCatalogPage = 'warehouses-catalog-page',
+  WarehouseCatalogList = 'warehouses-catalog',
 }

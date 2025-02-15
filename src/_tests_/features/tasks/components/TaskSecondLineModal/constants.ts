@@ -1,5 +1,5 @@
-import { TaskSecondLineModalProps } from 'features/task/components/TaskSecondLineModal/types'
-import { TaskTypeEnum } from 'features/task/constants/task/index'
+import { TaskSecondLineModalProps } from 'features/tasks/components/TaskSecondLineModal/types'
+import { TaskTypeEnum } from 'features/tasks/constants/task/index'
 
 import { fakeId, fakeIdStr } from '_tests_/utils'
 

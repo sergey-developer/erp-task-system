@@ -1,4 +1,4 @@
-import { ResolutionClassificationsCatalogDTO } from 'shared/catalogs/api/dto/resolutionClassifications'
+import { ResolutionClassificationsCatalogDTO } from 'shared/catalogs/resolutionClassifications/api/dto'
 import { IdType } from 'shared/types/common'
 
 export type GetResolutionClassificationsCatalogRequest = {

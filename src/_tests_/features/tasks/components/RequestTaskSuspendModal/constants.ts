@@ -1,4 +1,4 @@
-import { RequestTaskSuspendModalProps } from 'features/task/components/RequestTaskSuspendModal/types'
+import { RequestTaskSuspendModalProps } from 'features/tasks/components/RequestTaskSuspendModal/types'
 
 import systemFixtures from '_tests_/fixtures/system/index'
 import { fakeIdStr } from '_tests_/utils'

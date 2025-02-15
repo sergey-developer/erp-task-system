@@ -11,7 +11,7 @@ const monitoringEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getTaskMonitoring: build.query<GetTaskMonitoringResponse, GetTaskMonitoringRequest>({
       query: (recordId) => ({
-        url: makeTaskMonitoringEndpoint(recordId),
+        url: makeTaskMonitoringApiPath(recordId),
         method: HttpMethodEnum.Get,
       }),
     }),

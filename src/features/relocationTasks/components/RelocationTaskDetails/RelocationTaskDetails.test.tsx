@@ -2,7 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import { testUtils as attachmentImagesTestUtils } from 'features/attachments/components/AttachmentImages/AttachmentImages.test'
 import { testUtils as taskAttachmentListTestUtils } from 'features/attachments/components/Attachments/Attachments.test'
 import { testUtils as attachmentListModalTestUtils } from 'features/attachments/components/AttachmentsModal/AttachmentsModal.test'
-import { getRelocateFromToTitle, getWaybillM15Filename } from 'features/relocationTasks/api/helpers'
+import { getRelocationEquipmentAttachmentsErrorMessage } from 'features/relocationEquipments/api/constants'
 import {
   cancelRelocationTaskErrorMessage,
   closeRelocationTaskErrorMessage,
@@ -10,19 +10,21 @@ import {
   getRelocationEquipmentsErrorMessage,
   getRelocationTaskErrorMessage,
   getRelocationTaskWaybillM15ErrorMessage,
-  relocationTaskStatusDict,
   RelocationTaskStatusEnum,
-  relocationTaskTypeDict,
   returnRelocationTaskToReworkErrorMessage,
+} from 'features/relocationTasks/api/constants'
+import {
+  relocationTaskStatusDict,
+  relocationTaskTypeDict,
 } from 'features/relocationTasks/constants'
+import { getRelocateFromToTitle, getWaybillM15Filename } from 'features/relocationTasks/helpers'
 import EditRelocationTaskDraftPage from 'features/relocationTasks/pages/EditRelocationTaskDraftPage'
-import { TasksRoutesEnum } from 'features/task/constants/routes'
-import TasksPage from 'features/task/pages/TasksPage'
-import { getTasksPageLink } from 'features/task/utils/task'
+import { makeGetTasksPageLink } from 'features/tasks/helpers'
+import TasksPage from 'features/tasks/pages/TasksPage'
+import { TasksRoutesEnum } from 'features/tasks/routes/routes'
 import { UserPermissionsEnum } from 'features/users/api/constants'
-import { getRelocationEquipmentAttachmentListErrorMessage } from 'features/warehouse/constants/relocationEquipment'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
-import CreateDocumentsPackagePage from 'features/warehouse/pages/CreateDocumentsPackagePage'
+import CreateDocumentsPackagePage from 'features/warehouses/pages/CreateDocumentsPackagePage'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import { split } from 'lodash'
 
 import { CommonRoutesEnum } from 'configs/routes'
@@ -465,7 +467,7 @@ describe('Информация о заявке о перемещении', () =>
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute(
           'href',
-          getTasksPageLink({ viewTask: relocationTask.task!.id }),
+          makeGetTasksPageLink({ viewTask: relocationTask.task!.id }),
         )
       })
 
@@ -483,7 +485,7 @@ describe('Информация о заявке о перемещении', () =>
         const { user } = renderWithRouter(
           [
             {
-              path: WarehouseRouteEnum.RelocationTasks,
+              path: WarehousesRoutesEnum.RelocationTasks,
               element: (
                 <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />
               ),
@@ -493,7 +495,7 @@ describe('Информация о заявке о перемещении', () =>
               element: <TasksPage />,
             },
           ],
-          { initialEntries: [WarehouseRouteEnum.RelocationTasks], initialIndex: 0 },
+          { initialEntries: [WarehousesRoutesEnum.RelocationTasks], initialIndex: 0 },
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -914,7 +916,7 @@ describe('Информация о заявке о перемещении', () =>
           await attachmentListModalTestUtils.findContainer()
 
           const notification = await notificationTestUtils.findNotification(
-            getRelocationEquipmentAttachmentListErrorMessage,
+            getRelocationEquipmentAttachmentsErrorMessage,
           )
           expect(notification).toBeInTheDocument()
         })
@@ -2845,15 +2847,15 @@ describe('Информация о заявке о перемещении', () =>
       const { user } = renderWithRouter(
         [
           {
-            path: WarehouseRouteEnum.RelocationTasks,
+            path: WarehousesRoutesEnum.RelocationTasks,
             element: <RelocationTaskDetails {...props} relocationTaskId={props.relocationTaskId} />,
           },
           {
-            path: WarehouseRouteEnum.CreateDocumentsPackage,
+            path: WarehousesRoutesEnum.CreateDocumentsPackage,
             element: <CreateDocumentsPackagePage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.RelocationTasks], initialIndex: 0 },
+        { initialEntries: [WarehousesRoutesEnum.RelocationTasks], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -3049,7 +3051,7 @@ describe('Информация о заявке о перемещении', () =>
             element: <RelocationTaskDetails {...props} inventorization={inventorization} />,
           },
           {
-            path: WarehouseRouteEnum.EditRelocationTaskDraft,
+            path: WarehousesRoutesEnum.EditRelocationTaskDraft,
             element: <EditRelocationTaskDraftPage />,
           },
         ],

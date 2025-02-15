@@ -1,5 +1,5 @@
 import { RelocationTasksApiPathsEnum } from 'features/relocationTasks/constants'
-import { GetRelocationTasksResponse } from 'features/warehouse/models'
+import { GetRelocationTasksResponse } from 'features/warehouses/api/dto'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

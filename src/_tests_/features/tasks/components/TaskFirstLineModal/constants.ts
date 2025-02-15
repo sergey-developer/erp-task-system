@@ -1,4 +1,4 @@
-import { TaskFirstLineModalProps } from 'features/task/components/TaskFirstLineModal/types'
+import { TaskFirstLineModalProps } from 'features/tasks/components/TaskFirstLineModal/types'
 
 import { fakeIdStr } from '_tests_/utils'
 

@@ -4,11 +4,9 @@ import { SystemApiPathsEnum } from 'shared/system/api/constants/endpoints'
 import {
   GetSystemInfoRequest,
   GetSystemInfoResponse,
-} from 'shared/system/api/dto/systemInfo'
-import {
   GetSystemSettingsRequest,
   GetSystemSettingsResponse,
-} from 'shared/system/api/dto/systemSettings'
+} from 'shared/system/api/schemas'
 
 const systemEndpoints = baseApi.injectEndpoints({
   endpoints: (build) => ({

@@ -1,6 +1,6 @@
 import { makeGetInventorizationEquipmentUrl } from 'features/inventorizations/api/helpers'
-import { GetInventorizationEquipmentResponse } from 'features/warehouse/models'
-import { RequestWithEquipment } from 'features/warehouse/types'
+import { GetInventorizationEquipmentResponse } from 'features/warehouses/api/dto'
+import { RequestWithEquipment } from 'features/warehouses/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

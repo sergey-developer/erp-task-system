@@ -1,5 +1,5 @@
 import { UserDetailDTO } from 'features/users/api/dto'
-import { WarehouseModel } from 'features/warehouse/models'
+import { WarehouseDetailDTO } from 'features/warehouses/api/dto'
 
 import { IdType } from 'shared/types/common'
 import { MaybeNull } from 'shared/types/utils'
@@ -12,7 +12,7 @@ export type InventorizationDTO = {
   status: InventorizationStatusEnum
   deadlineAt: string
   createdAt: string
-  warehouses: Pick<WarehouseModel, 'id' | 'title'>[]
+  warehouses: Pick<WarehouseDetailDTO, 'id' | 'title'>[]
   executor: Pick<UserDetailDTO, 'id' | 'fullName'>
   createdBy: Pick<UserDetailDTO, 'id' | 'fullName'>
   completedAt: MaybeNull<string>

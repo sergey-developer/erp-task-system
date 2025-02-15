@@ -1,9 +1,5 @@
 import { FormInstance } from 'antd'
-import {
-  MeasurementUnitsCatalogDTO,
-  NomenclaturesGroupsDTO,
-  NomenclatureModel,
-} from 'features/warehouse/models'
+import { MeasurementUnitsCatalogDTO, NomenclatureDetailDTO } from 'features/warehouses/api/dto'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -26,7 +22,7 @@ export type NomenclatureFormModalProps = Required<Pick<BaseModalProps, 'open' | 
   isLoading: boolean
   submitBtnDisabled?: boolean
 
-  nomenclature?: NomenclatureModel
+  nomenclature?: NomenclatureDetailDTO
   nomenclatureIsLoading?: boolean
 
   groups: NomenclatureGroupsModel

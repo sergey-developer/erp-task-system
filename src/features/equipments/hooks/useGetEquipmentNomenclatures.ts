@@ -1,7 +1,7 @@
 import { getEquipmentNomenclaturesErrorMessage } from 'features/equipments/api/constants'
 import { useGetEquipmentNomenclaturesQuery } from 'features/equipments/api/endpoints/equipments.endpoints'
-import { GetEquipmentNomenclaturesRequest } from 'features/warehouse/models'
-import { GetEquipmentNomenclaturesTransformedResponse } from 'features/warehouse/types'
+import { GetEquipmentNomenclaturesRequest } from 'features/equipments/api/schemas'
+import { GetEquipmentNomenclaturesTransformedResponse } from 'features/equipments/api/types'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

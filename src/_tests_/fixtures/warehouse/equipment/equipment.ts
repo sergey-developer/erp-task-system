@@ -1,5 +1,5 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import { EquipmentDetailDTO } from 'features/warehouse/models'
+import { EquipmentDetailDTO } from 'features/equipments/api/dto'
 import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 

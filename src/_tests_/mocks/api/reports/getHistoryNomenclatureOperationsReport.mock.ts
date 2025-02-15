@@ -14,7 +14,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getHistoryNomenclatureOperationsReportMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, makeHistoryNomenclatureOperationsReportEndpoint(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeHistoryNomenclatureOperationsReportApiPath(id))
 
 export const mockGetHistoryNomenclatureOperationsReportSuccess = (
   id: IdType,

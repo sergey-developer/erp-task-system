@@ -1,5 +1,5 @@
 import { EquipmentsApiPathsEnum } from 'features/equipments/api/constants'
-import { GetEquipmentsCatalogResponse } from 'features/warehouse/models'
+import { GetEquipmentsCatalogResponse } from 'features/equipments/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

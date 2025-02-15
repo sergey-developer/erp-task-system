@@ -3,7 +3,7 @@ import { Button, Col, Input, Row, Space } from 'antd'
 import { SearchProps } from 'antd/es/input'
 import { EquipmentsFilterFormFields } from 'features/equipments/components/EquipmentFilter/types'
 import { useGetEquipmentCategories, useLazyGetEquipmentsXlsx } from 'features/equipments/hooks'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import omit from 'lodash/omit'
 import React, { FC, useMemo, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -31,9 +31,9 @@ const getEquipmentsXlsxParamsByLocation = (
   params: GetEquipmentsXlsxRequest,
 ): GetEquipmentsXlsxRequest => {
   switch (location.pathname) {
-    case WarehouseRouteEnum.Equipments:
+    case WarehousesRoutesEnum.Equipments:
       return params
-    case WarehouseRouteEnum.EquipmentNomenclatures:
+    case WarehousesRoutesEnum.EquipmentNomenclatures:
       return omit(params, 'nomenclature', 'ordering')
     default:
       return params
@@ -87,13 +87,13 @@ const EquipmentPageLayout: FC = () => {
     setFilterValues(values)
     toggleFilterOpened()
     setEquipmentsXlsxParams(equipmentsFilterToRequestParams(values))
-    navigate(WarehouseRouteEnum.EquipmentNomenclatures)
+    navigate(WarehousesRoutesEnum.EquipmentNomenclatures)
   }
 
   const onSearch: SearchProps['onSearch'] = (value) => {
     setSearchValue(value)
     setEquipmentsXlsxParams({ search: value })
-    navigate(WarehouseRouteEnum.EquipmentNomenclatures)
+    navigate(WarehousesRoutesEnum.EquipmentNomenclatures)
   }
 
   const onExportExcel = async () => {

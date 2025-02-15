@@ -1,10 +1,4 @@
-import { RelocationEquipmentApiTagEnum } from 'features/warehouse/constants/relocationEquipment'
-import {
-  CreateRelocationTaskCompletionDocumentsRequest,
-  CreateRelocationTaskCompletionDocumentsResponse,
-  GetRelocationTaskCompletionDocumentsRequest,
-  GetRelocationTaskCompletionDocumentsResponse,
-} from 'features/warehouse/models'
+import { RelocationEquipmentsEndpointsTagsEnum } from 'features/relocationEquipments/api/constants'
 
 import { getPaginatedList } from 'lib/antd/utils'
 
@@ -22,8 +16,8 @@ import {
   makeCreateRelocationTaskAttachmentApiPath,
   makeCreateRelocationTaskCompletionDocumentsApiPath,
   makeExecuteRelocationTaskApiPath,
-  makeGetRelocationEquipmentBalanceListApiPath,
-  makeGetRelocationEquipmentListApiPath,
+  makeGetRelocationEquipmentBalancesApiPath,
+  makeGetRelocationEquipmentsApiPath,
   makeGetRelocationTaskApiPath,
   makeGetRelocationTaskAttachmentsApiPath,
   makeGetRelocationTaskCompletionDocumentsApiPath,
@@ -40,18 +34,22 @@ import {
   CloseRelocationTaskResponse,
   CreateRelocationTaskAttachmentRequest,
   CreateRelocationTaskAttachmentResponse,
+  CreateRelocationTaskCompletionDocumentsRequest,
+  CreateRelocationTaskCompletionDocumentsResponse,
   CreateRelocationTaskITSMRequest,
   CreateRelocationTaskITSMResponse,
   CreateRelocationTaskRequest,
   CreateRelocationTaskResponse,
   ExecuteRelocationTaskRequest,
   ExecuteRelocationTaskResponse,
-  GetRelocationEquipmentBalanceListRequest,
-  GetRelocationEquipmentBalanceListResponse,
-  GetRelocationEquipmentListRequest,
-  GetRelocationEquipmentListResponse,
+  GetRelocationEquipmentBalancesRequest,
+  GetRelocationEquipmentBalancesResponse,
+  GetRelocationEquipmentsRequest,
+  GetRelocationEquipmentsResponse,
   GetRelocationTaskAttachmentsRequest,
   GetRelocationTaskAttachmentsResponse,
+  GetRelocationTaskCompletionDocumentsRequest,
+  GetRelocationTaskCompletionDocumentsResponse,
   GetRelocationTaskRequest,
   GetRelocationTaskResponse,
   GetRelocationTasksRequest,
@@ -108,7 +106,7 @@ const relocationTasksEndpoints = baseApi
             : [
                 RelocationTasksEndpointsTagsEnum.RelocationEquipmentList,
                 RelocationTasksEndpointsTagsEnum.RelocationTask,
-                RelocationEquipmentApiTagEnum.RelocationEquipmentAttachments,
+                RelocationEquipmentsEndpointsTagsEnum.RelocationEquipmentAttachments,
               ],
         query: ({ relocationTaskId, ...payload }) => ({
           url: makeUpdateRelocationTaskApiPath(relocationTaskId),
@@ -258,24 +256,24 @@ const relocationTasksEndpoints = baseApi
           getPaginatedList(response, arg),
       }),
 
-      getRelocationEquipmentList: build.query<
-        GetRelocationEquipmentListResponse,
-        GetRelocationEquipmentListRequest
+      getRelocationEquipments: build.query<
+        GetRelocationEquipmentsResponse,
+        GetRelocationEquipmentsRequest
       >({
         providesTags: (result, error) =>
           error ? [] : [RelocationTasksEndpointsTagsEnum.RelocationEquipmentList],
         query: ({ relocationTaskId }) => ({
-          url: makeGetRelocationEquipmentListApiPath({ relocationTaskId }),
+          url: makeGetRelocationEquipmentsApiPath({ relocationTaskId }),
           method: HttpMethodEnum.Get,
         }),
       }),
 
-      getRelocationEquipmentBalanceList: build.query<
-        GetRelocationEquipmentBalanceListResponse,
-        GetRelocationEquipmentBalanceListRequest
+      getRelocationEquipmentBalances: build.query<
+        GetRelocationEquipmentBalancesResponse,
+        GetRelocationEquipmentBalancesRequest
       >({
         query: ({ relocationTaskId }) => ({
-          url: makeGetRelocationEquipmentBalanceListApiPath(relocationTaskId),
+          url: makeGetRelocationEquipmentBalancesApiPath(relocationTaskId),
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -358,8 +356,8 @@ export const {
 
   useGetRelocationTasksQuery,
 
-  useGetRelocationEquipmentListQuery,
-  useGetRelocationEquipmentBalanceListQuery,
+  useGetRelocationEquipmentsQuery,
+  useGetRelocationEquipmentBalancesQuery,
 
   useMoveRelocationTaskDraftToWorkMutation,
 } = relocationTasksEndpoints

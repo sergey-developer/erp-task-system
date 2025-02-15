@@ -7,7 +7,7 @@ import { Moment } from 'moment-timezone'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
+import { LocationsCatalogDTO } from 'shared/catalogs/locations/api/dto'
 import { IdType } from 'shared/types/common'
 
 export type RelocationTasksFilterFormFields = Partial<{

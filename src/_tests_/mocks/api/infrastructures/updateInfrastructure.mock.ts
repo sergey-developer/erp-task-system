@@ -8,7 +8,7 @@ import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const updateInfrastructureMockFn = ({ infrastructureId }: RequestWithInfrastructure) =>
-  getRequestMockFn(HttpMethodEnum.Patch, makeUpdateInfrastructureEndpoint({ infrastructureId }))
+  getRequestMockFn(HttpMethodEnum.Patch, makeUpdateInfrastructureApiPath({ infrastructureId }))
 
 export const mockUpdateInfrastructureSuccess = (
   { infrastructureId }: RequestWithInfrastructure,

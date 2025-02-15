@@ -1,7 +1,7 @@
 import { within } from '@testing-library/react'
 import ExecuteInventorizationPage from 'features/inventorizations/pages/ExecuteInventorizationPage'
 import { makeCreateRelocationTaskDraftPageLocationState } from 'features/relocationTasks/api/helpers'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import * as reactRouterDom from 'react-router-dom'
 
 import { CommonRoutesEnum } from 'configs/routes'
@@ -233,7 +233,7 @@ describe('Страница создания черновика заявки на
           element: <EditRelocationTaskDraftPage />,
         },
         {
-          path: WarehouseRouteEnum.ExecuteInventorization,
+          path: WarehousesRoutesEnum.ExecuteInventorization,
           element: <ExecuteInventorizationPage />,
         },
       ],
@@ -301,7 +301,7 @@ describe('Страница создания черновика заявки на
           element: <EditRelocationTaskDraftPage />,
         },
         {
-          path: WarehouseRouteEnum.ExecuteInventorization,
+          path: WarehousesRoutesEnum.ExecuteInventorization,
           element: <ExecuteInventorizationPage />,
         },
       ],

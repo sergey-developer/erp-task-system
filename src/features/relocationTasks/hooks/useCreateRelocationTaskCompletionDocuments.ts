@@ -2,7 +2,7 @@ import { useCreateRelocationTaskCompletionDocumentsMutation } from 'features/rel
 import {
   CreateRelocationTaskCompletionDocumentsRequest,
   CreateRelocationTaskCompletionDocumentsResponse,
-} from 'features/warehouse/models'
+} from 'features/relocationTasks/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'

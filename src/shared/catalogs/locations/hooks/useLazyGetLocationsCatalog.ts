@@ -8,14 +8,12 @@ import {
   isErrorResponse,
   isForbiddenError,
 } from 'shared/api/baseApi'
-import { getLocationsCatalogErrorMessage } from 'shared/catalogs/api/constants/messages'
-import {
-  GetLocationsCatalogRequest,
-  GetLocationsCatalogResponse,
-} from 'shared/catalogs/api/dto/locations'
-import { useLazyGetLocationsCatalogQuery } from 'shared/catalogs/api/endpoints/locationsCatalog.endpoints'
 import { MaybeUndefined } from 'shared/types/utils'
 import { showErrorNotification } from 'shared/utils/notifications'
+
+import { getLocationsCatalogErrorMessage } from '../api/constants'
+import { useLazyGetLocationsCatalogQuery } from '../api/endpoints/locationsCatalog.endpoints'
+import { GetLocationsCatalogRequest, GetLocationsCatalogResponse } from '../api/schemas'
 
 type UseGetLocationsCatalogResult = CustomUseLazyQueryHookResult<
   MaybeUndefined<GetLocationsCatalogRequest>,

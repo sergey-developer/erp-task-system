@@ -1,4 +1,4 @@
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import { generatePath } from 'react-router-dom'
 
 import { IdType } from 'shared/types/common'
@@ -13,12 +13,12 @@ type MakeRelocationTasksPageLinkParams = Partial<
 >
 
 export const makeRelocationTasksPageLink = (params: MakeRelocationTasksPageLinkParams): string =>
-  getPathWithQs<MakeRelocationTasksPageLinkParams>(WarehouseRouteEnum.RelocationTasks, params)
+  getPathWithQs<MakeRelocationTasksPageLinkParams>(WarehousesRoutesEnum.RelocationTasks, params)
 
 export const makeEditRelocationTaskPageLink = (relocationTaskId: IdType): string =>
-  generatePath(WarehouseRouteEnum.EditRelocationTask, { id: String(relocationTaskId) })
+  generatePath(WarehousesRoutesEnum.EditRelocationTask, { id: String(relocationTaskId) })
 
 export const makeEditRelocationTaskDraftPageLink = (relocationTaskId: IdType): string =>
-  generatePath(WarehouseRouteEnum.EditRelocationTaskDraft, {
+  generatePath(WarehousesRoutesEnum.EditRelocationTaskDraft, {
     relocationTaskId: String(relocationTaskId),
   })

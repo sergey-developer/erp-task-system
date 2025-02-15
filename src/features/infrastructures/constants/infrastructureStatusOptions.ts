@@ -1,7 +1,7 @@
 import { DefaultOptionType } from 'rc-select/lib/Select'
 
+import { InfrastructureStatusEnum } from '../api/constants'
 import { infrastructureStatusDict } from './dict'
-import { InfrastructureStatusEnum } from './enums'
 
 export const infrastructureStatusOptions: DefaultOptionType[] = [
   {

@@ -8,7 +8,7 @@ import {
   inventorizationTypeDict,
 } from 'features/inventorizations/constants'
 import InventorizationsPage from 'features/inventorizations/pages/InventorizationsPage'
-import { WarehouseRouteEnum } from 'features/warehouse/constants/routes'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import * as reactRouterDom from 'react-router-dom'
 
 import { DEFAULT_FILE_NAME } from 'shared/constants/common'
@@ -162,15 +162,15 @@ describe('Страница проведения инвентаризации', (
       const { user } = renderWithRouter(
         [
           {
-            path: WarehouseRouteEnum.ExecuteInventorization,
+            path: WarehousesRoutesEnum.ExecuteInventorization,
             element: <ExecuteInventorizationPage />,
           },
           {
-            path: WarehouseRouteEnum.Inventorizations,
+            path: WarehousesRoutesEnum.Inventorizations,
             element: <InventorizationsPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ExecuteInventorization], initialIndex: 0 },
+        { initialEntries: [WarehousesRoutesEnum.ExecuteInventorization], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },
@@ -231,15 +231,15 @@ describe('Страница проведения инвентаризации', (
       const { user } = renderWithRouter(
         [
           {
-            path: WarehouseRouteEnum.ExecuteInventorization,
+            path: WarehousesRoutesEnum.ExecuteInventorization,
             element: <ExecuteInventorizationPage />,
           },
           {
-            path: WarehouseRouteEnum.Inventorizations,
+            path: WarehousesRoutesEnum.Inventorizations,
             element: <InventorizationsPage />,
           },
         ],
-        { initialEntries: [WarehouseRouteEnum.ExecuteInventorization], initialIndex: 0 },
+        { initialEntries: [WarehousesRoutesEnum.ExecuteInventorization], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: { ...getUserMeQueryMock(userFixtures.user()) },

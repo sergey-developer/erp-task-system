@@ -3,7 +3,7 @@ import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetSubTaskTemplatesCatalogRequest,
   GetSubTaskTemplatesCatalogResponse,
-} from 'shared/catalogs/api/endpoints/subTaskTemplates/schemas'
+} from 'shared/catalogs/subTaskTemplates/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const subTaskTemplatesCatalogEndpoints = baseApi.injectEndpoints({

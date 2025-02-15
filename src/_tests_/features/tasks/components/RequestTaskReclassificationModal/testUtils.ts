@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import {
   reclassificationReasonDict,
   ReclassificationReasonEnum,
-} from 'features/task/constants/taskReclassificationRequest/index'
+} from 'features/tasks/constants/taskReclassificationRequest/index'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/RequestTaskReclassificationModal/constants'
 import { buttonTestUtils, radioButtonTestUtils } from '_tests_/utils'

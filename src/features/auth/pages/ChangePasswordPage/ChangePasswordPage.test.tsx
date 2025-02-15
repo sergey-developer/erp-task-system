@@ -6,7 +6,7 @@ import {
   updatePasswordSuccessMsg,
 } from 'features/auth/api/constants'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
-import { TasksRoutesEnum } from 'features/task/constants/routes'
+import { TasksRoutesEnum } from 'features/tasks/routes/routes'
 
 import { validationMessages } from 'shared/constants/validation'
 

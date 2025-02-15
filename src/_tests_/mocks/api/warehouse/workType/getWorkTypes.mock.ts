@@ -1,5 +1,5 @@
-import { CatalogApiPathsEnum } from 'features/warehouse/constants/workType'
-import { GetWorkTypesCatalogResponse } from 'features/warehouse/models'
+import { CatalogApiPathsEnum } from 'features/warehouses/constants/workType'
+import { GetWorkTypesCatalogResponse } from 'features/warehouses/api/dto'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

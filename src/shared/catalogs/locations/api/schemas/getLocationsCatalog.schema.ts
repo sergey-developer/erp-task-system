@@ -1,6 +1,6 @@
-import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
+import { WarehouseTypeEnum } from 'features/warehouses/api/constants'
 
-import { LocationTypeEnum } from 'shared/catalogs/constants'
+import { LocationTypeEnum } from 'shared/catalogs/locations/api/constants'
 import { LocationsCatalogDTO } from 'shared/catalogs/locations/api/dto'
 import { IdType } from 'shared/types/common'
 import { ExtendSortKey } from 'shared/types/sort'

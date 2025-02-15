@@ -1,4 +1,4 @@
-import { TaskActionsPermissionsEnum } from 'features/task/constants/task'
+import { TaskActionsPermissionsEnum } from 'features/tasks/api/constants'
 
 export enum UserPermissionsEnum {
   // ControlRelocationTask = 'CONTROL_RELOCATION_TASK',

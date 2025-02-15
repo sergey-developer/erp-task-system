@@ -1,7 +1,7 @@
+import { getRelocationTasksErrorMessage } from 'features/relocationTasks/api/constants'
 import { useGetRelocationTasksQuery } from 'features/relocationTasks/api/endpoints/relocationTasks.endpoints'
-import { getRelocationTasksErrorMessage } from 'features/relocationTasks/constants'
-import { GetRelocationTasksRequest } from 'features/warehouse/models'
-import { GetRelocationTasksTransformedResponse } from 'features/warehouse/types'
+import { GetRelocationTasksRequest } from 'features/relocationTasks/api/schemas'
+import { GetRelocationTasksTransformedResponse } from 'features/relocationTasks/api/types'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

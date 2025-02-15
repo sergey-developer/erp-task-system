@@ -1,6 +1,5 @@
-import { GetMeasurementUnitsCatalogResponse } from 'features/warehouse/models'
-import { CatalogApiPathsEnum } from 'features/warehouse/services/measurementUnitApiService'
-
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants'
+import { GetMeasurementUnitsCatalogResponse } from 'shared/catalogs/measurementUnits/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'

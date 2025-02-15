@@ -1,6 +1,6 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { UserDetailDTO } from 'features/users/api/dto'
-import { NomenclatureModel, WarehouseModel } from 'features/warehouse/models'
+import { NomenclatureDetailDTO, WarehouseDetailDTO } from 'features/warehouses/api/dto'
 
 import { CurrencyCatalogItemDTO } from 'shared/catalogs/currencies/api/dto'
 import { CustomerCatalogItemDTO } from 'shared/catalogs/customers/api/dto'
@@ -16,7 +16,7 @@ import { EquipmentCategoryDTO } from './equipmentCategories.dto'
 export type EquipmentDetailDTO = {
   id: IdType
   title: string
-  nomenclature: Pick<NomenclatureModel, 'id' | 'title' | 'equipmentHasSerialNumber'>
+  nomenclature: Pick<NomenclatureDetailDTO, 'id' | 'title' | 'equipmentHasSerialNumber'>
   condition: EquipmentConditionEnum
   createdAt: string
   createdBy: Pick<UserDetailDTO, 'id' | 'fullName'>
@@ -30,7 +30,7 @@ export type EquipmentDetailDTO = {
   amount: number
 
   location: MaybeNull<Pick<LocationCatalogItemDTO, 'id' | 'title'>>
-  warehouse: MaybeNull<Pick<WarehouseModel, 'id' | 'title'>>
+  warehouse: MaybeNull<Pick<WarehouseDetailDTO, 'id' | 'title'>>
   inventoryNumber: MaybeNull<string>
   serialNumber: MaybeNull<string>
   quantity: MaybeNull<number>

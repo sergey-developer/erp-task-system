@@ -1,5 +1,5 @@
 import { TableProps } from 'antd'
-import { GetRelocationTasksSortKey, RelocationTaskDTO } from 'features/warehouse/models'
+import { GetRelocationTasksSortKey, RelocationTaskDTO } from 'features/warehouses/api/dto'
 
 import { ExtendSortKey, TableSortProps } from 'shared/types/sort'
 import { SetNonNullable } from 'shared/types/utils'

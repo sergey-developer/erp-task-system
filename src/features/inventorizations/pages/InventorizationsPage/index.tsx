@@ -18,7 +18,7 @@ import {
 import { useCreateInventorization, useGetInventorizations } from 'features/inventorizations/hooks'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useUserPermissions } from 'features/users/hooks'
-import { useGetWarehouses } from 'features/warehouse/hooks/warehouse'
+import { useGetWarehouses } from 'features/warehouses/hooks'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'

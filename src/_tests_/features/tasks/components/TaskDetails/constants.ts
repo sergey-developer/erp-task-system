@@ -1,7 +1,7 @@
-import { TaskDetailsProps } from 'features/task/components/TaskDetails/index'
-import { TaskModel } from 'features/task/models/index'
+import { TaskDetailsProps } from 'features/tasks/components/TaskDetails/index'
+import { TaskDetailDTO } from 'features/tasks/models/index'
 import { UserPermissionsEnum } from 'features/users/api/constants/index'
-import { WorkTypeActionsEnum } from 'features/warehouse/constants/workType/index'
+import { WorkTypeActionsEnum } from 'features/warehouses/constants/workType/index'
 
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures/index'
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
@@ -18,7 +18,7 @@ export const props: TaskDetailsProps = {
 }
 
 export const showChangeInfrastructureButton: {
-  task: Pick<TaskModel, 'infrastructureProject' | 'workType'>
+  task: Pick<TaskDetailDTO, 'infrastructureProject' | 'workType'>
 } = {
   task: {
     workType: warehouseFixtures.workType({

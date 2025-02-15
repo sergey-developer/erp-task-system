@@ -1,4 +1,4 @@
-import { WorkTypesCatalogItemDTO } from 'features/warehouse/models'
+import { WorkTypesCatalogItemDTO } from 'shared/catalogs/workTypes/api/dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

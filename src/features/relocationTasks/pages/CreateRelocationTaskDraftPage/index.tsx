@@ -9,17 +9,19 @@ import {
   makeExecuteInventorizationPageLink,
   MakeExecuteInventorizationPageLinkParams,
   makeExecuteInventorizationPageLocationState,
-} from 'features/inventorizations/api/helpers'
+} from 'features/inventorizations/helpers'
 import {
   useGetInventorizationEquipments,
   useLazyGetInventorizationEquipment,
 } from 'features/inventorizations/hooks'
 import { ExecuteInventorizationPageTabsEnum } from 'features/inventorizations/pages/ExecuteInventorizationPage/constants'
+import RelocationEquipmentDraftEditableTable from 'features/relocationEquipments/components/RelocationEquipmentDraftEditableTable'
 import {
-  checkRelocationTaskTypeIsEnteringBalances,
-  checkRelocationTaskTypeIsReturnWrittenOff,
-  checkRelocationTaskTypeIsWriteOff,
-} from 'features/relocationTasks/api/helpers'
+  ActiveEquipmentTableRow,
+  InventorizationEquipmentTableRow,
+  RelocationEquipmentDraftEditableTableProps,
+} from 'features/relocationEquipments/components/RelocationEquipmentDraftEditableTable/types'
+import { RelocationTaskTypeEnum } from 'features/relocationTasks/api/constants'
 import RelocationTaskForm from 'features/relocationTasks/components/RelocationTaskForm'
 import {
   LocationOption,
@@ -27,26 +29,24 @@ import {
   UserGroupOptionGroup,
 } from 'features/relocationTasks/components/RelocationTaskForm/types'
 import { makeUserGroupOptions } from 'features/relocationTasks/components/RelocationTaskForm/utils'
-import { RelocationTaskTypeEnum } from 'features/relocationTasks/constants'
+import {
+  checkRelocationTaskTypeIsEnteringBalances,
+  checkRelocationTaskTypeIsReturnWrittenOff,
+  checkRelocationTaskTypeIsWriteOff,
+} from 'features/relocationTasks/helpers'
 import { useCreateRelocationTask } from 'features/relocationTasks/hooks'
 import {
   getRelocateFromLocationsParams,
   getRelocateToLocationsParams,
 } from 'features/relocationTasks/pages/CreateRelocationTaskPage/utils'
-import { UserGroupCategoryEnum, UserPermissionsEnum } from 'features/users/api/constants'
-import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/users/hooks'
-import RelocationEquipmentDraftEditableTable from 'features/warehouse/components/RelocationEquipmentDraftEditableTable'
-import {
-  ActiveEquipmentTableRow,
-  InventorizationEquipmentTableRow,
-  RelocationEquipmentDraftEditableTableProps,
-} from 'features/warehouse/components/RelocationEquipmentDraftEditableTable/types'
-import { WarehouseTypeEnum } from 'features/warehouse/constants/warehouse'
-import { useGetWarehouse } from 'features/warehouse/hooks/warehouse'
 import {
   CreateRelocationTaskDraftPageLocationState,
   RelocationTaskDraftFormFields,
-} from 'features/warehouse/types'
+} from 'features/relocationTasks/types'
+import { UserGroupCategoryEnum, UserPermissionsEnum } from 'features/users/api/constants'
+import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/users/hooks'
+import { WarehouseTypeEnum } from 'features/warehouses/api/constants'
+import { useGetWarehouse } from 'features/warehouses/hooks'
 import isNumber from 'lodash/isNumber'
 import moment from 'moment-timezone'
 import React, { FC, Key, useCallback, useEffect, useMemo, useState } from 'react'
@@ -56,9 +56,9 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
-import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
-import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
+import { useGetCurrenciesCatalog } from 'shared/catalogs/currencies/hooks'
 import { checkLocationTypeIsWarehouse } from 'shared/catalogs/locations/helpers/checkLocationType'
+import { useLazyGetLocationsCatalog } from 'shared/catalogs/locations/hooks'
 import { CANCEL_TEXT } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { extractLocationState } from 'shared/utils/common'

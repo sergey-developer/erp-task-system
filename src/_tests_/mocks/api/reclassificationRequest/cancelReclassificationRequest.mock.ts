@@ -9,7 +9,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const cancelReclassificationRequestMockFn = (reclassificationRequestId: IdType) =>
   getRequestMockFn(
     HttpMethodEnum.Post,
-    makeCancelReclassificationRequestEndpoint(reclassificationRequestId),
+    makeCancelReclassificationRequestApiPath(reclassificationRequestId),
   )
 
 export const mockCancelReclassificationRequestSuccess = (

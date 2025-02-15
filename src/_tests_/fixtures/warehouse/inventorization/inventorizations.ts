@@ -1,8 +1,8 @@
 import {
   InventorizationStatusEnum,
   InventorizationTypeEnum,
-} from 'features/inventorizations/constants'
-import { InventorizationDTO } from 'features/warehouse/models'
+} from 'features/inventorizations/api/constants'
+import { InventorizationDTO } from 'features/inventorizations/api/dto'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 

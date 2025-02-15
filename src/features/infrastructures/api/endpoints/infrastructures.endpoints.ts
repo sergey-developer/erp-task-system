@@ -3,10 +3,10 @@ import {
   InfrastructuresEndpointsTagsEnum,
 } from 'features/infrastructures/api/constants'
 import {
-  makeDeleteInfrastructureOrdersFormsWorkEndpoint,
-  makeGetInfrastructureEndpoint,
-  makeUpdateInfrastructureEndpoint,
-  makeUpdateInfrastructureOrderFormWorkEndpoint,
+  makeDeleteInfrastructureOrdersFormsWorkApiPath,
+  makeGetInfrastructureApiPath,
+  makeUpdateInfrastructureApiPath,
+  makeUpdateInfrastructureOrderFormWorkApiPath,
 } from 'features/infrastructures/api/helpers'
 import {
   CreateInfrastructureOrderFormAttachmentRequest,
@@ -22,15 +22,15 @@ import {
   GetInfrastructureOrdersFormsRequest,
   GetInfrastructureOrdersFormsResponse,
   GetInfrastructureRequest,
+  GetInfrastructureResponse,
   GetInfrastructureStatusHistoryRequest,
   GetInfrastructureStatusHistoryResponse,
-  GetInfrastructureResponse,
-  UpdateInfrastructureRequest,
   UpdateInfrastructureOrderFormWorkRequest,
   UpdateInfrastructureOrderFormWorkResponse,
+  UpdateInfrastructureRequest,
+  UpdateInfrastructureResponse,
   UpdateInfrastructureStatusRequest,
   UpdateInfrastructureStatusResponse,
-  UpdateInfrastructureResponse,
 } from 'features/infrastructures/api/schemas'
 import { decamelize } from 'humps'
 
@@ -50,7 +50,7 @@ const infrastructuresEndpoints = baseApi
         providesTags: (result, error) =>
           error ? [] : [InfrastructuresEndpointsTagsEnum.Infrastructure],
         query: ({ infrastructureId }) => ({
-          url: makeGetInfrastructureEndpoint({ infrastructureId }),
+          url: makeGetInfrastructureApiPath({ infrastructureId }),
           method: HttpMethodEnum.Get,
         }),
       }),
@@ -61,7 +61,7 @@ const infrastructuresEndpoints = baseApi
         invalidatesTags: (result, error) =>
           error ? [] : [InfrastructuresEndpointsTagsEnum.Infrastructure],
         query: ({ infrastructureId, ...data }) => ({
-          url: makeUpdateInfrastructureEndpoint({ infrastructureId }),
+          url: makeUpdateInfrastructureApiPath({ infrastructureId }),
           method: HttpMethodEnum.Patch,
           data,
         }),
@@ -155,7 +155,7 @@ const infrastructuresEndpoints = baseApi
         UpdateInfrastructureOrderFormWorkRequest
       >({
         query: ({ infrastructureWorkId, ...data }) => ({
-          url: makeUpdateInfrastructureOrderFormWorkEndpoint(infrastructureWorkId),
+          url: makeUpdateInfrastructureOrderFormWorkApiPath(infrastructureWorkId),
           method: HttpMethodEnum.Put,
           data: data,
         }),
@@ -166,7 +166,7 @@ const infrastructuresEndpoints = baseApi
         DeleteInfrastructureOrdersFormsWorkRequest
       >({
         query: ({ infrastructureWorkId }) => ({
-          url: makeDeleteInfrastructureOrdersFormsWorkEndpoint({ infrastructureWorkId }),
+          url: makeDeleteInfrastructureOrdersFormsWorkApiPath({ infrastructureWorkId }),
           method: HttpMethodEnum.Delete,
         }),
       }),

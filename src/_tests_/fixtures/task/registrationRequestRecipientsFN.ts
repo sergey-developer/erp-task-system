@@ -1,8 +1,8 @@
-import { TaskRegistrationRequestRecipientsFNModel } from 'features/task/models'
+import { TaskRegistrationRequestRecipientsFNDTO } from 'features/tasks/api/dto'
 
 import { fakeName } from '_tests_/utils'
 
-export const registrationRequestRecipientsFN = (): TaskRegistrationRequestRecipientsFNModel => ({
+export const registrationRequestRecipientsFN = (): TaskRegistrationRequestRecipientsFNDTO => ({
   email: [fakeName()],
   emailAsCopy: [fakeName()],
 })

@@ -1,6 +1,6 @@
-import { GetInventorizationsRequest } from 'features/inventorizations/api/dto'
 import { useGetInventorizationsQuery } from 'features/inventorizations/api/endpoints/inventorizations.endpoints'
-import { GetInventorizationsTransformedResponse } from 'features/warehouse/types'
+import { GetInventorizationsRequest } from 'features/inventorizations/api/schemas'
+import { GetInventorizationsTransformedResponse } from 'features/inventorizations/api/types'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

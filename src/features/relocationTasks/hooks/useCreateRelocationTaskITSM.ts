@@ -1,9 +1,9 @@
+import { createRelocationTaskITSMErrorMessage } from 'features/relocationTasks/api/constants'
 import { useCreateRelocationTaskITSMMutation } from 'features/relocationTasks/api/endpoints/relocationTasks.endpoints'
-import { createRelocationTaskITSMErrorMessage } from 'features/relocationTasks/constants'
 import {
   CreateRelocationTaskITSMRequest,
   CreateRelocationTaskITSMResponse,
-} from 'features/warehouse/models'
+} from 'features/relocationTasks/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'

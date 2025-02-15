@@ -2,7 +2,7 @@ import { ColumnType } from 'antd/es/table'
 import { SortOrder } from 'antd/es/table/interface'
 import isEqual from 'lodash/isEqual'
 
-import { GetRelocationTasksSortKey, GetRelocationTasksSortValue } from 'features/warehouse/models'
+import { GetRelocationTasksSortKey, GetRelocationTasksSortValue } from 'features/warehouses/api/dto'
 
 import { SortOrderEnum } from 'shared/constants/sort'
 

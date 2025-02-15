@@ -1,5 +1,5 @@
-import { GetSubTaskListResponse } from 'features/task/models'
-import { getSubTaskListUrl } from 'features/task/utils/task'
+import { GetSubTasksResponse } from 'features/tasks/api/schemas'
+import { getSubTaskListUrl } from 'features/tasks/helpers'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
@@ -12,7 +12,7 @@ const getSubTaskListMockFn = (taskId: IdType) =>
 
 export const mockGetSubTaskListSuccess = (
   taskId: IdType,
-  options?: Partial<ResponseResolverOptions<GetSubTaskListResponse>>,
+  options?: Partial<ResponseResolverOptions<GetSubTasksResponse>>,
 ) => getSuccessMockFn(getSubTaskListMockFn(taskId), options)()
 
 export const mockGetSubTaskListServerError = (

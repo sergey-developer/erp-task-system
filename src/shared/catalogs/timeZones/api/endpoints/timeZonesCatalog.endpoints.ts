@@ -3,7 +3,7 @@ import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetTimeZonesCatalogRequest,
   GetTimeZonesCatalogResponse,
-} from 'shared/catalogs/api/endpoints/timeZones/schemas'
+} from 'shared/catalogs/timeZones/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const timeZonesCatalogEndpoints = baseApi.injectEndpoints({

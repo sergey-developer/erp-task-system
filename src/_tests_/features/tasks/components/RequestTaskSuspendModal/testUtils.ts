@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import {
   suspendReasonDict,
   SuspendReasonEnum,
-} from 'features/task/constants/taskSuspendRequest/index'
+} from 'features/tasks/constants/taskSuspendRequest/index'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/RequestTaskSuspendModal/constants'
 import { buttonTestUtils, radioButtonTestUtils, selectTestUtils } from '_tests_/utils'

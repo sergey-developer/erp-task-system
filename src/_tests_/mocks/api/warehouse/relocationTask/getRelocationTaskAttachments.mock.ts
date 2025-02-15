@@ -1,5 +1,5 @@
 import { getRelocationTaskAttachmentsUrl } from 'features/relocationTasks/api/helpers'
-import { GetRelocationTaskAttachmentsResponse } from 'features/warehouse/models'
+import { GetRelocationTaskAttachmentsResponse } from 'features/warehouses/api/dto'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

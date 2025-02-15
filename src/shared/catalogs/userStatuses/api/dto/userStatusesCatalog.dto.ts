@@ -1,4 +1,4 @@
-import { UserStatusCodeEnum } from 'shared/catalogs/constants'
+import { UserStatusCodeEnum } from 'shared/catalogs/userStatuses/api/constants'
 import { IdType } from 'shared/types/common'
 
 export type UserStatusCatalogItemDTO = {

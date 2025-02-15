@@ -8,7 +8,7 @@ import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getUserActionsMockFn = (userId: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, makeGetUserActionsEndpoint(userId))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetUserActionsApiPath(userId))
 
 export const mockGetUserActionsSuccess = (
   userId: IdType,

@@ -3,7 +3,7 @@ import { useCreateEquipmentTechnicalExaminationMutation } from 'features/equipme
 import {
   CreateEquipmentTechnicalExaminationRequest,
   CreateEquipmentTechnicalExaminationResponse,
-} from 'features/warehouse/models'
+} from 'features/equipments/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'

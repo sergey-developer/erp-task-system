@@ -2,7 +2,7 @@ import { executeRelocationTaskUrl } from 'features/relocationTasks/api/helpers'
 import {
   ExecuteRelocationTaskBadRequestErrorResponse,
   ExecuteRelocationTaskResponse,
-} from 'features/warehouse/models'
+} from 'features/warehouses/api/dto'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

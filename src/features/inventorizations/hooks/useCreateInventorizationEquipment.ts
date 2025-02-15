@@ -2,7 +2,7 @@ import { useCreateInventorizationEquipmentMutation } from 'features/inventorizat
 import {
   CreateInventorizationEquipmentRequest,
   CreateInventorizationEquipmentResponse,
-} from 'features/warehouse/models'
+} from 'features/inventorizations/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseMutationResult } from 'lib/rtk-query/types'

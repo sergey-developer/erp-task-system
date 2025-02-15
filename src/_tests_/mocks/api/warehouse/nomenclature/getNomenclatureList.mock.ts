@@ -1,5 +1,5 @@
 import { NomenclaturesApiPathsEnum } from 'features/nomenclatures/api/constants'
-import { GetNomenclatureListResponse } from 'features/warehouse/models'
+import { GetNomenclaturesResponse } from 'features/nomenclatures/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -10,5 +10,5 @@ const getNomenclatureListMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, NomenclaturesApiPathsEnum.GetNomenclatures)
 
 export const mockGetNomenclatureListSuccess = (
-  options?: Partial<ResponseResolverOptions<GetNomenclatureListResponse>>,
+  options?: Partial<ResponseResolverOptions<GetNomenclaturesResponse>>,
 ) => getSuccessMockFn(getNomenclatureListMockFn(), options)()

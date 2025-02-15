@@ -1,3 +1,3 @@
 export enum TestIdsEnum {
-  TaskListMapPage = 'task-list-map-page',
+  TasksMapPage = 'task-list-map-page',
 }

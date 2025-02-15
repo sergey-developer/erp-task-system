@@ -1,6 +1,6 @@
 import { Col, Form, Row, Select, SelectProps, Typography } from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import { TaskListItemModel } from 'features/task/models'
+import { TaskDTO } from 'features/tasks/api/dto'
 import { getFullUserName } from 'features/users/helpers'
 import { FC } from 'react'
 
@@ -55,7 +55,7 @@ const CreateRelocationTaskByIncidentModal: FC<CreateRelocationTaskByIncidentModa
           onFinish={onFinish}
         >
           <Form.Item name='incident' label='Инцидент' rules={onlyRequiredRules}>
-            <Select<TaskListItemModel['id'], TaskListItemModel>
+            <Select<TaskDTO['id'], TaskDTO>
               data-testid='incident-select'
               style={selectStyles}
               placeholder='Введите текст'

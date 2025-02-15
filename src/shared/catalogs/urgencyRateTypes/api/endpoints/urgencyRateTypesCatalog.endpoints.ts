@@ -3,7 +3,7 @@ import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import {
   GetUrgencyRateTypesCatalogRequest,
   GetUrgencyRateTypesCatalogResponse,
-} from 'shared/catalogs/api/endpoints/urgencyRateTypes/schemas'
+} from 'shared/catalogs/urgencyRateTypes/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 const urgencyRateTypesCatalogEndpoints = baseApi.injectEndpoints({

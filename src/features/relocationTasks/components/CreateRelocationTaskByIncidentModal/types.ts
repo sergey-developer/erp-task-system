@@ -1,6 +1,5 @@
 import { SelectProps } from 'antd'
-
-import { TaskListItemModel, TaskModel, TasksModel } from 'features/task/models'
+import { TaskDTO, TaskDetailDTO, TasksDTO } from 'features/tasks/api/dto'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
@@ -10,7 +9,7 @@ export type CreateRelocationTaskByIncidentModalProps = BaseModalProps & {
   onFinish: EmptyFn
 
   incident?: Pick<
-    TaskModel,
+    TaskDetailDTO,
     | 'id'
     | 'recordId'
     | 'title'
@@ -25,13 +24,13 @@ export type CreateRelocationTaskByIncidentModalProps = BaseModalProps & {
   incidentIsLoading: boolean
 
   searchValue: string
-  onSearchIncident: SelectProps<TaskListItemModel['id'], TaskListItemModel>['onSearch']
-  onChangeIncident: SelectProps<TaskListItemModel['id'], TaskListItemModel>['onChange']
+  onSearchIncident: SelectProps<TaskDTO['id'], TaskDTO>['onSearch']
+  onChangeIncident: SelectProps<TaskDTO['id'], TaskDTO>['onChange']
 
-  incidents: TasksModel
+  incidents: TasksDTO
   incidentsIsLoading: boolean
 }
 
 export type CreateRelocationTaskByIncidentFormFields = {
-  incident: TaskListItemModel['id']
+  incident: TaskDTO['id']
 }

@@ -1,5 +1,6 @@
 import { TableProps } from 'antd'
-import { GetInventorizationsSortValue, InventorizationDTO } from 'features/warehouse/models'
+import { InventorizationDTO } from 'features/inventorizations/api/dto'
+import { GetInventorizationsSortValue } from 'features/inventorizations/api/schemas'
 
 import { TableSortProps } from 'shared/types/sort'
 

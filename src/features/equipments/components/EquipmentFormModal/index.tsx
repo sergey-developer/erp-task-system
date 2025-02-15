@@ -1,11 +1,7 @@
 import { Col, Form, Input, InputNumber, Radio, Row, Select, Upload } from 'antd'
 import { equipmentConditionOptions } from 'features/equipments/api/constants'
 import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
-import {
-  EquipmentCategoryDTO,
-  NomenclatureDTO,
-  WarehouseListItemModel,
-} from 'features/warehouse/models'
+import { EquipmentCategoryDTO, NomenclatureDTO, WarehouseDTO } from 'features/warehouses/api/dto'
 import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect, useMemo } from 'react'
@@ -237,7 +233,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                   name='warehouse'
                   rules={onlyRequiredRules}
                 >
-                  <Select<IdType, WarehouseListItemModel>
+                  <Select<IdType, WarehouseDTO>
                     placeholder='Выберите склад'
                     fieldNames={idAndTitleSelectFieldNames}
                     options={warehouses}

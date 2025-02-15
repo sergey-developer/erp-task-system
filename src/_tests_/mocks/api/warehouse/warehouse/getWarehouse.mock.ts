@@ -1,8 +1,8 @@
-import { GetWarehouseResponse } from 'features/warehouse/models'
-import { getWarehouseUrl } from 'features/warehouse/utils/warehouse'
+import { getWarehouseUrl } from 'features/warehouses/helpers'
+import { GetWarehouseResponse } from 'features/warehouses/api/dto'
 
-import { HttpMethodEnum } from 'shared/constants/http'
 import { ErrorData } from 'shared/api/baseApi'
+import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'
 
 import {

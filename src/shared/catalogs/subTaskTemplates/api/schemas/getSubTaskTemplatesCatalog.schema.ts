@@ -1,12 +1,12 @@
-import { TaskModel } from 'features/task/models'
+import { TaskDetailDTO } from 'features/tasks/api/dto'
 
-import { SubTaskTemplatesCatalogDTO } from 'shared/catalogs/api/dto/subTaskTemplates'
+import { SubTaskTemplatesCatalogDTO } from 'shared/catalogs/subTaskTemplates/api/dto'
 import { SupportGroupDTO } from 'shared/supportGroups/api/dto'
 import { MaybeUndefined } from 'shared/types/utils'
 
 export type GetSubTaskTemplatesCatalogRequest = MaybeUndefined<
   Partial<{
-    type: TaskModel['type']
+    type: TaskDetailDTO['type']
     supportGroup: SupportGroupDTO['id']
   }>
 >
